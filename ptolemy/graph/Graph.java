@@ -34,6 +34,13 @@ package ptolemy.graph;
 import ptolemy.graph.analysis.Analysis;
 import ptolemy.graph.analysis.SelfLoopAnalysis;
 
+import ptolemy.graph.exception.GraphActionException;
+import ptolemy.graph.exception.GraphConstructionException;
+import ptolemy.graph.exception.GraphElementException;
+import ptolemy.graph.exception.GraphException;
+import ptolemy.graph.exception.GraphStateException;
+import ptolemy.graph.exception.GraphWeightException;
+
 import java.lang.reflect.Method;
 import java.text.CharacterIterator;
 
@@ -89,6 +96,10 @@ Otherwise, unpredictable behavior may result.
 
 <p>In discussions of complexity, <em>n</em> and <em>e</em> refers to the number
 of graph nodes and edges, respectively.
+
+<p>In derived classes, the following methods need special
+attention regarding whether or not they should be overridden:
+<br>{@link #validEdgeWeight(Object)} {@link #validNodeWeight(Object)}
 
 @author Shuvra S. Bhattacharyya, Ming-Yung Ko,
 Fuat Keceli, Shahrooz Shahparnia, Yuhong Xiong, Jie Liu.
@@ -312,7 +323,7 @@ public class Graph implements Cloneable {
      *  @param node The node.
      *  @exception GraphConstructionException If the node is already
      *  in the graph.
-     *  @exception GraphElementException If the weight is invalid.
+     *  @exception GraphWeightException If the weight is invalid.
      */
     public Node addNode(Node node) {
         if (containsNode(node)) {
@@ -329,7 +340,7 @@ public class Graph implements Cloneable {
      *
      *  @param weight The node weight.
      *  @return The node.
-     *  @exception GraphElementException If the specified weight is null.
+     *  @exception GraphWeightException If the specified weight is null.
      */
     public Node addNodeWeight(Object weight) {
         Node node = new Node(weight);
@@ -564,7 +575,7 @@ public class Graph implements Cloneable {
      *  @return An edge that has this weight.
      *  @exception NullPointerException If the specified weight
      *  is null.
-     *  @exception GraphElementException If the specified weight
+     *  @exception GraphWeightException If the specified weight
      *  is not an edge weight in this graph.
      */
     public Edge edge(Object weight) {
@@ -615,7 +626,7 @@ public class Graph implements Cloneable {
      *
      *  @param weight The edge weight.
      *  @return The edge label.
-     *  @exception GraphElementException If the specified weight is not
+     *  @exception GraphWeightException If the specified weight is not
      *  an edge weight in this graph.
      *  @see #edgeLabel(Edge)
      */
@@ -629,7 +640,7 @@ public class Graph implements Cloneable {
      *  @return The weight of the edge.
      *  @exception IndexOutOfBoundsException If the label is
      *  not valid.
-     *  @exception GraphElementException If the edge corresponding
+     *  @exception GraphWeightException If the edge corresponding
      *  to the label is unweighted.
      *  @see #edgeLabel(Edge)
      */
@@ -911,7 +922,7 @@ public class Graph implements Cloneable {
      *  @return A node that has this weight.
      *  @exception NullPointerException If the specified weight
      *  is null.
-     *  @exception GraphElementException If the specified weight
+     *  @exception GraphWeightException If the specified weight
      *  is not a node weight in this graph.
      */
     public Node node(Object weight) {
@@ -959,7 +970,7 @@ public class Graph implements Cloneable {
      *
      *  @param weight The node weight.
      *  @return The node label.
-     *  @exception GraphElementException If the specified weight is not
+     *  @exception GraphWeightException If the specified weight is not
      *  a node weight in this graph.
      *  @see #nodeLabel(Node)
      */
@@ -973,7 +984,7 @@ public class Graph implements Cloneable {
      *  @return The weight of the node.
      *  @exception IndexOutOfBoundsException If the label is
      *  not valid.
-     *  @exception GraphElementException If the node corresponding
+     *  @exception GraphWeightException If the node corresponding
      *  to the label is unweighted.
      *  @see #nodeLabel(Node)
      */
@@ -1015,7 +1026,7 @@ public class Graph implements Cloneable {
      *  @param collection The specified collection of weights.
      *  @return The nodes in this graph whose weights are contained
      *  in a specified collection.
-     *  @exception GraphElementException If any specified weight
+     *  @exception GraphWeightException If any specified weight
      *  is not a node weight in this graph.
      */
     public Collection nodes(Collection collection) {
@@ -1185,7 +1196,7 @@ public class Graph implements Cloneable {
             Node node = (Node)nodes.next();
             if (!containsNode(node)) {
                 throw new GraphElementException("Attempt to form an "
-                        + "induced subgraph \ncontaining a node that is not in "
+                        + "induced subgraph containing a node that is not in "
                         + "the 'parent' graph.\n"
                         + GraphException.nodeDump(node, this));
             }
@@ -1226,7 +1237,7 @@ public class Graph implements Cloneable {
             Node node = (Node)(nodes.next());
             if (!containsNode(node)) {
                 throw new GraphElementException("Attempt to form a "
-                        + "subgraph \ncontaining a node that is not in "
+                        + "subgraph containing a node that is not in "
                         + "the 'parent' graph.\n"
                         + GraphException.nodeDump(node, this));
             }
@@ -1237,7 +1248,7 @@ public class Graph implements Cloneable {
             Edge edge = (Edge)(edges.next());
             if (!containsEdge(edge)) {
                 throw new GraphElementException("Attempt to form a "
-                        + "subgraph \ncontaining an edge that is not in "
+                        + "subgraph containing an edge that is not in "
                         + "the 'parent' graph.\n"
                         + GraphException.edgeDump(edge, this));
             }
@@ -1300,7 +1311,7 @@ public class Graph implements Cloneable {
      *  method.
      *  @exception GraphElementException If the specified edge is not in
      *  the graph.
-     *  @exception GraphElementException If the weight of the given edge
+     *  @exception GraphWeightException If the weight of the given edge
      *  is not valid, as determined by {@link #validEdgeWeight(Object)}.
      *  @see #validateWeight(Edge, Object)
      *  @see #validateWeight(Node)
@@ -1317,7 +1328,7 @@ public class Graph implements Cloneable {
         }
         Object weightArgument = edge.hasWeight() ? edge.getWeight() : null;
         if (!validEdgeWeight(weightArgument)) {
-            throw new GraphElementException(
+            throw new GraphWeightException(
                     "Invalid weight associated with an edge in the graph."
                     + GraphException.edgeDump(edge, this));
         }
@@ -1345,7 +1356,7 @@ public class Graph implements Cloneable {
         }
         Object newWeight = edge.hasWeight() ? edge.getWeight() : null;
         if (!validEdgeWeight(newWeight)) {
-            throw new GraphElementException(
+            throw new GraphWeightException(
                     "Invalid weight associated with an edge in the graph."
                     + GraphException.edgeDump(edge, this));
         }
@@ -1374,7 +1385,7 @@ public class Graph implements Cloneable {
      *  method.
      *  @exception GraphElementException If the specified node is not in
      *  the graph.
-     *  @exception GraphElementException If the weight of the given node
+     *  @exception GraphWeightException If the weight of the given node
      *  is not valid, as determined by {@link #validNodeWeight(Object)}.
      *  @see #validateWeight(Node, Object)
      */
@@ -1390,7 +1401,7 @@ public class Graph implements Cloneable {
         }
         Object weightArgument = node.hasWeight() ? node.getWeight() : null;
         if (!validNodeWeight(weightArgument)) {
-            throw new GraphElementException(
+            throw new GraphWeightException(
                     "Invalid weight associated with a node in the graph."
                     + GraphException.nodeDump(node, this));
         }
@@ -1441,7 +1452,7 @@ public class Graph implements Cloneable {
         }
         Object newWeight = node.hasWeight() ? node.getWeight() : null;
         if (!validNodeWeight(newWeight)) {
-            throw new GraphElementException(
+            throw new GraphWeightException(
                     "Invalid weight associated with a node in the graph."
                     + GraphException.nodeDump(node, this));
         }
@@ -1527,7 +1538,8 @@ public class Graph implements Cloneable {
         else if (weighted && (weight == null)) {
             throw new NullPointerException("Attempt to assign a null "
                     + "weight to an edge. The first node:\n" + node1
-                    + "\nThe second node:\n" + node2 + "The graph: \n" + this);
+                    + "\nThe second node:\n" + node2
+                    + "\nThe graph: \n" + this);
         } else {
             Edge edge = null;
             if (weighted) {
@@ -1637,8 +1649,8 @@ public class Graph implements Cloneable {
         try {
             graph = (Graph)(getClass().newInstance());
         } catch (Exception exception) {
-            throw new RuntimeException("Could not create an empty graph from "
-                    + "this one.\n" + exception + "\n"
+            throw new GraphConstructionException("Could not create an "
+                    + "empty graph from this one.\n" + exception + "\n"
                     + GraphException.graphDump(this));
         }
         return graph;
@@ -1681,14 +1693,14 @@ public class Graph implements Cloneable {
      *  Derived classes can override this method to perform additional updates
      *  of internal data structures.
      *  @param edge The new edge.
-     *  @exception GraphElementException If the weight of the given edge is
+     *  @exception GraphWeightException If the weight of the given edge is
      *  not valid, as determined by {@link #validEdgeWeight(Object)}.
      *  @see #_registerNode(Node)
      */
     protected void _registerEdge(Edge edge) {
         Object weight = edge.hasWeight() ? edge.getWeight() : null;
         if (!validEdgeWeight(weight)) {
-            throw new GraphElementException("Invalid edge weight.\n"
+            throw new GraphWeightException("Invalid edge weight.\n"
                     + GraphException.edgeDump(edge, this));
         }
         _edges.add(edge);
@@ -1702,14 +1714,14 @@ public class Graph implements Cloneable {
      *  Derived classes can override this method to perform additional updates
      *  of internal data structures.
      *  @param node The new node.
-     *  @exception GraphElementException If the weight of the given node is
+     *  @exception GraphWeightException If the weight of the given node is
      *  not valid, as determined by {@link #validNodeWeight(Object)}.
      *  @see #_registerEdge(Edge)
      */
     protected void _registerNode(Node node) {
         Object weight = node.hasWeight() ? node.getWeight() : null;
         if (!validNodeWeight(weight)) {
-            throw new GraphElementException("Invalid node weight.\n"
+            throw new GraphWeightException("Invalid node weight.\n"
                     + GraphException.nodeDump(node, this));
         }
         _nodes.add(node);
@@ -1722,7 +1734,7 @@ public class Graph implements Cloneable {
     ////                         private methods                   ////
 
     // Given two node weights w1 and w2, add all edges of the form
-    // edges of the form (x1, x2), where
+    // (x1, x2), where
     //     (x1.getWeight() == w1) && (x2.getWeight() == w2).
     // The third parameter specifies whether the edges are to be
     // weighted, and the fourth parameter is the weight that is
@@ -1864,7 +1876,7 @@ public class Graph implements Cloneable {
                 String description = (element instanceof Node)
                         ? GraphException.nodeDump((Node)element, this)
                         : GraphException.edgeDump((Edge)element, this);
-                throw new RuntimeException("Internal error: the specified "
+                throw new GraphStateException("Internal error: the specified "
                         + "graph element is neither unweighted nor associated "
                         + "with a weight." + description);
 
@@ -1880,7 +1892,7 @@ public class Graph implements Cloneable {
     // Return the list of edges that have a given edge weight. Return
     // null if no edges have the given weight.
     // @exception NullPointerException If the specified weight is null.
-    // @exception GraphElementException If the specified weight
+    // @exception GraphWeightException If the specified weight
     // is not an edge weight in this graph.
     private ArrayList _sameWeightEdges(Object weight) {
         if (weight == null) {
@@ -1888,7 +1900,7 @@ public class Graph implements Cloneable {
         } else {
             ArrayList edgeList = (ArrayList)_edgeWeightMap.get(weight);
             if (edgeList == null) {
-                throw new GraphElementException("The specified weight "
+                throw new GraphWeightException("The specified weight "
                         + "is not an edge weight in this graph."
                         + GraphException.weightDump(weight, this));
             } else {
@@ -1900,7 +1912,7 @@ public class Graph implements Cloneable {
     // Return the list of nodes that have a given node weight. Return
     // null if no nodes have the given weight.
     // @exception NullPointerException If the specified weight is null.
-    // @exception GraphElementException If the specified weight
+    // @exception GraphWeightException If the specified weight
     // is not a node weight in this graph.
     private ArrayList _sameWeightNodes(Object weight) {
         if (weight == null) {
@@ -1908,7 +1920,7 @@ public class Graph implements Cloneable {
         } else {
             ArrayList nodeList = (ArrayList)_nodeWeightMap.get(weight);
             if (nodeList == null) {
-                throw new GraphElementException("The specified weight "
+                throw new GraphWeightException("The specified weight "
                         + "is not a node weight in this graph."
                         + GraphException.weightDump(weight, this));
             } else {
@@ -1928,7 +1940,7 @@ public class Graph implements Cloneable {
         if (oldWeight == null) {
             if (!unweightedSet.contains(element)) {
                 // This 'dump' of a null weight will also dump the graph.
-                throw new GraphElementException(
+                throw new GraphWeightException(
                         "Incorrect previous weight specified."
                         + GraphException.weightDump(oldWeight, this));
             }
@@ -1943,7 +1955,7 @@ public class Graph implements Cloneable {
             // with the removal unconditionally.
             List elementList = (List)weightMap.get(oldWeight);
             if ((elementList == null) || !elementList.remove(element)) {
-                throw new GraphElementException(
+                throw new GraphWeightException(
                         "Incorrect previous weight specified."
                         + GraphException.weightDump(oldWeight, this));
             }

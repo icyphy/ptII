@@ -79,7 +79,7 @@ test Graph-2.3 {try to add duplicate nodes} {
     set z [$p addNodeWeight $n1]
     catch {$p {addNode ptolemy.graph.Node} $z} msg
     list $msg
-} {{ptolemy.graph.GraphConstructionException: Attempt to add a node that is already contained in the graph.
+} {{ptolemy.graph.exception.GraphConstructionException: Attempt to add a node that is already contained in the graph.
 Dumps of the offending node and graph follow.
 The offending node:
 node1
@@ -103,7 +103,7 @@ test Graph-2.4 {try to add duplicate edges} {
     # use the graph above
     catch {$p {addEdge ptolemy.graph.Edge} $newEdge} msg
     list $msg
-} {{ptolemy.graph.GraphConstructionException: Attempt to add an edge that is already in the graph.
+} {{ptolemy.graph.exception.GraphConstructionException: Attempt to add an edge that is already in the graph.
 Dumps of the offending edge and graph follow.
 The offending edge:
 (node1, node2)
@@ -622,7 +622,7 @@ test Graph-9.1 {testing the validateWeight(Node) method} {
     set set6 [[java::new java.util.Vector [$gr nodes $nw2]] size]
     set counter2 [$gr changeCount]
     list $set1 $set2 $result $set3 $set4 $result2 $set5 $set6 $counter1 \
-	$counter2
+    $counter2
 } {2 1 1 1 1 1 1 2 3 5}
 
 ######################################################################
@@ -651,7 +651,7 @@ test Graph-9.3 {testing the GraphElementException} {
     $n4 setWeight $nw2
     catch {$gr validateWeight $n4} msg
     list $msg
-} {{ptolemy.graph.GraphElementException: The specified node is not in the graph.
+} {{ptolemy.graph.exception.GraphElementException: The specified node is not in the graph.
 Dumps of the offending node and graph follow.
 The offending node:
 weight2
@@ -698,7 +698,7 @@ test Graph-9.4 {testing validateWeight(Node, Weight)} {
     set set6 [[java::new java.util.Vector [$gr nodes $nw2]] size]
     set counter2 [$gr changeCount]
     list $set1 $set2 $result $set3 $set4 $result2 $set5 $set6 $counter1 \
-	$counter2
+    $counter2
 } {2 1 1 1 1 1 1 2 3 5}
 
 ######################################################################
@@ -738,7 +738,7 @@ test Graph-9.6 {testing validateWeight(Node, Weight) exceptions} {
     set set11 [[java::new java.util.Vector [$gr nodes $nw2]] size]
     set set12 [[java::new java.util.Vector [$gr nodes null]] size]
     list $msg1 $msg2 $msg3 $msg4 $set7 $set8 $set9 $set10 $set11 $set12
-} {{ptolemy.graph.GraphElementException: The specified node is not in the graph.
+} {{ptolemy.graph.exception.GraphElementException: The specified node is not in the graph.
 Dumps of the offending node and graph follow.
 The offending node:
 weight2
@@ -752,7 +752,7 @@ Edge Set:
 
 }
 
-} {ptolemy.graph.GraphElementException: Incorrect previous weight specified.
+} {ptolemy.graph.exception.GraphWeightException: Incorrect previous weight specified.
 Dumps of the offending weight and graph follow.
 The offending weight:
 weight2
@@ -766,7 +766,7 @@ Edge Set:
 
 }
 
-} {ptolemy.graph.GraphElementException: Incorrect previous weight specified.
+} {ptolemy.graph.exception.GraphWeightException: Incorrect previous weight specified.
 Dumps of the offending weight and graph follow.
 The offending weight:
 null
@@ -780,7 +780,7 @@ Edge Set:
 
 }
 
-} {ptolemy.graph.GraphElementException: Incorrect previous weight specified.
+} {ptolemy.graph.exception.GraphWeightException: Incorrect previous weight specified.
 Dumps of the offending weight and graph follow.
 The offending weight:
 null
@@ -856,7 +856,7 @@ test Graph-10.3 {checking restoration of an edge whose one node is deleted} {
     $oneg removeNode $node1
     catch {$oneg {restoreEdge ptolemy.graph.Edge} $edge} msg
     list $msg
-} {{ptolemy.graph.GraphElementException: Source node is not in the graph.
+} {{ptolemy.graph.exception.GraphElementException: Source node is not in the graph.
 
 Dumps of the offending edge and graph follow.
 The offending edge:
@@ -935,7 +935,7 @@ test Graph-11.1 {testing addGraph(Graph)} {
     # This should return false since we are adding an empty graph.
     set returnValue2 [$gr2 addGraph [java::new ptolemy.graph.Graph]]
     list $description1 $description2 $msg $description3 $returnValue \
-	$returnValue2
+    $returnValue2
 } {{{ptolemy.graph.Graph
 Node Set:
 0: weight1
@@ -955,7 +955,7 @@ Edge Set:
 1: (<unweighted node>, <unweighted node>)
 2: (<unweighted node>, <unweighted node>)
 }
-} {ptolemy.graph.GraphConstructionException: Attempt to add a node that is already contained in the graph.
+} {ptolemy.graph.exception.GraphConstructionException: Attempt to add a node that is already contained in the graph.
 Dumps of the offending node and graph follow.
 The offending node:
 weight1

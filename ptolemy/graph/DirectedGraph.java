@@ -36,6 +36,13 @@ import ptolemy.graph.analysis.SinkNodeAnalysis;
 import ptolemy.graph.analysis.SourceNodeAnalysis;
 import ptolemy.graph.analysis.TransitiveClosureAnalysis;
 
+import ptolemy.graph.exception.GraphActionException;
+import ptolemy.graph.exception.GraphElementException;
+import ptolemy.graph.exception.GraphException;
+import ptolemy.graph.exception.GraphStateException;
+import ptolemy.graph.exception.GraphTopologyException;
+import ptolemy.graph.exception.GraphWeightException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -202,13 +209,13 @@ public class DirectedGraph extends Graph {
      *  @param node A node weight in this graph.
      *  @return An array of node weights that are backward-reachable from the
      *  nodes that have the specified weight; each element is an {@link Object}.
-     *  @exception GraphElementException If the specified weight is
+     *  @exception GraphWeightException If the specified weight is
      *  not a node weight in this graph.
      */
     public Object[] backwardReachableNodes(Object weight) {
         Collection sameWeightNodes = nodes(weight);
         if (sameWeightNodes.size() == 0) {
-            throw new GraphElementException("The specified weight is not a "
+            throw new GraphWeightException("The specified weight is not a "
                     + "node weight in this graph."
                     + GraphException.weightDump(weight, this));
         }
@@ -454,14 +461,14 @@ public class DirectedGraph extends Graph {
      *  @param node The specified node weight.
      *  @return An array of node weights reachable from the specified weight;
      *  each element is an {@link Object}.
-     *  @exception GraphElementException If the specified node weight is
+     *  @exception GraphWeightException If the specified node weight is
      *  not a node weight in this graph.
      *  @see #reachableNodes(Node)
      */
     public Object[] reachableNodes(Object weight) {
         Collection sameWeightNodes = nodes(weight);
         if (sameWeightNodes.size() == 0) {
-            throw new GraphElementException("The specified weight is not a "
+            throw new GraphWeightException("The specified weight is not a "
                     + "node weight in this graph."
                     + GraphException.weightDump(weight, this));
         }
@@ -697,7 +704,7 @@ public class DirectedGraph extends Graph {
      *
      *  @return An acyclic graph in the form of
      *          {@link DirectedAcyclicGraph}.
-     *  @exception GraphTopologyException This graph is not acyclic.
+     *  @exception GraphException This graph is not acyclic.
      */
     public DirectedAcyclicGraph toDirectedAcyclicGraph() {
         DirectedAcyclicGraph acyclicGraph;

@@ -26,67 +26,62 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 
-ME =		ptolemy/graph
+ME =        ptolemy/graph
 
-DIRS = 		analysis test demo
+DIRS =      analysis exception test demo
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =      ../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	graph
+PTPACKAGE =     graph
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	analysis/analysis.jar
+    analysis/analysis.jar \
+    exception/exception.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	CPO.java \
-	DirectedAcyclicGraph.java \
-	DirectedGraph.java \
-	Edge.java \
+    CPO.java \
+    DirectedAcyclicGraph.java \
+    DirectedGraph.java \
+    Edge.java \
     Element.java \
-	Graph.java \
-    GraphActionException.java \
-    GraphConstructionException.java \
-    GraphElementException.java \
-    GraphStateException.java \
-    GraphTopologyException.java \
-    GraphException.java \
-	Graphs.java \
-	LabeledList.java \
-	Inequality.java \
-	InequalitySolver.java \
-	InequalityTerm.java \
-	Node.java 
+    Graph.java \
+    Graphs.java \
+    LabeledList.java \
+    Inequality.java \
+    InequalitySolver.java \
+    InequalityTerm.java \
+    Node.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	test
+MISC_FILES =    test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	demo \
-	'InequalitySolver$$1.class' \
-	'InequalitySolver$$Info.class' \
-	'LabeledList$$1.class' \
-	'LabeledList$$SubList.class'
+    doc \
+    demo \
+    'InequalitySolver$$1.class' \
+    'InequalitySolver$$Info.class' \
+    'LabeledList$$1.class' \
+    'LabeledList$$SubList.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

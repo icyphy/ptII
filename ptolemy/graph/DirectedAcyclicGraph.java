@@ -32,6 +32,9 @@
 package ptolemy.graph;
 
 import ptolemy.graph.analysis.TransitiveClosureAnalysis;
+import ptolemy.graph.exception.GraphConstructionException;
+import ptolemy.graph.exception.GraphStateException;
+import ptolemy.graph.exception.GraphTopologyException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -261,9 +264,10 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
      *
      *  @return An array of Objects representing the nodes sorted
      *   according to the topology.
-     *  @exception GraphTopologyException If the graph is cyclic.
+     *  @exception GraphStateException If the graph is cyclic.
      */
     public Object[] topologicalSort() {
+        _validate();
         int size = nodeCount();
         int[] indeg = new int[size];
         for (int i = 0; i < size; i++) {
@@ -291,8 +295,11 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
                     }
                 }
             }
+            // The following codes can be removed since they are not
+            // reachable. Cycles are checked by _validate() so that
+            // no cyclic graphs can reach to this point.
             if (finished && active) {
-                throw new GraphTopologyException(
+                throw new GraphStateException(
                         "DirectedAcyclicGraph.topologicalSort: Graph is "
                         + "cyclic.");
             }
@@ -413,18 +420,18 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     //   |
     // _upSetShared
 
-    // compute transitive closure.  Throws GraphTopologyException if detects
+    // compute transitive closure.  Throws GraphStateException if detects
     // cycles.  Find bottom and top elements.
     private void _validate() {
         boolean[][] transitiveClosure = transitiveClosure();
 
-        if (!_transitiveClosureAnalysis.obsolete()) {
+        if (!_transitiveClosureAnalysis.obsolete() && isAcyclic()) {
             _closure = transitiveClosure;
             return;
         }
 
-        if ( !isAcyclic()) {
-            throw new GraphTopologyException(
+        if (!isAcyclic()) {
+            throw new GraphStateException(
                     "DirectedAcyclicGraph._validate: Graph is cyclic.");
         }
 

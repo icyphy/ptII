@@ -1,4 +1,4 @@
-/* Exception of computing a function of graph with wrong states.
+/* Exception for graph action errors.
 
  Copyright (c) 2002 The University of Maryland.
  All rights reserved.
@@ -25,32 +25,26 @@
 @AcceptedRating Red (ssb@eng.umd.edu)
 */
 
-package ptolemy.graph;
+package ptolemy.graph.exception;
+
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// GraphStateException
+//// GraphActionException
 /**
-The exception of computing a funcion of graph with wrong states.
-In some cases, a proper input graph is required to evaluate functions of
-a graph. Graphs with wrong states lead to invalid results or even making
-functions incomputable. Some examples of the states are: topology,
-connectivity, graph type, node/edge counts ...etc.
+Exception for graph action errors. This is a non-RuntimeException and
+should be caught by calling methods.
 
 @author Mingyung Ko
 @version $Id$
 */
-public class GraphStateException extends GraphException {
-
-    /** The default constructor without arguments.
-     */
-    public GraphStateException() {}
+public class GraphActionException extends IllegalActionException {
 
     /** Constructor with an argument of text description.
-     *  @param message The exception message.
+     *  @param message Detailed description of the error.
      */
-    public GraphStateException(String message) {
+    public GraphActionException(String message) {
         super(message);
     }
-
 }
 

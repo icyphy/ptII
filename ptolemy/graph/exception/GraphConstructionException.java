@@ -25,7 +25,11 @@
 @AcceptedRating Red (ssb@eng.umd.edu)
 */
 
-package ptolemy.graph;
+package ptolemy.graph.exception;
+
+import ptolemy.graph.Edge;
+import ptolemy.graph.Graph;
+import ptolemy.graph.Node;
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphConstructionException

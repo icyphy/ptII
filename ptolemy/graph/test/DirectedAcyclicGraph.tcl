@@ -61,7 +61,7 @@ test DirectedAcyclicGraph-2.1 {Create an empty instance} {
 test DirectedAcyclicGraph-2.2 {test methods on the above empty instance} {
     catch {$p leastUpperBound null null} msg
     list [$p bottom] [$p top] $msg
-} {java0x0 java0x0 {ptolemy.graph.GraphElementException: The specified weight is not a node weight in this graph.
+} {java0x0 java0x0 {ptolemy.graph.exception.GraphWeightException: The specified weight is not a node weight in this graph.
 Dumps of the offending weight and graph follow.
 The offending weight:
 null
@@ -137,7 +137,7 @@ test DirectedAcyclicGraph-2.6 {catch exception on self loop} {
     # use the CPO above
     catch {$p addEdge $n1 $n1} msg
     list $msg
-} {{ptolemy.graph.GraphConstructionException: Cannot add a self loop in an acyclic graph.
+} {{ptolemy.graph.exception.GraphConstructionException: Cannot add a self loop in an acyclic graph.
 A self loop was attempted on the following node.
 node1}}
 
@@ -275,7 +275,7 @@ test DirectedAcyclicGraph-3.3 { top. sort cyclic graph, catch exceptin } {
 
     catch {$p topologicalSort} msg
     list $msg
-} {{ptolemy.graph.GraphTopologyException: DirectedAcyclicGraph.topologicalSort: Graph is cyclic.}}
+} {{ptolemy.graph.exception.GraphStateException: DirectedAcyclicGraph._validate: Graph is cyclic.}}
 
 ######################################################################
 ####
@@ -284,7 +284,7 @@ test DirectedAcyclicGraph-3.4 { reachable nodes on cyclic graph } {
     # use graph above
     catch {$p compare $n1 $n2} msg
     list $msg
-} {{ptolemy.graph.GraphTopologyException: DirectedAcyclicGraph._validate: Graph is cyclic.}}
+} {{ptolemy.graph.exception.GraphStateException: DirectedAcyclicGraph._validate: Graph is cyclic.}}
 
 ######################################################################
 ####

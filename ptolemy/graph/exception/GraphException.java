@@ -25,7 +25,12 @@
 @AcceptedRating Red (ssb@eng.umd.edu)
 */
 
-package ptolemy.graph;
+package ptolemy.graph.exception;
+
+import ptolemy.graph.Edge;
+import ptolemy.graph.Element;
+import ptolemy.graph.Graph;
+import ptolemy.graph.Node;
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphException
@@ -122,17 +127,17 @@ public class GraphException extends RuntimeException {
      *
      *  @param element The element to dump.
      *  @param graph The container graph.
-     *  @param elementName The name of the element.
+     *  @param elementDescriptor Descriptor of the element.
      *  @return A text string dump of the element and graph.
      */
     static protected String _elementDump(
-            Object element, Graph graph, String elementName) {
+            Object element, Graph graph, String elementDescriptor) {
 
         String elementString =
                 (element == null) ? "<null>" : element.toString();
         return "\nDumps of the offending "
-                + elementName + " and graph follow.\n"
-                + "The offending " + elementName + ":\n" + elementString
+                + elementDescriptor + " and graph follow.\n"
+                + "The offending " + elementDescriptor + ":\n" + elementString
                 + "\nThe offending graph:\n" + graph.toString() + "\n";
     }
 

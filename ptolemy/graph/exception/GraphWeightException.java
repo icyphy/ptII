@@ -1,4 +1,4 @@
-/* Exception thrown due to incorrect graph topology.
+/* Exception for unweighted graphs or graphs with improper weights.
 
  Copyright (c) 2002 The University of Maryland.
  All rights reserved.
@@ -25,31 +25,28 @@
 @AcceptedRating Red (ssb@eng.umd.edu)
 */
 
-package ptolemy.graph;
+package ptolemy.graph.exception;
 
 //////////////////////////////////////////////////////////////////////////
-//// GraphTopologyException
-/**
-The exception thrown due to incorrect graph topology. This is for
-functions of graphs with required topologies. For example, acyclic property
-is required in {@link DirectedAcyclicGraph} and the topology checking is
-necessary.
+//// GraphWeightException
+/** Exception for unweighted graphs or graphs with improper weights.
+This exception can also be thrown due to accessing elements with
+incorrect weights.
 
 @author Mingyung Ko
 @version $Id$
 */
-public class GraphTopologyException extends GraphStateException {
+public class GraphWeightException extends GraphException {
 
     /** The default constructor without arguments.
      */
-    public GraphTopologyException() {}
+    public GraphWeightException() {}
 
     /** Constructor with an argument of text description.
      *  @param message The exception message.
      */
-    public GraphTopologyException(String message) {
+    public GraphWeightException(String message) {
         super(message);
     }
-
 }
 
