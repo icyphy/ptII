@@ -33,8 +33,10 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
@@ -42,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.ShapeIcon;
 
@@ -80,7 +82,9 @@ public abstract class ShapeAttribute extends Attribute {
         super(container, name);
 
         // Hide the name.
-        new SingletonAttribute(this, "_hideName");
+        SingletonParameter hide = new SingletonParameter(this, "_hideName");
+        hide.setToken(BooleanToken.TRUE);
+        hide.setVisibility(Settable.EXPERT);
 
         _icon = new ShapeIcon(this, "_icon", _getDefaultShape());
         _icon.setPersistent(false);

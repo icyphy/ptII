@@ -28,14 +28,17 @@ COPYRIGHTENDKEY
 
 package ptolemy.moml.filter;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
 //// HideAnnotationNames
+
 /** When this class is registered with the MoMLParser.addMoMLFilter()
     method, it will cause MoMLParser to add a _hideName property
     property for any annotations.
@@ -49,9 +52,9 @@ import ptolemy.moml.MoMLParser;
 public class HideAnnotationNames implements MoMLFilter {
 
     /** If the attributeName is "name" and attributeValue ends
-     *        with "annotation", then
+     *  with "annotation", then
      *  <pre>
-     *   <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+     *   <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
      *   </property>
      *  <pre>
      *  is added if it is not yet present.
@@ -126,7 +129,10 @@ public class HideAnnotationNames implements MoMLFilter {
             _currentlyProcessingAnnotation = false;
             _currentAnnotationFullName = null;
             try {
-                new SingletonAttribute(container, "_hideName");
+                SingletonParameter hide = new SingletonParameter(container, "_hideName");
+                hide.setToken(BooleanToken.TRUE);
+                hide.setVisibility(Settable.EXPERT);
+
             	MoMLParser.setModified(true);
             } catch (NameDuplicationException ex) {        	
                 // Ignore, the container already has a _hideName.

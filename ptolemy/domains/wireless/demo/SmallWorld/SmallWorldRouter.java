@@ -44,6 +44,7 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
@@ -54,7 +55,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.Settable;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 
@@ -184,7 +185,9 @@ public class SmallWorldRouter extends TypedAtomicActor {
         node_icon.setPersistent(false);
 
         // Hide the name of this sensor node.
-        new SingletonAttribute(this, "_hideName");
+        SingletonParameter hide = new SingletonParameter(this, "_hideName");
+        hide.setToken(BooleanToken.TRUE);
+        hide.setVisibility(Settable.EXPERT);
     }
 
     ///////////////////////////////////////////////////////////////////

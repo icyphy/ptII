@@ -111,7 +111,11 @@ public class BoxedValuesIcon extends XMLIcon {
             width = stringBounds.getWidth() + 20;
             heigth = stringBounds.getHeight() + 10;
         }
-        return new BasicRectangle(0, 0, width, heigth, Color.white, 1);
+        BasicRectangle result
+                = new BasicRectangle(0, 0, width, heigth, Color.white, 1);
+        // FIXME: Doesn't do the right thing.
+        // result.setCentered(false);
+        return result;
     }
 
     /** Create a new Diva figure that visually represents this icon.

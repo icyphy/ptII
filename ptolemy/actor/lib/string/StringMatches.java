@@ -37,6 +37,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -81,12 +82,14 @@ public class StringMatches extends TypedAtomicActor {
         pattern = new PortParameter(this, "pattern");
         pattern.setStringMode(true);
         pattern.setExpression("");
-        new Attribute(pattern.getPort(), "_showName");
+        (new SingletonParameter(pattern.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         matchString = new PortParameter(this, "matchString");
         matchString.setStringMode(true);
         matchString.setExpression("");
-        new Attribute(matchString.getPort(), "_showName");
+        (new SingletonParameter(matchString.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.BOOLEAN);

@@ -60,8 +60,8 @@ import diva.util.xml.XmlReader;
    If there is no such attribute, then a default icon is used.
    The createFigure() method returns this same background figure, but
    decorated with a label giving the name of the container, unless the
-   container contains an attribute named "_hideName".  The createIcon()
-   method returns a Swing icon given by an attribute named
+   container contains a parameter named "_hideName" with value true.
+   The createIcon() method returns a Swing icon given by an attribute named
    "_smallIconDescription", if there is one.  If there is no such
    attribute, then the icon is simply a small representation of the
    background figure.

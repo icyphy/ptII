@@ -33,17 +33,18 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -133,8 +134,10 @@ public class ArrayPeakSearch extends TypedAtomicActor {
         peakValues = new TypedIOPort(this, "peakValues", false, true);
         peakIndices = new TypedIOPort(this, "peakIndices", false, true);
 
-        new SingletonAttribute(peakValues, "_showName");
-        new SingletonAttribute(peakIndices, "_showName");
+        (new SingletonParameter(peakValues, "_showName"))
+                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(peakIndices, "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         // Set Type Constraints.
         input.setTypeEquals(new ArrayType(BaseType.DOUBLE));

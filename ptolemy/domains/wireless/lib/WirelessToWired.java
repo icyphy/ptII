@@ -30,15 +30,16 @@ package ptolemy.domains.wireless.lib;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.wireless.kernel.AtomicWirelessChannel;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -85,7 +86,8 @@ public class WirelessToWired extends TypedAtomicActor {
         super(container, name);
 
         properties = new TypedIOPort(this, "properties", false, true);
-        new Attribute(properties, "_showName");
+        (new SingletonParameter(properties, "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         // Create and configure the parameters.
         inputChannelName = new StringParameter(this, "inputChannelName");
@@ -97,7 +99,8 @@ public class WirelessToWired extends TypedAtomicActor {
 
         payload = new TypedIOPort(this, "payload", false, true);
         payload.setTypeSameAs(input);
-        new Attribute(payload, "_showName");
+        (new SingletonParameter(payload, "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "

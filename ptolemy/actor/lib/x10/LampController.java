@@ -29,12 +29,13 @@ COPYRIGHTENDKEY
 package ptolemy.actor.lib.x10;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.SingletonAttribute;
 import x10.Command;
 
 //////////////////////////////////////////////////////////////////////////
@@ -77,10 +78,14 @@ public class LampController extends Sender {
         off = new TypedIOPort(this, "off", true, false);
 
         // Add attributes to indicate that names should be shown.
-        new SingletonAttribute(bright, "_showName");
-        new SingletonAttribute(dim, "_showName");
-        new SingletonAttribute(on, "_showName");
-        new SingletonAttribute(off, "_showName");
+        (new SingletonParameter(bright, "_showName"))
+                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(dim, "_showName"))
+                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(on, "_showName"))
+                .setToken(BooleanToken.TRUE);
+        (new SingletonParameter(off, "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         bright.setTypeEquals(BaseType.INT);
         dim.setTypeEquals(BaseType.INT);

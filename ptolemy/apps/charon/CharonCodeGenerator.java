@@ -122,9 +122,11 @@ public class CharonCodeGenerator extends Attribute {
                 + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\ngenerate code.</text></svg>");
-        new SingletonAttribute(this, "_hideName");
         new CharonEditorFactory(this, "_editorFactory");
-
+        
+        SingletonParameter hide = new SingletonParameter(this, "_hideName");
+        hide.setToken(BooleanToken.TRUE);
+        hide.setVisibility(Settable.EXPERT);
     }
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

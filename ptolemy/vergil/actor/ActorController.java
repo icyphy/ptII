@@ -49,9 +49,14 @@ import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
@@ -495,12 +500,28 @@ public abstract class ActorController extends AttributeController {
                     figure.add(labelFigure);
                 }
                 // If the port contains an attribute named "_showName",
-                // then render the name of the port as well.
-                if (port.getAttribute("_showName") != null) {
-                    LabelFigure labelFigure = 
-                        _createPortLabelFigure(port.getName(),
-                                _portLabelFont, x, y, direction);
-                    figure.add(labelFigure);
+                // then render the name of the port as well. If the
+                // attribute is a boolean-valued parameter, then
+                // show the name only if the value is true.
+                Attribute showAttribute = port.getAttribute("_showName");
+                if (showAttribute != null) {
+                    boolean show = true;
+                    if (showAttribute instanceof Parameter) {
+                        try {
+                            Token token = ((Parameter)showAttribute).getToken();
+                            if (token instanceof BooleanToken) {
+                                show = ((BooleanToken)token).booleanValue();
+                            }
+                        } catch (IllegalActionException e) {
+                            // Ignore. Presence of the attribute will prevail.
+                        }
+                    }
+                    if (show) {
+                        LabelFigure labelFigure = 
+                            _createPortLabelFigure(port.getName(),
+                                    _portLabelFont, x, y, direction);
+                        figure.add(labelFigure);
+                    }
                 }
             }
         }

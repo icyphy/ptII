@@ -35,11 +35,13 @@ import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.copernicus.kernel.GeneratorAttribute;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// GeneratorTableauAttribute
@@ -72,7 +74,11 @@ public class GeneratorTableauAttribute extends GeneratorAttribute {
     public GeneratorTableauAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        new SingletonAttribute(this, "_hideName");
+
+        SingletonParameter hide = new SingletonParameter(this, "_hideName");
+        hide.setToken(BooleanToken.TRUE);
+        hide.setVisibility(Settable.EXPERT);
+
         new GeneratorTableauEditorFactory(this, "_editorFactory");
     }
     ///////////////////////////////////////////////////////////////////

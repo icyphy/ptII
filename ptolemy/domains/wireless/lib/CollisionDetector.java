@@ -34,9 +34,11 @@ import java.util.List;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
@@ -182,23 +184,28 @@ public class CollisionDetector extends TypedAtomicActor {
 
         // Create and configure the ports.
         message = new WirelessIOPort(this, "message", true, false);
-        new Attribute(message, "_showName");
+        (new SingletonParameter(message, "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         power = new TypedIOPort(this, "power", true, false);
         power.setTypeEquals(BaseType.DOUBLE);
-        new Attribute(power, "_showName");
+        (new SingletonParameter(power, "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         duration = new TypedIOPort(this, "duration", true, false);
         duration.setTypeEquals(BaseType.DOUBLE);
-        new Attribute(duration, "_showName");
+        (new SingletonParameter(duration, "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         received = new TypedIOPort(this, "received", false, true);
         received.setTypeSameAs(message);
-        new Attribute(received, "_showName");
+        (new SingletonParameter(received, "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         collided = new TypedIOPort(this, "collided", false, true);
         collided.setTypeSameAs(message);
-        new Attribute(collided, "_showName");
+        (new SingletonParameter(collided, "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         // Configure parameters.
         SNRThresholdInDB = new Parameter(this, "SNRThresholdInDB");

@@ -39,12 +39,14 @@ import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PlotEffigy;
 import ptolemy.actor.gui.TableauFrame;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.Settable;
 import ptolemy.plot.Plot;
 
 
@@ -85,9 +87,12 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                 + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\nplot the schedule.</text></svg>");
-        new SingletonAttribute(this, "_hideName");
 
         new SchedulePlotterEditorFactory(this, "_editorFactory");
+
+        SingletonParameter hide = new SingletonParameter(this, "_hideName");
+        hide.setToken(BooleanToken.TRUE);
+        hide.setVisibility(Settable.EXPERT);
 
         // FIXME: This seems wrong.
         if (container instanceof CompositeActor) {

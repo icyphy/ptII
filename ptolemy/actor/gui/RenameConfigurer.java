@@ -30,11 +30,16 @@ package ptolemy.actor.gui;
 
 import javax.swing.BoxLayout;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
@@ -72,14 +77,9 @@ public class RenameConfigurer extends Query
         // be shown on the outside of the composite actor.
         boolean nameShowing = false;
         if (object instanceof Port) {
-            // NOTE: If the object is a Port, then Diva used to display
-            // the name twice, which looks really bad.
-            // In Ptolemy II 2.0beta, we shipped a modified
-            // version of this file that does not display the the
-            // Show name checkbox
-            nameShowing = _object.getAttribute("_showName") != null;
+            nameShowing = _isPropertySet(_object, "_showName");
         } else {
-            nameShowing = _object.getAttribute("_hideName") == null;
+            nameShowing = !_isPropertySet(_object, "_hideName");
         }
         addCheckBox("Show name", "Show name", nameShowing);
     }
@@ -93,7 +93,7 @@ public class RenameConfigurer extends Query
         if (_changed) {
             String newName = getStringValue("New name");
 
-            NamedObj parent = (NamedObj)_object.getContainer();
+            NamedObj parent = _object.getContainer();
             String oldName = _object.getName();
 
             StringBuffer moml = new StringBuffer("<");
@@ -107,25 +107,37 @@ public class RenameConfigurer extends Query
             // Remove or show name.
             boolean showName = getBooleanValue("Show name");
             if (_object instanceof Port) {
-                if (showName) {
-                    if (_object.getAttribute("_showName") == null) {
+                boolean previousShowName = _isPropertySet(_object, "_showName");
+                if (showName != previousShowName) {
+                    if (showName) {
                         moml.append("<property name=\"_showName\" "
-                        + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
-                    }
-                } else {
-                    if (_object.getAttribute("_showName") != null) {
-                        moml.append("<deleteProperty name=\"_showName\"/>");
+                        + "class=\"ptolemy.data.expr.SingletonParameter\""
+                        + " value=\"true\"/>");
+                    } else {
+                        if (!(_object.getAttribute("_showName") instanceof Parameter)) {
+                            moml.append("<deleteProperty name=\"_showName\"/>");
+                        } else {
+                            moml.append("<property name=\"_showName\" "
+                            + "class=\"ptolemy.data.expr.SingletonParameter\""
+                            + " value=\"false\"/>");
+                        }
                     }
                 }
             } else {
-                if (showName) {
-                    if (_object.getAttribute("_hideName") != null) {
-                        moml.append("<deleteProperty name=\"_hideName\"/>");
-                    }
-                } else {
-                    if (_object.getAttribute("_hideName") == null) {
+                boolean previousShowName = !_isPropertySet(_object, "_hideName");
+                if (showName != previousShowName) {
+                    if (showName) {
+                        if (!(_object.getAttribute("_hideName") instanceof Parameter)) {
+                            moml.append("<deleteProperty name=\"_hideName\"/>");
+                        } else {
+                            moml.append("<property name=\"_hideName\" "
+                            + "class=\"ptolemy.data.expr.SingletonParameter\""
+                            + " value=\"false\"/>");
+                        }
+                    } else {
                         moml.append("<property name=\"_hideName\" "
-                        + "class=\"ptolemy.kernel.util.SingletonAttribute\"/>");
+                        + "class=\"ptolemy.data.expr.SingletonParameter\""
+                        + " value=\"true\"/>");
                     }
                 }
             }
@@ -173,6 +185,38 @@ public class RenameConfigurer extends Query
      */
     public void changed(String name) {
         _changed = true;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Return true if the property of the specified name is set for
+     *  the specified object. A property is specified if the specified
+     *  object contains an attribute with the specified name and that
+     *  attribute is either not a boolean-valued parameter, or it is
+     *  a boolean-valued parameter with value true.
+     *  @param object The object.
+     *  @param name The property name.
+     *  @return True if the property is set.
+     */
+    private boolean _isPropertySet(NamedObj object, String name) {
+        Attribute attribute = object.getAttribute(name);
+        if (attribute == null) {
+            return false;
+        }
+        if (attribute instanceof Parameter) {
+            try {
+                Token token = ((Parameter)attribute).getToken();
+                if (token instanceof BooleanToken) {
+                    if (!((BooleanToken)token).booleanValue()) {
+                        return false;
+                    }
+                }
+            } catch (IllegalActionException e) {
+                // Ignore, using default of true.
+            }
+        }
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////

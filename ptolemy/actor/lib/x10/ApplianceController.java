@@ -30,11 +30,12 @@
 package ptolemy.actor.lib.x10;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.SingletonAttribute;
 import x10.Command;
 
 //////////////////////////////////////////////////////////////////////////
@@ -74,8 +75,8 @@ public class ApplianceController extends Sender {
         off = new TypedIOPort(this, "off", true, false);
 
         // Create attributes that force the names to be shown.
-        new SingletonAttribute(on, "_showName");
-        new SingletonAttribute(off, "_showName");
+        (new SingletonParameter(on, "_showName")).setToken(BooleanToken.TRUE);
+        (new SingletonParameter(off, "_showName")).setToken(BooleanToken.TRUE);
 
         // Will output true if movement is detected.
         on.setTypeEquals(BaseType.BOOLEAN);

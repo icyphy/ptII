@@ -36,12 +36,14 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import chic.ChicForPtolemy;
 
@@ -85,8 +87,11 @@ public class ChicInvoker extends Attribute {
                 + "xlink:href=\"ptolemy/chic/chic.gif\"/>\n"
                 + "</svg>\n");
 
-        new SingletonAttribute(this, "_hideName");
         new ChicControllerFactory(this, "_controllerFactory");
+
+        SingletonParameter hide = new SingletonParameter(this, "_hideName");
+        hide.setToken(BooleanToken.TRUE);
+        hide.setVisibility(Settable.EXPERT);
 
         chicAttributeName = new StringAttribute(this, "InterfaceName");
     }

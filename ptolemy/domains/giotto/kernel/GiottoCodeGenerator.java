@@ -47,8 +47,10 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.TextEffigy;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -56,7 +58,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -721,8 +723,12 @@ public class GiottoCodeGenerator extends Attribute {
                 + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\ngenerate code.</text></svg>");
-        new SingletonAttribute(this, "_hideName");
+
         _instantiateEditorFactoryClass();
+
+        SingletonParameter hide = new SingletonParameter(this, "_hideName");
+        hide.setToken(BooleanToken.TRUE);
+        hide.setVisibility(Settable.EXPERT);
     }
     protected String _endLine = "\n";
 

@@ -260,6 +260,10 @@ public class PropertyClassChanges implements MoMLFilter {
         // _hideName in visible attributes.
         HashMap hideNameClassChanges = new HashMap();
         // Key = property name, Value = new class name
+        // NOTE: Ideally, we would create a
+        // ptolemy.data.expr.SingletonParameter with value
+        // true, but we have no mechanism to set the value,
+        // so we use an attribute.
         hideNameClassChanges.put("_hideName",
                 "ptolemy.kernel.util.SingletonAttribute");
 

@@ -32,15 +32,17 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.ImageIcon;
 
@@ -77,7 +79,9 @@ public class ImageAttribute extends Attribute {
         super(container, name);
 
         // Hide the name.
-        new SingletonAttribute(this, "_hideName");
+        SingletonParameter hide = new SingletonParameter(this, "_hideName");
+        hide.setToken(BooleanToken.TRUE);
+        hide.setVisibility(Settable.EXPERT);
 
         _icon = new ImageIcon(this, "_icon");
         _icon.setPersistent(false);

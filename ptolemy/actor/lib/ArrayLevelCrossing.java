@@ -36,6 +36,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -87,7 +88,8 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
         start = new PortParameter(this, "start");
         start.setExpression("0");
         start.setTypeEquals(BaseType.INT);
-        new SingletonAttribute(start.getPort(), "_showName");
+        (new SingletonParameter(start.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         forwards = new Parameter(this, "forwards");
         forwards.setExpression("true");

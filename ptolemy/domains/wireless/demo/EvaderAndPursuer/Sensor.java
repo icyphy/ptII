@@ -31,21 +31,22 @@ package ptolemy.domains.wireless.demo.EvaderAndPursuer;
 import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.Settable;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 
@@ -144,11 +145,17 @@ public class Sensor extends TypedAtomicActor {
         node_icon.setPersistent(false);
 
         // Hide the name of this sensor node.
-        new SingletonAttribute(this, "_hideName");
+        SingletonParameter hide = new SingletonParameter(this, "_hideName");
+        hide.setToken(BooleanToken.TRUE);
+        hide.setVisibility(Settable.EXPERT);
+
         // Hide the ports.
-        new Attribute(output, "_hide");
-        new Attribute(input, "_hide");
-        new Attribute(signal, "_hide");
+        (new SingletonParameter(output, "_hide")).setToken(
+                BooleanToken.TRUE);
+        (new SingletonParameter(input, "_hide")).setToken(
+                BooleanToken.TRUE);
+        (new SingletonParameter(signal, "_hide")).setToken(
+                BooleanToken.TRUE);
     }
 
     /** Override the base class to declare that the <i>output</i>

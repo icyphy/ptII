@@ -37,9 +37,9 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -78,12 +78,14 @@ public class StringIndexOf extends TypedAtomicActor {
         searchFor = new PortParameter(this, "searchFor");
         searchFor.setStringMode(true);
         searchFor.setExpression("");
-        new Attribute(searchFor.getPort(), "_showName");
+        (new SingletonParameter(searchFor.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         inText = new PortParameter(this, "inText");
         inText.setStringMode(true);
         inText.setExpression("");
-        new Attribute(inText.getPort(), "_showName");
+        (new SingletonParameter(inText.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         ignoreCase = new Parameter(this, "ignoreCase");
         ignoreCase.setTypeEquals(BaseType.BOOLEAN);
@@ -92,7 +94,8 @@ public class StringIndexOf extends TypedAtomicActor {
         startIndex = new PortParameter(this, "startIndex");
         startIndex.setTypeEquals(BaseType.INT);
         startIndex.setExpression("0");
-        new Attribute(startIndex.getPort(), "_showName");
+        (new SingletonParameter(startIndex.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         // Create new parameters and ports, then set default values and/or
         // types of parameters and ports.

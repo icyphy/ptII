@@ -55,11 +55,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
@@ -68,8 +65,10 @@ import javax.swing.table.TableColumn;
 
 import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.unit.ParseException;
@@ -228,19 +227,21 @@ public class PortConfigurerDialog
                         _direction = "DEFAULT";
                     }
                     portInfo[COL_DIRECTION] = _direction;
-                    Attribute _show =
-                        (Attribute) (port.getAttribute("_showName"));
-                    if (_show == null) {
-                        portInfo[COL_SHOW_NAME] = Boolean.FALSE;
-                    } else {
+                    
+                    boolean isShowSet = _isPropertySet(port, "_showName");
+                    if (isShowSet) {
                         portInfo[COL_SHOW_NAME] = Boolean.TRUE;
-                    }
-                    Attribute hide = (Attribute) (port.getAttribute("_hide"));
-                    if (hide == null) {
-                        portInfo[COL_HIDE] = Boolean.FALSE;
                     } else {
-                        portInfo[COL_HIDE] = Boolean.TRUE;
+                        portInfo[COL_SHOW_NAME] = Boolean.FALSE;
                     }
+                    
+                    boolean isHideSet = _isPropertySet(port, "_hide");
+                    if (isHideSet) {
+                        portInfo[COL_HIDE] = Boolean.TRUE;
+                    } else {
+                        portInfo[COL_HIDE] = Boolean.FALSE;
+                    }
+
                     String _units = "";
                     UnitAttribute _unitsAttribute =
                         (UnitAttribute) port.getAttribute("_units");
@@ -382,9 +383,9 @@ public class PortConfigurerDialog
 
         public void toggleShowAllNames() {
             _showAllNames = !_showAllNames;
-            Boolean _show = new Boolean(_showAllNames);
+            Boolean show = new Boolean(_showAllNames);
             for (int i = 0; i < getRowCount(); i++) {
-                setValueAt(_show, i, COL_SHOW_NAME);
+                setValueAt(show, i, COL_SHOW_NAME);
             }
         }
 
@@ -650,14 +651,14 @@ public class PortConfigurerDialog
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// protected methods ////
-    /**
-     * apply any changes that may have been made in the table.
-     *
+    ////                    protected methods                      ////
+    
+    /** Apply any changes that may have been made in the table.
      */
     protected void _apply() {
         Iterator portIterator;
         TypedIOPort actualPort;
+        
         // The port names in the table will be used many times, so extract
         // them here.
         String portNameInTable[] = new String[_portTableModel.getRowCount()];
@@ -666,7 +667,8 @@ public class PortConfigurerDialog
                 (String) (_portTableModel
                     .getValueAt(i, PortTableModel.COL_NAME));
         }
-        //  Do some basic checks on table for things that are obviously
+        
+        // Do some basic checks on table for things that are obviously
         // incorrect. First, make sure all the new ports have names other than
         // the empty string.
         for (int i = 0; i < _portTableModel.getRowCount(); i++) {
@@ -677,7 +679,8 @@ public class PortConfigurerDialog
                 return;
             }
         }
-        //  Now, make sure all port names are unique
+        
+        //  Now, make sure all port names are unique.
         for (int i = 0; i < _portTableModel.getRowCount(); i++) {
             for (int j = i + 1; j < _portTableModel.getRowCount(); j++) {
                 if (portNameInTable[i].equals(portNameInTable[j])) {
@@ -690,9 +693,10 @@ public class PortConfigurerDialog
                 }
             }
         }
-        //   Determine which ports have been removed. If a port exists on the
-        //   target but is not represented by a row in the table then it needs
-        //   to be removed.
+        
+        // Determine which ports have been removed. If a port exists on the
+        // target but is not represented by a row in the table then it needs
+        // to be removed.
         Vector portsToBeRemoved = new Vector();
         portIterator = getTarget().portList().iterator();
         actualPort = null;
@@ -803,17 +807,18 @@ public class PortConfigurerDialog
                     havePortUpdate = true;
                     updates[PortTableModel.COL_MULTIPORT] = true;
                 }
-                Attribute _show =
-                    (Attribute) (actualPort.getAttribute("_showName"));
-                if ((_show == null)
-                    == (((Boolean) (portInfo[PortTableModel.COL_SHOW_NAME]))
+                
+                boolean isShowSet = _isPropertySet(actualPort, "_showName");
+                if (isShowSet != (((Boolean)
+                        (portInfo[PortTableModel.COL_SHOW_NAME]))
                         .booleanValue())) {
                     havePortUpdate = true;
                     updates[PortTableModel.COL_SHOW_NAME] = true;
                 }
-                Attribute hide = actualPort.getAttribute("_hide");
-                if ((hide == null)
-                    == (((Boolean) (portInfo[PortTableModel.COL_HIDE]))
+
+                boolean isHideSet = _isPropertySet(actualPort, "_hide");
+                if (isHideSet != (((Boolean)
+                        (portInfo[PortTableModel.COL_HIDE]))
                         .booleanValue())) {
                     havePortUpdate = true;
                     updates[PortTableModel.COL_HIDE] = true;
@@ -982,13 +987,15 @@ public class PortConfigurerDialog
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// private methods ////
+    ////                      private methods                      ////
+    
     // Create the MoML expression that represents the update.
     private String _createMoMLUpdate(
-        boolean updates[],
-        Object portInfo[],
-        String currentPortName,
-        String newPortName) {
+            boolean updates[],
+            Object portInfo[],
+            String currentPortName,
+            String newPortName) {
+                
         StringBuffer momlUpdate =
             new StringBuffer("<port name=\"" + currentPortName + "\">");
         if (updates[PortTableModel.COL_NAME]) {
@@ -1042,21 +1049,58 @@ public class PortConfigurerDialog
         }
         if (updates[PortTableModel.COL_SHOW_NAME]) {
             if (((Boolean) (portInfo[PortTableModel.COL_SHOW_NAME]))
-                .booleanValue()) {
-                momlUpdate.append(
-                    _momlProperty("_showName", _SINGLETON_ATTRIBUTE));
+                    .booleanValue()) {
+                momlUpdate.append(_momlProperty(
+                        "_showName", _SINGLETON_PARAMETER, "true"));
             } else {
-                momlUpdate.append(_momlDeleteProperty("_showName"));
+                // NOTE: If there is already a property that is not
+                // a boolean-valued parameter, then remove it rather
+                // than setting it to false.  This is done for more
+                // robust backward compatibility.
+                boolean removed = false;
+                TypedIOPort port = (TypedIOPort)
+                        portInfo[PortTableModel.COL_ACTUAL_PORT];
+                if (port != null) {
+                    Attribute attribute = port.getAttribute("_showName");
+                    if (!(attribute instanceof Parameter)) {
+                        momlUpdate.append(_momlDeleteProperty("_showName"));
+                        removed = true;
+                    }
+                }
+                if (!removed) {
+                    momlUpdate.append(_momlProperty(
+                            "_showName", _SINGLETON_PARAMETER, "false"));
+                }
             }
         }
+        
         if (updates[PortTableModel.COL_HIDE]) {
             if (((Boolean) (portInfo[PortTableModel.COL_HIDE]))
-                .booleanValue()) {
-                momlUpdate.append(_momlProperty("_hide", _SINGLETON_ATTRIBUTE));
+                    .booleanValue()) {
+                momlUpdate.append(_momlProperty(
+                        "_hide", _SINGLETON_PARAMETER, "true"));
             } else {
-                momlUpdate.append(_momlDeleteProperty("_hide"));
+                // NOTE: If there is already a property that is not
+                // a boolean-valued parameter, then remove it rather
+                // than setting it to false.  This is done for more
+                // robust backward compatibility.
+                boolean removed = false;
+                TypedIOPort port = (TypedIOPort)
+                        portInfo[PortTableModel.COL_ACTUAL_PORT];
+                if (port != null) {
+                    Attribute attribute = port.getAttribute("_hide");
+                    if (!(attribute instanceof Parameter)) {
+                        momlUpdate.append(_momlDeleteProperty("_hide"));
+                        removed = true;
+                    }
+                }
+                if (!removed) {
+                    momlUpdate.append(_momlProperty(
+                            "_hide", _SINGLETON_PARAMETER, "false"));
+                }
             }
         }
+        
         if (_units && updates[PortTableModel.COL_UNITS]) {
             momlUpdate.append(
                 _momlProperty(
@@ -1107,6 +1151,35 @@ public class PortConfigurerDialog
         column.setPreferredWidth(30);
     }
 
+    /** Return true if the property of the specified name is set for
+     *  the specified object. A property is specified if the specified
+     *  object contains an attribute with the specified name and that
+     *  attribute is either not a boolean-valued parameter, or it is
+     *  a boolean-valued parameter with value true.
+     *  @param object The object.
+     *  @param name The property name.
+     *  @return True if the property is set.
+     */
+    private boolean _isPropertySet(NamedObj object, String name) {
+        Attribute attribute = object.getAttribute(name);
+        if (attribute == null) {
+            return false;
+        }
+        if (attribute instanceof Parameter) {
+            try {
+                Token token = ((Parameter)attribute).getToken();
+                if (token instanceof BooleanToken) {
+                    if (!((BooleanToken)token).booleanValue()) {
+                        return false;
+                    }
+                }
+            } catch (IllegalActionException e) {
+                // Ignore, using default of true.
+            }
+        }
+        return true;
+    }
+    
     private String _momlDeleteProperty(String name) {
         return "<deleteProperty name=\"" + name + "\"/>";
     }
@@ -1158,7 +1231,7 @@ public class PortConfigurerDialog
                 }
             }
             if (!foundActualPort) {
-                // TODO throw an exception here
+                // FIXME throw an exception here
             }
         }
     }
@@ -1283,8 +1356,12 @@ public class PortConfigurerDialog
     static ParseTreeEvaluator _parseTreeEvaluator = new ParseTreeEvaluator();
     Vector _ports = null;
     private int _selectedRow = -1;
-    private static String _SINGLETON_ATTRIBUTE =
-        "ptolemy.kernel.util.SingletonAttribute";
+    
+    private static String _SINGLETON_ATTRIBUTE
+            = "ptolemy.kernel.util.SingletonAttribute";
+
+    private static String _SINGLETON_PARAMETER
+            = "ptolemy.data.expr.SingletonParameter";
 
     private boolean _showAllNames = false;
     private static String _STRING_ATTRIBUTE =

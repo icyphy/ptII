@@ -31,6 +31,8 @@ package ptolemy.vergil.kernel.attributes;
 import java.text.DateFormat;
 import java.util.Date;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -141,7 +143,9 @@ public class IDAttribute extends SingletonAttribute {
         author.setPersistent(true);
 
         // Hide the name.
-        new SingletonAttribute(this, "_hideName");
+        SingletonParameter hide = new SingletonParameter(this, "_hideName");
+        hide.setToken(BooleanToken.TRUE);
+        hide.setVisibility(Settable.EXPERT);
         
         BoxedValuesIcon icon = new BoxedValuesIcon(this, "_icon");
         icon.setPersistent(false);

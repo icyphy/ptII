@@ -39,6 +39,7 @@ import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -85,7 +86,8 @@ public class StringReplace extends TypedAtomicActor {
         pattern = new PortParameter(this, "pattern");
         pattern.setStringMode(true);
         pattern.setExpression("");
-        new Attribute(pattern.getPort(), "_showName");
+        (new SingletonParameter(pattern.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         replaceAll = new Parameter(this, "replaceAll");
         replaceAll.setExpression("true");
@@ -94,12 +96,14 @@ public class StringReplace extends TypedAtomicActor {
         replacement = new PortParameter(this, "replacement");
         replacement.setStringMode(true);
         replacement.setExpression("");
-        new Attribute(replacement.getPort(), "_showName");
+        (new SingletonParameter(replacement.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         stringToEdit = new PortParameter(this, "stringToEdit");
         stringToEdit.setStringMode(true);
         stringToEdit.setExpression("");
-        new Attribute(stringToEdit.getPort(), "_showName");
+        (new SingletonParameter(stringToEdit.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);

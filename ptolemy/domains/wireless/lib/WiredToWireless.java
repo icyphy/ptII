@@ -30,12 +30,13 @@ package ptolemy.domains.wireless.lib;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -70,10 +71,12 @@ public class WiredToWireless extends TypedAtomicActor {
         super(container, name);
 
         payload = new TypedIOPort(this, "payload", true, false);
-        new Attribute(payload, "_showName");
+        (new SingletonParameter(payload, "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         properties = new TypedIOPort(this, "properties", true, false);
-        new Attribute(properties, "_showName");
+        (new SingletonParameter(properties, "_showName"))
+                .setToken(BooleanToken.TRUE);
         // FIXME: This should be constrained to be a record token.
         // How to do that?
 

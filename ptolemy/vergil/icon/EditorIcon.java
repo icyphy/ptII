@@ -38,6 +38,8 @@ import java.util.Iterator;
 import javax.swing.SwingConstants;
 
 import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -71,9 +73,9 @@ import diva.gui.toolbox.FigureIcon;
    createBackgroundFigure() method, and a decorated version, created
    by the createFigure() method.  The decorated version has, in this
    base class, a label showing the name of the entity, unless the entity
-   contains an attribute called "_hideName".  The swing icon created
-   by createIcon() does not include the decorations, but rather is only
-   the background figure.
+   contains a parameter called "_hideName" with value true.
+   The swing icon created by createIcon() does not include the
+   decorations, but rather is only the background figure.
    <p>
    Derived classes may simply populate this attribute with other
    visible attributes (attributes that contain icons), or they can
@@ -247,8 +249,9 @@ public class EditorIcon extends Attribute {
      *  figure returned by createBackgroundFigure() as its background.
      *  This method adds a LabelFigure to the CompositeFigure that
      *  contains the name of the container of this icon, unless the
-     *  container has an attribute called "_hideName".  If the container
-     *  has an attribute called "_centerName", then the name is rendered
+     *  container has a parameter called "_hideName" with value true.
+     *  If the container has an attribute called "_centerName" with
+     *  value true, then the name is rendered
      *  in the center of the background figure, rather than above it.
      *  This method should never return null, even if the icon has
      *  not been properly initialized.
@@ -265,11 +268,11 @@ public class EditorIcon extends Attribute {
         // which typically carries no label.
         // NOTE: backward compatibility problem...
         // Old style annotations now have labels...
-        if (container.getAttribute("_hideName") == null) {
+        if (!_isPropertySet(container, "_hideName")) {
             String name = container.getName();
             // Do not add a label figure if the name is null.
             if (name != null && !name.equals("")) {
-                if (container.getAttribute("_centerName") == null) {
+                if (!_isPropertySet(container, "_centerName")) {
                     LabelFigure label = new LabelFigure(name,
                             _labelFont, 1.0, SwingConstants.SOUTH_WEST);
                     // Shift the label slightly right so it doesn't
@@ -421,6 +424,35 @@ public class EditorIcon extends Attribute {
         */
 
         return new BasicRectangle(-30, -20, 60, 40, Color.white, 1);
+    }
+
+    /** Return true if the property of the specified name is set for
+     *  the specified object. A property is specified if the specified
+     *  object contains an attribute with the specified name and that
+     *  attribute is either not a boolean-valued parameter, or it is
+     *  a boolean-valued parameter with value true.
+     *  @param object The object.
+     *  @param name The property name.
+     *  @return True if the property is set.
+     */
+    protected boolean _isPropertySet(NamedObj object, String name) {
+        Attribute attribute = object.getAttribute(name);
+        if (attribute == null) {
+            return false;
+        }
+        if (attribute instanceof Parameter) {
+            try {
+                Token token = ((Parameter)attribute).getToken();
+                if (token instanceof BooleanToken) {
+                    if (!((BooleanToken)token).booleanValue()) {
+                        return false;
+                    }
+                }
+            } catch (IllegalActionException e) {
+                // Ignore, using default of true.
+            }
+        }
+        return true;
     }
 
     /** Recreate the figure.  Call this to cause createIcon() to call

@@ -29,13 +29,15 @@ COPYRIGHTENDKEY
 package ptolemy.domains.wireless.lib;
 
 import ptolemy.actor.Director;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.Settable;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
@@ -108,7 +110,9 @@ public class GraphicalLocator extends Locator {
         node_icon.setPersistent(false);
 
         // Hide the name of this sensor node.
-        new SingletonAttribute(this, "_hideName");
+        SingletonParameter hide = new SingletonParameter(this, "_hideName");
+        hide.setToken(BooleanToken.TRUE);
+        hide.setVisibility(Settable.EXPERT);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -31,12 +31,13 @@ package ptolemy.actor.lib;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// Stop
@@ -113,9 +114,9 @@ public class Stop extends Sink {
                 + "STOP</text>\n"
                 + "</svg>\n");
         // Hide the name because the name is in the icon.
-        SingletonAttribute hideAttribute =
-            new SingletonAttribute(this, "_hideName");
-        hideAttribute.setPersistent(false);
+        SingletonParameter hide = new SingletonParameter(this, "_hideName");
+        hide.setToken(BooleanToken.TRUE);
+        hide.setVisibility(Settable.EXPERT);
     }
 
     ///////////////////////////////////////////////////////////////////

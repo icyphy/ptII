@@ -31,8 +31,10 @@ package ptolemy.actor.lib.string;
 
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -77,12 +79,14 @@ public class StringSubstring extends Transformer {
         start = new PortParameter(this, "start");
         start.setExpression("0");
         start.setTypeEquals(BaseType.INT);
-        new Attribute(start.getPort(), "_showName");
+        (new SingletonParameter(start.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         stop = new PortParameter(this, "stop");
         stop.setExpression("0");
         stop.setTypeEquals(BaseType.INT);
-        new Attribute(stop.getPort(), "_showName");
+        (new SingletonParameter(start.getPort(), "_showName"))
+                .setToken(BooleanToken.TRUE);
 
         input.setTypeEquals(BaseType.STRING);
         output.setTypeEquals(BaseType.STRING);
