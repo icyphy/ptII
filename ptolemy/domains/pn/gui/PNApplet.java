@@ -64,15 +64,15 @@ public class PNApplet extends PtolemyApplet {
         for (int i = 0; i < basepinfo.length; i++) {
             pinfo[i] = basepinfo[i];
         }
-    String newinfo[][] = {
-        {"initial_queue_capacity", "", "Capacity of the queues in PN"},
-        {"defaultcapacity", "1", "default capacity of queues"}
+        String newinfo[][] = {
+            {"initial_queue_capacity", "", "Capacity of the queues in PN"},
+            {"defaultcapacity", "1", "default capacity of queues"}
 
-    };
-    pinfo[basepinfo.length] = newinfo[0];
-    pinfo[basepinfo.length+1] = newinfo[1];
-    return pinfo;
-}
+        };
+        pinfo[basepinfo.length] = newinfo[0];
+        pinfo[basepinfo.length+1] = newinfo[1];
+        return pinfo;
+    }
 
     /** Initialize the applet.  After invoking the base class init() method,
      *  Create a "Go" button. This method
@@ -114,35 +114,35 @@ public class PNApplet extends PtolemyApplet {
 
 
     ////////////////////////////////////////////////////////////////////////
-////                         protected methods                      ////
+    ////                         protected methods                      ////
 
-/** In addition to creating the buttons provided by the base class,
- *  if the number of iterations has not been specified, then create
- *  a dialog box for that number to be entered.  The panel containing
- *  the buttons and the entry box is returned.
- *  @param numbuttons The number of buttons to create.
- */
-protected Panel _createRunControls(int numbuttons) {
-    Panel panel = super._createRunControls(numbuttons);
-    if (!_queuesizegiven) {
-        // To keep the label and entry box together, put them
-        // in a new panel.
-        Panel queuepanel = new Panel();
-        queuepanel.add(new Label("Initial capacity of FIFO channels:"));
+    /** In addition to creating the buttons provided by the base class,
+     *  if the number of iterations has not been specified, then create
+     *  a dialog box for that number to be entered.  The panel containing
+     *  the buttons and the entry box is returned.
+     *  @param numbuttons The number of buttons to create.
+     */
+    protected Panel _createRunControls(int numbuttons) {
+        Panel panel = super._createRunControls(numbuttons);
+        if (!_queuesizegiven) {
+            // To keep the label and entry box together, put them
+            // in a new panel.
+            Panel queuepanel = new Panel();
+            queuepanel.add(new Label("Initial capacity of FIFO channels:"));
             
-        // Process the defaultiterations parameter.
-        String defqueuespec = getParameter("defaultcapacity");
-        if (defqueuespec == null) {
-            defqueuespec = "1";
-        }
+            // Process the defaultiterations parameter.
+            String defqueuespec = getParameter("defaultcapacity");
+            if (defqueuespec == null) {
+                defqueuespec = "1";
+            }
 
-        _queuesizebox = new TextField(defqueuespec, 10);
-        _queuesizebox.addActionListener(new QueueSizeBoxListener());
-        queuepanel.add(_queuesizebox);
-        panel.add(queuepanel);
+            _queuesizebox = new TextField(defqueuespec, 10);
+            _queuesizebox.addActionListener(new QueueSizeBoxListener());
+            queuepanel.add(_queuesizebox);
+            panel.add(queuepanel);
+        }
+        return panel;
     }
-    return panel;
-}
 
 
     /** Get the initial capacity of the channels from the entry box, 
