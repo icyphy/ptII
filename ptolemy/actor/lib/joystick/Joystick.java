@@ -165,8 +165,6 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
             boolean oldIsPollingValue = _isPollingValue;
             _isPollingValue
                 = ((BooleanToken)isPolling.getToken()).booleanValue();
-            System.out.println("Joystick " + _isPollingValue + " " + oldIsPollingValue);
-
             // If necessary, add or remove this as a JoystickListener.
             if (_joy != null && _isPollingValue != oldIsPollingValue) {
                 if (!_isPollingValue) {
