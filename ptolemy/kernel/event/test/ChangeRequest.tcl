@@ -66,18 +66,18 @@ test ChangeRequest-3.0 {test DE example with no mutations} {
     set t [java::new ptolemy.kernel.event.test.TestDE]
     $t start
     # $t insertFeedback
-    enumToStrings [$t finish]
+    enumToObjects [$t finish]
 } {0.0 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0 11.0}
 
 test ChangeRequest-3.1 {test DE example with period change} {
     $t start
     $t doublePeriod
-    enumToStrings [$t finish]
+    enumToObjects [$t finish]
 } {0.0 1.0 2.0 3.0 5.0 7.0 9.0 11.0}
 
 test ChangeRequest-3.2 {test DE example with inserted actor} {
     set t [java::new ptolemy.kernel.event.test.TestDE]
     $t start
     $t insertClock
-    enumToStrings [$t finish]
+    enumToObjects [$t finish]
 } {0.0 1.0 2.0 2.5 3.0 4.0 4.5 5.0 6.0 6.5 7.0 8.0 8.5 9.0 10.0 10.5}
