@@ -3,16 +3,16 @@ Fix layering of nodes and edges
 The TreePane should have the first level expanded by default.
 Layout breaks when toolbar gets dragged to the bottom.
 Node deletion is broken when an edge is connected.
-entities should refer to icons, not to the entities themselves.
-exportMoML: icons location is not set (probably because of above).
-exportMoML: toplevel should be model
+Do something reasonable when a model is loaded that has no graphical
+information.
 
 TODO:
 Snap to Grid.
 Director specification.
 Title box on each graph.
 Text Annotation.
-Better layout for SchematicPalette.
+Better layout for Palette.
 Port to port direct connections.  (How should this work?)
 Icon drawing app.
 Better parameter configuration.
+Cut and Paste.

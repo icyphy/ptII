@@ -14,11 +14,11 @@
         </property>
         <property name="endFrame" class="ptolemy.data.expr.Parameter" value="29">
         </property>
-        <rendition name="_icon" class="ptolemy.schematic.util.LibraryIcon">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
             <location x="73.0" y="96.0"/>
             <configure>generic.transformer</configure>
         </rendition>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="TokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="TokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
@@ -28,7 +28,7 @@
         </port>
     </entity>
     <entity name="ImageDisplay2" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
-        <rendition name="_icon" class="ptolemy.schematic.util.LibraryIcon">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
             <location x="574.0" y="114.0"/>
             <configure>generic.transformer</configure>
         </rendition>
@@ -50,7 +50,7 @@
         </property>
         <property name="partitionRows" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <rendition name="_icon" class="ptolemy.schematic.util.LibraryIcon">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
             <location x="174.0" y="111.0"/>
             <configure>generic.transformer</configure>
         </rendition>
@@ -80,7 +80,7 @@
         </property>
         <property name="partitionRows" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <rendition name="_icon" class="ptolemy.schematic.util.LibraryIcon">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
             <location x="487.0" y="115.0"/>
             <configure>generic.transformer</configure>
         </rendition>
@@ -110,7 +110,7 @@
         </property>
         <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <rendition name="_icon" class="ptolemy.schematic.util.LibraryIcon">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
             <location x="282.0" y="114.0"/>
             <configure>generic.transformer</configure>
         </rendition>
@@ -140,7 +140,7 @@
         </property>
         <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <rendition name="_icon" class="ptolemy.schematic.util.LibraryIcon">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
             <location x="377.0" y="130.0"/>
             <configure>generic.transformer</configure>
         </rendition>
@@ -162,7 +162,7 @@
         </port>
     </entity>
     <entity name="ImageDisplay17" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
-        <rendition name="_icon" class="ptolemy.schematic.util.LibraryIcon">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
             <location x="160.0" y="224.0"/>
             <configure>generic.transformer</configure>
         </rendition>
