@@ -54,10 +54,7 @@ JSRCS = \
 	DEFSMActor.java \
         HSController.java \
         HSDirector.java \
-	HSInit.java \
-	HDFFSMDirector.java \
-	HDFFSMController.java \
-	HDFFSMTransition.java
+	HSInit.java
 
 EXTRA_SRCS =	$(JSRCS)
 
