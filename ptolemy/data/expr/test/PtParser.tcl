@@ -520,6 +520,18 @@ test PtParser-12.2 {Test matrix construction.} {
 
     list $col $row $value1 $value2
 } {1 3 {1.0 + 0.0i} {0.0 + 3.0i}}
+# Test matrix construction
+test PtParser-12.3 {Test matrix construction.} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root1 [ $p1 generateParseTree "\[0.5, -0.5\]" ]
+    set res1 [java::cast ptolemy.data.DoubleMatrixToken [ $root1 evaluateParseTree ]]
+    set col [ $res1 getColumnCount ]
+    set row [ $res1 getRowCount ]
+    set value1 [ $res1 getElementAt 0 0 ]
+    set value2 [ $res1 getElementAt 0 1 ]
+
+    list $col $row $value1 $value2
+} {2 1 0.5 -0.5}
 # Test matrix construction, using regularly spaced vector as row.
 test PtParser-12.3 {Test matrix construction.} {
     set p1 [java::new ptolemy.data.expr.PtParser]

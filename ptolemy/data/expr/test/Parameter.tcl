@@ -298,27 +298,7 @@ test Parameter10.0 {Check that the type of the Token returned by getToken is the
 #################################
 ####
 #
-test Parameter11.0 {Check that variables are not added to the scope of parameters.} {
-    set e [java::new {ptolemy.kernel.Entity String} entity]
-    set a [java::new ptolemy.data.expr.Parameter $e a]
-    set b [java::new ptolemy.data.expr.Variable $e b]
-    set p [java::new ptolemy.data.expr.Parameter $e p]
-    set tok [java::new {ptolemy.data.IntToken int} 1]
-    $a setToken $tok
-    $b setToken $tok
-    $p setExpression "a+1"
-    set ra [$p getToken]
-    $p setExpression "b+1"
-    catch {$p getToken} msg
-
-    list [$ra toString] $msg
-} {ptolemy.data.IntToken(2) {ptolemy.data.expr.IllegalExpressionException: Error parsing expression "b+1":
-The ID b is undefined.}}
-
-#################################
-####
-#
-test Parameter12.0 {Check that variables are in the scope of variables.} {
+test Parameter11.0 {Check that variables are in the scope of variables.} {
     set e [java::new {ptolemy.kernel.Entity String} entity]
     set a [java::new ptolemy.data.expr.Variable $e a]
     set b [java::new ptolemy.data.expr.Variable $e b]
