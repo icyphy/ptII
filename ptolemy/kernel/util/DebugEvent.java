@@ -40,7 +40,7 @@ a FiringEvent).
 @author  Steve Neuendorffer
 @version $Id$
 @see DebugListener
-@see FiringEvent
+@see ptolemy.actor.FiringEvent
 */
 public interface DebugEvent {
 
