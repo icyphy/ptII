@@ -1,4 +1,4 @@
-/* FIXME
+/* 
 
 @Copyright (c) 1997-2002 The Regents of the University of California.
 All rights reserved.
@@ -41,7 +41,7 @@ import java.util.ListIterator;
 @author Neil Turner
 @version $Id$
 @since Ptolemy II 2.0
- */
+*/
 public class Render extends PlotBox {
 
     /** Construct an instance.
@@ -202,7 +202,7 @@ public class Render extends PlotBox {
      *  The user needs to give a 3-by-256 integer array as a colormap.
      *  @param colormap The colormap used to render images.
      */
-    public synchronized void setColormap(int[][] colormap){
+    public synchronized void setColormap(int[][] colormap) {
         _colormap = colormap;
     }
 
