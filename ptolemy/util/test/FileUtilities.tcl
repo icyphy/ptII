@@ -107,3 +107,17 @@ test FileUtilities-1.4 {binaryCopyURLToFile same file} {
     list $fileExists0 $results
 } {0 0}
 
+
+######################################################################
+####
+#
+test FileUtilities-2.1 {nameToURL} {
+    set url1 [java::call ptolemy.util.FileUtilities nameToURL \
+	"xxxxxxCLASSPATHxxxxxx/ptolemy/util/FileUtilities.java" \
+	[java::null] [java::null]]
+    set url2 [java::call ptolemy.util.FileUtilities nameToURL \
+	"\$CLASSPATH/ptolemy/util/FileUtilities.java" \
+	[java::null] [java::null]]	
+    list [$url1 sameFile $url2]
+} {1}
+
