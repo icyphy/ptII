@@ -96,7 +96,7 @@ public class DFUtilities {
         if (!port.isInput()) {
             return 0;
         } else {
-            return _getRateVariableValue(port, "tokenConsumptionRate", 1);
+            return getRateVariableValue(port, "tokenConsumptionRate", 1);
         }
     }
 
@@ -116,7 +116,7 @@ public class DFUtilities {
         if (!port.isOutput()) {
             return 0;
         } else {
-            return _getRateVariableValue(port, "tokenInitProduction", 0);
+            return getRateVariableValue(port, "tokenInitProduction", 0);
         }
     }
 
@@ -136,7 +136,7 @@ public class DFUtilities {
         if (!port.isOutput()) {
             return 0;
         } else {
-            return _getRateVariableValue(port, "tokenProductionRate", 1);
+            return getRateVariableValue(port, "tokenProductionRate", 1);
         }
     }
 
@@ -150,7 +150,7 @@ public class DFUtilities {
      */
     public static void setTokenConsumptionRate(IOPort port, int rate)
             throws IllegalActionException {
-        _setRate(port, "tokenConsumptionRate", rate);
+        setRate(port, "tokenConsumptionRate", rate);
     }
 
     /** Set the <i>tokenInitProduction</i> parameter of the given port to
@@ -163,7 +163,7 @@ public class DFUtilities {
      */
     public static void setTokenInitProduction(IOPort port, int rate)
             throws IllegalActionException {
-        _setRate(port, "tokenInitProduction", rate);
+        setRate(port, "tokenInitProduction", rate);
     }
 
     /** Set the <i>tokenProductionRate</i> parameter of the given port
@@ -175,7 +175,7 @@ public class DFUtilities {
      */
     public static void setTokenProductionRate(IOPort port, int rate)
             throws IllegalActionException {
-        _setRate(port, "tokenProductionRate", rate);
+        setRate(port, "tokenProductionRate", rate);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -189,7 +189,7 @@ public class DFUtilities {
      *  @exception IllegalActionException If a rate does not contain a
      *  valid expression.
      */
-    public static int _getRate(IOPort port)
+    public static int getRate(IOPort port)
             throws NotSchedulableException, IllegalActionException {
         if (port.isInput() && port.isOutput()) {
             throw new NotSchedulableException(port,
@@ -214,7 +214,7 @@ public class DFUtilities {
      *  @param defaultValue The default value of the variable.
      *  @return A rate.
      */
-    public static int _getRateVariableValue(
+    public static int getRateVariableValue(
             Port port, String name, int defaultValue)
             throws IllegalActionException {
         Variable parameter = getRateVariable(port, name);
@@ -244,7 +244,7 @@ public class DFUtilities {
      *  @param name Name of the variable.
      *  @param value The value.
      */
-    public static void _setIfNotDefined(Port port, String name, int value)
+    public static void setIfNotDefined(Port port, String name, int value)
             throws IllegalActionException {
         Variable rateParameter = (Variable)port.getAttribute(name);
         if (rateParameter == null) {
@@ -301,7 +301,7 @@ public class DFUtilities {
      *  @param value The value.
      *  @exception If the variable exists and its value cannot be set.
      */
-    public static void _setOrCreate(
+    public static void setOrCreate(
             NamedObj container, String name, int value)
             throws IllegalActionException {
         Variable variable = _getOrCreate(container, name);
@@ -318,7 +318,7 @@ public class DFUtilities {
      *  @param expression The expression.
      *  @exception If the variable exists and its value cannot be set.
      */
-    public static void _setOrCreate(
+    public static void setOrCreate(
             NamedObj container, String name, String expression)
             throws IllegalActionException {
         Variable variable = _getOrCreate(container, name);
@@ -331,7 +331,7 @@ public class DFUtilities {
      *  @param name The variable name.
      *  @param rate The rate value.
      */
-    protected static void _setRate(Port port, String name, int rate)
+    public static void setRate(Port port, String name, int rate)
             throws IllegalActionException {
         if (rate < 0) {
             throw new IllegalActionException(

@@ -223,7 +223,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                             minimumBufferSizes.get(relation);
                         if (bufferSizeObject instanceof Integer) {
                             int bufferSize = ((Integer)bufferSizeObject).intValue();
-                            DFUtilities._setOrCreate(relation, "bufferSize", bufferSize);
+                            DFUtilities.setOrCreate(relation, "bufferSize", bufferSize);
                             if (_debugging) {
                                 _debug("Adding bufferSize parameter to "
                                         + relation.getName() +
@@ -231,7 +231,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                             }
                         } else if (bufferSizeObject instanceof String) {
                             String bufferSizeExpression = (String)bufferSizeObject;
-                            DFUtilities._setOrCreate(relation, "bufferSize",
+                            DFUtilities.setOrCreate(relation, "bufferSize",
                                     "\"" + bufferSizeExpression + "\"");
                             if (_debugging) {
                                 _debug("Adding bufferSize parameter to "
@@ -282,14 +282,14 @@ public abstract class BaseSDFScheduler extends Scheduler {
                         "External port is both an input and an output, "
                         + "which is not allowed in SDF.");
             } else if (port.isInput()) {
-                DFUtilities._setIfNotDefined(
+                DFUtilities.setIfNotDefined(
                         port, "tokenConsumptionRate", rate.intValue());
                 if (_debugging && VERBOSE) {
                     _debug("Setting tokenConsumptionRate to "
                             + rate.intValue());
                 }
             } else if (port.isOutput()) {
-                DFUtilities._setIfNotDefined(
+                DFUtilities.setIfNotDefined(
                         port, "tokenProductionRate", rate.intValue());
                 if (_debugging && VERBOSE) {
                     _debug("Setting tokenProductionRate to "
@@ -327,7 +327,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                     foundOutputPort = connectedPort;
                     inferredRate = newRate;
                 }
-                DFUtilities._setIfNotDefined(
+                DFUtilities.setIfNotDefined(
                         port, "tokenInitProduction", inferredRate);
                 if (_debugging && VERBOSE) {
                     _debug("Setting tokenInitProduction to "
@@ -358,7 +358,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                         Entity entity = (Entity) entities.next();
                         int firingCount =
                             ((Integer)entityToFiringsPerIteration.get(entity)).intValue();
-                        DFUtilities._setOrCreate(entity, "firingsPerIteration", firingCount);
+                        DFUtilities.setOrCreate(entity, "firingsPerIteration", firingCount);
                         if (_debugging) {
                             _debug("Adding firingsPerIteration parameter to "
                                     + entity.getName() + " with value "

@@ -915,7 +915,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             for (Iterator ports = actor.portList().iterator();
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
-                if (DFUtilities._getRate(port) == 0) {
+                if (DFUtilities.getRate(port) == 0) {
                     return actor;
                 }
             }
@@ -1050,7 +1050,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         if(currentActor == model) {
             currentRate = 1;
         } else {
-            currentRate = DFUtilities._getRate(currentPort);
+            currentRate = DFUtilities.getRate(currentPort);
         }
         
         // Port rates of less than zero are not valid.
@@ -1096,7 +1096,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             if(connectedActor == model) {
                 connectedRate = 1;
             } else {
-                connectedRate = DFUtilities._getRate(connectedPort);
+                connectedRate = DFUtilities.getRate(connectedPort);
             }
 
             // currentFiring is the firing ratio that we've already
