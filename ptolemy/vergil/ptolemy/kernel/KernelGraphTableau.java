@@ -50,21 +50,36 @@ notation as a a factory
 */
 public class KernelGraphTableau extends Tableau {
 
+    /** 
+     */
+    public KernelGraphTableau(Workspace workspace) 
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);
+    }
+    
+
     public KernelGraphTableau(PtolemyEffigy container,
             String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        NamedObj model = container.getModel();
-        if (!(model instanceof CompositeEntity)) {
-            throw new IllegalActionException(this,
-                    "Cannot graphically edit a model that is not a CompositeEntity.");
+        if(container instanceof PtolemyEffigy) {
+            NamedObj model = container.getModel(); 
+            if(model == null) {
+                return;
+            }
+            if (!(model instanceof CompositeEntity)) {
+                throw new IllegalActionException(this,
+                        "Cannot graphically edit a model "
+                        + "that is not a CompositeEntity. Model was a " + 
+                                                 model);
+            }
+            CompositeEntity entity = (CompositeEntity)model;
+            
+            KernelGraphFrame frame = new KernelGraphFrame(entity, this);
+            setFrame(frame);
+            frame.setBackground(BACKGROUND_COLOR);
         }
-	CompositeEntity entity = (CompositeEntity)model;
-
-	KernelGraphFrame frame = new KernelGraphFrame(entity, this);
-	setFrame(frame);
-	frame.setBackground(BACKGROUND_COLOR);
     }
 
     ///////////////////////////////////////////////////////////////////
