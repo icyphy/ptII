@@ -33,6 +33,10 @@ package ptolemy.domains.dt.kernel;
 import java.util.*;
 import javax.swing.*;
 
+/**
+@author C. Fong
+@version $Id$
+*/
 public class DTDebug {
 
     public DTDebug(boolean debugOn) {
