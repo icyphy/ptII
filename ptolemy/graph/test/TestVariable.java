@@ -61,6 +61,13 @@ public class TestVariable implements InequalityTerm {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the string value.
+     *  @return A String
+     */
+    public Object getAssociatedObject() {
+	return _value;
+    }
+
     /** Return the information of this term. The information is a
      *  String of the form: <name>(variable)_<value>
      *  @return A String
