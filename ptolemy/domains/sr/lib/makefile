@@ -71,6 +71,8 @@ OTHER_FILES_TO_BE_JARED = \
 	CurrentIcon.xml \
 	DefaultIcon.xml \
 	PreIcon.xml \
+	NonStrictAndIcon.xml \
+	NonStrictNandIcon.xml \
 	srentities.xml \
 	WhenIcon.xml
 
