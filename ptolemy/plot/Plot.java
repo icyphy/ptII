@@ -343,9 +343,20 @@ public class Plot extends PlotBox {
                     continue;
                 } else if (arg.equals("-brw")) {
                     // -brw <width> BarWidth Bars: 
-                    if (!_parseLine("Bars: " + args[i++])) {
-                        throw new 
-                            CmdLineArgException("Failed to parse `"+arg+"'");
+                    // We default the baroffset to 0 here if the value does
+                    // not include a comma.
+                    if (arg.indexOf(",") == -1) {
+                        if (!_parseLine("Bars: " + args[i++]+",0")) {
+                            throw new 
+                                CmdLineArgException("Failed to parse `"+
+                                        arg+"'");
+                        }
+                    } else {
+                        if (!_parseLine("Bars: " + args[i++])) {
+                            throw new 
+                                CmdLineArgException("Failed to parse `"+
+                                        arg+"'");
+                        }
                     }
                     continue;
                 } else if (arg.equals("-lf")) {
@@ -681,7 +692,8 @@ public class Plot extends PlotBox {
             if (barlx < _ulx) barlx = _ulx;
             if (barrx > _lrx) barrx = _lrx;
             if (_debug > 20) {
-            System.out.println("Plot:_drawPoint bar "+barlx+" "+ypos+" "+
+            System.out.println("Plot:_drawPoint bar ("+barlx+" "+ypos+" "+
+                    (barrx - barlx) + " " + (_lry - ypos) +") "+
                     barrx + " " + barlx + " " + _lry + " xpos="+ xpos +
                     " " + _barwidth+" "+_xscale+" "+_currentdataset );
             }
