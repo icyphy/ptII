@@ -28,7 +28,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.backtrack.ast;
 
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Set;
 import java.util.Stack;
 
 //////////////////////////////////////////////////////////////////////////
@@ -106,23 +108,49 @@ public class TypeAnalyzerState {
     }
 
     /** Get the type of a variable with its name in the current scope
-     *  and all the scopes enclosing the current scope.
+     *  and all the scopes enclosing the current scope. If it is not
+     *  in the current scope, scopes enclosing the current scope are
+     *  checked. The scopes can be a variable scope or a class scope.
+     *  The effect is the same as <tt>getVariable(name, false)</tt>.
      *
      *  @param name The variable name.
      *  @return The type of the variable, or <tt>null</tt> if it is not
      *   found.
+     *  @see #getVariable(String, boolean)
      */
     public Type getVariable(String name) {
-       int i = _variableStack.size() - 1;
-       if (i == -1)
-           return null;
+        return getVariable(name, false);
+    }
+    
+    /** Get the type of a variable with its name in the current scope
+     *  and all the scopes enclosing the current scope. If it is not
+     *  in the current scope, scopes enclosing the current scope are
+     *  checked.
+     *  <p>
+     *  If <tt>variableOnly</tt> is true, only variable scopes are
+     *  checked, but class scopes are ignored.
+     *  
+     *  @param name The variable name.
+     *  @param variablesOnly Whether to check variable scopes only.
+     *  @return The type of the variable, or <tt>null</tt> if it is not
+     *   found.
+     *  @see #getVariable(String)
+     */
+    public Type getVariable(String name, boolean variablesOnly) {
+        int i = _variableStack.size() - 1;
+        if (i == -1)
+            return null;
 
-       Hashtable table = (Hashtable)_variableStack.peek();
-       while (!table.containsKey(name) && i >= 1)
-           table = (Hashtable)_variableStack.get(--i);
+        Hashtable table = (Hashtable)_variableStack.peek();
+        while (!table.containsKey(name) && i >= 1) {
+            i--;
+            if (!variablesOnly ||
+                    !_classScopes.contains(new Integer(i)))
+                table = (Hashtable)_variableStack.get(i);
+        }
 
-       return (Type)table.get(name);
-   }
+        return (Type)table.get(name);
+    }
 
     /** Get the variable stack. The variable stack is a stack of scopes.
      *  Each element in this stack is of type {@link Hashtable}, with
@@ -136,6 +164,19 @@ public class TypeAnalyzerState {
      */
     public Stack getVariableStack() {
         return _variableStack;
+    }
+    
+    public boolean isVariable(String name) {
+        int i = _variableStack.size() - 1;
+        if (i == -1)
+            return false;
+
+        Hashtable table = (Hashtable)_variableStack.peek();
+        while (!table.containsKey(name) && i >= 1)
+            table = (Hashtable)_variableStack.get(--i);
+
+        return table.containsKey(name) && 
+            !_classScopes.contains(new Integer(i));
     }
 
     /** Leave a class declaration. The current class is set back to the
@@ -156,6 +197,16 @@ public class TypeAnalyzerState {
      */
     public void setClassLoader(LocalClassLoader loader) {
         _loader = loader;
+    }
+    
+    /** Set the current scope to be a class scope (a scope opened by
+     *  a class declaration).
+     *  
+     *  @param scope The scope to be set.
+     *  @see #unsetClassScope()
+     */
+    public void setClassScope() {
+        _classScopes.add(new Integer(_variableStack.size() - 1));
     }
 
     /** Get the current class (the class currently being inspected).
@@ -194,6 +245,18 @@ public class TypeAnalyzerState {
         _variableStack = variableStack;
     }
 
+    /** Unset the current scope as a class scope (a scope opened by a
+     *  class declaration).
+     *  <p>
+     *  A class scope should be unset when removed from the scope stack.
+     *  
+     *  @param scope The scope to be set.
+     *  @see #setClassScope()
+     */
+    public void unsetClassScope() {
+        _classScopes.remove(new Integer(_variableStack.size() - 1));
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                        private fields                     ////
 
@@ -219,4 +282,8 @@ public class TypeAnalyzerState {
      *  yet.
      */
     private Stack _previousClasses = new Stack();
+    
+    /** The set of scopes that correspond to class declarations.
+     */
+    private Set _classScopes = new HashSet();
 }
