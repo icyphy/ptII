@@ -98,7 +98,7 @@ public class RealTimeDelay extends Transformer {
         return newobj;
     }
 
-    /** Output the inputs direcly.
+    /** Output the inputs directly.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
