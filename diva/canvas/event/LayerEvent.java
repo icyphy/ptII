@@ -90,7 +90,7 @@ public class LayerEvent extends MouseEvent {
     public LayerEvent (MouseEvent e) {
         super(e.getComponent(), e.getID(), e.getWhen(),
                 e.getModifiersEx(), e.getX(), e.getY(),
-                e.getClickCount(), e.isPopupTrigger() );
+                e.getClickCount(), e.isPopupTrigger(), e.getButton());
 
         _backingEvent = e;
         _layerX = e.getX();
