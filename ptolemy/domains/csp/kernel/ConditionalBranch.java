@@ -226,6 +226,12 @@ public abstract class ConditionalBranch {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables                 ////
+
+    // The guard for this guarded communication statement.
+    protected boolean _guard;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The identification number of this branch (according to its parent)
@@ -236,9 +242,6 @@ public abstract class ConditionalBranch {
     // rendezvous. _alive remains true until it is no longer possible
     // for this branch to successfully rendezvous.
     private boolean _alive = true;
-
-    // The guard for this guarded communication statement.
-    protected boolean _guard;
 
     // The parent this thread is trying to perform a conditional
     // rendezvous for.
