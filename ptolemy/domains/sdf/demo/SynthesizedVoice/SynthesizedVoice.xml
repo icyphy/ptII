@@ -26,7 +26,7 @@
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">A model of a voice analysis/synthesis algorithm.
 The GradientAdaptiveLattice filter determines the spectral content of the
-input signal using an adaptive linear predictive filter.  
+input signal using an adaptive linear prediction filter.  
 The VariableRecursiveLattice uses this information to create a synthetic
 version of the original signal.  </text></svg></configure>
         </property>
