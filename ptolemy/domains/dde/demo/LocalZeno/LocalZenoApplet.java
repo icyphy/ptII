@@ -116,15 +116,15 @@ public class LocalZenoApplet extends DDEApplet {
 
         StateListener listener =
             new StateListener((GraphPane)_jgraph.getCanvasPane());
-	_join1.addListeners(listener);
-	_join2.addListeners(listener);
-	_fork1.addListeners(listener);
-	_fork2.addListeners(listener);
-	_fBack1.addListeners(listener);
-	_fBack2.addListeners(listener);
-	_rcvr1.addListeners(listener);
-	_rcvr2.addListeners(listener);
-	_clock.addListeners(listener);
+	_join1.addDebugListener(listener);
+	_join2.addDebugListener(listener);
+	_fork1.addDebugListener(listener);
+	_fork2.addDebugListener(listener);
+	_fBack1.addDebugListener(listener);
+	_fBack2.addDebugListener(listener);
+	_rcvr1.addDebugListener(listener);
+	_rcvr2.addDebugListener(listener);
+	_clock.addDebugListener(listener);
     }
 
     /** Construct the graph representing the topology.
@@ -458,7 +458,7 @@ public class LocalZenoApplet extends DDEApplet {
      * events on the Ptolemy kernel and changes the color of
      * the nodes appropriately.
      */
-    public class StateListener implements ExecEventListener {
+    public class StateListener implements DebugListener {
 
         // The Pane
         GraphPane _graphPane;
@@ -469,48 +469,47 @@ public class LocalZenoApplet extends DDEApplet {
             _graphPane = pane;
         }
 
-        /** Respond to a state changed event.
-         */
-        public void stateChanged(ExecEvent event) {
-            final int state = event.getCurrentState();
-            Actor actor = event.getActor();
+	/** Ignore messages.
+	 */
+	public void message(String message) {
+	}
 
-            String name = ((Nameable)actor).getName();
+        /** React to the given event.
+         */
+        public void event(DebugEvent debugEvent) {
+	    // only trap ExecEvents.
+	    if(!(debugEvent instanceof ExecEvent)) return;
+	    ExecEvent event = (ExecEvent) debugEvent;
+            final ExecEvent.ExecEventType state = event.getState();
+            NamedObj actor = event.getSource();
 
             // Get the corresponding graph node and its figure
-            Object node = _nodeMap.get(actor);
-            LabelWrapper wrapper = (LabelWrapper)_graphPane.getGraphController().getFigure(node);
-	    final BasicFigure figure = (BasicFigure)
+            Object node = (Object) _nodeMap.get(actor);
+            LabelWrapper wrapper = (LabelWrapper)
+                _graphPane.getGraphController().getFigure(node);
+            final BasicFigure figure = (BasicFigure)
                 wrapper.getChild();
 
             // Color the graph
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
                     public void run() {
-                        switch (state) {
-                        case 1:
+                        if(state == ExecEvent.WAITING) 
 			    figure.setFillPaint(Color.yellow);
-                            break;
-
-                        case 2:
+			else if(state == ExecEvent.ACCESSING)
                             figure.setFillPaint(Color.green);
-                            break;
-
-                        case 3:
+			else if(state == ExecEvent.BLOCKED)
                             figure.setFillPaint(Color.red);
-                            break;
-
-                        default:
-                            System.out.println("Unknown state: " + state);
-                        }
+			else
+                            System.err.println("Unknown state: " + state);
                     }
                 });
-            } catch (Exception e) {
-		e.printStackTrace();
             }
+            catch (Exception e) {
+		e.printStackTrace();
+	    }
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     //// ThreadRenderer

@@ -79,33 +79,6 @@ public class ListenWire extends Wire {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add an ExecEventListener to this actor's list of listeners.
-     * @params listener The ExecEventListener being add to this
-     *  actor's list.
-     */
-    public void addListeners(ExecEventListener listener) {
-        if( _listenerList == null ) {
-            _listenerList = new LinkedList();
-        }
-        _listenerList.addLast(listener);
-    }
-
-    /** Inform all listeners that the specified ExecEvent
-     *  has occurred.
-     * @params event The specified ExecEvent.
-     */
-    public void generateEvents(ExecEvent event) {
-        if( _listenerList == null ) {
-            return;
-        }
-        Iterator listeners = _listenerList.iterator();
-        while( listeners.hasNext() ) {
-            ExecEventListener listener =
-                (ExecEventListener)listeners.next();
-            listener.stateChanged(event);
-        }
-    }
-
     /** Generate an ExecEvent with a state value of 2. Return the
      *  value of the postfire method of this actor's superclass.
      *  Return true if this actor is enabled to call fire(); return
@@ -116,7 +89,7 @@ public class ListenWire extends Wire {
      *  with the thread activity of this method.
      */
     public boolean postfire() throws IllegalActionException {
-	generateEvents( new ExecEvent( this, 2 ) );
+	_debug( new ExecEvent( this, ExecEvent.WAITING ) );
 	try {
 	    Thread.sleep(100);
 	} catch(InterruptedException e) {
@@ -136,7 +109,7 @@ public class ListenWire extends Wire {
      *  with the thread activity of this method.
      */
     public boolean prefire() throws IllegalActionException {
-	generateEvents( new ExecEvent( this, 1 ) );
+	_debug( new ExecEvent( this, ExecEvent.ACCESSING ) );
 	try {
 	    Thread.sleep(100);
 	} catch(InterruptedException e) {
@@ -146,30 +119,13 @@ public class ListenWire extends Wire {
 	return super.prefire();
     }
 
-    /** Remove one instance of the specified ExecEventListener
-     *  from this actor's list of listeners.
-     * @param listener The specified ExecEventListener.
-     */
-    public void removeListeners(ExecEventListener listener) {
-        if( _listenerList == null ) {
-            return;
-        }
-        _listenerList.remove(listener);
-    }
-
     /** Generate an ExecEvent with a state value of 3. Invoke the
      *  wrapup() method of this actor's superclass.
      * @exception IllegalActionException If there is an exception in
      *  the execution of the wrapup method of this actor's superclass.
      */
     public void wrapup() throws IllegalActionException {
-	generateEvents( new ExecEvent( this, 3 ) );
+	_debug( new ExecEvent( this, ExecEvent.BLOCKED ) );
 	super.wrapup();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private LinkedList _listenerList;
-
 }

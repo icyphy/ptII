@@ -75,36 +75,6 @@ public class ListenClock extends Clock {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add an ExecEventListener to this actor's list of
-     *  listeners. If the specified listener already exists
-     *  in this actor's list, then allow both instances to
-     *  separately remain on the list.
-     * @param listener The specified ExecEventListener.
-     */
-    public void addListeners(ExecEventListener listener) {
-        if( _listenerList == null ) {
-            _listenerList = new LinkedList();
-        }
-        _listenerList.addLast(listener);
-    }
-
-    /** Notify all ExecEventListeners on this actor's
-     *  listener list that the specified event was
-     *  generated.
-     * @param event The specified ExecEvent.
-     */
-    public void generateEvents(ExecEvent event) {
-        if( _listenerList == null ) {
-            return;
-        }
-        Iterator listeners = _listenerList.iterator();
-        while( listeners.hasNext() ) {
-            ExecEventListener listener =
-                (ExecEventListener)listeners.next();
-            listener.stateChanged(event);
-        }
-    }
-
     /** Generate an ExecEvent with a state value of 1, cause the
      *  calling thread to sleep for 100 milliseconds and then call
      *  the superclass prefire() method.
@@ -112,7 +82,7 @@ public class ListenClock extends Clock {
      *  interruption while the calling thread sleeps.
      */
     public boolean prefire() throws IllegalActionException {
-	generateEvents( new ExecEvent( this, 1 ) );
+	_debug( new ExecEvent( this, ExecEvent.ACCESSING ) );
 	try {
 	    Thread.sleep(100);
 	} catch(InterruptedException e) {
@@ -132,7 +102,7 @@ public class ListenClock extends Clock {
      *  with the thread activity of this method.
      */
     public boolean postfire() throws IllegalActionException {
-	generateEvents( new ExecEvent( this, 2 ) );
+	_debug( new ExecEvent( this, ExecEvent.WAITING ) );
 	try {
 	    Thread.sleep(100);
 	} catch(InterruptedException e) {
@@ -150,24 +120,7 @@ public class ListenClock extends Clock {
      *  superclass.
      */
     public void wrapup() throws IllegalActionException {
-	generateEvents( new ExecEvent( this, 3 ) );
+	_debug( new ExecEvent( this, ExecEvent.BLOCKED ) );
 	super.wrapup();
     }
-
-    /** Remove one instance of the specified ExecEventListener
-     *  from this actor's list of listeners.
-     * @param listener The specified ExecEventListener.
-     */
-    public void removeListeners(ExecEventListener listener) {
-        if( _listenerList == null ) {
-            return;
-        }
-        _listenerList.remove(listener);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private LinkedList _listenerList;
-
 }
