@@ -74,10 +74,6 @@ JSRCS = \
 	POElement.java \
 	Port.java \
 	Relation.java \
-	SDFPort.java \
-	SDFPrint.java \
-	SDFRamp.java \
-	SDFStar.java \
 	Star.java \
 	StatusArray.java \
 	Tag.java \
