@@ -88,10 +88,15 @@ be displayed graphically (subject to the options explained
 below) with a legend in the upper right corner of the
 screen. To zoom in on a portion of the graph, depress a
 mouse button in the window and sweep out a region. <code>pxgraph</code>
-will then open a new window looking at just that portion of
+will then the window will be redrawn with just that portion of
 the graph. <code>pxgraph</code> also presents three control buttons in
-the upper left corner of each window: <I>Close</I>, 
-<I>About</I> and <I>Fill</I>.
+the lower left corner of each window: <code>Exit</code>, 
+<code>Print</code> and <code>About</code>.
+<p>The <code>Exit</code> button will exit the process.  You can also
+type <code>Control-D</code> to exit.
+<p>The <code>Print</code> button brings up a print dialog window
+<p>The <code>About</code> button brings up a message about 
+<code>pxgraph</code>
 <p>
 <I>pxgraph</I> accepts a large number of commmand line options.
 A list of these options is given below.
@@ -397,7 +402,6 @@ directives inside the file.  This version only supports
 <code>draw</code> and <code>move</code>.
 <li>This version does not support X resources.
 <li>Hardcopy is not yet supported.
-<li>Typing <code>Control-D</code> does not close a window.
  * @author Christopher Hylands
  * @version $Id$
  * @see Plot
@@ -444,6 +448,19 @@ public class Pxgraph extends Frame {
 	// netscape3.x so we stick with handleEvent().
     }
 
+    /** Handle key down and key up events.
+      */
+    public boolean keyDown(Event e, int key) {
+	int keyflags = e.modifiers;
+	if (e.id == Event.KEY_PRESS) {
+	    char c = (char) e.key;
+	    if (c == '\004') {
+		// If we get a Control-D, then exit.
+		System.exit(0);
+	    }
+	}
+	return true;
+    }
     /** Parse the command line arguments, do any preprocessing, then plot.
       * If you have the <code>pxgraph</code> shell script, then 
       * type <code>pxgraph -help</code> for the complete set of arguments.
@@ -698,14 +715,16 @@ public class Pxgraph extends Frame {
      */	
     private void _about () {
 	Message message = new Message(
- 			   "Pxgraph - (Java implementation) by\n" +
- 			   "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
- 			   "Christopher Hylands, cxh@eecs.berkeley.edu\n" +
- 			   "($Id$)\n\n"+
+ 			   "\t\t\t\t\t\tPxgraph\n" +
+ 			   "\t\t\t\t\tA Java Plotting Tool\n" +
+ 			   "By: Edward A. Lee, eal@eecs.berkeley.edu and\n" +
+ 			   "    Christopher Hylands, cxh@eecs.berkeley.edu\n" +
+ 			   "Version 1.0, Build: $Id$\n\n"+
  			   "For help, type 'pxgraph -help', or see \n" +
  			   "the Pxgraph class documentation.\n" +
  			   "For more information, see\n" +
- 			   "http://ptolemy.eecs.berkeley.edu/java/plot\n");
+ 			   "http://ptolemy.eecs.berkeley.edu/java/plot\n",
+			   Color.white,Color.black);
 	message.setTitle("About Pxgraph");
 	message.pack();
 	message.show();
