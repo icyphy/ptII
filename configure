@@ -1174,7 +1174,7 @@ echo "configure:1170: checking for \$KVM_DIR/bin/api/classes" >&5
 	    KVM_CLASSES=no
         fi
     else    
-	echo "$ac_t""'Not found in $KVM_DIR'" 1>&6
+	echo "$ac_t""Not found in $KVM_DIR" 1>&6
 	echo $ac_n "checking for kvm directory in /j2me_cldc""... $ac_c" 1>&6
 echo "configure:1180: checking for kvm directory in /j2me_cldc" >&5
 	# Likely place for kvm under windows
@@ -1189,19 +1189,20 @@ echo "configure:1186: checking for \$KVM_DIR/bin/api/classes" >&5
             else
 	        KVM_CLASSES=no
             fi
+        else 
+		KVM_CLASSES=no
         fi
 
-	KVM_CLASSES=no
     fi
     if test "$KVM_CLASSES" = "no"; then
         echo "configure: warning: 'Failed to find j2me_cldc/bin/api/classes,
 perhaps Kvm is not installed?
 You need not download Kvm unless you plan on building applications
-for the PalmPilot or Handspring Visor.
-Kvm can be downloaded from http://java.sun.com/products/kvm'" 1>&2
-	# Note that we don't substitute in the $(PTII) here
+for the Palm Pilot or Handspring Visor.
+Kvm can be downloaded from http://java.sun.com/products/cldc'" 1>&2
+	# Note that we don't substitute in the $(PTII) or $(KVM_DIR) here
 	KVM_DIR='$(PTII)/vendors/sun/kvm'
-   	KVM_CLASSES='$(KVM_DIR)/tools/classes.zip'
+   	KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
     fi    
 fi
 
