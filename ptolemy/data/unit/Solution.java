@@ -288,6 +288,9 @@ public class Solution {
             }
             _done[k] = true;
         }
+        for (int i = 0; i < _numConstraints; i++) {
+            _done[i] = true;
+        }
         _analyzeState();
         if (_debug)
             trace();
@@ -319,6 +322,31 @@ public class Solution {
         }
         retv._upper = this;
         return retv;
+    }
+
+    /** Get the state of the solution.
+     * @return The state of the solution.
+     */
+    public String getShortStateDesc() {
+        switch (_solveState) {
+            case _NOTRUN :
+                {
+                    return "NotRun";
+                }
+            case _NONUNIQUE :
+                {
+                    return "No Unique Solution";
+                }
+            case _INCONSISTENT :
+                {
+                    return "Inconsistent";
+                }
+            case _CONSISTENT :
+                {
+                    return "Consistent";
+                }
+        }
+        return "Unknown";
     }
 
     /** Get the state of the solution.

@@ -222,7 +222,7 @@ public class UnitSolverDialog
                 _uConstraints =
                     new UnitConstraints(_model, _entities, _relations);
                 Solution solution = _uConstraints.completeSolution();
-                _fullSolutionResult.setText(solution.getStateDesc());
+                _fullSolutionResult.setText(solution.getShortStateDesc());
             } catch (IllegalActionException e) {
                 MessageHandler.error("Full Solver failed: ", e);
                 return;
