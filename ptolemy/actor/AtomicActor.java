@@ -285,8 +285,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
             // exception.
-            throw new InternalErrorException(
-                    "AtomicActor.newPort: Internal error: " + ex.getMessage());
+            throw new InternalErrorException(this, ex, null);
         } finally {
             _workspace.doneWriting();
         }
