@@ -94,7 +94,8 @@ test Manager-8.2 {Test run-time type checking} {
     $director initialize
     $p1 broadcast $token
     set rtoken [$p2 get 0]
-    list [[$rtoken getClass] getName] [$rtoken doubleValue]
+    list [[$rtoken getClass] getName] \
+	    [[java::cast ptolemy.data.DoubleToken $rtoken] doubleValue]
 } {ptolemy.data.DoubleToken 3.0}
 
 ######################################################################
