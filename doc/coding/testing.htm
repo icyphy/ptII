@@ -52,26 +52,30 @@ The testing infrastructure will automatically run any MoML models
 located in <CODE>test/auto</CODE> directories.  (Nowhere do the names
 of these MoML files need to be listed in order for them to be run.)
  <p>However, said infrastructure has to be re-built in each new
-directory containing tests.
- <p>* Find another test/auto directory in the tree to use as an example.
- <p>* Create the test/ and test/auto/ directories as in the chosen example.
- <p>* cd to your test/ directory.
- <p>* Copy over the makefile and the testDefs.tcl file from the example.
- <p>* <i>Modify these two files to fit your situation, which may differ from
-the example you chose.</i>
- <p>* Use the command <CODE>touch dummy.tcl</CODE> to make a zero length
-file by this name.
- <p>* Use the <CODE>make</CODE> command to generate the alljtests.tcl file.
- <p>* Okay!  Now go up one directory.  There needs to be a makefile here
-too.  It needs to name the test/ directory you created.  If there is a
-makefile, edit it.  Look for a line like <CODE>DIRS =</CODE> between the
-<CODE>ME =</CODE> and <CODE>ROOT =</CODE> lines.  Edit this
+directory containing tests.  To create the infrastructure for a new 
+test directory, do the following:
+ <MENU>
+ <LI> Choose an existing test/auto directory in the tree.  Use this as
+an example.
+ <LI> Create your test/ and test/auto/ directories as in the chosen example.
+ <LI> cd to your test/ directory.
+ <LI> Copy over the makefile and the testDefs.tcl file from the example.
+ <LI> <i>Modify these two files to fit your situation, which may differ from
+the example situation.</i>
+ <LI> Use the command <CODE>touch dummy.tcl</CODE> to create a zero length
+file named dummy.tcl.
+ <LI> Use the <CODE>make</CODE> command to generate the alljtests.tcl file.
+ <LI> Okay!  Now go up one directory.  There needs to be a makefile here
+too.  It needs to name the test/ directory you created.  If there already
+is a makefile, edit it.  Look for a line like <CODE>DIRS =</CODE> between
+the <CODE>ME =</CODE> and <CODE>ROOT =</CODE> lines.  Edit this
 line to include the new test directory.  The result might look like:
 <CODE>DIRS = 		test</CODE>
-<p>* If no makefile exists in the directory above test/, you will need
+ <LI> If no makefile exists in the directory above test/, you will need
 to create one and repeat this procedure in the next directory up until
 you find an existing makefile.
- <p>When you have done all this, the test ought to run in the nightly build.
+ </MENU>
+ <p>When you have done all this, the tests in your new test/auto directory ought to run in the nightly build.
  <p>The test passes if it does not throw an exception
  <p>The <a href="codeDoc/ptolemy/actor/lib/Test.html">Test actor</a>
  (located under  "more libraries") 
