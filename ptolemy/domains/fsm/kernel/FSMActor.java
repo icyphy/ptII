@@ -44,6 +44,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Typeable;
+import ptolemy.domains.hdf.kernel.HDFFSMDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentEntity;
@@ -259,6 +260,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *   transition enabled.
      */
     public void fire() throws IllegalActionException {
+        //System.out.println("FSM actor fire.");
         _setInputVariables();
         List trList = _currentState.outgoingPort.linkedRelationList();
         _chooseTransition(trList);
@@ -340,6 +342,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
+        //System.out.println("FSM actor initialize.");
         reset();
     }
 
@@ -497,6 +500,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @exception IllegalActionException If any action throws it.
      */
     public boolean postfire() throws IllegalActionException {
+        //System.out.println("FSMAcotr postfire.");
         _commitLastChosenTransition();
         return !_reachedFinalState && !_stopRequested;
     }
@@ -506,6 +510,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
+        //System.out.println("FSMActor prefire.");
         _lastChosenTransition = null;
         return true;
     }
@@ -520,6 +525,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *   state with name specified by the <i>initialStateName</i> attribute.
      */
     public void preinitialize() throws IllegalActionException {
+        //System.out.println("FSM actor preinitialize.");
         _stopRequested = false;
         _reachedFinalState = false;
         _createReceivers();
@@ -1027,6 +1033,16 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         if (_workspace.getVersion() != _inputVariableVersion) {
             _updateInputVariables();
         }
+        CompositeActor container = (CompositeActor)getContainer();
+        Director director = container.getDirector();
+        //System.out.println("director name = " + director.getFullName());
+        if (director instanceof HDFFSMDirector) {
+            _firingsSoFar = ((HDFFSMDirector)director).getFiringsSoFar();
+            _firingsPerScheduleIteration = 
+                ((HDFFSMDirector)director).getFiringsPerScheduleIteration();
+        }
+        //System.out.println("firings = " + _firingsSoFar);
+        //System.out.println("firingsPerIteration = " + _firingsPerScheduleIteration);
         Iterator inPorts = inputPortList().iterator();
         while (inPorts.hasNext() && !_stopRequested) {
             IOPort p = (IOPort)inPorts.next();
@@ -1070,35 +1086,46 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             if (_debug_info) {
                 System.out.println(port.getName() + " port rate = " + portRate);
             }
-            Token[] hdfArray = new Token[portRate];
-            int index = 0;
+            if (_firingsSoFar == 0) {
+                _hdfArray = new Token[portRate * _firingsPerScheduleIteration];
+            }
+            int index = portRate * _firingsSoFar;
             // Update the value variable if there is/are token(s) in the channel.
             // FIXME: What if there are not enough tokens?
             // In HDF(SDF) this shouldn't happen.
+            int flag = 0;
             while (port.hasToken(channel)) {
-                shadowVariables[channel][0].setToken(BooleanToken.TRUE);
                 Token token = port.get(channel);
-                if (index < portRate) {
+                flag ++;
+                if (index < portRate * (_firingsSoFar + 1)) {
                     if (_debugging) {
                         _debug("---", port.getName(),"("+channel+
                                 ") has ", token.toString());
                     }
                     // Set the value of tokens here.
                     //shadowVariables[channel][1].setToken(token);
-                    hdfArray[index] = token;
+                    _hdfArray[index] = token;
                     if (_debug_info) {
                     System.out.println("hdfArray index = " + index + 
-                       " value = " + hdfArray[index].toString());
+                       " value = " + _hdfArray[index].toString());
                     }
                     index ++;
                 }
             }
-            if (index > 0) {
-                shadowVariables[channel][1].setToken(hdfArray[index - 1]);
-                shadowVariables[channel][2].setToken(new ArrayToken(hdfArray));
+            if (_debug_info) {
+                System.out.println("total tokens available at port: "
+                    + port.getFullName() + "  "+ flag);
+            }
+            
+            // The "portName_isPresent" is true only if there are 
+            // enough tokens. FIXME.
+            if (index == portRate * _firingsPerScheduleIteration) {
+                shadowVariables[channel][0].setToken(BooleanToken.TRUE);
+                shadowVariables[channel][1].setToken(_hdfArray[index - 1]);
+                shadowVariables[channel][2].setToken(new ArrayToken(_hdfArray));
                 if (_debug_info){
                     System.out.println("shadowVariables[channel][1] = " 
-                        + hdfArray[index -1].toString());
+                        + _hdfArray[index -1].toString());
                 }
             } else {
                 shadowVariables[channel][0].setToken(BooleanToken.FALSE);
@@ -1147,7 +1174,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1364,4 +1391,14 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     // Set to true to enable debugging.
     private boolean _debug_info = false;
     //private boolean _debug_info = true;
+    
+    // Firing counts for HDF/SDF. 
+    // For other domains, _firingsPerScheduleIteration will always be 1
+    // and _firingsSoFar will always be 0.
+    private int _firingsSoFar = 0;
+    private int _firingsPerScheduleIteration = 1;
+    
+    // "portNameArray" for HDF/SDF.
+    private Token[] _hdfArray;
+    
 }
