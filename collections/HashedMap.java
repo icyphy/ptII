@@ -116,9 +116,9 @@ public class HashedMap extends    UpdatableMapImpl
   }
 
 /**
- * Implements collections.HashTableParams.thresholdLoadfactor
+ * Implements collections.HashTableParams.thresholdLoadFactor
  * Time complexity: O(1).
- * @see collections.HashTableParams#thresholdLoadfactor
+ * @see collections.HashTableParams#thresholdLoadFactor
 **/
 
   public synchronized float thresholdLoadFactor() {
@@ -126,9 +126,9 @@ public class HashedMap extends    UpdatableMapImpl
   }
 
 /**
- * Implements collections.HashTableParams.thresholdLoadfactor
+ * Implements collections.HashTableParams.thresholdLoadFactor
  * Time complexity: O(n).
- * @see collections.HashTableParams#thresholdLoadfactor
+ * @see collections.HashTableParams#thresholdLoadFactor
 **/
 
   public synchronized void thresholdLoadFactor(float desired)
