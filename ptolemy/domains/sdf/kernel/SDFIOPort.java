@@ -195,8 +195,10 @@ public final class SDFIOPort extends TypedIOPort {
      * If setting the port to be an input, then set the consumption rate to
      * be 1.  If setting the port to not be an input, then set the consumption
      * rate to be 0.
+     *  @exception IllegalActionException If changing the port status is
+     *   not permitted.
      */
-    public void setInput(boolean isInput) {
+    public void setInput(boolean isInput) throws IllegalActionException {
         super.setInput(isInput);
         try {
             if (isInput) {
@@ -216,8 +218,10 @@ public final class SDFIOPort extends TypedIOPort {
      * If setting the port to be an output, then set the consumption rate to
      * be 1.  If setting the port to not be an output, then set the consumption
      * rate to be 0.
+     *  @exception IllegalActionException If changing the port status is
+     *   not permitted.
      */
-    public void setOutput(boolean isOutput) {
+    public void setOutput(boolean isOutput) throws IllegalActionException {
         super.setOutput(isOutput);
         try {
             if (isOutput) {
