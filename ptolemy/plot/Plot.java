@@ -1620,10 +1620,10 @@ public class Plot extends PlotBox {
                     try {
                         Graphics graphics =
                                (Graphics)_pendingPointsGraphics.remove(0);
-                        int[] pendingPointsData = 
+                        int[] pendingPoints = 
                                (int[])_pendingPointsData.remove(0);
-                        _drawPlotPoint(graphics, pendingPointsData[0],
-                               pendingPointsData[1]);
+                        _drawPlotPoint(graphics, pendingPoints[0],
+                               pendingPoints[1]);
                     } catch (NoSuchElementException ex) {
                         // In theory, this should not occur, but in any
                         // case, we do not want to report it since it
