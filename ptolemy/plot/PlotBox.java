@@ -872,21 +872,22 @@ public class PlotBox extends JPanel implements Printable {
      *  only the axes.
      *  @param graphics The graphics context.
      */
-    public void paintComponent(Graphics graphics) {
+    public synchronized void paintComponent(Graphics graphics) {
    //      super.paintComponent(graphics);
 //         _drawPlot(graphics, true);
-       
-        if(_plotImage == null) {
+        BufferedImage newPlotImage = _plotImage;
+        if(newPlotImage == null) {
             Rectangle bounds = getBounds();
-            _plotImage = new BufferedImage(
+            newPlotImage = new BufferedImage(
                     bounds.width, bounds.height,
                     BufferedImage.TYPE_3BYTE_BGR);
-            Graphics2D offScreenGraphics = _plotImage.createGraphics();
+            _plotImage = newPlotImage;
+            Graphics2D offScreenGraphics = newPlotImage.createGraphics();
             super.paintComponent(offScreenGraphics);
             _drawPlot(offScreenGraphics, true);
         }
         // Blit the offscreen image onto the screen.
-        graphics.drawImage(_plotImage, 0, 0, null);
+        graphics.drawImage(newPlotImage, 0, 0, null);
         
 
         // Acquire the focus so that key bindings work.
