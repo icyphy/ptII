@@ -11,7 +11,6 @@ public class TutorialApplet2 extends PtolemyApplet {
     public NamedObj _createModel(Workspace workspace) 
 	throws Exception {
         TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
-        _toplevel = toplevel;
 
 	// Create the director.
 	DEDirector director = new DEDirector(toplevel, "director");

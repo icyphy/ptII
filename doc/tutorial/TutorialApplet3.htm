@@ -7,21 +7,23 @@
 <H1>TutorialApplet3</H1>
 <OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
    width="700"
-   height="500"
+   height="300"
    codebase="http://java.sun.com/products/plugin/1.3/jinstall-13-win32.cab#Version=1,3,0,0">
-<PARAM NAME="code" VALUE="doc/tutorial/TutorialApplet3">
+<PARAM NAME="code" VALUE="ptolemy/actor/gui/PtolemyApplet">
+<PARAM NAME="modelClass" VALUE="doc.tutorial.TutorialApplet3">
+<PARAM NAME="controls" VALUE="buttons, topParameters">
+<PARAM NAME="orientation" VALUE="horizontal">
 <PARAM NAME="codebase" VALUE="../..">
-<PARAM NAME="stopTime" VALUE="30.0">
-<PARAM NAME="controls" VALUE="buttons,directorParameters">
 <PARAM NAME="type" VALUE="application/x-java-applet;version=1.3">
 <COMMENT>
 <EMBED type="application/x-java-applet;version=1.3"
    width="700"
-   height="500"
-   code="doc/tutorial/TutorialApplet3"
+   height="300"
+   code="ptolemy/actor/gui/PtolemyApplet"
+   modelClass="doc.tutorial.TutorialApplet3"
+   controls="buttons, topParameters"
+   orientation="horizontal"
    codebase="../.."
-   stopTime="30.0"
-   controls="buttons,directorParameters"
    pluginspage="http://java.sun.com/products/plugin/1.3/plugin-install.html">
 </COMMENT>
 <NOEMBED>
@@ -29,6 +31,6 @@ No JDK 1.3 support for applet!
 </NOEMBED>
 </EMBED>
 </OBJECT>
-<p>This applet uses a class that extends <code>PtolemyApplet</code> and includes the directory parameters in the user interface.
+<p>This applet uses the <code>modelClass</code> PtolemyApplet applet parameter.
 </BODY>
 </HTML>
