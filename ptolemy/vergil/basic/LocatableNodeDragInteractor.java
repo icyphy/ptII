@@ -159,7 +159,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         // so that the change propagates.
 
         // The toplevel is the container being edited.
-        NamedObj toplevel = (NamedObj)graphModel.getRoot();
+        final NamedObj toplevel = (NamedObj)graphModel.getRoot();
 
         StringBuffer moml = new StringBuffer();
         StringBuffer undoMoml = new StringBuffer();
@@ -210,19 +210,32 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         }
         moml.append("</group>\n");
         undoMoml.append("</group>\n");
+        
+        final String finalUndoMoML = undoMoml.toString(); 
 
         // Request the change.
         MoMLChangeRequest request = new MoMLChangeRequest(
-                this, toplevel, moml.toString());
+                this, toplevel, moml.toString()) {
+        	protected void _execute() throws Exception {
+        		super._execute();
+                
+                // Next create and register the undo entry;
+                // The MoML by itself will not cause an undo
+                // to register because the value is not changing.
+                // Note that this must be done inside the change
+                // request because write permission on the
+                // workspace is required to push an entry
+                // on the undo stack. If this is done outside
+                // the change request, there is a race condition
+                // on the undo, and a deadlock could result if
+                // the model is running.
+                MoMLUndoEntry newEntry = new MoMLUndoEntry(
+                        toplevel, finalUndoMoML.toString());
+                UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(toplevel);
+                undoInfo.push(newEntry);
+            }
+        };
         toplevel.requestChange(request);
-
-        // Next create and register the undo entry;
-        MoMLUndoEntry newEntry = new MoMLUndoEntry(
-                toplevel, undoMoml.toString());
-        UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(toplevel);
-        undoInfo.push(newEntry);
-        // FIXME: Doesn't the above MoMLChangeRequest also result in an undo?
-        // Maybe not, since the value isn't changing.
 
         if (frame != null) {
             // NOTE: Use changeExecuted rather than directly calling
