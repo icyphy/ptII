@@ -119,7 +119,7 @@ test PrioritizedTimedQueue-4.3 {Check hasRoom() for infinite capacity queue} {
     set t4 [java::new ptolemy.data.Token]
     catch {$tqr put $t4 3.7} msg
     list $msg
-} {{java.lang.IllegalArgumentException:  - Attempt to set current time in the past.}}
+} {{java.lang.IllegalArgumentException:  - Attempt to set current time to the past; time = 3.7. The _lastTime was 5.0}}
 
 ######################################################################
 ####
@@ -180,4 +180,4 @@ test PrioritizedTimedQueue-7.2 {Attempt to put negative time stamps} {
 
     catch {$tqr put $t1 -1.5} msg
     list $msg
-} {{java.lang.IllegalArgumentException:  - Attempt to set current time in the past.}}
+} {{java.lang.IllegalArgumentException:  - Attempt to set current time to the past; time = -1.5. The _lastTime was 0.0}}
