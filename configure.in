@@ -381,6 +381,7 @@ See $PTII/doc/install.htm for details.'])
 
 fi
 
+cd "$startdir"
 
 #--------------------------------------------------------------------
 #	We require JDK1.4 or later
@@ -421,7 +422,9 @@ AC_MSG_CHECKING([for the jar command in $PTJAVA_DIR/bin])
 if test -f "$PTJAVA_DIR/bin/jar"; then
     AC_MSG_RESULT($PTJAVA_DIR/bin/jar)
     AC_MSG_CHECKING([that $PTJAVA_DIR/bin/jar can handle -i])
+
     cd "$srcdir/config"
+
     "$PTJAVA_DIR/bin/jar" -cf jarTest.jar confTest.class
     if "$PTJAVA_DIR/bin/jar" -i jarTest.jar; then
         AC_MSG_RESULT([$PTJAVA_DIR/bin/jar -i worked])
@@ -431,11 +434,14 @@ if test -f "$PTJAVA_DIR/bin/jar"; then
     so we will not index the jar files])
 	JAR_INDEX=""
     fi
+
+    cd "$startdir"
+
 else
     AC_MSG_WARN([Cannot find '$PTJAVA_DIR/bin/jar'.
     This is usually only a problem if you run 'make install'])
 fi
-cd "$startdir"
+
 
 #--------------------------------------------------------------------
 #	Figure out which separator to use for CLASSPATH
@@ -475,6 +481,59 @@ ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
 #       Please try to keep the packages vaguely alphabetical
 #####################################################################
 #####################################################################
+
+#--------------------------------------------------------------------
+#       Boost is used by Mescal, which is not shipped with
+#       the standard Ptolemy II download
+#	See http://www.boost.org
+#--------------------------------------------------------------------
+
+# Set to -Ixxx if we found boost/static_assert.hpp
+PTBOOST_INCLUDE=
+
+# Set to yes if we found boost
+PTBOOST=no
+
+# We only need to look for Boost if mescal is present
+MESCAL_USER_DIR=$PTII/mescal/views/simulation/model/UINT.H
+
+if test ! -f "$MESCAL_USER_DIR"; then
+    AC_MSG_RESULT([$MESCAL_USER_DIR is not present,
+	so we need not find Boost.])
+else
+    if test "$PTBOOST" = "no"; then
+        AC_MSG_CHECKING([for Boost in \$PTII/mescal/include/boost/static_assert.hpp])
+	if test -f "$PTII/mescal/include/boost/static_assert.hpp"; then
+	    AC_MSG_RESULT([ok])
+	    PTBOOST_INCLUDE="-I$PTII/mescal/include"
+	    PTBOOST=yes
+        else
+	    AC_MSG_RESULT([not found, keep looking])
+	fi    
+    fi
+
+
+    if test "$PTBOOST" = "no"; then
+        AC_MSG_CHECKING([for Boost in /usr/local/include/boost/static_assert.hpp])
+	if test -f "/usr/local/include/boost/static_assert.hpp"; then
+	    AC_MSG_RESULT([ok])
+	    PTBOOST_INCLUDE="-I/usr/local/include"
+	    PTBOOST=yes
+        else
+	    AC_MSG_RESULT([not found, keep looking])
+	fi    
+    fi
+
+    if test "$PTBOOST" = "no"; then 
+            AC_MSG_WARN([Failed to find boost/static_assert.hpp, which is only
+    needed to compile files that include $MESCAL_USER_DIR
+    boost can be found at http://www.boost.org
+    To install boost, download the source and then do
+        cd boost-1.30.2
+        mkdir $PTII/mescal/include
+        cp -r boost $PTII/mescal/include])
+    fi
+fi
 
 #--------------------------------------------------------------------
 #       The CaffeineMark Kit is a Java benchmark kit
@@ -792,13 +851,41 @@ fi
 # We only need to look for GMP if mescal/relsat is present
 MESCAL_RELSAT_USER_DIR="$PTII/mescal/relsat"
 
+PTGMP=no
 if test ! -d "$MESCAL_RELSAT_USER_DIR"; then
     AC_MSG_RESULT([$MESCAL_RELSAT_USER_DIR is not present,
 	so we need not find GMP.])
 else
-    AC_MSG_CHECKING([for GMP])
-    AC_CHECK_HEADERS(gmp.h, PT_GMP=yes, PT_GMP=no)
-    if test "$PT_GMP" = "yes"; then
+    if test "$PTGMP" = "no"; then
+        AC_MSG_CHECKING([for GMP in \$PTII/mescal/include/gmp.h])
+	if test -f "$PTII/mescal/include/gmp.h"; then
+	    AC_MSG_RESULT([ok])
+	    PTGMP_INCLUDE="-I$PTII/mescal/include"
+	    PTGMP_LIB="-L$PTII/mescal/lib"
+	    PTGMP=yes
+        else
+	    AC_MSG_RESULT([not found, keep looking])
+	fi    
+    fi
+
+    if test "$PTGMP" = "no"; then
+        AC_MSG_CHECKING([for GMP in /usr/local/include/gmp.h])
+        if test -f "/usr/local/include/gmp.h"; then
+            AC_MSG_RESULT([ok])
+	    PTGMP_INCLUDE=-I/usr/local/include
+	    PTGMP_LIB=-L/usr/local/lib
+	    PTGMP=yes
+        else
+	    AC_MSG_RESULT([not found, keep looking])
+        fi
+    fi    
+
+    if test "$PTGMP" = "no"; then
+        AC_MSG_CHECKING([for GMP])
+        AC_CHECK_HEADERS(gmp.h, PTGMP=yes, PTGMP=no)
+    fi
+
+    if test "$PTGMP" = "yes"; then
         AC_MSG_CHECKING([for gcc])
         AC_PATH_PROG(PTCC, gcc)
         if test "${PTCC:-none}" == "none"; then
@@ -810,27 +897,46 @@ else
             fi
 	fi
 
-	PT_GMP_OK=no
+	PTGMP_OK=no
 	startdir=`pwd`
         cd "$srcdir/config"
-        AC_MSG_CHECKING([gmp by compiling a small program])
-	if "$PTCC" gmpTest.c -o gmpTest -L/usr/local/lib -lgmp ; then
+        AC_MSG_CHECKING([gmp by compiling a C small program])
+	if "$PTCC" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LIB -lgmp ; then
 	    ./gmpTest
 	    AC_MSG_RESULT([ok])
 	else    
-	    RESULTS=`"$PTCC" gmpTest.c -o gmpTest -L/usr/local/lib -lgmp`
+	    RESULTS=`"$PTCC" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LIB -lgmp`
 	    AC_MSG_WARN([Failed to compile config/gmpTest.c, 
-    "$PTCC" gmpTest.c -o gmpTest -L/usr/local/lib -lgmp
+    "$PTCC" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LIB -lgmp
     $RESULTS])
 	fi
+
+        AC_MSG_CHECKING([gmp by compiling a C++ small program])
+	AC_PROG_CXX
+	if "$CXX" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LIB -lgmpxx -lgmp ; then
+	    ./gmpTest2
+	    AC_MSG_RESULT([ok])
+	else    
+	    RESULTS=`"$CXX" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LIB -lgmpcxx -lgmp`
+	    AC_MSG_WARN([Failed to compile config/gmpTest2.cc, 
+    "$CXX" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LIB -lgmpxx -lgmp
+    $RESULTS
+    Under Cygwin, perhaps you need to add $PTII/bin/mescal to your PATH,
+    Under Linux, perhaps you need to add $PTII/bin/mescal to
+    your LD_LIBRARY_PATH])
+	fi
+
         cd "$startdir"
-    else
-        # FIXME: We could look for gmp.h in vendors/misc
-        AC_MSG_WARN([Failed to find gmp.h, which is only
+    fi
+
+    if test "$PTGMP" = "no"; then 
+            AC_MSG_WARN([Failed to find gmp.h, which is only
     needed to compile $MESCAL_RELSAT_USER_DIR
     gmp can be found at http://www.swox.com/gmp/
-    Under cygwin, you should configure with
-       ./configure --disable-static --enable-shared])
+    Mescal uses c++, and configure will look in /usr/local
+    and $PTII/mescal/include and $PTII/mescal/lib for gmp,
+    so gmp should be configured with
+       ./configure --enable-cxx --prefix=$PTII/mescal])
     fi
 fi
 
@@ -2348,6 +2454,10 @@ AC_SUBST(MATLAB_DIR)
 # Set the location of Matlab's engine libraries
 AC_SUBST(MATLAB_LIBDIR)
 
+# Set to -I$PTII/mescal/include or -I/usr/local/include
+# if we found boost/static_assert.hpp (mescal)
+AC_SUBST(PTBOOST_INCLUDE)
+
 # Set to cal and used in $PTII/ptoelmy/makefile if Cal was found.
 AC_SUBST(PTCAL_DIR)
 
@@ -2368,6 +2478,14 @@ AC_SUBST(PTCOMM_DIR)
 
 # Set to chic and used in $PTII/ptolemy/makefile if chic was found.
 AC_SUBST(PTCHIC_DIR)
+
+# Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
+# and used in $PTII/mescal/relsat
+AC_SUBST(PTGMP_INCLUDE)
+
+# Set to -L$PTII/lib or -L/usr/local/lib if the gmp libraries are found
+# and used in $PTII/mescal/relsat
+AC_SUBST(PTGMP_LIB)
 
 # Location of the the PTII directory
 # $PTII/ptolemy/plot/ptplot.jnlp.in reads this

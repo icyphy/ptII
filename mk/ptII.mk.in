@@ -122,6 +122,10 @@ LEJOS_DIR = @LEJOS_DIR@
 
 ########## You should not have to change anything below this line ######
 
+# Used by Mescal. Set to -I$PTII/mescal/include or -I/usr/local/include
+# if we found boost/static_assert.hpp
+PTBOOST_INCLUDE =	"@PTBOOST_INCLUDE@"
+
 # Directory that contains the Cal jar file ptCal.jar
 # used by bin/ptinvoke.in
 CAL_DIR = @CAL_DIR@
@@ -281,6 +285,14 @@ JAVACC_DIR =	@JAVACC_DIR@
 
 JJTREE =	"@JJTREE@"
 JAVACC =	"@JAVACC@"
+
+# Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
+# and used in $PTII/mescal/relsat
+PTGMP_INCLUDE = 	"@PTGMP_INCLUDE@"
+
+# Set to -I$PTII/mescal/lib or -I/usr/local/lib if the gmp libraries are found
+# and used in $PTII/mescal/relsat
+PTGMP_LIB =	@PTGMP_LIB@
 
 # Set to ptjacl and used in
 # $PTII/ptolemy/actor/gui/makefile if ptjacl.jar was found 
