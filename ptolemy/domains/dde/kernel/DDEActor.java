@@ -92,7 +92,6 @@ public class DDEActor extends TypedAtomicActor {
         super(container, name);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -169,15 +168,15 @@ public class DDEActor extends TypedAtomicActor {
      *  time stamp this token will come from the highest priority
      *  receiver that has the minimum receiver time. If all receivers 
      *  have expired then throw a TerminateProcessException.
-     * @see ptolemy.domains.dde.kernel.TimedQueueReceiver
      * @see ptolemy.domains.dde.kernel.DDEReceiver
+     * @see ptolemy.domains.dde.kernel.TimeKeeper
      * @see ptolemy.domains.dde.kernel.DDEThread
      */
     private Token _getNextInput() throws IllegalActionException {
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
 	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-        DDEReceiver lowestRcvr = timeKeeper.getFirstRcvr();
+        DDEReceiver lowestRcvr = (DDEReceiver)timeKeeper.getFirstRcvr();
 	if( lowestRcvr.hasToken() ) {
 	    _lastPort = (TypedIOPort)lowestRcvr.getContainer();
 	    return lowestRcvr.get();
@@ -187,8 +186,6 @@ public class DDEActor extends TypedAtomicActor {
 	} else { 
 	    throw new IllegalActionException("FIXME");
 	}
-
-	
     }
 
     ///////////////////////////////////////////////////////////////////
