@@ -1,4 +1,4 @@
-/* A CSPDirector governs the execution of a CSPCompositeActor.
+/* A CSPDirector governs the execution of a CompositeActor with CSP semantics.
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -34,9 +34,9 @@ package ptolemy.domains.csp.kernel;
 import ptolemy.actor.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.mutation.*;
+//import ptolemy.kernel.event.*;
 import collections.LinkedList;
-import ptolemy.data.*;
+//import ptolemy.data.*;
 
 import java.util.Enumeration;
 
@@ -50,22 +50,24 @@ a composite actor obey CSP semantics, call the method setDirector()
 with an instance of this class.
 <p>
 In the CSP domain, the director creates a thread for executing each 
-actor under its controlhandles deadlocks, both real
-(simulation is terminated) and artificial (some process are delaying).
+actor under its control. The director is responsible for handling 
+deadlocks, both real  and artificial.
 It maintains counts of the number of active processes, the number of
 blocked processes, and the number of delayed processes. A deadlock is 
 when the number of blocked processes plus the number delayed processes 
 equals the number of active processes. The deadlock is artificial if 
-at least one of the active processes is delayed or mutations are waiting to be performed. Otherwise the deadlock is real. 
+at least one of the active processes is delayed or mutations are waiting 
+to be performed. Otherwise the deadlock is real in that all actors 
+under the control of this director are blocked trying to communicate.
 <p>
 There are two levels of iterations: those at the level of the composite 
 actor controlled by this director, and those at the level of the 
 composite actor containing this level of hierarchy. Each time deadlock 
 is reached marks the end of an iteration. If the deadlock is real and 
-there are no pending mutations, then this marks the end of en iteration 
+there are no pending mutations, then this marks the end of an iteration 
 one level up in the hierarchy. Otherwise the deadlock marks the end 
 of an iteration at this level. Mutations are only perfromed at the 
-start of each iteration at this level.
+start of each iteration at this level. FIXME: two types of mutations.
 <p>
 If this director is controlling the top-level composite actor, and 
 real deadlock is encountered(an iteration one level up), then terminate 
@@ -152,6 +154,44 @@ public class CSPDirector extends Director {
         }
     }
 
+    /** Called by a CSPActor when it wants to delay. This method 
+     *  does not return until it is ok for the actor to proceed 
+     *  i.e. time has advanced enough.
+     *  Note that actors can only deal with delta time.
+     *  <p>
+     *  FIXME: what is here is my first pass thru time...
+     *  @param delta The length of time to delay the actor.
+     */
+    public void actorDelayed(double delta) {
+        double resumeTime = 0;
+        synchronized(this) {
+            _actorsDelayed++;
+            resumeTime = getTime() + delta;
+            _delayedUntilTime(resumeTime);
+        }
+
+        // FIXME: where to call handleDeadlock()?
+        // Delay the actor calling this method until appropriate time.
+        try {
+            synchronized(_delayLock) {
+                _delayLock.wait();
+                // Note that the director could decide to move to
+                // next time instant without increasing real time!
+                while (getTime() < resumeTime) {
+                    _delayLock.wait();
+                }
+            }
+        } catch (InterruptedException ex) {
+            System.out.println("CSPDirector.postfire: interrupted while" +
+                    " waiting for iteration to finish.");
+        }
+        
+        synchronized(this) {
+            _actorsDelayed--;
+        }    
+        return;
+    }
+
     /** Update the count of active actor processes each time a new actor is
      *  fired up.
      */
@@ -206,7 +246,7 @@ public class CSPDirector extends Director {
         _actorsAlive = 0;
 	_actorsBlocked = 0;
 	_actorsDelayed = 0;
-        _simulationTerminated = false;
+        _simulationFinished = false;
         return newobj;
     }
 
@@ -218,6 +258,12 @@ public class CSPDirector extends Director {
         //System.out.println("Ha, ha!");
     }
 
+    /** The current simulation time.
+     *  @return The current simulation time.
+     */
+    public double getTime() {
+        return _time;
+    }
 
     /** Create the execution threads that will control the execution 
      *  of each actor controlled by this director. This method should 
@@ -239,9 +285,9 @@ public class CSPDirector extends Director {
                 actor.createReceivers();
                 String name = ((NamedObj)actor).getName();
                 PNThread pnt = new PNThread(actor, name);
-                _threadlist.insertFirst(pnt);
+                _threadList.insertFirst(pnt);
             }
-            Enumeration threads = _threadlist.elements();
+            Enumeration threads = _threadList.elements();
             while (threads.hasMoreElements()) {
                 PNThread pnt = (PNThread)threads.nextElement();
                 System.out.println("Starting thread for: " +
@@ -263,114 +309,180 @@ public class CSPDirector extends Director {
 
     public boolean postfire() {
         try {
-            while (!_simulationTerminated) {
-                // a HORRIBLE hack, waits until all processes are
-                // stopped to invoke their postfire methods.
-                System.out.println("Postfire:Waiting for simulation to finish.");
-                Thread.currentThread().sleep(2000);
-            }
+            synchronized(_iterationLock) {
+                _iterationLock.wait();
+                // FIXME: what other checks should go in here?
+             }
         } catch (InterruptedException ex) {
-            System.out.println("Local cspDirector interrupted while waiting for simulation to finish");
+            System.out.println("CSPDirector.postfire: interrupted while" +
+                    " waiting for iteration to finish.");
         }
-        System.out.println("CSPDirector: Postfire returning true.");
         return true;
     }
 
     /** FIXME!
     */
     public boolean prefire() {
+        // FIXME: should call handledeadlock here to see if still 
+        // deadlocked after transfering tokens from ports of composite 
+        // actor to internal actors.
         return true;
     }
 
-    /** The action to terminate all actors under control of this local
-     *  director because a real deadlock has occurred. It could also
-     *  be called when a UI decides to terminate a simulation prematurely.
-     *  <p>
-     *  FIXME: this method is designed to be used with a local director.
-     *  How should an executive director call the local director to make
-     *  this happen?
+    /** Set the current simulation time.
+     *  @param newTime The new current simulation time.
      */
-    public synchronized void terminateSimulation() {
-        System.out.println("about to terminate simulation");
-        try {
-            workspace().getReadAccess();
-            if (_simulationTerminated) {
-                // simulation has already been terminated!
-                return;
+    public void setTime(double newTime) {
+        _time = newTime;
+    }
+
+    /** Terminate all threads under control of this director immediately.
+     *  This abrupt termination will not allow normal cleanup actions 
+     *  to be performed.
+     *
+     *  FIXME: for now call Thread.stop() but should change to use 
+     *  Thread.destroy() when it is eventually implemented.
+     */
+    public synchronized void terminate() {
+        // First need to invoke terminate on all actors under the 
+        // control of this dierector.
+        super.terminate();
+        // Now stop any threads created by this director.
+        Enumeration threads = _threadList.elements();
+        while (threads.hasMoreElements()) {
+            Thread next = (Thread)threads.nextElement();
+            if (next.isAlive()) {
+                next.stop();
             }
-            _simulationTerminated = true;
+        }
+    }
 
-            CompositeActor cont = (CompositeActor)getContainer();
-            Enumeration allMyActors = cont.deepGetEntities();
+    /** End the simulation. A flag is set in all the receivers, and 
+     *  in the director, which causes each process to terminate the 
+     *  next time it reaches a synchronization or delay point.
+     *  <p>
+     *  The simulation is ended when real deadlock occurs and this 
+     *  director is controlling the top-level composite actor. It can 
+     *  also happen when the desired number of iterations have passed 
+     *  one level up or when the user decides to finish the simulation.
+     *  <p>
+     *  Note that the wrapup methods are not invoked on the actors 
+     *  under control of this director as each actor is executed by a 
+     *  seperate thread.
+     *  <p>
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     */
+    public synchronized void wrapup() {
+        System.out.println("CSPDirector: about to end the simulation");
+        if (_simulationFinished) {
+            // simulation has already been terminated!
+            return;
+        }
+        _simulationFinished = true;
 
-            while (allMyActors.hasMoreElements()) {
-                try {
-                    Actor actor = (Actor)allMyActors.nextElement();
-                    Enumeration actorPorts = actor.inputPorts();
+        CompositeActor cont = (CompositeActor)getContainer();
+        Enumeration allMyActors = cont.deepGetEntities();
+        
+        while (allMyActors.hasMoreElements()) {
+            try {
+                Actor actor = (Actor)allMyActors.nextElement();
+                Enumeration actorPorts = actor.inputPorts();
+                CSPReceiver nextRec;
+                while (actorPorts.hasMoreElements()) {
+                    IOPort port = (IOPort)actorPorts.nextElement();
+                    // Terminating the ports and hence the star.
+                    Receiver[][] receivers = port.getReceivers();
+                    for (int i=0; i<receivers.length; i++) {
+                        for (int j=0; j<receivers[i].length; j++) {
+                            nextRec = (CSPReceiver)receivers[i][j];
+                            nextRec.setSimulationFinished();
+                            synchronized(nextRec) {
+                                nextRec.notifyAll();
+                            }
+                        }
+                    }
+                }
+                // FIXME: is terminating all receivers on non-atomic 
+                // output ports enough?
+                if (!((ComponentEntity)actor).isAtomic()) {
+                    actorPorts = actor.outputPorts();
                     while (actorPorts.hasMoreElements()) {
                         IOPort port = (IOPort)actorPorts.nextElement();
                         // Terminating the ports and hence the star
-                        Receiver[][] receivers = port.getReceivers();
+                               Receiver[][] receivers = port.getReceivers();
                         for (int i=0; i<receivers.length; i++) {
                             for (int j=0; j<receivers[i].length; j++) {
-                                CSPReceiver next = (CSPReceiver)receivers[i][j];
-                                next.setSimulationTerminated();
-                                System.out.println("synchronizing on receiver to kill");
-                                // FIXME: need to add this below!
-                                synchronized(next) {
-                                    next.notifyAll();
+                                nextRec = (CSPReceiver)receivers[i][j];
+                                nextRec.setSimulationFinished();
+                                synchronized(nextRec) {
+                                    nextRec.notifyAll();
                                 }
                             }
                         }
                     }
-                    // FIXME: is terminating all receivers on non-atomic 
-                    // output ports enough?
-                    if (!((ComponentEntity)actor).isAtomic()) {
-                        actorPorts = actor.outputPorts();
-                        while (actorPorts.hasMoreElements()) {
-                            IOPort port = (IOPort)actorPorts.nextElement();
-                            // Terminating the ports and hence the star
-                            Receiver[][] receivers = port.getReceivers();
-                            for (int i=0; i<receivers.length; i++) {
-                                for (int j=0; j<receivers[i].length; j++) {
-                                    ((CSPReceiver)receivers[i][j]).setSimulationTerminated();
-                                    receivers[i][j].notifyAll();
-                                }
-                            }
-                        }
-                    }
-                } catch (Exception ex) {
-                    System.out.println("CSPDirector: unable to terminate all actors");
-                    System.out.println("because: " + ex.getClass().getName() + ", message: " + ex.getMessage());
-                            //FIXME: should not catch general exception
                 }
+            } catch (Exception ex) {
+                //FIXME: should not catch general exception
+                System.out.println("CSPDirector: unable to terminate " +
+                        "all actors because: " + ex.getClass().getName() +
+                        ", message: " + ex.getMessage());
             }
-        } finally {
-            workspace().doneReading();
         }
     }
-
-    /** FIXME! Needed to mask trhe wrapup method from Director.
-    */
-    public void wrapup() {
-        return;
-    }
-
+  
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** FIXME: this needs to be made more sophisticated. How to 
-    *  handle delays, iterations, real/artificial deadlock, if real 
-    *  then transfer outputs...
+    /* Used to keep track of when are for how long processes are delayed.
+     */
+    private void _delayedUntilTime(double actorTime) {
+        // FIXME: initial simple implementation, make more sophistictaed later.
+        if ( (actorTime <= _getNextTime()) && (actorTime >= getTime()) ) {
+            _nextTime= actorTime;
+        }
+    }
+
+    /* FIXME: this will be more sophisticated later.
+     */
+    private double _getNextTime() {
+        return _nextTime;
+    }
+
+    /** FIXME: Needs a lot of polishing...
     */
     private synchronized void _handleDeadlock() {
-        if (_simulationTerminated) {
+        if (_simulationFinished) {
             return;
         }
-        //System.out.println("HandleDeadlock: alive = " + _actorsAlive + ", blocked = " + _actorsBlocked + ", delayed = " + _actorsDelayed);
         if (_actorsAlive == (_actorsBlocked + _actorsDelayed)) {
-            // simulation has ended in deadlock, so terminate
-            terminateSimulation();
+            if (_actorsDelayed > 0) {
+                // Artificial deadlock.
+                double nextTime = _getNextTime();
+                setTime(nextTime);
+                synchronized(_delayLock) {
+                    _delayLock.notifyAll();
+                }
+            } else if (false) {
+                // FIXME: handle immediate mutations here.
+            } else {
+                // Real deadlock
+                // FIXME: this could be todied up a bit.
+                if (getContainer().getContainer() != null) {
+                    // End of an iteration one level up, so allow 
+                    // postfire to return.
+                    synchronized(_iterationLock) {
+                        _iterationLock.notifyAll();
+                    }
+                } else {
+                    // This director controls the top level composite actor, 
+                    // and the deadlock is real, so end the simulation.
+                    synchronized(_iterationLock) {
+                        _iterationLock.notifyAll();
+                    }
+                    wrapup();
+                }
+            }
         }
     }
      
@@ -381,9 +493,23 @@ public class CSPDirector extends Director {
     private int _actorsAlive = 0;
     private int _actorsDelayed = 0;
 
+    // the current time of this simulation.
+    private double _time = 0;
+
+    // Lock object used to delay actors in time.
+    private Object _delayLock = new Object();
+
+    // Lock object used to mark the end of an iteration one level 
+    // up in the hierarchy.elay actors in time.
+    private Object _iterationLock = new Object();
+
+    // Store the next time that simulation time will get advanced to.
+    private double _nextTime;
+
     // Set to true when the simulation is terminated
-    private boolean _simulationTerminated = false;
+    private boolean _simulationFinished = false;
 
     // The threads under started by this director.
-    private LinkedList _threadlist = new LinkedList();
+    private LinkedList _threadList = new LinkedList();
+
 }
