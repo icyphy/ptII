@@ -54,6 +54,7 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = kernel.jar
 
 JSRCS = NondeterministicMerge.java \
+	ModelCompiler.java \
 	PNDirector.java \
 	PNQueueReceiver.java \
 	TimedPNDirector.java
