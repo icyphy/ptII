@@ -53,15 +53,12 @@ import java.awt.Color;
    of ThalesGraphFrame, which contains an editor pane based on diva.
 
    @see ThalesGraphFrame
-   @see GraphFrame
    @author  Steve Neuendorffer
    @version $Id$
-   * @modelguid {17B1FA87-F877-4EC7-83DD-2977E223764D}
    */
 public class ThalesGraphTableau extends ActorGraphTableau {
 
     /**
-     * @modelguid {4BF431E5-F505-43C3-85F1-4EF60FF1E566}
      */
     public ThalesGraphTableau(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
@@ -69,7 +66,7 @@ public class ThalesGraphTableau extends ActorGraphTableau {
     }
 
 
-    /** @modelguid {210B7DAD-02B5-4096-9806-AC9148090BAD} */
+    /**  */
     public ThalesGraphTableau(PtolemyEffigy container,
             String name)
             throws IllegalActionException, NameDuplicationException {
@@ -99,7 +96,6 @@ public class ThalesGraphTableau extends ActorGraphTableau {
     ////                     public inner classes                  ////
 
     /** A factory that creates graph editing tableaux for Ptolemy models.
-     * @modelguid {E7634A22-EF13-4A8F-8B5A-E6D899403976}
      */
     public static class Factory extends TableauFactory {
 
@@ -110,7 +106,6 @@ public class ThalesGraphTableau extends ActorGraphTableau {
          *   with this attribute.
          *  @exception NameDuplicationException If the name coincides with
          *   an attribute already in the container.
-         * @modelguid {C1DA2593-D008-4C56-BA6F-4A0907E7385F}
          */
         public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
@@ -130,7 +125,6 @@ public class ThalesGraphTableau extends ActorGraphTableau {
          *  PtolemyEffigy, or null otherwise.
          *  @exception Exception If an exception occurs when creating the
          *  tableau.
-         * @modelguid {B084377C-A065-4503-80E9-3D33194885C3}
          */
         public Tableau createTableau(Effigy effigy) throws Exception {
             if(effigy instanceof PtolemyEffigy) {
@@ -154,7 +148,6 @@ public class ThalesGraphTableau extends ActorGraphTableau {
     ////                         private members                   ////
 
     // The background color.
-    /** @modelguid {F40C89BB-670F-485F-931E-AED8CAC4D97D} */
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 
 

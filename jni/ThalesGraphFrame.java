@@ -78,11 +78,9 @@ import ptolemy.vergil.actor.ActorEditorGraphController;
    Given a composite entity and an instance of ThalesGraphTableau,
    it creates an editor and populates the menus and toolbar.
    This overrides the base class to associate with the editor the JNI interface.
-   @see EditorGraphController
-   @author  Steve Neuendorffer, Vincent Arnould
-   @contributor Edward A. Lee
+   @author  Steve Neuendorffer, Vincent Arnould, Contributor: Edward A. Lee
    @version $Id$
-   @see BasicGraphFrame.java,v 1.40 2001/12/05 03:01:29 cxh Exp $
+   @version BasicGraphFrame.java,v 1.40 2001/12/05 03:01:29 cxh Exp $
 */
 public class ThalesGraphFrame extends BasicGraphFrame {
 

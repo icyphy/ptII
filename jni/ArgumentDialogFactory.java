@@ -56,7 +56,6 @@ import ptolemy.vergil.debugger.BreakpointConfigurerDialog;
    @author Edward A. Lee and Steve Neuendorffer, modified by Vincent Arnould
    @version $Id$
    @since Ptolemy II 2.0
-   @see PortDialogFactory
 */
 public class ArgumentDialogFactory implements MenuItemFactory {
 
