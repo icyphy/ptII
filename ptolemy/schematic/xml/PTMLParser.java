@@ -200,10 +200,15 @@ public class PTMLParser extends HandlerBase{
             return sysID;
         }
 
-        // Construct the path to the DTD file
+        // Construct the path to the DTD file. The PTII root MUST be
+        // defined as a system property (this can be done by using
+        // the -D option to java.
+        StringBuffer dtdPath = new StringBuffer(System.getProperty("PTII"));
+        System.out.println("dtdPath = " + dtdPath);
+
         //// FIXME FIXME
         //// StringBuffer dtdPath = new StringBuffer(DomainLibrary.getPTIIRoot());
-        StringBuffer dtdPath = new StringBuffer("/users/ptII");
+        // StringBuffer dtdPath = new StringBuffer("/users/ptII");
 
         // Use System ID if there's no PTII environment variable
         if(dtdPath.toString().equals("UNKNOWN")) {
@@ -291,7 +296,7 @@ public class PTMLParser extends HandlerBase{
     private XMLElement current;
     private XMLElement root;
     private XmlParser parser = new XmlParser();
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
     private String _dtdlocation = null;
 }
 
