@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Hylands
 #
-# @Version: : NamedObj.tcl,v 1.33 1998/12/05 05:37:32 cxh Exp $
+# @Version: $Id$
 #
 # @Copyright (c) 1999 The Regents of the University of California.
 # All rights reserved.
@@ -37,15 +37,18 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-if {[info procs enumToObjects] == "" } then {
-     source enums.tcl
-}
-
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
 ######################################################################
 ####
 #
-test WaitingTime-1.1 {} {
-} {}
+test WaitingTime-1.1 {test constructor and clone} {
+    set e0 [deModel 3.0]
+    set waitbase [java::new ptolemy.domains.de.lib.WaitingTime $e0 wait]
+    set wait [java::cast ptolemy.domains.de.lib.WaitingTime [$waitbase clone]]
+    $waitbase setContainer [java::null]
+    $wait setContainer $e0
+    # Success here is just not throwing an exception.
+    list {}
+} {{}}

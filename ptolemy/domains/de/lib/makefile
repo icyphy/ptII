@@ -49,6 +49,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	Delay.java \
+	DETransformer.java \
 	WaitingTime.java
 
 EXTRA_SRCS =	$(JSRCS)

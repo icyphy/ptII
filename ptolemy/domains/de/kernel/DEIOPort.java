@@ -49,7 +49,7 @@ allowing actors to send output data with a time delay (relative to current
 time).
 <p>
 Actors in the DE domain are not required to use this port. If they use
-the base class, IOPort, then the data they send is sent with zero delay.
+the base class, TypedIOPort, then the data they send is sent with zero delay.
 
 @authors Lukito Muliadi, Edward A. Lee
 @version $Id$
@@ -104,33 +104,11 @@ public class DEIOPort extends TypedIOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Specify whether <i>all</i> the receivers contained by this DEIOPort
-     *  are allowed to have pending tokens. This method is usually called
-     *  by an actor that wants to defer getting tokens from a
-     *  particular port. For example, a server actor might decide to not
-     *  get input tokens when it is still busy with processing previous
-     *  input.
-     *  @param flag True to allow pending tokens, false to disallow.
-     *  @exception IllegalActionException If this.getReceivers() throws it.
-     */
-    public void allowPendingTokens(boolean flag)
-            throws IllegalActionException {
-        Receiver[][] recs = getReceivers();
-        for (int i = 0; i < recs.length ; i++) {
-            for (int j = 0; j < recs[i].length ; j ++) {
-                ((DEReceiver)recs[i][j]).allowPendingTokens(flag);
-            }
-        }
-    }
-
-
     /** Assert that this port has higher priority than the port in the
      *  argument.  The scheduler uses this information to ensure that
      *  if this port and the argument are to receive simultaneous events,
      *  then the event at this port will trigger a firing first (or
-     *  both events might be made visible in the same firing). In other
-     *  words, a firing with no token in this port but with tokens in the
-     *  other port (the one specified in the argument) cannot happen.
+     *  both events might be made visible in the same firing).
      *
      *  @param otherport Another input port
      *  @exception IllegalActionException If this port or the argument port
@@ -147,6 +125,7 @@ public class DEIOPort extends TypedIOPort {
 
     /** Return an enumeration of the other input ports that have lower
      *  priority than this one, as asserted by the before() method.
+     *  @return An enumeration of TypedIOPorts.
      */
     public Enumeration beforePorts() {
         return _beforeList.elements();
@@ -162,23 +141,48 @@ public class DEIOPort extends TypedIOPort {
      */
     public void broadcast(Token token, double delay)
             throws IllegalActionException {
+        _delay = delay;
         try {
-            // FIXME: Shouldn't this use the base class method, rather
-            // than copying it and editing it?
-            workspace().getReadAccess();
-            if (!isOutput()) {
-                throw new IllegalActionException(this,
-                        "broadcast: Tokens can only be sent from an " +
-                        "output port.");
-            }
-            Receiver fr[][] = getRemoteReceivers();
-            if(fr == null) {
-                return;
-            }
+            broadcast(token);
+        } finally {
+            _delay = 0.0;
+        }
+    }
 
-            for (int j = 0; j < fr.length; j++) {
-                send(j, token, delay);
+    /** Override the base class to use the delay that may have been set
+     *  by calling the overloaded version of send() that takes a delay
+     *  argument, or the similarly overloaded version of broadcast().
+     *  After setting the delay in all the receivers, the base class
+     *  send() method is invoked.
+     *
+     *  @param channelindex The index of the channel, from 0 to width-1
+     *  @param token The token to send
+     *  @exception IllegalActionException If the port is not an output,
+     *   or if the index is out of range, or if the token to be sent cannot
+     *   be converted to the type of this port, or if the token is null.
+     *  @exception NoRoomException If there is no room in the receiver.
+     *   This should not occur in the DE domain.
+     */
+    public void send(int channelindex, Token token)
+            throws IllegalActionException, NoRoomException {
+        try {
+            workspace().getReadAccess();
+            Receiver[][] fr = getRemoteReceivers();
+            if (fr == null) return;
+            if (channelindex >= fr.length || channelindex < 0) {
+                throw new IllegalActionException(this,
+                "send: channel index is out of range.");
             }
+            if (fr[channelindex] == null) return;
+            for (int j = 0; j < fr[channelindex].length; j++) {
+                try {
+                    ((DEReceiver)fr[channelindex][j]).setDelay(_delay);
+                } catch (ClassCastException e) {
+                    throw new InvalidStateException("DEIOPort.send() " +
+                    "expects to connect to receivers of type DEReceiver.");
+                }
+            }
+            super.send(channelindex, token);
         } finally {
             workspace().doneReading();
         }
@@ -196,38 +200,11 @@ public class DEIOPort extends TypedIOPort {
      */
     public void send(int channelindex, Token token, double delay)
             throws IllegalActionException {
+        _delay = delay;
         try {
-            // FIXME: Shouldn't this use the base class method, rather
-            // than copying it and editing it?
-            // FIXME: Since the modification is inside the loop (cast to
-            // DEReceiver), this method is overridden by copying and editing
-            // the base class one. Note that, once we permit level crossing
-            // connection, this method won't be valid anymore. Until that
-            // time, this method should work sufficiently well.
-            workspace().getReadAccess();
-            if (!isOutput()) {
-                throw new IllegalActionException(this,
-                        "send: Tokens can only be sent from an output port.");
-            }
-            if (channelindex >= getWidth() || channelindex < 0) {
-                throw new IllegalActionException(this,
-                        "send: channel index is out of range.");
-            }
-            Receiver[][] fr = getRemoteReceivers();
-            if (fr == null || fr[channelindex] == null) return;
-            for (int j = 0; j < fr[channelindex].length; j++) {
-                // FIXME: need to catch ?
-                try {
-                    ((DEReceiver)fr[channelindex][j]).put(token, delay);
-                } catch (ClassCastException e) {
-                    throw new InvalidStateException("DEIOPort.send() is" +
-                            " expected to have receivers of type "+
-                            "DEReceiver (1)");
-                }
-
-            }
+            send(channelindex, token);
         } finally {
-            workspace().doneReading();
+            _delay = 0.0;
         }
     }
 
@@ -264,4 +241,8 @@ public class DEIOPort extends TypedIOPort {
 
     // List of ports triggered immediately by this input port.
     private LinkedList _triggerList = new LinkedList();
+
+    // The delay to use in transfering tokens.
+    // Be careful to set this back to zero after using it.
+    private double _delay = 0.0;
 }

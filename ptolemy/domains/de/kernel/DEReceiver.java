@@ -39,24 +39,20 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// DEReceiver
 /** An implementation of the ptolemy.actor.Receiver interface for
- *  the DE domain.  Tokens received by this receiver are associated with
- *  time stamps.
- *  If the time stamp is not explicitly given,
- *  then it is assumed to be the current time (which is
- *  maintained by the director).  The get() method returns only tokens
- *  with time stamps equal to or earlier than the current time. Thus, when
+ *  the DE domain.  Tokens that are put into this receiver logically
+ *  have time stamps. If the time stamp is not explicitly given using
+ *  the setDelay() method,  then it is assumed to be the current time
+ *  (which is maintained by the director).  The put() method delegates
+ *  the specified token to the director, which returns it to this receiver
+ *  (via the protected method _triggerEvent()) when current time matches
+ *  the time stamp of the token. The get() method returns only tokens
+ *  that the director has so returned. Thus, when
  *  a token is put into the receiver using put(), it does not become
- *  immediately available to the get() method.  Instead, it is sent to
- *  the director to be queued. The director sorts tokens by time stamp.
- *  When the current time advances to match the time stamp of
- *  the token, the director inserts the token into the receiver (using
- *  the _triggerEvent() method).  After that point, the token can be
- *  retrieved using get().
+ *  immediately available to the get() method.
  *  <p>
- *  To explicitly specify the time stamp of a token, a version of the put()
- *  method is provided that takes one more argument representing the time
- *  stamp. The standard put() method from the Receiver interface implicitly
- *  uses the current time as the time stamp.
+ *  By default, the time stamp of a token is the current time of the
+ *  director when put() is called. To specify the time stamp in the
+ *  future, call setDelay() prior to calling put().
  *  <p>
  *  For use only by the director, this receiver has a 'depth' field
  *  indicating its depth in the topology.  This is used by the director
@@ -80,25 +76,17 @@ public class DEReceiver implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Specify whether pending tokens (i.e. leftover tokens) after an
-     *  actor firing is allowed in this receiver by the
-     *  director.
-     */
-    public void allowPendingTokens(boolean b) {
-        _isPendingTokenAllowed = b;
-    }
-
     /** Get a token from the receiver.  The token returned is one that
      *  was put in the receiver with a time stamp equal to or earlier than
      *  the current time.  Note that there might be multiple such
      *  tokens in the receiver. In that case, FIFO behaviour is used with
      *  respect to the put() method. If there is no such token, throw an
      *  exception.
-     *
      *  @return A token.
-     *  @exception NoTokenException If there are no more tokens.
+     *  @exception NoTokenException If there are no more tokens. This is
+     *   a runtime exception, so it need not be declared explicitly.
      */
-    public Token get() {
+    public Token get() throws NoTokenException {
         if(_tokens.isEmpty()) {
             throw new NoTokenException(getContainer(),
                     "No more tokens in the DE receiver.");
@@ -150,16 +138,10 @@ public class DEReceiver implements Receiver {
                 "Does not have a DE director.");
     }
 
-    /** Return true if the director exist and is an instance of
-     *  DEDirector. Note that the capacity of the receiver is unbounded.
-     *  @return True if the director exist and is an instance of DEDirector.
+    /** Return true, indicating that there is always room.
+     *  @return True.
      */
     public boolean hasRoom() {
-        try {
-            getDirector();
-        } catch (IllegalActionException e) {
-            return false;
-        }
         return true;
     }
 
@@ -167,134 +149,77 @@ public class DEReceiver implements Receiver {
      *  @return True if there are more tokens.
      */
     public boolean hasToken() {
-        // Don't need to check the validity of the director, because the fact
-        // that _tokens is not empty means there is a director that put datas
-        // there.
         return (!_tokens.isEmpty());
     }
 
-
-    /** Put a token into the receiver with no delay. The time stamp
-     *  is equal to the current time (obtained from the DEDirector). Note that
+    /** Put a token into this receiver. Note that
      *  this token does not become immediately available to the get() method.
      *  Instead, the token is queued with the director, and the director
      *  must put the token back into this receiver using the _triggerEvent()
-     *  method in order for the token to become available to the get() method.
-     *
+     *  protected method in order for the token to become available to
+     *  the get() method.  By default, this will occur at the current time
+     *  of the director.  However, by calling setDelay() before calling put(),
+     *  you can ask the director to make the token available at a future time.
      *  @param token The token to be put.
-     *  @exception NoRoomException Not thrown in this class.
      */
-    public void put(Token token) throws NoRoomException{
-
+    public void put(Token token) {
         try {
-            this.put(token, 0.0);
-        } catch (IllegalActionException e) {
-            // Can't happen.
-            e.printStackTrace();
-            throw new InternalErrorException("Calling Director." +
-                    "_enqueueEvent() with time "+
-                    "argument = currentTime shouldn't throw an exception." +
-                    " : " + e.getMessage());
+            DEDirector dir = getDirector();
+            dir._enqueueEvent(this, token,
+                dir.getCurrentTime() + _delay, _depth);
+            _delay = 0.0;
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(ex.toString());
         }
-
-    }
-
-    /** Put a token with the specified delay into the receiver.  The time
-     *  stamp of the token is equal to the current time (obtained from the
-     *  director) plus the delay.  Note that
-     *  this token does not become immediately available to the get() method.
-     *  Instead, the token is queued with the director, and the director
-     *  must put the token back into this receiver using the _triggerEvent()
-     *  method in order for the token to become available to the
-     *  get() method.
-     *
-     *  @param token The token to be put.
-     *  @param delay The delay of the token.
-     *  @exception IllegalActionException If the delay is negative, or if
-     *   there is no director.
-     */
-    public void put(Token token, double delay)
-            throws NoRoomException, IllegalActionException {
-
-        DEDirector dir = getDirector();
-        dir._enqueueEvent(this, token, dir.getCurrentTime() + delay, _depth);
     }
 
     /** Set the IOPort containing this receiver.
      *  @param port The container.
-     *  @exception IllegalActionException Not thrown, since any IOPort
-     *     can be the container.
      */
-    public void setContainer(IOPort port) throws IllegalActionException {
+    public void setContainer(IOPort port) {
         _container = port;
+    }
+
+    /** Set the delay for future calls to put().  This causes the director
+     *  to make the token available for the get() method at some future time,
+     *  current time plus the specified delay.  This value of delay is
+     *  only used in the next call to put().
+     *  @param delay The delay.
+     *  @exception IllegalActionException If the delay is negative.
+     */
+    public void setDelay(double delay) throws IllegalActionException {
+        if (delay < 0.0) {
+            throw new IllegalActionException(getContainer(),
+                "Cannot specify a negative delay.");
+        }
+        _delay = delay;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-
-
-    /** Return true if this receiver is inside an output port of an opaque
-     *  composite actor (a wormhole). Calling the put() method on this
-     *  kind of receiver will not result in an event being put into the
-     *  global event queue. This is needed, because this receiver is not
-     *  really the 'final destination' of the token, rather the containing
-     *  CompositeActor will call transferOutput to move the token into its
-     *  'final destination'.
-     *  @return True if above condition is satisfied, false otherwise.
-     *
+    /** Get the depth of this receiver as set by _setDepth().
+     *  @return depth The depth of this receiver.
      */
-    /*
-      protected boolean _isInsideReceiver() {
-
-      // FIXME: try to cache the result of this operation, since it's
-      // called so many times.
-
-      if (_container == null) {
-      throw new InternalErrorException("This can't happen!! " +
-      "This receiver does not have a container ???");
-      }
-      if (!_container.isOutput()) {
-      return false;
-      }
-      Nameable compositeActor = _container.getContainer();
-      if (! (compositeActor instanceof CompositeActor)) {
-      return false;
-      }
-      if (!((CompositeActor)compositeActor).isOpaque()) {
-      return false;
-      }
-      return true;
-
-      }
-    */
-
-    /** Return true if pending token is allowed in this receiver by the
-     *  director. Otherwise, return false.
-     *  @return True if pending token is allowed, false otherwise.
-     */
-    protected boolean _isPendingTokenAllowed() {
-        return _isPendingTokenAllowed;
+    protected long _getDepth() {
+        return _depth;
     }
-
 
     /** Set the depth of this receiver, obtained from the topological
      *  sort.  The depth determines the priority assigned to tokens
      *  with equal time stamps.  A smaller depth corresponds to a
      *  higher priority. Only DEDirector should call this method.
-     *
-     *  @param depth The depth of this receiver, determined from
-     *  topological sort.
+     *  @param depth The depth of this receiver.
      */
     protected void _setDepth(long depth) {
         _depth = depth;
     }
 
     /** Make a token available to the get() method.
-     *  Normally, only a director should use this method. It uses it
-     *  when its current time matches the time stamp of the token.
-     *
-     *  @param token The token to made available.
+     *  Normally, only a director will call this method. It calls it
+     *  when current time matches the time stamp of the token, i.e.
+     *  when the delay specified by setDelay() has elapsed.
+     *  @param token The token to make available to get().
      */
     protected void _triggerEvent(Token token) {
         _tokens.insertLast(token);
@@ -303,28 +228,26 @@ public class DEReceiver implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // _container IOPort containing this receiver.
+    // The delay for the next call to put().
+    private double _delay = 0.0;
+
+    // IOPort containing this receiver.
     private IOPort _container = null;
 
-    // _depth: The topological depth associated with this receiver.
-    long _depth = 0;
+    // The topological depth associated with this receiver.
+    private long _depth = 0;
 
-    // _director: The director where this DEReceiver should register the
-    // events being put in it. If this receiver is in the output port of
+    // The director where this DEReceiver should register the
+    // events being put in it. If this receiver is an inside receiver of
+    // an output port of
     // an opaque composite actor, then the director will be the local director
     // of the container of its port. Otherwise, it's the executive director of
     // the container of its port.
-    // Note: the code should be written to not refer to this field directly.
-    // Rather, it should call the getDirector() method.
-    DEDirector _director;
-    long _directorVersion = -1;
+    // NOTE: This should be accessed only via getDirector().
+    private DEDirector _director;
+    private long _directorVersion = -1;
 
     // List for storing tokens.  Access with clear(), insertLast(),
     // and take().
     private LinkedList _tokens = new LinkedList();
-
-    // _isPendingTokenAllowed A flag to determine whether pending
-    // (i.e. leftover) tokens are allowed.
-    private boolean _isPendingTokenAllowed = false;
-
 }
