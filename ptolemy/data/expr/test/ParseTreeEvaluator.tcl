@@ -104,7 +104,7 @@ test ParseTreeEvaluator-2.7 {Construct a Parser, try integer format specifiers} 
 # 
 test ParseTreeEvaluator-2.8 {Construct a Parser, try long format specifiers} {
     list [theTest "29l"] [theTest "035L"] [theTest "0x1Dl"] [theTest "0X1dL"]
-} {29l 29l 29l 29l}
+} {29l 29l 29l 29l} {Longs are not preserved}
 
 ######################################################################
 ####

@@ -245,7 +245,7 @@ test ParseTreeFreeVariableCollector-10.0 {Test that constants can be registered 
 test ParseTreeFreeVariableCollector-10.1 {Test that functions can access registered classes.
 } {
     list [theTest "min(1,3)"] [theTest "sin(30*PI/180)"]
-} {min {sin PI}}
+} {min {sin PI}} {expression constants should not take precendence over other identifiers}
 
 #
 
@@ -306,6 +306,6 @@ test ParseTreeFreeVariableCollector-17.1 {Test correct scoping in function defin
 
 test ParseTreeFreeVariableCollector-17.2 {Test nested function definitions.} {
     list [theTest "function (y) function(x) x + y + p3"] [theTest "p1(6)"] [theTest "p2(4)"]
-} {p3 p1 p2} {function application needs variable resolution}
+} {p3 p1 p2}
 
 

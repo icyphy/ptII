@@ -203,6 +203,7 @@ public class LongToken extends ScalarToken {
      *  @return A String formed using java.lang.Long.toString().
      */
     public String toString() {
+        // FIXME: this should have an "l" at the end.
         return Long.toString(_value);
     }
 
