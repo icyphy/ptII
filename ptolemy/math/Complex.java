@@ -344,6 +344,16 @@ public class Complex implements Cloneable, Serializable {
         return z.conjugate();
     }
 
+    /** Return the complex conjugate of the specified real number, which is
+     *  just the real number itself.  This method is provided for completeness
+     *  in the expression language.
+     *  @param z The specified real number.
+     *  @return The number provided as an argument, but converted to complex.
+     */
+    public static final Complex conjugate(double z) {
+        return new Complex(z, 0.0);
+    }
+
     /** Return the cosine of this complex number.  This is defined by:
      *  <pre>
      *  cos(z) = (exp(i*z) + exp(-i*z))/2
@@ -516,6 +526,14 @@ public class Complex implements Cloneable, Serializable {
      */
     public static double imag(Complex z) {
         return z.imag;
+    }
+
+    /** Return the imaginary part of the specified real number, which is 0.0.
+     *  @param z The complex number.
+     *  @return 0.0.
+     */
+    public static double imag(double z) {
+        return 0.0;
     }
 
     /** Return true if both the real and imaginary parts of this
@@ -791,6 +809,15 @@ public class Complex implements Cloneable, Serializable {
      */
     public static double real(Complex z) {
         return z.real;
+    }
+
+    /** Return the real part of the specified real number, which is the
+     *  real number itself.
+     *  @param z The complex number.
+     *  @return The argument.
+     */
+    public static double real(double z) {
+        return z;
     }
 
     /** Return the reciprocal of this complex number.
