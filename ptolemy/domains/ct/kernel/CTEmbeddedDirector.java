@@ -198,9 +198,10 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
                 }
                 if (!generator.prefire()) {
                     throw new IllegalActionException((Nameable)generator,
-                            "Actor is not ready to fire. In the CT domain, all "
-                            + "generator actors should be ready to fire at all "
-                            + " times.\nDoes the actor only operate on sequence "
+                            "Actor is not ready to fire. In the CT domain, "
+                            + "all generator actors should be ready to fire "
+                            + "at all times.\n"
+                            + "Does the actor only operate on sequence "
                             + "of tokens?");
                 }
             }
