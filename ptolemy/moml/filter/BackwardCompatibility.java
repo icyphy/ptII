@@ -30,6 +30,9 @@
 
 package ptolemy.moml.filter;
 
+import ptolemy.moml.MoMLFilter;
+
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,12 +57,32 @@ public class BackwardCompatibility {
      *  MoMLFilter to be applied to handle backward compatibility
      */
     public static List allFilters() {
-        List results = new LinkedList();
-        results.add(new AddEditorFactory());
-        results.add(new AddIcon());
-        results.add(new HideAnnotationNames());
-        results.add(new PortNameChanges());
-        results.add(new PropertyClassChanges());
-        return results;
+	return _filterList;
+    }
+
+    /** Return a string that describes all the filters
+     *  @return the String that describes all the filters and that ends with a	
+     *  newline.
+     */
+    public String toString() {
+	StringBuffer results =
+	    new StringBuffer("This filter contains the following filters:\n");
+	Iterator filters = _filterList.iterator();
+	while (filters.hasNext()) {
+	    results.append(((MoMLFilter)filters.next()).toString() + "\n");
+	}
+	return results.toString();
+    }
+
+    // List of MoMLFilters to be applied.
+    private static List _filterList; 
+
+    static {
+        _filterList = new LinkedList();
+        _filterList.add(new AddEditorFactory());
+        _filterList.add(new AddIcon());
+        _filterList.add(new HideAnnotationNames());
+        _filterList.add(new PortNameChanges());
+        _filterList.add(new PropertyClassChanges());
     }
 }

@@ -138,6 +138,15 @@ public class HideAnnotationNames implements MoMLFilter {
     }
 
 
+    /** Return a string that describes what the filter does.
+     *  @return the description of the filter that ends with a newline. 
+     */
+    public String toString() {
+	return getClass().getName()
+	    + ": If an annotation name ends with\n"
+	    + "'annotation1', then add _hideName if necessary.\n";
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -86,4 +86,9 @@ public interface MoMLFilter {
      */
     public String filterEndElement(NamedObj container, String elementName)
             throws Exception;
+
+    /** Return a string that describes what the filter does.
+     *  @return the description of the filter that ends with a new line. 
+     */
+    public String toString();
 }

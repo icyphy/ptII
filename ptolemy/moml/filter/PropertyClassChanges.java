@@ -38,6 +38,7 @@ import ptolemy.moml.MoMLParser;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
@@ -155,6 +156,33 @@ public class PropertyClassChanges implements MoMLFilter {
     public String filterEndElement(NamedObj container, String elementName)
             throws Exception {
         return elementName;
+    }
+
+    /** Return a string that describes what the filter does.
+     *  @return the description of the filter that ends with a newline. 
+     */
+    public String toString() {
+	StringBuffer results =
+	    new StringBuffer(getClass().getName() 
+			     + ": Update any actor port class names that have\n"
+			     + "been renamed.\n"
+			     + "Below are the actors that are affected, along\n"
+			     + "with the port name and the new classname:"
+			     );
+	Iterator actors = _actorsWithPropertyClassChanges.keySet().iterator();
+	while (actors.hasNext()) {
+	    String actor = (String)actors.next();
+	    results.append("\t" + actor + "\n");
+            HashMap propertyMap =
+		(HashMap) _actorsWithPropertyClassChanges.get(actor);
+	    Iterator properties = propertyMap.keySet().iterator();
+	    while (properties.hasNext()) {
+		String oldProperty = (String) properties.next();
+		String newProperty = (String) propertyMap.get(oldProperty);
+		results.append("\t\t" + oldProperty + "\t -> " + newProperty + "\n"); 
+	    }
+	}
+	return results.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
