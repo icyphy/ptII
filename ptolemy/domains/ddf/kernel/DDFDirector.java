@@ -778,7 +778,7 @@ public class DDFDirector extends Director {
                             return false;
                         }
                     }
-                    return true;
+                    continue;
 
                 } else { // All the channels in the port has same
                          // tokenConsumptionRate.
