@@ -65,13 +65,9 @@ public class MoMLSimpleApplication implements ChangeListener {
 
     /** A Nullary constructor is necessary so that we can extends this
      *  base class with a subclass
-     *  @exception Exception Always thrown.
+     *  @exception Exception Not thrown in this base class
      */   
-    public MoMLSimpleApplication() throws Exception{
-        // We need a nullary constructor so we can extend
-        // this class with a base class
-        throw new Exception("MoMLSimpleApplication() not supported, "
-                + "call MoMLSimplApplication(xmlFileName) instead");
+    public MoMLSimpleApplication() throws Exception {
     }
 
     /** Parse the xml file and run it.
