@@ -302,7 +302,7 @@ test FSMActor-7.1 {test exception when multiple transitions enabled} {
     catch {$dir fire} msg
     $dir terminate
     list $msg
-} {{ptolemy.domains.fsm.kernel.MultipleEnabledTransitionsException: Multiple enabled transitions: t0 and t1.
+} {{ptolemy.domains.fsm.kernel.MultipleEnabledTransitionsException: Multiple enabled transitions found but not all of them are nondeterministic. Transition t0 is deterministic.
   in .<Unnamed Object>.fsm.s0}}
 
 ######################################################################
