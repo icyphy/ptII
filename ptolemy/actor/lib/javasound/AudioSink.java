@@ -327,14 +327,25 @@ public class AudioSink extends Sink {
 
     /** If there are at least <i>count</i> tokens on the input
      *  port, invoke <i>count</i> iterations of this actor.
-     *  Otherwise, do nothing, and return a value of COMPLETED.
+     *  Otherwise, do nothing, and return a value of NOT_READY.
      *  One token is read from each channel in an iteration. 
      *  The audio output is either
      *  a sound file and/or the speaker, depending on the current 
      *  mode, which is controlled by the value of the <i>pathName</i> 
      *  parameter.
+     *  <p>
+     *  This method should be called instead of the prefire(), 
+     *  fire(), and postfire() methods when this actor is used in a
+     *  domain that supports vectorized actors. It is recommended for
+     *  performance reasons that a large value of <i>count</i> be used 
+     *  when this actor is used in live playback mode. This actor is 
+     *  optimized to provide good performance even if the value of 
+     *  <i>count</i> changes often.
+     *  @param count The number of iterations to perform.
      *  @return COMPLETED if the actor was successfully iterated the
-     *   specified number of times. Otherwise, throw an exception.
+     *   specified number of times. Otherwise, return NOT_READY if there
+     *   are not enough tokens on the input port, or throw an exception
+     *   if there is a problem writing audio samples to the audio sink.
      *  @exception IllegalActionException If the <i>count</i> samples
      *   cannot be written to the audio output device.
      */
@@ -348,7 +359,7 @@ public class AudioSink extends Sink {
 		_inArray[j] = input.get(j, count);
 	    } else {
 		// Not enough tokens on the input port, so just return.
-		return COMPLETED;
+		return NOT_READY;
 	    }
 	}
 	// For each sample.

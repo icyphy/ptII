@@ -340,10 +340,20 @@ public class AudioSource extends Source {
      *  often enough to prevent overflow of the internal audio capture 
      *  buffer. Overflow should be avoided, since it will result in loss 
      *  of data.
+     *  <p>
+     *  This method should be called instead of the prefire(), 
+     *  fire(), and postfire() methods when this actor is used in a
+     *  domain that supports vectorized actors. It is recommended for
+     *  performance reasons that a large value of <i>count</i> be used 
+     *  when this actor is used in live capture mode. This actor is 
+     *  optimized to provide good performance even if the value of 
+     *  <i>count</i> changes often.
+     *  @param count The number of iterations to perform.
      *  @return COMPLETED if the actor was successfully iterated the
      *   specified number of times. Return STOP_ITERATING if the
-     *   end of the soundfile is reached.
-     *  @exception IllegalActionException If audio cannot be captured.
+     *   end of the sound file is reached.
+     *  @exception IllegalActionException If there is a problem capturing
+     *   audio.
      */
     public int iterate(int count) throws IllegalActionException {
 	// Note: If audio is read from file and file channels < parameter
