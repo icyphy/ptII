@@ -65,10 +65,10 @@ the firing order for all the dynamic actors is called the
 <P>
 To help the scheduling, a system topology is partitioned into
 several clusters:
-the <I>aritmetic actors</I>, the <I>dynamic actors</I>, 
+the <I>arithmetic actors</I>, the <I>dynamic actors</I>, 
 the <I>step size control actors</I>, the <I>sink actors</I>,
 the <I>stateful actors</I>, and the <I> event generator</I>.
-Aritmetic actors are actors that has no integrators in its 
+Arithmetic actors are actors that has no integrators in its 
 function. Dynamic actors is the opposite of arithmetic actors,
 i.e. it has integrators. The most common dynamic actors are 
 integrators, whose output is the state x of the system.
@@ -86,7 +86,7 @@ integrators.
 The output schedule is the actors in g() function sorted in the topological
 order. 
 
-If thers are loops of arithmatic actors or loops of integrators,
+If thers are loops of arithmetic actors or loops of integrators,
 then the (sub)system is not schedulable, and a NotSchedulableException
 will be thrown.
 
@@ -625,7 +625,7 @@ public class CTScheduler extends Scheduler{
         DirectedAcyclicGraph g =  _toArithGraph(ca.deepGetEntities());
         DirectedAcyclicGraph gd = _toGraph(dynamicActors());
         if(!g.isAcyclic()) {
-            throw new NotSchedulableException("Arithmatic loop found.");
+            throw new NotSchedulableException("Arithmetic loop found.");
         }
         //System.out.println("CTScheduler#######################" +
         //        "number of edges" + g.getEdgeCount());
