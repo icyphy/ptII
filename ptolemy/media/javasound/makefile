@@ -34,19 +34,22 @@ ME =		ptolemy/media/javasound
 # Root of the Java directory
 ROOT =		../../..
 
-
 CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	javasound
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =	$(PTPACKAGE).jar
+
 JSRCS = \
 	SoundCapture.java \
 	SoundPlayback.java
 
-EXTRA_SRCS =	$(JSRCS) \
-
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -59,11 +62,8 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-# Don't include all or install rules here, we want the user
-# to run 'make demos' to run the tests.
 all: jclass
-
-install: all
+install: jclass jars
 
 depend:
 	@echo "no dependencies in this directory"
