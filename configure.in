@@ -762,7 +762,7 @@ if test ! -d "$JAI_USER_DIR"; then
     AC_MSG_RESULT([$JAI_USER_DIR is not present,
 	so we need not find JAI - The Java Advanced Imaging API.])
 else
-    AC_MSG_CHECKING([for Java Advanced Imaging API])
+    AC_MSG_CHECKING([for Java Advanced Imaging (JAI) API])
     # We need to run javac in the config directory so that javac from jdk1.1.6
     # under NT and cygwin works properly
     startdir=`pwd`
@@ -861,7 +861,7 @@ if test ! -d "$JMF_USER_DIR"; then
     AC_MSG_RESULT([$JMF_USER_DIR is not present,
 	so we need not find the JMF - The Java Media Framework.])
 else
-    AC_MSG_CHECKING([for Java Media Framework])
+    AC_MSG_CHECKING([for Java Media Framework (JMF)])
     # We need to run javac in the config directory so that javac
     # from jdk1.1.6 under NT and cygwin works properly
     startdir=`pwd`
@@ -870,6 +870,32 @@ else
     if "$JAVAC" JMFTest.java ; then
         AC_MSG_RESULT(ok)
         PTJMF_DIR=jmf
+	# Usually, JMF gets installed in C:/Program Files/JMF2.1.1
+	# and CLASSPATH gets that C:/Program Files/JMF2.1.1/lib/jmf.jar
+	# and C:/Program Files/JMF2.1.1/lib/sound.jar appended to it
+	# We need to figure out where it was found so that Eclipse
+	# can find it
+	AC_MSG_CHECKING([for the JMF directory])
+	if "$JAVAC" FindClass.java ; then
+	    # Usually jmf.jar will be in the CLASSPATH
+	    JMF_JAR=`CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass javax.media.CaptureDeviceInfo`
+	    if test -f "$JMF_JAR" ; then
+	       JMF_JARS_DIR=`dirname "$JMF_JAR"`
+	       AC_MSG_RESULT($JMF_JARS_DIR)
+	       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	           <classpathentry kind=\"lib\" path=\"$JMF_JAR\"/> \
+	           <classpathentry kind=\"lib\" path=\"$JMF_JARS_DIR/sound.jar\"/>"
+	    else 
+       	       AC_MSG_WARN([Could not find javax.media.CaptureDeviceInfo
+    class: $JMF_JAR
+    This means that Eclipse might not be able to find the JMF files.
+    This is only a problem if you are using Eclipse])
+            fi
+	else
+	    AC_MSG_WARN(['"$JAVAC" FindClass.java' failed.
+    This means that Eclipse might not be able to find the JMF files.
+    This is only a problem if you are using Eclipse])
+        fi
     else
         AC_MSG_WARN(['"$JAVAC" JMFTest.java' failed.
     perhaps the Java Media Framework (JMF) is not installed?
@@ -884,6 +910,7 @@ fi
 if test -z "$PTJMF_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/jmf/"
 fi
+
 
 
 #--------------------------------------------------------------------
