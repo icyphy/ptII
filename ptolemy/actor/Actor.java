@@ -51,8 +51,8 @@ public interface Actor extends Executable {
     /** Create any neccessary receivers. This method should iterate 
      *  over the input ports of the actor and call createReceivers() 
      *  on each one.
-     *  @exception IllegalActionException thrown if the receivers 
-     *   could not be created.
+     *  @exception IllegalActionException If the receivers could not
+     *  be created.
      */
     public void createReceivers() throws IllegalActionException;
     
