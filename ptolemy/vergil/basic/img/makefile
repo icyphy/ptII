@@ -65,6 +65,8 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
+all:
+
 install: jars
 
 include $(ROOT)/mk/ptno-compile.mk
