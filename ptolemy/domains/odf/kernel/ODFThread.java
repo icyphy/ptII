@@ -267,7 +267,11 @@ public class ODFThread extends ProcessThread {
 	        }
                 for (int i = 0; i < rcvrs.length; i++) {
                     for (int j = 0; j < rcvrs[i].length; j++) {
-                        ((ODFReceiver) rcvrs[i][j]).put(null, -1.0);
+			try {
+                            ((ODFReceiver) rcvrs[i][j]).put(null, -1.0);
+			} catch( TerminateProcessException e ) {
+			    // Do nothing since we are ending
+			}
 		    }
                 }
             }
