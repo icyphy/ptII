@@ -210,6 +210,19 @@ public class ModelFrame extends PtolemyTop implements ExecutionListener {
         }
     }
 
+    /** Close the window.  Override the base class to remove the
+     *  execution listener from the manager.
+     */
+    protected void _close() {
+        super._close();
+        if (_model != null) {
+            Manager manager = _model.getManager();
+            if (manager != null) {
+                manager.removeExecutionListener(this);
+            }
+        }
+    }
+
     /** Display more detailed information than given by _about().
      */
     protected void _help() {
