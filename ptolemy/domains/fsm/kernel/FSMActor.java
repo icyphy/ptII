@@ -310,10 +310,11 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 	}
     }
 
-    /** Initialize this actor.  This does nothing.
+    /** Initialize this actor.  Goto initial state.
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
+        reset();
     }
 
     /** Return a list of the input ports.
@@ -511,7 +512,8 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         //              _createInputVariables(inPort);
         //         }
 
-        _gotoInitialState();
+        // Note: reset() (gotoInitialState()) is called from
+        // initialize() now (zk 2002/09/11)`
     }
 
     /** Reset current state to the initial state. Throw an
