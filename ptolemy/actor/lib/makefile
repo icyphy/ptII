@@ -56,7 +56,9 @@ JSRCS = \
 	Const.java \
 	Distributor.java \
 	Expression.java \
+	Gaussian.java \
 	Ramp.java \
+	Sin.java \
 	TimePlot.java
 
 EXTRA_SRCS =	$(JSRCS)

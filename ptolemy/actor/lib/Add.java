@@ -27,6 +27,7 @@
 */
 
 package ptolemy.actor.lib;
+
 import ptolemy.kernel.util.*;
 import ptolemy.graph.*;
 import ptolemy.data.*;
@@ -73,6 +74,29 @@ public class Add extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            Add newobj = (Add)super.clone(ws);
+            newobj.input = new TypedIOPort(this, "input", true, false);
+            newobj.input.setMultiport(true);
+            newobj.output = new TypedIOPort(this, "output", false, true);
+            return newobj;
+        } catch (KernelException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Internal error: " + ex.getMessage());
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
+    }
+
     /** If there is at least one token in the input port, add the
      *  tokens on all the channels of the input port and send
      *  the result to the output port. If none of the input port
@@ -113,11 +137,7 @@ public class Add extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         public  variables                 ////
 
     public TypedIOPort input = null;
     public TypedIOPort output = null;
