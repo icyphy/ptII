@@ -228,8 +228,8 @@ public class DECQDirector extends DEDirector {
                                 _currentTime);
                     }
                     _actorToFire.fire();
-                    // check _filledReceivers to see if there's any receivers left
-                    // that's not emptied.
+                    // check _filledReceivers to see if there are any 
+                    // receivers left that are not emptied.
                     refire = false;
                     Enumeration enum = _filledReceivers.elements();
                     while (enum.hasMoreElements()) {
