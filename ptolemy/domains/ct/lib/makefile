@@ -64,12 +64,14 @@ JSRCS = \
 	CTPlot.java \
 	CTPrintln.java \
 	CTRamp.java \
+	CTSaberSubsys.java \
 	CTSin.java \
 	CTSink.java \
 	CTSquareWave.java \
 	CTZeroCrossingDetector.java \
 	CTZeroOrderHold.java \
-        GeneralFunctionActor.java
+        GeneralFunctionActor.java \
+	IPCInterface.java 
 
 EXTRA_SRCS =	$(JSRCS)
 

@@ -79,13 +79,17 @@ public class CTPrintln extends CTActor{
                    "No director avaliable");
        }
        double in = ((DoubleToken)input.get(0)).doubleValue();
-       System.out.println("CTTime:"+
-               ((CTDirector)getDirector()).getCurrentTime());
-       System.out.println("CTData:"+in);
+       //System.out.println("CTTime:"+
+       //        ((CTDirector)getDirector()).getCurrentTime());
+       //System.out.println("CTData:"+in);
+	System.out.println(((CTDirector)getDirector()).getCurrentTime() +"  "
+	+ in);
     }
 
     /** The single input port.
      */
     public TypedIOPort input;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 }

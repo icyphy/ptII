@@ -45,7 +45,7 @@ which has the value of the input signal.
 @see full-classname
 */
 public class CTPeriodicalSampler extends CTActor
-        implements CTEventGenerateActor {
+        implements CTEventGenerator {
 
     public static final boolean DEBUG = false;
 
@@ -114,15 +114,7 @@ public class CTPeriodicalSampler extends CTActor
      *  of this fire.
      */
     public void fire() throws IllegalActionException {
-
-        CTMixedSignalDirector dir = (CTMixedSignalDirector) getDirector();
-        double tnow = dir.getCurrentTime();
-        if( Math.abs(tnow- _nextSamplingTime)<dir.getTimeResolution()) {
-            dir.setFireEndTime(tnow);
-            if(DEBUG) {
-                System.out.println("set FireEndTime:" + tnow);
-            }
-        }
+        return;
     }
 
     /** Postfire: if this is the sampling point, output a token with the
@@ -130,20 +122,6 @@ public class CTPeriodicalSampler extends CTActor
      *  register the next sampling time as the next break point.
      */
     public boolean postfire() throws IllegalActionException {
-        CTMixedSignalDirector dir = (CTMixedSignalDirector) getDirector();
-        if(input.hasToken(0)) {
-            double tnow = dir.getCurrentTime();
-            if(Math.abs(tnow-_nextSamplingTime)<dir.getTimeResolution()) {
-                DoubleToken value = (DoubleToken) input.get(0);
-                if(DEBUG) {
-                    System.out.println(" Emit an event at" + tnow
-                    +  " with the value: " +value.doubleValue());
-                }
-                output.broadcast(value);
-                _nextSamplingTime = tnow+_samplePeriod;
-                dir.fireAt(this, _nextSamplingTime);
-            }
-        }
         return true;
     }
 
@@ -180,30 +158,29 @@ public class CTPeriodicalSampler extends CTActor
     /** Return true if there is defintly an event missed in the
      *  last step.
      */
-    public boolean hasMissedEvent() {
+    public boolean hasCurrentEvent() {
         CTDirector dir = (CTDirector)getDirector();
         double tnow = dir.getCurrentTime();
+         _hasCurrentEvent = false;
         if(Math.abs(tnow - _nextSamplingTime)<dir.getTimeResolution()) {
-            return false;
+            _hasCurrentEvent = true;
         }
-        if (tnow>_nextSamplingTime){
-            _eventMissed = true;
-            _refineStep = _nextSamplingTime - (tnow-dir.getCurrentTime());
-            return true;
-        }
-        return false;
+        return _hasCurrentEvent;
     }
 
     /** If there is a missed event return the expected sample time
      *  - current time; else return the current step size.
      */
-    public double refineStepSize() {
-        if(_eventMissed) {
-            _eventMissed = false;
-            return _refineStep;
+    public void emitCurrentEvents() {
+        if(_hasCurrentEvent) {
+            try {
+                if(input.hasToken(0)) {
+                    output.broadcast(input.get(0));
+                }
+            }catch (IllegalActionException e) {
+                //ignor.
+            }
         }
-        CTDirector dir = (CTDirector)getDirector();
-        return dir.getCurrentStepSize();
     }
 
 
@@ -224,7 +201,7 @@ public class CTPeriodicalSampler extends CTActor
     private CTParameter _paramSamplePeriod;
     private double _samplePeriod;
 
-    private boolean _eventMissed = false;
+    private boolean _hasCurrentEvent = false;
     private double _refineStep;
     private double _nextSamplingTime;
 }

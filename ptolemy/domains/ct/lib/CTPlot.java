@@ -106,7 +106,7 @@ public class  CTPlot extends CTActor {
 
         if (_plot == null) {
             _plot = new Plot();
-            (new PlotFrame(getName())).plot = _plot;
+            new PlotFrame(getName(), _plot);
         }
         _plot.clear(true);
         _plot.setButtons(true);
