@@ -163,6 +163,7 @@ HYVISUALPACKAGES = \
 			ptolemy.domains.fsm.kernel \
 			ptolemy.domains.sdf.kernel \
 			ptolemy.domains.sdf.lib \
+			ptolemy.domains.sdf.lib.vq \
 			ptolemy.media.javasound \
 			ptolemy.vergil.fsm.modal
 
@@ -175,7 +176,6 @@ PTINYPACKAGES = \
 			$(HYVISUALPACKAGES) \
 			ptolemy.domains.de.kernel \
 			ptolemy.domains.de.lib \
-			ptolemy.domains.sdf.lib.vq
 
 # actor.lib.comm uses the Java comm api for communicating with
 # serial ports.  javacomm is not always available, so actor.lib.comm
