@@ -33,7 +33,7 @@ package ptolemy.actor.gui.style;
 // Ptolemy imports.
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.gui.Query;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.gui.PtolemyQuery;
@@ -70,7 +70,7 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      *  @param name The name of the attribute.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable attribute for the container, or if the container
-     *   is not an instance of Parameter.
+     *   is not an instance of Variable.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
@@ -84,7 +84,7 @@ public class CheckBoxStyle extends ParameterEditorStyle {
 
     /** Return true if this style is acceptable for the given parameter.
      */
-    public boolean accept(Parameter param) {
+    public boolean accept(Variable param) {
 	try {
 	    Token current = param.getToken();
 	    if (current instanceof BooleanToken) {
@@ -97,23 +97,25 @@ public class CheckBoxStyle extends ParameterEditorStyle {
 	}
     }
 
-    /** This method is called by EditorPaneFactory to delegate the
-     *  construction of an entry in a Query.  This permits this class
-     *  to control how the user modifies the value of the containing
-     *  parameter.
+    /** Create a new entry in the given query with the given name
+     *  with this style.  Attach the variable that
+     *  contains this style to the created entry.  
+     *  This class will create a check box entry.
+     *  
      *  @param query The query into which to add the entry.
-     *  @exception IllegalActionException If the containing parameter
-     *   has a non-boolean value.
+     *  @exception IllegalActionException If the containing variable
+     *  has a value that cannot be edited using this style.
      */
-    public void addEntry(PtolemyQuery query) throws IllegalActionException {
+    public void addEntry(PtolemyQuery query)
+	throws IllegalActionException {
         String name = getContainer().getName();
-        Parameter param = (Parameter)getContainer();
+        Variable param = (Variable)getContainer();
         Token current = param.getToken();
         if (!(current instanceof BooleanToken)) {
             throw new IllegalActionException(getContainer(),
                     "CheckBoxStyle can only be used for boolean-valued parameters");
         }
         query.addCheckBox(name, name, ((BooleanToken)current).booleanValue());
-        query.attachParameter(param, name);
+	query.attachParameter(param, name);
     }
 }

@@ -33,7 +33,7 @@ package ptolemy.actor.gui.style;
 // Ptolemy imports.
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.gui.Query;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.gui.PtolemyQuery;
@@ -69,7 +69,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
      *  @param name The name of the attribute.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable attribute for the container, or if the container
-     *   is not an instance of Parameter.
+     *   is not an instance of Variable.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
@@ -85,33 +85,33 @@ public class ChoiceStyle extends ParameterEditorStyle {
      *  @return True if the style contains some parameters representing the
      *  choices.
      */
-    public boolean accept(Parameter param) {
-	return !attributeList(Parameter.class).isEmpty();
+    public boolean accept(Variable param) {
+	return !attributeList(Variable.class).isEmpty();
     }
 
-    /** This method is called by EditorPaneFactory to delegate the
-     *  construction of an entry in a Query.  This permits this class
-     *  to control how the user modifies the value of the containing
-     *  parameter.
+    /** Create a new entry in the given query with the given name
+     *  with this style.  Attach the variable that
+     *  contains this style to the created entry.  
+     *  This class will create a choice entry.
+     *  
      *  @param query The query into which to add the entry.
-     *  @exception IllegalActionException If the containing parameter
-     *   has a non-boolean value.
+     *  @exception IllegalActionException If the containing variable
+     *  has a value that cannot be edited using this style.
      */
-    public void addEntry(PtolemyQuery query) throws IllegalActionException {
+    public void addEntry(PtolemyQuery query)
+	throws IllegalActionException {
         String name = getContainer().getName();
-        Parameter param = (Parameter)getContainer();
-	List paramList = attributeList(Parameter.class);
-        Parameter choices[] = (Parameter [])paramList.toArray(new Parameter[paramList.size()]);
+        Variable param = (Variable)getContainer();
+	List paramList = attributeList(Variable.class);
+        Variable choices[] = (Variable [])paramList.toArray(new Variable[paramList.size()]);
 	String values[] = new String[choices.length];
 	for(int i = 0; i < choices.length; i++) {
-	    values[i] = choices[i].getToken().toString();
-	    System.out.println("value = " + values[i]);
+	    values[i] = choices[i].stringRepresentation();
 	}
 	   
-        Token current = param.getToken();
-	String defaultChoice = current.toString();
+       	String defaultChoice = param.stringRepresentation();
 
         query.addChoice(name, name, values, defaultChoice);
-        query.attachParameter(param, name);
+	query.attachParameter(param, name);
     }
 }

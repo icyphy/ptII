@@ -31,7 +31,7 @@
 package ptolemy.actor.gui.style;
 
 // Ptolemy imports.
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.gui.Query;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.gui.PtolemyQuery;
@@ -81,33 +81,33 @@ public abstract class ParameterEditorStyle extends Attribute {
 
     /** Return true if this style is acceptable for the given parameter.
      */
-    public abstract boolean accept(Parameter param);
+    public abstract boolean accept(Variable param);
 
-    /** This method is called by EditorPaneFactory to delegate the
-     *  construction of an entry in a Query.  This permits this class
-     *  to control how the the user modifies the value of the containing
-     *  parameter.
+    /** Create a new entry in the given query with the given name
+     *  with this style.  Attach the variable that
+     *  contains this style to the created entry.
+     *  
      *  @param query The query into which to add the entry.
-     *  @exception IllegalActionException If the containing parameter
-     *   has a value that cannot be edited using the requested style.
+     *  @exception IllegalActionException If the containing variable
+     *  has a value that cannot be edited using this style.
      */
     public abstract void addEntry(PtolemyQuery query)
-            throws IllegalActionException;
+	throws IllegalActionException;
 
     /** Override the base class to first check that the container is
-     *  an instance of Parameter.
+     *  an instance of Variable.
      *  @param container The container to attach this attribute to..
      *  @exception IllegalActionException If this attribute is not of the
      *   expected class for the container, or it has no name,
      *   or the attribute and container are not in the same workspace, or
      *   the proposed container would result in recursive containment, or
-     *   the proposed container is not an instance of Parameter.
+     *   the proposed container is not an instance of Variable.
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this attribute.
      */
     public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
-        if (container != null && !(container instanceof Parameter)) {
+        if (container != null && !(container instanceof Variable)) {
             throw new IllegalActionException(this, container,
                 "ParameterEditorStyle can only be contained by Parameter.");
         }
