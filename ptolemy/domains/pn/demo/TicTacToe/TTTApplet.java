@@ -95,6 +95,15 @@ public class TTTApplet extends PNApplet {
         return;
     }
 
+    /** Do nothing.
+     */
+    public void start() {
+    }
+
+    /** Start execution of the model. 
+     *  In this base class, this method calls the protected method
+     *  _go(), which executes the model.  
+     */
     protected void _go() throws IllegalActionException {
 	displayPanel.removeAll();
 	_display.setPanel(displayPanel);
