@@ -81,7 +81,7 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
     public AbstractPtolemyGraphModel(CompositeEntity toplevel) {
 	super(toplevel);
 	_toplevel = toplevel;
-	toplevel.addChangeListener(new GraphChangeListener());
+        toplevel.addChangeListener(new GraphChangeListener());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -97,6 +97,22 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
      * @exception GraphException if the operation fails.
      */
     public abstract void disconnectEdge(Object eventSource, Object edge);
+
+    /** Return the context for which a change request concerning the given
+     *  object should be made.  This is the first container
+     *  above the object in the hierarchy that defers its
+     * MoML definition, or the immediate parent if there is none.
+     */
+    public static NamedObj getChangeRequestParent(NamedObj object) {
+        NamedObj container = MoMLChangeRequest.getDeferredToParent(object);
+        if (container == null) {
+            container = (NamedObj)object.getContainer();
+        }
+        if (container == null) {
+            return object;
+        }
+        return container;
+    }
 
     /**
      * Return the property of the object associated with
@@ -177,6 +193,13 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
                 " not allow semantic objects" +
                 " to be changed");
     }
+    
+    /** Update the graph model.  This is called whenever a change request is 
+     *  executed.  Subclasses will override this to update internal data
+     *  structures that may be cached.
+     */
+    protected void _update() {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -200,12 +223,16 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
 	 *  @param change The change that has been executed.
 	 */
 	public void changeExecuted(ChangeRequest change) {
+            // update the graph model.
+            _update();
+
 	    // Ignore anything that comes from this graph model.
 	    // the other methods take care of issuing the graph event in
 	    // that case.
-	    if(change.getSource() == AbstractPtolemyGraphModel.this) {
+            if(change.getSource() == AbstractPtolemyGraphModel.this) {
                 return;
             }
+
 	    // This has to happen in the swing thread, because Diva assumes
 	    // that everything happens in the swing thread.  We invoke later
 	    // because the changeRequest that we are listening for often
@@ -229,6 +256,9 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
          *  @param exception The exception that was thrown.
          */
         public void changeFailed(ChangeRequest change, Exception exception) {
+            // update the graph model.
+            _update();
+
             // Report it if it has not been reported.
             if (!change.isErrorReported()) {
                 change.setErrorReported(true);
@@ -244,3 +274,11 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
     // The root of this graph model, as a CompositeEntity.
     private CompositeEntity _toplevel;
 }
+
+
+
+
+
+
+
+
