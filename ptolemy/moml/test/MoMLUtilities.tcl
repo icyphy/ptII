@@ -78,4 +78,4 @@ test MoMLUtilities-1.5 {substitution checks} {
 
 test MoMLUtilities-1.6 {substitution checks} {
     java::call ptolemy.moml.MoMLUtilities escapeAttribute "\"My n&me is <&rf>\""
-} {&quot;My n&amp;me is &lt;&amp;rf>&quot;}
+} {&quot;My n&amp;me is &lt;&amp;rf&gt;&quot;}
