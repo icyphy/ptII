@@ -28,6 +28,14 @@ the Ptolemy II test suite.
 <a href="http://www.scriptics.com/software/java.html">Scriptics Jacl and Tcl Blend page</a>.
 Note that to use Tcl Blend, you must also have a Tcl installed. 
 
+<h3><a href="javacc">JavaCC</a></h3>
+JavaCC is the Java Compiler Compiler, which similar to <CODE>yacc</CODE>
+and <CODE>lex</CODE>.
+ <p>JavaCC is only necessary if you modify the expression parser in
+<CODE>ptolemy/data/expr</CODE>.
+ <p>JavaCC can be downloaded from
+<a href="http://www.sun.com/suntest"><CODE>http://www.sun.com/suntest</CODE></a>
+
 <h2>Rebuilding</h2>
 The Ptolemy II distribution includes the compiled Java <CODE>.class</CODE>
 files and the <CODE>javadoc</CODE> output, so it is not
@@ -42,14 +50,18 @@ setenv PTII /users/ptII
 </pre>
 You may want to add that line to your <CODE>~/.cshrc</CODE> file.
 
- <p>To configure the makefiles, run <CODE>$PTII/configure</CODE>, which is
+ <p>To configure the makefiles,
+run <CODE>$PTII/configure</CODE>, which is
 a GNU autoconf script that looks for your Java compiler, reads in
 <CODE>$PTII/mk/ptII.mk.in</CODE> and generates
-<CODE>$PTII/mk/ptII.mk</CODE>.
+<CODE>$PTII/mk/ptII.mk</CODE>:
+<pre>
+cd $PTII
+./configure
+</pre>
 
  <p>To build:
 <pre>
-cd $PTII
 make
 </pre>
 
@@ -60,6 +72,32 @@ To build Ptolemy II under Windows NT4.0:
 <a href="http://sourceware.cygnus.com/cygwin/"><CODE>http://sourceware.cygnus.com/cygwin/</CODE></a>.
  <br>The Cygwin toolkit includes GNU <CODE>make</CODE> and <CODE>bash</CODE>.
 
+<li> Be sure to do <CODE>mkdir /tmp</CODE>
+
+<li> Part of the GNU-win32 installation includes setting up
+<CODE>/bin/sh.exe</CODE> for use from <CODE>make</CODE>.
+It is better if you copy <CODE>bash.exe</CODE> to 
+<CODE>/bin</CODE> instead of <CODE>sh.exe</CODE> - 
+some of the makefiles have problem if <CODE>sh.exe</CODE>
+is used.
+  <br>The commands to copy <CODE>bash.exe</CODE> are:
+<pre>
+mkdir /bin
+cp /Cygnus/B19/H-i386-cygwin32/bin/bash.exe /bin
+</pre>
+
+<li> Create <CODE>/etc/passwd</CODE> and <CODE>/etc/group</CODE>
+by running 
+<pre>
+mkdir /etc
+mkpasswd -l -g > /etc/passwd
+mkgroup  -l > /etc/group
+</pre>
+For more information, type <CODE>mkpasswd</CODE> and <CODE>mkgroup</CODE>
+without any arguments.  The Cygwin faq also covers these programs.
+If you do not set up <CODE>/etc/passwd</CODE>, then <CODE>chown</CODE>
+may have problems.
+
 <li> Set the value of the <CODE>PTII</CODE> environment variable to the 
 name of the directory where Ptolemy II is installed.
 Under NT, you set the environment variable via
@@ -69,9 +107,18 @@ the Environment tab of the System control panel
 
 <li> In the Environment tab, you should also set your path to include the location of the JDK bin directory (i.e. <CODE>C:\jdk1.1.6\bin</CODE>)
 
+
+<li> Optional: Install Tcl Blend, see the instructions
+<a href="#tclblend">above</a>.
+
+
+<li> Optional: Install JavaCC, see the instructions
+<a href="#javacc">above</a>.
+
+
 <li> Start up Cygwin <CODE>bash</CODE>, and cd to the Ptolemy II directory.
 
-<li> Run <CODE>configure</CODE>
+<li> Run <CODE>./configure</CODE>
 
 <li> Run <CODE>make</CODE>
 </ol>
