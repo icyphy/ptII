@@ -50,6 +50,14 @@ REALCLEAN_STUFF =
 # Sub directories to run make in.
 DIRS =		#usersGuides #internals
 
+ALLJSRCS = 	pn/*/*.java tcl/*.java tycho/*.java
+all: codeDoc/tree.html
+
+codeDoc/tree.html: ../pn/*/*.java ../tcl/*.java ../tycho/*.java
+	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
+	(cd codeDoc; rm -f images; ln -s ../$(ROOT)/lib/java/images .)
+	(cd ..; CLASSPATH=$(CLASSPATH):$(JAVAHOME)/lib/classes.zip $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
+
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/no-compile.mk
 
