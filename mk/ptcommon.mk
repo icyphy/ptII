@@ -153,6 +153,8 @@ bin_install_dir:
 	fi
 
 # Quickly attempt to build the tree
+# 'make fast' is a hack.  If it does not work for you, either fix it or 
+# don't use it and use 'make' instead.
 fast:
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
