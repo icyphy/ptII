@@ -262,6 +262,8 @@ public class DDEDirector extends ProcessDirector {
     public void fireAt(Actor actor, double time)
             throws IllegalActionException {
 
+        String name = ((Nameable)actor).getName();
+        System.out.println(name+": calling fireAt()");
         DDEThread ddeThread;
         Thread thread = Thread.currentThread();
         if( thread instanceof DDEThread ) {
@@ -360,7 +362,7 @@ public class DDEDirector extends ProcessDirector {
 
     /** Transfer data from an input port of the container to the
      *  ports it is connected to on the inside.  The port argument must
-     *  be an opaque input port.  If any channel of the input port
+     *  be an opaque input port. If any channel of the input port
      *  has no data, then that channel is ignored.
      *  JFIXME
      *
@@ -369,6 +371,7 @@ public class DDEDirector extends ProcessDirector {
      *  @param port The port to transfer tokens from.
      */
     public void transferInputs(IOPort port) throws IllegalActionException {
+        String name = ((Nameable)getContainer()).getName();
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferInputs: port argument is not an opaque" +
@@ -376,6 +379,9 @@ public class DDEDirector extends ProcessDirector {
         }
         Token token = null;
         Receiver[][] insiderecs = port.deepGetReceivers();
+        if( port.getWidth() > 0 ) {
+            System.out.println(name+":\t Beginning of transferInputs");
+        }
         for (int i = 0; i < port.getWidth(); i++) {
             if (insiderecs != null && insiderecs[i] != null) {
             	for (int j = 0; j < insiderecs[i].length; j++ ) {
@@ -392,11 +398,12 @@ public class DDEDirector extends ProcessDirector {
                 }
             }
         }
+        System.out.println(name+":\t End of transferInputs");
     }
 
     /** Transfer data from an output port of the container to the
      *  ports it is connected to on the outside.  The port argument must
-     *  be an opaque output port.  If any channel of the output port
+     *  be an opaque output port. If any channel of the output port
      *  has no data, then that channel is ignored.
      *  JFIXME
      *
@@ -405,12 +412,16 @@ public class DDEDirector extends ProcessDirector {
      *  @param port The port to transfer tokens from.
      */
     public void transferOutputs(IOPort port) throws IllegalActionException {
+        String name = ((Nameable)getContainer()).getName();
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferOutputs: port argument is not " +
                     "an opaque output port.");
         }
         Receiver[][] insiderecs = port.getInsideReceivers();
+        if( insiderecs.length > 0 ) {
+            System.out.println(name+":\t Beginning of transferOutputs");
+        }
         if (insiderecs != null) {
             for (int i = 0; i < insiderecs.length; i++) {
                 if (insiderecs[i] != null) {
@@ -432,6 +443,7 @@ public class DDEDirector extends ProcessDirector {
                 }
             }
         }
+        System.out.println(name+":\t End of transferOutputs");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -678,37 +690,32 @@ public class DDEDirector extends ProcessDirector {
      *  been resolved; return false otherwise.
      * @return True if deadlocks no longer exist; return
      *  false otherwise.
-     */
     protected boolean _resolveDeadlock() throws
     	    IllegalActionException {
+        System.out.println("#####Calling _resolveDeadlock");
         if( _writeBlocks != 0 ) {
             // Artificial Non-timed Deadlock
-            /* FIXME
-            System.out.println("Artificial deadlock!! Write blocks = "
-                    + _writeBlocks);
-            */
+            // System.out.println("Artificial deadlock!! Write blocks = " + _writeBlocks);
             _incrementLowestCapacityPort();
         } else {
             // Real Non-timed Deadlock
-            /* FIXME
-            System.out.println("Real deadlock!! Read blocks = "
-            	    + _readBlocks);
-            */
+            // System.out.println("Real deadlock!! Read blocks = " + _readBlocks);
             return false;
         }
 
         if( _pendingMutations ) {
-	    /* FIXME
+	    // FIXME
                try {
                _processTopologyRequests();
                } catch( TopologyChangeFailedException e ) {
                throw new IllegalActionException("TopologyChangeFailed: "
                + e.getMessage());
                }
-	    */
+	    //
         }
         return true;
     }
+     */
 
     /** Return true indicating that this actor is allowed to continue
      *  execution. Note that transferInputs() modifies its behavior 
@@ -819,6 +826,8 @@ public class DDEDirector extends ProcessDirector {
     private boolean _pendingMutations = false;
     private LinkedList _writeBlockedQs;
     private Hashtable _initialTimeTable;
+    
+    private LinkedList _extReadBlockedQs;
 
 
     ///////////////////////////////////////////////////////////////////

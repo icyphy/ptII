@@ -324,12 +324,19 @@ public class TimeKeeper {
      * @return double The output time of this time keeper.
      */
     public synchronized double getOutputTime() {
+        /*
         double time = _currentTime;
         if( _outputTime > _currentTime ) {
             time = _outputTime;
         }
         _outputTime = _currentTime;
         return time;
+        */
+        
+        if( _outputTime < _currentTime ) {
+            _outputTime = _currentTime;
+        }
+        return _outputTime;
     }
 
     /** Return true if the minimum receiver time is unique to a single
@@ -375,13 +382,22 @@ public class TimeKeeper {
 	} 
     }
 
-    /** Cause the actor managed by this time keeper to send a NullToken
-     *  to all output channels that have a receiver time less than or
-     *  equal to the current time of this time keeper. Associate a time i
-     *  stamp with each NullToken that is equal to the current time of
-     *  this thread. This method is not synchronized so the calling
-     *  method should be. Note that the actor controlled by this 
-     *  TimeKeeper is necessarily opaque.
+    /** If the actor managed by this time keeper is atomic, then send a 
+     *  NullToken to all output channels that have a receiver time less 
+     *  than or equal to the current time of this time keeper. Associate 
+     *  a time i stamp with each NullToken that is equal to the current 
+     *  time of this thread. If this is an opaque composite actor that
+     *  contains a DDE model and the receiver argument is contained on
+     *  outside of an input boundary port, then send NullTokens to the 
+     *  inside of that receiver's port. If this is an opaque composite
+     *  actor and the receiver argument is contained on the inside of an
+     *  output boundary port, then set the output time of this TimeKeeper
+     *  to be equivalent to the receiver's rcvr time. 
+     *  <P>
+     *  This method is not synchronized so the calling method should be. 
+     *  Note that the actor controlled by this TimeKeeper is necessarily 
+     *  opaque.
+     * @params rcvr The receiver that is causing this method to be invoked.
      */
     public void sendOutNullTokens(DDEReceiver rcvr) {
         if( ((ComponentEntity) _actor).isAtomic() ) {
@@ -401,6 +417,7 @@ public class TimeKeeper {
 		    }
 		}
             }
+            // FIXME
         } else if( _actor.getDirector() instanceof DDEDirector ){
             if( rcvr == null ) {
                 return;
@@ -450,6 +467,7 @@ public class TimeKeeper {
 		    ((NamedObj)_actor).getName() + " - Attempt to "
 		    + "set current time in the past.");
 	}
+            
 	if( time != TimedQueueReceiver.IGNORE ) {
             _currentTime = time;
 	}
@@ -588,6 +606,12 @@ public class TimeKeeper {
             new RcvrTimeTriple(tqr, time, priority);
 	_removeRcvrTriple( triple );
 	_addRcvrTriple( triple );
+        try {
+            setOutputTime( getCurrentTime() );
+        } catch( IllegalActionException e ) {
+            // This exception will never be thrown since 
+            // the current time is never in the past.
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
