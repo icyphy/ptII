@@ -73,6 +73,10 @@ public class DDEApplet extends PtolemyApplet {
     public String getSingleParameter(String name) {
 	String params[][] = getParameterInfo();
 
+	if( params == null ) {
+	    return null;
+	}
+
 	for( int i = 0; i < params.length; i++ ) {
 	    if( params[i][0].equals(name) ) {
 		return params[i][1];
