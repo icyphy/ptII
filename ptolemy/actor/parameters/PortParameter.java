@@ -68,10 +68,17 @@ read from that port.  Also, any call to get() on the associated
 port will result in the value of this parameter being updated.
 <p>
 When using this parameter in an actor, care must be exercised
-to read its value only once per firing by calling getToken().
+to read its value exactly once per firing by calling getToken().
 Each time getToken() is called, a new token will be consumed from
-the associated port (if there is a token).  This may result in
+the associated port (if there is a token).  If this is called
+multiple times in an iteration, it may result in
 consuming tokens that were intended for subsequent firings.
+Thus, for example, it should not be called in fire() and then
+again in postfire().  Moreover, in some domains (such as DE),
+it is essential that if a token is provided on a port, that it
+is consumed.  In DE, the actor will be repeatedly fired until
+the token is consumed.  Thus, it is an error to not call getToken()
+once per iteration.
 <p>
 If this is actor is placed in a container that does not implement
 the TypedActor interface, then no associated port is created,
