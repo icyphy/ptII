@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating red (liuj@eecs.berkeley.edu)
+@ProposedRating yellow (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel;
@@ -215,6 +215,31 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _initStepSize;
     }
 
+    /** Return the local trancation error tolerance, used by
+     *  variable step size solvers.
+     *  @return The local trancation error tolerance.
+     */
+    public final double getLTETolerance() {
+        return _lteTolerance;
+    }
+
+    /** Return the maximum number of iterations in fixed point
+     *  calculation. If the iteration has exceed this number
+     *  and the fixed point is still not found, then the algorithm
+     *  is considered failed.
+     */
+    public final int getMaxIterations() {
+        return _maxIterations;
+    }
+
+    /** Return the minimum step size used in variable step size
+     *  ODE solvers.
+     *  @return The minimum step size.
+     */
+    public final double getMinStepSize() {
+        return _minStepSize;
+    } 
+
     /** Return the start time.
      *  @return the start time.
      */
@@ -244,49 +269,19 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _timeResolution;
     }
 
-    /** Return the local trancation error tolerant, used for
-     *  adjustable step size solvers.
-     *  @return The local trancation error tolerant.
-     */
-    public final double getLTETolerance() {
-        return _lteTolerance;
-    }
-
-    /** Return the value accuracy, used for test if implicit method
+    /** Return the value resolution, used for testing if sn implicit method
      *  has reached the fixed point. Two values differ less than
-     *  this accuracy is considered identical in fixed point
+     *  this accuracy is considered identical in the fixed point
      *  calculation.
      *
-     *  @return The local trancation error tolerant.
+     *  @return The value resolution for finding fixed point.
      */
     public final double getValueResolution() {
         return _valueResolution;
     }
 
-    /** Return the minimum step size used in variable step size
-     *  ODE solvers.
-     */
-    public final double getMinStepSize() {
-        return _minStepSize;
-    }
-
-    /** Return the maximum number of iterations in fixed point
-     *  calculation. If the iteration has exceed this number
-     *  and the fixed point is still not found, then the algorithm
-     *  is considered failed.
-     */
-    public final int getMaxIterations() {
-        return _maxIterations;
-    }
-
-    /** Return a CTReceiver.
-     */
-    public Receiver newReceiver() {
-        return new CTReceiver();
-    }
-
-    /** Register a break point in the future. This request the
-     *  Director to fire exactly at the each registered time.
+    /** Register a break point at a future time. This requests the
+     *  Director to fire exactly at each registered time.
      *  Override the fireAt() method in Director.
      *  @param actor The actor that requested the fire
      *  @param time The fire time
@@ -305,6 +300,13 @@ public abstract class CTDirector extends StaticSchedulingDirector
                     " the current time.");
         }
         _breakPoints.insert(new Double(time));
+    }
+
+    /** Return a new CTReceiver.
+     *  @return A new CTReceiver.
+     */
+    public Receiver newReceiver() {
+        return new CTReceiver();
     }
 
     /** If parameter changed, queue the event
@@ -326,7 +328,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
             "Critical Parameter deleted");
     }
 
-    /** abstract class for update all parameters.
+    /** Update changed parameters. The queued parameter change events
+     *  will be processed in their happening order.
      *  @exception IllegalActionException If throw by creation of some
      *       parameters.
      */
@@ -345,7 +348,12 @@ public abstract class CTDirector extends StaticSchedulingDirector
              pEvents.clear();
          }
      }
-    /** Update paramters.
+    /** Update a changed paramter. If the changed parameter name matches
+     *  the name of a parameter of the director, then the coresponding
+     *  parameter value will be updated. Otherwise, throw an exception.
+     *  @param param The changed parameter.
+     *  @exception IllegalActionException If the parameter name is not
+     *     found.
      */
     public void updateParameter(Parameter param)
             throws IllegalActionException {
@@ -394,7 +402,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
         }
     }
 
-    /** set the currentODESolver
+    /** set the given solver to be the current ODE Solver.
+     *  @param solver The solver to be set.
      */
     public void setCurrentODESolver(ODESolver solver)
             throws IllegalActionException {
@@ -402,7 +411,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     /** Set the current step size. This variable is very import during
-     *  the simulation and can not be changed in the middle of an
+     *  the simulation and should NOT be changed in the middle of an
      *  iteration.
      *  @param curstepsize The step size used for currentStepSize().
      */
@@ -411,26 +420,33 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     /** Set the current simulation time. All the actors directed by this
-     *  director will share this global time.
+     *  director will share this global time. This is a very important
+     *  value for a correct simulation. The method should be cafully used.
      *  @param tnow The current time.
      */
     public void setCurrentTime(double tnow){
         _currentTime = tnow;
     }
 
-    /** Set stopTime. The stop time will be registered as a break point.
-     */
-    public void setStopTime(double tstop) {
-        _stopTime = tstop;
-    }
-
-    /** Set startTime. The start time will NOT be registered as a
-     *  break point so the user should do it explicitly if needed.
+    /** Set the start time for the simulation. The start time is not 
+     *  registered as a breakpoint in this method. The extended director
+     *  should do it themselves if needed.
+     *  @param tstart The start time. 
      */
     public void setStartTime(double tstart) {
         _stopTime = tstart;
     }
 
+    /** Set the stop time for the simulation.  The stopt time is not 
+     *  registered as a breakpoint in this method. The extended director
+     *  should do it themselves if needed.
+     *  @param tstop The stop time for the simulation.
+     */
+    public void setStopTime(double tstop) {
+        _stopTime = tstop;
+    }
+
+ 
     /** Set the suggested next step size.
      *  @param nextstep The suggested next step size.
      */
@@ -442,12 +458,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
     ////                         protected methods                      ////
 
     /** Return the parameter event queue.
+     *  @return The parameter event queue.
      */
     protected LinkedList _getParameterEvents() {
         return _parameterEvents;
     }
 
-    /** Add all the parameters.
+    /** Create and initialize all the parameters. All parameters take
+     *  their default values.
      */
     private void _initParameters() {
         try {
@@ -470,12 +488,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
             _paramMinStepSize = new CTParameter(
                 this, "MinimumStepSize", new DoubleToken(_minStepSize));
             _paramMaxIterations = new CTParameter(
-                this, "MaximumIterationsPerStep", new IntToken(_maxIterations));
+                this, "MaximumIterationsPerStep", 
+                new IntToken(_maxIterations));
             _paramLTETolerance =  new CTParameter(
                 this, "LocalTrancationErrorTolerance",
                 new DoubleToken(_lteTolerance));
             _paramValueResolution =  new CTParameter(
-                this, "ConvergeValueResolution", new DoubleToken(_valueResolution));
+                this, "ConvergeValueResolution", 
+                new DoubleToken(_valueResolution));
             _paramTimeResolution= new CTParameter(
                 this, "TimeResolution", new DoubleToken(_timeResolution));
 
@@ -487,7 +507,12 @@ public abstract class CTDirector extends StaticSchedulingDirector
         }
     }
 
-    /** Instantiate ODESolver from its classname
+    /** Instantiate ODESolver from its classname. Given the solver's full 
+     *  class name, this method will try to inistantiate it by looking
+     *  for the java class.
+     *  @param solverclass The solver's full class name.
+     *  @exception IllegalActionException If the solver is unable to be 
+     *       created.
      */
     protected ODESolver _instantiateODESolver(String solverclass)
             throws IllegalActionException {
@@ -521,11 +546,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return newsolver;
     }
 
-   /** Indicate whether this director would like to have write access
-     *  during its iteration. By default, the return value is true, indicating
-     *  the need for a write access.
+    /** Returns false, indicating that this director does not need to 
+     *  modify the topology during the execution.
      *
-     *  @return True if this director need write access, false otherwise.
+     *  @return False.
      */
     protected boolean _writeAccessPreference() {
         return false;

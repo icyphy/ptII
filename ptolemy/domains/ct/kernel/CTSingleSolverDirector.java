@@ -1,4 +1,4 @@
-/* Base class for top level CT directors.
+/* A CTDirector that uses only one ODE solver.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -23,7 +23,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel;
@@ -41,7 +41,28 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// CTSingleSolverDirector
 /**
-A CT director that does not change its ODE solver.
+A CTDirector that uses only one ODE solver. The solver is a parameter
+of the director called "ODESolver". The default solver is ForwardEulerSoler.
+The solver of this director must be able to self start, so any solver
+that uses history points can not be the solver for this director. 
+<P>
+This director can handle explicit breakpoints, which are breakpoints
+that are registered in the breakpoint table. It does not handle 
+unexpected breakpoints like event detections.  So this director can
+only be a top-level director. Since impulse backward Euler method 
+does not advance time, it should not be used as the solver for this
+director. As a result, if the system contains impulse sources,
+this director is not ideal. Please use CTMultiSolverDirector with
+ImpulseBESolver as the breakpoint solver for better result.
+<P>
+Each iteration of the director simulate the system for one step size.
+The size of the step is determined by the ODE solver as well as 
+the breakpoints. After each iteration, the execution control will be
+returned to the manager, where possible mutations are taken care of.
+At the end of the simulation, the postfire() method will return false,
+telling the manager that the simulatin finished.
+ 
+
 @author Jie Liu
 @version $Id$
 */
@@ -49,8 +70,7 @@ public class CTSingleSolverDirector extends CTDirector {
 
 
     /** Construct a CTDirector with no name and no Container.
-     *  The default startTime and stopTime are all zeros. There's no
-     *  scheduler associated.
+     *  All the parameters takes their default values.
      */
     public CTSingleSolverDirector () {
         super();
@@ -61,9 +81,7 @@ public class CTSingleSolverDirector extends CTDirector {
      *  If the name argument is null, then the name is set to the empty
      *  string. The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *  The default startTime and stopTime are all zeros. There's no
-     *  scheduler associated.
-     *
+     *  All the parameters takes their default values.
      *  @param name The name of this director.
      */
     public CTSingleSolverDirector (String name) {
@@ -76,8 +94,7 @@ public class CTSingleSolverDirector extends CTDirector {
      *  The director is added to the list of objects in the workspace.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     *  The default startTime and stopTime are all zeros. There's no
-     *  scheduler associated.
+     *  All the parameters takes their default values.
      *
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
@@ -90,15 +107,81 @@ public class CTSingleSolverDirector extends CTDirector {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
+    /**  Fire the system for one iteration. One iteration is defined as
+     *   simulating the system at one time point, which includes
+     *   resolving states and producing outputs. For the first iteration
+     *   it only produces the output, since the initial states are
+     *   the "real" states of the system, and no more resolving is needed.
+     *   The step size of one iteration is determined by the suggested
+     *   next step size and the breakpoints. If the first breakpoint in 
+     *   the breakpoint table is in the middle of the "intended" step.
+     *   Then the current step size is reduced to breakpoint - current
+     *   time. The result of such a step is the left limit of the states
+     *   at the breakpoint. 
+     *   <P>
+     *   All the actors are prefired before an iteration is begun. If 
+     *   any one of them returns false, then the iteratin is not 
+     *   proceeded, and the function returns.
+     *
+     *  @exception IllegalActionException If thrown by the ODE solver.
+     */
+    public void fire() throws IllegalActionException {
+        if (_first) {
+            _first = false;
+            produceOutput();
+            return;
+        }
+        updateStates(); // call postfire on all actors
+        //Refine step size
+        setCurrentStepSize(getSuggestedNextStepSize());
+        double bp;
+        TotallyOrderedSet breakPoints = getBreakPoints();
+        // If now is a break point, remove the break point from table;
+        if((breakPoints != null) && !breakPoints.isEmpty()) {
+            bp = ((Double)breakPoints.first()).doubleValue();
+            if(bp <= getCurrentTime()) {
+                // break point now!
+                breakPoints.removeFirst();
+            }
+            //adjust step size;
+            if(!breakPoints.isEmpty()) {
+                bp = ((Double)breakPoints.first()).doubleValue();
+                double iterEndTime = getCurrentTime()+getCurrentStepSize();
+                if (iterEndTime > bp) {
+                    setCurrentStepSize(bp-getCurrentTime());
+                }
+            }
+        }
+        //chhose ODE solver
+        setCurrentODESolver(_defaultSolver);
+        // prefire all the actors.
+        boolean ready = true;
+        CompositeActor ca = (CompositeActor) getContainer();
+        Enumeration actors = ca.deepGetEntities();
+        while(actors.hasMoreElements()) {
+            Actor a = (Actor) actors.nextElement();
+            ready = ready && a.prefire();
+        }
+        if(ready) {
+            ODESolver solver = getCurrentODESolver();
+            solver.proceedOneStep();
+            produceOutput();
+        }
+    }
 
-    /** This does the initialization for the entire subsystem. This
+    /** Initialization for the entire system. This
      *  is called exactly once at the start of the entire execution.
      *  It set the current time to the start time and the current step
      *  size to the initial step size.
      *  It invoke the initialize() method for all the Actors in the
-     *  system. The ODE solver is not checked here, since in some
-     *  cases, the ODE solver may be set after the initialize phase.
-     *
+     *  system. Parameters are updated, so that the parameters 
+     *  set after the creation of the actor are evaluated and ready
+     *  for use. The stop time is registered as a breakpoint.
+     *  This method checks if there is a composite actor for this 
+     *  director to direct, and if there is a proper scheduler for this
+     *  director. If not, an exception is throw. 
+     *  The ODE solver is instantiated.
+     *  
      *  @exception IllegalActionException If there's no scheduler or
      *       thrown by a contained actor.
      */
@@ -156,24 +239,29 @@ public class CTSingleSolverDirector extends CTDirector {
         super.initialize();
     }
 
+    /** Check if the simulatin is ended. Test if the current time is 
+     *  the stop time. If so, return false ( for stop further simulaiton).
+     *  Otherwise, returns true.
+     *  @return false If the simulation is finished
+     *  @exception IllegalActionException Never thrown
+     */
+    public boolean postfire() throws IllegalActionException {
+        if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
+            fireAt(null, getStopTime());
+        }
+        if(Math.abs(getCurrentTime() - getStopTime()) < getTimeResolution()) {
+            updateStates(); // call postfire on all actors
+            return false;
+        }
+        return true;
+    }
 
-    /** Perform mutation and process pause/stop request.
-     *  If the CTSubSystem is requested a stop (if CTSubSystem.isPaused()
-     *  returns true) then pause the thread.
-     *  The pause can be wake up by notify(), at that time if the
-     *  CTSubSystem is not paused (isPaused() returns false) then
-     *  resume the simulation. So the simulation can only be
-     *  paused at the prefire stage.
-     *  If stop is requested return false, otherwise return true.
-     *  Transfer time from the outer domain, if there is any. If this
-     *  is the toplevel domain, if the currenttime + currentstepsize
-     *  is greater than the stop time, set the currentStepSize to be
-     *  stopTime-currentTime.
+    /** Check if the system is ready for one iteration. The schedule
+     *  is recomputed if there is any mutation. The parameters are
+     *  updated, since this is the safe place to change parameters.
      *
-     *  @return true If stop is not requested
-     *  @exception IllegalActionException If the pause is interrupted or it
-     *       is thrown by a contained actor.
-     *  @exception NameDuplicationException If thrown by a contained actor.
+     *  @return true Always
+     *  @exception IllegalActionException Never thrown in this director.
      */
     public boolean prefire() throws IllegalActionException {
         if (VERBOSE) {
@@ -194,90 +282,11 @@ public class CTSingleSolverDirector extends CTDirector {
         }
         updateParameters();
         return true;
-   }
-
-   /**  Fire the system for one iteration.
-     *
-     *  @exception IllegalActionException If thrown by the ODE solver.
-     */
-    public void fire() throws IllegalActionException {
-        if (_first) {
-            _first = false;
-            produceOutput();
-            return;
-        }
-        updateStates(); // call postfire on all actors
-        //Refine step size
-        setCurrentStepSize(getSuggestedNextStepSize());
-        double bp;
-        TotallyOrderedSet breakPoints = getBreakPoints();
-        // If now is a break point, remove the break point from table;
-        if((breakPoints != null) && !breakPoints.isEmpty()) {
-            bp = ((Double)breakPoints.first()).doubleValue();
-            if(bp <= getCurrentTime()) {
-                // break point now!
-                breakPoints.removeFirst();
-            }
-            //adjust step size;
-            if(!breakPoints.isEmpty()) {
-                bp = ((Double)breakPoints.first()).doubleValue();
-                double iterEndTime = getCurrentTime()+getCurrentStepSize();
-                if (iterEndTime > bp) {
-                    setCurrentStepSize(bp-getCurrentTime());
-                }
-            }
-        }
-        //chhose ODE solver
-        setCurrentODESolver(_defaultSolver);
-        // prefire all the actors.
-        boolean ready = true;
-        CompositeActor ca = (CompositeActor) getContainer();
-        Enumeration actors = ca.deepGetEntities();
-        while(actors.hasMoreElements()) {
-            Actor a = (Actor) actors.nextElement();
-            ready = ready && a.prefire();
-        }
-        if(ready) {
-            ODESolver solver = getCurrentODESolver();
-            solver.proceedOneStep();
-            produceOutput();
-        }
     }
 
-
-    /** Test if the current time is the stop time.
-     *  If so, return false ( for stop further simulaiton).
-     *  @return false If the simulation time expires.
-     *  @exception IllegalActionException If there is no ODE solver, or
-     *        thrown by the solver.
-     */
-    public boolean postfire() throws IllegalActionException {
-        if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
-            fireAt(null, getStopTime());
-        }
-        if(Math.abs(getCurrentTime() - getStopTime()) < getTimeResolution()) {
-            updateStates(); // call postfire on all actors
-            return false;
-        }
-        return true;
-    }
-
-    /** wrapup . Show the statistics.
-     */
-    public void wrapup() throws IllegalActionException{
-        if(STAT) {
-            System.out.println("**************STATISTICS***************");
-            System.out.println("Total # of STEPS "+NSTEP);
-            System.out.println("Total # of Function Evaluation "+NFUNC);
-            System.out.println("Total # of Failed Steps "+NFAIL);
-        }
-        super.wrapup();
-    }
-
-
-    /** produce outputs
+    /** produce outputs. Fire all the actors in the output schedule.
      *  @exception IllegalActionException If the actor on the output
-     *      path throws it.
+     *      schedule throws it.
      */
     public void produceOutput() throws IllegalActionException {
         CTScheduler scheduler = (CTScheduler) getScheduler();
@@ -287,12 +296,12 @@ public class CTSingleSolverDirector extends CTDirector {
         //        can use them. That is at least true for implicit methods.
         Enumeration integrators = scheduler.dynamicActorSchedule();
         while(integrators.hasMoreElements()) {
-            CTDynamicActor integrator=(CTDynamicActor)integrators.nextElement();
+            CTDynamicActor dyn =(CTDynamicActor)integrators.nextElement();
             if(VERBOSE) {
                 System.out.println("Excite State..."+
-                    ((Nameable)integrator).getName());
+                    ((Nameable)dyn).getName());
             }
-            integrator.emitPotentialStates();
+            dyn.emitPotentialStates();
         }
         // outputSchdule.fire()
         Enumeration outputactors = scheduler.outputSchedule();
@@ -304,9 +313,13 @@ public class CTSingleSolverDirector extends CTDirector {
             }
             nextoutputactor.fire();
         }
-    }
+    } 
 
-    /** update States
+    /** Call postfire() on all actors. For a correct CT simulation,
+     *  the state of an actor can only change at this stage of an
+     *  iteration.
+     *  @exception IllegalActionException If any of the actors 
+     *      throws it.
      */
     public void updateStates() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
@@ -317,7 +330,10 @@ public class CTSingleSolverDirector extends CTDirector {
         }
     }
 
-    /** Update paramters.
+    /** Update given paramter. If the parameter does not exist, 
+     *  throws an exception.
+     *  @param param The parameter.
+     *  @exception IllegalActionException If the parameter does not exist.
      */
     public void updateParameter(Parameter param)
             throws IllegalActionException {
@@ -333,21 +349,38 @@ public class CTSingleSolverDirector extends CTDirector {
         }
     }
 
+    /** Show the statistics of the simulation if needed. The statistics
+     *  includes the number of step simulated, the number of funciton
+     *  evaluations (firing all actors in the state transition schedule),
+     *  and the number of failed steps (due to error control).
+     *  
+     *  @exception IllegalActionException Never thrown.
+     */
+    public void wrapup() throws IllegalActionException{
+        if(STAT) {
+            System.out.println("**************STATISTICS***************");
+            System.out.println("Total # of STEPS "+NSTEP);
+            System.out.println("Total # of Function Evaluation "+NFUNC);
+            System.out.println("Total # of Failed Steps "+NFAIL);
+        }
+        super.wrapup();
+    }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
     private void _initParameters() {
         try {
-            _solverclass= "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver";
+            _solverclass=
+                "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver";
             _paramODESolver = new CTParameter(
                 this, "ODESolver", new StringToken(_solverclass));
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");
         } catch (NameDuplicationException ex) {
-            throw new InvalidStateException(this,"Parameter name duplication.");
+            throw new InvalidStateException(this,
+                    "Parameter name duplication.");
         }
-
     }
 
     ////////////////////////////////////////////////////////////////////////
