@@ -145,7 +145,7 @@ test Const-2.5 {test RecordToken containing ArrayToken} {
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{{anArray=[1.5, 2.5], name="foo", value=5}}}
+} {{{anArray={1.5, 2.5}, name="foo", value=5}}}
 
 test Const-2.6 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
@@ -179,7 +179,7 @@ test Const-2.7 {test an array of record} {
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{[{name="foo", value=5}, {name="bar", value=3}]}}
+} {{{{name="foo", value=5}, {name="bar", value=3}}}}
 
 test Const-2.6 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]

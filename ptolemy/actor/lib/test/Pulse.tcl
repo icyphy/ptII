@@ -54,7 +54,7 @@ test Pulse-1.1 {test constructor and clone with default values} {
     set indexesVal [[$newIndexes getToken] toString]
 
     list $valuesVal $indexesVal
-} {{[1, 0]} {[0, 1]}}
+} {{{1, 0}} {[0, 1]}}
 
 ######################################################################
 #### Check type of values parameter
@@ -107,7 +107,7 @@ test Pulse-2.4 {test with two-dimensional output values} {
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{[1, 2]} {[0, 0]} {[3, 4]} {[5, 6]} {[0, 0]}}
+} {{{1, 2}} {{0, 0}} {{3, 4}} {{5, 6}} {{0, 0}}}
 
 test Pulse-2.5 {test string output} {
     set val0 [java::new ptolemy.data.StringToken AB]

@@ -45,14 +45,14 @@ test DiscreteRandomSource-1.0 {test constructor and initial value} {
     set e0 [sdfModel 4]
     set randommaster [java::new ptolemy.actor.lib.DiscreteRandomSource $e0 random]
     [$randommaster getAttribute values] toString
-} {ptolemy.data.expr.Parameter {.top.random.values} [0, 1]}
+} {ptolemy.data.expr.Parameter {.top.random.values} {0, 1}}
 
 test DiscreteRandomSource-1.1 {test clone and initial value} {
     set random [java::cast ptolemy.actor.lib.DiscreteRandomSource [$randommaster clone]]
     $randommaster setContainer [java::null]
     $random setContainer $e0
     [$random getAttribute values] toString
-} {ptolemy.data.expr.Parameter {.top.random.values} [0, 1]}
+} {ptolemy.data.expr.Parameter {.top.random.values} {0, 1}}
 
 ######################################################################
 #### Test DiscreteRandomSource in a SDF model

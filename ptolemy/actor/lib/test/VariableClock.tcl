@@ -45,14 +45,14 @@ test VariableClock-1.0 {test constructor and initial value} {
     set e0 [deModel 10.0]
     set clockmaster [java::new ptolemy.actor.lib.VariableClock $e0 clock]
     [$clockmaster getAttribute values] toString
-} {ptolemy.data.expr.Parameter {.top.clock.values} [1]}
+} {ptolemy.data.expr.Parameter {.top.clock.values} {1}}
 
 test VariableClock-1.1 {test clone and initial value} {
     set clock [java::cast ptolemy.actor.lib.VariableClock [$clockmaster clone]]
     $clockmaster setContainer [java::null]
     $clock setContainer $e0
     [$clock getAttribute values] toString
-} {ptolemy.data.expr.Parameter {.top.clock.values} [1]}
+} {ptolemy.data.expr.Parameter {.top.clock.values} {1}}
 
 ######################################################################
 #### Test VariableClock in a DE model
