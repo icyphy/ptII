@@ -101,8 +101,9 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
 	 *  for the given proxy (perhaps because the proxy is not of the
 	 *  appropriate subclass) then return null.
 	 *  @param proxy The model proxy.
-	 *  @return A new FSMGraphTableau, if the proxy is a PtolemyEffigy
-	 *  that references an FSMActor or null otherwise.
+	 *  @return A new InterfaceAutomatonGraphTableau, if the proxy is a
+	 *  PtolemyEffigy that references an InterfaceAutomaton or null
+	 *  otherwise.
 	 *  @exception Exception If an exception occurs when creating the
 	 *  tableau.
 	 */
