@@ -99,6 +99,27 @@ OPTIONAL_FILES = \
 	'FixPoint$$1.class' \
 	'FixPoint$$Error.class' \
 	'FixPoint$$FixValue.class' \
+	'Overflow$$1.class' \
+	'Overflow$$General.class' \
+	'Overflow$$Grow.class' \
+	'Overflow$$Modulo.class' \
+	'Overflow$$Saturate.class' \
+	'Overflow$$ToZero.class' \
+	'Overflow$$Trap.class' \
+	'Overflow$$Unknown.class' \
+	'Rounding$$1.class' \
+	'Rounding$$General.class' \
+	'Rounding$$RoundCeiling.class' \
+	'Rounding$$RoundDown.class' \
+	'Rounding$$RoundFloor.class' \
+	'Rounding$$RoundHalfCeiling.class' \
+	'Rounding$$RoundHalfDown.class' \
+	'Rounding$$RoundHalfEven.class' \
+	'Rounding$$RoundHalfFloor.class' \
+	'Rounding$$RoundHalfUp.class' \
+	'Rounding$$RoundUnnecessary.class' \
+	'Rounding$$RoundUp.class' \
+	'Rounding$$Unknown.class' \
 	'SignalProcessing$$GaussianSampleGenerator.class' \
 	'SignalProcessing$$PolynomialSampleGenerator.class' \
 	'SignalProcessing$$RaisedCosineSampleGenerator.class' \
@@ -106,6 +127,7 @@ OPTIONAL_FILES = \
 	'SignalProcessing$$SincSampleGenerator.class' \
 	'SignalProcessing$$SinusoidSampleGenerator.class' \
 	'SignalProcessing$$SqrtRaisedCosineSampleGenerator.class'
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 
