@@ -19,14 +19,12 @@ with others, where the other domains provide the transformations for
 the graphical elements. For example, a model of a physical system might be
 constructed in CT and animated in GR.
 
-
 <h2>Java3D</h2>
 The GR domain demos require Java3D, which can be installed 
  <!-- #in_browser causes HTMLViewer to spawn a separate browser -->
 
- from
-<a href="http://java.sun.com/products/java-media/3D/#in_browser" target="_top"><CODE>http://java.sun.com/products/java-media/3D/</CODE></a>.
-
+ from <a href="http://java.sun.com/products/java-media/3D/#in_browser" target="_top"><CODE>http://java.sun.com/products/java-media/3D/</CODE></a>.
+ 
 You need not install Java3D if you are not planning on using GR domain.
 
  <p>If you plan on recompiling the GR domain, then install the Java 3D SDK
@@ -49,29 +47,32 @@ was fixed in Java 3D 1.2.1_04
  <p>If you are running Ptolemy II under Web Start, see
 <a href="../../../../doc/webStartHelp.htm#Java3D">Installing Java 3D for use with Web Start</a>
 
-<h2>Java 3D in applets </h2>
-Java 3D can be run inside a browser.  Under Windows, see
-<a href="file:///C|/jdk1.3/demo/java3d/index.html"><code>file:///C|/jdk1.3/demo/java3d/index.html</code></a>
-
 <h3>Resources</h3>
 <menu>
 <li> <a href="../../../../doc/troubleshooting.htm#plugin">Ptolemy II Plugin troubleshooting guide</a>
 <li> See also the Java 3D FAQ question <a href="http://java.sun.com/products/java-media/3D/java3dfaq-1.3.html#browser" target="_top">What do I have to do so that Java 3D will run from by browser?</a>
-
 </menu>
 <h3>Running Java 3D Applets under Windows</h3>
 
 <ol>
-<li>Install Java 3D from
  <!-- #in_browser causes HTMLViewer to spawn a separate browser -->
-<a href="http://java.sun.com/products/java-media/3D/#in_browser" target="_top"><CODE>http://java.sun.com/products/java-media/3D/</CODE></a>.
+<li>Install Java 3D from <a href="http://java.sun.com/products/java-media/3D/#in_browser" target="_top"><CODE>http://java.sun.com/products/java-media/3D/</CODE></a>.
 
-<li> Enable the Java Plug-in console window by going to
-<CODE>Start</CODE> -&gt; <CODE>Settings</CODE> -&gt;
-<CODE>Control Panel</CODE> -&gt; <CODE>Java Plug-in</CODE>
-and restarting your browser.
+<br>We have verified the demos with the Java 3D 1.2.1_04 SDK (DirectX Version).
+<br>The installation should update the Java Runtime Environment
+that the browser uses.
 
-<li> Goto <a href="file:///C|/jdk1.3/demo/java3d/index.html"><code>file:///C|/jdk1.3/demo/java3d/index.html</code></a> and run the HelloUniverse demo
+<li>The Java 3D SDK installation includes demonstrations that can
+be run from your browser.
+<br>Under Windows, go to the <code>demo/java3d</code> subdirectory
+in your JDK directory, for example
+<a href="file:///C|/j2sdk1.4.0/demo/java3d/index.html#in_browser"><code>file:///C|/j2sdk1.4.0/demo/java3d/index.html</code></a>
+and run the HelloUniverse demo
+
+ <!-- #in_browser causes HTMLViewer to spawn a separate browser -->
+
+<br>If you can't find the demos on your local disk, try
+<a href="http://java.sun.com/products/java-media/3D/demos/index.html#in_browser"><code>http://java.sun.com/products/java-media/3D/demos/<code></a>
 
 <li>If the demo fails to run, look in the Java Plugin console window.
 If you get a message like
