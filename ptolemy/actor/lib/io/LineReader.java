@@ -76,7 +76,7 @@ This actor can skip some lines at the beginning of the file or URL, with
 the number specified by the <i>numberOfLinesToSkip</i> parameter. The
 default value of this parameter is 0.
 <p>
-If you need to reset this line reader to start again at the begining
+If you need to reset this line reader to start again at the beginning
 of the file, the way to do this is to call initialize() during the run
 of the model.  This can be done, for example, using a modal model
 with a transition where reset is enabled.

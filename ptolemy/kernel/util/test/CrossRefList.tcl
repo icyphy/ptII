@@ -336,7 +336,7 @@ test CrossRefList-6.4 {link in the middle of a list} {
 ######################################################################
 ####
 #
-test CrossRefList-6.5 {link at the begining of a list} {
+test CrossRefList-6.5 {link at the beginning of a list} {
     $ca insertLink 0 $cd
     _testCrossRefListGetLinks $ca $cd
 } {{D java0x0 C D B} {A A}}

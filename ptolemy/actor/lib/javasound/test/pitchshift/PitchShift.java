@@ -273,12 +273,12 @@ public class PitchShift {
 
                     // Update the pointers.
                     _inputRingBufWritePos++;
-                    // Make the write postition pointer wrap back to the begining after it
+                    // Make the write postition pointer wrap back to the beginning after it
                     // reaches the end of the buffer.
                     _inputRingBufWritePos %= ringBufSize;
 
                     readPos++;
-                    // Make the write postition pointer wrap back to the begining after it
+                    // Make the write postition pointer wrap back to the beginningg after it
                     // reaches the end of the buffer.
                     readPos %= ringBufSize;
 
