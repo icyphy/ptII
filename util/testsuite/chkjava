@@ -44,6 +44,7 @@
 # 12) Check for // System.out.println 
 # 13) Check for @exception tags that are not worded properly
 # 14) Check for @throws
+# 15) Make sure that Parameters names do not start with capital letters
 
 for file in $@
 do
@@ -258,5 +259,11 @@ do
 	    echo "$results"
 	fi
 
+        # 15) Make sure that Parameters names do not start with capital letters
+	results=`egrep 'public Parameter [A-Z]' $file`
+	if [ "x$results" != "x" ]; then
+	    echo "$file: contains a Parameter name that starts with a capital letter."
+	    echo "$results"
+	fi
 done
 
