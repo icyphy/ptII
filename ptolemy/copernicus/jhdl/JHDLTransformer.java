@@ -41,7 +41,7 @@ import soot.*;
 import soot.jimple.*;
 import soot.jimple.toolkits.invoke.SiteInliner;
 import soot.jimple.toolkits.invoke.StaticInliner;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
+//import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
 import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
 import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
 import soot.jimple.toolkits.scalar.CopyPropagator;
@@ -112,7 +112,7 @@ class JHDLTransformer extends SceneTransformer {
      *  @return The value of the superclass options, plus the option "deep".
      */
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " deep targetPackage";
+        return "deep targetPackage";
     }
 
     ///////////////////////////////////////////////////////////////////
