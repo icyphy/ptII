@@ -1,4 +1,6 @@
-<!-- $Id$-->
+<!-- $Id$
+  @author: 
+-->
 <HTML>
 <HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
@@ -13,7 +15,7 @@
 <P>
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
-<center>
+<CENTER>
 <!-- The HTML below is for the Java Plugin.  The first
      section is for IE, the second is for Netscape 4, the third for Mozilla 1.0
      For information about applets and Ptolemy, see

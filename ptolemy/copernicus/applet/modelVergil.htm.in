@@ -1,13 +1,13 @@
 <!-- : $Id$
   @author: 
  -->
-<html>
-<head>
+<HTML>
+<HEAD>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
 <link href="@codeBase@/doc/default.css" rel="stylesheet" type="text/css">
-<title>@sanitizedModelName@</title>
-</head>
-<body>
+<TITLE>@sanitizedModelName@</TITLE>
+</HEAD>
+<BODY>
 <H1>@sanitizedModelName@</H1>
 <P>
 The @sanitizedModelName@ diagram model can be created in the Ptolemy II schematic editor
@@ -36,7 +36,6 @@ called Vergil, as shown below:
         <SCRIPT LANGUAGE="JavaScript1.1"><!--
         var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
         var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
-        var _ns6 = ((_ns == true) && (_info.indexOf("Mozilla/5") >= 0));
 //--></SCRIPT>
     </COMMENT>
 
@@ -101,7 +100,6 @@ called Vergil, as shown below:
 //--></SCRIPT>
 <!-- /HTML CONVERTER -->
 </CENTER>
-<p>
-<p>
-</body>
-</html>
+</p>
+</BODY>
+</HTML>
