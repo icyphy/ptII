@@ -208,7 +208,7 @@ public class ConstVariableModelAnalysis {
             String name = (String)names.next();
             NamedObj object = action.getDestination(name);
             if (object instanceof Variable) {
-                // Note that the context of change is the moal model
+                // Note that the context of change is the modal model
                 // container of the FSM.
                 variableToChangeContext.put(object, actor.getContainer());
             }
@@ -231,7 +231,10 @@ public class ConstVariableModelAnalysis {
             PortParameter parameter = (PortParameter)portParameters.next();
             ParameterPort port = parameter.getPort();
    
-            if(port.getWidth() > 0) {
+            // Under what conditions is a PortParameter not associated
+            // with a port?  This came up in the context of
+            // IterateOverArray.
+            if(port != null && port.getWidth() > 0) {
                 variableToChangeContext.put(parameter, entity);
             }
         }
@@ -314,8 +317,12 @@ public class ConstVariableModelAnalysis {
                     String expression = variable.getExpression();
                     // compute the variables.
                     try {
-                        ASTPtRootNode root =
-                            parser.generateParseTree(expression);
+                        ASTPtRootNode root;
+                        if(variable.isStringMode()) {
+                            root = parser.generateStringParseTree(expression);
+                        } else {
+                            root = parser.generateParseTree(expression);
+                        }
                         Set freeVarNames = new HashSet(
                                 collector.collectFreeVariables(root));
                         for (Iterator names = freeVarNames.iterator();
