@@ -1,8 +1,8 @@
 /*
   File: Bag.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   24Sep95  dl@cs.oswego.edu   Create from collections.java  working file
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -26,7 +26,7 @@ import java.util.NoSuchElementException;
  *
 **/
 
-public interface Bag extends Collection { 
+public interface Bag extends Collection {
 
 /**
  * Construct a new Bag that is a clone of self except
@@ -36,11 +36,11 @@ public interface Bag extends Collection {
  *
  * @param the element to add to the new Bag
  * @return the new Bag c, with the sameStructure as this except that
- * c.occurrencesOf(element) == occurrencesOf(element)+1 
+ * c.occurrencesOf(element) == occurrencesOf(element)+1
  * @exception IllegalElementException if !canInclude(element)
 **/
 
-  public Bag   adding(Object element) 
+  public Bag   adding(Object element)
                        throws IllegalElementException;
 
 /**
@@ -55,7 +55,7 @@ public interface Bag extends Collection {
  * @exception IllegalElementException if !canInclude(element)
 **/
 
-  public Bag  addingIfAbsent(Object element) 
+  public Bag  addingIfAbsent(Object element)
                        throws IllegalElementException;
 
 };

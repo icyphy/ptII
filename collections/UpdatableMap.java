@@ -1,8 +1,8 @@
 /*
   File: UpdatableMap.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   24Sep95  dl@cs.oswego.edu   Create from collections.java  working file
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -38,7 +38,7 @@ public interface UpdatableMap extends UpdatableCollection, Map {
  *
  * @param key the key for element to include
  * @param element the element to include
- * @return condition: 
+ * @return condition:
  * <PRE>
  * includes(key, element) &&
  * no spurious effects &&
@@ -46,19 +46,19 @@ public interface UpdatableMap extends UpdatableCollection, Map {
  * </PRE>
 **/
 
-  public void putAt(Object key, Object element) 
+  public void putAt(Object key, Object element)
                  throws IllegalElementException;
 
 
 /**
  * Remove the pair with the given key
  * @param  key the key
- * @return condition: 
+ * @return condition:
  * <PRE>
  * !includesKey(key)
  * foreach (k in keys()) at(k).equals(PREV(this).at(k)) &&
- * foreach (k in PREV(this).keys()) (!k.equals(key)) --> at(k).equals(PREV(this).at(k)) 
- * (version() != PREV(this).version()) == 
+ * foreach (k in PREV(this).keys()) (!k.equals(key)) --> at(k).equals(PREV(this).at(k))
+ * (version() != PREV(this).version()) ==
  * includesKey(key) !=  PREV(this).includesKey(key))
  * </PRE>
 **/
@@ -73,7 +73,7 @@ public interface UpdatableMap extends UpdatableCollection, Map {
  * @param key the key for the pair to remove
  * @param oldElement the existing element
  * @param newElement the value to replace it with
- * @return condition: 
+ * @return condition:
  * <PRE>
  * !includesAt(key, oldElement) || includesAt(key, newElement);
  * no spurious effects &&
@@ -81,7 +81,7 @@ public interface UpdatableMap extends UpdatableCollection, Map {
  * </PRE>
 **/
 
-  public void replaceElement(Object key, Object oldElement, Object newElement) 
+  public void replaceElement(Object key, Object oldElement, Object newElement)
                 throws IllegalElementException;
 };
 

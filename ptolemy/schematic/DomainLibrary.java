@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -36,14 +36,14 @@ import collections.HashedMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// DomainLibrary
-/** 
+/**
 This class provides information about the domains and actors
 in Ptolemy installation. This information can be queried
 and extended by clients such as user interfaces and configuration
 tools. The information is persistently stored in an XML
 file.
 
-The specification for the domain library is expressed in XML and looks 
+The specification for the domain library is expressed in XML and looks
 something like the following:
 <pre>
 <domainlibrary name="Dataflow" version="1.0">
@@ -60,7 +60,7 @@ something like the following:
 </pre>
 
 The domains are created after reading each domain_classname, then all the
-actor_packages are added to this domain. 
+actor_packages are added to this domain.
 
 <p>
 Actors are created by giving its domain and its name. The actor name
@@ -76,9 +76,9 @@ the domain polymorphic actor packages are searched.
 */
 public class DomainLibrary extends XMLElement{
 
-    /** 
+    /**
      * Create a new DomainLibrary object
-     */	
+     */
     public DomainLibrary() {
         super("domainlibrary");
         _domains = (HashedMap) new HashedMap();
@@ -86,7 +86,7 @@ public class DomainLibrary extends XMLElement{
         setVersion("");
     }
 
-    /** 
+    /**
      * Construct a DomainLibrary object with the specified attributes.
      *
      * @param attributes a HashedMap from attribute name to attribute value.
@@ -101,17 +101,17 @@ public class DomainLibrary extends XMLElement{
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Add a domain to the domain list. 
+    /** Add a domain to the domain list.
      * @param domain The added domain.
-     */	
+     */
     public void addDomain(Domain domain) {
         String name=domain.getName();
         _domains.putAt(name,domain);
     }
 
     /** Return a new actor with the specified name that is compatible with
-     *  the specified domain. 
-     *  The actor is searched through the list of actor packages for 
+     *  the specified domain.
+     *  The actor is searched through the list of actor packages for
      *  the given domain. The first one that matches the name will be
      *  created and returned. If no actor is found in that domain,
      *  the compatible domains will be searched, and then the domain
@@ -120,7 +120,7 @@ public class DomainLibrary extends XMLElement{
      * @param domain The domain from which the actor is asked.
      * @param actorName The name of the actor.
      * @return The new actor object if there is one.
-     */	
+     */
     public Actor createActor(Domain domain, String actorName) {
         return null;
     }
@@ -135,9 +135,9 @@ public class DomainLibrary extends XMLElement{
         return _domains.keys();
     }
 
-    /** 
-     * Get the single instance of this class. 
-     */	
+    /**
+     * Get the single instance of this class.
+     */
     public static DomainLibrary getInstance() {
         if (_instance == null) {
             _instance = new DomainLibrary();
@@ -145,10 +145,10 @@ public class DomainLibrary extends XMLElement{
         return _instance;
     }
 
-   /** Return a new domain object with the specified name. 
+   /** Return a new domain object with the specified name.
      *  @param domainname The identifier of a domain.
      *  @return The domain that has the name.
-     */	
+     */
     public Domain getDomain(String domainname) {
         return (Domain)_domains.at(domainname);
     }
@@ -173,24 +173,24 @@ public class DomainLibrary extends XMLElement{
      *  @param actorpackage The String of actor package.
      *  @exception IllegalActionException If the domain is not on the list
      *        or the actor package is unknow.
-     */	
-    public void removeActorPackage(Domain domain, String actorpackage) 
+     */
+    public void removeActorPackage(Domain domain, String actorpackage)
         throws IllegalActionException {
     }
 
-    /** 
-     * Remove the specified domain from the domain list. 
+    /**
+     * Remove the specified domain from the domain list.
      *
      * @exception IllegalActionException If no domain with the given name
      * exists
-     */	
+     */
     public void removeDomain(String domainname) throws IllegalActionException {
         _domains.removeAt(domainname);
     }
 
     /**
      * Set the global instance of this object.   This should be set once,
-     * and once only!!!!  
+     * and once only!!!!
      */
     public void setInstance(DomainLibrary d) {
         if(_instance==null) _instance = d;
@@ -198,7 +198,7 @@ public class DomainLibrary extends XMLElement{
                 " already been set.");
     }
 
-    /** 
+    /**
      * Set the short name of this domainlibrary
      */
     public void setName(String s) {
@@ -216,7 +216,7 @@ public class DomainLibrary extends XMLElement{
     ////                         private variables                      ////
 
     // A list of known domains.
-    private HashedMap _domains;    
+    private HashedMap _domains;
 
     // The single instance
     private static DomainLibrary _instance = null;

@@ -91,13 +91,13 @@ public class DERegister extends DEActor {
         while (input.hasToken(0)) {
             _lastInput = input.get(0);
         }
-        
+
         while (clock.hasToken(0)) {
             clock.get(0);
             output.broadcast(_lastInput);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -37,14 +37,14 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNSieve
-/** 
+/**
 @author Neil Smyth
 @version @$Id$
 */
 public class CSPSieve extends CSPActor {
-    
+
     /** Calls the super class constructor and creates the neccessary ports.
-     * @exception NameDuplicationException is thrown if more than one port 
+     * @exception NameDuplicationException is thrown if more than one port
      *  with the same name is added to the star
      */
     public CSPSieve(CompositeActor container, String name, int prime)
@@ -54,14 +54,14 @@ public class CSPSieve extends CSPActor {
         _input = new IOPort(this, "input", true, false);
         _output = new IOPort(this, "output", false, true);
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Reads one Token from it's input port and writes this token to 
+
+    /** Reads one Token from it's input port and writes this token to
      *  it's output ports. Needs to read one token for every output
-     *  port. 
+     *  port.
      */
     public void fire() throws IllegalActionException {
         Token data;
@@ -74,11 +74,11 @@ public class CSPSieve extends CSPActor {
             lastSeen = ((IntToken)data).intValue();
 	    System.out.println("Sieve got data:" + data.toString());
 	    if (lastSeen % _prime != 0) {
-		// is it the next prime? 
+		// is it the next prime?
 		if (islargestprime) {
 		    System.out.println(getName() + ": Queuing Topology " +
                             "Change.");
-		    // yes - make the topologyChange for it 
+		    // yes - make the topologyChange for it
 		    TopologyChangeRequest t = _makeChangeRequest(lastSeen);
                     /*try {
                         System.out.println(getName() + ":1");
@@ -93,8 +93,8 @@ public class CSPSieve extends CSPActor {
                     System.out.println(getName() +":Queued TopologyChange");
 		    delay();
                     System.out.println(getName() +": change succeeded?");
-		    islargestprime = false;	    
-		} 
+		    islargestprime = false;
+		}
 		else {
 		    _output.send(0, data);
                 }
@@ -114,7 +114,7 @@ public class CSPSieve extends CSPActor {
         return _output;
     }
 
-    /** Create and return a new TopologyChangeRequest object that 
+    /** Create and return a new TopologyChangeRequest object that
      *  adds a new sieve.
      *  @param value The prime the new filter should sieve.
      */
@@ -140,7 +140,7 @@ public class CSPSieve extends CSPActor {
                     throw new InvalidStateException("Cannot create " +
                             "new sieve.");
                 }
-        
+
                 queueEntityAddedEvent(container, newSieve);
                 queueRelationAddedEvent(container, newRel);
                 queuePortLinkedEvent(newRel, _output);
@@ -153,7 +153,7 @@ public class CSPSieve extends CSPActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /* The input port */
     private IOPort _input;
     /* The output port */

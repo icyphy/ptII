@@ -1,8 +1,8 @@
 /*
   File: ImplementationCheckable.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -18,7 +18,7 @@ package collections;
  * ImplementationCheckable is an interface for classes possessing
  * a method that checks the consistency of an objects internal state.
  * <P>
- * 
+ *
  * @author Doug Lea
  * @version 0.93
  *

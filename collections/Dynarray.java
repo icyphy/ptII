@@ -1,8 +1,8 @@
 /*
   File: Dynarray.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Changed protection statuses
 
 */
-  
+
 package collections;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
 /**
  *
  * Dynamically allocated and resized Arrays.
- * 
+ *
  * Beyond implementing its interfaces, adds methods
  * to adjust capacities. The default heuristics for resizing
  * usually work fine, but you can adjust them manually when
@@ -40,7 +40,7 @@ import java.util.NoSuchElementException;
  *
 **/
 
-public class Dynarray extends    UpdatableSeqImpl 
+public class Dynarray extends    UpdatableSeqImpl
                       implements UpdatableSeq,
                                  SortableCollection {
 /**
@@ -62,7 +62,7 @@ public class Dynarray extends    UpdatableSeqImpl
 // constructors
 
 /**
- * Make a new empty Dynarray. 
+ * Make a new empty Dynarray.
 **/
 
   public Dynarray() { this(null, null, 0); }
@@ -76,17 +76,17 @@ public class Dynarray extends    UpdatableSeqImpl
 /**
  * Special version of constructor needed by clone()
 **/
-  protected Dynarray(Predicate s, Object b[], int c) { 
-    super(s); array_ = b; count_ = c;  
+  protected Dynarray(Predicate s, Object b[], int c) {
+    super(s); array_ = b; count_ = c;
   }
 
 /**
  * Make an independent copy. The elements themselves are not cloned
 **/
 
-  protected Object clone() throws CloneNotSupportedException { 
+  protected Object clone() throws CloneNotSupportedException {
     int cap = count_;
-    if (cap == 0) 
+    if (cap == 0)
       return new Dynarray(screener_, null, 0);
     else {
       if (cap < minCapacity) cap = minCapacity;
@@ -103,8 +103,8 @@ public class Dynarray extends    UpdatableSeqImpl
  * @return capacity (always greater than or equal to size())
 **/
 
-  public synchronized int capacity() { 
-    return (array_ == null)? 0 : array_.length; 
+  public synchronized int capacity() {
+    return (array_ == null)? 0 : array_.length;
   }
 
 /**
@@ -112,10 +112,10 @@ public class Dynarray extends    UpdatableSeqImpl
  * That is, if given an argument less than the current
  * number of elements, the capacity is just set to the
  * current number of elements. Thus, elements are never lost
- * by setting the capacity. 
- * 
+ * by setting the capacity.
+ *
  * @param newCap the desired capacity.
- * @return condition: 
+ * @return condition:
  * <PRE>
  * capacity() >= size() &&
  * version() != PREV(this).version() == (capacity() != PREV(this).capacity())
@@ -149,7 +149,7 @@ public class Dynarray extends    UpdatableSeqImpl
 **/
   public synchronized boolean includes(Object element) {
     if (element == null) return false;
-    for (int i = 0; i < count_; ++i) 
+    for (int i = 0; i < count_; ++i)
       if (array_[i].equals(element))
         return true;
     return false;
@@ -163,7 +163,7 @@ public class Dynarray extends    UpdatableSeqImpl
   public synchronized int occurrencesOf(Object element) {
     if (element == null) return 0;
     int c = 0;
-    for (int i = 0; i < count_; ++i) 
+    for (int i = 0; i < count_; ++i)
       if (array_[i].equals(element)) ++c;
     return c;
   }
@@ -173,8 +173,8 @@ public class Dynarray extends    UpdatableSeqImpl
  * Time complexity: O(1).
  * @see collections.Collection#elements
 **/
-  public synchronized CollectionEnumeration elements() { 
-    return new DAEnumeration(this, array_); 
+  public synchronized CollectionEnumeration elements() {
+    return new DAEnumeration(this, array_);
   }
 
 
@@ -208,10 +208,10 @@ public class Dynarray extends    UpdatableSeqImpl
  * Time complexity: O(1).
  * @see collections.Seq#at
 **/
-  public synchronized Object at(int index) 
+  public synchronized Object at(int index)
   throws  NoSuchElementException {
-    checkIndex(index);  
-    return array_[index]; 
+    checkIndex(index);
+    return array_[index];
   }
 
 /**
@@ -221,7 +221,7 @@ public class Dynarray extends    UpdatableSeqImpl
 **/
   public synchronized int firstIndexOf(Object element, int startingIndex) {
     if (startingIndex < 0) startingIndex = 0;
-    for (int i = startingIndex; i < count_; ++i) 
+    for (int i = startingIndex; i < count_; ++i)
       if (array_[i].equals(element))
         return i;
     return -1;
@@ -234,7 +234,7 @@ public class Dynarray extends    UpdatableSeqImpl
 **/
   public synchronized int lastIndexOf(Object element, int startingIndex) {
     if (startingIndex >= count_) startingIndex = count_ -1;
-    for (int i = startingIndex; i >= 0; --i) 
+    for (int i = startingIndex; i >= 0; --i)
       if (array_[i].equals(element))
         return i;
     return -1;
@@ -264,7 +264,7 @@ public class Dynarray extends    UpdatableSeqImpl
  * Time complexity: O(length).
  * @see collections.Seq#subseq
 **/
-  public synchronized /* Dynarray */ Seq subseq(int from, int length) 
+  public synchronized /* Dynarray */ Seq subseq(int from, int length)
   throws  NoSuchElementException {
     if (length > 0) {
       checkIndex(from);
@@ -285,7 +285,7 @@ public class Dynarray extends    UpdatableSeqImpl
  * Time complexity: O(1).
  * @see collections.UpdatableCollection#clear
 **/
-  public synchronized void clear() { 
+  public synchronized void clear() {
     array_ = null;
     setCount(0);
   }
@@ -295,7 +295,7 @@ public class Dynarray extends    UpdatableSeqImpl
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#removeOneOf
 **/
-  public synchronized void removeOneOf(Object element)  { 
+  public synchronized void removeOneOf(Object element)  {
     remove_(element, false);
   }
 
@@ -305,8 +305,8 @@ public class Dynarray extends    UpdatableSeqImpl
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#replaceOneOf
 **/
-  public synchronized void replaceOneOf(Object oldElement, Object newElement)  
-  throws IllegalElementException { 
+  public synchronized void replaceOneOf(Object oldElement, Object newElement)
+  throws IllegalElementException {
     replace_(oldElement, newElement, false);
   }
 
@@ -315,9 +315,9 @@ public class Dynarray extends    UpdatableSeqImpl
  * Time complexity: O(n * number of replacements).
  * @see collections.UpdatableCollection#replaceAllOf
 **/
-  public synchronized void replaceAllOf(Object oldElement, 
-                                                 Object newElement)  
-  throws IllegalElementException { 
+  public synchronized void replaceAllOf(Object oldElement,
+                                                 Object newElement)
+  throws IllegalElementException {
     replace_(oldElement, newElement, true);
   }
 
@@ -326,7 +326,7 @@ public class Dynarray extends    UpdatableSeqImpl
  * Time complexity: O(n * occurrencesOf(element)).
  * @see collections.UpdatableCollection#exclude
 **/
-  public synchronized void exclude(Object element)  { 
+  public synchronized void exclude(Object element)  {
     remove_(element, true);
   }
 
@@ -336,7 +336,7 @@ public class Dynarray extends    UpdatableSeqImpl
  * Takes the rightmost element of the array.
  * @see collections.UpdatableCollection#take
 **/
-  public synchronized Object take() 
+  public synchronized Object take()
   throws  NoSuchElementException {
     Object v = last();
     removeLast();
@@ -361,14 +361,14 @@ public class Dynarray extends    UpdatableSeqImpl
   }
 
 
-// UpdatableSeq methods     
+// UpdatableSeq methods
 
 /**
  * Implements collections.UpdatableSeq.insertFirst.
  * Time complexity: O(n)
  * @see collections.UpdatableSeq#insertFirst
 **/
-  public synchronized void insertFirst(Object element) 
+  public synchronized void insertFirst(Object element)
   throws IllegalElementException {
     checkElement(element);
     growBy_(1);
@@ -381,7 +381,7 @@ public class Dynarray extends    UpdatableSeqImpl
  * Time complexity: O(1).
  * @see collections.UpdatableSeq#replaceFirst
 **/
-  public synchronized void replaceFirst(Object element) 
+  public synchronized void replaceFirst(Object element)
   throws IllegalElementException {
     checkElement(element);
     array_[0] = element;
@@ -403,7 +403,7 @@ public class Dynarray extends    UpdatableSeqImpl
  * Time complexity: normally O(1), but O(n) if size() == capacity().
  * @see collections.UpdatableSeq#insertLast
 **/
-  public synchronized void insertLast(Object element) 
+  public synchronized void insertLast(Object element)
   throws IllegalElementException {
     checkElement(element);
     int last = count_;
@@ -416,7 +416,7 @@ public class Dynarray extends    UpdatableSeqImpl
  * Time complexity: O(1).
  * @see collections.UpdatableSeq#replaceLast
 **/
-  public synchronized void replaceLast(Object element) 
+  public synchronized void replaceLast(Object element)
   throws IllegalElementException, NoSuchElementException {
     checkElement(element);
     array_[count_-1] = element;
@@ -440,7 +440,7 @@ public class Dynarray extends    UpdatableSeqImpl
  * Time complexity: O(n).
  * @see collections.UpdatableSeq#insertAt
 **/
-  public synchronized void insertAt(int index, Object element) 
+  public synchronized void insertAt(int index, Object element)
   throws IllegalElementException, NoSuchElementException {
     if (index != count_) checkIndex(index);
     checkElement(element);
@@ -454,21 +454,21 @@ public class Dynarray extends    UpdatableSeqImpl
  * Time complexity: O(n).
  * @see collections.UpdatableSeq#removeAt
 **/
-  public synchronized void removeAt(int index) 
+  public synchronized void removeAt(int index)
   throws NoSuchElementException {
     checkIndex(index);
     for (int i = index+1; i < count_; ++i) array_[i-1] = array_[i];
     array_[count_-1] = null;
     growBy_(-1);
   }
-    
+
 
 /**
  * Implements collections.UpdatableSeq.replaceAt.
  * Time complexity: O(1).
  * @see collections.UpdatableSeq#replaceAt
 **/
-  public synchronized void replaceAt(int index, Object element) 
+  public synchronized void replaceAt(int index, Object element)
   throws IllegalElementException, NoSuchElementException {
     checkIndex(index);
     checkElement(element);
@@ -478,32 +478,32 @@ public class Dynarray extends    UpdatableSeqImpl
 
 /**
  * Implements collections.UpdatableSeq.prependElements.
- * Time complexity: O(n + number of elements in e) if (e 
+ * Time complexity: O(n + number of elements in e) if (e
  * instanceof CollectionEnumeration) else O(n * number of elements in e)
  * @see collections.UpdatableSeq#prependElements
 **/
-  public synchronized void prependElements(Enumeration e) 
+  public synchronized void prependElements(Enumeration e)
   throws IllegalElementException, CorruptedEnumerationException {
     insertElementsAt_(0, e);
   }
 
 /**
  * Implements collections.UpdatableSeq.appendElements.
- * Time complexity: O(number of elements in e) 
+ * Time complexity: O(number of elements in e)
  * @see collections.UpdatableSeq#appendElements
 **/
-  public synchronized void appendElements(Enumeration e) 
+  public synchronized void appendElements(Enumeration e)
   throws IllegalElementException, CorruptedEnumerationException {
     insertElementsAt_(count_, e);
   }
 
 /**
  * Implements collections.UpdatableSeq.insertElementsAt.
- * Time complexity: O(n + number of elements in e) if (e 
+ * Time complexity: O(n + number of elements in e) if (e
  * instanceof CollectionEnumeration) else O(n * number of elements in e)
  * @see collections.UpdatableSeq#insertElementsAt
 **/
-  public synchronized void insertElementsAt(int index, Enumeration e) 
+  public synchronized void insertElementsAt(int index, Enumeration e)
   throws IllegalElementException, CorruptedEnumerationException,
   NoSuchElementException {
     if (index != count_) checkIndex(index);
@@ -516,7 +516,7 @@ public class Dynarray extends    UpdatableSeqImpl
  * Time complexity: O(n).
  * @see collections.UpdatableSeq#removeFromTo
 **/
-  public synchronized void removeFromTo(int fromIndex, int toIndex) 
+  public synchronized void removeFromTo(int fromIndex, int toIndex)
   throws NoSuchElementException {
     checkIndex(fromIndex);
     checkIndex(toIndex);
@@ -544,48 +544,48 @@ public class Dynarray extends    UpdatableSeqImpl
 
     if (lo >= hi) return;
 
-    /* 
-       Use median-of-three(lo, mid, hi) to pick a partition. 
+    /*
+       Use median-of-three(lo, mid, hi) to pick a partition.
        Also swap them into relative order while we are at it.
    */
-  
+
     int mid = (lo + hi) / 2;
-  
+
     if (cmp.compare(s[lo], s[mid]) > 0) {
       Object tmp = s[lo]; s[lo] = s[mid]; s[mid] = tmp; // swap
     }
-    
+
     if (cmp.compare(s[mid], s[hi]) > 0) {
-      Object tmp = s[mid]; s[mid] = s[hi]; s[hi] = tmp; // swap 
-      
+      Object tmp = s[mid]; s[mid] = s[hi]; s[hi] = tmp; // swap
+
       if (cmp.compare(s[lo], s[mid]) > 0) {
         Object tmp2 = s[lo]; s[lo] = s[mid]; s[mid] = tmp2; // swap
       }
-      
+
     }
-    
+
     int left = lo+1;           // start one past lo since already handled lo
     int right = hi-1;          // similarly
     if (left >= right) return; // if three or fewer we are done
-    
+
     Object partition = s[mid];
-    
+
     for (;;) {
-      
+
       while (cmp.compare(s[right], partition) > 0) --right;
-      
+
       while (left < right && cmp.compare(s[left], partition) <= 0) ++left;
-      
+
       if (left < right) {
         Object tmp = s[left]; s[left] = s[right]; s[right] = tmp; // swap
         --right;
       }
       else break;
     }
-    
+
     quickSort(s, lo, left, cmp);
     quickSort(s, left+1, hi, cmp);
-    
+
   }
 
 // helper methods
@@ -612,7 +612,7 @@ public class Dynarray extends    UpdatableSeqImpl
   private void growBy_(int inc) {
     int needed = count_ + inc;
     if (inc > 0) {
-      /* heuristic: 
+      /* heuristic:
      */
       int current = capacity();
       if (needed > current) {
@@ -629,25 +629,25 @@ public class Dynarray extends    UpdatableSeqImpl
         }
       }
     }
-    else if (needed == 0) 
+    else if (needed == 0)
       array_ = null;
     setCount(needed);
   }
 
 
-  
+
 
 /**
  * Utility to splice in enumerations
 **/
 
-  private void insertElementsAt_(int index, Enumeration e) 
+  private void insertElementsAt_(int index, Enumeration e)
   throws CorruptedEnumerationException, IllegalElementException {
     if (e instanceof CollectionEnumeration) { // we know size!
       int inc = ((CollectionEnumeration)(e)).numberOfRemainingElements();
       int oldcount = count_;
       int oldversion = version_;
-      growBy_(inc); 
+      growBy_(inc);
       for (int i = oldcount-1; i >= index; --i) array_[i+inc] = array_[i];
       int j = index;
       while (e.hasMoreElements()) {
@@ -661,7 +661,7 @@ public class Dynarray extends    UpdatableSeqImpl
         array_[j++] = element;
       }
     }
-    else if (index == count_) { // next best; we can append 
+    else if (index == count_) { // next best; we can append
       while (e.hasMoreElements()) {
         Object element = e.nextElement();
         checkElement(element);
@@ -693,8 +693,8 @@ public class Dynarray extends    UpdatableSeqImpl
     }
   }
 
-  private void replace_(Object oldElement, Object newElement, boolean allOccurrences)  
-  throws IllegalElementException { 
+  private void replace_(Object oldElement, Object newElement, boolean allOccurrences)
+  throws IllegalElementException {
     if (oldElement == null || count_ == 0) return;
     for (int i = 0; i < count_; ++i) {
       if (array_[i].equals(oldElement)) {
@@ -712,7 +712,7 @@ public class Dynarray extends    UpdatableSeqImpl
  * Implements collections.ImplementationCheckable.checkImplementation.
  * @see collections.ImplementationCheckable#checkImplementation
 **/
-  public synchronized void checkImplementation() 
+  public synchronized void checkImplementation()
   throws ImplementationError {
 
     super.checkImplementation();

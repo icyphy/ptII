@@ -86,7 +86,7 @@ public class TestLevel extends TypedAtomicActor {
 	// get the input token from the input port.
         double inputValue;
         inputValue = ((DoubleToken)(input.get(0))).doubleValue();
-        
+
 
         // produce the output token.
 

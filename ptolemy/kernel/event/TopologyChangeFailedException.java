@@ -81,7 +81,7 @@ public class TopologyChangeFailedException extends KernelException {
         this.failedEvent = failedEvent;
         this.thrownException = thrownException;
     }
-				  
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 }

@@ -114,7 +114,7 @@ import java.util.Enumeration;
 // in the initialization() method. This means that mutations are not
 // currently supported.
 public class DECQDirector extends DEDirector {
-    
+
     private static final boolean DEBUG = false;
 
     /** Construct a director with empty string as name in the
@@ -123,7 +123,7 @@ public class DECQDirector extends DEDirector {
     public DECQDirector() {
         super();
     }
-    
+
     /** Construct a director with the specified name in the default
      *  workspace. If the name argument is null, then the name is set to the
      *  empty string. This director is added to the directory of the workspace,
@@ -171,8 +171,8 @@ public class DECQDirector extends DEDirector {
         // FIXME: Should this check that the depth is not negative?
         // This check is done only done after the start time is initialized.
         if (_startTimeInitialized) {
-            if (delay < 0.0) throw new IllegalActionException(getContainer(), 
-                    "Attempt to queue a token with a past time stamp " + 
+            if (delay < 0.0) throw new IllegalActionException(getContainer(),
+                    "Attempt to queue a token with a past time stamp " +
                     "after start time is fixed.");
         }
 
@@ -184,7 +184,7 @@ public class DECQDirector extends DEDirector {
                                " at time " + (_currentTime + delay) +
                                " .");
         }
-        
+
 
         DESortKey key = new DESortKey(_currentTime + delay, depth);
         DEEvent event = new DEEvent(actor, key);
@@ -211,14 +211,14 @@ public class DECQDirector extends DEDirector {
         "Attempt to queue a token with a past time stamp.");
 
         // FIXME: Provide a mechanism for listening for events.
-        
+
         DESortKey key = new DESortKey(_currentTime + delay, depth);
         DEEvent event = new DEEvent(receiver, token, key);
         if (DEBUG) {
             System.out.print(getFullName()+":");
             System.out.println("Enqueue event for port: " +
                     receiver.getContainer().description(FULLNAME)+
-                    " on actor: " + ((Entity)event.actor).description(FULLNAME) + 
+                    " on actor: " + ((Entity)event.actor).description(FULLNAME) +
                     " at time " + (_currentTime + delay) +
                     " .");
         }
@@ -228,7 +228,7 @@ public class DECQDirector extends DEDirector {
 
     /** Fire the one actor identified by the prefire() method as ready to fire.
      *  If there are multiple simultaneous events destined to this actor,
-     *  then they will have all been dequeued from the global queue and put 
+     *  then they will have all been dequeued from the global queue and put
      *  into the corresponding receivers.
      *  <p>
      *  The actor will be fired multiple times until it has consumed all tokens
@@ -242,7 +242,7 @@ public class DECQDirector extends DEDirector {
         boolean _timeHasNotAdvanced = true;
 
         while (true) {
-        
+
             if (!_prepareActorToFire()) {
                 return;
             }
@@ -251,40 +251,40 @@ public class DECQDirector extends DEDirector {
                 // The actor to be fired is it's container.. so it must be that
                 // this director is a local director of an OCA.
                 if (!isEmbedded()) {
-                    throw new InternalErrorException("The director of this " + 
-                            "composite actor doesn't " + 
+                    throw new InternalErrorException("The director of this " +
+                            "composite actor doesn't " +
                             "realize that it's embedded.");
                 }
-                // Since the tokens is already in the right place, 
+                // Since the tokens is already in the right place,
                 // we just return.
                 return;
             }
-            
-            
+
+
             if (DEBUG) {
                 System.out.print(getFullName() + ":");
-                System.out.println("Prefiring actor: " + 
+                System.out.println("Prefiring actor: " +
                         ((Entity)_actorToFire).description(FULLNAME)+
                         " at time: " +
-                        _currentTime + 
+                        _currentTime +
                         " and returns ....");
                 System.out.println("<<<");
             }
-            
-            
+
+
             if (_actorToFire.prefire()) {
-                
+
                 if (DEBUG) {
                     System.out.println(">>>");
                     System.out.println("Well... it returned true.");
                 }
-                
-                // Repeatedly fire the actor until it doesn't have any 
-                // more filled receivers. In the case of 'pure event' the 
+
+                // Repeatedly fire the actor until it doesn't have any
+                // more filled receivers. In the case of 'pure event' the
                 // actor is fired once.
-                // 
+                //
                 boolean refire = false;
-                
+
                 do {
                     if (DEBUG) {
                         System.out.print(getFullName() + ":");
@@ -339,17 +339,17 @@ public class DECQDirector extends DEDirector {
                         "fire(), the next event has smaller time stamp than" +
                         " the current time.");
             }
-            
+
         } // while (true)
-    
+
     }
 
-    /** 
+    /**
      *
      *  @param delay The delay, relative to the current time.
      *  @exception IllegalActionException If the delay is negative.
      */
-    public void fireAfterDelay(Actor actor, double delay) 
+    public void fireAfterDelay(Actor actor, double delay)
             throws IllegalActionException {
         // Check if the actor is in the composite actor containing this
         // director. FIXME.
@@ -380,7 +380,7 @@ public class DECQDirector extends DEDirector {
     public double getNextIterationTime() {
         return _nextIterationTime;
     }
-        
+
     /** Set current time to zero, calculate priorities for simultaneous
      *  events, and invoke the initialize() methods of all actors deeply
      *  contained by the container.  To be able to calculate the priorities,
@@ -401,13 +401,13 @@ public class DECQDirector extends DEDirector {
      *   container or one of the deeply contained actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        
+
         // FIXME: Something weird going on here with respect to the
         // order of method invocation.
 
 	// initialize the global event queue.
 	_cQueue = new CalendarQueue(new DECQComparator());
-        
+
 	// initialize the directed graph for scheduling.
 	_dag = new DirectedAcyclicGraph();
 	// FIXME: why current time is started to be 0.0 ???
@@ -434,13 +434,13 @@ public class DECQDirector extends DEDirector {
         if (isEmbedded() && !_cQueue.isEmpty()) {
             _requestFiring();
         }
-        
+
     }
 
-    /** 
+    /**
      */
     public boolean postfire() throws IllegalActionException {
-        
+
         if (!super.postfire()) {
             if (DEBUG) {
                 System.out.println("Returning false in postfire()");
@@ -467,27 +467,27 @@ public class DECQDirector extends DEDirector {
     // If the time stamp is greater than the stop time, or there are no
     // events on the event queue, then return false,
     // which will have the effect of stopping the simulation.
-     
+
     // @return True if there is an actor to fire.
     // @exception IllegalActionException If the base class throws it.
     private boolean _prepareActorToFire() {
         // During prefire, new actor will be chosen to fire
 	// therefore, initialize _actorToFire field to null.
-               
+
         _actorToFire = null;
 	// Initialize the _filledReceivers field.
 	_filledReceivers.clear();
         // FIXME: This is just temporary, to see if it works.
-	
+
         DEEvent currentEvent = null;
         // Keep taking events out until there are no more simultaneous
         // events or until the queue is empty. Some events get put back
         // into the queue.  We collect those in the following fifo
         // to put them back outside the loop.
         FIFOQueue fifo = new FIFOQueue();
-        
+
         while (true) {
-            
+
             if (_stopWhenQueueIsEmpty) {
                 try {
                     currentEvent = (DEEvent)_cQueue.take();
@@ -512,7 +512,7 @@ public class DECQDirector extends DEDirector {
                                 // this shouldn't happen.
                                 throw new InternalErrorException(
                                         "In DECQDirector._prepareActor"+
-                                        "ToFire(), a thread got " + 
+                                        "ToFire(), a thread got " +
                                         "interrupted.");
                             }
                         }
@@ -521,31 +521,31 @@ public class DECQDirector extends DEDirector {
                     break;
                 }
             }
-            
+
             if (_actorToFire == null) {
                 // This is first time we're in the loop, therefore always
                 // accept the event.
                 _actorToFire = currentEvent.actor;
-                
+
                 // Advance current time.
                 _currentTime = currentEvent.key.timeStamp();
-                
-                // FIXME: The following line should happen only during the 
-                // first prefire(), because subsequent enqueue is 
+
+                // FIXME: The following line should happen only during the
+                // first prefire(), because subsequent enqueue is
                 // restricted to be ahead of _currentTime.
                 // FIXME: debug structure here...
                 if (_currentTime < _startTime) {
                     if (_startTimeInitialized) {
                         throw new InternalErrorException("DECQDirector "+
-                                "_prepareActorToFire() bug.. trying " + 
+                                "_prepareActorToFire() bug.. trying " +
                                 "to initialize " +
                                 "start time twice.");
                     }
-                    
+
                     _startTime = _currentTime;
                     _startTimeInitialized = true;
                 }
-                
+
                 if (_currentTime > _stopTime && !isEmbedded()) {
                     // The stopping condition is met.
                     // Note that, if this director is embedded then
@@ -554,13 +554,13 @@ public class DECQDirector extends DEDirector {
                     // FIXME: might be wrong approach
                     _shouldPostfireReturnFalse = true;
                     if (DEBUG) {
-                        System.out.println("Stopping time is met " + 
-                                "in DECQDirector.prefire() of " + 
+                        System.out.println("Stopping time is met " +
+                                "in DECQDirector.prefire() of " +
                                 getFullName() + ".");
                     }
                     return false;
                 }
-                
+
                 // Transfer the event to the receiver and keep track
                 // of which receiver is filled.
                 DEReceiver rec = currentEvent.receiver;
@@ -573,12 +573,12 @@ public class DECQDirector extends DEDirector {
                     }
                     // Transfer the event to the receiver.
                     rec._triggerEvent(currentEvent.token);
-                } 
+                }
             } else {
                 // Not the first time through the loop; check if the event
                 // has time stamp equal to previously obtained current
                 // time. Then check if it's for the same actor.
-                
+
                 // Check whether the event occurred at current time.
                 if (currentEvent.key.timeStamp() < _currentTime) {
                     throw new InternalErrorException("Event that was "+
@@ -611,14 +611,14 @@ public class DECQDirector extends DEDirector {
                         // if rec is null, then it's a 'pure event' and
                         // there's no need to put event into receiver.
                         if (rec != null) {
-                            // Adds the receiver to the _filledreceivers 
+                            // Adds the receiver to the _filledreceivers
 			    // list.
                             if (!_filledReceivers.includes(rec)) {
                                 _filledReceivers.insertFirst(rec);
                             }
 			    // Transfer the event to the receiver.
                             rec._triggerEvent(currentEvent.token);
-                        } 
+                        }
                     } else {
                         // Put it back in the queue.
                         fifo.put(currentEvent);
@@ -630,10 +630,10 @@ public class DECQDirector extends DEDirector {
         // queue.
         while (fifo.size() > 0) {
             DEEvent event = (DEEvent)fifo.take();
-            
+
             _cQueue.put(event.key,event);
         }
-        
+
         if (_actorToFire == null) {
             System.out.println("No actor to fire anymore");
             _shouldPostfireReturnFalse = true;
@@ -642,7 +642,7 @@ public class DECQDirector extends DEDirector {
         }
         return _actorToFire != null;
     }
-    
+
 
 
     // Construct a directed graph with the nodes representing input ports and
@@ -786,12 +786,12 @@ public class DECQDirector extends DEDirector {
             }
 	}
     }
-    
+
 
     private void _requestFiring() throws IllegalActionException {
 
         if (DEBUG) {
-            System.out.println(getFullName() + " requests firing from " + 
+            System.out.println(getFullName() + " requests firing from " +
                                ((CompositeActor)getContainer()).getExecutiveDirector().getFullName());
         }
 
@@ -803,10 +803,10 @@ public class DECQDirector extends DEDirector {
             throw new IllegalActionException(e.getMessage());
         }
         double nextRefire = sortkey.timeStamp();
-        
+
         // enqueue a refire for the container of this director.
         ((CompositeActor)getContainer()).getExecutiveDirector().fireAfterDelay((Actor)getContainer(), nextRefire - getCurrentTime());
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -829,7 +829,7 @@ public class DECQDirector extends DEDirector {
                 throw new IllegalActionException(
                     "Attempt to queue an event with an invalid receiver.");
             }
-	    
+
             receiver = r;
             token = t;
             key = k;
@@ -849,7 +849,7 @@ public class DECQDirector extends DEDirector {
     }
 
     private class DECQComparator implements CQComparator {
-	
+
 	/** Compare its two argument for order. Return a negative integer,
 	 *  zero, or a positive integer as the first argument is less than,
 	 *  equal to, or greater than the second.
@@ -867,10 +867,10 @@ public class DECQDirector extends DEDirector {
 	 *            of DESortKey
 	 */
 	public int compare(Object object1, Object object2) {
-	    
+
 	    DESortKey a = (DESortKey) object1;
 	    DESortKey b = (DESortKey) object2;
-	    
+
 	    if ( a.timeStamp() < b.timeStamp() )  {
 		return -1;
 	    } else if ( a.timeStamp() > b.timeStamp() ) {
@@ -883,7 +883,7 @@ public class DECQDirector extends DEDirector {
 		return 0;
 	    }
     }
-	
+
 	/** Given a key, a zero reference, and a bin width, return the index of
 	 *  the bin containing the key.
 	 *  <p>
@@ -897,18 +897,18 @@ public class DECQDirector extends DEDirector {
 	 *  @exception ClassCastException Arguments need to be instances of
 	 *          DESortKey.
 	 */
-	public long getBinIndex(Object key, 
+	public long getBinIndex(Object key,
                 Object zeroReference, Object binWidth) {
 	    DESortKey a = (DESortKey) key;
 	    DESortKey w = (DESortKey) binWidth;
 	    DESortKey zero = (DESortKey) zeroReference;
-	    
+
 	    return (long)((a.timeStamp() - zero.timeStamp())/w.timeStamp());
 	}
-	
-	
+
+
 	/** Given an array of DESortKey objects, find the appropriate bin
-	 *  width. By 'appropriate', the bin width is chosen such that 
+	 *  width. By 'appropriate', the bin width is chosen such that
          *  on average
 	 *  the number of entry in all non-empty bins is equal to one.
 	 *  If the argument is null, return the default bin width which is 1.0
@@ -924,13 +924,13 @@ public class DECQDirector extends DEDirector {
 	 *
 	 */
 	public Object getBinWidth(Object[] keyArray) {
-	    
+
 	    if ( keyArray == null ) {
 		return new DESortKey(1.0, 0);
 	    }
-	    
+
 	    double[] diff = new double[keyArray.length - 1];
-	    
+
 	    double average = 0;
 	    for (int i = 1; i < keyArray.length; ++i) {
 		diff[i-1] = ((DESortKey)keyArray[i]).timeStamp() -
@@ -948,7 +948,7 @@ public class DECQDirector extends DEDirector {
 	    }
 	    effAverage = effAverage / nEffSamples;
 	    return new DESortKey(3.0 * effAverage, 0);
-	    
+
 	}
     }
 
@@ -973,7 +973,7 @@ public class DECQDirector extends DEDirector {
     // FIXME: debug variables
     private boolean _startTimeInitialized = false;
 
-    // 
+    //
     private double _nextIterationTime;
 }
 

@@ -39,9 +39,9 @@ import ptolemy.data.IntToken;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPMultiSource
-/** 
+/**
 Waits to send a Token on any arc connected to its output port.
-FIXME: add longer description!!    
+FIXME: add longer description!!
 
 @author Neil Smyth
 @version $Id$
@@ -51,7 +51,7 @@ public class CSPMultiSource extends CSPActor {
     public CSPMultiSource() {
         super();
     }
-    
+
     public CSPMultiSource  (CompositeActor cont, String name)
        throws IllegalActionException, NameDuplicationException {
 	 super(cont, name);
@@ -61,7 +61,7 @@ public class CSPMultiSource extends CSPActor {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
-   
+
     public void fire() {
         try {
             int count = 0;
@@ -79,7 +79,7 @@ public class CSPMultiSource extends CSPActor {
                 Token t = new IntToken(count);
                 ConditionalBranch[] branches = new ConditionalBranch[size];
                 for (i=0; i<size; i++) {
-                    branches[i] = new ConditionalSend(guards[i], 
+                    branches[i] = new ConditionalSend(guards[i],
                             output, i, i, t);
                 }
 
@@ -89,7 +89,7 @@ public class CSPMultiSource extends CSPActor {
                 boolean flag = false;
                 for (i=0; i<size; i++) {
                     if (successfulBranch == i) {
-                        System.out.println(getName() + ": sent Token: " + 
+                        System.out.println(getName() + ": sent Token: " +
                                 t.toString() + " to receiver " + i);
                         flag = true;
                     }
@@ -111,7 +111,7 @@ public class CSPMultiSource extends CSPActor {
         _again = false;
         return;
     }
-    
+
     public boolean prefire() {
         return _again;
     }
@@ -125,7 +125,7 @@ public class CSPMultiSource extends CSPActor {
     }
 
     public IOPort output;
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
 

@@ -99,7 +99,7 @@ object includes an integer field to store the read depth. This is as opposed
 to using a hashtable as a map between (ordinary )Thread object and its
 read depth field.
 <p>
-Workspace can be made read-only by calling the setReadOnly(boolean) 
+Workspace can be made read-only by calling the setReadOnly(boolean)
 method with <i>true</i> as an argument. A read-only workspace can only have
 readers but no writers. The getReadAccess() and doneReading() methods invoked
 on a read-only workspace return immediately bypassing all checks. Note that
@@ -225,7 +225,7 @@ public final class Workspace implements Nameable, Serializable {
         }
 
         Thread current = Thread.currentThread();
-        
+
         // Implementation note: I used instance of here, because of some
         // performance details plus instanceof is really a better coding
         // style, in term of code visibility (lmuliadi).
@@ -241,7 +241,7 @@ public final class Workspace implements Nameable, Serializable {
             // The current thread is a PtolemyThread.
             PtolemyThread ptThread = (PtolemyThread)current;
             if (ptThread.readDepth == 0) {
-                throw new InvalidStateException(this, 
+                throw new InvalidStateException(this,
                         "Workspace: doneReading() called without a prior "
                         + "matching call to getReadAccess()!");
             }
@@ -289,7 +289,7 @@ public final class Workspace implements Nameable, Serializable {
         // A read-only workspace can't be written, so calling this method
         // doesn't really make sense.
         if (_readOnly) {
-            throw new InvalidStateException(this, "Trying to relinguish " + 
+            throw new InvalidStateException(this, "Trying to relinguish " +
                     "write access on a write-protected workspace.");
                 }
         _writeReq--;
@@ -334,7 +334,7 @@ public final class Workspace implements Nameable, Serializable {
      *  has been obtained.  Permission is granted unless either another
      *  thread has write permission, or there are threads that
      *  have requested write permission and not gotten it yet. If this thread
-     *  already has a read permission, then another permission is granted 
+     *  already has a read permission, then another permission is granted
      *  irrespective of other write requests.
      *  It is essential that doneReading() be called
      *  after this, or write permission may never again be granted in
@@ -345,7 +345,7 @@ public final class Workspace implements Nameable, Serializable {
      *  under this condition.
      */
     public synchronized void getReadAccess() {
-        
+
         // The workspace is read-only, so there are no writers,
         // so always grant the permission.
         if (_readOnly) {
@@ -356,7 +356,7 @@ public final class Workspace implements Nameable, Serializable {
         // at the end of iteration, do a wait() on the workspace. Otherwise,
         // once the thread get a read access, it returns.
         while (true) {
-            // If the current thread has read permission, then grant 
+            // If the current thread has read permission, then grant
             // it read permission
             Thread current = Thread.currentThread();
 
@@ -390,7 +390,7 @@ public final class Workspace implements Nameable, Serializable {
                     return;
                 } else {
                     // If the current thread has write permission or if there
-                    // are no pending write requests, then grant 
+                    // are no pending write requests, then grant
                     // read permission.
                     if (current == _writer || _writeReq == 0 ) {
                         // The thread may already have read permission.
@@ -438,12 +438,12 @@ public final class Workspace implements Nameable, Serializable {
     public synchronized void getWriteAccess() {
         // A read-only workspace can't be written, so throw an exception.
         if (_readOnly) {
-            throw new InvalidStateException(this, "Trying to get write " + 
+            throw new InvalidStateException(this, "Trying to get write " +
                     "access on a write-protected workspace.");
         }
         _writeReq++;
 
-        // Go into an infinite 'while (true)' loop and check if this thread 
+        // Go into an infinite 'while (true)' loop and check if this thread
         // can get a write access. If yes, then return, if not then perform
         // a wait() on the workspace.
 
@@ -458,30 +458,30 @@ public final class Workspace implements Nameable, Serializable {
                 // there are no writers.  Are there any readers?
                 if (_readers.isEmpty() && _numPtReaders==0) {
                     // No readers
-                    
+
                     _writer = current;
 
                     _writeDepth = 1;
                     return;
                 }
-                
+
                 // Check if sole reader is this current thread.
 
                 if (current instanceof PtolemyThread) {
                     // current thread is a PtolemyThread.
                     if (DEBUG) {
-                        System.out.println("PtolemyThread calling " + 
+                        System.out.println("PtolemyThread calling " +
                                 "getWriteAccess");
                     }
                     PtolemyThread ptThread = (PtolemyThread)current;
-                    if (_numPtReaders == 1 
-                            && _readers.size() == 0 
+                    if (_numPtReaders == 1
+                            && _readers.size() == 0
                             && ptThread.readDepth > 0) {
                         // Sole reader is this thread.
                         _writer = current;
                         _writeDepth = 1;
                         return;
-                        
+
                     }
                 } else {
                     // current thread is not a PtolemyThread.
@@ -489,7 +489,7 @@ public final class Workspace implements Nameable, Serializable {
                         System.out.println("Thread calling " +
                                 "getWriteAccess");
                     }
-                    if (_readers.size() == 1 && 
+                    if (_readers.size() == 1 &&
                             _numPtReaders == 0 &&
                             _readers.get(current) != null) {
                         _writer = current;
@@ -508,35 +508,35 @@ public final class Workspace implements Nameable, Serializable {
                     }
                     // Sole reader is this thread.
 
-                    _writer = current;                   
+                    _writer = current;
 
                     _writeDepth = 1;
                     return;
-                } 
-                
+                }
+
                 if (current instanceof PtolemyThread) {
                     if (DEBUG) {
-                        System.out.println("PtolemyThread calling " + 
+                        System.out.println("PtolemyThread calling " +
                         "getWriteAccess");
                     }
                     PtolemyThread ptThread = (PtolemyThread)current;
                     if (_numPtReaders==1 && ptThread.readDepth > 0) {
                         // Sole reader is this thread.
-                        
+
                         _writer = current;
-                           
+
                         _writeDepth = 1;
-                        return;  
+                        return;
                     }
                 }
-                
+
 
                 */
-                
+
             }
 	    try {
                 if (DEBUG1) {
-                    System.out.println(Thread.currentThread().getName() + 
+                    System.out.println(Thread.currentThread().getName() +
                             ": cannot get write access yet, calling wait().");
                     Enumeration reads = _readers.keys();
                     while (reads.hasMoreElements()) {
@@ -599,23 +599,23 @@ public final class Workspace implements Nameable, Serializable {
         incrVersion();
     }
 
-    /** Specify whether this workspace is read only. When the workspace is 
+    /** Specify whether this workspace is read only. When the workspace is
      *  read only, calling getWriteAcess() or doneWriting() will result in
      *  a runtime exception, and calling getReadAccess() and doneReading()
      *  will return immediately. Accesses to topology information are
      *  considerably more efficient if the workspace is read only.
-     *  
+     *
      *  @param flagValue True to make the workspace read only, and false
      *   otherwise.
      *  @exception IllegalActionException If a thread has write
      *   access on the workspace.
      */
-    public synchronized void setReadOnly(boolean flagValue) 
+    public synchronized void setReadOnly(boolean flagValue)
             throws IllegalActionException {
         if (flagValue == true) {
             // Check if there's no writer.
             if (_writer != null) {
-                throw new IllegalActionException(this, "Can't make a " + 
+                throw new IllegalActionException(this, "Can't make a " +
                         "workspace read-only while there is a writer on it.");
             }
         }
@@ -633,7 +633,7 @@ public final class Workspace implements Nameable, Serializable {
      *  wait() on the specified object. When wait() returns, re-acquire
      *  all the read accesses held earlier by the thread and return.
      *  This method helps prevent deadlocks caused when a thread that
-     *  waiting for another thread to do something prevents it from doing 
+     *  waiting for another thread to do something prevents it from doing
      *  that something by holding read access on the workspace.
      *  @param obj The object that the thread wants to wait on.
      */
@@ -708,14 +708,14 @@ public final class Workspace implements Nameable, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Obtain permissions to read objects in the workspace. This obtains 
-     *  many permissions on the read access and should be called in 
+    /** Obtain permissions to read objects in the workspace. This obtains
+     *  many permissions on the read access and should be called in
      *  conjunction with _releaseAllReadPermissions.
      *  This method suspends the calling thread until such permission
      *  has been obtained.  Permission is granted unless either another
      *  thread has write permission, or there are threads that
      *  have requested write permission and not gotten it yet.
-     *  @param count This is the number of read permissions desired on the 
+     *  @param count This is the number of read permissions desired on the
      *  workspace.
      */
     private synchronized void _reacquireReadPermissions(int count) {
@@ -770,8 +770,8 @@ public final class Workspace implements Nameable, Serializable {
     }
 
     /** Frees the thread of all the readAccesses on the workspace. The method
-     *  _reacquireAllReadAccesses should be called after this method is 
-     *  called. 
+     *  _reacquireAllReadAccesses should be called after this method is
+     *  called.
      *  @return The number of readAccess that the thread possessed on the
      *  workspace
      */
@@ -786,9 +786,9 @@ public final class Workspace implements Nameable, Serializable {
 
         // Find the current thread.
         Thread current = Thread.currentThread();
-        
+
         // First check whether current thread is an instance of PtolemyThread.
-        
+
         if (current instanceof PtolemyThread) {
             // the current thread is an instance of PtolemyThread.
             PtolemyThread pthread = (PtolemyThread) current;

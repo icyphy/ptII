@@ -1,8 +1,8 @@
 /*
   File: FilteringEnumeration.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   22Oct95  dl@cs.oswego.edu   Created.
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -25,14 +25,14 @@ import java.util.NoSuchElementException;
  * FilteringEnumerations work as wrappers around other Enumerations.
  * To build one, you need an existing Enumeration (perhaps one
  * from coll.elements(), for some Collection coll), and a Predicate
- * object (i.e., implementing interface Predicate). 
+ * object (i.e., implementing interface Predicate).
  * For example, if you want to screen out everything but Panel
  * objects from a collection coll that might hold things other than Panels,
  * write something of the form:
  * <PRE>
  * Enumeration e = coll.elements();
  * Enumeration panels = FilteringEnumeration(e, IsPanel);
- * while (panels.hasMoreElements()) 
+ * while (panels.hasMoreElements())
  *  doSomethingWith((Panel)(panels.nextElement()));
  * </PRE>
  * To use this, you will also need to write a little class of the form:
@@ -78,7 +78,7 @@ public class FilteringEnumeration implements Enumeration {
   private Object  nextElement_;
 
 /**
- * True if we have a next element 
+ * True if we have a next element
 **/
 
   private boolean haveNext_;
@@ -130,7 +130,7 @@ public class FilteringEnumeration implements Enumeration {
     haveNext_ = false;
     nextElement_ = null;
     for (;;) {
-      if (!src_.hasMoreElements()) 
+      if (!src_.hasMoreElements())
         return;
       else {
         try {
@@ -150,5 +150,5 @@ public class FilteringEnumeration implements Enumeration {
 
 
 }
-  
+
 

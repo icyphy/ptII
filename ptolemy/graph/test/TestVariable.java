@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -92,7 +92,7 @@ public class TestVariable implements InequalityTerm {
     public boolean isSettable() {
 	return true;
     }
- 
+
     /** Set the name of this variable. If the specified String is null,
      *  Set the name to an empty String.
      *  @param A String

@@ -37,7 +37,7 @@ import collections.LinkedList;
 import collections.CollectionEnumeration;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /** PtolemyThread
 PtolemyThread extends Thread by adding a <i>readDepth</i> field. This field is
 used for counting the number of read accesses this thread has gotten from the
@@ -60,25 +60,25 @@ table. (as was metioned in the previous paragraph)
 public class PtolemyThread extends Thread {
 
     /** Construct a new PtolemyThread object. This constructor has the
-     *  same effect as PtolemyThread(null, null, <i>gname</i>), where 
-     *  <i>gname</i> is a newly generated name. Automatically generated 
-     *  names are of the form "Thread-"+n, where n is an integer. 
-     */	
+     *  same effect as PtolemyThread(null, null, <i>gname</i>), where
+     *  <i>gname</i> is a newly generated name. Automatically generated
+     *  names are of the form "Thread-"+n, where n is an integer.
+     */
     public PtolemyThread() {
         super();
     }
 
     /** Construct a new PtolemyThread object. This constructor has the same
-     *  effect as PtolemyThread(null, target, <i>gname</i>), where 
+     *  effect as PtolemyThread(null, target, <i>gname</i>), where
      *  <i>gname</i> is a newly generated name. Automatically generated
      *  names are of the form "Thread-"+n, where n is an integer.
      *  @param target The object whose run method is called.
-     */	
+     */
     public PtolemyThread(Runnable target) {
         super(target);
     }
-    
-    /** Construct a new PtolemyThread object. This constructor has the 
+
+    /** Construct a new PtolemyThread object. This constructor has the
      *  same effect as PtolemyThread(null, target, name)
      *  @param target The object whose run method is called.
      *  @param name The name of the new thread.
@@ -88,7 +88,7 @@ public class PtolemyThread extends Thread {
         super(target, name);
     }
 
-    /** Construct a new PtolemyThread object. This constructor has the 
+    /** Construct a new PtolemyThread object. This constructor has the
      *  same effect as PtolemyThread(null, null, name)
      *  @param name The name of the new thread.
      */
@@ -96,10 +96,10 @@ public class PtolemyThread extends Thread {
         super(name);
     }
 
-    /** Construct a new PtolemyThread object. This constructor has the 
-     *  same effect as PtolemyThread(group, target, gname), where gname is a 
+    /** Construct a new PtolemyThread object. This constructor has the
+     *  same effect as PtolemyThread(group, target, gname), where gname is a
      *  newly generated name. Automatically generated names are of
-     *  the form "Thread-"+n, where n is an integer. 
+     *  the form "Thread-"+n, where n is an integer.
      *  @param group The thread group
      *  @param target The object whose run method is called.
      */
@@ -107,8 +107,8 @@ public class PtolemyThread extends Thread {
         super(group, target);
     }
 
-    /** Construct a new PtolemyThread object so that it has target as 
-     *  its run object, has the specified name as its name, and belongs 
+    /** Construct a new PtolemyThread object so that it has target as
+     *  its run object, has the specified name as its name, and belongs
      *  to the thread group referred to by group.
      *  @param group The thread group.
      *  @param target The object whose run method is called.
@@ -120,7 +120,7 @@ public class PtolemyThread extends Thread {
         super(group, target, name);
     }
 
-    /** Construct a new PtolemyThread object. This constructor has the same 
+    /** Construct a new PtolemyThread object. This constructor has the same
      *  effect as PtolemyThread(group, null, name).
      *  @param group The thread group.
      *  @param name The name of the new thread.

@@ -1,8 +1,8 @@
 /*
   File: HashedSet.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Changed protection statuses
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -26,10 +26,10 @@ import java.util.NoSuchElementException;
  * <P> For an introduction to this package see <A HREF="index.html"> Overview </A>.
 **/
 
-public class HashedSet extends    UpdatableSetImpl 
+public class HashedSet extends    UpdatableSetImpl
                        implements UpdatableSet, HashTableParams  {
 
-// instance variables 
+// instance variables
 
 /**
  * The table. Each entry is a list. Null if no table allocated
@@ -59,21 +59,21 @@ public class HashedSet extends    UpdatableSetImpl
  * Special version of constructor needed by clone()
 **/
 
-  protected HashedSet(Predicate s, float f) { 
+  protected HashedSet(Predicate s, float f) {
     super(s); table_ = null; loadFactor_ = f;
   }
 
 /**
  * Make an independent copy of the table. Does not clone elements.
 **/
-  
-  protected Object clone() throws CloneNotSupportedException { 
+
+  protected Object clone() throws CloneNotSupportedException {
     HashedSet c =  new HashedSet(screener_, loadFactor_);
     if (count_ != 0) {
       int cap = 2 * (int)(count_ / loadFactor_) + 1;
       if (cap < defaultInitialBuckets) cap = defaultInitialBuckets;
       c.buckets(cap);
-      for (int i = 0; i < table_.length; ++i) 
+      for (int i = 0; i < table_.length; ++i)
         for (LLCell p = table_[i]; p != null; p = p.next())
           c.include(p.element());
     }
@@ -89,8 +89,8 @@ public class HashedSet extends    UpdatableSetImpl
  * @see collections.HashTableParams#buckets.
 **/
 
-  public synchronized int buckets() { 
-    return (table_ == null)? 0 : table_.length; 
+  public synchronized int buckets() {
+    return (table_ == null)? 0 : table_.length;
   }
 
 /**
@@ -99,13 +99,13 @@ public class HashedSet extends    UpdatableSetImpl
  * @see collections.HashTableParams#buckets.
 **/
 
-  public synchronized void buckets(int newCap) 
+  public synchronized void buckets(int newCap)
   throws IllegalArgumentException {
-    if (newCap == buckets()) 
+    if (newCap == buckets())
       return;
-    else if (newCap >= 1) 
+    else if (newCap >= 1)
       resize(newCap);
-    else 
+    else
       throw new IllegalArgumentException("Impossible Hash table size:" + newCap);
 
   }
@@ -116,7 +116,7 @@ public class HashedSet extends    UpdatableSetImpl
  * @see collections.HashTableParams#thresholdLoadfactor
 **/
 
-  public synchronized float thresholdLoadFactor() { 
+  public synchronized float thresholdLoadFactor() {
     return loadFactor_;
   }
 
@@ -168,8 +168,8 @@ public class HashedSet extends    UpdatableSetImpl
  * Time complexity: O(1).
  * @see collections.Collection#elements
 **/
-  public synchronized CollectionEnumeration elements() { 
-    return new HTEnumeration(this, table_); 
+  public synchronized CollectionEnumeration elements() {
+    return new HTEnumeration(this, table_);
   }
 
 // UpdatableCollection methods
@@ -179,7 +179,7 @@ public class HashedSet extends    UpdatableSetImpl
  * Time complexity: O(1).
  * @see collections.UpdatableCollection#clear
 **/
-  public synchronized void clear() { 
+  public synchronized void clear() {
     setCount(0);
     table_ = null;
   }
@@ -214,7 +214,7 @@ public class HashedSet extends    UpdatableSetImpl
     }
   }
 
-  public synchronized void replaceOneOf(Object oldElement, Object newElement) 
+  public synchronized void replaceOneOf(Object oldElement, Object newElement)
   throws IllegalElementException {
 
     if (count_ == 0 || oldElement == null || oldElement.equals(newElement))
@@ -226,7 +226,7 @@ public class HashedSet extends    UpdatableSetImpl
     }
   }
 
-  public synchronized void replaceAllOf(Object oldElement, Object newElement) 
+  public synchronized void replaceAllOf(Object oldElement, Object newElement)
   throws IllegalElementException {
     replaceOneOf(oldElement, newElement);
   }
@@ -236,7 +236,7 @@ public class HashedSet extends    UpdatableSetImpl
  * Time complexity: O(number of buckets).
  * @see collections.UpdatableCollection#take
 **/
-  public synchronized Object take() 
+  public synchronized Object take()
   throws NoSuchElementException {
     if (count_ != 0) {
       for (int i = 0; i < table_.length; ++i) {
@@ -311,7 +311,7 @@ public class HashedSet extends    UpdatableSetImpl
 **/
   protected void resize(int newCap) {
     LLCell newtab[] = new LLCell[newCap];
-    
+
     if (table_ != null) {
       for (int i = 0; i < table_.length; ++i) {
         LLCell p = table_[i];
@@ -334,7 +334,7 @@ public class HashedSet extends    UpdatableSetImpl
  * Implements collections.ImplementationCheckable.checkImplementation.
  * @see collections.ImplementationCheckable#checkImplementation
 **/
-  public synchronized void checkImplementation() 
+  public synchronized void checkImplementation()
   throws ImplementationError {
 
     super.checkImplementation();

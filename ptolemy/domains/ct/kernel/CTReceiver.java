@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating red (liuj@eecs.berkeley.edu)
@@ -35,7 +35,7 @@ import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTReceiver
-/** 
+/**
 The receiver for continuous time simulation. This is basically a mailbox
 receiver which has just one capacity. If a token is sent to the receiver
 when the receiver is full, then the old token will be overwirtten.
@@ -60,7 +60,7 @@ public class CTReceiver extends Mailbox{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Put a token into the CTReceiver. If the argument is null, 
+    /** Put a token into the CTReceiver. If the argument is null,
      *  then the CTReceiver will not contain a token after this
      *  returns. If the receiver already has a token, then the old
      *  token will be lost, and the receiver only contains the new

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -41,14 +41,14 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDirector
-/** 
+/**
 This class maintains most parameters that are share by all ODE solvers.
 It maintains a break point table to record all the break points.
 @author Jie Liu
 @version $Id$
 @see ptolemy.actor.Director
 */
-public abstract class CTDirector extends StaticSchedulingDirector 
+public abstract class CTDirector extends StaticSchedulingDirector
         implements ParameterListener{
 
     public static final boolean VERBOSE = true;
@@ -63,7 +63,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     /** Construct a CTDirector with no name and no Container.
      *  The default startTime and stopTime are all zeros. There's no
      *  scheduler associated.
-     */	
+     */
     public CTDirector () {
         super();
         _initParameters();
@@ -71,7 +71,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             setScheduler(new CTScheduler());
         }catch(IllegalActionException e) {
             // Should never occur.
-            throw new InternalErrorException(this.getFullName() + 
+            throw new InternalErrorException(this.getFullName() +
                 "setting scheduler error");
         }
     }
@@ -92,7 +92,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             setScheduler(new CTScheduler());
         }catch(IllegalActionException e) {
             // Should never occur.
-            throw new InternalErrorException(this.getFullName() + 
+            throw new InternalErrorException(this.getFullName() +
                 "setting scheduler error");
         }
     }
@@ -130,14 +130,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _breakPoints;
     }
 
-    /** Return the current ODESolver. 
+    /** Return the current ODESolver.
      *  @return The current ODESolver
      */
     public ODESolver getCurrentODESolver() {
         return _currentSolver;
     }
 
-    /** Return the current step size. In a fixed step size method this is 
+    /** Return the current step size. In a fixed step size method this is
      *  is the value set by setParam("initialStepSize"). For a variable step
      *  size method, the step size is controlled by the algorithm.
      *  @return the current step size.
@@ -187,26 +187,26 @@ public abstract class CTDirector extends StaticSchedulingDirector
     public final double getTimeAccuracy() {
         return _timeAccuracy;
     }
-   
+
     /** Return the local trancation error tolerant, used for
      *  adjustable step size solvers.
      *  @return The local trancation error tolerant.
-     */   
+     */
     public final double getLTETolerant() {
         return _lteTolerant;
     }
 
-    /** Return the value accuracy, used for test if implicit method 
-     *  has reached the fixed point. Two values differ less than 
-     *  this accuracy is considered identical in fixed point 
+    /** Return the value accuracy, used for test if implicit method
+     *  has reached the fixed point. Two values differ less than
+     *  this accuracy is considered identical in fixed point
      *  calculation.
-     *  
+     *
      *  @return The local trancation error tolerant.
-     */ 
+     */
     public final double getValueAccuracy() {
         return _valueAccuracy;
     }
-    
+
     /** Return the minimum step size used in variable step size
      *  ODE solvers.
      */
@@ -237,7 +237,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         if(_breakPoints == null) {
             _breakPoints = new TotallyOrderedSet(new DoubleComparator());
         }
-        Double bp = new Double(delay+getCurrentTime());   
+        Double bp = new Double(delay+getCurrentTime());
         _breakPoints.insert(bp);
     }
 
@@ -269,7 +269,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         if((pEvents != null )&& (!pEvents.isEmpty())) {
             if(DEBUG) {
                 System.out.println(" # of events = "+pEvents.size());
-            }            
+            }
             Enumeration pes = pEvents.elements();
             while(pes.hasMoreElements()) {
                 ParameterEvent event = (ParameterEvent) pes.nextElement();
@@ -292,13 +292,13 @@ public abstract class CTDirector extends StaticSchedulingDirector
             if(VERBOSE) {
                 System.out.println("initStepSize updating.");
             }
-            _initStepSize = 
+            _initStepSize =
             ((DoubleToken)param.getToken()).doubleValue();
         } else if(param == _paramStartTime) {
             if(VERBOSE) {
                 System.out.println("starttime updating.");
             }
-            _startTime = ((DoubleToken)param.getToken()).doubleValue(); 
+            _startTime = ((DoubleToken)param.getToken()).doubleValue();
         } else if(param == _paramLTETolerant) {
             if(VERBOSE) {
                 System.out.println("LTE tolerant updating.");
@@ -308,16 +308,16 @@ public abstract class CTDirector extends StaticSchedulingDirector
             if(VERBOSE) {
                 System.out.println("minstep updating.");
             }
-            _minStepSize = 
+            _minStepSize =
             ((DoubleToken)param.getToken()).doubleValue();
         }  else if(param == _paramValueAccuracy) {
-            _valueAccuracy = 
+            _valueAccuracy =
             ((DoubleToken)param.getToken()).doubleValue();
         } else if(param == _paramTimeAccuracy) {
-            _timeAccuracy = 
+            _timeAccuracy =
             ((DoubleToken)param.getToken()).doubleValue();
         } else if(param == _paramMaxIterations) {
-            _maxIterations = 
+            _maxIterations =
             ((IntToken)param.getToken()).intValue();
         } else {
             if (VERBOSE) {
@@ -333,7 +333,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     public void setCurrentODESolver(ODESolver solver)
             throws IllegalActionException {
         _currentSolver = solver;
-    }   
+    }
 
     /** Set the current step size. This variable is very import during
      *  the simulation and can not be changed in the middle of an
@@ -345,7 +345,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     }
 
     /** Set the current simulation time. All the actors directed by this
-     *  director will share this global time. 
+     *  director will share this global time.
      *  @param tnow The current time.
      */
     public void setCurrentTime(double tnow){
@@ -393,7 +393,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             _lteTolerant = 1e-4;
             _valueAccuracy = 1e-6;
             _timeAccuracy = 1e-6;
-           
+
 
             _paramStartTime = new CTParameter(
                 this, "StartTime", new DoubleToken(_startTime));
@@ -420,10 +420,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
             throw new InvalidStateException(this,"Parameter name duplication.");
         }
     }
-  
+
     /** Instantiate ODESolver from its classname
      */
-    protected ODESolver _instantiateODESolver(String solverclass) 
+    protected ODESolver _instantiateODESolver(String solverclass)
             throws IllegalActionException {
         ODESolver newsolver;
         if(VERBOSE) {
@@ -460,8 +460,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  the need for a write access.
      *
      *  @return True if this director need write access, false otherwise.
-     */ 
-    protected boolean _writeAccessPreference() { 
+     */
+    protected boolean _writeAccessPreference() {
         return false;
     }
 
@@ -480,8 +480,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
     private CTParameter _paramLTETolerant;
     private CTParameter _paramValueAccuracy;
     private CTParameter _paramTimeAccuracy;
-    
-    
+
+
     //values
     private double _startTime;
     private double _stopTime;
@@ -491,10 +491,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
     private double _lteTolerant;
     private double _valueAccuracy;
     private double _timeAccuracy;
-    
+
 
     private LinkedList _parameterEvents = null;
-    
+
     // Simulation progress variables.
     private double _currentTime;
     private double _currentStepSize;

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -29,15 +29,15 @@ package ptolemy.domains.ct.kernel.solver;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImplicitMethodSolver
-/** 
+/**
 Interface for implicit method ODE solvers. Implicit ODE solving methods
-try to find a fixed point for each given time point. This interface 
+try to find a fixed point for each given time point. This interface
 defines method to let actors vote if the fixed point has reached.
 @author Jie Liu
 @version $Id$
 */
 public interface ImplicitMethodSolver {
-    /** Vote if a fixed point has reached. The final result is the 
+    /** Vote if a fixed point has reached. The final result is the
      *  <i>and</i> of all votes.
      *  @param converge True if vote for converge.
      */
@@ -47,5 +47,5 @@ public interface ImplicitMethodSolver {
      *  @return True if all the votes are true.
      */
     public boolean isConverged();
-     
+
 }

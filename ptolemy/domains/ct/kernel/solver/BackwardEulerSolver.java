@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -35,7 +35,7 @@ import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// BackwardEulerSolver
-/** 
+/**
 Description of the class
 @author Jie Liu
 @version $Id$
@@ -49,7 +49,7 @@ public class BackwardEulerSolver extends FixedStepSolver
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
-     */	
+     */
     public BackwardEulerSolver() {
         super(_name);
     }
@@ -70,7 +70,7 @@ public class BackwardEulerSolver extends FixedStepSolver
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Vote if a fixed point has reached. The final result is the 
+    /** Vote if a fixed point has reached. The final result is the
      *  <i>and</i> of all votes.
      *  @param converge True if vote for converge.
      */
@@ -85,10 +85,10 @@ public class BackwardEulerSolver extends FixedStepSolver
         return _converge;
     }
 
-    /** Resolve the state of the integrators at time 
+    /** Resolve the state of the integrators at time
      *  CurrentTime+CurrentStepSize. It gets the state transition
      *  schedule from the scheduler and fire until the fixed point.
-     * 
+     *
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      */
@@ -168,7 +168,7 @@ public class BackwardEulerSolver extends FixedStepSolver
         }
         integrator.setPotentialState(pstate);
         integrator.setPotentialDerivative(f);
-        
+
         integrator.output.broadcast(new DoubleToken(pstate));
     }
 

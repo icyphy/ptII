@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -37,7 +37,7 @@ import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ForwardEulerSolver
-/** 
+/**
 The Forward Euler(FE) ODE solver. For ODE
     dx/dt = f(x, u, t), x(0) = x0;
 The FE method approximate the x(t+h) as:
@@ -54,7 +54,7 @@ public class ForwardEulerSolver extends FixedStepSolver{
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
-     */	
+     */
     public ForwardEulerSolver() {
         super(_name);
     }
@@ -74,11 +74,11 @@ public class ForwardEulerSolver extends FixedStepSolver{
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Resolve the state of the integrators at time 
+
+    /** Resolve the state of the integrators at time
      *  CurrentTime+CurrentStepSize. It gets the state transition
      *  schedule from the scheduler and fire for one iteration.
-     * 
+     *
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      */
@@ -136,7 +136,7 @@ public class ForwardEulerSolver extends FixedStepSolver{
         double pstate = integrator.getState() + f*(dir.getCurrentStepSize());
         integrator.setPotentialState(pstate);
         integrator.setPotentialDerivative(f);
-        
+
         integrator.output.broadcast(new DoubleToken(pstate));
     }
 
@@ -150,7 +150,7 @@ public class ForwardEulerSolver extends FixedStepSolver{
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // static name.
     private static final String _name="CT_Forward_Euler_Solver" ;
 }

@@ -152,7 +152,7 @@ public class LongToken extends ScalarToken {
 	    IntToken inttoken = (IntToken)IntToken.convert(token);
 	    return new LongToken(inttoken.longValue());
 	}
-	
+
 	throw new IllegalActionException("cannot convert from token " +
 		"type: " + token.getClass().getName() + " to a LongToken");
     }

@@ -1,8 +1,8 @@
 /*
   File: HTEnumeration.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Changed protection statuses
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -31,7 +31,7 @@ final class HTEnumeration extends CEImpl {
   private LLCell cell_;
   private int row_;
 
-  public HTEnumeration(UpdatableCollection c, LLCell tab[]) { 
+  public HTEnumeration(UpdatableCollection c, LLCell tab[]) {
     super(c);
     tab_ = tab;
     row_ = 0;
@@ -42,14 +42,14 @@ final class HTEnumeration extends CEImpl {
  * Implements java.util.Enumeration.nextElement.
  * @see java.util.Enumeration#nextElement
 **/
-  public Object nextElement() { 
+  public Object nextElement() {
     decRemaining();
     // if this loop fails, then we've not detected a version change?
     while (cell_ == null) cell_ = tab_[row_++];
-    Object v = cell_.element(); 
+    Object v = cell_.element();
     cell_ = cell_.next();
     return v;
   }
-		    
+
 }
 

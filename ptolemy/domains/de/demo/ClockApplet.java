@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -39,7 +39,7 @@ import ptolemy.plot.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ClockApplet
-/** 
+/**
 A very simple applet containing a discrete-event simulation.
 
 @author Edward A. Lee
@@ -51,7 +51,7 @@ public class ClockApplet extends Applet {
     ////                         public methods                         ////
 
     /** Initialize the applet.
-     */	
+     */
     public void init() {
         // The applet has two panels, stacked vertically
         setLayout(new BorderLayout());
@@ -80,13 +80,13 @@ public class ClockApplet extends Applet {
         try {
             topLevel = new TypedCompositeActor();
             topLevel.setName("Top");
-        
+
             // Set up the directors
             _localDirector = new DECQDirector("DE Director");
             topLevel.setDirector(_localDirector);
             _executiveDirector = new Manager("Executive Director");
             topLevel.setManager(_executiveDirector);
-            
+
             // Set up the actors and connections
             DEClock clock = new DEClock(topLevel, "Clock", 1.0, 1.0);
             DEPoisson poisson = new DEPoisson(topLevel, "Poisson",-1.0,1.0);

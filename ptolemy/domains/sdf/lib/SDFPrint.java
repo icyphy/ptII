@@ -33,7 +33,7 @@ import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
- 
+
 
 /**
  * @version $Id$
@@ -41,7 +41,7 @@ import ptolemy.domains.sdf.kernel.*;
 public class SDFPrint extends SDFAtomicActor {
     public IOPort inputport;
 
-    public SDFPrint(CompositeActor container, String name) 
+    public SDFPrint(CompositeActor container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container,name);
         try{
@@ -53,16 +53,16 @@ public class SDFPrint extends SDFAtomicActor {
             System.out.println("SDFPrint: Constructor error");
         }
     }
-    
+
     public void fire() throws IllegalActionException {
         IntToken message;
-        
+
 
         message=(IntToken)inputport.get(0);
         System.out.println(message.intValue());
 
-        
-        
+
+
     }
 }
 

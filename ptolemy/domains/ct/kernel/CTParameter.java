@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating red (liuj@eecs.berkeley.edu)
@@ -36,7 +36,7 @@ import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTParameter
-/** 
+/**
 In the CT domain, the actor is the ParameteListener for parameter.
 @author  Jie Liu
 @version $Id$
@@ -66,7 +66,7 @@ public class CTParameter extends Parameter{
 
     /** Construct a CTParameter with the given name contained by the specified
      *  CTActor. The container argument must not be null, or a
-     *  NullPointerException will be thrown.  The container must be an 
+     *  NullPointerException will be thrown.  The container must be an
      *  instance of ParameterListener, otherwise an IllegalActionException
      *  is thrown. This parameter will use the
      *  workspace of the container for synchronization and version counts.
@@ -96,7 +96,7 @@ public class CTParameter extends Parameter{
 
     /** Construct a Parameter with the given container, name, and Token.
      *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  The container must be a 
+     *  NullPointerException will be thrown.  The container must be a
      *  ParameterListener, otherwise an IllegalActionException will be thrown.
      *  This parameter will use the
      *  workspace of the container for synchronization and version counts.

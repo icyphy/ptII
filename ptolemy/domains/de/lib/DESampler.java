@@ -68,7 +68,7 @@ public class DESampler extends DEActor {
         output = new DEIOPort(this, "output", false, true);
         // create input ports
         input = new DEIOPort(this, "dataInput", true, false);
-        
+
         clock = new DEIOPort(this, "clockInput", true, false);
         clock.setDeclaredType(Token.class);
         clock.triggers(output);
@@ -120,12 +120,12 @@ public class DESampler extends DEActor {
     public Enumeration typeConstraints()  {
 	try {
 	    workspace().getReadAccess();
-           
+
             LinkedList result = new LinkedList();
             Inequality constraint = new Inequality(input.getTypeTerm(),output.getTypeTerm());
             result.insertLast(constraint);
             return result.elements();
-            
+
         } finally {
 	    workspace().doneReading();
 	}

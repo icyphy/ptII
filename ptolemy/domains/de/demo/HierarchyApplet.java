@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -42,7 +42,7 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Hierarchy
-/** 
+/**
 An applet that demonstrate a hierarchy of DE inside DE.
 
 @author Lukito
@@ -56,7 +56,7 @@ public class HierarchyApplet extends Applet {
     ////                         public methods                         ////
 
     /** Initialize the applet.
-     */	
+     */
     public void init() {
 
         // Process the background parameter.
@@ -68,7 +68,7 @@ public class HierarchyApplet extends Applet {
             }
         } catch (Exception ex) {}
         setBackground(background);
-        
+
         // Initialization
 
         _stopTimeBox = new TextField("10.0", 10);
@@ -80,7 +80,7 @@ public class HierarchyApplet extends Applet {
 	Plot plotPanel = new Plot();
 	add(plotPanel, "Center");
 
-        
+
         // Adding a control panel in the main panel.
         Panel controlPanel = new Panel();
         add(controlPanel, "South");
@@ -103,12 +103,12 @@ public class HierarchyApplet extends Applet {
         // Adding current time in the sub panel.
         simulationParam.add(_currentTimeLabel);
         // Done adding average wait time.
-        
+
         // Adding go button in the control panel.
         controlPanel.add(_goButton);
-        _goButton.addActionListener(new GoButtonListener());        
+        _goButton.addActionListener(new GoButtonListener());
         // Done adding go button
-        
+
 
         // Creating the topology.
         try {
@@ -119,12 +119,12 @@ public class HierarchyApplet extends Applet {
             sys.setManager(_manager);
             _localDirector = new DECQDirector("TopLocalDirector");
             sys.setDirector(_localDirector);
-            
+
             // Set up block A
 
             TypedCompositeActor blockA = new TypedCompositeActor(sys, "BlockA");
             blockA.setDirector(new DECQDirector("Director A"));
-            
+
             DEClock clock = new DEClock(blockA, "Clock", 1.0, 1.0);
             Ramp ramp1 = new Ramp(blockA, "Ramp1", 0, 2);
             DEPoisson poisson = new DEPoisson(blockA, "Poisson", 1.0, 0.5);
@@ -139,9 +139,9 @@ public class HierarchyApplet extends Applet {
             Relation r2 = blockA.connect(ramp1.output, A1);
             ((IORelation)r2).setWidth(2);
             Relation r3 = blockA.connect(poisson.output, A2);
-            
+
             // Set up block B
-            
+
             TypedCompositeActor blockB = new TypedCompositeActor(sys, "BlockB");
             blockB.setDirector(new DECQDirector("Director B"));
 
@@ -159,14 +159,14 @@ public class HierarchyApplet extends Applet {
             Relation r7 = blockB.connect(ramp2.output, sampler2.input);
             Relation r8 = blockB.connect(B2, sampler2.clock);
             Relation r11 = blockB.connect(sampler2.output, B3);
-            
+
             // Set up block C
 
             TypedCompositeActor blockC = new TypedCompositeActor(sys, "BlockC");
             blockC.setDirector(new DECQDirector("Director C"));
-            
+
             DEPlot plot = new DEPlot(blockC, "Plot", plotPanel);
-            
+
             DEIOPort C1 = new DEIOPort(blockC, "C1", true, false);
             //C1.setDeclaredType(DoubleToken.class);
             DEIOPort C2 = new DEIOPort(blockC, "C2", true, false);
@@ -181,7 +181,7 @@ public class HierarchyApplet extends Applet {
             // Set up block interconnections.
 
             DESampler sampler1 = new DESampler(sys, "Sampler1");
-            
+
             Relation r4 = sys.connect(A1, sampler1.input);
             Relation r5 = sys.connect(A2, sampler1.clock);
             B1.link(r5);
@@ -198,7 +198,7 @@ public class HierarchyApplet extends Applet {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
-    
+
     // The thread that runs the simulation.
     private boolean _isSimulationRunning;
 
@@ -211,10 +211,10 @@ public class HierarchyApplet extends Applet {
     private Button _goButton;
     private Label _currentTimeLabel;
 
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
-    
+
 
     //////////////////////////////////////////////////////////////////////////
     ////                       inner classes                              ////
@@ -238,9 +238,9 @@ public class HierarchyApplet extends Applet {
             super.executionFinished(e);
             _isSimulationRunning = false;
         }
-        
+
     }
-    
+
     private class GoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
 
@@ -250,7 +250,7 @@ public class HierarchyApplet extends Applet {
             }
 
             try {
-                
+
                 // Set the stop time.
                 String timespec = _stopTimeBox.getText();
                 try {
@@ -260,21 +260,21 @@ public class HierarchyApplet extends Applet {
                     System.err.println("Invalid stop time: " + ex.getMessage());
                     return;
                 }
-                
+
                 _localDirector.setStopTime(_stopTime);
-                
+
                 // Start the CurrentTimeThread.
                 Thread ctt = new CurrentTimeThread();
                 _isSimulationRunning = true;
                 ctt.start();
-                
+
                 _manager.startRun();
-                                
+
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
                 e.printStackTrace();
             }
-                
+
         }
     }
 

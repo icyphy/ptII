@@ -1,8 +1,8 @@
 /*
   File: IncrSeq.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Changed to use accessOnly
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -56,7 +56,7 @@ public final class IncrSeq extends IncrImpl implements Seq {
  * Implements collections.Seq.at.
  * @see collections.Seq#at
 **/
-  public synchronized Object at(int index) 
+  public synchronized Object at(int index)
   throws  NoSuchElementException {
     return ((UpdatableSeq)(accessOnly())).at(index);
   }
@@ -86,7 +86,7 @@ public final class IncrSeq extends IncrImpl implements Seq {
   public synchronized int firstIndexOf(Object element, int startingIndex) {
     return ((UpdatableSeq)(accessOnly())).firstIndexOf(element, startingIndex);
   }
-   
+
 /**
  * Implements collections.Seq.firstIndexOf.
  * @see collections.Seq#firstIndexOf
@@ -116,7 +116,7 @@ public final class IncrSeq extends IncrImpl implements Seq {
  * Makes a full new Seq, not a lazy update.
  * @see collections.Seq#subseq
 **/
-  public synchronized /* IncrSeq */ Seq  subseq(int index, int length) 
+  public synchronized /* IncrSeq */ Seq  subseq(int index, int length)
   throws  NoSuchElementException {
     return new IncrSeq(((UpdatableSeq)(((UpdatableSeq)accessOnly()).subseq(index, length))));
   }
@@ -127,7 +127,7 @@ public final class IncrSeq extends IncrImpl implements Seq {
  * @see collections.Collection#removingOneOf
 **/
   public synchronized /* IncrSeq */ Collection  removingOneOf(Object element) {
-    undelta(); 
+    undelta();
     UpdatableSeq u = (UpdatableSeq)updatable_;
     int idx = u.firstIndexOf(element);
     if (idx < 0)
@@ -154,7 +154,7 @@ public final class IncrSeq extends IncrImpl implements Seq {
  * @see collections.Collection#excluding
 **/
   public synchronized /* IncrSeq */ Collection  excluding(Object element) {
-    undelta(); 
+    undelta();
     UpdatableSeq u = (UpdatableSeq)updatable_;
     int occ = u.occurrencesOf(element);
     if (occ == 0)
@@ -174,9 +174,9 @@ public final class IncrSeq extends IncrImpl implements Seq {
  * @see collections.Collection#replacingOneOf
 **/
   public synchronized /* IncrSeq */ Collection  replacingOneOf(Object oldElement,
-                                                    Object newElement) 
+                                                    Object newElement)
   throws IllegalElementException {
-    undelta(); 
+    undelta();
     UpdatableSeq u = (UpdatableSeq)updatable_;
     int idx = u.firstIndexOf(oldElement);
     if (idx < 0)
@@ -203,9 +203,9 @@ public final class IncrSeq extends IncrImpl implements Seq {
  * @see collections.Collection#replacingAllOf
 **/
   public synchronized /* IncrSeq */ Collection  replacingAllOf(Object oldElement,
-                                                        Object newElement) 
+                                                        Object newElement)
   throws IllegalElementException {
-    undelta(); 
+    undelta();
     UpdatableSeq u = (UpdatableSeq)updatable_;
     int oldocc = u.occurrencesOf(oldElement);
     if (oldocc == 0)
@@ -225,9 +225,9 @@ public final class IncrSeq extends IncrImpl implements Seq {
  * Implements collections.Seq.insertingAt.
  * @see collections.Seq#insertingAt
 **/
-  public synchronized /* IncrSeq */ Seq  insertingAt(int index, Object element) 
+  public synchronized /* IncrSeq */ Seq  insertingAt(int index, Object element)
   throws IllegalElementException, NoSuchElementException {
-    undelta(); 
+    undelta();
     UpdatableSeq u = (UpdatableSeq)updatable_;
     u.insertAt(index, element);
     IncrSeq s = new IncrSeq(u);
@@ -242,9 +242,9 @@ public final class IncrSeq extends IncrImpl implements Seq {
  * Implements collections.Seq.removingAt.
  * @see collections.Seq#removingAt
 **/
-  public synchronized /* IncrSeq */ Seq  removingAt(int index) 
+  public synchronized /* IncrSeq */ Seq  removingAt(int index)
   throws NoSuchElementException {
-    undelta(); 
+    undelta();
     UpdatableSeq u = (UpdatableSeq)updatable_;
     Object element = u.at(index);
     u.removeAt(index);
@@ -261,9 +261,9 @@ public final class IncrSeq extends IncrImpl implements Seq {
  * Implements collections.Seq.replacingAt
  * @see collections.Seq#replacingAt
 **/
-  public synchronized /* IncrSeq */ Seq  replacingAt(int index, Object element) 
+  public synchronized /* IncrSeq */ Seq  replacingAt(int index, Object element)
   throws IllegalElementException, NoSuchElementException {
-    undelta(); 
+    undelta();
     UpdatableSeq u = (UpdatableSeq)updatable_;
     Object oldElement = u.at(index);
     if (oldElement.equals(element))
@@ -284,10 +284,10 @@ public final class IncrSeq extends IncrImpl implements Seq {
 /**
  * Perform updates within an edit chain
 **/
-  protected synchronized UpdatableCollection doEdit(UpdatableCollection c) { 
+  protected synchronized UpdatableCollection doEdit(UpdatableCollection c) {
     UpdatableSeq u = (UpdatableSeq)c;
-    try { 
-      if (op_ == ADD_EDIT) 
+    try {
+      if (op_ == ADD_EDIT)
         u.insertAt(indexArg_, firstObjectArg_);
       else if (op_ == REMOVE_EDIT)
         u.removeAt(indexArg_);
@@ -295,7 +295,7 @@ public final class IncrSeq extends IncrImpl implements Seq {
         u.replaceAt(indexArg_, firstObjectArg_);
     }
     catch (IllegalElementException ex) {} // we've screened for all possible
-    catch (NoSuchElementException ex) {} 
+    catch (NoSuchElementException ex) {}
     return u;
   }
 

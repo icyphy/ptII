@@ -38,10 +38,10 @@ import ptolemy.kernel.util.InvalidStateException;
 //////////////////////////////////////////////////////////////////////////
 //// CSPReceiver
 /**
-Receiver for CSP style communication. In CSP all communication is via 
-synchronous message passing, so bothe the sending and receiving 
-process need to rendezvous at the receiver. For rendezvous, the 
-receiver is the key synchronization point. It is assumed each receiver 
+Receiver for CSP style communication. In CSP all communication is via
+synchronous message passing, so bothe the sending and receiving
+process need to rendezvous at the receiver. For rendezvous, the
+receiver is the key synchronization point. It is assumed each receiver
 has at most one
 thread trying to send to it and at most one thread trying to receive
 from it at any one time. The receiver performs the synchronization
@@ -70,14 +70,14 @@ public class CSPReceiver implements ProcessReceiver {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Retrieve a Token from the receiver by rendezvous. This method 
+    /** Retrieve a Token from the receiver by rendezvous. This method
      *  does not return until the rendezvous has been completed.
-     *  If a put has already been reached, it notifies the waiting put 
-     *  and waits for the rendezvous to complete. When the rendezvous is 
+     *  If a put has already been reached, it notifies the waiting put
+     *  and waits for the rendezvous to complete. When the rendezvous is
      *  complete it returns with the token.
-     *  If a put has not yet been reached, the method delays until a 
+     *  If a put has not yet been reached, the method delays until a
      *  put is reached.
-     *  It is assumed that at most one process is trying to receive 
+     *  It is assumed that at most one process is trying to receive
      *  from and send to the channel associated with this receiver.
      *  @return The Token transferred by the rendezvous.
      */
@@ -98,10 +98,10 @@ public class CSPReceiver implements ProcessReceiver {
                 _setGetWaiting(true);
                 notifyAll();
 
-                // This is needed for the case when a condSend reaches 
-                // the receiver before a get. When the condSend continues, 
-                // it resets the condSendWaiting flag and does a put() 
-                // which sets the getWaiting flag to 
+                // This is needed for the case when a condSend reaches
+                // the receiver before a get. When the condSend continues,
+                // it resets the condSendWaiting flag and does a put()
+                // which sets the getWaiting flag to
                 // false and the rendezvous proceeds normally.
                 while (_isConditionalSendWaiting()) {
                     _checkAndWait();
@@ -123,7 +123,7 @@ public class CSPReceiver implements ProcessReceiver {
                     ex.getMessage());
         } finally {
             if (blocked) {
-                // process was blocked, woken up and terminated. 
+                // process was blocked, woken up and terminated.
                 // register process as being unblocked
                 _getDirector()._actorUnblocked();
             }
@@ -131,14 +131,14 @@ public class CSPReceiver implements ProcessReceiver {
         return tmp;
     }
 
-    /** Place a Token from the receiver by rendezvous. This method 
+    /** Place a Token from the receiver by rendezvous. This method
      *  does not return until the rendezvous has been completed.
-     *  If get has already been reached, it notifies the waiting get 
-     *  and waits for the rendezvous to complete. When the rendezvous is 
+     *  If get has already been reached, it notifies the waiting get
+     *  and waits for the rendezvous to complete. When the rendezvous is
      *  complete it returns.
-     *  If a get has not yet been reached, the method delays until a 
+     *  If a get has not yet been reached, the method delays until a
      *  get is reached.
-     *  It is assumed that at most one process is trying to receive 
+     *  It is assumed that at most one process is trying to receive
      *  from and send to the channel associated with this receiver.
      *  to receive from it and at most one channel send to it.
      *  @param t The token being transferred in the rendezvous.
@@ -155,15 +155,15 @@ public class CSPReceiver implements ProcessReceiver {
                     _checkAndWait();
                 }
                 return;
-            } else { 
+            } else {
                 // put got there first, so have to wait for a get
                 _setPutWaiting(true);
                 notifyAll();
 
-                // This is needed for the case when a condRec reaches 
-                // the receiver before a put. When the condRec continues, 
-                // it resets the condRecWaiting flag and does a get() 
-                // which sets the putWaiting flag to 
+                // This is needed for the case when a condRec reaches
+                // the receiver before a put. When the condRec continues,
+                // it resets the condRecWaiting flag and does a get()
+                // which sets the putWaiting flag to
                 // false and the rendezvous proceeds normally.
                 while (_isConditionalReceiveWaiting()) {
                     _checkAndWait();
@@ -185,7 +185,7 @@ public class CSPReceiver implements ProcessReceiver {
                     ex.getMessage());
         } finally {
             if (blocked) {
-                // process was blocked, woken up and terminated. 
+                // process was blocked, woken up and terminated.
                 // register process as being unblocked
                 _getDirector()._actorUnblocked();
             }
@@ -239,9 +239,9 @@ public class CSPReceiver implements ProcessReceiver {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** This method wraps the wait() call between checks on the state 
-     *  of the receiver. The flags checked are whether the receiver 
-     *  has been paused or has finished. The actions taken depending 
+    /** This method wraps the wait() call between checks on the state
+     *  of the receiver. The flags checked are whether the receiver
+     *  has been paused or has finished. The actions taken depending
      *  on the falgs apply to whatever process this method was invoked from.
      *  Note: It should only be called from CSPReceiver and conditional
      *  rendezvous branches, and then only from code that already has
@@ -262,9 +262,9 @@ public class CSPReceiver implements ProcessReceiver {
     }
 
     /** The parent CSPActor of the conditional branch to reach the
-     *  rendezvous point first. It is needed if both attempts to 
-     *  rendezvous at this receiver come from conditional branches. 
-     *  It is used to check if both conditional branches are the first 
+     *  rendezvous point first. It is needed if both attempts to
+     *  rendezvous at this receiver come from conditional branches.
+     *  It is used to check if both conditional branches are the first
      *  to attempt to rendezvous.
      *  @return The parent actor which created the first conditional
      *   branch to arrive.
@@ -341,14 +341,14 @@ public class CSPReceiver implements ProcessReceiver {
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
 
-    /* Check the flags controlling the state of the receiver and 
-     * hence the actor process trying to rendezvous with it. If the 
-     * simulation has been finished the _simulationFinished flag will 
-     * have been set and a TerminateProcessException will be thrown 
+    /* Check the flags controlling the state of the receiver and
+     * hence the actor process trying to rendezvous with it. If the
+     * simulation has been finished the _simulationFinished flag will
+     * have been set and a TerminateProcessException will be thrown
      * which will cause the actor process to finish.
      * <p>
-     * If the simulation has been paused, register the the current 
-     * thread as being paused with director, and after the pause 
+     * If the simulation has been paused, register the the current
+     * thread as being paused with director, and after the pause
      * reset the simulationPaused flag.
      *  @exception TerminateProcessException If the actor to
      *   which this receiver belongs has been terminated while still
@@ -356,10 +356,10 @@ public class CSPReceiver implements ProcessReceiver {
      *  @exception InterruptedException If the thread is
      *   interrupted while paused.
      */
-    private synchronized void _checkFlags() 
+    private synchronized void _checkFlags()
             throws InterruptedException, TerminateProcessException{
         if (_simulationFinished) {
-            throw new TerminateProcessException(getContainer().getName() + 
+            throw new TerminateProcessException(getContainer().getName() +
                     ": terminated.");
         } else if (_simulationPaused) {
             _getDirector().increasePausedCount();
@@ -369,7 +369,7 @@ public class CSPReceiver implements ProcessReceiver {
             // The simulation may have ended while we were paused...
             // Need to do this as wait is used above.
             if (_simulationFinished) {
-                throw new TerminateProcessException(getContainer().getName() + 
+                throw new TerminateProcessException(getContainer().getName() +
                         ": terminated.");
             }
         }
@@ -384,16 +384,16 @@ public class CSPReceiver implements ProcessReceiver {
             Actor cont = (Actor)getContainer().getContainer();
             return  (CSPDirector)cont.getDirector();
         } catch (NullPointerException ex) {
-            // If a thread has a reference to a receiver with no directer it 
+            // If a thread has a reference to a receiver with no directer it
             // is an error so terminate the process.
 	    throw new TerminateProcessException("CSPReceiver: trying to " +
                     " rendezvous with a receiver with no " +
                     "director => terminate.");
-	}     
+	}
     }
 
     /* Flag indicating the state of the rendezvous. It returns false if
-     *  one side has tried to rendezvous and the second side has not. 
+     *  one side has tried to rendezvous and the second side has not.
      *  Otherwise it returns true.
      *  @return Flag indicating the state of the rendezvous.
      */
@@ -432,9 +432,9 @@ public class CSPReceiver implements ProcessReceiver {
 
     /* Called only by the get and put methods of this class to indicate
      * the state of a rendezvous. The first side of the rendezvous to
-     * arrive sets it to false, and waits until the second side sets 
+     * arrive sets it to false, and waits until the second side sets
      * it to true allowing it to continue.
-     * @param value boolean indicating whether a rendezvous is finished 
+     * @param value boolean indicating whether a rendezvous is finished
      *  or not.
      */
     private void _setRendezvousComplete(boolean value) {
@@ -456,7 +456,7 @@ public class CSPReceiver implements ProcessReceiver {
 
     // Container.
     private IOPort _container = null;
-  
+
     // Flag indicating whether or not a get is waiting at this receiver.
     private boolean _getWaiting = false;
 
@@ -477,7 +477,7 @@ public class CSPReceiver implements ProcessReceiver {
     // Flag indicating whether state of rendezvous.
     private boolean _rendezvousComplete = false;
 
-    // Flag indicating that any subsequent attempts to rendezvous 
+    // Flag indicating that any subsequent attempts to rendezvous
     // at this receiver should cause the attaempting processes to terminate.
     private boolean _simulationFinished = false;
 

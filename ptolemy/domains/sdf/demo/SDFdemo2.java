@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
 */
-/** a demo for the SDF domain.  demonstrates an actor with more than one 
- *  on each port.   
+/** a demo for the SDF domain.  demonstrates an actor with more than one
+ *  on each port.
  *  @author Steve Neuendorffer
  *  @version $Id$
  */
@@ -56,12 +56,12 @@ public class SDFdemo2 {
     private SDFScheduler s = new SDFScheduler();
     private IORelation r;
 
-    public static void main(String args[])            
+    public static void main(String args[])
             throws IllegalActionException, NameDuplicationException
          {
              //            DebugListener debugger = new DebugListener();
              //Debug.register(debugger);
-        
+
         SDFdemo2 demo=new SDFdemo2();
         demo.execute();
     }
@@ -80,15 +80,15 @@ public class SDFdemo2 {
 
                 r=(IORelation) c.connect(ramp.outputport,delay.inputport,"R1");
                 r=(IORelation) c.connect(delay.outputport,print.inputport,"R2");
-             
-                
+
+
                 Parameter p = (Parameter) d.getAttribute("Iterations");
                 p.setToken(new IntToken(6));
-      
+
                 m.run();
         }
-}    
- 
-    
+}
+
+
 
 

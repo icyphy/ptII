@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -34,7 +34,7 @@ import java.io.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExampleSerializable
-/** 
+/**
 This class constructs a system from the Ptolemy II design document, Figure 8,
 saves it to a file and then reloads it.
 @author Christopher Hylands
@@ -45,9 +45,9 @@ public class ExampleSerializable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-        
+
     /** Create an Example System, then print it out. */
-    public static void main(String args[]) 
+    public static void main(String args[])
             throws NameDuplicationException, IllegalActionException {
         ExampleSystem exsys = new ExampleSystem();
         String filename = new String("ExampleSerializable.data");
@@ -76,7 +76,7 @@ public class ExampleSerializable {
                 if (olddescription.equals(newdescription)) {
                     System.out.println("OK: Description read in from " +
                             filename + " is the same as the original\n");
-                } else {                    
+                } else {
                     System.out.println("ERROR\nDescription read in from " +
                             filename + "\n"+
                             newdescription + "\n" +
@@ -94,5 +94,5 @@ public class ExampleSerializable {
         }
 
     }
-    
+
 }

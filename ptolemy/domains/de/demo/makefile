@@ -84,7 +84,7 @@ MISC_FILES =	#doc
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	clockapplet.jar	
+	clockapplet.jar
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -258,7 +258,7 @@ depend:
 quantify1:
 	JAVA_HOME=$(JAVA_HOME_ENV) QUANTIFY_JAVA_HOME=$(QUANTIFY_JAVA_HOME_ENV) CLASSPATH="$(CLASSPATH)" $(JAVA_HOME_ENV)/bin/qjava sun.applet.AppletViewer Adder.html
 
-quantify2:	
+quantify2:
 	JAVA_HOME=$(JAVA_HOME_ENV) QUANTIFY_JAVA_HOME=$(QUANTIFY_JAVA_HOME_ENV) CLASSPATH="$(CLASSPATH)" $(JAVA_HOME_ENV)/bin/qjava ptolemy.domains.de.demo.QueueApp
 
 # Get the rest of the rules

@@ -1,4 +1,4 @@
-/* A Queue with optional history and capacity, performing blocking reads 
+/* A Queue with optional history and capacity, performing blocking reads
    and blocking writes.
 
  Copyright (c) 1997-1998 The Regents of the University of California.
@@ -21,7 +21,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -36,11 +36,11 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNQueueReceiver
-/** 
+/**
 A first-in, first-out (FIFO) queue with optional capacity and
-history, with blocking reads and writes. Objects are appended to the queue 
+history, with blocking reads and writes. Objects are appended to the queue
 with the put() method, performing a blocking write, and removed from the queue
-with the get() method using blocking reads. The object removed is the oldest 
+with the get() method using blocking reads. The object removed is the oldest
 one in the queue. By default, the capacity is unbounded, but it can be set to
 any nonnegative size. If the history
 capacity is greater than zero (or infinite, indicated by a capacity
@@ -48,12 +48,12 @@ of -1), then objects removed from the queue are transferred to a
 second queue rather than simply deleted. By default, the history
 capacity is zero. In case the queue is empty, the get() method blocks till
 a token is introduced into the queue or a termination exception is thrown.
-In case the queue is full, the put() method blocks till there is enough 
+In case the queue is full, the put() method blocks till there is enough
 room in the queue to introduce the token.
 
 @author Mudit Goel
 @version $Id$
-@see QueueReceiver    
+@see QueueReceiver
 @see ptolemy.actor.QueueReceiver
 */
 public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
@@ -74,9 +74,9 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Reads the oldest token from the Queue and returns it. If there are 
+    /** Reads the oldest token from the Queue and returns it. If there are
      *  no tokens in the Queue, then the method blocks on it. It throws
-     *  a TerminateProcessException in case the simulation has to be 
+     *  a TerminateProcessException in case the simulation has to be
      *  terminated.
      *  @return Token read from the queue
      */
@@ -97,7 +97,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 			workspace.wait(this);
 		    }
 		}
-                
+
                 //System.out.println("Halfway thru receiver.get()");
                 if (_terminate) {
                     throw new TerminateProcessException("");
@@ -111,7 +111,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                         notifyAll(); //Wake up threads waiting on a write;
                     }
                 }
-                
+
                 while (_pause) {
                     //System.out.println(" Actually pausing");
                     director.increasePausedCount();
@@ -125,19 +125,19 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     }
 
     /** Always returns true as the Process Network model of computation does
-     *  not allow polling for data. 
+     *  not allow polling for data.
      * @return true
      * @exception IllegalActionException never thrown in this class.
-     */    
+     */
     public boolean hasRoom() throws IllegalActionException {
 	return true;
     }
 
     /** Always returns true as the Process Network model of computation does
-     *  not allow polling for data. 
+     *  not allow polling for data.
      * @return true
      * @exception IllegalActionException never thrown in this class.
-     */    
+     */
     public boolean hasToken() throws IllegalActionException {
 	return true;
     }
@@ -166,7 +166,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	Workspace workspace = getContainer().workspace();
 	PNDirector director = (PNDirector)((Actor)(getContainer().getContainer())).getDirector();
 	//System.out.println("putting token in PNQueueReceiver and pause = "+_pause);
-        
+
         synchronized(this) {
             try {
                 if (!super.hasRoom()) {
@@ -182,14 +182,14 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 }
                 if (_terminate) {
                     throw new TerminateProcessException("");
-                } else { 
+                } else {
                     //token can be put in the queue;
                     super.put(token);
                     //Check if pending write to the Queue;
                     if (_readpending) {
                         director.readUnblock();
                         _readpending = false;
-                        notifyAll(); 
+                        notifyAll();
                         //Wake up all threads waiting on a write to this receiver;
                     }
                 }
@@ -198,17 +198,17 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                     director.increasePausedCount();
                     workspace.wait(this);
                 }
-                
+
             } catch (IllegalActionException e) {
                 System.out.println(e.toString());
             }
         }
     }
 
-    /** This pauses or wakes up the receiver and hence any actor trying to 
+    /** This pauses or wakes up the receiver and hence any actor trying to
      *  read or write to the queue
      *  @param pause true if the receiver should be paused and false otherwise.
-     */    
+     */
     public synchronized void setPause(boolean pause) {
 	if (pause) {
 	    _pause = true;
@@ -219,12 +219,12 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     }
 
     /** Set the flag indicating a pending read from the queue
-     * @param readpending is true if there is a pending read, false otherwise. 
+     * @param readpending is true if there is a pending read, false otherwise.
      */
     public synchronized void setReadPending(boolean readpending) {
 	_readpending = readpending;
     }
-    
+
     /** Set the flag indicating a pending write from the queue
      * @param writepending is true if there is a pending read, false otherwise.
      */
@@ -246,7 +246,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     ////                         private variables                 ////
 
     private boolean _readpending = false;
-    private boolean _writepending = false; 
+    private boolean _writepending = false;
     private boolean _pause = false;
     private boolean _terminate = false;
 }

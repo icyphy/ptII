@@ -1,8 +1,8 @@
 /*
   File: HTPairEnumeration.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Changed protection statuses
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -31,7 +31,7 @@ final class HTPairEnumeration extends CEImpl {
   private int row_;
   private boolean usekeys_;
 
-  public HTPairEnumeration(UpdatableCollection c, LLPair tab[], boolean usekeys) { 
+  public HTPairEnumeration(UpdatableCollection c, LLPair tab[], boolean usekeys) {
     super(c);
     tab_ = tab;
     row_ = 0;
@@ -43,14 +43,14 @@ final class HTPairEnumeration extends CEImpl {
  * Implements java.util.Enumeration.nextElement.
  * @see java.util.Enumeration#nextElement
 **/
-  public Object nextElement() { 
+  public Object nextElement() {
     decRemaining();
     // if this loop fails, then we've not detected a version change?
     while (cell_ == null) cell_ = tab_[row_++];
-    Object v = (usekeys_)? cell_.key() : cell_.element(); 
+    Object v = (usekeys_)? cell_.key() : cell_.element();
     cell_ = (LLPair)(cell_.next());
     return v;
   }
-		    
+
 }
 

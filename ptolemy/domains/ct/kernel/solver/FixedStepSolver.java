@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating red (liuj@eecs.berkeley.edu)
@@ -34,7 +34,7 @@ import ptolemy.domains.ct.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixedStepSolver
-/** 
+/**
 Base class for fixed step size (no error control) ODE solvers.
 @version $Id$
 @see classname
@@ -44,7 +44,7 @@ public abstract class FixedStepSolver extends ODESolver{
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
-     */	
+     */
     public FixedStepSolver() {
         super();
     }
@@ -94,7 +94,7 @@ public abstract class FixedStepSolver extends ODESolver{
      *  Always returns 0 since no error control functionality.
      *  @return 0 always.
      */
-    public final double integratorSuggestedNextStepSize( 
+    public final double integratorSuggestedNextStepSize(
          CTBaseIntegrator integrator){
         return 0;
     }
@@ -102,7 +102,7 @@ public abstract class FixedStepSolver extends ODESolver{
     /** Method for resolveing the next step size if the current
      *  step is a success. Do nothing in this kind of methods.
      *  Different solver may implement it differently.
-     * 
+     *
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      */

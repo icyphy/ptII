@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -34,18 +34,18 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExampleSystem
-/** 
-ExapmleSystem constructs a hierachical graph as shown in 
+/**
+ExapmleSystem constructs a hierachical graph as shown in
 Ptolemy 2 design document, Figure 8.
 The graph has 10 entities, 14 ports, and 12 relations.
 The main function also returns the results of some key functions of
 ComponentRelation and ComponentPort.
-See Ptolemy 2 design document, Figure 11 
+See Ptolemy 2 design document, Figure 11
 @author Jie Liu
 @version $Id$
 */
 public class ExampleSystem implements Serializable {
-    /** Construct the graph */	
+    /** Construct the graph */
     public ExampleSystem()
             throws IllegalActionException, NameDuplicationException {
         super();
@@ -57,7 +57,7 @@ public class ExampleSystem implements Serializable {
         e4 = new CompositeEntity(e3, "E4");
         e7 = new CompositeEntity(e0, "E7");
         e10 = new CompositeEntity(e0, "E10");
-        
+
         // Create component entities
         e1 = new ComponentEntity(e4, "E1");
         e2 = new ComponentEntity(e4, "E2");
@@ -65,7 +65,7 @@ public class ExampleSystem implements Serializable {
         e6 = new ComponentEntity(e3, "E6");
         e8 = new ComponentEntity(e7, "E8");
         e9 = new ComponentEntity(e10, "E9");
-        
+
         // Create ports
         p0 = (ComponentPort) e4.newPort("P0");
         p1 = (ComponentPort) e1.newPort("P1");
@@ -82,7 +82,7 @@ public class ExampleSystem implements Serializable {
         p12 = (ComponentPort) e10.newPort("P12");
         p13 = (ComponentPort) e10.newPort("P13");
         p14 = (ComponentPort) e9.newPort("P14");
-        
+
         // Create links
         r1 = e4.connect(p1, p0, "R1");
         r2 = e4.connect(p1, p4, "R2");
@@ -99,18 +99,18 @@ public class ExampleSystem implements Serializable {
         r11 = e10.connect(p12, p13, "R11");
         r12 = e10.connect(p14, p13, "R12");
         p11.link(r7);
-       
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /**
      *  Return the results as a String.
      *  @see ptolemy.kernel.demo.Figure8.ExampleApplet#buttonAction()
      *  @see java.awt.buttton
      *  @param java.awt.event
-     */	
+     */
     public String toString() {
 
         return ("----Methods of ComponentRelation----\n" +
@@ -157,7 +157,7 @@ public class ExampleSystem implements Serializable {
                 printConnectedPorts(p12) +
                 printConnectedPorts(p13) +
                 printConnectedPorts(p14) +
-                "\ndeepConnectedPorts:\n" +    
+                "\ndeepConnectedPorts:\n" +
                 printDeepConnectedPorts(p0) +
                 printDeepConnectedPorts(p1) +
                 printDeepConnectedPorts(p2) +
@@ -171,7 +171,7 @@ public class ExampleSystem implements Serializable {
                 printDeepConnectedPorts(p10) +
                 printDeepConnectedPorts(p11) +
                 printDeepConnectedPorts(p12) +
-                printDeepConnectedPorts(p13) +                
+                printDeepConnectedPorts(p13) +
                 printDeepConnectedPorts(p14));
     }
 
@@ -180,7 +180,7 @@ public class ExampleSystem implements Serializable {
      * are restricted in the same level of hierachy
      * @see ptolemy.kernel.Relation#getLinkedPorts()
      * @param ComponentRelation
-     */	
+     */
     public String printLinkedPorts(ComponentRelation r) {
         String st = r.getName() + ": ";
         ComponentPort po;
@@ -191,14 +191,14 @@ public class ExampleSystem implements Serializable {
         }
         return(st+"\n");
     }
-    
+
     /**
      * Print the deeply linked ports for a given
      * ComponetRelation. Look through all transparent ports and return
      * only non transparent ports (those with no inside links).
      * @see ptolemy.kernel.ComponentRelation#deepGetLinkedPorts()
      * @param ComponentRelation
-     */	
+     */
     public String printDeepLinkedPorts(ComponentRelation r) {
         String st = r.getName() + ": ";
         ComponentPort po;
@@ -209,13 +209,13 @@ public class ExampleSystem implements Serializable {
         }
         return(st+"\n");
     }
-    
+
     /**
      * Print the connected ports for a given ComponetPort.  Restricted
      * to the same level of hierachy.
      * @see ptolemy.kernel.Port#getConnectedPorts()
      * @param ComponentPort
-     */	
+     */
     public String printConnectedPorts(ComponentPort p) {
         String st = p.getName() + ": ";
         ComponentPort po;
@@ -226,14 +226,14 @@ public class ExampleSystem implements Serializable {
         }
         return(st+"\n");
     }
-    
+
     /**
      * Print the deeply connected ports for a given ComponetPort. Look through
      * all transparent ports and return only non transparent ports (those
      * with no inside links).
      * @see ptolemy.kernel.ComponentPort#deepGetConnectedPorts()
      * @param ComponentPort
-     */	
+     */
     public String printDeepConnectedPorts(ComponentPort p) {
         String st = p.getName() + ": ";
         ComponentPort po;
@@ -244,9 +244,9 @@ public class ExampleSystem implements Serializable {
         }
         return(st+"\n");
     }
-        
+
     /** Create an Example System, then print it out. */
-    public static void main(String args[]) 
+    public static void main(String args[])
             throws NameDuplicationException, IllegalActionException {
         ExampleSystem exsys = new ExampleSystem();
         System.out.println(exsys.toString());
@@ -254,7 +254,7 @@ public class ExampleSystem implements Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // Components of the system.
 
     public CompositeEntity e0;
@@ -262,14 +262,14 @@ public class ExampleSystem implements Serializable {
     public CompositeEntity e4;
     public CompositeEntity e7;
     public CompositeEntity e10;
-    
+
     public ComponentEntity e1;
     public ComponentEntity e2;
     public ComponentEntity e5;
     public ComponentEntity e6;
     public ComponentEntity e8;
     public ComponentEntity e9;
-    
+
     public ComponentPort p0;
     public ComponentPort p1;
     public ComponentPort p2;
@@ -285,7 +285,7 @@ public class ExampleSystem implements Serializable {
     public ComponentPort p12;
     public ComponentPort p13;
     public ComponentPort p14;
-    
+
     public ComponentRelation r1;
     public ComponentRelation r2;
     public ComponentRelation r3;
@@ -297,6 +297,6 @@ public class ExampleSystem implements Serializable {
     public ComponentRelation r9;
     public ComponentRelation r10;
     public ComponentRelation r11;
-    public ComponentRelation r12;    
+    public ComponentRelation r12;
 }
 

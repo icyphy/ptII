@@ -29,7 +29,7 @@
 
 
 
-// do we want to make this a token class?   
+// do we want to make this a token class?
 // upside: consistant interface, might be useful for domains.
 // downside: work
 
@@ -46,7 +46,7 @@ A Fraction class.  Yes, it works just the way you'd expect.
 @version $Id$
 */
 public class Fraction {
-    
+
     /** Create a new fraction.   Default Value = 0
      */
     public Fraction() {
@@ -54,7 +54,7 @@ public class Fraction {
         _den = 1;
     }
 
-    
+
     /** Create a new fraction.   Default Value = i;
      */
     public Fraction(int i) {
@@ -65,9 +65,9 @@ public class Fraction {
     /** Create a new Fraction.   Default Value = Numerator/Denominator;
      */
     public Fraction(int Numerator, int Denominator) {
-                if(Denominator == 0) 
+                if(Denominator == 0)
                     throw new ArithmeticException("Illegal Fraction: cannot Divide by zero");
-                
+
         _num = Numerator;
         _den = Denominator;
     }
@@ -93,9 +93,9 @@ public class Fraction {
     /** Set the Denominator of an existing Fraction
      */
     public void setDenominator(int Denominator) {
-                if(Denominator == 0) 
+                if(Denominator == 0)
                     throw new ArithmeticException("Illegal Fraction: cannot Divide by zero");
-                _den = Denominator;               
+                _den = Denominator;
     }
 
 
@@ -125,9 +125,9 @@ public class Fraction {
     /** Divide two Fractions.
      *  @return The answer as another Fraction
      */
-    public static Fraction divide(Fraction a, Fraction b) { 
+    public static Fraction divide(Fraction a, Fraction b) {
         Fraction f = new Fraction(a._num * b._den, a._den * b._num);
-        if(f._den == 0) 
+        if(f._den == 0)
             throw new ArithmeticException("Illegal Fraction: cannot Divide by zero");
         return f;
     }
@@ -151,7 +151,7 @@ public class Fraction {
     }
 
 
-    /** Negate a Fraction.   
+    /** Negate a Fraction.
      *  @return The answer as another Fraction
      */
     public static Fraction negate(Fraction a) {
@@ -173,14 +173,14 @@ public class Fraction {
      *  lowest terms, standard form.
      */
     public static boolean equals(Fraction ai, Fraction bi) {
-        Fraction a = new Fraction(ai); 
+        Fraction a = new Fraction(ai);
         Fraction b = new Fraction(bi);
         a.simplify();
         b.simplify();
         return ((a._num == b._num) && (a._den == b._den));
     }
-    
-    
+
+
     /** Convert the fraction to a readable string
      */
     public String toString() {
@@ -191,7 +191,7 @@ public class Fraction {
         return s.toString();
     }
 
-    
+
     /** Return the Numerator
      */
     public int getNumerator() {
@@ -208,7 +208,7 @@ public class Fraction {
     public static Fraction ZERO = new Fraction(0,1);
 
     /** Implement Euclid's method for finding the Greatest Common Divisor of
-     *  two numbers 
+     *  two numbers
      */
     // These should be moved to the Math Package
 
@@ -221,7 +221,7 @@ public class Fraction {
         return v;
     }
 
-    /** Finds the least common multiple of two integers 
+    /** Finds the least common multiple of two integers
      */
     public static int lcm(int u, int v) {
         int gcd = gcd(u, v);

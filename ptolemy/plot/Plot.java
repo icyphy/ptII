@@ -94,7 +94,7 @@ import java.net.*;
  * is specified, then unique marks are used for the first ten data sets,
  * and then recycled.
  * Using no marks is useful when lines connect the points in a plot,
- * which is done by default. 
+ * which is done by default.
  * If the above directive appears before any DataSet directive, then it
  * specifies the default for all data sets.  If if appears after a DataSet
  * directive, then it applies only to that data set.

@@ -41,7 +41,7 @@ of types. A type lower in the lattice can be converted to a higher
 type without loss of information.  The elements in this lattice are
 instances java class <code>Class</code>.  NaT (not a type) is represented
 by java.lang.Void.TYPE.  The type hierarchy is separate from the class
-hierarchy. 
+hierarchy.
 
 @author Yuhong Xiong
 @version $Id$

@@ -1,8 +1,8 @@
 /*
   File: CheckedCollection.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -12,7 +12,7 @@
   19Oct95  dl                 more misc clean-up.
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
  * For each operation, they invoke c.checkImplementation(),
  * then operate upon c,
  * then check for as many testable effects of the operation
- * as is feasible, and then recheck c. 
+ * as is feasible, and then recheck c.
  * <P>
  * This is not usually very fast. Among other reasons,
  * checks often require that copies of state be made to compare against later.
@@ -46,7 +46,7 @@ public class CheckedCollection implements UpdatableCollection  {
 **/
 
   public UpdatableCollection thys;
-  
+
 /**
  * A clone of the thys made before an operation
 **/
@@ -64,15 +64,15 @@ public class CheckedCollection implements UpdatableCollection  {
  * Wrap collection c in inside a Checker
 **/
 
-  public CheckedCollection(UpdatableCollection c) { 
-    thys = c; 
+  public CheckedCollection(UpdatableCollection c) {
+    thys = c;
     thys.checkImplementation();
   }
 
 /**
  * Make a Checked clone of underlying collection
 **/
-  protected Object clone() throws CloneNotSupportedException { 
+  protected Object clone() throws CloneNotSupportedException {
     return new CheckedCollection((UpdatableCollection)(thys.duplicate()));
   }
 
@@ -81,11 +81,11 @@ public class CheckedCollection implements UpdatableCollection  {
  * Wrapper for clone()
  * @see clone
 **/
- 
- public synchronized Collection duplicate() { 
+
+ public synchronized Collection duplicate() {
    Collection c = null;
    try {
-     c = (Collection)(this.clone()); 
+     c = (Collection)(this.clone());
     } catch (CloneNotSupportedException ex) {}
    return c;
  }
@@ -109,13 +109,13 @@ public class CheckedCollection implements UpdatableCollection  {
     prev = (UpdatableCollection)(thys.duplicate());
     prevVersion = thys.version();
   }
-  
+
 /**
  * Checks collections.Collection.canInclude according to its specification
  * @see collections.Collection#canInclude
 **/
   public synchronized boolean     canInclude(Object element) {
-    preCheck(); 
+    preCheck();
     boolean result = thys.canInclude(element);
     // not allowed to report true for null
     assert(!(result == true && element == null));
@@ -130,7 +130,7 @@ public class CheckedCollection implements UpdatableCollection  {
  * @see collections.Collection#isEmpty
 **/
   public synchronized boolean     isEmpty() {
-    preCheck(); 
+    preCheck();
     boolean result = thys.isEmpty();
     // must be behaviorally equivalent to asking if size() == 0
     assert(result == (thys.size() == 0));
@@ -144,7 +144,7 @@ public class CheckedCollection implements UpdatableCollection  {
  * @see collections.Collection#size
 **/
   public synchronized  int         size() {
-    preCheck(); 
+    preCheck();
     int result = thys.size();
     // sizes are non-negative
     assert(result >= 0);
@@ -162,7 +162,7 @@ public class CheckedCollection implements UpdatableCollection  {
  * @see collections.Collection#occurrencesOf
 **/
   public synchronized int         occurrencesOf(Object element) {
-    preCheck(); 
+    preCheck();
     int result = thys.occurrencesOf(element);
     // occurrences are non-negative
     assert((result >= 0));
@@ -182,7 +182,7 @@ public class CheckedCollection implements UpdatableCollection  {
  * @see collections.Collection#includes
 **/
   public synchronized boolean     includes(Object element) {
-    preCheck(); 
+    preCheck();
     boolean result = thys.includes(element);
     // must be equiv to asking if occurrences >= 1
     assert(result == (thys.occurrencesOf(element) >= 1));
@@ -208,7 +208,7 @@ public class CheckedCollection implements UpdatableCollection  {
       assert(thys.includes(v));
     }
     // We've exhausted e; return another one
-    postCheck(); 
+    postCheck();
     return thys.elements();
   }
 
@@ -224,7 +224,7 @@ public class CheckedCollection implements UpdatableCollection  {
     return result;
   }
 
-/** 
+/**
  * Implements Object.toString
 **/
   public String toString() {
@@ -234,7 +234,7 @@ public class CheckedCollection implements UpdatableCollection  {
     return result;
   }
 
-/** 
+/**
  * Checks collections.UpdatableCollection.version according to its specification
  * @see collections.UpdatableCollection#version
 **/
@@ -316,7 +316,7 @@ public class CheckedCollection implements UpdatableCollection  {
  * Checks collections.UpdatableCollection.replaceOneOf according to its specification
  * @see collections.UpdatableCollection#replaceOneOf
 **/
-  public synchronized void replaceOneOf(Object oldElement, Object newElement) 
+  public synchronized void replaceOneOf(Object oldElement, Object newElement)
   throws IllegalElementException {
     preCheck();
     try {
@@ -337,7 +337,7 @@ public class CheckedCollection implements UpdatableCollection  {
  * @see collections.Collection#replacingOneOf
 **/
   public synchronized Collection replacingOneOf(Object oldElement,
-                                                Object newElement) 
+                                                Object newElement)
   throws IllegalElementException {
     preCheck();
     try {
@@ -360,7 +360,7 @@ public class CheckedCollection implements UpdatableCollection  {
  * Checks collections.UpdatableCollection.replaceAllOf according to its specification
  * @see collections.UpdatableCollection#replaceAllOf
 **/
-  public synchronized void replaceAllOf(Object oldElement, Object newElement) 
+  public synchronized void replaceAllOf(Object oldElement, Object newElement)
   throws IllegalElementException {
     preCheck();
     try {
@@ -381,7 +381,7 @@ public class CheckedCollection implements UpdatableCollection  {
  * @see collections.Collection#replacingAllOf
 **/
   public synchronized Collection replacingAllOf(Object oldElement,
-                                                Object newElement) 
+                                                Object newElement)
   throws IllegalElementException {
     preCheck();
     try {
@@ -422,11 +422,11 @@ public class CheckedCollection implements UpdatableCollection  {
   }
 
 
-/** 
+/**
  * Checks collections.UpdatableCollection.excludeElements
  * @see collections.UpdatableCollection#excludeElements
 **/
-  public synchronized void excludeElements(Enumeration e) 
+  public synchronized void excludeElements(Enumeration e)
   throws CorruptedEnumerationException {
     preCheck();
     thys.excludeElements(e);
@@ -436,11 +436,11 @@ public class CheckedCollection implements UpdatableCollection  {
   }
 
 
-/** 
+/**
  * Checks collections.UpdatableCollection.removeElements
  * @see collections.UpdatableCollection#removeElements
 **/
-  public synchronized void removeElements(Enumeration e) 
+  public synchronized void removeElements(Enumeration e)
   throws CorruptedEnumerationException {
     preCheck();
     thys.removeElements(e);
@@ -452,7 +452,7 @@ public class CheckedCollection implements UpdatableCollection  {
  * Implements collections.ImplementationCheckable.assert.
  * @see collections.ImplementationCheckable#assert
 **/
-  public void assert(boolean pred) 
+  public void assert(boolean pred)
   throws ImplementationError {
     ImplementationError.assert(thys, pred);
   }
@@ -495,7 +495,7 @@ public class CheckedCollection implements UpdatableCollection  {
     CollectionEnumeration os = oc.elements();
     while (os.hasMoreElements()) {
       Object v = os.nextElement();
-      assert(!v.equals(element) == 
+      assert(!v.equals(element) ==
              (nc.occurrencesOf(v) == oc.occurrencesOf(v)));
     }
 
@@ -515,13 +515,13 @@ public class CheckedCollection implements UpdatableCollection  {
     // ... unless they are equal, in which case unchanged
     if (oldElement.equals(newElement)) delta = 0;
 
-    assert(nc.occurrencesOf(oldElement) == 
+    assert(nc.occurrencesOf(oldElement) ==
 	   oc.occurrencesOf(oldElement) - delta);
 
     if (delta != 0)
       assert(nc.canInclude(newElement));
 
-    // new occurrences added by one 
+    // new occurrences added by one
     int reqNewOcc = prev.occurrencesOf(newElement) + delta;
     // .. unless it obeys Set semantics, in which case max of 1
     if (reqNewOcc > 1 && (nc instanceof Set)) reqNewOcc = 1;

@@ -1,8 +1,8 @@
 /*
   File: Immutable.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Renamed just to `Immutable'
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
 /**
  *
  * Immutable is a root interface of immutable classes; i.e.,
- * those with objects that may be looked at but not updated. 
+ * those with objects that may be looked at but not updated.
  * By necessity in Java, all implementation classes supporting
  * interface Immutable must be <CODE>final</CODE> classes.
  * <P>

@@ -1,8 +1,8 @@
 /*
   File: LinkedBuffer.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Changed protection statuses
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -25,7 +25,7 @@ import java.util.NoSuchElementException;
  * buffer is the value of chunkSize that was current during the
  * operation that caused the Bag to grow. The chunkSize() may
  * be adjusted at any time. (It is not considered a version change.)
- * 
+ *
  * <P>
  * All but the final buffer is always kept full.
  * When a buffer has no elements, it is released (so is
@@ -35,7 +35,7 @@ import java.util.NoSuchElementException;
  * you merely put a lot of things in, and then look at
  * them via enumerations, but don't often look for
  * particular elements.
- * 
+ *
  * @author Doug Lea
  * @version 0.93
  *
@@ -87,8 +87,8 @@ public class LinkedBuffer extends UpdatableBagImpl implements UpdatableBag {
 /**
  * Special version of constructor needed by clone()
 **/
-  protected LinkedBuffer(Predicate s, int n, CLCell t, int lc, int cs) { 
-    super(s); 
+  protected LinkedBuffer(Predicate s, int n, CLCell t, int lc, int cs) {
+    super(s);
     count_ = n;
     tail_ = t;
     lastCount_ = lc;
@@ -98,7 +98,7 @@ public class LinkedBuffer extends UpdatableBagImpl implements UpdatableBag {
 /**
  * Make an independent copy. Does not clone elements.
 **/
-  protected Object clone() throws CloneNotSupportedException { 
+  protected Object clone() throws CloneNotSupportedException {
     if (count_ == 0) return new LinkedBuffer(screener_);
     else {
       CLCell h = tail_.copyList();
@@ -122,27 +122,27 @@ public class LinkedBuffer extends UpdatableBagImpl implements UpdatableBag {
   public synchronized int chunkSize() { return chunkSize_; }
 
 /**
- * Set the chunk size to be used when adding new buffers to the 
+ * Set the chunk size to be used when adding new buffers to the
  * list during future add() operations.
  * Any value greater than 0 is OK. (A value of 1 makes this a
  * into very slow simulation of a linked list!)
 **/
 
-  public synchronized void chunkSize(int newChunkSize) 
+  public synchronized void chunkSize(int newChunkSize)
   throws IllegalArgumentException {
-    if (newChunkSize > 0) 
+    if (newChunkSize > 0)
       chunkSize_ = newChunkSize;
     else
       throw new IllegalArgumentException("Attempt to set impossible chunk size value of " + newChunkSize);
   }
 
-// Collection methods  
+// Collection methods
 
 /*
   This code is pretty repetitive, but I don't know a nice way to
   separate traversal logic from actions
 */
-        
+
 /**
  * Implements collections.Collection.includes.
  * Time complexity: O(n).
@@ -158,7 +158,7 @@ public class LinkedBuffer extends UpdatableBagImpl implements UpdatableBag {
       if (isLast) n = lastCount_;
       else n = buff.length;
       for (int i = 0; i < n; ++i) {
-        if (buff[i].equals(element)) 
+        if (buff[i].equals(element))
           return true;
       }
       if (isLast) break;
@@ -183,7 +183,7 @@ public class LinkedBuffer extends UpdatableBagImpl implements UpdatableBag {
       if (isLast) n = lastCount_;
       else n = buff.length;
       for (int i = 0; i < n; ++i) {
-        if (buff[i].equals(element)) 
+        if (buff[i].equals(element))
           ++c;
       }
       if (isLast) break;
@@ -197,7 +197,7 @@ public class LinkedBuffer extends UpdatableBagImpl implements UpdatableBag {
  * Time complexity: O(1).
  * @see collections.Collection#elements
 **/
-  public synchronized CollectionEnumeration elements() { 
+  public synchronized CollectionEnumeration elements() {
     return new LBEnumeration(this, ((tail_ == null) ? null : tail_.next()));
   }
 
@@ -208,7 +208,7 @@ public class LinkedBuffer extends UpdatableBagImpl implements UpdatableBag {
  * Time complexity: O(1).
  * @see collections.UpdatableCollection#clear
 **/
-  public synchronized void clear() { 
+  public synchronized void clear() {
     setCount(0);
     tail_ = null;
     lastCount_ = 0;
@@ -238,8 +238,8 @@ public class LinkedBuffer extends UpdatableBagImpl implements UpdatableBag {
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#replaceOneOf
 **/
-  public synchronized void replaceOneOf(Object oldElement, Object newElement)  
-  throws IllegalElementException { 
+  public synchronized void replaceOneOf(Object oldElement, Object newElement)
+  throws IllegalElementException {
     replace_(oldElement, newElement, false);
   }
 
@@ -248,8 +248,8 @@ public class LinkedBuffer extends UpdatableBagImpl implements UpdatableBag {
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#replaceAllOf
 **/
-  public synchronized void replaceAllOf(Object oldElement, 
-                                                 Object newElement) 
+  public synchronized void replaceAllOf(Object oldElement,
+                                                 Object newElement)
   throws IllegalElementException {
     replace_(oldElement, newElement, true);
   }
@@ -260,7 +260,7 @@ public class LinkedBuffer extends UpdatableBagImpl implements UpdatableBag {
  * Takes the least element.
  * @see collections.UpdatableCollection#take
 **/
-  public synchronized Object take() 
+  public synchronized Object take()
   throws NoSuchElementException {
     if (count_ != 0) {
       Object buff[] = (Object[])(tail_.element());
@@ -282,7 +282,7 @@ public class LinkedBuffer extends UpdatableBagImpl implements UpdatableBag {
  * Time complexity: O(n).
  * @see collections.UpdatableBag#addIfAbsent
 **/
-  public synchronized void addIfAbsent(Object element) 
+  public synchronized void addIfAbsent(Object element)
   throws IllegalElementException {
     if (!includes(element)) add(element);
   }
@@ -293,10 +293,10 @@ public class LinkedBuffer extends UpdatableBagImpl implements UpdatableBag {
  * Time complexity: O(1).
  * @see collections.UpdatableBag#add
 **/
-  public synchronized void add(Object element) 
+  public synchronized void add(Object element)
   throws IllegalElementException {
     checkElement(element);
-    
+
     incCount();
     if (tail_ == null) {
       tail_ = new CLCell(new Object[chunkSize_]);
@@ -344,9 +344,9 @@ public class LinkedBuffer extends UpdatableBagImpl implements UpdatableBag {
     }
   }
 
-  private void replace_(Object oldElement, Object newElement, boolean allOccurrences) 
+  private void replace_(Object oldElement, Object newElement, boolean allOccurrences)
   throws IllegalElementException {
-    if (oldElement == null || count_ == 0 || oldElement.equals(newElement)) 
+    if (oldElement == null || count_ == 0 || oldElement.equals(newElement))
       return;
     CLCell p = tail_.next();
     for (;;) {
@@ -391,14 +391,14 @@ public class LinkedBuffer extends UpdatableBagImpl implements UpdatableBag {
  * Implements collections.ImplementationCheckable.checkImplementation.
  * @see collections.ImplementationCheckable#checkImplementation
 **/
-  public void checkImplementation() 
+  public void checkImplementation()
   throws ImplementationError {
 
     super.checkImplementation();
     assert(chunkSize_ >= 0);
     assert(lastCount_ >= 0);
     assert(((count_ == 0) == (tail_ == null)));
-    
+
     if (tail_ == null) return;
     int c = 0;
     CLCell p = tail_.next();

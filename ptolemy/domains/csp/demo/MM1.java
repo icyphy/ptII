@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -34,21 +34,21 @@ import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// A M/M/1 queue simulation to test time.
-/** 
+/**
 Customer - Buffer - Server
 <p>
 Customers arrive with a Poisson distribution, i.e. the inter-arrival
-times are exponentially distributed. The buffer stores customers who 
-have arrived but ahve not yet been served. The server process also 
+times are exponentially distributed. The buffer stores customers who
+have arrived but ahve not yet been served. The server process also
 serves customers with an exponential distribution.
 <p>
-By varying the rate of customer arrivals, the buffer size and rate 
-at which the server deals with customers, various trade offs can 
-be observed. For example, if the rate of customer arrivals is 
-greater than the service rate, then the buffer will nearly always 
+By varying the rate of customer arrivals, the buffer size and rate
+at which the server deals with customers, various trade offs can
+be observed. For example, if the rate of customer arrivals is
+greater than the service rate, then the buffer will nearly always
 be full and customers may be refused.
 <p>
-This demo illustrates both the use of time and conditional 
+This demo illustrates both the use of time and conditional
 communication, the buffer uses a CDO, in the CSP domain.
 <p>
 @author Neil Smyth
@@ -56,14 +56,14 @@ communication, the buffer uses a CDO, in the CSP domain.
 */
 public class MM1 {
     /** Create an instance for excuoing the M/M/1 demo.
-     * */	
+     * */
     public MM1() {}
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** The application code.
-     */	
+     */
     public static void main(String[] args) {
         try {
             CompositeActor univ = new CompositeActor();
@@ -85,11 +85,11 @@ public class MM1 {
             servRate.setExpression("1.0");
             servRate.evaluate();
 
-            
+
 	    Customer source = new Customer(univ, "Customer");
 	    CSPBuffer middle = new CSPBuffer(univ, "Buffer", 5);
             Server sink = new Server(univ, "Server");
-            
+
             IOPort out1 = source.output;
 	    IOPort in1 = middle.input;
 	    IOPort out2 = middle.output;

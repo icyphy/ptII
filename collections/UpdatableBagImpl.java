@@ -1,8 +1,8 @@
 /*
   File: UpdatableBagImpl.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   13Oct95  dl                 Create
   22Oct95  dl                 add addElements
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
 /**
  *
  * UpdatableBagImpl extends UpdatableImpl to provide
- * default implementations of some Bag operations. 
+ * default implementations of some Bag operations.
  * @author Doug Lea
  * @version 0.93
  *
@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
  *
 **/
 
-abstract class UpdatableBagImpl extends UpdatableImpl implements UpdatableBag { 
+abstract class UpdatableBagImpl extends UpdatableImpl implements UpdatableBag {
 
 
 /**
@@ -48,7 +48,7 @@ abstract class UpdatableBagImpl extends UpdatableImpl implements UpdatableBag {
  * Implements collections.Bag.addingIfAbsent
  * @see collections.Bag#addingIfAbsent
 **/
-  public synchronized Bag addingIfAbsent(Object element) 
+  public synchronized Bag addingIfAbsent(Object element)
   throws IllegalElementException {
     UpdatableBag c = null;
     try {
@@ -64,13 +64,13 @@ abstract class UpdatableBagImpl extends UpdatableImpl implements UpdatableBag {
  * @see collections.Bag#adding
 **/
 
-  public synchronized  Bag adding(Object element) 
+  public synchronized  Bag adding(Object element)
   throws IllegalElementException {
     UpdatableBag c = null;
     try {
       c = ((UpdatableBag)clone());
       c.add(element);
-    } catch (CloneNotSupportedException ex) {}      
+    } catch (CloneNotSupportedException ex) {}
     return c;
   }
 
@@ -79,7 +79,7 @@ abstract class UpdatableBagImpl extends UpdatableImpl implements UpdatableBag {
  * @see collections.UpdatableBag#addElements
 **/
 
-  public synchronized  void addElements(Enumeration e) 
+  public synchronized  void addElements(Enumeration e)
    throws IllegalElementException, CorruptedEnumerationException {
     while (e.hasMoreElements()) add(e.nextElement());
   }

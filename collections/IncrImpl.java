@@ -1,8 +1,8 @@
 /*
   File: IncrImpl.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   Thu Oct 12 1995 Doug Lea    Remove special no-copy on enum clone
   13Oct95  dl                 New strategy to check if pinned by enumerator
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -38,7 +38,7 @@ import java.util.NoSuchElementException;
  * The logic of reconstruction is to work our way to the UpdatableCollection
  * serving as the source of the edits, and then apply each undo operation
  * all the way back up to where we are. Subclasses specialize
- * on the exact edit operation to do at each step. 
+ * on the exact edit operation to do at each step.
  * <P>
  * Reconstruction would be two-line recursive procedure of the form:
  * <PRE>
@@ -53,7 +53,7 @@ import java.util.NoSuchElementException;
  * <LI> We need to prevent interference among concurrent reconstructions
  *    and/or with operations on the collections themselves.
  *    But we cannot afford to hold a lock (synch) on every single node in
- *    the chain of edits at once. For long edit chains, it would 
+ *    the chain of edits at once. For long edit chains, it would
  *    require too many
  *    simultaneous locks. The java runtime could even run out of them.
  *
@@ -62,7 +62,7 @@ import java.util.NoSuchElementException;
  * </OL>
  * <P>
  * These problems are addressed by:
- * <OL>  
+ * <OL>
  * <LI> Using a condition variable, that causes each node to
  *    lock without holding all of the locks at once. The
  *    variable used, prevVersion_ happens to be the same
@@ -70,7 +70,7 @@ import java.util.NoSuchElementException;
  *
  * <LI> Putting next-links from each node to the one representing
  *     the edit which is to follow. This way we can iterate rather
- *     than use recursion. 
+ *     than use recursion.
  * </OL>
  * <P>
  * (All this would be a little prettier if we offloaded work
@@ -101,7 +101,7 @@ abstract class IncrImpl implements Immutable, Collection {
 
 /**
  * When delta'd, a ref to the collection we generated.
- * Invariant:  exactly one of updatable_ or nextVersion_ 
+ * Invariant:  exactly one of updatable_ or nextVersion_
  * are non-null at any given time.
 **/
 
@@ -129,11 +129,11 @@ abstract class IncrImpl implements Immutable, Collection {
 
   private IncrCollectionEnumeration pin_;
 
-/** 
- * We can only handle a known number of undoable operations on 
+/**
+ * We can only handle a known number of undoable operations on
  * collections, encoded into op_
 **/
- 
+
   protected int op_;
 
 /* Known Possible values of op_: */
@@ -142,10 +142,10 @@ abstract class IncrImpl implements Immutable, Collection {
   protected static final int ADD_EDIT = 1;
   protected static final int REMOVE_EDIT = 2;
   protected static final int REPLACE_EDIT = 3;
- 
+
 
 /**
- * Some opportunistic sharing: Subclasses happen 
+ * Some opportunistic sharing: Subclasses happen
  * to need records of two Object arguments  for updates.
 **/
 
@@ -153,8 +153,8 @@ abstract class IncrImpl implements Immutable, Collection {
   protected Object secondObjectArg_;
 
 
-  protected IncrImpl(UpdatableCollection c) { 
-    updatable_ = c; 
+  protected IncrImpl(UpdatableCollection c) {
+    updatable_ = c;
     nextVersion_ = null;
     prevVersion_ = null;
     op_ = NO_EDIT;
@@ -167,17 +167,17 @@ abstract class IncrImpl implements Immutable, Collection {
  * Wrapper for clone()
  * @see clone
 **/
- 
- public Collection duplicate() { 
+
+ public Collection duplicate() {
    Collection c = null;
    try {
-     c = (Collection)(this.clone()); 
+     c = (Collection)(this.clone());
     } catch (CloneNotSupportedException ex) {}
    return c;
  }
 
- 
-    
+
+
 /**
  * Implements collections.Collection.canInclude.
  * @see collections.Collection#canInclude
@@ -232,8 +232,8 @@ abstract class IncrImpl implements Immutable, Collection {
  * @see collections.Collection#elements
 **/
   public final synchronized CollectionEnumeration elements() {
-    undelta(); 
-    // wrap the underlying enumeration in Incr version 
+    undelta();
+    // wrap the underlying enumeration in Incr version
     CollectionEnumeration e = updatable_.elements();
     IncrCollectionEnumeration ie = new IncrCollectionEnumeration(this, e);
     pin(ie);
@@ -242,7 +242,7 @@ abstract class IncrImpl implements Immutable, Collection {
 
 
   public final synchronized String toString() {
-    undelta(); 
+    undelta();
     StringBuffer buf = new StringBuffer();
     buf.append("( (class: " + getClass().toString() + ")");
     buf.append(updatable_.toString());
@@ -252,7 +252,7 @@ abstract class IncrImpl implements Immutable, Collection {
 
 
 /**
- * Call this as the first statement of EVERY subclass method 
+ * Call this as the first statement of EVERY subclass method
  * that performs any kind of constructive update.
 **/
 
@@ -289,7 +289,7 @@ abstract class IncrImpl implements Immutable, Collection {
       // funny end-condition on loop:
       //    since we've used up null as a sentinel, we go until
       //    we are back at our own node.
-      for (;;) { 
+      for (;;) {
         c = p.reconstruct(c);
         IncrImpl nxt = p.breakEditChain();
         if (p == this) break;
@@ -313,13 +313,13 @@ abstract class IncrImpl implements Immutable, Collection {
      if (updatable_ == null) undelta();
      return updatable_;
    }
-       
+
 
 /**
  * unpin from a traversal. Called only by IncrCollectionEnumeration
  * when hasMoreElements() is false.
 **/
-  
+
   synchronized final void unpin(IncrCollectionEnumeration e) {
     if (e == pin_) pin_ = null;
   }
@@ -328,7 +328,7 @@ abstract class IncrImpl implements Immutable, Collection {
  * Pin during a traversal. Call from any method constructing an
  * enumeration.
 **/
-  
+
   protected synchronized final void pin(IncrCollectionEnumeration e) {
     pin_ = e;
   }
@@ -348,7 +348,7 @@ abstract class IncrImpl implements Immutable, Collection {
     if (updatable_ != null) { // we have a source
       return (UpdatableCollection)(updatable_.duplicate());
     }
-    else if (op_ == NO_EDIT) 
+    else if (op_ == NO_EDIT)
       return c;
     else
       return doEdit(c);
@@ -384,7 +384,7 @@ abstract class IncrImpl implements Immutable, Collection {
  * Implements collections.ImplementationCheckable.assert.
  * @see collections.ImplementationCheckable#assert
 **/
-  public void assert(boolean pred) 
+  public void assert(boolean pred)
   throws ImplementationError {
     ImplementationError.assert(this, pred);
   }
@@ -400,9 +400,9 @@ abstract class IncrImpl implements Immutable, Collection {
     assert(prevVersion_ == null);
     assert((op_ >= NO_EDIT) && (op_ <= REPLACE_EDIT));
 
-    if (updatable_ != null) 
+    if (updatable_ != null)
       updatable_.checkImplementation();
-    else 
+    else
       nextVersion_.checkImplementation();
   }
 

@@ -118,17 +118,17 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
         }
     }
 
-   /** Get the number of tokens that are produced or consumed 
-     *  on the designated port of this Actor.   
+   /** Get the number of tokens that are produced or consumed
+     *  on the designated port of this Actor.
      *
-     *  @throw IllegalActionException if port is not contained in this actor, 
+     *  @throw IllegalActionException if port is not contained in this actor,
      *  or the port is not an Input port.
-     *  @throw IllegalActionException if the Port is not connected on the 
-     *  inside and has not been explicitly set, thus the rate cannot be 
+     *  @throw IllegalActionException if the Port is not connected on the
+     *  inside and has not been explicitly set, thus the rate cannot be
      *  determined.
      *  @return The number of tokens consumed on the port.
      */
-    public int getTokenConsumptionRate(IOPort p) 
+    public int getTokenConsumptionRate(IOPort p)
             throws IllegalActionException{
 
         Debug.println("getTokenConsumptionRate:" + p.toString());
@@ -136,10 +136,10 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
                 p.getName() + " is not an Input Port.");
         Port pp = getPort(p.getName());
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
-                p.getName() + " is not contained in Actor " + 
+                p.getName() + " is not contained in Actor " +
                 getName());
 
-        // If we've previously set the rate explicitly, then use that, 
+        // If we've previously set the rate explicitly, then use that,
         // Otherwise we'll go on and try to extrapolate.
         if(_tokenconsumptionrate.includesKey(p)) {
             Integer tokens = (Integer) _tokenconsumptionrate.at(p);
@@ -153,16 +153,16 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
         Debug.println("Starting Sub-schedule");
         Enumeration schedule = scheduler.schedule();
         Debug.println("Finished Sub-Schedule");
-        
+
         Enumeration ports = p.insidePorts();
-        if(ports.hasMoreElements() == false) 
+        if(ports.hasMoreElements() == false)
             throw new IllegalActionException("Port " + p.getName() +
                     " is not connected on the inside, " +
                     "leaving its rate indeterminate.");
         IOPort connectedPort = (IOPort) ports.nextElement();
-        ComponentEntity connectedActor = 
+        ComponentEntity connectedActor =
             (ComponentEntity) connectedPort.getContainer();
-        
+
         Debug.println("getting connectedrate");
         int connectedrate = ((DataflowActor) connectedActor).
             getTokenConsumptionRate(connectedPort);
@@ -176,51 +176,51 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
         return connectedrate * firing;
     }
 
-    /** Get the number of tokens that are produced or consumed 
-     *  on the designated port of this Actor during each firing.   
+    /** Get the number of tokens that are produced or consumed
+     *  on the designated port of this Actor during each firing.
      *  Return zero if setTokenProductionRate has not been called
      *   on this IOPort.
      *
      *  @throw IllegalActionException if port is not contained in this actor.
-     *  @return The number of tokens produced on the port, as supplied by 
+     *  @return The number of tokens produced on the port, as supplied by
      *  setTokenProductionRate, or zero if setTokenProductionRate has not been
      *  called
      */
-    public int getTokenInitProduction(IOPort p) 
+    public int getTokenInitProduction(IOPort p)
         throws IllegalActionException {
 
         Port pp = getPort(p.getName());
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
-                p.getName() + " is not contained in Actor " + 
+                p.getName() + " is not contained in Actor " +
                 getName());
-        
+
         if(! _tokeninitproduction.includesKey(p)) return 0;
         Integer i = (Integer) _tokeninitproduction.at(p);
 
         return i.intValue();
     }
 
-    /** Get the number of tokens that are produced or consumed 
-     *  on the designated port of this Actor.   
+    /** Get the number of tokens that are produced or consumed
+     *  on the designated port of this Actor.
      *
      *  @throw IllegalActionException if port is not contained in this actor,
      *  is not an output port.
-     *  @throw IllegalActionException if the Port is not connected on the 
+     *  @throw IllegalActionException if the Port is not connected on the
      *  inside and the rate has not been explicitly set, thus the rate cannot
      *  be determined.
      *  @return The number of tokens produced on the port.
      */
     public int getTokenProductionRate(IOPort p) throws IllegalActionException {
-        
+
         Debug.println("getTokenProductionRate:");
         if(!p.isOutput()) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not an Input Port.");
         Port pp = getPort(p.getName());
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
-                p.getName() + " is not contained in Actor " + 
+                p.getName() + " is not contained in Actor " +
                 getName());
 
-        // If we've previously set the rate explicitly, then use that, 
+        // If we've previously set the rate explicitly, then use that,
         // Otherwise we'll go on and try to extrapolate.
         if(_tokenproductionrate.includesKey(p)) {
             Integer tokens = (Integer) _tokenproductionrate.at(p);
@@ -234,16 +234,16 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
         Debug.println("Starting Sub-schedule");
         Enumeration schedule = scheduler.schedule();
         Debug.println("Finished Sub-Schedule");
-        
+
         Enumeration ports = p.insidePorts();
-        if(ports.hasMoreElements() == false) 
+        if(ports.hasMoreElements() == false)
             throw new IllegalActionException("Port " + p.getName() +
                     " is not connected on the inside, " +
                     "leaving its rate indeterminate.");
         IOPort connectedPort = (IOPort) ports.nextElement();
-        ComponentEntity connectedActor = 
+        ComponentEntity connectedActor =
             (ComponentEntity) connectedPort.getContainer();
-        
+
         Debug.println("getting connectedrate");
         int connectedrate = ((DataflowActor) connectedActor).
             getTokenProductionRate(connectedPort);
@@ -252,7 +252,7 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
         Debug.println("getting firing");
         int firing = scheduler.getFiringCount(connectedActor);
         Debug.println((new Integer(firing)).toString());
-        Debug.println("return rate of:" + 
+        Debug.println("return rate of:" +
                 (new Integer(connectedrate*firing)).intValue());
 
         return connectedrate * firing;
@@ -260,8 +260,8 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
 
     /** This method sets the value returned by getTokenConsumptionRate on the
      *  port.   If this method is not called, then getTokenConsumptionRate will
-     *  attempt to extrapolate the proper values by scheduling the contained 
-     *  actors.   This method allows domains that in general don't support 
+     *  attempt to extrapolate the proper values by scheduling the contained
+     *  actors.   This method allows domains that in general don't support
      *  strict dataflow semantics to be encapsulated within strict dataflow
      *  domains.
      *  @param IOPort the number of tokens consumed on the port.
@@ -275,21 +275,21 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
                 p.getName() + " is not an Input Port.");
         Port pp = getPort(p.getName());
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
-                p.getName() + " is not contained in Actor " + 
+                p.getName() + " is not contained in Actor " +
                 getName());
         _tokenconsumptionrate.putAt(p, new Integer(count));
     }
 
-    /** Set the number of tokens that are produced or consumed 
+    /** Set the number of tokens that are produced or consumed
      *  on the appropriate port of this Actor during the initialization phase.
      *  This is usually used to simulate a delay along the relation that the
      *  port is connected to, and may be necessary in order to get the SDF
      *  scheduler to create a valid schedule from certain kinds of topologies.
-     * 
+     *
      *  @throw IllegalActionException if port is not contained in this actor.
      *  @throw IllegalActionException if port is not an input IOPort.
      */
-    public void setTokenInitProduction(IOPort p,int r) 
+    public void setTokenInitProduction(IOPort p,int r)
         throws IllegalActionException {
         if(r <= 0) throw new IllegalActionException(
                 "setTokenRatePerFiring: Rate must be > 0");
@@ -297,31 +297,31 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
         if(!p.isOutput()) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not an Output Port.");
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
-                p.getName() + " is not contained in Actor " + 
+                p.getName() + " is not contained in Actor " +
                 getName());
-        _tokeninitproduction = 
+        _tokeninitproduction =
             (HashedMap) _tokeninitproduction.puttingAt(p,new Integer(r));
     }
 
-    /** Set the number of tokens that are produced or consumed 
+    /** Set the number of tokens that are produced or consumed
      *  on the designated port of this Actor.   It may also
      *  be called in an opaque CompositeActor to place a non-dataflow domain
      *  inside of a dataflow domain.  (In this case the CompositeActor cannot
      *  determine the rate by scheduling the contained domain, and it must be
-     *  explicitly declared.) 
+     *  explicitly declared.)
      *
      *  @throw IllegalActionException if port is not contained in this actor,
      *  or is not an output port.
      *  @return The number of tokens produced on the port.
      */
-    public void setTokenProductionRate(IOPort p, int count) 
+    public void setTokenProductionRate(IOPort p, int count)
             throws IllegalActionException {
         Debug.println("getTokenProductionRate:");
         if(!p.isOutput()) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not an Input Port.");
         Port pp = getPort(p.getName());
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
-                p.getName() + " is not contained in Actor " + 
+                p.getName() + " is not contained in Actor " +
                 getName());
         _tokenproductionrate.putAt(p, new Integer(count));
     }
@@ -340,5 +340,5 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
     private HashedMap _tokenconsumptionrate;
     private HashedMap _tokenproductionrate;
     private HashedMap _tokeninitproduction;
-            
+
 }

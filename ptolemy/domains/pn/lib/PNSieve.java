@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -36,14 +36,14 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNSieve
-/** 
+/**
 @author Mudit Goel
-@version $Id$ 
+@version $Id$
 */
 public class PNSieve extends AtomicActor {
-    
-    /** Constructor  Adds port   
-     * @exception NameDuplicationException is thrown if more than one port 
+
+    /** Constructor  Adds port
+     * @exception NameDuplicationException is thrown if more than one port
      *  with the same name is added to the star
      */
     public PNSieve(CompositeActor container, String name)
@@ -52,14 +52,14 @@ public class PNSieve extends AtomicActor {
         _input = new IOPort(this, "input", true, false);
         _output = new IOPort(this, "output", false, true);
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Reads one Token from it's input port and writes this token to 
+
+    /** Reads one Token from it's input port and writes this token to
      *  it's output ports. Needs to read one token for every output
-     *  port. 
+     *  port.
      */
     public void fire() throws IllegalActionException {
         Token data;
@@ -69,17 +69,17 @@ public class PNSieve extends AtomicActor {
 	    data = _input.get(0);
 	    //System.out.println("Sieve gotten data");
 	    if (((IntToken)data).intValue()%_prime != 0) {
-		// is it the next prime? 
+		// is it the next prime?
 		if (islargestprime) {
 		    //System.out.println("Making mutations");
-		    // yes - make the mutation for it 
+		    // yes - make the mutation for it
 		    TopologyChangeRequest m = makeMutation(((IntToken)data).intValue());
 		    PNDirector director = (PNDirector)getDirector();
 		    // Queue the new mutation
 		    director.queueTopologyChangeRequest(m);
 		    //System.out.println("Queued mutation");
 		    islargestprime = false;
-		} 
+		}
 		else {
 		    _output.broadcast(data);
 		    //System.out.println("broadcasting data "+data.stringValue());
@@ -87,7 +87,7 @@ public class PNSieve extends AtomicActor {
 	    }
 	}
     }
-    
+
     public void setParam(String name, String valueString)
             throws IllegalActionException {
         if (name.equals("prime")) {
@@ -103,7 +103,7 @@ public class PNSieve extends AtomicActor {
      */
     private TopologyChangeRequest makeMutation(final int value) {
         TopologyChangeRequest request = new TopologyChangeRequest(this) {
-            
+
             public void constructEventQueue() {
                 //System.out.println("TopologyRequest event q being constructed!");
 
@@ -132,8 +132,8 @@ public class PNSieve extends AtomicActor {
 		    input = (IOPort)newSieve.getPort("input");
 		    //_output = new PNOutPort(PNSieve.this, "output");
 		    newRelation = container.connect(input, _output, value+"_queue");
-		 
-                
+
+
                 } catch (NameDuplicationException ex) {
                     throw new InvalidStateException("Cannot create " +
                             "new sieve.");
@@ -141,7 +141,7 @@ public class PNSieve extends AtomicActor {
                     throw new InvalidStateException("Cannot create " +
                             "new sieve.");
                 }
-            
+
                 queueEntityAddedEvent(container, newSieve);
                 if (relation !=null) {
                     queuePortUnlinkedEvent(relation, _output);
@@ -158,7 +158,7 @@ public class PNSieve extends AtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /* The input port */
     private IOPort _input;
     /* The output port */

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -30,7 +30,7 @@ import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDynamicActor
-/** 
+/**
 Interface of dynamic actors in the CT domain. Dynamic actors are actors
 that have state and will emit their state at the begining of a execution.
 Typically, integrators and analog filters are dynamic actors.
@@ -41,7 +41,7 @@ Typically, integrators and analog filters are dynamic actors.
 */
 public interface CTDynamicActor {
     /** Emit the potential state.
-     *  @exception IllegalActionException If the data transfer is not 
+     *  @exception IllegalActionException If the data transfer is not
      *       completed.
      */
     public void emitPotentialStates() throws IllegalActionException;

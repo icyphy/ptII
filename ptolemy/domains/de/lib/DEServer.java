@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -36,7 +36,7 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEServer
-/** 
+/**
 Emulate a server. If input events arrive when it is not busy, it delays
 them by the service time (a constant parameter). If they arrive when it is
 not busy, it delays them the service time plus however long it takes to
@@ -48,17 +48,17 @@ become free from the previous tasks.
 */
 public class DEServer extends DEActor {
     /** Construct a DEServer star.
-     *  
+     *
      * @param serviceTime The service time
      * @param container The composite actor that this actor belongs too.
      * @param name The name of this actor.
      *
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
-     */	
-    public DEServer(TypedCompositeActor container, 
+     */
+    public DEServer(TypedCompositeActor container,
             String name,
-            double serviceTime) 
+            double serviceTime)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port
@@ -78,14 +78,14 @@ public class DEServer extends DEActor {
 
     /** Produce the output event according to whether the server is busy or
      *  not.
-     * 
+     *
      * @exception IllegalActionException Not thrown in this class.
-     */	
+     */
     public void fire() throws IllegalActionException{
         // get the input token from the input port.
         DoubleToken inputToken;
         inputToken = (DoubleToken)(input.get(0));
-                
+
         // produce the output token.
         double inputTime = ((DECQDirector)getDirector()).getCurrentTime();
 	double outputTime;
@@ -102,7 +102,7 @@ public class DEServer extends DEActor {
 		_doneTime = _doneTime + _serviceTime;
 	    }
 	}
-	
+
         // send the output token via output DEIOPort.
         output.broadcast(inputToken, _serviceTime);
     }
@@ -117,7 +117,7 @@ public class DEServer extends DEActor {
     private double _serviceTime;
     private boolean _firstInput = true;
     private double _doneTime = 0.0;
-    
+
     // the ports.
     public DEIOPort output;
     public DEIOPort input;

@@ -41,7 +41,7 @@ public class SDFSplit extends SDFAtomicActor {
     public IOPort outputport1;
     public IOPort outputport2;
 
-    public SDFSplit(CompositeActor container, String name) 
+    public SDFSplit(CompositeActor container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container,name);
         try{
@@ -59,10 +59,10 @@ public class SDFSplit extends SDFAtomicActor {
             System.out.println("SDFSplit: constructor error");
         }
     }
-    
+
     public void fire() throws IllegalActionException {
         IntToken message;
-        
+
 
         message=(IntToken)inputport.get(0);
         System.out.print("Split1 - ");

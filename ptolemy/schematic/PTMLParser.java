@@ -42,14 +42,14 @@ import com.microstar.xml.*;
 //////////////////////////////////////////////////////////////////////////
 //// PTMLParser
 /**
-This class interfaces to the Microstar Aelfred XML parser in order to 
+This class interfaces to the Microstar Aelfred XML parser in order to
 parse PTML files.  Calling one of the parse methods will read the XML
 input and create a parse tree of XMLElements, returning the root of the
-tree.   Some of the nodes in the tree may actually be subclasses of 
+tree.   Some of the nodes in the tree may actually be subclasses of
 XMLElement.  The subclass that is created depends solely on the type
 of the element.   These subclasses encapsulate the semantic meaning
-of the contained parse tree.  For Example an element in the XML document 
-of type "iconlibrary" will be placed in an instance of the IconLibrary class.  
+of the contained parse tree.  For Example an element in the XML document
+of type "iconlibrary" will be placed in an instance of the IconLibrary class.
 an IconLibrary represents a collection of Icons, and contains methods
 to directly access its child elements that represent icons.
 
@@ -58,22 +58,22 @@ to directly access its child elements that represent icons.
 */
 public class PTMLParser extends HandlerBase{
 
-    /** 
-     * Create a PTMLParser that will operate relative to the url in the given 
+    /**
+     * Create a PTMLParser that will operate relative to the url in the given
      * string.
      */
     public PTMLParser(String s) {
         super();
         url=s;
-    } 
+    }
 
-    /** 
+    /**
      * Implement com.microstar.xml.XMLHandler.attribute
      * Accumulate all the attributes until the next startElement.
-     * 
+     *
      * @throws XmlException if the attribute is not valid.
      */
-    public void attribute(String name, String value, boolean specified) 
+    public void attribute(String name, String value, boolean specified)
     throws Exception {
         if(name == null) throw new XmlException("Attribute has no name",
                 _currentExternalEntity(),
@@ -85,7 +85,7 @@ public class PTMLParser extends HandlerBase{
                 parser.getColumnNumber());
         attributes.putAt(name, value);
     }
-        
+
     /**
      * Implement com.microstar.xml.XMLHandler.charData
      */
@@ -95,13 +95,13 @@ public class PTMLParser extends HandlerBase{
         current.appendPCData(s);
     }
 
-    /** 
+    /**
      * Implement com.microstar.xml.XMLHandler.endDocument
      * If we've finished the parse and didn't get back to the root of the
      * parse tree, then something is wrong, and throw an exception.
      */
     public void endDocument() throws Exception {
-        if(current!=root) 
+        if(current!=root)
             throw new XmlException(
                     "internal error in PTMLParser",
                     _currentExternalEntity(),
@@ -109,11 +109,11 @@ public class PTMLParser extends HandlerBase{
                     parser.getColumnNumber());
     }
 
-    /** 
+    /**
      * Implement com.microstar.xml.XMLHandler.endElement
-     * Move up one level in the parse tree and apply any semantic meaning 
+     * Move up one level in the parse tree and apply any semantic meaning
      * that the element that is ending might have within its parent.  For
-     * example, if the element is an Icon contained within an IconLibrary, 
+     * example, if the element is an Icon contained within an IconLibrary,
      * then the icon should be added to the library's list of icons.
      */
     public void endElement(String name) throws Exception {
@@ -128,17 +128,17 @@ public class PTMLParser extends HandlerBase{
      * move up one leve in the entity tree.
      */
     public void endExternalEntity(String URI) throws Exception {
-        if(DEBUG) 
+        if(DEBUG)
             System.out.println("endExternalEntity: URI=\"" + URI + "\"\n");
-        if(!_currentExternalEntity().equals(URI)) 
+        if(!_currentExternalEntity().equals(URI))
             throw new XmlException("Entities out of order",
                     _currentExternalEntity(),
                     parser.getLineNumber(),
                     parser.getColumnNumber());
         sysids.removeFirst();
-    }                                                  
+    }
 
-    /** 
+    /**
      * Implement com.microstar.xml.XMLHandler.error
      * @throws XmlException if called.
      */
@@ -147,44 +147,44 @@ public class PTMLParser extends HandlerBase{
                 throw new XmlException(message, sysid, line, column);
     }
 
-    /** 
-     * Get the URL associated with this Parser.  
+    /**
+     * Get the URL associated with this Parser.
      */
     public String getURL() {
         return url;
     }
 
-    /** 
-     * Parse the URL associated with this library.  The URL should specify 
+    /**
+     * Parse the URL associated with this library.  The URL should specify
      * an XML file that is valid with IconLibrary.dtd.
      *
-     * @return the XMLElement that contains the root of the parse tree.  
-     * this element will have element type of "document". 
+     * @return the XMLElement that contains the root of the parse tree.
+     * this element will have element type of "document".
      * @throws IllegalActionException if the URL is not valid or the file
-     * could not be retrieved.  
+     * could not be retrieved.
      * @throws IllegalActionException if the parser fails.
      */
     public XMLElement parse() throws Exception {
         try {
         parser.setHandler(this);
-        parser.parse(url, null, (String)null); 
+        parser.parse(url, null, (String)null);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        return root;      
+        return root;
     }
 
-    /** 
+    /**
      * Parse the given stream, using the url associated with this library
      * to expand any external references within the XML.  The stream should
-     * be valid with IconLibrary.dtd.  
+     * be valid with IconLibrary.dtd.
      *
-     * @return the XMLElement that contains the root of the parse tree.  
-     * this element will have element type of "document". 
+     * @return the XMLElement that contains the root of the parse tree.
+     * this element will have element type of "document".
      * @throws IllegalActionException if the parser fails.
      */
-    public XMLElement parse(InputStream is) 
+    public XMLElement parse(InputStream is)
     throws Exception {
         try {
             parser.setHandler(this);
@@ -195,12 +195,12 @@ public class PTMLParser extends HandlerBase{
         }
         return root;
     }
- 
+
     /**
      * Implement com.microstar.xml.XMLHandler.resolveEntity
      * If a public specifier is given, then append XMLLocation to it.
      */
-    public Object resolveEntity(String pubID, String sysID) 
+    public Object resolveEntity(String pubID, String sysID)
             throws Exception {
         if(pubID == null) return sysID;
 
@@ -209,7 +209,7 @@ public class PTMLParser extends HandlerBase{
         return XMLLOCATION+pubID;
     }
 
-    /** 
+    /**
      * Implement com.microstar.xml.XMLHandler.startDocument
      * Initialize the parse tree to contain no elements.
      */
@@ -220,11 +220,11 @@ public class PTMLParser extends HandlerBase{
 
     /**
      * Implement com.microstar.xml.XMLHandler.startElement
-     * Create a new XMLElement, or derived class of XMLElement, based on 
-     * the element type.   Set the attributes of the new XMLElement equal 
-     * to the attributes that have been accumulated since the last 
+     * Create a new XMLElement, or derived class of XMLElement, based on
+     * the element type.   Set the attributes of the new XMLElement equal
+     * to the attributes that have been accumulated since the last
      * call to this method.  If this is the first element encountered
-     * during this parse, set the root of the parse tree equal to the 
+     * during this parse, set the root of the parse tree equal to the
      * newly created element.
      * Descend the parse tree into the new element
      *
@@ -232,7 +232,7 @@ public class PTMLParser extends HandlerBase{
      */
     public void startElement(String name) {
         XMLElement e;
- 
+
         if(name.equals("entity")) {
             e=new SchematicEntity(attributes);
         }
@@ -261,15 +261,15 @@ public class PTMLParser extends HandlerBase{
             e=new XMLElement(name,attributes);
         }
         e.setParent(current);
-        if(current == null) 
+        if(current == null)
             root = e;
         else
             current.addChildElement(e);
         current = e;
         attributes = (HashedMap) new HashedMap();
     }
-    
-    /** 
+
+    /**
      * implement com.microstar.xml.XMLHandler.startExternalEntity
      * move down one level in the entity tree.
      */
@@ -281,12 +281,12 @@ public class PTMLParser extends HandlerBase{
 
     protected String _currentExternalEntity() {
         if(DEBUG)
-            System.out.println("currentExternalEntity: URI=\"" + 
+            System.out.println("currentExternalEntity: URI=\"" +
                     (String)sysids.first() + "\"\n");
         return (String)sysids.first();
-    } 
+    }
 
-    /* this linkedlist contains the current path in the tree of 
+    /* this linkedlist contains the current path in the tree of
      * entities being parsed.  The leaf is first in the list.
      */
     private LinkedList sysids = new LinkedList();

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -34,13 +34,13 @@ import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNRamp
-/** 
+/**
 
 @author Mudit Goel
-@version $Id$ 
+@version $Id$
 */
 public class PNRamp extends AtomicActor {
-    
+
     /** Constructor Adds ports to the star
      * @param initValue is the initial token that the star puts in the stream
      * @exception NameDuplicationException indicates that an attempt to add
@@ -51,11 +51,11 @@ public class PNRamp extends AtomicActor {
         super(container, name);
         _output = new IOPort(this, "output", false, true);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    public void setParam(String name, String valueString) 
+
+    public void setParam(String name, String valueString)
 	    throws IllegalActionException {
 	if (name.equals("Initial Value")) {
 	    IntToken token = new IntToken(valueString);
@@ -64,7 +64,7 @@ public class PNRamp extends AtomicActor {
 	    throw new IllegalActionException(this,name+" param does not exist");
 	}
     }
-    
+
     /** Writes successive integers to the output
      */
     public void fire() throws IllegalActionException {
@@ -83,12 +83,12 @@ public class PNRamp extends AtomicActor {
     public boolean postfire() {
         return _notdone;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private boolean _notdone = true;
-    
+
     /* This is the initial value that the star puts in the stream */
     private int _seed;
     /* Output port */

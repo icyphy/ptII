@@ -1,8 +1,8 @@
 /*
   File: DAEnumeration.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Changed protection statuses
 
 */
-  
+
 package collections;
 
 /**
@@ -26,7 +26,7 @@ final class DAEnumeration extends CEImpl {
   private Object [] arr_;
   private int cur_;
 
-  public DAEnumeration(UpdatableCollection c, Object arr[]) { 
+  public DAEnumeration(UpdatableCollection c, Object arr[]) {
     super(c); arr_ = arr; cur_ = 0;
   }
 
@@ -34,8 +34,8 @@ final class DAEnumeration extends CEImpl {
  * Implements java.util.Enumeration.nextElement().
  * @see java.util.Enumeration#nextElement()
 **/
-  public Object nextElement() {  
+  public Object nextElement() {
     decRemaining();
-    return  arr_[cur_++];  
+    return  arr_[cur_++];
   }
 }

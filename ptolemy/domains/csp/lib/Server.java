@@ -42,10 +42,10 @@ import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPSink
-/** 
-  
-Model of a server in a M/M/1 queue. It serves customers with times 
-that are exponentially distributed. It is parameterized by the 
+/**
+
+Model of a server in a M/M/1 queue. It serves customers with times
+that are exponentially distributed. It is parameterized by the
 Parameter "servicelRate". The default service rate is 1.
 <p>
 @author Neil Smyth
@@ -59,12 +59,12 @@ public class Server extends CSPActor {
         input = new IOPort(this, "input", true, false);
     }
 
-    public Server(CompositeActor cont, String name) 
+    public Server(CompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          this(cont, name, 1);
     }
 
-    public Server(CompositeActor cont, String name, double rate) 
+    public Server(CompositeActor cont, String name, double rate)
         throws IllegalActionException, NameDuplicationException {
         super(cont, name);
         _rate = new Parameter(this, "serviceRate", (new DoubleToken(rate)) );
@@ -86,7 +86,7 @@ public class Server extends CSPActor {
                 interval = Math.exp(-(rand.nextDouble())*rate);
                 interval = (int)(interval*1000);
                 delay(interval/1000);
-                System.out.println(getName() + " serviced customer: " + 
+                System.out.println(getName() + " serviced customer: " +
                       t.toString());
                 count++;
             }
@@ -98,7 +98,7 @@ public class Server extends CSPActor {
         } catch (NoTokenException ex) {
             System.out.println("CSPSink invalid get, exiting...");
         } finally {
-            
+
             /*try {
                 setContainer(null);
             } catch (NameDuplicationException ex) {
@@ -112,15 +112,15 @@ public class Server extends CSPActor {
                         }*/
         }
     }
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
-    
+
    public IOPort input;
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
- 
+
     private Parameter _rate;
 
 }

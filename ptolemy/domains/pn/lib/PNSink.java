@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -35,13 +35,13 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNSink
-/** 
+/**
 
 @author Mudit Goel
 @version $Id$
 */
 public class PNSink extends AtomicActor{
-    
+
     /** Constructor Adds ports to the star
      * @param initValue is the initial token that the star puts in the stream
      * @exception NameDuplicationException indicates that an attempt to add
@@ -52,10 +52,10 @@ public class PNSink extends AtomicActor{
         super(container, name);
         _input = new IOPort(this, "input", true, false);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Writes successive integers to the output
      */
     public void fire() throws IllegalActionException {
@@ -65,10 +65,10 @@ public class PNSink extends AtomicActor{
 	    System.out.println("Sink discarded "+data.intValue());
 	}
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /* Input port */
     private IOPort _input;
 }

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -40,12 +40,12 @@ import java.util.Enumeration;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// ProcessDirector 
-/** 
-Base class of directors for the process orientated domains. It provides 
+//// ProcessDirector
+/**
+Base class of directors for the process orientated domains. It provides
 default implementations for methods that are common across such domains.
 
-@author Mudit Goel, Neil Smyth 
+@author Mudit Goel, Neil Smyth
 @version $Id$
 */
 public class ProcessDirector extends Director {
@@ -79,7 +79,7 @@ public class ProcessDirector extends Director {
     public ProcessDirector(Workspace workspace, String name) {
         super(workspace, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -102,15 +102,15 @@ public class ProcessDirector extends Director {
         return newobj;
     }
 
-    /** This decreases the number of active threads in the 
+    /** This decreases the number of active threads in the
      *  compositeActor by 1.
-     *  It also checks if the simulation has paused if a pause was 
+     *  It also checks if the simulation has paused if a pause was
      *  requested.
-     *  This method should be called only when an active thread that was 
+     *  This method should be called only when an active thread that was
      *  registered using increaseActiveCount() is terminated.
      */
     public synchronized void decreaseActiveCount() {
-	_actorsActive--;	    
+	_actorsActive--;
 	_checkForDeadlock();
 	//System.out.println("decreased active count");
         //If pause requested, then check if paused
@@ -119,8 +119,8 @@ public class ProcessDirector extends Director {
         }
     }
 
- 
-    /** This invokes the initialize() methods of all its deeply contained 
+
+    /** This invokes the initialize() methods of all its deeply contained
      *  actors. It also creates receivers for all the ports and increases the
      *  number of active threads for each actor being initialized.
      *  <p>
@@ -139,10 +139,10 @@ public class ProcessDirector extends Director {
             Enumeration allactors = container.deepGetEntities();
             //Creating receivers and threads for all actors;
             while (allactors.hasMoreElements()) {
-                Actor actor = (Actor)allactors.nextElement(); 
+                Actor actor = (Actor)allactors.nextElement();
                 //increaseActiveCount should be called before createReceivers
-                // as that might increase the count of processes blocked 
-                //and deadlocks might get detected even if there are no 
+                // as that might increase the count of processes blocked
+                //and deadlocks might get detected even if there are no
                 //deadlocks
                 increaseActiveCount();
                 actor.createReceivers();
@@ -155,18 +155,18 @@ public class ProcessDirector extends Director {
         }
     }
 
-    /** This method should be called when a new thread corresponding 
-     *  to an actor is started in a simulation. This method is 
-     *  required for detection of deadlocks. 
-     *  The corresponding method decreaseActiveCount should be called 
+    /** This method should be called when a new thread corresponding
+     *  to an actor is started in a simulation. This method is
+     *  required for detection of deadlocks.
+     *  The corresponding method decreaseActiveCount should be called
      *  when the thread is terminated.
      */
     public synchronized void increaseActiveCount() {
 	_actorsActive++;
     }
 
-    /** This method increases the number of paused threads and checks if the 
-     *  entire simulation is paused. 
+    /** This method increases the number of paused threads and checks if the
+     *  entire simulation is paused.
      */
     public synchronized void increasePausedCount() {
         _actorsPaused++;
@@ -174,36 +174,36 @@ public class ProcessDirector extends Director {
     }
 
 
-    /** Return true indicating that the director is ready to be fired. This 
+    /** Return true indicating that the director is ready to be fired. This
      *  starts a thread corresponding to all the actors that were created
      *  in the initialize() method.
      *  @return true always.
      *  @exception IllegalActionException This is never thrown in PN
      */
-    public boolean prefire() 
+    public boolean prefire()
 	    throws IllegalActionException  {
         Enumeration threads = _threadList.elements();
         // Starting threads.
         while (threads.hasMoreElements()) {
             ProcessThread pnt = (ProcessThread)threads.nextElement();
-            pnt.start();        
+            pnt.start();
         }
         //_threadList.clear(); // Should it be cleared or given to manager?
         return true;
     }
 
-    /** Pause the simulation. This method iterates through the set of 
-     *  actors in the compositeActor and sets the pause flag of all 
-     *  the receivers. It also sets the pause flag in all the output 
+    /** Pause the simulation. This method iterates through the set of
+     *  actors in the compositeActor and sets the pause flag of all
+     *  the receivers. It also sets the pause flag in all the output
      *  ports of the CompositeActor under control of this director.
      *  <p>
-     *  FIXME: should a simulationPausedEvent be sent when the 
+     *  FIXME: should a simulationPausedEvent be sent when the
      *  simulation is fully paused?
      *  <p>
      *  FIXME: why is this read locked?
      *  @exception IllegalActionException If cannot access all the receivers.
      */
-    public void setPauseRequested() throws IllegalActionException {        
+    public void setPauseRequested() throws IllegalActionException {
         synchronized(this) {
             // If already paused do nothing.
             if (_pauseRequested) {
@@ -215,15 +215,15 @@ public class ProcessDirector extends Director {
 	try {
 	    //LinkedList _pausedReceivers = new LinkedList();
 
-	    // Obtaining a list of all actors in this compositeActor 
+	    // Obtaining a list of all actors in this compositeActor
 	    CompositeActor cont = (CompositeActor)getContainer();
             Enumeration allMyActors = cont.deepGetEntities();
             Enumeration actorPorts;
-            
+
             ProcessReceiver nextRec;
-                
+
             while (allMyActors.hasMoreElements()) {
-                // Obtaining all the ports of each actor 
+                // Obtaining all the ports of each actor
                 Actor actor = (Actor)allMyActors.nextElement();
                  actorPorts = actor.inputPorts();
                 while (actorPorts.hasMoreElements()) {
@@ -239,10 +239,10 @@ public class ProcessDirector extends Director {
 		    }
 		}
 	    }
-    
-            // If this director is controlling a CompositeActor with 
-            // output ports, need to set the simulationFinished flag 
-            // there as well. 
+
+            // If this director is controlling a CompositeActor with
+            // output ports, need to set the simulationFinished flag
+            // there as well.
             // FIXME: is this the best way to set these flags.
             actorPorts  = cont.outputPorts();
             while (actorPorts.hasMoreElements()) {
@@ -257,11 +257,11 @@ public class ProcessDirector extends Director {
                     }
                 }
             }
-            
+
             // Now wake up all the receivers.
             (new NotifyThread(_pausedReceivers)).start();
 
-            return; 
+            return;
 	} finally {
 	    workspace().doneReading();
 	}
@@ -273,7 +273,7 @@ public class ProcessDirector extends Director {
         if (!_pauseRequested) {
             return;
         }
-       
+
 	Enumeration receivers = _pausedReceivers.elements();
 	while (receivers.hasMoreElements()) {
 	    ProcessReceiver rec = (ProcessReceiver)receivers.nextElement();
@@ -282,21 +282,21 @@ public class ProcessDirector extends Director {
 
         // Now wake up all the receivers.
         (new NotifyThread(_pausedReceivers)).start();
-      
+
         _pausedReceivers.clear();
         _actorsPaused= 0;
         _pauseRequested = false;
     }
 
     /** Terminate all threads under control of this director immediately.
-     *  This abrupt termination will not allow normal cleanup actions 
+     *  This abrupt termination will not allow normal cleanup actions
      *  to be performed.
      *
-     *  FIXME: for now call Thread.stop() but should change to use 
+     *  FIXME: for now call Thread.stop() but should change to use
      *  Thread.destroy() when it is eventually implemented.
      */
     public synchronized void terminate() {
-        // First need to invoke terminate on all actors under the 
+        // First need to invoke terminate on all actors under the
         // control of this director.
         super.terminate();
         // Now stop any threads created by this director.
@@ -311,11 +311,11 @@ public class ProcessDirector extends Director {
 
 
     /** End the simulation. A flag is set in all the receivers
-     *  which causes each process to terminate the next time it 
+     *  which causes each process to terminate the next time it
      *  reaches a communication point.
      *  <p>
-     *  Note that the wrapup methods are not invoked on the actors 
-     *  under control of this director as each actor is executed by a 
+     *  Note that the wrapup methods are not invoked on the actors
+     *  under control of this director as each actor is executed by a
      *  seperate thread.
      *  <p>
      **  @exception IllegalActionException if a method accessing the topology
@@ -324,10 +324,10 @@ public class ProcessDirector extends Director {
     public synchronized void wrapup() throws IllegalActionException {
 	CompositeActor cont = (CompositeActor)getContainer();
         Enumeration allMyActors = cont.deepGetEntities();
-        
+
         Enumeration actorPorts;
         ProcessReceiver nextRec;
-        
+
         LinkedList recs = new LinkedList();
 
         while (allMyActors.hasMoreElements()) {
@@ -345,10 +345,10 @@ public class ProcessDirector extends Director {
                     }
                 }
             }
-            
-            // If this director is controlling a CompositeActor with 
-            // output ports, need to set the simulationFinished flag 
-            // there as well. 
+
+            // If this director is controlling a CompositeActor with
+            // output ports, need to set the simulationFinished flag
+            // there as well.
             actorPorts  = cont.outputPorts();
             while (actorPorts.hasMoreElements()) {
                 IOPort port = (IOPort)actorPorts.nextElement();
@@ -362,27 +362,27 @@ public class ProcessDirector extends Director {
                         }
                 }
             }
-            
+
             // Now wake up all the receivers.
             (new NotifyThread(recs)).start();
         }
         return;
-    } 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Checks for deadlock(Both artificial and true deadlocks). 
-     *  noOfStoppedProcess is 0 if the deadlock is being checked for a 
+    /** Checks for deadlock(Both artificial and true deadlocks).
+     *  noOfStoppedProcess is 0 if the deadlock is being checked for a
      *  blocked queue. 1 if check is being done when a process stopped.
-     *  This is not synchronized and thus should be called from a 
+     *  This is not synchronized and thus should be called from a
      *  synchronized method.
      */
     protected synchronized void _checkForDeadlock() {
 	System.out.println("_checkForDeadlock: No default implementation, " +
                "should be overridden in derived classes.");
         return;
-    
+
     }
 
     /** Check if all threads are either blocked or paused.
@@ -397,19 +397,19 @@ public class ProcessDirector extends Director {
     /** Handles deadlock, both real and artificial
      * Returns false only if it detects a mutation.
      * Returns true for termination.
-     * This is not synchronized and should be synchronized in the 
+     * This is not synchronized and should be synchronized in the
      * calling method.
      */
-    protected boolean _handleDeadlock() 
+    protected boolean _handleDeadlock()
 	    throws IllegalActionException {
        System.out.println("_handleDeadlock: No default implementation, " +
                "should be overridden in derived classes.");
        return true;
     }
-  
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     protected long _actorsActive = 0;
     protected long _actorsPaused = 0;
 
@@ -417,7 +417,7 @@ public class ProcessDirector extends Director {
     protected boolean _paused = false;
 
     protected LinkedList _pausedReceivers = new LinkedList();
-  
+
     // The threads under started by this director.
     protected LinkedList _threadList = new LinkedList();
 }

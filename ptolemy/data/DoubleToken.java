@@ -39,9 +39,9 @@ import java.text.NumberFormat;
 //////////////////////////////////////////////////////////////////////////
 //// DoubleToken
 /**
-A token that contains a double precision number. 
+A token that contains a double precision number.
 <p>
-Note that a double cannot be losslessly onverted to a long, and vice 
+Note that a double cannot be losslessly onverted to a long, and vice
 versa, as both have 64 bit representations in Java.
 <p>
 @author Neil Smyth, Yuhong Xiong
@@ -89,7 +89,7 @@ public class DoubleToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token add(ptolemy.data.Token rightArg) 
+    public Token add(ptolemy.data.Token rightArg)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, rightArg);
         try {
@@ -123,7 +123,7 @@ public class DoubleToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token addReverse(ptolemy.data.Token leftArg) 
+    public Token addReverse(ptolemy.data.Token leftArg)
             throws IllegalActionException {
         DoubleToken tmp = (DoubleToken)this.convert(leftArg);
         double result = tmp.doubleValue() + _value;

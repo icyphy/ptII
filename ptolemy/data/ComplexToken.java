@@ -195,7 +195,7 @@ public class ComplexToken extends ScalarToken {
                 "is incomparable with ComplexToken in the type " +
                 "hierarchy.");
         }
- 
+
         if (compare == CPO.LOWER) {
             return divisor.divideReverse(this);
         } else {
@@ -247,7 +247,7 @@ public class ComplexToken extends ScalarToken {
                 "is incomparable with ComplexToken in the type " +
                 "hierarchy.");
         }
- 
+
         if (compare == CPO.LOWER) {
             return token.equals(this);
         } else {
@@ -354,7 +354,7 @@ public class ComplexToken extends ScalarToken {
                 "is incomparable with ComplexToken in the type " +
                 "hierarchy.");
         }
- 
+
         if (compare == CPO.LOWER) {
             return rightArg.subtractReverse(this);
         } else {

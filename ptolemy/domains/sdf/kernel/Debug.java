@@ -25,17 +25,17 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						COPYRIGHTENDKEY
 */
 
-/* This is an static class that allows debug print statements to be 
-   inserted into code and easily ignored when not needed. 
+/* This is an static class that allows debug print statements to be
+   inserted into code and easily ignored when not needed.
 @ProposedRating Red (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.kernel;
 
-/** I wrote this class in an effort to provide a nice way to deal with 
+/** I wrote this class in an effort to provide a nice way to deal with
     inserting debugging print statements into code.   It is often a nicer
-    way to trace code than by stepping through with jdb and this mechanism 
-    allows the more useful of these trace statements to remain in code with 
+    way to trace code than by stepping through with jdb and this mechanism
+    allows the more useful of these trace statements to remain in code with
     little overhead.
 
 @author Steve Neuendorffer
@@ -48,21 +48,21 @@ import ptolemy.kernel.util.InvalidStateException;
 
 public class Debug {
 
-    /** Throw an exception if expr is not true. 
+    /** Throw an exception if expr is not true.
      *
      *  @param expr an expression to be evaluted
      *  @exception InvalidStateException if expression evaluates to false.
      */
     public static void assert(boolean expr) {
         if(!expr) {
-            InvalidStateException exception = 
+            InvalidStateException exception =
                 new InvalidStateException("Assertion Failed");
             println(exception.toString());
         }
     }
 
     /** Publish an event string to all debug listeners.
-     *  
+     *
      *  @param eventstring String to be issued
      */
     public static void print(String eventstring) {
@@ -75,7 +75,7 @@ public class Debug {
 
 
     /** Publish an event string to all debug listeners, terminated with EOLN.
-     *  
+     *
      *  @param eventstring String to be issued
      */
     public static void println(String eventstring) {
@@ -83,7 +83,7 @@ public class Debug {
     }
 
     /** Register a new debug listener.
-     *  
+     *
      *  @param DebugListener to be registered.
      */
     public static void register(DebugListener d) {
@@ -91,7 +91,7 @@ public class Debug {
     }
 
     /** Remove a debug listener from the list of registered listeners.
-     *  
+     *
      *  @param DebugListener to be unregistered.
      */
     public static void unregister(DebugListener d) {
@@ -100,8 +100,8 @@ public class Debug {
 
     // A HashedSet of all our debuglisteners
     static HashedSet debuglisteners;
-    
-    static { 
+
+    static {
         debuglisteners = new HashedSet();
     }
 }

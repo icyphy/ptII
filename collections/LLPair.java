@@ -1,8 +1,8 @@
 /*
   File: LLPair.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   24Sep95  dl@cs.oswego.edu   Create from collections.java  working file
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -116,7 +116,7 @@ public class LLPair extends LLCell implements Pair {
 **/
   public final int countKey(Object key) {
     int c = 0;
-    for (LLPair p = this; p != null; p = (LLPair)(p.next())) 
+    for (LLPair p = this; p != null; p = (LLPair)(p.next()))
       if (p.key().equals(key)) ++c;
     return c;
   }
@@ -126,13 +126,13 @@ public class LLPair extends LLCell implements Pair {
 **/
   public final int count(Object key, Object element) {
     int c = 0;
-    for (LLPair p = this; p != null; p = (LLPair)(p.next())) 
+    for (LLPair p = this; p != null; p = (LLPair)(p.next()))
       if (p.key().equals(key) && p.element().equals(element)) ++c;
     return c;
   }
 
-  protected Object clone()  throws CloneNotSupportedException { 
-    return new LLPair(key(), element(), (LLPair)(next())); 
+  protected Object clone()  throws CloneNotSupportedException {
+    return new LLPair(key(), element(), (LLPair)(next()));
   }
 
 }

@@ -36,13 +36,13 @@ import java.util.NoSuchElementException;
 import collections.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// Icon 
+//// Icon
 /**
 
 An icon is the graphical representation of a schematic entity.
 Icons are created by an IconLibrary in response to a request
 for an icon. Each icon is represented in an icon library
-XML files by the <icon> element.   
+XML files by the <icon> element.
 <!-- icon elements will be parsed into class Icon -->
 <!ELEMENT icon (description, entitytype, graphic*, parameter*, port*)>
 <!ATTLIST icon
@@ -55,7 +55,7 @@ public class Icon extends XMLElement {
 
     /**
      * Create a new Icon. By default, the icon contains no graphic
-     * representations, no attributes, and has an entity type that 
+     * representations, no attributes, and has an entity type that
      * exists, but is not specified.
      */
     public Icon () {
@@ -85,7 +85,7 @@ public class Icon extends XMLElement {
         ports = (HashedMap) new HashedMap();
         if(!hasAttribute("name")) setName("");
     }
-   
+
 
     /**
      * Create a new Icon, containing the specified attributes and the
@@ -105,46 +105,46 @@ public class Icon extends XMLElement {
         if(!hasAttribute("name")) setName("");
     }
 
-    /** 
+    /**
      * Add a new graphic to the icon. The format
      * is specified in the "format" attribute of the XMLElement.
      * The XMLElement must be of element type "graphic".
-     *  
-     * @throw IllegalActionException if the element is not of element type 
+     *
+     * @throw IllegalActionException if the element is not of element type
      * "graphic"
-     * @throw IllegalActionException if a graphic with the same type as 
-     * the element is already associated with this Icon. 
+     * @throw IllegalActionException if a graphic with the same type as
+     * the element is already associated with this Icon.
      */
     public void addGraphic (XMLElement element) throws IllegalActionException {
         String type = element.getElementType();
-        if(!type.equals("graphic")) 
+        if(!type.equals("graphic"))
             throw new IllegalActionException("Element must be of " +
                     " type graphic");
         String format = element.getAttribute("format");
-        if(containsGraphic(format)) 
-            throw new IllegalActionException("Graphic of type " + format + 
+        if(containsGraphic(format))
+            throw new IllegalActionException("Graphic of type " + format +
                     " already exists.");
         graphics.putAt(format, element);
         addChildElement(element);
     }
 
-    /** 
+    /**
      * Add a new port to the icon. The port name must be unique within this
      * icon.
-     *  
-     * @throw IllegalActionException if a port with the same name as 
-     * the new port is already contained in this Icon. 
+     *
+     * @throw IllegalActionException if a port with the same name as
+     * the new port is already contained in this Icon.
      */
     public void addPort (SchematicPort port) throws IllegalActionException {
         String name = port.getName();
-        if(containsPort(name)) 
-            throw new IllegalActionException("Port with name " + name + 
+        if(containsPort(name))
+            throw new IllegalActionException("Port with name " + name +
                     " already exists.");
         ports.putAt(name, port);
         addChildElement(port);
     }
 
-    /** 
+    /**
      * Test if this icon contains a graphic in the
      * given format.
      */
@@ -152,7 +152,7 @@ public class Icon extends XMLElement {
         return graphics.includesKey(format);
     }
 
-    /** 
+    /**
      * Test if this icon contains a port with the
      * given name.
      */
@@ -160,16 +160,16 @@ public class Icon extends XMLElement {
         return ports.includesKey(name);
     }
 
-    /** 
+    /**
      * Given a graphic format attribute, return the graphic
-     * that has that format. 
-     * 
+     * that has that format.
+     *
      * @return an XMLElement with element type of "graphic"
      * @throw IllegalActionException if no graphic exists in the given format
      */
-    public XMLElement getGraphic (String format) 
+    public XMLElement getGraphic (String format)
     throws IllegalActionException {
-        try {            
+        try {
             XMLElement s = (XMLElement) graphics.at(format);
             return s;
         }
@@ -179,14 +179,14 @@ public class Icon extends XMLElement {
         }
     }
 
-    /** 
+    /**
      * Return the port contained in this object with the given name.
-     * 
+     *
      * @throw IllegalActionException if no port exists with the given name.
      */
-    public SchematicPort getPort(String name) 
+    public SchematicPort getPort(String name)
     throws IllegalActionException {
-        try {            
+        try {
             SchematicPort s = (SchematicPort) ports.at(name);
             return s;
         }
@@ -196,22 +196,22 @@ public class Icon extends XMLElement {
         }
     }
 
-    /** 
+    /**
      * Return a long description string of the the Icons in thie Library.
      */
     public String getDescription() {
         return description.getPCData();
     }
 
-    /** 
+    /**
      * Return the EntityType of this Icon
      */
     public EntityType getEntityType () {
         return entitytype;
     }
 
-    /** 
-     * Return the name of this Icon.  
+    /**
+     * Return the name of this Icon.
      */
     public String getName() {
         return getAttribute("name");
@@ -219,7 +219,7 @@ public class Icon extends XMLElement {
 
     /**
      * Return an enumeration over the names of the graphics formats
-     * supported by this icon. 
+     * supported by this icon.
      *
      * @return Enumeration of String.
      */
@@ -236,7 +236,7 @@ public class Icon extends XMLElement {
         return ports.elements();
     }
 
-    /** 
+    /**
      * Remove a graphic from the icon. Throw an exception if
      * a graphic in this format is not associated with the Icon.
      */
@@ -252,7 +252,7 @@ public class Icon extends XMLElement {
         }
     }
 
-    /** 
+    /**
      * Remove a port from the icon. Throw an exception if
      * a port with this name is not contained in the Icon.
      */
@@ -268,13 +268,13 @@ public class Icon extends XMLElement {
         }
     }
 
-    /** 
+    /**
      * Set the string that contains the long description of this icon.
      */
     public void setDescription(String s) {
         description.setPCData(s);
     }
-  
+
     /**
      * Set the name of this Icon.
      */

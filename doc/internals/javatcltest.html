@@ -15,7 +15,7 @@ with Tcl.  For information about writing tests in general, see the
 methods.  We use TclBlend and the standard Tcl test bed to create tests.
 In the example below, we call <CODE>java::new</CODE> to create an
 instance of the Java <CODE>NamedObj</CODE> class.  We can then
-call public methods of <CODE>NamedObj</CODE> by referring to the 
+call public methods of <CODE>NamedObj</CODE> by referring to the
 Java object handle <CODE>$n</CODE>:
 <PRE>
 test NamedObj-2.1 {Create a NamedObj, set the name, change it} {
@@ -37,7 +37,7 @@ the Tcl test file should be at <CODE>test/NamedObj.tcl</CODE>.
 
 <H3><A NAME="getJavaInfo testing proc">getJavaInfo Testing Proc</A></H3>
  <P>TclBlend provides a Tcl procedure called <CODE>java::info</CODE>
-which returns information about an instance of a Java class.  
+which returns information about an instance of a Java class.
 <A HREF="../../../kernel/test/testDefs.tcl"><CODE>$TYCHO/kernel/test/testDefs.tcl</CODE></A>
 defines the <CODE>getJavaInfo</CODE> Tcl proc, which takes a Java object
 handle and returns a string that describes the object's fields, methods

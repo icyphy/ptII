@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
@@ -35,11 +35,11 @@ import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// IdentityActor
-/** 
+/**
 An IdentityActor is a simple atomic actor that transfers the input token
-to the output. This actor is used in tests that needs to emulate the 
+to the output. This actor is used in tests that needs to emulate the
 fire method. This actor has a single input port and a single output port,
-with the name "input" and "output" respectively. 
+with the name "input" and "output" respectively.
 
 @author  Jie Liu
 @version $Id$
@@ -84,7 +84,7 @@ public class IdentityActor extends AtomicActor {
             Token in = input.get(0);
             output.broadcast(in);
         }catch(NoTokenException e) {
-            throw new IllegalActionException( this, 
+            throw new IllegalActionException( this,
             " No token available when firing.");
         }
     }

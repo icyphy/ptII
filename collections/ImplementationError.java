@@ -1,8 +1,8 @@
 /*
   File: ImplementationError.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -14,10 +14,10 @@
 package collections;
 
 /**
- * ImplementationError is thrown by 
+ * ImplementationError is thrown by
  * ImplementationCheckable.checkImplementation upon failure
  * to verify internal representation constraints.
- * 
+ *
  * @author Doug Lea
  * @version 0.93
  *
@@ -30,13 +30,13 @@ public class ImplementationError extends Error {
 /**
  * The object failing the ImplementationCheck
 **/
-  
+
   public Object failedObject;
 
   public ImplementationError() { super(); }
 
-  public ImplementationError(String msg, Object v) { 
-    super(msg); failedObject = v; 
+  public ImplementationError(String msg, Object v) {
+    super(msg); failedObject = v;
   }
 
 /**
@@ -45,10 +45,10 @@ public class ImplementationError extends Error {
  * @param obj -- the object making the assertion
  * @param pred -- the assertion
 **/
-  public static void assert(Object obj, boolean pred) 
+  public static void assert(Object obj, boolean pred)
   throws ImplementationError {
     if (!pred) throw new ImplementationError("Assertion failure", obj);
   }
-      
+
 }
 

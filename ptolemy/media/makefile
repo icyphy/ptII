@@ -43,7 +43,7 @@ include $(CONFIG)
 JDOCFLAGS = 	-author -version -public
 
 # Order matters here, go into util first, since mutation depends on it
-DIRS = 		
+DIRS =
 
 CLASSPATH =	../..
 

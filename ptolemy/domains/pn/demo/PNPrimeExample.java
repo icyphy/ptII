@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -38,7 +38,7 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNPrimeExample
-/** 
+/**
 This is currently a Universe containing some PN Actors. This might not support
 hierarchy currently.
 @author  Mudit Goel
@@ -46,8 +46,8 @@ hierarchy currently.
 */
 public class PNPrimeExample {
 
-    public static void main(String args[]) throws 
-            IllegalStateException, IllegalActionException, 
+    public static void main(String args[]) throws
+            IllegalStateException, IllegalActionException,
             NameDuplicationException {
         CompositeActor myUniverse = new CompositeActor();
         myUniverse.setName("Prime_example");

@@ -38,15 +38,15 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalBranch
 /**
-Base class for classes representing guarded communication statements. A 
+Base class for classes representing guarded communication statements. A
 guarded comunication statement is of the form
 <br>
       guard; communication => statements
 <br>
-If the guard is true, or absent which implies true, then the branch 
-is enabled. Guarded communication statements are the used to perfrom 
-both forms of conditional communication constructs: CIF and CDO.  Each guarded 
-comunication statement is one branch of a CIF or CDO. 
+If the guard is true, or absent which implies true, then the branch
+is enabled. Guarded communication statements are the used to perfrom
+both forms of conditional communication constructs: CIF and CDO.  Each guarded
+comunication statement is one branch of a CIF or CDO.
 <p>
 A CDO has the form
 <br>
@@ -59,25 +59,25 @@ CDO {
 }
 <br>
 While at least one of the branches is enabled, the construct continues
-to evaluate and execute one of the enabled branches. If more than one 
-branch is enabled, the first branch to be able to rendezvous succeeds 
-and its statements are executed. Note that this construct is 
-nondeterministic as it may be  a race condition that determines 
-which branch is sucessful. The CIF is similar to the CDO excpet that 
+to evaluate and execute one of the enabled branches. If more than one
+branch is enabled, the first branch to be able to rendezvous succeeds
+and its statements are executed. Note that this construct is
+nondeterministic as it may be  a race condition that determines
+which branch is sucessful. The CIF is similar to the CDO excpet that
 it is only evaluated once.
 <p>
-The communication part of a guarded communication statement can be 
-either a send() or a receive(). There are thus two subclasses of this 
-class, each representing a guarded communication statement for one of 
-the communication primitives. The subclasses are ConditionalSend and 
+The communication part of a guarded communication statement can be
+either a send() or a receive(). There are thus two subclasses of this
+class, each representing a guarded communication statement for one of
+the communication primitives. The subclasses are ConditionalSend and
 ConditionalReceive.
 <p>
-If more than one branch is enabled, each enabled branch is executed 
-in a seperate thread. For rendezvous, the receiver is the key 
+If more than one branch is enabled, each enabled branch is executed
+in a seperate thread. For rendezvous, the receiver is the key
 synchronization point.
 <p>
 Conditional branches are designed to be used once. Upon instantiation,
-they are given the guard, port and the channel and the identification 
+they are given the guard, port and the channel and the identification
 number of the branch according to the parent.
 The port and the channel together define the CSPReceiver with which to
 rendezvous. The CSPActor, that contains this branch, is
@@ -89,10 +89,10 @@ assumed to be the container of the port argument.
 
 public abstract class ConditionalBranch {
 
-    /** Create a guarded communication statement. This class contains 
-     *  all of the information necessary to carry out a guarded 
-     *  communication statement, with the exception of the type of 
-     *  communication. The receiver is set in the subclass as it 
+    /** Create a guarded communication statement. This class contains
+     *  all of the information necessary to carry out a guarded
+     *  communication statement, with the exception of the type of
+     *  communication. The receiver is set in the subclass as it
      *  is subject to communication specific tests.
      *  @param guard The guard for the guarded communication statement
      *   represented by this object.
@@ -149,16 +149,16 @@ public abstract class ConditionalBranch {
         return _receiver;
     }
 
-    /** the token transfered if the branch succeeded. For a ConditionalSend 
-     *  it is set upon creation, and set to null after the rendezvous. 
-     *  For a ConditionalReceive it is set after the rendezvous has 
-     *  occured, and is null before that. 
+    /** the token transfered if the branch succeeded. For a ConditionalSend
+     *  it is set upon creation, and set to null after the rendezvous.
+     *  For a ConditionalReceive it is set after the rendezvous has
+     *  occured, and is null before that.
      *  @return The Token transfered if the rendezvous succeeded.
      */
     public Token getToken() {
         return _token;
     }
-        
+
     /** Boolean indicating if this branch is still alive. If it is false, it
      *  indicates another conditional branch was able to rendezvous before
      *  this branch. The branch should stop trying to rendezvous with
@@ -182,9 +182,9 @@ public abstract class ConditionalBranch {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** Called by subclasses to wait. It takes care of registering 
+    /** Called by subclasses to wait. It takes care of registering
      *  branches as blocked which is needed for deadlock detection.
-     *  @exception InterruptedException If this method is interrupted 
+     *  @exception InterruptedException If this method is interrupted
      *   while waiting.
      */
     protected void _checkAndWait() throws InterruptedException {

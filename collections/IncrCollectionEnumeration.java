@@ -1,8 +1,8 @@
 /*
   File: IncrCollectionEnumeration.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   13Oct    dl@cs.oswego.edu   Create.
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -75,7 +75,7 @@ public final class IncrCollectionEnumeration implements CollectionEnumeration {
  * @see collections.CollectionEnumeration#corrupted
 **/
   public synchronized boolean corrupted() {
-    return enum_.corrupted(); 
+    return enum_.corrupted();
   }
 
 

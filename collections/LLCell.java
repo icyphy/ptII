@@ -1,8 +1,8 @@
 /*
   File: LLCell.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   24Sep95  dl@cs.oswego.edu   Create from collections.java  working file
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -56,22 +56,22 @@ public class LLCell extends Cell {
 
 
 /**
- * Splice in p between current cell and whatever it was previously 
+ * Splice in p between current cell and whatever it was previously
  * pointing to
  * @param p, the cell to splice
 **/
 
-  public final void linkNext(LLCell p) { 
-    if (p != null)  p.next_ = next_; 
+  public final void linkNext(LLCell p) {
+    if (p != null)  p.next_ = next_;
     next_ = p;
   }
 
 /**
- * Cause current cell to skip over the current next() one, 
+ * Cause current cell to skip over the current next() one,
  * effectively removing the next element from the list
 **/
 
-  public final void unlinkNext()       { 
+  public final void unlinkNext()       {
     if (next_ != null) next_ = next_.next_;
   }
 
@@ -128,7 +128,7 @@ public class LLCell extends Cell {
 **/
 
   public final LLCell last() {
-    LLCell p = this; 
+    LLCell p = this;
     for ( ; p.next_ != null; p = p.next_) {}
     return p;
   }
@@ -153,7 +153,7 @@ public class LLCell extends Cell {
     LLCell newlist = null;
     try {
       newlist = (LLCell)(clone());
-    } catch (CloneNotSupportedException ex) {}      
+    } catch (CloneNotSupportedException ex) {}
     LLCell current = newlist;
     for (LLCell p = next_; p != null; p = p.next_) {
       try {
@@ -169,8 +169,8 @@ public class LLCell extends Cell {
  * Clone is SHALLOW; i.e., just makes a copy of the current cell
 **/
 
-  protected Object clone() throws CloneNotSupportedException { 
-    return new LLCell(element(), next_); 
+  protected Object clone() throws CloneNotSupportedException {
+    return new LLCell(element(), next_);
   }
 
 /**
@@ -216,7 +216,7 @@ public class LLCell extends Cell {
  * @param s the head of the list
  * @return the head of the second half
 **/
- 
+
   public static LLCell split(LLCell s) {
     LLCell fast = s;
     LLCell slow = s;

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -36,7 +36,7 @@ import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTAdd
-/** 
+/**
 An multi-input one output double precision adder (IO type: double)
 In the fire() phase, it adds all the input token and emit the sum as
 the output. Inherent other functions from the default implementation
@@ -51,8 +51,8 @@ public class CTAdd extends CTActor{
      * @param name The name
      * @exception NameDuplicationException another star already had this name
      * @exception IllegalActionException illustrates internal problems
-    */	
-    public CTAdd(TypedCompositeActor container, String name) 
+    */
+    public CTAdd(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input = new TypedIOPort(this, "input");
@@ -68,7 +68,7 @@ public class CTAdd extends CTActor{
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-   
+
     /** Add the input tokens, and output the sum.
      *  @exception IllegalActionException If there's no enough input
      *       tokens.
@@ -80,7 +80,7 @@ public class CTAdd extends CTActor{
         }
         output.broadcast(new DoubleToken(sum));
     }
-    
+
     /** The multi-input port.
      */
     public TypedIOPort input;

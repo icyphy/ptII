@@ -38,14 +38,14 @@ import ptolemy.domains.sdf.kernel.*;
 /**
 @author Stephen Neuendorffer
 @version $Id$
-*/ 
+*/
 
 public class SDFJoin extends SDFAtomicActor {
     public IOPort inputport1;
     public IOPort inputport2;
     public IOPort outputport;
 
-    public SDFJoin(CompositeActor container, String name) 
+    public SDFJoin(CompositeActor container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container,name);
         try{
@@ -63,11 +63,11 @@ public class SDFJoin extends SDFAtomicActor {
             System.out.println("SDFJoin: constructor error");
         }
     }
-    
+
     public void fire() throws IllegalActionException {
         IntToken message;
-        
-        
+
+
         message=(IntToken)inputport1.get(0);
         System.out.print("Join1 - ");
         System.out.println(message.intValue());
@@ -76,7 +76,7 @@ public class SDFJoin extends SDFAtomicActor {
         System.out.print("Join2 - ");
         System.out.println(message.intValue());
         outputport.send(0,message);
-            
+
     }
 }
 

@@ -1,8 +1,8 @@
 /*
   File: UpdatableMapImpl.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   13Oct95  dl                 Create
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
 /**
  *
  * UpdatableMapImpl extends UpdatableImpl to provide
- * default implementations of some Map operations. 
+ * default implementations of some Map operations.
  * @author Doug Lea
  * @version 0.93
  *
@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
  *
 **/
 
-abstract class UpdatableMapImpl extends UpdatableImpl implements UpdatableMap { 
+abstract class UpdatableMapImpl extends UpdatableImpl implements UpdatableMap {
 
 
 /**
@@ -48,7 +48,7 @@ abstract class UpdatableMapImpl extends UpdatableImpl implements UpdatableMap {
  * Implements collections.Map.puttingAt.
  * @see collections.Map#puttingAt
 **/
-  public synchronized  Map  puttingAt(Object key, Object element) 
+  public synchronized  Map  puttingAt(Object key, Object element)
   throws IllegalElementException {
     UpdatableMap c = null;
     try {

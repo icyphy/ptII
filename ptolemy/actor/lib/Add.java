@@ -43,7 +43,7 @@ This adder has multiple input ports and a single output port.
 The types on the ports are undeclared and will be resolved by
 the type resolution mechanism.
 
-@author Yuhong Xiong 
+@author Yuhong Xiong
 @version $Id$
 */
 
@@ -87,7 +87,7 @@ public class Add extends TypedAtomicActor {
 	    }
 	}
 
-	_output.broadcast(sum); 
+	_output.broadcast(sum);
     }
 
     /** Return the type constraints: Input <= Output; Output <= Scalar.

@@ -1,8 +1,8 @@
 /*
   File: RBPairEnumeration.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Changed protection statuses
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -30,7 +30,7 @@ final class RBPairEnumeration extends CEImpl {
   private RBPair cur_;
   private boolean useKeys_;
 
-  public RBPairEnumeration(UpdatableCollection c, RBPair t,boolean useKeys) { 
+  public RBPairEnumeration(UpdatableCollection c, RBPair t,boolean useKeys) {
     super(c);
     if (t == null)
       cur_ = t;
@@ -43,9 +43,9 @@ final class RBPairEnumeration extends CEImpl {
  * Implements java.util.Enumeration.nextElement.
  * @see java.util.Enumeration#nextElement
 **/
-  public Object nextElement() { 
+  public Object nextElement() {
     decRemaining();
-    Object v = (useKeys_)? cur_.key(): cur_.element(); 
+    Object v = (useKeys_)? cur_.key(): cur_.element();
     cur_ = (RBPair)(cur_.successor());
     return v;
   }

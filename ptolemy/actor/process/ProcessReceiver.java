@@ -39,7 +39,7 @@ import ptolemy.actor.util.*;
 /**
 Interface for receivers in process domains.
 
-It extends adds methods to the Receiver interface for setting flags 
+It extends adds methods to the Receiver interface for setting flags
 that the simulation has been paused or is finished.
 
 @author Neil Smyth
@@ -53,12 +53,12 @@ public interface ProcessReceiver extends Receiver {
 
     /** Set the local flag that the simulation has been paused.
      *  @param value The new value of the paused flag.
-     */     
+     */
     public void setPause(boolean value);
-    
+
     /** Set the local flag that the simulation has been finished.
      *  @param value The new value of the finished flag.
-     */     
+     */
     public void setFinish();
 }
 

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -32,7 +32,7 @@ import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTMemarisActor
-/** 
+/**
 An interface for actors that can remembers their state. The states
 of the actor can be used for rolling back the simulation when needed.
 This ability is essential when embbeding CT subsystem inside an

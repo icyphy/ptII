@@ -46,8 +46,8 @@ XML elements. It contains some basic support for accessing elements.
 @version $Id$
 */
 public class XMLElement extends Object {
-    
-    /** 
+
+    /**
      * Create a new XMLElement with element type given by the string.
      * The element has no attributes and no child elements.
      *
@@ -60,7 +60,7 @@ public class XMLElement extends Object {
         _pcdata = "";
     }
 
-    /** 
+    /**
      * Create a new XMLElement with element type with the given name and the
      * given attributes.  The element starts with no child elements.
      *
@@ -80,14 +80,14 @@ public class XMLElement extends Object {
         _childelements.insertLast(e);
         e.setParent(this);
     }
-    
+
     /**
      * Add the String to the end of the current PCDATA for this element.
      */
     public void appendPCData(String s) {
         _pcdata = _pcdata + s;
     }
-    
+
     /**
      * Return an enumeration over the names of the attributes
      * in this schematic.
@@ -98,7 +98,7 @@ public class XMLElement extends Object {
 
     /**
      * Return an Enumeration of all the child elements of this element.
-     *  
+     *
      *  @return an Enumeration of XMLElements
      */
     public Enumeration childElements() {
@@ -108,7 +108,7 @@ public class XMLElement extends Object {
    /**
      * Return an Enumeration of all the child elements of this element that
      * have the given element type.
-     *  
+     *
      *  @return an Enumeration of XMLElements
      */
     /*   public Enumeration childElements(String type) {
@@ -135,7 +135,7 @@ public class XMLElement extends Object {
      * Return the first child element of this element with the given type
      * @throws NoSuchElementException if no element with the given type exists.
      */
-    /*    public XMLElement getChildElement(String type) 
+    /*    public XMLElement getChildElement(String type)
     throws NoSuchElementException {
        Enumeration elements = childElements();
         while(elements.hasMoreElements()) {
@@ -146,17 +146,17 @@ public class XMLElement extends Object {
         throw new NoSuchElementException("XMLElement does not contain a " +
                 "child element with type " + type);
     }*/
-        
+
 
     /** Return the type of this XMLElement.  The type is immutably set when
-     *  the XMLElement is created.  
+     *  the XMLElement is created.
      */
     public String getElementType() {
         return _elementtype;
     }
-    
+
     /**
-     * Return the parent element of this element, or null if the parent 
+     * Return the parent element of this element, or null if the parent
      * has not been set.
      */
     public XMLElement getParent() {
@@ -169,7 +169,7 @@ public class XMLElement extends Object {
     public String getPCData() {
         return _pcdata;
     }
-    
+
     /**
      * Test if this schematic has the attribute wuth the given name.
      */
@@ -177,14 +177,14 @@ public class XMLElement extends Object {
         return _attributes.includesKey(name);
     }
 
-    /** 
-     * Test if the element is a child element of this element 
+    /**
+     * Test if the element is a child element of this element
      */
     public boolean hasChildElement(XMLElement e) {
         return _childelements.includes(e);
     }
 
-    /** 
+    /**
      * Test if a child element of this element has the given type
      */
     /*    public boolean hasChildElement(String type) {
@@ -197,14 +197,14 @@ public class XMLElement extends Object {
         return false;
     }*/
 
-    /** 
+    /**
      * Remove an attribute from this element
      */
     public void removeAttribute(String name) {
         _attributes.removeAt(name);
     }
 
-    /** 
+    /**
      * Remove an child element from this element
      */
     public void removeChildElement(XMLElement e) {
@@ -220,15 +220,15 @@ public class XMLElement extends Object {
         _attributes.putAt(name, value);
     }
 
-    /** 
+    /**
      * Set the parent element of this element.
      */
     public void setParent(XMLElement p) {
         _parent = p;
     }
 
-    /** 
-     * Set the text of this element to the given string. 
+    /**
+     * Set the text of this element to the given string.
      */
     public void setPCData(String s) {
         _pcdata = s;
@@ -263,8 +263,8 @@ public class XMLElement extends Object {
         s = s + getElementType();
         s = s + ">\n";
         return s;
-    }  
-        
+    }
+
     /**
      * Add an attribute with the given name to this element.
      * This method is package-private, since only the XML

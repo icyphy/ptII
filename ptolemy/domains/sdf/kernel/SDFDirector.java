@@ -42,13 +42,13 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// SDFDirector
 /**  An SDFDirector is the class that controls execution of a set of SDFActors.
-     It is derived from StaticSchedulingDirector and by default uses an 
-     SDFScheduler to static schedule the execution of the Actors.   
+     It is derived from StaticSchedulingDirector and by default uses an
+     SDFScheduler to static schedule the execution of the Actors.
      Furthermore, it creates Receivers of type QueueReceiver, which is
      consistant with a dataflow domain.
 
-     The SDF director has a single parameter, "Iterations" corresponding to a 
-     limit on the number of times the director will fire its hierarchy 
+     The SDF director has a single parameter, "Iterations" corresponding to a
+     limit on the number of times the director will fire its hierarchy
      before it returns false in postfire.   If this number is not greater
      than zero, then no limit is set and postfire will always return false.
      The default number of iterations is zero.
@@ -58,7 +58,7 @@ import java.util.Enumeration;
 public class SDFDirector extends StaticSchedulingDirector {
 
     /** Construct a director in the default workspace with an empty string
-     *  as its name. 
+     *  as its name.
      *  The SDFDirector will have a default scheduler of type SDFScheduler.
      */
     public SDFDirector() {
@@ -68,7 +68,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     /** Construct an SDFDirector in the default workspace with the given name.
      *  The SDFDirector will have a default scheduler of type SDFScheduler.
-     *  
+     *
      *  @param name Name of this object.
      */
     public SDFDirector(String name) {
@@ -95,8 +95,8 @@ public class SDFDirector extends StaticSchedulingDirector {
 
 
     /** Return a new receiver consistant with the SDF domain.
-        All SDF receivers are FIFOQueues.  
-        @return A new FIFOQueue 
+        All SDF receivers are FIFOQueues.
+        @return A new FIFOQueue
         */
     public Receiver newReceiver() {
         return new QueueReceiver();
@@ -161,11 +161,11 @@ public class SDFDirector extends StaticSchedulingDirector {
         CompositeActor container = ((CompositeActor)getContainer());
 
         if (container == null) {
-            throw new InvalidStateException("SDFDirector " + getName() + 
+            throw new InvalidStateException("SDFDirector " + getName() +
                     " fired, but it has no container!");
         } else {
             Scheduler s = getScheduler();
-            if (s == null) 
+            if (s == null)
                 throw new IllegalActionException("Attempted to fire " +
                         "SDF system with no scheduler");
             Enumeration allactors = s.schedule();
@@ -173,7 +173,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 Actor actor = (Actor)allactors.nextElement();
                 if(!actor.prefire()) {
                     throw new IllegalActionException("SDF Schedule " +
-                            "invalid.   Actor " + 
+                            "invalid.   Actor " +
                             "is not ready to fire.");
                 }
                 actor.fire();
@@ -211,7 +211,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Initialize the object.   In this case, we give the SDFDirector a 
+    /** Initialize the object.   In this case, we give the SDFDirector a
      *  default scheduler
      */
 
@@ -221,15 +221,15 @@ public class SDFDirector extends StaticSchedulingDirector {
             setScheduler(scheduler);
         }
         catch (IllegalActionException e) {
-            // if setScheduler fails, then we should just set it to Null.  
-            // this should never happen because we don't override 
-            // setScheduler() to do sanity checks.  
+            // if setScheduler fails, then we should just set it to Null.
+            // this should never happen because we don't override
+            // setScheduler() to do sanity checks.
             Debug.println("Illegal schedule caught, " +
                 "which should never happen!");
         }
 
         try {
-            _parameteriterations 
+            _parameteriterations
                 = new Parameter(this,"Iterations",new IntToken(0));
         }
         catch (Exception e) {
@@ -237,13 +237,13 @@ public class SDFDirector extends StaticSchedulingDirector {
             Debug.println("This should never happen.");
         }
 
-          
+
 
 
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private int _iteration;
     private Parameter _parameteriterations;
 

@@ -21,7 +21,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -42,8 +42,8 @@ import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// HistogramApplet
-/** 
-An applet that uses Ptolemy II DE domain engine to simulate passengers 
+/**
+An applet that uses Ptolemy II DE domain engine to simulate passengers
 and buses arrivals and then calculate the wait time.
 
 @author Lukito
@@ -55,7 +55,7 @@ public class HistogramApplet extends Applet implements Runnable {
     ////                         public methods                         ////
 
     /** Initialize the applet.
-     */	
+     */
     public void init() {
 
         // Process the background parameter.
@@ -97,7 +97,7 @@ public class HistogramApplet extends Applet implements Runnable {
         plot.setXLabel("Time");
         plot.setYLabel("Wait time");
         appletPanel.add(plot, "North");
-        
+
         // _hist is the drawing panel for the DEHist actor.
         Plot hist = new Plot();
         hist.setSize(new Dimension(450, 150));
@@ -162,13 +162,13 @@ public class HistogramApplet extends Applet implements Runnable {
 
         // Adding go button in the control panel.
         controlPanel.add(_goButton);
-        _goButton.addActionListener(new GoButtonListener());        
+        _goButton.addActionListener(new GoButtonListener());
         // Done adding go button
-        
+
         try {
             TypedCompositeActor topLevel = new TypedCompositeActor();
             topLevel.setName("Top");
-        
+
             // Set up the directors
             _clock = new DEClock(topLevel, "Clock Bus", 1.0, 1.0);
             _poisson = new DEPoisson(topLevel, "Poisson Bus", 1.0, 1.0);
@@ -176,7 +176,7 @@ public class HistogramApplet extends Applet implements Runnable {
             topLevel.setDirector(_localDirector);
             _executiveDirector = new Manager("Executive Director");
             topLevel.setManager(_executiveDirector);
-            
+
             // Create the actors.
             // The connections are created after appropriate source is chosen.
             DEPoisson dePoisson = new DEPoisson(topLevel, "Poisson",-1.0,1.0);
@@ -196,7 +196,7 @@ public class HistogramApplet extends Applet implements Runnable {
             Relation r3 = topLevel.connect(deWaitingTime.output, dePlot.input);
             deHist.input.link(r3);
             _stat.input.link(r3);
-            
+
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
             ex.printStackTrace();
@@ -216,12 +216,12 @@ public class HistogramApplet extends Applet implements Runnable {
             System.err.println("Invalid stop time: " + ex.getMessage());
             return;
         }
-        
+
         try {
                 Checkbox selected = _cbg.getSelectedCheckbox();
 
                 System.out.println("Selected = " + selected);
-                
+
                 if (selected == _clockCheckbox) {
                     System.out.println("Inside clock selection");
                     _meanInterval = (Parameter)_clock.getAttribute("interval");
@@ -244,7 +244,7 @@ public class HistogramApplet extends Applet implements Runnable {
                         _bus = _poisson;
                     }
                 }
-                
+
                 _localDirector.setStopTime(_stopTime);
 
                 // Start the CurrentTimeThread.
@@ -257,12 +257,12 @@ public class HistogramApplet extends Applet implements Runnable {
 
                 // initialize mean wait time text
                 _averageWaitTimeLabel.setText("Calculating...");
-              
+
 
 
                 // Start the simulation.
                 _executiveDirector.run();
-                
+
                 double average = _stat.getAverage();
                 _averageWaitTimeLabel.setText("Mean wait time = "+average);
         } catch (Exception ex) {
@@ -271,11 +271,11 @@ public class HistogramApplet extends Applet implements Runnable {
         }
         _meanInterval = null;
     }
-    
+
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
-    
+
     // FIXME: I changed all of this to 'friendly' from 'private' (lmuliadi)
 
     // The thread that runs the simulation.
@@ -301,10 +301,10 @@ public class HistogramApplet extends Applet implements Runnable {
     /*private*/ TextField _stopTimeBox;
     /*private*/ double _stopTime = 100.0;
     /*private*/ Button _goButton;
-    
+
     /*private*/ TextField _intervalTextField;
     /*private*/ double _interval = 10.0;
-    
+
     /*private*/ Label _averageWaitTimeLabel;
     /*private*/ Label _currentTimeLabel;
 
@@ -312,7 +312,7 @@ public class HistogramApplet extends Applet implements Runnable {
     /*private*/ Parameter _meanInterval;
     /*private*/ Scrollbar _meanIntervalScrollbar;
     /*private*/ Label _meanIntervalLabel;
- 
+
     // END FIXME
 
     //////////////////////////////////////////////////////////////////////////
@@ -329,7 +329,7 @@ public class HistogramApplet extends Applet implements Runnable {
                 try {
                     sleep(500);
                 } catch (InterruptedException e) {}
-            } 
+            }
         }
     }
 
@@ -348,11 +348,11 @@ public class HistogramApplet extends Applet implements Runnable {
                 System.out.println("Error: " + e.getMessage());
                 e.printStackTrace();
             }
-                
+
         }
     }
-    
-   
+
+
     public class IntervalSbListener implements AdjustmentListener {
         public void adjustmentValueChanged(AdjustmentEvent e) {
             int value = e.getValue();
@@ -364,7 +364,7 @@ public class HistogramApplet extends Applet implements Runnable {
         }
     }
 
-    
+
 }
 
 

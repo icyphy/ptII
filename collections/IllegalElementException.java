@@ -1,8 +1,8 @@
 /*
   File: IllegalElementException.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   24Sep95  dl@cs.oswego.edu   Create from collections.java  working file
   13Oct95  dl                 Changed protection statuses
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -31,11 +31,11 @@ import java.util.NoSuchElementException;
 public class IllegalElementException extends IllegalArgumentException {
  public Object argument;
  public IllegalElementException() { super(); }
- public IllegalElementException(Object v, String msg) { 
-   super(msg); 
+ public IllegalElementException(Object v, String msg) {
+   super(msg);
    argument = v;
  }
 
 }
 
- 
+

@@ -60,10 +60,10 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
 	 throws NameDuplicationException, IllegalActionException  {
       super(container, name);
     }
-  
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
 
     /**
      */
@@ -92,22 +92,22 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
                 }
             }
         }
-        
+
     }
 
     /** Implement this method to define the job of the threaded actor.
      */
     public abstract void run();
 
-    /** Clear input ports then wait until 
+    /** Clear input ports then wait until
      *  input events arrive.
      */
     public void waitForNewInputs() {
 
         _emptyPorts();
-        
+
         // Set the flag to true, so the director can wake up.
-        _isWaiting = true;      
+        _isWaiting = true;
         synchronized(_monitor) {
             _monitor.notifyAll();
         }
@@ -128,18 +128,18 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
      *  @exception IllegalActionException The specified array of ports is not
      *  all input ports.
      */
-    public void waitForNewInputs(IOPort[] ports) 
+    public void waitForNewInputs(IOPort[] ports)
             throws IllegalActionException {
-        
+
         _emptyPorts();
-        
+
         while (true) {
 
             waitForNewInputs();
             // check for availability of tokens in the list of ports.
             // If any of the listed ports has at least a token, then return
             // Otherwise, wait for more new inputs.
-            
+
             for (int i = 0; i < ports.length; i++) {
                 IOPort port = ports[i];
                 for (int j = 0; j < port.getWidth(); j++) {
@@ -170,11 +170,11 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
             }
         }
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
 

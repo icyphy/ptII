@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedCodeRate red (liuj@eecs.berkeley.edu)
@@ -36,7 +36,7 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTRamp
-/** 
+/**
 A ramp source
 @author Jie Liu
 @version $Id$
@@ -49,8 +49,8 @@ public class CTRamp extends CTActor {
      * @param name The name
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
-     */	
-    public CTRamp(TypedCompositeActor container, String name) 
+     */
+    public CTRamp(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output = new TypedIOPort(this, "output");
@@ -61,7 +61,7 @@ public class CTRamp extends CTActor {
         _paramInitValue = new CTParameter(this, "InitialValue",
                 new DoubleToken(_initValue));
         _slope = 1.0;
-        _paramSlope = new CTParameter(this, "Slope", 
+        _paramSlope = new CTParameter(this, "Slope",
                 new DoubleToken(_slope));
     }
 
@@ -97,7 +97,7 @@ public class CTRamp extends CTActor {
     /** The single output port
      */
     public TypedIOPort output;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

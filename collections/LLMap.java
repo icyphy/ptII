@@ -1,8 +1,8 @@
 /*
   File: LLMap.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -12,7 +12,7 @@
   21Oct95  dl                 Fixed error in removeAt
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -56,7 +56,7 @@ public class LLMap extends UpdatableMapImpl implements UpdatableMap {
 /**
  * Special version of constructor needed by clone()
 **/
-  protected LLMap(Predicate s, LLPair l, int c) { 
+  protected LLMap(Predicate s, LLPair l, int c) {
     super(s); list_ = l;  count_ = c;
   }
 
@@ -64,9 +64,9 @@ public class LLMap extends UpdatableMapImpl implements UpdatableMap {
  * Make an independent copy of the list. Does not clone elements
 **/
 
-  protected Object clone()  throws CloneNotSupportedException { 
+  protected Object clone()  throws CloneNotSupportedException {
     if (list_ == null) return new LLMap(screener_, null, 0);
-    else return new LLMap(screener_, (LLPair)(list_.copyList()), count_);  
+    else return new LLMap(screener_, (LLPair)(list_.copyList()), count_);
   }
 
 
@@ -97,8 +97,8 @@ public class LLMap extends UpdatableMapImpl implements UpdatableMap {
  * Time complexity: O(1).
  * @see collections.Collection#elements
 **/
-  public synchronized CollectionEnumeration elements() { 
-    return new LLPairEnumeration(this, list_, false); 
+  public synchronized CollectionEnumeration elements() {
+    return new LLPairEnumeration(this, list_, false);
   }
 
 // Map methods
@@ -129,8 +129,8 @@ public class LLMap extends UpdatableMapImpl implements UpdatableMap {
  * Time complexity: O(1).
  * @see collections.Map#keys
 **/
-  public synchronized CollectionEnumeration keys() { 
-    return new LLPairEnumeration(this, list_, true); 
+  public synchronized CollectionEnumeration keys() {
+    return new LLPairEnumeration(this, list_, true);
   }
 
 /**
@@ -138,7 +138,7 @@ public class LLMap extends UpdatableMapImpl implements UpdatableMap {
  * Time complexity: O(n).
  * @see collections.Map#at
 **/
-  public synchronized Object at(Object key) 
+  public synchronized Object at(Object key)
   throws  NoSuchElementException {
     checkKey(key);
     if (list_ != null) {
@@ -170,9 +170,9 @@ public class LLMap extends UpdatableMapImpl implements UpdatableMap {
  * Time complexity: O(1).
  * @see collections.UpdatableCollection#clear
 **/
-  public synchronized void clear() { 
-    list_ = null; 
-    setCount(0); 
+  public synchronized void clear() {
+    list_ = null;
+    setCount(0);
   }
 
 /**
@@ -180,8 +180,8 @@ public class LLMap extends UpdatableMapImpl implements UpdatableMap {
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#replaceOneOf
 **/
-  public synchronized void replaceOneOf(Object oldElement, Object newElement)  
-  throws IllegalElementException { 
+  public synchronized void replaceOneOf(Object oldElement, Object newElement)
+  throws IllegalElementException {
     replace_(oldElement, newElement, false);
   }
 
@@ -190,8 +190,8 @@ public class LLMap extends UpdatableMapImpl implements UpdatableMap {
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#replaceAllOf
 **/
-  public synchronized void replaceAllOf(Object oldElement, 
-                                                 Object newElement) 
+  public synchronized void replaceAllOf(Object oldElement,
+                                                 Object newElement)
   throws IllegalElementException {
     replace_(oldElement, newElement, true);
   }
@@ -201,7 +201,7 @@ public class LLMap extends UpdatableMapImpl implements UpdatableMap {
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#exclude
 **/
-  public synchronized void exclude(Object element)  { 
+  public synchronized void exclude(Object element)  {
     remove_(element, true);
   }
 
@@ -210,7 +210,7 @@ public class LLMap extends UpdatableMapImpl implements UpdatableMap {
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#removeOneOf
 **/
-  public synchronized void removeOneOf(Object element)  { 
+  public synchronized void removeOneOf(Object element)  {
     remove_(element, false);
   }
 
@@ -220,7 +220,7 @@ public class LLMap extends UpdatableMapImpl implements UpdatableMap {
  * takes the first element on the list
  * @see collections.UpdatableCollection#take
 **/
-  public synchronized Object take() 
+  public synchronized Object take()
   throws NoSuchElementException {
     if (list_ != null) {
       Object v = list_.element();
@@ -287,9 +287,9 @@ public class LLMap extends UpdatableMapImpl implements UpdatableMap {
  * Time complexity: O(n).
  * @see collections.UpdatableMap#replaceElement
 **/
-  public synchronized void replaceElement(Object key, Object oldElement, 
-                                          Object newElement)  
-  throws IllegalElementException { 
+  public synchronized void replaceElement(Object key, Object oldElement,
+                                          Object newElement)
+  throws IllegalElementException {
     if (key == null || oldElement == null || list_ == null) return;
     LLPair p = list_.find(key, oldElement);
     if (p != null) {
@@ -299,7 +299,7 @@ public class LLMap extends UpdatableMapImpl implements UpdatableMap {
     }
   }
 
-  private void remove_(Object element, boolean allOccurrences)  { 
+  private void remove_(Object element, boolean allOccurrences)  {
     if (element == null || count_ == 0) return;
     LLPair p = list_;
     LLPair trail = p;
@@ -323,13 +323,13 @@ public class LLMap extends UpdatableMapImpl implements UpdatableMap {
  * Helper for replace
 **/
 
-  private void replace_(Object oldElement, Object newElement, 
-                          boolean allOccurrences)  
-  throws IllegalElementException { 
+  private void replace_(Object oldElement, Object newElement,
+                          boolean allOccurrences)
+  throws IllegalElementException {
     if (list_ == null || oldElement == null || oldElement.equals(newElement))
       return;
     LLCell p = list_.find(oldElement);
-    while (p != null) { 
+    while (p != null) {
     checkElement(newElement);
       p.element(newElement);
       incVersion();
@@ -344,7 +344,7 @@ public class LLMap extends UpdatableMapImpl implements UpdatableMap {
  * Implements collections.ImplementationCheckable.checkImplementation.
  * @see collections.ImplementationCheckable#checkImplementation
 **/
-  public synchronized void checkImplementation() 
+  public synchronized void checkImplementation()
   throws ImplementationError {
 
     super.checkImplementation();

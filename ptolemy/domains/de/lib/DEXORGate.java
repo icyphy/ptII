@@ -68,7 +68,7 @@ public class DEXORGate extends DEActor {
             "Invalid delay.  Cannot be less than zero.");
         }
         _delay = new Parameter(this, "delay", new DoubleToken(delay));
-        
+
         // create the ports
         output = new DEIOPort(this, "output", false, true);
         input1 = new DEIOPort(this, "input1", true, false);
@@ -91,7 +91,7 @@ public class DEXORGate extends DEActor {
         }
         boolean in1 = (_in1 == 1.0);
         boolean in2 = (_in2 == 1.0);
-        
+
         DoubleToken outToken = null;
         if ((in1 && !in2) || (!in1 && in2)) {
             outToken = new DoubleToken(1.0);
@@ -100,7 +100,7 @@ public class DEXORGate extends DEActor {
         }
 
         output.broadcast(outToken, ((DoubleToken)_delay.getToken()).doubleValue());
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////

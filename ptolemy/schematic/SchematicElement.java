@@ -39,7 +39,7 @@ import collections.HashedMap;
 
 A SchematicElement is the superclass of classes that can
 appear in a Ptolemy II schematic.  (SchematicEntity, SchematicPort,
-SchematicRelation).  All of these have a name and a number of 
+SchematicRelation).  All of these have a name and a number of
 SchematicParameters associated with them.
 
 @author Steve Neuendorffer, John Reekie
@@ -60,7 +60,7 @@ public class SchematicElement extends XMLElement {
     }
 
     /**
-     * Create a SchematicElement object with the specified element type and 
+     * Create a SchematicElement object with the specified element type and
      * attributes
      *
      * @param type the element type of the new object
@@ -123,7 +123,7 @@ public class SchematicElement extends XMLElement {
         parameters.removeAt(name);
     }
 
-    /** 
+    /**
      * Set the short name of this element
      */
     public void setName(String s) {

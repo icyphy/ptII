@@ -13,16 +13,16 @@ Overview of the <CODE>collections</CODE> Package
 </H1>
 
 
-<P> by <A HREF="http://g.oswego.edu/dl/"> Doug Lea</A>.  
+<P> by <A HREF="http://g.oswego.edu/dl/"> Doug Lea</A>.
 
 <P>
 This overview is intended to accompany version 0.95c of the package of
 code
-(<A HREF="ftp://g.oswego.edu/pub/java/collections.tar.gz">tar.gz format</A>) 
-(<A HREF="ftp://g.oswego.edu/pub/java/collections.zip">zip format</A>) 
+(<A HREF="ftp://g.oswego.edu/pub/java/collections.tar.gz">tar.gz format</A>)
+(<A HREF="ftp://g.oswego.edu/pub/java/collections.zip">zip format</A>)
 and <A HREF="collections.html">documentation </A>
 for the java collection classes. Please send comments and questions to
-<a href="mailto:dl@cs.oswego.edu">dl@cs.oswego.edu</a>. 
+<a href="mailto:dl@cs.oswego.edu">dl@cs.oswego.edu</a>.
 
 <P> (Note: This package is fairly stable and in routine use.  However,
 there may continue to be minor changes. For example, because of
@@ -53,11 +53,11 @@ Collections
 are accessed, placed, and maintained under some set of rules.  There
 are many different ways you could classify these different rules. This
 package uses one of the simplest, splitting them into four main categories,
-(Sets, Bags, Seqs, Maps), plus a few `mixin' variants.  
+(Sets, Bags, Seqs, Maps), plus a few `mixin' variants.
 Top-level functionality is described entirely via <CODE>interfaces</CODE>,
 <EM>not</EM> <CODE>classes</CODE>. This allows some mixing
 and matching of capabilities at the implementation level, and
-also enables you to add your own alternative implementations 
+also enables you to add your own alternative implementations
 of this functionality that will interoperate with the versions
 provided in this package.
 <P>
@@ -70,7 +70,7 @@ want in a particular situation. The basic choices are:
 
 <LI> Bags may contain multiple occurrences of any element.
 
-<LI> Seqs are ordered, and have elements that are accessible 
+<LI> Seqs are ordered, and have elements that are accessible
      via array-like indices.
 
 <LI> Maps associate unique keys with each element.
@@ -84,7 +84,7 @@ want in a particular situation. The basic choices are:
 </UL>
 
 
-<P> 
+<P>
 The base interface <CODE>Collection</CODE> reflects commonalities
 across all of these of kinds of rules. For reasons described below,
 all of the interfaces in the following diagram describe
@@ -106,7 +106,7 @@ Collections or build new Collections with various properties.
  <LI> Report whether it <CODE>canInclude</CODE> a given
       value. In general Collections hold
       Objects. Elements may be subclasses of Object, but
-      not builtin scalars like int. 
+      not builtin scalars like int.
       You can, however, use numbers as elements via
       the java.lang.Number class (or rather its subclasses) to
       ``wrap'' the numbers as number-holding objects first. For example:
@@ -114,7 +114,7 @@ Collections or build new Collections with various properties.
  void addFloat(UpdatableBag b, float f) {
    b.add(new Float(f));
  }
- </PRE> 
+ </PRE>
       <P>
       Also, null is never a valid element, so canInclude(null) is
       always false.
@@ -123,17 +123,17 @@ Collections or build new Collections with various properties.
       This can be annoying, but is the most defensible policy.
       One reason that nulls are excluded is that some collection operations
       intrinsically rely upon operations Object.equals and Object.hashCode,
-      neither of which apply to nulls. 
+      neither of which apply to nulls.
       <P>
       Any given collection may make stronger demands on the
       kinds of elements it will accept, and report this via
       <CODE>canInclude</CODE>.
       Most implementation
-      classes support a constructor with an argument supplying an element 
-      screener (an object of type 
-      <A HREF="collections.Predicate.html">Predicate</A>) that checks 
+      classes support a constructor with an argument supplying an element
+      screener (an object of type
+      <A HREF="collections.Predicate.html">Predicate</A>) that checks
       whether a value is considered to be a potentially
-      legal element of the collection. For example, you 
+      legal element of the collection. For example, you
       could supply a screener that requires
       that all elements be Strings (using `instanceof').
       Screeners provide a more flexible variant of
@@ -149,21 +149,21 @@ Collections or build new Collections with various properties.
       element it holds.  <P>
 
  <LI> Produce an <A HREF="#secEnumerations">enumeration</A> of its <CODE>elements</CODE>.  The
-      enumeration returned is of type 
+      enumeration returned is of type
       <A HREF="collections.CollectionEnumeration.html">
       CollectionEnumeration</A>, a
       stronger kind of enumeration than java.util.Enumeration. <P>
 
  <LI> Perform <CODE>checkImplementation</CODE>, that checks
       the consistency and properties of the internal state of a
-      collection implementation object. <CODE>Collection</CODE> is a 
-      subinterface of 
+      collection implementation object. <CODE>Collection</CODE> is a
+      subinterface of
 <A HREF="collections.ImplementationCheckable.html">
 ImplementationCheckable</A>, which is in turn a subinterface
 of <A HREF="collections.Assertable.html">Assertable</A>, the base
 interface for classes with an <CODE>assert</CODE> method that can
 be used to help track down errors.  <P>
- 
+
  <LI>  Report whether it has the <CODE>sameStructure</CODE> as
        another Collection, c; that is whether c has the same
        size and the same elements() arranged in a compatible way. This is
@@ -173,23 +173,23 @@ be used to help track down errors.  <P>
        to collections. <P>
 
 
- <LI>  Build a new Collection that is just like self except 
+ <LI>  Build a new Collection that is just like self except
         <CODE>excluding</CODE> (i.e., removing all <CODE>occurrencesOf</CODE>)
         a given element. This does <EM>not</EM>
         alter the Collection itself, it just makes a new one. This operation
         is a lot like <EM>subtraction</EM> of numbers. When you
-        say <CODE>a - b</CODE> for two numbers <CODE>a</CODE> and 
+        say <CODE>a - b</CODE> for two numbers <CODE>a</CODE> and
         <CODE>b</CODE>, you get a new number that represents
-        the difference between them without changing 
+        the difference between them without changing
         <CODE>a</CODE> or <CODE>b</CODE>. The <CODE>excluding</CODE>
-        operation has the same kind of effect. 
+        operation has the same kind of effect.
          By convention, all such creational methods are named with gerunds
          (e.g., including, excluding,  adding).
         <P>
         If you want a collection
         in which you actually change the contents of the current collection
         rather than building a new one,
-        you'll need an <A HREF="#secUpdatable">UpdatableCollection</A> with 
+        you'll need an <A HREF="#secUpdatable">UpdatableCollection</A> with
         an <CODE>exclude</CODE>
         operation, described below. But even without using UpdatableCollections,
         you can still create <EM>series</EM> of collections, each one
@@ -198,7 +198,7 @@ be used to help track down errors.  <P>
 
         <PRE>
         Collection excludingElements(Collection c, Enumeration e) {
-          while (e.hasMoreElements()) 
+          while (e.hasMoreElements())
             c = c.excluding(e.nextElement());
           return c;
         }
@@ -206,28 +206,28 @@ be used to help track down errors.  <P>
 
          <P>
         For many implementations of Collection, this is a ridiculously
-        slow way to do it. However, as described below, others 
+        slow way to do it. However, as described below, others
         (the Incr classes) are tuned to do this reasonably efficiently. <P>
- 
 
- <LI>  Build a new Collection that is just like self except 
+
+ <LI>  Build a new Collection that is just like self except
         <CODE>removingOneOf</CODE> (i.e., removing at most one
-        occurrence of) a given element. <P> 
+        occurrence of) a given element. <P>
 
- <LI>  Build a new Collection that is just like self except 
+ <LI>  Build a new Collection that is just like self except
         <CODE>replacingOneOf</CODE> (i.e., at most one
         occurrence of) some old value with a new value. <P>
-       
 
- <LI>  Build a new Collection that is just like self except 
-        <CODE>replacingAllOf</CODE> (i.e., all 
+
+ <LI>  Build a new Collection that is just like self except
+        <CODE>replacingAllOf</CODE> (i.e., all
         occurrences of) some old value with a new value. <P>
 
 
   <LI> Build a <CODE>duplicate</CODE> of self -- an independent
        copy of the collection, but not
        necessarily its elements. Elements themselves
-       are not necessarily cloned. (Note: <CODE>duplicate</CODE> 
+       are not necessarily cloned. (Note: <CODE>duplicate</CODE>
        is simply the externally callable version of method
        <CODE>java.lang.Object.clone()</CODE>.)
 
@@ -243,9 +243,9 @@ be used to help track down errors.  <P>
  </UL>
 
 <DT> <A HREF="collections.Set.html">Sets</A>
-<DD> Sets are collections in which the number of occurrences of 
-     any object is at most one. They support an operation that 
-     causes <CODE>includes</CODE> to be true; i.e., adding an 
+<DD> Sets are collections in which the number of occurrences of
+     any object is at most one. They support an operation that
+     causes <CODE>includes</CODE> to be true; i.e., adding an
      element only if it is not present.
 
 <DT> <A HREF="collections.Bag.html">Bags</A>
@@ -256,7 +256,7 @@ be used to help track down errors.  <P>
  `manually' enforces that the number of occurrences is at most one.)
 
 <DT> <A HREF="collections.Seq.html">Seqs</A>
-<DD> Seqs maintain elements in sequential order.  
+<DD> Seqs maintain elements in sequential order.
  They are sequential lists that can be accessed by positional
  indices ranging from 0..size()-1. Other Collections that are not
  Seqs may guarantee some kind of sequential ordering
@@ -269,9 +269,9 @@ be used to help track down errors.  <P>
  use regular Collections in which each element holds a pair,
  Maps are generally simpler, more efficient, and contain
  operations useful under the interpretation that the pairs
- represent keyed elements.) 
+ represent keyed elements.)
  <P>
- Maps also serve as a way to use a certain field of objects of some 
+ Maps also serve as a way to use a certain field of objects of some
  class as a key for purposes of storing in a collection.
  For example, supposing you want to use some accessor prop() defined in
  your class as the basis for entering and finding elements,
@@ -284,22 +284,22 @@ be used to help track down errors.  <P>
      elements <EM>NOT</EM> to change once they have been placed in
      the collection. They cannot in general deal with cases
      where you change any of their
-     elements behind their backs in ways that break their sort order. 
+     elements behind their backs in ways that break their sort order.
      (See however, <A HREF="#secChecked"> implementation checks</A>
      that can help you discover if this occurred.)
  <P>
- ElementSorted Collections provide a different way to use 
+ ElementSorted Collections provide a different way to use
 properties of objects as their access keys.
- You can define your class to implement interface 
+ You can define your class to implement interface
 <A HREF="collections.Keyed.html">
 Keyed</A>,
  with a method key() that returns
  the key (for example it might just return prop()). Then use
- a <A HREF="collections.Comparator.html"> Comparator</A> 
- that compares on keys(). The 
+ a <A HREF="collections.Comparator.html"> Comparator</A>
+ that compares on keys(). The
  <A HREF="collections.DefaultComparator.html">DefaultComparator</A>
  class does this automatically before trying to perform comparsions,
- but you can write your own Comparator that does this in a 
+ but you can write your own Comparator that does this in a
  more specialized and efficient way.) <P>
 
 <DT> <A HREF="collections.KeySortedCollection.html">KeySortedCollections</A>
@@ -339,7 +339,7 @@ Updatable collections are `normal' mutable collections. They:
      all elements from a supplied Eunumeration.
 
 <DT> <A HREF="collections.UpdatableBag.html">UpdatableBags</A>
-<DD> Updatable collections with an add(v) operation, that adds 
+<DD> Updatable collections with an add(v) operation, that adds
  an occurrence of v to the collection, and addIfAbsent that only
  conditionally adds the element.
 
@@ -347,22 +347,22 @@ Updatable collections are `normal' mutable collections. They:
 <DD> Seqs with standard indexed update operations (insertAt, replaceAt,
  removeAt). They also support
  method <CODE>insertElementsAt(int index, Enumeration e)</CODE>
- that adds all elements of e, in order, at position index.  
+ that adds all elements of e, in order, at position index.
  UpdatableSeqs also support special (often more efficient)
  methods operating on the front and back of the sequence,
 
 <DT> <A HREF="collections.UpdatableMap.html">UpdatableMaps</A>
-<DD> Maps with update operations, principally 
+<DD> Maps with update operations, principally
   putAt(key, element) and removeAt(key).
 
 <DT> <A HREF="collections.SortableCollection.html">SortableCollections</A>
 <DD> A `mixin' for collections that support a sort
  operation that accepts a  Comparator.
  The difference between Sorted and Sortable is that
- (Element- or Key-) SortedCollections are always in sorted order, 
+ (Element- or Key-) SortedCollections are always in sorted order,
  while Sortable
  ones may be sorted (via sort(Comparator cmp)), but may then
- be altered in ways so they are no longer sorted. 
+ be altered in ways so they are no longer sorted.
 </DL>
 
  Generally, implementations are written at the point
@@ -378,10 +378,10 @@ Updatable collections are `normal' mutable collections. They:
  For example, it's possible to have an RBTree serve as the underlying
  implementation for a Set by making, say, an RBSet class holding
  a reference to an RBTree, and forwarding include as addIfAbsent,
- and so on. 
+ and so on.
  Similarly, there are not any Seq-like classes (like Stack or Queue)
  that ONLY support operations
- on the front or back, since you can just use UpdatableSeqs 
+ on the front or back, since you can just use UpdatableSeqs
  for such purposes merely by not using those other operations;
  or if you like, making a special class holding an UpdatableSeq and
  forwarding it only selected messages.
@@ -396,7 +396,7 @@ Updatable collections are `normal' mutable collections. They:
  the person doing the initial construction of a collection
  object that will be passed around and used polymorphically
  has to care about these issues. If you do not care, just use
- the ones handed out by 
+ the ones handed out by
  <A HREF="collections.DefaultImplementations.html">
  DefaultImplementations</A>, which makes
  pretty reasonable choices.  If you do care, be sure to look
@@ -414,7 +414,7 @@ Updatable collections are `normal' mutable collections. They:
  <A HREF="collections.UpdatableImpl.html">UpdatableImpl</A>
  a convenient abstract class
  that provides default implementations of many UpdatableCollection
- operations. 
+ operations.
  <P>
  Also, all current UpdatableCollection classes implement constructive
  operations (<CODE>excluding</CODE>, <CODE>adding</CODE>, etc) by
@@ -429,7 +429,7 @@ Updatable collections are `normal' mutable collections. They:
 <DT> <A HREF="collections.RBTree.html">RBTrees </A>
         implement UpdatableBag, ElementSortedCollection
 <DD> Implementation of red-black trees, a form of
-     balanced sorted binary search tree. 
+     balanced sorted binary search tree.
 
 <DT> <A HREF="collections.LinkedList.html">LinkedLists </A>
         implement UpdatableSeq, SortableCollection
@@ -441,7 +441,7 @@ Updatable collections are `normal' mutable collections. They:
 
 <DT> <A HREF="collections.Dynarray.html">Dynarrays </A>
         implement UpdatableSeq, SortableCollection
-<DD> Buffered array that dynamically resizes when necessary. 
+<DD> Buffered array that dynamically resizes when necessary.
 
 <DT> <A HREF="collections.LinkedBuffer.html">LinkedBuffers </A>
         implement UpdatableBag
@@ -480,9 +480,9 @@ data structures. These include:
 
 <LI> Red-black trees: methods to reset the <CODE>elementComparator</CODE>
      or <CODE>keyComparator</CODE> used for ordering.
-     
+
 </UL>
- 
+
  <P>
 
 Many of the implementation classes themselves rely on yet
@@ -527,7 +527,7 @@ Many of the implementation classes themselves rely on yet
  support mutations. This is a stronger claim than is made by
  Collection, since any object known only to be a Collection MAY be
  coercible to Updatable. But an Immutable version is not. This makes
- Immutable classes exceedingly safe.  
+ Immutable classes exceedingly safe.
  <P>
  In Java, the <EM>concept</EM> of immutablity is best expressed as
  an in-the-small <a href="http://g.oswego.edu/dl/pats/aopintro.html">
@@ -556,7 +556,7 @@ Many of the implementation classes themselves rely on yet
  <A HREF="collections.IncrSeq.html">IncrSeqs</A>
  <A HREF="collections.IncrMap.html">IncrMaps</A>
  are all implementation subclasses of abstract
- class  
+ class
  <A HREF="collections.IncrImpl.html">IncrImpl</A>
  that uses a `negative delta' algorithm to
  do lazy copying of collections formed via creational
@@ -568,7 +568,7 @@ Many of the implementation classes themselves rely on yet
  They normally update in a `lazy' fashion,
  making copies only when necessary. However, when you are using
  a received Immutable Collection as the basis for a very extensive set of
- update operations (none of which should be applied to the original), 
+ update operations (none of which should be applied to the original),
  it is sometimes more efficient
  to build an UpdatableCollection, add all of the elements of the
  received ImmutableCollection to it, and then work off that. (Also,
@@ -581,12 +581,12 @@ Many of the implementation classes themselves rely on yet
  <OL>
    <LI> As a much stronger analog of C++ `pass by const reference';
         i.e.,  passing an updatable collection in a way that is
-        guaranteed not to modify it. 
+        guaranteed not to modify it.
         Each of the Immutable classes supports a constructor that
         allows you to use an UpdatableCollection in an immutable fashion.
         For example, suppose
         you have a HashedSet hs, (an implementation of UpdatableSet),
-        and want to send it safely to some method 
+        and want to send it safely to some method
         <CODE> SomeClass.someMethod(Set s)</CODE>.
         You can do this via <CODE>c.someMethod(new IncrSet(hs))</CODE>.
         Note, however, that constancy guarantees can only hold
@@ -617,7 +617,7 @@ Many of the implementation classes themselves rely on yet
  when you don't need to. This is the same reasoning
  that led to Java having two classes for Strings: <CODE>String</CODE>
  for pure immutable strings, and <CODE>StringBuffer</CODE> for
- updatable ones. 
+ updatable ones.
 
 
 <H2>
@@ -625,7 +625,7 @@ Many of the implementation classes themselves rely on yet
 Exceptions
 </H2>
 
-Collection methods are defined to throw only a small 
+Collection methods are defined to throw only a small
       number of exception types: <P>
 
 <DL>
@@ -666,14 +666,14 @@ Enumerations
 Enumerations are the ``common currency'' of collections. Enumerations
 are generally ``lightweight'' and simple to use, not only within
 this package, but also across other Java classes that use the
-<CODE>java.util.Enumeration</CODE> interface. 
+<CODE>java.util.Enumeration</CODE> interface.
 Because  Collection methods use Enumerations as
 the basic element access construct, classes in this
 package are generally compatible with other existing Java collection
 classes.  (Although by necessity, there is some
 duplication. For example, Dynamic array implementations are
 very similar to java.util.Vector, but different enough that they
-needed to be redone from scratch.) 
+needed to be redone from scratch.)
 
  <P>
 All <CODE>Collection</CODE> classes actually produce
@@ -717,14 +717,14 @@ operations, but recovering in special ways upon exception.
 <P>
 You sometimes need to adjust standard algorithms to avoid the
 possibility of CorruptedEnumerationExceptions. For example, if
-you want to traverse through s.elements() for <CODE>Set s</CODE> and 
+you want to traverse through s.elements() for <CODE>Set s</CODE> and
 add other new elements depending on what's there, you CANNOT do it
 via code like:
 <PRE>
   void f(UpdatableSet s) { // DO NOT DO THIS
     Enumeration e = s.elements();
-    while (e.hasMoreElements()) 
-      if (someProperty(e.nextElement())) 
+    while (e.hasMoreElements())
+      if (someProperty(e.nextElement()))
         s.include(someNewObject()); // will cause exception for nextElement
   }
 </PRE>
@@ -733,13 +733,13 @@ via code like:
 One alternative is to place new elements in an auxilliary collection
 during the traversal; for example:
 <PRE>
-  void f(UpdatableSet s) { 
+  void f(UpdatableSet s) {
     UpdatableBag aux = new LinkedBuffer();
     Enumeration e = s.elements();
-    while (e.hasMoreElements()) 
-      if (someProperty(e.nextElement())) 
-        aux.add(someNewObject()); 
-    s.includeElements(aux.elements()); // add them all at once   
+    while (e.hasMoreElements())
+      if (someProperty(e.nextElement()))
+        aux.add(someNewObject());
+    s.includeElements(aux.elements()); // add them all at once
   }
 </PRE>
  <P>
@@ -747,11 +747,11 @@ Or, you could instead use an ImmutableSet, returning the ultimate
 result:
 
 <PRE>
-  Set f(Set s) { 
+  Set f(Set s) {
     Enumeration e = s.elements();
-    while (e.hasMoreElements()) 
-      if (someProperty(e.nextElement())) 
-        s = s.including(someNewObject()); 
+    while (e.hasMoreElements())
+      if (someProperty(e.nextElement()))
+        s = s.including(someNewObject());
     return s;
   }
 </PRE>
@@ -761,11 +761,11 @@ of Sets or Bags when you need to use such algorithms,
 and use indexing instead of element() traversals. For example:
 
 <PRE>
-  void f(UpdatableSeq s) { 
+  void f(UpdatableSeq s) {
     int originalSize = s.size();
     for (int i = 0; i &lt; originalSize; ++i)
-      if (someProperty(s.at(i)) 
-        s.insertLast(someNewObject()); 
+      if (someProperty(s.at(i))
+        s.insertLast(someNewObject());
   }
 </PRE>
 
@@ -797,7 +797,7 @@ other special data structures. They include:
   Object arr[] = { new Float(1.0f), new Float(2.0f) }
   Dynarray s = ...
   s.insertElementsAt(0, new ArrayEnumeration(arr));
- </PRE> 
+ </PRE>
  <P>
 <DT> <A HREF="collections.FilteringEnumeration.html">FilteringEnumeration</A>
 <DD> A class that allows you to ignore elements in an enumeration
@@ -809,7 +809,7 @@ other special data structures. They include:
   <PRE>
   Enumeration e = coll.elements();
   Enumeration panels = new FilteringEnumeration(e, new IsPanel());
-  while (panels.hasMoreElements()) 
+  while (panels.hasMoreElements())
    doSomethingWith((Panel)(panels.nextElement()));
   </PRE>
   To use this, you will also need to write a little class of the form:
@@ -823,14 +823,14 @@ other special data structures. They include:
 <DD> A class that allows you to  transform elements from
      other enumerations before they are seen by their `consumers'
      by invoking an arbitrary <A HREF="collections.Function.html">Function</A>)
-     on each <CODE>nextElement</CODE> access. 
+     on each <CODE>nextElement</CODE> access.
   For example, if you want to process only the parent() fields
   of java.awt.Component elements held by a collection coll
   you could write something of the form:
   <PRE>
   Enumeration e = coll.elements();
   Enumeration parents = new MappingEnumeration(e, new ParentFunction());
-  while (parents.hasMoreElements()) 
+  while (parents.hasMoreElements())
    doSomethingWith((Container)(parents.nextElement()));
   </PRE>
   To use this, you will also need to write a little class of the form:
@@ -844,17 +844,17 @@ other special data structures. They include:
   </PRE>
  <P>
   (You might also interpose a FilteringEnumeration here to screen
-  out the resulting nulls.)  
+  out the resulting nulls.)
   <P>
   All this requires too much set-up to be reasonable in most
   situations, but is invaluable in others. <P>
 
 <DT> <A HREF="collections.InterleavingEnumeration.html">InterleavingEnumeration</A>
-<DD> A class that allows you to  
+<DD> A class that allows you to
   combine the elements
   of two different enumerations as if they were one enumeration
   before they are seen by their `consumers'.
-  This sometimes allows you to avoid having to use a 
+  This sometimes allows you to avoid having to use a
   Collection object to temporarily combine two sets of Collection elements()
   that need to be collected together for common processing.
   <P>
@@ -862,13 +862,13 @@ other special data structures. They include:
   interleaved fashion, alternating between the first and second
   enumerations unless one of them has been exhausted, in which case
   all remaining elements of the other are revealed until it too is
-  exhausted. 
+  exhausted.
   <P>
   For example, if you want to process together the elements of
   two Collections a and b, you could write something of the form:
   <PRE>
   Enumeration items = new InterleavingEnumeration(a.elements(), b.elements());
-  while (items.hasMoreElements()) 
+  while (items.hasMoreElements())
    doSomethingWith(items.nextElement());
   </PRE>
  <P>
@@ -889,7 +889,7 @@ other special data structures. They include:
  operations, which is easier to do with a bit of formalism.
  In fact, the main reason for spelling these out is to form a
  basis for testing. Nearly all claims made about operations in
- interfaces are tested for in corresponding Checked classes. 
+ interfaces are tested for in corresponding Checked classes.
  So
  you can be reasonably sure that any claim made has been verified
  to hold, at least in the cases actually tested.
@@ -920,10 +920,10 @@ other special data structures. They include:
  <P>
  Constructs used in the class documentation include:
  <UL>
-  <LI> <CODE>return condition</CODE> to describe 
+  <LI> <CODE>return condition</CODE> to describe
        postconditions and effects true upon return of a method.
 
-  <LI> <CODE>PREV(obj)</CODE> within a return condition to refer 
+  <LI> <CODE>PREV(obj)</CODE> within a return condition to refer
         to the state of an object at the onset of a method.
 
   <LI> <CODE>OUT(message)</CODE>  to describe messages that are
@@ -937,7 +937,7 @@ other special data structures. They include:
   <LI> <CODE>foreach (SomeClass x) predicate(x)</CODE> to
        means that predicate holds for each instance of SomeClass
 
-  <LI> <CODE>foreach (Object x in e) predicate(x) </CODE> to mean 
+  <LI> <CODE>foreach (Object x in e) predicate(x) </CODE> to mean
        that the predicate holds for each element obtained
        via nextElement() for Enumeration e.
 
@@ -947,17 +947,17 @@ other special data structures. They include:
   <LI> <CODE>--&gt;</CODE> to means `implies'.
 
   <LI> ``Behaviorally equivalent to <CODE>{ code segment }</CODE>''
-       to document convenience or specialized methods that can be 
+       to document convenience or specialized methods that can be
        defined in terms of the effects of more primitive methods.
 
   <LI> ``No spurious effects'', meaning that the changes or results listed
-       are the <EM>only</EM> behavioral effects on any visible object. 
+       are the <EM>only</EM> behavioral effects on any visible object.
        In particular, that
        an operation does not otherwise affect the size() or elements()
        of the collection(s), and does not invoke
-       <EM>any</EM> methods (except for <CODE>equals</CODE> 
-       and <CODE>hashCode</CODE>) on the elements 
-       held in the collection. 
+       <EM>any</EM> methods (except for <CODE>equals</CODE>
+       and <CODE>hashCode</CODE>) on the elements
+       held in the collection.
 
  </UL>
 
@@ -970,14 +970,14 @@ Note: All of the code in this package carries the following header:
 <p>
 
 <pre>
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 </pre>
 <p>
 This means that you can use it for any purpose whatsoever, with no
 restrictions.
- 
+
 <UL>
 <LI> <A HREF="ArrayEnumeration.java">ArrayEnumeration.java</A>
 

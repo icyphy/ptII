@@ -111,7 +111,7 @@ public class Ramp extends TypedAtomicActor {
         while (input.hasToken(0)) {
             input.get(0);
             output.broadcast(_stateToken);
-            
+
             // increment the state.
             _stateToken = _stateToken.add(_step.getToken());
         }

@@ -1,8 +1,8 @@
 /*
   File: ArrayEnumeration.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Changed protection statuses
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -33,8 +33,8 @@ public final class ArrayEnumeration implements CollectionEnumeration {
 
 /**
  * Build an enumeration that returns successive elements of the array
-**/  
-  public ArrayEnumeration(Object arr[]) { 
+**/
+  public ArrayEnumeration(Object arr[]) {
     arr_ = arr; cur_ = 0; size_ = arr.length;
   }
 
@@ -63,12 +63,12 @@ public final class ArrayEnumeration implements CollectionEnumeration {
  * Implements java.util.Enumeration.nextElement().
  * @see java.util.Enumeration#nextElement()
 **/
-  public Object nextElement() {  
+  public Object nextElement() {
     if (!hasMoreElements())
       throw new NoSuchElementException("exhausted enumeration");
     else {
       size_--;
-      return  arr_[cur_++];  
+      return  arr_[cur_++];
     }
   }
 }

@@ -78,12 +78,12 @@ public class Not extends TypedAtomicActor {
 	// get the input token from the input port.
         DoubleToken inputToken;
         inputToken = (DoubleToken)(input.get(0));
-        
+
         // produce the output token.
 	DoubleToken outputToken;
 	if (inputToken.doubleValue() == 0.0)
 	    outputToken = new DoubleToken(1.0);
-	else 
+	else
 	    outputToken = new DoubleToken(0.0);
 
         // send the output token via output TypedIOPort.

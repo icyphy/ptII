@@ -1,8 +1,8 @@
 /*
   File: DefaultComparator.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   24Sep95  dl@cs.oswego.edu   Create from collections.java  working file
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
  *
  *
  * DefaultComparator provides a general-purpose but slow compare
- * operation. 
+ * operation.
  * @author Doug Lea
  * @version 0.93
  *
@@ -29,7 +29,7 @@ import java.util.NoSuchElementException;
 
 public class DefaultComparator implements Comparator {
 
-/** 
+/**
  * Try various downcasts to find a basis for
  * comparing two elements. If all else fails, just compare
  * hashCodes(). This can be effective when you are
@@ -55,15 +55,15 @@ public class DefaultComparator implements Comparator {
       return ((String)(a)).compareTo((String)(b));
     }
     else if ((a instanceof Number) && (b instanceof Number)) {
-      double diff = ((Number)(a)).doubleValue() - 
+      double diff = ((Number)(a)).doubleValue() -
         ((Number)(b)).doubleValue();
-      if (diff < 0.0) return -1; 
-      else if (diff > 0.0) return 1; 
+      if (diff < 0.0) return -1;
+      else if (diff > 0.0) return 1;
       else return 0;
     }
     else if (a.equals(b))
       return 0;
-    else 
+    else
       return a.hashCode() - b.hashCode();
   }
 }

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -37,8 +37,8 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTConst
-/** 
-A constant source in the CT domain. The actor output a token at the 
+/**
+A constant source in the CT domain. The actor output a token at the
 fire() phase. The value of the token equals the parameter "value"
 set in the setParam method. If the "value" is not set, the default
 value is 0.
@@ -54,8 +54,8 @@ public class CTConst extends CTActor {
      * @param name The name.
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
-     */	
-    public CTConst(TypedCompositeActor container, String name) 
+     */
+    public CTConst(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output = new TypedIOPort(this, "output");
@@ -73,7 +73,7 @@ public class CTConst extends CTActor {
     /** Output a doubleToken of the constant value.
      *
      *  @exception IllegalActionException Never thrown.
-     */	
+     */
     public void fire() throws IllegalActionException{
         output.broadcast(new DoubleToken(_value));
     }
@@ -89,7 +89,7 @@ public class CTConst extends CTActor {
     /** The single output port.
      */
     public TypedIOPort output;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

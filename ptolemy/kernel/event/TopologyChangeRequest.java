@@ -71,7 +71,7 @@ public abstract class TopologyChangeRequest {
     public TopologyChangeRequest (Object client) {
         this._client = client;
     }
-  
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -100,7 +100,7 @@ public abstract class TopologyChangeRequest {
             event.notifyListeners(listener);
         }
     }
- 
+
     /** Perform the actions contained by the mutation events
      * in this mutation request. (Note that no events are
      * passed to any listeners.) If any action throws an exception,
@@ -131,7 +131,7 @@ public abstract class TopologyChangeRequest {
                     event.undoTopologyChange();
                 }
                 catch (Exception e) {}
-                
+
                 // Set up the exception to throw
                 exception = new TopologyChangeFailedException(event, doException);
 

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -35,8 +35,8 @@ import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNInterleavingExample
-/** 
-An example to test the PN domain. This example tests the PN INterleaving 
+/**
+An example to test the PN domain. This example tests the PN INterleaving
 example.
 @author Mudit Goel
 @version $Id$
@@ -44,8 +44,8 @@ example.
 
 class PNInterleavingExample {
 
-    public static void main(String args[]) throws 
-	    IllegalStateException, IllegalActionException, 
+    public static void main(String args[]) throws
+	    IllegalStateException, IllegalActionException,
             NameDuplicationException {
 	CompositeActor myUniverse = new CompositeActor();
 	Manager exec = new Manager("exec");
@@ -61,7 +61,7 @@ class PNInterleavingExample {
         PNRedirect _redirect1 = new PNRedirect(myUniverse, "redirect1");
         _redirect1.setParam("Initial Value", "1");
         //PNPlot _plot = new PNPlot(myUniverse, "plot");
-        
+
         //FIXME: Find a neat way of specifying the queue length of input port!
         //FIXME: Need a nice way of doing the following.
         //Maybe a nice method that set all star parameters and links all ports
@@ -72,31 +72,31 @@ class PNInterleavingExample {
 
         //portout = (PNOutPort)_interleave.getPort("output");
         //((PNInPort)_plot.getPort("input")).link(queue);
-        
+
         //queue = (IORelation)myUniverse.connect(portin, portout, "QPlot");
- 
+
         portout = (IOPort)_redirect0.getPort("output");
         portin = (IOPort)_interleave.getPort("input");
         queue = (IORelation)myUniverse.connect(portin, portout, "QY");
         //portin.getQueue().setCapacity(1);
- 
+
 
 	//((PNOutPort)_redirect1.getPort("output")).link(queue);
         portout =(IOPort)_redirect1.getPort("output");
         portin = (IOPort)_interleave.getPort("input");
         queue = (IORelation)myUniverse.connect(portin, portout, "QZ");
         //portin.getQueue().setCapacity(1);
- 
+
         portout = (IOPort)_alternate.getPort("output");
         portin = (IOPort)_redirect0.getPort("input");
-        queue = (IORelation)myUniverse.connect(portin, portout, "QT1");       
+        queue = (IORelation)myUniverse.connect(portin, portout, "QT1");
         //portin.getQueue().setCapacity(1);
- 
+
         portout = (IOPort)_alternate.getPort("output");
         portin = (IOPort)_redirect1.getPort("input");
         queue = (IORelation)myUniverse.connect(portin, portout, "QT2");
         //portin.getQueue().setCapacity(1);
- 
+
 	System.out.println("Connections made");
  	exec.startRun();
         System.out.println("Bye World\n");
@@ -104,5 +104,5 @@ class PNInterleavingExample {
     }
 
 }
-   
+
 

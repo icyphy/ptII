@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -39,7 +39,7 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTSink
-/** 
+/**
 Consume the input token and do nothing.
 @author  Jie Liu
 @version $Id$
@@ -47,14 +47,14 @@ Consume the input token and do nothing.
 @see full-classname
 */
 public class CTSink extends CTActor{
-    /** Construct the sink. 
+    /** Construct the sink.
      * @see ptolemy.domains.ct.kernel.CTActor
      * @param container The CTSubSystem this star belongs to
      * @param name The name
      * @exception NameDuplicationException another star already had this name
      * @exception IllegalActionException illustrates internal problems
      */
-    public CTSink(TypedCompositeActor container, String name) 
+    public CTSink(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input = new TypedIOPort(this, "input");
@@ -71,14 +71,14 @@ public class CTSink extends CTActor{
      * The format of printout is :
      * CTTime:......
      * CTData:......
-     *  @exception IllegalActionException If there's no director or 
+     *  @exception IllegalActionException If there's no director or
      *        no input token when needed.
-     */	
-    
+     */
+
     public void fire() throws  IllegalActionException{
        CTDirector dir = (CTDirector) getDirector();
        if (dir == null) {
-           throw new IllegalActionException(this, 
+           throw new IllegalActionException(this,
                    "No director avaliable");
        }
        for(int i = 0; i < input.getWidth(); i++) {

@@ -1,8 +1,8 @@
 /*
   File: IncrMap.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Changed to use accessOnly
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -83,7 +83,7 @@ public final class IncrMap extends IncrImpl implements Map {
  * Implements collections.Map.at.
  * @see collections.Map#at
 **/
-  public synchronized Object      at(Object key) 
+  public synchronized Object      at(Object key)
   throws  NoSuchElementException {
     return ((UpdatableMap)accessOnly()).at(key);
   }
@@ -102,8 +102,8 @@ public final class IncrMap extends IncrImpl implements Map {
  * @see collections.Map#keys
 **/
   public synchronized CollectionEnumeration keys() {
-    undelta(); 
-    // wrap the underlying enumeration in Incr version 
+    undelta();
+    // wrap the underlying enumeration in Incr version
     CollectionEnumeration e = ((UpdatableMap)(updatable_)).keys();
     IncrCollectionEnumeration ie = new IncrCollectionEnumeration(this, e);
     pin(ie);
@@ -116,12 +116,12 @@ public final class IncrMap extends IncrImpl implements Map {
  * Implements collections.Map.puttingAt.
  * @see collections.Map#puttingAt
 **/
-  public synchronized /* IncrMap */ Map  puttingAt(Object key, Object element) 
+  public synchronized /* IncrMap */ Map  puttingAt(Object key, Object element)
   throws IllegalElementException {
-    undelta(); 
+    undelta();
     UpdatableMap u = (UpdatableMap)updatable_;
     boolean has = u.includesAt(key, element);
-    if (has) 
+    if (has)
       return this;
     else { // if already has key, undo via another include
       boolean hasKey = u.includesKey(key);
@@ -155,10 +155,10 @@ public final class IncrMap extends IncrImpl implements Map {
  * @see collections.Map#removingAt
 **/
   public synchronized /* IncrMap */ Map   removingAt(Object key) {
-    undelta(); 
+    undelta();
     UpdatableMap u = (UpdatableMap)updatable_;
     boolean has = u.includesKey(key);
-    if (!has) 
+    if (!has)
       return this;
     else {
       try {
@@ -181,7 +181,7 @@ public final class IncrMap extends IncrImpl implements Map {
  * @see collections.Collection#removingOneOf
 **/
   public synchronized /* IncrMap */ Collection  removingOneOf(Object element) {
-    undelta(); 
+    undelta();
     UpdatableMap u = (UpdatableMap)updatable_;
     Object key = u.aKeyOf(element);
     if (key == null)
@@ -206,7 +206,7 @@ public final class IncrMap extends IncrImpl implements Map {
  * @see collections.Collection#excluding
 **/
   public synchronized /* IncrMap */ Collection  excluding(Object element) {
-    undelta(); 
+    undelta();
     UpdatableMap u = (UpdatableMap)updatable_;
     int occ = u.occurrencesOf(element);
     if (occ == 0)
@@ -228,9 +228,9 @@ public final class IncrMap extends IncrImpl implements Map {
  * @see collections.Collection#replacingAllOf
 **/
   public synchronized /* IncrMap */ Collection  replacingAllOf(Object oldElement,
-                                             Object newElement) 
+                                             Object newElement)
   throws IllegalElementException {
-    undelta(); 
+    undelta();
     UpdatableMap u = (UpdatableMap)updatable_;
     int oldocc = u.occurrencesOf(oldElement);
     if (oldocc == 0)
@@ -249,9 +249,9 @@ public final class IncrMap extends IncrImpl implements Map {
  * @see collections.Collection#replacingOneOf
 **/
   public synchronized /* IncrMap */ Collection replacingOneOf(Object oldElement,
-                                                    Object newElement) 
+                                                    Object newElement)
   throws IllegalElementException {
-    undelta(); 
+    undelta();
     UpdatableMap u = (UpdatableMap)updatable_;
     Object key = u.aKeyOf(oldElement);
     if (key == null)
@@ -264,10 +264,10 @@ public final class IncrMap extends IncrImpl implements Map {
 /**
  * Perform updates within an edit chain
 **/
-  protected synchronized UpdatableCollection doEdit(UpdatableCollection c) { 
+  protected synchronized UpdatableCollection doEdit(UpdatableCollection c) {
     UpdatableMap u = (UpdatableMap)c;
-    try { 
-      if (op_ == ADD_EDIT) 
+    try {
+      if (op_ == ADD_EDIT)
         u.putAt(firstObjectArg_, secondObjectArg_);
       else if (op_ == REMOVE_EDIT)
         u.removeAt(firstObjectArg_);

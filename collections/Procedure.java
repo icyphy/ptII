@@ -1,8 +1,8 @@
 /*
   File: Procedure.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   22Oct95  dl@cs.oswego.edu   Created.
 
 */
-  
+
 package collections;
 
 /**
@@ -30,7 +30,7 @@ public interface Procedure {
 /**
  * Execute some procedure on obj.
  * Raise any Exception at all.
-**/  
-  public void       procedure(Object obj) throws Exception; 
+**/
+  public void       procedure(Object obj) throws Exception;
 }
 

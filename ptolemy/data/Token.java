@@ -57,7 +57,7 @@ public class Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a new token whose value is the value of the 
+    /** Return a new token whose value is the value of the
      *  argument Token added to the value of this Token.
      *  It should be overridden in derived
      *  classes to provide type specific actions for add.
@@ -73,7 +73,7 @@ public class Token {
         throw new IllegalActionException(str);
     }
 
-    /** Return a new token whose value is the value of this 
+    /** Return a new token whose value is the value of this
      *  Token added to the value of the argument Token.
      *  It should be overridden in derived classes
      *  to provide type specific actions for add.

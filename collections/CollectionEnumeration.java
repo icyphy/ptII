@@ -1,8 +1,8 @@
 /*
   File: CollectionEnumeration.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   24Sep95  dl@cs.oswego.edu   Create from collections.java  working file
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -43,8 +43,8 @@ public interface CollectionEnumeration extends Enumeration {
 
 /**
  * Return the number of elements in the enumeration that have
- * not yet been traversed. When corrupted() is true, this 
- * number may (or may not) be greater than zero even if hasMoreElements() 
+ * not yet been traversed. When corrupted() is true, this
+ * number may (or may not) be greater than zero even if hasMoreElements()
  * is false. Exception recovery mechanics may be able to
  * use this as an indication that recovery of some sort is
  * warranted. However, it is not necessarily a foolproof indication.
@@ -56,11 +56,11 @@ public interface CollectionEnumeration extends Enumeration {
  * while (e.hasMoreElements()) arr[i++] = e.nextElement();
  * </PRE>
  * <P>
- * For the converse case, 
+ * For the converse case,
  * @see ArrayEnumeration
  * @return the number of untraversed elements
 **/
-    
+
   public int numberOfRemainingElements();
 }
 

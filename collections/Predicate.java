@@ -1,8 +1,8 @@
 /*
   File: Predicate.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   24Sep95  dl@cs.oswego.edu   Create from collections.java  working file
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -23,7 +23,7 @@ import java.util.NoSuchElementException;
  * predicate(Object obj) method that returns true or false
  * depending on whether obj obeys the maintained predicate.
  * <P>
- * When used as an element screener, check should 
+ * When used as an element screener, check should
  * return false if the
  * element should not be allowed in the collection, in which case
  * any attempted add or replace operation will raise an exception. Use of
@@ -44,7 +44,7 @@ public interface Predicate {
  * @return true is obeys predicate
 **/
 
-  public boolean     predicate(Object obj); 
+  public boolean     predicate(Object obj);
 }
 
 

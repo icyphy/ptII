@@ -1,8 +1,8 @@
 /*
   File: CLEnumeration.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Changed protection statuses
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -29,18 +29,18 @@ import java.util.NoSuchElementException;
 final class CLEnumeration extends CEImpl {
   private CLCell cur_;
 
-  public CLEnumeration(UpdatableCollection c, CLCell first) { 
+  public CLEnumeration(UpdatableCollection c, CLCell first) {
     super(c);
-    cur_ = first; 
+    cur_ = first;
   }
 
 /**
  * Implements java.util.Enumeration.nextElement.
  * @see java.util.Enumeration#nextElement
 **/
-  public Object nextElement() { 
+  public Object nextElement() {
     decRemaining();
-    Object v = cur_.element(); 
+    Object v = cur_.element();
     cur_ = cur_.next();
     return v;
   }

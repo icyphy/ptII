@@ -116,7 +116,7 @@ public class DEWaitingTime extends DEActor {
         super.initialize();
         _waiting.removeAllElements();
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////

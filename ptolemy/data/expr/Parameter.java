@@ -68,10 +68,10 @@ in it or it is given a new expression which is evaluated.
 To create a parameter from an expression, create the parameter with the
 appropriate container and name, then call setExpression() to set its value.
 <p>
-A Parameter can also be reset. If the Parameter was originally set from a 
+A Parameter can also be reset. If the Parameter was originally set from a
 Token, then this Token is placed agin in the Parameter. If the Parameter
- was originally given an expression, then this expression is placed agian 
-in the Parameter and evaluated. Note that the type of the Token resulting 
+ was originally given an expression, then this expression is placed agian
+in the Parameter and evaluated. Note that the type of the Token resulting
 from reset must be compatible the current Parameter type.
 <p>
 FIXME: this class comment needs to be cleaned up.
@@ -276,7 +276,7 @@ public class Parameter extends Attribute implements ParameterListener {
     public NamedList getScope() {
         if (_scopeVersion == workspace().getVersion()) {
             return _scope;
-        } 
+        }
         try {
             workspace().getReadAccess();
             _scope = new NamedList();
@@ -344,10 +344,10 @@ public class Parameter extends Attribute implements ParameterListener {
      */
     public Class getType() {
         return _paramType;
-    } 
-    
-    /** A Parameter which the expression in this Parameter references 
-     *  has changed. Here we just call evaluate() to obtain the new 
+    }
+
+    /** A Parameter which the expression in this Parameter references
+     *  has changed. Here we just call evaluate() to obtain the new
      *  Token to be stored in this Parameter.
      *  @param event The ParameterEvent containing the information
      *    about why the referenced Parameter changed.
@@ -356,9 +356,9 @@ public class Parameter extends Attribute implements ParameterListener {
          evaluate();
     }
 
-    /** A Parameter which the expression stored in this Parameter 
-     *  has been removed. Check if the current expression is still 
-     *  valid by recreating and evaluating the parse tree. 
+    /** A Parameter which the expression stored in this Parameter
+     *  has been removed. Check if the current expression is still
+     *  valid by recreating and evaluating the parse tree.
      *  @param event The ParameterEvent containing information
      *    about the removed Parameter.
      */
@@ -368,7 +368,7 @@ public class Parameter extends Attribute implements ParameterListener {
     }
 
     /** Unregister a ParameterListener of this Parameter.
-     *  @param oldListener The ParameterListener that is will no 
+     *  @param oldListener The ParameterListener that is will no
      *  longer be notified when the value of this Parameter changes.
      */
     public void removeParameterListener(ParameterListener oldListener) {
@@ -380,7 +380,7 @@ public class Parameter extends Attribute implements ParameterListener {
         LinkedList newList = new LinkedList();
         Enumeration oldList = _listeners.elements();
         while(oldList.hasMoreElements()) {
-            ParameterListener nextList = 
+            ParameterListener nextList =
                      (ParameterListener)oldList.nextElement();
              if (oldListener != nextList) {
                  newList.insertFirst(nextList);
@@ -413,9 +413,9 @@ public class Parameter extends Attribute implements ParameterListener {
     }
 
     /** Specify the container NamedObj, adding this Parameter to the
-     *  list of attributes in the container.  If the specified container 
-     *  is null, remove this Parameter from the list of attributes of the 
-     *  NamedObj and also notify all ParameterListeners which are registered 
+     *  list of attributes in the container.  If the specified container
+     *  is null, remove this Parameter from the list of attributes of the
+     *  NamedObj and also notify all ParameterListeners which are registered
      *  with this Parameter that this Parameter has been removed.
      *  If the container already
      *  contains an parameter with the same name, then throw an exception
@@ -423,8 +423,8 @@ public class Parameter extends Attribute implements ParameterListener {
      *  not in the same workspace as this parameter, throw an exception.
      *  If this parameter is already contained by the NamedObj, do nothing.
      *  If the parameter already has a container, remove
-     *  this attribute from its attribute list of the NamedObj first.  
-     *  Otherwise, remove it from the directory of the workspace, if it is 
+     *  this attribute from its attribute list of the NamedObj first.
+     *  Otherwise, remove it from the directory of the workspace, if it is
      *  there. This method is write-synchronized on the
      *  workspace and increments its version number.
      *  @param container The container to attach this attribute to..
@@ -457,8 +457,8 @@ public class Parameter extends Attribute implements ParameterListener {
      *  is set to null. If it is not null, the expression is stored
      *  to be evaluated at a later stage. To evaluate the expression
      *  now, invoke the method evaluate on this parameter.
-     *  If the previous Token in the Parameter was the result of 
-     *  evaluating an expression, the dependencies registered with 
+     *  If the previous Token in the Parameter was the result of
+     *  evaluating an expression, the dependencies registered with
      *  other Parameters for that expression are cleared.
      *  @param str The expression for this parameter.
      */
@@ -481,8 +481,8 @@ public class Parameter extends Attribute implements ParameterListener {
 
     /** Put a new Token in this Parameter. This is the way to give the
      *  give the Parameter a new simple value.
-     *  If the previous Token in the Parameter was the result of 
-     *  evaluating an expression, the dependencies registered with 
+     *  If the previous Token in the Parameter was the result of
+     *  evaluating an expression, the dependencies registered with
      *  other Parameters for that expression are cleared.
      *  @param token The new Token to be stored in this Parameter.
      *  @exception IllegalArgumentException If the token cannot be placed
@@ -546,7 +546,7 @@ public class Parameter extends Attribute implements ParameterListener {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return a description of this Parameter. 
+    /** Return a description of this Parameter.
      *  @param detail The level of detail.
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
@@ -582,9 +582,9 @@ public class Parameter extends Attribute implements ParameterListener {
     }
 
     /** Rebuild the dependencies of this parameter on other parameters
-     *  by recreating and evaluating the parse tree, and check if the 
+     *  by recreating and evaluating the parse tree, and check if the
      *  current expression is still valid.
-     */  
+     */
     protected void _rebuildDependencies() {
         setExpression(_currentExpression);
         evaluate();
@@ -628,14 +628,14 @@ public class Parameter extends Attribute implements ParameterListener {
         }
     }
 
-   /*  Clear the dependencies this Parameter has registered 
-    *  with other Parameters. If this is not done a phanton web 
-    *  of dependencies may exist which could lead to false 
-    *  dependency loops being detected. Normally this method is 
-    *  called with the roor node of the parse tree and recursively 
+   /*  Clear the dependencies this Parameter has registered
+    *  with other Parameters. If this is not done a phanton web
+    *  of dependencies may exist which could lead to false
+    *  dependency loops being detected. Normally this method is
+    *  called with the roor node of the parse tree and recursively
     *  calls itself to visit the whole tree.
-    *  @param node The node in the tree below which all dependencies 
-    *   are cleared. 
+    *  @param node The node in the tree below which all dependencies
+    *   are cleared.
     */
     private void _clearDependencies(Node node) {
         int children = node.jjtGetNumChildren();

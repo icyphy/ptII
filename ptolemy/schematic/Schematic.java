@@ -51,7 +51,7 @@ and run a simulation, or to display and edit the visual schematic
 */
 public class Schematic extends SchematicElement {
 
-    /** 
+    /**
      * Create a new Schematic object.
      */
     public Schematic () {
@@ -63,7 +63,7 @@ public class Schematic extends SchematicElement {
         setVersion("");
    }
 
-    /** 
+    /**
      * Create a new Schematic object with the specified attributes
      */
     public Schematic (HashedMap attributes) {
@@ -117,7 +117,7 @@ public class Schematic extends SchematicElement {
         return entities.keys();
     }
 
-    /** 
+    /**
      * Return a long description string of this Schematic.
      */
     public String getDescription() {
@@ -178,12 +178,12 @@ public class Schematic extends SchematicElement {
         entities.removeAt(name);
     }
 
-    /** 
+    /**
      * Set the string that contains the long description of this library.
      */
     public void setDescription(String s) {
         description.setPCData(s);
-    }   
+    }
 
     /** Set the string that represents the version of this schematic.
      */

@@ -37,8 +37,8 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// DataflowActor
 /**
-A Dataflow Actor is a actor that follows dataflow semantics.   
-At any time it may be queried for the number of tokens that 
+A Dataflow Actor is a actor that follows dataflow semantics.
+At any time it may be queried for the number of tokens that
 it will produce or consume on any of its ports during its next firing.
 
 @author Stephen Neuendorffer
@@ -51,28 +51,28 @@ it will produce or consume on any of its ports during its next firing.
 */
 interface DataflowActor {
 
-    /** Get the number of tokens that are produced or consumed 
-     *  on the designated port of this Actor.   
+    /** Get the number of tokens that are produced or consumed
+     *  on the designated port of this Actor.
      *
      *  @throw IllegalActionException if port is not contained in this actor,
      *  or is not an input port.
      *  @return The number of tokens consumed on the port.
      */
-    public int getTokenConsumptionRate(IOPort p) 
+    public int getTokenConsumptionRate(IOPort p)
         throws IllegalActionException;
 
 
-    /** Get the number of tokens that are produced or consumed 
-     *  on the designated port of this Actor.   
+    /** Get the number of tokens that are produced or consumed
+     *  on the designated port of this Actor.
      *
      *  @throw IllegalActionException if port is not contained in this actor.
      *  or is not an output port.
      *  @return The number of tokens produced on the port.
      */
-    public int getTokenProductionRate(IOPort p) 
+    public int getTokenProductionRate(IOPort p)
         throws IllegalActionException;
 
-    /** Set the number of tokens that are produced or consumed 
+    /** Set the number of tokens that are produced or consumed
      *  on the designated port of this Actor.   This will generally
      *  be called in an AtomicActor to define it's behavior.   It may also
      *  be called in an opaque CompositeActor to place a non-dataflow domain
@@ -84,22 +84,22 @@ interface DataflowActor {
      *  or is not an input port.
      *  @return The number of tokens consumed on the port.
      */
-    public void setTokenConsumptionRate(IOPort p, int count) 
+    public void setTokenConsumptionRate(IOPort p, int count)
         throws IllegalActionException;
 
-    /** Set the number of tokens that are produced or consumed 
+    /** Set the number of tokens that are produced or consumed
      *  on the designated port of this Actor.  This will generally
      *  be called in an AtomicActor to define it's behavior.   It may also
      *  be called in an opaque CompositeActor to place a non-dataflow domain
      *  inside of a dataflow domain.  (In this case the CompositeActor cannot
      *  determine the rate by scheduling the contained domain, and it must be
-     *  explicitly declared.) 
+     *  explicitly declared.)
      *
      *  @throw IllegalActionException if port is not contained in this actor,
      *  or is not an output port.
      *  @return The number of tokens produced on the port.
      */
-    public void setTokenProductionRate(IOPort p, int count) 
+    public void setTokenProductionRate(IOPort p, int count)
         throws IllegalActionException;
 
          /*
@@ -108,13 +108,13 @@ interface DataflowActor {
         */
 
 
-    /** Get the number of tokens that are produced or consumed 
-     *  on the designated port of this Actor during each firing.   
+    /** Get the number of tokens that are produced or consumed
+     *  on the designated port of this Actor during each firing.
      *  Return zero if setTokenProductionRate has not been called
      *   on this IOPort.
      *
      *  @throw IllegalActionException if port is not contained in this actor.
-     *  @return The number of tokens produced on the port, as supplied by 
+     *  @return The number of tokens produced on the port, as supplied by
      *  setTokenProductionRate, or zero if setTokenProductionRate has not been
      *  called
      */
@@ -126,19 +126,19 @@ interface DataflowActor {
             throws IllegalActionException;
             */
 
-    /** Set the number of tokens that are produced or consumed 
+    /** Set the number of tokens that are produced or consumed
      *  on the appropriate port of this Actor during the initialization phase.
      *  This is usually used to simulate a delay along the relation that the
      *  port is connected to, and may be necessary in order to get the SDF
      *  scheduler to create a valid schedule from certain kinds of topologies.
-     * 
+     *
      *  @throw IllegalActionException if port is not contained in this actor.
      *  @throw IllegalActionException if port is not an input IOPort.
      */
     public void setTokenInitProduction(IOPort p, int count)
             throws IllegalActionException;
-            
- 
+
+
 }
 
 

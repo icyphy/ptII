@@ -43,7 +43,7 @@ import java.awt.*;
  * @version $Id$
  */
 public class PNExampleApplet extends Applet {
-    
+
 
     /** Return a string describing this applet.
      */

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -33,28 +33,28 @@ import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ODESolver
-/** 
+/**
 Abstract base class for ODE solvers. This class hooks the method in one
 iteration in the CTDirector, ie. prefire(), fire(), and postfire().
 The idea is that CTDirector can switch its solver at each iteration
 of simulation seamlessly. The behavior of the integrators also changes
 when changing ODE solver, so this class provides the action methods
 for the integrators too.
-Conceptually, ODE solvers do not maintain simulation parameters, 
+Conceptually, ODE solvers do not maintain simulation parameters,
 but they get these parameters from the director. So a set of parameters
 are shared by all the switchable solvers.
 @author Jie Liu
 @version $Id$
 */
 public abstract class ODESolver extends NamedObj {
-    
+
     public static final boolean VERBOSE = false;
     public static final boolean DEBUG = false;
 
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
-     */	
+     */
     public ODESolver() {
         super();
     }
@@ -87,7 +87,7 @@ public abstract class ODESolver extends NamedObj {
 
     /** Abstract method hooks the fire() method of director.
      *  Different solver may implement it differently.
-     * 
+     *
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      */
@@ -96,7 +96,7 @@ public abstract class ODESolver extends NamedObj {
     /** Abstract method for resolveing the next step size if the current
      *  step is a success.
      *  Different solver may implement it differently.
-     * 
+     *
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      */
@@ -104,7 +104,7 @@ public abstract class ODESolver extends NamedObj {
 
 
     /** Increase the round counter by one. Round counter is a counter
-     *  for the number of fire() rounds in one iteration. Some 
+     *  for the number of fire() rounds in one iteration. Some
      *  CTActors (like the integrator) may behaves differently under
      *  different round. The round can be get by the round() method.
      *  And resetRound() will always reset the counter to 0.
@@ -120,7 +120,7 @@ public abstract class ODESolver extends NamedObj {
     }
 
     /** Return the round counter record.
-     * 
+     *
      *  @return The round of fire().
      */
     public int getRound() {
@@ -142,7 +142,7 @@ public abstract class ODESolver extends NamedObj {
      */
     public abstract boolean integratorIsSuccess(CTBaseIntegrator integrator);
 
-    /** Abstract hook method for suggestedNextStepSize() method of 
+    /** Abstract hook method for suggestedNextStepSize() method of
      *  integrators.
      *  @param integrator The integrator of that calls this method.
      *  @return The suggested next step by the given integrator.
@@ -159,7 +159,7 @@ public abstract class ODESolver extends NamedObj {
     /** Run the CT subsystem for one successful step.
      *  Different solver may interprete "success" and implement
      *  it differently.
-     * 
+     *
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      */
@@ -171,9 +171,9 @@ public abstract class ODESolver extends NamedObj {
                 break;
             }
             startOverLastStep();
-        }        
+        }
     }
-   
+
     /** Reinitialize the last step and start over again.
      *  The typical operations incolved in this method are reset
      *  the currentTime and currentStepSize of the director.
@@ -184,7 +184,7 @@ public abstract class ODESolver extends NamedObj {
      *  @return true if the local error in the last step is tolerable.
      */
     public abstract boolean errorTolerable();
-    
+
     /** Return the director contains this solver.
      *  @return the director contains this solver.
      */

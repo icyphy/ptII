@@ -1,8 +1,8 @@
 /*
   File: Collection.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   14dec95  dl                 Declare as a subinterface of Cloneable
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -41,7 +41,7 @@ public interface Collection extends ImplementationCheckable, Cloneable {
  * No other spurious effects.
  * @return number of elements
 **/
-  public int         size(); 
+  public int         size();
 
 /**
  * Report whether this collection has no elements.
@@ -81,7 +81,7 @@ public interface Collection extends ImplementationCheckable, Cloneable {
  * @return true iff contains at least one member that is equal to element.
 **/
   public boolean     includes(Object element);
- 
+
 /**
  * Return an enumeration that may be used to traverse through
  * the elements in the collection. Standard usage, for some
@@ -96,10 +96,10 @@ public interface Collection extends ImplementationCheckable, Cloneable {
  * All Collections return instances
  * of CollectionEnumeration, that can report the number of remaining
  * elements, and also perform consistency checks so that
- * for UpdatableCollections, element enumerations may become 
+ * for UpdatableCollections, element enumerations may become
  * invalidated if the collection is modified during such a traversal
  * (which could in turn cause random effects on the collection.
- * TO prevent this,  CollectionEnumerations 
+ * TO prevent this,  CollectionEnumerations
  * raise CorruptedEnumerationException on attempts to access
  * nextElements of altered Collections.)
  * Note: Since all collection implementations are synchronizable,
@@ -119,12 +119,12 @@ public interface Collection extends ImplementationCheckable, Cloneable {
  * elements but different nextElement() orderings.
  * Again, sub-interfaces may provide stronger guarantees. In
  * particular, Seqs produce enumerations with nextElements in
- * index order, ElementSortedCollections enumerations are in ascending 
+ * index order, ElementSortedCollections enumerations are in ascending
  * sorted order, and KeySortedCollections are in ascending order of keys.
  * @return an enumeration e such that
  * <PRE>
  *   e.numberOfRemainingElements() == size() &&
- *   foreach (v in e) includes(e) 
+ *   foreach (v in e) includes(e)
  * </PRE>
 **/
 
@@ -132,7 +132,7 @@ public interface Collection extends ImplementationCheckable, Cloneable {
 
 /**
  * Report whether other has the same element structure as this.
- * That is, whether other is of the same size, and has the same 
+ * That is, whether other is of the same size, and has the same
  * elements() properties.
  * This is a useful version of equality testing. But is not named
  * `equals' in part because it may not be the version you need.
@@ -140,7 +140,7 @@ public interface Collection extends ImplementationCheckable, Cloneable {
  * The easiest way to decribe this operation is just to
  * explain how it is interpreted in standard sub-interfaces:
  * <UL>
- *  <LI> Seq and ElementSortedCollection: other.elements() has the 
+ *  <LI> Seq and ElementSortedCollection: other.elements() has the
  *        same order as this.elements().
  *  <LI> Bag: other.elements has the same occurrencesOf each element as this.
  *  <LI> Set: other.elements includes all elements of this
@@ -181,17 +181,17 @@ public interface Collection extends ImplementationCheckable, Cloneable {
 /**
  * Construct a new Collection that is a clone of self except
  * that one occurrence of oldElement is replaced with
- * newElement. 
+ * newElement.
  * It is NOT an error to replace a non-existent element.
  *
  * @param oldElement the element to replace
  * @param newElement the replacement
  * @return a new Collection, c, with the sameStructure as this, except:
  * <PRE>
- * let int delta = oldElement.equals(newElement)? 0 : 
+ * let int delta = oldElement.equals(newElement)? 0 :
  *               max(1, this.occurrencesOf(oldElement) in
  *  c.occurrencesOf(oldElement) == this.occurrencesOf(oldElement) - delta &&
- *  c.occurrencesOf(newElement) ==  (this instanceof Set) ? 
+ *  c.occurrencesOf(newElement) ==  (this instanceof Set) ?
  *         max(1, this.occurrencesOf(oldElement) + delta):
  *                this.occurrencesOf(oldElement) + delta) &&
  * </PRE>
@@ -203,17 +203,17 @@ public interface Collection extends ImplementationCheckable, Cloneable {
 /**
  * Construct a new Collection that is a clone of self except
  * that all occurrences of oldElement are replaced with
- * newElement. 
+ * newElement.
  * It is NOT an error to convert a non-existent element.
  *
  * @param oldElement the element to replace
  * @param newElement the replacement
  * @return a new Collection, c, with the sameStructure as this except
  * <PRE>
- * let int delta = oldElement.equals(newElement)? 0 : 
+ * let int delta = oldElement.equals(newElement)? 0 :
                    occurrencesOf(oldElement) in
  *  c.occurrencesOf(oldElement) == this.occurrencesOf(oldElement) - delta &&
- *  c.occurrencesOf(newElement) ==  (this instanceof Set) ? 
+ *  c.occurrencesOf(newElement) ==  (this instanceof Set) ?
  *         max(1, this.occurrencesOf(oldElement) + delta):
  *                this.occurrencesOf(oldElement) + delta)
  * </PRE>

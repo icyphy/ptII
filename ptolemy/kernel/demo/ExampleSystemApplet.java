@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -33,19 +33,19 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExampleSystem
-/** 
-ExapmleSystem constructs a hierachical graph as shown in 
-Ptolemy 2 design document, Figure 8 
+/**
+ExapmleSystem constructs a hierachical graph as shown in
+Ptolemy 2 design document, Figure 8
 The graph has 10 entities, 14 ports, and 12 relations.
 The main function also returns the results of some key functions of
 ComponentRelation and ComponentPort.
-See Ptolemy 2 design document, Figure 11 
+See Ptolemy 2 design document, Figure 11
 @author Jie Liu
 @version $Id$
 */
-public class ExampleSystemApplet extends ExampleApplet 
+public class ExampleSystemApplet extends ExampleApplet
 {
-    /** Construct the graph. */	
+    /** Construct the graph. */
     public ExampleSystemApplet()
             throws IllegalActionException, NameDuplicationException {
         super();
@@ -60,20 +60,20 @@ public class ExampleSystemApplet extends ExampleApplet
     *  @see ptolemy.kernel.demo.Figure8.ExampleApplet#buttonAction()
     *  @see java.awt.buttton
     *  @param java.awt.event
-    */	
+    */
     public boolean buttonAction(java.awt.Event event) {
         clearTextArea();
         printInTextArea(_exsys.toString());
         return true;
     }
 
-    /** Initialize the applet. */ 
+    /** Initialize the applet. */
     public void init() {
         super.init();
         addNotify();
         createAppletForm();
     }
-    
+
     /** Create the applet form. */
     public void createAppletForm() {
         try {
@@ -90,7 +90,7 @@ public class ExampleSystemApplet extends ExampleApplet
         f.setResizable(true);
         f.add(exsys);
         f.addNotify();
-        java.awt.Insets insets = f.insets(); 
+        java.awt.Insets insets = f.insets();
         exsys.init();
         exsys.move(insets.left,insets.top);
         f.resize(exsys.preferredSize());
@@ -100,7 +100,7 @@ public class ExampleSystemApplet extends ExampleApplet
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // Example System containing Entities, Relations and Ports.
     ExampleSystem _exsys;
 }

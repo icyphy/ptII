@@ -41,36 +41,36 @@ import collections.LinkedList;
 A CompositeActor is an aggregation of actors.  It may have a
 <i>local director</i>, which is an object of class Director that
 is responsible for executing the contained actors.
-At the top level of a hierarchy, a composite actor (the toplevel 
+At the top level of a hierarchy, a composite actor (the toplevel
 CompositeActor of the topology) will normally exist with a local Director,
 and no container.  A composite actor at a lower level
 of the hierarchy may also have a local director.  A composite actor
 with a local director is <i>opaque</i>, and serves the role of the
 <i>wormhole</i> from Ptolemy 0.x. Its ports are opaque, but it can
-contain actors and relations.  The toplevel composite actor is also 
-with a Manager object that is responsible for managing any execution within 
+contain actors and relations.  The toplevel composite actor is also
+with a Manager object that is responsible for managing any execution within
 the topology at a high level.
 <p>
 The <i>executive director</i> of a composite actor is the local director of
-the actor's container.   The toplevel composite actor has no executive 
-director, and getExecutiveDirector will return null.   For transparent 
-composite actors, the executive director and the local director will be the 
+the actor's container.   The toplevel composite actor has no executive
+director, and getExecutiveDirector will return null.   For transparent
+composite actors, the executive director and the local director will be the
 same.
 <p>
 The getDirector() method returns the local director if there is one.
 Otherwise, it returns the <i>executive director</i> of the CompositeActor,
- if there is one.  Whatever it returns is called (simply) the 
+ if there is one.  Whatever it returns is called (simply) the
 <i>director</i> of the composite (it may be local or executive).  This
-Director is responsible for the execution of all the actors contained 
+Director is responsible for the execution of all the actors contained
 within the composite actor.
 <p>
 A composite actor must have an executive director in order communicate with
 the hierarchy around it.   In fact, it cannot even receive data in its
- input ports without an executive director, since the executive director 
+ input ports without an executive director, since the executive director
 is responsible for supplying the receivers to the ports.
 The toplevel composite actor has no executive director and cannot have
-ports that transmit data, but it can still be executed as long as it has a 
-local director.  If the getDirector() method returns null, then the 
+ports that transmit data, but it can still be executed as long as it has a
+local director.  If the getDirector() method returns null, then the
 composite is not executable.
 <p>
 When a composite actor has both a director and an executive director, then
@@ -100,8 +100,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
     /** Construct a CompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
-     *  directory.  
-     *  You should set the director before attempting to execute it. 
+     *  directory.
+     *  You should set the director before attempting to execute it.
      *  You should set the container before sending data to it.
      *  Increment the version number of the workspace.
      */
@@ -112,8 +112,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
     /** Construct a CompositeActor in the specified workspace with no container
      *  and an empty string as a name. You can then change the name with
      *  setName(). If the workspace argument is null, then use the default
-     *  workspace. 
-     *  You should set the director before attempting to execute it. 
+     *  workspace.
+     *  You should set the director before attempting to execute it.
      *  You should set the container before sending data to it.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the actor.
@@ -127,11 +127,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  NullPointerException will be thrown.  This actor will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.  
+     *  Increment the version of the workspace.
      *  This actor will have no
      *  local director initially, and its executive director will be simply
      *  the director of the container.
-     *  You should set the director before attempting to execute it. 
+     *  You should set the director before attempting to execute it.
      *
      *  @param container The container actor.
      *  @param name The name of this actor.
@@ -156,7 +156,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  The ports of the returned actor are not connected to anything.
      *  The connections of the relations are duplicated in the new composite,
      *  unless they cross levels, in which case an exception is thrown.
-     *  The local director is cloned, if there is one. 
+     *  The local director is cloned, if there is one.
      *  The executive director is not cloned.
      *  NOTE: This will not work if there are level-crossing transitions.
      *
@@ -247,7 +247,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     }
 
     /** Return the executive director of this CompositeActor.
-     *  The container (if any) is queried for its (local) director.  
+     *  The container (if any) is queried for its (local) director.
      *  If it has none, or there
      *  is no container, then return null. This method is read-synchronized
      *  on the workspace.
@@ -264,7 +264,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             workspace().doneReading();
         }
     }
-    
+
     /** Get the manager responsible for execution of this composite actor.
      *  If this is the toplevel composite actor, then return what was
      *  set with setManager().
@@ -474,7 +474,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             }
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
-            return getDirector().postfire();           
+            return getDirector().postfire();
         } finally {
             workspace().doneReading();
         }
@@ -585,8 +585,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** If this is an opaque CompositeActor, then look to our director 
-     *  for help.   If we are transparent, then we really shouldn't have been 
+    /** If this is an opaque CompositeActor, then look to our director
+     *  for help.   If we are transparent, then we really shouldn't have been
      *  called, so just ignore.
      */
     public void terminate() {

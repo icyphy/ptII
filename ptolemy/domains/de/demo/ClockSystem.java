@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -34,7 +34,7 @@ import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ClockSystem
-/** 
+/**
 A simple DE test system.
 
 @author Edward A. Lee, Lukito Muliadi
@@ -44,7 +44,7 @@ public class ClockSystem {
     /** Constructor
      *  @exception IllegalActionException Not thrown.
      *  @exception NameDuplicationException Not thrown.
-     */	
+     */
     public ClockSystem()
             throws IllegalActionException, NameDuplicationException {
         topLevel = new TypedCompositeActor();
@@ -70,8 +70,8 @@ public class ClockSystem {
     /** Run the system for the specified amount of time.
      *  @exception IllegalActionException Not thrown.
      *  @exception NameDuplicationException Not thrown.
-     */	
-    public void go(double stopTime) throws IllegalActionException, 
+     */
+    public void go(double stopTime) throws IllegalActionException,
             NameDuplicationException {
         localDirector.setStopTime(stopTime);
         manager.startRun();

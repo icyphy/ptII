@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -32,8 +32,8 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// DefaultExecutionListener
-/** 
-A default implementation of the ExecutionListener interface. 
+/**
+A default implementation of the ExecutionListener interface.
 @author Steve Neuendorffer, Lukito Muliadi
 @version $Id$
 @see classname
@@ -47,7 +47,7 @@ public class DefaultExecutionListener implements ExecutionListener {
      * @param parameter-name description
      * @return description
      * @exception full-classname description
-     */	
+     */
     public DefaultExecutionListener() {
     }
 
@@ -62,7 +62,7 @@ public class DefaultExecutionListener implements ExecutionListener {
         if (e instanceof TypeConflictException) {
             TypeConflictException tce = (TypeConflictException) e;
             Enumeration ports = tce.getPorts();
-            System.out.println("Type conflict exception with the offending "+ 
+            System.out.println("Type conflict exception with the offending "+
                     "ports:");
             while (ports.hasMoreElements() ) {
                 IOPort port = (IOPort) ports.nextElement();
@@ -72,7 +72,7 @@ public class DefaultExecutionListener implements ExecutionListener {
         e.printStackTrace();
     }
 
-    /** Called to report that the current iteration finished and 
+    /** Called to report that the current iteration finished and
      *  the wrapup sequence completed normally.
      */
     public void executionFinished(ExecutionEvent event) {
@@ -91,7 +91,7 @@ public class DefaultExecutionListener implements ExecutionListener {
     public void executionPaused(ExecutionEvent event) {
         System.out.println("DefaultExecutionListener.executionPaused()");
     }
-    
+
     /** Called to report a successfull resumption of execution
      */
     public void executionResumed(ExecutionEvent event) {
@@ -105,10 +105,10 @@ public class DefaultExecutionListener implements ExecutionListener {
     }
 
     /** Called to report a successful termination of execution.
-     */    
+     */
     public void executionTerminated(ExecutionEvent event) {
         System.out.println("DefaultExecutionListener.executionTerminated()");
-    } 
-    
+    }
+
 
 }

@@ -1,8 +1,8 @@
 /*
   File: Seq.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,14 +10,14 @@
   24Sep95  dl@cs.oswego.edu   Create from collections.java  working file
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
 /**
- * 
+ *
  *
  * Seqs are indexed, sequentially ordered collections.
  * Indices are always in the range 0 .. size() -1. All accesses by index
@@ -35,12 +35,12 @@ public interface Seq extends Collection {
 
 /**
  * Return the element at the indicated index
- * @param index 
+ * @param index
  * @return the element at the index
  * @exception NoSuchElementException if index is not in range 0..size()-1
 **/
 
-  public Object      at(int index) 
+  public Object      at(int index)
                        throws  NoSuchElementException;
 
 /**
@@ -49,7 +49,7 @@ public interface Seq extends Collection {
  * @exception NoSuchElementException if isEmpty
 **/
 
-  public Object      first() 
+  public Object      first()
                        throws NoSuchElementException;
 
 /**
@@ -58,18 +58,18 @@ public interface Seq extends Collection {
  * @exception NoSuchElementException if isEmpty
 **/
 
-  public Object      last() 
+  public Object      last()
                        throws NoSuchElementException;
 
 /**
- * Report the index of leftmost occurrence of an element from a 
+ * Report the index of leftmost occurrence of an element from a
  * given starting point, or -1 if there is no such index.
  * @param element the element to look for
  * @param startingIndex the index to start looking from. The startingIndex
  * need not be a valid index. If less than zero it is treated as 0.
  * If greater than or equal to size(), the result will always be -1.
  * @return index such that
- * <PRE> 
+ * <PRE>
  * let int si = max(0, startingIndex) in
  *  index == -1 &&
  *   foreach (int i in si .. size()-1) !at(index).equals(element)
@@ -85,11 +85,11 @@ public interface Seq extends Collection {
  * Find the leftmost occurrence of an element.
  * Behaviorally equivalent to firstIndexOf(element, 0)
 **/
-   
+
   public int         firstIndexOf(Object element);
 
 /**
- * Report the index of righttmost occurrence of an element from a 
+ * Report the index of righttmost occurrence of an element from a
  * given starting point, or -1 if there is no such index.
  * @param element the element to look for
  * @param startingIndex the index to start looking from. The startingIndex
@@ -97,7 +97,7 @@ public interface Seq extends Collection {
  * will always be -1.
  * If greater than or equal to size(), it is treated as size()-1.
  * @return index such that
- * <PRE> 
+ * <PRE>
  * let int si = min(size()-1, startingIndex) in
  *  index == -1 &&
  *   foreach (int i in 0 .. si) !at(index).equals(element)
@@ -126,11 +126,11 @@ public interface Seq extends Collection {
  * @return new seq such that
  * <PRE>
  * s.size() == max(0, length) &&
- * foreach (int i in 0 .. s.size()-1) s.at(i).equals(at(i+index)); 
+ * foreach (int i in 0 .. s.size()-1) s.at(i).equals(at(i+index));
  * </PRE>
  * @exception NoSuchElementException if index is not in range 0..size()-1
 **/
-  public Seq         subseq(int index, int length) 
+  public Seq         subseq(int index, int length)
                         throws NoSuchElementException;
 
 /**
@@ -147,7 +147,7 @@ public interface Seq extends Collection {
  * @exception NoSuchElementException if index is not in range 0..size()-1
 **/
 
-  public Seq  insertingAt(int index, Object element) 
+  public Seq  insertingAt(int index, Object element)
                         throws IllegalElementException,
                                NoSuchElementException;
 
@@ -159,13 +159,13 @@ public interface Seq extends Collection {
  * @return new seq, s, such that
  * <PRE>
  *  s.at(index) == element &&
- *  foreach (int i in 0 .. s.size()-1) 
+ *  foreach (int i in 0 .. s.size()-1)
  *     (i != index) --&gt; s.at(i).equals(at(i));
  * </PRE>
  * @exception NoSuchElementException if index is not in range 0..size()-1
 **/
 
-  public Seq   replacingAt(int index, Object element) 
+  public Seq   replacingAt(int index, Object element)
                         throws IllegalElementException,
                                NoSuchElementException;
 
@@ -182,7 +182,7 @@ public interface Seq extends Collection {
  * </PRE>
  * @exception NoSuchElementException if index is not in range 0..size()-1
 **/
-  public Seq   removingAt(int index) 
+  public Seq   removingAt(int index)
                         throws NoSuchElementException;
 
 

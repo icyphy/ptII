@@ -34,12 +34,12 @@ import java.util.Enumeration;
 import collections.HashedMap;
 
 //////////////////////////////////////////////////////////////////////////
-//// SchematicRelation 
+//// SchematicRelation
 /**
 
 A SchematicRelation represents a relation in a Ptolemy II schematic.
 It contains links, which specify the topology of the schematic.
-Every link has a name that specifies the unique port within a schematic that 
+Every link has a name that specifies the unique port within a schematic that
 it is connected to.   A link name is formed by period concatenating the
 entity name and the port name that the link is connected to, such as
 "entity.port".
@@ -57,7 +57,7 @@ name CDATA #REQUIRED>
 */
 public class SchematicRelation extends SchematicElement {
 
-    /** 
+    /**
      * Create a new SchematicRelation object.
      */
     public SchematicRelation () {
@@ -82,13 +82,13 @@ public class SchematicRelation extends SchematicElement {
      * Add a new link to this relation. The name of the link
      * is the concatenation of the entity name and the port
      * name, separated by a period.
-     * 
+     *
      * @return an XMLElement that represents the link.
      */
     public void addLink (String name) {
         XMLElement e = new XMLElement("link");
         e.setAttribute("name", name);
-        addChildElement(e);    
+        addChildElement(e);
         links.putAt(name, e);
     }
 
@@ -108,18 +108,18 @@ public class SchematicRelation extends SchematicElement {
 
     /**
      * Return an enumeration over the links in this relation.   Each
-     * element in the enumeration will be a string representing a 
+     * element in the enumeration will be a string representing a
      * port that is connected to this relation.
-     * 
+     *
      * @return an Enumeration of String
      */
     public Enumeration links () {
         return links.keys();
     }
 
-    /** 
-     * Remove the link with the given name from this relation.  The link 
-     * should refer to a 
+    /**
+     * Remove the link with the given name from this relation.  The link
+     * should refer to a
      */
     public void removeLink(String name) {
         XMLElement e = (XMLElement) links.at(name);
@@ -127,7 +127,7 @@ public class SchematicRelation extends SchematicElement {
         links.removeAt(name);
     }
 
-    /** 
+    /**
      * Set the width of this relation.
      */
     public void setWidth(String width) {

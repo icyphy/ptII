@@ -1,8 +1,8 @@
 /*
   File: CheckedSeq.java.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -12,12 +12,12 @@
   19Oct95  dl                 More misc clean-up
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
-  
+
 /**
  *
  * @author Doug Lea
@@ -38,7 +38,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
 /**
  * Make a Checked clone of underlying collection
 **/
-  protected Object clone() throws CloneNotSupportedException { 
+  protected Object clone() throws CloneNotSupportedException {
     return new CheckedSeq((UpdatableSeq)(thys.duplicate()));
   }
 
@@ -72,12 +72,12 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
       // Make sure all forms of indexing v work
       assert(thys().at(i).equals(v));
       assert(thys().firstIndexOf(v, i) == i);
-      assert(thys().lastIndexOf(v, i) == i); 
+      assert(thys().lastIndexOf(v, i) == i);
       assert(thys().firstIndexOf(v) <= i);
       assert(thys().lastIndexOf(v) >= i);
       ++i;
     }
-    postCheck(); 
+    postCheck();
     return thys.elements();
   }
 
@@ -85,9 +85,9 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
  * Checks collections.Seq.at according to its specification
  * @see collections.Seq#at
 **/
-  public synchronized Object at(int index) 
+  public synchronized Object at(int index)
   throws  NoSuchElementException {
-    preCheck(); 
+    preCheck();
     try {
       Object result = thys().at(index);
       assert(result != null);
@@ -112,7 +112,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
 **/
   public synchronized Object first()
   throws  NoSuchElementException {
-    preCheck(); 
+    preCheck();
     try {
       Object result = thys().first();
       assert(result.equals(thys().at(0)));
@@ -136,7 +136,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
 **/
   public synchronized Object last()
   throws  NoSuchElementException {
-    preCheck(); 
+    preCheck();
     try {
       Object result = thys().last();
       assert(result.equals(thys().at(thys.size()-1)));
@@ -158,7 +158,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
  * @see collections.Seq#firstIndexOf
 **/
   public synchronized int firstIndexOf(Object element, int startingIndex) {
-    preCheck(); 
+    preCheck();
     int result = thys().firstIndexOf(element, startingIndex);
     int si = (startingIndex < 0)? 0 : startingIndex;
     int n = result;
@@ -176,13 +176,13 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
     postCheck();
     return result;
   }
-   
+
 /**
  * Checks collections.Seq.firstIndexOf according to its specification
  * @see collections.Seq#firstIndexOf
 **/
   public synchronized int firstIndexOf(Object element) {
-    preCheck(); 
+    preCheck();
     int result = thys().firstIndexOf(element);
     assert(result == thys().firstIndexOf(element, 0));
     assert(thys.sameStructure(prev));
@@ -195,7 +195,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
  * @see collections.Seq#lastIndexOf
 **/
   public synchronized int lastIndexOf(Object element, int startingIndex) {
-    preCheck(); 
+    preCheck();
     int result = thys().lastIndexOf(element, startingIndex);
     int n = result+1;
     if (result < 0) n = 0;
@@ -218,7 +218,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
  * @see collections.Seq#lastIndexOf
 **/
   public synchronized int lastIndexOf(Object element) {
-    preCheck(); 
+    preCheck();
     int result = thys().lastIndexOf(element);
     assert(result == thys().lastIndexOf(element, thys.size()-1));
     assert(thys.sameStructure(prev));
@@ -230,7 +230,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
  * Checks collections.Seq.subseq according to its specification
  * @see collections.Seq#subseq
 **/
-  public synchronized Seq subseq(int index, int length) 
+  public synchronized Seq subseq(int index, int length)
   throws  NoSuchElementException {
     preCheck();
 
@@ -275,14 +275,14 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
       postCheck();
       throw ex;
     }
-    
+
   }
 
 /**
  * Checks collections.Seq.insertingAt.
  * @see collections.Seq#insertingAt
 **/
-  public synchronized Seq  insertingAt(int index, Object element) 
+  public synchronized Seq  insertingAt(int index, Object element)
   throws IllegalElementException, NoSuchElementException {
     preCheck();
     try {
@@ -304,7 +304,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
       postCheck();
       throw ex;
     }
-    
+
   }
 
 
@@ -333,7 +333,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
       postCheck();
       throw ex;
     }
-    
+
   }
 
 
@@ -341,7 +341,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
  * Checks collections.Seq.replacingAt
  * @see collections.Seq#replacingAt
 **/
-  public synchronized  Seq  replacingAt(int index, Object element) 
+  public synchronized  Seq  replacingAt(int index, Object element)
   throws IllegalElementException, NoSuchElementException {
     preCheck();
     try {
@@ -363,7 +363,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
       postCheck();
       throw ex;
     }
-    
+
   }
 
 /**
@@ -384,7 +384,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
       postCheck();
       throw ex;
     }
-    
+
   }
 
 
@@ -392,7 +392,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
  * Checks collections.Seq.removingAt.
  * @see collections.Seq#removingAt
 **/
-  public synchronized Seq  removingAt(int index) 
+  public synchronized Seq  removingAt(int index)
   throws NoSuchElementException {
     preCheck();
     try {
@@ -408,7 +408,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
       postCheck();
       throw ex;
     }
-    
+
   }
 
 /**
@@ -422,13 +422,13 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
       prev().insertAt(0, element);
     }
     catch (IllegalElementException ex) { e = ex; }
-    catch (NoSuchElementException ex) { 
+    catch (NoSuchElementException ex) {
       assert(false); // should not occur!
     }
     try {
       thys().insertFirst(element);
     }
-    catch (IllegalElementException ex) { 
+    catch (IllegalElementException ex) {
       assert(e != null);
     }
     assert(thys.sameStructure(prev));
@@ -454,10 +454,10 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
     try {
       thys().replaceFirst(element);
     }
-    catch (IllegalElementException ex) { 
+    catch (IllegalElementException ex) {
       assert(e1 != null);
     }
-    catch (NoSuchElementException ex) { 
+    catch (NoSuchElementException ex) {
       assert(e2 != null);
     }
 
@@ -483,7 +483,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
     try {
       thys().removeFirst();
     }
-    catch (IllegalElementException ex) { 
+    catch (IllegalElementException ex) {
       assert(e != null);
     }
     assert(thys.sameStructure(prev));
@@ -504,13 +504,13 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
       prev().insertAt(thys.size(), element);
     }
     catch (IllegalElementException ex) { e = ex; }
-    catch (NoSuchElementException ex) { 
+    catch (NoSuchElementException ex) {
       assert(false); // should not occur
     }
     try {
       thys().insertLast(element);
     }
-    catch (IllegalElementException ex) { 
+    catch (IllegalElementException ex) {
       assert(e != null);
     }
     assert(thys.sameStructure(prev));
@@ -536,10 +536,10 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
     try {
       thys().replaceLast(element);
     }
-    catch (IllegalElementException ex) { 
+    catch (IllegalElementException ex) {
       assert(e1 != null);
     }
-    catch (NoSuchElementException ex) { 
+    catch (NoSuchElementException ex) {
       assert(e2 != null);
     }
 
@@ -565,7 +565,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
     try {
       thys().removeLast();
     }
-    catch (IllegalElementException ex) { 
+    catch (IllegalElementException ex) {
       assert(e != null);
     }
     assert(thys.sameStructure(prev));
@@ -606,7 +606,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
       postCheck();
       throw ex;
     }
-    
+
   }
 
 
@@ -623,11 +623,11 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
       if (e instanceof CollectionEnumeration)
         n = ((CollectionEnumeration)e).numberOfRemainingElements();
       thys().insertElementsAt(index, e);
-      if (n < 0) 
+      if (n < 0)
         n = thys.size() - prev.size(); // best we can do
 
       assert(thys.size() == prev.size() + n);
-      assert(!e.hasMoreElements());                         
+      assert(!e.hasMoreElements());
       assert(index >= 0 && index < prev.size());
       assert(!((thys.version() == prevVersion) && n > 0));
       for (int i = 0; i < index; ++i) {
@@ -635,7 +635,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
       }
       // We cannot check the inserted elements themselves
       // since e has been exhausted. We can't even
-      // first clone it since Enumerations don't claim to be 
+      // first clone it since Enumerations don't claim to be
       // usefully clonable.
       for (int i = index + n; i < thys.size(); ++i) {
         assert(thys().at(i).equals(prev().at(i-n)));
@@ -662,9 +662,9 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
  * Checks collections.UpdatableSeq.prependElements according to its specification
  * @see collections.UpdatableSeq#prependElements
 **/
-  public synchronized void prependElements(Enumeration e) 
+  public synchronized void prependElements(Enumeration e)
   throws IllegalElementException, CorruptedEnumerationException {
-    // too hard to check via behavioral equivalence, so 
+    // too hard to check via behavioral equivalence, so
     // we just adapt insertElementsAt code
     preCheck();
     try {
@@ -672,11 +672,11 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
       if (e instanceof CollectionEnumeration)
         n = ((CollectionEnumeration)e).numberOfRemainingElements();
       thys().prependElements(e);
-      if (n < 0) 
+      if (n < 0)
         n = thys.size() - prev.size(); // best we can do
       thys().prependElements(e);
       assert(thys.size() == prev.size() + n);
-      assert(!e.hasMoreElements());                        
+      assert(!e.hasMoreElements());
       assert(!((thys.version() == prevVersion) && n > 0));
       for (int i = n; i < thys.size(); ++i) {
         assert(thys().at(i).equals(prev().at(i-n)));
@@ -697,9 +697,9 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
  * Checks collections.UpdatableSeq.appendElements according to its specification
  * @see collections.UpdatableSeq#appendElements
 **/
-  public synchronized void        appendElements(Enumeration e) 
+  public synchronized void        appendElements(Enumeration e)
   throws IllegalElementException, CorruptedEnumerationException {
-    // As above, too hard to check via behavioral equivalence, so 
+    // As above, too hard to check via behavioral equivalence, so
     // we just adapt insertElementsAt code
     preCheck();
     try {
@@ -707,11 +707,11 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
       if (e instanceof CollectionEnumeration)
         n = ((CollectionEnumeration)e).numberOfRemainingElements();
       thys().appendElements(e);
-      if (n < 0) 
+      if (n < 0)
         n = thys.size() - prev.size(); // best we can do
 
       assert(thys.size() == prev.size() + n);
-      assert(!e.hasMoreElements());                        
+      assert(!e.hasMoreElements());
       assert(!((thys.version() == prevVersion) && n > 0));
       for (int i = 0; i < prev.size(); ++i) {
         assert(thys().at(i).equals(prev().at(i)));
@@ -745,7 +745,7 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
     for (int i = index+1; i < thys.size(); ++i) {
       assert(nc.at(i).equals(oc.at(i-1)));
     }
-    
+
     if (verchk) {
       int nv = ((UpdatableCollection)nc).version();
       assert(nv != prevVersion);
@@ -766,9 +766,9 @@ public class CheckedSeq extends CheckedCollection implements UpdatableSeq {
     assert(nc.size() == oc.size());
     assert(index >= 0 && index < nc.size());
     assert(nc.at(index).equals(element));
-    for (int i = 0; i < index; ++i) 
+    for (int i = 0; i < index; ++i)
       assert(nc.at(i).equals(oc.at(i)));
-    for (int i = index+1; i < nc.size(); ++i) 
+    for (int i = index+1; i < nc.size(); ++i)
       assert(nc.at(i).equals(oc.at(i)));
 
     if (verchk) {

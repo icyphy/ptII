@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: $Id$ 
+# @Version: $Id$
 #
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
@@ -43,7 +43,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 
-JSRCS = 
+JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \

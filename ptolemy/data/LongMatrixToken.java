@@ -300,7 +300,7 @@ public class LongMatrixToken extends MatrixToken {
 	return array;
     }
 
-    /** Return a new Token representing the left multiplicative 
+    /** Return a new Token representing the left multiplicative
      *  identity. The returned token contains an identity matrix
      *  whose dimension is the same as the number of rows of
      *  the matrix contained in this token.

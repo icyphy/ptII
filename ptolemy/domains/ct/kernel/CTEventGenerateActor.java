@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -34,11 +34,11 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTEventGenerateActor
-/** 
-Interface for event generator in the CT domain. All event generators, 
+/**
+Interface for event generator in the CT domain. All event generators,
 including zero-crossing event detector, event triggered sampler,
 and sample-point event generator
-should implement this interface. The event generators can be asked if 
+should implement this interface. The event generators can be asked if
 there is an event happened at the current time. If no, then it can be
 further asked if there is a event during the last integration step.
 If so, the event detector should suggest a new step size to further
@@ -50,7 +50,7 @@ finding the event time point.
 @see full-classname
 */
 public interface CTEventGenerateActor {
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
@@ -64,5 +64,5 @@ public interface CTEventGenerateActor {
      *  the currentStepSize.
      */
     public double refineStepSize();
-     
+
 }

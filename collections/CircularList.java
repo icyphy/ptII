@@ -1,8 +1,8 @@
 /*
   File: CircularList.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   24Sep95  dl@cs.oswego.edu   Create from collections.java  working file
   13Oct95  dl                 Changed protection statuses
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -54,7 +54,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Special version of constructor needed by clone()
 **/
 
-  protected CircularList(Predicate s, CLCell h, int c) { 
+  protected CircularList(Predicate s, CLCell h, int c) {
     super(s); list_ = h; count_ = c;
   }
 
@@ -62,9 +62,9 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Make an independent copy of the list. Elements themselves are not cloned
 **/
 
-  protected Object clone() throws CloneNotSupportedException { 
+  protected Object clone() throws CloneNotSupportedException {
     if (list_ == null) return new CircularList(screener_, null, 0);
-    else return new CircularList(screener_, list_.copyList(), count_);  
+    else return new CircularList(screener_, list_.copyList(), count_);
   }
 
 
@@ -95,8 +95,8 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(1).
  * @see collections.Collection#elements
 **/
-  public synchronized CollectionEnumeration elements() { 
-    return new CLEnumeration(this, list_); 
+  public synchronized CollectionEnumeration elements() {
+    return new CLEnumeration(this, list_);
   }
 
 
@@ -109,7 +109,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
 **/
   public synchronized Object first()
   throws  NoSuchElementException {
-    return firstCell().element();   
+    return firstCell().element();
   }
 
 /**
@@ -119,7 +119,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
 **/
   public synchronized Object last()
   throws  NoSuchElementException {
-    return lastCell().element();  
+    return lastCell().element();
   }
 
 /**
@@ -127,9 +127,9 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(n).
  * @see collections.Seq#at
 **/
-  public synchronized Object at(int index) 
+  public synchronized Object at(int index)
     throws  NoSuchElementException {
-    return cellAt(index).element();  
+    return cellAt(index).element();
   }
 
 /**
@@ -143,7 +143,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
     if (p == null || element == null) return -1;
     for (int i = 0; true; ++i) {
       if (i >= startingIndex && p.element().equals(element)) return i;
-      p = p.next(); 
+      p = p.next();
       if (p == list_) return -1;
     }
   }
@@ -194,7 +194,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(length).
  * @see collections.Seq#subseq
 **/
-  public synchronized /* CircularList */ Seq subseq(int from, int length) 
+  public synchronized /* CircularList */ Seq subseq(int from, int length)
   throws  NoSuchElementException {
     if (length > 0) {
       checkIndex(from);
@@ -220,9 +220,9 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(1).
  * @see collections.UpdatableCollection#clear
 **/
-  public synchronized void clear() { 
-    list_ = null; 
-    setCount(0); 
+  public synchronized void clear() {
+    list_ = null;
+    setCount(0);
   }
 
 /**
@@ -230,7 +230,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#exclude
 **/
-  public synchronized void exclude(Object element)  { 
+  public synchronized void exclude(Object element)  {
     remove_(element, true);
   }
 
@@ -248,7 +248,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#replaceOneOf
 **/
-  public synchronized void replaceOneOf(Object oldElement, Object newElement)  throws IllegalElementException { 
+  public synchronized void replaceOneOf(Object oldElement, Object newElement)  throws IllegalElementException {
     replace_(oldElement, newElement, false);
   }
 
@@ -257,9 +257,9 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#replaceAllOf
 **/
-  public synchronized void replaceAllOf(Object oldElement, 
-                                                 Object newElement)  
-  throws IllegalElementException { 
+  public synchronized void replaceAllOf(Object oldElement,
+                                                 Object newElement)
+  throws IllegalElementException {
     replace_(oldElement, newElement, true);
   }
 
@@ -270,7 +270,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * takes the last element on the list.
  * @see collections.UpdatableCollection#take
 **/
-  public synchronized Object take() 
+  public synchronized Object take()
   throws  NoSuchElementException {
     Object v = last();
     removeLast();
@@ -286,7 +286,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(1).
  * @see collections.UpdatableSeq#insertFirst
 **/
-  public synchronized void insertFirst(Object element) 
+  public synchronized void insertFirst(Object element)
   throws IllegalElementException {
     checkElement(element);
     if (list_ == null) list_ = new CLCell(element);
@@ -299,7 +299,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(1).
  * @see collections.UpdatableSeq#replaceFirst
 **/
-  public synchronized void replaceFirst(Object element) 
+  public synchronized void replaceFirst(Object element)
   throws IllegalElementException {
     checkElement(element);
     firstCell().element(element);
@@ -313,7 +313,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
 **/
   public synchronized void removeFirst()
   throws NoSuchElementException {
-    if (firstCell().isSingleton()) 
+    if (firstCell().isSingleton())
       list_ = null;
     else {
       CLCell n = list_.next();
@@ -328,13 +328,13 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(1).
  * @see collections.UpdatableSeq#insertLast
 **/
-  public synchronized void insertLast(Object element) 
+  public synchronized void insertLast(Object element)
   throws IllegalElementException {
     if (list_ == null) insertFirst(element);
-    else { 
+    else {
       checkElement(element);
-      list_.prev().addNext(element); 
-      incCount(); 
+      list_.prev().addNext(element);
+      incCount();
     }
   }
 
@@ -343,7 +343,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(1).
  * @see collections.UpdatableSeq#replaceLast
 **/
-  public synchronized void replaceLast(Object element) 
+  public synchronized void replaceLast(Object element)
   throws IllegalElementException, NoSuchElementException {
     checkElement(element);
     lastCell().element(element);
@@ -356,7 +356,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(1).
  * @see collections.UpdatableSeq#removeLast
 **/
-  public synchronized void removeLast() 
+  public synchronized void removeLast()
   throws NoSuchElementException {
     CLCell l = lastCell();
     if (l == list_) list_ = null;
@@ -369,22 +369,22 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(n).
  * @see collections.UpdatableSeq#insertAt
 **/
-  public synchronized void insertAt(int index, Object element) 
+  public synchronized void insertAt(int index, Object element)
   throws IllegalElementException, NoSuchElementException {
     if (index == 0) insertFirst(element);
-    else { 
+    else {
       checkElement(element);
-      cellAt(index - 1).addNext(element); 
-      incCount(); 
+      cellAt(index - 1).addNext(element);
+      incCount();
     }
   }
-    
+
 /**
  * Implements collections.UpdatableSeq.replaceAt.
  * Time complexity: O(n).
  * @see collections.UpdatableSeq#replaceAt
 **/
-  public synchronized void replaceAt(int index, Object element) 
+  public synchronized void replaceAt(int index, Object element)
   throws IllegalElementException, NoSuchElementException {
     checkElement(element);
     cellAt(index).element(element);
@@ -396,12 +396,12 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(n).
  * @see collections.UpdatableSeq#removeAt
 **/
-  public synchronized void removeAt(int index) 
+  public synchronized void removeAt(int index)
   throws NoSuchElementException {
     if (index == 0) removeFirst();
-    else { 
-      cellAt(index - 1).unlinkNext(); 
-      decCount(); 
+    else {
+      cellAt(index - 1).unlinkNext();
+      decCount();
     }
   }
 
@@ -410,7 +410,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(number of elements in e).
  * @see collections.UpdatableSeq#prependElements
 **/
-  public synchronized void prependElements(Enumeration e) 
+  public synchronized void prependElements(Enumeration e)
   throws IllegalElementException, CorruptedEnumerationException {
     CLCell hd = null;
     CLCell current = null;
@@ -442,7 +442,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(number of elements in e).
  * @see collections.UpdatableSeq#appendElements
 **/
-  public synchronized void appendElements(Enumeration e) 
+  public synchronized void appendElements(Enumeration e)
   throws IllegalElementException, CorruptedEnumerationException {
     if (list_ == null) prependElements(e);
     else {
@@ -462,7 +462,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(size() + number of elements in e).
  * @see collections.UpdatableSeq#insertElementsAt
 **/
-  public synchronized void insertElementsAt(int index, Enumeration e) 
+  public synchronized void insertElementsAt(int index, Enumeration e)
   throws IllegalElementException, CorruptedEnumerationException,
   NoSuchElementException {
     if (list_ == null || index == 0) prependElements(e);
@@ -484,7 +484,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * Time complexity: O(n).
  * @see collections.UpdatableSeq#removeFromTo
 **/
-  public synchronized void removeFromTo(int fromIndex, int toIndex) 
+  public synchronized void removeFromTo(int fromIndex, int toIndex)
   throws NoSuchElementException {
     checkIndex(toIndex);
     CLCell p = cellAt(fromIndex);
@@ -504,15 +504,15 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
       p = n;
     }
   }
-    
+
 
 // helper methods
 
 /**
  * return the first cell, or throw exception if empty
 **/
-  private CLCell firstCell() throws NoSuchElementException { 
-    if (list_ != null) return list_; 
+  private CLCell firstCell() throws NoSuchElementException {
+    if (list_ != null) return list_;
     checkIndex(0);
     return null; // not reached!
 
@@ -521,7 +521,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
 /**
  * return the last cell, or throw exception if empty
 **/
-  private CLCell lastCell() throws NoSuchElementException { 
+  private CLCell lastCell() throws NoSuchElementException {
     if (list_ != null) return list_.prev();
     checkIndex(0);
     return null; // not reached!
@@ -538,7 +538,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
 /**
  * helper for remove/exclude
 **/
-  private void remove_(Object element, boolean allOccurrences) 
+  private void remove_(Object element, boolean allOccurrences)
   throws IllegalElementException {
     if (element == null || list_ == null) return;
     CLCell p = list_;
@@ -561,27 +561,27 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
         break;
       else
         p = n;
-    } 
+    }
   }
 
 
 /**
  * helper for replace*
 **/
-  private void replace_(Object oldElement, Object newElement, 
-                          boolean allOccurrences)  
-  throws IllegalElementException { 
+  private void replace_(Object oldElement, Object newElement,
+                          boolean allOccurrences)
+  throws IllegalElementException {
     if (oldElement == null || list_ == null) return;
-    CLCell p = list_; 
-    do { 
+    CLCell p = list_;
+    do {
       if (p.element().equals(oldElement)) {
         checkElement(newElement);
         incVersion();
         p.element(newElement);
         if (!allOccurrences) return;
       }
-      p = p.next(); 
-    } while (p != list_); 
+      p = p.next();
+    } while (p != list_);
   }
 
 // ImplementationCheckable methods
@@ -591,7 +591,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
  * @see collections.ImplementationCheckable#checkImplementation
 **/
 
-  public synchronized void checkImplementation() 
+  public synchronized void checkImplementation()
   throws ImplementationError {
 
     super.checkImplementation();
@@ -613,7 +613,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
       ++c;
     }
     while (p != list_);
-    
+
     assert(c == count_);
 
   }

@@ -51,11 +51,11 @@ public class SDFdemo {
     private SDFScheduler s=new SDFScheduler();
     private IORelation r;
 
-    public static void main(String args[])            
+    public static void main(String args[])
             throws IllegalActionException, NameDuplicationException
          {
              DebugListener debugger = new DebugListener();
-    
+
         Debug.register(debugger);
         SDFdemo demo=new SDFdemo();
         demo.execute();
@@ -75,14 +75,14 @@ public class SDFdemo {
 
                 r=(IORelation) c.connect(ramp.outputport,delay.inputport,"R1");
                 r=(IORelation) c.connect(delay.outputport,print.inputport,"R2");
-                             
-               
+
+
                 Parameter p = (Parameter) d.getAttribute("Iterations");
                 p.setToken(new IntToken(6));
                 m.run();
         }
-}    
- 
-    
+}
+
+
 
 

@@ -1,4 +1,4 @@
-/* 
+/*
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -49,7 +49,7 @@ NO        | YES      | 0        | The period is the lengh of the array |<br>
 NO        | YES      | N>0      | the period is N                      |<br>
 NO        | NO       | anything | Output the array once then zeros     |<br>
 YES       | anything | anything | Stop after outputting the array once |<br>
-------------------------------------------------------------------------<br> 
+------------------------------------------------------------------------<br>
 
 
 @author Lukito Muliadi
@@ -75,7 +75,7 @@ public class DEWaveForm extends DEActor {
         // ports
         output = new TypedIOPort(this, "output", false, true);
         input = new TypedIOPort(this, "input", true, false);
-        
+
         // parameters
         // create a 2d double matrix from the 1d double array argument.
         double[][] value2d = new double[1][];
@@ -88,9 +88,9 @@ public class DEWaveForm extends DEActor {
         }
 
         _value = new Parameter(this, "value", new DoubleMatrixToken(value2d));
-        _haltAtEnd = new Parameter(this, "haltAtEnd", 
+        _haltAtEnd = new Parameter(this, "haltAtEnd",
                 new BooleanToken(haltAtEnd));
-        _periodic = new Parameter(this, "periodic", 
+        _periodic = new Parameter(this, "periodic",
                 new BooleanToken(periodic));
         _period = new Parameter(this, "period", new IntToken(period));
     }
@@ -103,7 +103,7 @@ public class DEWaveForm extends DEActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        
+
         double[] value = ((DoubleMatrixToken)_value.getToken()).doubleMatrix()[0];
         boolean haltAtEnd=((BooleanToken)_haltAtEnd.getToken()).booleanValue();
         boolean periodic=((BooleanToken)_periodic.getToken()).booleanValue();
@@ -113,7 +113,7 @@ public class DEWaveForm extends DEActor {
         input.get(0);
 
         // haltAtEnd = no, periodic = yes, period = 0
-        
+
         if (!haltAtEnd && periodic && period == 0) {
             if (_index >= value.length-1) {
                 _index = 0;
@@ -136,7 +136,7 @@ public class DEWaveForm extends DEActor {
                 output.broadcast(new DoubleToken(0.0));
             }
         }
-        
+
         // haltAtEnd = no, periodic = no, period = anything
         if (!haltAtEnd && !periodic) {
             if (_index < value.length-1) {
@@ -183,7 +183,7 @@ public class DEWaveForm extends DEActor {
 
     // last data index broadcasted.
     private int _index = -1;
-    
+
     // parameters.
     private Parameter _value;
     private Parameter _haltAtEnd;

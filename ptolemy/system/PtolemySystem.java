@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -36,8 +36,8 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemySystem
-/** 
-This class provides information about the Ptolemy system. 
+/**
+This class provides information about the Ptolemy system.
 The User Interface can use this information for creating and displaying
 domains and actors. A "configuration" can be read from a default place
 or an input stream, and saved to the default place or an output stream.
@@ -55,7 +55,7 @@ actor_package: <B>ActorPackage</B> <I>package</I>
 <P>
 
 The domains are created after reading each domain_classname, then all the
-actor_packages are added to this domain. 
+actor_packages are added to this domain.
 
 Actors are created by giving its domain and its name. The actor name
 may come from the actor icons or be directly specified by the user.
@@ -71,7 +71,7 @@ the domain polymorphic actor packages are searched.
 public class PtolemySystem {
     /** Null constructor. The configuration file is loaded from some
      *  default place.
-     */	
+     */
     public PtolemySystem() {
     }
 
@@ -91,7 +91,7 @@ public class PtolemySystem {
      *  not already there.
      * @param domain The domain this package of actors belongs to.
      * @param actorpackage The full package name.
-     */	
+     */
     public void addActorPackage(Domain domain, String actorpackage) {
         // if ! (domain exists) addDomain(domain)
         // domain.addActorPackage(actorpackage);
@@ -101,13 +101,13 @@ public class PtolemySystem {
      *  saveConfiguration() method. If the domain is already on the domain
      *  list, do nothing.
      * @param domain The added domain.
-     */	
+     */
     public void addDomain(Domain domain) {
     }
 
     /** Return a new actor with the specified name that is compatible with
-     *  the specified domain. 
-     *  The actor is searched through the list of actor packages for 
+     *  the specified domain.
+     *  The actor is searched through the list of actor packages for
      *  the given domain. The first one that matches the name will be
      *  created and returned. If no actor is found in that domain,
      *  the compatible domains will be searched, and then the domain
@@ -116,7 +116,7 @@ public class PtolemySystem {
      * @param domain The domain from which the actor is asked.
      * @param actorName The name of the actor.
      * @return The new actor object if there is one.
-     */	
+     */
     public Actor createActor(Domain domain, String actorName) {
         return null;
     }
@@ -128,7 +128,7 @@ public class PtolemySystem {
      *  domain list, returns null.
      * @param domain The domain requested.
      * @return The actor packages in a array.
-     */	
+     */
     public String[] getActorPackages(Domain domain) {
         //if (domain == null) return PolyDomain.getActorPackages()
         //if (domain exist) return domain.getActorPackages()
@@ -136,39 +136,39 @@ public class PtolemySystem {
         return null;
     }
 
-    /** Return a new domain object with the specified name. The name of 
+    /** Return a new domain object with the specified name. The name of
      *  a domain is the full class name of the Java class. This domain
      *  class is searched in the CLASSPATH of the system. If no matched
      *  class is found, then a ClassNotFoundException will be thrown.
      *  @param domainname The full class name of the domain.
      *  @return The domain that has the name.
-     */	
+     */
     public Domain createDomain(String domainname) {
         return null;
     }
 
     /** Return an enumeration of all available domains.
      *  @return The available domains.
-     */	
+     */
     public Enumeration getDomains() {
         return null;
     }
 
     /** Return the (static) version of Ptolemy II.
-     */	
+     */
     public String getVersion() {
         return null;
     }
 
     /** Load the configuration from the default place.
-     */	
+     */
     public void loadConfiguration() {
     }
 
     /** Load the configuration from an InputStream. The domains are
      *  created for each domain configuration.
      * @param inputstream The input stream to read the configuration.
-     */	
+     */
     public void loadConfiguration(InputStream inputstream) {
     }
 
@@ -179,8 +179,8 @@ public class PtolemySystem {
      *  @param actorpackage The String of actor package.
      *  @exception IllegalActionException If the domain is not on the list
      *        or the actor package is unknow.
-     */	
-    public void removeActorPackage(Domain domain, String actorpackage) 
+     */
+    public void removeActorPackage(Domain domain, String actorpackage)
         throws IllegalActionException {
     }
 
@@ -190,13 +190,13 @@ public class PtolemySystem {
      * @param domain The domain asked to remove.
      * @exception IllegalActionException If the domain is not on the domain
      *       list.
-     */	
+     */
     public void removeDomain(Domain domain) throws IllegalActionException{
     }
 
     /** Save the current configuration, including domains and actor packages
      *  to the default place.
-     */	
+     */
     public void saveConfiguration(){
     }
 
@@ -211,5 +211,5 @@ public class PtolemySystem {
     ////                         private variables                      ////
 
     // A list of known domains.
-    private LinkedList _domains;    
+    private LinkedList _domains;
 }

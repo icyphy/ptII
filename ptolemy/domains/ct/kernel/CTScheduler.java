@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -37,7 +37,7 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTClusterScheduler
-/** 
+/**
 A CT (sub)system can be represented mathematiclly as:
     dx/xt = f(x, u, t)
     y = g(x, u, t)
@@ -59,8 +59,8 @@ order. It is acheived by sorting backward from the sinks, traces back until
 a dynamic actor or a source is reached. The dynamic actors is not in the
 schedule.
 
-The event detection schedule is the actors in the h() function sorted 
-in the topological order. It is acheived by sorting bakward from the 
+The event detection schedule is the actors in the h() function sorted
+in the topological order. It is acheived by sorting bakward from the
 event detector's inputs, traces back to a dynamic actor or a source.
 dynamic actors are not in this list.
 
@@ -80,7 +80,7 @@ public class CTScheduler extends Scheduler{
 
     /** Construct a CT topological sort schduler in the defaul workspace
      *  with the default name "CT Topological Sort Scheduler".
-     */	
+     */
     public CTScheduler() {
         super();
         try {
@@ -90,12 +90,12 @@ public class CTScheduler extends Scheduler{
                 "Internal error when setName to a CTScheduler");
         }
     }
-    
+
     /** Construct a CT topological sort schduler in the given workspace
      *  with the name "CT Topological Sort Scheduler".
      *
      *  @param ws The workspace.
-     */	
+     */
     public CTScheduler(Workspace ws) {
         super(ws);
         try {
@@ -148,7 +148,7 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    /** Return an enumeration of error control actors. 
+    /** Return an enumeration of error control actors.
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
@@ -169,7 +169,7 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    /** Return an enumeration of event detectors. 
+    /** Return an enumeration of event detectors.
      *  This enumeration is locally
      *  cached. If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
@@ -232,7 +232,7 @@ public class CTScheduler extends Scheduler{
     }
 
     /** Returns an enumeration of the schedule of dynamic actors.
-     *  This enumeration is locally cached. 
+     *  This enumeration is locally cached.
      *  If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
      *  Otherwise, it calls _schedule to reconstruct, and save
@@ -241,21 +241,21 @@ public class CTScheduler extends Scheduler{
      *  in the reverse topology order. This order is considered safe
      *  for both implicit methods and explicit methods. For implicit
      *  method, the order is irrelavant. But for explicit method,
-     *  we should guarantee that the input of the integrator is 
+     *  we should guarantee that the input of the integrator is
      *  one step earlier than the output.
      *  This method read-synchronize on the workspace.
      */
-    public Enumeration dynamicActorSchedule() 
+    public Enumeration dynamicActorSchedule()
         throws NotSchedulableException, IllegalActionException {
         try {
             workspace().getReadAccess();
             if(!valid()) {
                 if(DEBUG) {
-                    System.out.println("The schedule is not valid" + 
+                    System.out.println("The schedule is not valid" +
                         " when calling dynamicActorSchedule().");
                 }
                 schedule();
-            }   
+            }
             return _stateschedule.elements();
         } finally {
             workspace().doneReading();
@@ -263,7 +263,7 @@ public class CTScheduler extends Scheduler{
     }
 
     /** Returns an enumeration of the schedule of the output path.
-     *  This enumeration is locally cached. 
+     *  This enumeration is locally cached.
      *  If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
      *  Otherwise, it calls _schedule to reconstruct, and save
@@ -272,14 +272,14 @@ public class CTScheduler extends Scheduler{
      *  integrators (or dynamic actors) to sink actors (or composite
      *  actor's output ports) in the topology order.
      *  This method read-synchronize on the workspace.
-     */ 
-    public Enumeration outputSchedule() 
+     */
+    public Enumeration outputSchedule()
         throws NotSchedulableException, IllegalActionException  {
         try {
 	    workspace().getReadAccess();
             if(!valid()) {
                 if(DEBUG) {
-                    System.out.println("The schedule is not valid" + 
+                    System.out.println("The schedule is not valid" +
                         " when calling outputSchedule().");
                 }
                 schedule();
@@ -290,16 +290,16 @@ public class CTScheduler extends Scheduler{
         }
     }
 
-    /** Return the actors in the event detection path in the 
+    /** Return the actors in the event detection path in the
      *  topological order.
      */
-    public Enumeration eventGenerationSchedule() 
+    public Enumeration eventGenerationSchedule()
             throws NotSchedulableException, IllegalActionException {
         try {
 	    workspace().getReadAccess();
             if(!valid()) {
                 if(DEBUG) {
-                    System.out.println("The schedule is not valid" + 
+                    System.out.println("The schedule is not valid" +
                         " when calling eventGenerationSchedule().");
                 }
                 schedule();
@@ -311,7 +311,7 @@ public class CTScheduler extends Scheduler{
     }
 
     /** Returns an enumeration of the schedule of the output path.
-     *  This enumeration is locally cached. 
+     *  This enumeration is locally cached.
      *  If workspace version equals to the cached version,
      *  then it returns the cached enumeration.
      *  Otherwise, it calls _schedule to reconstruct, and save
@@ -320,14 +320,14 @@ public class CTScheduler extends Scheduler{
      *  integrators (or dynamic actors) to sink actors (or composite
      *  actor's output ports) in the topology order.
      *  This method read-synchronize on the workspace.
-     */ 
+     */
     public Enumeration stateTransitionSchedule()
             throws NotSchedulableException, IllegalActionException {
         try {
 	    workspace().getReadAccess();
             if(!valid()) {
                 if(DEBUG) {
-                    System.out.println("The schedule is not valid" + 
+                    System.out.println("The schedule is not valid" +
                         " when calling stateTransitionSchedule().");
                 }
                 schedule();
@@ -340,10 +340,10 @@ public class CTScheduler extends Scheduler{
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
- 
-    /** Find out the dynamic actors and sink actors in the 
-     *  CompositeActor. 
-     */	
+
+    /** Find out the dynamic actors and sink actors in the
+     *  CompositeActor.
+     */
     protected void _classifyActors() {
         if(VERBOSE) {
             System.out.println("in _classifyActors");
@@ -363,7 +363,7 @@ public class CTScheduler extends Scheduler{
             _evdct.clear();
             _memaris.clear();
         }
-        
+
         CompositeActor ca = (CompositeActor) getContainer().getContainer();
         Enumeration actors = ca.deepGetEntities();
         while(actors.hasMoreElements()) {
@@ -410,7 +410,7 @@ public class CTScheduler extends Scheduler{
         _outputschedule = new LinkedList();
         _eventschedule = new LinkedList();
         LinkedList _scheList = new LinkedList();
-        
+
         DirectedAcyclicGraph g =  _toGraph(ca.deepGetEntities());
         if(!g.isAcyclic()) {
             throw new NotSchedulableException("Arithmetic loop found.");
@@ -428,7 +428,7 @@ public class CTScheduler extends Scheduler{
             while (enumdynactors.hasMoreElements()) {
                 dynactors[count++] = enumdynactors.nextElement();
             }
-            
+
             // Dynamic actors are reverse ordered.
             Object[] xsort = g.topologicalSort(dynactors);
             if(DEBUG) {
@@ -448,11 +448,11 @@ public class CTScheduler extends Scheduler{
             if(DEBUG) {
                 System.out.println("Number of reachable nodes from" +
                     "integrators="+fx.length);
-            }    
+            }
             Object[] fxsort = g.topologicalSort(fx);
             for(int i=0; i < fxsort.length; i++) {
                 _transitionschedule.insertLast(fxsort[i]);
-            }  
+            }
             if(VERBOSE) {
                 System.out.println("state transition schedule constructed.");
             }
@@ -484,7 +484,7 @@ public class CTScheduler extends Scheduler{
             }
             _scheList.insertLast(_outputschedule);
         }
-        
+
         // construct an array of event detectors.
         int numofevdct = _evdct.size();
         if(DEBUG) {
@@ -511,7 +511,7 @@ public class CTScheduler extends Scheduler{
         }
         return _scheList.elements();
     }
-    
+
     /** Return the successor actors of the given actor in the topology.
      *  If the actor is a sink, returns null. If any of the output
      *  port is not connected, throw an InvalidStateException.
@@ -563,24 +563,24 @@ public class CTScheduler extends Scheduler{
          }
          return pre.elements();
      }
-     
+
     /** Convert the actors under schedule a directed acyclic graph,
      *  where the loops are broken at the output of the integrators.
-     *  Each actor 
+     *  Each actor
      *  in the LinkedList is a node in the graph, each link between a pair
      *  of actors is a edge between the
      *  corresponding nodes unless the source node is an integrator.
      *  The presentance of the director and containers is not checked
      *  in this method, so the caller should check.
-     *  @return A graph representation of the actors. 
-     */     
+     *  @return A graph representation of the actors.
+     */
     protected DirectedAcyclicGraph _toGraph(Enumeration actors) {
         if(VERBOSE) {
             System.out.println("in _toGraph()");
         }
         CTDirector dir =(CTDirector)getContainer();
         CompositeActor ca = (CompositeActor)(dir.getContainer());
-     
+
         DirectedAcyclicGraph g = new DirectedAcyclicGraph();
         // Create the nodes.
         // The actors comes from deepGetEntities, so it is impossible
@@ -616,10 +616,10 @@ public class CTScheduler extends Scheduler{
                 }
             }
         }
-        
-	return g;    
+
+	return g;
     }
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -643,7 +643,7 @@ public class CTScheduler extends Scheduler{
     private transient LinkedList _evdct;
     // A linkedLost of memaris actors.
     private transient LinkedList _memaris;
-    
+
     // Version of the lists.
     private transient long _dynamicversion = -1;
 }

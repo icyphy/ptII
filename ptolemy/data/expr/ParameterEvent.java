@@ -34,8 +34,8 @@ package ptolemy.data.expr;
 //// ParameterEvent
 /**
 A ParameterEvent is an event object that is broadcast to ParameterListener
-objects when a Parameter changes or is removed. It contains information 
-which the Parameter can query about how the Parameter changed, or which 
+objects when a Parameter changes or is removed. It contains information
+which the Parameter can query about how the Parameter changed, or which
 Parameter was removed.
 
 @author  Neil Smyth
@@ -49,17 +49,17 @@ public class ParameterEvent {
     ///////////////////////////////////////////////////////////////////
     ////                     public static fields                  ////
 
-    /** The Parameter changed as a new expression was placed in 
+    /** The Parameter changed as a new expression was placed in
      *  it and evaluated to a new Token.
      */
     public static final int SET_FROM_EXPRESSION = 1;
 
-    /** The Parameter changed as a new Token was placed directly 
+    /** The Parameter changed as a new Token was placed directly
      *  in it.
      */
     public static final int SET_FROM_TOKEN = 2;
 
-    /** The Parameter changed as another Parameter, which the 
+    /** The Parameter changed as another Parameter, which the
      *  expression in the Parameter referenced, changed.
      */
     public static final int UPDATED = 4;
@@ -67,8 +67,8 @@ public class ParameterEvent {
     ///////////////////////////////////////////////////////////////////
     ////                         constructors                      ////
 
-    /** Create a new parameter event, with no information. This 
-     *  constructor will mainly be used to notify ParameterListeners 
+    /** Create a new parameter event, with no information. This
+     *  constructor will mainly be used to notify ParameterListeners
      *  that a Parameter was removed.
      *  @param removed The Parameter that was removed
      */
@@ -77,11 +77,11 @@ public class ParameterEvent {
         _parameter = removed;
     }
 
-    /** Create a new parameter event, with the specified ID for 
-     *  the specified Parameter and the Parameters new value. This 
-     *  constructor will mainly be used to notify ParameterListeners 
+    /** Create a new parameter event, with the specified ID for
+     *  the specified Parameter and the Parameters new value. This
+     *  constructor will mainly be used to notify ParameterListeners
      *  that the Parameter changed.
-     *  @param id The information representing why the value in 
+     *  @param id The information representing why the value in
      *   the Parameter changed.
      *  @param changed The Parameter that changed.
      */
@@ -89,11 +89,11 @@ public class ParameterEvent {
         id = eventId;
         _parameter = changed;
     }
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the ID of this event. The ID may give some additional 
+    /** Get the ID of this event. The ID may give some additional
      *  information about why the Parameter changed.
      *
      *  @return The integer ID.
@@ -102,7 +102,7 @@ public class ParameterEvent {
         return id;
     }
 
-    /** Get the Parameter associated with this event. 
+    /** Get the Parameter associated with this event.
      *
      *  @return The Parameter which changed or was removed.
      */
@@ -117,7 +117,7 @@ public class ParameterEvent {
      * a preceding underscore for consistency with AWT.
      */
     private int id;
-    
+
     /** The Parameter that was removed or changed.
      */
     private Parameter _parameter;

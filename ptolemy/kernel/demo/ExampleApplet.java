@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -39,7 +39,7 @@ import java.lang.String;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExampleApplet
-/** 
+/**
 ExapmleApplet is an applet contains a run button and a text area.
 It's for the general perpose of convert the command line application
 into AWT compatible applet. This applet is also contained in a frame
@@ -52,7 +52,7 @@ to make it run as an application
 class ExampleApplet extends java.applet.Applet
 {
     /** Constructor
-     */	
+     */
     public ExampleApplet() {
         super();
     }
@@ -64,7 +64,7 @@ class ExampleApplet extends java.applet.Applet
      *  letter display.
      * @see java.awt.Rectangle
      * @param position of the rectangle, initial point(x,y), width and hight
-     */	
+     */
     public Rectangle rectangle( int x, int y, int w, int h )
         {
             String        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -77,12 +77,12 @@ class ExampleApplet extends java.applet.Applet
                     (int) Math.round( ( (double)fw * (double)w ) / 4.0 ),
                     (int) Math.round( ( (double)fh * (double)h ) / 4.0 ) );
         }
-    
+
     /** Place the Rectangle in a component.
      * @see java.awt.Rectangle
      * @see java.awt.Component
      * @see java.awt.Insets
-     */	
+     */
     public void positionComponent( java.awt.Component comp, int x, int y,
             int w, int h, java.awt.Insets formInsets ) {
         Rectangle rect = rectangle( x, y, w, h );
@@ -95,7 +95,7 @@ class ExampleApplet extends java.applet.Applet
 
     /** Create the applet. One label, one button "run" and one text area.
     *  @see java.lang.applet#create
-    */	
+    */
     public boolean create() throws java.lang.Exception {
         setFont( new Font( "Dialog", Font.PLAIN, 12 ) );
 
@@ -112,7 +112,7 @@ class ExampleApplet extends java.applet.Applet
         add(_lb);
         add(_bnrun);
         add(_tarea);
-        
+
         positionComponent( this, 0, 0, 296, 225, null );
 
         positionComponent( _lb, -1, 5, 231, 10, formInsets );
@@ -140,10 +140,10 @@ class ExampleApplet extends java.applet.Applet
         show();
         return retval;
     }
-    
-    /** Destroy the applet. 
+
+    /** Destroy the applet.
     *  @see java.lang.applet#destroy
-    */	
+    */
     public synchronized void destroy() {
         if( (java.awt.Container)this instanceof java.awt.Window ) {
             ((java.awt.Window)(java.awt.Container)this).dispose();
@@ -155,10 +155,10 @@ class ExampleApplet extends java.applet.Applet
         System.exit(0);
 
     }
-    
+
     /** Handle the event passed to this applet. The event for the button is catched
     *  and all othe events are hendled by default.
-    */	
+    */
     public boolean handleEvent(java.awt.Event event) {
         Object eventTarget = event.target;
         if( eventTarget == _bnrun && event.id == java.awt.Event.ACTION_EVENT ) {
@@ -166,23 +166,23 @@ class ExampleApplet extends java.applet.Applet
         }
         return super.handleEvent(event);
     }
-    
+
     /** The action performed after clicking the button. By default it does nothing.
     *  To be override by the inherent class.
-    */	
+    */
     public boolean buttonAction(java.awt.Event event) {
         printInTextArea("Hello World\n");
         return true;
     }
-    
+
     /** Print the string in the text area. It does not add any extra charactors to
      *  the string, like "\n".
      *  @param st the string to be printed.
-     */	
+     */
     public void printInTextArea (String st) {
         _tarea.appendText(st);
     }
-    
+
     /** Reset the text area by an empty string.
      */
     public void clearTextArea() {
@@ -193,7 +193,7 @@ class ExampleApplet extends java.applet.Applet
     ////                         protected variables               ////
 
     /** A label, a text area and a button */
-    
+
     private  java.awt.Button  _bnrun = new java.awt.Button();
     private  java.awt.TextArea  _tarea = new java.awt.TextArea();
     private  java.awt.Label  _lb = new java.awt.Label();

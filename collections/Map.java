@@ -1,8 +1,8 @@
 /*
   File: Map.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   24Sep95  dl@cs.oswego.edu   Create from collections.java  working file
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 
 /**
  *
- * Maps maintain keyed elements. Any kind of Object 
+ * Maps maintain keyed elements. Any kind of Object
  * may serve as a key for an element.
  *
  * @author Doug Lea
@@ -71,7 +71,7 @@ public interface Map extends Collection {
 
 
 /**
- * Return the element associated with Key key. 
+ * Return the element associated with Key key.
  * @param key a key
  * @return element such that includesAt(key, element)
  * @exception NoSuchElementException if !includesKey(key)
@@ -85,7 +85,7 @@ public interface Map extends Collection {
  * number of keys associated with any element, but this returns only
  * one of them (any arbitrary one), or null if no such key exists.
  * @param element, a value to try to find a key for.
- * @return k, such that 
+ * @return k, such that
  * <PRE>
  * (k == null && !includes(element)) ||  includesAt(k, element)
  * </PRE>
@@ -109,7 +109,7 @@ public interface Map extends Collection {
 **/
 
 
-  public Map  puttingAt(Object key, Object element) 
+  public Map  puttingAt(Object key, Object element)
                           throws IllegalElementException;
 
 /**
@@ -121,7 +121,7 @@ public interface Map extends Collection {
  * @return the new Map c, for which:
  * <PRE>
  * foreach (v in c.keys()) includesAt(v, at(v)) &&
- * !c.includesKey(key) 
+ * !c.includesKey(key)
  * </PRE>
 **/
   public Map  removingAt(Object key);

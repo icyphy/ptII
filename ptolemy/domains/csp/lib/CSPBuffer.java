@@ -40,10 +40,10 @@ import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPBuffer
-/** 
-A single channel buffer. It is parameterized by the Parameter "depth", 
+/**
+A single channel buffer. It is parameterized by the Parameter "depth",
 which controls how many Tokens can be stored in this buffer.
-The default depth of the buffer is 1. The buffer depth can change 
+The default depth of the buffer is 1. The buffer depth can change
 between firings of this actor.
 <p>
 
@@ -59,13 +59,13 @@ public class CSPBuffer extends CSPActor {
         output = new IOPort(this, "bufferOutput", false, true);
         input = new IOPort(this, "bufferInput", true, false);
     }
-    
-    public CSPBuffer(CompositeActor cont, String name) 
+
+    public CSPBuffer(CompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          this(cont, name, 1);
     }
 
-    public CSPBuffer(CompositeActor cont, String name, int depth) 
+    public CSPBuffer(CompositeActor cont, String name, int depth)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
          _depth = new Parameter(this, "depth", (new IntToken(depth)) );
@@ -89,25 +89,25 @@ public class CSPBuffer extends CSPActor {
                 // step 1
                 guard = (_size < depth);
                 branches[0] = new ConditionalReceive(guard, input, 0, 0);
-              
+
                 guard = (_size > 0);
-                branches[1] = new ConditionalSend(guard, output, 0, 1, 
+                branches[1] = new ConditionalSend(guard, output, 0, 1,
                         _buffer[_readFrom]);
 
                 // step 2
                 int successfulBranch = chooseBranch(branches);
-                                
+
                 // step 3
                 if (successfulBranch == 0) {
                     _size++;
                     _buffer[_writeTo] = branches[0].getToken();
-                    System.out.println(getName() + " got Token: " + 
-                            _buffer[_writeTo].toString() + ", size is: " + 
+                    System.out.println(getName() + " got Token: " +
+                            _buffer[_writeTo].toString() + ", size is: " +
                             _size);
                     _writeTo = ++_writeTo % depth;
                 } else if (successfulBranch == 1) {
                     _size--;
-                    System.out.println(getName() + " sent Token: " + 
+                    System.out.println(getName() + " sent Token: " +
                             _buffer[_readFrom].toString() + ", size is: " +
                             _size);
                     _readFrom = ++_readFrom % depth;
@@ -122,11 +122,11 @@ public class CSPBuffer extends CSPActor {
                 count++;
             }
         } catch (IllegalActionException ex) {
-            System.out.println("CSPBuffer: IllegalActionException, exiting" + 
+            System.out.println("CSPBuffer: IllegalActionException, exiting" +
                     ex.getMessage());
         } catch (NoTokenException ex) {
             System.out.println("CSPBuffer: cannot get token.");
-        } 
+        }
     }
 
     public IOPort input;
@@ -137,7 +137,7 @@ public class CSPBuffer extends CSPActor {
 
     // The array storing the buffered Tokens.
     private Token[] _buffer;
-    
+
     // The Parameter storing the depth of the buffer.
      private Parameter _depth;
 

@@ -1,8 +1,8 @@
 /*
   File: CheckedBag.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -12,7 +12,7 @@
   19Oct95  dl                 More misc clean up
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -37,7 +37,7 @@ public class CheckedBag extends CheckedCollection implements UpdatableBag  {
  * Make a Checked clone of underlying collection
 **/
 
-  protected Object clone() throws CloneNotSupportedException { 
+  protected Object clone() throws CloneNotSupportedException {
     return new CheckedBag((UpdatableBag)(thys.duplicate()));
   }
 
@@ -57,7 +57,7 @@ public class CheckedBag extends CheckedCollection implements UpdatableBag  {
  * @see collections.UpdatableBag#addIfAbsent
 **/
 
-  public synchronized void addIfAbsent(Object element) 
+  public synchronized void addIfAbsent(Object element)
   throws IllegalElementException {
     preCheck();
     try {
@@ -78,7 +78,7 @@ public class CheckedBag extends CheckedCollection implements UpdatableBag  {
  * Checks collections.Bag.addingIfAbsent
  * @see collections.Bag#addingIfAbsent
 **/
-  public synchronized Bag addingIfAbsent(Object element) 
+  public synchronized Bag addingIfAbsent(Object element)
   throws IllegalElementException {
     preCheck();
     try {
@@ -122,7 +122,7 @@ public class CheckedBag extends CheckedCollection implements UpdatableBag  {
  * @see collections.Bag#adding
 **/
 
-  public synchronized  Bag adding(Object element) 
+  public synchronized  Bag adding(Object element)
   throws IllegalElementException {
     preCheck();
     try {
@@ -146,7 +146,7 @@ public class CheckedBag extends CheckedCollection implements UpdatableBag  {
  * @see collections.UpdatableBag#addElements
 **/
 
-  public synchronized  void addElements(Enumeration e) 
+  public synchronized  void addElements(Enumeration e)
    throws IllegalElementException, CorruptedEnumerationException {
     preCheck();
     thys().addElements(e);
@@ -182,7 +182,7 @@ public class CheckedBag extends CheckedCollection implements UpdatableBag  {
     CollectionEnumeration os = oc.elements();
     while (os.hasMoreElements()) {
       Object v = os.nextElement();
-      assert((v.equals(element) || 
+      assert((v.equals(element) ||
               (nc.occurrencesOf(v) == oc.occurrencesOf(v))));
     }
 

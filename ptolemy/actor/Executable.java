@@ -99,11 +99,11 @@ public interface Executable {
      *  @exception IllegalActionException If prefiring is not permitted.
      */
     public boolean prefire() throws IllegalActionException;
-            
+
     /** This method is invoked to immediately terminate any execution
-     *  within an actor.  
+     *  within an actor.
      */
-    public void terminate();       
+    public void terminate();
 
     /** This method should be invoked exactly once per execution
      *  of an application.  None of the other action methods should be

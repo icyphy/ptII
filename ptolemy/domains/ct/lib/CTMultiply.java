@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -37,7 +37,7 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTMultiply
-/** 
+/**
 Output the multiplication of all the inputs. Multi-input single output.
 (IO type: double). This actor has no parameter.
 @author Jie Liu
@@ -50,8 +50,8 @@ public class CTMultiply extends CTActor{
      * @param name The name
      * @exception NameDuplicationException another star already had this name
      * @exception IllegalActionException illustrates internal problems
-     */	
-    public CTMultiply(TypedCompositeActor container, String name) 
+     */
+    public CTMultiply(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input = new TypedIOPort(this, "input");
@@ -68,7 +68,7 @@ public class CTMultiply extends CTActor{
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-   
+
     /** Multiply the input tokens, and output the product
      *  @exception IllegalActionException If there's no enough input
      *       tokens.
@@ -80,7 +80,7 @@ public class CTMultiply extends CTActor{
         }
         output.broadcast(new DoubleToken(product));
     }
-    
+
     /** The multi-input port.
      */
     public TypedIOPort input;

@@ -91,20 +91,20 @@ public class DEPlot extends DEActor {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void initialize() throws IllegalActionException {
-        
+
         _plot.clear(true);
         _plot.setButtons(true);
         _plot.setMarksStyle("dots");
         _plot.setImpulses(true);
         _plot.setConnected(false);
         _plot.setTitle(getName());
-	
+
 	for (int i = 0; i < input.getWidth(); i++) {
             if (_legends != null && i < _legends.length && _legends[i].length() != 0) {
                 _plot.addLegend(i, _legends[i]);
             } else {
                 _plot.addLegend(i, "Data " + i);
-                
+
             }
         }
 
@@ -130,12 +130,12 @@ public class DEPlot extends DEActor {
         }
 
         int numEmptyChannel = 0;
-        
+
         int width = input.getWidth();
         for (int i = 0; i<width; i++) {
             // check channel i.
             if (input.hasToken(i)) {
-                double curTime =((DECQDirector)getDirector()).getCurrentTime(); 
+                double curTime =((DECQDirector)getDirector()).getCurrentTime();
                 // channel i is not empty, get all the tokens in it.
                 while (input.hasToken(i)) {
                     DoubleToken curToken = null;
@@ -160,8 +160,8 @@ public class DEPlot extends DEActor {
                     // add the point
                     if (DEBUG) {
                         System.out.print(this.getFullName() + ":");
-                        System.out.println("Dataset = " + i + 
-                                ", CurrentTime = " + curTime + 
+                        System.out.println("Dataset = " + i +
+                                ", CurrentTime = " + curTime +
                                 ", CurrentValue = " + curValue + ".");
                     }
                     _plot.addPoint(i, curTime, curValue, false);

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -36,19 +36,19 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTActor
-/** 
-CTActor is the base class for continuous time actors. 
+/**
+CTActor is the base class for continuous time actors.
 <P>
-CTActors can have parameters attached. The parameters can be set by the 
-setParam() method at any time, but the parameter will not be used 
+CTActors can have parameters attached. The parameters can be set by the
+setParam() method at any time, but the parameter will not be used
 immediately until it is updated by the updateParams() method. When a
-parameter is changed, the <code>paramChanged</code> flag is set. 
-The parameter will be updated in the updateParams() method, if the 
+parameter is changed, the <code>paramChanged</code> flag is set.
+The parameter will be updated in the updateParams() method, if the
 <code>paramChanged</code> flag is set.  In this base class
 implementation, the updateParams() happens at the prefire()
 stage of the iteration, so that the parameters are keep consistent
 during the iteration. Parameters can be get by the getUpdatedParam()
-method. 
+method.
 @author Jie Liu
 @version $Id$
 @see ptolemy.actor.AtomicActor
@@ -80,15 +80,15 @@ public class CTActor extends TypedAtomicActor implements ParameterListener{
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
-     * 
+     *
      *  @param CTSubSystem The subsystem that this actor is lived in
      *  @param name The actor's name
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException Name coincides with
      *   an entity already in the container.
-     */	
-    public CTActor(TypedCompositeActor container, String name) 
+     */
+    public CTActor(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -104,7 +104,7 @@ public class CTActor extends TypedAtomicActor implements ParameterListener{
     public boolean isParamChanged() {
         return _paramChanged;
     }
-     
+
     /** Set the <code>paramChanged</code> flag to true. The paramter will
      *  be updated when the next time the updateParameters() is called.
      */
@@ -132,28 +132,28 @@ public class CTActor extends TypedAtomicActor implements ParameterListener{
         }
         return true;
     }
-    
-    /** FIXME: For the reason of domain polymorphic, consider not doing 
+
+    /** FIXME: For the reason of domain polymorphic, consider not doing
      *  this
-     *  Override setContainer() to insure the container is a CTSubSystem 
+     *  Override setContainer() to insure the container is a CTSubSystem
      *  or null (for removing a CTActor).
      *
      *  @param a CTSubSystem that contains this actor.
      *  @exception IllegalActionException If the container is not an
      *             instance of CTSubSystem or null.
      *  @exception NameDuplicationException If the container has
-     *             already contained a object with the name of this 
+     *             already contained a object with the name of this
      *             actor.
      *
-    public void setContainer(CompositeEntity container) 
+    public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         if(!(container instanceof CTSubSystem) && (container != null)) {
-            throw new IllegalActionException(container, 
+            throw new IllegalActionException(container,
                     " is not a CTSubSystem.");
         }
         super.setContainer(container);
-    }*/  
-    
+    }*/
+
     /** Set the <code>paramChanged</code> flag if the argument
      *  is true, otherwise reset the flag to false.
      *
@@ -162,7 +162,7 @@ public class CTActor extends TypedAtomicActor implements ParameterListener{
     public void resetParamChanged() {
         _paramChanged = false;
     }
-    
+
 
     /** Update the parameter values.
      *  @exception IllegalActionException If the parameter is not
@@ -176,7 +176,7 @@ public class CTActor extends TypedAtomicActor implements ParameterListener{
      *  If the actor has input ports, consume all the tokens left.
      *  Set <code>paramChanged</code> to true. This method will return
      *  regardless the occurrence of any ptolemy exceptions.
-     *  
+     *
      * @exception IllegalActionException Not throw in this class.
      *   May be needed by derived classes.
      */
@@ -195,7 +195,7 @@ public class CTActor extends TypedAtomicActor implements ParameterListener{
             //ignore.
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -43,8 +43,8 @@ an entity so that it can be a) instantiated in a Ptolemy II
 simulation and b) looked up in an icon library for display
 and editing of a schematic. In the external data format of Ptolemy
 II schmatics, the entity type is represented by the <type/>
-element embedded in the <entity> element.   
-<!-- entitytype elements will be parsed into class EntityType -->   
+element embedded in the <entity> element.
+<!-- entitytype elements will be parsed into class EntityType -->
 <!ELEMENT entitytype EMPTY>
 <!ATTLIST entitytype
 name ID #REQUIRED>
@@ -53,7 +53,7 @@ name ID #REQUIRED>
 @version $Id$
 */
 public class EntityType extends XMLElement {
-    
+
     /**
      * Create an EntityType without any attributes.
      */
@@ -74,13 +74,13 @@ public class EntityType extends XMLElement {
         return getAttribute("name");
     }
 
-    /** 
+    /**
      * Test if the give entity type is the same as this entity type.
      */
     public boolean equals (EntityType et) {
         return getName().equals(et.getName());
     }
-    
+
     public void setName(String name) {
         setAttribute("name", name);
     }

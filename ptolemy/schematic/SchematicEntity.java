@@ -42,9 +42,9 @@ import ptolemy.kernel.util.IllegalActionException;
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class SchematicEntity extends SchematicElement { 
+public class SchematicEntity extends SchematicElement {
 
-    /** 
+    /**
      * Create a new SchematicEntity object wtih no set attributes.
      */
     public SchematicEntity () {
@@ -54,7 +54,7 @@ public class SchematicEntity extends SchematicElement {
     }
 
     /**
-     * Create a new SchematicEntity object with the given attributes and an 
+     * Create a new SchematicEntity object with the given attributes and an
      * unspecified entitytype.
      *
      * @param attributes a HashedMap from a String specifying the name of
@@ -79,23 +79,23 @@ public class SchematicEntity extends SchematicElement {
         if(!hasAttribute("icon")) setIcon(DEFAULTICONNAME);
     }
 
-    /** 
+    /**
      * Add a new port to the icon. The port name must be unique within this
      * entity.
-     *  
-     * @throw IllegalActionException if a port with the same name as 
-     * the new port is already contained in this SchematicEntity. 
+     *
+     * @throw IllegalActionException if a port with the same name as
+     * the new port is already contained in this SchematicEntity.
      */
     public void addPort (SchematicPort port) throws IllegalActionException {
         String name = port.getName();
-        if(containsPort(name)) 
-            throw new IllegalActionException("Port with name " + name + 
+        if(containsPort(name))
+            throw new IllegalActionException("Port with name " + name +
                     " already exists.");
         ports.putAt(name, port);
         addChildElement(port);
     }
 
-    /** 
+    /**
      * Test if this entity contains a port with the
      * given name.
      */
@@ -104,20 +104,20 @@ public class SchematicEntity extends SchematicElement {
     }
 
     /**
-     * Get the string that specifies the icon for this entity.  
+     * Get the string that specifies the icon for this entity.
      */
     public String getIcon () {
         return getAttribute("icon");
     }
-    
-    /** 
+
+    /**
      * Return the port contained in this object with the given name.
-     * 
+     *
      * @throw IllegalActionException if no port exists with the given name.
      */
-    public SchematicPort getPort(String name) 
+    public SchematicPort getPort(String name)
     throws IllegalActionException {
-        try {            
+        try {
             SchematicPort s = (SchematicPort) ports.at(name);
             return s;
         }
@@ -136,7 +136,7 @@ public class SchematicEntity extends SchematicElement {
         return ports.elements();
     }
 
-    /** 
+    /**
      * Remove a port from the entity. Throw an exception if
      * a port with this name is not contained in the entity.
      */
@@ -153,10 +153,10 @@ public class SchematicEntity extends SchematicElement {
     }
 
     /**
-     * Set the Icon that describes this entity.   
+     * Set the Icon that describes this entity.
      *
      * @param iconspec A string specifiying a unique icon within
-     * ptolemy.   This string is in the form 
+     * ptolemy.   This string is in the form
      * "hierarchical.library.name.iconname"
      */
     public void setIcon (String iconspec) {

@@ -1,8 +1,8 @@
 /*
   File: KeySortedCollection.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   24Sep95  dl@cs.oswego.edu   Create from collections.java  working file
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -25,7 +25,7 @@ import java.util.NoSuchElementException;
  * <P>
  * KeySorted Collections guarantee that enumerations
  * appear in sorted order;  that is if a and b are two Keys
- * obtained in succession from keys().nextElement(), that 
+ * obtained in succession from keys().nextElement(), that
  * <PRE>
  * elementComparator().compare(a, b) <= 0.
  * </PRE>

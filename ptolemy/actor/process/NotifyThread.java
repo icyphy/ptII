@@ -21,7 +21,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -38,13 +38,13 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// NotifyThread
-/** 
-Helper thread for calling notifyAll on a single lock or a LinkedList 
-of locks. Since this is a new thread without any locks, calling notifyAll 
+/**
+Helper thread for calling notifyAll on a single lock or a LinkedList
+of locks. Since this is a new thread without any locks, calling notifyAll
  from this thread reduces the possibility of deadlocks.
 <p>
-To use this to wake up any threads waiting on a lock, create a new instance 
-of this class with a LinkedList of lock objects (or single lock) to call 
+To use this to wake up any threads waiting on a lock, create a new instance
+of this class with a LinkedList of lock objects (or single lock) to call
 notifyAll on, then optionally wait for this object.
 <p>
 @author Neil Smyth
@@ -95,10 +95,10 @@ public class NotifyThread extends Thread {
             this.notifyAll();
         }
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // The locks to call notifyAll on.
     private LinkedList _locks = null;
 

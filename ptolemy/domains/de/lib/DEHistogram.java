@@ -55,7 +55,7 @@ public class DEHistogram extends DEActor {
      *  @exception NameDuplicationException If the parent class throws it.
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public DEHistogram(TypedCompositeActor container, 
+    public DEHistogram(TypedCompositeActor container,
             String name, double binWidth)
             throws NameDuplicationException, IllegalActionException  {
 
@@ -69,7 +69,7 @@ public class DEHistogram extends DEActor {
      *  @exception NameDuplicationException If the parent class throws it.
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public DEHistogram(TypedCompositeActor container, 
+    public DEHistogram(TypedCompositeActor container,
             String name, double binWidth, Plot plot)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
@@ -89,7 +89,7 @@ public class DEHistogram extends DEActor {
         _binWidth = new Parameter(this, "bin width", new DoubleToken(binWidth));
         // FIXME: Hardwire binZeroOffset.
         _binZeroOffset = binWidth / 2.0;
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -125,15 +125,15 @@ public class DEHistogram extends DEActor {
         // Gather datas from input port.
         // FIXME: make it one channel first.
         while (input.hasToken(0)) {
-       
+
             double dataIn = ((DoubleToken)input.get(0)).doubleValue();
-       
+
             // perform the translation from data value to bin number.
             // Also, keep track of the max and min bin we've seen so far.
             int bin = _valueToBin(dataIn);
             if (bin > _maxBin) _maxBin = bin;
             if (bin < _minBin) _minBin = bin;
-            
+
 
             Integer binObject = new Integer(bin);
 
@@ -146,7 +146,7 @@ public class DEHistogram extends DEActor {
                 _map.putAt(binObject, new Integer(1));
             }
 
-            
+
         }
     }
 
@@ -208,7 +208,7 @@ public class DEHistogram extends DEActor {
         double binWidth = ((DoubleToken)_binWidth.getToken()).doubleValue();
         double offset = (value - _binZeroOffset) / binWidth;
 
-        
+
 
         // Now round offset to the nearest integer.
         // If offset is equal to xxx.5, then round up.
@@ -224,7 +224,7 @@ public class DEHistogram extends DEActor {
 
     private double _yMin;
     private double _yMax;
-    
+
     private Parameter _binWidth;
     // The x-coordinate of the center of the first bin.
     private double _binZeroOffset;

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating red (liuj@eecs.berkeley.edu)
@@ -32,9 +32,9 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// NumericalNonconvergeException
-/** 
+/**
 This exception is used to indicate a numerical calculation failiar,
-typically in the process of finding the fixed point solution of an 
+typically in the process of finding the fixed point solution of an
 algebriac equation. This is a RuntimeException.
 @author  Jie Liu
 @version $Id$
@@ -74,5 +74,5 @@ public class NumericalNonconvergeException extends InvalidStateException{
      */
     public NumericalNonconvergeException( Enumeration objects, String detail) {
         super(objects, detail);
-    } 
+    }
 }

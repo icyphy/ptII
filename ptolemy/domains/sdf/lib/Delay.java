@@ -43,7 +43,7 @@ public class Delay extends SDFAtomicActor {
     public IOPort inputport;
     public IOPort outputport;
 
-    public Delay(CompositeActor container, String name) 
+    public Delay(CompositeActor container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container,name);
         try{
@@ -67,10 +67,10 @@ public class Delay extends SDFAtomicActor {
         System.out.println("Delay, initial token" + token.toString());
         outputport.send(0,token);
     }
-    
+
     public void fire() throws IllegalActionException {
         IntToken message;
-        
+
         message=(IntToken)inputport.get(0);
         System.out.print("Delay - ");
         System.out.println(message.intValue());

@@ -39,35 +39,35 @@ import java.util.Random;
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalReceive
 /**
-Represents a guarded communication statement in which the 
-communication is a receive(). Thus is represents 
+Represents a guarded communication statement in which the
+communication is a receive(). Thus is represents
 <br>
      guard; receive() => statements
 <br>
-It is one branch of either a CDO or a CIF conditional 
-communication construct. 
+It is one branch of either a CDO or a CIF conditional
+communication construct.
 <p>
-The branches used in a conditional communication construct are 
-controlled by the chooseBranch() method of CSPActor. Thus any actor 
+The branches used in a conditional communication construct are
+controlled by the chooseBranch() method of CSPActor. Thus any actor
 that wishes to use a CDO or a CIF must derive from CSPActor.
 <p>
-Each branch is created to perfrom one communication. If more than 
-one branch is enabled (the guard is true or absent), then a thread 
-is created for each enabled branch to try and perfrom 
-the appropriate rendezvous. If the branch 
-suceeds and is allowed to rendezvous, then it registers itself with 
-the parent actor and the thread it is running in dies. Otherwsise it 
-continues to trya nd rendezvous until it suceeds or it is notified that 
-another branch has suceeded in with its rendezvous, in which case this 
+Each branch is created to perfrom one communication. If more than
+one branch is enabled (the guard is true or absent), then a thread
+is created for each enabled branch to try and perfrom
+the appropriate rendezvous. If the branch
+suceeds and is allowed to rendezvous, then it registers itself with
+the parent actor and the thread it is running in dies. Otherwsise it
+continues to trya nd rendezvous until it suceeds or it is notified that
+another branch has suceeded in with its rendezvous, in which case this
 branch has failed and the thread it is running in dies.
 <p>
-For rendezvous, the receiver is the key synchronization point. The 
-receiver with which this branch will try to rendezvous is set upon 
-instantiation. It is determined from the port and channel which is 
+For rendezvous, the receiver is the key synchronization point. The
+receiver with which this branch will try to rendezvous is set upon
+instantiation. It is determined from the port and channel which is
 passed in in the constructor.
 <p>
-The algorithm by which a branch determines whether or not it has 
-succeeded with its rendezvous is executed in the run method. There are 
+The algorithm by which a branch determines whether or not it has
+succeeded with its rendezvous is executed in the run method. There are
 roughly three parts to the algorithm, each of which is relevant
 to the different rendezvous scenarios.
 <br>
@@ -122,15 +122,15 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *  @exception IllegalActionException If the channel has more
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
-    public ConditionalReceive(boolean guard, IOPort port, int channel, 
+    public ConditionalReceive(boolean guard, IOPort port, int channel,
             int branch) throws IllegalActionException {
          super(guard, port, branch);
 	 Receiver[][] receivers;
 	 try {
              port.workspace().getReadAccess();
              if (!port.isInput()) {
-                 throw new IllegalActionException(port, "ConditionalRec: " + 
-                         "tokens only received from an input port."); 
+                 throw new IllegalActionException(port, "ConditionalRec: " +
+                         "tokens only received from an input port.");
              }
              if (channel >= port.getWidth() || channel < 0) {
                  throw new IllegalActionException(port, "ConditionalRec: " +
@@ -143,7 +143,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
              }
              if (receivers[channel].length != 1) {
                  throw new IllegalActionException(port, "ConditionalRec: " +
-                         "channel " + channel + " does not have exactly " + 
+                         "channel " + channel + " does not have exactly " +
                          "one receiver");
              }
              if (!(receivers[channel][0] instanceof CSPReceiver)) {
@@ -168,7 +168,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      */
     public void run() {
         try {
-            // FIXME: For testing purposes only. Needed so that threads are 
+            // FIXME: For testing purposes only. Needed so that threads are
             // not always executed in the same order.
             // Random rand = new Random();
             //Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
@@ -176,11 +176,11 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
             synchronized(getReceiver()) {
                 if (getReceiver()._isConditionalReceiveWaiting()
                      || getReceiver()._isGetWaiting() ) {
-                    // Should never happen that a get or a ConditionalReceive 
+                    // Should never happen that a get or a ConditionalReceive
                     // is already at the receiver.
                     throw new InvalidStateException(getParent().getName() +
                          ": ConditionalReceive branch trying to rendezvous " +
-                         "with a receiver that already has a get or a " + 
+                         "with a receiver that already has a get or a " +
                          "ConditionalReceive waiting.");
                 }
 
@@ -200,7 +200,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                                 _token = getReceiver().get();
                                 getParent()._branchSucceeded(getID());
                                 return;
-                            } 
+                            }
                             _checkAndWait();
                             if (!isAlive()) {
                                 getParent()._branchFailed(getID());
@@ -247,7 +247,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                             } else if (getReceiver()._isPutWaiting()) {
                                 if (getParent()._amIFirst(getID())) {
                                     // I am the branch that succeeds
-                                    // Note that need to reset condSend 
+                                    // Note that need to reset condSend
                                     // flag BEFORE doing put.
                                     CSPReceiver rec = getReceiver();
                                     rec._setConditionalReceive(false, null);
@@ -263,7 +263,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                 }
             }
         } catch (InterruptedException ex) {
-            System.out.println( getParent().getName() + 
+            System.out.println( getParent().getName() +
                     ": ConditionalReceive interrupted: " + ex.getMessage());
             getParent()._branchFailed(getID());
         } catch (TerminateProcessException ex) {

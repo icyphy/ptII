@@ -43,18 +43,18 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// CSPActor
 /**
-This class is the base class of all atomic actors using the 
-non-deterministic communication and timed features of  the communicating 
-sequential processes(CSP) domain. 
+This class is the base class of all atomic actors using the
+non-deterministic communication and timed features of  the communicating
+sequential processes(CSP) domain.
 <p>
-The model of computation used in this domain extends the original CSP 
-model of computation in two ways. First it allows non-deterministic 
+The model of computation used in this domain extends the original CSP
+model of computation in two ways. First it allows non-deterministic
 communication using both sends and receives. The original model only
-allowed non-deterministic receives. Second, we have added a centralised 
-notion of time. The original proposal was untimed. Neither of these 
-extensions are new, but it is worth noting the differences between 
-the model we use and the original model. If an actor wishes to use 
-either non-deterministic rendezvous or time, it must derive from 
+allowed non-deterministic receives. Second, we have added a centralised
+notion of time. The original proposal was untimed. Neither of these
+extensions are new, but it is worth noting the differences between
+the model we use and the original model. If an actor wishes to use
+either non-deterministic rendezvous or time, it must derive from
 this class. Otherwise deriving from AtomicActor is sufficent.
 <p>
 This class provides the methods for controlling which branch of a
@@ -64,13 +64,13 @@ Then it waits for one branch to succeed, after which it wakes up and
 terminates the remaining branches. When the last conditional branch
 thread has finished it allows the actor thread to continue.
 <p>
-Time is supported by two methods, delay() and delay(double). These methods 
+Time is supported by two methods, delay() and delay(double). These methods
 do nothing if the simulation is untimed. If the simulation
 is timed, the first method just pauses the actor until the next occasion the
-director advances time. The second method 
-pauses the actor until time is advanced the argument time from the 
-current simulation time. Thus time is centralised in that it is 
-controlled by the director controlling this actor, and that 
+director advances time. The second method
+pauses the actor until time is advanced the argument time from the
+current simulation time. Thus time is centralised in that it is
+controlled by the director controlling this actor, and that
 each actor can only deal with delta (as opposed to absolute) time.
 <p>
 @author Neil Smyth
@@ -144,15 +144,15 @@ public class CSPActor extends AtomicActor {
 	return newobj;
     }
 
-    /** Delay until the director advances time. If the simulation is 
+    /** Delay until the director advances time. If the simulation is
      *  not timed do nothing.
      */
     public void delay() {
         delay(0.0);
     }
 
-    /** Delay this actor until the director sufficently advances 
-     *  time from the current time. If the simulation is not timed 
+    /** Delay this actor until the director sufficently advances
+     *  time from the current time. If the simulation is not timed
      *  do nothing.
      *  @param The delta time to delay this actor by.
      */
@@ -166,7 +166,7 @@ public class CSPActor extends AtomicActor {
                 }
             }
         } catch (InterruptedException ex) {
-            throw new TerminateProcessException("CSPActor interrupted " + 
+            throw new TerminateProcessException("CSPActor interrupted " +
                     "while delayed." );
         }
     }
@@ -181,8 +181,8 @@ public class CSPActor extends AtomicActor {
         delay();
     }
 
-    /** Default implementation for CSPActors is to return false. If an 
-     *  actor wishes to go for more than one iteration it should 
+    /** Default implementation for CSPActors is to return false. If an
+     *  actor wishes to go for more than one iteration it should
      *  override this method to return true.
      *  @return Boolean indicating if another iteration can occur.
      */
@@ -190,9 +190,9 @@ public class CSPActor extends AtomicActor {
         return false;
     }
 
-    /** Terminate abruptly any threads created by this actor. Note that 
+    /** Terminate abruptly any threads created by this actor. Note that
      *  this method does not allow the threads to terminate gracefully.
-     */   
+     */
     public void terminate() {
         synchronized(_getInternalLock()) {
             //System.out.println("Terminating actor: " + getName());
@@ -209,8 +209,8 @@ public class CSPActor extends AtomicActor {
         }
     }
 
-    /** Defaul implementation for actors inheriting from this 
-     *  class. It simply prints out a message that the actor is 
+    /** Defaul implementation for actors inheriting from this
+     *  class. It simply prints out a message that the actor is
      *  wrapping up.
      */
      public void wrapup() {
@@ -242,7 +242,7 @@ public class CSPActor extends AtomicActor {
     }
 
     /** Increase the count of conditional branches that are blocked.
-     *  Check if all the conditional branches are blocked, and if so 
+     *  Check if all the conditional branches are blocked, and if so
      *  register this actor as being blocked.
      */
     protected void _branchBlocked() {
@@ -279,13 +279,13 @@ public class CSPActor extends AtomicActor {
 
     /** Called by a conditional branch after a successful rendezvous. It
      *  wakes up chooseBranch which then proceeds to terminate the
-     *  remaining branches. 
+     *  remaining branches.
      *  @param branchID The ID assigned to the calling branch upon creation.
      */
     protected void _branchSucceeded(int branchID) {
         synchronized(_getInternalLock() ) {
            if (_branchTrying != branchID) {
-                throw new InvalidStateException(getName() + 
+                throw new InvalidStateException(getName() +
                         ": branchSucceeded called with a branch id not " +
                         "equal to the id of the branch registered as trying.");
             }
@@ -299,7 +299,7 @@ public class CSPActor extends AtomicActor {
     }
 
     /** Decrease the count of conditional branches that are blocked.
-     *  Check if all the conditional branches were previously blocked, 
+     *  Check if all the conditional branches were previously blocked,
      *  and if so register this actor with the director as being unblocked.
      */
     protected void _branchUnblocked() {
@@ -312,23 +312,23 @@ public class CSPActor extends AtomicActor {
         }
     }
 
-    /** Determine which branch suceeds in rendezvousing. This method is 
+    /** Determine which branch suceeds in rendezvousing. This method is
      *  central to nondeterministic rendezvous. It is passed in an array
-     *  of branches, each element of which represents one of the 
-     *  conditional rendezvous branches. If the guard for the branch is 
-     *  false then the branch is not enabled.  It returns the id of 
+     *  of branches, each element of which represents one of the
+     *  conditional rendezvous branches. If the guard for the branch is
+     *  false then the branch is not enabled.  It returns the id of
      *  the successful branch, or -1 if none of the branches were enabled.
      *  <p>
-     *  If exactly one branch is enabled, then the communication is 
+     *  If exactly one branch is enabled, then the communication is
      *  perfromed direclt and the id of the enabled branch  is returned.
-     *  If more than one branch is enabled, a thread  is created and 
-     *  started for each enabled branch. These threads each try to 
-     *  rendezvous until one succeeds. After a thread succeeds the 
-     *  other threads are killed, and the id of the successful 
+     *  If more than one branch is enabled, a thread  is created and
+     *  started for each enabled branch. These threads each try to
+     *  rendezvous until one succeeds. After a thread succeeds the
+     *  other threads are killed, and the id of the successful
      *  branch is returned.
      *  <p>
      *  @param branches The set of conditional branches involved.
-     *  @return The ID of the successful branch, or -1 none of the 
+     *  @return The ID of the successful branch, or -1 none of the
      *   branches were enabled.
      */
     protected int chooseBranch(ConditionalBranch[] branches) {
@@ -351,16 +351,16 @@ public class CSPActor extends AtomicActor {
                         onlyBranch = branches[i];
                     }
                 }
-                        
+
                 // Three cases: 1) No guards were true so return -1
-                // 2) Only one guard was true so perform the rendezvous 
-                // directly, 3) More than one guard was true, so start 
-                // the thread for each branch and wait for one of them 
+                // 2) Only one guard was true so perform the rendezvous
+                // directly, 3) More than one guard was true, so start
+                // the thread for each branch and wait for one of them
                 // to rendezvous.
                 int num = _threadList.size();
 
                 if (num == 0) {
-                    // The guards preceeding all the conditional 
+                    // The guards preceeding all the conditional
                     // communications were false, so no branches to create.
                     //System.out.println("No branches to create, returning");
                     return _successfulBranch; // will be -1
@@ -386,10 +386,10 @@ public class CSPActor extends AtomicActor {
                         _branchesActive++;
                     }
                     _branchesStarted = _branchesActive;
-                    //System.out.println(_branchesStarted + 
+                    //System.out.println(_branchesStarted +
                     //" branches created..\n");
                     // wait for a branch to succeed
-                    while ((_successfulBranch == -1) && 
+                    while ((_successfulBranch == -1) &&
                             (_branchesActive > 0)) {
                         _getInternalLock().wait();
                     }
@@ -397,15 +397,15 @@ public class CSPActor extends AtomicActor {
             }
             // If get to here have more than one conditional branch.
             //System.out.println("Now terminating non successful branches...");
-            
+
             LinkedList tmp = new LinkedList();
-            
+
             // Now terminate non-successful branches
             for (int i = 0; i < branches.length; i++) {
-                // If the guard for a branch is false, it means a 
+                // If the guard for a branch is false, it means a
                 // thread was not created for that branch.
                 if ( (i!= _successfulBranch) && (branches[i].getGuard()) ) {
-                    // to terminate a branch, need to set flag 
+                    // to terminate a branch, need to set flag
                     // on receiver & wake it up
                     Receiver rec = branches[i].getReceiver();
                     tmp.insertFirst(rec);
@@ -414,7 +414,7 @@ public class CSPActor extends AtomicActor {
             }
             // Now wake up all the receivers.
             (new NotifyThread(tmp)).start();
-            
+
             // when there are no more active branches, branchFailed
             // should issue a notifyAll on the internalLock
             synchronized(_getInternalLock()) {
@@ -450,7 +450,7 @@ public class CSPActor extends AtomicActor {
             throw new InvalidStateException("CSPActor._continue() " +
                     "called on an actor that was not delayed: " + getName());
         }
-        // FIXME: perhaps this notifyAll should be done in a new 
+        // FIXME: perhaps this notifyAll should be done in a new
         // thread as it is called from CSPDirector?
         synchronized(_getInternalLock()) {
             _delayed = false;
@@ -458,7 +458,7 @@ public class CSPActor extends AtomicActor {
         }
     }
 
-    /*  Create and return a new TopologyChangeRequest object that 
+    /*  Create and return a new TopologyChangeRequest object that
      *  removes this actor from the simulation.
      */
     private TopologyChangeRequest _makeFinishRequest() {
@@ -492,7 +492,7 @@ public class CSPActor extends AtomicActor {
             }
         }
         throw new InvalidStateException(getName() + ": Error: branch " +
-               "releasing first without possessing it! :" + _branchTrying + 
+               "releasing first without possessing it! :" + _branchTrying +
                " & " + branchNumber);
     }
 
@@ -517,7 +517,7 @@ public class CSPActor extends AtomicActor {
             _branchesBlocked = 0;
             _branchesStarted = 0;
             _branchTrying = -1;
-            _successfulBranch = -1;         
+            _successfulBranch = -1;
         }
     }
 
@@ -528,11 +528,11 @@ public class CSPActor extends AtomicActor {
     // active.
     private int _branchesActive= 0;
 
-    // Contains the number of conditional branches that are blocked 
+    // Contains the number of conditional branches that are blocked
     // trying to rendezvous.
     private int _branchesBlocked = 0;
 
-    // Contains the number of branches that were actually started for 
+    // Contains the number of branches that were actually started for
     // the most recent conditional rendezvous.
     private int _branchesStarted = 0;
 
@@ -540,14 +540,14 @@ public class CSPActor extends AtomicActor {
     // is -1 if no branch is currently trying.
     private int _branchTrying = -1;
 
-    // Flag indicating this actor is delayed. It needs to be accessible 
+    // Flag indicating this actor is delayed. It needs to be accessible
     // by the director.
     private boolean _delayed = false;
 
     // This lock is only used internally by the actor. It is used to
     // avoid having to synchronize on the actor itself. The chooseBranch
     // method waits on it so it knows when a branch has succeeded and when
-    // the last branch it created has died. It is also used to control 
+    // the last branch it created has died. It is also used to control
     // a delayed actor.
     private Object _internalLock = new Object();
 
@@ -555,7 +555,7 @@ public class CSPActor extends AtomicActor {
     private int _successfulBranch = -1;
 
     // Threads created by this actor to perfrom a conditional rendezvous.
-    // Need to keep a list of them in case the simulation is 
+    // Need to keep a list of them in case the simulation is
     // terminated abruptly.
     private LinkedList _threadList = null;
 }

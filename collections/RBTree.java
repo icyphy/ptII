@@ -1,8 +1,8 @@
 /*
   File: RBTree.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Changed protection statuses
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
 **/
 
 public class RBTree extends    UpdatableBagImpl
-                    implements UpdatableBag, 
+                    implements UpdatableBag,
                                ElementSortedCollection {
 
 // instance variables
@@ -72,8 +72,8 @@ public class RBTree extends    UpdatableBagImpl
  * Special version of constructor needed by clone()
 **/
 
-  protected RBTree(Predicate s, Comparator cmp, RBCell t, int n) { 
-    super(s); 
+  protected RBTree(Predicate s, Comparator cmp, RBCell t, int n) {
+    super(s);
     count_ = n;
     tree_ = t;
     if (cmp != null) cmp_ = cmp;
@@ -83,15 +83,15 @@ public class RBTree extends    UpdatableBagImpl
 /**
  * Make an indepenent copy of the tree. Does not clone elements.
 **/
-  protected Object clone() throws CloneNotSupportedException { 
+  protected Object clone() throws CloneNotSupportedException {
     if (count_ == 0) return new RBTree(screener_, cmp_);
     else return new RBTree(screener_, cmp_, tree_.copyTree(), count_);
   }
 
 
 
-// Collection methods  
-        
+// Collection methods
+
 /**
  * Implements collections.Collection.includes.
  * Time complexity: O(log n).
@@ -117,7 +117,7 @@ public class RBTree extends    UpdatableBagImpl
  * Time complexity: O(1).
  * @see collections.Collection#elements
 **/
-  public synchronized CollectionEnumeration elements() { 
+  public synchronized CollectionEnumeration elements() {
     return new RBCellEnumeration(this, tree_);
   }
 
@@ -130,7 +130,7 @@ public class RBTree extends    UpdatableBagImpl
  * @see collections.ElementSortedCollection#elementComparator
 **/
   public synchronized Comparator elementComparator() { return cmp_; }
-  
+
 /**
  * Reset the comparator. Will cause a reorganization of the tree.
  * Time complexity: O(n log n).
@@ -160,7 +160,7 @@ public class RBTree extends    UpdatableBagImpl
  * Time complexity: O(1).
  * @see collections.UpdatableCollection#clear
 **/
-  public synchronized void clear() { 
+  public synchronized void clear() {
     setCount(0);
     tree_ = null;
   }
@@ -189,8 +189,8 @@ public class RBTree extends    UpdatableBagImpl
  * Time complexity: O(log n).
  * @see collections.UpdatableCollection#replaceOneOf
 **/
-  public synchronized void replaceOneOf(Object oldElement, Object newElement)  
-  throws IllegalElementException { 
+  public synchronized void replaceOneOf(Object oldElement, Object newElement)
+  throws IllegalElementException {
     replace_(oldElement, newElement, false);
   }
 
@@ -199,8 +199,8 @@ public class RBTree extends    UpdatableBagImpl
  * Time complexity: O(log n * occurrencesOf(oldElement)).
  * @see collections.UpdatableCollection#replaceAllOf
 **/
-  public synchronized void replaceAllOf(Object oldElement, 
-                                                 Object newElement) 
+  public synchronized void replaceAllOf(Object oldElement,
+                                                 Object newElement)
   throws IllegalElementException {
     replace_(oldElement, newElement, true);
   }
@@ -211,7 +211,7 @@ public class RBTree extends    UpdatableBagImpl
  * Takes the least element.
  * @see collections.UpdatableCollection#take
 **/
-  public synchronized Object take() 
+  public synchronized Object take()
   throws NoSuchElementException {
     if (count_ != 0) {
       RBCell p = tree_.leftmost();
@@ -232,7 +232,7 @@ public class RBTree extends    UpdatableBagImpl
  * Time complexity: O(log n).
  * @see collections.UpdatableBag#addIfAbsent
 **/
-  public synchronized void addIfAbsent(Object element) 
+  public synchronized void addIfAbsent(Object element)
   throws IllegalElementException {
     add_(element, true);
   }
@@ -243,7 +243,7 @@ public class RBTree extends    UpdatableBagImpl
  * Time complexity: O(log n).
  * @see collections.UpdatableBag#add
 **/
-  public synchronized void add(Object element) 
+  public synchronized void add(Object element)
   throws IllegalElementException {
     add_(element, false);
   }
@@ -251,7 +251,7 @@ public class RBTree extends    UpdatableBagImpl
 
 // helper methods
 
-  private void add_(Object element, boolean checkOccurrence) 
+  private void add_(Object element, boolean checkOccurrence)
   throws IllegalElementException {
     checkElement(element);
     if (tree_ == null) {
@@ -264,7 +264,7 @@ public class RBTree extends    UpdatableBagImpl
         int diff = cmp_.compare(element, t.element());
         if (diff == 0 && checkOccurrence) return;
         else if (diff <= 0) {
-          if (t.left() != null) 
+          if (t.left() != null)
             t = t.left();
           else {
             tree_ = t.insertLeft(new RBCell(element), tree_);
@@ -273,7 +273,7 @@ public class RBTree extends    UpdatableBagImpl
           }
         }
         else {
-          if (t.right() != null) 
+          if (t.right() != null)
             t = t.right();
           else {
             tree_ = t.insertRight(new RBCell(element), tree_);
@@ -299,9 +299,9 @@ public class RBTree extends    UpdatableBagImpl
     }
   }
 
-  private void replace_(Object oldElement, Object newElement, boolean allOccurrences) 
+  private void replace_(Object oldElement, Object newElement, boolean allOccurrences)
   throws IllegalElementException {
-    if (oldElement == null || count_ == 0 || oldElement.equals(newElement)) 
+    if (oldElement == null || count_ == 0 || oldElement.equals(newElement))
       return;
     while (includes(oldElement)) {
       removeOneOf(oldElement);
@@ -316,7 +316,7 @@ public class RBTree extends    UpdatableBagImpl
  * Implements collections.ImplementationCheckable.checkImplementation.
  * @see collections.ImplementationCheckable#checkImplementation
 **/
-  public void checkImplementation() 
+  public void checkImplementation()
   throws ImplementationError {
 
     super.checkImplementation();
@@ -329,7 +329,7 @@ public class RBTree extends    UpdatableBagImpl
       RBCell t = tree_.leftmost();
       while (t != null) {
         Object v = t.element();
-        if (last != null) 
+        if (last != null)
           assert(cmp_.compare(last, v) <= 0);
         last = v;
         t = t.successor();

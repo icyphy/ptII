@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -34,7 +34,7 @@ import ptolemy.domains.csp.lib.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// BasicDemo
-/** 
+/**
 Source - Sink
 @author Neil Smyth
 @version $Id$
@@ -48,7 +48,7 @@ public class BasicDemo {
      * @param parameter-name description
      * @return description
      * @exception full-classname description
-     */	
+     */
     public BasicDemo() {}
 
     ///////////////////////////////////////////////////////////////////
@@ -60,7 +60,7 @@ public class BasicDemo {
      * @param parameter-name description
      * @return description
      * @exception full-classname description
-     */	
+     */
     public static void main(String[] args) {
         try {
             CompositeActor univ = new CompositeActor();
@@ -72,7 +72,7 @@ public class BasicDemo {
 
 	    CSPSource source = new CSPSource(univ, "Source");
             CSPSink sink = new CSPSink(univ, "Sink");
-            
+
             IOPort out = source.output;
             IOPort in = sink.input;
 

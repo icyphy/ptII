@@ -1,8 +1,8 @@
 /*
   File: UpdatableSeqImpl.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   13Oct95  dl                 Create
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
 /**
  *
  * UpdatableSeqImpl extends UpdatableImpl to provide
- * default implementations of some Seq operations. 
+ * default implementations of some Seq operations.
  * @author Doug Lea
  * @version 0.93
  *
@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
  *
 **/
 
-abstract class UpdatableSeqImpl extends UpdatableImpl implements UpdatableSeq { 
+abstract class UpdatableSeqImpl extends UpdatableImpl implements UpdatableSeq {
 
 
 /**
@@ -48,7 +48,7 @@ abstract class UpdatableSeqImpl extends UpdatableImpl implements UpdatableSeq {
  * Implements collections.Seq.insertingAt.
  * @see collections.Seq#insertingAt
 **/
-  public synchronized Seq  insertingAt(int index, Object element) 
+  public synchronized Seq  insertingAt(int index, Object element)
   throws IllegalElementException, NoSuchElementException {
     UpdatableSeq c = null;
     try {
@@ -62,13 +62,13 @@ abstract class UpdatableSeqImpl extends UpdatableImpl implements UpdatableSeq {
  * Implements collections.Seq.removingAt.
  * @see collections.Seq#removingAt
 **/
-  public synchronized Seq  removingAt(int index) 
+  public synchronized Seq  removingAt(int index)
   throws NoSuchElementException {
     UpdatableSeq c = null;
     try {
       c = ((UpdatableSeq)clone());
       c.removeAt(index);
-    } catch (CloneNotSupportedException ex) {}      
+    } catch (CloneNotSupportedException ex) {}
     return c;
   }
 
@@ -76,7 +76,7 @@ abstract class UpdatableSeqImpl extends UpdatableImpl implements UpdatableSeq {
  * Implements collections.Seq.replacingAt
  * @see collections.Seq#replacingAt
 **/
-  public synchronized  Seq  replacingAt(int index, Object element) 
+  public synchronized  Seq  replacingAt(int index, Object element)
   throws IllegalElementException, NoSuchElementException {
     UpdatableSeq c = null;
     try {

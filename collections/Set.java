@@ -1,8 +1,8 @@
 /*
   File: Set.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   24Sep95  dl@cs.oswego.edu   Create from collections.java  working file
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -31,7 +31,7 @@ import java.util.NoSuchElementException;
  *
 **/
 
-public interface Set extends Collection { 
+public interface Set extends Collection {
 
 /**
  * Construct a new Collection that is a clone of self except
@@ -45,7 +45,7 @@ public interface Set extends Collection {
  * @exception IllegalElementException if !canInclude(element)
 **/
 
-  public Set  including(Object element) 
+  public Set  including(Object element)
                        throws IllegalElementException;
 
 }

@@ -104,7 +104,7 @@ public final class ArrayMath {
         int resultsize = array1.length+array2.length-1;
         if (resultsize < 0) {
             // If we attempt to convolve two zero length arrays, return
-            // a zero length array.  
+            // a zero length array.
             result = new Complex[0];
             return result;
         }
@@ -143,7 +143,7 @@ public final class ArrayMath {
 
         if (resultsize < 0) {
             // If we attempt to convolve two zero length arrays, return
-            // a zero length array.  
+            // a zero length array.
             result = new double[0];
             return result;
         }

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -36,7 +36,7 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTPeriodicalSampler
-/** 
+/**
 This actor periodically sample the input signal and generate an event
 which has the value of the input signal.
 @author Jie Liu
@@ -48,22 +48,22 @@ public class CTPeriodicalSampler extends CTActor
         implements CTEventGenerateActor {
 
     public static final boolean DEBUG = true;
-            
+
     /** Construct a CTActor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
-     *  A CTActor can be either dynamic, or not.  It must be set at the 
+     *  A CTActor can be either dynamic, or not.  It must be set at the
      *  construction time and can't be changed thereafter.
      *  A dynamic actor will produce a token at its initialization phase.
-     * 
+     *
      *  @param CompositeActor The subsystem that this actor is lived in
      *  @param name The actor's name
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException Name coincides with
      *   an entity already in the container.
-     */	
+     */
     public CTPeriodicalSampler(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -79,7 +79,7 @@ public class CTPeriodicalSampler extends CTActor
         output.setDeclaredType(DoubleToken.class);
 
         _samplePeriod = (double)1.0;
-        _paramSamplePeriod = new CTParameter(this, 
+        _paramSamplePeriod = new CTParameter(this,
             "SamplePeriod", new DoubleToken(_samplePeriod));
     }
 
@@ -90,7 +90,7 @@ public class CTPeriodicalSampler extends CTActor
      *  of this fire.
      */
     public void fire() throws IllegalActionException {
-       
+
         CTMixedSignalDirector dir = (CTMixedSignalDirector) getDirector();
         double tnow = dir.getCurrentTime();
         if( Math.abs(tnow-_nextSamplingTime) < dir.getTimeAccuracy()) {
@@ -114,14 +114,14 @@ public class CTPeriodicalSampler extends CTActor
                 if(DEBUG) {
                     System.out.println(" Emit an event at" + tnow
                     +  " with the value: " +value.doubleValue());
-                } 
+                }
                 output.broadcast(value);
                 _nextSamplingTime = tnow+_samplePeriod;
                 dir.fireAfterDelay(this, _samplePeriod);
             }
         }
         return true;
-    }  
+    }
 
     /** Initilaize, chech if the director is a CTMixedSignalDirector.
      *  If the director is not a CTMixedSignalDirector throw an exception.
@@ -152,7 +152,7 @@ public class CTPeriodicalSampler extends CTActor
         }
         _samplePeriod = p;
     }
-    
+
     /** Return true if there is defintly an event missed in the
      *  last step.
      */
@@ -169,7 +169,7 @@ public class CTPeriodicalSampler extends CTActor
 
     /** If there is a missed event return the expected sample time
      *  - current time; else return the current step size.
-     */  
+     */
     public double refineStepSize() {
         if(_eventMissed) {
             _eventMissed = false;
@@ -199,5 +199,5 @@ public class CTPeriodicalSampler extends CTActor
 
     private boolean _eventMissed = false;
     private double _refineStep;
-    private double _nextSamplingTime; 
+    private double _nextSamplingTime;
 }

@@ -39,7 +39,7 @@ import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPMultiSink
-/** 
+/**
     Waits to receive a Token on any arc connected to its input port.
 FIXME: add longer description!!
 
@@ -51,7 +51,7 @@ public class CSPMultiSink extends CSPActor {
     public CSPMultiSink() {
         super();
     }
-    
+
     public CSPMultiSink  (CompositeActor cont, String name)
        throws IllegalActionException, NameDuplicationException {
 	 super(cont, name);
@@ -61,7 +61,7 @@ public class CSPMultiSink extends CSPActor {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
-   
+
     public void fire() {
         try {
             int count = 0;
@@ -78,7 +78,7 @@ public class CSPMultiSink extends CSPActor {
             while (continueCDO || (count < 25) ) {
                 ConditionalBranch[] branches = new ConditionalBranch[size];
                 for (i = 0; i < size; i++) {
-                    branches[i] = new ConditionalReceive(guards[i], 
+                    branches[i] = new ConditionalReceive(guards[i],
                             input, i, i);
                 }
 

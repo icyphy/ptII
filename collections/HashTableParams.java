@@ -1,8 +1,8 @@
 /*
   File: HashTableParams.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   24Sep95  dl@cs.oswego.edu   Create from collections.java  working file
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -58,7 +58,7 @@ public interface HashTableParams {
  * @exception IllegalArgumentException if newCap less than 1
 **/
 
-  public void buckets(int newCap) 
+  public void buckets(int newCap)
     throws IllegalArgumentException;
 
 /**

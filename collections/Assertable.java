@@ -1,8 +1,8 @@
 /*
   File: Assertable.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -18,7 +18,7 @@ package collections;
  * an assert method that raises an exception if a boolean
  * argument is false.
  * <P>
- * 
+ *
  * @author Doug Lea
  * @version 0.93
  *
@@ -30,7 +30,7 @@ public interface Assertable {
 
 /**
  * Raise an exception if predicate is false.
- * 
+ *
  * Suggested default implementation is:
  * <PRE>
  * {
@@ -41,6 +41,6 @@ public interface Assertable {
  * @exception ImplementationError if predicate is false.
 **/
 
-  public void assert(boolean predicate) throws ImplementationError; 
+  public void assert(boolean predicate) throws ImplementationError;
 }
 

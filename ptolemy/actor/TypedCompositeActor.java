@@ -298,7 +298,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 		while (ports.hasMoreElements()) {
 		    TypedIOPort srcport = (TypedIOPort)ports.nextElement();
                     Receiver[][] receivers = srcport.getRemoteReceivers();
- 
+
                     Enumeration destPorts = _receiverToPort(receivers);
                     result.appendElements(
 				_typeConstraintsFromTo(srcport, destPorts));

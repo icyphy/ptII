@@ -90,13 +90,13 @@ public class DEPassGate extends DEActor {
             DoubleToken inputToken = null;
             // The following code might throw a NoTokenException.
             inputToken = (DoubleToken)(input.get(0));
-            
+
 	    // If the gate also has token, change the state of the gate.
             if (gate.hasToken(0)) {
 		DoubleToken gateToken = null;
                 // The following code might throw a NoTokenException.
                 gateToken=(DoubleToken)(gate.get(0));
-                
+
 		if (gateToken.doubleValue() == 0.0) {
 		    // gate is closing (or closed)
 		    _gateOpen = false;
@@ -119,7 +119,7 @@ public class DEPassGate extends DEActor {
 	    DoubleToken gateToken = null;
             // The following method call might throw a NoTokenException.
             gateToken = (DoubleToken)(gate.get(0));
-            
+
 	    if (gateToken.doubleValue() != 0.0 && _gateOpen == false) {
 		// gate just reoopened.
 		_gateOpen = true;
@@ -139,13 +139,13 @@ public class DEPassGate extends DEActor {
 
     /** Initialize gate to be open, and last token equal null.
      *
-     *  @exception IllegalActionException Thrown if could not create the 
+     *  @exception IllegalActionException Thrown if could not create the
      *   receivers.
      */
     public void initialize() throws IllegalActionException {
         _gateOpen = true;
         _lastToken = null;
-            
+
     }
 
     ///////////////////////////////////////////////////////////////////

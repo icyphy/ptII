@@ -1,8 +1,8 @@
 /*
   File: UpdatableCollection.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   24Sep95  dl@cs.oswego.edu   Create from collections.java  working file
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -40,7 +40,7 @@ public interface UpdatableCollection  extends Collection {
  * Versioning
  * <EM>may</EM> be conservative with respect to `replacement' operations.
  * For the sake of versioning replacements may be considered as
- * removals followed by additions. Thus version numbers may change 
+ * removals followed by additions. Thus version numbers may change
  * even if the old and new  elements are identical.
  * <P>
  * All element() enumerations for Updatable Collections track version
@@ -55,10 +55,10 @@ public interface UpdatableCollection  extends Collection {
  * @return the version number
 **/
 
-  public int         version(); 
+  public int         version();
 
 /**
- * Cause the collection to become empty. 
+ * Cause the collection to become empty.
  * @return condition:
  * <PRE>
  * isEmpty() &&
@@ -69,10 +69,10 @@ public interface UpdatableCollection  extends Collection {
   public void        clear();
 
 /**
- * Exclude all occurrences of the indicated element from the collection. 
+ * Exclude all occurrences of the indicated element from the collection.
  * No effect if element not present.
  * @param element the element to exclude.
- * @return condition: 
+ * @return condition:
  * <PRE>
  * !includes(element) &&
  * size() == PREV(this).size() - PREV(this).occurrencesOf(element) &&
@@ -85,10 +85,10 @@ public interface UpdatableCollection  extends Collection {
 
 
 /**
- * Remove an instance of the indicated element from the collection. 
+ * Remove an instance of the indicated element from the collection.
  * No effect if !includes(element)
  * @param element the element to remove
- * @return condition: 
+ * @return condition:
  * <PRE>
  * let occ = max(1, occurrencesOf(element)) in
  *  size() == PREV(this).size() - occ &&
@@ -109,10 +109,10 @@ public interface UpdatableCollection  extends Collection {
  * with newElement has the same effect as just removing oldElement.
  * @return condition:
  * <PRE>
- * let int delta = oldElement.equals(newElement)? 0 : 
+ * let int delta = oldElement.equals(newElement)? 0 :
  *               max(1, PREV(this).occurrencesOf(oldElement) in
  *  occurrencesOf(oldElement) == PREV(this).occurrencesOf(oldElement) - delta &&
- *  occurrencesOf(newElement) ==  (this instanceof Set) ? 
+ *  occurrencesOf(newElement) ==  (this instanceof Set) ?
  *         max(1, PREV(this).occurrencesOf(oldElement) + delta):
  *                PREV(this).occurrencesOf(oldElement) + delta) &&
  *  no other element changes &&
@@ -121,7 +121,7 @@ public interface UpdatableCollection  extends Collection {
  * @exception IllegalElementException if includes(oldElement) and !canInclude(newElement)
 **/
 
-  public void replaceOneOf(Object oldElement, Object newElement) 
+  public void replaceOneOf(Object oldElement, Object newElement)
                    throws IllegalElementException;
 
 /**
@@ -133,10 +133,10 @@ public interface UpdatableCollection  extends Collection {
  * with newElement has the same effect as just removing oldElement.
  * @return condition:
  * <PRE>
- * let int delta = oldElement.equals(newElement)? 0 : 
+ * let int delta = oldElement.equals(newElement)? 0 :
                    PREV(this).occurrencesOf(oldElement) in
  *  occurrencesOf(oldElement) == PREV(this).occurrencesOf(oldElement) - delta &&
- *  occurrencesOf(newElement) ==  (this instanceof Set) ? 
+ *  occurrencesOf(newElement) ==  (this instanceof Set) ?
  *         max(1, PREV(this).occurrencesOf(oldElement) + delta):
  *                PREV(this).occurrencesOf(oldElement) + delta) &&
  *  no other element changes &&
@@ -145,7 +145,7 @@ public interface UpdatableCollection  extends Collection {
  * @exception IllegalElementException if includes(oldElement) and !canInclude(newElement)
 **/
 
-  public void replaceAllOf(Object oldElement, Object newElement) 
+  public void replaceAllOf(Object oldElement, Object newElement)
                 throws IllegalElementException;
 
 /**
@@ -153,12 +153,12 @@ public interface UpdatableCollection  extends Collection {
  * may strengthen the guarantee about the nature of this element.
  * but in general it is the most convenient or efficient element to remove.
  * <P>
- * Example usage. One way to transfer all elements from 
+ * Example usage. One way to transfer all elements from
  * UpdatableCollection a to UpdatableBag b is:
  * <PRE>
  * while (!a.empty()) b.add(a.take());
  * </PRE>
- * @return an element v such that PREV(this).includes(v) 
+ * @return an element v such that PREV(this).includes(v)
  * and the postconditions of removeOneOf(v) hold.
  * @exception NoSuchElementException iff isEmpty.
 **/
@@ -175,7 +175,7 @@ public interface UpdatableCollection  extends Collection {
  * @exception CorruptedEnumerationException is propagated if thrown
 **/
 
-  public void excludeElements(Enumeration e) 
+  public void excludeElements(Enumeration e)
     throws CorruptedEnumerationException;
 
 
@@ -188,7 +188,7 @@ public interface UpdatableCollection  extends Collection {
  * @exception CorruptedEnumerationException is propagated if thrown
 **/
 
-  public void removeElements(Enumeration e) 
+  public void removeElements(Enumeration e)
     throws CorruptedEnumerationException;
 
 };

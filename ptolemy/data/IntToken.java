@@ -115,7 +115,7 @@ public class IntToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token addReverse(ptolemy.data.Token leftArg) 
+    public Token addReverse(ptolemy.data.Token leftArg)
             throws IllegalActionException {
         IntToken tmp = (IntToken)this.convert(leftArg);
         int result = tmp.intValue() + _value;

@@ -36,12 +36,12 @@ import ptolemy.domains.sdf.kernel.*;
 
 /**
  * @version $Id$
- */ 
+ */
 public class SDF2Delay extends SDFAtomicActor {
     public IOPort inputport;
     public IOPort outputport;
 
-    public SDF2Delay(CompositeActor container, String name) 
+    public SDF2Delay(CompositeActor container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container,name);
         try{
@@ -56,10 +56,10 @@ public class SDF2Delay extends SDFAtomicActor {
             System.out.println("SDFDelay: constructor error");
         }
     }
-    
+
     public void fire() throws IllegalActionException {
         IntToken message;
-        
+
 
         message=(IntToken)inputport.get(0);
         System.out.print("Delay1 - ");

@@ -63,7 +63,7 @@ public class DEFullAdder extends TypedCompositeActor {
         // create an output port
         S = new TypedIOPort(this, "S", false, true);
         Cout = new TypedIOPort(this, "Cout", false, true);
-        
+
         // create input ports
         A = new TypedIOPort(this, "A", true, false);
         B = new TypedIOPort(this, "B", true, false);
@@ -119,7 +119,7 @@ public class DEFullAdder extends TypedCompositeActor {
     public TypedIOPort Cin;
     public TypedIOPort S;
     public TypedIOPort Cout;
-    
+
 }
 
 

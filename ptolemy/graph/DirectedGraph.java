@@ -170,7 +170,7 @@ public class DirectedGraph extends Graph {
      */
     public Object[] backwardReachableNodes(Object[] objs) {
 	_computeTransitiveClosure();
-        
+
         int N = objs.length;
         int ids[] = new int[N];
         for (int i = 0; i < N; i++) {
@@ -180,7 +180,7 @@ public class DirectedGraph extends Graph {
         // Or the correspoding rows.
 	for (int i = 0; i < _transitiveClosure.length; i++) {
             boolean orthem = false;
-            for (int j = 0;  j < N; j++) { 
+            for (int j = 0;  j < N; j++) {
                 orthem = orthem || _transitiveClosure[i][ids[j]];
             }
 	    if (orthem) {
@@ -276,7 +276,7 @@ public class DirectedGraph extends Graph {
         // Or the correspoding rows.
 	for (int i = 0; i < _transitiveClosure.length; i++) {
             boolean orthem = false;
-            for (int j = 0;  j < N; j++) { 
+            for (int j = 0;  j < N; j++) {
                 orthem = orthem || _transitiveClosure[ids[j]][i];
             }
 	    if (orthem) {

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -36,10 +36,10 @@ import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ProcessThread
-/** 
-This thread is created to execute the actor iteration methods in a 
-seperate thread. 
-This calls the prefire(), fire() and postfire() method of the 
+/**
+This thread is created to execute the actor iteration methods in a
+seperate thread.
+This calls the prefire(), fire() and postfire() method of the
 embedded actor.
 
 
@@ -48,10 +48,10 @@ embedded actor.
 */
 public class ProcessThread extends PtolemyThread {
 
-    /** Construct a thread to be used for the execution of the 
-     *  iteration methods of the actor. 
+    /** Construct a thread to be used for the execution of the
+     *  iteration methods of the actor.
      *  @param actor The actor that needs to be executed.
-     *  @param director The director responsible for the execution of this 
+     *  @param director The director responsible for the execution of this
      *  actor.
      */
     public ProcessThread(Actor actor, ProcessDirector director) {
@@ -61,17 +61,17 @@ public class ProcessThread extends PtolemyThread {
          _manager = ((CompositeActor)_director.getContainer()).getManager();
     }
 
-    /** Construct a thread to be used for the execution of the 
-     *  iteration methods of the actor. 
+    /** Construct a thread to be used for the execution of the
+     *  iteration methods of the actor.
      *  @param actor The actor that needs to be executed.
-     *  @param director The director responsible for the execution of this 
+     *  @param director The director responsible for the execution of this
      *  actor.
      *  @param name The name of the thread.
      */
     public ProcessThread(Actor actor, ProcessDirector director, String name) {
         super(name);
 	_actor = actor;
-        _director = director; 
+        _director = director;
         _manager = ((CompositeActor)_director.getContainer()).getManager();
     }
 
@@ -84,8 +84,8 @@ public class ProcessThread extends PtolemyThread {
     public Actor getActor() {
 	return _actor;
     }
-    
-    /** This initializes the actor, and iterates it through the execution 
+
+    /** This initializes the actor, and iterates it through the execution
      *  cycle till it terminates.
      */
     public void run() {
@@ -93,7 +93,7 @@ public class ProcessThread extends PtolemyThread {
             boolean iterate = true;
 	    while (iterate) {
                 iterate = false;
-                // container is checked for null to detect the 
+                // container is checked for null to detect the
                 // termination of the actor
                 if (((Entity)_actor).getContainer()!=null && _actor.prefire()){
                     _actor.fire();
@@ -116,7 +116,7 @@ public class ProcessThread extends PtolemyThread {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private Actor _actor;
     private ProcessDirector _director;
     private Manager _manager;

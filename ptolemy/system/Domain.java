@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating red (liuj@eecs.berkeley.edu)
@@ -37,13 +37,13 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyDomain
-/** 
-A domain is an aggregation of actor and directors. This class manage the 
+/**
+A domain is an aggregation of actor and directors. This class manage the
 actor package list and the director list. This base class provide methods
 that support creating actors, create directors, get available directors
 etc. The derived class should provide a list of the director's full class
 name. The actor
-packages are added at run time through addActorPackage() method, which 
+packages are added at run time through addActorPackage() method, which
 is generally called by PtolemySystem.
 
 @author  Jie Liu, Lukito Muliadi
@@ -52,7 +52,7 @@ is generally called by PtolemySystem.
 public class Domain {
     /** Construct a Ptolemy Domain with an empty string
      *  name.  At the time of construction it has no actors packages.
-     */	
+     */
     public Domain() {
         this(null);
     }
@@ -61,7 +61,7 @@ public class Domain {
      *  then the name of the director is an empty string.
      *  At the time of construction it has no actor packages.
      *  @param name The name of the domain.
-     */	
+     */
     public Domain(String name) {
         if(name == null) {
             _name = "";
@@ -75,13 +75,13 @@ public class Domain {
 
     /** Add an actor package for the this domain.
      * @param actorpackage The full package name.
-     */	
+     */
     public void addActorPackage(String actorpackage) {
         // actorpackagelist.add(actirpackage)
     }
 
     /** Create a new actor in this domain that matches the given
-     *  actor class name. The actor class is searched through the 
+     *  actor class name. The actor class is searched through the
      *  known actor packages. If no actor is found, then throw
      *  a ClassNotFoundException.
      *  @param actorname The name of the actor.
@@ -91,7 +91,7 @@ public class Domain {
         return null;
     }
 
-    /** Create a new director from the given director name.  
+    /** Create a new director from the given director name.
      *  The name of a director is its full class name.
      *  If the director is not found, a ClassNotFoundException is thrown.
      *  @param directorname The director's full class name.
@@ -107,7 +107,7 @@ public class Domain {
     public String[] getActorPackages(){
         return null;
     }
-    
+
     /** Return the available Director names in an Enumeration of String.
      *  The name of a director is its full class name.
      *  @return The enumeration of director class names.
@@ -132,14 +132,14 @@ public class Domain {
 
     /** Remove the specified actor package.
      *  @param actorpackage The requested actor package String.
-     *  @exception IllegalActionException If the specified actor package 
+     *  @exception IllegalActionException If the specified actor package
      *       is not in this domain.
      */
     public void removeActorPackage(String actorpackage) {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////    
+    ////                         private variables                      ////
 
     // The name of the Domain.
     private String _name;

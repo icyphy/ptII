@@ -43,17 +43,17 @@ import java.lang.reflect.*;
 //////////////////////////////////////////////////////////////////////////
 //// Manager
 /**
-A Manager is a domain-independent object that manages the execution of 
-a model.   It provides several methods to control execution with: run() 
+A Manager is a domain-independent object that manages the execution of
+a model.   It provides several methods to control execution with: run()
 startRun(), pause(), resume(), terminate(), and finish().
-Most often, methods in this object will be called by a 
-graphical user interface.  However, it is possible to manually call 
-these methods from a java object, a java applet, or an interactive 
-prompt, such as TclBlend. 
-Because user interaction will likely be occuring asynchronously to the 
-execution of the model, it is important that all the processing for the 
-model occur in a separate thread.   The Manager is responsible for creating 
-and managing the Java thread in which execution begins, although some 
+Most often, methods in this object will be called by a
+graphical user interface.  However, it is possible to manually call
+these methods from a java object, a java applet, or an interactive
+prompt, such as TclBlend.
+Because user interaction will likely be occuring asynchronously to the
+execution of the model, it is important that all the processing for the
+model occur in a separate thread.   The Manager is responsible for creating
+and managing the Java thread in which execution begins, although some
 domains may spawn additional threads of their own.
 <p>
 Note that the Manager class implements the Runnable interface with the run()
@@ -65,9 +65,9 @@ thread running the execution and the flow of execution will be returned
 immediately to the caller.
 <p>
 Manager also tries to optimize the simulation by making the workspace
-<i>write-protected</i> during the iteration period when all the 
+<i>write-protected</i> during the iteration period when all the
 directors 'agree'.
-Calling getReadAccess() and doneReading() on a <i>write-protected</i> 
+Calling getReadAccess() and doneReading() on a <i>write-protected</i>
 workspace will return immediately (No writer, no problem). On the other hand,
 calling getWriteAccess() and doneWriting() on a <i>write-protected</i>
 workspace will result in an exception being thrown, so don't write-protect the
@@ -121,7 +121,7 @@ public final class Manager extends NamedObj implements Runnable {
     ////                         public methods                    ////
 
     /** Add the ExecutionListener to the set of ExecutionListeners.
-     *  The ExecutionListener will be notified when the appropriate 
+     *  The ExecutionListener will be notified when the appropriate
      *  ExecutionEvents occur.
      *  @param an ExecutionListener
      */
@@ -130,15 +130,15 @@ public final class Manager extends NamedObj implements Runnable {
         _ExecutionListeners.include((Object) el);
     }
 
-    /** 
+    /**
      * Set a flag to request that the thread in which execution is running
      * stop execution and exit gracefully.    The next time that execution
      * control is returned to the manager, the manager will act as if the
      * toplevel composite actor returned false in postfire.
      * Execution can be stopped immediately by calling the terminate() method.
-     * This thread is synchronized so that it runs atomically with respect to 
+     * This thread is synchronized so that it runs atomically with respect to
      * other methods in Manager that control the simulation thread.
-     * This method is non-blocking.   
+     * This method is non-blocking.
      */
     public synchronized void finish() {
         _keepIterating = false;
@@ -150,11 +150,11 @@ public final class Manager extends NamedObj implements Runnable {
         }
     }
 
-    /** Encapsulate the Exception with an ExecutionEvent and call 
+    /** Encapsulate the Exception with an ExecutionEvent and call
      *  ExecutionError in all the ExecutionListeners.   If there are
-     *  no ExecutionListeners, then print the exception's stack trace on 
+     *  no ExecutionListeners, then print the exception's stack trace on
      *  the console.
-     * 
+     *
      *  @param e The Exception
      **/
      public void fireExecutionError(Exception e) {
@@ -171,7 +171,7 @@ public final class Manager extends NamedObj implements Runnable {
 
 
     /** Return the toplevel composite actor for which this manager
-     *  controls execution.   This composite actor does not have a parent, and 
+     *  controls execution.   This composite actor does not have a parent, and
      *  contains the entire hierarchy for an execution.
      *  @return The CompositeActor that this Manager is responsible for.
      */
@@ -180,20 +180,20 @@ public final class Manager extends NamedObj implements Runnable {
     }
 
     /** If an execution is currently running, then set a flag requesting that
-     *  execution pause at the next available opportunity between toplevel 
-     *  iterations.   When the pause flag is detected, the 
-     *  simulation thread will suspend itself and issue the 
+     *  execution pause at the next available opportunity between toplevel
+     *  iterations.   When the pause flag is detected, the
+     *  simulation thread will suspend itself and issue the
      *  ExecutionPaused ExecutionEvent to all ExecutionListeners.
-     *  This thread is synchronized so that it runs atomically with respect to 
+     *  This thread is synchronized so that it runs atomically with respect to
      *  the other methods in manager that control the simulation thread.
      *  This call is non-blocking.
      */
     public synchronized void pause() {
         if(_keepIterating) _isPaused = true;
     }
-    
+
     /** Remove the ExecutionListener to the set of ExecutionListeners.
-     *  The ExecutionListener will be no longer be notified when 
+     *  The ExecutionListener will be no longer be notified when
      *  ExecutionEvents occur.
      *  @param an ExecutionListener
      */
@@ -277,9 +277,9 @@ public final class Manager extends NamedObj implements Runnable {
 	}
     }
 
-    /** If running and paused, resume the currently paused simulation by 
+    /** If running and paused, resume the currently paused simulation by
      *  turning off the paused flag and waking the simulation thread up.
-     *  This thread is synchronized so that it runs atomically with respect to 
+     *  This thread is synchronized so that it runs atomically with respect to
      *  the other methods in manager that control the simulation thread.
      */
     public synchronized void resume() {
@@ -293,20 +293,20 @@ public final class Manager extends NamedObj implements Runnable {
         }
     }
 
-    /** 
+    /**
      * Run the sequence of execution.  This method executes the toplevel
-     * composite actor until it returns false in postfire.  
-     * The execution begins by calling initialize() on the toplevel 
-     * composite actor.   Each iteration of execution consists of calling 
+     * composite actor until it returns false in postfire.
+     * The execution begins by calling initialize() on the toplevel
+     * composite actor.   Each iteration of execution consists of calling
      * prefire(), fire() and postfire() on the top-level composite actor.
      * If postfire returns false, then execution is finished by calling
      * wrapup() on the toplevel composite actor to clean up the execution.
      * <p>
      * The execution is performed by the
      * current thread. I.e. The execution is performed in 'foreground' and
-     * the method returns only after the execution finishes.  However, it is 
-     * possible for other threads to come in and pause(), resume(), 
-     * terminate() or finish() the execution of the simulation.  
+     * the method returns only after the execution finishes.  However, it is
+     * possible for other threads to come in and pause(), resume(),
+     * terminate() or finish() the execution of the simulation.
      * To start the simulation in 'background', use the startRun() method.
      * startRun() creates a new thread which executes this run() method and
      * then returns immediately.
@@ -319,14 +319,14 @@ public final class Manager extends NamedObj implements Runnable {
             // _simulationThread will not be initialized, i.e. equal to null.
             _simulationThread = Thread.currentThread();
         } else {
-            System.out.println("There's already a thread running the " + 
-                    "simulation. Either wait for it to end, or call " + 
+            System.out.println("There's already a thread running the " +
+                    "simulation. Either wait for it to end, or call " +
                     "terminate() or finish().");
             return;
         }
 
         CompositeActor toplevel = ((CompositeActor)getToplevel());
-               
+
         // ensure that we only have one execution running.
         synchronized(this) {
             // Check if the execution is still iterating.
@@ -348,35 +348,35 @@ public final class Manager extends NamedObj implements Runnable {
             try {
                 // Initialize the topology
                 toplevel.initialize();
-                
+
                 // Figure out the appropriate write access.
-                _needWriteAccessDuringIteration = 
+                _needWriteAccessDuringIteration =
                        _checkIfWriteAccessNeededDuringIteration();
 
                 // Call _iterate() until:
                 // _keepIterating is set to false (presumably by stop())
                 // postfire() returns false.
                 while (_keepIterating && _iterate()) {
-                    
+
                     try {
                         // if a pause has been requested
                         if(_isPaused) {
                             // Notify listeners that we are paused.
-                            event = 
+                            event =
                                 new ExecutionEvent(this,_iteration);
                             _fireExecutionEvent(
                                     ExecutionEventType.EXECUTIONPAUSED, event);
-                            
+
                             synchronized (_simulationThread) {
-                                // suspend this thread until 
+                                // suspend this thread until
                                 // somebody wakes us up.
                                 while(_isPaused)
                                     _simulationThread.wait();
                             }
 
-                            // Somebody woke us up, so notify all the 
+                            // Somebody woke us up, so notify all the
                             // listeners that we are resuming.
-                            event = 
+                            event =
                                 new ExecutionEvent(this,_iteration);
                             _fireExecutionEvent(
                                     ExecutionEventType.EXECUTIONRESUMED,
@@ -387,21 +387,21 @@ public final class Manager extends NamedObj implements Runnable {
                         // We don't care if we were interrupted..
                         // Just ignore.
                     }
-                    
+
                 } // while (_keepIterating && _iterate())
             }
             finally {
                 // if we are done, then always be sure to reset the flags.
                 _keepIterating = false;
                 _isPaused = false;
-                
+
                 // try to wrapup the topology.
                 toplevel.wrapup();
 
                 // notify all listeners that we have been stopped.
-                event = 
+                event =
                     new ExecutionEvent(this,_iteration);
-                _fireExecutionEvent(ExecutionEventType.EXECUTIONFINISHED, 
+                _fireExecutionEvent(ExecutionEventType.EXECUTIONFINISHED,
                         event);
             }
         } catch (Exception e) {
@@ -410,34 +410,34 @@ public final class Manager extends NamedObj implements Runnable {
 
         // The simulation is finished, the thread has finished its job.
         _simulationThread = null;
-        
-    }   
 
-    /** Start an execution that will run for an unspecified number of 
-     *  toplevel iterations.   This will normally be stopped by 
-     *  calling finish(), terminate(), or returning false in a postfire method. 
+    }
+
+    /** Start an execution that will run for an unspecified number of
+     *  toplevel iterations.   This will normally be stopped by
+     *  calling finish(), terminate(), or returning false in a postfire method.
      *  This method is non-blocking, i.e. it runs on 'background'
      *  @see Manager.run()
      */
     public synchronized void startRun() {
 
         if(_keepIterating) return;
-        
-        // If the previous run hasn't totally finished yet, then be sure 
+
+        // If the previous run hasn't totally finished yet, then be sure
         // it is good and dead before continuing.
-        
+
         // FIXME: Steve, this means that if the user click the START button
         // twice before the first simulation ended, the second press will
         // be buffered, and the second simulation will rerun immediately
         // after the first one ends.. Is this what you want ? (lmuliadi)
-        
+
         if(_simulationThread!=null) {
              _simulationThread.stop();
              try {
                  _simulationThread.join();
              }
              catch (InterruptedException e) {
-                 // Well, if we bothered to kill it, then this should 
+                 // Well, if we bothered to kill it, then this should
                  // always get thrown, so just ignore it.
              }
              _simulationThread = null;
@@ -445,12 +445,12 @@ public final class Manager extends NamedObj implements Runnable {
         Thread futureRunningThread = new PtolemyThread(this);
         futureRunningThread.start();
     }
-    
+
     /** Terminate any currently executing simulation with extreme prejudice.
-     *  Kill the main simulation thread and call terminate on the toplevel 
-     *  container.   This should cause any actors to free up any resources 
-     *  they have allocated and Directors should kill any threads they have 
-     *  created.   However, a consistant state is not guaranteed.   The 
+     *  Kill the main simulation thread and call terminate on the toplevel
+     *  container.   This should cause any actors to free up any resources
+     *  they have allocated and Directors should kill any threads they have
+     *  created.   However, a consistant state is not guaranteed.   The
      *  topology should probably be recreated before attemping any
      *  further operations.   This is not synchronized because we want it to
      *  happen as soon as possible, no matter what.
@@ -458,7 +458,7 @@ public final class Manager extends NamedObj implements Runnable {
     public void terminate() {
 
         // kill the main thread and wait for it to die.
-        if(_simulationThread != null) { 
+        if(_simulationThread != null) {
             _simulationThread.stop();
             try {
                 _simulationThread.join();
@@ -487,7 +487,7 @@ public final class Manager extends NamedObj implements Runnable {
 
     /** Invoke one iteration.  An iteration consists of
      *  invocations of prefire(), fire(), and postfire(), in that
-     *  order.  Prefire() will be called multiple times until it returns true. 
+     *  order.  Prefire() will be called multiple times until it returns true.
      *  If prefire() return false, then fire() and postfire() are not
      *  invoked.   Fire() will be called a single time.   If postfire()
      *  returns false, then the execution should be terminated.
@@ -505,16 +505,16 @@ public final class Manager extends NamedObj implements Runnable {
         if (toplevel == null) {
             throw new InvalidStateException("Manager "+ getName() +
                     " attempted execution with no topology to execute!");
-        }        
-        
+        }
+
         ExecutionEvent event = new ExecutionEvent(this,_iteration);
         _fireExecutionEvent(ExecutionEventType.ITERATIONSTARTED, event);
-        
+
         // Toplevel mutations will occur here.
-        
+
         try {
             workspace().getReadAccess();
-            
+
 	    try {
 		if (!_typeResolved) {
                     resolveTypes();
@@ -524,14 +524,14 @@ public final class Manager extends NamedObj implements Runnable {
             catch (TypeConflictException e) {
                 fireExecutionError(e);
             }
-            
+
             // Set the appropriate write access, because we're about to
             // go into an interation.
             try {
                 if (!_needWriteAccessDuringIteration) {
                     workspace().setReadOnly(true);
-                } 
-                
+                }
+
                 if (toplevel.prefire()) {
                     toplevel.fire();
                     return toplevel.postfire();
@@ -540,7 +540,7 @@ public final class Manager extends NamedObj implements Runnable {
             } finally {
                 if (!_needWriteAccessDuringIteration) {
                     workspace().setReadOnly(false);
-                } 
+                }
             }
         } finally {
             workspace().doneReading();
@@ -555,18 +555,18 @@ public final class Manager extends NamedObj implements Runnable {
      */
     protected void _makeManagerOf (CompositeActor ca) {
         if (ca != null) {
-            if(ca.getContainer() != null) 
+            if(ca.getContainer() != null)
                 throw new InvalidStateException("Manager's container must " +
                         "be the toplevel CompositeActor!");
             workspace().remove(this);
         }
         _toplevel = ca;
     }
-    
+
     /** Check if write access in the workspace will be needed during an
      *  iteration.
 s     *  An iteration is defined to be one invocation of prefire(), fire(), and
-     *  postfire() methods of the top level composite actor. 
+     *  postfire() methods of the top level composite actor.
      *  <p>
      *  This method recursively call the needWriteAccess() method of all lower
      *  level directors. Intuitively, the workspace will only be made write-
@@ -587,31 +587,31 @@ s     *  An iteration is defined to be one invocation of prefire(), fire(), and
     }
 
     /**
-     * Propagate the execution event to all the execution listeners. 
+     * Propagate the execution event to all the execution listeners.
      */
-    private void _fireExecutionEvent(ExecutionEventType type, 
+    private void _fireExecutionEvent(ExecutionEventType type,
         ExecutionEvent event) {
         Enumeration listeners = _ExecutionListeners.elements();
         while(listeners.hasMoreElements()) {
-            ExecutionListener l = 
+            ExecutionListener l =
                 (ExecutionListener) listeners.nextElement();
-            if(type == ExecutionEventType.EXECUTIONSTARTED) 
+            if(type == ExecutionEventType.EXECUTIONSTARTED)
                 l.executionStarted(event);
-            else if(type == ExecutionEventType.EXECUTIONPAUSED) 
+            else if(type == ExecutionEventType.EXECUTIONPAUSED)
                 l.executionPaused(event);
-            else if(type == ExecutionEventType.EXECUTIONRESUMED) 
+            else if(type == ExecutionEventType.EXECUTIONRESUMED)
                 l.executionResumed(event);
-            else if(type == ExecutionEventType.EXECUTIONERROR) 
+            else if(type == ExecutionEventType.EXECUTIONERROR)
                 l.executionError(event);
-            else if(type == ExecutionEventType.EXECUTIONFINISHED) 
+            else if(type == ExecutionEventType.EXECUTIONFINISHED)
                 l.executionFinished(event);
-            else if(type == ExecutionEventType.EXECUTIONTERMINATED) 
+            else if(type == ExecutionEventType.EXECUTIONTERMINATED)
                 l.executionTerminated(event);
-            else if(type == ExecutionEventType.ITERATIONSTARTED) 
+            else if(type == ExecutionEventType.ITERATIONSTARTED)
                 l.executionIterationStarted(event);
 
         }
-    } 
+    }
 
 
     ///////////////////////////////////////////////////////////////////
@@ -622,19 +622,19 @@ s     *  An iteration is defined to be one invocation of prefire(), fire(), and
 
         private ExecutionEventType(String name) {this.name = name;}
 
-        public static final ExecutionEventType EXECUTIONSTARTED = 
+        public static final ExecutionEventType EXECUTIONSTARTED =
         new ExecutionEventType("Execution Started");
-        public static final ExecutionEventType EXECUTIONPAUSED = 
+        public static final ExecutionEventType EXECUTIONPAUSED =
         new ExecutionEventType("Execution Paused");
-        public static final ExecutionEventType EXECUTIONRESUMED = 
+        public static final ExecutionEventType EXECUTIONRESUMED =
         new ExecutionEventType("Execution Resumed");
-        public static final ExecutionEventType EXECUTIONERROR = 
+        public static final ExecutionEventType EXECUTIONERROR =
         new ExecutionEventType("Execution Error");
-        public static final ExecutionEventType EXECUTIONFINISHED = 
+        public static final ExecutionEventType EXECUTIONFINISHED =
         new ExecutionEventType("Execution Finished");
-        public static final ExecutionEventType EXECUTIONTERMINATED = 
+        public static final ExecutionEventType EXECUTIONTERMINATED =
         new ExecutionEventType("Execution Terminated");
-        public static final ExecutionEventType ITERATIONSTARTED = 
+        public static final ExecutionEventType ITERATIONSTARTED =
         new ExecutionEventType("Iteration Started");
 
         public String toString() {return name;}
@@ -661,7 +661,7 @@ s     *  An iteration is defined to be one invocation of prefire(), fire(), and
     // _simulationThread is the thread that's executing the run() method.
     // It should be non-null whenever the simulation is still running (i.e.
     // the run() method hasn't finish yet) and should be set to null after
-    // simulation ends. 
+    // simulation ends.
     private Thread _simulationThread;
 
     // Listeners for ExecutionEvent.

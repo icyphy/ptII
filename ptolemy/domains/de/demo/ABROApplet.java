@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -42,7 +42,7 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// QueueApplet
-/** 
+/**
 An applet that uses Ptolemy II DE domain.
 
 @author Lukito
@@ -56,7 +56,7 @@ public class ABROApplet extends Applet {
     ////                         public methods                         ////
 
     /** Initialize the applet.
-     */	
+     */
     public void init() {
 
         // Process the background parameter.
@@ -82,7 +82,7 @@ public class ABROApplet extends Applet {
         setLayout(new BorderLayout());
         Plot panel = new Plot();
         add(panel, "Center");
-        
+
         // Adding a control panel in the main panel.
         Panel controlPanel = new Panel();
         add(controlPanel, "South");
@@ -105,31 +105,31 @@ public class ABROApplet extends Applet {
         // Adding current time in the sub panel.
         simulationParam.add(_currentTimeLabel);
         // Done adding average wait time.
-        
+
         // Adding go button in the control panel.
         controlPanel.add(_goButton);
         controlPanel.add(_pauseButton);
         controlPanel.add(_finishButton);
         controlPanel.add(_terminateButton);
-            
-        _goButton.addActionListener(new GoButtonListener());        
+
+        _goButton.addActionListener(new GoButtonListener());
         _pauseButton.addActionListener(new PauseButtonListener());
         _finishButton.addActionListener(new FinishButtonListener());
         _terminateButton.addActionListener(new TerminateButtonListener());
         // Done adding go button
-        
+
 
         // Creating the topology.
         try {
             TypedCompositeActor sys = new TypedCompositeActor();
             sys.setName("Demo");
-        
+
             // Set up the top level composite actor, director and manager
             _localDirector = new DECQDirector("DEDir");
             sys.setDirector(_localDirector);
             _manager = new Manager("Manager");
             _manager.addExecutionListener(new MyExecutionListener());
-            sys.setManager(_manager);            
+            sys.setManager(_manager);
 
             // ---------------------------------
             // Create the actors.
@@ -150,16 +150,16 @@ public class ABROApplet extends Applet {
             Relation r2 = sys.connect(b.output, abro.B);
             Relation r3 = sys.connect(r.output, abro.R);
 
-            
+
             Relation r4 = sys.connect(abro.O, plot.input);
             plot.input.link(r1);
             plot.input.link(r2);
             plot.input.link(r3);
 
-            String[] legends = {"O", "A", "B", "R"}; 
+            String[] legends = {"O", "A", "B", "R"};
             plot.setLegend(legends);
 
-                        
+
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
             ex.printStackTrace();
@@ -168,7 +168,7 @@ public class ABROApplet extends Applet {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
-    
+
     // The thread that runs the simulation.
     private boolean _isSimulationRunning;
 
@@ -186,10 +186,10 @@ public class ABROApplet extends Applet {
 
     private Label _currentTimeLabel;
     private boolean _isSimulationPaused = false;
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
-    
+
 
     //////////////////////////////////////////////////////////////////////////
     ////                       inner classes                              ////
@@ -213,9 +213,9 @@ public class ABROApplet extends Applet {
             super.executionFinished(e);
             _isSimulationRunning = false;
         }
-        
+
     }
-    
+
     private class GoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
 
@@ -225,11 +225,11 @@ public class ABROApplet extends Applet {
             }
 
             try {
-                
+
                 // The simulation is started non-paused (of course :-) )
                 _isSimulationPaused = false;
                 _pauseButton.setLabel(" Pause ");
-                
+
                 // Set the stop time.
                 String timespec = _stopTimeBox.getText();
                 try {
@@ -239,39 +239,39 @@ public class ABROApplet extends Applet {
                     System.err.println("Invalid stop time: " + ex.getMessage());
                     return;
                 }
-                
+
                 _localDirector.setStopTime(_stopTime);
-                
+
                 // Start the CurrentTimeThread.
                 Thread ctt = new CurrentTimeThread();
                 _isSimulationRunning = true;
                 ctt.start();
-                
+
                 _manager.startRun();
-                                
+
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
                 e.printStackTrace();
             }
-                
+
         }
     }
-    
+
     private class PauseButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
-            
+
             if (_isSimulationPaused) {
                 _isSimulationPaused = false;
                 _manager.resume();
                 _pauseButton.setLabel(" Pause ");
-                    
+
             } else {
                 _isSimulationPaused = true;
                 _manager.pause();
                 _pauseButton.setLabel("Resume");
-                
+
             }
-            
+
         }
     }
 

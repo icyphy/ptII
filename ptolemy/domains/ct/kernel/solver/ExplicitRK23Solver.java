@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -37,7 +37,7 @@ import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExplicitRK23Solver
-/** 
+/**
 Description of the class
 @author  Jie Liu
 @version $Id$
@@ -50,7 +50,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
-     */	
+     */
     public ExplicitRK23Solver() {
         super(_name);
     }
@@ -75,7 +75,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
     /** Resolve the state of the integrators at time currentTime
      *  CurrentTime+CurrentStepSize. It gets the state transition
      *  schedule from the scheduler and fire for one iteration.
-     * 
+     *
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      */
@@ -162,7 +162,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
                 integrator.setPotentialState(outvalue);
                 break;
             default:
-                throw new InvalidStateException(this, 
+                throw new InvalidStateException(this,
                     "execution sequence out of range.");
         }
         integrator.output.broadcast(new DoubleToken(outvalue));
@@ -188,7 +188,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
             double h = dir.getCurrentStepSize();
             double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
             integrator.setPotentialDerivative(f);
-            double[] k = integrator.getAuxVariables(); 
+            double[] k = integrator.getAuxVariables();
             double lte = h * Math.abs(k[0]*_E[0] + k[1]*_E[1]
                                 + k[2]*_E[2] + f* _E[3]);
             //k[3] is Local Truncation Error
@@ -196,7 +196,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
             if(DEBUG) {
                 System.out.println("Integrator: "+ integrator.getName() +
                 " local truncation error = " + lte);
-            } 
+            }
             if(lte<errtol) {
                 if(DEBUG) {
                     System.out.println("Integrator: " + integrator.getName() +
@@ -209,16 +209,16 @@ public class ExplicitRK23Solver extends VariableStepSolver{
                     " reports a failiar.");
                 }
                 return false;
-            }    
+            }
         } catch (IllegalActionException e) {
             //should never happen.
-            throw new InternalErrorException(integrator.getName() + 
+            throw new InternalErrorException(integrator.getName() +
             " can't read input." + e.getMessage());
         }
     }
 
 
-    /** Hook method for suggestedNextStepSize() method of 
+    /** Hook method for suggestedNextStepSize() method of
      *  integrators.
      *  @param integrator The integrator of that calls this method.
      *  @return The suggested next step by the given integrator.
@@ -250,7 +250,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
     private static final double[][] _B = {{0.5},
                                                 {0, 0.75},
                                                 {2.0/9.0, 1.0/3.0, 4.0/9.0}};
-    private static final double[] _E = 
+    private static final double[] _E =
             {-5.0/72.0, 1.0/12.0, 1.0/9.0, -1.0/8.0};
     private static final double _order = 3;
 }

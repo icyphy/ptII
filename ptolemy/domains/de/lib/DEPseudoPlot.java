@@ -121,12 +121,12 @@ public class DEPseudoPlot extends DEActor {
         }
 
         int numEmptyChannel = 0;
-        
+
         int width = input.getWidth();
         for (int i = 0; i<width; i++) {
             // check channel i.
             if (input.hasToken(i)) {
-                double curTime =((DECQDirector)getDirector()).getCurrentTime(); 
+                double curTime =((DECQDirector)getDirector()).getCurrentTime();
                 // channel i is not empty, get all the tokens in it.
                 while (input.hasToken(i)) {
                     DoubleToken curToken = null;

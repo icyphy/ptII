@@ -36,7 +36,7 @@ import collections.HashedMap;
 //////////////////////////////////////////////////////////////////////////
 //// SchematicParameter
 /**
-A SchematicParameter encapsulate a parameter that can be set on a 
+A SchematicParameter encapsulate a parameter that can be set on a
 SchematicElement.  Every parameter has three pieces of data, the name,
 type and value.
 <!-- parameter elements will be parsed into class SchematicParameter -->
@@ -75,16 +75,16 @@ public class SchematicParameter extends XMLElement{
     /**
      * Create a SchematicParameter object with the given name, type and value.
      */
-    public SchematicParameter(String name,  
+    public SchematicParameter(String name,
             String type, String value) {
         super("parameter");
         setAttribute("name", name);
         setAttribute("type", type);
         setAttribute("value", value);
     }
-   
 
-    /** 
+
+    /**
      * Return the name of this parameter.
      */
     public String getName() {
@@ -97,15 +97,15 @@ public class SchematicParameter extends XMLElement{
     public String getType() {
         return getAttribute("type");
     }
-       
+
     /**
      * Return the Value of this parameter
-     */     
+     */
     public String getValue() {
         return getAttribute("value");
     }
-      
-    /** 
+
+    /**
      * Set the name of this parameter
      */
     public void setName(String s) {
@@ -114,10 +114,10 @@ public class SchematicParameter extends XMLElement{
 
     /**
      * Set the type of this parameter
-     */      
+     */
     public void setType(String type) {
         setAttribute("type", type);
-    } 
+    }
 
     /**
      * set the value of this parameter

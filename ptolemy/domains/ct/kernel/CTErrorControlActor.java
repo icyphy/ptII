@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -31,22 +31,22 @@ import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTErrorControlActor
-/** 
+/**
 Interface for Error Contol actors. Any actors that would like to control
 the local error of an iteration should implement this interface. Usually
 these actors, when the error is tolerable, will suggest a new step
 size. For those actors that don't want to suggest new step size should
-return twice the current step size. 
+return twice the current step size.
 @author Jie Liu
 @version $Id$
 */
 public interface CTErrorControlActor {
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
     /** Return true if current step is successful.
-     */	
+     */
     public boolean isSuccessful();
 
     /** Return the suggested next step size.For those actors that don't

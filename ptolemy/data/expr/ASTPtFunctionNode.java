@@ -55,15 +55,15 @@ create a new class with the functions defined in it and register
 it with the parser. By default only java.lang.Math and
 ptolemy.data.expr.UtilityFunctions are searched for a given function.
 <p>
-The one exception to the above rule is a recursive call to the parser. 
-The function eval() takes as an argument a StringToken, and parses 
-and evaluates the contained String by re-invoking the parser. The 
-scope for the re-evaluation (i.e. the Parameters it can refer to 
-by name) is the same as the main expression in which this function 
-call is embedded. Note that the parse tree as it is returned from 
-the parser will contain a node representing this function. Then 
-when the tree is evaluated, the call to eval() with both create 
-and evaluate the parse tree for the expression argument to obtain 
+The one exception to the above rule is a recursive call to the parser.
+The function eval() takes as an argument a StringToken, and parses
+and evaluates the contained String by re-invoking the parser. The
+scope for the re-evaluation (i.e. the Parameters it can refer to
+by name) is the same as the main expression in which this function
+call is embedded. Note that the parse tree as it is returned from
+the parser will contain a node representing this function. Then
+when the tree is evaluated, the call to eval() with both create
+and evaluate the parse tree for the expression argument to obtain
 the Token to be stored in this node.
 <p>
 FIXME: add note about function argument types and the return type.
@@ -78,7 +78,7 @@ FIXME: add note about function argument types and the return type.
 */
 public class ASTPtFunctionNode extends ASTPtRootNode {
     protected String funcName;
-       
+
 
     protected ptolemy.data.Token _resolveNode()
             throws IllegalArgumentException {
@@ -97,11 +97,11 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 return tree.evaluateParseTree();
             } catch (IllegalActionException ex) {
                 throw new IllegalArgumentException("ASTPtFunctionNode: " +
-                        "could not parse and evaluate expression " + exp + 
+                        "could not parse and evaluate expression " + exp +
                         ", " + ex.getMessage());
             } catch (IllegalArgumentException ex) {
                 throw new IllegalArgumentException("ASTPtFunctionNode: " +
-                        "could not parse and evaluate expression " + exp + 
+                        "could not parse and evaluate expression " + exp +
                         ", " + ex.getMessage());
             }
         }

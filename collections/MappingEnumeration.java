@@ -1,8 +1,8 @@
 /*
   File: MappingEnumeration.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   22Oct95  dl@cs.oswego.edu   Created.
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -25,14 +25,14 @@ import java.util.NoSuchElementException;
  * MappingEnumerations work as wrappers around other Enumerations.
  * To build one, you need an existing Enumeration (perhaps one
  * from coll.elements(), for some Collection coll), and a Function
- * object (i.e., implementing interface Function). 
+ * object (i.e., implementing interface Function).
  * For example, if you want to process only the parent() fields
  * of java.awt.Component elements held by a collection coll
  * you could write something of the form:
  * <PRE>
  * Enumeration e = coll.elements();
  * Enumeration parents = MappingEnumeration(e, ParentFunction);
- * while (parents.hasMoreElements()) 
+ * while (parents.hasMoreElements())
  *  doSomethingWith((Container)(parents.nextElement()));
  * </PRE>
  * To use this, you will also need to write a little class of the form:
@@ -84,8 +84,8 @@ public class MappingEnumeration implements Enumeration {
  * Implements java.util.Enumeration.hasMoreElements
 **/
 
-  public synchronized boolean hasMoreElements() { 
-    return src_.hasMoreElements(); 
+  public synchronized boolean hasMoreElements() {
+    return src_.hasMoreElements();
   }
 
 /**
@@ -102,5 +102,5 @@ public class MappingEnumeration implements Enumeration {
   }
 
 }
-  
+
 

@@ -1,8 +1,8 @@
 /*
   File: HashedMap.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -12,7 +12,7 @@
   21Oct95  dl                 fixed error in removeAt
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -27,11 +27,11 @@ import java.util.NoSuchElementException;
  * <P> For an introduction to this package see <A HREF="index.html"> Overview </A>.
 **/
 
- 
-public class HashedMap extends    UpdatableMapImpl 
+
+public class HashedMap extends    UpdatableMapImpl
                        implements UpdatableMap, HashTableParams {
 
-// instance variables 
+// instance variables
 
 /**
  * The table. Each entry is a list. Null if no table allocated
@@ -47,13 +47,13 @@ public class HashedMap extends    UpdatableMapImpl
 
 // constructors
 
-/** 
+/**
  * Make a new empty map.
 **/
 
   public HashedMap() { this(null, defaultLoadFactor); }
 
-/** 
+/**
  * Make a new empty map to use given element screener.
 **/
 
@@ -63,7 +63,7 @@ public class HashedMap extends    UpdatableMapImpl
  * Special version of constructor needed by clone()
 **/
 
-  protected HashedMap(Predicate s, float f) { 
+  protected HashedMap(Predicate s, float f) {
     super(s); table_ = null; loadFactor_ = f;
   }
 
@@ -71,14 +71,14 @@ public class HashedMap extends    UpdatableMapImpl
  * Make an independent copy of the table. Elements themselves are not cloned.
 **/
 
-  protected Object clone() throws CloneNotSupportedException { 
+  protected Object clone() throws CloneNotSupportedException {
     HashedMap c =  new HashedMap(screener_, loadFactor_);
     if (count_ != 0) {
       int cap = 2 * (int)((count_ / loadFactor_)) + 1;
       if (cap < defaultInitialBuckets) cap = defaultInitialBuckets;
       c.buckets(cap);
       for (int i = 0; i < table_.length; ++i) {
-        for (LLPair p = table_[i]; p != null; p = (LLPair)(p.next())) 
+        for (LLPair p = table_[i]; p != null; p = (LLPair)(p.next()))
           c.putAt(p.key(), p.element());
       }
     }
@@ -94,8 +94,8 @@ public class HashedMap extends    UpdatableMapImpl
  * @see collections.HashTableParams#buckets.
 **/
 
-  public synchronized int buckets() { 
-    return (table_ == null)? 0 : table_.length; 
+  public synchronized int buckets() {
+    return (table_ == null)? 0 : table_.length;
   }
 
 /**
@@ -104,13 +104,13 @@ public class HashedMap extends    UpdatableMapImpl
  * @see collections.HashTableParams#buckets.
 **/
 
-  public synchronized void buckets(int newCap) 
+  public synchronized void buckets(int newCap)
   throws IllegalArgumentException {
-    if (newCap == buckets()) 
+    if (newCap == buckets())
       return;
-    else if (newCap >= 1) 
+    else if (newCap >= 1)
       resize(newCap);
-    else 
+    else
       throw new IllegalArgumentException("Impossible Hash table size:" + newCap);
 
   }
@@ -121,7 +121,7 @@ public class HashedMap extends    UpdatableMapImpl
  * @see collections.HashTableParams#thresholdLoadfactor
 **/
 
-  public synchronized float thresholdLoadFactor() { 
+  public synchronized float thresholdLoadFactor() {
     return loadFactor_;
   }
 
@@ -180,8 +180,8 @@ public class HashedMap extends    UpdatableMapImpl
  * Time complexity: O(1).
  * @see collections.Collection#elements
 **/
-  public synchronized CollectionEnumeration elements() { 
-    return new HTPairEnumeration(this, table_, false); 
+  public synchronized CollectionEnumeration elements() {
+    return new HTPairEnumeration(this, table_, false);
   }
 
 
@@ -199,7 +199,7 @@ public class HashedMap extends    UpdatableMapImpl
     if (p != null) return p.findKey(key) != null;
     else return false;
   }
-  
+
 /**
  * Implements collections.Map.includesAt
  * Time complexity: O(1) average; O(n) worst.
@@ -217,8 +217,8 @@ public class HashedMap extends    UpdatableMapImpl
  * Time complexity: O(1).
  * @see collections.Map#keys
 **/
-  public synchronized CollectionEnumeration keys() { 
-    return new HTPairEnumeration(this, table_, true); 
+  public synchronized CollectionEnumeration keys() {
+    return new HTPairEnumeration(this, table_, true);
   }
 
 /**
@@ -226,7 +226,7 @@ public class HashedMap extends    UpdatableMapImpl
  * Time complexity: O(1) average; O(n) worst.
  * @see collections.Map#at
 **/
-  public synchronized Object at(Object key) 
+  public synchronized Object at(Object key)
   throws  NoSuchElementException {
     checkKey(key);
     if (count_ != 0) {
@@ -255,7 +255,7 @@ public class HashedMap extends    UpdatableMapImpl
     }
     return null;
   }
-  
+
 
 // UpdatableCollection methods
 
@@ -264,7 +264,7 @@ public class HashedMap extends    UpdatableMapImpl
  * Time complexity: O(1).
  * @see collections.UpdatableCollection#clear
 **/
-  public synchronized void clear() { 
+  public synchronized void clear() {
     setCount(0);
     table_ = null;
   }
@@ -294,7 +294,7 @@ public class HashedMap extends    UpdatableMapImpl
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#replaceOneOf
 **/
-  public synchronized void replaceOneOf(Object oldElement, Object newElement) 
+  public synchronized void replaceOneOf(Object oldElement, Object newElement)
   throws IllegalElementException {
     replace_(oldElement, newElement, false);
   }
@@ -304,7 +304,7 @@ public class HashedMap extends    UpdatableMapImpl
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#replaceAllOf
 **/
-  public synchronized void replaceAllOf(Object oldElement, Object newElement) 
+  public synchronized void replaceAllOf(Object oldElement, Object newElement)
   throws IllegalElementException {
     replace_(oldElement, newElement, true);
   }
@@ -314,7 +314,7 @@ public class HashedMap extends    UpdatableMapImpl
  * Time complexity: O(number of buckets).
  * @see collections.UpdatableCollection#take
 **/
-  public synchronized Object take() 
+  public synchronized Object take()
   throws NoSuchElementException {
     if (count_ != 0) {
       for (int i = 0; i < table_.length; ++i) {
@@ -397,9 +397,9 @@ public class HashedMap extends    UpdatableMapImpl
  * Time complexity: O(1) average; O(n) worst.
  * @see collections.UpdatableMap#replaceElement
 **/
-  public synchronized void replaceElement(Object key, Object oldElement, 
-                                          Object newElement)  
-    throws IllegalElementException { 
+  public synchronized void replaceElement(Object key, Object oldElement,
+                                          Object newElement)
+    throws IllegalElementException {
     if (key == null || oldElement == null || count_ == 0) return;
     LLPair p = table_[hashOf(key)];
     if (p != null) {
@@ -446,7 +446,7 @@ public class HashedMap extends    UpdatableMapImpl
 
   protected void resize(int newCap) {
     LLPair newtab[] = new LLPair[newCap];
-    
+
     if (table_ != null) {
       for (int i = 0; i < table_.length; ++i) {
         LLPair p = table_[i];
@@ -488,7 +488,7 @@ public class HashedMap extends    UpdatableMapImpl
     }
   }
 
-  private void replace_(Object oldElement, Object newElement, boolean allOccurrences) 
+  private void replace_(Object oldElement, Object newElement, boolean allOccurrences)
     throws IllegalElementException {
     if (count_ == 0 || oldElement == null || oldElement.equals(newElement))
       return;
@@ -517,7 +517,7 @@ public class HashedMap extends    UpdatableMapImpl
  * Implements collections.ImplementationCheckable.checkImplementation.
  * @see collections.ImplementationCheckable#checkImplementation
 **/
-  public synchronized void checkImplementation() 
+  public synchronized void checkImplementation()
   throws ImplementationError {
     super.checkImplementation();
 
@@ -540,10 +540,10 @@ public class HashedMap extends    UpdatableMapImpl
       }
     }
     assert(c == count_);
-   
+
 
   }
 
-   
+
 }
 

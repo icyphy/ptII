@@ -44,10 +44,10 @@ import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
 //// Customer
-/** 
-Customer arriving in M/M/1 demo. Customers arrive in a Poisson 
+/**
+Customer arriving in M/M/1 demo. Customers arrive in a Poisson
 fashion, i.e the inter-arrival times are exponentially distributed.
-It is parameterized by the Parameter "arrivalRate". The default rate 
+It is parameterized by the Parameter "arrivalRate". The default rate
 of arrival is 1.
 <p>
 @author Neil Smyth
@@ -61,13 +61,13 @@ public class Customer extends CSPActor {
         _rate = new Parameter(this, "arrivalRate", (new DoubleToken(1)) );
         output = new IOPort(this, "output", false, true);
     }
-    
-    public Customer(CompositeActor cont, String name) 
+
+    public Customer(CompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          this(cont, name, 1);
     }
 
-    public Customer(CompositeActor cont, String name, double rate) 
+    public Customer(CompositeActor cont, String name, double rate)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
          _rate = new Parameter(this, "arrivalRate", (new DoubleToken(rate)) );
@@ -76,7 +76,7 @@ public class Customer extends CSPActor {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
-            
+
     public void fire() {
         try {
             Random rand = new Random();
@@ -94,14 +94,14 @@ public class Customer extends CSPActor {
                         t.toString());
                 count++;
             }
-            System.out.println("Customer(" + getName() + 
+            System.out.println("Customer(" + getName() +
                     "):finished normally.");
             finish();
             return;
         } catch (IllegalActionException ex) {
             System.out.println("Customer: illegalActionException, exiting");
         } finally {
-            
+
             /*try {
                 setContainer(null);
             } catch (NameDuplicationException ex) {
@@ -115,15 +115,15 @@ public class Customer extends CSPActor {
                         }*/
         }
     }
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
-    
+
     public IOPort output;
 
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
- 
+
     private Parameter _rate;
 }

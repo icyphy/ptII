@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Green (yourname@eecs.berkeley.edu)
@@ -35,7 +35,7 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// TotallyOrderedSet
-/** 
+/**
 Totally ordered set, implemented using LinkedList. No repeated elements (
 elements that the comparator returns 0).
 @author  Jie Liu
@@ -46,7 +46,7 @@ public class TotallyOrderedSet {
      *  final field.
      * @see Collections.Comparator
      * @param comparator The Comparator to compare elements.
-     */	
+     */
     public TotallyOrderedSet(Comparator comparator) {
         _comparator = comparator;
         _set = new LinkedList();
@@ -70,11 +70,11 @@ public class TotallyOrderedSet {
     /** Return true if the given element is contained in this set.
      *  This is done by sequentially compare the given elements with
      *  all the elements in this set, util the one that GREATER_THEN
-     *  the given one is reached. If any comparison returns 0, then 
+     *  the given one is reached. If any comparison returns 0, then
      *  return true; else return false. If the type of given element
-     *  is uncomparable by the comparator, then a ClassCastException 
+     *  is uncomparable by the comparator, then a ClassCastException
      *  will be thrown.
-     *  @return True If the elements is contained according to the 
+     *  @return True If the elements is contained according to the
      *        comparator.
      */
     public boolean contains(Object obj) {
@@ -107,18 +107,18 @@ public class TotallyOrderedSet {
     public Object first() {
         return _set.first();
     }
-    
+
     /** Return the index of the given object. Return -1 if the object
      *  is not in the set.
      */
     public int indexOf(Object obj) {
         return _set.firstIndexOf(obj);
     }
-            
+
     /** Insert the given element, keeping the set sorted. If the set
-     *  <i>contains</i> the given element, then do nothing. 
+     *  <i>contains</i> the given element, then do nothing.
      *  If the type of given element
-     *  is uncomparable by the comparator, then a ClassCastException 
+     *  is uncomparable by the comparator, then a ClassCastException
      *  will be thrown.
      *  @param obj The element to be inserted.
      */
@@ -154,7 +154,7 @@ public class TotallyOrderedSet {
      */
     public void removeAt(int index) {
         _set.removeAt(index);
-    }  
+    }
 
     /** Remove the first element.
      *  @exception NoSuchElementException If the set is empty.
@@ -162,7 +162,7 @@ public class TotallyOrderedSet {
     public void removeFirst() {
         _set.removeFirst();
     }
-         
+
     /** Return the size of the set.
      *  @return The size of the set.
      */
@@ -170,8 +170,8 @@ public class TotallyOrderedSet {
         return _set.size();
     }
 
-    
-    /** Return the firstelement, ie. the <i>"smallest"</i> element and 
+
+    /** Return the firstelement, ie. the <i>"smallest"</i> element and
      *  remove it from the set.
      *  @return The smallest element.
      */
@@ -179,7 +179,7 @@ public class TotallyOrderedSet {
         Object temp = _set.first();
         _set.removeFirst();
         return temp;
-    }        
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -187,6 +187,6 @@ public class TotallyOrderedSet {
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
     private final Comparator _comparator;
-    
+
     private LinkedList _set;
 }

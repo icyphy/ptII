@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating red (liuj@eecs.berkeley.edu)
@@ -39,7 +39,7 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTSingleSolverDirector
-/** 
+/**
 A CT director that does not change its ODE solver.
 @author Jie Liu
 @version $Id$
@@ -50,7 +50,7 @@ public class CTSingleSolverDirector extends CTDirector {
     /** Construct a CTDirector with no name and no Container.
      *  The default startTime and stopTime are all zeros. There's no
      *  scheduler associated.
-     */	
+     */
     public CTSingleSolverDirector () {
         super();
         this._initParameters();
@@ -90,7 +90,7 @@ public class CTSingleSolverDirector extends CTDirector {
     ////                         public methods                         ////
 
 
-    /** This does the initialization for the entire subsystem. This 
+    /** This does the initialization for the entire subsystem. This
      *  is called exactly once at the start of the entire execution.
      *  It set the current time to the start time and the current step
      *  size to the initial step size.
@@ -159,7 +159,7 @@ public class CTSingleSolverDirector extends CTDirector {
     /** Perform mutation and process pause/stop request.
      *  If the CTSubSystem is requested a stop (if CTSubSystem.isPaused()
      *  returns true) then pause the thread.
-     *  The pause can be wake up by notify(), at that time if the 
+     *  The pause can be wake up by notify(), at that time if the
      *  CTSubSystem is not paused (isPaused() returns false) then
      *  resume the simulation. So the simulation can only be
      *  paused at the prefire stage.
@@ -205,7 +205,7 @@ public class CTSingleSolverDirector extends CTDirector {
             produceOutput();
             return;
         }
-        updateStates(); // call postfire on all actors 
+        updateStates(); // call postfire on all actors
         //Refine step size
         setCurrentStepSize(getSuggestedNextStepSize());
         double bp;
@@ -215,7 +215,7 @@ public class CTSingleSolverDirector extends CTDirector {
             bp = ((Double)breakPoints.first()).doubleValue();
             if(bp <= getCurrentTime()) {
                 // break point now!
-                breakPoints.removeFirst();   
+                breakPoints.removeFirst();
             }
             //adjust step size;
             if(!breakPoints.isEmpty()) {
@@ -237,14 +237,14 @@ public class CTSingleSolverDirector extends CTDirector {
             ready = ready && a.prefire();
         }
         if(ready) {
-            ODESolver solver = getCurrentODESolver();  
+            ODESolver solver = getCurrentODESolver();
             solver.iterate();
             produceOutput();
         }
     }
 
 
-    /** Test if the current time is the stop time. 
+    /** Test if the current time is the stop time.
      *  If so, return false ( for stop further simulaiton).
      *  @return false If the simulation time expires.
      *  @exception IllegalActionException If there is no ODE solver, or
@@ -255,7 +255,7 @@ public class CTSingleSolverDirector extends CTDirector {
             fireAfterDelay(null, getStopTime()-getCurrentTime());
         }
         if(Math.abs(getCurrentTime() - getStopTime()) < getTimeAccuracy()) {
-            updateStates(); // call postfire on all actors 
+            updateStates(); // call postfire on all actors
             return false;
         }
         return true;
@@ -272,7 +272,7 @@ public class CTSingleSolverDirector extends CTDirector {
         }
         super.wrapup();
     }
-                
+
 
     /** produce outputs
      *  @exception IllegalActionException If the actor on the output
@@ -303,7 +303,7 @@ public class CTSingleSolverDirector extends CTDirector {
             }
             nextoutputactor.fire();
         }
-    }  
+    }
 
     /** update States
      */
@@ -315,7 +315,7 @@ public class CTSingleSolverDirector extends CTDirector {
             nextactor.postfire();
         }
     }
-    
+
     /** Update paramters.
      */
     public void updateParameter(Parameter param)
@@ -331,7 +331,7 @@ public class CTSingleSolverDirector extends CTDirector {
             super.updateParameter(param);
         }
     }
-                
+
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
@@ -346,7 +346,7 @@ public class CTSingleSolverDirector extends CTDirector {
         } catch (NameDuplicationException ex) {
             throw new InvalidStateException(this,"Parameter name duplication.");
         }
-        
+
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -361,6 +361,6 @@ public class CTSingleSolverDirector extends CTDirector {
     private ODESolver _defaultSolver = null;
 
     //indicate the first round of execution.
-    
+
     private boolean _first;
 }

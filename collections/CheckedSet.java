@@ -1,8 +1,8 @@
 /*
   File: CheckedSet.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -12,7 +12,7 @@
   19Oct95  dl                 More misc clean-up.
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -37,7 +37,7 @@ public class CheckedSet extends CheckedCollection implements UpdatableSet  {
 /**
  * Make a Checked clone of underlying collection
 **/
-  protected Object clone() throws CloneNotSupportedException { 
+  protected Object clone() throws CloneNotSupportedException {
     return new CheckedSet((UpdatableSet)(thys.duplicate()));
   }
 
@@ -79,7 +79,7 @@ public class CheckedSet extends CheckedCollection implements UpdatableSet  {
  * Checks collections.Set.including
  * @see collections.Set#including
 **/
-  public synchronized  Set including(Object element) 
+  public synchronized  Set including(Object element)
   throws IllegalElementException {
     preCheck();
     try {
@@ -103,7 +103,7 @@ public class CheckedSet extends CheckedCollection implements UpdatableSet  {
  * @see collections.UpdatableSet#includeElements
 **/
 
-  public synchronized  void includeElements(Enumeration e) 
+  public synchronized  void includeElements(Enumeration e)
    throws IllegalElementException, CorruptedEnumerationException {
     preCheck();
     thys().includeElements(e);

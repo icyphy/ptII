@@ -30,10 +30,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.sdf.kernel;
 
-/** I wrote this class in an effort to provide a nice way to deal with 
+/** I wrote this class in an effort to provide a nice way to deal with
     inserting debugging print statements into code.   It is often a nicer
-    way to trace code than by stepping through with jdb and this mechanism 
-    allows the more useful of these trace statements to remain in code with 
+    way to trace code than by stepping through with jdb and this mechanism
+    allows the more useful of these trace statements to remain in code with
     little overhead.
 
 @author Steve Neuendorffer

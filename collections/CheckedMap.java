@@ -1,8 +1,8 @@
 /*
   File: CheckedMap.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Misc clean-up
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -39,7 +39,7 @@ public class CheckedMap extends CheckedCollection implements UpdatableMap {
 /**
  * Make a Checked clone of underlying collection
 **/
-  protected Object clone() throws CloneNotSupportedException  { 
+  protected Object clone() throws CloneNotSupportedException  {
     return new CheckedMap((UpdatableMap)(thys.duplicate()));
   }
 
@@ -60,7 +60,7 @@ public class CheckedMap extends CheckedCollection implements UpdatableMap {
  * @see collections.Map#canIncludeKey
 **/
   public boolean canIncludeKey(Object key) {
-    preCheck(); 
+    preCheck();
     boolean result = thys().canIncludeKey(key);
     assert(!(result == true && key == null));
     assert(thys.sameStructure(prev));
@@ -74,7 +74,7 @@ public class CheckedMap extends CheckedCollection implements UpdatableMap {
  * @see collections.Map#includesKey
 **/
   public synchronized boolean     includesKey(Object key) {
-    preCheck(); 
+    preCheck();
     boolean result = thys().includesKey(key);
     assert(!(result == true && !thys().canInclude(key)));
     assert(thys.sameStructure(prev));
@@ -87,7 +87,7 @@ public class CheckedMap extends CheckedCollection implements UpdatableMap {
  * @see collections.Map#includesAt
 **/
   public synchronized boolean     includesAt(Object key, Object value) {
-    preCheck(); 
+    preCheck();
     boolean result = thys().includesAt(key, value);
     assert(!(result == true && (!thys().includesKey(key) || !thys().includes(value))));
     assert(thys.sameStructure(prev));
@@ -116,7 +116,7 @@ public class CheckedMap extends CheckedCollection implements UpdatableMap {
       assert(thys().includesAt(k, v));
     }
 
-    postCheck(); 
+    postCheck();
     // return a new one
     return thys().keys();
   }
@@ -126,9 +126,9 @@ public class CheckedMap extends CheckedCollection implements UpdatableMap {
  * Checks collections.Map.at according to its specification
  * @see collections.Map#at
 **/
-  public synchronized Object      at(Object key) 
+  public synchronized Object      at(Object key)
   throws  NoSuchElementException {
-    preCheck(); 
+    preCheck();
     try {
       Object result = thys().at(key);
       assert(thys().includesAt(key, result));
@@ -150,7 +150,7 @@ public class CheckedMap extends CheckedCollection implements UpdatableMap {
  * @see collections.Map#aKeyOf
 **/
   public synchronized Object aKeyOf(Object element) {
-    preCheck(); 
+    preCheck();
     Object result = thys().aKeyOf(element);
     assert((result == null && !thys().includes(element)) ||
       (thys().at(result).equals(element)));
@@ -165,7 +165,7 @@ public class CheckedMap extends CheckedCollection implements UpdatableMap {
  * Checks collections.UpdatableMap.putAt according to its specification
  * @see collections.UpdatableMap#putAt
 **/
-  public synchronized void putAt(Object key, Object element) 
+  public synchronized void putAt(Object key, Object element)
   throws IllegalElementException {
     preCheck();
     try {
@@ -185,7 +185,7 @@ public class CheckedMap extends CheckedCollection implements UpdatableMap {
  * Checks collections.Map.puttingAt.
  * @see collections.Map#puttingAt
 **/
-  public synchronized  Map  puttingAt(Object key, Object element) 
+  public synchronized  Map  puttingAt(Object key, Object element)
   throws IllegalElementException {
     preCheck();
     try {
@@ -236,8 +236,8 @@ public class CheckedMap extends CheckedCollection implements UpdatableMap {
  * Checks collections.UpdatableMap.replaceElement according to its specification
  * @see collections.UpdatableMap#replaceElement
 **/
-  public synchronized void replaceElement(Object key, Object oldElement, 
-                                          Object newElement) 
+  public synchronized void replaceElement(Object key, Object oldElement,
+                                          Object newElement)
   throws IllegalElementException {
     preCheck();
     try {
@@ -245,7 +245,7 @@ public class CheckedMap extends CheckedCollection implements UpdatableMap {
       assert((!thys().includesAt(key, oldElement) ||
          thys().includesAt(key, newElement)));
       assert(thys().size() == prev().size());
-      assert(!(thys().version() == prevVersion && 
+      assert(!(thys().version() == prevVersion &&
           prev().includesAt(key, oldElement)));
       CollectionEnumeration prevKeys = prev().keys();
       while (prevKeys.hasMoreElements()) {

@@ -310,15 +310,15 @@ public class AtomicActor extends ComponentEntity implements Actor {
         super.setContainer(container);
     }
 
-    /** By default, an AtomicActor does nothing incredible in its 
-     *  terminate, it just wraps up.  
+    /** By default, an AtomicActor does nothing incredible in its
+     *  terminate, it just wraps up.
      */
     public void terminate() {
         try {
             wrapup();
         }
         catch (IllegalActionException e) {
-            // Do not pass go, do not collect $200.  Most importantly, 
+            // Do not pass go, do not collect $200.  Most importantly,
             // just ignore everything and terminate.
         }
     }

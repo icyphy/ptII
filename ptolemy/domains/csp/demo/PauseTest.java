@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -34,10 +34,10 @@ import ptolemy.domains.csp.lib.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PauseTest
-/** 
+/**
 Source - Buffer - Sink
 
-Used to check that pausing works by pausing and resuming the 
+Used to check that pausing works by pausing and resuming the
 simulation several times during one run.
 <p>
 @author Neil Smyth
@@ -52,7 +52,7 @@ public class PauseTest {
      * @param parameter-name description
      * @return description
      * @exception full-classname description
-     */	
+     */
     public PauseTest() {}
 
     ///////////////////////////////////////////////////////////////////
@@ -64,7 +64,7 @@ public class PauseTest {
      * @param parameter-name description
      * @return description
      * @exception full-classname description
-     */	
+     */
     public static void main(String[] args) {
         try {
             CompositeActor univ = new CompositeActor();
@@ -77,7 +77,7 @@ public class PauseTest {
 	    CSPPausingSource source = new CSPPausingSource(univ, "Source");
 	    CSPBuffer middle = new CSPBuffer(univ, "Buffer", 5);
             CSPSink sink = new CSPSink(univ, "Sink");
-            
+
             IOPort out1 = source.output;
 	    IOPort in1 = middle.input;
 	    IOPort out2 = middle.output;

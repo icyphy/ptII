@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -55,7 +55,7 @@ public class TestConstant implements InequalityTerm {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the information of this term. The information is a 
+    /** Return the information of this term. The information is a
      *  String of the form: <name>(constant)_<value>
      *  @return A String
      */
@@ -83,7 +83,7 @@ public class TestConstant implements InequalityTerm {
     public boolean isSettable() {
 	return false;
     }
- 
+
     /** Set the name of this constant. If the specified String is null,
      *  Set the name to an empty String.
      *  @param A String

@@ -1,8 +1,8 @@
 /*
   File: SortableCollection.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   24Sep95  dl@cs.oswego.edu   Create from collections.java  working file
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
  * After sorting, but in the absence of other mutative operations,
  * Sortable Collections guarantee that enumerations
  * appear in sorted order;  that is if a and b are two elements
- * obtained in succession from nextElement(), that 
+ * obtained in succession from nextElement(), that
  * <PRE>
  * comparator().compare(a, b) <= 0.
  * </PRE>
@@ -43,6 +43,6 @@ public interface SortableCollection extends UpdatableCollection {
 /**
  * Sort the current elements with respect to cmp.compare.
 **/
- 
+
   public void sort(Comparator  cmp);
 };

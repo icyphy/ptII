@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -34,8 +34,8 @@ import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPPrimeExample
-/** 
-This creates an example implementing Sieve of Eratosthenes. It has 
+/**
+This creates an example implementing Sieve of Eratosthenes. It has
 no hierarchy.
 <p>
 @author Neil Smyth, adapted from a file by Mudit Goel
@@ -43,8 +43,8 @@ no hierarchy.
 */
 public class CSPPrimeExample {
 
-    public static void main(String args[]) throws 
-            IllegalStateException, IllegalActionException, 
+    public static void main(String args[]) throws
+            IllegalStateException, IllegalActionException,
             NameDuplicationException {
         CompositeActor univ = new CompositeActor();
         univ.setName("Prime_example");
@@ -66,7 +66,7 @@ public class CSPPrimeExample {
         //portin = (IOPort)sink.getInputPort();
 	//univ.connect(portin, portout, "plot_queue");
 
-        
+
         //System.out.println(univ.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
 
         manager.run();

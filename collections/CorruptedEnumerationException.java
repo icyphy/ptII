@@ -1,8 +1,8 @@
 /*
   File: CorruptedEnumerationException.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Changed protection statuses
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -50,8 +50,8 @@ public class CorruptedEnumerationException extends NoSuchElementException {
 
  public CorruptedEnumerationException() { super(); }
 
- public CorruptedEnumerationException(int oldv, int newv, Collection coll, String msg) { 
-   super(msg); 
+ public CorruptedEnumerationException(int oldv, int newv, Collection coll, String msg) {
+   super(msg);
    oldVersion = oldv;
    newVersion = newv;
    collection = coll;

@@ -1,8 +1,8 @@
 /*
   File: UpdatableSet.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   22Oct95  dl                 add addElements
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
 /**
  *
  * UpdatableSets support an include operations to add
- * an element only if it not present. 
+ * an element only if it not present.
  * @author Doug Lea
  * @version 0.93
  *
@@ -34,7 +34,7 @@ public interface UpdatableSet extends UpdatableCollection, Set  {
  * Include the indicated element in the collection.
  * No effect if the element is already present.
  * @param element the element to add
- * @return condition: 
+ * @return condition:
  * <PRE>
  * includes(element) &&
  * no spurious effects &&
@@ -59,7 +59,7 @@ public interface UpdatableSet extends UpdatableCollection, Set  {
 **/
 
 
-  public void includeElements(Enumeration e) 
+  public void includeElements(Enumeration e)
    throws IllegalElementException, CorruptedEnumerationException;
 
 

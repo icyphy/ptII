@@ -41,7 +41,7 @@ public class SDFRamp extends SDFAtomicActor {
     private int value;
     public IOPort outputport;
 
-    public SDFRamp(CompositeActor container, String name) 
+    public SDFRamp(CompositeActor container, String name)
             throws IllegalActionException,
             NameDuplicationException {
         super(container,name);
@@ -60,11 +60,11 @@ public class SDFRamp extends SDFAtomicActor {
     public void initialize() {
             value=0;
     }
-    
+
     public boolean prefire() throws IllegalActionException {
         return true;
     }
-        
+
 
     public void fire() throws IllegalActionException {
     System.out.println("Running Ramp");

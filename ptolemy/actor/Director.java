@@ -41,12 +41,12 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// Director
 /**
-A Director governs the execution within a CompositeActor.  A composite actor 
-that contains a director is considered opaque, and the execution model 
+A Director governs the execution within a CompositeActor.  A composite actor
+that contains a director is considered opaque, and the execution model
 within the composite actor is determined by the contained Director.   This
 director is called the local director of a composite actor.   A composite
 actor is also aware of the director of its container, which is referred to
-as its executive director.  
+as its executive director.
 <p>
 A top-level composite actor is generally associated with a Manager as well as
 a local director.  The Manager has overall responsibility for
@@ -66,7 +66,7 @@ director or executive director).
 A director implements the action methods (initialize(), prefire(), fire(),
 postfire(), and wrapup()).  In this base class, default implementations
 are provided that may or may not be useful in specific domains.   In general,
-these methods will perform domain-dependant actions, and then call the 
+these methods will perform domain-dependant actions, and then call the
 respective methods in all contained actors.
 <p>
 A director also provides services for cleanly handling mutations of the
@@ -96,8 +96,8 @@ An initialize() method may queue further mutations with the director.
 The director also provides methods to optimize the iteration portion of a
 simulation. This is done by letting the workspace to be write-protected during
 an iteration. In this base class, the default implementation prevent the
-workspace to be write-protected. Derived classes (e.g. domain specific 
-directors) should override the _writeAccessPreference() method to let 
+workspace to be write-protected. Derived classes (e.g. domain specific
+directors) should override the _writeAccessPreference() method to let
 the workspace to be write-protected. (Note that the workspace might still be
 not-write-protected, it all depends on other directors in the simulation).
 
@@ -191,7 +191,7 @@ public class Director extends NamedObj implements Executable {
      *   container or one of the deeply contained actors throws it.
      */
     public void fire() throws IllegalActionException {
-        // Somewhere in here, constrained mutations should 
+        // Somewhere in here, constrained mutations should
         // probably be allowed to occur.
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
@@ -231,7 +231,7 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** Create receivers and then invoke the initialize()
-     *  methods of all its deeply contained actors.  
+     *  methods of all its deeply contained actors.
      *  <p>
      *  This method should be invoked once per execution, before any
      *  iteration. It may produce output data.
@@ -257,12 +257,12 @@ public class Director extends NamedObj implements Executable {
      *  ever need write access on the workspace. This method first check
      *  the 'personal' preference of this director, if this director wants
      *  write access then just return true. Otherwise, this method continue by
-     *  recursively call ones in the lower level directors. If any of those 
-     *  lower level directors disagree to have the workspace write-protected, 
+     *  recursively call ones in the lower level directors. If any of those
+     *  lower level directors disagree to have the workspace write-protected,
      *  then return true.
      *  @return true If this director disagree to have the workspace
      *  write protected, false otherwise.
-     *   
+     *
      */
     public final boolean needWriteAccess() {
         if (_writeAccessPreference()) {
@@ -274,17 +274,17 @@ public class Director extends NamedObj implements Executable {
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
                 // find out which of those actors has a local director.
-                if (actor instanceof CompositeActor && 
+                if (actor instanceof CompositeActor &&
                         ((CompositeActor)actor).isOpaque()) {
                     CompositeActor ca = (CompositeActor) actor;
                     // ca.getDirector() is guaranteed to return a local
                     // director, not the executive director.
                     if (ca.getDirector().needWriteAccess()) {
-                        // If any of the directors need a write access, then 
+                        // If any of the directors need a write access, then
                         // everyone has to respect it.
                         return true;
                     }
-                    
+
                 }
             }
             // Up to this point, all lower level directors have been queried
@@ -292,9 +292,9 @@ public class Director extends NamedObj implements Executable {
             // Therefore, return false.
             return false;
         } else {
-            System.out.println("Is this a bug, can a director not have a " + 
+            System.out.println("Is this a bug, can a director not have a " +
                     "container.");
-            
+
         }
         // This is hack, since otherwise the compiler will barf.
         // I choose to return the safe default case.
@@ -312,31 +312,31 @@ public class Director extends NamedObj implements Executable {
     /** Return false.   The default director will only get fired once, and will
      *  terminate execution afterwards.   Domain Directors will probably want
      *  to override this method.   Note that this is called by the container of
-     *  this Director to see if the Director wishes to execute anymore, and 
+     *  this Director to see if the Director wishes to execute anymore, and
      *  should *NOT*, in general, just take the logical AND of calling
      *  postfire on all the contained actors.
      *
      *  @return True if the Director wishes to be scheduled for another
      *  iteration
-     *  @exception IllegalActionException *Deprecate* If the postfire() 
-     *  method of the container or one of the deeply contained actors 
+     *  @exception IllegalActionException *Deprecate* If the postfire()
+     *  method of the container or one of the deeply contained actors
      *  throws it.
      */
     public boolean postfire() throws IllegalActionException {
         return false;
     }
 
-    /** return True, indicating that the Director is ready to fire.   
+    /** return True, indicating that the Director is ready to fire.
      *  Domain Directors will probably want
      *  to override this method.   Note that this is called by the container of
-     *  this Director to see if the Director is ready to execute, and 
+     *  this Director to see if the Director is ready to execute, and
      *  should *NOT*, in general, just take the logical AND of calling
      *  prefire on all the contained actors.
      *
      *  @return True if the Director wishes to be scheduled for another
      *  iteration
-     *  @exception IllegalActionException *Deprecate* If the postfire() 
-     *  method of the container or one of the deeply contained actors 
+     *  @exception IllegalActionException *Deprecate* If the postfire()
+     *  method of the container or one of the deeply contained actors
      *  throws it.
      */
     public boolean prefire() throws IllegalActionException {
@@ -365,7 +365,7 @@ public class Director extends NamedObj implements Executable {
      *  current time.
      */
     // FIXME: complete this.
-    public void fireAfterDelay(Actor actor, double delay) 
+    public void fireAfterDelay(Actor actor, double delay)
             throws IllegalActionException {
         // do nothing.
     }
@@ -381,21 +381,21 @@ public class Director extends NamedObj implements Executable {
 
     /** Set the current time.
      *  Do nothing in this base class implementation.
-     *  @exception IllegalActionException If time cannot be changed 
-     *   due to the state of the simulation. Only thrown in derived 
+     *  @exception IllegalActionException If time cannot be changed
+     *   due to the state of the simulation. Only thrown in derived
      *   classes.
      *  @param newTime The new current simulation time.
-     *  
+     *
      */
     // FIXME: complete this.
     public void setCurrentTime(double newTime) throws IllegalActionException {
-        
+
     }
 
 
-    /** Recursively terminate all of our actors.   Domains may need to 
+    /** Recursively terminate all of our actors.   Domains may need to
      *  override this to properly deal with any threads they've created.
-     */   
+     */
     public void terminate() {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
@@ -406,7 +406,7 @@ public class Director extends NamedObj implements Executable {
             }
         }
     }
-        
+
     /** Transfer data from an input port of the container to the
      *  ports it is connected to on the inside.  The port argument must
      *  be an opaque input port.  If any channel of the input port
@@ -475,8 +475,8 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
-    /** Invoke the wrapup() method of all the actors contained in the 
-     *  Director's container.  
+    /** Invoke the wrapup() method of all the actors contained in the
+     *  Director's container.
      *  <p>
      *  This method should be invoked once per execution.  None of the other
      *  action methods should be invoked after it in the execution.
@@ -588,10 +588,10 @@ public class Director extends NamedObj implements Executable {
 
         Enumeration enum = _queuedTopologyRequests.elements();
         while (enum.hasMoreElements()) {
-            TopologyChangeRequest r = 
+            TopologyChangeRequest r =
                 (TopologyChangeRequest)enum.nextElement();
 
-            // Change the topology. This might throw a 
+            // Change the topology. This might throw a
             // TopologyChangeFailedException
             try {
                 r.constructEventQueue();
@@ -631,8 +631,8 @@ public class Director extends NamedObj implements Executable {
      *  the need for a write access.
      *
      *  @return True if this director need write access, false otherwise.
-     */ 
-    protected boolean _writeAccessPreference() { 
+     */
+    protected boolean _writeAccessPreference() {
         return true;
     }
 
@@ -646,7 +646,7 @@ public class Director extends NamedObj implements Executable {
     // Support for mutations.
     private LinkedList _queuedTopologyRequests = null;
     private TopologyMulticaster _topologyListeners = null;
-    
+
     private LinkedList _newActors = new LinkedList();
-   
+
 }

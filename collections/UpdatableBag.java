@@ -1,8 +1,8 @@
 /*
   File: UpdatableBag.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   22Oct95  dl                 add addElements
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -33,7 +33,7 @@ public interface UpdatableBag extends UpdatableCollection, Bag  {
 /**
  * Add an occurrence of the indicated element to the collection.
  * @param element the element to add
- * @return condition: 
+ * @return condition:
  * <PRE>
  * occurrences(element) == PREV(this).occurrencesOf(element)+1 &&
  * Version change: always
@@ -48,7 +48,7 @@ public interface UpdatableBag extends UpdatableCollection, Bag  {
  * is not already present in the collection.
  * No effect if the element is already present.
  * @param element the element to add
- * @return condition: 
+ * @return condition:
  * <PRE>
  * occurrencesOf(element) == min(1, PREV(this).occurrencesOf(element) &&
  * no spurious effects &&
@@ -72,7 +72,7 @@ public interface UpdatableBag extends UpdatableCollection, Bag  {
 **/
 
 
-  public void addElements(Enumeration e) 
+  public void addElements(Enumeration e)
    throws IllegalElementException, CorruptedEnumerationException;
 
 

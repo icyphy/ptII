@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -34,7 +34,7 @@ import ptolemy.domains.csp.lib.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ThreeActor Demo
-/** 
+/**
 Source - Buffer - Sink
 @author Neil Smyth
 @version $Id$
@@ -48,7 +48,7 @@ public class ThreeActor {
      * @param parameter-name description
      * @return description
      * @exception full-classname description
-     */	
+     */
     public ThreeActor() {}
 
     ///////////////////////////////////////////////////////////////////
@@ -60,7 +60,7 @@ public class ThreeActor {
      * @param parameter-name description
      * @return description
      * @exception full-classname description
-     */	
+     */
     public static void main(String[] args) {
         try {
             CompositeActor univ = new CompositeActor();
@@ -73,7 +73,7 @@ public class ThreeActor {
 	    CSPSource source = new CSPSource(univ, "Source");
 	    CSPBuffer middle = new CSPBuffer(univ, "Buffer", 5);
             CSPSink sink = new CSPSink(univ, "Sink");
-            
+
             IOPort out1 = source.output;
 	    IOPort in1 = middle.input;
 	    IOPort out2 = middle.output;

@@ -35,7 +35,7 @@ import java.net.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// LogicAnalyzer
-/** 
+/**
 
 @author Lukito Muliadi
 @version $Id$
@@ -43,7 +43,7 @@ import java.net.*;
 @see full-classname
 */
 public class LogicAnalyzer extends PlotBox {
-    
+
     public static final boolean DEBUG = false;
 
     ///////////////////////////////////////////////////////////////////
@@ -69,9 +69,9 @@ public class LogicAnalyzer extends PlotBox {
         } else if (logicValue == ZERO) {
             yVal = -dataset - _heightRatio*0.5;
         }
-        
+
         if (DEBUG) {
-            System.out.println("Set="+dataset + " X-value=" + time + 
+            System.out.println("Set="+dataset + " X-value=" + time +
                     " Y-value=" + yVal);
         }
         _addPoint(dataset, time, yVal);
@@ -514,7 +514,7 @@ public class LogicAnalyzer extends PlotBox {
     }
 
     /* We don't wanna have a legend in the upper right hand corner.
-     * 
+     *
      */
     protected int _drawLegend(Graphics graphics, int urx, int ury) {
         // no legend, so the width is equal to 0
@@ -541,12 +541,12 @@ public class LogicAnalyzer extends PlotBox {
 
         Vector pts = (Vector)_points.elementAt(dataset);
         PlotPoint pt = (PlotPoint)pts.elementAt(index);
-       
+
         // Use long here because these numbers can be quite large
-        // (when we are zoomed out a lot).      
+        // (when we are zoomed out a lot).
         long ypos = _lry - (long)((pt.y - _yMin) * _yscale);
         long xpos = _ulx + (long)((pt.x - _xMin) * _xscale);
-        
+
         long prevx = 0;
         long prevy = 0;
         if (index>0) {
@@ -559,10 +559,10 @@ public class LogicAnalyzer extends PlotBox {
             // a vertical line
             _drawLine(graphics, dataset, xpos, ypos,xpos, prevy, true);
         } else {
-            
+
         }
-        
-        /*       
+
+        /*
         // Use long here because these numbers can be quite large
         // (when we are zoomed out a lot).
         long ypos = _lry - (long)((pt.y - _yMin) * _yscale);

@@ -1,8 +1,8 @@
 /*
   File: BinaryFunction.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,12 +10,12 @@
   22Oct95  dl@cs.oswego.edu   Created.
 
 */
-  
+
 package collections;
 
 /**
  *
- * BinaryFunction is a common interface for classes with an arbitrary 
+ * BinaryFunction is a common interface for classes with an arbitrary
  * function of two Object arguments that returns an Object result,
  * without throwing any kind of user exception.
  * @author Doug Lea
@@ -31,5 +31,5 @@ public interface BinaryFunction {
  * Execute some function of two arguments. return a result
 **/
 
-  public Object     binaryFunction(Object fst, Object snd); 
+  public Object     binaryFunction(Object fst, Object snd);
 }

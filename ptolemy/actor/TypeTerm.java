@@ -107,7 +107,7 @@ public class TypeTerm implements InequalityTerm {
     /** Return this TypeTerm in an array if this term represent a type
      *  variable. This term represent a type variable only when this
      *  term is associated with a TypedIOPort, and the type of that port
-     *  is undeclared.  If this term represent a type constant, return 
+     *  is undeclared.  If this term represent a type constant, return
      *  an array of size zero.
      */
     public InequalityTerm[] getVariables() {

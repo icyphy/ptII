@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -38,7 +38,7 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTPrintln
-/** 
+/**
 Print the time and data of the input tokens at stdout. Single input sink.
 (Input type: double) This actor has no parameters.
 @author Jie Liu
@@ -52,7 +52,7 @@ public class CTPrintln extends CTActor{
      * @exception NameDuplicationException another star already had this name
      * @exception IllegalActionException illustrates internal problems
      */
-    public CTPrintln(TypedCompositeActor container, String name) 
+    public CTPrintln(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input = new TypedIOPort(this, "input");
@@ -68,14 +68,14 @@ public class CTPrintln extends CTActor{
      * The format of printout is :
      * CTTime:......
      * CTData:......
-     *  @exception IllegalActionException If there's no director or 
+     *  @exception IllegalActionException If there's no director or
      *        no input token when needed.
-     */	
-    
+     */
+
     public void fire() throws  IllegalActionException{
        CTDirector dir = (CTDirector) getDirector();
        if (dir == null) {
-           throw new IllegalActionException(this, 
+           throw new IllegalActionException(this,
                    "No director avaliable");
        }
        double in = ((DoubleToken)input.get(0)).doubleValue();

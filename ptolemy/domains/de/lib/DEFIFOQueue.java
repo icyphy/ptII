@@ -42,8 +42,8 @@ Events on the "demand" input trigger a dequeue on the "outData" port if the
 queue is not empty. If the queue is empty, then a "demand" event enables
 the next future "inData" particle to pass immediately to "outData". The first
 particle to arrive at "inData" is always passed directly to the output,
-unless <i>numDemandsPending</i> is initialized to 0. If 
-<i>consolidateDemands</i> is set to TRUE (the default), then 
+unless <i>numDemandsPending</i> is initialized to 0. If
+<i>consolidateDemands</i> is set to TRUE (the default), then
 <i>numDemandsPending</i> is not permitted to rise above one. The size of the
 queue is sent to the <i>size</i> output whenever an "inData" or "demand"
 event is processed. Input data that doesn't fit in the queue is sent to
@@ -65,7 +65,7 @@ public class DEFIFOQueue extends TypedAtomicActor {
      * @exception IllegalActionException internal problem
      */
     public DEFIFOQueue(TypedCompositeActor container,
-            String name, 
+            String name,
             int numDemandsPending,
 	    boolean consolidateDemands,
 	    int capacity)
@@ -112,7 +112,7 @@ public class DEFIFOQueue extends TypedAtomicActor {
 	    bugFree = true;
 	    Token inDataToken = null;
             inDataToken = inData.get(0);
-        
+
 	    // check if the queue is full.
 	    if (_queue.size() == _capacity) {
 		// put the token into the overflow
@@ -132,7 +132,7 @@ public class DEFIFOQueue extends TypedAtomicActor {
 	    bugFree = true;
 	    Token demandToken = null;
             demandToken = demand.get(0);
-	    
+
 	    // check if the queue is empty
 	    if (_queue.size() == 0) {
 		// queue is empty, so increment numDemandsPending.
@@ -155,7 +155,7 @@ public class DEFIFOQueue extends TypedAtomicActor {
 
     /** FIXME:Describe me!
      *
-     *  @exception IllegalActionException Thrown if could not create the 
+     *  @exception IllegalActionException Thrown if could not create the
      *   receivers.
      */
     public void initialize() throws IllegalActionException {

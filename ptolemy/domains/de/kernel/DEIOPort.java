@@ -113,8 +113,8 @@ public class DEIOPort extends TypedIOPort {
                 ((DEReceiver)recs[i][j]).allowPendingTokens(b);
             }
         }
-        
-        
+
+
     }
 
 
@@ -126,7 +126,7 @@ public class DEIOPort extends TypedIOPort {
      *  @param otherport Another input port
      *  @exception IllegalActionException If this port or the argument port
      *   is not an input.
-     */	
+     */
     public void before(IOPort otherport) throws IllegalActionException {
         if (!isInput() || !otherport.isInput()) {
             throw new IllegalActionException(this,
@@ -137,7 +137,7 @@ public class DEIOPort extends TypedIOPort {
 
     /** Return an enumeration of the other input ports that have lower
      *  priority than this one, as asserted by the before() method.
-     */	
+     */
     public Enumeration beforePorts() {
         return beforeList.elements();
     }
@@ -150,7 +150,7 @@ public class DEIOPort extends TypedIOPort {
      *  @param delay The time stamp of the token being broadcast.
      *  @exception IllegalActionException If the port is not an output.
      */
-    public void broadcast(Token token, double delay) 
+    public void broadcast(Token token, double delay)
             throws IllegalActionException {
         try {
             // FIXME: Shouldn't this use the base class method, rather
@@ -165,7 +165,7 @@ public class DEIOPort extends TypedIOPort {
             if(fr == null) {
                 return;
             }
-            
+
             for (int j = 0; j < fr.length; j++) {
                 send(j, token, delay);
             }
@@ -214,7 +214,7 @@ public class DEIOPort extends TypedIOPort {
                             " expected to have receivers of type "+
                             "DEReceiver (1)");
                 }
-                
+
             }
         } finally {
             workspace().doneReading();
@@ -226,7 +226,7 @@ public class DEIOPort extends TypedIOPort {
      *  @param output The output port that may be triggered.
      *  @exception IllegalActionException If this port is not an input,
      *   or if the argument is not an output.
-     */	
+     */
     public void triggers(IOPort output) throws IllegalActionException {
         if (!isInput() || !output.isOutput()) {
             throw new IllegalActionException(this,
@@ -238,7 +238,7 @@ public class DEIOPort extends TypedIOPort {
     /** Return an enumeration of the output ports that are triggered by
      *  this input port.  I.e., an event at this input port may cause
      *  an immediate (zero-delay) event at any of these output ports.
-     */	
+     */
     public Enumeration triggersPorts() {
         return triggerList.elements();
     }
@@ -246,8 +246,8 @@ public class DEIOPort extends TypedIOPort {
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    // List of ports with lower (FIXME: higher ?) priority than this one.  
-    // I.e., events at this port should be triggered before those at ports 
+    // List of ports with lower (FIXME: higher ?) priority than this one.
+    // I.e., events at this port should be triggered before those at ports
     // in this list.
     private LinkedList beforeList = new LinkedList();
 

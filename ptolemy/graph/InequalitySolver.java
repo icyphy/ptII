@@ -418,7 +418,7 @@ public class InequalitySolver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // FIXME: I changed thess because of a Netscape applet bug (lmuliadi)
     // with inner class accessing private field of the outer class
     /*private*/ CPO _cpo = null;

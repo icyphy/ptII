@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -33,8 +33,8 @@ import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// CTIntegrator 
-/** 
+//// CTIntegrator
+/**
 A wrapper of CTBaseIntegrator. Basically do nothing. All the action methods
 come from the ODEsolver.
 @author Jie Liu
@@ -48,8 +48,8 @@ public class CTIntegrator extends CTBaseIntegrator {
      * @param name The name.
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
-     */    
-    public CTIntegrator(TypedCompositeActor container, String name) 
+     */
+    public CTIntegrator(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }

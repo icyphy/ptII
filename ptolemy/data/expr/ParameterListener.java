@@ -34,7 +34,7 @@ package ptolemy.data.expr;
 //////////////////////////////////////////////////////////////////////////
 //// ParameterListener
 /**
-Interface for all classes that want to be notified when the Token 
+Interface for all classes that want to be notified when the Token
 stored in a Parameter changes or when a Parameter is removed(deleted).
 
 @author  Neil Smyth

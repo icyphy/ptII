@@ -1,8 +1,8 @@
 /*
   File: IncrBag.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Changed to use accessOnly
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
 
 /**
  *
- * 
+ *
  * Incremental Implementation of Immutable Bag
  * @author Doug Lea
  * @version 0.93
@@ -60,12 +60,12 @@ public final class IncrBag extends IncrImpl implements Immutable, Bag {
  * Implements collections.Bag.addingIfAbsent
  * @see collections.Bag#addingIfAbsent
 **/
-  public synchronized /* IncrBag */ Bag addingIfAbsent(Object element) 
+  public synchronized /* IncrBag */ Bag addingIfAbsent(Object element)
   throws IllegalElementException {
-    undelta(); 
+    undelta();
     UpdatableBag u = (UpdatableBag)updatable_;
     boolean has = u.includes(element);
-    if (has) 
+    if (has)
       return this;
     else {
       u.add(element);
@@ -83,9 +83,9 @@ public final class IncrBag extends IncrImpl implements Immutable, Bag {
  * Implements collections.Bag.adding
  * @see collections.Bag#adding
 **/
-  public synchronized /* IncrBag */ Bag adding(Object element) 
+  public synchronized /* IncrBag */ Bag adding(Object element)
   throws IllegalElementException {
-    undelta(); 
+    undelta();
     UpdatableBag u = (UpdatableBag)updatable_;
     u.add(element);
     IncrBag s = new IncrBag(u);
@@ -102,7 +102,7 @@ public final class IncrBag extends IncrImpl implements Immutable, Bag {
  * @see collections.Collection#excluding
 **/
   public synchronized /* IncrBag */ Collection excluding(Object element) {
-    undelta(); 
+    undelta();
     UpdatableBag u = (UpdatableBag)updatable_;
     int occ = u.occurrencesOf(element);
     if (occ == 0)
@@ -124,7 +124,7 @@ public final class IncrBag extends IncrImpl implements Immutable, Bag {
  * @see collections.Collection#removingOneOf
 **/
   public synchronized /* IncrBag */ Collection removingOneOf(Object element) {
-    undelta(); 
+    undelta();
     UpdatableBag u = (UpdatableBag)updatable_;
     int occ = u.occurrencesOf(element);
     if (occ == 0)
@@ -146,9 +146,9 @@ public final class IncrBag extends IncrImpl implements Immutable, Bag {
  * @see collections.Collection#replacingAllOf
 **/
   public synchronized /* IncrBag */ Collection replacingAllOf(Object oldElement,
-                                                        Object newElement) 
+                                                        Object newElement)
   throws IllegalElementException {
-    undelta(); 
+    undelta();
     UpdatableBag u = (UpdatableBag)updatable_;
     int oldocc = u.occurrencesOf(oldElement);
     if (oldocc == 0)
@@ -171,9 +171,9 @@ public final class IncrBag extends IncrImpl implements Immutable, Bag {
  * @see collections.Collection#replacingOneOf
 **/
   public synchronized /* IncrBag */ Collection replacingOneOf(Object oldElement,
-                                                    Object newElement) 
+                                                    Object newElement)
   throws IllegalElementException {
-    undelta(); 
+    undelta();
     UpdatableBag u = (UpdatableBag)updatable_;
     boolean has = u.includes(oldElement);
     if (!has)
@@ -195,11 +195,11 @@ public final class IncrBag extends IncrImpl implements Immutable, Bag {
 /**
  * Perform updates within an edit chain
 **/
-  protected synchronized UpdatableCollection doEdit(UpdatableCollection c) { 
+  protected synchronized UpdatableCollection doEdit(UpdatableCollection c) {
     UpdatableBag u = (UpdatableBag)c;
-    try { 
+    try {
       for (int i = 0; i < occurrencesArg_; ++i) {
-        if (op_ == ADD_EDIT) 
+        if (op_ == ADD_EDIT)
           u.add(firstObjectArg_);
         else if (op_ == REMOVE_EDIT)
           u.removeOneOf(firstObjectArg_);

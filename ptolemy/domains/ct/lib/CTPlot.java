@@ -98,14 +98,14 @@ public class  CTPlot extends CTActor {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void intialize() throws IllegalActionException {
-        
+
         // Call clear with 'true' argument, so it'll reset the legend...
         _plot.clear(false);
-	
+
 	for (int i = 0; i < input.getWidth(); i++) {
 	  _plot.addLegend(i, "Data " + i);
 	}
-        
+
         // Initialization of the frame X-range is deferred until the fire()
         // phase, because the director doesn't know the start time until
         // some stars enqueue an event.
@@ -129,12 +129,12 @@ public class  CTPlot extends CTActor {
         }
 
         int numEmptyChannel = 0;
-        
+
         int width = input.getWidth();
         for (int i = 0; i<width; i++) {
             // check channel i.
             if (input.hasToken(i)) {
-                double curTime =((Director)getDirector()).getCurrentTime(); 
+                double curTime =((Director)getDirector()).getCurrentTime();
                 // channel i is not empty, get all the tokens in it.
                 while (input.hasToken(i)) {
                     DoubleToken curToken = null;
@@ -159,8 +159,8 @@ public class  CTPlot extends CTActor {
                     // add the point
                     if (DEBUG) {
                         System.out.print(this.getFullName() + ":");
-                        System.out.println("Dataset = " + i + 
-                                ", CurrentTime = " + curTime + 
+                        System.out.println("Dataset = " + i +
+                                ", CurrentTime = " + curTime +
                                 ", CurrentValue = " + curValue + ".");
                     }
                     if(_firstPoint) {

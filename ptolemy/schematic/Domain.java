@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating red (liuj@eecs.berkeley.edu)
@@ -37,13 +37,13 @@ import collections.HashedMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyDomain
-/** 
-A domain is an aggregation of actor and directors. This class manages the 
+/**
+A domain is an aggregation of actor and directors. This class manages the
 actor package list and the director list. This base class provide methods
 that support creating actors, create directors, get available directors
 etc. The derived class should provide a list of the director's full class
 name. The actor
-packages are added at run time through addActorPackage() method, which 
+packages are added at run time through addActorPackage() method, which
 is generally called by PtolemySystem.
 
 @author  Jie Liu, Lukito Muliadi
@@ -54,7 +54,7 @@ public class Domain extends XMLElement {
     /** Construct a Ptolemy Domain with an empty string
      *  name.  At the time of construction it has no actor packages and
      *  no directors.
-     */	
+     */
     public Domain() {
         super("domain");
         _actorpackages = (HashedMap) new HashedMap();
@@ -63,11 +63,11 @@ public class Domain extends XMLElement {
         setName("");
     }
 
-    /** Construct a Ptolemy Domain with the given attributes. 
+    /** Construct a Ptolemy Domain with the given attributes.
      *  At the time of construction it has no actor packages and no directors
      *
      *  @param attributes a HashedMap from attribute name to attribute value.
-     */	
+     */
     public Domain(HashedMap attributes) {
         super("domain",attributes);
         _actorpackages = (HashedMap) new HashedMap();
@@ -85,29 +85,29 @@ public class Domain extends XMLElement {
     public Enumeration actorPackageNames(){
         return _actorpackages.keys();
     }
-    
-   /** 
+
+   /**
      * Add an actor package for the this domain.   All the classes in this
      * java package are assumed to implement the Actor interface.
      * @param name A unique Identifier for this package.
      * @param package The full package name.
-     */	
+     */
     public void addActorPackage(String name, String packagename) {
         XMLElement e = new XMLElement("actorpackage");
         e.setAttribute("name", name);
         e.setAttribute("packagename", packagename);
-        addChildElement(e);    
+        addChildElement(e);
         _actorpackages.putAt(name, e);
     }
 
-    /** 
+    /**
      * Add a director to this domain.
      */
     public void addDirector(String name, String classname) {
         XMLElement e = new XMLElement("director");
         e.setAttribute("name", name);
         e.setAttribute("classname", classname);
-        addChildElement(e);    
+        addChildElement(e);
         _directors.putAt(name, e);
     }
 
@@ -125,9 +125,9 @@ public class Domain extends XMLElement {
         return _directors.includesKey(name);
     }
 
-   /** 
+   /**
      * Create a new actor in this domain that matches the given
-     * actor class name. The actor class is searched through the 
+     * actor class name. The actor class is searched through the
      * known actor packages. If no actor is found, then throw
      * a ClassNotFoundException.
      *
@@ -138,7 +138,7 @@ public class Domain extends XMLElement {
         return null;
     }
 
-    /** Create a new director from the given director name.  
+    /** Create a new director from the given director name.
      *  The name of a director is its full class name.
      *  If the director is not found, a ClassNotFoundException is thrown.
      *  @param directorname The director's full class name.
@@ -172,7 +172,7 @@ public class Domain extends XMLElement {
 
     /** Remove the specified actor package.
      *  @param actorpackage The requested actor package String.
-     *  @exception IllegalActionException If the specified actor package 
+     *  @exception IllegalActionException If the specified actor package
      *       is not in this domain.
      */
     public void removeActorPackage(String actorpackage) {
@@ -196,7 +196,7 @@ public class Domain extends XMLElement {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////    
+    ////                         private variables                      ////
 
     // The list of the director's full names
     private HashedMap _directors;

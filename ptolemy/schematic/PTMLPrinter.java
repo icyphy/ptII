@@ -49,20 +49,20 @@ public class PTMLPrinter {
         super();
         url = newurl;
         root=e;
-    } 
+    }
 
     public void print() {
     }
-    
+
     public void print(OutputStream os) throws IOException {
         Writer out
-            = new BufferedWriter(new OutputStreamWriter(os)); 
+            = new BufferedWriter(new OutputStreamWriter(os));
         out.write(xmlheader);
         out.write(root.toString());
         out.flush();
     }
-    
-    protected void printXMLElement(Writer out, XMLElement e) 
+
+    protected void printXMLElement(Writer out, XMLElement e)
     throws IOException {
         out.write("<");
         out.write(e.getElementType());
@@ -86,11 +86,11 @@ public class PTMLPrinter {
         out.write("</");
         out.write(e.getElementType());
         out.write(">\n");
-        
+
     }
 
     static final String xmlheader = new String(
-            "<?xml version=\"1.0\" standalone=\"no\"?>\n" + 
+            "<?xml version=\"1.0\" standalone=\"no\"?>\n" +
             "<!DOCTYPE ptolemyicon SYSTEM \"ptolemyicon.dtd\">\n");
     private XMLElement current;
     private XMLElement root;

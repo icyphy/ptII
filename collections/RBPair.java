@@ -1,8 +1,8 @@
 /*
   File: RBPair.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Changed protection statuses
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -43,7 +43,7 @@ public class RBPair extends RBCell implements Pair {
  * Make a new node with same key and element values, but null links
 **/
 
-  protected Object clone() throws CloneNotSupportedException { 
+  protected Object clone() throws CloneNotSupportedException {
     RBPair t = new RBPair(key_, element());
     t.color_ = color_;
     return t;
@@ -76,7 +76,7 @@ public class RBPair extends RBCell implements Pair {
       if (t.element().equals(element)) return t;
       else if (t.right_ == null)
         t = t.left_;
-      else if (t.left_ == null) 
+      else if (t.left_ == null)
         t = t.right_;
       else {
         RBCell p = t.left_.find(element, cmp);
@@ -99,7 +99,7 @@ public class RBPair extends RBCell implements Pair {
       if (t.element().equals(element)) ++c;
       if (t.right_ == null)
         t = t.left_;
-      else if (t.left_ == null) 
+      else if (t.left_ == null)
         t = t.right_;
       else {
         c += t.left_.count(element, cmp);

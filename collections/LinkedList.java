@@ -1,8 +1,8 @@
 /*
   File: LinkedList.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,7 +10,7 @@
   2Oct95  dl@cs.oswego.edu   repack from LLSeq.java
 
 */
-  
+
 package collections;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
@@ -26,7 +26,7 @@ import java.util.NoSuchElementException;
  * <P> For an introduction to this package see <A HREF="index.html"> Overview </A>.
 **/
 
-public class LinkedList extends    UpdatableSeqImpl 
+public class LinkedList extends    UpdatableSeqImpl
                         implements UpdatableSeq,
                                    SortableCollection {
 // instance variables
@@ -34,7 +34,7 @@ public class LinkedList extends    UpdatableSeqImpl
 /**
  * The head of the list. Null iff count_ == 0
 **/
- 
+
   protected LLCell list_;
 
 // constructors
@@ -55,8 +55,8 @@ public class LinkedList extends    UpdatableSeqImpl
  * Special version of constructor needed by clone()
 **/
 
-  protected LinkedList(Predicate s, LLCell l, int c) { 
-    super(s); list_ = l; count_ = c; 
+  protected LinkedList(Predicate s, LLCell l, int c) {
+    super(s); list_ = l; count_ = c;
   }
 
 /**
@@ -64,12 +64,12 @@ public class LinkedList extends    UpdatableSeqImpl
  * The elements themselves are not cloned
 **/
 
-  protected Object clone() throws CloneNotSupportedException { 
-    if (list_ == null) return new LinkedList(screener_, null, 0); 
-    else return new LinkedList(screener_, list_.copyList(), count_);  
+  protected Object clone() throws CloneNotSupportedException {
+    if (list_ == null) return new LinkedList(screener_, null, 0);
+    else return new LinkedList(screener_, list_.copyList(), count_);
   }
 
-      
+
 // Collection methods
 
 /**
@@ -97,8 +97,8 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(1).
  * @see collections.Collection#elements
 **/
-  public synchronized CollectionEnumeration elements() { 
-    return new LLCellEnumeration(this, list_); 
+  public synchronized CollectionEnumeration elements() {
+    return new LLCellEnumeration(this, list_);
   }
 
 
@@ -112,7 +112,7 @@ public class LinkedList extends    UpdatableSeqImpl
 **/
   public synchronized Object first()
   throws  NoSuchElementException {
-    return firstCell().element();   
+    return firstCell().element();
   }
 
 /**
@@ -122,7 +122,7 @@ public class LinkedList extends    UpdatableSeqImpl
 **/
   public synchronized Object last()
   throws  NoSuchElementException {
-    return lastCell().element();  
+    return lastCell().element();
   }
 
 /**
@@ -130,9 +130,9 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(n).
  * @see collections.Seq#at
 **/
-  public synchronized Object at(int index) 
+  public synchronized Object at(int index)
   throws  NoSuchElementException {
-    return cellAt(index).element();  
+    return cellAt(index).element();
   }
 
 /**
@@ -172,7 +172,7 @@ public class LinkedList extends    UpdatableSeqImpl
     int index = -1;
     LLCell p = list_;
     while (i <= startingIndex && p != null) {
-      if (p.element().equals(element)) 
+      if (p.element().equals(element))
         index = i;
       ++i;
       p = p.next();
@@ -196,7 +196,7 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(length).
  * @see collections.Seq#subseq
 **/
-  public synchronized /* LinkedList */ Seq subseq(int from, int length) 
+  public synchronized /* LinkedList */ Seq subseq(int from, int length)
   throws  NoSuchElementException {
     if (length > 0) {
       LLCell p = cellAt(from);
@@ -222,7 +222,7 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(1).
  * @see collections.UpdatableCollection#clear
 **/
-  public synchronized void clear() { 
+  public synchronized void clear() {
     if (list_ != null) { list_ = null; setCount(0);  }
   }
 
@@ -231,7 +231,7 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#exclude
 **/
-  public synchronized void exclude(Object element)  { 
+  public synchronized void exclude(Object element)  {
     remove_(element, true);
   }
 
@@ -240,7 +240,7 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#removeOneOf
 **/
-  public synchronized void removeOneOf(Object element)  { 
+  public synchronized void removeOneOf(Object element)  {
     remove_(element, false);
   }
 
@@ -249,8 +249,8 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#replaceOneOf
 **/
-  public synchronized void replaceOneOf(Object oldElement, Object newElement)  
-  throws IllegalElementException { 
+  public synchronized void replaceOneOf(Object oldElement, Object newElement)
+  throws IllegalElementException {
     replace_(oldElement, newElement, false);
   }
 
@@ -259,8 +259,8 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#replaceAllOf
 **/
-  public synchronized void replaceAllOf(Object oldElement, 
-                                                 Object newElement) 
+  public synchronized void replaceAllOf(Object oldElement,
+                                                 Object newElement)
   throws IllegalElementException {
     replace_(oldElement, newElement, true);
   }
@@ -272,7 +272,7 @@ public class LinkedList extends    UpdatableSeqImpl
  * takes the first element on the list
  * @see collections.UpdatableCollection#take
 **/
-  public synchronized Object take() 
+  public synchronized Object take()
   throws NoSuchElementException {
     Object v = first();
     removeFirst();
@@ -302,7 +302,7 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(1).
  * @see collections.UpdatableSeq#insertFirst
 **/
-  public synchronized void insertFirst(Object element) 
+  public synchronized void insertFirst(Object element)
   throws IllegalElementException {
     checkElement(element);
     list_ = new LLCell(element, list_);
@@ -314,7 +314,7 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(1).
  * @see collections.UpdatableSeq#replaceFirst
 **/
-  public synchronized void replaceFirst(Object element) 
+  public synchronized void replaceFirst(Object element)
   throws IllegalElementException {
     checkElement(element);
     firstCell().element(element);
@@ -326,7 +326,7 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(1).
  * @see collections.UpdatableSeq#removeFirst
 **/
-  public synchronized void removeFirst() 
+  public synchronized void removeFirst()
   throws NoSuchElementException {
     list_ = firstCell().next();
     decCount();
@@ -337,13 +337,13 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(n).
  * @see collections.UpdatableSeq#insertLast
 **/
-  public synchronized void insertLast(Object element) 
+  public synchronized void insertLast(Object element)
   throws IllegalElementException {
     checkElement(element);
     if (list_ == null) insertFirst(element);
-    else { 
-      list_.last().next(new LLCell(element)); 
-      incCount(); 
+    else {
+      list_.last().next(new LLCell(element));
+      incCount();
     }
   }
 
@@ -352,7 +352,7 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(n).
  * @see collections.UpdatableSeq#replaceLast
 **/
-  public synchronized void replaceLast(Object element) 
+  public synchronized void replaceLast(Object element)
   throws IllegalElementException, NoSuchElementException {
     checkElement(element);
     lastCell().element(element);
@@ -381,13 +381,13 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(n).
  * @see collections.UpdatableSeq#insertAt
 **/
-  public synchronized void insertAt(int index, Object element) 
+  public synchronized void insertAt(int index, Object element)
   throws IllegalElementException, NoSuchElementException {
     if (index == 0) insertFirst(element);
-    else { 
+    else {
       checkElement(element);
-      cellAt(index - 1).linkNext(new LLCell(element)); 
-      incCount(); 
+      cellAt(index - 1).linkNext(new LLCell(element));
+      incCount();
     }
   }
 
@@ -396,21 +396,21 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(n).
  * @see collections.UpdatableSeq#removeAt
 **/
-  public synchronized void removeAt(int index) 
+  public synchronized void removeAt(int index)
   throws NoSuchElementException {
     if (index == 0) removeFirst();
-    else { 
-      cellAt(index - 1).unlinkNext(); 
-      decCount(); 
+    else {
+      cellAt(index - 1).unlinkNext();
+      decCount();
     }
   }
-    
+
 /**
  * Implements collections.UpdatableSeq.replaceAt.
  * Time complexity: O(n).
  * @see collections.UpdatableSeq#replaceAt
 **/
-  public synchronized void replaceAt(int index, Object element) 
+  public synchronized void replaceAt(int index, Object element)
   throws IllegalElementException, NoSuchElementException {
     cellAt(index).element(element);
     incVersion();
@@ -421,7 +421,7 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(number of elements in e).
  * @see collections.UpdatableSeq#prependElements
 **/
-  public synchronized void prependElements(Enumeration e) 
+  public synchronized void prependElements(Enumeration e)
   throws IllegalElementException, CorruptedEnumerationException {
     splice_(e, null, list_);
   }
@@ -431,7 +431,7 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(n + number of elements in e).
  * @see collections.UpdatableSeq#appendElements
 **/
-  public synchronized void appendElements(Enumeration e) 
+  public synchronized void appendElements(Enumeration e)
   throws IllegalElementException, CorruptedEnumerationException {
     if (list_ == null) splice_(e, null, null);
     else splice_(e, list_.last(), null);
@@ -442,7 +442,7 @@ public class LinkedList extends    UpdatableSeqImpl
  * Time complexity: O(n + number of elements in e).
  * @see collections.UpdatableSeq#insertElementsAt
 **/
-  public synchronized void insertElementsAt(int index, Enumeration e) 
+  public synchronized void insertElementsAt(int index, Enumeration e)
   throws IllegalElementException, CorruptedEnumerationException,
   NoSuchElementException {
     if (index == 0) splice_(e, null, list_);
@@ -451,20 +451,20 @@ public class LinkedList extends    UpdatableSeqImpl
       splice_(e, p, p.next());
     }
   }
-  
+
 /**
  * Implements collections.UpdatableSeq.removeFromTo.
  * Time complexity: O(n).
  * @see collections.UpdatableSeq#removeFromTo
 **/
-  public synchronized void removeFromTo(int fromIndex, int toIndex) 
+  public synchronized void removeFromTo(int fromIndex, int toIndex)
   throws NoSuchElementException {
     checkIndex(toIndex);
     if (fromIndex <= toIndex) {
       if (fromIndex == 0) {
         LLCell p = firstCell();
         for (int i = fromIndex; i <= toIndex; ++i) p = p.next();
-        list_ = p;  
+        list_ = p;
       }
       else {
         LLCell f = cellAt(fromIndex-1);
@@ -475,13 +475,13 @@ public class LinkedList extends    UpdatableSeqImpl
       addToCount(-(toIndex-fromIndex+1));
     }
   }
-    
+
 
 
 // helper methods
 
-  private final LLCell firstCell() throws NoSuchElementException { 
-    if (list_ != null) return list_; 
+  private final LLCell firstCell() throws NoSuchElementException {
+    if (list_ != null) return list_;
     checkIndex(0);
     return null; // not reached!
   }
@@ -501,7 +501,7 @@ public class LinkedList extends    UpdatableSeqImpl
  * Helper method for removeOneOf()
 **/
 
-  private void remove_(Object element, boolean allOccurrences)  { 
+  private void remove_(Object element, boolean allOccurrences)  {
     if (element == null || count_ == 0) return;
     LLCell p = list_;
     LLCell trail = p;
@@ -526,13 +526,13 @@ public class LinkedList extends    UpdatableSeqImpl
  * Helper for replace
 **/
 
-  private void replace_(Object oldElement, Object newElement, 
-                          boolean allOccurrences)  
-  throws IllegalElementException { 
+  private void replace_(Object oldElement, Object newElement,
+                          boolean allOccurrences)
+  throws IllegalElementException {
     if (count_ == 0 || oldElement == null || oldElement.equals(newElement))
       return;
     LLCell p = list_.find(oldElement);
-    while (p != null) { 
+    while (p != null) {
       checkElement(newElement);
       p.element(newElement);
       incVersion();
@@ -545,7 +545,7 @@ public class LinkedList extends    UpdatableSeqImpl
  * Splice elements of e between hd and tl. if hd is null return new hd
 **/
 
-  private void splice_(Enumeration e, LLCell hd, LLCell tl) 
+  private void splice_(Enumeration e, LLCell hd, LLCell tl)
     throws IllegalElementException, CorruptedEnumerationException {
     if (e.hasMoreElements()) {
       LLCell newlist = null;
@@ -555,9 +555,9 @@ public class LinkedList extends    UpdatableSeqImpl
         checkElement(v);
         incCount();
         LLCell p = new LLCell(v, null);
-        if (newlist == null) 
+        if (newlist == null)
           newlist = p;
-        else 
+        else
           current.next(p);
         current = p;
       }
@@ -573,7 +573,7 @@ public class LinkedList extends    UpdatableSeqImpl
  * Implements collections.ImplementationCheckable.checkImplementation.
  * @see collections.ImplementationCheckable#checkImplementation
 **/
-  public synchronized void checkImplementation() 
+  public synchronized void checkImplementation()
   throws ImplementationError {
 
     super.checkImplementation();

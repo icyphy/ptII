@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating red (liuj@eecs.berkeley.edu)
@@ -38,7 +38,7 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// VariableStepSolver
-/** 
+/**
 Base class for variable step size (with local error control) ODE solvers.
 @author  Jie Liu
 @version $Id$
@@ -50,7 +50,7 @@ public abstract class VariableStepSolver extends ODESolver{
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
-     */	
+     */
     public VariableStepSolver() {
         super();
     }
@@ -88,12 +88,12 @@ public abstract class VariableStepSolver extends ODESolver{
         try {
             CTDirector dir = (CTDirector)getContainer();
             CTScheduler sch = (CTScheduler)dir.getScheduler();
-        
+
             boolean tolerable = true;
             Enumeration errCtrlActors = sch.errorControlActors();
             while(errCtrlActors.hasMoreElements()) {
-                CTErrorControlActor eca = 
-                    (CTErrorControlActor)errCtrlActors.nextElement(); 
+                CTErrorControlActor eca =
+                    (CTErrorControlActor)errCtrlActors.nextElement();
                 tolerable = tolerable && eca.isSuccessful();
             }
             if(DEBUG) {
@@ -112,25 +112,25 @@ public abstract class VariableStepSolver extends ODESolver{
             }
             return tolerable;
         }catch (NullPointerException e) {
-            throw new InvalidStateException(this, 
+            throw new InvalidStateException(this,
                 "has no scheduler avaliable");
         }
     }
 
     /** Resolve the next step size if the current
-     *  step is a success. It ask all the error control actors for 
+     *  step is a success. It ask all the error control actors for
      *  their suggestion and resolve the minimum. Set this value
      *  to the director. (Director may further change it for the sake
      *  of break points/event detection)
      *  Different solver may implement it differently.
-     * 
+     *
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
      */
     public void resolveNextStepSize() {
         CTDirector dir = (CTDirector)getContainer();
         if(dir == null) {
-            throw new InvalidStateException(this, 
+            throw new InvalidStateException(this,
                 " has no director.");
         }
         CTScheduler sch = (CTScheduler)dir.getScheduler();
@@ -141,10 +141,10 @@ public abstract class VariableStepSolver extends ODESolver{
         double newh = dir.getCurrentStepSize()*5.0;
         Enumeration errCtrlActors = sch.errorControlActors();
         while(errCtrlActors.hasMoreElements()) {
-            CTErrorControlActor eca = 
-                (CTErrorControlActor)errCtrlActors.nextElement(); 
+            CTErrorControlActor eca =
+                (CTErrorControlActor)errCtrlActors.nextElement();
             newh = Math.min(newh, eca.suggestedNextStepSize());
-        } 
+        }
         dir.setSuggestedNextStepSize(newh);
     }
 

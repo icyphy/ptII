@@ -237,7 +237,7 @@ public class CalendarQueue {
             throw new IllegalAccessException("Invoking take() on empty"+
                     " queue is not allowed.");
         }
-        
+
         // Search buckets starting from index: _minBucket
         //   analogy: starting from the current page(month) of the calendar
         for (int i = _minBucket, j = 0; ; )
@@ -609,7 +609,7 @@ public class CalendarQueue {
 
         if (DEBUG) {
             System.out.println("Resize method is called with old size = " +
-                    _nBuckets + " and new size = " + newsize + 
+                    _nBuckets + " and new size = " + newsize +
                     " and queue size = " + _qSize);
         }
 
@@ -620,7 +620,7 @@ public class CalendarQueue {
         // for use when copying calendar
         old_bucket = _bucket;
         old_nbuckets = _nBuckets;
- 
+
         // Initialize new calendar
         _localInit(newsize, new_width, _minKey);
 
@@ -656,7 +656,7 @@ public class CalendarQueue {
                     }
                 }
                 if (DEBUG && VERBOSE) {
-                    
+
                     for (int j = 0; j < old_nbuckets; j++) {
                         System.out.print("old Bucket" + j + " : ");
                         LLCell curr = old_bucket[j].head;
@@ -669,7 +669,7 @@ public class CalendarQueue {
                         System.out.println("");
                     }
                 }
-                
+
                 // check if this particular old bucket is non-empty.
                 if (old_bucket[i].head != null) {
                     LLCell cell = old_bucket[i].head;
@@ -684,18 +684,18 @@ public class CalendarQueue {
                         // Useful debugging information, you can ignore it.
                         if (DEBUG) {
                             if (_cqComparator.compare(
-                                    ((CQEntry)cell.element()).key, 
+                                    ((CQEntry)cell.element()).key,
                                     ((CQEntry)minCell.element()).key
                                     ) == 0) {
                                 System.out.println("Different bucket has "+
                                 "equal element.. no way!");
-                            }                       
+                            }
                         }
                         // minCell is a valid value, so we can compare it with
                         // the current old bucket 'head cell'. Then update
                         // minCell if minCell is not less than the 'head cell'.
                         if (_cqComparator.compare(
-                            ((CQEntry)cell.element()).key, 
+                            ((CQEntry)cell.element()).key,
                             ((CQEntry)minCell.element()).key
                         ) < 0) {
                             minCell = cell;
@@ -723,10 +723,10 @@ public class CalendarQueue {
                 // minCell is obtained, we update old_bucket[minIndex] by
                 // removing its head of the list. (because that's the minimum,
                 // remember that all buckets are internally sorted already)
-                
+
                 // update old_bucket[minIndex].
                 // Make the head pointer to point to the next link.
-                old_bucket[minIndex].head = minCell.next();       
+                old_bucket[minIndex].head = minCell.next();
                 // If minCell happen to be old_bucket[minIndex] tail, then
                 // set tail to be null, because it just got removed.
                 if (old_bucket[minIndex].tail == minCell) {
@@ -736,17 +736,17 @@ public class CalendarQueue {
                 // Now that I finished updating the old_bucket, let's put
                 // the minCell into the new queue. The minCell will be put
                 // at the tail of a bucket in the new queue.
-                
+
                 // First calculate the index, using cqComparator methods.
                 long newindex = _getBinIndex(((CQEntry)minCell.element()).key);
                 newindex = newindex % _nBuckets;
                 if (newindex < 0) {
                     newindex += _nBuckets;
                 }
-                
+
                 // Zero in on the targetted bucket in the new buckets set.
                 CQLinkedList targetLL = _bucket[(int)newindex];
-                
+
                 // Since minCell is being put at tail position, make sure
                 // its next field point to null.
                 // BTW, removing this will result in a bug that will take hours
@@ -754,7 +754,7 @@ public class CalendarQueue {
                 minCell.next(null);
                 // Check if targetLL is an empty list.. Note that empty list
                 // will have both head and tail fields to be null.
-                if (targetLL.tail != null) { 
+                if (targetLL.tail != null) {
                     // targetLL is not an empty list, so append minCell to
                     // the end of the list.
                     targetLL.tail.next(minCell);
@@ -783,8 +783,8 @@ public class CalendarQueue {
             }
             // keep iterating until a break is issued when the old buckets
             // are all empty.
-        } while (true); 
-        
+        } while (true);
+
     }
 
     // This function calculates the width to use for buckets
@@ -911,7 +911,7 @@ public class CalendarQueue {
             }
         }
 
-        // I want to make this public, so it'll be more efficient 
+        // I want to make this public, so it'll be more efficient
         // than using method call to access these fields.
         // FIXME: good enough reasons ?
         public Object value;
@@ -948,22 +948,22 @@ public class CalendarQueue {
         // Use FIFO behaviour when objects with the same weight are
         // encountered.
         public void insertAndSort(Object obj) {
- 
+
             // Special cases:
             // Linked list is empty.
             if (head == null) {
                 head = new LLCell(obj, null);
                 tail = head;
                 return;
-            } 
-            
+            }
+
             // LinkedList is not empty.
             // I assert that by construction, when head != null, tail != null
             // as well.
-            
+
             // Check if obj is greater than or equal to tail.
-            
-            if ( _cqComparator.compare( 
+
+            if ( _cqComparator.compare(
                 ((CQEntry)obj).key,
                 ((CQEntry)tail.element()).key) >= 0
             ) {
@@ -973,7 +973,7 @@ public class CalendarQueue {
                 tail = newTail;
                 return;
             }
-            
+
             // Check if head is strictly greater than obj
             if ( _cqComparator.compare(
                 ((CQEntry)head.element()).key,
@@ -983,7 +983,7 @@ public class CalendarQueue {
                 head = new LLCell(obj, head);
                 return;
             }
-            
+
             // No more special cases..
             // Iterate from head of queue and progresses..
             LLCell prevCell = head;
@@ -1005,9 +1005,9 @@ public class CalendarQueue {
                 prevCell = currCell;
                 currCell = prevCell.next();
             } while (currCell != null);
-            
+
         }
-        
+
 
         // basically a macro, to shorten typing
         public Object peekKey() {
@@ -1023,7 +1023,7 @@ public class CalendarQueue {
         // head of the linked list.
         // returns true if succeed, false otherwise
         public boolean removes(CQEntry cqEntry) {
-            
+
             // two special cases:
             // Case 1: linked-list is empty.. always return false
             if (head == null) return false;
@@ -1040,7 +1040,7 @@ public class CalendarQueue {
                 }
                 return true;
             }
- 
+
             // non-special case that requires looping...
             LLCell prevCell = head;
             LLCell currCell = prevCell.next();
@@ -1062,7 +1062,7 @@ public class CalendarQueue {
                 prevCell = currCell;
                 currCell = currCell.next();
             } while (currCell != null);
-            
+
             // Out of the loop, which means currCell == null, i.e. entry
             // not found.
             return false;
@@ -1077,7 +1077,7 @@ public class CalendarQueue {
             }
             return oldhead.element();
         }
-        
+
         // FIXME: this is bad.. leaving this to be public.
         // head
         public LLCell head;

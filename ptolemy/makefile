@@ -35,7 +35,7 @@
 #
 # doc directory should be last so we get files from version control before
 # updating the docs
-# filter is not yet ready 
+# filter is not yet ready
 DIRS = kernel plot graph data actor automata gui math domains schematic #filter
 
 # Root of Ptolemy II directory

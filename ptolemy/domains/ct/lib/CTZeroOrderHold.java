@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -36,14 +36,14 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTZeroOrderHold
-/** 
+/**
 An actor that convert event into continuous signal. This class act
 as the zero order hold. It consume the token at the postfire()
 phase, since that is the point there the state of the system is
-determined. This value will be hold and emitted every time it is 
+determined. This value will be hold and emitted every time it is
 fired.
 FIXME: Consider bypass itself, if it is not connected to any opaque
-compositeActor. Do it by override getReceivers(), which return the 
+compositeActor. Do it by override getReceivers(), which return the
 receivers of the port its output are connected.
 @author Jie Liu
 @version $Id$
@@ -51,17 +51,17 @@ receivers of the port its output are connected.
 @see full-classname
 */
 public class CTZeroOrderHold extends CTActor{
-    
+
     public static final boolean DEBUG = true;
-    
+
     /** Construct a CTActor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
-     *  A CTActor can be either dynamic, or not.  It must be set at the 
+     *  A CTActor can be either dynamic, or not.  It must be set at the
      *  construction time and can't be changed thereafter.
      *  A dynamic actor will produce a token at its initialization phase.
-     * 
+     *
      *  @param CTSubSystem The subsystem that this actor is lived in
      *  @param name The actor's name
      *  @param isDynamic True if the actor is a dynamic actor
@@ -69,7 +69,7 @@ public class CTZeroOrderHold extends CTActor{
      *   by the proposed container.
      *  @exception NameDuplicationException Name coincides with
      *   an entity already in the container.
-     */	
+     */
     public CTZeroOrderHold(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -100,7 +100,7 @@ public class CTZeroOrderHold extends CTActor{
             if(DEBUG) {
                 CTDirector dir = (CTDirector) getDirector();
                 System.out.println("Receive an event at: " +
-                    dir.getCurrentTime()); 
+                    dir.getCurrentTime());
                 System.out.println("Event value="+_lasteventvalue);
             }
         }
@@ -110,7 +110,7 @@ public class CTZeroOrderHold extends CTActor{
     /** Output a doubleToken of the last event value.
      *
      *  @exception IllegalActionException Never thrown.
-     */	
+     */
     public void fire()  throws IllegalActionException{
         output.broadcast(new DoubleToken(_lasteventvalue));
     }

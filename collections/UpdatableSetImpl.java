@@ -1,8 +1,8 @@
 /*
   File: UpdatableSetImpl.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   22Oct95  dl                 add includeElements
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
 /**
  *
  * UpdatableSetImpl extends UpdatableImpl to provide
- * default implementations of some Set operations. 
+ * default implementations of some Set operations.
  * @author Doug Lea
  * @version 0.93
  *
@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
  *
 **/
 
-abstract class UpdatableSetImpl extends UpdatableImpl implements UpdatableSet { 
+abstract class UpdatableSetImpl extends UpdatableImpl implements UpdatableSet {
 
 
 /**
@@ -49,13 +49,13 @@ abstract class UpdatableSetImpl extends UpdatableImpl implements UpdatableSet {
  * Implements collections.Set.including
  * @see collections.Set#including
 **/
-  public synchronized  Set including(Object element) 
+  public synchronized  Set including(Object element)
   throws IllegalElementException {
     UpdatableSet c = null;
     try {
       c = ((UpdatableSet)clone());
       c.include(element);
-    } catch (CloneNotSupportedException ex) {}      
+    } catch (CloneNotSupportedException ex) {}
     return c;
   }
 
@@ -64,7 +64,7 @@ abstract class UpdatableSetImpl extends UpdatableImpl implements UpdatableSet {
  * @see collections.UpdatableSet#includeElements
 **/
 
-  public synchronized  void includeElements(Enumeration e) 
+  public synchronized  void includeElements(Enumeration e)
    throws IllegalElementException, CorruptedEnumerationException {
     while (e.hasMoreElements()) include(e.nextElement());
   }

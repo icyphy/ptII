@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -40,13 +40,13 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTMultiSolverDirector
-/** 
-A director that utilizes multiple ODE solvers. The reason of switching 
+/**
+A director that utilizes multiple ODE solvers. The reason of switching
 solvers is that when abrupt changes in the signal occurs ( usually called
 break points), the history information is useless for further calculation.
 At these points, it is reasonable to switch to a low order implecit method
 with minimum step size to restart the solving process. For input signals
-that contains Dirac impulses, it is also essential to switch to a 
+that contains Dirac impulses, it is also essential to switch to a
 specific solver to deal with them.
 @author  Jie Liu
 @version $Id$
@@ -57,7 +57,7 @@ public class CTMultiSolverDirector extends CTDirector {
     /** Construct a CTDirector with no name and no Container.
      *  The default startTime and stopTime are all zeros. There's no
      *  scheduler associated.
-     */	
+     */
     public CTMultiSolverDirector () {
         super();
         _initParameters();
@@ -96,7 +96,7 @@ public class CTMultiSolverDirector extends CTDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** This does the initialization for the entire subsystem. This 
+    /** This does the initialization for the entire subsystem. This
      *  is called exactly once at the start of the entire execution.
      *  It set the current time to the start time and the current step
      *  size to the initial step size.
@@ -140,7 +140,7 @@ public class CTMultiSolverDirector extends CTDirector {
     /** Perform mutation and process pause/stop request.
      *  If the CTSubSystem is requested a stop (if CTSubSystem.isPaused()
      *  returns true) then pause the thread.
-     *  The pause can be wake up by notify(), at that time if the 
+     *  The pause can be wake up by notify(), at that time if the
      *  CTSubSystem is not paused (isPaused() returns false) then
      *  resume the simulation. So the simulation can only be
      *  paused at the prefire stage.
@@ -186,8 +186,8 @@ public class CTMultiSolverDirector extends CTDirector {
             produceOutput();
             return;
         }
-        updateStates(); // call postfire on all actors       
-        
+        updateStates(); // call postfire on all actors
+
         //Refine step size ans set ODE Solvers.
         setCurrentODESolver(_defaultSolver);
         setCurrentStepSize(getSuggestedNextStepSize());
@@ -199,7 +199,7 @@ public class CTMultiSolverDirector extends CTDirector {
             bp = ((Double)breakPoints.first()).doubleValue();
             if(Math.abs(bp-getCurrentTime()) < getTimeAccuracy()) {
                 // break point now!
-                breakPoints.removeFirst();  
+                breakPoints.removeFirst();
                 setCurrentODESolver(_breakpointSolver);
                 setCurrentStepSize(getMinStepSize());
             }
@@ -220,16 +220,16 @@ public class CTMultiSolverDirector extends CTDirector {
             Actor a = (Actor) actors.nextElement();
             ready = ready && a.prefire();
         }
-        
+
         if(ready) {
-            ODESolver solver = getCurrentODESolver();  
+            ODESolver solver = getCurrentODESolver();
             solver.iterate();
             produceOutput();
         }
     }
 
 
-    /** Test if the current time is the stop time. 
+    /** Test if the current time is the stop time.
      *  If so, return false ( for stop further simulaiton).
      *  @return false If the simulation time expires.
      *  @exception IllegalActionException If there is no ODE solver, or
@@ -239,8 +239,8 @@ public class CTMultiSolverDirector extends CTDirector {
         if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
             fireAfterDelay(null, getStopTime()-getCurrentTime());
         }
-        if(Math.abs(getCurrentTime() - getStopTime()) < getTimeAccuracy()) { 
-            updateStates(); // call postfire on all actors 
+        if(Math.abs(getCurrentTime() - getStopTime()) < getTimeAccuracy()) {
+            updateStates(); // call postfire on all actors
             return false;
         }
         if(getStopTime() < getCurrentTime()) {
@@ -261,7 +261,7 @@ public class CTMultiSolverDirector extends CTDirector {
         }
         super.wrapup();
     }
-                
+
 
     /** produce outputs
      *  @exception IllegalActionException If the actor on the output
@@ -292,7 +292,7 @@ public class CTMultiSolverDirector extends CTDirector {
             }
             nextoutputactor.fire();
         }
-    }  
+    }
 
     /** update States
      */
@@ -310,7 +310,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
     /** Update paramters.
      */
-    public void updateParameter(Parameter param) 
+    public void updateParameter(Parameter param)
             throws IllegalActionException {
         if(param == _paramDefaultODESolver) {
             if(VERBOSE) {
@@ -343,7 +343,7 @@ public class CTMultiSolverDirector extends CTDirector {
             _breakpointsolverclass=
                 "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver";
             _paramBreakpointODESolver = new CTParameter(
-                this, "BreakpointODESolver", 
+                this, "BreakpointODESolver",
                 new StringToken(_breakpointsolverclass));
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
@@ -351,10 +351,10 @@ public class CTMultiSolverDirector extends CTDirector {
         } catch (NameDuplicationException ex) {
             throw new InvalidStateException(this,"Parameter name duplication.");
         }
-        
+
     }
 
-    /** _initialize the simulation. 
+    /** _initialize the simulation.
      *  This is the real intialize method. The initalize method do some
      *  checking and call this method. Derivede class may call this method
      *  directly.
@@ -431,6 +431,6 @@ public class CTMultiSolverDirector extends CTDirector {
     // The default solver.
     private ODESolver _breakpointSolver = null;
     //indicate the first round of execution.
-    
+
     private boolean _first;
 }

@@ -1,8 +1,8 @@
 /*
   File: UpdatableImpl.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -12,7 +12,7 @@
   22Oct95  dl                 Add excludeElements, removeElements
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -21,11 +21,11 @@ import java.io.Serializable;
 
 /**
  *
- * UpdatableImpl serves as a convenient base class for most 
+ * UpdatableImpl serves as a convenient base class for most
  * implementations of updatable collections. It maintains
  * a version number and element count.
  * It also provides default implementations of many
- * collection operations. 
+ * collection operations.
  * @author Doug Lea
  * @version 0.93
  *
@@ -33,16 +33,16 @@ import java.io.Serializable;
  *
 **/
 
-public abstract class UpdatableImpl implements UpdatableCollection, Serializable { 
+public abstract class UpdatableImpl implements UpdatableCollection, Serializable {
 
 // instance variables
 
-/** 
+/**
  * version_ represents the current version number
 **/
   protected int version_;
 
-/** 
+/**
  * screener_ hold the supplied element screener
 **/
 
@@ -64,7 +64,7 @@ public abstract class UpdatableImpl implements UpdatableCollection, Serializable
 /**
  * Initialize at version 0, an empty count, and supplied screener
 **/
-  protected UpdatableImpl(Predicate screener) { 
+  protected UpdatableImpl(Predicate screener) {
     version_ = 0; count_ = 0; screener_ = screener; }
 
 
@@ -75,11 +75,11 @@ public abstract class UpdatableImpl implements UpdatableCollection, Serializable
  * Wrapper for clone()
  * @see clone
 **/
- 
- public synchronized Collection duplicate() { 
+
+ public synchronized Collection duplicate() {
    Collection c = null;
    try {
-     c = (Collection)(this.clone()); 
+     c = (Collection)(this.clone());
     } catch (CloneNotSupportedException ex) {}
    return c;
  }
@@ -118,14 +118,14 @@ public abstract class UpdatableImpl implements UpdatableCollection, Serializable
  * This suffices for all currently supported collection types,
  * but must be overridden if you define new Collection subinterfaces
  * and/or implementations.
- * 
+ *
  * @see collections.Collection#sameStructure
 **/
 
   public synchronized boolean sameStructure(Collection other) {
-    if (other == null) 
+    if (other == null)
       return false;
-    else if (other == this) 
+    else if (other == this)
       return true;
     else if (this instanceof KeySortedCollection) {
       if (!(other instanceof Map)) return false;
@@ -135,7 +135,7 @@ public abstract class UpdatableImpl implements UpdatableCollection, Serializable
       if (!(other instanceof Map)) return false;
       else return samePairs((Map)(this), (Map)(other));
     }
-    else if ((this instanceof Seq) || 
+    else if ((this instanceof Seq) ||
              (this instanceof ElementSortedCollection))
       return sameOrderedElements(this, other);
     else if (this instanceof Bag)
@@ -179,7 +179,7 @@ public abstract class UpdatableImpl implements UpdatableCollection, Serializable
  * @see collections.Collection#replacingOneOf
 **/
   public synchronized Collection replacingOneOf(Object oldElement,
-                                                Object newElement) 
+                                                Object newElement)
   throws IllegalElementException {
     UpdatableCollection c = null;
     try {
@@ -194,7 +194,7 @@ public abstract class UpdatableImpl implements UpdatableCollection, Serializable
  * @see collections.Collection#replacingAllOf
 **/
   public synchronized Collection replacingAllOf(Object oldElement,
-                                                    Object newElement) 
+                                                    Object newElement)
   throws IllegalElementException {
     UpdatableCollection c = null;
     try {
@@ -207,7 +207,7 @@ public abstract class UpdatableImpl implements UpdatableCollection, Serializable
 
 // Default implementations of UpdatableCollection methods
 
-/** 
+/**
  * Implements collections.UpdatableCollection.version.
  * Time complexity: O(1).
  * @see collections.UpdatableCollection#version
@@ -215,21 +215,21 @@ public abstract class UpdatableImpl implements UpdatableCollection, Serializable
   public synchronized int version() { return version_; }
 
 
-/** 
+/**
  * Implements collections.UpdatableCollection.excludeElements
  * @see collections.UpdatableCollection#excludeElements
 **/
-  public synchronized void excludeElements(Enumeration e) 
+  public synchronized void excludeElements(Enumeration e)
   throws CorruptedEnumerationException {
     while (e.hasMoreElements()) exclude(e.nextElement());
   }
 
 
-/** 
+/**
  * Implements collections.UpdatableCollection.removeElements
  * @see collections.UpdatableCollection#removeElements
 **/
-  public synchronized void removeElements(Enumeration e) 
+  public synchronized void removeElements(Enumeration e)
   throws CorruptedEnumerationException {
     while (e.hasMoreElements()) removeOneOf(e.nextElement());
   }
@@ -271,15 +271,15 @@ public abstract class UpdatableImpl implements UpdatableCollection, Serializable
       try {
         while (k.hasMoreElements()) {
           buf.append(" (");
-          
+
           buf.append(" (");
           buf.append(k.nextElement().toString());
           buf.append(")");
-          
+
           buf.append(" (");
           buf.append(e.nextElement().toString());
           buf.append(")");
-          
+
           buf.append(" )");
         }
       }
@@ -314,14 +314,14 @@ public abstract class UpdatableImpl implements UpdatableCollection, Serializable
 /**
  * add to the element count and update version_ if changed
 **/
-  protected final void addToCount(int c) { 
+  protected final void addToCount(int c) {
     if (c != 0) { count_ += c; version_++; }
   }
 
 /**
  * set the element count and update version_ if changed
 **/
-  protected final void setCount(int c) { 
+  protected final void setCount(int c) {
     if (c != count_) { count_ = c; version_++; }
   }
 
@@ -380,9 +380,9 @@ public abstract class UpdatableImpl implements UpdatableCollection, Serializable
 
   public static boolean samePairs(Map s, Map t) {
     if (s.size() != t.size()) return false;
-        
+
     Enumeration ts = t.keys();
-        
+
     try { // set up to return false on collection exceptions
       while (ts.hasMoreElements()) {
         Object k = ts.nextElement();
@@ -396,9 +396,9 @@ public abstract class UpdatableImpl implements UpdatableCollection, Serializable
 
   public static boolean sameOrderedPairs(Map s, Map t) {
     if (s.size() != t.size()) return false;
-        
+
     Enumeration ts = t.keys();
-    Enumeration ss = s.keys();    
+    Enumeration ss = s.keys();
 
     try { // set up to return false on collection exceptions
       while (ts.hasMoreElements()) {
@@ -413,7 +413,7 @@ public abstract class UpdatableImpl implements UpdatableCollection, Serializable
     catch (NoSuchElementException ex) { return false; }
   }
 
-// misc common helper methods 
+// misc common helper methods
 
 /**
  * Principal method to throw a NoSuchElementException.
@@ -444,7 +444,7 @@ public abstract class UpdatableImpl implements UpdatableCollection, Serializable
  * Implements collections.ImplementationCheckable.assert.
  * @see collections.ImplementationCheckable#assert
 **/
-  public void assert(boolean pred) 
+  public void assert(boolean pred)
   throws ImplementationError {
     ImplementationError.assert(this, pred);
   }
@@ -453,7 +453,7 @@ public abstract class UpdatableImpl implements UpdatableCollection, Serializable
  * Implements collections.ImplementationCheckable.checkImplementation.
  * @see collections.ImplementationCheckable#checkImplementation
 **/
-  public synchronized void checkImplementation() 
+  public synchronized void checkImplementation()
   throws ImplementationError {
     assert(count_ >= 0);
   }

@@ -299,10 +299,10 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 
     /** Sort the given graph objects in their topological order.
      *  This method use the transitive closure matrix. Since generally
-     *  the graph is checked for cyclicity before this method is 
+     *  the graph is checked for cyclicity before this method is
      *  called, the use of the transitive closure matrix should
      *  not add any overhead. A bubble sort is used for the internal
-     *  implementation, so the complexity is n^2. 
+     *  implementation, so the complexity is n^2.
      *  @return The objects in there sorted order.
      */
     public Object[] topologicalSort(Object[] objs) {

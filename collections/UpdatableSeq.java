@@ -1,8 +1,8 @@
 /*
   File: UpdatableSeq.java.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -10,12 +10,12 @@
   24Sep95  dl@cs.oswego.edu   Create from collections.java  working file
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
-  
+
 /**
  *
  * UpdatableSeqs are Seqs possessing standard modification methods
@@ -107,7 +107,7 @@ public interface UpdatableSeq extends UpdatableCollection, Seq {
                               NoSuchElementException;
 
 /**
- * Remove the leftmost element. 
+ * Remove the leftmost element.
  * Behaviorally equivalent to removeAt(0);
 **/
 
@@ -134,7 +134,7 @@ public interface UpdatableSeq extends UpdatableCollection, Seq {
 
 
 /**
- * Remove the rightmost element. 
+ * Remove the rightmost element.
  * Behaviorally equivalent to removeAt(size()-1);
  * @exception NoSuchElementException if isEmpty
 **/
@@ -154,11 +154,11 @@ public interface UpdatableSeq extends UpdatableCollection, Seq {
  * <PRE>
  * let n = max(0, toIndex - fromIndex + 1 in
  *  size() == PREV(this).size() - 1 &&
- *  for (int i in 0 .. fromIndex - 1)     at(i).equals(PREV(this).at(i)) && 
- *  for (int i in fromIndex .. size()- 1) at(i).equals(PREV(this).at(i+n) 
- *  Version change iff n > 0 
+ *  for (int i in 0 .. fromIndex - 1)     at(i).equals(PREV(this).at(i)) &&
+ *  for (int i in fromIndex .. size()- 1) at(i).equals(PREV(this).at(i+n)
+ *  Version change iff n > 0
  * </PRE>
- * @exception NoSuchElementException if fromIndex or toIndex is not in 
+ * @exception NoSuchElementException if fromIndex or toIndex is not in
  * range 0..size()-1
 **/
 
@@ -166,30 +166,30 @@ public interface UpdatableSeq extends UpdatableCollection, Seq {
                        throws NoSuchElementException;
 
 /**
- * Insert all elements of enumeration e at a given index, preserving 
+ * Insert all elements of enumeration e at a given index, preserving
  * their order. The index can range from
  * 0..size() (i.e., one past the current last index). If the index is
  * equal to size(), the elements are appended.
- * 
+ *
  * @param index the index to start adding at
  * @param e the elements to add
  * @return condition:
  * <PRE>
  * foreach (int i in 0 .. index-1) at(i).equals(PREV(this)at(i)); &&
  * All existing elements at indices at or greater than index have their
- *  indices incremented by the number of elements 
+ *  indices incremented by the number of elements
  *  traversable via e.nextElement() &&
  * The new elements are at indices index + their order in
  *   the enumeration's nextElement traversal.
  * !(e.hasMoreElements()) &&
- * (version() != PREV(this).version()) == PREV(e).hasMoreElements() 
+ * (version() != PREV(this).version()) == PREV(e).hasMoreElements()
  * </PRE>
  * @exception IllegalElementException if !canInclude some element of e;
  * this may or may not nullify the effect of insertions of other elements.
  * @exception NoSuchElementException if index is not in range 0..size()
  * @exception CorruptedEnumerationException is propagated if raised; this
  * may or may not nullify the effects of insertions of other elements.
-**/  
+**/
   public void        insertElementsAt(int index, Enumeration e)
                        throws IllegalElementException,
                               CorruptedEnumerationException,
@@ -199,9 +199,9 @@ public interface UpdatableSeq extends UpdatableCollection, Seq {
  * Prepend all elements of enumeration e, preserving their order.
  * Behaviorally equivalent to addElementsAt(0, e)
  * @param e the elements to add
-**/  
+**/
 
-  public void prependElements(Enumeration e) 
+  public void prependElements(Enumeration e)
                 throws IllegalElementException,
                        CorruptedEnumerationException;
 
@@ -210,8 +210,8 @@ public interface UpdatableSeq extends UpdatableCollection, Seq {
  * Append all elements of enumeration e, preserving their order.
  * Behaviorally equivalent to addElementsAt(size(), e)
  * @param e the elements to add
-**/  
-  public void        appendElements(Enumeration e) 
+**/
+  public void        appendElements(Enumeration e)
                         throws IllegalElementException,
                                CorruptedEnumerationException;
 

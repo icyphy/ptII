@@ -44,7 +44,7 @@ include $(CONFIG)
 JDOCFLAGS = 	-author -version -public
 
 # Order matters here, go into util first, since mutation depends on it
-DIRS = 	 
+DIRS =
 
 CLASSPATH = ../..
 
@@ -59,7 +59,7 @@ JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
 	PtolemySystem.java \
-	Domain.java	
+	Domain.java
 
 EXTRA_SRCS =	$(JSRCS)
 

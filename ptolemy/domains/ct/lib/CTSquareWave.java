@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedCodeRate red (liuj@eecs.berkeley.edu)
@@ -37,9 +37,9 @@ import java.lang.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTSquareWave
-/** 
+/**
     FIXME: Not consider break points yet.
-A square wave source. The actor will regist a discontinuity to the 
+A square wave source. The actor will regist a discontinuity to the
 director when the jump occurs. Single output source (Output type:double).
 
 @author Jie Liu
@@ -52,12 +52,12 @@ public class CTSquareWave extends CTActor {
     public static final boolean DEBUG = true;
 
     /** Construct the CTSquareWave actor
-     * @param container container of this actor 
+     * @param container container of this actor
      * @param name The name
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
-     */	
-    public CTSquareWave(TypedCompositeActor container, String name) 
+     */
+    public CTSquareWave(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output = new TypedIOPort(this, "output");
@@ -72,7 +72,7 @@ public class CTSquareWave extends CTActor {
                 new DoubleToken(_minValue));
         _frequency = (double)1.0;
         _halfperiod = (double)1.0/((double)2.0*_frequency);
-        _paramFrequency = new CTParameter(this, "Frequency", 
+        _paramFrequency = new CTParameter(this, "Frequency",
                 new DoubleToken(_frequency));
         _startFromMin = true;
         _paramStartFromMin = new CTParameter(this, "StartFromMinimum",
@@ -86,7 +86,7 @@ public class CTSquareWave extends CTActor {
 
     /** Initalize the actor, start the waveform from the start time,
      *  and the first output is min-level.
-     *  
+     *
      *  @exception IllegalActionException If there's no director or no
      *       input token.
      */
@@ -99,7 +99,7 @@ public class CTSquareWave extends CTActor {
         _lastfliptime = dir.getStartTime();
         _isMin = ((BooleanToken)_paramStartFromMin.getToken()).booleanValue();
     }
-    
+
     /** Always returns true. If the currentTime is greate than lastFlipTime
      *  + _halfPeriod, then flip, and reset lastFlipTime.
      */
@@ -118,10 +118,10 @@ public class CTSquareWave extends CTActor {
         }
         return true;
     }
-     
 
-    /** Output a token according to the waveform. 
-     *    
+
+    /** Output a token according to the waveform.
+     *
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws  IllegalActionException{
@@ -134,7 +134,7 @@ public class CTSquareWave extends CTActor {
 
     /** If a flip occurs during
      *  the currentTime and the currentTime+currentStepSize, then regist
-     *  a jump to the director. 
+     *  a jump to the director.
      *  @return Same as super.prefire()
      *  @exception IllegalActionException If there's no director.
      */
@@ -147,13 +147,13 @@ public class CTSquareWave extends CTActor {
         double now = dir.getCurrentTime();
         double nextfliptime = _lastfliptime + _halfperiod;
         //System.out.println("next flip time="+nextfliptime);
-        if ((nextfliptime > now) && 
+        if ((nextfliptime > now) &&
         (nextfliptime <(now+dir.getSuggestedNextStepSize()))) {
             dir.fireAfterDelay(this, nextfliptime-now);
-        }  
+        }
         return true;
     }
-        
+
     /** Update the parameter if it has been changed.
      *  The new parameter will be used only after this method is called.
      *  FIXME: default values? negative frquency?
@@ -165,10 +165,10 @@ public class CTSquareWave extends CTActor {
         }
         _maxValue = ((DoubleToken)_paramMaxValue.getToken()).doubleValue();
         _minValue = ((DoubleToken)_paramMinValue.getToken()).doubleValue();
-       
+
         double f  = ((DoubleToken)_paramFrequency.getToken()).doubleValue();
         if(f < 0) {
-            throw new IllegalActionException (this, 
+            throw new IllegalActionException (this,
                     "Fequency: "+ f + " is illegal.");
         }
         _frequency = f;
@@ -184,7 +184,7 @@ public class CTSquareWave extends CTActor {
     /** Single output port.
      */
     public TypedIOPort output;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -195,10 +195,10 @@ public class CTSquareWave extends CTActor {
     private double _minValue;
     private CTParameter _paramMinValue;
     private double _frequency;
-    private CTParameter _paramFrequency;   
+    private CTParameter _paramFrequency;
     private boolean _startFromMin;
     private CTParameter _paramStartFromMin;
-    
+
     private double _halfperiod;
     private double _lastfliptime;
     private boolean _isMin;

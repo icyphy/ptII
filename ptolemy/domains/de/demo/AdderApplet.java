@@ -21,7 +21,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -43,7 +43,7 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// AdderApplet
-/** 
+/**
 An applet that uses Ptolemy II DE domain engine to add two binary numbers.
 
 @author Lukito
@@ -57,7 +57,7 @@ public class AdderApplet extends Applet implements Runnable {
     ////                         public methods                         ////
 
     /** Initialize the applet.
-     */	
+     */
     public void init() {
 
         // Process the background parameter.
@@ -96,13 +96,13 @@ public class AdderApplet extends Applet implements Runnable {
         //la.setXLabel("time");
         appletPanel.add(la, "Center");
         la.repaint();
-        
+
         // Adding a control panel in the main panel.
         Panel controlPanel = new Panel();
         add(controlPanel, "South");
         // Done adding a control panel.
 
-        
+
         // Adding A and B in the control panel.
         Panel checkboxPanel = new Panel();
         checkboxPanel.setLayout(new GridLayout(2,1));
@@ -116,7 +116,7 @@ public class AdderApplet extends Applet implements Runnable {
         BEntry.add(_BTextField);
         controlPanel.add(checkboxPanel);
         // Done adding A and B
-        
+
 
         // Adding simulation parameter panel in the control panel.
         Panel simulationParam = new Panel();
@@ -134,23 +134,23 @@ public class AdderApplet extends Applet implements Runnable {
         // Adding current time in the sub panel.
         simulationParam.add(_currentTimeLabel);
         // Done adding average wait time.
-        
+
         // Adding go button in the control panel.
         controlPanel.add(_goButton);
-        _goButton.addActionListener(new GoButtonListener());        
+        _goButton.addActionListener(new GoButtonListener());
         // Done adding go button
-        
+
 
         // Creating the topology.
         try {
             TypedCompositeActor topLevel = new TypedCompositeActor();
             topLevel.setName("Top");
-        
+
             // Set up the top level composite actor, director and manager
             _localDirector = new DECQDirector("DE Director");
             topLevel.setDirector(_localDirector);
             _manager = new Manager("Executive Director");
-            topLevel.setManager(_manager);            
+            topLevel.setManager(_manager);
 
             // ---------------------------------
             // Create the actors.
@@ -159,13 +159,13 @@ public class AdderApplet extends Applet implements Runnable {
             DEClock _clock = new DEClock(topLevel, "Clock", 1.0, 1.0);
             // a full adder with propagation delay equal to 0.1
             DEFullAdder _fullAdder = new DEFullAdder(topLevel, "Fulladder", 0.1);
-            
+
             // These wave form generators output the given array once, then
             // zeros..
             //double[] a = {0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0};
             DEWaveForm _A = new DEWaveForm(topLevel, "WaveForm A", null, false, false, 0);
             //double[] b = {0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0};
-        
+
             DEWaveForm _B = new DEWaveForm(topLevel, "WaveForm B", null, false, false, 0);
 
             _valueOfA = (Parameter)_A.getAttribute("value");
@@ -187,13 +187,13 @@ public class AdderApplet extends Applet implements Runnable {
             _B.input.link(Rclock);
             _S.clock.link(Rclock);
             _Cout.clock.link(Rclock);
-            
+
             // interface to the full adder.
             Relation RA = topLevel.connect(_A.output, _fullAdder.A);
             Relation RB = topLevel.connect(_B.output, _fullAdder.B);
             Relation RS = topLevel.connect(_fullAdder.S, _S.input);
             Relation RCout = topLevel.connect(_fullAdder.Cout, _Cout.input);
-            
+
             // the feedback loop for the carries.
             Relation RCin = topLevel.connect(_Cout.output, _fullAdder.Cin);
 
@@ -204,8 +204,8 @@ public class AdderApplet extends Applet implements Runnable {
             _logicAnalyzer.input.link(RCout);
             _logicAnalyzer.input.link(RCin);
             topLevel.connect(_logicAnalyzer.input, _S.output);
-                        
-            
+
+
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
             ex.printStackTrace();
@@ -215,7 +215,7 @@ public class AdderApplet extends Applet implements Runnable {
     /** Run the simulation.
      */
     public void run() {
-        
+
         String timespec = _stopTimeBox.getText();
         try {
             Double spec = Double.valueOf(timespec);
@@ -238,12 +238,12 @@ public class AdderApplet extends Applet implements Runnable {
         array2d[0] = array;
         t = new DoubleMatrixToken(array2d);
         _valueOfB.setToken(t);
-        
-        
-        
-        
+
+
+
+
         try {
-                
+
                 _localDirector.setStopTime(_stopTime);
 
                 // Start the CurrentTimeThread.
@@ -278,17 +278,17 @@ public class AdderApplet extends Applet implements Runnable {
                 } //HACK
                 */
                 _manager.run();
-                
+
         } catch (Exception ex) {
             System.err.println("Run failed: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
-    
+
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
-    
+
     // The thread that runs the simulation.
     private Thread simulationThread;
 
@@ -310,10 +310,10 @@ public class AdderApplet extends Applet implements Runnable {
     // Attributes to be changed.
     private Parameter _valueOfA;
     private Parameter _valueOfB;
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
-    
+
     // Given a string of the form "x1 x2 x3 x4 ..." where xi's are double
     // values, return an array of double.
     private double[] _string2DoubleArray(String s) {
@@ -354,11 +354,11 @@ public class AdderApplet extends Applet implements Runnable {
                 try {
                     sleep(500);
                 } catch (InterruptedException e) {}
-            } 
+            }
         }
     }
 
-    
+
     private class GoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
             try {
@@ -374,7 +374,7 @@ public class AdderApplet extends Applet implements Runnable {
                 System.out.println("Error: " + e.getMessage());
                 e.printStackTrace();
             }
-                
+
         }
     }
 

@@ -1,8 +1,8 @@
 /*
   File: RBMap.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Changed protection statuses
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -27,9 +27,9 @@ import java.util.NoSuchElementException;
  * <P> For an introduction to this package see <A HREF="index.html"> Overview </A>.
 **/
 
-  
-public class RBMap extends    UpdatableMapImpl 
-                   implements UpdatableMap, 
+
+public class RBMap extends    UpdatableMapImpl
+                   implements UpdatableMap,
                               KeySortedCollection {
 
 // instance variables
@@ -72,8 +72,8 @@ public class RBMap extends    UpdatableMapImpl
  * Special version of constructor needed by clone()
 **/
 
-  protected RBMap(Predicate s, Comparator cmp, RBPair t, int n) { 
-    super(s); 
+  protected RBMap(Predicate s, Comparator cmp, RBPair t, int n) {
+    super(s);
     count_ = n;
     tree_ = t;
     if (cmp != null) cmp_ = cmp;
@@ -84,7 +84,7 @@ public class RBMap extends    UpdatableMapImpl
  * Create an independent copy. Does not clone elements.
 **/
 
-  protected Object clone() throws CloneNotSupportedException { 
+  protected Object clone() throws CloneNotSupportedException {
     if (count_ == 0) return new RBMap(screener_, cmp_);
     else return new RBMap(screener_, cmp_, (RBPair)(tree_.copyTree()), count_);
   }
@@ -117,7 +117,7 @@ public class RBMap extends    UpdatableMapImpl
  * Time complexity: O(1).
  * @see collections.Collection#elements
 **/
-  public synchronized CollectionEnumeration elements() { 
+  public synchronized CollectionEnumeration elements() {
     return new RBPairEnumeration(this, tree_, false);
   }
 
@@ -179,8 +179,8 @@ public class RBMap extends    UpdatableMapImpl
  * Time complexity: O(1).
  * @see collections.Map#keys
 **/
-  public synchronized CollectionEnumeration keys() { 
-    return new RBPairEnumeration(this, tree_, true); 
+  public synchronized CollectionEnumeration keys() {
+    return new RBPairEnumeration(this, tree_, true);
   }
 
 /**
@@ -188,7 +188,7 @@ public class RBMap extends    UpdatableMapImpl
  * Time complexity: O(log n).
  * @see collections.Map#at
 **/
-  public synchronized Object at(Object key) 
+  public synchronized Object at(Object key)
   throws  NoSuchElementException {
     if (count_ != 0) {
       RBPair p = tree_.findKey(key, cmp_);
@@ -205,7 +205,7 @@ public class RBMap extends    UpdatableMapImpl
   public synchronized Object aKeyOf(Object element) {
     if (element == null || count_ == 0) return null;
     RBPair p = ((RBPair)( tree_.find(element, cmp_)));
-    if (p != null) 
+    if (p != null)
       return p.key();
     else
       return null;
@@ -219,7 +219,7 @@ public class RBMap extends    UpdatableMapImpl
  * Time complexity: O(1).
  * @see collections.UpdatableCollection#clear
 **/
-  public synchronized void clear() { 
+  public synchronized void clear() {
     setCount(0);
     tree_ = null;
   }
@@ -254,14 +254,14 @@ public class RBMap extends    UpdatableMapImpl
       decCount();
     }
   }
-      
+
 
 /**
  * Implements collections.UpdatableCollection.replaceOneOf.
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#replaceOneOf
 **/
-  public synchronized void replaceOneOf(Object oldElement, Object newElement) 
+  public synchronized void replaceOneOf(Object oldElement, Object newElement)
   throws IllegalElementException {
     if (count_ == 0 || oldElement == null || oldElement.equals(newElement))
       return;
@@ -278,7 +278,7 @@ public class RBMap extends    UpdatableMapImpl
  * Time complexity: O(n).
  * @see collections.UpdatableCollection#replaceAllOf
 **/
-  public synchronized void replaceAllOf(Object oldElement, Object newElement) 
+  public synchronized void replaceAllOf(Object oldElement, Object newElement)
   throws IllegalElementException {
     RBPair p = (RBPair)(tree_.find(oldElement, cmp_));
     while (p != null) {
@@ -295,7 +295,7 @@ public class RBMap extends    UpdatableMapImpl
  * Takes the element associated with the least key.
  * @see collections.UpdatableCollection#take
 **/
-  public synchronized Object take() 
+  public synchronized Object take()
   throws NoSuchElementException {
     if (count_ != 0) {
       RBPair p = (RBPair)(tree_.leftmost());
@@ -341,9 +341,9 @@ public class RBMap extends    UpdatableMapImpl
  * Time complexity: O(log n).
  * @see collections.UpdatableMap#replaceElement
 **/
-  public synchronized void replaceElement(Object key, Object oldElement, 
-                                          Object newElement)  
-  throws IllegalElementException { 
+  public synchronized void replaceElement(Object key, Object oldElement,
+                                          Object newElement)
+  throws IllegalElementException {
     if (key == null || oldElement == null || count_ == 0) return;
     RBPair p = tree_.find(key, oldElement, cmp_);
     if (p != null) {
@@ -357,7 +357,7 @@ public class RBMap extends    UpdatableMapImpl
 // helper methods
 
 
-  private void add_(Object key, Object element, boolean checkOccurrence) 
+  private void add_(Object key, Object element, boolean checkOccurrence)
   throws IllegalElementException {
     checkKey(key);
     checkElement(element);
@@ -377,7 +377,7 @@ public class RBMap extends    UpdatableMapImpl
           return;
         }
         else if (diff <= 0) {
-          if (t.left() != null) 
+          if (t.left() != null)
             t = (RBPair)(t.left());
           else {
             tree_ = (RBPair)(t.insertLeft(new RBPair(key, element), tree_));
@@ -386,7 +386,7 @@ public class RBMap extends    UpdatableMapImpl
           }
         }
         else {
-          if (t.right() != null) 
+          if (t.right() != null)
             t = (RBPair)(t.right());
           else {
             tree_ = (RBPair)(t.insertRight(new RBPair(key, element), tree_));
@@ -404,7 +404,7 @@ public class RBMap extends    UpdatableMapImpl
  * Implements collections.ImplementationCheckable.checkImplementation.
  * @see collections.ImplementationCheckable#checkImplementation
 **/
-  public void checkImplementation() 
+  public void checkImplementation()
   throws ImplementationError {
 
     super.checkImplementation();

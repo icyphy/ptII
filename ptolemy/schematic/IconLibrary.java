@@ -38,10 +38,10 @@ import java.io.*;
 //////////////////////////////////////////////////////////////////////////
 //// IconLibrary
 /**
-An IconLibrary is the hierarchical object for organizing Icons.   An 
-IconLibrary contains a set of Icons, and a set of other IconLibraries 
-called suiblibraries.  All the Icons contained within this library should 
-have a unique name and a unique entitytype.   The sublibraries and 
+An IconLibrary is the hierarchical object for organizing Icons.   An
+IconLibrary contains a set of Icons, and a set of other IconLibraries
+called suiblibraries.  All the Icons contained within this library should
+have a unique name and a unique entitytype.   The sublibraries and
 description of this Iconlibrary are kept within a dummy XMLElement with
 element type of "header".  This element should be the first child element
 to be parsed, allowing the parse to be halted without parsing all of the
@@ -61,9 +61,9 @@ iconlibrary CDATA #REQUIRED>
 */
 public class IconLibrary extends XMLElement{
 
-    /** Create an IconLibrary object with no attributes.  
+    /** Create an IconLibrary object with no attributes.
      * The Library should then be associated
-     * with a URL and parsed before expecting valid results from the other 
+     * with a URL and parsed before expecting valid results from the other
      * methods
      */
     public IconLibrary() {
@@ -79,14 +79,14 @@ public class IconLibrary extends XMLElement{
 
     }
 
-    /** Create an IconLibrary object with the attributes given in the 
+    /** Create an IconLibrary object with the attributes given in the
      *  HashedMap.
      * The Library should then be associated
-     * with a URL and parsed before expecting valid results from the other 
+     * with a URL and parsed before expecting valid results from the other
      * methods
      */
     public IconLibrary(HashedMap attributes) {
-        super("iconlibrary", attributes);        
+        super("iconlibrary", attributes);
         _sublibraries = (HashedMap) new HashedMap();
         _icons = (HashedMap) new HashedMap();
         _header = new XMLElement("header");
@@ -96,7 +96,7 @@ public class IconLibrary extends XMLElement{
         if(!hasAttribute("name")) setName("");
         if(!hasAttribute("version")) setVersion("");
    }
-        
+
     /**
      * Add an Icon to this library
      */
@@ -105,8 +105,8 @@ public class IconLibrary extends XMLElement{
         _icons.putAt(i.getName(),i);
     }
 
-    /** 
-     * Add a sublibrary to this library.   
+    /**
+     * Add a sublibrary to this library.
      */
     public void addSubLibrary(String name) {
         XMLElement e = new XMLElement("sublibrary");
@@ -114,7 +114,7 @@ public class IconLibrary extends XMLElement{
         _header.addChildElement(e);
         _sublibraries.putAt(name, e);
     }
-    
+
     /**
      * Test if the library contains an Icon with the given name
      */
@@ -128,16 +128,16 @@ public class IconLibrary extends XMLElement{
     public boolean containsSubLibrary(String name) {
         return _sublibraries.includesKey(name);
     }
-    
-    /** 
-     * Get the Icon that is stored in this IconLibrary with the specified 
+
+    /**
+     * Get the Icon that is stored in this IconLibrary with the specified
      * type signature
      */
     public Icon getIcon(EntityType e) {
         return (Icon) _icons.at(e);
     }
 
-    /** 
+    /**
      * Return a long description string of the the Icons in thie Library.
      */
     public String getDescription() {
@@ -157,16 +157,16 @@ public class IconLibrary extends XMLElement{
         return getAttribute("version");
     }
 
-    /** 
+    /**
      * Return the icons that are contained in this icon library.
-     * 
+     *
      * @return an enumeration of Icon
      */
     public Enumeration icons() {
         if(_icons==null) return null;
         return _icons.elements();
     }
-    
+
    /**
      * Remove an icon from this IconLibrary
      */
@@ -185,14 +185,14 @@ public class IconLibrary extends XMLElement{
         _sublibraries.removeAt(name);
     }
 
-    /** 
+    /**
      * Set the string that contains the long description of this library.
      */
     public void setDescription(String s) {
         _description.setPCData(s);
     }
-    
-    /** 
+
+    /**
      * Set the short name of this library
      */
     public void setName(String s) {
@@ -205,9 +205,9 @@ public class IconLibrary extends XMLElement{
         setAttribute("version",s);
     }
 
-    /** 
-     * Return the names of subLibraries of this IconLibrary.   These names 
-     * are URL Strings which can be passed to other IconLibrary objects 
+    /**
+     * Return the names of subLibraries of this IconLibrary.   These names
+     * are URL Strings which can be passed to other IconLibrary objects
      * for parsing.
      * @return an Enumeration of Strings
      */
@@ -234,7 +234,7 @@ public class IconLibrary extends XMLElement{
             _sublibraries.putAt(filename,e);
         } else if(e.getElementType().equals("header")) {
             /* Remove the old header and swap in the new one.
-               if the new header does not contain a description, then 
+               if the new header does not contain a description, then
                keep the old description */
             if(!e.hasChildElement(_description)) {
                 _header.removeChildElement(_description);
@@ -249,7 +249,7 @@ public class IconLibrary extends XMLElement{
             // to it because header doesn't have it's own object.
             _header.removeChildElement(_description);
             _description = e;
-        }    
+        }
     }
 
     private XMLElement _description;

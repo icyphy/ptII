@@ -187,10 +187,10 @@ public class DEReceiver implements Receiver {
             // Can't happen.
             e.printStackTrace();
             throw new InternalErrorException("enqueueEvent with delay "+
-                    "argument = 0 shouldn't throw an exception." + 
-                    " : " + e.getMessage()); 
+                    "argument = 0 shouldn't throw an exception." +
+                    " : " + e.getMessage());
         }
-        
+
     }
 
     /** Put a token with the specified delay into the receiver.  The time
@@ -206,7 +206,7 @@ public class DEReceiver implements Receiver {
      *  @exception IllegalActionException If the delay is negative, or if
      *   there is no director.
      */
-    public void put(Token token, double delay) 
+    public void put(Token token, double delay)
             throws NoRoomException, IllegalActionException {
         getDirector().enqueueEvent(this, token, delay, _depth);
     }
@@ -245,7 +245,7 @@ public class DEReceiver implements Receiver {
      *  really the 'final destination' of the token, rather the containing
      *  CompositeActor will call transferOutput to move the token into its
      *  'final destination'.
-     *  
+     *
      */
     protected boolean _isOCAOutput() {
 
@@ -253,7 +253,7 @@ public class DEReceiver implements Receiver {
         // called so many times.
 
         if (_container == null) {
-            throw new InternalErrorException("This can't happen!! " + 
+            throw new InternalErrorException("This can't happen!! " +
                     "This receiver does not have a container ???");
         }
         if (!_container.isOutput()) {
@@ -267,7 +267,7 @@ public class DEReceiver implements Receiver {
             return false;
         }
         return true;
-        
+
     }
 
     /**

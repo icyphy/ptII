@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
@@ -33,7 +33,7 @@ import collections.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleComparator
-/** 
+/**
 Compare two Double objects.
 @author Jie Liu
 @version $Id$
@@ -58,5 +58,5 @@ public class DoubleComparator implements Comparator{
            return 0;
        }
    }
-    
+
 }

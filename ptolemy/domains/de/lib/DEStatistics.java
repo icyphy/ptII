@@ -73,7 +73,7 @@ public class DEStatistics extends DEActor {
         reset = new DEIOPort(this, "reset", true, false);
 
 	// Assert priorities
-        input.before(demand); 
+        input.before(demand);
         demand.before(reset);
         demand.triggers(average);
         demand.triggers(variance);
@@ -125,7 +125,7 @@ public class DEStatistics extends DEActor {
                 reset.get(0);
                 _sum = 0;
                 _sum2 = 0;
-                _num = 0;            
+                _num = 0;
             }
         }
     }
@@ -144,14 +144,14 @@ public class DEStatistics extends DEActor {
 
     /** Intialize the object fields.
      *
-     *  @exception IllegalActionException Thrown if could not create the 
+     *  @exception IllegalActionException Thrown if could not create the
      *   receivers.
      */
     public void initialize() throws IllegalActionException {
         _sum = 0;
         _sum2 = 0;
         _num = 0;
-            
+
     }
 
     ///////////////////////////////////////////////////////////////////

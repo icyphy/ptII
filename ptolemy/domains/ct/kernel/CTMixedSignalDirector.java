@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
@@ -40,7 +40,7 @@ import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTMixedSignalDirector
-/** 
+/**
 This class adds the event detection capability to the MultiSolverDirector.
 FIXME: Consider just use this as the MultiSolverDirector.
 @author  Jie Liu
@@ -52,7 +52,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
     /** Construct a CTDirector with no name and no Container.
      *  The default startTime and stopTime are all zeros. There's no
      *  scheduler associated.
-     */	
+     */
     public CTMixedSignalDirector () {
         super();
         _initParameters();
@@ -97,7 +97,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         return _fireEndTime;
     }
 
-    /** This does the initialization for the entire subsystem. This 
+    /** This does the initialization for the entire subsystem. This
      *  is called exactly once at the start of the entire execution.
      *  It set the current time to the start time and the current step
      *  size to the initial step size.
@@ -124,7 +124,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             // clear the parameters and make sure the outside parameters
             // override the local parameter (start time).
             updateParameters();
-            
+
             // this is an embedded director.
             // synchronize the start time and request a fire at the start time.
             Director exe = ca.getExecutiveDirector();
@@ -140,7 +140,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
     /** Perform mutation and process pause/stop request.
      *  If the CTSubSystem is requested a stop (if CTSubSystem.isPaused()
      *  returns true) then pause the thread.
-     *  The pause can be wake up by notify(), at that time if the 
+     *  The pause can be wake up by notify(), at that time if the
      *  CTSubSystem is not paused (isPaused() returns false) then
      *  resume the simulation. So the simulation can only be
      *  paused at the prefire stage.
@@ -195,25 +195,25 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             }
             if(Math.abs (_outsideTime -getCurrentTime()) < timeAcc) {
                 if(DEBUG) {
-                    System.out.println("Round up current time " + 
+                    System.out.println("Round up current time " +
                         getCurrentTime() + " to outside time " +_outsideTime);
                 }
                 setCurrentTime(_outsideTime);
             }
-            
+
             // check for roll back.
             if (_outsideTime < getCurrentTime()) {
                 if(DEBUG) {
                     System.out.println(getName() + " rollback from: " +
                         getCurrentTime() + " to: " +_knownGoodTime +
                         "due to outside time " +_outsideTime );
-                }    
+                }
                 if(STAT) {
                     NROLL ++;
                 }
                 rollback();
             }
-            
+
             runlength = Math.min(runlength, _runAheadLength);
             setFireEndTime(_outsideTime + runlength);
             fireAfterDelay(null,_outsideTime - getCurrentTime());
@@ -274,7 +274,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 produceOutput();
                 //return;
             }
-            updateStates(); // call postfire on all actors 
+            updateStates(); // call postfire on all actors
             if(!_isTopLevel()) {
                 if(knownGood) {
                     saveStates();
@@ -282,7 +282,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 }
             }
 
-            
+
 
             //Refine step size and set ODE Solvers.
             setCurrentODESolver(_getDefaultSolver());
@@ -303,7 +303,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 }
                 if(Math.abs(bp-tnow) < timeAcc) {
                     // break point now!
-                    breakPoints.removeFirst();  
+                    breakPoints.removeFirst();
                     setCurrentTime(bp);
                     setCurrentODESolver(_getBreakpointSolver());
                     setCurrentStepSize(getMinStepSize());
@@ -317,7 +317,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                     bp = ((Double)breakPoints.first()).doubleValue();
                     if(Math.abs(bp-tnow) < timeAcc) {
                         setCurrentTime(bp);
-                        breakPoints.removeFirst();  
+                        breakPoints.removeFirst();
                     } else {
                         double iterEndTime = tnow+getCurrentStepSize();
                         if (iterEndTime > bp) {
@@ -330,7 +330,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             if(DEBUG) {
                 System.out.println("Resolved stepsize: "+getCurrentStepSize());
             }
-            
+
             // prefire all the actors.
             boolean ready = true;
             CompositeActor ca = (CompositeActor) getContainer();
@@ -346,7 +346,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                     if(hasMissedEvent()) {
                         setCurrentTime(getCurrentTime()-getCurrentStepSize());
                         setCurrentStepSize(getRefineStepSize());
-                    } else { 
+                    } else {
                         break;
                     }
                 }
@@ -375,7 +375,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         }
     }
 
-    /** Test if the current time is the stop time. 
+    /** Test if the current time is the stop time.
      *  If so, return false ( for stop further simulaiton).
      *  @return false If the simulation time expires.
      *  @exception IllegalActionException If there is no ODE solver, or
@@ -383,8 +383,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
      */
     public boolean postfire() throws IllegalActionException {
         if(_isTopLevel()) {
-            if(Math.abs(getCurrentTime()-getStopTime()) < getTimeAccuracy()) { 
-                updateStates(); // call postfire on all actors 
+            if(Math.abs(getCurrentTime()-getStopTime()) < getTimeAccuracy()) {
+                updateStates(); // call postfire on all actors
                 return false;
             }
             if(getStopTime() < getCurrentTime()) {
@@ -395,7 +395,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
                 fireAfterDelay(null, getStopTime()-getCurrentTime());
             }
         }
-        
+
         return true;
     }
 
@@ -441,11 +441,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         }
     }
 
-    /** Return true if any of the event detectors has a missed event in 
+    /** Return true if any of the event detectors has a missed event in
      *  the last step.
      */
     public boolean hasMissedEvent() {
-        
+
         boolean result = false;
         _refineStepSize = getCurrentStepSize();
         CTScheduler scheduler = (CTScheduler) getScheduler();
@@ -463,7 +463,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             if(answer == true) {
                 result = true;
                 _suggestRefineStepSize(ed.refineStepSize());
-            }   
+            }
         }
         return result;
     }
@@ -478,7 +478,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
     /** Update the given parameter. If the parameter is RunAheadLength
      *  update it. Otherwise pass it to the super class.
      */
-    public void updateParameters(Parameter param) 
+    public void updateParameters(Parameter param)
             throws IllegalActionException {
         if(param == _paramRunAheadLength) {
             if(VERBOSE) {
@@ -496,7 +496,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
     ////                         protected methods                      ////
 
     /**Return true if this is a toplevel director. A syntax suger.
-     */	
+     */
     protected boolean _isTopLevel() {
         long version = workspace().getVersion();
         if (version == _mutationVersion) {
@@ -522,7 +522,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
     private void _initParameters() {
         try {
             _runAheadLength = 1.0;
-            _paramRunAheadLength = new CTParameter(this, 
+            _paramRunAheadLength = new CTParameter(this,
                 "MaxRunAheadLength", new DoubleToken(_runAheadLength));
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
@@ -536,7 +536,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
      */
     protected void _suggestRefineStepSize(double refine) {
         _refineStepSize = Math.min(_refineStepSize, refine);
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -544,13 +544,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
     // version of mutation. If this version is not the workspace
     // version then every thing related to mutation need to be updated.
     private long _mutationVersion = -1;
-    
+
     // Illustrate if this is the top level director.
     private boolean _isTop;
 
     // indeicate the first execution.
     private boolean _first;
-    
+
     // The time for the "known good" state.
     private double _knownGoodTime;
 
@@ -559,7 +559,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
 
     // parameter of default runaheadlength
     private CTParameter _paramRunAheadLength;
-    
+
     // variable of runaheadlength
     private double _runAheadLength;
 

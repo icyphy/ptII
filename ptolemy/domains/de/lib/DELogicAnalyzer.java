@@ -63,7 +63,7 @@ public class DELogicAnalyzer extends DEActor {
      *  @exception NameDuplicationException If the parent class throws it.
      *  @exception IllegalActionException If the parent class throws it.
      */
-    public DELogicAnalyzer(TypedCompositeActor container, 
+    public DELogicAnalyzer(TypedCompositeActor container,
             String name, LogicAnalyzer plot)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
@@ -108,19 +108,19 @@ public class DELogicAnalyzer extends DEActor {
         }
 
         int numEmptyChannel = 0;
-        
+
         int width = input.getWidth();
         for (int i = 0; i<width; i++) {
             // check channel i.
             if (input.hasToken(i)) {
-                double curTime =((DECQDirector)getDirector()).getCurrentTime(); 
+                double curTime =((DECQDirector)getDirector()).getCurrentTime();
                 // channel i is not empty, get all the tokens in it.
                 while (input.hasToken(i)) {
                     DoubleToken curToken = null;
                     curToken = (DoubleToken)input.get(i);
                     double curValue = curToken.doubleValue();
-                    
-                    
+
+
                     // add the point
                     if (curValue == 1.0) {
                         _logicAnalyzer.addPoint(i, curTime, LogicAnalyzer.ONE);

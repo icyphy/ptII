@@ -56,7 +56,7 @@ public class testlistener implements ExecutionListener {
     public void executionPaused(ExecutionEvent event) {
         Debug.println("testlistener: executionPaused");
     }
-    
+
     /** Called to report a successfull resumption of execution
      */
     public void executionResumed(ExecutionEvent event) {
@@ -70,12 +70,12 @@ public class testlistener implements ExecutionListener {
     }
 
     /** Called to report a successful termination of execution.
-     */    
+     */
     public void executionTerminated(ExecutionEvent event) {
         Debug.println("testlistener: executionTerminated");
-    } 
-    
-    /** Called to report that the current iteration finished and 
+    }
+
+    /** Called to report that the current iteration finished and
      *  the wrapup sequence completed normally.
      */
     public void executionFinished(ExecutionEvent event) {

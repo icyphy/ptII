@@ -301,7 +301,7 @@ public class LogicAnalyzerFrame extends Frame {
             } else if (actionCommand.equals("Clear")) {
                 logicAnalyzer.clear(false);
                 logicAnalyzer.repaint();
-            } 
+            }
         }
     }
 

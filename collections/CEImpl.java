@@ -1,8 +1,8 @@
 /*
   File: CEImpl.java
 
-  Originally written by Doug Lea and released into the public domain. 
-  Thanks for the assistance and support of Sun Microsystems Labs, Agorics 
+  Originally written by Doug Lea and released into the public domain.
+  Thanks for the assistance and support of Sun Microsystems Labs, Agorics
   Inc, Loral, and everyone contributing, testing, and using this code.
 
   History:
@@ -11,7 +11,7 @@
   13Oct95  dl                 Changed protection statuses
 
 */
-  
+
 package collections;
 
 import java.util.Enumeration;
@@ -59,16 +59,16 @@ class CEImpl implements CollectionEnumeration {
  * @see collections.CollectionEnumeration#corrupted
 **/
 
-  public boolean corrupted() { 
-    return version_ != coll_.version(); 
+  public boolean corrupted() {
+    return version_ != coll_.version();
   }
 
 /**
  * Implements collections.CollectionEnumeration.numberOfRemaingingElements.
  * @see collections.CollectionEnumeration#numberOfRemaingingElements
 **/
-  public int numberOfRemainingElements() { 
-    return remaining_; 
+  public int numberOfRemainingElements() {
+    return remaining_;
   }
 
 /**
@@ -76,18 +76,18 @@ class CEImpl implements CollectionEnumeration {
  * Return true if numberOfRemainingElements > 0 and not corrupted
  * @see java.util.Enumeration#hasMoreElements
 **/
-  public boolean hasMoreElements() { 
-    return !corrupted() && remaining_ > 0; 
+  public boolean hasMoreElements() {
+    return !corrupted() && remaining_ > 0;
   }
 
 /**
- * Subclass utility. 
+ * Subclass utility.
  * Tries to decrement remaining_, raising exceptions
  * if it is already zero or if corrupted()
  * Always call as the first line of nextElement.
-**/ 
+**/
   protected void decRemaining() throws NoSuchElementException {
-    if (corrupted()) 
+    if (corrupted())
       throw new CorruptedEnumerationException(version_, coll_.version(), coll_, "Using version " + version_ + "but now at version " + coll_.version());
     else if (numberOfRemainingElements() <= 0)
       throw new NoSuchElementException("exhausted enumeration");

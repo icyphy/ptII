@@ -54,7 +54,7 @@ type (string|double|doubleArray) #REQUIRED>
 */
 public class SchematicPort extends SchematicElement {
 
-    /** 
+    /**
      * Create a new SchematicPort object, with no attributes.
      */
     public SchematicPort () {
@@ -65,7 +65,7 @@ public class SchematicPort extends SchematicElement {
         setType("undeclared");
     }
 
-    /** 
+    /**
      * Create a new SchematicPort object, with the specified attributes.
      * @param attributes a HashedMap from a String specifying the name of
      * an attribute to a String specifying the attribute's value.
@@ -78,9 +78,9 @@ public class SchematicPort extends SchematicElement {
         if(!hasAttribute("type")) setType("undeclared");
     }
 
-    /** 
+    /**
      * Return a string that represents the type of this port.  If the type
-     * is not specified and should be determined at runtime, then 
+     * is not specified and should be determined at runtime, then
      * the type returned will be "undeclared".
      */
     public String getType() {
@@ -108,7 +108,7 @@ public class SchematicPort extends SchematicElement {
         return getAttribute("output").equals("true");
     }
 
-    /** 
+    /**
      * Set whether or not this port is an input port.
      */
     public void setInput(boolean flag) {
@@ -133,7 +133,7 @@ public class SchematicPort extends SchematicElement {
     }
 
     /**
-     * Set the type of this port.   If the type is to be dynamically 
+     * Set the type of this port.   If the type is to be dynamically
      * determined, then set the type to "undeclared".
      *
      * @param a String representing the type of this port.

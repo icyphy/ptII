@@ -182,7 +182,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
 		    	if (outport.getDeclaredType() == null &&
 			    inport != outport) {
-			    // output also undeclared, not bi-directional port, 
+			    // output also undeclared, not bi-directional port,
 		            Inequality ineq = new Inequality(
 				inport.getTypeTerm(), outport.getTypeTerm());
 			    result.insertLast(ineq);

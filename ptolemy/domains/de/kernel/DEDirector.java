@@ -41,7 +41,7 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// DEDirector
 //
-/** Abstract base class for DE domain director. 
+/** Abstract base class for DE domain director.
  *
  *  @author Lukito Muliadi
  *  @version $Id$
@@ -60,7 +60,7 @@ public abstract class DEDirector extends Director {
     public DEDirector() {
 	super();
     }
-  
+
     /** Construct a director with the specified name in the default
      *  workspace. If the name argument is null, then the name is set to the
      *  empty string. This director is added to the directory of the workspace,
@@ -70,7 +70,7 @@ public abstract class DEDirector extends Director {
     public DEDirector(String name) {
 	super(name);
     }
-  
+
     /** Construct a director in the given workspace with the given name.
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
@@ -83,10 +83,10 @@ public abstract class DEDirector extends Director {
     public DEDirector(Workspace workspace, String name) {
 	super(workspace, name);
     }
-  
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Put a "pure event" into the event queue with the specified delay and
      *  depth. The time stamp of the event is the current time plus the
      *  delay.  The depth is used to prioritize events that have equal
@@ -104,7 +104,7 @@ public abstract class DEDirector extends Director {
      */
     public abstract void enqueueEvent(Actor actor, double delay, long depth)
 	 throws IllegalActionException;
-       
+
     /** Put a token into the event queue with the specified destination
      *  receiver, delay and depth. The time stamp of the token is the
      *  current time plus the delay.  The depth is used to prioritize
@@ -117,10 +117,10 @@ public abstract class DEDirector extends Director {
      *  @param depth The depth.
      *  @exception IllegalActionException If the delay is negative.
      */
-    public abstract void enqueueEvent(DEReceiver receiver, 
+    public abstract void enqueueEvent(DEReceiver receiver,
 	    Token token,
-	    double delay, 
-	    long depth) 
+	    double delay,
+	    long depth)
 	 throws IllegalActionException;
 
     /** Fire the one actor identified by the prefire() method as ready to fire.
@@ -147,7 +147,7 @@ public abstract class DEDirector extends Director {
     public double getCurrentTime() {
 	return _currentTime;
     }
-    
+
     /** Return the time of the earliest event seen in the simulation.
      *  Before the simulation begins, this is java.lang.Double.MAX_VALUE.
      *  @return The start time of the simulation.
@@ -155,7 +155,7 @@ public abstract class DEDirector extends Director {
     public double getStartTime() {
         return _startTime;
     }
-    
+
     /** Return the stop time of the simulation, as set by setStopTime().
      *  @return The stop time of the simulation.
      */
@@ -181,12 +181,12 @@ public abstract class DEDirector extends Director {
     public Receiver newReceiver() {
 	return new DEReceiver();
     }
-    
+
     /** FIXME: Describe me!
      */
     public boolean postfire() throws IllegalActionException {
         if (_shouldPostfireReturnFalse) {
-            return false;            
+            return false;
         } else {
             return true;
         }
@@ -233,7 +233,7 @@ public abstract class DEDirector extends Director {
                     Token t = port.get(i);
                     if (insiderecs != null && insiderecs[i] != null) {
                         for (int j=0; j < insiderecs[i].length; j++) {
-                            DEReceiver deRec = 
+                            DEReceiver deRec =
                                 (DEReceiver)insiderecs[i][j];
 
                             Actor container = (Actor)getContainer();
@@ -254,12 +254,12 @@ public abstract class DEDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Override the default Director implementation, because in DE
      *  domain, we don't need write access inside an iteration.
      *  @return false.
-     */ 
-    protected boolean _writeAccessPreference() { 
+     */
+    protected boolean _writeAccessPreference() {
         // Return false to let the workspace be write-protected.
         // Return true to debug the PtolemyThread.
         return false;
@@ -268,24 +268,24 @@ public abstract class DEDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
-    
+
+
     // Defines the stopping condition
     protected double _stopTime = 0.0;
-    
+
     // The time of the earliest event seen in the current simulation.
     protected double _startTime = Double.MAX_VALUE;
-    
+
     // The current time of the simulation.
     // Firing actors may get the current time by calling getCurrentTime()
     protected double _currentTime = 0.0;
-    
+
     // Set to true when it's time to end the simulation.
     // e.g. The earliest time in the global event queue is greater than
     // the stop time.
     // FIXME: This is a hack :(
     protected boolean _shouldPostfireReturnFalse = false;
-    
+
     // Decide whether the simulation should be stopped when there's no more
     // events in the global event queue.
     // By default, its value is 'true', meaning that the simulation will stop
@@ -293,6 +293,6 @@ public abstract class DEDirector extends Director {
     // to wait on the queue while some other threads might enqueue events in
     // it.
     protected boolean _stopWhenQueueIsEmpty = true;
-    
+
 
 }

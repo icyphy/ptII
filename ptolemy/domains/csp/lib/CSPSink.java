@@ -40,7 +40,7 @@ import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPSink
-/** 
+/**
     FIXME: add description!!
 
 @author Neil Smyth
@@ -51,8 +51,8 @@ public class CSPSink extends AtomicActor {
     public CSPSink() {
         super();
     }
-    
-    public CSPSink(CompositeActor cont, String name) 
+
+    public CSPSink(CompositeActor cont, String name)
         throws IllegalActionException, NameDuplicationException {
         super(cont, name);
         input = new IOPort(this, "input", true, false);
@@ -68,7 +68,7 @@ public class CSPSink extends AtomicActor {
             while (count < 10 ) {
                 //System.out.println(getName() + " getting...");
                 Token t = input.get(0);
-                System.out.println(getName() + " received Token: " + 
+                System.out.println(getName() + " received Token: " +
                       t.toString());
                 count++;
                 //Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
@@ -80,9 +80,9 @@ public class CSPSink extends AtomicActor {
             System.out.println("CSPSink invalid get, exiting...");
         } catch (NoTokenException ex) {
             System.out.println("CSPSink invalid get, exiting...");
-        } 
+        }
     }
-    
+
     public boolean prefire() {
         return _again;
     }

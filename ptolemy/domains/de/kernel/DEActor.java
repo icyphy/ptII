@@ -64,7 +64,7 @@ public class DEActor extends TypedAtomicActor {
 	 throws NameDuplicationException, IllegalActionException  {
       super(container, name);
     }
-  
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -77,7 +77,7 @@ public class DEActor extends TypedAtomicActor {
         }
         return dir.getCurrentTime();
     }
-    
+
     /*
      */
     public double getStartTime() throws IllegalActionException {
@@ -87,14 +87,14 @@ public class DEActor extends TypedAtomicActor {
 	}
 	return dir.getStartTime();
     }
-    
+
     /*
      */
     public double getStopTime() throws IllegalActionException {
 	DEDirector dir = (DEDirector)getDirector();
 	if (dir==null) {
 	    throw new IllegalActionException("No director available");
-	}	
+	}
 	return dir.getStopTime();
     }
     /** Schedule this actor to be fired at a specified delay relative
@@ -111,7 +111,7 @@ public class DEActor extends TypedAtomicActor {
         // one higher than the max depth of the input ports.
         // If this actor has no input ports, then the depth is set to
         // to be zero.
-        
+
         dir.fireAfterDelay(this, delay);
     }
 
@@ -137,16 +137,16 @@ public class DEActor extends TypedAtomicActor {
 		    }
 		}
 	    }
-	    	    
+
 	}
-    } 
+    }
     */
 
   ///////////////////////////////////////////////////////////////////
   ////                         private variables                 ////
-  
+
   // Private variables should not have doc comments, they should
   // have regular C++ comments.
-  
+
 }
 

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -35,7 +35,7 @@ import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNRedirect
-/** 
+/**
 
 @author Mudit Goel
 @version $Id$
@@ -44,7 +44,7 @@ public class PNRedirect extends AtomicActor{
 
     /** Constructor Adds ports to the star
      * @exception NameDuplicationException indicates that an attempt to add
-     *  two ports with the same name has been made, or a star with an 
+     *  two ports with the same name has been made, or a star with an
      *  identical name already exists.
      * @exception IllegalActionException a port with name null is being added
      *  to the star
@@ -55,8 +55,8 @@ public class PNRedirect extends AtomicActor{
         _input = new IOPort(this, "input", true, false);
         _output = new IOPort(this, "output", false, true);
     }
-    
- 
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -80,7 +80,7 @@ public class PNRedirect extends AtomicActor{
      *  @param valueString This is the value to be assigned to the parameter
      *  @throws IllegalActionException If the parameter is not recognised
      */
-    public void setParam(String name, String valueString) 
+    public void setParam(String name, String valueString)
 	    throws IllegalActionException {
 	if (name.equals("Initial Value")) {
 	    _initValue = new IntToken(valueString);

@@ -1,27 +1,27 @@
 /* A library of audio operations.
- 
+
 Copyright (c) 1998 The Regents of the University of California.
 All rights reserved.
- 
+
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
 software and its documentation for any purpose, provided that the above
 copyright notice and the following two paragraphs appear in all copies
 of this software.
- 
+
 IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
- 
+
 THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
- 
+
 */
 
 package ptolemy.media;
@@ -34,7 +34,7 @@ import java.io.IOException;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// Audio 
+//// Audio
 /**
  * Instances of this class represent audio data equivalent to that
  * contained by a Sun/NeXT audio file (.au file).  The class also
@@ -66,7 +66,7 @@ import java.io.IOException;
  *  </CENTER>
  *  <p>
  *  The design of this class is based on the web page of
- *  <a href=mailto:donahu@cooper.edu>Billy Donahue</a>. 
+ *  <a href=mailto:donahu@cooper.edu>Billy Donahue</a>.
  *  <a href=http://www.cooper.edu/~donahu/auformat/auFormat.html>
  *  http://www.cooper.edu/~donahu/auformat/auFormat.html</a>.
  *  Note that this class serves the same role as
@@ -97,10 +97,10 @@ public class Audio {
         this.audio = new byte[1][];
         this.audio[0] = audio;
     }
-    
+
     /** Construct an instance initialized with the audio
      *  signal given by the argument.  The argument is an array
-     *  of double-precision, floating point audio samples assumed to 
+     *  of double-precision, floating point audio samples assumed to
      *  be normalized to be in the range -1.0 to 1.0.
      *  The data will be encoded according to the mu-law standard at an
      *  8kHz sample rate, with a single channel.
@@ -119,7 +119,7 @@ public class Audio {
             this.audio[0][i]=lin2mu((int)(audio[i]*31616.0));
         }
     }
-    
+
     /** Construct an instance and initialize it by reading
      *  the specified stream.
      *  @param input The input stream.
@@ -133,11 +133,11 @@ public class Audio {
         format=input.readInt();
         sampleRate=input.readInt();
         numChannels=input.readInt();
-        
+
         // Read the info field.
         info = new byte[offset-24];
         input.read(info, 0, offset-24);
-        
+
         // Check the magic number, which should be 0x2E736E64,'.snd'
         // in ASCII.
         if (magic[0] != 0x2E || magic[1] != 0x73 || magic[2] != 0x6E ||
@@ -154,42 +154,42 @@ public class Audio {
             throw new IllegalArgumentException("SignalProcessing.readAudio:"
             + " Sorry, only one-channel audio data can be read.");
         }
-        
+
         // Finally read the audio data.
         audio = new byte[1][size];
         input.readFully(audio[0]);
     }
-    
+
     /////////////////////////////////////////////////////////////////////
     ////                      public members                         ////
-    
+
     /** The file type identifier, 0x2E736E64 or '.snd' in ASCII. */
     public byte magic[] = {'.', 's', 'n', 'd'};
-    
+
     /** Offset of audio data relative to the start of the stream. */
     public int offset;
-    
+
     /** Number of bytes of audio data. */
     public int size;
-    
+
     /** Format code; 1 for 8-bit mu-law. */
     public int format;
-    
+
     /** The sampling rate. */
     public int sampleRate;
-    
+
     /** The number of channels. */
     public int numChannels;
-    
+
     /** Four byte info field. */
     public byte info[];
-    
+
     /** Audio data, by channel. */
     public byte[][] audio;
-    
+
     /////////////////////////////////////////////////////////////////////
     ////                      public methods                         ////
-    
+
     /** Convert an integer linear representation of an audio sample
      *  into a mu-255 companded representation.  Mu law is the standard
      *  used in Sun .au files as well as throughout the telephone network.
@@ -216,7 +216,7 @@ public class Audio {
      *  This code may be freely used as long as proper credit
      *  is given.  It was originally written in C by
      *  Craig Reese (IDA/Supercomputing Research Center) and
-     *  Joe Campbell (Department of Defense), and 
+     *  Joe Campbell (Department of Defense), and
      *  ported to Java by Tony Hursh, January 1997.
      *  References:
      *  <ol>
@@ -232,7 +232,7 @@ public class Audio {
      *
      *  @param lin A linear representation of the sample.
      *  @return A mu-255 representation of the sample.
-     */ 
+     */
     public static byte lin2mu(int sample) {
         int sign = 0;
         if(sample < 0) {
@@ -279,7 +279,7 @@ public class Audio {
      *
      *  @param b A mu-255 representation of the sample.
      *  @return A linear representation of the sample.
-     */ 
+     */
     public static int mu2lin(byte b) {
         // flip the bits
         int mu = b ^ 0xFF;
@@ -328,7 +328,7 @@ public class Audio {
      */
     public static void setZeroTrap(boolean boole) {
         _zerotrap = boole;
-    }     
+    }
 
     /** Convert the audio data to linear double encoding (from mu-law).
      *  The returned numbers lie in the range -1.0 to 1.0.
@@ -346,7 +346,7 @@ public class Audio {
         }
         return null;
     }
-    
+
     /** Convert the audio data to linear integer encoding (from mu-law).
      *  The returned integers use the low-order 16 bits only, lying
      *  in the range -31616 to 31616.
@@ -365,7 +365,7 @@ public class Audio {
         }
         return null;
     }
-    
+
     /** Return a readable representation of the header data. */
     public String toString() {
         return "file ID tag = " + new String(magic) + "\n"
@@ -376,7 +376,7 @@ public class Audio {
         + "number of channels = " + numChannels + "\n"
         + "info field = " + new String(info);
     }
-    
+
     /** Write the audio data to an output stream in the Sun audio format.
      *  This method can be used to play the audio data using the
      *  (undocumented and unsupported) sun.audio package as follows:
@@ -435,7 +435,7 @@ public class Audio {
 
     // The following are used for mu-law conversion.
     // Turn on the trap as per the MIL-STD (this prevents a result of 0).
-    private static boolean _zerotrap = false; 
+    private static boolean _zerotrap = false;
     // define the add-in bias for 16 bit samples.
     private static final int BIAS = 0x84;
     // clipping value for inputs.

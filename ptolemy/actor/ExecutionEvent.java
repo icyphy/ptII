@@ -9,10 +9,10 @@ software and its documentation for any purpose, provided that the above
 copyright notice and the following two paragraphs appear in all copies
 of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY 
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES 
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF 
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF 
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
 THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
@@ -33,11 +33,11 @@ package ptolemy.actor;
 //////////////////////////////////////////////////////////////////////////
 //// ExecutionEvent
 /**
-An ExecutionEvent is passed from a Manager to an ExecutionListener to 
-represent an event that happened during the execution of a topology.   
-This event contains three pieces of information:  the manager that created 
-the event, the toplevel iteration number during which the event occured and 
-an exception.   Each object may or may not be a valid reference.   
+An ExecutionEvent is passed from a Manager to an ExecutionListener to
+represent an event that happened during the execution of a topology.
+This event contains three pieces of information:  the manager that created
+the event, the toplevel iteration number during which the event occured and
+an exception.   Each object may or may not be a valid reference.
 
 @author Steve Neuendorffer
 @version: $Id$
@@ -73,20 +73,20 @@ public class ExecutionEvent {
 
     //////////////////////////////////////////////////////////////
     ////                    public methods                   /////
-    
+
     /** Return the Manager that generated the event.
      */
     public Manager getManager() {
         return _manager;
     }
 
-    /** Return the number of the toplevel iteration during which the event 
+    /** Return the number of the toplevel iteration during which the event
      *  was generated.
      */
     public int getIteration() {
         return _iteration;
     }
-    
+
     /** Return the exception associated with the event.
      */
     public Exception getException() {

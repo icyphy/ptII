@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -37,23 +37,23 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTGain
-/** 
-The output of the actor is the input multiplies a gain. This actor 
+/**
+The output of the actor is the input multiplies a gain. This actor
 should have the same function in all domains. Single input single output.
 (IO type: double). This actor has one double parameter, the gain.
 @author Jie Liu
 @version $Id$
 */
 public class CTGain extends CTActor {
-    /** Construct the gain, default gain is 1.0. Single input, single 
+    /** Construct the gain, default gain is 1.0. Single input, single
      *  output.
      * @see ptolemy.domains.ct.kernel.CTActor
      * @param container The CTSubSystem this star belongs to
      * @param name The name
      * @exception NameDuplicationException another star already had this name
      * @exception IllegalActionException illustrates internal problems
-     */	
-    public CTGain(TypedCompositeActor container, String name) 
+     */
+    public CTGain(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input = new TypedIOPort(this, "input");
@@ -72,10 +72,10 @@ public class CTGain extends CTActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Multiply the input token with the gain, and output the product.
-     *  
-     *  @exception IllegalActionException If there's no input token 
+     *
+     *  @exception IllegalActionException If there's no input token
      *        when needed.
      */
     public void fire() throws IllegalActionException{
@@ -86,12 +86,12 @@ public class CTGain extends CTActor {
 
     /** Update the parameter if it has been changed.
      *  The new parameter will be used only after this method is called.
-     *  @exception IllegalActionException Never thrown.*  
+     *  @exception IllegalActionException Never thrown.*
      */
     public void updateParameters() throws IllegalActionException {
         _gain = ((DoubleToken)_paramGain.getToken()).doubleValue();
     }
-    
+
     /** The single input port.
      */
     public TypedIOPort input;

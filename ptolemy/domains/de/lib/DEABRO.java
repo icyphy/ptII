@@ -67,7 +67,7 @@ public class DEABRO extends DEThreadActor {
             String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        
+
         // create the ports
         A = new DEIOPort(this, "A", true, false);
         B = new DEIOPort(this, "B", true, false);
@@ -84,7 +84,7 @@ public class DEABRO extends DEThreadActor {
 
     public void run() {
         try {
-            
+
 
             while (true) {
                 if (DEBUG) {
@@ -121,7 +121,7 @@ public class DEABRO extends DEThreadActor {
                     if (DEBUG) {
                         System.out.println("Seen B..");
                     }
-                    
+
                     IOPort[] ports = {A,R};
                     waitForNewInputs(ports);
                     if (!R.hasToken(0)) {
@@ -139,12 +139,12 @@ public class DEABRO extends DEThreadActor {
                     }
                 }
             } // while (true)
-        
+
 
         } catch (IllegalActionException e) {
             e.printStackTrace();
             throw new InternalErrorException(e.getMessage());
-            
+
         }
     }
 

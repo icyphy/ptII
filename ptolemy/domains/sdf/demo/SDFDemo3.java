@@ -56,11 +56,11 @@ public class SDFdemo3 {
     private SDFScheduler s=new SDFScheduler();
     private IORelation r;
 
-    public static void main(String args[])            
+    public static void main(String args[])
             throws IllegalActionException, NameDuplicationException
          {
 
-        
+
         SDFdemo3 demo=new SDFdemo3();
         demo.execute();
     }
@@ -94,8 +94,8 @@ public class SDFdemo3 {
                 p.setToken(new IntToken(1));
                 m.run();
         }
-}    
- 
-    
+}
+
+
 
 

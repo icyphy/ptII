@@ -41,7 +41,7 @@ import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPSource
-/** 
+/**
     FIXME: add description!!
 
 @author Neil Smyth
@@ -53,16 +53,16 @@ public class CSPPausingSource extends AtomicActor {
     public CSPPausingSource() {
         super();
     }
-    
-    public CSPPausingSource(CompositeActor cont, String name) 
+
+    public CSPPausingSource(CompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
          output = new IOPort(this, "output", false, true);
     }
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
-            
+
     public void fire() {
         try {
             Random rand = new Random();
@@ -89,16 +89,16 @@ public class CSPPausingSource extends AtomicActor {
             return;
         } catch (IllegalActionException ex) {
             System.out.println("CSPSource: illegalActionException, exiting");
-        }  
+        }
     }
 
     public boolean prefire() {
         return _again;
     }
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
-    
+
     public IOPort output;
     private boolean _again = true;
 }
