@@ -200,7 +200,7 @@ public class AccelerLinearizer extends CTActor{
 
     /** Update the parameter if they have been changed.
      *  The new parameter will be used only after this method is called.
-     *  @exception IllegalActionException Never thrown.*
+     *  @exception IllegalActionException Not thrown in this base class
      */
     public void updateParameters() throws IllegalActionException {
         String taps = ((StringToken)paramAlphaP.getToken()).toString();

@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (liuj@eecs.berkeley.edu)
+@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.demo.Helicopter;
@@ -323,7 +326,7 @@ public class HelicopterApplet extends CTApplet {
             xzPlot.plot.setXRange(-1.0, 100.0);
             xzPlot.plot.setYRange(1.0, 12.0);
             xzPlot.plot.setSize(200, 200);
-            xzPlot.plot.addLegend(0,"x,z");
+            xzPlot.plot.addLegend(0, "x, z");
 
             TimedPlotter vxPlot = new TimedPlotter(_toplevel,
                     "Horizontal Speed");
@@ -708,7 +711,7 @@ public class HelicopterApplet extends CTApplet {
 
     /** Execute the system.  This overrides the base class to read the
      *  values in the query box first.
-     *  @exception IllegalActionException Not thrown.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _go() throws IllegalActionException {
         try {

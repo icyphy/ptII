@@ -66,8 +66,9 @@ public class HelicopterActor extends CTActor{
     /** Construct the actor, all parameters take the default value.
      * @param container The TypedCompositeActor this star belongs to
      * @param name The name
-     * @exception NameDuplicationException another star already had this name
-     * @exception IllegalActionException illustrates internal problems
+     * @exception NameDuplicationException If another star already had
+     * this name
+     * @exception IllegalActionException If there is an internal error.
      */
     public HelicopterActor(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
@@ -147,7 +148,7 @@ public class HelicopterActor extends CTActor{
 
     /** Update the parameter if they have been changed.
      *  The new parameter will be used only after this method is called.
-     *  @exception IllegalActionException Never thrown.*
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public void updateParameters() throws IllegalActionException {
         _Iy = ((DoubleToken)paramIy.getToken()).doubleValue();
