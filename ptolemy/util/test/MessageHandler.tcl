@@ -134,13 +134,32 @@ java.lang.Throwable: Another throwable}}
 
 ######################################################################
 ####
-#
-#  test MessageHandler-7.1 {yesNoQuestion(String)} {
-#      jdkCapture {
-#  	java::call ptolemy.util.MessageHandler \
-#  		yesNoQuestion "Is this test working?"
-#      } results
-#      #list $results
-#      list "No test for	
-#  } {} {N
+test MessageHandler-7.1 {yesNoQuestion(String), answer is yes} {
+    set stdin [java::field System in]
+    # set the byteArray to "yes" 
+    set byteArray [java::new {byte[]} {3} {121 101 115}]
+    set stream [java::new java.io.ByteArrayInputStream $byteArray]
+    java::call System setIn $stream
+    jdkCapture {
+ 	set answer [java::call ptolemy.util.MessageHandler \
+ 		yesNoQuestion "Is this test working?"]
+    } results
+    java::call System setIn $stdin
+    list $answer $results
+} {1 {Is this test working? (yes or no) }}
 
+######################################################################
+####
+test MessageHandler-7.2 {yesNoQuestion(String), answer is yes} {
+    set stdin [java::field System in]
+    # set the byteArray to "no" 
+    set byteArray [java::new {byte[]} {2} {110 111}]
+    set stream [java::new java.io.ByteArrayInputStream $byteArray]
+    java::call System setIn $stream
+    jdkCapture {
+ 	set answer [java::call ptolemy.util.MessageHandler \
+ 		yesNoQuestion "Is this other test working?"]
+    } results
+    java::call System setIn $stdin
+    list $answer $results
+} {0 {Is this other test working? (yes or no) }}
