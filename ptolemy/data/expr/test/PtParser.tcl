@@ -400,3 +400,31 @@ test PtParser-9.0 {Check that evaluation of the parse tree does not change the p
 
     list [$res1a getValue] [$res1b getValue] [$res2a getValue] [$res2b getValue] [$res3a getValue] [$res3b getValue] [$res4a getValue] [$res4b getValue] [$res5a getValue] [$res5b getValue]
 } {5 5 -1 -1 6 6 0.5 0.5 2 2}
+######################################################################
+####
+# Need to test that constants can be registered and recognized by the parser.
+test PtParser-9.0 {Test that constants can be registered and recognized by the parser} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root1 [ $p1 {generateParseTree String} "PI + E"]
+    set res1 [ $root1 evaluateParseTree ]
+    set value1 [$res1 toString]
+
+    $p1 registerConstant "neil" "neil"
+    $p1 registerConstant "one" [java::new {Integer int} 1]
+    $p1 registerConstant "half" [java::new {Double double} "0.5"]
+    $p1 registerConstant "long" [java::new {Long long} "1000"]
+    $p1 registerConstant "boolean" [java::new {Boolean boolean} "true"]
+
+    set root1 [ $p1 {generateParseTree String} "half + one + neil"]
+    set res1 [ $root1 evaluateParseTree ]
+    set value2 [$res1 toString]
+
+    set root1 [ $p1 {generateParseTree String} "boolean == true"]
+    set res1 [ $root1 evaluateParseTree ]
+    set value3 [$res1 toString]
+
+    set root1 [ $p1 {generateParseTree String} "long"]
+    set res1 [ $root1 evaluateParseTree ]
+    set value4 [$res1 toString]
+    list $value1 $value2 $value3 $value4
+} {ptolemy.data.DoubleToken(5.86) ptolemy.data.StringToken(1.5neil) ptolemy.data.BooleanToken(true) ptolemy.data.LongToken(1000)}
