@@ -40,32 +40,21 @@ import java.util.NoSuchElementException;
 @version $Id$
 */
 public class PNRamp extends PNActor{
-    /** Constructor
-     */	
-    public PNRamp() {
-        super();
-    }
-
-    /** Constructor 
-     */
-    public PNRamp(Workspace workspace) {
-        super(workspace);
-    }
-
+    
     /** Constructor Adds ports to the star
      * @param initValue is the initial token that the star puts in the stream
      * @exception NameDuplicationException indicates that an attempt to add
      *  two ports with the same name has been made
      */
     public PNRamp(CompositeActor container, String name)
-             throws NameDuplicationException {
+            throws NameDuplicationException {
         super(container, name);
         _output = newOutPort(this, "output");
     }
- 
+    
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-
+    
     public void setInitState(int seed) {
         _seed = seed;
     }
@@ -83,6 +72,7 @@ public class PNRamp extends PNActor{
                 _seed++;
             }
             System.out.println("Terminating at al "+this.getName());
+            ((PNDirector)getDirector()).processStopped();
         } catch (NoSuchElementException e) {
 	    System.out.println("Terminating "+this.getName());
             return;
@@ -91,9 +81,10 @@ public class PNRamp extends PNActor{
     
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
-
+    
     /* This is the initial value that the star puts in the stream */
     private int _seed;
     /* Output port */
     private PNOutPort _output;
 }
+
