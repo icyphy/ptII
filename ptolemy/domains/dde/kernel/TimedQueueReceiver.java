@@ -175,6 +175,27 @@ public class TimedQueueReceiver {
             TimeKeeper timeKeeper =
                 ((DDEThread)thread).getTimeKeeper();
 
+	    if( !isInsideBoundary() && !isOutsideBoundary() ) {
+		if( !timeKeeper.searchingForIgnoredTokens() ) {
+		    timeKeeper.setSearchForIgnoredTokens( true );
+		    timeKeeper.updateIgnoredReceivers();
+		}
+		if( !timeKeeper.searchingForIgnoredTokens() ) {
+		    timeKeeper.updateRcvrList(this);
+		}
+	    } else if( !isInsideBoundary() ) {
+		timeKeeper.updateRcvrList(this);
+	    }
+        }
+
+
+	/*
+        // Call updateRcvrList() even if _queue.size() == 0,
+        // so that the triple is no longer in front.
+        if( thread instanceof DDEThread ) {
+            TimeKeeper timeKeeper =
+                ((DDEThread)thread).getTimeKeeper();
+
             if( !timeKeeper.searchingForIgnoredTokens() ) {
                 timeKeeper.setSearchForIgnoredTokens( true );
                 timeKeeper.updateIgnoredReceivers();
@@ -183,6 +204,7 @@ public class TimedQueueReceiver {
                 timeKeeper.updateRcvrList(this);
             }
         }
+	*/
         return token;
     }
 
@@ -508,7 +530,8 @@ public class TimedQueueReceiver {
     private int _priority = 0;
 
     // The queue in which this receiver stores tokens.
-    private FIFOQueue _queue = new FIFOQueue();
+    // FIXME
+    FIFOQueue _queue = new FIFOQueue();
 
     // The IOPort which contains this receiver.
     private IOPort _container;
@@ -523,7 +546,8 @@ public class TimedQueueReceiver {
     // where the specification of the destination receiver
     // may be considered redundant.
 
-    private class Event {
+    // FIXME
+    public class Event {
 
 	// Construct an Event with a token and time stamp.
 	public Event(Token token, double time) {
