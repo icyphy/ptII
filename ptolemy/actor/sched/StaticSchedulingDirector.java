@@ -100,6 +100,65 @@ public class StaticSchedulingDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Calculate the current schedule, if necessary,
+     *  and iterate the contained actors
+     *  in the order given by the schedule.  No internal state of the
+     *  director is updated during fire, so it may be used with domains that
+     *  require this property, such as CT.
+     *  <p>
+     *  Iterating an actor involves calling the actor's iterate() method,
+     *  which is equivalent to calling the actor's  prefire(), fire() and
+     *  postfire() methods in succession.  If iterate() returns NOT_READY,
+     *  indicating that the actor is not ready to execute, then an
+     *  IllegalActionException will be thrown. The values returned from
+     *  iterate() are recorded and are used to determine the value that
+     *  postfire() will return at the end of the director's iteration.
+     *  <p>
+     *  This base class is intended to be sample code for statically 
+     *  scheduled domains.  In many cases, these domains will need to 
+     *  override this method to perform domain specific operations.
+     *  @exception IllegalActionException If any actor executed by this
+     *  actor return false in prefire.
+     *  @exception InvalidStateException If this director does not have a
+     *  container.
+     */
+    public void fire() throws IllegalActionException {
+        TypedCompositeActor container = ((TypedCompositeActor)getContainer());
+
+        if (container == null) {
+            throw new InvalidStateException("Director " + getName() +
+                    " fired, but it has no container!");
+        } else {
+            Scheduler s = getScheduler();
+            if (s == null)
+                throw new IllegalActionException("Attempted to fire " +
+                        "system with no scheduler");
+	    Schedule sched = s.getSchedule();
+	    Iterator firings = sched.firingIterator();
+            while (firings.hasNext()) {
+		Firing firing = (Firing)firings.next();
+		Actor actor = (Actor)firing.getActor();
+		int iterationCount = firing.getIterationCount();
+
+		if(_debugging) {
+                    _debug(new FiringEvent(this, actor, FiringEvent.ITERATE));
+		}
+
+		int returnVal =
+                    actor.iterate(iterationCount);
+		if (returnVal == COMPLETED) {
+		    _postfirereturns = _postfirereturns && true;
+		} else if (returnVal == NOT_READY) {
+		    throw new IllegalActionException(this,
+                            (ComponentEntity) actor, "Actor " +
+                            "is not ready to fire.");
+		} else if (returnVal == STOP_ITERATING) {
+		    _postfirereturns = false;
+		}
+            }
+        }
+    }
+
     /** Return the scheduler that is responsible for scheduling the
      *  directed actors.
      *  This method is read-synchronized on the workspace.
