@@ -225,6 +225,16 @@ public class TypeTest extends Discard {
                     names.hasNext();) {
                     String name = (String)names.next();
                     StringToken value = (StringToken)assignment.get(name);
+                    if (actualPortTypes == null) {
+                        throw new IllegalActionException(this,
+                                "actualPortTypes is null!");
+                    }
+                    if (actualPortTypes.get(actorName) == null) {
+                        throw new IllegalActionException(this,
+                                "actualPortTypes.get(" + actorName
+                                + ") returned null.  Perhaps there is no "
+                                + "actor by that name?");
+                    }
                     StringToken actualValue = 
                         (StringToken)((RecordToken)actualPortTypes.get(
                                               actorName)).get(name);
