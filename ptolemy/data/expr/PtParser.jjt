@@ -688,7 +688,7 @@ String tidied, x;
            // Register the calling parameter as a ParameterListener 
 	   // of this Parameter this ID references.
            if (_listener != null) {
-        	referedParam.registerListener(_listener);
+        	referedParam.addParameterListener(_listener);
             }
         } else if (_constantsRecognized.containsKey(token.image)) {
             // constant is registered with the parser.
