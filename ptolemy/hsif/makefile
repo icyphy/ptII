@@ -37,7 +37,7 @@ DIRS =		xsl
 # Root of the Java directory
 ROOT =		../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR).$(CLASSPATHSEPARATOR)$(ROOT)/ptolemy/apps/hsif/saxon7.jar
+CLASSPATH =	$(ROOT)
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
@@ -82,64 +82,64 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES =
 
 # Command to run the Saxon transformer.
-SAXON_TRANSFORM = CLASSPATH="$(CLASSPATH)" "$(JAVA)" \
-			net.sf.saxon.Transform 
+XSL_TRANSFORM = CLASSPATH="$(CLASSPATH)" "$(JAVA)" \
+			ptolemy.util.XSLTUtilities
 JCLASS = $(JSRCS:%.java=%.class)
 
-all:	jclass Thermostat.xml SwimmingPool.xml
+# This rule will convert a .hsif file into a .moml file. Try:
+#   cp demo/SwimmingPool/SwimmingPool.xml SwimmingPool.hsif
+#   cp demo/SwimmingPool/HSIF.dtd .
+#   make SwimmingPool.moml
+.SUFFIXES: .hsif .moml
+.hsif.moml:
+	rm -f `basename $< .hsif`.moml
+	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" "$(JAVA)" \
+		ptolemy.hsif.HSIFUtilities $< $@
+
+all:	jclass Thermostat_moml.xml SwimmingPool_moml.xml
 install: all jars 
 
 # In the rules below, note that the .xsl style sheet is at the end
 # of the list of dependencies.
 
 # Generating MoML files
-#Thermostat : sl_pre_Thermostat Thermostat.xml
-Thermostat.xml: data/Thermostat_mid_sl.xml xsl/HSIF.xsl
-	$(SAXON_TRANSFORM) $^ > $@
+Thermostat_moml.xml: data/Thermostat_mid_sl.xml xsl/HSIF.xsl
+	$(XSL_TRANSFORM) $^ $@
 
-#SwimmingPool : sl_pre_SwimmingPool SwimmingPool.xml
-SwimmingPool.xml: data/SwimmingPool_mid_sl.xml xsl/HSIF.xsl
-	$(SAXON_TRANSFORM) $^ > $@
+SwimmingPool_moml.xml: data/SwimmingPool_mid_sl.xml xsl/HSIF.xsl
+	$(XSL_TRANSFORM) $^ $@
 
 
 # Dealing with the redundant nodes after l_pre_shif
-#sl_pre_Thermostat : l_pre_Thermostat data/Thermostat_mid_sl.xml
 data/Thermostat_mid_sl.xml: data/Thermostat_mid_l.xml xsl/SlimPreprocessor.xsl
-	$(SAXON_TRANSFORM) $^ > $@
+	$(XSL_TRANSFORM) $^ $@
 
-#sl_pre_SwimmingPool : l_pre_Thermostat data/SwimmingPool_mid_sl.xml
 data/SwimmingPool_mid_sl.xml: data/SwimmingPool_mid_l.xml xsl/SlimPreprocessor.xsl
-	$(SAXON_TRANSFORM) $^ > $@
+	$(XSL_TRANSFORM) $^ $@
 
 
 # Dealing with Local Variables
-#l_pre_Thermostat : sg_pre_Thermostat data/Thermostat_mid_l.xml
 data/Thermostat_mid_l.xml: data/Thermostat_mid_sg.xml xsl/LocalVariablePreprocessor.xsl
-	$(SAXON_TRANSFORM) $^ > $@
+	$(XSL_TRANSFORM) $^ $@
 
-#l_pre_SwimmingPool : sg_pre_SwimmingPool data/SwimmingPool_mid_l.xml
 data/SwimmingPool_mid_l.xml: data/SwimmingPool_mid_sg.xml xsl/LocalVariablePreprocessor.xsl
-	$(SAXON_TRANSFORM) $^ > $@
+	$(XSL_TRANSFORM) $^ $@
 
 
 # Dealing with the redundant nodes after g_pre_shif
-#sg_pre_Thermostat : g_pre_Thermostat data/Thermostat_mid_sg.xml
 data/Thermostat_mid_sg.xml: data/Thermostat_mid_g.xml xsl/SlimPreprocessor.xsl
-	$(SAXON_TRANSFORM) $^ > $@
+	$(XSL_TRANSFORM) $^ $@
 
-#sg_pre_SwimmingPool : g_pre_SwimmingPool data/SwimmingPool_mid_sg.xml
 data/SwimmingPool_mid_sg.xml: data/SwimmingPool_mid_g.xml xsl/SlimPreprocessor.xsl
-	$(SAXON_TRANSFORM) $^ > $@
+	$(XSL_TRANSFORM) $^ $@
 
 
 # Dealing with Global Variables
-#g_pre_Thermostat: data/Thermostat_mid_g.xml
-data/Thermostat_mid_g.xml: data/Thermostat.xml xsl/GlobalVariablePreprocessor.xsl
-	$(SAXON_TRANSFORM) $^ > $@
+data/Thermostat_mid_g.xml: demo/Thermostat/Thermostat.xml xsl/GlobalVariablePreprocessor.xsl
+	$(XSL_TRANSFORM) $^ $@
 
-#g_pre_SwimmingPool: data/SwimmingPool_mid_g.xml
-data/SwimmingPool_mid_g.xml: data/SwimmingPool.xml xsl/GlobalVariablePreprocessor.xsl
-	$(SAXON_TRANSFORM) $^ > $@
+data/SwimmingPool_mid_g.xml: demo/SwimmingPool/SwimmingPool.xml xsl/GlobalVariablePreprocessor.xsl
+	$(XSL_TRANSFORM) $^ $@
 
 
 # Get the rest of the rules
