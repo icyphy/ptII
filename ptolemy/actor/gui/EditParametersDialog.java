@@ -65,7 +65,7 @@ close the dialog.
 <p>
 The dialog is modal, so the statement that creates the dialog will
 not return until the user dismisses the dialog.  The method buttonPressed()
-can then be called to find out whether the user clicked the OK button
+can then be called to find out whether the user clicked the Commit button
 or the Cancel button (or any other button specified in the constructor).
 Then you can access the component to determine what values were set
 by the user.
@@ -77,7 +77,7 @@ public class EditParametersDialog extends ComponentDialog
     implements ChangeListener {
 
     /** Construct a dialog with the specified owner and target.
-     *  An "OK" and a "Cancel" button are added to the dialog.
+     *  A "Commit" and a "Cancel" button are added to the dialog.
      *  The dialog is placed relative to the owner.
      *  @param owner The object that, per the user, appears to be
      *   generating the dialog.
@@ -139,7 +139,7 @@ public class EditParametersDialog extends ComponentDialog
                     _target.requestChange(
                             new MoMLChangeRequest(this, _target, moml));
             }
-        } else if (buttonPressed().equals("Style")) {
+        } else if (buttonPressed().equals("Edit Style")) {
             // Create a dialog for setting parameter styles.
             try {
                 StyleConfigurer panel = new StyleConfigurer(target);
@@ -151,6 +151,9 @@ public class EditParametersDialog extends ComponentDialog
                     // Restore original parameter values.
                     panel.restore();
                 }
+                // Open a new dialog.
+                new EditParametersDialog(_owner, _target);
+
             } catch (IllegalActionException ex) {
                 MessageHandler.error("Edit Parameter Style failed", ex);
             }         
@@ -168,7 +171,7 @@ public class EditParametersDialog extends ComponentDialog
         if (change.getSource() != this) return;
 
         // Open a new dialog.
-        EditParametersDialog dialog = new EditParametersDialog(_owner, _target);
+        new EditParametersDialog(_owner, _target);
 
         _target.removeChangeListener(this);
     }
@@ -207,8 +210,9 @@ public class EditParametersDialog extends ComponentDialog
      */
     protected void _handleClosing() {
         super._handleClosing();
-        if (!buttonPressed().equals("OK")
+        if (!buttonPressed().equals("Commit")
                 && !buttonPressed().equals("Add")
+                && !buttonPressed().equals("Edit Style")
                 && !buttonPressed().equals("Remove")) {
             // Restore original parameter values.
             ((Configurer)contents).restore();
@@ -268,7 +272,7 @@ public class EditParametersDialog extends ComponentDialog
 
     // Button labels.
     private static String[] _moreButtons
-            = {"OK", "Add", "Remove", "Style", "Cancel"};
+            = {"Commit", "Add", "Remove", "Edit Style", "Cancel"};
 
     // The owner window.
     private Frame _owner;

@@ -59,7 +59,7 @@ close the dialog.
 <p>
 The dialog is modal, so the statement that creates the dialog will
 not return until the user dismisses the dialog.  The method buttonPressed()
-can then be called to find out whether the user clicked the OK button
+can then be called to find out whether the user clicked the Commit button
 or the Cancel button (or any other button specified in the constructor).
 Then you can access the component to determine what values were set
 by the user.
@@ -176,11 +176,11 @@ public class PortConfigurerDialog extends ComponentDialog
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** If the window is closed with an OK, then apply the changes.
+    /** If the window is closed with anything but Cancel, apply the changes.
      */
     protected void _handleClosing() {
         super._handleClosing();
-        if (buttonPressed().equals("OK")) {
+        if (!buttonPressed().equals("Cancel")) {
             ((PortConfigurer)contents).apply();
         }
     }
@@ -230,7 +230,7 @@ public class PortConfigurerDialog extends ComponentDialog
 
     // Button labels.
     private static String[] _moreButtons
-            = {"OK", "Add", "Remove", "Cancel"};
+            = {"Commit", "Add", "Remove", "Cancel"};
 
     // The owner window.
     private Frame _owner;
