@@ -301,7 +301,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 		} finally {
 		    // If we failed to populate the effigy with a model,
 		    // then we remove the effigy from its container.
-			    if (toplevel == null) {
+                    if (toplevel == null) {
 			effigy.setContainer(null);
 		    }
 		}
