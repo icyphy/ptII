@@ -81,14 +81,14 @@ public class PackageResolutionVisitor extends JavaVisitor
         node.setProperty(PACKAGE_KEY, thePkgDecl);
 
         // build environment for this file
-        Scope importOnDemandEnv = new Environ(
+        Scope importOnDemandEnv = new Scope(
                 StaticResolution.SYSTEM_PACKAGE.getScope());
 
-        Scope pkgEnv = new Environ(importOnDemandEnv);
+        Scope pkgEnv = new Scope(importOnDemandEnv);
 
         pkgEnv.copyDeclList(thePkgDecl.getScope());
 
-        Scope environ = new Environ(pkgEnv); // the file level environment
+        Scope environ = new Scope(pkgEnv); // the file level environment
         node.setProperty(ENVIRON_KEY, environ);
 
         node.accept(new ResolvePackageVisitor(), null);

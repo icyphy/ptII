@@ -82,7 +82,7 @@ public class PackageDecl extends JavaDecl
         _container = container;
     }
 
-    public final Scope getEnviron() {
+    public final Scope getScope() {
 	//System.out.println("PackageDecl.getScope()" + getName());
         if (_environ == null) {
             _initScope();
@@ -90,7 +90,7 @@ public class PackageDecl extends JavaDecl
         return _environ;
     }
 
-    public final void setScope(Environ environ) {
+    public final void setScope(Scope environ) {
         _environ = environ;
     }
 
@@ -131,7 +131,7 @@ public class PackageDecl extends JavaDecl
             _environ = new Scope(null);
         } else {
             //System.out.println("_initScope : has container");
-            _environ = new Scope(_container.getEnviron());
+            _environ = new Scope(_container.getScope());
         }
 
         // Use the contents of the system jar file to get java.* etc. files 

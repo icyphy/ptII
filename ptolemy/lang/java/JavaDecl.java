@@ -165,7 +165,7 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
      *  names (of members, classes, interfaces, and subpackages) to
      *  JavaDecls of these entities.
      */
-    public Scope getEnviron() {
+    public Scope getScope() {
         throw new RuntimeException(getClass().getName() + " has no environ.");
     }
 
@@ -180,12 +180,12 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
      *
      *  The default method just calls getScope().
      */
-    public Scope getTypeEnviron() {
+    public Scope getTypeScope() {
         return getScope();
     }
 
     /** Set the environment associated with this declaration. */
-    public void setScope(Environ environ) {
+    public void setScope(Scope environ) {
         throw new RuntimeException(getClass().getName() + " has no environ.");
     }
 

@@ -80,7 +80,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
     public final boolean hasScope() { return true; }
 
-    public final Scope getEnviron() {
+    public final Scope getScope() {
         if (!wasVisitedBy(ResolveClassVisitor.visitorClass())) {
             //System.out.println("getScope() for " + _name + ": building environment");
             _buildScope();
@@ -89,11 +89,11 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         return _environ;
     }
 
-    public final Scope getTypeEnviron() {
+    public final Scope getTypeScope() {
         return _environ;
     }
 
-    public final void setScope(Environ environ) {
+    public final void setScope(Scope environ) {
         _environ = environ;
     }
 
@@ -200,7 +200,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
                     "using dummy environment.");
 
             _environ =
-		new Scope(StaticResolution.SYSTEM_PACKAGE.getEnviron());
+		new Scope(StaticResolution.SYSTEM_PACKAGE.getScope());
 
             setSuperClass(StaticResolution.OBJECT_DECL);
 

@@ -60,14 +60,14 @@ public class Scope {
     /** Construct an environment nested inside the parent argument,
      *  without its own proper Decl's.
      */
-    public Scope(Environ parent) {
+    public Scope(Scope parent) {
         this(parent, new LinkedList());
     }
 
     /** Construct an environment nested inside the parent argument,
      *  with the given List of Decl's in this environment itself.
      */
-    public Scope(Environ parent, List declList) {
+    public Scope(Scope parent, List declList) {
         _parent = parent;
         _declList = declList;
     }
@@ -82,45 +82,45 @@ public class Scope {
         _declList.add(decl);
     }
 
-    /** Return an ScopeIterator that will iterate over all the Decls
+    /** Return an ScopeIteratorator that will iterate over all the Decls
      *  in this Scope.
      */
-    public ScopeIterator allDecls() {
+    public ScopeIteratorator allDecls() {
         return lookupFirst(Decl.ANY_NAME, Decl.CG_ANY, false);
     }
 
-    /** Return an ScopeIterator that will iterate over all the Decls
+    /** Return an ScopeIteratorator that will iterate over all the Decls
      *  that have any of the categories bits set in mask.
      */
-    public ScopeIterator allDecls(int mask) {
+    public ScopeIteratorator allDecls(int mask) {
         return lookupFirst(Decl.ANY_NAME, mask, false);
     }
 
-    /** Return an ScopeIterator that will iterate over all the Decls
+    /** Return an ScopeIteratorator that will iterate over all the Decls
      *  that have the same name.
      */
-    public ScopeIterator allDecls(String name) {
+    public ScopeIteratorator allDecls(String name) {
         return lookupFirst(name, Decl.CG_ANY, false);
     }
 
     /** Return an ListIterator that will iterate over all the proper Decls
-     *  in this Scope and in any parent Environs.
+     *  in this Scope and in any parent Scopes.
      */
     public ListIterator allProperDecls() {
         return _declList.listIterator();
     }
 
     /** Return an ListIterator that will iterate over all the proper Decls
-     *  in this Scope and in any parent Environs that have a matching mask.
+     *  in this Scope and in any parent Scopes that have a matching mask.
      */
-    public ScopeIterator allProperDecls(int mask) {
+    public ScopeIteratorator allProperDecls(int mask) {
         return lookupFirst(Decl.ANY_NAME, mask, true);
     }
 
-    /** Return an ScopeIterator that will iterate over all the proper Decls
-     *  in this Scope and in any parent Environs that have the same name.
+    /** Return an ScopeIteratorator that will iterate over all the proper Decls
+     *  in this Scope and in any parent Scopes that have the same name.
      */
-    public ScopeIterator allProperDecls(String name) {
+    public ScopeIteratorator allProperDecls(String name) {
         return lookupFirst(name, Decl.CG_ANY, true);
     }
 
@@ -207,7 +207,7 @@ public class Scope {
      *  is false, then do not look in the parent environment.
      */
     public Decl lookup(String name, int mask, boolean[] more, boolean proper) {
-        ScopeIterator itr = lookupFirst(name, mask, proper);
+        ScopeIteratorator itr = lookupFirst(name, mask, proper);
 
         if (itr.hasNext()) {
             Decl retval = (Decl) itr.next();
@@ -219,26 +219,26 @@ public class Scope {
     }
 
     /** Lookup a decl by name in the current Scope. */
-    public ScopeIterator lookupFirst(String name) {
+    public ScopeIteratorator lookupFirst(String name) {
         return lookupFirst(name, Decl.CG_ANY, false);
     }
 
     /** Lookup a decl by name and mask in the current Scope. */
-    public ScopeIterator lookupFirst(String name, int mask) {
+    public ScopeIteratorator lookupFirst(String name, int mask) {
         return lookupFirst(name, mask, false);
     }
 
     /** Lookup a decl by name in the current Scope or the
      *  parent Scopes
      */
-    public ScopeIterator lookupFirstProper(String name) {
+    public ScopeIteratorator lookupFirstProper(String name) {
         return lookupFirst(name, Decl.CG_ANY, true);
     }
 
     /** Lookup a decl by name and mask in the current Scope or the
      *  parent Scopes
      */
-    public ScopeIterator lookupFirstProper(String name, int mask) {
+    public ScopeIteratorator lookupFirstProper(String name, int mask) {
         return lookupFirst(name, mask, true);
     }
 
@@ -247,10 +247,10 @@ public class Scope {
      *  in the parent Scopes, if the proper argument is false, the
      *  do not look in the parent Scopes.
      */
-    public ScopeIterator lookupFirst(String name, int mask, boolean proper) {
+    public ScopeIteratorator lookupFirst(String name, int mask, boolean proper) {
         Scope parent = proper ? null : _parent;
 
-        return new ScopeIterator(parent, _declList.listIterator(), name, mask);
+        return new ScopeIteratorator(parent, _declList.listIterator(), name, mask);
     }
 
     /** Return true if there is more than one matching Decl only
@@ -271,7 +271,7 @@ public class Scope {
         return more[0];
     }
 
-    /** Return the parent Scope of this Environ. */
+    /** Return the parent Scope of this Scope. */
     public Scope parent() {
         return _parent;
     }
