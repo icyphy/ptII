@@ -118,7 +118,12 @@ public abstract class TreeNode extends TrackedPropertyMap
             {
                 // Visit myself first.
                 returnValue = _acceptHere(visitor, visitorArgs);
-                traverseChildren(visitor, visitorArgs, setChildReturnValues);
+
+                // If processing of children has been turned off, 
+                // simply reset the flag that disables processing of children.
+                // Otherwise, traverse the children.
+                if (_ignoreChildren) _ignoreChildren = false;
+                else traverseChildren(visitor, visitorArgs, setChildReturnValues);
             }
             break;
 
@@ -227,6 +232,18 @@ public abstract class TreeNode extends TrackedPropertyMap
         } else {
             return null;
         }
+    }
+
+    /** Disable traversing children of this node the next time
+     *  a visitation of this node completes during a self-first
+     *  traversal. This method has no effect for other traversal
+     *  modes (e.g., children first). This method allows selective pruning
+     *  of subtrees, which can significantly improve performance
+     *  for some applications. To ignore children in multiple self-first
+     *  traversals, the method must be called multiple times.
+     */
+    public void ignoreChildren() {
+        _ignoreChildren = true;
     }
 
     /** Return true if the class of this object is a singleton, i.e. there
@@ -409,6 +426,7 @@ public abstract class TreeNode extends TrackedPropertyMap
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
+
     /** Accept a visitor at this node only (not the children).
      *  This method uses reflection and
      *  therefore suffers a performance penalty. This method should be
@@ -499,4 +517,8 @@ public abstract class TreeNode extends TrackedPropertyMap
 
     // Static null list.
     private static LinkedList nullList = new LinkedList();
+
+    // A flag that is used to disable traversal of children under
+    // self-first traversal mode.
+    private boolean _ignoreChildren = false;
 }
