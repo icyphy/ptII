@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="topLevel" class="ptolemy.actor.TypedCompositeActor">
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="422.0, 91.0">
+        <property name="_location" class="ptolemy.moml.Location" value="365.0, 70.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -35,7 +35,7 @@ fixpoint tokens with the given precision
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="109.0, 220.0">
+        <property name="_location" class="ptolemy.moml.Location" value="68.0, 326.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -50,7 +50,7 @@ fixpoint tokens with the given precision
         </property>
         <property name="quantizer" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="264.0, 135.0">
+        <property name="_location" class="ptolemy.moml.Location" value="260.0, 179.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -64,7 +64,7 @@ fixpoint tokens with the given precision
         </property>
         <property name="overflow" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="363.0, 134.0">
+        <property name="_location" class="ptolemy.moml.Location" value="365.0, 179.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -84,7 +84,7 @@ fixpoint tokens with the given precision
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="492.99998474121094, 219.0">
+        <property name="_location" class="ptolemy.moml.Location" value="506.99998474121094, 324.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -102,9 +102,9 @@ fixpoint tokens with the given precision
 <wrap/>
 <default marks="dots"/>
 </plot>?>
-                </configure>    </entity>
+                        </configure>    </entity>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="204.0, 225.0">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="201.0, 331.0">
         </vertex>
     </relation>
     <relation name="_R1" class="ptolemy.actor.TypedIORelation">
