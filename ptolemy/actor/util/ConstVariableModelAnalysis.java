@@ -53,7 +53,9 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
@@ -63,24 +65,32 @@ An analysis that traverses a model to determine all the constant
 variables in a hierarchical model.  Basically, a constant variable in
 a particular model is any variable in the model that is defined by a
 expression of constants, or any variable that is defined by an
-expression whos list of variables is contained within all the constant
+expression whose list of variables is contained within all the constant
 variables in scope of that variable.
 
 <p> This class computes the set of constant variables by computing the
 set of variables that are not constant and then performing the
 complement.  This is somewhat easier to compute.  The computation is
 performed in two passes, the first of which extracts the set of
-variables which must be not-constant either by inclusion in an initial
-set, or by assignment from within a modal model.  The second pass
-collects all the variables which are not constant because they depend
-on other variables which are not constant.
+variables which must be not-constant either by not having an
+expression, by inclusion in an initial set, by virtue of being a
+PortParameter with an external connection, or by assignment from
+within a modal model.  The second pass collects all the variables
+which are not constant because they depend on other variables which
+are not constant.  This class also recognizes dependence declarations
+represented by the {@see DependencyDeclaration} class.
 
 <p> This class also keeps track of the "change context" of each
 dynamic variable.  The change context of a variable is an actor that
 contains that variable.  During a firing of the actor, the variable's
 value should not change.  This is important for supporting parameter
 changes in the context of domains that perform scheduling based on
-parameter values, like SDF.
+parameter values, like SDF.  The change context of a PortParameter
+with an external connection is the container of the PortParameter.
+The change context of a variable assigned by a finite state machine in
+a modal model is the container of the finite state machine.  The
+change context of asserted not constant variables and variables with
+no expression are assumed to be the toplevel of the model.
 
 @author Stephen Neuendorffer
 @version $Id$
@@ -97,7 +107,7 @@ public class ConstVariableModelAnalysis {
      *  during analysis.
      */
     public ConstVariableModelAnalysis(Entity model)
-            throws IllegalActionException {
+            throws IllegalActionException, NameDuplicationException {
         this(model, Collections.EMPTY_SET);
     }
 
@@ -110,15 +120,46 @@ public class ConstVariableModelAnalysis {
      *  @exception IllegalActionException If an exception occurs
      *  during analysis.
      */
-    public ConstVariableModelAnalysis(Entity model, Set variableSet)
-            throws IllegalActionException {
+    public ConstVariableModelAnalysis(
+            Entity model, Set variableSet)
+            throws IllegalActionException, NameDuplicationException {
         _containerToNotConstVariableSet = new HashMap();
         _containerToConstVariableSet = new HashMap();
     
         _variableToChangeContext = new HashMap();
+        
+        for(Iterator variables = variableSet.iterator();
+            variables.hasNext();) {
+            Variable variable = (Variable)variables.next();
+            _variableToChangeContext.put(variable, model);
+        }
+
         _collectNotConstantVariables(model, _variableToChangeContext);
   
+        //       System.out.println("Analyzing constants");
         _analyzeAllVariables(model);
+        //      System.out.println("Done analyzing constants");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return the analysis that is active for the given object.
+     */
+    public static ConstVariableModelAnalysis getAnalysis(NamedObj object)
+            throws IllegalActionException {
+        Entity toplevel = (Entity)object.toplevel();
+        ConstVariableModelAnalysis analysis = null;
+
+        if(analysis == null) {
+            try {
+                analysis = new ConstVariableModelAnalysis(
+                        toplevel);
+            } catch (NameDuplicationException ex) {
+                // Ignore
+            }
+        }
+        return analysis;
     }
 
     /** Return the change context of the given variable.  This an
@@ -304,15 +345,47 @@ public class ConstVariableModelAnalysis {
             while (!notTestedSet.isEmpty()) {
                 Variable variable = (Variable)notTestedSet.iterator().next();
                 notTestedSet.remove(variable);
-
+           
                 // Perform the test.
                 boolean isNotConstant = false;
                 NamedObj changeContext = null;
+            
+                List list = 
+                    variable.attributeList(ChangeContextDeclaration.class);
+                for(Iterator declarations = list.iterator();
+                    declarations.hasNext();) {
+                    ChangeContextDeclaration declaration =
+                        (ChangeContextDeclaration)declarations.next();
+                    if(declaration.getChangeContext() != null) {
+                        changeContext = declaration.getChangeContext();
+                        isNotConstant = true;
+                    }
+                }
+             
                 if (_variableToChangeContext.keySet().contains(variable)) {
                     isNotConstant = true;
                     changeContext = (NamedObj)
                         _variableToChangeContext.get(variable);
-                } else {
+                }
+                for(Iterator declarations =
+                        variable.attributeList(DependencyDeclaration.class).iterator();
+                    declarations.hasNext() && !isNotConstant;) {
+                    DependencyDeclaration declaration =
+                        (DependencyDeclaration) declarations.next();
+                    for(Iterator dependents = declaration.getDependents().iterator();
+                        dependents.hasNext() && !isNotConstant;) {
+                        Variable scopeVariable = (Variable)dependents.next();
+                        boolean scopeVariableChanges = 
+                            _variableToChangeContext.keySet().contains(
+                                    scopeVariable);
+                        if(scopeVariableChanges) {
+                            isNotConstant = true;
+                            changeContext = (NamedObj)
+                                _variableToChangeContext.get(scopeVariable);
+                        }
+                    }
+                }
+                if(!isNotConstant) {
                     // Analyze the expression.
                     String expression = variable.getExpression();
                     // compute the variables.
@@ -340,15 +413,12 @@ public class ConstVariableModelAnalysis {
                                 changeContext = (NamedObj)
                                    _variableToChangeContext.get(scopeVariable);
                             } else if(scopeVariable == null) {
-                                if(_assumeParserConstantsAreConstant) {
-                                    // Free variables (i.e. methods) bound
-                                    // to parser constants are assumed to
-                                    // be static.
-                                    if (ptolemy.data.expr.Constants.get(name) == null) {
-                                        isNotConstant = true;
-                                        changeContext = container.toplevel();
-                                    }
-                                } else {
+                                // Free variables (and methods) are
+                                // usually assumed to be static since
+                                // they will likely be bound to parser
+                                // constants or looked up as Java
+                                // methods.
+                                if(!_assumeUnboundVariablesAreConstant) {
                                     // Free variables are assumed to be dynamic
                                     isNotConstant = true;
                                     changeContext = container.toplevel();
@@ -398,14 +468,6 @@ public class ConstVariableModelAnalysis {
             Attribute attribute = (Attribute)attributes.next();
             _analyzeAllVariables(attribute);
         }
-        if (container instanceof Entity) {
-            for(Iterator ports = 
-                    ((Entity)container).portList().iterator();
-                ports.hasNext();) {
-                Port port = (Port)ports.next();
-                _analyzeAllVariables(port);
-            }
-        }
         if (container instanceof CompositeEntity) {
             for (Iterator entities =
                      ((CompositeEntity)container).entityList().iterator();
@@ -414,7 +476,14 @@ public class ConstVariableModelAnalysis {
                 _analyzeAllVariables(entity);
             }
         }
-                     
+        if (container instanceof Entity) {
+            for(Iterator ports = 
+                    ((Entity)container).portList().iterator();
+                ports.hasNext();) {
+                Port port = (Port)ports.next();
+                _analyzeAllVariables(port);
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -424,5 +493,5 @@ public class ConstVariableModelAnalysis {
     private Map _containerToConstVariableSet;
     private Map _variableToChangeContext;
     private CompositeActor _model;
-    private static boolean _assumeParserConstantsAreConstant = true;
+    private static boolean _assumeUnboundVariablesAreConstant = true;
 }
