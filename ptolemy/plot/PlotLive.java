@@ -75,7 +75,6 @@ public abstract class PlotLive extends Plot implements Runnable {
      * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean action (Event evt, Object arg) {
-        // 
         if (evt.target == _startButton) {
             _running = true;
             return true;
@@ -99,15 +98,6 @@ public abstract class PlotLive extends Plot implements Runnable {
     public synchronized abstract void addPoints();
 
     /**
-     * Return a string describing this applet.
-     */
-    public String getAppletInfo() {
-        return "PlotLive 1.0: A live data plotter.\n" +
-            "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
-            "($Id$)";
-    }
-
-    /**
      * Create a start and stop buttons, by which the user can invoke
      * <code>enable()</code> and <code>disable</code>.  Alternatively,
      * a derived class might invoke these directly and dispense with
@@ -115,6 +105,7 @@ public abstract class PlotLive extends Plot implements Runnable {
      * <code>init()</code> method in derived classes.
      */
     public void makeButtons () {
+        if (_debug >8 ) System.out.println("PlotLive: makeButtons");
         // So that the buttons appear at the upper right...
         // Note that this infringes on the title space... maybe not good.
         _startButton = new Button("start");
@@ -138,7 +129,8 @@ public abstract class PlotLive extends Plot implements Runnable {
      * responsiveness of the user interface.
      */
     public void run() {
-        while (isActive()) {
+        if (_debug >8 ) System.out.println("PlotLive: run");
+        while ( true /*isActive()*/) {
             if (_running) {
                 addPoints();
                 Thread.yield();
@@ -153,7 +145,7 @@ public abstract class PlotLive extends Plot implements Runnable {
         }
         // Set to null so that if the applet is restarted the
         // thread will be restarted.
-        _plotThread = null;
+//        _plotThread = null;
     }
 
     /**
@@ -162,16 +154,17 @@ public abstract class PlotLive extends Plot implements Runnable {
      * already done.
      */
     public void start() {
-        if (_plotThread == null) {
-            _plotThread = new Thread(this, "Plot Thread");
-            _plotThread.start();
+        if (_debug >8 ) System.out.println("PlotLive: start");
+        if (_plotLiveThread == null) {
+            _plotLiveThread = new Thread(this, "PlotLive Thread");
+            _plotLiveThread.start();
         }
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                       private variables                          ////
     
-    private Thread _plotThread;
+    private Thread _plotLiveThread;
    
     private Button _startButton, _stopButton;
     
