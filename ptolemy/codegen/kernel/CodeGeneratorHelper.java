@@ -31,6 +31,8 @@ package ptolemy.codegen.kernel;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
@@ -40,6 +42,7 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -65,6 +68,30 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         _component = component;
     }
 
+    /////////////////////////////////////////////////////////////////////
+    ////                      public inner classes                   ////
+    
+    /** A class that defines a channel object. A channel object is
+     *  specified by its port and its channel index in that port.
+     */
+    public class Channel {
+        /** Construct the channel with the given port and channel number.
+         * @param portObject The given port.
+         * @param channel The channel number of this object in the given port.
+         */
+        public Channel (Port portObject, int channel) {
+            port = portObject;
+            channelNumber = channel;
+        }
+        /** The port that contains this channel.
+         */
+        public Port port;
+        
+        /** The channel number of this channel.
+         */
+        public int channelNumber;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -219,22 +246,38 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 String[] channelAndOffset = _getChannelAndOffset(name);
                 
+                List sinkChannels = new LinkedList();
                 if (channelAndOffset[0].equals("")) {
-                    result.append(getSinkChannels(port, 0));
+                    sinkChannels = getSinkChannels(port, 0);
                 } else {
                     int channel = (new Integer(channelAndOffset[0])).intValue();
-                    result.append(getSinkChannels(port, channel));
+                    sinkChannels = getSinkChannels(port, channel);
                 }
-                if (!channelAndOffset[1].equals("") && getBufferSize(port) > 1) {
-                    //String temp = getOffset(port) + " + " + channelAndOffset[1];
-                    int temp = getOffset(port) + (new Integer(channelAndOffset[1])).intValue();
-                    temp = temp % getBufferSize(port);
-                    result.append("[" + temp + "]");
-                } else if (getBufferSize(port) > 1) {
-                    // Did not specify offset, so the receiver buffer size is 1.
-                    // This is multiple firing.
-                    int temp = getOffset(port) % getBufferSize(port);
-                    result.append("[" + temp + "]");
+                for (int i = 0; i < sinkChannels.size(); i ++) {
+                    IOPort sinkPort
+                            = (IOPort) ((Channel) sinkChannels.get(i)).port;
+                    int channel = ((Channel) sinkChannels.get(i)).channelNumber;
+                    if (i != 0) {
+                        result.append(" = ");
+                    }
+                    result.append(sinkPort.getFullName().replace('.', '_'));
+                    if (sinkPort.isMultiport()) {
+                        result.append("[" + channel + "]");
+                    }
+                    if (!channelAndOffset[1].equals("") && getBufferSize(port) > 1) {
+                        // FIXME: This is a hack. It is using the offset of the
+                        // output port to substitute the offsets of its downstream
+                        // input ports.
+                        //String temp = getOffset(port) + " + " + channelAndOffset[1];
+                        int temp = getOffset(port) + (new Integer(channelAndOffset[1])).intValue();
+                        temp = temp % getBufferSize(port);
+                        result.append("[" + temp + "]");
+                    } else if (getBufferSize(port) > 1) {
+                        // Did not specify offset, so the receiver buffer size is 1.
+                        // This is multiple firing.
+                        int temp = getOffset(port) % getBufferSize(port);
+                        result.append("[" + temp + "]");
+                    }
                 }
                 return result.toString();
             }
@@ -271,27 +314,28 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
 
-    /** Return a string that contains all the sink input ports
-     *  and channels given an output port and a given channel.
-     *  The returned string is in the form "inputPortName1[channelNumber1]
-     *  = inputPortName2[channelNumber2] = ...". If the given output
-     *  channel doesn't have a sink input, the method returns an empty string.
+    /** Return a list of channel objects that are the sink input ports
+     *  given an output port and a given channel.
+     *  Return a string that contains all the sink input ports
      * @param outputPort The given output port.
      * @param channelNumber The given channel number.
-     * @return The string.
+     * @return The list of channel objects that are the sink input ports
+     *  of the given output port and channel.
      */
-    public String getSinkChannels(IOPort outputPort, int channelNumber) {
+    public List getSinkChannels(IOPort outputPort, int channelNumber) {
 
+        List sinkChannels = new LinkedList();
         Receiver[][] remoteReceivers
             = (outputPort.getRemoteReceivers());
 
         if (remoteReceivers.length == 0) {
             // This is an escape method. This class will not call this
             // method if the output port does not have a remote receiver.
-            return "";
+            return sinkChannels;
         }
 
-        StringBuffer result = new StringBuffer();
+        //StringBuffer result = new StringBuffer();
+        
         boolean foundIt = false;
         for (int i = 0; i < remoteReceivers[channelNumber].length; i ++) {
             IOPort sinkPort = remoteReceivers[channelNumber][i].getContainer();
@@ -300,18 +344,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 for (int k = 0; k < portReceivers[j].length; k ++) {
                     if (remoteReceivers[channelNumber][i]
                             == portReceivers[j][k]) {
-                        if (!foundIt) {
-                            foundIt = true;
-                        } else {
-                            result.append(" = ");
-                        }
-                        result.append(sinkPort.getContainer()
-                                .getFullName().replace('.', '_'));
-                        result.append("_");
-                        result.append(sinkPort.getName());
-                        if (sinkPort.isMultiport()) {
-                            result.append("[" + j + "]");
-                        }
+                        Channel sinkChannel = new Channel(sinkPort, j);
+                        sinkChannels.add(sinkChannel);
                         break;
                         //sinkPorts.add(sinkPort);
                         //sinkChannels.add(new Integer(j));
@@ -320,7 +354,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             }
         }
-        return result.toString();
+        return sinkChannels;
     }
 
     /** Get the size of a parameter. The size of a parameter
@@ -493,7 +527,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
+    
     /** Return the channel number and offset given in a string.
      *  The result is an integer array of length 2. The first element
      *  indicates the channel number, the second the offset. If either

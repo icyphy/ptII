@@ -91,7 +91,7 @@ public class Director implements ActorCodeGenerator {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        code.append("The wrapup of the director.");
+        code.append("/* The firing of the director. */\n");
         Iterator actors = ((CompositeActor) _codeGenerator.getContainer())
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
