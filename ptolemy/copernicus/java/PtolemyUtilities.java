@@ -629,6 +629,9 @@ public class PtolemyUtilities {
     public static Type settableType;
 
     //The soot class representing java.lang.system 
+    public static SootClass stringClass;
+    
+    //The soot class representing java.lang.system 
     public static SootClass systemClass;
 
     // Soot class representing the ptolemy.data.Token class.
@@ -653,7 +656,10 @@ public class PtolemyUtilities {
         SootClass objectClass =
             Scene.v().loadClassAndSupport("java.lang.Object");
         toStringMethod = objectClass.getMethod("java.lang.String toString()");
-        
+      
+        stringClass =
+            Scene.v().loadClassAndSupport("java.lang.String");
+       
         systemClass = Scene.v().loadClassAndSupport("java.lang.System");
         arraycopyMethod = systemClass.getMethodByName("arraycopy");
        

@@ -99,6 +99,10 @@ public class TypeSpecializer extends SceneTransformer {
         int localCount = 0;
         System.out.println("TypeSpecializer.internalTransform("
                 + phaseName + ", " + options + ")");
+        if(!Options.getBoolean(options, "deep")) {
+            return;
+        }
+
         boolean debug = Options.getBoolean(options, "debug");
 
         Scene.v().setActiveHierarchy(new Hierarchy());

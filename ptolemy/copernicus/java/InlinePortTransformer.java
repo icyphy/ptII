@@ -74,18 +74,8 @@ public class InlinePortTransformer extends SceneTransformer {
         if(!Options.getBoolean(options, "deep")) {
             return;
         }
-
-        SootClass objectClass = 
-            Scene.v().loadClassAndSupport("java.lang.Object");
-        SootClass namedObjClass = 
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
-        SootClass kernelEntityClass = 
-            Scene.v().loadClassAndSupport("ptolemy.kernel.Entity");
-        SootMethod getPortMethod = kernelEntityClass.getMethod(
-              "ptolemy.kernel.Port getPort(java.lang.String)");
-        SootClass portClass = 
-            Scene.v().loadClassAndSupport("ptolemy.kernel.Port");
-        Type portType = RefType.v(portClass);
+      
+        Type portType = RefType.v(PtolemyUtilities.portClass);
         
         // FIXME toplevel ports?
         // Loop over all the actor instance classes.
@@ -279,7 +269,8 @@ public class InlinePortTransformer extends SceneTransformer {
                                 }
                                 boolean allArgsAreConstant = (r.getArgCount() == constantArgCount);
                                 
-                                if(SootUtilities.derivesFrom(type.getSootClass(), portClass)) {
+                                if(SootUtilities.derivesFrom(type.getSootClass(), 
+                                        PtolemyUtilities.portClass)) {
                                     // if we are invoking a method on a port class, then
                                     // attempt to get the constant value of the port.
                                     TypedIOPort port = (TypedIOPort)

@@ -127,31 +127,7 @@ public class ActorTransformer extends SceneTransformer {
         if(!Options.getBoolean(options, "deep")) {
             return;
         }
-
-        SootClass objectClass =
-            Scene.v().loadClassAndSupport("java.lang.Object");
-
-        SootClass namedObjClass =
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
-        SootMethod getAttributeMethod = namedObjClass.getMethod(
-                "ptolemy.kernel.util.Attribute getAttribute(java.lang.String)");
-
-        SootClass attributeClass =
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
-        Type attributeType = RefType.v(attributeClass);
-
-        SootClass settableClass =
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
-        Type settableType = RefType.v(settableClass);
-        SootMethod setExpressionMethod =
-            settableClass.getMethodByName("setExpression");
-
-        SootClass actorClass =
-            Scene.v().loadClassAndSupport("ptolemy.actor.TypedAtomicActor");
-        Type actorType = RefType.v(actorClass);
-        SootClass compositeActorClass =
-            Scene.v().loadClassAndSupport("ptolemy.actor.TypedCompositeActor");
-
+     
         // Create an instance class for every actor.
         for(Iterator i = _model.entityList().iterator();
             i.hasNext();) {

@@ -30,34 +30,37 @@
 package ptolemy.copernicus.java;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.IORelation;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.kernel.CompositeEntity;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
-import ptolemy.data.Token;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
 
 import soot.*;
 import soot.jimple.*;
+import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
 import soot.jimple.toolkits.invoke.SiteInliner;
 import soot.jimple.toolkits.invoke.StaticInliner;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
 import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
 import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
 import soot.jimple.toolkits.scalar.CopyPropagator;
 import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
-import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
 import soot.jimple.toolkits.scalar.Evaluator;
-import soot.toolkits.graph.*;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
+import soot.toolkits.scalar.LocalSplitter;
+
 import soot.dava.*;
+import soot.toolkits.graph.*;
 import soot.util.*;
 
 import java.util.HashMap;
@@ -131,6 +134,10 @@ public class ModelTransformer extends SceneTransformer {
         units.add(Jimple.v().newReturnVoidStmt());
         
         _removeSuperExecutableMethods(modelClass);
+
+        // Resolve name collisions.
+        LocalNameStandardizer.v().transform(body, phaseName + ".lns");
+        LocalSplitter.v().transform(body, phaseName + ".lns");
 
         Scene.v().setActiveHierarchy(new Hierarchy());
     }

@@ -111,16 +111,9 @@ public class InlineDirectorTransformer extends SceneTransformer {
         if(!Options.getBoolean(options, "deep")) {
             return;
         }
-
-        SootClass actorClass =  Scene.v().loadClassAndSupport(
-                "ptolemy.actor.TypedAtomicActor");
-        Type actorType = RefType.v(actorClass);
-        SootClass compositeActorClass =
-            Scene.v().loadClassAndSupport("ptolemy.actor.TypedCompositeActor");
-        SootClass applicationClass = Scene.v().loadClassAndSupport(
-                "ptolemy.actor.gui.CompositeActorApplication");
-        applicationClass.setLibraryClass();
-
+        
+        Type actorType = RefType.v(PtolemyUtilities.actorClass);
+      
         SootClass modelClass = Scene.v().getMainClass();
 
         // Inline the director
@@ -130,7 +123,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                     new LinkedList(), VoidType.v(),
                     Modifier.PUBLIC);
             SootMethod actorMethod =
-                SootUtilities.searchForMethodByName(actorClass,
+                SootUtilities.searchForMethodByName(PtolemyUtilities.actorClass,
                         classMethod.getName());
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
@@ -163,7 +156,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
                     new LinkedList(), VoidType.v(),
                     Modifier.PUBLIC);
             SootMethod actorMethod =
-                SootUtilities.searchForMethodByName(actorClass,
+                SootUtilities.searchForMethodByName(
+                        PtolemyUtilities.actorClass,
                         classMethod.getName());
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
@@ -194,11 +188,14 @@ public class InlineDirectorTransformer extends SceneTransformer {
                     new LinkedList(), VoidType.v(),
                     Modifier.PUBLIC);
             SootMethod actorPrefireMethod =
-                SootUtilities.searchForMethodByName(actorClass, "prefire");
+                SootUtilities.searchForMethodByName(
+                        PtolemyUtilities.actorClass, "prefire");
             SootMethod actorFireMethod =
-                SootUtilities.searchForMethodByName(actorClass, "fire");
+                SootUtilities.searchForMethodByName(
+                        PtolemyUtilities.actorClass, "fire");
             SootMethod actorPostfireMethod =
-                SootUtilities.searchForMethodByName(actorClass, "postfire");
+                SootUtilities.searchForMethodByName(
+                        PtolemyUtilities.actorClass, "postfire");
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);
             classMethod.setActiveBody(body);
@@ -244,7 +241,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
                     new LinkedList(), VoidType.v(),
                     Modifier.PUBLIC);
             SootMethod actorMethod =
-                SootUtilities.searchForMethodByName(actorClass,
+                SootUtilities.searchForMethodByName(
+                        PtolemyUtilities.actorClass,
                         classMethod.getName());
             modelClass.addMethod(classMethod);
             JimpleBody body = Jimple.v().newBody(classMethod);

@@ -94,41 +94,6 @@ public class InlineTokenTransformer extends SceneTransformer {
             return;
         }
 
-        SootClass stringClass =
-            Scene.v().loadClassAndSupport("java.lang.String");
-        Type stringType = RefType.v(stringClass);
-        SootClass objectClass = 
-            Scene.v().loadClassAndSupport("java.lang.Object");
-        SootMethod toStringMethod =
-            objectClass.getMethod("java.lang.String toString()");
-        SootClass namedObjClass = 
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
-        SootMethod getAttributeMethod = namedObjClass.getMethod(
-                "ptolemy.kernel.util.Attribute getAttribute(java.lang.String)");
-        SootMethod attributeChangedMethod = namedObjClass.getMethod(
-                "void attributeChanged(ptolemy.kernel.util.Attribute)");
-
-        SootClass attributeClass = 
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
-        Type attributeType = RefType.v(attributeClass);
-        SootClass settableClass = 
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
-        Type settableType = RefType.v(settableClass);
-        SootMethod getExpressionMethod = 
-            settableClass.getMethod("java.lang.String getExpression()");
-        SootMethod setExpressionMethod = 
-            settableClass.getMethod("void setExpression(java.lang.String)");
-        
-        SootClass tokenClass = 
-            Scene.v().loadClassAndSupport("ptolemy.data.Token");
-        Type tokenType = RefType.v(tokenClass);
-        SootClass parameterClass = 
-            Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");
-        SootMethod getTokenMethod = 
-            parameterClass.getMethod("ptolemy.data.Token getToken()");
-        SootMethod setTokenMethod = 
-            parameterClass.getMethod("void setToken(ptolemy.data.Token)");
-
         // Loop over all the actor instance classes.
         for(Iterator i = _model.entityList().iterator();
             i.hasNext();) {
@@ -204,7 +169,8 @@ public class InlineTokenTransformer extends SceneTransformer {
                                     }
                                 }
 
-                                if(SootUtilities.derivesFrom(type.getSootClass(), tokenClass)) {
+                                if(SootUtilities.derivesFrom(type.getSootClass(), 
+                                        PtolemyUtilities.tokenClass)) {
                                     // if we are invoking a method on a token class, then
                                     // attempt to get the constant value of the token.
                                     Token token = getTokenValue(entity, (Local)r.getBase(), unit, localDefs);
