@@ -464,6 +464,10 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final Integer PTOLEMY_TRANSFORMED_KEY =
     new Integer(RESERVED_JAVA_PROPERTIES);
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+
     /** An array indexed by (kind - TYPE_KINDS) containing known declarations
      *  of types in Ptolemy.
      */
@@ -553,6 +557,9 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
      *  type of the data encapsulated by the kind of token.
      */
     protected static final TypeNode[] _TOKEN_CONTAINED_TYPES;
+
+    // Set to true to turn on debugging messages.
+    protected final static boolean _debug = false;
 
     static {
         System.out.println("PtolemyTypeIdentifier<static>: start");
@@ -962,23 +969,24 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
 	// OK, do some sanity checks on array lengths.
 
-	System.out.println("PtolemyTypeIdentifier.<static>: "
-			   + "\n _KNOWN_KINDS.length: "
-			   + _KNOWN_KINDS.length
-			   + "\n _KNOWN_TOKEN_TYPES.length: "
-			   + _KNOWN_TOKEN_TYPES.length
-			   + "\n _IS_CONCRETE_TOKEN.length: "
-			   + _IS_CONCRETE_TOKEN.length
-			   + "\n _MATRIX_ELEMENT_TOKEN_KINDS.length: "
-			   + _MATRIX_ELEMENT_TOKEN_KINDS.length
-			   + "\n _KNOWN_CLASS_DECLS.length: "
-			   + _KNOWN_CLASS_DECLS.length
-			   + "\n _KNOWN_TYPENAMENODES.length: "
-			   + _KNOWN_TYPENAMENODES.length
-			   + "\n _TOKEN_CONTAINED_TYPES.length: "
-			   + _TOKEN_CONTAINED_TYPES.length
-			   );
-
+        if (_debug) {
+            System.out.println("PtolemyTypeIdentifier.<static>: "
+                    + "\n _KNOWN_KINDS.length: "
+                    + _KNOWN_KINDS.length
+                    + "\n _KNOWN_TOKEN_TYPES.length: "
+                    + _KNOWN_TOKEN_TYPES.length
+                    + "\n _IS_CONCRETE_TOKEN.length: "
+                    + _IS_CONCRETE_TOKEN.length
+                    + "\n _MATRIX_ELEMENT_TOKEN_KINDS.length: "
+                    + _MATRIX_ELEMENT_TOKEN_KINDS.length
+                    + "\n _KNOWN_CLASS_DECLS.length: "
+                    + _KNOWN_CLASS_DECLS.length
+                    + "\n _KNOWN_TYPENAMENODES.length: "
+                    + _KNOWN_TYPENAMENODES.length
+                    + "\n _TOKEN_CONTAINED_TYPES.length: "
+                    + _TOKEN_CONTAINED_TYPES.length
+                               );
+        }
 	if ( _KNOWN_KINDS.length != _KNOWN_CLASS_DECLS.length ) {
 	    throw new
 		RuntimeException("PtolemyTypeIdentifier.<static>"
@@ -1017,9 +1025,4 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         System.out.println("PtolemyTypeIdentifier<static>: end");
     }
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    // Set to true to turn on debugging messages.
-    protected final static boolean _debug = false;
 }
