@@ -30,7 +30,7 @@
 
 ME =		diva/canvas
 
-DIRS = 		connector demo event interactor selection toolbox #test
+DIRS = 		connector demo event interactor toolbox test
 
 # Root of the Ptolemy II directory
 ROOT =		../..
