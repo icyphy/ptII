@@ -95,7 +95,14 @@ public class GeneralFunctionActor extends TypedAtomicActor {
     public void initialize() {
         try {
             // create input variables
-            _inputVarList.createVariables(inputPorts());
+            Enumeration ports = inputPorts();
+            while(ports.hasMoreElements()) {
+                Nameable port = (Nameable)ports.nextElement();
+                if (_inputVarList.getAttribute(port.getName()) == null) {
+                    Variable var = new Variable(_inputVarList, port.getName());
+                    _inputVarList.addVariable(var);
+                }
+            }
             Enumeration outVars = _outputVarList.getVariables();
             while (outVars.hasMoreElements()) {
                 Variable var = (Variable)outVars.nextElement();
