@@ -154,6 +154,7 @@
       <property name="HybridFSM" class="ptolemy.domains.fsm.kernel.HSDirector"/>
       <property name="Giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
       <property name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector"/>
+      <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector"/>
 
           </group>
         ?>
@@ -176,6 +177,7 @@
             <input source="../actor/lib/signalprocessing.xml"/>
             <input source="../domains/ct/lib/ctentities.xml"/>
             <input source="../domains/de/lib/deentities.xml"/>
+            <input source="../domains/sr/lib/srentities.xml"/>
           </group>
         ?>
       </configure>
