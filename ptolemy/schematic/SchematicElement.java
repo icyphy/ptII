@@ -37,8 +37,10 @@ import collections.HashedMap;
 //// SchematicElement
 /**
 
-A SchematicElement is the abstract superclass of classes that can
-appear in a Ptolemy II schematic.
+A SchematicElement is the superclass of classes that can
+appear in a Ptolemy II schematic.  (SchematicEntity, SchematicPort,
+SchematicRelation).  All of these have a name and a number of 
+SchematicParameters associated with them.
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
@@ -54,6 +56,7 @@ public class SchematicElement extends XMLElement {
     public SchematicElement(String type) {
         super(type);
         parameters = (HashedMap) new HashedMap();
+        setName("");
     }
 
     /**
@@ -67,6 +70,7 @@ public class SchematicElement extends XMLElement {
     public SchematicElement(String type, HashedMap attributes) {
         super(type, attributes);
         parameters = (HashedMap) new HashedMap();
+        if(!hasAttribute("name")) setName("");
     }
 
     /**
@@ -91,7 +95,7 @@ public class SchematicElement extends XMLElement {
     }
 
    /**
-     * Test if there is an parameter with the given name in this
+     * Test if there is a parameter with the given name in this
      * element.
      */
     public boolean containsParameter (String name) {
@@ -129,6 +133,15 @@ public class SchematicElement extends XMLElement {
      */
     public Enumeration parameters () {
         return parameters.elements();
+    }
+
+    /**
+     * Remove the parameter with the given name from this element
+     */
+    public void removeParameter(String name) {
+        SchematicParameter p= (SchematicParameter) parameters.at(name);
+        removeChildElement(p);
+        parameters.removeAt(name);
     }
 
     /** 
