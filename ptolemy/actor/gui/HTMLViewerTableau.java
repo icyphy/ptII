@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 package ptolemy.actor.gui;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 
 import ptolemy.kernel.util.Attribute;
@@ -36,6 +37,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// HTMLViewerTableau
@@ -190,6 +192,13 @@ public class HTMLViewerTableau extends Tableau {
                     URL anotherURL =
                         JNLPUtilities.jarURLEntryResource(urlString);
                     if (anotherURL == null) {
+                        try {
+                            anotherURL = _absolutePTIIURLToJarURL(urlString);
+                        } catch (Exception ex) {
+                            // Ignore: failed
+                        }
+                    }
+                    if (anotherURL == null) {
                         throw io;
                     }
                     ((HTMLViewer)tableau.getFrame()).setPage(anotherURL);
@@ -202,6 +211,80 @@ public class HTMLViewerTableau extends Tableau {
             } else {
                 return null;
             }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** If possible convert an absolute URL that refers to a file inside
+     *  the $PTII tree to a jar URL.
+     *  <p>For example, if doc/codeDoc.jar is in the classpath, but
+     *  the contents of codeDoc/ do not exist as files, then calling
+     *  this method with:
+     *  file:/C:/ptII/doc/codeDoc/ptolemy/util/package-summary.html#package_description]
+     *  will return:
+     *  jar:file:/C:/cxh/ptII/doc/codeDoc.jar!/doc/codeDoc/ptolemy/kernel/package-summary.html#package_description
+
+     *  @return The jar url that refers to a file if the file can be found
+     *  as a resource or null if the file cannot be found.
+     *  @exception URISyntaxException If there are problems creating a URI.
+     *  @exception MalformedURLException If there are problems creating a URL.
+     */
+    public static URL _absolutePTIIURLToJarURL(String urlName) 
+            throws java.net.URISyntaxException,
+            java.net.MalformedURLException {
+
+            // Try looking up the URL as a resource relative to $PTII.
+        String ptIIDirAsURLName = StringUtilities.getProperty(
+                "ptolemy.ptII.dirAsURL");
+        String relativePath = null;
+        if (urlName.startsWith(ptIIDirAsURLName)) {
+            relativePath = urlName.substring(ptIIDirAsURLName.length());
+        } else {
+            // If we click on a link, it might be:
+            // "file:/C:/ptII/doc/codeDoc/"
+            // but ptolemy.ptII.dirAsURL might be
+            // "file:/c:/ptII"
+            // URL.sameFile() will not work here, so we use URI.relativize()
+            URI uri = new URI(urlName);
+            URI ptIIDirAsURI = new URI(ptIIDirAsURLName);
+            URI relativeURI = uri.relativize(ptIIDirAsURI);
+            
+            if (relativeURI.toURL().sameFile(ptIIDirAsURI.toURL())) {
+                // Hmm, should this be
+                relativePath = uri.toString()
+                    .substring(ptIIDirAsURI.toString().length());
+                //relativePath = urlName.substring(ptIIDirAsURLName.length());
+            }
+        }
+        if (relativePath == null) {
+            return null;
+        } else {
+            URL anotherURL = Thread.currentThread()
+                .getContextClassLoader()
+                .getResource(relativePath);
+            if (anotherURL == null && 
+                    relativePath.indexOf('#') != -1) {
+                // getResource does not work on paths that look like:
+                // "package-summary.html#package_description"
+                // So, we get the resource without the
+                // trailing # and then append it
+                String relativePathBase = 
+                    relativePath.substring(0,
+                            relativePath.lastIndexOf("#"));
+                
+                anotherURL = Thread.currentThread()
+                    .getContextClassLoader()
+                    .getResource(relativePathBase);
+                if (anotherURL != null) {
+                    anotherURL = new URL(anotherURL.toString()
+                        + relativePath.substring(
+                                relativePath.lastIndexOf("#")));
+                }
+                
+            }
+            return anotherURL;
         }
     }
 }
