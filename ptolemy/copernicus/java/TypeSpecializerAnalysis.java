@@ -113,8 +113,8 @@ public class TypeSpecializerAnalysis {
         if (_debug) {
             _printSolverVariables();
         }
-        if(succeeded) {
-            if(_debug) System.out.println("solution FOUND!");
+        if (succeeded) {
+            if (_debug) System.out.println("solution FOUND!");
         } else {
             System.out.println("Unsatisfied Inequalities:");
             try {
@@ -150,7 +150,7 @@ public class TypeSpecializerAnalysis {
         _solver = new InequalitySolver(TypeLattice.lattice());
         _objectToInequalityTerm = new HashMap();
 
-        for(Iterator classes = list.iterator();
+        for (Iterator classes = list.iterator();
             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             _collectConstraints(theClass, _debug);
@@ -166,8 +166,8 @@ public class TypeSpecializerAnalysis {
         if (_debug) {
             _printSolverVariables();
         }
-        if(succeeded) {
-            if(_debug) System.out.println("solution FOUND!");
+        if (succeeded) {
+            if (_debug) System.out.println("solution FOUND!");
         } else {
             System.out.println("Unsatisfied Inequalities:");
             try {

@@ -155,7 +155,7 @@ public class BooleanToken extends AbstractConvertibleToken
      *  BooleanToken.FALSE otherwise.
      */
     public static BooleanToken getInstance(boolean value) {
-        if(value) {
+        if (value) {
             return BooleanToken.TRUE;
         } else {
             return BooleanToken.FALSE;
@@ -218,7 +218,7 @@ public class BooleanToken extends AbstractConvertibleToken
      */
     public BitwiseOperationToken bitwiseAnd(Token rightArgument)
             throws IllegalActionException {
-        if(!(rightArgument instanceof BooleanToken)) {
+        if (!(rightArgument instanceof BooleanToken)) {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("bitwiseAnd",
                             this, rightArgument));
@@ -239,7 +239,7 @@ public class BooleanToken extends AbstractConvertibleToken
      */
     public BitwiseOperationToken bitwiseOr(Token rightArgument)
             throws IllegalActionException {
-        if(!(rightArgument instanceof BooleanToken)) {
+        if (!(rightArgument instanceof BooleanToken)) {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("bitwiseOr",
                             this, rightArgument));
@@ -258,7 +258,7 @@ public class BooleanToken extends AbstractConvertibleToken
      */
     public BitwiseOperationToken bitwiseXor(Token rightArgument)
             throws IllegalActionException {
-        if(!(rightArgument instanceof BooleanToken)) {
+        if (!(rightArgument instanceof BooleanToken)) {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("bitwiseXor",
                             this, rightArgument));
@@ -272,7 +272,7 @@ public class BooleanToken extends AbstractConvertibleToken
      *  string "false" if it represents false.
      */
     public String toString() {
-        if(booleanValue()) {
+        if (booleanValue()) {
             return "true";
         } else {
             return "false";

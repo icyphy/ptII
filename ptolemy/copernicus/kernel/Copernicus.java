@@ -388,7 +388,7 @@ public class Copernicus {
             throws IllegalActionException {
         HashMap substituteMap = new HashMap();
         Iterator attributes = namedObj.attributeList().iterator();
-        while(attributes.hasNext()) {
+        while (attributes.hasNext()) {
             Attribute attribute = (Attribute)attributes.next();
             if (attribute instanceof Variable) {
                 Variable variable = (Variable)attribute;

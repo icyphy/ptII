@@ -297,7 +297,7 @@ public class RecordType extends StructuredType {
             FieldType fieldType = (FieldType)fieldTypes.next();
             Type type = fieldType._declaredType;
             // Return false if the field is not constant.
-            if(!type.isConstant()) {
+            if (!type.isConstant()) {
                 return false;
             }
         }

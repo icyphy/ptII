@@ -146,7 +146,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                     // FIXME: string matching is probably not good enough.
                     if (r.getMethod().getSubSignature().equals(
                                 PtolemyUtilities.getPortMethod.getSubSignature())) {
-                        if(_debug) {
+                        if (_debug) {
                             System.out.println("replacing getPort in " + unit);
                         }
                         // Inline calls to getPort(arg) when
@@ -175,7 +175,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                 }
             }
         }
-        if(actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
+        if (actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
             CompositeEntity model = (CompositeEntity)actor;
             // Loop over all the entity classes and replace getPort calls.
             for (Iterator i = model.deepEntityList().iterator();
@@ -284,7 +284,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
             field = theClass.getFieldByName(fieldName);
 
             Type type = field.getType();
-            if(!(type instanceof RefType)) {
+            if (!(type instanceof RefType)) {
                 System.out.println("Class " + theClass
                         + " declares field for port "
                         + port.getFullName() + " but it has type "
@@ -292,7 +292,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                 continue;
             } else {
                 SootClass fieldClass = ((RefType)type).getSootClass();
-                if(!SootUtilities.derivesFrom(fieldClass,
+                if (!SootUtilities.derivesFrom(fieldClass,
                         PtolemyUtilities.componentPortClass)) {
                     System.out.println("Class " + theClass
                             + " declares field for port "
@@ -324,7 +324,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
 
         // Loop over all the actor instance classes and get
         // fields for ports.
-        if(actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
+        if (actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
             // Then recurse
             CompositeEntity model = (CompositeEntity)actor;
             for (Iterator i = model.deepEntityList().iterator();

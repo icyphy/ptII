@@ -265,7 +265,7 @@ public class RemoteManagerClient extends TypedAtomicActor {
                 _remoteManager =
                     ptolemy.actor.corba.RemoteManagerUtil.RemoteManagerHelper.narrow(
                             ncRef.resolve(path));
-                if(_remoteManager == null) {
+                if (_remoteManager == null) {
                     throw new IllegalActionException(this,
                             " can not find the remote actor.");
                 }

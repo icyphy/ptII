@@ -282,24 +282,24 @@ public abstract class BasicGraphController extends AbstractGraphController
                         Object userObject = figure.getUserObject();
                         if (userObject != null) {
                             Iterator inEdges = model.inEdges(userObject);
-                            while(inEdges.hasNext()) {
+                            while (inEdges.hasNext()) {
                                 Figure connector = getFigure(inEdges.next());
                                 if (connector instanceof Connector) {
                                     ((Connector)connector).reroute();
                                 }
                             }
                             Iterator outEdges = model.outEdges(userObject);
-                            while(outEdges.hasNext()) {
+                            while (outEdges.hasNext()) {
                                 Figure connector = getFigure(outEdges.next());
                                 if (connector instanceof Connector) {
                                     ((Connector)connector).reroute();
                                 }
                             }
-                            if(model.isComposite(userObject)) {
+                            if (model.isComposite(userObject)) {
                                 Iterator edges = GraphUtilities
                                         .partiallyContainedEdges(
                                         userObject, model);
-                                while(edges.hasNext()) {
+                                while (edges.hasNext()) {
                                     Figure connector = getFigure(edges.next());
                                     if (connector instanceof Connector) {
                                         ((Connector)connector).reroute();

@@ -199,7 +199,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
                    = ((BooleanToken)synchronizedPlay.getToken()).booleanValue();
             if (synch) {
                 synchronized(this) {
-                    while(_player.getState() == Controller.Started
+                    while (_player.getState() == Controller.Started
                     && !_stopRequested) {
                         try {
                             wait();

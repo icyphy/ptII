@@ -101,7 +101,7 @@ public class DoubleMatrixToken extends MatrixToken {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
         Token token = tree.evaluateParseTree();
-        if(token instanceof DoubleMatrixToken) {
+        if (token instanceof DoubleMatrixToken) {
             double[][] value = ((DoubleMatrixToken)token).doubleMatrix();
             _initialize(value, DO_COPY);
         } else {
@@ -125,11 +125,11 @@ public class DoubleMatrixToken extends MatrixToken {
      */
     public DoubleMatrixToken(Token[] tokens, int rows, int columns)
             throws IllegalActionException {
-        if(tokens == null) {
+        if (tokens == null) {
             throw new IllegalActionException("DoubleMatrixToken: The specified"
                     + " array is null.");
         }
-        if(tokens.length != rows * columns) {
+        if (tokens.length != rows * columns) {
             throw new IllegalActionException("DoubleMatrixToken: The specified"
                     + " array is not of the correct length");
         }
@@ -138,7 +138,7 @@ public class DoubleMatrixToken extends MatrixToken {
         _value = new double[rows][columns];
         for (int i = 0; i < tokens.length; i++) {
             Token token = tokens[i];
-            if(token instanceof ScalarToken) {
+            if (token instanceof ScalarToken) {
                 _value[i / columns][i % columns] =
                     ((ScalarToken)token).doubleValue();
             } else {

@@ -107,15 +107,15 @@ public class JHDLNotExpr implements UnopExpr {
     {
         Value op = getOpBox().getValue();
 
-        if(op.getType().equals(IntType.v()) || op.getType().equals(ByteType.v()) ||
+        if (op.getType().equals(IntType.v()) || op.getType().equals(ByteType.v()) ||
             op.getType().equals(ShortType.v()) || op.getType().equals(BooleanType.v()) ||
             op.getType().equals(CharType.v()))
             return IntType.v();
-        else if(op.getType().equals(LongType.v()))
+        else if (op.getType().equals(LongType.v()))
             return LongType.v();
-        else if(op.getType().equals(DoubleType.v()))
+        else if (op.getType().equals(DoubleType.v()))
             return DoubleType.v();
-        else if(op.getType().equals(FloatType.v()))
+        else if (op.getType().equals(FloatType.v()))
             return FloatType.v();
         else
             return UnknownType.v();

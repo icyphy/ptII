@@ -127,7 +127,7 @@ public class UnreachableMethodRemover extends SceneTransformer {
                     SootMethod method = (SootMethod)methods.next();
                     SootMethod aMethod = theClass.getMethod(
                             method.getSubSignature());
-                    if(aMethod != null) {
+                    if (aMethod != null) {
                         System.out.println("Assuming interface method " +
                                 aMethod + " is reachable");
                         interfaceMethodSet.add(aMethod);

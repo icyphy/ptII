@@ -84,7 +84,7 @@ public class VisibleParameterEditorFactory extends EditorFactory {
                 createEditorPane());
 
         // If we were canceled, then restore the old value.
-        if(dialog.buttonPressed().equals("Cancel")) {
+        if (dialog.buttonPressed().equals("Cancel")) {
             SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
                         NamedObj parent =
@@ -121,7 +121,7 @@ public class VisibleParameterEditorFactory extends EditorFactory {
         PtolemyQuery query = new PtolemyQuery(object);
         query.setTextWidth(25);
 
-        if(object instanceof Settable) {
+        if (object instanceof Settable) {
             Settable parameter = (Settable)object;
             _oldExpression = parameter.getExpression();
             query.addStyledEntry(parameter);

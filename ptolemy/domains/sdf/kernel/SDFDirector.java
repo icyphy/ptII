@@ -245,7 +245,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         _iterationCount = 0;
 
         CompositeActor container = (CompositeActor)getContainer();
-        for(Iterator ports = container.outputPortList().iterator();
+        for (Iterator ports = container.outputPortList().iterator();
             ports.hasNext();) {
             IOPort port = (IOPort)ports.next();
 

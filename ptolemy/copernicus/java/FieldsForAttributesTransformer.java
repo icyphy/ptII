@@ -153,14 +153,14 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                         // Replace calls to getDirector with
                         // null.  FIXME: we should be able to
                         // do better than this?
-                        if(unit instanceof InvokeStmt) {
+                        if (unit instanceof InvokeStmt) {
                             body.getUnits().remove(unit);
                         } else {
                             box.setValue(NullConstant.v());
                         }
                     } else if (r.getMethod().getSubSignature().equals(
                                        _getAttributeSig)) {
-                        if(unit instanceof InvokeStmt) {
+                        if (unit instanceof InvokeStmt) {
                                 body.getUnits().remove(unit);
                         } else {
                             // Replace calls to getAttribute(arg)
@@ -190,7 +190,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             }
         }
 
-        if(actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
+        if (actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
             CompositeEntity model = (CompositeEntity)actor;
             // Loop over all the entity classes and replace getAttribute calls.
             for (Iterator i = model.deepEntityList().iterator();
@@ -213,7 +213,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
     private void _replaceGetAttributeMethod(
             JimpleBody body, ValueBox box, Local baseLocal,
             String name, Unit unit, LocalDefs localDefs) {
-        if(_debug) {
+        if (_debug) {
             System.out.println("replacing getAttribute in " + unit);
         }
 
@@ -223,7 +223,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         if (baseObject != null) {
             // Then we are dealing with a getAttribute call on one of the
             // classes we are generating.
-            if(_debug) {
+            if (_debug) {
                 System.out.println("baseObject = " + baseObject);
                 System.out.println("attribute name = " + name);
             }
@@ -234,7 +234,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             SootField attributeField = (SootField)
                 _attributeToFieldMap.get(attribute);
             Local local;
-            if(entityContainer.equals(baseObject)) {
+            if (entityContainer.equals(baseObject)) {
                 local = baseLocal;
             } else {
                 local = Jimple.v().newLocal("container",
@@ -330,7 +330,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             SootField field = theClass.getFieldByName(fieldName);
 
             Type type = field.getType();
-            if(!(type instanceof RefType)) {
+            if (!(type instanceof RefType)) {
                 System.out.println("Class " + theClass
                         + " declares field for attribute "
                         + attribute.getFullName() + " but it has type "
@@ -338,7 +338,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 continue;
             } else {
                 SootClass fieldClass = ((RefType)type).getSootClass();
-                if(!SootUtilities.derivesFrom(fieldClass,
+                if (!SootUtilities.derivesFrom(fieldClass,
                         PtolemyUtilities.attributeClass)) {
                     System.out.println("Class " + theClass
                             + " declares field for attribute "
@@ -376,7 +376,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
 
         // Loop over all the actor instance classes and get
         // fields for ports.
-        if(actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
+        if (actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
             // Then recurse
             CompositeEntity model = (CompositeEntity)actor;
             for (Iterator i = model.deepEntityList().iterator();

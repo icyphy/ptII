@@ -544,7 +544,7 @@ public class DEDirector extends Director {
 
             // Set the depth equal to the depth of the actor.
             _enqueueEvent(actor, time + getCurrentTime());
-            if(_isEmbedded()) {
+            if (_isEmbedded()) {
                 _requestFiring();
             }
             _eventQueue.notifyAll();
@@ -1093,7 +1093,7 @@ public class DEDirector extends Director {
                     actorToFire = currentEvent.actor();
 
                     // Deal with a fireAtCurrentTime event.
-                    if(currentTime == Double.NEGATIVE_INFINITY) {
+                    if (currentTime == Double.NEGATIVE_INFINITY) {
                         currentTime = getCurrentTime();
                     }
 

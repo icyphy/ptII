@@ -124,7 +124,7 @@ public class FixToken extends ScalarToken {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
         Token token = tree.evaluateParseTree();
-        if(token instanceof FixToken) {
+        if (token instanceof FixToken) {
             _value = ((FixToken)token).fixValue();
         } else {
             throw new IllegalActionException("A FixToken cannot be"

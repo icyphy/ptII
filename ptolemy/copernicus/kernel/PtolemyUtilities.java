@@ -246,7 +246,7 @@ public class PtolemyUtilities {
 //                             tokenArrayLocal)),
 //                     insertPoint);
 //             return tokenLocal;
-        } else if(token.getClass().equals(Token.class)) {
+        } else if (token.getClass().equals(Token.class)) {
             // Token has no string constructor.
             SootClass tokenClass =
                 Scene.v().loadClassAndSupport(token.getClass().getName());
@@ -278,7 +278,7 @@ public class PtolemyUtilities {
             return tokenLocal;
         } else if (token instanceof BooleanToken) {
             Value value;
-            if(((BooleanToken)token).booleanValue()) {
+            if (((BooleanToken)token).booleanValue()) {
                 value = IntConstant.v(1);
             } else {
                 value = IntConstant.v(0);
@@ -708,18 +708,18 @@ public class PtolemyUtilities {
      *  depth one, while structured types have depth greater than one.
      */
     public static int getTypeDepth(ptolemy.data.type.Type type) {
-        if(type instanceof ptolemy.data.type.ArrayType) {
+        if (type instanceof ptolemy.data.type.ArrayType) {
             return 1 + getTypeDepth(((ptolemy.data.type.ArrayType)type).getElementType());
-        } else if(type instanceof ptolemy.data.type.RecordType) {
+        } else if (type instanceof ptolemy.data.type.RecordType) {
             ptolemy.data.type.RecordType recordType =
                 (ptolemy.data.type.RecordType)type;
             Iterator labels = recordType.labelSet().iterator();
             int maxDepth = 0;
-            while(labels.hasNext()) {
+            while (labels.hasNext()) {
                 ptolemy.data.type.Type elementType =
                     recordType.get((String)labels.next());
                 int depth = getTypeDepth(elementType);
-                if(depth > maxDepth) maxDepth = depth;
+                if (depth > maxDepth) maxDepth = depth;
             }
             return maxDepth + 1;
         } else {
@@ -865,9 +865,9 @@ public class PtolemyUtilities {
                     UnitValueBoxPair pair = (UnitValueBoxPair)pairs.next();
                     if (pair.getUnit() instanceof InvokeStmt) {
                         InvokeStmt useStmt = (InvokeStmt)pair.getUnit();
-                        if(useStmt.getInvokeExpr() instanceof SpecialInvokeExpr) {
+                        if (useStmt.getInvokeExpr() instanceof SpecialInvokeExpr) {
                             SpecialInvokeExpr constructorExpr = (SpecialInvokeExpr) useStmt.getInvokeExpr();
-                            if(constructorExpr.getMethod().getSignature().equals(
+                            if (constructorExpr.getMethod().getSignature().equals(
                                        "<ptolemy.data.type.ArrayType: void <init>(ptolemy.data.type.Type)>")) {
                                 Local arg1Local = (Local)constructorExpr.getArg(0);
                                 ptolemy.data.type.Type elementType =

@@ -1383,10 +1383,10 @@ public class ModelTransformer extends SceneTransformer {
 
         // Add code to the end of each class initializer to set the
         // instance field.
-        for(Iterator methods = actorClass.getMethods().iterator();
+        for (Iterator methods = actorClass.getMethods().iterator();
             methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
-            if(method.getName().equals("<init>")) {
+            if (method.getName().equals("<init>")) {
                 JimpleBody body = (JimpleBody)method.getActiveBody();
                 body.getUnits().insertBefore(
                         Jimple.v().newAssignStmt(
@@ -1400,7 +1400,7 @@ public class ModelTransformer extends SceneTransformer {
 
         // Loop over all the actor instance classes and get
         // fields for ports.
-        if(actor instanceof CompositeActor) {
+        if (actor instanceof CompositeActor) {
             // Then recurse
             CompositeEntity model = (CompositeEntity)actor;
             for (Iterator i = model.deepEntityList().iterator();

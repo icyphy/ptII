@@ -258,7 +258,7 @@ public class Scrambler extends Transformer {
         }
 
         // Exclusive-or with the input if there is any.
-         for(int i = 0; i < input.getWidth(); i++){
+         for (int i = 0; i < input.getWidth(); i++){
             if (input.hasToken(0)){
                 IntToken inputToken = (IntToken)input.get(0);
                 int inputTokenValue = inputToken.intValue();

@@ -189,7 +189,7 @@ public class JAIScale extends Transformer {
         RenderedOp oldImage = jaiImageToken.getValue();
         parameters.addSource(oldImage);
 
-        if(_specifySize) {
+        if (_specifySize) {
             int oldImageWidth = oldImage.getWidth();
             int oldImageHeight = oldImage.getHeight();
             parameters.add((float)_width/(float)oldImageWidth);

@@ -201,7 +201,7 @@ public class HDFFSMDirector extends FSMDirector {
      *  @exception IllegalActionException If there is no controller.
      */
     public void fire() throws IllegalActionException {
-        if(_debug_info) System.out.println(getName() +
+        if (_debug_info) System.out.println(getName() +
                                            " fire() invoked.");
         HDFFSMActor ctrl = (HDFFSMActor)getController();
         ctrl._setInputVariables(_firingsSoFar, _getFiringsPerSchedulIteration());
@@ -211,7 +211,7 @@ public class HDFFSMDirector extends FSMDirector {
         Actor[] ref = ctrl.currentState().getRefinement();
         _fireRefinement = false;
         if (ref != null) {
-          if(_debug_info) System.out.println(getName() +
+          if (_debug_info) System.out.println(getName() +
                              " fire(): refinement is " +
                              // FIXME
                              //((CompositeActor)ref).getName());
@@ -226,11 +226,11 @@ public class HDFFSMDirector extends FSMDirector {
           //_fireRefinement = ref.prefire();
           _fireRefinement = ref[0].prefire();
         }
-        if(_debug_info) System.out.println(getName() +
+        if (_debug_info) System.out.println(getName() +
                " fire(): refinement is ready to fire = " +
                                            _fireRefinement);
         if (_fireRefinement) {
-            if(_debug_info) System.out.println(getName() +
+            if (_debug_info) System.out.println(getName() +
                                         " firing refinement");
             // Fire the refinement.
             // FIXME
@@ -275,7 +275,7 @@ public class HDFFSMDirector extends FSMDirector {
      *  @exception IllegalActionException If there is no controller.
      */
     public boolean prefire() throws IllegalActionException {
-        if(_debug_info) System.out.println(getName() +
+        if (_debug_info) System.out.println(getName() +
                                   " prefire() invoked.");
         return getController().prefire();
     }
@@ -314,7 +314,7 @@ public class HDFFSMDirector extends FSMDirector {
             throw new IllegalActionException(this,
              "Can't postfire because current refinement is null.");
         }
-        if(_debug_info) {
+        if (_debug_info) {
             _debugPostfire(curState);
         }
         // Postfire the current refinement.
@@ -517,7 +517,7 @@ public class HDFFSMDirector extends FSMDirector {
      */
     public boolean transferInputs(IOPort port)
                    throws IllegalActionException {
-        if(_debug_info) System.out.println(getName() +
+        if (_debug_info) System.out.println(getName() +
                 " : transferInputs() invoked");
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
@@ -531,16 +531,16 @@ public class HDFFSMDirector extends FSMDirector {
         // For each channel.
         for (int i = 0; i < port.getWidth(); i++) {
             int rate = SDFScheduler.getTokenConsumptionRate(port);
-            if(_debug_info) System.out.println(getName() +
+            if (_debug_info) System.out.println(getName() +
                                  " : transferInputs(): " +
                                            getFullName() +
                     ": transferInputs(): Rate of port: " +
                         port.getFullName() + " is " + rate);
-            for(int k = 0; k < rate; k++) {
+            for (int k = 0; k < rate; k++) {
                 try {
                     ptolemy.data.Token t = port.get(i);
                     if (insiderecs != null && insiderecs[i] != null) {
-                        if(_debug_info) {
+                        if (_debug_info) {
                             System.out.println(getName() +
                            " : transferInputs() " + getFullName() +
                                 ": transfering input from port: " +
@@ -583,7 +583,7 @@ public class HDFFSMDirector extends FSMDirector {
      */
     public boolean transferOutputs(IOPort port)
             throws IllegalActionException {
-        if(_debug_info) System.out.println(getName() +
+        if (_debug_info) System.out.println(getName() +
                   " : transferOutputs() invoked on port: "
                                       + port.getFullName());
 
@@ -598,7 +598,7 @@ public class HDFFSMDirector extends FSMDirector {
         if (insiderecs != null) {
             for (int i = 0; i < insiderecs.length; i++) {
                 if (insiderecs[i] != null) {
-                    if(_debug_info) System.out.println(getName() +
+                    if (_debug_info) System.out.println(getName() +
                     " : transferOutputs(): insiderecs[0].length: " +
                                                insiderecs[0].length);
                     for (int j = 0; j < insiderecs[i].length; j++) {
@@ -606,7 +606,7 @@ public class HDFFSMDirector extends FSMDirector {
                             try {
                                 ptolemy.data.Token t =
                                     insiderecs[i][j].get();
-                                if(_debug_info) System.out.println(getName() +
+                                if (_debug_info) System.out.println(getName() +
                                       " : transferOutputs(): sending token.");
                                 port.send(i, t);
                                 trans = true;
@@ -810,8 +810,8 @@ public class HDFFSMDirector extends FSMDirector {
             throws IllegalActionException {
         Parameter param =
             (Parameter)p.getAttribute("tokenConsumptionRate");
-        if(param == null) {
-            if(p.isInput())
+        if (param == null) {
+            if (p.isInput())
                 return 1;
             else
                 return 0;
@@ -832,8 +832,8 @@ public class HDFFSMDirector extends FSMDirector {
             throws IllegalActionException {
         Parameter param =
             (Parameter)p.getAttribute("tokenProductionRate");
-        if(param == null) {
-            if(p.isOutput())
+        if (param == null) {
+            if (p.isOutput())
                 return 1;
             else
                 return 0;
@@ -844,18 +844,18 @@ public class HDFFSMDirector extends FSMDirector {
 
     private void _setTokenConsumptionRate(Entity e, IOPort port, int rate)
             throws NotSchedulableException {
-        if(rate < 0) throw new NotSchedulableException(
+        if (rate < 0) throw new NotSchedulableException(
                 "Rate must be >= 0");
-        if(!port.isInput()) throw new NotSchedulableException("IOPort " +
+        if (!port.isInput()) throw new NotSchedulableException("IOPort " +
                 port.getName() + " is not an Input Port.");
         Port pp = e.getPort(port.getName());
-        if(!port.equals(pp)) throw new NotSchedulableException("IOPort " +
+        if (!port.equals(pp)) throw new NotSchedulableException("IOPort " +
                 port.getName() + " is not contained in Entity " +
                 e.getName());
         Parameter param = (Parameter)
             port.getAttribute("tokenConsumptionRate");
         try {
-            if(param != null) {
+            if (param != null) {
                 param.setToken(new IntToken(rate));
             } else {
                 param = new Parameter(port,"tokenConsumptionRate",
@@ -873,18 +873,18 @@ public class HDFFSMDirector extends FSMDirector {
 
     private void _setTokenProductionRate(Entity e, IOPort port, int rate)
             throws NotSchedulableException {
-        if(rate < 0) throw new NotSchedulableException(
+        if (rate < 0) throw new NotSchedulableException(
                 "Rate must be >= 0");
-        if(!port.isOutput()) throw new NotSchedulableException("IOPort " +
+        if (!port.isOutput()) throw new NotSchedulableException("IOPort " +
                 port.getName() + " is not an Output Port.");
         Port pp = e.getPort(port.getName());
-        if(!port.equals(pp)) throw new NotSchedulableException("IOPort " +
+        if (!port.equals(pp)) throw new NotSchedulableException("IOPort " +
                 port.getName() + " is not contained in Entity " +
                 e.getName());
         Parameter param = (Parameter)
             port.getAttribute("tokenProductionRate");
         try {
-            if(param != null) {
+            if (param != null) {
                 param.setToken(new IntToken(rate));
             } else {
                 param = new Parameter(port,"tokenProductionRate",

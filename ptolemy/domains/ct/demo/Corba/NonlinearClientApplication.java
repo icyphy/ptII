@@ -138,7 +138,7 @@ public class NonlinearClientApplication {
             gain3.factor.setToken(new DoubleToken(-1000.0));
 
             String orbinit = new String("");
-            for(int i = 0; i < args.length; i++) {
+            for (int i = 0; i < args.length; i++) {
                 orbinit = orbinit + args[i] + " ";
             }
             _client.ORBInitProperties.setToken(new StringToken(orbinit));

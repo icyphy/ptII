@@ -358,7 +358,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  the actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
-        if(!(getContainer() instanceof CTStepSizeControlActor)) {
+        if (!(getContainer() instanceof CTStepSizeControlActor)) {
             throw new IllegalActionException(this, "can only be contained by "
                     + "a composite actor that implements "
                     + "the CTStepSizeControlActor "

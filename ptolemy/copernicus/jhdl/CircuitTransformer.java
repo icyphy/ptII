@@ -166,7 +166,7 @@ public class CircuitTransformer extends SceneTransformer {
         //      port of the entity
         //    - appropriate edges between input/output ports and entity
         System.out.println("   Add actors");
-        for(Iterator i = model.entityList().iterator(); i.hasNext();) {
+        for (Iterator i = model.entityList().iterator(); i.hasNext();) {
 
             Entity entity = (Entity)i.next();
             System.out.println("    Adding entity "+entity);
@@ -206,7 +206,7 @@ public class CircuitTransformer extends SceneTransformer {
               System.out.println("    Input Port = " + port + " inside sinks="
                                + port.insideSinkPortList().size());
             combinedGraph.addNodeWeight(port);
-            for(Iterator insideSinks = port.insideSinkPortList().iterator();
+            for (Iterator insideSinks = port.insideSinkPortList().iterator();
                 insideSinks.hasNext();) {
                 IOPort insideSink = (IOPort)insideSinks.next();
                 System.out.println("     remote port="+insideSink);
@@ -217,7 +217,7 @@ public class CircuitTransformer extends SceneTransformer {
         // 3. Iterate over all output ports and make connections in graph
         // representing topology of model
         System.out.println("   Add output connections");
-        for(Iterator i = model.entityList().iterator(); i.hasNext();) {
+        for (Iterator i = model.entityList().iterator(); i.hasNext();) {
             Entity entity = (Entity)i.next();
             for (Iterator outPorts = ((TypedAtomicActor)entity).outputPortList().iterator(); outPorts.hasNext();){
                 IOPort port = (IOPort) outPorts.next();
@@ -306,7 +306,7 @@ public class CircuitTransformer extends SceneTransformer {
                                        DirectedGraph topGraph,
                                        Map entityGraphMap) {
 
-        for(Iterator i = model.entityList().iterator(); i.hasNext();) {
+        for (Iterator i = model.entityList().iterator(); i.hasNext();) {
             Entity entity = (Entity) i.next();
             DirectedGraph entityGraph =
                 (DirectedGraph) entityGraphMap.get(entity);

@@ -98,9 +98,9 @@ public class LibraryUsageReporter extends SceneTransformer {
                 Scene.v().getMainClass().getMethods());
 
         Set createableClasses = new HashSet();
-        for(Iterator reachables = reachableList.iterator(); reachables.hasNext();) {
+        for (Iterator reachables = reachableList.iterator(); reachables.hasNext();) {
             SootMethod method = (SootMethod)reachables.next();
-            if(method.getName().equals("<init>")) {
+            if (method.getName().equals("<init>")) {
                 createableClasses.addAll(
                         hierarchy.getSuperclassesOfIncluding(
                                 method.getDeclaringClass()));
@@ -110,25 +110,25 @@ public class LibraryUsageReporter extends SceneTransformer {
 
         Set RTAReachableClasses = new HashSet(createableClasses);
         List list = new LinkedList();
-        for(Iterator reachables = reachableList.iterator(); reachables.hasNext();) {
+        for (Iterator reachables = reachableList.iterator(); reachables.hasNext();) {
             SootMethod method = (SootMethod)reachables.next();
             String methodName = method.getSignature();
-            if(method.isStatic() ||
+            if (method.isStatic() ||
                     createableClasses.contains(method.getDeclaringClass())) {
                 list.add(methodName);
                 RTAReachableClasses.add(method.getDeclaringClass());
             }
         }
         Collections.sort(list);
-        for(Iterator names = list.iterator(); names.hasNext();) {
+        for (Iterator names = list.iterator(); names.hasNext();) {
             System.out.println(names.next());
         }
         try {
             FileWriter writer = new FileWriter(outDir + "/jarClassList.txt");
-            for(Iterator classes = RTAReachableClasses.iterator();
+            for (Iterator classes = RTAReachableClasses.iterator();
                 classes.hasNext();) {
                 SootClass theClass = (SootClass)classes.next();
-                if(!theClass.getName().startsWith("java")) {
+                if (!theClass.getName().startsWith("java")) {
                     writer.write(theClass.getName());
                     writer.write("\n");
                 }

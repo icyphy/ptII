@@ -146,14 +146,14 @@ public class UnusedFieldRemover extends SceneTransformer {
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-                for(Iterator stmts = body.getUnits().iterator();
+                for (Iterator stmts = body.getUnits().iterator();
                     stmts.hasNext();) {
                     Stmt stmt = (Stmt)stmts.next();
                     for (Iterator boxes = stmt.getUseBoxes().iterator();
                          boxes.hasNext();) {
                         ValueBox box = (ValueBox)boxes.next();
                         Value value = box.getValue();
-                        if(value instanceof FieldRef) {
+                        if (value instanceof FieldRef) {
                             Object field = ((FieldRef)value).getField();
                             unusedFieldSet.remove(field);
                         }
@@ -171,16 +171,16 @@ public class UnusedFieldRemover extends SceneTransformer {
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-                for(Iterator stmts = body.getUnits().snapshotIterator();
+                for (Iterator stmts = body.getUnits().snapshotIterator();
                     stmts.hasNext();) {
                     Stmt stmt = (Stmt)stmts.next();
                     for (Iterator boxes = stmt.getDefBoxes().iterator();
                          boxes.hasNext();) {
                         ValueBox box = (ValueBox)boxes.next();
                         Value value = box.getValue();
-                        if(value instanceof FieldRef) {
+                        if (value instanceof FieldRef) {
                             Object field = ((FieldRef)value).getField();
-                            if(unusedFieldSet.contains(field)) {
+                            if (unusedFieldSet.contains(field)) {
                                 body.getUnits().remove(stmt);
                             }
                         }
@@ -191,7 +191,7 @@ public class UnusedFieldRemover extends SceneTransformer {
             for (Iterator fields = entityClass.getFields().snapshotIterator();
                  fields.hasNext();) {
                 SootField field = (SootField)fields.next();
-                if(unusedFieldSet.contains(field)) {
+                if (unusedFieldSet.contains(field)) {
                     entityClass.removeField(field);
                 }
             }

@@ -122,7 +122,7 @@ public class ExceptionEliminator extends SceneTransformer {
                      traps.hasNext();) {
                     Trap trap = (Trap)traps.next();
                     SootClass exception = trap.getException();
-                    if(_isPtolemyException(exception)) {
+                    if (_isPtolemyException(exception)) {
                         trap.setException(PtolemyUtilities.exceptionClass);
                     }
                 }
@@ -175,15 +175,15 @@ public class ExceptionEliminator extends SceneTransformer {
                         ((RefType)expr.getBase().getType()).getSootClass();
                     if (_isPtolemyException(exceptionClass)) {
                         Value foundArg = null;
-                        for(Iterator args = expr.getArgs().iterator();
+                        for (Iterator args = expr.getArgs().iterator();
                             args.hasNext();) {
                             Value arg = (Value)args.next();
-                            if(arg.getType().equals(RefType.v(PtolemyUtilities.stringClass))) {
+                            if (arg.getType().equals(RefType.v(PtolemyUtilities.stringClass))) {
                                 foundArg = arg;
                                 break;
                             }
                         }
-                        if(foundArg == null || _obfuscate) {
+                        if (foundArg == null || _obfuscate) {
                             box.setValue(Jimple.v().newSpecialInvokeExpr(
                                                  (Local)expr.getBase(),
                                                  PtolemyUtilities.runtimeExceptionConstructor,
@@ -195,14 +195,14 @@ public class ExceptionEliminator extends SceneTransformer {
                                                  foundArg));
                         }
                     }
-                } else if(value instanceof VirtualInvokeExpr) {
+                } else if (value instanceof VirtualInvokeExpr) {
                     VirtualInvokeExpr expr = (VirtualInvokeExpr)value;
                     SootClass exceptionClass =
                         ((RefType)expr.getBase().getType()).getSootClass();
                     if (_isPtolemyException(exceptionClass)) {
                         SootMethod method = expr.getMethod();
-                        if(method.getName().equals("getMessage")) {
-                            if(unit instanceof InvokeStmt) {
+                        if (method.getName().equals("getMessage")) {
+                            if (unit instanceof InvokeStmt) {
                                 body.getUnits().remove(unit);
                             } else {
                                 box.setValue(StringConstant.v("PtolemyException"));

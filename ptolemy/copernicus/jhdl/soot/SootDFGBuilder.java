@@ -173,7 +173,7 @@ public class SootDFGBuilder extends SootASTVisitor {
                                           Value args[], Value base) {
         Node invokeNode = _valueMap.getValueNode(ie);
         Node baseNode = _valueMap.getValueNode(base);
-        for(int i = 0; i < args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             Node argNode = _valueMap.getValueNode(args[i]);
             //System.out.println("arg="+argNode+" invokeNode="+invokeNode);
             _graph.addEdge(argNode,invokeNode,"arg"+i);
@@ -190,7 +190,7 @@ public class SootDFGBuilder extends SootASTVisitor {
         System.out.println("SpecialInvoke="+ie+" method="+ie.getMethod().getName());
         Node invokeNode = _valueMap.getValueNode(ie);
         Node baseNode = _valueMap.getValueNode(base);
-        for(int i = 0; i < args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             Node argNode = _valueMap.getValueNode(args[i]);
             //System.out.println("arg="+argNode+" invokeNode="+invokeNode);
             _graph.addEdge(argNode,invokeNode,"arg"+i);
@@ -204,7 +204,7 @@ public class SootDFGBuilder extends SootASTVisitor {
         System.out.println("ConstructorInvoke="+ie+" method="+ie.getMethod().getName());
         Node invokeNode = _valueMap.getValueNode(ie);
         Node baseNode = _valueMap.getValueNode(base);
-        for(int i = 0; i < args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             Node argNode = _valueMap.getValueNode(args[i]);
             //System.out.println("arg="+argNode+" invokeNode="+invokeNode);
             _graph.addEdge(argNode,invokeNode,"arg"+i);

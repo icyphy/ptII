@@ -29,7 +29,7 @@ public class BlockGraphToDotty extends GraphToDotty {
         Map m = new HashMap();
         List basicBlocks = g.getBlocks();
         Iterator it = basicBlocks.iterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             Block currentBlock = (Block) it.next();
             m.put(currentBlock.getHead(),  "Block " + (new Integer(currentBlock.getIndexInMethod()).toString()));
         }
@@ -40,7 +40,7 @@ public class BlockGraphToDotty extends GraphToDotty {
         sb.append("//Dotfile created by HashMutableToDotty\r\n");
         sb.append("digraph "+ename+" {\r\n");
         sb.append("\t// Vertices\r\n");
-        for(Iterator nodes = g.iterator();nodes.hasNext();) {
+        for (Iterator nodes = g.iterator();nodes.hasNext();) {
             Block source = (Block)nodes.next();
             String name="v" + count++;
             sb.append("\t\""+name+"\" [label=\""
@@ -55,7 +55,7 @@ public class BlockGraphToDotty extends GraphToDotty {
 
             //System.err.println(source.toShortString());
 
-            for(Iterator succs = g.getSuccsOf(source).iterator(); succs.hasNext();) {
+            for (Iterator succs = g.getSuccsOf(source).iterator(); succs.hasNext();) {
                 Block dest= (Block)succs.next();
                 sb.append("\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\"");
                 if (endsWithIf){

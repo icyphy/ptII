@@ -88,7 +88,7 @@ public class TopMatrixType extends StructuredType
         // This is useful because there are some things like
         // the matrix visualizer that can meaningfully accept any token
         // type.
-        if(token instanceof MatrixToken) {
+        if (token instanceof MatrixToken) {
             return token;
         } else {
             throw new IllegalActionException("Cannot convert " + token +
@@ -211,7 +211,7 @@ public class TopMatrixType extends StructuredType
      *   not the same structured type as this one.
      */
     protected int _compare(StructuredType type) {
-        if(equals(type)) {
+        if (equals(type)) {
             return CPO.SAME;
         } else {
             return CPO.HIGHER;
@@ -235,7 +235,7 @@ public class TopMatrixType extends StructuredType
      *   not the same structured type as this one.
      */
     protected StructuredType _greatestLowerBound(StructuredType type) {
-        if(equals(type)) {
+        if (equals(type)) {
             return this;
         } else {
             return type;

@@ -111,11 +111,11 @@ public class SaberSubsystem extends TypedAtomicActor
             String ppname = p.getName() + "ToolVar";
             Parameter pp = (Parameter)getAttribute(ppname);
             String varname = ((StringToken)pp.getToken()).stringValue();
-            if(_porttable.put(varname, p) != null) {
+            if (_porttable.put(varname, p) != null) {
                 throw new IllegalActionException( this,
                         "two ports has the same tool variables");
             }
-            if(p.isOutput()) {
+            if (p.isOutput()) {
                 _numout ++;
             }
         }
@@ -140,7 +140,7 @@ public class SaberSubsystem extends TypedAtomicActor
             _reader = new BufferedReader(
                     new InputStreamReader(_instream), 1000);
             boolean show = false;
-            if(_reader == null) {
+            if (_reader == null) {
                 throw new IllegalActionException(this,
                         "instream reading error.");
             }
@@ -165,7 +165,7 @@ public class SaberSubsystem extends TypedAtomicActor
             _ps.println("bye");
             while (true){
                 try {
-                    //if(_reader.ready()) {
+                    //if (_reader.ready()) {
                     String line = _reader.readLine();
                     _debug(line);
                     if (line == null) continue;
@@ -195,9 +195,9 @@ public class SaberSubsystem extends TypedAtomicActor
                     if (locsep < 0) continue;
                     String nname = line.substring(0, locsep);
                     _debug(getFullName() + "gets dc var "+ nname);
-                    if(_porttable.containsKey(nname)) {
+                    if (_porttable.containsKey(nname)) {
                         TypedIOPort po = (TypedIOPort)_porttable.get(nname);
-                        if(po.isOutput()) {
+                        if (po.isOutput()) {
                             double pd = _parseNumber(line, locsep,
                                     line.length());
                             _debug(getFullName() + " gets var value: "+pd);
@@ -221,7 +221,7 @@ public class SaberSubsystem extends TypedAtomicActor
      */
     public void emitTentativeOutputs() throws IllegalActionException {
         Iterator outputPorts = outputPortList().iterator();
-        while(outputPorts.hasNext()) {
+        while (outputPorts.hasNext()) {
             TypedIOPort p = (TypedIOPort)outputPorts.next();
             DoubleToken d = (DoubleToken)_outpvalue.get(p);
             p.broadcast(d);
@@ -256,7 +256,7 @@ public class SaberSubsystem extends TypedAtomicActor
         //            " , trep " + _endpt + " , trip " + _startpt +
         //            " , tripeqtrep yes, tstep " + _innerStep);
 
-        if(_first) {
+        if (_first) {
             _ps.println("tr (tend " + endTime + ", tstep "+ _innerStep );
             _first = false;
         } else {
@@ -284,7 +284,7 @@ public class SaberSubsystem extends TypedAtomicActor
 
                 _reader = new BufferedReader(
                         new InputStreamReader(_instream));
-                if(_reader == null) {
+                if (_reader == null) {
                     throw new IllegalActionException(this,
                             " Can't refresh input buffer." +
                             " IO error while in reading " + e.getMessage());
@@ -301,7 +301,7 @@ public class SaberSubsystem extends TypedAtomicActor
         Iterator outputPorts = outputPortList().iterator();
         String outstr = new String();
         int outindex = 0;
-        while(outputPorts.hasNext()) {
+        while (outputPorts.hasNext()) {
             IOPort p = (IOPort) outputPorts.next();
             Parameter pparam = (Parameter)getAttribute(p.getName() +
                     "ToolVar");
@@ -339,7 +339,7 @@ public class SaberSubsystem extends TypedAtomicActor
                                 tmp++;
                             }
                             int tmp2;
-                            if( i == outindex-1) {
+                            if ( i == outindex-1) {
                                 tmp2 = line.length();
                             } else {
                                 tmp2 = line.indexOf(' ', tmp);
@@ -371,7 +371,7 @@ public class SaberSubsystem extends TypedAtomicActor
                 _outstream = _tool.getOutputStream();
                 _reader = new BufferedReader(
                         new InputStreamReader(_instream));
-                if(_reader == null) {
+                if (_reader == null) {
                     throw new IllegalActionException(this,
                             " Can't refresh input buffer." +
                             " IO error while in reading " + e.getMessage());
@@ -381,7 +381,7 @@ public class SaberSubsystem extends TypedAtomicActor
         // Output tokens
         outputPorts = outputPortList().iterator();
         int outi = 0;
-        while(outputPorts.hasNext()) {
+        while (outputPorts.hasNext()) {
             TypedIOPort p = (TypedIOPort) outputPorts.next();
             _outtoken[outi] = new DoubleToken(_outvar[outi]);
             p.broadcast( _outtoken[outi] );

@@ -165,7 +165,7 @@ public class JAIPNMWriter extends Sink {
         else {
             //file doesn't exist, so create new file
             try {
-                if(!_file.createNewFile()) {
+                if (!_file.createNewFile()) {
                     throw new IllegalActionException(this, "Couldn't" +
                             " create file");
                 }

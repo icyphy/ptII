@@ -98,7 +98,7 @@ public class ArrayType extends StructuredType {
      *   cannot be done.
      */
     public Token convert(Token token) throws IllegalActionException {
-        if(!(token instanceof ArrayToken)) {
+        if (!(token instanceof ArrayToken)) {
             throw new IllegalArgumentException(
                     Token.notSupportedIncomparableConversionMessage(
                             token, toString()));

@@ -170,7 +170,7 @@ public class ArrayMemory extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         BooleanToken yes = BooleanToken.TRUE;
         /**Read the Serial/Parallel Control*/
-        if(serialOrParallel.hasToken(0)){
+        if (serialOrParallel.hasToken(0)){
             _serialOrParallel =
             ((BooleanToken)serialOrParallel.get(0)).booleanValue();
         }
@@ -186,15 +186,15 @@ public class ArrayMemory extends TypedAtomicActor {
         }
 
         /** Write to the array*/
-        if(write.hasToken(0)){
+        if (write.hasToken(0)){
             _write = (BooleanToken)write.get(0);
 
             if (_write.isEqualTo(yes).booleanValue()){
-                if(_serialOrParallel){
+                if (_serialOrParallel){
                     _memory[_index] = (Token)dataInSerial.get(0);
-                }  else {if(dataInParallel.hasToken(0)){
+                }  else {if (dataInParallel.hasToken(0)){
                     ArrayToken token = (ArrayToken)dataInParallel.get(0);
-                    for(int i = 0; i < _arrayLength; i++) {
+                    for (int i = 0; i < _arrayLength; i++) {
                         _memory[i] = (token.getElement(i));
                     }
                 }
@@ -202,10 +202,10 @@ public class ArrayMemory extends TypedAtomicActor {
             }
 
             /** Read from the array*/
-            if(read.hasToken(0)){
+            if (read.hasToken(0)){
                 _read  = (BooleanToken)read.get(0);
-                if(_read.isEqualTo(yes).booleanValue()){
-                    if(_serialOrParallel){
+                if (_read.isEqualTo(yes).booleanValue()){
+                    if (_serialOrParallel){
                         dataOutSerial.send(0, _memory[_index]);
                     } else{
                         dataOutParallel.send(0, new ArrayToken(_memory));

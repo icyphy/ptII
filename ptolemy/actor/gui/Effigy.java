@@ -435,7 +435,7 @@ public class Effigy extends CompositeEntity {
      */
     protected void _removeEntity(ComponentEntity entity) {
         super._removeEntity(entity);
-               if(numberOfOpenTableaux() == 0 && !isSystemEffigy()) {
+               if (numberOfOpenTableaux() == 0 && !isSystemEffigy()) {
             try {
                 setContainer(null);
             } catch (Exception ex) {

@@ -170,7 +170,7 @@ public class IIR extends Transformer {
 
             // Note: a<sub>0</sub> must always be 1.
             // Issue a warning if it isn't.
-            if(!_denominator[0].isEqualTo(_denominator[0].one())
+            if (!_denominator[0].isEqualTo(_denominator[0].one())
                         .booleanValue()) {
                 try {
                     MessageHandler.warning(
@@ -293,7 +293,7 @@ public class IIR extends Transformer {
     }
 
     private void _initStateVector() throws  IllegalActionException {
-        if(_numerator.length > 0) {
+        if (_numerator.length > 0) {
             int stateSize = (int)java.lang.Math.max(_numerator.length,
                     _denominator.length);
             _stateVector = new Token[stateSize];

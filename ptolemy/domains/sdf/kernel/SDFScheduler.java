@@ -1766,7 +1766,7 @@ public class SDFScheduler extends Scheduler {
             int width = relation.getWidth();
             // loop through all of the channels of that relation.
             for (int i = 0; i < width; i++, sourceChannel++) {
-                if(receivers[sourceChannel] == null) {
+                if (receivers[sourceChannel] == null) {
                     // There is nothing connected on the other side of
                     // transparent hierarchy... just ignore.
                     continue;

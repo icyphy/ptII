@@ -133,10 +133,10 @@ public class InlineParameterTransformer extends SceneTransformer {
                 attributeToValueFieldMap, constantAnalysis, debug);
 
         // Replace the token calls... on ALL the classes.
-        for(Iterator classes = Scene.v().getApplicationClasses().iterator();
+        for (Iterator classes = Scene.v().getApplicationClasses().iterator();
             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
-            if(SootUtilities.derivesFrom(theClass,
+            if (SootUtilities.derivesFrom(theClass,
                        PtolemyUtilities.inequalityTermClass)) continue;
 
             // inline calls to parameter.getToken and getExpression
@@ -195,7 +195,7 @@ public class InlineParameterTransformer extends SceneTransformer {
 //                         _phaseName + ".lns");
 //             }
 //         }
-//         if(actor instanceof CompositeActor && !(actor instanceof FSMActor)) {
+//         if (actor instanceof CompositeActor && !(actor instanceof FSMActor)) {
 //             CompositeActor model = (CompositeActor)actor;
 //             for (Iterator entities = model.deepEntityList().iterator();
 //                  entities.hasNext();) {
@@ -236,7 +236,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                 if (debug) System.out.println("invoking = " + r.getMethod());
                 if (r.getBase().getType() instanceof RefType) {
                     RefType type = (RefType)r.getBase().getType();
-                    if(debug) System.out.println("baseType = " + type);
+                    if (debug) System.out.println("baseType = " + type);
                     // Remove calls to validate().
                     if (r.getMethod().equals(PtolemyUtilities.validateMethod)) {
                         body.getUnits().remove(stmt);
@@ -740,7 +740,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                     boolean isConstant = constantAnalysis.getConstVariables(
                             (Entity)context).contains(attribute);
                     int modifier;
-                    if(isConstant) {
+                    if (isConstant) {
                         modifier = Modifier.PUBLIC |
                             Modifier.STATIC |
                             Modifier.FINAL;
@@ -753,7 +753,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                             tokenType,
                             modifier);
                     theClass.addField(field);
-                    if(isConstant) {
+                    if (isConstant) {
                         try {
                             field.addTag(new ValueTag(variable.getToken()));
                         } catch (Exception ex) {
@@ -777,7 +777,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                     attributeToValueFieldMap, constantAnalysis, debug);
         }
 
-        if(container instanceof ComponentEntity) {
+        if (container instanceof ComponentEntity) {
             ComponentEntity entity = (ComponentEntity)container;
             for (Iterator ports = entity.portList().iterator();
                  ports.hasNext();) {
@@ -788,7 +788,7 @@ public class InlineParameterTransformer extends SceneTransformer {
             }
         }
 
-        if(container instanceof CompositeEntity &&
+        if (container instanceof CompositeEntity &&
                 !(container instanceof FSMActor)) {
             CompositeEntity model = (CompositeEntity)container;
             // Loop over all the actor instance classes.

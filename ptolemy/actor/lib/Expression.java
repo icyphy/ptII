@@ -426,7 +426,7 @@ public class Expression extends TypedAtomicActor {
                 Set set = _variableCollector.collectFreeVariables(
                         _parseTree, _scope);
                 List termList = new LinkedList();
-                for(Iterator elements = set.iterator();
+                for (Iterator elements = set.iterator();
                     elements.hasNext();) {
                     String name = (String)elements.next();
                     if (name.equals("time") ||
@@ -437,7 +437,7 @@ public class Expression extends TypedAtomicActor {
                     if (port != null) {
                         InequalityTerm[] terms =
                             port.getTypeTerm().getVariables();
-                        for(int i = 0; i < terms.length; i++) {
+                        for (int i = 0; i < terms.length; i++) {
                             termList.add(terms[i]);
                         }
                         continue;
@@ -447,7 +447,7 @@ public class Expression extends TypedAtomicActor {
                     if (result != null) {
                         InequalityTerm[] terms =
                             result.getTypeTerm().getVariables();
-                        for(int i = 0; i < terms.length; i++) {
+                        for (int i = 0; i < terms.length; i++) {
                             termList.add(terms[i]);
                         }
                         continue;

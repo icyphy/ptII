@@ -161,7 +161,7 @@ public class HeaderFileGenerator extends CodeGenerator {
         // no need to import it.
         _removeRequiredType(source);
 
-        if(source.hasSuperclass()) {
+        if (source.hasSuperclass()) {
             if (RequiredFileGenerator.isRequired(source
                         .getSuperclass())) {
                 _updateRequiredTypes(source.getSuperclass().getType());

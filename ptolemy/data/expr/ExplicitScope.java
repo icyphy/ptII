@@ -63,7 +63,7 @@ public class ExplicitScope implements ParserScope {
      */
     public ptolemy.data.Token get(String name) throws IllegalActionException {
         Variable variable = (Variable)_list.get(name);
-        if(variable == null) {
+        if (variable == null) {
             return null;
         }
         return variable.getToken();
@@ -78,7 +78,7 @@ public class ExplicitScope implements ParserScope {
      */
     public ptolemy.data.type.Type getType(String name) throws IllegalActionException {
         Variable variable = (Variable)_list.get(name);
-        if(variable == null) {
+        if (variable == null) {
             return null;
         } else {
             return variable.getType();

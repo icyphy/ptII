@@ -396,7 +396,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
         // this method every time we add a field.
         StringBuffer results = new StringBuffer();
         Iterator attributes = attributeList().iterator();
-        while(attributes.hasNext()) {
+        while (attributes.hasNext()) {
             Attribute attribute = (Attribute)attributes.next();
             if (attribute instanceof Parameter) {
                 StringBuffer value = new StringBuffer("\n Value:         ");
@@ -559,7 +559,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 
 
         List classPathList = new LinkedList();
-        for(int i = 0; i < necessaryClassesToken.length(); i++) {
+        for (int i = 0; i < necessaryClassesToken.length(); i++) {
             String necessaryClass =
                 ((StringToken)necessaryClassesToken.getElement(i))
                 .stringValue();

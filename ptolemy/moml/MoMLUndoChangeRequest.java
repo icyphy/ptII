@@ -105,7 +105,7 @@ public class MoMLUndoChangeRequest extends ChangeRequest {
             return null;
         } else {
             List deferList = object.getMoMLInfo().deferredFrom;
-            if(deferList != null && deferList.size() > 0) {
+            if (deferList != null && deferList.size() > 0) {
                 return object;
             } else {
                 return getDeferredToParent((NamedObj)object.getContainer());

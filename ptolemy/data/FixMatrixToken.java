@@ -92,7 +92,7 @@ public class FixMatrixToken extends MatrixToken {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
         Token token = tree.evaluateParseTree();
-        if(token instanceof FixMatrixToken) {
+        if (token instanceof FixMatrixToken) {
             FixPoint[][] value = ((FixMatrixToken)token).fixMatrix();
             _initialize(value);
         } else {
@@ -116,12 +116,12 @@ public class FixMatrixToken extends MatrixToken {
      */
     public FixMatrixToken(Token[] tokens, int rows, int columns)
             throws IllegalActionException {
-        if(tokens == null) {
+        if (tokens == null) {
             throw new IllegalActionException(
                     "FixMatrixToken: The specified"
                     + " array is null.");
         }
-        if(tokens.length != rows * columns) {
+        if (tokens.length != rows * columns) {
             throw new IllegalActionException(
                     "FixMatrixToken: The specified"
                     + " array is not of the correct length");
@@ -131,7 +131,7 @@ public class FixMatrixToken extends MatrixToken {
         _value = new FixPoint[rows][columns];
         for (int i = 0; i < tokens.length; i++) {
             Token token = tokens[i];
-            if(token instanceof ScalarToken) {
+            if (token instanceof ScalarToken) {
                 _value[i / columns][i % columns] =
                     ((ScalarToken)token).fixValue();
             } else {

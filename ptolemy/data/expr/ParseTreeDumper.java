@@ -146,7 +146,7 @@ public class ParseTreeDumper extends AbstractParseTreeVisitor {
         if (node.jjtGetNumChildren() > 0) {
             String oldPrefix = _prefix;
             _prefix = " " + oldPrefix;
-            for(int i = 0; i < node.jjtGetNumChildren(); i++) {
+            for (int i = 0; i < node.jjtGetNumChildren(); i++) {
                 ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
                 child.visit(this);
             }

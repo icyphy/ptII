@@ -109,7 +109,7 @@ public class XSLTUtilities {
         Document inputDocument = parse(args[0]);
 
         List transforms = new LinkedList();
-        for(int i = 1; i < args.length - 1; i++) {
+        for (int i = 1; i < args.length - 1; i++) {
             transforms.add(args[i]);
         }
         Document outputDocument =

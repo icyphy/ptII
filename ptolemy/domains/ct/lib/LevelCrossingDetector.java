@@ -265,7 +265,7 @@ public class LevelCrossingDetector extends Transformer
 
         // If at breakpoints, no step size refinement is necessary.
         // The step size is 0.0, and it is always accurate.
-        if(((CTDirector)getDirector()).isBreakpointIteration()) {
+        if (((CTDirector)getDirector()).isBreakpointIteration()) {
             // Check if the discontinuity generates events.
             if ((_lastTrigger - _level) * (_thisTrigger - _level)
                           < 0.0) {

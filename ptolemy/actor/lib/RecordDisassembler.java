@@ -190,12 +190,12 @@ public class RecordDisassembler extends TypedAtomicActor {
          *  @return A Type.
          */
         public Object getValue() throws IllegalActionException {
-            if(input.getType() == BaseType.UNKNOWN) {
+            if (input.getType() == BaseType.UNKNOWN) {
                 return BaseType.UNKNOWN;
-            } else if(input.getType() instanceof RecordType) {
+            } else if (input.getType() instanceof RecordType) {
                 RecordType type = (RecordType)input.getType();
                 Type fieldType = type.get(_name);
-                if(fieldType == null) {
+                if (fieldType == null) {
                     return BaseType.UNKNOWN;
                 } else {
                     return fieldType;
@@ -210,10 +210,10 @@ public class RecordDisassembler extends TypedAtomicActor {
          *  of this function.
          */
         public String getVerboseString() {
-            if(input.getType() instanceof RecordType) {
+            if (input.getType() instanceof RecordType) {
                 RecordType type = (RecordType)input.getType();
                 Type fieldType = type.get(_name);
-                if(fieldType == null) {
+                if (fieldType == null) {
                     return "Input Record doesn't have field named " + _name;
                 }
             }

@@ -270,7 +270,7 @@ public class JAIJPEGWriter extends Sink {
 
         Token horizontalSubsamplingData[] = ((ArrayToken)horizontalSubsampling.getToken()).arrayValue();
         Token verticalSubsamplingData[] = ((ArrayToken)verticalSubsampling.getToken()).arrayValue();
-        for(int i = 0; i < 3; i = i + 1) {
+        for (int i = 0; i < 3; i = i + 1) {
             _jpegEncodeParameters.setHorizontalSubsampling(i,((IntToken)horizontalSubsamplingData[i]).intValue());
             _jpegEncodeParameters.setVerticalSubsampling(i,((IntToken)verticalSubsamplingData[i]).intValue());
         }
@@ -303,7 +303,7 @@ public class JAIJPEGWriter extends Sink {
         else {
             //file doesn't exist, so create new file
             try {
-                if(!_file.createNewFile()) {
+                if (!_file.createNewFile()) {
                     throw new IllegalActionException(this, "Couldn't" +
                             " create file");
                 }
@@ -337,7 +337,7 @@ public class JAIJPEGWriter extends Sink {
     private int[] _tableFiller(ArrayToken array) {
         Token tokenArray[] = array.arrayValue();
         int intArray[] = new int[tokenArray.length];
-        for(int i = 0; i < tokenArray.length; i = i + 1) {
+        for (int i = 0; i < tokenArray.length; i = i + 1) {
             int _value = ((IntToken)(tokenArray[i])).intValue();
             intArray[i] = _value;
         }

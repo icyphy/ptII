@@ -169,7 +169,7 @@ public class GiottoCodeGenerator extends Attribute {
      */
     private static void _checkGiottoID(String string)
             throws IllegalActionException {
-        if(string.equals("output")) {
+        if (string.equals("output")) {
             throw new RuntimeException("The identifier " + string +
                     " cannot be used in a Giotto program.  " +
                     "Please change your model and attempt to " +
@@ -328,9 +328,9 @@ public class GiottoCodeGenerator extends Attribute {
         // Write the input port specification of the task
         first = true;
         String inputPorts = "";
-        for(Iterator inPorts = actor.inputPortList().iterator();
+        for (Iterator inPorts = actor.inputPortList().iterator();
             inPorts.hasNext();) {
-            if(first) {
+            if (first) {
                 first = false;
             } else {
                 inputPorts += ",";
@@ -351,9 +351,9 @@ public class GiottoCodeGenerator extends Attribute {
         // write the output port specification of the task.
         first = true;
         String outputPorts = "";
-        for(Iterator outPorts = actor.outputPortList().iterator();
+        for (Iterator outPorts = actor.outputPortList().iterator();
             outPorts.hasNext();) {
-            if(first) {
+            if (first) {
                 first = false;
             } else {
                 codeString += ",";
@@ -427,14 +427,14 @@ public class GiottoCodeGenerator extends Attribute {
         int currentDepth = model.depthInHierarchy();
 
         Map driverIOMap = new LinkedHashMap();
-        for(Iterator inPorts = actor.inputPortList().iterator();
+        for (Iterator inPorts = actor.inputPortList().iterator();
             inPorts.hasNext();) {
             IOPort inPort = (IOPort) inPorts.next();
             String sanitizedPortName =
                 StringUtilities.sanitizeName(
                         inPort.getName(model));
             List sourcePortList = inPort.sourcePortList();
-            if(sourcePortList.size() > 1) {
+            if (sourcePortList.size() > 1) {
                 throw new IllegalActionException(inPort, "Input port " +
                         "cannot receive data from multiple sources in Giotto.");
             }
@@ -458,9 +458,9 @@ public class GiottoCodeGenerator extends Attribute {
         codeString +=  "        output (";
         // Write the input port specification of the task
         boolean first = true;
-        for(Iterator inPorts = actor.inputPortList().iterator();
+        for (Iterator inPorts = actor.inputPortList().iterator();
             inPorts.hasNext();) {
-            if(first) {
+            if (first) {
                 first = false;
             } else {
                 codeString += ",";
@@ -475,7 +475,7 @@ public class GiottoCodeGenerator extends Attribute {
         codeString +=  "{"
             + _endLine;
 
-        for(Iterator sourceNames = driverIOMap.keySet().iterator();
+        for (Iterator sourceNames = driverIOMap.keySet().iterator();
             sourceNames.hasNext();) {
             String sourceName = (String) sourceNames.next();
             String destName = (String) driverIOMap.get(sourceName);
@@ -512,7 +512,7 @@ public class GiottoCodeGenerator extends Attribute {
         // Generate driver functions for toplevel output ports.
         // FIXME: the giotto director should do some checking to
         // avoid several outputs of actors connect to the same output port?
-        for(Iterator outPorts = model.outputPortList().iterator();
+        for (Iterator outPorts = model.outputPortList().iterator();
             outPorts.hasNext();) {
             String driverParas = "";
             TypedIOPort port = (TypedIOPort)outPorts.next();
@@ -696,7 +696,7 @@ public class GiottoCodeGenerator extends Attribute {
                 // Preinitialize and resolve types.
                 CompositeActor toplevel = (CompositeActor)model.toplevel();
                 Manager manager = toplevel.getManager();
-                if(manager == null) {
+                if (manager == null) {
                     manager = new Manager(
                             toplevel.workspace(), "manager");
                     toplevel.setManager(manager);

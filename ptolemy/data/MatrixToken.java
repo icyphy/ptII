@@ -318,9 +318,9 @@ public abstract class MatrixToken extends Token {
             throws IllegalActionException {
         Token[] result = new Token[length];
         Token value = start;
-        if(length > 0) {
+        if (length > 0) {
             result[0] = start;
-            for(int i = 1; i < length; i++) {
+            for (int i = 1; i < length; i++) {
                 value = value.add(increment);
                 result[i] = value;
             }
@@ -364,14 +364,14 @@ public abstract class MatrixToken extends Token {
             ScalarToken start, ScalarToken increment, ScalarToken end)
             throws IllegalActionException {
         ScalarToken zero = (ScalarToken)increment.zero();
-        if(increment.isEqualTo(increment.zero()).booleanValue()) {
+        if (increment.isEqualTo(increment.zero()).booleanValue()) {
             throw new IllegalActionException("Sequence length cannot " +
                     "be determined because the increment is zero.");
-        } else if(increment.isLessThan(zero).booleanValue() &&
+        } else if (increment.isLessThan(zero).booleanValue() &&
                 start.isLessThan(end).booleanValue()) {
             throw new IllegalActionException("Sequence length cannot " +
                     "be determined because the increment has the wrong sign.");
-        } else if(zero.isLessThan(increment).booleanValue() &&
+        } else if (zero.isLessThan(increment).booleanValue() &&
                 end.isLessThan(start).booleanValue()) {
             throw new IllegalActionException("Sequence length cannot " +
                     "be determined because the increment has the wrong sign.");
@@ -380,14 +380,14 @@ public abstract class MatrixToken extends Token {
                 (ScalarToken)end.subtract(start).divide(increment);
             int count;
             // UGH...  I don't see how to abstract this nicely...
-            if(diff instanceof LongToken) {
+            if (diff instanceof LongToken) {
                 count = ((int)diff.longValue()) + 1;
-            } else if(diff instanceof DoubleToken) {
+            } else if (diff instanceof DoubleToken) {
                 count = ((int)diff.doubleValue()) + 1;
             } else {
                 count = diff.intValue() + 1;
             }
-            if(count < 1) {
+            if (count < 1) {
                 throw new InternalErrorException(
                         "The determined count does not make sense.");
             }
@@ -543,7 +543,7 @@ public abstract class MatrixToken extends Token {
         // straight to isEqualTo().  Also, these methods might introduce
         // exceptions because of type conversion issues.
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
-        if(typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME) {
             return _doIsCloseTo(rightArgument, epsilon);
         } else if (typeInfo == CPO.HIGHER) {
             MatrixToken convertedArgument = (MatrixToken)
@@ -584,7 +584,7 @@ public abstract class MatrixToken extends Token {
     public final BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
-        if(typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME) {
             return _doIsEqualTo(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             MatrixToken convertedArgument = (MatrixToken)
@@ -631,7 +631,7 @@ public abstract class MatrixToken extends Token {
         /*
         // If the rightArgument is a complex token, throw an error
         // message as modulo can't be operated.
-        if(rightArgument instanceof ComplexToken)
+        if (rightArgument instanceof ComplexToken)
             throw new IllegalActionException(
                     notSupportedMessage("modulo", this, rightArgument));
         */
@@ -643,7 +643,7 @@ public abstract class MatrixToken extends Token {
         /*
         // If this is a complex array, throw an error message as modulo
         // can't be performed on it
-        if(elementType == BaseType.COMPLEX)
+        if (elementType == BaseType.COMPLEX)
             throw new IllegalActionException(
                     notSupportedMessage("modulo", this, rightArgument));
         */

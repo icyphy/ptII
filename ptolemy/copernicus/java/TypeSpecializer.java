@@ -175,7 +175,7 @@ public class TypeSpecializer extends SceneTransformer {
                         Type newType =
                             typeAnalysis.getSpecializedSootType(newArrayExpr);
                         if (newType != null && !newType.equals(baseType)) {
-                            if(debug) System.out.println("replacing with " + newType);
+                            if (debug) System.out.println("replacing with " + newType);
                             box.setValue(Jimple.v().newNewArrayExpr(newType, newArrayExpr.getSize()));
                         }
                     }
@@ -191,11 +191,11 @@ public class TypeSpecializer extends SceneTransformer {
                 if (!(assignStmt.getLeftOp() instanceof FieldRef)) {
                     continue;
                 }
-                if(!PtolemyUtilities.isTokenType(assignStmt.getLeftOp().getType())) {
+                if (!PtolemyUtilities.isTokenType(assignStmt.getLeftOp().getType())) {
                     continue;
                 }
 
-                if(debug) System.out.println("checking assignment " + assignStmt);
+                if (debug) System.out.println("checking assignment " + assignStmt);
 
                 // FIXME: We need to figure out a way to insert casts where appropriate.
                 // See RampFiringLimitSDF
@@ -205,8 +205,8 @@ public class TypeSpecializer extends SceneTransformer {
 //                 rightType = _getReplacementTokenType(
 //                         assignStmt.getRightOp(), typeAnalysis);
 
-//                 if(leftType != null && rightType != null && !leftType.equals(rightType)) {
-//                     if(debug) System.out.println("inserting conversion: leftType = " +
+//                 if (leftType != null && rightType != null && !leftType.equals(rightType)) {
+//                     if (debug) System.out.println("inserting conversion: leftType = " +
 //                             leftType + ", rightType = " + rightType);
 
 
@@ -250,7 +250,7 @@ public class TypeSpecializer extends SceneTransformer {
                     Type newType =
                         typeAnalysis.getSpecializedSootType(field);
                     if (newType != null && !newType.equals(type)) {
-                        if(debug) System.out.println("inserting cast");
+                        if (debug) System.out.println("inserting cast");
                         Local tempLocal =
                             Jimple.v().newLocal("fieldUpdateLocal", newType);
                         body.getLocals().add(tempLocal);
@@ -274,7 +274,7 @@ public class TypeSpecializer extends SceneTransformer {
 
             Type baseType = field.getType();
             RefType refType = PtolemyUtilities.getBaseTokenType(baseType);
-            if(refType != null &&
+            if (refType != null &&
                     SootUtilities.derivesFrom(refType.getSootClass(),
                             PtolemyUtilities.tokenClass)) {
                 Type type = typeAnalysis.getSpecializedSootType(field);
@@ -282,7 +282,7 @@ public class TypeSpecializer extends SceneTransformer {
                 Type replacementType =
                     SootUtilities.createIsomorphicType(field.getType(),
                             type);
-                if(debug) System.out.println("replacing with " + type);
+                if (debug) System.out.println("replacing with " + type);
                 field.setType(type);
                 map.put(field, typeAnalysis.getSpecializedType(field));
             }
@@ -314,10 +314,10 @@ public class TypeSpecializer extends SceneTransformer {
             FieldRef ref = (FieldRef)value;
             SootField field = ref.getField();
             return typeAnalysis.getSpecializedType(field);
-        } else if(value instanceof Local) {
+        } else if (value instanceof Local) {
             Local local = (Local)value;
             return typeAnalysis.getSpecializedType(local);
-      //   } else if(value.getType().equals(NullType.v())) {
+      //   } else if (value.getType().equals(NullType.v())) {
 //             return tokenClass
         } else {
             return null;

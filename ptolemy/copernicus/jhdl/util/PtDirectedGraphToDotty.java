@@ -56,7 +56,7 @@ public class PtDirectedGraphToDotty  extends GraphToDotty {
         HashMap hm=new HashMap();
         StringBuffer sb = new StringBuffer();
         sb.append(header("PtDirectedGraphToDotty",ename));
-        for(Iterator nodes = g.nodes().iterator(); nodes.hasNext();) {
+        for (Iterator nodes = g.nodes().iterator(); nodes.hasNext();) {
             Node source = (Node)nodes.next();
             String name="v" + count++;
             sb.append("\t\""+name+"\"");
@@ -72,7 +72,7 @@ public class PtDirectedGraphToDotty  extends GraphToDotty {
         sb.append("\t// Edges\r\n");
         for (Iterator nodes=g.nodes().iterator(); nodes.hasNext();){
             Node source = (Node)nodes.next();
-            for(Iterator succs = g.outputEdges(source).iterator(); succs.hasNext();) {
+            for (Iterator succs = g.outputEdges(source).iterator(); succs.hasNext();) {
                 Edge edge= (Edge)succs.next();
                 Node dest= edge.sink();
                 sb.append("\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\"");

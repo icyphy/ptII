@@ -54,7 +54,7 @@ public class CircuitCreator {
 
         write_header(writer, packageName, className);
 
-        for(Iterator nodes = operatorGraph.getNodes().iterator();
+        for (Iterator nodes = operatorGraph.getNodes().iterator();
             nodes.hasNext();) {
             Object node = nodes.next();
             writer.write("    Wire " + _getWireName(node) + " = wire(32);\r\n");
@@ -71,14 +71,14 @@ public class CircuitCreator {
                 Object pred = operatorGraph.getPredsOf(node).iterator().next();
                 write_fir(writer, pred, node);
             }
-            else if(node.toString().startsWith("add")) {
+            else if (node.toString().startsWith("add")) {
                 Iterator preds = operatorGraph.getPredsOf(node).iterator();
                 Object in1 = preds.next();
                 Object in2 = preds.next();
 
                 write_add(writer, in1, in2, node);
 
-            } else if(node.toString().startsWith("buf")) {
+            } else if (node.toString().startsWith("buf")) {
                 Object pred = operatorGraph.getPredsOf(node).iterator().next();
                 write_buf(writer, pred);
             } else {

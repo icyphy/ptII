@@ -542,7 +542,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                         int[] tab = (int[])field.get(obj);
                         Token[] toks =  new Token[((int[])field.get(obj))
                                 .length];
-                        for(int j = 0; j<((int[])field.get(obj)).length ; j++)
+                        for (int j = 0; j<((int[])field.get(obj)).length ; j++)
                             toks[j] = new IntToken(((int[])field.get(obj))[j]);
                         port.send(0, new ArrayToken(toks));
                     } catch (IllegalAccessException ex) {
@@ -554,7 +554,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                         double[] tab = (double[])field.get(obj);
                         Token[] toks =  new Token[((double[])field.get(obj))
                                 .length];
-                        for(int j = 0; j<((double[])field.get(obj)).length;
+                        for (int j = 0; j<((double[])field.get(obj)).length;
                             j++) {
                             toks[j] = new DoubleToken(((double[])field
                                     .get(obj))[j]);

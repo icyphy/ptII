@@ -163,7 +163,7 @@ public class JAITranslate extends Transformer {
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp oldImage = jaiImageToken.getValue();
 
-        if(_debugging) {
+        if (_debugging) {
             _debug("oldimage width " + oldImage.getWidth());
             _debug("oldimage height " + oldImage.getHeight());
             _debug("oldimage min x " + oldImage.getMinX());
@@ -195,7 +195,7 @@ public class JAITranslate extends Transformer {
         }
         RenderedOp newImage = JAI.create("translate", parameters, null);
 
-        if(_debugging) {
+        if (_debugging) {
             _debug("newimage width " + newImage.getWidth());
             _debug("newimage height " + newImage.getHeight());
             _debug("newimage min x " + newImage.getMinX());

@@ -1572,7 +1572,7 @@ public class MoMLParser extends HandlerBase {
                     // configurations that have optional parts like
                     // Matlab or javacomm.
                     Iterator inputFileNames = inputFileNamesToSkip.iterator();
-                    while(inputFileNames.hasNext()) {
+                    while (inputFileNames.hasNext()) {
                         String inputFileName = (String)inputFileNames.next();
                         if (source.endsWith(inputFileName)) {
                             skip = true;
@@ -2265,7 +2265,7 @@ public class MoMLParser extends HandlerBase {
                         // Get the relation at the given index
                         List linkedRelations = port.linkedRelationList();
                         int index = linkedRelations.indexOf(tmpRelation);
-                        if(index != -1) {
+                        if (index != -1) {
                             // Linked on the outside...
                             _undoContext.appendUndoMoML("<link port=\"" +
                                     portName + "\" insertAt=\"" +

@@ -180,13 +180,13 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         tr = _ctrl._chooseTransition(_st.nonpreemptiveTransitionList());
 
         // execute the refinements of the enabled transition
-        if(tr != null) {
+        if (tr != null) {
             Actor[] transitionActors = tr.getRefinement();
             if (transitionActors != null) {
                 for (int i = 0; i < transitionActors.length; ++i) {
                     if (_stopRequested) break;
                     if (transitionActors[i].prefire()) {
-                        if(_debugging) {
+                        if (_debugging) {
                             _debug(getFullName(),
                                    " fire transition refinement",
                                   ((ptolemy.kernel.util.NamedObj)transitionActors[i]).getName());

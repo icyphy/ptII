@@ -80,7 +80,7 @@ public class SootASTVisitor {
     }
 
     public void processUnitIterator(Iterator units) throws SootASTException {
-        for(; units.hasNext();) {
+        for (; units.hasNext();) {
             // Process all Stmt units in this graph
             Stmt stmt = (Stmt)units.next();
             if (DEBUG) System.out.println("Statement Class="+

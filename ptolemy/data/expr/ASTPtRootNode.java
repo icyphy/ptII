@@ -92,10 +92,10 @@ public class ASTPtRootNode implements Node, Cloneable {
      */
     public Object clone() throws CloneNotSupportedException {
         ASTPtRootNode node = (ASTPtRootNode) super.clone();
-        if(_children != null) {
+        if (_children != null) {
             node._children = new ArrayList(_children.size());
             // Deeply clone all the children.
-            for(Iterator i = _children.iterator(); i.hasNext();) {
+            for (Iterator i = _children.iterator(); i.hasNext();) {
                 ASTPtRootNode child = (ASTPtRootNode)i.next();
                 ASTPtRootNode clone = (ASTPtRootNode)child.clone();
                 node._children.add(clone);

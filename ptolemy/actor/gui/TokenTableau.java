@@ -144,7 +144,7 @@ public class TokenTableau extends Tableau {
         ((TextEditor)frame).text.setEditable(false);
         // Display current data.
         Iterator tokens = effigy.getTokens().iterator();
-        while(tokens.hasNext()) {
+        while (tokens.hasNext()) {
             ((TextEditor)frame).text.append(tokens.next().toString());
             ((TextEditor)frame).text.append("\n");
         }

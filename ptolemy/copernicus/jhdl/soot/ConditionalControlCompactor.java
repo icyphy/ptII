@@ -148,7 +148,7 @@ public class ConditionalControlCompactor {
 
             } while (i.hasNext());
 
-        } while(unitsModified);
+        } while (unitsModified);
 
     }
 

@@ -446,7 +446,7 @@ public class HSPortInliner implements PortInliner {
                 ((IntConstant)Evaluator.getConstantValueOf(channelValue)).value;
             int channel = 0;
             List relationList;
-            if(inside) {
+            if (inside) {
                 relationList = port.insideRelationList();
             } else {
                 relationList = port.linkedRelationList();

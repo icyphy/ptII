@@ -409,7 +409,7 @@ public class Transition extends ComponentRelation {
             }
         }
         if (action != null) {
-            if(aLabel) buffer.append("\n");
+            if (aLabel) buffer.append("\n");
             buffer.append(action);
             aLabel = true;
         }

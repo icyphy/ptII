@@ -154,7 +154,7 @@ public class Configurer extends JPanel implements CloseListener {
      *  configurer panel.
      */
     public static boolean isVisible(Settable settable) {
-        if(settable.getVisibility() == Settable.FULL ||
+        if (settable.getVisibility() == Settable.FULL ||
                 settable.getVisibility() == Settable.NOT_EDITABLE) {
             return true;
         } else {

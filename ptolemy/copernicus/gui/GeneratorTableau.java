@@ -169,7 +169,7 @@ public class GeneratorTableau extends Tableau {
             // If the model has been modified, then save it.  When we
             // run codegen, we often run a separate java process and
             // read a .xml file so that xml file should be updated.
-            if( isModified()) {
+            if ( isModified()) {
                 _save();
             }
 

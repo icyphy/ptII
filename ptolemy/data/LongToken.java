@@ -71,7 +71,7 @@ public class LongToken extends ScalarToken {
     public LongToken(String init) throws IllegalActionException {
         // Throw away the ending L or l, if necessary.
         init = init.trim();
-        if(init.endsWith("L") || init.endsWith("l")) {
+        if (init.endsWith("L") || init.endsWith("l")) {
             init = init.substring(0, init.length() - 1);
         }
         try {
@@ -217,7 +217,7 @@ public class LongToken extends ScalarToken {
      */
     public UnsignedByteToken truncatedUnsignedByteValue()
             throws IllegalActionException {
-        if(_value < 0 || _value > 255) {
+        if (_value < 0 || _value > 255) {
             throw new IllegalActionException("Value cannot be represented" +
                     " as an unsigned Byte");
         } else {

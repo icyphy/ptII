@@ -271,7 +271,7 @@ static private final int jjMoveNfa_0(int startState, int curPos)
                   break;
                default : break;
             }
-         } while(i != startsAt);
+         } while (i != startsAt);
       }
       else if (curChar < 128)
       {
@@ -304,7 +304,7 @@ static private final int jjMoveNfa_0(int startState, int curPos)
                   break;
                default : break;
             }
-         } while(i != startsAt);
+         } while (i != startsAt);
       }
       else
       {
@@ -320,7 +320,7 @@ static private final int jjMoveNfa_0(int startState, int curPos)
                   break;
                default : break;
             }
-         } while(i != startsAt);
+         } while (i != startsAt);
       }
       if (kind != 0x7fffffff)
       {

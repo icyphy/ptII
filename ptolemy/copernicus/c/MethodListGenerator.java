@@ -266,7 +266,7 @@ public class MethodListGenerator {
 
             // Iterate over each method in each interface.
             Iterator interfaceMethods = thisInterface.getMethods().iterator();
-            while(interfaceMethods.hasNext()) {
+            while (interfaceMethods.hasNext()) {
                 SootMethod thisMethod = (SootMethod)interfaceMethods.next();
                 // Prevent the method from being listed as "inherited" if
                 // its declared by this class itself, or if its

@@ -112,7 +112,7 @@ public class FrontDropQueue extends CIActor {
     public boolean prefire() throws IllegalActionException {
         super.prefire();
         //in case this actor is removed from _asyncPulledActors list to _pulledActors.
-        if(input.hasToken(0)) {
+        if (input.hasToken(0)) {
             if (isPulled()) {
                 enableActor();
             }

@@ -171,7 +171,7 @@ public class PDFDirector extends Director {
             _postfirereturns = true;
             String name = init.getExpression();
             Actor actor = (Actor) container.getEntity(name);
-            if(_debugging) {
+            if (_debugging) {
                 _debug(new FiringEvent(this, actor, FiringEvent.ITERATE));
             }
 
@@ -180,7 +180,7 @@ public class PDFDirector extends Director {
 
             name = model.getExpression();
             actor = (Actor) container.getEntity(name);
-            if(_debugging) {
+            if (_debugging) {
                 _debug(new FiringEvent(this, actor, FiringEvent.ITERATE));
             }
 
@@ -224,7 +224,7 @@ public class PDFDirector extends Director {
         TypedCompositeActor container = ((TypedCompositeActor)getContainer());
         Iterator inputPorts = container.inputPortList().iterator();
         int inputCount = 0;
-        while(inputPorts.hasNext()) {
+        while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
             int threshold = SDFScheduler.getTokenConsumptionRate(inputPort);
             if (_debugging) {
@@ -234,9 +234,9 @@ public class PDFDirector extends Director {
             Receiver receivers[][] = inputPort.getReceivers();
 
             int channel;
-            for(channel = 0; channel < inputPort.getWidth(); channel++) {
-                if(!receivers[channel][0].hasToken(threshold)) {
-                    if(_debugging) {
+            for (channel = 0; channel < inputPort.getWidth(); channel++) {
+                if (!receivers[channel][0].hasToken(threshold)) {
+                    if (_debugging) {
                         _debug("Channel " + channel +
                                 " does not have enough tokens." +
                                 " Prefire returns false on " +
@@ -246,7 +246,7 @@ public class PDFDirector extends Director {
                 }
             }
         }
-        if(_debugging) _debug("Prefire returns true on " +
+        if (_debugging) _debug("Prefire returns true on " +
                 container.getFullName());
         return true;
     }
@@ -299,11 +299,11 @@ public class PDFDirector extends Director {
         Receiver[][] insiderecs = port.deepGetReceivers();
         for (int i = 0; i < port.getWidth(); i++) {
             int rate = SDFScheduler.getTokenConsumptionRate(port);
-            for(int k = 0; k < rate; k++) {
+            for (int k = 0; k < rate; k++) {
                 try {
                     ptolemy.data.Token t = port.get(i);
                     if (insiderecs != null && insiderecs[i] != null) {
-                        if(_debugging) _debug(getName(),
+                        if (_debugging) _debug(getName(),
                                 "transferring input from " + port.getName());
                         for (int j = 0; j < insiderecs[i].length; j++) {
                             insiderecs[i][j].put(t);
@@ -365,7 +365,7 @@ public class PDFDirector extends Director {
                             try {
                                 System.out.println("transferring");
                                 ptolemy.data.Token t = insiderecs[i][j].get();
-                                if(port.getContainer().equals(initEntity) &&
+                                if (port.getContainer().equals(initEntity) &&
                                     port.deepConnectedPortList().size() > 0) {
                                     System.out.println("Setting");
                                     Settable settable = (Settable)attribute;

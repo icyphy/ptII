@@ -919,7 +919,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         StringBuffer stringConst = new StringBuffer(v.value);
 
         // Convert \ to \\.
-        for(int i = 0; i < stringConst.length(); i++) {
+        for (int i = 0; i < stringConst.length(); i++) {
             if (stringConst.charAt(i) == '\\') {
                 stringConst.insert(i, '\\');
                 i++;
@@ -928,7 +928,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
 
         // Convert " to \".
-        for(int i = 0; i < stringConst.length(); i++) {
+        for (int i = 0; i < stringConst.length(); i++) {
             if (stringConst.charAt(i) == '"') {
                 stringConst.insert(i, '\\');
                 i++;
@@ -937,7 +937,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
 
         // Format newlines properly.
-        for(int i = 0; i < stringConst.length(); i++) {
+        for (int i = 0; i < stringConst.length(); i++) {
             if (stringConst.charAt(i) == '\n') {
                 stringConst.replace(i,i+1, "\\n");
                 i++;
@@ -947,7 +947,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
         // Format \0 properly, avoid gcc warnings like:
         // 'warning: null character(s) preserved in literal'
-        for(int i = 0; i < stringConst.length(); i++) {
+        for (int i = 0; i < stringConst.length(); i++) {
             if (stringConst.charAt(i) == '\0') {
                 stringConst.replace(i,i+1, "\\0");
                 i++;
@@ -956,7 +956,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
         // Format Control-M properly, avoid gcc warnings like:
         // 'warning: multi-line string literals are deprecated'
-        for(int i = 0; i < stringConst.length(); i++) {
+        for (int i = 0; i < stringConst.length(); i++) {
             if (stringConst.charAt(i) == '\r') {
                 stringConst.replace(i,i+1, "\\r");
                 i++;

@@ -98,11 +98,11 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
     }
     public void visitLeafNode(ASTPtLeafNode node)
             throws IllegalActionException {
-        if(node.isConstant() && node.isEvaluated()) {
+        if (node.isConstant() && node.isEvaluated()) {
             return;
         }
-        if(!_excludedNames.contains(node.getName())) {
-            if(_scope != null) {
+        if (!_excludedNames.contains(node.getName())) {
+            if (_scope != null) {
                 ptolemy.data.Token token = _scope.get(node.getName());
                 node.setToken(token);
                 node.setConstant(true);

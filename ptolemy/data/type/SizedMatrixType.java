@@ -91,11 +91,11 @@ public abstract class SizedMatrixType extends StructuredType
      *  same class, with the same number of rows and columns.
      */
     public boolean equals(Object object) {
-        if(!(object instanceof SizedMatrixType)) return false;
+        if (!(object instanceof SizedMatrixType)) return false;
         SizedMatrixType matrixType = (SizedMatrixType)object;
-        if(matrixType.getTokenClass() != _tokenClass) return false;
-        if(matrixType.getRowCount() != _rows) return false;
-        if(matrixType.getColumnCount() != _columns) return false;
+        if (matrixType.getTokenClass() != _tokenClass) return false;
+        if (matrixType.getRowCount() != _rows) return false;
+        if (matrixType.getColumnCount() != _columns) return false;
         return true;
     }
 
@@ -169,7 +169,7 @@ public abstract class SizedMatrixType extends StructuredType
      *  @return False.
      */
     public boolean isSubstitutionInstance(Type type) {
-        if(type instanceof StructuredType) {
+        if (type instanceof StructuredType) {
             return (((StructuredType)type)._getRepresentative()
                     == _getRepresentative());
         } else {
@@ -194,7 +194,7 @@ public abstract class SizedMatrixType extends StructuredType
      */
     public void updateType(StructuredType newType)
             throws IllegalActionException {
-        if(newType._getRepresentative() != _getRepresentative()) {
+        if (newType._getRepresentative() != _getRepresentative()) {
             throw new InternalErrorException(
                     "SizedMatrixType.updateType: Cannot " +
                     "updateType the element type to " + newType + ".");
@@ -266,7 +266,7 @@ public abstract class SizedMatrixType extends StructuredType
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof MatrixToken) {
                 return IntMatrixToken.convert((MatrixToken)token);
-            } else if(getRowCount() == getColumnCount() &&
+            } else if (getRowCount() == getColumnCount() &&
                     token instanceof ScalarToken) {
                 return IntMatrixToken.convert(
                         (ScalarToken)token, getRowCount());
@@ -337,12 +337,12 @@ public abstract class SizedMatrixType extends StructuredType
      */
     protected int _compare(StructuredType type) {
         return CPO.SAME;
-        //         if(equals(type)) {
+        //         if (equals(type)) {
         //             return CPO.SAME;
-        //         } else if(equals(_getRepresentative()) ||
+        //         } else if (equals(_getRepresentative()) ||
         //                 type.equals(BaseType.MATRIX)) {
         //             return CPO.LOWER;
-        //         } else if(equals(BaseType.MATRIX) ||
+        //         } else if (equals(BaseType.MATRIX) ||
         //                 type.equals(_getRepresentative())) {
         //             return CPO.HIGHER;
         //         } else {
@@ -366,12 +366,12 @@ public abstract class SizedMatrixType extends StructuredType
      */
     protected StructuredType _greatestLowerBound(StructuredType type) {
         return this;
-        //         if(equals(type)) {
+        //         if (equals(type)) {
         //              return this;
-        //         } else if(equals(_getRepresentative()) ||
+        //         } else if (equals(_getRepresentative()) ||
         //                 type.equals(BaseType.MATRIX)) {
         //             return this;
-        //         } else if(equals(BaseType.MATRIX) ||
+        //         } else if (equals(BaseType.MATRIX) ||
         //                 type.equals(_getRepresentative())) {
         //             return type;
         //         } else {
@@ -389,12 +389,12 @@ public abstract class SizedMatrixType extends StructuredType
      */
     protected StructuredType _leastUpperBound(StructuredType type) {
         return this;
-        //         if(equals(type)) {
+        //         if (equals(type)) {
         //             return this;
-        //         } else if(equals(_getRepresentative()) ||
+        //         } else if (equals(_getRepresentative()) ||
         //                 type.equals(BaseType.MATRIX)) {
         //             return type;
-        //         } else if(equals(BaseType.MATRIX) ||
+        //         } else if (equals(BaseType.MATRIX) ||
         //                 type.equals(_getRepresentative())) {
         //             return this;
         //         } else {

@@ -190,7 +190,7 @@ public class ConvolutionalCoder extends Transformer {
             _maskNumber = maskToken.length();
             _mask = new int[_maskNumber];
             _maxPolyValue = 0;
-            for(int i = 0; i < _maskNumber; i++) {
+            for (int i = 0; i < _maskNumber; i++) {
                 _mask[i] = ((IntToken)maskToken.getElement(i)).intValue();
                 if (_mask[i] <= 0) {
                     throw new IllegalActionException(this,

@@ -550,7 +550,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                         boolean headOK = nodeSet.contains(head);
                         boolean tailOK = nodeSet.contains(tail);
                         Iterator objects = nodeSet.iterator();
-                        while(!(headOK && tailOK) && objects.hasNext()) {
+                        while (!(headOK && tailOK) && objects.hasNext()) {
                             Object object = objects.next();
                             if (!headOK && GraphUtilities.isContainedNode(head,
                                     object, graphModel)) {

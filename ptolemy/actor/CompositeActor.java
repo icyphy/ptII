@@ -1012,7 +1012,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // When deleting, the executive director also needs to be
             // notified that its schedule must be recomputed.
             Director executiveDirector = getExecutiveDirector();
-            if(executiveDirector != null) {
+            if (executiveDirector != null) {
                 executiveDirector.invalidateSchedule();
             }
         }

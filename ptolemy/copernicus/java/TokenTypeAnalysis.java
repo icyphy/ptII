@@ -199,7 +199,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                 Type type = r.getBase().getType();
                 //   System.out.println("baseType = " + type);
                 //  System.out.println("methodName = " + methodName);
-                if(type instanceof NullType) {
+                if (type instanceof NullType) {
                     // Note: The control path that causes this to be
                     // null should never occur in practice.
                     return;
@@ -240,7 +240,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
 //                         System.out.println("type(r.getArg(0)) = " + in.get(r.getArg(0)));
                         ptolemy.data.type.Type baseType = (ptolemy.data.type.Type) in.get(r.getBase());
                         ptolemy.data.type.Type argType = (ptolemy.data.type.Type) in.get(r.getArg(0));
-                        if(baseType == null || argType == null) {
+                        if (baseType == null || argType == null) {
                             out.put(leftOp, null);
                         } else {
                             out.put(leftOp, TypeLattice.lattice().leastUpperBound(baseType, argType));
@@ -366,17 +366,17 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                             PtolemyUtilities.getTokenTypeForSootType(tokenType));
                 }
                 // Otherwise there is nothing to be done.
-            } else if(rightOp instanceof FieldRef) {
+            } else if (rightOp instanceof FieldRef) {
                 // System.out.println("fieldRef stmt = " + stmt);
                 FieldRef fieldRef = (FieldRef)rightOp;
                 SootField field = fieldRef.getField();
                 TypeTag tag = (TypeTag)field.getTag("_CGType");
                 Object newType;
-                if(tag == null) {
+                if (tag == null) {
                    //  System.out.println("No Tag... Existing type = " + in.get(rightOp));
 //                     System.out.println("No Tag... field type = " + field.getType());
 
-                    if(in.get(rightOp) == null) {
+                    if (in.get(rightOp) == null) {
                         RefType fieldType = PtolemyUtilities.getBaseTokenType(field.getType());
                         newType = PtolemyUtilities.getTokenTypeForSootType(
                                 fieldType);

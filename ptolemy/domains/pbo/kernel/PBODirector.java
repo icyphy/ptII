@@ -160,7 +160,7 @@ public class PBODirector extends Director {
      *  of the associated actors throws it.
      */
     public void fire() throws IllegalActionException {
-        if(_deadlineQueue.isEmpty()) {
+        if (_deadlineQueue.isEmpty()) {
             // nothing is currently waiting, so update time to the
             // make the next actor ready to execute.
             PBOEvent event = (PBOEvent)_requestQueue.take();
@@ -190,7 +190,7 @@ public class PBODirector extends Director {
         // first process any new activations that will
         // occur before endFiringTime.
         double requestTime = ((PBOEvent)_requestQueue.get()).time();
-        while(requestTime < endFiringTime) {
+        while (requestTime < endFiringTime) {
             // make the given actor ready to execute.
             PBOEvent event = (PBOEvent)_requestQueue.take();
             Actor actor = (Actor)event.actor();
@@ -207,7 +207,7 @@ public class PBODirector extends Director {
         // now fire the currently executing actor and update
         // time to reflect the amount of time spent.
         boolean postfireReturns;
-        if(executingActor.prefire()) {
+        if (executingActor.prefire()) {
             _debug("Firing actor " + ((Entity) executingActor).getFullName() +
                    " at " + firingTime);
             executingActor.fire();
@@ -226,7 +226,7 @@ public class PBODirector extends Director {
         // reschedule this composite to handle the next process starting.
         CompositeActor container = (CompositeActor)getContainer();
         Director executive = container.getExecutiveDirector();
-        if(executive != null) {
+        if (executive != null) {
             _debug("Rescheduling composite");
             executive.fireAt(container, getNextIterationTime());
         }
@@ -264,7 +264,7 @@ public class PBODirector extends Director {
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
-        if(_deadlineQueue.isEmpty()) {
+        if (_deadlineQueue.isEmpty()) {
             // This should never be empty.
             PBOEvent requestEvent = (PBOEvent)_requestQueue.get();
             return requestEvent.time();
@@ -295,9 +295,9 @@ public class PBODirector extends Director {
         //Initialize the queue of deadlines and next firings to
         // contain all the actors.
         CompositeActor container = (CompositeActor) getContainer();
-        if(container != null) {
+        if (container != null) {
             Iterator allActors = container.deepEntityList().iterator();
-            while(allActors.hasNext()) {
+            while (allActors.hasNext()) {
                 Actor actor = (Actor) allActors.next();
                 _deadlineQueue.put(new PBOEvent(actor,
                         _getExecutionTime(actor)));
@@ -335,7 +335,7 @@ public class PBODirector extends Director {
         double stoptime = ((DoubleToken) stopTime.getToken()).doubleValue();
         double curtime = getCurrentTime();
         _debug("CurrentTime = " + curtime);
-        if(curtime > stoptime)
+        if (curtime > stoptime)
             return false;
         else
             return true;
@@ -424,13 +424,13 @@ public class PBODirector extends Director {
      */
     private double _getExecutionPeriod(Actor a)
             throws IllegalActionException {
-        if(!(a instanceof Nameable))
+        if (!(a instanceof Nameable))
             throw new IllegalActionException(
                     "Cannot get the execution period for an actor that "
                     + "is not an entity");
         Parameter param =
             (Parameter)((ComponentEntity)a).getAttribute("executionPeriod");
-        if(param == null) {
+        if (param == null) {
             throw new IllegalActionException("Actor does not have a " +
                 "executionPeriod parameter");
         }
@@ -448,13 +448,13 @@ public class PBODirector extends Director {
      */
     private double _getExecutionTime(Actor a)
             throws IllegalActionException {
-        if(!(a instanceof Nameable))
+        if (!(a instanceof Nameable))
             throw new IllegalActionException(
                     "Cannot get the executionTime for an actor that is not " +
                     "an entity.");
         Parameter param =
             (Parameter)((ComponentEntity)a).getAttribute("executionTime");
-        if(param == null) {
+        if (param == null) {
             throw new IllegalActionException("Actor does not have an " +
                 "executionTime parameter.");
         }

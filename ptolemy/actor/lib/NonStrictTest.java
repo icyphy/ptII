@@ -169,7 +169,7 @@ public class NonStrictTest extends Transformer {
         _numberOfInputTokensSeen = 0;
         _iteration = 0;
         _trainingTokens = null;
-        if(((BooleanToken)trainingMode.getToken()).booleanValue()) {
+        if (((BooleanToken)trainingMode.getToken()).booleanValue()) {
             if (isRunningNightlyBuild()) {
                 throw new IllegalActionException(this,
                     TRAINING_MODE_ERROR_MESSAGE);
@@ -266,7 +266,7 @@ public class NonStrictTest extends Transformer {
                 _trainingTokens.size() > 0) {
             Object[] newValues = _trainingTokens.toArray();
             Token[] newTokens = new Token[newValues.length];
-            for(int i = 0; i < newValues.length; i++) {
+            for (int i = 0; i < newValues.length; i++) {
                 newTokens[i] = (Token)newValues[i];
             }
             correctValues.setToken(new ArrayToken(newTokens));

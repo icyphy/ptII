@@ -606,7 +606,7 @@ public class DatagramReader extends TypedAtomicActor {
 
             if (_packetsAlreadyAwaitingFire != 0) {
                 bytesAvailable = _broadcastPacket.getLength();
-                if(bytesAvailable > 0) {
+                if (bytesAvailable > 0) {
                     useDefaultOutput = false;
                 } else {
                     useDefaultOutput = true;

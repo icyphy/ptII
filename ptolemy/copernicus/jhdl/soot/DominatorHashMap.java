@@ -275,7 +275,7 @@ public class DominatorHashMap extends HashMap {
                     put(n,intersection);
                 }
             }
-        } while(changed);
+        } while (changed);
 
         // Trim size of dominator vectors (extra space no longer needed)
         for (Iterator i = _graph.nodes().iterator(); i.hasNext();) {

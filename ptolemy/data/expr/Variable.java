@@ -500,7 +500,7 @@ public class Variable extends Attribute
             _needsEvaluation = true;
         }
 
-        if(_variablesDependentOn != null) {
+        if (_variablesDependentOn != null) {
             Iterator entries = _variablesDependentOn.entrySet().iterator();
             while (entries.hasNext()) {
                 Map.Entry entry = (Map.Entry)entries.next();
@@ -945,13 +945,13 @@ public class Variable extends Attribute
             // The value of this variable is undefined.
         }
         String tokenString;
-        if(value == null) {
+        if (value == null) {
             tokenString = "value undefined";
         } else {
             tokenString = value.toString();
         }
 
-        if(tokenString.length() > 50) {
+        if (tokenString.length() > 50) {
             tokenString = "value elided";
         }
 
@@ -1321,7 +1321,7 @@ public class Variable extends Attribute
                 PtParser parser = new PtParser();
                 _parseTree = parser.generateParseTree(_currentExpression);
             }
-            if(_parseTreeEvaluator == null) {
+            if (_parseTreeEvaluator == null) {
                 _parseTreeEvaluator = new ParseTreeEvaluator();
             }
             if (_parserScope == null) {
@@ -1343,11 +1343,11 @@ public class Variable extends Attribute
 
     private void _invalidateShadowedSettables(NamedObj object)
             throws IllegalActionException {
-        if(object == null) {
+        if (object == null) {
             // Nothing to do.
             return;
         }
-        for(Iterator variables = object.attributeList(
+        for (Iterator variables = object.attributeList(
                     Variable.class).iterator();
             variables.hasNext();) {
             Variable variable = (Variable)variables.next();
@@ -1687,10 +1687,10 @@ public class Variable extends Attribute
 
             // Cache the result..
             if (result != null) {
-                if(_variablesDependentOn == null) {
+                if (_variablesDependentOn == null) {
                     _variablesDependentOn = new HashMap();
                 }
-                if(!_variablesDependentOn.containsValue(result)) {
+                if (!_variablesDependentOn.containsValue(result)) {
                     result.addValueListener(Variable.this);
                     _variablesDependentOn.put(name, result);
                 }

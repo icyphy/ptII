@@ -109,7 +109,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
      */
     public static Entity getEntityContainerOfObject(Nameable object) {
         Nameable container = object.getContainer();
-        if(container instanceof Entity) {
+        if (container instanceof Entity) {
             return (Entity)container;
         } else {
             return getEntityContainerOfObject(container);
@@ -135,7 +135,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
         for (Iterator methods = actorClass.getMethods().iterator();
              methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
-            if(_debug)
+            if (_debug)
                 System.out.println("Replacing entity calls in " + method);
 
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
@@ -163,14 +163,14 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                                     (Local)r.getBase(),
                                     unit, localDefs);
                         box.setValue(newFieldRef);
-                        if(_debug) System.out.println("replacing " + unit);
+                        if (_debug) System.out.println("replacing " + unit);
                     } else if (r.getMethod().equals(
                                        PtolemyUtilities.toplevelMethod)) {
                         // Replace with reference to the toplevel
                         Value newFieldRef =
                             ModelTransformer.getFieldRefForEntity(_model);
                         box.setValue(newFieldRef);
-                        if(_debug) System.out.println("replacing " + unit);
+                        if (_debug) System.out.println("replacing " + unit);
                    } else if (r.getMethod().getSubSignature().equals(
                                        PtolemyUtilities.getEntityMethod.getSubSignature())) {
                         Value nameValue = r.getArg(0);
@@ -185,7 +185,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                                         (Local)r.getBase(), name,
                                         unit, localDefs);
                             box.setValue(newFieldRef);
-                            if(_debug) System.out.println("replacing " + unit);
+                            if (_debug) System.out.println("replacing " + unit);
                         } else {
                             String string = "Entity cannot be " +
                                 "statically determined";
@@ -198,7 +198,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
             TypeAssigner.v().transform(body, "ta", "");
         }
 
-        if(actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
+        if (actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
             CompositeEntity model = (CompositeEntity)actor;
             // Loop over all the entity classes and replace getAttribute calls.
             for (Iterator i = model.deepEntityList().iterator();
@@ -232,7 +232,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
             FieldRef ref = (FieldRef) stmt.getRightOp();
             SootField field = ref.getField();
             ValueTag tag = (ValueTag) field.getTag("_CGValue");
-            if(tag == null) {
+            if (tag == null) {
                 return NullConstant.v();
             }
             object = (NamedObj)tag.getObject();

@@ -90,7 +90,7 @@ public class GiottoPortInliner implements PortInliner {
             _portToTypeNameToBufferField.get(port);
         SootField arrayField = (SootField)
             typeNameToBufferField.get(type.toString());
-        if(arrayField == null) {
+        if (arrayField == null) {
             throw new RuntimeException("arrayField for " + port + " and type " + type + " is null!");
         }
         return arrayField;
@@ -102,7 +102,7 @@ public class GiottoPortInliner implements PortInliner {
             _portToTypeNameToInsideBufferField.get(port);
         SootField arrayField = (SootField)
             typeNameToBufferField.get(type.toString());
-        if(arrayField == null) {
+        if (arrayField == null) {
             throw new RuntimeException("arrayField null!");
         }
         return arrayField;
@@ -924,7 +924,7 @@ public class GiottoPortInliner implements PortInliner {
             portToTypeNameToBufferField.get(port);
         SootField arrayField = (SootField)
             typeNameToBufferField.get(type.toString());
-        if(arrayField == null) {
+        if (arrayField == null) {
             throw new RuntimeException("arrayField null!");
         }
         // Load the array of port channels.

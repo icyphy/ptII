@@ -159,7 +159,7 @@ public class ProcessDirector extends Director {
             // Don't resolve deadlock if we are just pausing
             // or if a stop has been requested.
             // NOTE: Added !_stopRequested.  EAL 3/12/03.
-            if(_areActorsDeadlocked() && !_stopRequested) {
+            if (_areActorsDeadlocked() && !_stopRequested) {
                 if (_debugging) {
                     _debug("Deadlock detected.");
                 }
@@ -180,7 +180,7 @@ public class ProcessDirector extends Director {
      *  acceptable to the domain.  Not thrown in this base class.
      */
     public void initialize(Actor actor) throws IllegalActionException {
-        if(_debugging) {
+        if (_debugging) {
             _debug("Initializing actor: " + ((NamedObj)actor).getFullName());
         }
 
@@ -227,7 +227,7 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        if(_debugging) {
+        if (_debugging) {
             _debug("Called postfire().");
             _debug("_notDone = " + _notDone);
             _debug("_stopRequested = " + _stopRequested);

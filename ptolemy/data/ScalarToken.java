@@ -382,7 +382,7 @@ public abstract class ScalarToken extends Token
     public final Token divide(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
-        if(typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME) {
             return _doDivide(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
@@ -830,7 +830,7 @@ public abstract class ScalarToken extends Token
     public final Token multiply(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
-        if(typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME) {
             return _doMultiply(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
@@ -993,7 +993,7 @@ public abstract class ScalarToken extends Token
     public final Token subtract(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
-        if(typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME) {
             return _doSubtract(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)

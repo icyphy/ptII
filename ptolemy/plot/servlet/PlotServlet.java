@@ -43,10 +43,10 @@ public class PlotServlet extends HttpServlet
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {  String fName = request.getParameter("file");
-    if(fName == null)
+    if (fName == null)
         throw new ServletException("No filename given!");
 
-    if(fName.indexOf("..") >= 0)
+    if (fName.indexOf("..") >= 0)
         throw new ServletException("Security problem with filename: " + fName);
 
     InputStream fileStream = this.getClass().getClassLoader()
@@ -55,7 +55,7 @@ public class PlotServlet extends HttpServlet
     Plot ptPlot;
     try
         {
-            if(fileStream == null)
+            if (fileStream == null)
                 throw new ServletException("Could not find: " + fName);
 
 
@@ -63,9 +63,9 @@ public class PlotServlet extends HttpServlet
             int h = 200;
             int w = 300;
             String dummy = request.getParameter("h");
-            if(dummy != null) h = Integer.parseInt(dummy);
+            if (dummy != null) h = Integer.parseInt(dummy);
             dummy = request.getParameter("w");
-            if(dummy != null) w = Integer.parseInt(dummy);
+            if (dummy != null) w = Integer.parseInt(dummy);
             ptPlot.setSize(w,h);
 
             read(ptPlot, fileStream);

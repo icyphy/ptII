@@ -159,7 +159,7 @@ public class JAIRotate extends Transformer {
         RenderedOp oldImage = jaiImageToken.getValue();
         parameters.addSource(oldImage);
 
-        if(_debugging) {
+        if (_debugging) {
             _debug("oldimage width " + oldImage.getWidth());
             _debug("oldimage height " + oldImage.getHeight());
             _debug("oldimage min x " + oldImage.getMinX());
@@ -190,7 +190,7 @@ public class JAIRotate extends Transformer {
                     "Invalid value for interpolationType");
         }
         RenderedOp newImage = JAI.create("Rotate", parameters);
-        if(_debugging) {
+        if (_debugging) {
             _debug("newimage width " + newImage.getWidth());
             _debug("newimage height " + newImage.getHeight());
             _debug("newimage min x " + newImage.getMinX());

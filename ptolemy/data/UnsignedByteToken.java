@@ -107,7 +107,7 @@ public class UnsignedByteToken extends ScalarToken {
             // Note that Byte.parseByte performs signed conversion,
             // which is not really what we want.
             int value = Integer.parseInt(init);
-            if(value > 255 || value < 0) {
+            if (value > 255 || value < 0) {
                 throw new IllegalActionException("Value '" + init +
                         "' is out of the range of Unsigned Byte");
             }

@@ -370,7 +370,7 @@ public class SootUtilities {
             //  System.out.println("field with type " + type);
             if (type instanceof RefType) {
                 SootClass refClass = ((RefType)type).getSootClass();
-                if(refClass == oldClass) {
+                if (refClass == oldClass) {
                     oldField.setType(RefType.v(newClass));
                     // we have to do this seemingly useless
                     // thing, since the scene caches a pointer
@@ -1273,9 +1273,9 @@ public class SootUtilities {
         buffer.append(returnType + " " + Scene.v().quotedNameOf(method.getName()) + "(");
 
         Class[] parameterTypes = method.getParameterTypes();
-        if(parameterTypes.length > 0) {
+        if (parameterTypes.length > 0) {
             buffer.append(parameterTypes[0].getName());
-            for(int i = 1; i < parameterTypes.length; i++) {
+            for (int i = 1; i < parameterTypes.length; i++) {
                 buffer.append(",");
                 buffer.append(parameterTypes[i].getName());
             }
@@ -1285,7 +1285,7 @@ public class SootUtilities {
 
 //         SootClass math = Scene.v().getSootClass("java.lang.Math");
 //         Iterator methods = math.getMethods().iterator();
-//         while(methods.hasNext()) {
+//         while (methods.hasNext()) {
 //             System.out.println("method = " + ((SootMethod)methods.next()).getSignature());
 //         }
         System.out.println("looking for method " + buffer);

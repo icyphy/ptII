@@ -574,7 +574,7 @@ class IValueMap {
         SootField field = ifr.getField();
         Value baseValue = ifr.getBase();
         InstanceFieldRef previous=null;
-        for(Iterator it = instanceFieldRefs.keySet().iterator();it.hasNext();) {
+        for (Iterator it = instanceFieldRefs.keySet().iterator();it.hasNext();) {
             InstanceFieldRef ifr_n = (InstanceFieldRef) it.next();
             if (ifr_n.getBase().equals(baseValue) &&
                 ifr_n.getField().equals(field)) {

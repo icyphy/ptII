@@ -159,7 +159,7 @@ public class Scale extends Transformer {
     // Scale the given input token on the left by the given factor.
     private Token _scaleOnLeft(Token input, Token factor)
             throws IllegalActionException {
-        if(input instanceof ArrayToken) {
+        if (input instanceof ArrayToken) {
             Token[] argArray = ((ArrayToken)input).arrayValue();
             Token[] result = new Token[argArray.length];
             for (int i = 0; i < argArray.length; i++) {
@@ -175,7 +175,7 @@ public class Scale extends Transformer {
     // Scale the given input token on the right by the given factor.
     private Token _scaleOnRight(Token input, Token factor)
             throws IllegalActionException {
-        if(input instanceof ArrayToken) {
+        if (input instanceof ArrayToken) {
             Token[] argArray = ((ArrayToken)input).arrayValue();
             Token[] result = new Token[argArray.length];
             for (int i = 0; i < argArray.length; i++) {

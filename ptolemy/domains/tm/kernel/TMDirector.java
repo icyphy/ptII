@@ -410,7 +410,7 @@ public class TMDirector extends Director {
             // Check the finish processing time.
             double finishTime = getCurrentTime() +
                 event.processingTime();
-            if(_debugging) _debug("finishing time = " + finishTime);
+            if (_debugging) _debug("finishing time = " + finishTime);
             if ( finishTime < _nextIterationTime) {
                 _nextIterationTime = finishTime;
             }

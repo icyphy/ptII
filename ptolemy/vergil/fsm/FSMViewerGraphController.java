@@ -167,7 +167,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
     /** Return the edge controller appropriate for the given node.
      */
     public EdgeController getEdgeController(Object edge) {
-        if( ((FSMGraphModel)getGraphModel()).getPtolemyModel()
+        if ( ((FSMGraphModel)getGraphModel()).getPtolemyModel()
             instanceof ModalController) {
             return _modalTransitionController;
         }

@@ -130,7 +130,7 @@ public class TransitionRefinementPort extends RefinementPort {
                 _mirrorDisable = true;
                 boolean success = false;
                 String portName = getName();
-                if(_hasSibling && isInput() && !isOutput()){
+                if (_hasSibling && isInput() && !isOutput()){
                     // we are the input sibling, extract "real" port name
                     portName = getName().substring(0, getName().length() - 3);
                 }
@@ -262,7 +262,7 @@ public class TransitionRefinementPort extends RefinementPort {
             _workspace.getWriteAccess();
             if (_mirrorDisable || getContainer() == null) {
                 //change sibling
-                if(_hasSibling && isOutput() && getContainer() != null)
+                if (_hasSibling && isOutput() && getContainer() != null)
                 {
                     TransitionRefinement container =
                                 (TransitionRefinement) getContainer();
@@ -318,9 +318,9 @@ public class TransitionRefinementPort extends RefinementPort {
         boolean disableStatus = _mirrorDisable;
         // check first that this isn't an input sibling port,
         // if it is then it *cannot* be set as an output too
-        if(_hasSibling && isInput() && !isOutput())
+        if (_hasSibling && isInput() && !isOutput())
         {
-            if(isOutput) {
+            if (isOutput) {
                 throw new InternalErrorException(
                              "TransitionRefinementPort.setOutput:" +
                              " cannot set input sibling port to be an output");
@@ -337,7 +337,7 @@ public class TransitionRefinementPort extends RefinementPort {
 
                 // now create a sibling if we
                 // don't otherwise have one
-                if(!_hasSibling && isOutput) {
+                if (!_hasSibling && isOutput) {
 
                     try {
                         TransitionRefinement container =
@@ -359,7 +359,7 @@ public class TransitionRefinementPort extends RefinementPort {
                         String relationName = getName() + "Relation";
                         ModalModel model = (ModalModel) container.getContainer();
                         Relation relation = model.getRelation(relationName);
-                        if(relation != null) {
+                        if (relation != null) {
                             sibling.link(relation);
                         }
                         _hasSibling = true;

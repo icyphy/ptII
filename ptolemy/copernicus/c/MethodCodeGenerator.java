@@ -184,7 +184,7 @@ public class MethodCodeGenerator {
         StringBuffer code = new StringBuffer();
 
         //Epilogue
-        if(tracker.trapsExist()) {
+        if (tracker.trapsExist()) {
             code.append(_indent(1) + "}\n");
 
             code.append(_indent(1) + "else\n");
@@ -213,7 +213,7 @@ public class MethodCodeGenerator {
                     "/* Map exception_id to handler */\n");
         code.append(_indent(2)+"switch (epc)\n");
         code.append(_indent(2)+"{\n");
-        for(int i = 0;i<= (tracker.getEpc()-1);i++) {
+        for (int i = 0;i<= (tracker.getEpc()-1);i++) {
             code.append(_indent(3)+"case "+(i)+":\n");
             if (tracker.getHandlerUnitList(i).size()>0) {
                 Iterator j = tracker.getTrapsForEpc(i).listIterator();
@@ -388,7 +388,7 @@ public class MethodCodeGenerator {
             parameterCount++;
         }
 
-        for(parameterIndex = 0;parameterIndex < method.getParameterCount();
+        for (parameterIndex = 0;parameterIndex < method.getParameterCount();
                 parameterIndex++) {
             if (parameterCount++ > 0) code.append(", ");
                 Local local = body.getParameterLocal(parameterIndex);
@@ -423,7 +423,7 @@ public class MethodCodeGenerator {
         code.append("\n");
         if (tracker.trapsExist()) {
             code.append(_indent(1) + "epc = setjmp(env);\n");
-            code.append(_indent(1) + "if(epc == 0)\n");
+            code.append(_indent(1) + "if (epc == 0)\n");
             code.append(_indent(1) + "{\n");
 
             indentLevel = 2;
@@ -484,7 +484,7 @@ public class MethodCodeGenerator {
             }
 
             //Code for end unit in exceptions.
-            if(handle_exceptions && tracker.isEndUnit(unit)) {
+            if (handle_exceptions && tracker.isEndUnit(unit)) {
                 code.append(_indent(2)+"/* That was end unit for trap "
                         + tracker.endIndexOf(unit) + " */\n");
                 tracker.endUnitEncountered(unit);
@@ -493,7 +493,7 @@ public class MethodCodeGenerator {
             }
 
             //Code for handler unit in exceptions.
-            if(handle_exceptions && tracker.isHandlerUnit(unit)) {
+            if (handle_exceptions && tracker.isHandlerUnit(unit)) {
                 code.append(_indent(2) + "/* Handler Unit for Trap " +
                         tracker.handlerIndexOf(unit) + " */\n");
             }

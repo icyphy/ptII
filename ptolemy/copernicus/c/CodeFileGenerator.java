@@ -257,7 +257,7 @@ public class CodeFileGenerator extends CodeGenerator {
                                         stringConstants.next().toString());
                 // Replace all incidences of " with \" to prevent bad characters
                 // between quotes.
-                for(int i = 0; i<value.length(); i++) {
+                for (int i = 0; i<value.length(); i++) {
                     if (value.charAt(i) == '"') {
                         value.insert(i,"\\");
                         i++;

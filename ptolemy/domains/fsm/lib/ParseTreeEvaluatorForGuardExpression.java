@@ -235,7 +235,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      */
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
-        if(node.isConstant() && node.isEvaluated()) {
+        if (node.isConstant() && node.isEvaluated()) {
             return;
         }
 
@@ -253,7 +253,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
         ptolemy.data.Token result = node.jjtGetChild(0).getToken();
 
-        if(!(result instanceof BooleanToken)) {
+        if (!(result instanceof BooleanToken)) {
             throw new IllegalActionException("Cannot perform logical "
                     + "operation on " + result + " which is a "
                     + result.getClass().getName());
@@ -264,19 +264,19 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                 node, "Invalid operation");
 
         boolean flag = node.isLogicalAnd();
-        for(int i = 1; i < numChildren; i++) {
+        for (int i = 1; i < numChildren; i++) {
             ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
 
             // Evaluate the child
             child.visit(this);
             // Get its value.
             ptolemy.data.Token nextToken = child.getToken();
-            if(!(nextToken instanceof BooleanToken)) {
+            if (!(nextToken instanceof BooleanToken)) {
                 throw new IllegalActionException("Cannot perform logical "
                         + "operation on " + nextToken + " which is a "
                         + result.getClass().getName());
             }
-            if(flag) {
+            if (flag) {
                 result = ((BooleanToken)nextToken).and((BooleanToken)result);
             } else {
                 result = ((BooleanToken)nextToken).or((BooleanToken)result);
@@ -297,7 +297,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
     public void visitRelationalNode(ASTPtRelationalNode node)
         throws IllegalActionException {
 
-        if(node.isConstant() && node.isEvaluated()) {
+        if (node.isConstant() && node.isEvaluated()) {
             return;
         }
 
@@ -339,14 +339,14 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         ptolemy.data.Token result;
         // For equal or not equal comparison, the numerical error
         // has to be considered.
-        if(operator.kind == PtParserConstants.EQUALS ||
+        if (operator.kind == PtParserConstants.EQUALS ||
            operator.kind == PtParserConstants.NOTEQUALS) {
-            if(operator.kind == PtParserConstants.EQUALS) {
+            if (operator.kind == PtParserConstants.EQUALS) {
                 result = leftToken.isCloseTo(rightToken, _errorTolerance);
             } else {
                 result = leftToken.isCloseTo(rightToken, _errorTolerance).not();
             }
-            if((leftToken instanceof BooleanToken) &&
+            if ((leftToken instanceof BooleanToken) &&
                     (rightToken instanceof BooleanToken)) {
                 // handle the relations like x == true
                 if (((BooleanToken) result).booleanValue()) {
@@ -373,7 +373,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                 _difference = difference.doubleValue();
             }
         } else {
-            if(!((leftToken instanceof ScalarToken) &&
+            if (!((leftToken instanceof ScalarToken) &&
                     (rightToken instanceof ScalarToken))) {
                 throw new IllegalActionException(
                         "The " + operator.image +
@@ -381,13 +381,13 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             }
             ScalarToken leftScalar = (ScalarToken)leftToken;
             ScalarToken rightScalar = (ScalarToken)rightToken;
-            if(operator.kind == PtParserConstants.GTE) {
+            if (operator.kind == PtParserConstants.GTE) {
                 result = leftScalar.isLessThan(rightScalar).not();
-            } else if(operator.kind == PtParserConstants.GT) {
+            } else if (operator.kind == PtParserConstants.GT) {
                 result = rightScalar.isLessThan(leftScalar);
-            } else if(operator.kind == PtParserConstants.LTE) {
+            } else if (operator.kind == PtParserConstants.LTE) {
                 result = rightScalar.isLessThan(leftScalar).not();
-            } else if(operator.kind == PtParserConstants.LT) {
+            } else if (operator.kind == PtParserConstants.LT) {
                 result = leftScalar.isLessThan(rightScalar);
             } else {
                 throw new IllegalActionException(

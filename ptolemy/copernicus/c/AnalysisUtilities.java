@@ -167,7 +167,7 @@ public class AnalysisUtilities{
 
         gray.addAll(source.getInterfaces());
 
-        while(!gray.isEmpty()) {
+        while (!gray.isEmpty()) {
             SootClass s = (SootClass)gray.getFirst();
 
             if (s.isInterface()) {

@@ -200,7 +200,7 @@ public class Chop extends SDFTransformer {
             if (director != null) {
                 director.invalidateSchedule();
             }
-        } else if(attribute == numberToWrite) {
+        } else if (attribute == numberToWrite) {
             _numberToWrite = ((IntToken)numberToWrite.getToken()).intValue();
             if (_numberToWrite <= 0) {
                 throw new IllegalActionException(this,
@@ -212,9 +212,9 @@ public class Chop extends SDFTransformer {
             if (director != null) {
                 director.invalidateSchedule();
             }
-        } else if(attribute == offset) {
+        } else if (attribute == offset) {
             _offsetValue = ((IntToken)offset.getToken()).intValue();
-        } else if(attribute == usePastInputs) {
+        } else if (attribute == usePastInputs) {
             _usePast = ((BooleanToken)usePastInputs.getToken()).booleanValue();
         }
 

@@ -232,7 +232,7 @@ public class Director extends Attribute implements Executable {
      */
     public void fireAtCurrentTime(Actor actor)
             throws IllegalActionException {
-        if(_isEmbedded()) {
+        if (_isEmbedded()) {
             CompositeActor container = (CompositeActor)getContainer();
             container.getExecutiveDirector().fireAtCurrentTime(
                     container);

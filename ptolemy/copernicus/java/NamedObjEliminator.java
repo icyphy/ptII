@@ -120,13 +120,13 @@ public class NamedObjEliminator extends SceneTransformer {
                     if (unit.containsFieldRef()) {
                         ValueBox box = unit.getFieldRefBox();
                         Value value = box.getValue();
-                        if(value instanceof InstanceFieldRef) {
+                        if (value instanceof InstanceFieldRef) {
                             InstanceFieldRef fieldRef = (InstanceFieldRef)value;
                             SootField field = fieldRef.getField();
                             // Turn off debugging..
-                            if(field.getSubSignature().equals(
+                            if (field.getSubSignature().equals(
                                        PtolemyUtilities.debuggingField.getSubSignature())) {
-                                if(unit instanceof AssignStmt) {
+                                if (unit instanceof AssignStmt) {
                                     body.getUnits().insertBefore(
                                             Jimple.v().newAssignStmt(
                                                     ((AssignStmt)unit).getLeftOp(),
@@ -165,7 +165,7 @@ public class NamedObjEliminator extends SceneTransformer {
                             // InlinePortTransformer
                             if (expr.getMethod().getSubSignature().equals(
                                     PtolemyUtilities.getFullNameMethod.getSubSignature())) {
-                                if(unit instanceof AssignStmt) {
+                                if (unit instanceof AssignStmt) {
                                     body.getUnits().insertBefore(
                                             Jimple.v().newAssignStmt(
                                                     ((AssignStmt)unit).getLeftOp(),
@@ -176,7 +176,7 @@ public class NamedObjEliminator extends SceneTransformer {
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getSubSignature().equals(
                                                PtolemyUtilities.getNameMethod.getSubSignature())) {
-                                if(unit instanceof AssignStmt) {
+                                if (unit instanceof AssignStmt) {
                                     body.getUnits().insertBefore(
                                             Jimple.v().newAssignStmt(
                                                     ((AssignStmt)unit).getLeftOp(),
@@ -187,7 +187,7 @@ public class NamedObjEliminator extends SceneTransformer {
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getSubSignature().equals(
                                                PtolemyUtilities.findEffigyMethod.getSubSignature())) {
-                                if(unit instanceof AssignStmt) {
+                                if (unit instanceof AssignStmt) {
                                     body.getUnits().insertBefore(
                                             Jimple.v().newAssignStmt(
                                                     ((AssignStmt)unit).getLeftOp(),
@@ -245,7 +245,7 @@ public class NamedObjEliminator extends SceneTransformer {
                      units.hasNext();) {
                     Stmt unit = (Stmt)units.next();
 
-                    if(unit.containsInvokeExpr()) {
+                    if (unit.containsInvokeExpr()) {
                         ValueBox box = unit.getInvokeExprBox();
                         Value value = box.getValue();
                         if (value instanceof SpecialInvokeExpr) {
@@ -264,7 +264,7 @@ public class NamedObjEliminator extends SceneTransformer {
                                 //          body.getUnits().remove(unit);
                             }
                         }
-                    } else if(unit instanceof IdentityStmt) {
+                    } else if (unit instanceof IdentityStmt) {
                         IdentityStmt identityStmt = (IdentityStmt)unit;
                         Value value = identityStmt.getRightOp();
                         if (value instanceof ParameterRef) {
@@ -281,7 +281,7 @@ public class NamedObjEliminator extends SceneTransformer {
                                             identityStmt.getLeftOp(),
                                             NullConstant.v()),
                                     body.getFirstNonIdentityStmt());
-                        }//  else if(value instanceof ThisRef) {
+                        }//  else if (value instanceof ThisRef) {
 //                             // Fix the type of thisRefs.
 //                             ValueBox box = identityStmt.getRightOpBox();
 //                             box.setValue(

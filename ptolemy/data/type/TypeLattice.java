@@ -609,8 +609,8 @@ public class TypeLattice {
     private static int[][] _compareCache;
     static {
         _compareCache = new int[Type.HASH_MAX + 1][Type.HASH_MAX + 1];
-        for(int i = 0; i <= Type.HASH_MAX; i++) {
-            for(int j = 0; j <= Type.HASH_MAX; j++) {
+        for (int i = 0; i <= Type.HASH_MAX; i++) {
+            for (int j = 0; j <= Type.HASH_MAX; j++) {
                 _compareCache[i][j] = Type.HASH_INVALID;
             }
         }

@@ -103,7 +103,7 @@ public class ScopeExtendingAttribute extends Attribute
             // a variable inside this attribute must be invalidated.
             // This does not include variables inside the container itself,
             // which take precedence.
-            if(container != null) {
+            if (container != null) {
                 _invalidateShadowedSettables(
                         (NamedObj)container.getContainer());
             }
@@ -123,11 +123,11 @@ public class ScopeExtendingAttribute extends Attribute
 
     private void _invalidateShadowedSettables(NamedObj object)
             throws IllegalActionException {
-        if(object == null) {
+        if (object == null) {
             // Nothing to do.
             return;
         }
-        for(Iterator variables = object.attributeList(
+        for (Iterator variables = object.attributeList(
                     Variable.class).iterator();
             variables.hasNext();) {
             Variable variable = (Variable)variables.next();

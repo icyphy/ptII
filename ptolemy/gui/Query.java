@@ -1271,7 +1271,7 @@ public class Query extends JPanel {
             // FIXME: The following doesn't have any effect.
             fileChooser.setApproveButtonMnemonic('S');
             int returnValue = fileChooser.showOpenDialog(Query.this);
-            if(returnValue == JFileChooser.APPROVE_OPTION) {
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
                 if (_base == null) {
                     // Absolute file name.
                     try {

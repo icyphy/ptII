@@ -113,7 +113,7 @@ public class TokenInstanceofEliminator extends BodyTransformer
                     Type opType =
                         PtolemyUtilities.getSootTypeForTokenType(type);
 
-                    if(debug) System.out.println("Checking instanceof check: " + expr);
+                    if (debug) System.out.println("Checking instanceof check: " + expr);
                     CastAndInstanceofEliminator.replaceInstanceofCheck(
                             box, Scene.v().getActiveHierarchy(),
                             checkType, opType, debug);

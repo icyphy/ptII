@@ -138,7 +138,7 @@ public abstract class MonotonicFunction implements InequalityTerm {
      */
     public final String toString() {
         String string = getVerboseString();
-        if(string == null) {
+        if (string == null) {
             string = "";
         } else {
             string = ", " + string;

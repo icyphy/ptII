@@ -110,7 +110,7 @@ public class ComplexMatrixToken extends MatrixToken {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
         Token token = tree.evaluateParseTree();
-        if(token instanceof ComplexMatrixToken) {
+        if (token instanceof ComplexMatrixToken) {
             Complex[][] value = ((ComplexMatrixToken)token).complexMatrix();
             _initialize(value, DO_COPY);
         } else {
@@ -134,12 +134,12 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     public ComplexMatrixToken(Token[] tokens, int rows, int columns)
             throws IllegalActionException {
-        if(tokens == null) {
+        if (tokens == null) {
             throw new IllegalActionException(
                     "ComplexMatrixToken: The specified"
                     + " array is null.");
         }
-        if(tokens.length != rows * columns) {
+        if (tokens.length != rows * columns) {
             throw new IllegalActionException(
                     "ComplexMatrixToken: The specified"
                     + " array is not of the correct length");
@@ -149,7 +149,7 @@ public class ComplexMatrixToken extends MatrixToken {
         _value = new Complex[rows][columns];
         for (int i = 0; i < tokens.length; i++) {
             Token token = tokens[i];
-            if(token instanceof ScalarToken) {
+            if (token instanceof ScalarToken) {
                 _value[i / columns][i % columns] =
                     ((ScalarToken)token).complexValue();
             } else {

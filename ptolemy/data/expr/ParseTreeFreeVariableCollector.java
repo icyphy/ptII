@@ -100,7 +100,7 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
 
     public void visitLeafNode(ASTPtLeafNode node)
             throws IllegalActionException {
-        if(node.isConstant() && node.isEvaluated()) {
+        if (node.isConstant() && node.isEvaluated()) {
             return;
         }
         _set.add(node.getName());
@@ -175,7 +175,7 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
      */
      protected boolean _isValidName(String name)
             throws IllegalActionException {
-        if(_scope != null) {
+        if (_scope != null) {
             try {
                 return (_scope.getType(name) != null);
             } catch (Exception ex) {

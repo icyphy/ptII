@@ -123,7 +123,7 @@ public class FunctionType extends StructuredType {
         // conversions.
 
         return token;
-        //   if(false) {
+        //   if (false) {
         /*FunctionToken functionToken = (FunctionToken)token;
         // The converted token has the same set of labels as the argument.
         // That is, fields not in this type are not cut off.
@@ -170,11 +170,11 @@ public class FunctionType extends StructuredType {
 
         FunctionType functionType = (FunctionType)object;
 
-        if(getArgCount() != functionType.getArgCount()) {
+        if (getArgCount() != functionType.getArgCount()) {
             return false;
         }
 
-        for(int i = 0; i < getArgCount(); i++) {
+        for (int i = 0; i < getArgCount(); i++) {
             Type myType = this.getArgType(i);
             Type argType = functionType.getArgType(i);
             if (!myType.equals(argType)) {
@@ -199,7 +199,7 @@ public class FunctionType extends StructuredType {
      *  @return a Type.
      */
     public Type getArgType(int i) {
-        if(i < 0 || i >= _argTypeTerms.length) {
+        if (i < 0 || i >= _argTypeTerms.length) {
             return null;
         }
         FieldTypeTerm fieldType = _argTypeTerms[i];
@@ -243,7 +243,7 @@ public class FunctionType extends StructuredType {
      */
     public void initialize(Type type) {
         try {
-            for(int i = 0; i < getArgCount(); i++) {
+            for (int i = 0; i < getArgCount(); i++) {
                 FieldTypeTerm fieldType = (FieldTypeTerm)getArgTypeTerm(i);
                 if (fieldType.isSettable()) {
                     fieldType.initialize(type);
@@ -276,12 +276,12 @@ public class FunctionType extends StructuredType {
 
         // The given type cannot be losslessly converted to this type
         // if it does not contain the same number of arguments.
-        if(argumentFunctionType.getArgCount() != getArgCount()) {
+        if (argumentFunctionType.getArgCount() != getArgCount()) {
             return false;
         }
 
         // Loop through all of the fields of this type...
-        for(int i = 0; i < getArgCount(); i++) {
+        for (int i = 0; i < getArgCount(); i++) {
             Type argumentFieldTypeTerm =
                 argumentFunctionType.getArgType(i);
 
@@ -304,11 +304,11 @@ public class FunctionType extends StructuredType {
      */
     public boolean isConstant() {
         // Loop through all of the fields of this type...
-        for(int i = 0; i < getArgCount(); i++) {
+        for (int i = 0; i < getArgCount(); i++) {
             FieldTypeTerm fieldType = getArgTypeTerm(i);
             Type type = fieldType._declaredType;
             // Return false if the field is not constant.
-            if(!type.isConstant()) {
+            if (!type.isConstant()) {
                 return false;
             }
         }
@@ -322,7 +322,7 @@ public class FunctionType extends StructuredType {
      */
     public boolean isInstantiable() {
         // Loop through all of the fields of this type...
-        for(int i = 0; i < getArgCount(); i++) {
+        for (int i = 0; i < getArgCount(); i++) {
             Type type = getArgType(i);
             // Return false if the field is not instantiable.
             if (!type.isInstantiable()) {
@@ -355,7 +355,7 @@ public class FunctionType extends StructuredType {
         }
 
         // Loop through all of the fields of this type...
-        for(int i = 0; i < getArgCount(); i++) {
+        for (int i = 0; i < getArgCount(); i++) {
             Type myArgType = getArgType(i);
             Type argType = functionType.getArgType(i);
             if (!myArgType.isSubstitutionInstance(argType)) {
@@ -364,7 +364,7 @@ public class FunctionType extends StructuredType {
         }
 
         // Check the return type.
-        if(!getReturnType().isSubstitutionInstance(
+        if (!getReturnType().isSubstitutionInstance(
                    functionType.getReturnType())) {
             return false;
         }
@@ -418,7 +418,7 @@ public class FunctionType extends StructuredType {
         }
 
         // Loop through all of the fields of this type...
-        for(int i = 0; i < getArgCount(); i++) {
+        for (int i = 0; i < getArgCount(); i++) {
             FieldTypeTerm argTypeTerm = getArgTypeTerm(i);
             if (argTypeTerm.isSettable()) {
                 Type newArgType =

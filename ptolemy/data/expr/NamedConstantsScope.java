@@ -75,7 +75,7 @@ public class NamedConstantsScope implements ParserScope {
      */
     public ptolemy.data.type.Type getType(String name) {
         ptolemy.data.Token value = (ptolemy.data.Token)_map.get(name);
-        if(value == null) {
+        if (value == null) {
             return null;
         } else {
             return value.getType();

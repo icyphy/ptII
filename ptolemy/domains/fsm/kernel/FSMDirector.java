@@ -204,12 +204,12 @@ public class FSMDirector extends Director implements ModelErrorHandler {
      *   choice action.
      */
     public void fire() throws IllegalActionException {
-        if(_debugging) {
+        if (_debugging) {
             _debug(getFullName(), "fire at time: " + getCurrentTime());
         }
         FSMActor ctrl = getController();
         ctrl._setInputVariables();
-        if(_debugging) {
+        if (_debugging) {
             _debug(getFullName(), " find FSMActor " + ctrl.getName());
         }
         State st = ctrl.currentState();
@@ -246,7 +246,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
             for (int i = 0; i < actors.length; ++i) {
                 if (_stopRequested) break;
                 if (actors[i].prefire()) {
-                    if(_debugging) {
+                    if (_debugging) {
                         _debug(getFullName(), " fire refinement",
                                ((ptolemy.kernel.util.NamedObj)
                                 actors[i]).getName());
@@ -267,7 +267,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                 for (int i = 0; i < actors.length; ++i) {
                     if (_stopRequested) break;
                     if (actors[i].prefire()) {
-                        if(_debugging) {
+                        if (_debugging) {
                             _debug(getFullName(),
                                    " fire transition refinement",
                                    ((ptolemy.kernel.util.NamedObj)
@@ -311,7 +311,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
         if (container instanceof Actor) {
             Actor cont = (Actor)container;
             Director executiveDirector = cont.getExecutiveDirector();
-            if(executiveDirector != null) {
+            if (executiveDirector != null) {
                 executiveDirector.fireAt(cont, time);
             } else {
                 setCurrentTime(time);
@@ -426,7 +426,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
             }
         }
 
-        if(_debugging) {
+        if (_debugging) {
             _debug("ModelError: " + exception.getMessage() + " is discarded.");
         }
         return true;
@@ -496,7 +496,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
      */
     public boolean postfire() throws IllegalActionException {
         // FIXME: Changed by liuj, not yet reviewed.
-        if(_debugging) {
+        if (_debugging) {
             _debug(getFullName(),
                     "postfire called at time: " + getCurrentTime());
         }
@@ -517,7 +517,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
      *  FIXME: Changed by liuj, not yet reviewed.
      */
     public boolean prefire() throws IllegalActionException {
-        if(_debugging) {
+        if (_debugging) {
             _debug(getFullName(),
                     "prefire called at time: "+getCurrentTime());
         }
@@ -612,7 +612,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                                 insideReceivers[i][j].get();
                             }
                             insideReceivers[i][j].put(t);
-                            if(_debugging) {
+                            if (_debugging) {
                                 _debug(getFullName(),
                                         "transferring input from "
                                         + port.getFullName()
@@ -712,7 +712,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                                 Iterator transitions =
                                     state.nonpreemptiveTransitionList()
                                     .iterator();
-                                while(transitions.hasNext()) {
+                                while (transitions.hasNext()) {
                                     Transition transition =
                                         (Transition) transitions.next();
                                     _checkActorsForReceiver

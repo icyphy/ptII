@@ -2433,7 +2433,7 @@ public class IOPort extends ComponentPort {
         // those that have one of these receivers in their remote
         // receiver list.
         Iterator sourcePorts = sourcePortList().iterator();
-        while(sourcePorts.hasNext()) {
+        while (sourcePorts.hasNext()) {
             IOPort sourcePort = (IOPort)sourcePorts.next();
             Receiver[][] sourcesRemoteReceivers
                     = sourcePort.getRemoteReceivers();

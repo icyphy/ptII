@@ -80,7 +80,7 @@ public class KeyInput3D extends GRActor {
         super.fire();
         if (_hasData) {
             keycode.send(0, new IntToken((int)_keycode));
-            if(_debugging) {
+            if (_debugging) {
                 _debug("KeyCode = " + (int)_keycode);
             }
             _hasData = false;

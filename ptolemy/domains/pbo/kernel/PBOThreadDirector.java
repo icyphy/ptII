@@ -144,7 +144,7 @@ public class PBOThreadDirector extends Director {
 
     public synchronized void actorFinished(Actor actor) {
         PBOEvent event = (PBOEvent) _deadlineQueue.take();
-        if(event.actor() != actor) {
+        if (event.actor() != actor) {
             throw new InternalErrorException("an actor finished which" +
                     "should not be running!");
         }
@@ -156,7 +156,7 @@ public class PBOThreadDirector extends Director {
 
         // process new activations.
         PBOEvent event = (PBOEvent)_requestQueue.get();
-        while(event.time() < currentTime) {
+        while (event.time() < currentTime) {
             _requestQueue.take();
             Actor actor = event.actor();
             double requestTime = event.time();
@@ -175,15 +175,15 @@ public class PBOThreadDirector extends Director {
     private synchronized void _reschedule() {
         PBOEvent nextEvent = (PBOEvent) _deadlineQueue.get();
         Actor nextActor = nextEvent.actor();
-        if(nextActor != _executingActor) {
+        if (nextActor != _executingActor) {
             // Idle the current thread.
-            if(_executingActor != null) {
+            if (_executingActor != null) {
                 PBOThread thread =
                     (PBOThread) _threadMap.get(_executingActor);
                 thread.setPriority(IDLE);
             }
             // Start the new thread.
-            if(nextActor != null) {
+            if (nextActor != null) {
                 PBOThread nextThread =
                     (PBOThread)_threadMap.get(nextEvent.actor());
                 nextThread.setPriority(RUNNING);
@@ -216,13 +216,13 @@ public class PBOThreadDirector extends Director {
         _scheduleNew();
          Workspace workspace = workspace();
         synchronized (this) {
-            while(_areActorsWaiting) {
+            while (_areActorsWaiting) {
                 workspace.wait(this);
             }
         }
     }
 
-    /*       if(_deadlineQueue.isEmpty()) {
+    /*       if (_deadlineQueue.isEmpty()) {
              // nothing is currently waiting, so update time to the
              // make the next actor ready to execute.
              PBOEvent event = (PBOEvent)_requestQueue.take();
@@ -251,7 +251,7 @@ public class PBOThreadDirector extends Director {
              // first process any new activations that will
              // occur before endFiringTime.
              double requestTime = ((PBOEvent)_requestQueue.get()).time();
-             while(requestTime < endFiringTime) {
+             while (requestTime < endFiringTime) {
              // make the given actor ready to execute.
              PBOEvent event = (PBOEvent)_requestQueue.take();
              Actor actor = (Actor)event.actor();
@@ -268,7 +268,7 @@ public class PBOThreadDirector extends Director {
              // now fire the currently executing actor and update
              // time to reflect the amount of time spent.
              boolean postfireReturns;
-             if(executingActor.prefire()) {
+             if (executingActor.prefire()) {
              _debug("Firing actor " + ((Entity) executingActor).getFullName() +
              " at " + firingTime);
              executingActor.fire();
@@ -287,7 +287,7 @@ public class PBOThreadDirector extends Director {
              // reschedule this composite to handle the next process starting.
              CompositeActor container = (CompositeActor)getContainer();
              Director executive = container.getExecutiveDirector();
-             if(executive != null) {
+             if (executive != null) {
              _debug("Rescheduling composite");
              executive.fireAt(container, getNextIterationTime());
              }
@@ -323,7 +323,7 @@ public class PBOThreadDirector extends Director {
      *  @return The current time.
      */
     public double getCurrentTime() {
-        if(_startTime > 0)
+        if (_startTime > 0)
             return (double)System.currentTimeMillis() - _startTime;
         else
             return 0.0;
@@ -340,7 +340,7 @@ public class PBOThreadDirector extends Director {
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
-        if(_deadlineQueue.isEmpty()) {
+        if (_deadlineQueue.isEmpty()) {
             // This should never be empty.
             PBOEvent requestEvent = (PBOEvent)_requestQueue.get();
             return requestEvent.time();
@@ -372,9 +372,9 @@ public class PBOThreadDirector extends Director {
         //Initialize the queue of deadlines and next firings to
         // contain all the actors.
         CompositeActor container = (CompositeActor) getContainer();
-        if(container != null) {
+        if (container != null) {
             Iterator allActors = container.deepEntityList().iterator();
-            while(allActors.hasNext()) {
+            while (allActors.hasNext()) {
                 Actor actor = (Actor) allActors.next();
                 Thread thread = new PBOThread(_threadGroup, actor);
                 thread.setPriority(IDLE);
@@ -416,7 +416,7 @@ public class PBOThreadDirector extends Director {
         double stoptime = ((DoubleToken) stopTime.getToken()).doubleValue();
         double curtime = getCurrentTime();
         _debug("CurrentTime = " + curtime);
-        if(curtime > stoptime)
+        if (curtime > stoptime)
             return false;
         else
             return true;
@@ -505,13 +505,13 @@ public class PBOThreadDirector extends Director {
      */
     private double _getExecutionPeriod(Actor a)
             throws IllegalActionException {
-        if(!(a instanceof Nameable))
+        if (!(a instanceof Nameable))
             throw new IllegalActionException(
                     "Cannot get the execution period for an actor that "
                     + "is not an entity");
         Parameter param =
             (Parameter)((ComponentEntity)a).getAttribute("executionPeriod");
-        if(param == null) {
+        if (param == null) {
             throw new IllegalActionException("Actor does not have a " +
                     "executionPeriod parameter");
         }
@@ -529,13 +529,13 @@ public class PBOThreadDirector extends Director {
      */
     private double _getExecutionTime(Actor a)
             throws IllegalActionException {
-        if(!(a instanceof Nameable))
+        if (!(a instanceof Nameable))
             throw new IllegalActionException(
                     "Cannot get the executionTime for an actor that is not " +
                     "an entity.");
         Parameter param =
             (Parameter)((ComponentEntity)a).getAttribute("executionTime");
-        if(param == null) {
+        if (param == null) {
             throw new IllegalActionException("Actor does not have an " +
                     "executionTime parameter.");
         }

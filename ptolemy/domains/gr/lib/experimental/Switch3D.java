@@ -135,7 +135,7 @@ public class Switch3D extends GRTransform {
         _previousIndex = -1;
         int width = sceneGraphIn.getWidth();
         int i;
-        for(i=0;i<width;i++) {
+        for (i=0;i<width;i++) {
             if (sceneGraphIn.hasToken(i)) {
                 SceneGraphToken o = (SceneGraphToken) sceneGraphIn.get(i);
                 Node n = (Node) o.getSceneGraphNode();
@@ -146,7 +146,7 @@ public class Switch3D extends GRTransform {
         width = sceneGraphOut.getWidth();
         System.out.println("width "+width);
         attachmentGroup = new BranchGroup[width];
-        for(i=0;i<width;i++) {
+        for (i=0;i<width;i++) {
             System.out.println("accessing # "+i);
             attachmentGroup[i] = new BranchGroup();
             attachmentGroup[i].setCapability(Group.ALLOW_CHILDREN_WRITE);

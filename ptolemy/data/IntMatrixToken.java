@@ -120,7 +120,7 @@ public class IntMatrixToken extends MatrixToken {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
         Token token = tree.evaluateParseTree();
-        if(token instanceof IntMatrixToken) {
+        if (token instanceof IntMatrixToken) {
             int[][] value = ((IntMatrixToken)token).intMatrix();
             _initialize(value, DO_COPY);
         } else {
@@ -144,11 +144,11 @@ public class IntMatrixToken extends MatrixToken {
      */
     public IntMatrixToken(Token[] tokens, int rows, int columns)
             throws IllegalActionException {
-        if(tokens == null) {
+        if (tokens == null) {
             throw new IllegalActionException("IntMatrixToken: The specified"
                     + " array is null.");
         }
-        if(tokens.length != rows * columns) {
+        if (tokens.length != rows * columns) {
             throw new IllegalActionException("IntMatrixToken: The specified"
                     + " array is not of the correct length");
         }
@@ -157,7 +157,7 @@ public class IntMatrixToken extends MatrixToken {
         _value = new int[rows][columns];
         for (int i = 0; i < tokens.length; i++) {
             Token token = tokens[i];
-            if(token instanceof ScalarToken) {
+            if (token instanceof ScalarToken) {
                 _value[i / columns][i % columns] =
                     ((ScalarToken)token).intValue();
             } else {
@@ -247,8 +247,8 @@ public class IntMatrixToken extends MatrixToken {
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
             IntToken tem = IntToken.convert(token);
             int[][] result = new int[size][size];
-            for(int i = 0; i < size; i++)
-                for(int j = 0; j < size; j++)
+            for (int i = 0; i < size; i++)
+                for (int j = 0; j < size; j++)
                     result[i][j] = tem.intValue();
             return new IntMatrixToken(result);
         }

@@ -85,7 +85,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         ASTPtRootNode tree = parser.generateParseTree(init);
         Token token = tree.evaluateParseTree();
 
-        if(token instanceof ArrayToken) {
+        if (token instanceof ArrayToken) {
             Token[] value = ((ArrayToken)token).arrayValue();
             _initialize(value);
         } else {

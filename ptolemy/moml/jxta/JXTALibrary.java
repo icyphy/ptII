@@ -395,7 +395,7 @@ public class JXTALibrary extends EntityLibrary
             DiscardQueryException,
             IOException {
         String qry = query.getQuery();
-        if(qry.startsWith("<ActorQuery>")) {
+        if (qry.startsWith("<ActorQuery>")) {
 
             if (_actorQueryResponse == null) {
                 throw new DiscardQueryException();
@@ -685,7 +685,7 @@ public class JXTALibrary extends EntityLibrary
         //byte[] buff = new byte[MAXBUFF];
         //int size = actStream.read(buff);
         //actStream.close();
-        //if(size < MAXBUFF) {
+        //if (size < MAXBUFF) {
         try {
             MessageElement msgelm = msg.newMessageElement(_TAG, null,
                     actStream) ;

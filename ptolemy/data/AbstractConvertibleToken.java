@@ -184,7 +184,7 @@ public abstract class AbstractConvertibleToken extends Token
     public final Token divide(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
-        if(typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME) {
             Token result = _divide(rightArgument);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
@@ -291,7 +291,7 @@ public abstract class AbstractConvertibleToken extends Token
         // straight to isEqualTo().  Also, these methods might introduce
         // exceptions because of type conversion issues.
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
-        if(typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME) {
             return _isCloseTo(rightArgument, epsilon);
         } else if (typeInfo == CPO.HIGHER) {
             AbstractConvertibleToken convertedArgument =
@@ -334,7 +334,7 @@ public abstract class AbstractConvertibleToken extends Token
     public final BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
-        if(typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME) {
             return _isEqualTo(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
             AbstractConvertibleToken convertedArgument =
@@ -377,7 +377,7 @@ public abstract class AbstractConvertibleToken extends Token
     public final Token modulo(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
-        if(typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME) {
             Token result = _modulo(rightArgument);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
@@ -472,7 +472,7 @@ public abstract class AbstractConvertibleToken extends Token
     public final Token multiply(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
-        if(typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME) {
             Token result = _multiply(rightArgument);
             return result;
         } else if (typeInfo == CPO.HIGHER) {
@@ -567,7 +567,7 @@ public abstract class AbstractConvertibleToken extends Token
     public final Token subtract(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
-        if(typeInfo == CPO.SAME) {
+        if (typeInfo == CPO.SAME) {
             Token result = _subtract(rightArgument);
             return result;
         } else if (typeInfo == CPO.HIGHER) {

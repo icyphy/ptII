@@ -93,7 +93,7 @@ public class RequiredFileGenerator {
             // Generate headers for only required classes.
             Iterator j = getRequiredClasses().iterator();
             //Iterator j = Scene.v().getClasses().iterator();
-            while(j.hasNext()) {
+            while (j.hasNext()) {
                 String nextClassName=((SootClass)j.next()).getName();
                 _generateHeaders(classPath, nextClassName);
             }
@@ -292,7 +292,7 @@ public class RequiredFileGenerator {
         // Generate the .c file.
         if (Options.v().get("compileMode").equals("full")) {
             if (FileHandler.exists(fileName+".c")) {
-                if(verbose) {
+                if (verbose) {
                     System.out.println( "\texists:"+fileName+".c");
                 }
             }
@@ -300,7 +300,7 @@ public class RequiredFileGenerator {
             {
                 code = cGenerator.generate(sootClass);
                 FileHandler.write(fileName+".c", code);
-                if(verbose) {
+                if (verbose) {
                     System.out.println( "\tcreated: " +fileName+".c");
                 }
             }
@@ -337,7 +337,7 @@ public class RequiredFileGenerator {
         // Create any parent directories, if required.
         if (fileName.lastIndexOf('/')>0) {
         // The file requires some directories.
-            if(verbose) {
+            if (verbose) {
                 System.out.println(className);
             }
 
@@ -350,7 +350,7 @@ public class RequiredFileGenerator {
         // Generate the stub header file.
         if (FileHandler.exists(fileName
                     + StubFileGenerator.stubFileNameSuffix())) {
-            if(verbose) System.out.println( "\texists: " + fileName
+            if (verbose) System.out.println( "\texists: " + fileName
                 + StubFileGenerator.stubFileNameSuffix());
         }
         else {
@@ -362,15 +362,15 @@ public class RequiredFileGenerator {
                 FileHandler.write(name, code);
             }
 
-            if(verbose) {
+            if (verbose) {
                 System.out.println( "\tcreated: " + name);
             }
         }
 
 
         // Generate the .h file.
-        if(FileHandler.exists(fileName+".h")) {
-            if(verbose) {
+        if (FileHandler.exists(fileName+".h")) {
+            if (verbose) {
                 System.out.println( "\texists: " + fileName + ".h");
             }
         }
@@ -379,7 +379,7 @@ public class RequiredFileGenerator {
             code = hGenerator.generate(sootClass);
             FileHandler.write(fileName+".h", code);
 
-            if(verbose) {
+            if (verbose) {
                 System.out.println( "\tcreated: " + fileName + ".h");
             }
         }

@@ -291,12 +291,12 @@ public class TokenToNativeTransformer extends SceneTransformer {
         // Inline all token methods, until we run out of things to inline
         boolean doneSomething = true;
         int count = 0;
-        while(doneSomething && count < 20) {
+        while (doneSomething && count < 20) {
             doneSomething = false;
             count++;
             System.out.println("inlining token methods in " + entityClass + " iteration " +
                     count + " depth = " + depth);
-            if(debug) {
+            if (debug) {
                 System.err.println("inlining token methods in " + entityClass + " iteration " +
                         count + " depth = " + depth);
             }
@@ -411,17 +411,17 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 for (Iterator units = body.getUnits().snapshotIterator();
                      units.hasNext();) {
                     Stmt stmt = (Stmt)units.next();
-                    if(debug) System.out.println("unit = " + stmt);
-                    if(stmt.containsInvokeExpr()) {
+                    if (debug) System.out.println("unit = " + stmt);
+                    if (stmt.containsInvokeExpr()) {
                         ValueBox box = stmt.getInvokeExprBox();
                         Value value = box.getValue();
-                        if(debug) System.out.println("value = " + value);
+                        if (debug) System.out.println("value = " + value);
                         boolean flag = _inlineTokenMethodsIn(
                                 method, body, stmt, box,
                                 localDefs, localUses, typeAnalysis,
                                 depth, unsafeLocalSet, debug);
                         doneSomething |= flag;
-                        if(!flag) {
+                        if (!flag) {
                             doneSomething |= _inlineTypeMethodsIn(
                                     method, body, stmt, box,
                                     localDefs, localUses,
@@ -469,9 +469,9 @@ public class TokenToNativeTransformer extends SceneTransformer {
             Local local = (Local)r.getBase();
             Type baseType = local.getType();
 
-            if(baseType instanceof NullType) {
+            if (baseType instanceof NullType) {
                 // replace with NullPointerException..
-                if(debug) {
+                if (debug) {
                     System.out.println("Invoke base is null, replacing with " +
                             "NullPointerException");
                 }
@@ -490,13 +490,13 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
             // Try to make sure we get methods like Scale._scaleOnRight
             // inlined.
-            if(baseType instanceof RefType &&
+            if (baseType instanceof RefType &&
                     Scene.v().getApplicationClasses().contains(
                             ((RefType)baseType).getSootClass())) {
-                for(Iterator args = r.getArgs().iterator();
+                for (Iterator args = r.getArgs().iterator();
                     args.hasNext() && !isInlineableTokenMethod;) {
                     Object arg = args.next();
-                    if(arg instanceof Local) {
+                    if (arg instanceof Local) {
                         Local argLocal = (Local)arg;
                         System.out.println("argtype = " + argLocal.getType());
                         isInlineableTokenMethod = _isInlineableTokenType(
@@ -508,7 +508,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 }
             }
 
-            if(!isInlineableTokenMethod) {
+            if (!isInlineableTokenMethod) {
                 return false;
             }
 
@@ -519,7 +519,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
             // Then determine the method that was
             // actually invoked.
             List methodList;
-            if(value instanceof SpecialInvokeExpr) {
+            if (value instanceof SpecialInvokeExpr) {
                 SootMethod invokedMethod = hierarchy.resolveSpecialDispatch(
                         (SpecialInvokeExpr)r, method);
                 methodList = new LinkedList();
@@ -552,7 +552,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             !inlinee.isNative()) {
                         // FIXME: only inline things where we are
                         // also inlining the constructor???
-                        if(debug) System.out.println("inlining " + inlinee);
+                        if (debug) System.out.println("inlining " + inlinee);
                         inlinee.retrieveActiveBody();
                         // Then we know exactly what method will
                         // be called, so inline it.
@@ -565,7 +565,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     }
                 }
             } else {
-                if(debug) {
+                if (debug) {
                     System.out.println("uninlinable method invocation = " + r);
                     for (Iterator j = methodList.iterator();
                          j.hasNext();) {
@@ -575,7 +575,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
             }
         } else if (value instanceof SpecialInvokeExpr) {
             SpecialInvokeExpr r = (SpecialInvokeExpr)value;
-            if(debug) System.out.println("special invoking = " + r.getMethod());
+            if (debug) System.out.println("special invoking = " + r.getMethod());
 
             Type baseType = typeAnalysis.getSpecializedSootType((Local)r.getBase());
 
@@ -591,9 +591,9 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 // appropriate type
                 if (isInlineableTokenMethod) {
                     type = (RefType)typeAnalysis.getSpecializedSootType((Local)r.getBase());
-                    if(PtolemyUtilities.getTypeDepth(
+                    if (PtolemyUtilities.getTypeDepth(
                                typeAnalysis.getSpecializedType((Local)r.getBase())) != depth) {
-                        if(debug) System.out.println("skipping, type depth = " +
+                        if (debug) System.out.println("skipping, type depth = " +
                                 PtolemyUtilities.getTypeDepth(
                                         typeAnalysis.getSpecializedType((Local)r.getBase())) +
                                 ", but only inlining depth " + depth);
@@ -611,7 +611,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     declaringClass.setLibraryClass();
                     if (!inlinee.isAbstract() &&
                             !inlinee.isNative()) {
-                        if(debug) System.out.println("inlining");
+                        if (debug) System.out.println("inlining");
                         inlinee.retrieveActiveBody();
                         // Then we know exactly what method will
                         // be called, so inline it.
@@ -619,7 +619,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                 inlinee, (Stmt)unit, method);
                         doneSomething = true;
                     } else {
-                        if(debug) System.out.println("removing");
+                        if (debug) System.out.println("removing");
                         // If we don't have a method,
                         // then remove the invocation.
                         body.getUnits().remove(unit);
@@ -632,14 +632,14 @@ public class TokenToNativeTransformer extends SceneTransformer {
             if (r.getMethod().getDeclaringClass().equals(
                         PtolemyUtilities.typeLatticeClass)) {
                 try {
-                    if(debug) System.out.println("inlining typelattice method = " + unit);
+                    if (debug) System.out.println("inlining typelattice method = " + unit);
                     typeAnalysis.inlineTypeLatticeMethods(method,
                             unit, box, r, localDefs, localUses);
                 } catch (Exception ex) {
                     System.out.println("Exception occured " + ex.getMessage());
                 }
             } else {
-                if(debug) System.out.println("static invoking = " + r.getMethod());
+                if (debug) System.out.println("static invoking = " + r.getMethod());
                 SootMethod inlinee = (SootMethod)r.getMethod();
                 SootClass declaringClass = inlinee.getDeclaringClass();
                 // These methods contain a large amount of
@@ -658,7 +658,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     declaringClass.setLibraryClass();
                     if (!inlinee.isAbstract() &&
                             !inlinee.isNative()) {
-                        if(debug) System.out.println("inlining");
+                        if (debug) System.out.println("inlining");
                         inlinee.retrieveActiveBody();
                         // Then we know exactly what method will
                         // be called, so inline it.
@@ -676,12 +676,12 @@ public class TokenToNativeTransformer extends SceneTransformer {
         // Inline all token methods, until we run out of things to inline
         boolean doneSomething = true;
         int count = 0;
-        while(doneSomething && count < 20) {
+        while (doneSomething && count < 20) {
             doneSomething = false;
             count++;
             System.out.println("inlining type methods in " + entityClass + " iteration " +
                     count + " depth = " + depth);
-            if(debug) {
+            if (debug) {
                 System.err.println("inlining type methods in " + entityClass + " iteration " +
                         count + " depth = " + depth);
             }
@@ -709,7 +709,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 for (Iterator units = body.getUnits().snapshotIterator();
                      units.hasNext();) {
                     Unit unit = (Unit)units.next();
-                    if(debug) System.out.println("unit = " + unit);
+                    if (debug) System.out.println("unit = " + unit);
                     Iterator boxes = unit.getUseBoxes().iterator();
                     while (boxes.hasNext()) {
                         ValueBox box = (ValueBox)boxes.next();
@@ -752,7 +752,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             r.getMethod().getName().equals("getTokenClass") ||
                             r.getMethod().getName().equals("getElementType"));
 
-                if(debug && isInlineableTypeMethod) {
+                if (debug && isInlineableTypeMethod) {
                     System.out.println("Inlineable type method = " + r.getMethod());
                 }
 
@@ -780,13 +780,13 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                                  StringConstant.v("java.lang.Object")));
 
                         } else if (inlinee.getName().equals("getElementType")) {
-                            if(debug) System.out.println("handling getElementType: " + unit);
+                            if (debug) System.out.println("handling getElementType: " + unit);
                             // Handle ArrayType.getElementType specially.
                             ptolemy.data.type.Type baseTokenType =
                                 PtolemyUtilities.getTypeValue(method,
                                         (Local)r.getBase(), unit, localDefs, localUses);
                             //typeAnalysis.getSpecializedType((Local)r.getBase());
-                            if(baseTokenType instanceof ptolemy.data.type.ArrayType) {
+                            if (baseTokenType instanceof ptolemy.data.type.ArrayType) {
                                 Local local = PtolemyUtilities.buildConstantTypeLocal(
                                         body, unit,
                                         ((ptolemy.data.type.ArrayType)baseTokenType).getElementType());
@@ -795,7 +795,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             }
                         } else if (inlinee.getName().equals("equals")) {
                             try {
-                                if(debug) System.out.println("handling equals: " + unit);
+                                if (debug) System.out.println("handling equals: " + unit);
                                 // Handle Type.equals
                                 ptolemy.data.type.Type baseTokenType =
                                     PtolemyUtilities.getTypeValue(method,
@@ -805,17 +805,17 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                     PtolemyUtilities.getTypeValue(method,
                                             (Local)r.getArg(0), unit, localDefs, localUses);
                                 //      typeAnalysis.getSpecializedType((Local)r.getBase());
-                                //    if(baseTokenType.isInstantiable()) {
+                                //    if (baseTokenType.isInstantiable()) {
                                 //                                                     continue;
                                 //                                                 }
 
-                                if(baseTokenType.equals(argumentTokenType)) {
-                                    if(debug) System.out.println("replacing with true: type = "
+                                if (baseTokenType.equals(argumentTokenType)) {
+                                    if (debug) System.out.println("replacing with true: type = "
                                             + baseTokenType);
                                     box.setValue(IntConstant.v(1));
                                     doneSomething = true;
                                 } else {
-                                    if(debug) System.out.println("replacing with false: type1 = "
+                                    if (debug) System.out.println("replacing with false: type1 = "
                                             + baseTokenType + ", type2 = " + argumentTokenType);
                                     box.setValue(IntConstant.v(0));
                                     doneSomething = true;
@@ -829,7 +829,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                     !inlinee.isNative()) {
                                 // FIXME: only inline things where we are
                                 // also inlining the constructor???
-                                if(debug) System.out.println("inlining " + inlinee);
+                                if (debug) System.out.println("inlining " + inlinee);
                                 inlinee.retrieveActiveBody();
                                 // Then we know exactly what method will
                                 // be called, so inline it.
@@ -841,7 +841,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             }
                         }
                     } else {
-                        if(debug) {
+                        if (debug) {
                             System.out.println("uninlinable method invocation = " + r);
                             for (Iterator j = methodList.iterator();
                                  j.hasNext();) {
@@ -850,10 +850,10 @@ public class TokenToNativeTransformer extends SceneTransformer {
                         }
                     }
                 } else {
-                    if(debug) System.out.println("Not a type method.");
+                    if (debug) System.out.println("Not a type method.");
                 }
             } else {
-                if(debug) System.out.println("baseType = " + baseType);
+                if (debug) System.out.println("baseType = " + baseType);
             }
         }
         return doneSomething;
@@ -865,7 +865,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
         boolean doneSomething = false;
 
         System.out.println("Creating Replacement token fields in " + entityClass + " with depth " + depth);
-        if(debug) {
+        if (debug) {
             System.err.println("Creating Replacement token fields in " + entityClass + " with depth " + depth);
         }
 
@@ -891,7 +891,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
             if (debug) System.out.println("Specialized type = " + fieldTokenType);
 
             // Ignore fields that aren't of the right depth.
-            if(PtolemyUtilities.getTypeDepth(fieldTokenType) != depth) {
+            if (PtolemyUtilities.getTypeDepth(fieldTokenType) != depth) {
                 if (debug) System.out.println("Skipping field " + field + ": Wrong depth");
                 continue;
             }
@@ -969,7 +969,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
         boolean doneSomething = false;
         System.out.println("Replacing token fields in " + entityClass + " with depth " + depth);
-        if(debug) {
+        if (debug) {
             System.err.println("Replacing token fields in " + entityClass + " with depth " + depth);
         }
 
@@ -1009,7 +1009,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     typeAnalysis.getSpecializedType(local);
 
                 // Ignore fields that aren't of the right depth.
-                if(PtolemyUtilities.getTypeDepth(localTokenType) != depth) {
+                if (PtolemyUtilities.getTypeDepth(localTokenType) != depth) {
                     continue;
                 }
 
@@ -1169,7 +1169,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                 Local baseLocal = (Local)r.getBase();
                                 Local instanceLocal = _getInstanceLocal(body, baseLocal,
                                         field, localToFieldToLocal, debug);
-                                if(instanceLocal != null) {
+                                if (instanceLocal != null) {
                                     stmt.getLeftOpBox().setValue(instanceLocal);
                                     doneSomething = true;
                                 }
@@ -1192,7 +1192,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                 Local baseLocal = (Local)r.getBase();
                                 Local instanceLocal = _getInstanceLocal(body, baseLocal,
                                         field, localToFieldToLocal, debug);
-                                if(instanceLocal != null) {
+                                if (instanceLocal != null) {
                                     stmt.getRightOpBox().setValue(instanceLocal);
                                     doneSomething = true;
                                 }
@@ -1267,7 +1267,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                    SootField replacementField = (SootField)entityFieldToIsNotNullField.get(field);
                                    //System.out.println("replacementField = " + replacementField);
                                    FieldRef isNotNullFieldRef;
-                                   if(oldFieldRef instanceof InstanceFieldRef) {
+                                   if (oldFieldRef instanceof InstanceFieldRef) {
                                        isNotNullFieldRef = Jimple.v().newInstanceFieldRef(
                                                ((InstanceFieldRef)oldFieldRef).getBase(),
                                                replacementField);
@@ -1334,7 +1334,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                                "<ptolemy.data.BooleanToken: ptolemy.data.BooleanToken FALSE>")) {
                                 isBooleanTokenFalseSingleton = true;
                             }
-                            if((isBooleanTokenFalseSingleton || isBooleanTokenTrueSingleton) &&
+                            if ((isBooleanTokenFalseSingleton || isBooleanTokenTrueSingleton) &&
                                     fieldToReplacementLocal != null) {
                                 doneSomething = true;
                                 // Replace references to fields with token types.
@@ -1348,14 +1348,14 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                 for (Iterator localFields = fieldToReplacementLocal.keySet().iterator();
                                      localFields.hasNext();) {
                                     SootField localField = (SootField)localFields.next();
-                                    if(!localField.getName().equals("_value")) {
+                                    if (!localField.getName().equals("_value")) {
                                         throw new RuntimeException("Unknown Field in BooleanToken: " +
                                                 localField.getName());
                                     }
                                     if (debug) System.out.println("localField = " + localField);
                                     Local replacementLocal = (Local)
                                         fieldToReplacementLocal.get(localField);
-                                    if(isBooleanTokenTrueSingleton) {
+                                    if (isBooleanTokenTrueSingleton) {
                                         body.getUnits().insertBefore(
                                                 Jimple.v().newAssignStmt(
                                                         replacementLocal,
@@ -1381,7 +1381,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                    SootField replacementField = (SootField)entityFieldToIsNotNullField.get(field);
                                    //   System.out.println("replacementField = " + replacementField);
                                    FieldRef isNotNullFieldRef;
-                                   if(oldFieldRef instanceof InstanceFieldRef) {
+                                   if (oldFieldRef instanceof InstanceFieldRef) {
                                        isNotNullFieldRef = Jimple.v().newInstanceFieldRef(
                                                ((InstanceFieldRef)oldFieldRef).getBase(),
                                                replacementField);
@@ -1567,7 +1567,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
                                 Local isNotNullLocal = (Local)
                                     localToIsNotNullLocal.get(stmt.getLeftOp());
-                                if(debug) System.out.println("Stmt = " + stmt);
+                                if (debug) System.out.println("Stmt = " + stmt);
 
                                 body.getUnits().insertBefore(
                                         Jimple.v().newAssignStmt(
@@ -1640,10 +1640,10 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
                             Local isNotNullLocal = (Local)
                                 localToIsNotNullLocal.get(expr.getOp1());
-                            if(isNotNullLocal != null) {
-                                if(debug) System.out.println("replacing binary expression " + expr);
+                            if (isNotNullLocal != null) {
+                                if (debug) System.out.println("replacing binary expression " + expr);
                                 Value nullValue;
-                                if(isNotNullLocal.getType().equals(BooleanType.v())) {
+                                if (isNotNullLocal.getType().equals(BooleanType.v())) {
                                     // If the isNotNullLocal is for a regular Object.
                                     nullValue = IntConstant.v(0);
                                 } else {
@@ -1666,9 +1666,9 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
                             Local isNotNullLocal = (Local)
                                 localToIsNotNullLocal.get(expr.getOp2());
-                            if(isNotNullLocal != null) {
+                            if (isNotNullLocal != null) {
                                 Value nullValue;
-                                if(isNotNullLocal.getType().equals(BooleanType.v())) {
+                                if (isNotNullLocal.getType().equals(BooleanType.v())) {
                                     // If the isNotNullLocal is for a regular Object.
                                     nullValue = IntConstant.v(0);
                                 } else {
@@ -1704,7 +1704,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
              uses.hasNext();) {
             UnitValueBoxPair pair = (UnitValueBoxPair)uses.next();
             Stmt defStmt = (Stmt)pair.getUnit();
-            if(defStmt instanceof DefinitionStmt) {
+            if (defStmt instanceof DefinitionStmt) {
                 Value value = ((DefinitionStmt)defStmt).getLeftOp();
                 if (PtolemyUtilities.isTokenType(value.getType())) {
                     set.add(value);
@@ -1902,7 +1902,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 !unsafeLocalSet.contains(local)) {
             RefType type = (RefType)baseType;
 
-            if(!SootUtilities.derivesFrom(type.getSootClass(),
+            if (!SootUtilities.derivesFrom(type.getSootClass(),
                        PtolemyUtilities.tokenClass)) {
                 return false;
             }
@@ -1910,9 +1910,9 @@ public class TokenToNativeTransformer extends SceneTransformer {
             // If it is a token, then check to
             // make sure that it has the
             // appropriate type
-            if(PtolemyUtilities.getTypeDepth(
+            if (PtolemyUtilities.getTypeDepth(
                        typeAnalysis.getSpecializedType(local)) != depth) {
-                if(debug) System.out.println("skipping, type depth = " +
+                if (debug) System.out.println("skipping, type depth = " +
                         PtolemyUtilities.getTypeDepth(
                                 typeAnalysis.getSpecializedType(local)) +
                         ", but only inlining depth " + depth);

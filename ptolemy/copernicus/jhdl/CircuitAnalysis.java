@@ -108,17 +108,17 @@ public class CircuitAnalysis {
         DirectedGraph fire_graph=null;
         DirectedGraph postfire_graph=null;
 
-        if(theClass.declaresMethodByName("prefire")) {
+        if (theClass.declaresMethodByName("prefire")) {
             prefire_graph =
                 _analyzeMethod(theClass.getMethodByName("prefire"));
 //              _analyze(prefire_graph, theClass.getMethodByName("prefire"));
         }
-        if(theClass.declaresMethodByName("fire")) {
+        if (theClass.declaresMethodByName("fire")) {
             fire_graph =
                 _analyzeMethod(theClass.getMethodByName("fire"));
 //              _analyze(fire_graph, theClass.getMethodByName("fire"));
         }
-        if(theClass.declaresMethodByName("postfire")) {
+        if (theClass.declaresMethodByName("postfire")) {
             postfire_graph =
                 _analyzeMethod(theClass.getMethodByName("postfire"));
 //              _analyze(postfire_graph, theClass.getMethodByName("postfire"));
@@ -130,17 +130,17 @@ public class CircuitAnalysis {
 
         // get rid of non-essential nodes of
 //          boolean changed = true;
-//          while(changed) {
+//          while (changed) {
 //              changed = false;
-//              for(Iterator nodes = graph.nodes().iterator();
+//              for (Iterator nodes = graph.nodes().iterator();
 //                  nodes.hasNext();) {
 //                  Node node = (Node)nodes.next();
-//                  if(requiredNodeSet.contains(node)) {
+//                  if (requiredNodeSet.contains(node)) {
 //                      continue;
 //                  }
 //                  HashSet set = new HashSet(graph.successors(node));
 //                  set.retainAll(requiredNodeSet);
-//                  if(set.isEmpty()) {
+//                  if (set.isEmpty()) {
 //                      continue;
 //                  }
 //                  requiredNodeSet.add(node);
@@ -167,17 +167,17 @@ public class CircuitAnalysis {
 
         // find removable nodes and add new edges between removed
         // nodes predecessors and successors
-        for(Iterator nodes = graph.nodes().iterator();
+        for (Iterator nodes = graph.nodes().iterator();
             nodes.hasNext();) {
             Node node = (Node)nodes.next();
-            if(node.getWeight() instanceof Local ||
+            if (node.getWeight() instanceof Local ||
                node.getWeight() instanceof SootField ||
                !requiredNodeSet.contains(node)) {
                 // Then remove the node.
-                for(Iterator preds = graph.predecessors(node).iterator();
+                for (Iterator preds = graph.predecessors(node).iterator();
                     preds.hasNext();) {
                     Node pred = (Node)preds.next();
-                    for(Iterator succs = graph.successors(node).iterator();
+                    for (Iterator succs = graph.successors(node).iterator();
                         succs.hasNext();) {
                         Node succ = (Node)succs.next();
                         graph.addEdge(pred, succ);
@@ -188,17 +188,17 @@ public class CircuitAnalysis {
         }
 
         // Remove all the edges & nodes
-        for(Iterator nodes = removeSet.iterator();
+        for (Iterator nodes = removeSet.iterator();
             nodes.hasNext();) {
             Node node = (Node)nodes.next();
             List predList = new LinkedList(graph.predecessors(node));
-            for(Iterator preds = predList.iterator();
+            for (Iterator preds = predList.iterator();
                 preds.hasNext();) {
                 Node pred = (Node)preds.next();
                 graph.removeEdge((Edge)graph.successorEdges(pred, node).toArray()[0]);
             }
             List succList = new LinkedList(graph.successors(node));
-            for(Iterator succs = succList.iterator();
+            for (Iterator succs = succList.iterator();
                 succs.hasNext();) {
                 Node succ = (Node)succs.next();
                 graph.removeEdge((Edge)graph.successorEdges(node, succ).toArray()[0]);

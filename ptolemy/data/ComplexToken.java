@@ -73,7 +73,7 @@ public class ComplexToken extends ScalarToken {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
         Token token = tree.evaluateParseTree();
-        if(token instanceof ComplexToken) {
+        if (token instanceof ComplexToken) {
             _value = ((ComplexToken)token).complexValue();
         } else {
             throw new IllegalActionException("A ComplexToken cannot be"

@@ -148,17 +148,17 @@ public class JavaToC {
         boolean verbose = false;
 
         // Actual flags.
-        for(int i = 1;i<args.length; i++) {
+        for (int i = 1;i<args.length; i++) {
             if (args[i].startsWith("-")) {
                 // Its a flag.
 
                 // Call for help.
-                if(args[i].equals("-h")) {
+                if (args[i].equals("-h")) {
                     showHelp();
                     System.exit(0);
                 }
                 // Check for possible options.
-                else if(args[i].equals("-lib")
+                else if (args[i].equals("-lib")
                         || args[i].equals("-verbose")
                         || args[i].equals("-compileMode")
                         || args[i].equals("-pruneLevel")
@@ -182,7 +182,7 @@ public class JavaToC {
         }
 
         // If no className specified
-        if(className.equals("")) showHelp();
+        if (className.equals("")) showHelp();
 
     }
 

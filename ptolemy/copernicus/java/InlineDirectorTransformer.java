@@ -118,7 +118,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         for (Iterator i = model.deepEntityList().iterator();
              i.hasNext();) {
             Entity entity = (Entity)i.next();
-            if(entity instanceof CompositeActor) {
+            if (entity instanceof CompositeActor) {
                 String className =
                     ModelTransformer.getInstanceClassName(entity, options);
                 SootClass compositeClass = Scene.v().getSootClass(className);
@@ -129,12 +129,12 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
         MakefileWriter.addMakefileSubstitution("@extraClassPath@", "");
 
-        if(model.getDirector() instanceof SDFDirector) {
+        if (model.getDirector() instanceof SDFDirector) {
             _inlineSDFDirector(model, modelClass, phaseName, options);
-        } else if(model.getDirector() instanceof HSDirector ||
+        } else if (model.getDirector() instanceof HSDirector ||
                   model.getDirector() instanceof FSMDirector) {
             _inlineHSDirector(model, modelClass, phaseName, options);
-        } else if(model.getDirector() instanceof GiottoDirector) {
+        } else if (model.getDirector() instanceof GiottoDirector) {
             _inlineGiottoDirector(model, modelClass, phaseName, options);
         } else {
             throw new RuntimeException("Inlining a director can not "
@@ -337,7 +337,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                         Jimple.v().newAssignStmt(paramLocal,
                                 body.getParameterLocal(0)),
                         insertPoint);
-                for(int i = 0; i < inputCount; i++) {
+                for (int i = 0; i < inputCount; i++) {
                     TypedIOPort port = (TypedIOPort)inputPortList.get(i);
                     // Get the port variable from the parameter.
                     units.insertBefore(
@@ -400,7 +400,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
                 // Copy the outputs
                 // FIXME! loop
-                for(int i = 0; i < outputCount; i++) {
+                for (int i = 0; i < outputCount; i++) {
                     TypedIOPort port = (TypedIOPort)outputPortList.get(i);
                     // Get the buffer to retrieve the token from.
                     units.insertBefore(
@@ -445,7 +445,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             // value driver.
             List outputPortList = ((Actor)entity).outputPortList();
             int outputCount = outputPortList.size();
-            for(int i = 0; i < outputCount; i++) {
+            for (int i = 0; i < outputCount; i++) {
                 TypedIOPort port = (TypedIOPort)outputPortList.get(i);
                 String portID = StringUtilities.sanitizeName(
                         port.getName(model));
@@ -689,7 +689,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             body.getLocals().add(tokenLocal);
 
             // Transfer Inputs from input ports.
-            for(Iterator ports = model.inputPortList().iterator();
+            for (Iterator ports = model.inputPortList().iterator();
                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate = 1;
@@ -801,7 +801,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             }
 
             // Transfer outputs from output ports
-            for(Iterator ports = model.outputPortList().iterator();
+            for (Iterator ports = model.outputPortList().iterator();
                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate;
@@ -1129,7 +1129,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             body.getLocals().add(tokenLocal);
 
             // Transfer Inputs from input ports.
-            for(Iterator ports = model.inputPortList().iterator();
+            for (Iterator ports = model.inputPortList().iterator();
                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate = 1;
@@ -1231,7 +1231,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             }
 
             // Transfer outputs from output ports
-            for(Iterator ports = model.outputPortList().iterator();
+            for (Iterator ports = model.outputPortList().iterator();
                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate;
@@ -1546,7 +1546,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             body.getLocals().add(tokenLocal);
 
             // Transfer Inputs from input ports.
-            for(Iterator ports = model.inputPortList().iterator();
+            for (Iterator ports = model.inputPortList().iterator();
                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate;
@@ -1679,8 +1679,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 // FIXME: This should be a command line option.
                 int threshold = 2;
 
-                if(firingCount < threshold) {
-                    for(int i = 0; i < firingCount; i++) {
+                if (firingCount < threshold) {
+                    for (int i = 0; i < firingCount; i++) {
                         units.insertBefore(Jimple.v().newInvokeStmt(
                                           Jimple.v().newVirtualInvokeExpr(actorLocal,
                                                   actorPrefireMethod)),
@@ -1747,7 +1747,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             }
 
             // Transfer outputs from output ports
-            for(Iterator ports = model.outputPortList().iterator();
+            for (Iterator ports = model.outputPortList().iterator();
                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate;

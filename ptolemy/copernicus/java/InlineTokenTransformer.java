@@ -173,7 +173,7 @@ public class InlineTokenTransformer extends SceneTransformer {
                 }
             }
         }
-        if(actor instanceof CompositeActor) {
+        if (actor instanceof CompositeActor) {
             CompositeActor model = (CompositeActor)actor;
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {

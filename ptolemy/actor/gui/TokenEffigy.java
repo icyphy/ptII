@@ -207,7 +207,7 @@ public class TokenEffigy extends Effigy {
         // Note that the corresponding reader is platform-tolerant.
         PrintWriter print = new PrintWriter(writer);
         Iterator tokens = _tokens.iterator();
-        while(tokens.hasNext()) {
+        while (tokens.hasNext()) {
             Token token = (Token)tokens.next();
             print.println(token.toString());
         }

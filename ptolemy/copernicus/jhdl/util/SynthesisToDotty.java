@@ -64,7 +64,7 @@ public class SynthesisToDotty extends GraphToDotty {
         sb.append("digraph "+ename+" {\r\n");
         sb.append("\tcompound=true;\r\n");
         sb.append("\t// Vertices\r\n");
-        for(Iterator nodes = g.nodes().iterator(); nodes.hasNext();) {
+        for (Iterator nodes = g.nodes().iterator(); nodes.hasNext();) {
             Node source = (Node)nodes.next();
             String name;
 
@@ -94,7 +94,7 @@ public class SynthesisToDotty extends GraphToDotty {
         sb.append("\t// Edges\r\n");
         for (Iterator nodes=g.nodes().iterator(); nodes.hasNext();){
             Node source = (Node)nodes.next();
-            for(Iterator succs = g.outputEdges(source).iterator(); succs.hasNext();) {
+            for (Iterator succs = g.outputEdges(source).iterator(); succs.hasNext();) {
                 Edge edge= (Edge)succs.next();
                 Node dest= edge.sink();
 
@@ -157,7 +157,7 @@ public class SynthesisToDotty extends GraphToDotty {
         sb.append("subgraph "+cluster_num+" {\r\n");
         sb.append("\t\tlabel=\""+bl.toShortString()+"\";\r\n");
         sb.append("\t\t// Vertices\r\n");
-        for(Iterator nodes = g.nodes().iterator(); nodes.hasNext();) {
+        for (Iterator nodes = g.nodes().iterator(); nodes.hasNext();) {
             Node source = (Node)nodes.next();
             String name="s" + subCount++;
             if (bigHack==null) bigHack=name;
@@ -174,7 +174,7 @@ public class SynthesisToDotty extends GraphToDotty {
         sb.append("\t\t// Edges\r\n");
         for (Iterator nodes=g.nodes().iterator(); nodes.hasNext();){
             Node source = (Node)nodes.next();
-            for(Iterator succs = g.outputEdges(source).iterator(); succs.hasNext();) {
+            for (Iterator succs = g.outputEdges(source).iterator(); succs.hasNext();) {
                 Edge edge= (Edge)succs.next();
                 Node dest= edge.sink();
                 sb.append("\t\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\"");

@@ -234,7 +234,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
             ) throws
             CorbaIllegalActionException,
             CorbaUnknownPortException {
-        if(width != 1) {
+        if (width != 1) {
             throw new CorbaIllegalActionException(
                     " The port width is immutable.");
         }

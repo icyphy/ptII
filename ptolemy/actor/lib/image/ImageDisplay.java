@@ -137,7 +137,7 @@ public class ImageDisplay extends Sink implements Placeable {
      *   or if a token is received that contains a null image.
      */
     public void fire() throws IllegalActionException {
-        if(_debugging) {
+        if (_debugging) {
             _debug("ImageDisplay actor firing");
         }
         if (input.hasToken(0)) {

@@ -214,7 +214,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
             org.omg.CORBA.Object obj = orb.string_to_object(_ior);
             _remoteActor = CorbaActorHelper.narrow(obj);
             System.out.println("narrow to a corbaActor object from the ior.");
-            if(_remoteActor == null) {
+            if (_remoteActor == null) {
                         throw new IllegalActionException(this,
                                 " can not find the remote actor.");
             }
@@ -230,7 +230,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
             Iterator attributes = attributeList().iterator();
             while (attributes.hasNext()) {
                 Attribute att = (Attribute)attributes.next();
-                if((att != ORBInitProperties) && (att != remoteActorName) &&
+                if ((att != ORBInitProperties) && (att != remoteActorName) &&
                         (att instanceof Parameter)) {
                     _debug(getName(),
                             " check remote parameter: ", att.getName());
@@ -403,7 +403,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
         Enumeration rps = doc.getChildren("Response");
         //TextElement rrr = (TextElement) rps.nextElement();
         //System.out.println("the name of the element is: " + rrr.getName());
-        while(rps.hasMoreElements()) {
+        while (rps.hasMoreElements()) {
             TextElement rp = (TextElement) rps.nextElement();
             Enumeration cbrps = rp.getChildren();
             TextElement rrr = (TextElement) cbrps.nextElement();
@@ -418,7 +418,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
                     System.out.println("the name of the actor element is: " + act.getName());
                     if (act.getTextValue() == _remoteActorName) {
                         Enumeration  iors = cbrp.getChildren("CorbaActorIOR");
-                        while(iors.hasMoreElements()) {
+                        while (iors.hasMoreElements()) {
                             TextElement ior = (TextElement) iors.nextElement();
                             _ior = ior.getTextValue();
 
@@ -448,11 +448,11 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
      */
     protected void _transferInputs() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
-        while(inputPorts.hasNext()) {
+        while (inputPorts.hasNext()) {
             IOPort port = (IOPort)(inputPorts.next());
             String inputName = port.getName();
             for (short i = 0; i < port.getWidth(); i++) {
-                if(port.hasToken(i)) {
+                if (port.hasToken(i)) {
                     Token inputToken = port.get(0);
                     try {
                         _remoteActor.transferInput(
@@ -494,12 +494,12 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
      */
     protected void _transferOutputs() throws IllegalActionException {
         Iterator outputPorts = outputPortList().iterator();
-        while(outputPorts.hasNext()) {
+        while (outputPorts.hasNext()) {
             IOPort port = (IOPort)(outputPorts.next());
             String portName = port.getName();
             for (short i = 0; i < port.getWidth(); i++) {
                 try {
-                    if(_remoteActor.hasData(portName, i)) {
+                    if (_remoteActor.hasData(portName, i)) {
                         String returndata = _remoteActor.transferOutput(
                                 portName, i);
                         //FIXME: type?

@@ -449,7 +449,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   the number of active actors; return true otherwise.
      */
     protected synchronized boolean _areActorsDeadlocked() {
-        if(_debugging) {
+        if (_debugging) {
             _debug("Checking for deadlock:");
             _debug("There are " + _getBlockedActorsCount()
                     + " Blocked actors and " + _getActiveActorsCount()
@@ -604,7 +604,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected boolean _resolveDeadlock() throws IllegalActionException {
-        if(_debugging) {
+        if (_debugging) {
             _debug("Resolving Deadlock");
         }
         Director execDir = ((Actor)getContainer()).getExecutiveDirector();
@@ -688,7 +688,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     protected boolean _resolveInternalDeadlock() throws
             IllegalActionException {
-        if(_debugging) {
+        if (_debugging) {
             _debug("Failed To Resolve Internal Deadlock: stopping");
         }
         return false;

@@ -149,7 +149,7 @@ public class SDFPortInliner implements PortInliner {
 
         SootField indexArrayField = (SootField)_portToIndexArrayField.get(port);
 
-        if(indexArrayField == null) {
+        if (indexArrayField == null) {
             throw new RuntimeException("indexArrayField is null!");
         }
         // Load the array of indexes.
@@ -1594,7 +1594,7 @@ public class SDFPortInliner implements PortInliner {
             int channel = 0;
             boolean found = false;
             List relationList;
-            if(inside) {
+            if (inside) {
                 relationList = port.insideRelationList();
             } else {
                 relationList = port.linkedRelationList();
@@ -1634,7 +1634,7 @@ public class SDFPortInliner implements PortInliner {
                 portToTypeNameToBufferField.get(port);
             SootField arrayField = (SootField)
                 typeNameToBufferField.get(type.toString());
-            if(arrayField == null) {
+            if (arrayField == null) {
                 throw new RuntimeException("arrayField null!");
             }
             Local bufferArrayLocal =
@@ -1687,7 +1687,7 @@ public class SDFPortInliner implements PortInliner {
                     unit);
         } else {
             SootField indexArrayField = (SootField)portToIndexArrayField.get(port);
-            if(indexArrayField == null) {
+            if (indexArrayField == null) {
                 System.out.println(portToIndexArrayField.toString());
                 throw new RuntimeException("indexArrayField is null for port " + port + "!");
             }

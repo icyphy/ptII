@@ -179,7 +179,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
             }
 
             // Recurse
-            if(entity instanceof CompositeActor) {
+            if (entity instanceof CompositeActor) {
                 _inlinePortCalls(entityClass, (CompositeActor)entity,
                         portToTypeNameToBufferField,
                         portToIndexArrayField,
@@ -955,7 +955,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
             int channel = 0;
             boolean found = false;
             List relationList;
-            if(inside) {
+            if (inside) {
                 relationList = port.insideRelationList();
             } else {
                 relationList = port.linkedRelationList();
@@ -1004,7 +1004,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
                 portToTypeNameToBufferField.get(port);
             SootField arrayField = (SootField)
                 typeNameToBufferField.get(type.toString());
-            if(arrayField == null) {
+            if (arrayField == null) {
                 throw new RuntimeException("arrayField null!");
             }
             Local bufferArrayLocal =
@@ -1057,7 +1057,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
                     unit);
         } else {
             SootField indexArrayField = (SootField)portToIndexArrayField.get(port);
-            if(indexArrayField == null) {
+            if (indexArrayField == null) {
                 throw new RuntimeException("indexArrayField is null for port " + port + "!");
             }
             // Load the array of indexes.
@@ -1109,7 +1109,7 @@ public class InlinePrimitivePortTransformer extends SceneTransformer {
 
         SootField indexArrayField = (SootField)portToIndexArrayField.get(port);
 
-        if(indexArrayField == null) {
+        if (indexArrayField == null) {
             throw new RuntimeException("indexArrayField is null!");
         }
         // Load the array of indexes.

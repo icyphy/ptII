@@ -793,7 +793,7 @@ public class BrowserLauncher {
             String[] systemFolderFiles = systemFolder.list();
             // Avoid a FilenameFilter because
             // that can't be stopped mid-list
-            for(int i = 0; i < systemFolderFiles.length; i++) {
+            for (int i = 0; i < systemFolderFiles.length; i++) {
                 try {
                     File file = new File(systemFolder, systemFolderFiles[i]);
                     if (!file.isFile()) {

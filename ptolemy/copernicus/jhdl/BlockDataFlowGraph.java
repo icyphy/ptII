@@ -184,7 +184,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
      **/
     protected void _processStmtUnits()
         throws JHDLUnsupportedException {
-        for(Iterator units = _block.iterator(); units.hasNext();) {
+        for (Iterator units = _block.iterator(); units.hasNext();) {
 
             // Process all Stmt units in this graph
             Stmt stmt = (Stmt)units.next();
@@ -195,15 +195,15 @@ public class BlockDataFlowGraph extends DirectedGraph {
             // Each statement is treated differently. Search for the
             // appropriate statement type and process it according
             // to its semantics.
-            if(stmt instanceof DefinitionStmt) {
+            if (stmt instanceof DefinitionStmt) {
                 _processDefinitionStmt((DefinitionStmt) stmt);
-            } else if(stmt instanceof InvokeStmt) {
+            } else if (stmt instanceof InvokeStmt) {
                 _processInvokeStmt((InvokeStmt) stmt);
-            } else if(stmt instanceof ReturnStmt) {
+            } else if (stmt instanceof ReturnStmt) {
                 _processReturnStmt((ReturnStmt) stmt);
-            } else if(stmt instanceof ReturnVoidStmt) {
+            } else if (stmt instanceof ReturnVoidStmt) {
                 // a return void statement does not affect dataflow.
-            } else if(stmt instanceof IfStmt) {
+            } else if (stmt instanceof IfStmt) {
                 // if statements shoudl be last statement in basic block.
                 // This IfStmt generates dataflow constructs
                 _processIfStmt((IfStmt) stmt);
@@ -213,7 +213,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
             } else if (stmt instanceof LookupSwitchStmt) {
                 // No data flow is added at this point - control flow
                 // analysis may look at this statement at a later time.
-            } else if(stmt instanceof GotoStmt) {
+            } else if (stmt instanceof GotoStmt) {
                 // Goto statements shoudl be last statement in basic block.
                 // No data flow is added at this point - control flow
                 // analysis may look at this statement at a later time.
@@ -283,15 +283,15 @@ public class BlockDataFlowGraph extends DirectedGraph {
             valueNode = _processUnopExpr( (UnopExpr) v);
         } else if (v instanceof BinopExpr){
             valueNode = _processBinopExpr( (BinopExpr) v);
-        } else if(v instanceof Local) {
+        } else if (v instanceof Local) {
             valueNode = _processLocal((Local)v);
-        } else if(v instanceof CastExpr) {
+        } else if (v instanceof CastExpr) {
             valueNode = _processCastExpr((CastExpr) v);
-        } else if(v instanceof Ref) {
+        } else if (v instanceof Ref) {
             valueNode = _processRef((Ref) v);
-        } else if(v instanceof InvokeExpr) {
+        } else if (v instanceof InvokeExpr) {
             valueNode = _processInvokeExpr((InvokeExpr) v);
-        } else if(v instanceof Constant){
+        } else if (v instanceof Constant){
             valueNode = _processConstant((Constant) v);
         } else {
             // soot.jimple.NewExpr
@@ -441,7 +441,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
         SootField field = ifr.getField();
         Value baseValue = ifr.getBase();
         InstanceFieldRef previous=null;
-        for(Iterator it = _instanceFieldRefs.keySet().iterator();it.hasNext();) {
+        for (Iterator it = _instanceFieldRefs.keySet().iterator();it.hasNext();) {
             InstanceFieldRef ifr_n = (InstanceFieldRef) it.next();
             if (ifr_n.getBase().equals(baseValue) &&
                 ifr_n.getField().equals(field)) {
@@ -496,7 +496,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
 
         // add argument links
         int argCount=0;
-        for(Iterator arguments = ie.getArgs().iterator();
+        for (Iterator arguments = ie.getArgs().iterator();
             arguments.hasNext();) {
             Value argument = (Value)arguments.next();
             Node a_n = _processValue(argument);
@@ -535,7 +535,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
                                       System.identityHashCode(lv));
         if (lv instanceof Local) {
             leftOpNode = _createLocal((Local) lv);
-        } else if(lv instanceof InstanceFieldRef) {
+        } else if (lv instanceof InstanceFieldRef) {
             leftOpNode = _createInstanceFieldRef((InstanceFieldRef)lv);
         } else {
             throw new JHDLUnsupportedException("Unsupported Left AssignOp=" +

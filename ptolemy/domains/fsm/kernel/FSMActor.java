@@ -322,13 +322,13 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @return A list of input IOPort objects.
      */
     public List inputPortList() {
-        if(_inputPortsVersion != _workspace.getVersion()) {
+        if (_inputPortsVersion != _workspace.getVersion()) {
             try {
                 _workspace.getReadAccess();
                 // Update the cache.
                 LinkedList inPorts = new LinkedList();
                 Iterator ports = portList().iterator();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
                     if (p.isInput()) {
                         inPorts.add(p);
@@ -371,7 +371,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         while (n++ < count && !_stopRequested) {
             if (prefire()) {
                 fire();
-                if(!postfire()) return STOP_ITERATING;
+                if (!postfire()) return STOP_ITERATING;
             } else {
                 return NOT_READY;
             }
@@ -444,14 +444,14 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @return A list of output IOPort objects.
      */
     public List outputPortList() {
-        if(_outputPortsVersion != _workspace.getVersion()) {
+        if (_outputPortsVersion != _workspace.getVersion()) {
             try {
                 _workspace.getReadAccess();
                 _cachedOutputPorts = new LinkedList();
                 Iterator ports = portList().iterator();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
-                    if( p.isOutput()) {
+                    if ( p.isOutput()) {
                         _cachedOutputPorts.add(p);
                     }
                 }

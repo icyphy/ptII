@@ -146,8 +146,8 @@ public class RemoteCompositeActor extends CompositeActor {
             throws CloneNotSupportedException {
         RemoteCompositeActor newObject =
             (RemoteCompositeActor)super.clone(workspace);
-        if( getDirector() != getExecutiveDirector() ) {
-            if( getDirector() != null ) {
+        if ( getDirector() != getExecutiveDirector() ) {
+            if ( getDirector() != null ) {
                 newObject._hasLocalDirector = true;
             }
         }
@@ -167,7 +167,7 @@ public class RemoteCompositeActor extends CompositeActor {
      */
     public void fire() throws IllegalActionException {
         try {
-            if( !_hasLocalDirector ) {
+            if ( !_hasLocalDirector ) {
                 throw new IllegalActionException( this, "Cannot"
                         + " invoke fire on a non-opaque actor.");
             }
@@ -189,7 +189,7 @@ public class RemoteCompositeActor extends CompositeActor {
      */
     public void initialize() throws IllegalActionException {
         try {
-            if( !_hasLocalDirector ) {
+            if ( !_hasLocalDirector ) {
                 throw new IllegalActionException( this, "Cannot"
                         + " initialize a non-opaque actor.");
             }
@@ -223,7 +223,7 @@ public class RemoteCompositeActor extends CompositeActor {
      */
     public boolean postfire() throws IllegalActionException {
         try {
-            if( !_hasLocalDirector ) {
+            if ( !_hasLocalDirector ) {
                 throw new IllegalActionException( this, "Cannot"
                         + " invoke postfire on a non-opaque actor.");
             }
@@ -248,7 +248,7 @@ public class RemoteCompositeActor extends CompositeActor {
      */
     public boolean prefire() throws IllegalActionException {
         try {
-            if( !_hasLocalDirector ) {
+            if ( !_hasLocalDirector ) {
                 throw new IllegalActionException( this, "Cannot"
                         + " invoke prefire on a non-opaque actor.");
             }
@@ -286,7 +286,7 @@ public class RemoteCompositeActor extends CompositeActor {
      */
     public void wrapup() throws IllegalActionException {
         try {
-            if( !_hasLocalDirector ) {
+            if ( !_hasLocalDirector ) {
                 throw new IllegalActionException( this, "Cannot"
                         + " invoke wrapup on a non-opaque actor.");
             }

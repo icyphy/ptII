@@ -268,7 +268,7 @@ public class VergilApplication extends MoMLApplication {
             + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME + ".xml";
         System.out.print("Opening user library " + libraryName + "...");
         File file = new File(libraryName);
-        if(!file.isFile() || !file.exists()) {
+        if (!file.isFile() || !file.exists()) {
             try {
                 file.createNewFile();
                 FileWriter writer = new FileWriter(file);
@@ -396,7 +396,7 @@ public class VergilApplication extends MoMLApplication {
             if (configurationDirectories != null) {
                 result += "\nThe following Boolean flags start vergil using "
                     + "different configurations:\n";
-                for(i = 0; i < configurationDirectories.length; i++) {
+                for (i = 0; i < configurationDirectories.length; i++) {
                     result += " -" + configurationDirectories[i].getName();
                     String configurationFileName = configurationDirectories[i]
                         + File.separator
@@ -519,7 +519,7 @@ public class VergilApplication extends MoMLApplication {
 
         if (args.length > 0) {
             argsBuffer.append("\nArguments: " + args[0]);
-            for(int i = 1; i < args.length; i++) {
+            for (int i = 1; i < args.length; i++) {
                 argsBuffer.append(" " + args[i]);
             }
             argsBuffer.append("\n");

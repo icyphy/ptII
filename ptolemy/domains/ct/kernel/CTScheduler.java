@@ -788,7 +788,7 @@ public class CTScheduler extends Scheduler {
         Iterator entities = container.deepEntityList().iterator();
         while (entities.hasNext()) {
             Entity entity = (Entity)entities.next();
-            for(Iterator ports = entity.portList().iterator();
+            for (Iterator ports = entity.portList().iterator();
                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 String typeString =
@@ -1093,7 +1093,7 @@ public class CTScheduler extends Scheduler {
             StringBuffer buffer = new StringBuffer();
             if (_map != null) {
                 Iterator ports = _map.keySet().iterator();
-                while(ports.hasNext()) {
+                while (ports.hasNext()) {
                     IOPort port = (IOPort)ports.next();
                     String type = signalTypeToString(getType(port));
                     buffer.append("  "

@@ -85,7 +85,7 @@ public class TokenToExpression extends Converter {
      *   if no connection has been made to the input.
      */
     public boolean prefire() throws IllegalActionException {
-        if(input.hasToken(0)) {
+        if (input.hasToken(0)) {
             return super.prefire();
         } else {
             return false;

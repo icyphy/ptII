@@ -183,7 +183,7 @@ public class MainFileGenerator extends CodeGenerator {
                 + "1, 0, argc - 1);\n");
         // Set the elements of the String array correctly.
         code.append(_indent(1)
-                + "for(i = 1; i < argc; i++) {\n");
+                + "for (i = 1; i < argc; i++) {\n");
         code.append(_indent(2)
                 + CNames.arrayReferenceFunction
                 + "(string_array, _STRING_INSTANCE_STRUCT, i - 1)"

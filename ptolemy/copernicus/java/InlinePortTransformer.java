@@ -167,7 +167,7 @@ public class InlinePortTransformer extends SceneTransformer {
         }
 
         PortInliner inliner = getPortInliner(model);
-        if(inliner == null) {
+        if (inliner == null) {
             throw new RuntimeException("Port methods cannot be inlined for " +
                     director.getClass().getName());
         }
@@ -736,7 +736,7 @@ public class InlinePortTransformer extends SceneTransformer {
             return null;
         } else {
             NamedObj object = (NamedObj) tag.getObject();
-            if(object instanceof TypedIOPort) {
+            if (object instanceof TypedIOPort) {
                 return (TypedIOPort)object;
             } else {
                 throw new RuntimeException("The object " +

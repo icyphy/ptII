@@ -97,7 +97,7 @@ public class ConstVariableRate extends Const {
         if (attribute == rate) {
             _productionRate =
                 ((IntToken)rate.getToken()).intValue();
-            if(_productionRate < 0) throw new IllegalActionException(
+            if (_productionRate < 0) throw new IllegalActionException(
                 "Rate must be >= 0");
             Parameter tokenProductionRate =
                 (Parameter)output.getAttribute("tokenProductionRate");

@@ -100,7 +100,7 @@ public class LongMatrixToken extends MatrixToken {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
         Token token = tree.evaluateParseTree();
-        if(token instanceof LongMatrixToken) {
+        if (token instanceof LongMatrixToken) {
             long[][] value = ((LongMatrixToken)token).longMatrix();
             _initialize(value, DO_COPY);
         } else {
@@ -124,11 +124,11 @@ public class LongMatrixToken extends MatrixToken {
      */
     public LongMatrixToken(Token[] tokens, int rows, int columns)
             throws IllegalActionException {
-        if(tokens == null) {
+        if (tokens == null) {
             throw new IllegalActionException("LongMatrixToken: The specified"
                     + " array is null.");
         }
-        if(tokens.length != rows * columns) {
+        if (tokens.length != rows * columns) {
             throw new IllegalActionException("LongMatrixToken: The specified"
                     + " array is not of the correct length");
         }
@@ -137,7 +137,7 @@ public class LongMatrixToken extends MatrixToken {
         _value = new long[rows][columns];
         for (int i = 0; i < tokens.length; i++) {
             Token token = tokens[i];
-            if(token instanceof ScalarToken) {
+            if (token instanceof ScalarToken) {
                 _value[i / columns][i % columns] =
                     ((ScalarToken)token).longValue();
             } else {

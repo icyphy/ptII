@@ -86,7 +86,7 @@ public class FreeVariableModelAnalysis {
      */
     public Set getFreeVariables(Entity entity) {
         Set freeVariables = (Set)_entityToFreeVariableSet.get(entity);
-        if(freeVariables == null) {
+        if (freeVariables == null) {
             throw new RuntimeException("Entity " + entity.getFullName() +
                     " has not been analyzed.");
         }
@@ -99,8 +99,8 @@ public class FreeVariableModelAnalysis {
     // deeply contained in the given model.
     private Set _freeVariables(Entity model) throws IllegalActionException {
         Set set = new HashSet();
-        if(model instanceof CompositeEntity) {
-            for(Iterator entities =
+        if (model instanceof CompositeEntity) {
+            for (Iterator entities =
                     ((CompositeEntity)model).entityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
@@ -109,7 +109,7 @@ public class FreeVariableModelAnalysis {
         }
 
         Set variableNames = new HashSet();
-        for(Iterator variables =
+        for (Iterator variables =
                 model.attributeList(Variable.class).iterator();
             variables.hasNext();) {
             Variable variable = (Variable)variables.next();
@@ -122,7 +122,7 @@ public class FreeVariableModelAnalysis {
         PtParser parser = new PtParser();
         ParseTreeFreeVariableCollector collector =
             new ParseTreeFreeVariableCollector();
-        for(Iterator variables =
+        for (Iterator variables =
                 model.attributeList(Variable.class).iterator();
             variables.hasNext();) {
             Variable variable = (Variable)variables.next();

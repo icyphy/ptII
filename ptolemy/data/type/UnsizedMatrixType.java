@@ -91,9 +91,9 @@ public abstract class UnsizedMatrixType extends StructuredType
      *  same class, with the same number of rows and columns.
      */
     public boolean equals(Object object) {
-        if(!(object instanceof UnsizedMatrixType)) return false;
+        if (!(object instanceof UnsizedMatrixType)) return false;
         UnsizedMatrixType matrixType = (UnsizedMatrixType)object;
-        if(matrixType.getTokenClass() != _tokenClass) return false;
+        if (matrixType.getTokenClass() != _tokenClass) return false;
         return true;
     }
 
@@ -192,7 +192,7 @@ public abstract class UnsizedMatrixType extends StructuredType
      *  @return False.
      */
     public boolean isSubstitutionInstance(Type type) {
-        if(type instanceof StructuredType) {
+        if (type instanceof StructuredType) {
             return (((StructuredType)type)._getRepresentative()
                     == _getRepresentative());
         } else {
@@ -217,7 +217,7 @@ public abstract class UnsizedMatrixType extends StructuredType
      */
     public void updateType(StructuredType newType)
             throws IllegalActionException {
-        if(newType._getRepresentative() != _getRepresentative()) {
+        if (newType._getRepresentative() != _getRepresentative()) {
             throw new InternalErrorException(
                     "UnsizedMatrixType.updateType: Cannot " +
                     "updateType the element type to " + newType + ".");
@@ -339,7 +339,7 @@ public abstract class UnsizedMatrixType extends StructuredType
      */
     protected int _compare(StructuredType type) {
         return CPO.SAME;
-        //         if(equals(type)) {
+        //         if (equals(type)) {
         //             return CPO.SAME;
         //         } else {
         //             return CPO.LOWER;
@@ -376,7 +376,7 @@ public abstract class UnsizedMatrixType extends StructuredType
      */
     protected StructuredType _leastUpperBound(StructuredType type) {
         return this;
-        //         if(equals(type)) {
+        //         if (equals(type)) {
         //             return this;
         //         } else {
         //             return type;

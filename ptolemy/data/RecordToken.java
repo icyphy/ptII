@@ -90,7 +90,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
         ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
         Token token = evaluator.evaluateParseTree(tree);
 
-        if(token instanceof RecordToken) {
+        if (token instanceof RecordToken) {
             RecordToken recordToken = (RecordToken)token;
             Object[] labelObjects = recordToken.labelSet().toArray();
             String[] labels = new String[labelObjects.length];

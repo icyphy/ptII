@@ -129,7 +129,7 @@ public class Linpack{
         norma = 0.0;
         gen = new Random();
         gen.setSeed(init);
-        /*    Next two for() statements switched.    Solver wants
+        /*    Next two for () statements switched.    Solver wants
          *    matrix in column order. --dmd 3/3/97
          */
         for (i = 0; i < n; i++) {

@@ -441,7 +441,7 @@ public class StringUtilities {
             switch (streamTokenizer.ttype) {
             case StreamTokenizer.TT_WORD:
                 if (inDoubleQuotedString) {
-                    if( token.length() > 0 ) {
+                    if ( token.length() > 0 ) {
                         token += " ";
                     }
                     token += singleToken + streamTokenizer.sval;

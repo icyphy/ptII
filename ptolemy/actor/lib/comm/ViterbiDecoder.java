@@ -203,7 +203,7 @@ public class ViterbiDecoder extends Transformer {
             _maskNumber = maskToken.length();
             _mask = new int[_maskNumber];
             _maxPolyValue = 0;
-            for(int i = 0; i < _maskNumber; i++) {
+            for (int i = 0; i < _maskNumber; i++) {
                 _mask[i] = ((IntToken)maskToken.getElement(i)).intValue();
                 if (_mask[i] <= 0) {
                     throw new IllegalActionException(this,
@@ -266,10 +266,10 @@ public class ViterbiDecoder extends Transformer {
             _distance = new double[_rowNum];
             _tempDistance = new double[_rowNum];
             // Initialize the truth table and the buffer.
-            for(int i = 0; i < _rowNum; i ++) {
+            for (int i = 0; i < _rowNum; i ++) {
                 _distance[i] = 0;
                 _tempDistance[i] = 0;
-                for(int j = 0; j < _depth; j ++) {
+                for (int j = 0; j < _depth; j ++) {
                     _path[i][j] = 0;
                     _tempPath[i][j] = 0;
                 }
@@ -474,7 +474,7 @@ public class ViterbiDecoder extends Transformer {
      */
     private IntToken[] _convertToBit(int integer, int length) {
         IntToken[] bit = new IntToken[length];
-        for(int i = length -1; i >= 0; i --) {
+        for (int i = length -1; i >= 0; i --) {
             if ((integer & 1) == 1) {
                 bit[i] = _tokenOne;
             } else {

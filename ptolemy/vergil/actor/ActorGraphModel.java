@@ -392,7 +392,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             Object tailObj = getSemanticObject(tail);
             if (tailObj != null && linkedPortList.contains(tailObj)) {
                 linkedPortList.remove(tailObj);
-            } else if(tailObj != relation) {
+            } else if (tailObj != relation) {
                 //  System.out.println("removing link = " + link);
                 link.setHead(null);
                 link.setTail(null);
@@ -403,7 +403,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             Object headObj = getSemanticObject(head);
             if (headObj != null && linkedPortList.contains(headObj)) {
                 linkedPortList.remove(headObj);
-            } else if(headObj != relation) {
+            } else if (headObj != relation) {
                 // System.out.println("removing link = " + link);
                 link.setHead(null);
                 link.setTail(null);

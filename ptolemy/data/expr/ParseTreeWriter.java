@@ -115,13 +115,13 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
         List args = node.getArgumentNameList();
         ptolemy.data.type.Type[] argTypes = node.getArgumentTypes();
         int n = args.size();
-        for(int i = 0; i < n; i++) {
-            if(i > 0) {
+        for (int i = 0; i < n; i++) {
+            if (i > 0) {
                 _writer.print(", ");
             }
             _writer.print((String)args.get(i));
             ptolemy.data.type.Type type = argTypes[i];
-            if(type != ptolemy.data.type.BaseType.GENERAL) {
+            if (type != ptolemy.data.type.BaseType.GENERAL) {
                 _writer.print(":");
                 _writer.print(type.toString());
             }
@@ -140,7 +140,7 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
     }
     public void visitLeafNode(ASTPtLeafNode node)
             throws IllegalActionException {
-        if(node.isConstant() && node.isEvaluated()) {
+        if (node.isConstant() && node.isEvaluated()) {
             _writer.print(node.getToken().toString());
         } else {
             _writer.print(node.getName());
@@ -173,9 +173,9 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
         _writer.print(".");
         _writer.print(node.getMethodName());
         _writer.print("(");
-        if(node.jjtGetNumChildren() > 1) {
+        if (node.jjtGetNumChildren() > 1) {
             _printChild(node, 1);
-            for(int i = 2; i < node.jjtGetNumChildren(); i++) {
+            for (int i = 2; i < node.jjtGetNumChildren(); i++) {
                 _writer.print(", ");
                 _printChild(node, i);
             }
@@ -196,11 +196,11 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         Iterator names = node.getFieldNames().iterator();
         _writer.print("{");
-        if(node.jjtGetNumChildren() > 0) {
+        if (node.jjtGetNumChildren() > 0) {
             _writer.print(names.next());
             _writer.print("=");
             _printChild(node, 0);
-            for(int i = 1; i < node.jjtGetNumChildren(); i++) {
+            for (int i = 1; i < node.jjtGetNumChildren(); i++) {
                 _writer.print(", ");
                 _writer.print(names.next());
                 _writer.print("=");
@@ -229,9 +229,9 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
     }
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
-        if(node.isMinus()) {
+        if (node.isMinus()) {
             _writer.print("-");
-        } else if(node.isNot()) {
+        } else if (node.isNot()) {
             _writer.print("!");
         } else {
             _writer.print("~");
@@ -247,9 +247,9 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
 
     private void _printChildrenSeparated(ASTPtRootNode node, String string)
             throws IllegalActionException {
-        if(node.jjtGetNumChildren() > 0) {
+        if (node.jjtGetNumChildren() > 0) {
             _printChild(node, 0);
-            for(int i = 1; i < node.jjtGetNumChildren(); i++) {
+            for (int i = 1; i < node.jjtGetNumChildren(); i++) {
                 _writer.print(string);
                 _printChild(node, i);
             }
@@ -260,9 +260,9 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
             ASTPtRootNode node, List separatorList)
             throws IllegalActionException {
         Iterator separators = separatorList.iterator();
-        if(node.jjtGetNumChildren() > 0) {
+        if (node.jjtGetNumChildren() > 0) {
             _printChild(node, 0);
-            for(int i = 1; i < node.jjtGetNumChildren(); i++) {
+            for (int i = 1; i < node.jjtGetNumChildren(); i++) {
                 Token separator = (Token)separators.next();
                 _writer.print(separator.image);
                 _printChild(node, i);

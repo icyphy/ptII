@@ -768,7 +768,7 @@ public class TableauFrame extends Top {
 
             if (extension != null) {
                 Iterator extensions = _extensions.iterator();
-                while(extensions.hasNext()) {
+                while (extensions.hasNext()) {
                     String matchExtension = (String)extensions.next();
                     if (extension.equalsIgnoreCase(matchExtension)) {
                         return true;
@@ -784,7 +784,7 @@ public class TableauFrame extends Top {
             Iterator extensions = _extensions.iterator();
             int extensionNumber = 1;
             int size = _extensions.size();
-            while(extensions.hasNext()) {
+            while (extensions.hasNext()) {
                 String extension = (String)extensions.next();
                 result.append(".");
                 result.append(extension);

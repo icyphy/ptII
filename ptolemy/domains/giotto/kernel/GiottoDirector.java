@@ -202,7 +202,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 //             throw new IllegalActionException(this,
 //                     "Calling fireAt() before preinitialize().");
 //         }
-        if(_debugging) {
+        if (_debugging) {
             _debug("fireAt() called by " + actor + " for time " + time);
         }
     }

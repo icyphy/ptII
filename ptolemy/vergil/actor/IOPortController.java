@@ -172,14 +172,14 @@ public class IOPortController extends AttributeController {
 
           if ( cardinal == null && port instanceof IOPort )
           {
-             if(((IOPort)port).isInput() && ((IOPort)port).isOutput()) {
+             if (((IOPort)port).isInput() && ((IOPort)port).isOutput()) {
                    direction = SwingUtilities.SOUTH;
                AffineTransform transform = new AffineTransform();
                transform.setToRotation( Math.toRadians( -90 ));
                polygon.transform( transform );
-               } else if(((IOPort)port).isInput()) {
+               } else if (((IOPort)port).isInput()) {
                    direction = SwingUtilities.WEST;
-               } else if(((IOPort)port).isOutput()) {
+               } else if (((IOPort)port).isOutput()) {
                    direction = SwingUtilities.EAST;
                } else {
                    // should never happen

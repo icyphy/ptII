@@ -197,7 +197,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
             try {
-                if(actionCommand.equals("Listen to Director")) {
+                if (actionCommand.equals("Listen to Director")) {
                     Effigy effigy = (Effigy)getTableau().getContainer();
                     // Create a new text effigy inside this one.
                     Effigy textEffigy = new TextEffigy(effigy,

@@ -375,18 +375,18 @@ public class Token implements Serializable {
      */
     public ptolemy.data.Token pow(int times)
             throws IllegalActionException {
-        if(times == 0) {
+        if (times == 0) {
             // anything to the zero is one.
             return one();
-        } else if(times < 0) {
+        } else if (times < 0) {
             ptolemy.data.Token result = this;
-            for( int k = times; k < -1; k++ ) {
+            for ( int k = times; k < -1; k++ ) {
                 result = result.multiply(this);
             }
             return one().divide(result);
         } else {
             ptolemy.data.Token result = this;
-            for( int k = 0; k < times - 1; k++ ) {
+            for ( int k = 0; k < times - 1; k++ ) {
                 result = result.multiply(this);
             }
             return result;

@@ -201,7 +201,7 @@ public class CorbaActorClient extends TypedAtomicActor {
                 _remoteActor =
                     ptolemy.actor.corba.util.CorbaActorHelper.narrow(
                             ncRef.resolve(path));
-                if(_remoteActor == null) {
+                if (_remoteActor == null) {
                     throw new IllegalActionException(this,
                             " can not find the remote actor.");
                 }
@@ -213,7 +213,7 @@ public class CorbaActorClient extends TypedAtomicActor {
             Iterator attributes = attributeList().iterator();
             while (attributes.hasNext()) {
                 Attribute att = (Attribute)attributes.next();
-                if((att != ORBInitProperties) && (att != remoteActorName) &&
+                if ((att != ORBInitProperties) && (att != remoteActorName) &&
                         (att instanceof Parameter)) {
                     _debug(getName(),
                             " check remote parameter: ", att.getName());
@@ -375,11 +375,11 @@ public class CorbaActorClient extends TypedAtomicActor {
      */
     protected void _transferInputs() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
-        while(inputPorts.hasNext()) {
+        while (inputPorts.hasNext()) {
             IOPort port = (IOPort)(inputPorts.next());
             String inputName = port.getName();
             for (short i = 0; i < port.getWidth(); i++) {
-                if(port.hasToken(i)) {
+                if (port.hasToken(i)) {
                     Token inputToken = port.get(0);
                     try {
                         _remoteActor.transferInput(
@@ -421,12 +421,12 @@ public class CorbaActorClient extends TypedAtomicActor {
      */
     protected void _transferOutputs() throws IllegalActionException {
         Iterator outputPorts = outputPortList().iterator();
-        while(outputPorts.hasNext()) {
+        while (outputPorts.hasNext()) {
             IOPort port = (IOPort)(outputPorts.next());
             String portName = port.getName();
             for (short i = 0; i < port.getWidth(); i++) {
                 try {
-                    if(_remoteActor.hasData(portName, i)) {
+                    if (_remoteActor.hasData(portName, i)) {
                         String returndata = _remoteActor.transferOutput(
                                 portName, i);
                         //FIXME: type?

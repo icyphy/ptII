@@ -120,7 +120,7 @@ public class Argument extends Attribute implements Settable {
      */
     public String getC2Type() {
         String ret = _cType;
-        if(_cType.endsWith("[]")) {
+        if (_cType.endsWith("[]")) {
             if (StringUtilities.getProperty("os.name")
                     .startsWith("SunOS")) {
             }
@@ -578,7 +578,7 @@ public class Argument extends Attribute implements Settable {
             || _cType.startsWith("long")
             || _cType.startsWith("short")
             || _cType.startsWith("double")) {
-            if(isOutput()&&!isInput()&&!_cType.endsWith("[]")) {
+            if (isOutput()&&!isInput()&&!_cType.endsWith("[]")) {
                 MessageHandler.error(
                                      "An argument can't be "
                                      + "output with a simple type.");

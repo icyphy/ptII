@@ -82,7 +82,7 @@ public class BooleanMatrixToken extends MatrixToken {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
         Token token = tree.evaluateParseTree();
-        if(token instanceof BooleanMatrixToken) {
+        if (token instanceof BooleanMatrixToken) {
             boolean[][] value = ((BooleanMatrixToken)token).booleanMatrix();
             _initialize(value);
         } else {
@@ -106,12 +106,12 @@ public class BooleanMatrixToken extends MatrixToken {
      */
     public BooleanMatrixToken(Token[] tokens, int rows, int columns)
             throws IllegalActionException {
-        if(tokens == null) {
+        if (tokens == null) {
             throw new IllegalActionException(
                     "BooleanMatrixToken: The specified"
                     + " array is null.");
         }
-        if(tokens.length != rows * columns) {
+        if (tokens.length != rows * columns) {
             throw new IllegalActionException(
                     "BooleanMatrixToken: The specified"
                     + " array is not of the correct length");
@@ -121,7 +121,7 @@ public class BooleanMatrixToken extends MatrixToken {
         _value = new boolean[rows][columns];
         for (int i = 0; i < tokens.length; i++) {
             Token token = tokens[i];
-            if(token instanceof BooleanToken) {
+            if (token instanceof BooleanToken) {
                 _value[i / columns][i % columns] =
                     ((BooleanToken)token).booleanValue();
             } else {

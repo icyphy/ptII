@@ -50,7 +50,7 @@ public class GarbageTest {
         System.out.println("done!");
 
         // Causes execution to halt so we can examine memory
-        for(int i=0; i<10; i++) {
+        for (int i=0; i<10; i++) {
             i--;
         }
 

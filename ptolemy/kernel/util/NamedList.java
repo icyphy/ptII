@@ -91,7 +91,7 @@ public final class NamedList implements Cloneable, Serializable {
      */
     public NamedList(NamedList original) {
         super();
-        if(original != null) {
+        if (original != null) {
             _namedList.addAll(original.elementList());
         }
         _container = null;

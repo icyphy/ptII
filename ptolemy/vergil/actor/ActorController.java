@@ -168,7 +168,7 @@ public class ActorController extends AttributeController {
         Filter portFilter = new Filter() {
             public boolean accept(Object candidate) {
                 GraphModel model = getController().getGraphModel();
-                if(candidate instanceof Locatable &&
+                if (candidate instanceof Locatable &&
                    model.getSemanticObject(candidate) instanceof Entity) {
                     return true;
                 } else {
@@ -263,24 +263,24 @@ public class ActorController extends AttributeController {
             int southPortCount = 0;
             int northPortCount = 0;
 
-            while(nodes.hasNext()) {
+            while (nodes.hasNext()) {
                 Port port = (Port) nodes.next();
                 StringAttribute cardinal = (StringAttribute)port.getAttribute("_cardinal");
                 StringAttribute ordinal  = (StringAttribute)port.getAttribute("_ordinal");
 
                 if (cardinal == null) {
-                    if(!(port instanceof IOPort)) {
+                    if (!(port instanceof IOPort)) {
                         southPortCount++;
                         southPorts.add(port);
                     } else {
                         IOPort ioport = (IOPort) port;
-                        if(ioport.isInput() && ioport.isOutput()) {
+                        if (ioport.isInput() && ioport.isOutput()) {
                             southPortCount++;
                             southPorts.add(port);
-                        } else if(ioport.isInput()) {
+                        } else if (ioport.isInput()) {
                             westPortCount++;
                             westPorts.add(port);
-                        } else if(ioport.isOutput()) {
+                        } else if (ioport.isOutput()) {
                             eastPortCount++;
                             eastPorts.add(port);
                         } else {
@@ -290,22 +290,22 @@ public class ActorController extends AttributeController {
                     }
                 }
                 else {
-                    if(!(port instanceof IOPort)) {
+                    if (!(port instanceof IOPort)) {
                         southPortCount++;
                         southPorts.add(port);
                     } else {
                         String value = cardinal.getExpression();
                         IOPort ioport = (IOPort) port;
-                        if( value.equalsIgnoreCase("SOUTH") ) {
+                        if ( value.equalsIgnoreCase("SOUTH") ) {
                             southPortCount++;
                             southPorts.add(port);
-                        } else if( value.equalsIgnoreCase("WEST") ) {
+                        } else if ( value.equalsIgnoreCase("WEST") ) {
                             westPortCount++;
                             westPorts.add(port);
-                        } else if( value.equalsIgnoreCase("EAST") ) {
+                        } else if ( value.equalsIgnoreCase("EAST") ) {
                             eastPortCount++;
                             eastPorts.add(port);
-                        } else if( value.equalsIgnoreCase("NORTH") ) {
+                        } else if ( value.equalsIgnoreCase("NORTH") ) {
                             northPortCount++;
                             northPorts.add( port );
                         } else {
@@ -643,7 +643,7 @@ public class ActorController extends AttributeController {
             // Figure out what entity.
             super.actionPerformed(e);
             NamedObj object = getTarget();
-            if(object instanceof Entity) {
+            if (object instanceof Entity) {
                 Entity entity = (Entity)object;
                 BasicGraphFrame.saveComponentInLibrary(_configuration, entity);
             }

@@ -149,7 +149,7 @@ public class MatrixTokenTableau extends TokenTableau {
         frame.getContentPane().add(_pane);
         // Display current data.
         Iterator tokens = effigy.getTokens().iterator();
-        while(tokens.hasNext()) {
+        while (tokens.hasNext()) {
             Object token = tokens.next();
             _pane.display((MatrixToken)token);
         }
@@ -218,7 +218,7 @@ public class MatrixTokenTableau extends TokenTableau {
 
                 // Next, check compatibility of the data.
                 Iterator tokens = ((TokenEffigy)effigy).getTokens().iterator();
-                while(tokens.hasNext()) {
+                while (tokens.hasNext()) {
                     Object token = tokens.next();
                     if (!MatrixTokenTableau.canDisplay((Token)token)) {
                         return null;

@@ -135,7 +135,7 @@ public abstract class AbstractActionsAttribute extends Action {
             throws IllegalActionException {
         Integer integer = (Integer)_numbers.get(
                 _destinationNames.indexOf(name));
-       if(integer == null) {
+       if (integer == null) {
            throw new IllegalActionException(
                    "No channel was specified for " + name);
        }
@@ -158,7 +158,7 @@ public abstract class AbstractActionsAttribute extends Action {
      *  an empty list.
      */
     public List getDestinationNameList() {
-        if(_destinationNames == null) {
+        if (_destinationNames == null) {
             return new LinkedList();
         } else {
             return Collections.unmodifiableList(_destinationNames);
@@ -213,7 +213,7 @@ public abstract class AbstractActionsAttribute extends Action {
 
         PtParser parser = new PtParser();
         Map map = parser.generateAssignmentMap(expression);
-        for(Iterator names = map.keySet().iterator();
+        for (Iterator names = map.keySet().iterator();
             names.hasNext();) {
             String name = (String)names.next();
             ASTPtAssignmentNode node = (ASTPtAssignmentNode)map.get(name);
@@ -334,7 +334,7 @@ public abstract class AbstractActionsAttribute extends Action {
             Variable result = getScopedVariable(
                     null,
                     (NamedObj)AbstractActionsAttribute.this, name);
-            if(result != null) {
+            if (result != null) {
                 return result.getToken();
             } else {
                 return null;

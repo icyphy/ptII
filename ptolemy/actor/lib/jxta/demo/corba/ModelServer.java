@@ -217,7 +217,7 @@ public class ModelServer implements QueryHandler{
             DiscardQueryException,
                         IOException {
         String qry = query.getQuery();
-        if(qry.startsWith("<CorbaActorQuery>")) {
+        if (qry.startsWith("<CorbaActorQuery>")) {
 
             if (_actorQueryResponse == null) {
                 throw new DiscardQueryException();

@@ -66,7 +66,7 @@ public class PBOReceiver extends AbstractReceiver {
      *  @return A token.
      */
     public Token get() throws NoTokenException {
-        if(_token == null) {
+        if (_token == null) {
             throw new NoTokenException(getContainer(),
                     "Attempt to get data from an empty PBOReceiver");
         }
@@ -88,7 +88,7 @@ public class PBOReceiver extends AbstractReceiver {
      */
     public Token[] getArray(int numberOfTokens) throws NoTokenException {
         Token[] tokens = new Token[numberOfTokens];
-        for(int i = 0; i < numberOfTokens; i++) {
+        for (int i = 0; i < numberOfTokens; i++) {
             tokens[i] = _token;
         }
         return tokens;

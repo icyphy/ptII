@@ -123,7 +123,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
             }
 
             // Recurse
-            if(entity instanceof CompositeActor) {
+            if (entity instanceof CompositeActor) {
                 _eliminateAllComparisons((CompositeActor)entity);
             }
         }
