@@ -131,12 +131,12 @@ RegenerateCode:
 # FIXME: we can't ship these
 JAVASRC_STUBS=$(PTII)/vendors/sun/src
 
-codegen: $(ROOT)/ptolemy/domains/sdf/demo/orthocom/OrthogonalComSystem.class \
+codegen: $(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalComSystem.class \
 		generate_codegen compile_codegen run_codegen 
 
-$(ROOT)/ptolemy/domains/sdf/demo/orthocom/OrthogonalComSystem.class: \
-	$(ROOT)/ptolemy/domains/sdf/demo/orthocom/OrthogonalComSystem.java
-	(cd $(ROOT)/ptolemy/domains/sdf/demo/orthocom; $(MAKE))
+$(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalComSystem.class: \
+	$(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalComSystem.java
+	(cd $(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom; $(MAKE))
 
 generate_codegen:
 	@if [ ! -d $(JAVASRC_STUBS) ]; then \
@@ -145,17 +145,17 @@ generate_codegen:
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS)" \
 	$(JAVA) -DPTII=$(ROOT) \
 		ptolemy.domains.sdf.codegen.SDFCodeGenerator \
-		-class  ptolemy.domains.sdf.demo.orthocom.OrthogonalComSystem \
+		-class  ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalComSystem \
 		-iterations 500 \
-		-outdir $(ROOT) -outpkg cg.orthocom
+		-outdir $(ROOT) -outpkg cg.OrthogonalCom
 compile_codegen:
-	(cd $(ROOT)/cg/orthocom; $(JAVAC) -classpath ../.. CG_Main.java)
+	(cd $(ROOT)/cg/OrthogonalCom; $(JAVAC) -classpath ../.. CG_Main.java)
 run_codegen: 	
-	(cd $(ROOT)/cg/orthocom; \
-		$(JAVA) -classpath ../.. cg.orthocom.CG_Main)
+	(cd $(ROOT)/cg/OrthogonalCom; \
+		$(JAVA) -classpath ../.. cg.OrthogonalCom.CG_Main)
 
 run_non_codegen:
-	$(JAVA) -classpath $(ROOT) ptolemy.actor.gui.CompositeActorApplication -class ptolemy.domains.sdf.demo.orthocom.OrthogonalComSystem -iterations 500
+	$(JAVA) -classpath $(ROOT) ptolemy.actor.gui.CompositeActorApplication -class ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalComSystem -iterations 500
 depend:
 	@echo "no dependencies in this directory"
 
