@@ -211,6 +211,41 @@ run_ramp:
 	(cd $(CGROOT)/cg/RampSystem; \
 		"$(JAVA)" -classpath ../.. cg.RampSystem.CG_Main)
 
+
+# Generate code for a trivial ramp2 demo - much faster for testing
+# To generate code in the current directory:
+#   rm -rf ~/ptII/cg; make CGROOT=. ramp2
+CGROOT=$(ROOT)
+ramp2: generate_ramp2 compile_ramp2 run_ramp2
+generate_ramp2:
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." \
+	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
+	-class  ptolemy.domains.sdf.codegen.test.RampArraySystem \
+	-iterations 10 \
+	-outdir $(CGROOT) -outpkg cg.RampArraySystem
+
+compile_ramp2:
+	(cd $(CGROOT)/cg/RampArraySystem; "$(JAVAC)" $(JFLAGS) -classpath ../.. CG_Main.java)
+run_ramp2:
+	(cd $(CGROOT)/cg/RampArraySystem; \
+		"$(JAVA)" -classpath ../.. cg.RampArraySystem.CG_Main)
+
+
+# Generate code for a trivial butterfly demo - much faster for testing
+butterfly: generate_butterfly compile_butterfly run_butterfly
+generate_butterfly:
+	CLASSPATH="$(CLASSPATH)" \
+	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
+	-class  ptolemy.domains.sdf.demo.Butterfly.Butterfly \
+	-iterations 50 \
+	-outdir $(ROOT) -outpkg cg.Butterfly
+
+compile_butterfly:
+	(cd $(ROOT)/cg/Butterfly; "$(JAVAC)" $(JFLAGS) -classpath ../.. CG_Main.java)
+run_butterfly:
+	(cd $(ROOT)/cg/Butterfly; \
+		"$(JAVA)" -classpath ../.. cg.Butterfly.CG_Main)
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
 
