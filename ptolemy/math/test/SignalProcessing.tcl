@@ -80,8 +80,16 @@ set cat1 [java::new {ptolemy.math.Complex[]} 16 [list $tc1 $tc2 $tc3 $tc4 $tc5 $
 set a0 [java::new {double[]} 0]
 set a1 [java::new {double[]} 1 [list -36.32]]
 set a2 [java::new {double[]} 2 [list 48.21 -2.62]]
+set rt1 [java::call ptolemy.math.ComplexArrayMath \
+	 {realParts ptolemy.math.Complex[]} $cat1]
+
 set rf1 [java::new {double[]} 16 [list 35.18411171499244 58.597309396491724 -8.538697482870184 1.2562064613276824 9.69895211060134 -9.075655753742792 1.1140913592386354 -13.76214746925425 -28.756489139482685 -6.045434825499838 26.727826141831585 -10.040825463925147 -2.309538366555107 -38.6680744335618 8.62411338341144 7.323833508845723]]
 set if1 [java::new {double[]} 16 [list 16.30551342105384 32.95091818451263 1.5948145331090942 13.888295409268732 -5.724429796387775 -23.565125711136343 19.801562101512367 -37.125875283435164 -27.673994246528572 36.672861270367434 -9.049017104630792 8.283334138653242 -8.007417537167292 12.95198086398985 -40.29675635202494 40.150925016430506]]
+
+# DCT types
+set normdct [java::field ptolemy.math.SignalProcessing DCT_TYPE_NORMALIZED]
+set unnormdct [java::field ptolemy.math.SignalProcessing DCT_TYPE_UNNORMALIZED]
+set orthodct  [java::field ptolemy.math.SignalProcessing DCT_TYPE_ORTHONORMAL]
 
 proc javaPrintArray {javaArrayObj} {
     set result {}
@@ -209,8 +217,29 @@ test SignalProcessing-3.1 {DCT double[] empty array} {
 } {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : size of transform must be positive.}}
 
 ####################################################################
-test SignalProcessing-3.2 {DCT double[] order 1} {
+test SignalProcessing-3.2 {DCT double[] implicit order 0} {
     set dctresult [java::call ptolemy.math.SignalProcessing {DCT double[]} $a1]
+    set eresult [java::call ptolemy.math.SignalProcessing \
+                 {DCT double[] int int} $a1 0 $normdct]
+    set b [java::call ptolemy.math.DoubleArrayMath \
+    	   {within double[] double[] double} $eresult $dctresult 0.00001]
+    list $b
+} {1}
+
+####################################################################
+test SignalProcessing-3.5 {DCT double[] implicit order 4} {
+    set dctresult [java::call ptolemy.math.SignalProcessing \
+                   {DCT double[]} $rt1]
+    set eresult [java::call ptolemy.math.SignalProcessing \
+           	 {DCT double[] int int} $rt1 4 $normdct]
+    set b [java::call ptolemy.math.DoubleArrayMath \
+	   {within double[] double[] double} $eresult $dctresult 0.00001]
+} {1}
+
+####################################################################
+test SignalProcessing-4.1 {DCT double[] order 0 normalized} {
+    set dctresult [java::call ptolemy.math.SignalProcessing \
+                   {DCT double[] int int} $a1 0 0]
     # this is -36.32 / sqrt(2)
     set eresult [java::new {double[]} 1 [list -25.68211829]]
     set b [java::call ptolemy.math.DoubleArrayMath \
@@ -219,12 +248,80 @@ test SignalProcessing-3.2 {DCT double[] order 1} {
 } {1}
 
 ####################################################################
-test SignalProcessing-3.3 {DCT double[] order 2} {
-    set dctresult [java::call ptolemy.math.SignalProcessing {DCT double[]} $a2]
+test SignalProcessing-4.2 {DCT double[] order 0 un-normalized} {
+    set dctresult [java::call ptolemy.math.SignalProcessing \
+                   {DCT double[] int int} $a1 0 $unnormdct]
+    set eresult [java::new {double[]} 1 [list -36.32]]
+    set b [java::call ptolemy.math.DoubleArrayMath \
+    	   {within double[] double[] double} $eresult $dctresult 0.00001]
+    list $b
+} {1}
+
+####################################################################
+test SignalProcessing-4.3 {DCT double[] order 0 orthonormal} {
+    set dctresult [java::call ptolemy.math.SignalProcessing \
+                   {DCT double[] int int} $a1 0 $orthodct]
+    set eresult [java::new {double[]} 1 [list -36.32]]
+    set b [java::call ptolemy.math.DoubleArrayMath \
+    	   {within double[] double[] double} $eresult $dctresult 0.00001]
+    list $b
+} {1}
+
+####################################################################
+test SignalProcessing-4.4 {DCT double[] order 1 normalized} {
+    set dctresult [java::call ptolemy.math.SignalProcessing \
+                   {DCT double[] int int} $a2 1 $normdct]
     set eresult [java::new {double[]} 2 [list 32.236998154294 35.942237687712]]
     set b [java::call ptolemy.math.DoubleArrayMath \
 	   {within double[] double[] double} $eresult $dctresult 0.00001]
     list $b
+} {1}
+
+####################################################################
+test SignalProcessing-4.5 {DCT double[] order 1 un-normalized} {
+    set dctresult [java::call ptolemy.math.SignalProcessing \
+            	   {DCT double[] int int} $a2 1 $unnormdct]   
+    set eresult [java::new {double[]} 2 [list 45.59 35.942237687712]]
+    set b [java::call ptolemy.math.DoubleArrayMath \
+	   {within double[] double[] double} $eresult $dctresult 0.00001]
+    list $b
+} {1}
+
+####################################################################
+test SignalProcessing-4.4 {DCT double[] order 1 orthonormal} {
+    set dctresult [java::call ptolemy.math.SignalProcessing \
+                   {DCT double[] int int} $a2 1 $orthodct]
+    set eresult [java::new {double[]} 2 [list 32.236998154294 35.942237687712]]
+    set b [java::call ptolemy.math.DoubleArrayMath \
+	   {within double[] double[] double} $eresult $dctresult 0.00001]
+    list $b
+} {1}
+
+####################################################################
+test SignalProcessing-4.7 {DCT double[] order 4 normalized} {
+    set dctresult [java::call ptolemy.math.SignalProcessing \
+                   {DCT double[] int int} $rt1 4 $normdct]
+    set eresult [java::new {double[]} 16 [list \
+24.87892398369620 -1.38997635886534 31.62491748877781 -23.10282379888632 \
+8.05506206787482 1.42444992909460 -15.29332143414364 8.66464032828361 \
+3.41971034013956 0.99509402007309 -18.55078724417616 1.18005538113372 \
+18.65455009129330 -11.69178599277821 -38.12249106628497 -17.75402835092547]]
+
+    set b [java::call ptolemy.math.DoubleArrayMath \
+	   {within double[] double[] double} $eresult $dctresult 0.00001]
+} {1}
+
+####################################################################
+test SignalProcessing-4.9 {DCT double[] order 4 orthonormal} {
+    set dctresult [java::call ptolemy.math.SignalProcessing \
+                   {DCT double[] int int} $rt1 4 $orthodct]
+    set eresult [java::new {double[]} 16 [list \
+8.79602792874811 -0.49143085452134 11.18109680538992 -8.16808168637524 \
+2.84789450553641 0.50361910216175 -5.40700564647427 3.06341296633589 \
+1.20905018560322  0.35181886475593 -6.55869372835294 0.41721258108766 \
+6.59537943476881 -4.13367057983768 -13.47833597434684 -6.27699692015881]]
+    set b [java::call ptolemy.math.DoubleArrayMath \
+	   {within double[] double[] double} $eresult $dctresult 0.00001]
 } {1}
 
 ####################################################################
@@ -303,7 +400,8 @@ test SignalProcessing-5.7 {FFTComplexOut, order 2, smaller array} {
 test SignalProcessing-5.8 {FFTComplexOut, order 4} {
     set result [java::call ptolemy.math.SignalProcessing \
 	    {FFTComplexOut ptolemy.math.Complex[] int } $cat1 4]
-    set efftr [java::call ptolemy.math.ComplexArrayMath {formArray double[] double[] } $rf1 $if1]
+    set efftr [java::call ptolemy.math.ComplexArrayMath \
+               {formComplexArray double[] double[] } $rf1 $if1]
     set close [java::call ptolemy.math.ComplexArrayMath {within ptolemy.math.Complex[] ptolemy.math.Complex[] double } $result $efftr 0.00001]
     list $close
 } {1}
@@ -331,7 +429,7 @@ test SignalProcessing-7.3 {FFTComplexOut double[] order 0} {
 	       {FFTComplexOut double[] int} $a1 0]
     set im [java::new {double[]} 1 [list 0.0]]
     set eresult [java::call ptolemy.math.ComplexArrayMath \
-	         {formArray double[] double[]} $a1 $im]
+	         {formComplexArray double[] double[]} $a1 $im]
     set br [java::call ptolemy.math.ComplexArrayMath \
             {within ptolemy.math.Complex[] ptolemy.math.Complex[] double} \
              $result $eresult 0.00001] 
@@ -354,6 +452,124 @@ test SignalProcessing-7.5 {FFTComplexOut double, order 3} {
 	    {FFTComplexOut double[] int} $impulse 3 ]
     epsilonDiff [javaPrintArray $result] {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
 } {}
+
+####################################################################
+test SignalProcessing-8.1 {IDCT double[] empty array} {
+    catch {set eres [java::call ptolemy.math.SignalProcessing \
+	    {IDCT double[]} $a0]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.SignalProcessing : size of transform must be positive.}}
+
+####################################################################
+test SignalProcessing-8.2 {IDCT double[] implicit order 0} {
+    set idctresult [java::call ptolemy.math.SignalProcessing \
+                    {IDCT double[]} $a1]
+    set eresult [java::call ptolemy.math.SignalProcessing \
+                 {IDCT double[] int int} $a1 0 $normdct]
+    set b [java::call ptolemy.math.DoubleArrayMath \
+    	   {within double[] double[] double} $eresult $idctresult 0.00001]
+    list $b
+} {1}
+
+####################################################################
+test SignalProcessing-8.5 {IDCT double[] implicit order 4} {
+    set idctresult [java::call ptolemy.math.SignalProcessing \
+                   {IDCT double[]} $rt1]
+    set eresult [java::call ptolemy.math.SignalProcessing \
+           	 {IDCT double[] int int} $rt1 4 $normdct]
+    set b [java::call ptolemy.math.DoubleArrayMath \
+	   {within double[] double[] double} $eresult $idctresult 0.00001]
+} {1}
+
+####################################################################
+test SignalProcessing-9.1 {IDCT double[] order 0 normalized} {
+    set tin [java::new {double[]} 1 [list -25.68211829]]
+    set idctresult [java::call ptolemy.math.SignalProcessing \
+                   {IDCT double[] int int} $tin 0 0]
+    set tin [java::new {double[]} 1 [list -25.68211829]]
+    set b [java::call ptolemy.math.DoubleArrayMath \
+    	   {within double[] double[] double} $a1 $idctresult 0.00001]
+    list $b
+} {1}
+
+####################################################################
+test SignalProcessing-9.2 {IDCT double[] order 0 un-normalized} {
+    set tin [java::new {double[]} 1 [list -36.32]]
+    set idctresult [java::call ptolemy.math.SignalProcessing \
+                    {IDCT double[] int int} $tin 0 $unnormdct]
+    set eresult [java::new {double[]} 1 [list -36.32]]
+    set b [java::call ptolemy.math.DoubleArrayMath \
+    	   {within double[] double[] double} $a1 $idctresult 0.00001]
+    list $b
+} {1}
+
+####################################################################
+test SignalProcessing-9.3 {IDCT double[] order 0 orthonormal} {
+    set tin [java::new {double[]} 1 [list -36.32]]
+    set idctresult [java::call ptolemy.math.SignalProcessing \
+                   {IDCT double[] int int} $tin 0 $orthodct]
+    set b [java::call ptolemy.math.DoubleArrayMath \
+    	   {within double[] double[] double} $a1 $idctresult 0.00001]
+    list $b
+} {1}
+
+####################################################################
+test SignalProcessing-9.4 {IDCT double[] order 1 normalized} {
+    set tin [java::new {double[]} 2 [list 32.236998154294 35.942237687712]]
+    set idctresult [java::call ptolemy.math.SignalProcessing \
+                   {IDCT double[] int int} $tin 1 $normdct]
+    
+    set b [java::call ptolemy.math.DoubleArrayMath \
+	   {within double[] double[] double} $a2 $idctresult 0.00001]
+    list $b
+} {1}
+
+####################################################################
+test SignalProcessing-9.5 {DCT double[] order 1 un-normalized} {
+    set tin [java::new {double[]} 2 [list 45.59 35.942237687712]]
+    set idctresult [java::call ptolemy.math.SignalProcessing \
+            	   {IDCT double[] int int} $tin 1 $unnormdct]   
+    
+    set b [java::call ptolemy.math.DoubleArrayMath \
+	   {within double[] double[] double} $a2 $idctresult 0.00001]
+    list $b
+} {1}
+
+####################################################################
+test SignalProcessing-9.6 {IDCT double[] order 1 orthonormal} {
+    set tin [java::new {double[]} 2 [list 32.236998154294 35.942237687712]]
+    set idctresult [java::call ptolemy.math.SignalProcessing \
+                    {IDCT double[] int int} $tin 1 $orthodct]    
+    set b [java::call ptolemy.math.DoubleArrayMath \
+	   {within double[] double[] double} $a2 $idctresult 0.00001]
+    list $b
+} {1}
+
+####################################################################
+test SignalProcessing-9.7 {IDCT double[] order 4 normalized} {
+    set tin [java::new {double[]} 16 [list \
+24.87892398369620 -1.38997635886534 31.62491748877781 -23.10282379888632 \
+8.05506206787482 1.42444992909460 -15.29332143414364 8.66464032828361 \
+3.41971034013956 0.99509402007309 -18.55078724417616 1.18005538113372 \
+18.65455009129330 -11.69178599277821 -38.12249106628497 -17.75402835092547]]
+    set idctresult [java::call ptolemy.math.SignalProcessing \
+                    {IDCT double[] int int} $tin 4 $normdct]
+    set b [java::call ptolemy.math.DoubleArrayMath \
+	   {within double[] double[] double} $rt1 $idctresult 0.00001]
+} {1}
+
+####################################################################
+test SignalProcessing-9.9 {IDCT double[] order 4 orthonormal} {
+    set tin [java::new {double[]} 16 [list \
+8.79602792874811 -0.49143085452134 11.18109680538992 -8.16808168637524 \
+2.84789450553641 0.50361910216175 -5.40700564647427 3.06341296633589 \
+1.20905018560322  0.35181886475593 -6.55869372835294 0.41721258108766 \
+6.59537943476881 -4.13367057983768 -13.47833597434684 -6.27699692015881]]
+    set idctresult [java::call ptolemy.math.SignalProcessing \
+                   {IDCT double[] int int} $tin 4 $orthodct]
+    set b [java::call ptolemy.math.DoubleArrayMath \
+	   {within double[] double[] double} $rt1 $idctresult 0.00001]
+} {1}
 
 ####################################################################
 test SignalProcessing-9.1 {IFFTComplexOut Complex: empty array} {
