@@ -54,7 +54,7 @@ JARFILE = 	$(TYPACKAGE).jar
 # Classes that are included in the jar file as Java Beand.
 JBEANCLASSES =	ptolemy/plot/Plot.class ptolemy/plot/PlotLive.class
 
-SRCDIRS = 	demo apps
+SRCDIRS = 	demo #apps
 DIRS = 		$(SRCDIRS) doc #test
 
 # Sources that compile under JDK1.0.2 and later
@@ -87,12 +87,20 @@ MISC_FILES = #bean test
 OPTIONAL_FILES = \
 	$(DIRS) \
 	adm \
+	apps \
 	manifest.tmp \
 	ptolemy.plot.jar \
 	ptolemy.plot.zip \
 	ptolemy.plot$(JVERSION).tar.gz \
 	ptolemy.plot$(JVERSION).zip \
-	ptolemy.plotapplet.jar
+	ptolemy.plotapplet.jar \
+	'Message$$1.class' \
+	'Message$$2.class' \
+	'PlotBox$$DragListener.class' \
+	'PlotBox$$FillButtonListener.class' \
+	'PlotBox$$ZoomListener.class' \
+	'PlotLive$$StartButtonListener.class' \
+	'PlotLive$$StopButtonListener.class'
 
 # Files to be removed by 'make realclean'
 REALCLEAN_STUFF = 
