@@ -118,19 +118,29 @@ public class MailboxBoundaryReceiver extends Mailbox
         }
     }
 
+    /**
+     */
+    public Token get() {
+        return get(null);
+    }
+    
     /** Throw a TerminateBranchException. This method should never
      *  be called. Instead, calls should be made to get(Branch).
      */
-    public Token get() {
+    public Token get(Branch branch) {
         Workspace workspace = getContainer().workspace();
+        /*
         ProcessDirector director = ((ProcessDirector)((Actor)
         	(getContainer().getContainer())).getDirector());
+        */
         
         synchronized(this) {
             if( !_terminate && !hasToken() ) {
                 _readBlock = true;
-            	director._actorBlocked(this);
+                prepareToBlock(branch);
+            	// director._actorBlocked(this);
                 while( _readBlock && !_terminate ) {
+                    checkIfBranchIterationIsOver(branch);
                     workspace.wait(this);
                 }
             }
@@ -138,15 +148,81 @@ public class MailboxBoundaryReceiver extends Mailbox
             if( _terminate ) {
             	throw new TerminateProcessException("");
             } else {
+                
+                checkIfBranchIterationIsOver(branch);
+                
+                waitForBranchPermission(branch);
+                
                 if( _writeBlock ) {
                     _writeBlock = false;
-                    director._actorUnBlocked(this);
-                    notifyAll();
+                    
+                    wakeUpBlockedPartner();
+                    
+                    // director._actorUnBlocked(this);
+                    // notifyAll();
                 }
             	return super.get();
             }
         }
     }
+    
+    /**
+     */
+    public synchronized void wakeUpBlockedPartner() {
+        if( _otherBranch != null ) {
+            _otherBranch.registerRcvrUnBlocked(this);
+        } else {
+            ProcessDirector director = ((ProcessDirector)((Actor)
+        	    (getContainer().getContainer())).getDirector());
+            director._actorUnBlocked(this);
+            
+        }
+        notifyAll();
+    }
+    
+    /**
+     */
+    public void waitForBranchPermission(Branch branch) 
+    	    throws TerminateBranchException {
+        if( branch == null ) {
+            return;
+        }
+        
+        Workspace workspace = getContainer().workspace();
+        while( !branch.isBranchPermitted() && !branch.isIterationOver() ) {
+            branch.registerRcvrBlocked(this);
+            workspace.wait(this);
+        }
+        branch.registerRcvrUnBlocked(this);
+        
+        checkIfBranchIterationIsOver(branch);
+    }
+            
+    /**
+     */
+    public void checkIfBranchIterationIsOver(Branch branch) 
+    	    throws TerminateBranchException {
+        if( branch != null ) {
+            if( branch.isIterationOver() ) {
+                throw new TerminateBranchException("The current "
+                        + "has ended.");
+            }
+        }
+    }
+    
+    /**
+     */
+    public void prepareToBlock(Branch branch) throws TerminateBranchException {
+        if( branch != null ) {
+            branch.registerRcvrBlocked(this);
+            _otherBranch = branch;
+        } else {
+            ProcessDirector director = ((ProcessDirector)((Actor)
+        	    (getContainer().getContainer())).getDirector());
+            director._actorBlocked(this);
+        }
+    }
+    
             
     /** Remove and return the oldest token from the FIFO queue contained
      *  in the receiver. Terminate the calling process by throwing a
@@ -162,7 +238,6 @@ public class MailboxBoundaryReceiver extends Mailbox
      *  process, and inform the director of the same. 
      *  Otherwise return.
      *  @return The oldest Token read from the queue
-     */
     public Token get(Branch branch) {
 	if( isInsideBoundary() ) {
 	    if( isConnectedToBoundary() ) {
@@ -180,6 +255,7 @@ public class MailboxBoundaryReceiver extends Mailbox
 	return get();
 
     }
+     */
 
     /** Remove and return the oldest token from the FIFO queue contained
      *  in the receiver. Terminate the calling process by throwing a
@@ -195,7 +271,6 @@ public class MailboxBoundaryReceiver extends Mailbox
      *  process, and inform the director of the same. 
      *  Otherwise return.
      *  @return The oldest Token read from the queue
-     */
     public void put(Token token, Branch branch) {
 	if( isInsideBoundary() ) {
 	    if( isConnectedToBoundary() ) {
@@ -213,6 +288,7 @@ public class MailboxBoundaryReceiver extends Mailbox
 	put(token);
 
     }
+     */
 
     /** Get a token from the mailbox receiver and specify a Branch
      *  to control the execution of this method. If the controlling
@@ -382,7 +458,57 @@ public class MailboxBoundaryReceiver extends Mailbox
     /** Throw a TerminateBranchException. This method should never
      *  be called. Instead, calls should be made to put(Token, Branch).
      */
+    public void put(Token token, Branch branch) {
+        Workspace workspace = getContainer().workspace();
+        /*
+        ProcessDirector director = ((ProcessDirector)((Actor)
+        	(getContainer().getContainer())).getDirector());
+        */
+        
+        synchronized(this) {
+            if( !_terminate && !hasRoom() ) {
+                _writeBlock = true;
+                prepareToBlock(branch);
+                while( _writeBlock && !_terminate ) {
+                    checkIfBranchIterationIsOver(branch);
+                    workspace.wait(this);
+                    /*
+                    director._actorBlocked(this);
+                    try {
+                        wait();
+                    } catch( InterruptedException e ) {
+                        throw new TerminateProcessException(
+                        	"InterruptedException thrown");
+                    }
+                    */
+                }
+            }
+            
+            if( _terminate ) {
+            	throw new TerminateProcessException("");
+            } else {
+                
+                checkIfBranchIterationIsOver(branch);
+                
+                waitForBranchPermission(branch);
+                
+                super.put(token);
+                if( _readBlock ) {
+                    _readBlock = false;
+                    wakeUpBlockedPartner();
+                    // director._actorUnBlocked(this);
+                    // notifyAll();
+                }
+            }
+        }
+    }
+            
+    /** Throw a TerminateBranchException. This method should never
+     *  be called. Instead, calls should be made to put(Token, Branch).
+     */
     public void put(Token token) {
+        put(token, null);
+        /*
         ProcessDirector director = ((ProcessDirector)((Actor)
         	(getContainer().getContainer())).getDirector());
         
@@ -411,6 +537,7 @@ public class MailboxBoundaryReceiver extends Mailbox
                 }
             }
         }
+        */
     }
             
     /** Put a token into the mailbox receiver and specify a Branch
