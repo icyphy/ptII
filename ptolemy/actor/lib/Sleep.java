@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -41,17 +41,16 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Sleep
 /**
-An actor that delays the inputs for a certain duration of real time.
-The delay only happens in postfire(). In the fire() stage of execution,
-the inputs are directly transferred to outputs.
-If the width of the input port is less than
-that of the output port, the tokens in the extra channels
-are lost.
+An actor that calls Thread.sleep() on the current thread the first
+time fire() is called.  The sleep delays the inputs for a certain
+amount of real time, specified by the <i>sleepTime</i> parameter.
 
-@author Jie Liu
+<p>If the width of the output port is less than that of the input port,
+the tokens in the extra channels are lost.
+
+@author Jie Liu, Christopher Hylands
 @version $Id$
 */
-
 public class Sleep extends Transformer {
 
     /** Construct an actor with the given container and name.
@@ -65,9 +64,9 @@ public class Sleep extends Transformer {
     public Sleep(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        delay = new Parameter(this, "delay",
+        sleepTime = new Parameter(this, "sleepTime",
                 new LongToken(0));
-	delay.setTypeEquals(BaseType.LONG);
+	sleepTime.setTypeEquals(BaseType.LONG);
 	// Data type polymorphic, multiports.
         input.setMultiport(true);
         output.setMultiport(true);
@@ -76,59 +75,73 @@ public class Sleep extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The delay amount, in milliseconds
+    /** The sleepTime amount, in milliseconds
      *  This parameter must contain a LongToken.
-     *  The default value of this parameter is 0, meaning no delay.
+     *  The default value of this parameter is 0, meaning 
+     *  that this actor will not sleep the current thread at all.
      */
-    public Parameter delay;
+    public Parameter sleepTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Transfer tokens from inputs to outputs, one token from
-     *  each channel. If the width of the input port is less than
-     *  that of the output port, the tokens in the extra channels
+    /** Call Thread.sleep() the first time fire is called and then
+     *  transfer tokens from inputs to outputs, one token from each
+     *  channel.  If fire() is called twice in a row without an
+     *  intervening call to either postfire() or prefire(), then no
+     *  output is produced.
+     *  <p>If the width of the output port is less than
+     *  that of the input port, the tokens in the extra channels
      *  are lost.
-     *  @exception IllegalActionException Not thrown in this base class
-     */
+     *  @exception IllegalActionException Not thrown in this base class */
     public void fire() throws IllegalActionException {
-        _transferTokens();
-
+	if (!_wasSleepCalledInFireYet) {
+	    try {
+		long sleepTimeValue =
+		    ((LongToken)sleepTime.getToken()).longValue();
+		if(_debugging) _debug(getName() + "Wait for" +
+				      sleepTimeValue + "milliseconds.");
+		Thread.sleep(sleepTimeValue);
+	    } catch (InterruptedException e) {
+		// Ignore...
+	    }
+	    // Pull these out of the loop so we do not call them
+	    // more than once.
+	    int inputWidth = input.getWidth();
+	    int outputWidth = output.getWidth();		
+	    for (int i = 0; i < inputWidth; i++) {
+		if(input.hasToken(i)) {
+		    Token inToken = input.get(i);
+		    if( i < outputWidth) {
+			output.send(i, inToken);
+		    }
+		}
+	    }
+	}
     }
 
-    /** Output the inputs with a real time delay, specified by
-     *  the parameter, delay. Always return true.
-     *  @exception IllegalActionException If there is no director.
+    /** Reset the flag that fire() checks so that fire() only sleeps once.
+     *  @exception IllegalActionException If the parent class throws it.
+     *  @return Whatever the superclass returns (probably true).
      */
     public boolean postfire() throws IllegalActionException {
-        try {
-            long delayTime = ((LongToken)delay.getToken()).longValue();
-            if(_debugging) _debug(getName() + "Wait for" +
-                    delayTime + "milliseconds.");
-            Thread.sleep(delayTime);
-        } catch (InterruptedException e) {
-            // Ignore...
-        }
-        _transferTokens();
-        return true;
+	_wasSleepCalledInFireYet = false; 
+        return super.postfire();
+    }
+
+    /** Reset the flag that fire() checks so that fire() only sleeps once.
+     *  @exception IllegalActionException If the parent class throws it.
+     *  @return Whatever the superclass returns (probably true).
+     */
+    public boolean prefire() throws IllegalActionException {
+	_wasSleepCalledInFireYet = false; 
+        return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         private variables                 ////
 
-    /* Transfer tokens from inputs to outputs, one token from
-     * each channel. If the width of the input port is less than
-     * that of the output port, the tokens in the extra channels
-     * are lost.
-     */
-    private void  _transferTokens() throws IllegalActionException {
-        for (int i = 0; i < input.getWidth(); i++) {
-            if(input.hasToken(i)) {
-                Token inToken = input.get(i);
-                if( i < output.getWidth()) {
-                    output.send(i, inToken);
-                }
-            }
-        }
-    }
+    // True if sleep was called in fire().  Sleep should only
+    // be called once in fire().
+    private boolean _wasSleepCalledInFireYet = false; 
 }
