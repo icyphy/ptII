@@ -43,7 +43,9 @@ include $(CONFIG)
 TCL_SRCS = testDefs.tcl
 
 JSRCS = \
-	TestSink.java
+	StringPNListener.java \
+	TestSink.java \
+	TestDirector.java 
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
