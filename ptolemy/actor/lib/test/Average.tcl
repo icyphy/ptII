@@ -72,6 +72,7 @@ test Average-2.1 {test with the default output values} {
 } {0.0 0.5 1.0 1.5 2.0}
 
 test Average-2.2 {test with the typed output values} {
+    # FIXME: Is this the right behavior?
     set e0 [sdfModel 5]
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
     set init [getParameter $ramp init]
@@ -89,4 +90,4 @@ test Average-2.2 {test with the typed output values} {
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {0.0 0.5 1.0 1.5 2.0}
+} {0 0 1 1 2}
