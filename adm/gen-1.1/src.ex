@@ -82,7 +82,6 @@ ptolemy/plot/adm
 ptolemy/schematic
 ptolemy/system
 ptolemy/vergil/JModelViewer.java
-ptolemy/vergil/MoMLViewerApplet.java
 ptolemy/vergil/VergilApplet.java
 ptolemy/vergil/graph
 devel
