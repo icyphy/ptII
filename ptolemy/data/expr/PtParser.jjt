@@ -772,9 +772,12 @@ String tidied, x;
         }
     }
    ) #PtLeafNode
-  |
-    LOOKAHEAD( "[" )
-    matrixConstruct()
+
+  |   LOOKAHEAD( "[" )
+      matrixConstruct()
+
+  |   LOOKAHEAD( "{" )
+      recordConstruct()
 }
 
 void function() #PtFunctionNode :
@@ -852,4 +855,30 @@ void matrixConstruct() #PtMatrixConstructNode :
     "]" { jjtThis._form = 2; jjtThis._nRows = nRows; }
    )
   )
+}
+
+void recordConstruct() #PtRecordConstructNode :
+{
+  Token x = null;
+}
+{
+    "{"
+    ( x = <ID>
+      {
+        jjtThis._fieldNames.add(x.image);
+      }
+    )
+    "="
+    funcIf()
+    (
+      ","
+      ( x = <ID>
+        {
+          jjtThis._fieldNames.add(x.image);
+        }
+      )
+      "="
+      funcIf()
+    )*
+    "}"
 }

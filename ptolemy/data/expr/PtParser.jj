@@ -1304,9 +1304,12 @@ String tidied, x;
      }
    }
 /*@egen*/
-  |
-    LOOKAHEAD( "[" )
-    matrixConstruct()
+
+  |   LOOKAHEAD( "[" )
+      matrixConstruct()
+
+  |   LOOKAHEAD( "{" )
+      recordConstruct()
 }
 
 void function()                 :
@@ -1468,5 +1471,57 @@ void matrixConstruct()                        :
       jjtree.closeNodeScope(jjtn000, true);
     }
   }
+/*@egen*/
+}
+
+void recordConstruct()                        :
+{/*@bgen(jjtree) PtRecordConstructNode */
+  ASTPtRecordConstructNode jjtn000 = new ASTPtRecordConstructNode(this, JJTPTRECORDCONSTRUCTNODE);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/
+  Token x = null;
+}
+{/*@bgen(jjtree) PtRecordConstructNode */
+    try {
+/*@egen*/
+    "{"
+    ( x = <ID>
+      {
+        jjtn000._fieldNames.add(x.image);
+      }
+    )
+    "="
+    funcIf()
+    (
+      ","
+      ( x = <ID>
+        {
+          jjtn000._fieldNames.add(x.image);
+        }
+      )
+      "="
+      funcIf()
+    )*
+    "}"/*@bgen(jjtree)*/
+    } catch (Throwable jjte000) {
+      if (jjtc000) {
+        jjtree.clearNodeScope(jjtn000);
+        jjtc000 = false;
+      } else {
+        jjtree.popNode();
+      }
+      if (jjte000 instanceof RuntimeException) {
+        throw (RuntimeException)jjte000;
+      }
+      if (jjte000 instanceof ParseException) {
+        throw (ParseException)jjte000;
+      }
+      throw (Error)jjte000;
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
 /*@egen*/
 }
