@@ -4,13 +4,17 @@
 <class name="Controller" extends="ptolemy.domains.fsm.kernel.FSMActor">
     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Init">
     </property>
-    <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
-    </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[601, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[769, 181]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 152]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {0, 138, 984, 290}, maximized = false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{384.5, 90.5}">
     </property>
     <port name="in" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
@@ -33,39 +37,23 @@
         </property>
     </port>
     <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="152.0, 42.5">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="State0" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="mode0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="243.0, 60.0">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <entity name="State1" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="mode1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="462.0, 124.0">
         </property>
-        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
-        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-        </port>
     </entity>
     <relation name="t0" class="ptolemy.domains.fsm.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
-        </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
         </property>
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="mode0.ramp1.init = 0; mode0.ramp2.init = 0">
         </property>
@@ -76,8 +64,6 @@
         <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
     </relation>
     <relation name="t1" class="ptolemy.domains.fsm.kernel.Transition">
@@ -95,8 +81,6 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-        </property>
     </relation>
     <relation name="t2" class="ptolemy.domains.fsm.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_isPresent &amp;&amp; (in % 4 == 0)">
@@ -112,8 +96,6 @@
         <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
     </relation>
     <link port="Init.outgoingPort" relation="t0"/>

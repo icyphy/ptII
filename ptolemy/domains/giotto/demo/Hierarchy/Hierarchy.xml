@@ -17,7 +17,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 46.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[583, 282]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[113, 152]">
     </property>
@@ -63,11 +63,11 @@ source and the upper composite.</text>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {113, 154, 798, 459}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {113, 154, 798, 391}, maximized = false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.5, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{291.5, 141.0}">
     </property>
     <entity name="Source" class="ptolemy.actor.lib.Const">
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 155.0">
