@@ -65,7 +65,7 @@ class ExampleApplet extends java.applet.Applet
      * @see java.awt.Rectangle
      * @param position of the rectangle, initial point(x,y), width and hight
      */	
-    public Rectangle DURectangle( int x, int y, int w, int h )
+    public Rectangle rectangle( int x, int y, int w, int h )
         {
             String        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
             FontMetrics   fm = getFontMetrics( getFont() );
@@ -83,8 +83,9 @@ class ExampleApplet extends java.applet.Applet
      * @see java.awt.Component
      * @see java.awt.Insets
      */	
-    public void DUPositionComponent( java.awt.Component comp, int x, int y, int w, int h, java.awt.Insets formInsets ) {
-        Rectangle     rect = DURectangle( x, y, w, h );
+    public void positionComponent( java.awt.Component comp, int x, int y,
+            int w, int h, java.awt.Insets formInsets ) {
+        Rectangle rect = rectangle( x, y, w, h );
         if( formInsets != null ) {
             rect.x += formInsets.left;
             rect.y += formInsets.top;
@@ -112,9 +113,9 @@ class ExampleApplet extends java.applet.Applet
         add(_bnrun);
         add(_tarea);
         
-        DUPositionComponent( this, 0, 0, 296, 225, null );
+        positionComponent( this, 0, 0, 296, 225, null );
 
-        DUPositionComponent( _lb, -1, 5, 231, 10, formInsets );
+        positionComponent( _lb, -1, 5, 231, 10, formInsets );
         _lb.setAlignment(java.awt.Label.CENTER);
         _lb.setText( "Results of Major Methods Applied to Ports and Relations" );
         _lb.setFont( new Font( "Dialog", Font.BOLD, 14 ) );
@@ -123,14 +124,14 @@ class ExampleApplet extends java.applet.Applet
         _lb.enable(true);
         _lb.show();
 
-        DUPositionComponent( _bnrun, 235, 20, 50, 20, formInsets );
+        positionComponent( _bnrun, 235, 20, 50, 20, formInsets );
         _bnrun.setBackground( Color.lightGray );
         _bnrun.setForeground( Color.black );
         _bnrun.enable(true);
         _bnrun.show();
         _bnrun.setLabel("Run");
 
-        DUPositionComponent( _tarea, 5, 20, 220, 185, formInsets );
+        positionComponent( _tarea, 5, 20, 220, 185, formInsets );
         _tarea.setBackground( Color.lightGray );
         _tarea.setForeground( Color.black );
         _tarea.enable(true);
