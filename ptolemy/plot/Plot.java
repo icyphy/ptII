@@ -1177,6 +1177,7 @@ public class Plot extends PlotBox {
             stoken.whitespaceChars(0, ' ');
 	    stoken.wordChars('(','~');
 	    stoken.quoteChar('"');
+	    stoken.quoteChar('\'');
             int c;
 
          out:
@@ -1200,12 +1201,13 @@ public class Plot extends PlotBox {
 		    prependdash = true;
 		    break;
 		case '"':
+		case '\'':
                     //System.out.println("String: " + stoken.sval);
 		    argvector.addElement(new String(stoken.sval));
 		    break;
                 default:
-                    throw new IOException("Failed to parse: "+ (char)c +
-					  " in `"+pxgraphargs+"'");
+                    throw new IOException("Failed to parse: '"+ (char)c +
+					  '" in `"+pxgraphargs+"'");
                 }
             }
 	 } catch (IOException e) {
