@@ -395,7 +395,10 @@ public class Main extends KernelMain {
                 new Transform("wjtp.doe",
                         new TransformerAdapter(
                                 DeadObjectEliminator.v())));
-       _addStandardOptimizations(Scene.v().getPack("wjtp"));
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.smr",
+                        SideEffectFreeInvocationRemover.v()));
 
    /*
         Scene.v().getPack("wjtp").add(

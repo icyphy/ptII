@@ -126,19 +126,7 @@ public class ExceptionEliminator extends SceneTransformer {
                         trap.setException(PtolemyUtilities.exceptionClass);
                     }
                 }
-
-                for (Iterator units = body.getUnits().iterator();
-                     units.hasNext();) {
-                    Stmt unit = (Stmt)units.next();
-
-                    // If any box is removable, then remove the statement.
-                    for (Iterator boxes = unit.getUseBoxes().iterator();
-                         boxes.hasNext();) {
-                        ValueBox box = (ValueBox)boxes.next();
-
-                        _replaceExceptions(box);
-                    }
-                }
+                _replaceExceptions(body);
             }
         }
     }
@@ -159,44 +147,68 @@ public class ExceptionEliminator extends SceneTransformer {
 
     // Replace any Ptolemy exception constructor
     // or initializer with a plain old RuntimeException.
-    private void _replaceExceptions(ValueBox box) {
-        // FIXME: This is currently way too simple.
-        Value value = box.getValue();
-        Type type = value.getType();
-        if (value instanceof NewExpr) {
-            // Fix kernel exceptions to be runtime exceptions.
-            NewExpr expr = (NewExpr)value;
-            SootClass exceptionClass = expr.getBaseType().getSootClass();
-            if (_isPtolemyException(exceptionClass)) {
-                expr.setBaseType(
-                        RefType.v(PtolemyUtilities.runtimeExceptionClass));
-
-            }
-        } else if (value instanceof SpecialInvokeExpr) {
-            // Fix the exception constructors.
-            SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
-            SootClass exceptionClass =
-                ((RefType)expr.getBase().getType()).getSootClass();
-            if (_isPtolemyException(exceptionClass)) {
-                Value foundArg = null;
-                for(Iterator args = expr.getArgs().iterator();
-                    args.hasNext();) {
-                    Value arg = (Value)args.next();
-                    if(arg.getType().equals(RefType.v(PtolemyUtilities.stringClass))) {
-                        foundArg = arg;
-                        break;
+    private void _replaceExceptions(JimpleBody body) {
+        for (Iterator units = body.getUnits().snapshotIterator();
+             units.hasNext();) {
+            Stmt unit = (Stmt)units.next();
+            
+            // If any box is removable, then remove the statement.
+            for (Iterator boxes = unit.getUseBoxes().iterator();
+                 boxes.hasNext();) {
+                ValueBox box = (ValueBox)boxes.next();
+                // FIXME: This is currently way too simple.
+                Value value = box.getValue();
+                Type type = value.getType();
+                if (value instanceof NewExpr) {
+                    // Fix kernel exceptions to be runtime exceptions.
+                    NewExpr expr = (NewExpr)value;
+                    SootClass exceptionClass = expr.getBaseType().getSootClass();
+                    if (_isPtolemyException(exceptionClass)) {
+                        expr.setBaseType(
+                                RefType.v(PtolemyUtilities.runtimeExceptionClass));
+                        
                     }
-                }
-                if(foundArg == null || _obfuscate) {
-                    box.setValue(Jimple.v().newSpecialInvokeExpr(
-                                         (Local)expr.getBase(),
-                                         PtolemyUtilities.runtimeExceptionConstructor,
-                                         Collections.EMPTY_LIST));
-                } else {
-                    box.setValue(Jimple.v().newSpecialInvokeExpr(
-                                         (Local)expr.getBase(),
-                                         PtolemyUtilities.runtimeExceptionStringConstructor,
-                                         foundArg));
+                } else if (value instanceof SpecialInvokeExpr) {
+                    // Fix the exception constructors.
+                    SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
+                    SootClass exceptionClass =
+                        ((RefType)expr.getBase().getType()).getSootClass();
+                    if (_isPtolemyException(exceptionClass)) {
+                        Value foundArg = null;
+                        for(Iterator args = expr.getArgs().iterator();
+                            args.hasNext();) {
+                            Value arg = (Value)args.next();
+                            if(arg.getType().equals(RefType.v(PtolemyUtilities.stringClass))) {
+                                foundArg = arg;
+                                break;
+                            }
+                        }
+                        if(foundArg == null || _obfuscate) {
+                            box.setValue(Jimple.v().newSpecialInvokeExpr(
+                                                 (Local)expr.getBase(),
+                                                 PtolemyUtilities.runtimeExceptionConstructor,
+                                                 Collections.EMPTY_LIST));
+                        } else {
+                            box.setValue(Jimple.v().newSpecialInvokeExpr(
+                                                 (Local)expr.getBase(),
+                                                 PtolemyUtilities.runtimeExceptionStringConstructor,
+                                                 foundArg));
+                        }
+                    }
+                } else if(value instanceof VirtualInvokeExpr) {
+                    VirtualInvokeExpr expr = (VirtualInvokeExpr)value;
+                    SootClass exceptionClass =
+                        ((RefType)expr.getBase().getType()).getSootClass();
+                    if (_isPtolemyException(exceptionClass)) {
+                        SootMethod method = expr.getMethod();
+                        if(method.getName().equals("getMessage")) {
+                            if(unit instanceof InvokeStmt) {
+                                body.getUnits().remove(unit);
+                            } else {
+                                box.setValue(StringConstant.v("PtolemyException"));
+                            }
+                        }
+                    }
                 }
             }
         }

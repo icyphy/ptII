@@ -25,6 +25,7 @@
  -p wjtp.ts targetPackage:@targetPackage@
  -p wjtp.noe targetPackage:@targetPackage@
  -p wjtp.nee targetPackage:@targetPackage@
+ -p wjtp.lur "outDir:@ptIIUserDirectory@/@targetPath@"
  -p wjtp.ee obfuscate,targetPackage:@targetPackage@
  -p wjtp.snapshot1 "outDir:@ptIIUserDirectory@/@targetPath@/jimple1"
  -p wjtp.snapshot2 "outDir:@ptIIUserDirectory@/@targetPath@/jimple2"

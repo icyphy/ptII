@@ -81,30 +81,61 @@ public class LibraryUsageReporter extends SceneTransformer {
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions();
+        return super.getDeclaredOptions() + " outDir";
     }
 
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
+        String outDir = Options.getString(options, "outDir");
         System.out.println("LibraryUsageReporter.internalTransform("
                 + phaseName + ", " + options + ")");
-
+        Hierarchy hierarchy = Scene.v().getActiveHierarchy();
         InvokeGraph invokeGraph =
             ClassHierarchyAnalysis.newPreciseInvokeGraph(true);
         MethodCallGraph methodCallGraph =
             (MethodCallGraph)invokeGraph.newMethodGraph();
-        List reachableList = methodCallGraph.getMethodsReachableFrom(Scene.v().getMainClass().getMethods());
+        List reachableList = methodCallGraph.getMethodsReachableFrom(
+                Scene.v().getMainClass().getMethods());
+
+        Set createableClasses = new HashSet();
+        for(Iterator reachables = reachableList.iterator(); reachables.hasNext();) {
+            SootMethod method = (SootMethod)reachables.next();
+            if(method.getName().equals("<init>")) {
+                createableClasses.addAll(
+                        hierarchy.getSuperclassesOfIncluding(
+                                method.getDeclaringClass()));
+                // FIXME: interfaces?
+            }
+        }
+
+        Set RTAReachableClasses = new HashSet(createableClasses);
         List list = new LinkedList();
         for(Iterator reachables = reachableList.iterator(); reachables.hasNext();) {
             SootMethod method = (SootMethod)reachables.next();
             String methodName = method.getSignature();
-//             if(method.isStatic() || createableClasses.contains(method.getDeclaringClass())) {
+            if(method.isStatic() ||
+                    createableClasses.contains(method.getDeclaringClass())) {
                 list.add(methodName);
-                //           }
+                RTAReachableClasses.add(method.getDeclaringClass());  
+            }
         }
         Collections.sort(list);
         for(Iterator names = list.iterator(); names.hasNext();) {
             System.out.println(names.next());
+        }
+        try {
+            FileWriter writer = new FileWriter(outDir + "/jarClassList.txt");
+            for(Iterator classes = RTAReachableClasses.iterator(); 
+                classes.hasNext();) {
+                SootClass theClass = (SootClass)classes.next();
+                if(!theClass.getName().startsWith("java")) {
+                    writer.write(theClass.getName());
+                    writer.write("\n");
+                }
+            }
+            writer.close();
+        } catch(Exception ex) {
+            ex.printStackTrace();
         }
     }
     private static LibraryUsageReporter _instance = new LibraryUsageReporter();
