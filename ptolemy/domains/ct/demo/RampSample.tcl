@@ -44,13 +44,16 @@ $sys setDirector $dedir
 
 set ctsub [java::new ptolemy.actor.TypedCompositeActor $sys CTSubsystem]
 set subout [java::new ptolemy.actor.TypedIOPort $ctsub P1]
+set ptype [java::call Class forName ptolemy.data.DoubleToken]
+$subout makeOutput 1
+$subout setDeclaredType $ptype
 set ctdir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector CTEmbDIR]
 $ctsub setDirector $ctdir
 
 # construct the sub system
 set const [java::new ptolemy.domains.ct.lib.CTConst $ctsub Const]
 set integral [java::new ptolemy.domains.ct.lib.CTIntegrator $ctsub Integrator]
-set print [java::new ptolemy.domains.ct.lib.CTPrintln $ctsub Print]
+set print [java::new ptolemy.domains.ct.lib.CTPlot $ctsub CTPlot]
 set sampler [java::new ptolemy.domains.ct.lib.CTPeriodicalSampler $ctsub Sample]
 
 set constout [$const getPort output]
