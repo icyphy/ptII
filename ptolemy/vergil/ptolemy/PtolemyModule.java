@@ -144,6 +144,10 @@ public class PtolemyModule implements Module {
 	GUIUtilities.addMenuItem(menuDevel, action, 'I',
 				 "Print current document info");
 
+	JToolBar tb = new JToolBar();
+	Container pane = _application.getDesktopContext().getToolBarPane();
+	pane.add(tb);
+	
 	action = new executeSystemAction();
 	_application.addAction(action);
 	GUIUtilities.addMenuItem(menuDevel, action, 'E', "Execute System");
@@ -152,10 +156,6 @@ public class PtolemyModule implements Module {
         _application.addAction(action);
 	GUIUtilities.addMenuItem(menuDevel, action, 'L', 
 				 "Automatically layout the model");
-	
-	JToolBar tb = new JToolBar();
-	Container pane = _application.getDesktopContext().getToolBarPane();
-	pane.add(tb);
 	
 	String dflt = "";
 	// Creating the renderers this way is rather nasty..
@@ -191,6 +191,11 @@ public class PtolemyModule implements Module {
 	// Create something that will manage Directors for us.  
 	new DirectorService(getApplication(), tb);
 
+        action = new executeSystemAction();
+        _application.addAction(action);
+        GUIUtilities.addToolBarButton(tb, action,
+				      "Execute System", "Go");
+        
         application.addDocumentFactory(new PtolemyDocument.Factory());
 	application.addDocumentFactory(new PtolemyDocument.FSMFactory());
 
