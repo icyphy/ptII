@@ -91,7 +91,9 @@ test Director-5.1 {Test action methods} {
     set a2 [java::new ptolemy.actor.test.TestActor $e0 A2]
     $a1 clear
     set r1 [$d4 getNextIterationTime]
-    $manager run
+    $manager initialize
+    $manager iterate
+    $manager wrapup
     list $r1 [$a1 getRecord] [$d4 getNextIterationTime]
 } {0.0 {.E0.A1.initialize
 .E0.A2.initialize
@@ -113,7 +115,9 @@ test Director-6.1 {Test wormhole activation} {
     set d5 [java::new ptolemy.actor.Director $e1 D5]
     $a2 setContainer $e1
     $a1 clear
-    $manager run
+    $manager initialize
+    $manager iterate
+    $manager wrapup
     $a1 getRecord
 } {.E0.A1.initialize
 .E0.E1.A2.initialize
