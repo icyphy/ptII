@@ -328,10 +328,10 @@ public class CTMultiSolverDirector extends CTDirector {
         if(_debugging) _debug(getFullName(), " initializing:");
         // synchronized on time and initialize all actors
         if(_debugging) _debug(getFullName(), " initialize directed actors: ");
+        _setDiscretePhase(true);
         super.initialize();
         // Display schedule
         if(_debugging) _debug(getScheduler().getSchedule().toString());
-
         _setDiscretePhase(false);
         _first = true;
         // set step sizes
@@ -634,6 +634,8 @@ public class CTMultiSolverDirector extends CTDirector {
         _setCurrentODESolver(getODESolver());
         // If now is a break point, remove the break point from table;
         if(breakPoints != null && !breakPoints.isEmpty()) {
+            if(_debugging) _debug("first breakpoint is at " + 
+                    breakPoints.first());
             breakPoints.removeAllLessThan(now);
             if(breakPoints.contains(now)) {
                 // It is at a break point now.

@@ -358,15 +358,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
             // If the outside time and the next iteration time are so close
             // that the difference is less than the time resolution, then
-            // we simply omit this firing and refire at the next iteration time.
-            /*
-            if ((nextIterationTime != _outsideTime ) && 
-                    (nextIterationTime - _outsideTime < timeResolution)) {
-                _currentTime = nextIterationTime;
-                exe.fireAt(container, nextIterationTime);
-                return false;
-            }
-            */
+            // we simply omit this firing and refire at the next iteration 
+            //time.
             // If outside next iteration time is equal to the outside
             // time, then request for a zero delay refire.
             // Notice that DE will pust this zero delay refire to be the
