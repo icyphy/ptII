@@ -34,25 +34,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 30.0]">
         </property>
     </property>
-    <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 80.0]">
-        </property>
-    </property>
     <entity name="ColtBeta" class="ptolemy.actor.lib.colt.ColtBeta">
         <property name="seed" class="ptolemy.actor.lib.colt.ColtSeedParameter" value="1L">
         </property>
@@ -67,7 +48,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
@@ -154,7 +135,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
@@ -166,7 +147,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
@@ -178,7 +159,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
@@ -190,7 +171,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
@@ -202,7 +183,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
@@ -214,7 +195,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
@@ -226,7 +207,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
@@ -238,7 +219,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
@@ -250,7 +231,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
@@ -262,7 +243,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
@@ -274,7 +255,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
@@ -286,7 +267,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
@@ -298,7 +279,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
@@ -310,7 +291,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
@@ -322,7 +303,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10^-4">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
