@@ -94,6 +94,12 @@ public class BaseType implements Type, Serializable {
         return (Type)_types.get(name);
     }
 
+    /** Return the class for tokens that this basetype represents.
+     */
+    public Class getTokenClass() {
+        return _tokenClass;
+    }
+    
     /** Test if the argument token is compatible with this type. The method
      *  returns true if this type is UNKNOWN, since any type is a substitution
      *  instance of it. If this type is not UNKNOWN, this method returns true

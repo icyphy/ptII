@@ -129,6 +129,13 @@ public class ArrayToken extends Token {
 	return _value[index];
     }
 
+    /** Return the type contained in this ArrayToken.
+     *  @return A Type.
+     */
+    public Type getElementType() {
+	return _elementType;
+    }
+
     /** Return the type of this ArrayToken.
      *  @return An ArrayType.
      */
