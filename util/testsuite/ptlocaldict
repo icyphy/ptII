@@ -33,6 +33,7 @@ Hashtable
 Holger
 Hylands
 Id
+Instantiable
 Itcl
 Itk
 JDK
@@ -97,6 +98,7 @@ Yuhong
 applet
 applets
 appletviewer
+arraycopy
 autoconf
 behaviour
 berkeley
@@ -104,6 +106,7 @@ bgcolor
 blockquote&gt
 cellpadding
 cellspacing
+charset
 checkbox
 checkjunk
 chown
@@ -111,12 +114,15 @@ colspan
 containees
 cshrc
 csp
+css
+ct
 cxh
 cygnus
 cygwin
 cygwin32
 davisj
 developer.netscape.com
+dfm
 eal
 edu
 eecs
@@ -124,6 +130,7 @@ email
 faf0e6
 frameborder
 frameset
+gif
 h1
 h2
 h3
@@ -138,8 +145,10 @@ htmlchek
 htmlchekout
 http
 i
+img
 index.html
 instanceof
+instantiable
 java
 java,v
 javacc
@@ -154,6 +163,7 @@ jindent
 johnr
 lang
 liuj
+liuxj
 lmuliadi
 majordomo
 makefile
@@ -180,6 +190,7 @@ ok
 param
 passwd
 postfire
+prev
 println
 ptolemy
 ptolemy.eecs.berkeley.edu
@@ -189,15 +200,19 @@ servlets
 setenv
 sourceware
 src
+stylesheet
 sunsite
 suntest
 tcl
 tclblend
 td
 th
+toc
 toplevel
 tr
+upcasting
 util
+wbwu
 website
 www.scriptics.com
 yuhong
