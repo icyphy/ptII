@@ -127,26 +127,26 @@ public class OrderedMerge extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if (nextPort.hasToken(0)) {
-            ScalarToken readToken = (ScalarToken)nextPort.get(0);
-            if (recordedToken == null) {
+        if (_nextPort.hasToken(0)) {
+            ScalarToken readToken = (ScalarToken)_nextPort.get(0);
+            if (_recordedToken == null) {
                 // First firing.  Just record the token.
-                tentativeRecordedToken = readToken;
-                tentativeNextPort = inputB;
+                _tentativeRecordedToken = readToken;
+                _tentativeNextPort = inputB;
             } else {
-                if ((readToken.isLessThan(recordedToken)).booleanValue()) {
+                if ((readToken.isLessThan(_recordedToken)).booleanValue()) {
                     // Produce the smaller output.
                     output.send(0, readToken);
                 } else {
                     // Produce the smaller output.
-                    output.send(0, recordedToken);
-                    tentativeRecordedToken = readToken;
+                    output.send(0, _recordedToken);
+                    _tentativeRecordedToken = readToken;
 
                     // Swap ports.
-                    if (nextPort == inputA) {
-                        tentativeNextPort = inputB;
+                    if (_nextPort == inputA) {
+                        _tentativeNextPort = inputB;
                     } else {
-                        tentativeNextPort = inputA;
+                        _tentativeNextPort = inputA;
                     }
                 }
             }
@@ -158,8 +158,8 @@ public class OrderedMerge extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        nextPort = inputA;
-        recordedToken = null;
+        _nextPort = inputA;
+        _recordedToken = null;
     }
 
     /** Commit the recorded token.
@@ -167,23 +167,35 @@ public class OrderedMerge extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        recordedToken = tentativeRecordedToken;
-        nextPort = tentativeNextPort;
+        _recordedToken = _tentativeRecordedToken;
+        _nextPort = _tentativeNextPort;
         return super.postfire();
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    
+    /** Get the next input port. 
+     *  @return next input port.  
+     */
+    // This method is Added by Gang Zhou so that DDFOrderedMerge 
+    // can inherit this class.
+    protected TypedIOPort _getNextPort() {
+        return _nextPort;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The recorded token. */
-    private ScalarToken recordedToken = null;
+    private ScalarToken _recordedToken = null;
 
     /** The port from which to read next. */
-    private TypedIOPort nextPort = null;
+    private TypedIOPort _nextPort = null;
 
     /** The tentative recorded token. */
-    private ScalarToken tentativeRecordedToken = null;
+    private ScalarToken _tentativeRecordedToken = null;
 
     /** The tentative port from which to read next. */
-    private TypedIOPort tentativeNextPort = null;
+    private TypedIOPort _tentativeNextPort = null;
 }
