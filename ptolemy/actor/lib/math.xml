@@ -29,7 +29,7 @@
   </entity>
 
   <entity name="Expression" class="ptolemy.actor.lib.Expression">
-    <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
         <property name="attributeName" value="expression"/>
         <property name="displayWidth" value="60"/>
     </property>
@@ -58,7 +58,7 @@
 	              class="ptolemy.kernel.util.StringAttribute"/>
         </property>
      </property>
-    <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
         <property name="attributeName" value="function"/>
     </property>
   </entity>
@@ -79,7 +79,7 @@
   </entity>
 
   <entity name="Scale" class="ptolemy.actor.lib.Scale">
-    <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
         <property name="attributeName" value="factor"/>
     </property>
   </entity>
@@ -101,7 +101,7 @@
 	              class="ptolemy.kernel.util.StringAttribute"/>
         </property>
     </property>
-    <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
         <property name="attributeName" value="function"/>
     </property>
   </entity>

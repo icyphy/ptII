@@ -127,7 +127,7 @@
             <property name="value" class="ptolemy.data.expr.Parameter" value="t1 / (t1 - t0)">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -162,7 +162,7 @@
             <property name="value" class="ptolemy.data.expr.Parameter" value="1.0 / (t0 - t1)">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">

@@ -100,7 +100,7 @@ include:
     <entity name="Expression2" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="cos(slow) + cos(fast)">
         </property>
-        <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">

@@ -40,7 +40,7 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="theta_eq">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -61,7 +61,7 @@
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -126,7 +126,7 @@
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -146,7 +146,7 @@
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -181,7 +181,7 @@
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -201,7 +201,7 @@
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -221,7 +221,7 @@
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -241,7 +241,7 @@
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -273,7 +273,7 @@
                 </property>
             </property>
         </property>
-        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -305,7 +305,7 @@
                 </property>
             </property>
         </property>
-        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">

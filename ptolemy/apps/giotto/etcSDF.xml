@@ -209,7 +209,7 @@ system with forced spring pull-back.</text></svg></configure>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -273,7 +273,7 @@ system with forced spring pull-back.</text></svg></configure>
                     </property>
                 </property>
             </property>
-            <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -293,7 +293,7 @@ system with forced spring pull-back.</text></svg></configure>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -313,7 +313,7 @@ system with forced spring pull-back.</text></svg></configure>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -333,7 +333,7 @@ system with forced spring pull-back.</text></svg></configure>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -396,7 +396,7 @@ system with forced spring pull-back.</text></svg></configure>
             <property name="value" class="ptolemy.data.expr.Parameter" value="theta_eq">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -516,7 +516,7 @@ the pedal is not depressed and pi means full throttle.</text></svg></configure>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -535,7 +535,7 @@ the pedal is not depressed and pi means full throttle.</text></svg></configure>
             <property name="value" class="ptolemy.data.expr.Parameter" value="0.7">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -776,7 +776,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                     </property>
                     <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
-                    <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
                         </property>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -814,7 +814,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                     <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
                     </property>
                     <doc>Create a constant sequence</doc>
-                    <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                         </property>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -834,7 +834,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                     <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <doc>Create a constant sequence</doc>
-                    <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                         </property>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -854,7 +854,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                     <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <doc>Create a constant sequence</doc>
-                    <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                         </property>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -930,7 +930,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                 <property name="value" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -1066,7 +1066,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                         <property name="value" class="ptolemy.data.expr.Parameter" value="2">
                         </property>
                         <doc>Create a constant sequence</doc>
-                        <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                             </property>
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -1517,7 +1517,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -1564,7 +1564,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                                 </property>
                                             </property>
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -1584,7 +1584,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -1604,7 +1604,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -1624,7 +1624,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -1658,7 +1658,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         <property name="value" class="ptolemy.data.expr.Parameter" value="theta_eq">
                                         </property>
                                         <doc>Create a constant sequence</doc>
-                                        <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -1694,7 +1694,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -1714,7 +1714,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -1749,7 +1749,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -1781,7 +1781,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                                 </property>
                                             </property>
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -1954,7 +1954,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -2040,7 +2040,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -2126,7 +2126,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -2227,7 +2227,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
                                     </property>
                                     <doc>Create a constant sequence</doc>
-                                    <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                                         </property>
                                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -2362,7 +2362,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                     <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
                                     </property>
                                     <doc>Create a constant sequence</doc>
-                                    <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                                         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                                         </property>
                                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -2500,7 +2500,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -2547,7 +2547,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                                 </property>
                                             </property>
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -2567,7 +2567,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -2587,7 +2587,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -2607,7 +2607,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -2641,7 +2641,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         <property name="value" class="ptolemy.data.expr.Parameter" value="theta_eq">
                                         </property>
                                         <doc>Create a constant sequence</doc>
-                                        <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -2677,7 +2677,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -2697,7 +2697,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -2732,7 +2732,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -2764,7 +2764,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                                 </property>
                                             </property>
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -2937,7 +2937,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -3023,7 +3023,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -3109,7 +3109,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                         </property>
                                         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                                         </property>
-                                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                                             </property>
                                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -3339,7 +3339,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                                 </property>
                             </property>
                         </property>
-                        <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
                             </property>
                             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -3427,7 +3427,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                             </property>
                             <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.0">
                             </property>
-                            <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
                                 </property>
                                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -3463,7 +3463,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                             <property name="value" class="ptolemy.data.expr.Parameter" value="tps_error_threshold">
                             </property>
                             <doc>Create a constant sequence</doc>
-                            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                                 </property>
                                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -3541,7 +3541,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                             <property name="value" class="ptolemy.data.expr.Parameter" value="false">
                             </property>
                             <doc>Create a constant sequence</doc>
-                            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                                 </property>
                                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -3576,7 +3576,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                             </property>
                             <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.0">
                             </property>
-                            <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
                                 </property>
                                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -3641,7 +3641,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                             <property name="value" class="ptolemy.data.expr.Parameter" value="false">
                             </property>
                             <doc>Create a constant sequence</doc>
-                            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                                 </property>
                                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -3676,7 +3676,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                             </property>
                             <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.0">
                             </property>
-                            <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+                            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
                                 </property>
                                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -3962,7 +3962,7 @@ inputs is put here as a placeholder.</text></svg></configure>
             <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -4116,7 +4116,7 @@ respectively pwm is on or off.</text></svg></configure>
             </property>
             <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -4230,7 +4230,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="volts_batt">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -4250,7 +4250,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="motor_on_B_Vbemf_1">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -4270,7 +4270,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="motor_on_B_Vbemf_2">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -4320,7 +4320,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="motor_on_B_Vbat_1">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -4340,7 +4340,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="motor_on_B_Vbat_2">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -4390,7 +4390,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="motor_on_Ax_11">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -4410,7 +4410,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="motor_on_Ax_12">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -4445,7 +4445,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="motor_on_Ax_22">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -4465,7 +4465,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="motor_on_Ax_21">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -4602,7 +4602,7 @@ respectively pwm is on or off.</text></svg></configure>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -4635,7 +4635,7 @@ respectively pwm is on or off.</text></svg></configure>
             <property name="value" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -4747,7 +4747,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="motor_off_B_Vbemf_1">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -4767,7 +4767,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="motor_off_B_Vbemf_2">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -4817,7 +4817,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="motor_off_Ax_11">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -4837,7 +4837,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="motor_off_Ax_12">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -4872,7 +4872,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="motor_off_Ax_22">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -4892,7 +4892,7 @@ respectively pwm is on or off.</text></svg></configure>
                 <property name="value" class="ptolemy.data.expr.Parameter" value="motor_off_Ax_21">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                     </property>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -5221,7 +5221,7 @@ respectively pwm is on or off.</text></svg></configure>
             </property>
             <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_icon" class="ptolemyvergil.icon.AttributeValueIcon">
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
@@ -5272,7 +5272,7 @@ respectively pwm is on or off.</text></svg></configure>
             <property name="value" class="ptolemy.data.expr.Parameter" value="good">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
@@ -5292,7 +5292,7 @@ respectively pwm is on or off.</text></svg></configure>
             <property name="value" class="ptolemy.data.expr.Parameter" value="good">
             </property>
             <doc>Create a constant sequence</doc>
-            <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
                 </property>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">

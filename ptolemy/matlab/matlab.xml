@@ -9,7 +9,7 @@
   <doc>Matlab Actor(s)</doc>
 
   <entity name="MatlabExpression" class="ptolemy.matlab.Expression">
-    <property name="_icon" class="ptolemyvergil.icon.BoxedValueIcon">
+    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
         <property name="attributeName" value="expression"/>
         <property name="displayWidth" value="60"/>
     </property>
