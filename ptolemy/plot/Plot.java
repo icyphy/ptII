@@ -331,8 +331,7 @@ public class Plot extends PlotBox {
         // Vector.clear() is new in JDK1.2, so we use just
         // create a new Vector here so that we can compile
         // this with JDK1.1 for use in JDK1.1 browsers
-        //points.clear();
-        points = new Vector();
+        _points.setElementAt(new Vector(), dataset);
         repaint();
     }
 
