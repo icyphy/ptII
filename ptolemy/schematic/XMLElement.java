@@ -147,6 +147,24 @@ public class XMLElement extends Object {
                 "child element with type " + type);
     }
 
+    /**
+     * Return the first child element of this element with the given type
+     * and name.
+     * @throws NoSuchElementException if no element with the given type 
+     * and name exists.
+     */
+    public XMLElement getChildElement(String type, String name)
+    throws NoSuchElementException {
+       Enumeration elements = childElements();
+        while(elements.hasMoreElements()) {
+            XMLElement el = (XMLElement) elements.nextElement();
+            if(type.equals(el.getElementType())&&
+                    name.equals(el.getAttribute("name")))
+                return el;
+        }
+        throw new NoSuchElementException("XMLElement does not contain a " +
+                "child element with type " + type);
+    }
 
     /** Return the type of this XMLElement.  The type is immutably set when
      *  the XMLElement is created.
