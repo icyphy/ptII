@@ -53,7 +53,6 @@ JSRCS = \
 	ExplicitRK23Solver.java \
 	FixedStepSolver.java \
 	ForwardEulerSolver.java \
-	ImpulseBESolver.java \
 	TrapezoidalRuleSolver.java
 
 
