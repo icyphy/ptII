@@ -51,7 +51,6 @@ JSRCS = \
 	AsymmetricDecryption.java \
 	AsymmetricEncryption.java \
 	CipherActor.java \
-	Cryptography.java \
 	CryptographyActor.java \
 	Decryption.java \
 	ServiceInformation.java \
