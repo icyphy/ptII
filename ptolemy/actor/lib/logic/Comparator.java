@@ -132,7 +132,8 @@ public class Comparator extends TypedAtomicActor {
 
 
     /** Override the base class to determine which comparison is being
-     *  specified.
+     *  specified.  Read the value of the comparison attribute and set
+     *  the cached value appropriately.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the comparison is not recognized.
      */
@@ -224,7 +225,7 @@ public class Comparator extends TypedAtomicActor {
 
     // Constants used for more efficient execution.
     private static final int _LT = 0;
-    private static final int _LE  = 1;
+    private static final int _LE = 1;
     private static final int _GT = 2;
     private static final int _GE = 3;
     private static final int _EQ = 4;
