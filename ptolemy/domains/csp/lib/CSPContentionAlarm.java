@@ -90,7 +90,7 @@ public class CSPContentionAlarm extends CSPActor {
             // State 2
             generateEvents( new ExecEvent( this, 2 ) );
 	    // System.out.println("\t\t\t\tSTATE 2: " +getName());
-            waitForDeadlock();
+            _waitForDeadlock();
 
             // State 3
             generateEvents( new ExecEvent( this, 3 ) );

@@ -97,7 +97,7 @@ public class CSPSieve extends CSPActor {
 		    TopologyChangeRequest t = _makeChangeRequest(lastSeen);
 		    getDirector().queueTopologyChangeRequest(t);
                     //System.out.println(getName() +":Queued TopologyChange");
-		    waitForDeadlock();
+		    _waitForDeadlock();
                     //System.out.println(getName() +": change succeeded?");
 		    islargestprime = false;
 		}
