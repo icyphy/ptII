@@ -26,7 +26,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
@@ -47,14 +47,15 @@ import ptolemy.actor.*;
 Output the most recent input token when the <i>trigger</i> port receives a
 token.  If no token has been received on the <i>input</i> port when a
 token is received on the <i>trigger</i> port, then no output is
-produced.  The inputs and can be of any token type, and the output
+produced.  The inputs can be of any token type, and the output
 is constrained to be of a type at least that of the input.
 <p>
 Both the <i>input</i> port and the <i>output</i> port are multiports.
 Generally, their widths should match. Otherwise, if the width of the
 <i>input</i> is greater than
 the width of the <i>output</i>, the extra input tokens will
-not be produced. If the width of the <i>output</i> is greater
+not appear on any output, although they will be consumed from
+the input port. If the width of the <i>output</i> is greater
 than that of the <i>input</i>, then the last few
 channels of the <i>output</i> will never emit tokens.
 <p>

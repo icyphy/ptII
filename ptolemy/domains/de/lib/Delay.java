@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
@@ -46,17 +46,16 @@ The time delay is required to be non-negative and has default value 1.0.
 The input and output types are unconstrained, except that the
 output type must be at least that of the input.
 <p>
-The actor assumes there is always an input token
-for each iteration, or the fire() method will throw an exception.
-Its behavior on each firing is to read a token from the input,
-and to produce the token on the corresponding output
+The behavior on each firing is to read a token from the input,
+if there is one, and to produce the token on the corresponding output
 channel with the appropriate time delay.  The output is produced
 in the postfire() method, consistent with the notion that persistent
 state is only updated in postfire().  Notice that it produces
 the output immediately, in the same iteration that it reads the
-input, so that even if actor no longer exists
+input, so that even if the actor no longer exists
 after the time delay elapses, the destination actor will still see
-the token.
+the token. If there is no input token, then no output token is
+produced.
 <p>
 Occasionally, it is useful to set the time
 delay to zero.  This causes the input tokens to be produced on
@@ -136,17 +135,24 @@ public class Delay extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        _currentInput = input.get(0);
+        if (input.hasToken(0)) {
+            _currentInput = input.get(0);
+        } else {
+            _currentInput = null;
+        }
     }
 
-    /** Produce token that was read in the fire() method.
+    /** Produce token that was read in the fire() method, if there
+     *  was one.
      *  The output is produced with a time offset equal to the value
      *  of the delay parameter.
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-        output.send(0, _currentInput,
-                ((DoubleToken)delay.getToken()).doubleValue());
+        if (_currentInput != null) {
+            output.send(0, _currentInput,
+                    ((DoubleToken)delay.getToken()).doubleValue());
+        }
         return super.postfire();
     }
 

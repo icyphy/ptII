@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (xxx@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
@@ -43,8 +43,6 @@ import ptolemy.kernel.util.*;
 This is an abstract base class for DE actors that transform
 an input stream into an output stream.  It provides an input
 and an output port, and manages the cloning of these ports.
-These ports are instances of DEPort, and the actor extends DEActor.
-Thus, all the facilities of those classes are available.
 
 @author Edward A. Lee
 @version $Id$
@@ -77,7 +75,7 @@ public abstract class DETransformer extends DEActor {
      */
     public DEIOPort input;
 
-    /** The output port. By default, the type of this output is constrained
+    /** The output port. By default, the type of this port is constrained
      *  to be at least that of the input.
      */
     public DEIOPort output;

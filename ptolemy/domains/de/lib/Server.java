@@ -1,4 +1,4 @@
-/* A server with a fixed service time.
+/* A server with a fixed or variable service time.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
@@ -42,10 +42,11 @@ import ptolemy.actor.TypedCompositeActor;
 //// Server
 /**
 This actor models a server with a fixed or variable service time.
+A server is either busy (serving a customer) or not busy at any given time.
 If an input arrives when it is not busy, then the input token is produced
 on the output with a delay given by the <i>serviceTime</i> parameter.
 If an input arrives while the server is busy, then that input is
-ignored until the server becomes free, at which point it is produced
+queued until the server becomes free, at which point it is produced
 on the output with a delay given by the <i>serviceTime</i> parameter.
 If several inputs arrive while the server is busy, then they are
 served on a first-come, first-served basis.
@@ -166,7 +167,7 @@ public class Server extends DETransformer {
         }
     }
 
-    /** Indicate that the server is free.
+    /** Indicate that the server is not busy.
      *  @exception IllegalActionException If the base class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -191,8 +192,8 @@ public class Server extends DETransformer {
         }
     }
 
-    /** Produce token that was read in the fire() method, if one was read,
-     *  and schedule a firing when the service time elapses.
+    /** If a token was read in the fire() method, then produce it on
+     *  the output and schedule a firing to occur when the service time elapses.
      *  The output is produced with a time offset equal to the value
      *  of the <i>serviceTime</i> parameter.
      *  @exception IllegalActionException If there is no director.

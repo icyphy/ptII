@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
@@ -103,10 +103,11 @@ public class WaitingTime extends DEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If this firing is triggered by an event at waitee, then output
-     *  the waiting time for each prior event arrival at waiter since the
-     *  last arrival of waitee.  If there is no event at waitee, then record
-     *  the time of arrival of the events at waiter, and produce no output.
+    /** If this firing is triggered by an event at <i>waitee</i>, then output
+     *  the waiting time for each prior event arrival at <i>waiter</i>
+     *  since the last arrival of waitee.  If there is no event at
+     *  <i>waitee</i>, then record the time of arrival of the events
+     *  at <i>waiter</i>, and produce no output.
      *  @exception IllegalActionException If get() or send() throws it.
      */
     public void fire() throws IllegalActionException {
