@@ -53,7 +53,6 @@ the initial outputs permit the computation to get started. The
 default value for the <i>initialOutputs</i> parameter causes a
 single integer token with value zero to be produced in
 initialize().
-@see ptolemy.domains.de.lib.TimedDelay
 
 @author Steve Neuendorffer, Edward A. Lee
 @version $Id$
