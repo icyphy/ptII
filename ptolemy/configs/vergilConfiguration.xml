@@ -128,8 +128,6 @@
          </property>
       </property>
       <property name="Giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
-      <property name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector"/>
-
           </group>
         ?>
       </configure>
