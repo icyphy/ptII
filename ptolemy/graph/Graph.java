@@ -1111,42 +1111,41 @@ public class Graph implements Cloneable {
         return nodes;
     }
 
-    /** Remove an edge from this graph.
+    /** Remove an edge from this graph if it exists in the graph.
+     *  The edge may be hidden.
      * An edge that is removed from a graph can be re-inserted
      * into the graph at a later time (using {@link #addEdge(Edge)}),
      * provided that the incident nodes are still in the graph.
-     * This is an <em>O(e)</em> operation. A similar operation can be
+     *
+     * <p>This is an <em>O(e)</em> operation. A similar operation can be
      * performed in <em>O(1)</em> time using {@link #hideEdge(Edge)}.
      * @param edge The edge to be removed.
-     * @exception IllegalArgumentException If the edge is not contained
-     * in the graph.
+     * @return True if the edge was removed.
      * @see #hideEdge(Edge).
      */
-    public void removeEdge(Edge edge) {
-        try {
-            _edges.remove(edge);
-        } catch (IllegalArgumentException exception) {
-            throw new IllegalArgumentException("Attempt to remove an edge "
-                    + "that is not in the graph." + _edgeDump(edge));
+    public boolean removeEdge(Edge edge) {
+        if (!_edges.contains(edge)) {
+            return false;
         }
-        _disconnectEdge(edge);
+        _edges.remove(edge);
+        if (!hidden(edge)) { 
+            _disconnectEdge(edge);
+        }
+        return true;
     }
 
-    /** Remove a node from this graph.
+    /** Remove a node from this graph if it exists in the graph.
      * All edges incident to the node are also removed. This is an
      * <em>O(n + ke)</em> operation, where <em>k</em> is the number of
      * incident edges.
      * @param node The node to be removed.
-     * @exception IllegalArgumentException If the node is not contained
-     * in the graph.
+     * @return True if the node was removed.
      */
-    public void removeNode(Node node) {
-        try {
-            _nodes.remove(node);
-        } catch (IllegalArgumentException exception) {
-            throw new IllegalArgumentException("Attempt to remove a node "
-                    + "that is not in the graph."  + _nodeDump(node));
+    public boolean removeNode(Node node) {
+        if (!_nodes.contains(node)) {
+            return false;
         }
+        _nodes.remove(node);
         // Avoid concurrent modification of the incident edges list.
         Object[] incidentEdgeArray = incidentEdges(node).toArray();
         for (int i = 0; i < incidentEdgeArray.length; i++) {
@@ -1161,6 +1160,7 @@ public class Graph implements Cloneable {
             }
         }
         _registerChange();
+        return true;
     }
 
     /** Restore an edge if the edge exists in the graph and is presently
