@@ -118,7 +118,7 @@ public class CTZeroCrossingDetector extends CTActor
      *  @exception IllegalActionException If the event cannot be broadcasted.
      */
     public void emitCurrentEvents() throws IllegalActionException{
-        _debug(this.getFullName() + " checking for currrent event...");
+        _debug(this.getFullName() + " checking for current event...");
     
         if(_eventNow) {
             _debug(getFullName() + " Emitting event: " + 

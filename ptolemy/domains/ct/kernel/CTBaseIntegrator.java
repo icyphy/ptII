@@ -328,12 +328,12 @@ public class CTBaseIntegrator extends CTActor
         CTDirector dir = (CTDirector)getDirector();
         if(dir == null) {
             throw new IllegalActionException( this,
-                    " has no director available");
+                    " no director available");
         }
         ODESolver solver = (ODESolver)dir.getCurrentODESolver();
         if(solver == null) {
             throw new IllegalActionException( this,
-                    " has no ODE solver available");
+                    " no ODE solver available");
         }
 
         int n = solver.getIntegratorAuxVariableCount();
@@ -475,8 +475,8 @@ public class CTBaseIntegrator extends CTActor
 
     // The history states and its derivative.
     // This variable is needed by Linear Multistep (LMS) methods,
-    // like Trapezoidal rule.
-    // FIXME: In the current implememtation, the highest LMS method is of
+    // like Tropezoidal rule.
+    // FIXME: In the current implementation, the highest LMS method is of
     // order 2. So only the information of the last step is needed. But
     // the interface is provided to have multiple histories and retrieve
     // them by index.

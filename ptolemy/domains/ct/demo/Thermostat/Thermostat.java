@@ -50,7 +50,7 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// Thermostat
 /**
-This applet shows a simple thermostat system. The temperatur of the room
+This applet shows a simple thermostat system. The temperature of the room
 is expected to be controlled between Tl and Th
 <p>
 The system has two states, heating and cooling. In the heating state,
@@ -63,7 +63,7 @@ In the cooling state, the temperature is dropped linearly, i.e.
 <pre>
 <CODE>    dx/dt = -1</CODE>
 </pre>
-The control rule is that if the temperature reaches Th degree, then swich
+The control rule is that if the temperature reaches Th degree, then switch
 the controller to the cooling state; if the temperature decreases to Tl degree
 then switch the controller to the heating state. 
 <p>

@@ -53,7 +53,7 @@ import ptolemy.data.expr.Parameter;
 A demonstration of the Lorenz system. The system is given by a set of 
 ODEs like:
 dx1/dt = sigma*(x2-x1)
-dx2/dt = (lamda-x3)*x1 -x2
+dx2/dt = (lambda-x3)*x1 -x2
 dx3/dt = x1*x2-b*x3
 
 This demo plots the projection of the state trajectory to the (x1,x2)
@@ -80,7 +80,7 @@ public class LorenzApplet extends CTApplet {
         controlpanel.add("West", _query);
         _query.addLine("stopT", "Stop Time", "50.0");
         _query.addLine("sigma", "Sigma", "10.0");
-        _query.addLine("lamda", "Lamda", "25.0");
+        _query.addLine("lambda", "Lambda", "25.0");
         _query.addLine("b", "b", "2.0");
 
         Panel runcontrols = new Panel();
@@ -90,7 +90,6 @@ public class LorenzApplet extends CTApplet {
         //System.out.println("Construct the model");
         // Creating the model.
         try {
-            
             // Set up the top level composite actor, director and manager
             _toplevel.setName("LorenzSystem");
             _dir = new CTSingleSolverDirector(
@@ -100,29 +99,29 @@ public class LorenzApplet extends CTApplet {
             // ---------------------------------
             // Create the system.
             // ---------------------------------
-
+            
             // CTActors
-
-            _LAMDA = new Const(_toplevel, "LAMDA");
+            
+            _LAMBDA = new Const(_toplevel, "LAMBDA");
             _SIGMA = new Scale(_toplevel, "SIGMA");
             _B = new Scale(_toplevel, "B");
-
+            
             AddSubtract ADD1 = new AddSubtract(_toplevel, "Add1");
             AddSubtract ADD2 = new AddSubtract(_toplevel, "Add2");
             AddSubtract ADD3 = new AddSubtract(_toplevel, "Add3");
             AddSubtract ADD4 = new AddSubtract(_toplevel, "Add4");
-
+            
             MultiplyDivide MULT1 = new MultiplyDivide(_toplevel, "MULT1");
             MultiplyDivide MULT2 = new MultiplyDivide(_toplevel, "MULT2");
-
+            
             CTIntegrator X1 = new CTIntegrator(_toplevel, "IntegratorX1");
             CTIntegrator X2 = new CTIntegrator(_toplevel, "IntegratorX2");
             CTIntegrator X3 = new CTIntegrator(_toplevel, "IntegratorX3");
-
+            
             Scale MINUS1 = new Scale(_toplevel, "MINUS1");
             Scale MINUS2 = new Scale(_toplevel, "MINUS2");
             Scale MINUS3 = new Scale(_toplevel, "MINUS3");
-
+            
             XYPlotter myplot = new XYPlotter(_toplevel, "CTXYPlot");
             myplot.setPanel(this);
             myplot.plot.setGrid(true);
@@ -130,7 +129,7 @@ public class LorenzApplet extends CTApplet {
             myplot.plot.setYRange(-25.0, 25.0);
             myplot.plot.setSize(400, 400);
             myplot.plot.addLegend(0,"(x1,x2)");
-
+            
             // CTConnections
             TypedIORelation x1 = new TypedIORelation(_toplevel, "X1");
             TypedIORelation x2 = new TypedIORelation(_toplevel, "X2");
@@ -141,22 +140,22 @@ public class LorenzApplet extends CTApplet {
             MINUS1.input.link(x1);
             MINUS2.input.link(x2);
             MINUS3.input.link(x3);
-
+            
             // dx1/dt = sigma*(x2-x1)
             _toplevel.connect(MINUS1.output, ADD1.plus);
             ADD1.plus.link(x2);
             _toplevel.connect(ADD1.output, _SIGMA.input);
             _toplevel.connect(_SIGMA.output, X1.input);
-
-            // dx2/dt = (lamda-x3)*x1-x2
-            _toplevel.connect(_LAMDA.output, ADD2.plus);
+            
+            // dx2/dt = (lambda-x3)*x1-x2
+            _toplevel.connect(_LAMBDA.output, ADD2.plus);
             _toplevel.connect(MINUS3.output, ADD2.plus);
             _toplevel.connect(ADD2.output, MULT1.multiply);
             MULT1.multiply.link(x1);
             _toplevel.connect(MULT1.output, ADD3.plus);
             _toplevel.connect(MINUS2.output, ADD3.plus);
             _toplevel.connect(ADD3.output, X2.input);
-
+            
             // dx3/dt = x1*x2-b*x3
             MULT2.multiply.link(x1);
             MULT2.multiply.link(x2);
@@ -164,10 +163,10 @@ public class LorenzApplet extends CTApplet {
             _toplevel.connect(MULT2.output, ADD4.plus);
             _toplevel.connect(_B.output, ADD4.minus);
             _toplevel.connect(ADD4.output, X3.input);
-
+            
             myplot.inputX.link(x1);
             myplot.inputY.link(x2);
-
+            
             //System.out.println("Parameters");
             // CT Director parameters
             _dir.InitStepSize.setToken(new DoubleToken(0.01));
@@ -175,12 +174,12 @@ public class LorenzApplet extends CTApplet {
             StringToken token2 = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             _dir.ODESolver.setToken(token2);
-
+            
             // CTActorParameters
             X1.InitialState.setToken(new DoubleToken(1.0));
             X2.InitialState.setToken(new DoubleToken(1.0));
             X3.InitialState.setToken(new DoubleToken(1.0));
-
+            
             MINUS1.gain.setToken(new DoubleToken(-1.0));
             MINUS2.gain.setToken(new DoubleToken(-1.0));
             MINUS3.gain.setToken(new DoubleToken(-1.0));
@@ -200,8 +199,8 @@ public class LorenzApplet extends CTApplet {
         try {
             _dir.StopTime.setToken(new DoubleToken(
                     _query.doubleValue("stopT")));
-            _LAMDA.value.setToken(new DoubleToken(
-                    _query.doubleValue("lamda")));
+            _LAMBDA.value.setToken(new DoubleToken(
+                    _query.doubleValue("lambda")));
             _SIGMA.gain.setToken(new DoubleToken(
                     _query.doubleValue("sigma")));
             _B.gain.setToken(new DoubleToken(
@@ -223,7 +222,7 @@ public class LorenzApplet extends CTApplet {
 
     private Query _query;
 
-    private Const _LAMDA;
+    private Const _LAMBDA;
     private Scale _SIGMA;
     private Scale _B;
 
@@ -237,8 +236,8 @@ public class LorenzApplet extends CTApplet {
             try {
                 _dir.StopTime.setToken(new DoubleToken(
                         _query.doubleValue("stopT")));
-                _LAMDA.value.setToken(new DoubleToken(
-                        _query.doubleValue("lamda")));
+                _LAMBDA.value.setToken(new DoubleToken(
+                        _query.doubleValue("lambda")));
                 _SIGMA.gain.setToken(new DoubleToken(
                         _query.doubleValue("sigma")));
                 _B.gain.setToken(new DoubleToken(

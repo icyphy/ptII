@@ -298,7 +298,7 @@ public class ControllerActor extends CTActor{
      */
     public TypedIOPort outputDA;
 
-    /** Parameter for Iy, doble, default 0.271256.
+    /** Parameter for Iy, double, default 0.271256.
      */
     public Parameter paramIy;
 

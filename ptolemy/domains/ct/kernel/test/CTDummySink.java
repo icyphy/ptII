@@ -37,7 +37,7 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// CTDummySink
 /** 
-Dummy actor fot sink. Multi-input, no output.
+Dummy actor for sink. Multi-input, no output.
 @author  Jie Liu
 @version $Id$
 

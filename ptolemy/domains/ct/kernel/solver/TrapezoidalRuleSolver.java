@@ -211,7 +211,7 @@ public class TrapezoidalRuleSolver extends ODESolver{
                 return true;
             } else {
                 _debug("Integrator: " + integrator.getName() +
-                        " reports a failiar.");
+                        " reports a failure.");
                 return false;
             }
         } catch (IllegalActionException e) {

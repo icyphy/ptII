@@ -104,7 +104,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
     ////                         public methods                    ////
 
     /** React to a change in an attribute. If the changed attribute matches
-     *  a parameter of the director, then the coresponding private copy of the
+     *  a parameter of the director, then the corresponding private copy of the
      *  parameter value will be updated.
      *  @param param The changed parameter.
      *  @exception IllegalActionException If the new solver that is specified

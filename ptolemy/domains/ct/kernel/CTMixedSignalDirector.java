@@ -197,7 +197,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             setCurrentStepSize(getSuggestedNextStepSize());
             _processBreakpoints();
             _debug("Resolved stepsize: "+getCurrentStepSize() +
-                                   " One itertion from " + getCurrentTime());
+                                   " One iteration from " + getCurrentTime());
             _fireOneIteration();
             if (_stopByEvent()) {
                 _debug( this.getFullName() + " stop by event.");
@@ -388,7 +388,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             }
             // fireAt(null, _outsideTime);
             // fireAt(null, getIterationEndTime());
-            // Now it's guranteed that the current time is the outside time.
+            // Now it's guaranteed that the current time is the outside time.
             _debug("Iteration end time="+getIterationEndTime());
         }
         return true;

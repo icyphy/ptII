@@ -114,7 +114,7 @@ public class CTPeriodicSampler extends CTActor
                     _hasCurrentEvent = false;
                 }
             }catch (IllegalActionException e) {
-                throw new InternalErrorException("Token missmatch.");
+                throw new InternalErrorException("Token mismatch.");
             }
         }
     } 

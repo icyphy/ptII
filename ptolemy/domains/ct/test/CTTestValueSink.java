@@ -23,8 +23,8 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Green (yourname@eecs.berkeley.edu)
-@AcceptedRating Green (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@AcceptedRating Red (liuj@eecs.berkeley.edu)
 
 */
 
@@ -112,7 +112,7 @@ public class CTTestValueSink extends TypedAtomicActor {
     
     /** Wrapup. Compare the last token with 1.0. For correct integration,
      *  the last token should be very close to it.
-     *  We take 1e-10 as the value resolition.
+     *  We take 1e-10 as the value resolution.
      *  
      */
     public void wrapup() {

@@ -41,7 +41,7 @@ import collections.LinkedList;
 //// CTScheduler
 /**
 Clustered graph sorting scheduler for CT domain. 
-A CT (sub)system can be represented mathematiclly as:<Br>
+A CT (sub)system can be represented mathematically as:<Br>
     dx/dt = f(x, u, t)<Br>
     y = g(x, u, t)<BR>
     e: h(x, u, t) = 0<BR>
@@ -575,7 +575,7 @@ public class CTScheduler extends Scheduler{
      }
 
     /** return an Enumeration of the detail schedules. The first
-     *  element in the Enumeration is the states chedule, then
+     *  element in the Enumeration is the states schedule, then
      *  transition schedule, then output schedule, and then
      *  event generating schedule. Each schedule is
      *  an Enumeration of actors in their topological order.
