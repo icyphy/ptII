@@ -98,7 +98,19 @@ PTINYJSRCS = \
 			ptolemy.domains.sdf.lib \
 			ptolemy.domains.sdf.lib.vq
 
+# GR domain uses Java 3D, which is not part of the default
+# JDK1.3 download, so we can't include the GR domain classes in
+# the default build.
+#GRJSRCS =		ptolemy.domains.gr.kernel \
+#			ptolemy.domains.gr.lib
+
+# Javasound is not part of JDK1.2
+#JAVASOUNDJSRCS =	ptolemy.actor.lib.javasound \
+#			ptolemy.media.javasound
+
 ALLJSRCS =		$(PTINYJSRCS) \
+			$(GRJSRCS) \
+			$(JAVASOUNDJSRCS) \
 			ptolemy.plot \
 			ptolemy.plot.plotml \
 			ptolemy.plot.compat \
