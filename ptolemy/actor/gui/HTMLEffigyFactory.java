@@ -101,7 +101,6 @@ public class HTMLEffigyFactory extends EffigyFactory {
             throws Exception {
         if (in == null) return null;
         String extension = getExtension(in);
-        String protocol = in.getProtocol();
         // Here, if it has an "http" protocol, we agree to
         // open it.  The reason is that many main HTML pages are
         // referenced by a string like "http://ptolemy.eecs.berkeley.edu".

@@ -186,7 +186,7 @@ public class PortConfigurerDialog extends ComponentDialog
         if (change == null || change.getSource() != this) return;
 
         // Open a new dialog.
-        PortConfigurerDialog dialog = new PortConfigurerDialog(
+        new PortConfigurerDialog(
                 _owner, _target, _configuration);
 
         _target.removeChangeListener(this);

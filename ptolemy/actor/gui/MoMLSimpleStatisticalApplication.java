@@ -195,7 +195,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
 
                 Object args[] = new Object[1];
                 args[0] = workspace;
-                NamedObj newModel = (NamedObj)constructor.newInstance(args);
+                constructor.newInstance(args);
 
             } else {
                 if (!arg.startsWith("-")) {
@@ -300,8 +300,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
      */
     public static void main(String args[]) {
         try {
-            MoMLSimpleStatisticalApplication application =
-                new MoMLSimpleStatisticalApplication(args);
+            new MoMLSimpleStatisticalApplication(args);
         } catch (Exception ex) {
             System.err.println("Command failed: " + ex);
             ex.printStackTrace();

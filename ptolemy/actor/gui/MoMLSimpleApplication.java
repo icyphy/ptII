@@ -155,8 +155,7 @@ public class MoMLSimpleApplication implements ChangeListener {
      */
     public static void main(String args[]) {
         try {
-            MoMLSimpleApplication simpleApplication =
-                new MoMLSimpleApplication(args[0]);
+            new MoMLSimpleApplication(args[0]);
         } catch (Exception ex) {
             System.err.println("Command failed: " + ex);
             ex.printStackTrace();

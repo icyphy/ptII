@@ -202,7 +202,6 @@ public class RecordUpdater extends TypedAtomicActor {
      */
     public List typeConstraintList() {
         Object[] portArray = outputPortList().toArray();
-        int size = portArray.length;
         String[] labels = new String[0];
         Type[] types = new Type[0];
 

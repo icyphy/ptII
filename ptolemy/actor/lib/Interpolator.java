@@ -164,11 +164,9 @@ public class Interpolator extends SequenceSource {
         if (attribute == values) {
             ArrayToken valuesValue = (ArrayToken)values.getToken();
             _values = new double[valuesValue.length()];
-            double previous = 0.0;
             for (int i = 0; i < valuesValue.length(); i++) {
                 _values[i] = ((DoubleToken)valuesValue.getElement(i))
                     .doubleValue();
-                previous = _values[i];
             }
             _interpolation.setValues(_values);
         } else if (attribute == indexes) {
