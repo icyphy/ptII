@@ -157,6 +157,14 @@ proc _testPortLinkedRelations {args} {
 }
 
 ######################################################################
+#### _testPortInsideRelations
+# Given a ComponentPort, return a Tcl List containing its Inside Relations.
+#
+proc _testPortInsideRelations {args} {
+    eval _testEnums insideRelations $args
+}
+
+######################################################################
 #### _testRelationLinkedEntities
 # Given one or more Entities, return a Tcl list containing
 # a list of lists of the Entities that each Relation is connected to.
