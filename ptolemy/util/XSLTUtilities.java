@@ -33,8 +33,15 @@ package ptolemy.util;
 // Note that classes in ptolemy.util do not depend on any
 // other ptolemy packages.
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.Iterator;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StreamTokenizer;
+import java.io.StringReader;
+import java.net.URL;
+import java.util.LinkedList;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -43,7 +50,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
-
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 
@@ -69,18 +76,18 @@ public class XSLTUtilities {
     ////                         public methods                    ////
 
     /** Parse a document.
-     * @param fileName The file name of the xml file to be read in
+     * @param filename The file name of the xml file to be read in
      * @return the parsed document.
      */
-    public static Document parse(String fileName) throws Exception {
+    public static Document parse(String filename) throws Exception {
         DocumentBuilderFactory factory
             = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        return builder.parse(new File(fileName));
+        return builder.parse(new File(filename));
 
     }
 
-    /** Transform a document 
+    /** Transform a document
      * @param inputDocument The Document to be transformed
      * @param transformFileName The file name of the xsl file to be used
      * @return a transformed document
@@ -96,19 +103,18 @@ public class XSLTUtilities {
         return (Document)result.getNode();
     }
 
-    /** Transform a document 
-     * @param inputDocument The Document to be transformed
-     * @param transformFileNames A list of Strings naming the
-     * xsl files to be applied sequentially
-     * @return a transformed document
-     */
-    public static Document transform(Document inputDocument,
-            List transformFileNames) throws Exception {
-        Iterator fileNames = transformFileNames.iterator();
-        while (fileNames.hasNext()) {
-            String fileName = (String) fileNames.next();
-            inputDocument = transform(inputDocument, fileName);
-        }
-        return inputDocument;
+    public static void transform
+                (String xsltFileName, String sourceFileName, String outputFileName)
+                throws Exception {
+        OutputStream os = new FileOutputStream(outputFileName);
+        StreamSource source = new StreamSource(sourceFileName);
+        StreamResult result = new StreamResult(os);
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer t =
+                tf.newTransformer(new StreamSource(xsltFileName));
+        t.setOutputProperty("indent", "yes");
+        t.transform(source, result);
+        os.flush();
+        os.close();
     }
 }

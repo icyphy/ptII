@@ -33,6 +33,7 @@ package ptolemy.hsif;
 
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.EffigyFactory;
+import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -65,7 +66,7 @@ An object that can create a new Effigy from an HSIF file.
 @see Configuration
 @see Effigy
 */
-public class HSIFEffigyFactory extends CompositeEntity {
+public class HSIFEffigyFactory extends EffigyFactory {
 
     /** Create a factory with the given name and container.
      *  @param container The container.
@@ -116,25 +117,19 @@ public class HSIFEffigyFactory extends CompositeEntity {
              if (!extension.equals("xml")) {
                  return null;
              }
-             // Create a blank effigy.
-             PtolemyEffigy effigy = new PtolemyEffigy(
-                     container, container.uniqueName("effigy"));
-
-             MoMLParser parser = new MoMLParser();
-             NamedObj toplevel = null;
-
         }
 
         if (_isHSIF(input)) {
             try {
                 _inCreateEffigy = true;
 
-                URL temporaryMoMLFileURL = new URL("SwimmingPool.xml");
+                //URL temporaryMoMLFileURL = new URL("SwimmingPool.xml");
+                String temporaryOutputName = "SwimmingPool.xml";
                 // FIXME: HSIFToMoML does NOT work.
-                _HSIFToMoML(input, temporaryMoMLFileURL);
-                
+                _HSIFToMoML(input, temporaryOutputName);
+
                 return ((EffigyFactory)getContainer()).createEffigy(container,
-                       temporaryMoMLFileURL, temporaryMoMLFileURL);
+                       base, MoMLApplication.specToURL(temporaryOutputName));
            } finally {
                _inCreateEffigy = false;
            }
@@ -147,20 +142,12 @@ public class HSIFEffigyFactory extends CompositeEntity {
 
 
     // Read in the file named by input, transform it and generate output.
-    private static void _HSIFToMoML(URL input, URL output) throws Exception {
-        // FIXME: need to go from a URL to a filename.
-        Document inputDocument = XSLTUtilities.parse(input.toString());
-
-        List transforms = new LinkedList();
-
-        // FIXME: Need to locate these in the jar files.
-        transforms.add("xsl/GlobalVariablePreprocessor.xsl");
-        transforms.add("xsl/SlimPreprocessor.xsl");
-        transforms.add("xsl/LocalVariablePreprocessor.xsl");
-        Document outputDocument =
-            XSLTUtilities.transform(inputDocument, transforms);
-
-        // FIXME: need to go from outputDocument to a URL.
+    private static void _HSIFToMoML(URL input, String output) throws Exception {
+        XSLTUtilities.transform(input.toString(), "xsl/GlobalVariablePreprocessor.xsl", "outputDocument_g");
+        XSLTUtilities.transform("outputDocument_g", "xsl/SlimPreprocessor.xsl", "outputDocument_sg");
+        XSLTUtilities.transform("outputDocument_sg", "xsl/LocalVariablePreprocessor.xsl", "outputDocument_l");
+        XSLTUtilities.transform("outputDocument_l", "xsl/SlimPreprocessor.xsl", "outputDocument_sl");
+        XSLTUtilities.transform("outputDocument_sl", "xsl/HSIF.xsl", output);
     }
 
     // Return true if the input file is a HSIF file.
@@ -195,5 +182,5 @@ public class HSIFEffigyFactory extends CompositeEntity {
 
     private boolean _inCreateEffigy;
     private boolean _isHSIF;
-
+    private URL _temporaryMoMLFileURL;
 }
