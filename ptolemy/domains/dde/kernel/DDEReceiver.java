@@ -322,6 +322,9 @@ public class DDEReceiver extends TimedQueueReceiver
         if( timeKeeper.getNextTime() == INACTIVE ) {
             requestFinish();
 	}
+        if( getRcvrTime() == INACTIVE && !_terminate ) {
+	    return false;
+	}
         if( getRcvrTime() == IGNORE && !_terminate ) {
 	    if( _ignoreNotSeen ) {
 		_ignoreNotSeen = false;
