@@ -38,11 +38,14 @@ import soot.toolkits.graph.*;
 import java.util.*;
 
 /** 
-An attempt to remove instance equality checks.  This is not strictly correct.  I think a better way to 
-formulate it is as a forward dataflow problem that colors all of the locals based on the
-set of objects that they can refer to.
-
-Namely, this is not correct because it assumes that all fields contain distinct objects.  It also depends on the fact that the values are defined at fields.
+A transformer that removes instance equality checks. 
+It uses alias analysis to determine what locals can point to the same object,
+allowing static evaluation of simple conditions.
+Specifically, <i>ref1 == ref2</i> can be replaced with true if <i>ref1</i>
+and <i>ref2</i> are must-aliases of eachother, and false if <i>ref1</> and <i>ref2</i>
+are not maybe aliases of eachother.  Similarly, <i>ref1 != ref2</i> can be
+replaced with true if <i>ref1</> and <i>ref2</i> are not maybe aliases of 
+eachother and with false if they are must-aliases
 
 */
 
@@ -51,9 +54,13 @@ public class InstanceEqualityEliminator extends BodyTransformer
     private static InstanceEqualityEliminator instance = new InstanceEqualityEliminator();
     private InstanceEqualityEliminator() {}
 
-    public static InstanceEqualityEliminator v() { return instance; }
+    public static InstanceEqualityEliminator v() {
+        return instance; 
+    }
 
-    public String getDeclaredOptions() { return super.getDeclaredOptions(); }
+    public String getDeclaredOptions() { 
+        return super.getDeclaredOptions() + " debug"; 
+    }
     
     protected void internalTransform(Body b, String phaseName, Map options)
     {
@@ -62,10 +69,11 @@ public class InstanceEqualityEliminator extends BodyTransformer
             System.out.println("[" + body.getMethod().getName() +
                 "] Eliminating instance equality checks...");
         
+        boolean debug = Options.getBoolean(options, "debug");
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
-        //        SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);        
         MustAliasAnalysis aliasAnalysis = new MustAliasAnalysis(unitGraph);
-
+ 
+        // Loop through all the uni
         for(Iterator units = body.getUnits().iterator();
             units.hasNext();) {
             Unit unit = (Unit)units.next();
@@ -80,9 +88,11 @@ public class InstanceEqualityEliminator extends BodyTransformer
                     Value right = binop.getOp2();
                     if(left.getType() instanceof RefType &&
                             right.getType() instanceof RefType) {
-                        System.out.println("checking unit = " + unit);
-                        System.out.println("left aliases = " + aliasAnalysis.getAliasesOfBefore((Local)left, unit));
-                        System.out.println("right aliases = " + aliasAnalysis.getAliasesOfBefore((Local)right, unit));
+                        if(debug) System.out.println("checking unit = " + unit);
+                        if(debug) System.out.println("left aliases = " + 
+                                aliasAnalysis.getAliasesOfBefore((Local)left, unit));
+                        if(debug) System.out.println("right aliases = " + 
+                                aliasAnalysis.getAliasesOfBefore((Local)right, unit));
                         // Utter hack... Should be:
                         // if(aliasAnalysis.getAliasesOfBefore((Local)left, unit).contains(right)) {
                         Set intersection = aliasAnalysis.getAliasesOfBefore((Local)left, unit);
@@ -96,52 +106,10 @@ public class InstanceEqualityEliminator extends BodyTransformer
                             // Replace with operands that can be statically evaluated.
                             binop.getOp1Box().setValue(IntConstant.v(0));
                             binop.getOp2Box().setValue(IntConstant.v(1));
-                        }
-                        /*
-                        // System.out.println("expr = " + binop);
-                        Object leftDef = _getUniqueDef(left, unit, localDefs);
-                        Object rightDef = _getUniqueDef(right, unit, localDefs);
-                        // System.out.println("def = " + leftDef);
-                        // System.out.println("def = " + rightDef);
-                        if(leftDef instanceof EquivTo &&
-                                leftDef instanceof FieldRef &&
-                                rightDef instanceof EquivTo &&
-                                rightDef instanceof FieldRef &&
-                                Modifier.isFinal(
-                                        ((FieldRef)leftDef).getField().getModifiers())) {
-                            if(((EquivTo)leftDef).equivTo(rightDef)) {
-                                // System.out.println("equivalent definitions of -" + binop.getSymbol() + "!");
-                                // Replace with operands that can be statically evaluated.
-                                binop.getOp1Box().setValue(IntConstant.v(0));
-                                binop.getOp2Box().setValue(IntConstant.v(0));
-                            } else {
-                                // System.out.println("unequivalent definitions of -" + binop.getSymbol() + "!");
-                                // Replace with operands that can be statically evaluated.
-                                binop.getOp1Box().setValue(IntConstant.v(0));
-                                binop.getOp2Box().setValue(IntConstant.v(1));
-                            }
-                        }
-                       */
+                        }                      
                     }
                 }
             }
-        }
-    }
-
-    private Object _getUniqueDef(Value value, Unit unit, LocalDefs localDefs) {
-        List defs = localDefs.getDefsOfAt((Local)value, unit);
-        if(defs.size() == 1) {
-            DefinitionStmt stmt = (DefinitionStmt)defs.get(0);
-            if(stmt.getRightOp() instanceof CastExpr) {
-                CastExpr castExpr = (CastExpr)stmt.getRightOp();
-                return _getUniqueDef(castExpr.getOp(), stmt, localDefs);
-            } else if(stmt.getRightOp() instanceof Local) {
-                return _getUniqueDef(stmt.getRightOp(), stmt, localDefs);
-            } else {
-                return stmt.getRightOp();
-            }           
-        } else {
-            return value;
         }
     }
 }

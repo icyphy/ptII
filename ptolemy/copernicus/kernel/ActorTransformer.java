@@ -295,14 +295,11 @@ public class ActorTransformer extends SceneTransformer {
     }
 
     private static void _implementExecutableInterface(SootClass theClass) {
-        System.out.println("theClass " + theClass);
-        
         // Loop through all the methods and remove calls to super.
         for(Iterator methods = theClass.getMethods().iterator();
             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
-             System.out.println("method " + method);
-             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
              for(Iterator units = body.getUnits().snapshotIterator();
                 units.hasNext();) {
                 Unit unit = (Unit)units.next();
@@ -319,17 +316,18 @@ public class ActorTransformer extends SceneTransformer {
                                 box.setValue(IntConstant.v(1));
                             } else {
                                 body.getUnits().remove(unit);
-                                System.out.println("removing " + r);
                             }
-                        } else if(!r.getMethod().getName().equals("<init>")) {
-                            System.out.println("superCall:" + r);
                         }
                     }
                 }
             }
         }
 
-        // FIXME: what about the other methods?
+        // The initialize method implemented in the actor package is wierd,
+        // because it calls getDirector.  Since we don't need it,
+        // make sure that we never call the baseclass initialize method.
+        // FIXME: When we get to the point where we no longer derive
+        // from TypedAtomicActor, we need to implement all of these methods.
         if(!theClass.declaresMethodByName("initialize")) {
             SootMethod method = new SootMethod("initialize",
                     new LinkedList(), VoidType.v(), Modifier.PUBLIC);

@@ -116,6 +116,9 @@ public class InlinePortTransformer extends SceneTransformer {
                     SootField bufferField = new SootField("_portbuffer_" + port.getName(),
                             ArrayType.v(tokenType, 2), Modifier.PUBLIC);
                     entityClass.addField(bufferField);
+
+                    // Tag the field we created with the type of its data.
+                    bufferField.addTag(new TypeTag(type));
                     
                     // Create references to the buffer for each port channel
                     for(Iterator methods = entityClass.getMethods().iterator();
@@ -280,7 +283,8 @@ public class InlinePortTransformer extends SceneTransformer {
                                     // if we are invoking a method on a port class, then
                                     // attempt to get the constant value of the port.
                                     TypedIOPort port = (TypedIOPort)
-                                        getPortValue((Local)r.getBase(), unit, localDefs, localUses);
+                                        getPortValue(method, (Local)r.getBase(), 
+                                                unit, localDefs, localUses);
                                     //     System.out.println("reference to port = " + port);
                                          
                                     if(port == null) {
@@ -816,19 +820,23 @@ public class InlinePortTransformer extends SceneTransformer {
         }
     }
 
-    /** Attempt to determine the constant value of the given local, which is assumed to have a variable
-     *  type.  Walk backwards through all the possible places that the local may have been defined and
-     *  try to symbolically evaluate the value of the variable. If the value can be determined, 
+    /** Attempt to determine the constant value of the 
+     *  given local, which is assumed to have a variable
+     *  type.  Walk backwards through all the possible 
+     *  places that the local may have been defined and
+     *  try to symbolically evaluate the value of the 
+     *  variable. If the value can be determined, 
      *  then return it, otherwise return null.
      */ 
-    public static Port getPortValue(Local local, 
+    public static Port getPortValue(SootMethod method, Local local, 
             Unit location, LocalDefs localDefs, LocalUses localUses) {
         List definitionList = localDefs.getDefsOfAt(local, location);
         if(definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
             if(value instanceof CastExpr) {
-                return getPortValue((Local)((CastExpr)value).getOp(), stmt, localDefs, localUses);
+                return getPortValue(method, (Local)((CastExpr)value).getOp(),
+                        stmt, localDefs, localUses);
             } else if(value instanceof FieldRef) {
                 SootField field = ((FieldRef)value).getField();
                 ValueTag tag = (ValueTag)field.getTag("_CGValue");
@@ -858,7 +866,8 @@ public class InlinePortTransformer extends SceneTransformer {
                     }
                 }
             } else {
-                System.out.println("unknown value = " + value);
+                System.out.println("InlinePortTransformer.getAttributeValue(): Unknown value = " 
+                        + value + " searching for local " + local + " in method " + method);
             }
         } else {
             System.out.println("more than one definition of = " + local);

@@ -179,7 +179,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                                             portToFieldMap.get(port);
                                     } else {
                                         // Walk back and get the definition of the field.
-                                        SootField baseField = getFieldDef(baseLocal, unit, localDefs);
+                                        SootField baseField = _getFieldDef(baseLocal, unit, localDefs);
                                         portField = baseField.getDeclaringClass().getFieldByName(
                                                 baseField.getName() + "_" + name);
                                     }
@@ -208,18 +208,18 @@ public class FieldsForPortsTransformer extends SceneTransformer {
      *  then return it, otherwise return null.
      */ 
     // FIXME: This is actually a backwards DataFlow problem.
-    public static SootField getFieldDef(Local local, 
+    private static SootField _getFieldDef(Local local, 
             Unit location, LocalDefs localDefs) {
         List definitionList = localDefs.getDefsOfAt(local, location);
         if(definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
             if(value instanceof CastExpr) {
-                return getFieldDef((Local)((CastExpr)value).getOp(), stmt, localDefs);
+                return _getFieldDef((Local)((CastExpr)value).getOp(), stmt, localDefs);
             } else if(value instanceof FieldRef) {
                 return ((FieldRef)value).getField();
             } else {
-                System.out.println("unknown value = " + value);
+                throw new RuntimeException("unknown value = " + value);
             }
         } else {
             System.out.println("more than one definition of = " + local);

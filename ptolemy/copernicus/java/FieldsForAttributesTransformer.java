@@ -154,7 +154,12 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                         Value value = box.getValue();
                         if(value instanceof InstanceInvokeExpr) {
                             InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                            if(r.getMethod().equals(getAttributeMethod)) {
+                            if(r.getMethod().getSubSignature().equals(
+                                    PtolemyUtilities.getDirectorMethod.getSubSignature())) {
+                                // Replace calls to getDirector with null.
+                                //FIXME: we should be able to do better than this?
+                                box.setValue(NullConstant.v());
+                            } else if(r.getMethod().equals(getAttributeMethod)) {
                                 // inline calls to getAttribute(arg) when arg is a string
                                 // that can be statically evaluated.
                                 Value nameValue = r.getArg(0);
@@ -180,7 +185,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                                             attributeToFieldMap.get(attribute);
                                     } else {
                                         // Walk back and get the definition of the field.
-                                        SootField baseField = getFieldDef(baseLocal, unit, localDefs);
+                                        SootField baseField = _getFieldDef(baseLocal, unit, localDefs);
                                         attributeField = baseField.getDeclaringClass().getFieldByName(
                                                 baseField.getName() + "_" + name);
                                     }
@@ -207,18 +212,18 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
      *  variable. If the value can be determined, 
      *  then return it, otherwise return null.
      */ 
-    public static SootField getFieldDef(Local local, 
+    private static SootField _getFieldDef(Local local, 
             Unit location, LocalDefs localDefs) {
         List definitionList = localDefs.getDefsOfAt(local, location);
         if(definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
             if(value instanceof CastExpr) {
-                return getFieldDef((Local)((CastExpr)value).getOp(), stmt, localDefs);
+                return _getFieldDef((Local)((CastExpr)value).getOp(), stmt, localDefs);
             } else if(value instanceof FieldRef) {
                 return ((FieldRef)value).getField();
             } else {
-                System.out.println("unknown value = " + value);
+                throw new RuntimeException("unknown value = " + value);
             }
         } else {
             System.out.println("more than one definition of = " + local);

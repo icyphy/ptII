@@ -235,6 +235,9 @@ public class ModelTransformer extends SceneTransformer {
                             relation.getName() + "_" + i, arrayType,
                             Modifier.PUBLIC | Modifier.STATIC);
                     modelClass.addField(field);
+                    
+                    // Tag the field with the type.
+                    field.addTag(new TypeTag(type));
 
                     // Create the new buffer
                     clinitUnits.addFirst(Jimple.v().newAssignStmt(
@@ -552,13 +555,11 @@ public class ModelTransformer extends SceneTransformer {
     // FIXME: duplicate with Actor transformer.
     private static void _removeSuperExecutableMethods(SootClass theClass) {
         // Loop through all the methods 
-        System.out.println("theClass " + theClass);
-                
+                        
         for(Iterator methods = theClass.getMethods().iterator();
             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
-             System.out.println("method " + method);
-             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
              for(Iterator units = body.getUnits().snapshotIterator();
                 units.hasNext();) {
                 Unit unit = (Unit)units.next();
@@ -575,7 +576,6 @@ public class ModelTransformer extends SceneTransformer {
                                 box.setValue(IntConstant.v(1));
                             } else {
                                 body.getUnits().remove(unit);
-                                System.out.println("removing " + r);
                             }
                         } else if(!r.getMethod().getName().equals("<init>")) {
                             System.out.println("superCall:" + r);

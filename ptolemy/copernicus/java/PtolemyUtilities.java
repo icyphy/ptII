@@ -338,6 +338,35 @@ public class PtolemyUtilities {
         return local;
     }
 
+    /** If the given type is a reference type to a class that
+     *  derives from ptolemy.data.Token, or array whose element type
+     *  derives from ptolemy.data.Token, then return that
+     *  token type.  Otherwise return null.
+     */
+    // FIXME: should throw exception.
+    public static RefType getBaseTokenType(Type type) {
+        RefType returnType;
+        if(type instanceof RefType) {
+            returnType = (RefType)type;
+        } else if(type instanceof ArrayType) {
+            ArrayType arrayType = (ArrayType)type;
+            if(arrayType.baseType instanceof RefType) {
+                returnType = (RefType)arrayType.baseType;
+            } else {
+                return null;
+            }
+        } else {
+            // If we have a native type, then ignore because it can't be a token type.
+            return null;
+        }
+        SootClass objectClass = returnType.getSootClass();
+        if(SootUtilities.derivesFrom(objectClass,
+                PtolemyUtilities.tokenClass)) {
+            return returnType;
+        }
+        return null;
+    }
+
     /** Given a ptolemy token type, return the soot type that can reference
      *  tokens of the ptolemy type.
      */
@@ -487,6 +516,49 @@ public class PtolemyUtilities {
         }
     }
 
+    /** Return true if the given type references a concrete
+     *  ptolemy token type.  In other words It is either a direct
+     *  reference to a token, or an array of tokens.
+     *  This method only returns true if the token is
+     *  an instantiable token.
+     */
+    public static boolean isConcreteTokenType(Type type) {
+        RefType refType;
+        if(type instanceof RefType) {
+            refType = (RefType)type;
+        } else if(type instanceof ArrayType) {
+            ArrayType arrayType = (ArrayType)type;
+            if(arrayType.baseType instanceof RefType) {
+                refType = (RefType)arrayType.baseType;
+            } else return false;
+        } else return false;
+        SootClass tokenClass = refType.getSootClass();
+        if(tokenClass.equals(PtolemyUtilities.tokenClass) ||
+                tokenClass.equals(PtolemyUtilities.scalarTokenClass)) {
+            return false;
+        }
+        return SootUtilities.derivesFrom(refType.getSootClass(),
+                PtolemyUtilities.tokenClass);
+    }
+
+    /** Return true if the given type references a
+     *  ptolemy token type.  In other words It is either a direct
+     *  reference to a token, or an array of tokens.
+     */
+    public static boolean isTokenType(Type type) {
+        RefType refType;
+        if(type instanceof RefType) {
+            refType = (RefType)type;
+        } else if(type instanceof ArrayType) {
+            ArrayType arrayType = (ArrayType)type;
+            if(arrayType.baseType instanceof RefType) {
+                refType = (RefType)arrayType.baseType;
+            } else return false;
+        } else return false;
+        return SootUtilities.derivesFrom(refType.getSootClass(),
+                PtolemyUtilities.tokenClass);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -495,6 +567,9 @@ public class PtolemyUtilities {
 
     // Soot Type representing the ptolemy.actor.TypedAtomicActor class.
     public static Type actorType;
+    
+    // The soot method representing the java.lang.System.arraycopy method. 
+    public static SootMethod arraycopyMethod;
 
     // Soot class representing the ptolemy.data.ArrayToken class.
     public static SootClass arrayTokenClass;
@@ -522,6 +597,10 @@ public class PtolemyUtilities {
     public static SootMethod getAttributeMethod;
 
     // SootMethod representing
+    // ptolemy.actor.Actor.getDirector
+    public static SootMethod getDirectorMethod;
+
+    // SootMethod representing
     // ptolemy.kernel.util.Settable.getExpression();
     public static SootMethod getExpressionMethod;
 
@@ -537,6 +616,9 @@ public class PtolemyUtilities {
     // Soot Type representing the ptolemy.kernel.ComponentPort class.
     public static Type portType;
 
+    // Soot class representing the ptolemy.data.ScalarToken class.
+    public static SootClass scalarTokenClass;
+
     // SootMethod representing ptolemy.kernel.util.Settable.setExpression().
     public static SootMethod setExpressionMethod;
 
@@ -546,10 +628,13 @@ public class PtolemyUtilities {
     // Soot Type representing the ptolemy.kernel.util.Settable class.
     public static Type settableType;
 
-    // Soot class representing the ptolemy.data.ArrayToken class.
+    //The soot class representing java.lang.system 
+    public static SootClass systemClass;
+
+    // Soot class representing the ptolemy.data.Token class.
     public static SootClass tokenClass;
 
-    // Soot Type representing the ptolemy.data.ArrayToken class.
+    // Soot Type representing the ptolemy.data.Token class.
     public static BaseType tokenType;
     
     public static SootMethod toStringMethod;
@@ -562,6 +647,9 @@ public class PtolemyUtilities {
         SootClass objectClass =
             Scene.v().loadClassAndSupport("java.lang.Object");
         toStringMethod = objectClass.getMethod("java.lang.String toString()");
+        
+        systemClass = Scene.v().loadClassAndSupport("java.lang.System");
+        arraycopyMethod = systemClass.getMethodByName("arraycopy");
        
         namedObjClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
@@ -589,6 +677,8 @@ public class PtolemyUtilities {
         actorClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedAtomicActor");
         actorType = RefType.v(actorClass);
+        getDirectorMethod = 
+            Scene.v().getMethod("<ptolemy.actor.Actor: ptolemy.actor.Director getDirector()>");
 
         compositeActorClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedCompositeActor");

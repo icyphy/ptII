@@ -83,8 +83,43 @@ public class DeadObjectEliminator extends BodyTransformer {
     protected void internalTransform(Body body, String phaseName, Map options) {
         _removeDeadObjectCreation(body, PtolemyUtilities.tokenClass);
         _removeDeadObjectCreation(body, PtolemyUtilities.typeClass);
+        _removeDeadObjectCreation(body, PtolemyUtilities.attributeClass);
     }
-
+        // Lastly go back and look for any constructors of attributes.
+        // Remove them and all uses of those objects.  If there is anything left,
+        // Then we should deal with it above.
+        /*
+          for(Iterator units = body.getUnits().snapshotIterator();
+          units.hasNext();) {
+          Unit unit = (Unit)units.next();
+          Iterator boxes = unit.getUseBoxes().iterator();
+          while(boxes.hasNext()) {
+          ValueBox box = (ValueBox)boxes.next();
+          Value value = box.getValue();
+          if(value instanceof NewExpr) {
+          SootClass newClass = ((RefType)((NewExpr)value).getType()).getSootClass();
+          if(SootUtilities.derivesFrom(newClass, 
+          PtolemyUtilities.attributeClass)) {
+          if(unit instanceof DefinitionStmt) {
+          // If we are keeping a definition, then 
+          // set the definition to be null.
+          box.setValue(NullConstant.v());
+          } else {
+          // I can't imagine when this would
+          // be true?
+          body.getUnits().remove(unit);
+          }
+          }
+          } else if(value instanceof SpecialInvokeExpr) {
+          SootClass newClass = ((RefType)((SpecialInvokeExpr)value).getBase().getType()).getSootClass();
+          if(SootUtilities.derivesFrom(newClass, 
+          PtolemyUtilities.attributeClass)) {
+          // and remove the constructor.
+          body.getUnits().remove(unit);
+          }
+          }
+          }
+          }*/
     /** Remove any creations of objects of the given class, or subclasses that are
      *  not directly used in the given body.  Note that this is not, technically a 
      *  safe thing to do, since object creation may have side effects that will not

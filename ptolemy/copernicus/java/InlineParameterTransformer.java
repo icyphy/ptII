@@ -173,11 +173,12 @@ public class InlineParameterTransformer extends SceneTransformer {
                                         // inline the method.
                                         inlinee = (SootMethod)methodList.get(0);
                                     } else {
-                                        System.out.println("Can't inline " + unit);
+                                        String string = "Can't inline " + unit + 
+                                            " in method " + method + "\n";
                                         for(int i = 0; i < methodList.size(); i++) {
-                                            System.out.println("target = " + methodList.get(i));
+                                            string += "target = " + methodList.get(i) + "\n";
                                         }
-                                        continue;
+                                        System.out.println(string);
                                     }
                                 } else if(r instanceof SpecialInvokeExpr) {
                                     inlinee = Scene.v().getActiveHierarchy().resolveSpecialDispatch(
@@ -225,11 +226,12 @@ public class InlineParameterTransformer extends SceneTransformer {
                             // if we are invoking a method on a variable class, then
                             // attempt to get the constant value of the variable.
                             Attribute attribute =
-                                getAttributeValue((Local)r.getBase(), unit, localDefs, localUses);
+                                getAttributeValue(method, (Local)r.getBase(), unit, localDefs, localUses);
                                   
                             // If the base is not constant, then obviously there is nothing we can do
                             if(attribute == null) {
-                                continue;
+                                System.out.println("Attempt to inline Settable method failed on: " 
+                                        + r + "\nCould not statically determine base.");
                             }
                                     
                             // Inline getType, setTypeEquals, etc...
@@ -363,41 +365,6 @@ public class InlineParameterTransformer extends SceneTransformer {
             }
         }
 
-        // Lastly go back and look for any constructors of attributes.
-        // Remove them and all uses of those objects.  If there is anything left,
-        // Then we should deal with it above.
-        /*
-          for(Iterator units = body.getUnits().snapshotIterator();
-          units.hasNext();) {
-          Unit unit = (Unit)units.next();
-          Iterator boxes = unit.getUseBoxes().iterator();
-          while(boxes.hasNext()) {
-          ValueBox box = (ValueBox)boxes.next();
-          Value value = box.getValue();
-          if(value instanceof NewExpr) {
-          SootClass newClass = ((RefType)((NewExpr)value).getType()).getSootClass();
-          if(SootUtilities.derivesFrom(newClass, 
-          PtolemyUtilities.attributeClass)) {
-          if(unit instanceof DefinitionStmt) {
-          // If we are keeping a definition, then 
-          // set the definition to be null.
-          box.setValue(NullConstant.v());
-          } else {
-          // I can't imagine when this would
-          // be true?
-          body.getUnits().remove(unit);
-          }
-          }
-          } else if(value instanceof SpecialInvokeExpr) {
-          SootClass newClass = ((RefType)((SpecialInvokeExpr)value).getBase().getType()).getSootClass();
-          if(SootUtilities.derivesFrom(newClass, 
-          PtolemyUtilities.attributeClass)) {
-          // and remove the constructor.
-          body.getUnits().remove(unit);
-          }
-          }
-          }
-          }*/
         return doneSomething;
     }            
 
@@ -406,15 +373,15 @@ public class InlineParameterTransformer extends SceneTransformer {
      *  try to symbolically evaluate the value of the variable. If the value can be determined, 
      *  then return it, otherwise return null.
      */ 
-    public static Attribute getAttributeValue(Local local, 
+    public static Attribute getAttributeValue(SootMethod method, Local local, 
             Unit location, LocalDefs localDefs, LocalUses localUses) {
         List definitionList = localDefs.getDefsOfAt(local, location);
         if(definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
             if(value instanceof CastExpr) {
-                return getAttributeValue( 
-                        (Local)((CastExpr)value).getOp(), stmt, localDefs, localUses);
+                return getAttributeValue(method, (Local)((CastExpr)value).getOp(),
+                        stmt, localDefs, localUses);
             } else if(value instanceof FieldRef) {
                 SootField field = ((FieldRef)value).getField();
                 ValueTag tag = (ValueTag)field.getTag("_CGValue");
@@ -443,7 +410,8 @@ public class InlineParameterTransformer extends SceneTransformer {
                     }
                 }
             } else {
-                System.out.println("unknown value = " + value);
+                System.out.println("InlineParameterTransformer.getAttributeValue(): Unknown value = " 
+                        + value + " searching for local " + local + " in method " + method);
             }
         } else {
             System.out.println("more than one definition of = " + local);

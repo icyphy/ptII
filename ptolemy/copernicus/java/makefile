@@ -45,6 +45,7 @@ DIRS =		test
 # Keep this list alphabetized.
 JSRCS = \
 	CommandLineTransformer.java \
+	ConstantLoopUnroller.java \
 	DeadObjectEliminator.java \
 	EntitySootClass.java \
 	FieldsForAttributesTransformer.java \
@@ -59,7 +60,7 @@ JSRCS = \
 	PtolemyUtilities.java \
 	TokenToNativeTransformer.java \
 	TypeSpecializer.java \
-	ConstantLoopUnroller.java \
+	UnreachableMethodRemover.java \
 	ValueTag.java	
 
 EXTRA_SRCS =	$(JSRCS)
@@ -89,8 +90,8 @@ shallowDemo: compileShallowDemo runShallowDemo
 deepDemo: compileDeepDemo runDeepDemo
 
 SOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
-#MODEL = OrthogonalCom 
-MODEL = test
+MODEL = OrthogonalCom 
+#MODEL = test
 SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
 
 DEEPTARGETPACKAGE = ptolemy.copernicus.java.cg.deep
@@ -142,6 +143,7 @@ compileDeepDemo: $(JCLASS)
 		-p wjtp.itt deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.ttn deep,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.ts deep \
+		-p wjtp.umr debug \
 		$(SOOT_USER_ARGS)
 	@echo "Here is that javap output"
 	javap -verbose -l -s -classpath $(ROOT) $(DEEPTARGETCLASS)
