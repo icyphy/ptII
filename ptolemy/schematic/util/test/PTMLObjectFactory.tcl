@@ -64,17 +64,17 @@ test PTMLObjectFactory-2.1 {Constructor tests} {
 } icons {
     {ptolemy.schematic.util.Icon {LoadImage} parameters {
     } graphics {
-        {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {content=} {color=red} {fill=pink} {coords=0 0 60 40}}}
-        {ptolemy.schematic.util.GraphicElement {polygon} attributes { {content=} {coords=10 10 50 30 10 30 50 10} {fill=blue} {color=black}}}
-        {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {content=} {fill=yellow} {coords=25 15 10 10} {color=black}}}
-        {ptolemy.schematic.util.GraphicElement {line} attributes { {content=} {coords=30 20 60 20}}}
+        {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {color=red} {fill=pink} {coords=0 0 60 40}} label {}}
+        {ptolemy.schematic.util.GraphicElement {polygon} attributes { {coords=10 10 50 30 10 30 50 10} {fill=blue} {color=black}} label {}}
+        {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {fill=yellow} {coords=25 15 10 10} {color=black}} label {}}
+        {ptolemy.schematic.util.GraphicElement {line} attributes { {coords=30 20 60 20}} label {}}
     }}
     {ptolemy.schematic.util.Icon {SaveImage} parameters {
     } graphics {
-        {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {content=} {color=red} {fill=orange} {coords=0 0 60 40}}}
-        {ptolemy.schematic.util.GraphicElement {polygon} attributes { {content=} {coords=10 10 50 30 10 30 50 10} {fill=blue} {color=black}}}
-        {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {content=} {fill=yellow} {coords=25 15 10 10} {color=black}}}
-        {ptolemy.schematic.util.GraphicElement {line} attributes { {content=} {coords=0 20 30 20}}}
+        {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {color=red} {fill=orange} {coords=0 0 60 40}} label {}}
+        {ptolemy.schematic.util.GraphicElement {polygon} attributes { {coords=10 10 50 30 10 30 50 10} {fill=blue} {color=black}} label {}}
+        {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {fill=yellow} {coords=25 15 10 10} {color=black}} label {}}
+        {ptolemy.schematic.util.GraphicElement {line} attributes { {coords=0 20 30 20}} label {}}
     }}
 } terminalstyles{
     {ptolemy.schematic.util.TerminalStyle {1out} parameters {
@@ -114,10 +114,10 @@ test PTMLObjectFactory-2.2 {Constructor tests} {
     } icon {
         ptolemy.schematic.util.Icon {LoadImage} parameters {
         } graphics {
-            {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {content=} {color=red} {fill=pink} {coords=0 0 60 40}}}
-            {ptolemy.schematic.util.GraphicElement {polygon} attributes { {content=} {coords=10 10 50 30 10 30 50 10} {fill=blue} {color=black}}}
-            {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {content=} {fill=yellow} {coords=25 15 10 10} {color=black}}}
-            {ptolemy.schematic.util.GraphicElement {line} attributes { {content=} {coords=30 20 60 20}}}
+            {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {color=red} {fill=pink} {coords=0 0 60 40}} label {}}
+            {ptolemy.schematic.util.GraphicElement {polygon} attributes { {coords=10 10 50 30 10 30 50 10} {fill=blue} {color=black}} label {}}
+            {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {fill=yellow} {coords=25 15 10 10} {color=black}} label {}}
+            {ptolemy.schematic.util.GraphicElement {line} attributes { {coords=30 20 60 20}} label {}}
         }
     } terminalstyle {
         ptolemy.schematic.util.TerminalStyle {1out} parameters {
@@ -137,10 +137,10 @@ test PTMLObjectFactory-2.2 {Constructor tests} {
     } icon {
         ptolemy.schematic.util.Icon {SaveImage} parameters {
         } graphics {
-            {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {content=} {color=red} {fill=orange} {coords=0 0 60 40}}}
-            {ptolemy.schematic.util.GraphicElement {polygon} attributes { {content=} {coords=10 10 50 30 10 30 50 10} {fill=blue} {color=black}}}
-            {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {content=} {fill=yellow} {coords=25 15 10 10} {color=black}}}
-            {ptolemy.schematic.util.GraphicElement {line} attributes { {content=} {coords=0 20 30 20}}}
+            {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {color=red} {fill=orange} {coords=0 0 60 40}} label {}}
+            {ptolemy.schematic.util.GraphicElement {polygon} attributes { {coords=10 10 50 30 10 30 50 10} {fill=blue} {color=black}} label {}}
+            {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {fill=yellow} {coords=25 15 10 10} {color=black}} label {}}
+            {ptolemy.schematic.util.GraphicElement {line} attributes { {coords=0 20 30 20}} label {}}
         }
     } terminalstyle {
         ptolemy.schematic.util.TerminalStyle {1in} parameters {
@@ -187,10 +187,10 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
         } icon {
             ptolemy.schematic.util.Icon {LoadImage} parameters {
             } graphics {
-                {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {content=} {color=red} {fill=pink} {coords=0 0 60 40}}}
-                {ptolemy.schematic.util.GraphicElement {polygon} attributes { {content=} {coords=10 10 50 30 10 30 50 10} {fill=blue} {color=black}}}
-                {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {content=} {fill=yellow} {coords=25 15 10 10} {color=black}}}
-                {ptolemy.schematic.util.GraphicElement {line} attributes { {content=} {coords=30 20 60 20}}}
+                {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {color=red} {fill=pink} {coords=0 0 60 40}} label {}}
+                {ptolemy.schematic.util.GraphicElement {polygon} attributes { {coords=10 10 50 30 10 30 50 10} {fill=blue} {color=black}} label {}}
+                {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {fill=yellow} {coords=25 15 10 10} {color=black}} label {}}
+                {ptolemy.schematic.util.GraphicElement {line} attributes { {coords=30 20 60 20}} label {}}
             }
         } terminalstyle {
             ptolemy.schematic.util.TerminalStyle {1out} parameters {
@@ -226,10 +226,10 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
         } icon {
             ptolemy.schematic.util.Icon {SaveImage} parameters {
             } graphics {
-                {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {content=} {color=red} {fill=orange} {coords=0 0 60 40}}}
-                {ptolemy.schematic.util.GraphicElement {polygon} attributes { {content=} {coords=10 10 50 30 10 30 50 10} {fill=blue} {color=black}}}
-                {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {content=} {fill=yellow} {coords=25 15 10 10} {color=black}}}
-                {ptolemy.schematic.util.GraphicElement {line} attributes { {content=} {coords=0 20 30 20}}}
+                {ptolemy.schematic.util.GraphicElement {rectangle} attributes { {color=red} {fill=orange} {coords=0 0 60 40}} label {}}
+                {ptolemy.schematic.util.GraphicElement {polygon} attributes { {coords=10 10 50 30 10 30 50 10} {fill=blue} {color=black}} label {}}
+                {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {fill=yellow} {coords=25 15 10 10} {color=black}} label {}}
+                {ptolemy.schematic.util.GraphicElement {line} attributes { {coords=0 20 30 20}} label {}}
             }
         } terminalstyle {
             ptolemy.schematic.util.TerminalStyle {1in} parameters {

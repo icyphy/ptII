@@ -399,7 +399,7 @@ public class PTMLObjectFactory {
             ptmlobject.setAttribute(n, v);
         }
 
-        ptmlobject.setAttribute("content", e.getPCData());
+        ptmlobject.setLabel(e.getPCData());
         return ptmlobject;
     }
 

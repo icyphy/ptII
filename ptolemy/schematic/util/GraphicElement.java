@@ -63,6 +63,7 @@ public class GraphicElement extends Object {
     public GraphicElement (String type) {
         _attributes = (LLMap) new LLMap();
         _type = type;
+        _label = "";
     }
 
     /**
@@ -90,16 +91,12 @@ public class GraphicElement extends Object {
     }
 
     /**
-     * Return the value of the content attribute of this graphic element.
-     * If no content attribute exists, return an empty string.  This is 
-     * primarily useful for textual elements.
+     * Return the label of this graphic element. This is 
+     * primarily useful for textual elements, but may be used for other
+     * objects that have a label.
      */
-    public String getContent() {
-        if(!hasAttribute("content")) {
-            return new String("");
-        } else {
-            return getAttribute("content");
-        }
+    public String getLabel() {
+        return _label;
     }
 
     /**
@@ -107,7 +104,7 @@ public class GraphicElement extends Object {
      */
     public PaintedObject getPaintedObject() {
 	String type = getType();
-	String content = getContent();
+	String label = getLabel();
 	HashMap map = new HashMap();
 	for (Enumeration j = attributeNames(); j.hasMoreElements(); ) {
 	    String key = (String) j.nextElement();
@@ -115,7 +112,7 @@ public class GraphicElement extends Object {
 	    map.put(key,val);
 	}
 	PaintedObject paintedObject = 
-	    GraphicsParser.createPaintedObject(type, map, content);
+	    GraphicsParser.createPaintedObject(type, map, label);
 
 	if(paintedObject == null) 
 	    return GraphicElement._errorObject;
@@ -146,6 +143,13 @@ public class GraphicElement extends Object {
         _attributes.putAt(name, value);
     }
 
+    /** Set the label for this graphic element.  This is usually parsed from
+     * the content portion of an XML entity.
+     */
+    public void setLabel (String name) {
+        _label = name;
+    }
+
     /**
      * Return a string this representing Icon.
      */
@@ -159,7 +163,7 @@ public class GraphicElement extends Object {
             result += " {" + p + "=" + getAttribute(p) + "}";
         }
 	
-        result += "}}";
+        result += "} label {" + getLabel() + "}}";
 
         return result;       
     }
@@ -169,6 +173,7 @@ public class GraphicElement extends Object {
     
     private LLMap _attributes;
     private String _type;
+    private String _label;
 }
 
     
