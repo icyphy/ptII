@@ -23,22 +23,27 @@
 
 */
 
-package ptolemy.graph;
+// In theory, this class could be in ptolemy.graph, but that would
+// set up a two way dependency between ptolemy.actor and ptolemy.graph.
+
+package ptolemy.actor;
+
+import ptolemy.graph.DirectedGraph;
+import ptolemy.graph.Graph;
+import ptolemy.graph.Node;
+import ptolemy.kernel.Port;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import ptolemy.actor.Actor;
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
-import ptolemy.kernel.Port;
+
 
 ///////////////////////////////////////////////////////////////////////
 //// GraphReader
 /** This class provides methods for converting Ptolemy II models
 into generic graph representations. Portions of
 this code are based on examples from [1].
+
 <p>
 References<br>
 [1] J. Davis et al., <em>Heterogeneous

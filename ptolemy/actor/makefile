@@ -66,6 +66,7 @@ JSRCS = \
 	Executable.java \
 	ExecutionListener.java \
 	FiringEvent.java \
+	GraphReader.java \
 	IOPort.java \
 	IORelation.java \
 	Mailbox.java \
