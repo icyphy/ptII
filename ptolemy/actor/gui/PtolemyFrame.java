@@ -47,6 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.UndoStackAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyFrame
@@ -126,12 +127,22 @@ public abstract class PtolemyFrame extends TableauFrame {
     }
 
     /** Set the associated model.  This also sets an error handler for
-     *  the model that results in model errors throwing an exception.
+     *  the model that results in model errors throwing an exception
+     *  and associates an undo stack with the model.
      *  @param model The associated model.
      */
     public void setModel(CompositeEntity model) {
         _model = model;
         _model.setModelErrorHandler(new BasicModelErrorHandler());
+        List attrList = _model.attributeList(UndoStackAttribute.class);
+        if (attrList.size() == 0) {
+            // Create and attach a new instance
+            try {
+                new UndoStackAttribute(_model, "_undoInfo");
+            } catch (KernelException e) {
+                throw new InternalErrorException(e);
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
