@@ -528,7 +528,7 @@ public class ComponentPort extends Port {
     /** Unlink the specified relation on the inside. If the relation
      *  is not linked to this port on the inside, do nothing.
      *  If the relation is linked more than once on the inside,
-     *  remove only the first link.
+     *  remove all occurrences of the link.
      *  If there is a container, notify it by calling connectionsChanged().
      *  This method is write-synchronized on the workspace
      *  and increments its version number.
@@ -915,10 +915,13 @@ public class ComponentPort extends Port {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
     /** @serial The list of inside relations for this port. */
-    private CrossRefList _insideLinks;
+    protected CrossRefList _insideLinks;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // A cache of the deeply linked ports, and the version used to
     // construct it.

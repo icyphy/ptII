@@ -304,11 +304,11 @@ test Port-5.3 {Test unlink of port connected multiple times to same relation.} {
     set result5 [_testPortLinkedRelations $p1 $p3]
 
    list "$result1\n$result2\n$result3\n$result4\n$result5"
-} {{{relation2 relation1} {relation1 relation2 relation1}
-{relation2 relation1} {relation1 relation1}
-{relation2 relation1} relation1
+} {{relation2 {relation1 relation2 relation1}
+relation2 {relation1 relation1}
+relation2 {}
 1
-relation1 relation1}}
+{} {}}}
 
 ######################################################################
 ####

@@ -213,7 +213,7 @@ unlink 1->2 4 times = $result3\n\
 "
 } {{ result0 = {} {} {}
  1->2 4 times = {{Owner Two} {Owner Two} {Owner Two} {Owner Two}} {{Owner One} {Owner One} {Owner One} {Owner One}} {}
- unlink 1->2 twice = {{Owner Two} {Owner Two}} {{Owner One} {Owner One}} {}
+ unlink 1->2 twice = {} {} {}
  unlink 1->2 4 times = {} {} {}
  }}
 
@@ -360,10 +360,10 @@ test CrossRefList-6.7 {link at the end of a list} {
 ######################################################################
 ####
 #
-test CrossRefList-7.1 {unlink first occurrence} {
+test CrossRefList-7.1 {unlink by relation} {
     $ca unlink $d
     _testCrossRefListGetLinks $ca $cd
-} {{java0x0 C D D B D} {A A A}}
+} {{java0x0 C B} {}}
 
 ######################################################################
 ####
@@ -373,7 +373,7 @@ test CrossRefList-7.1 {unlink by index at the head} {
     # signature here or jacl thinks the argument is an Object.
     $ca {unlink int} 0
     _testCrossRefListGetLinks $ca $cd
-} {{C D D B D} {A A A}}
+} {{C B} {}}
 
 ######################################################################
 ####
@@ -381,9 +381,9 @@ test CrossRefList-7.1 {unlink by index at the head} {
 test CrossRefList-7.2 {unlink by index at the tail} {
     # NOTE: There is a bug in jacl, and we have to give the method
     # signature here or jacl thinks the argument is an Object.
-    $ca {unlink int} 4
+    $ca {unlink int} 1
     _testCrossRefListGetLinks $ca $cd
-} {{C D D B} {A A}}
+} {C {}}
 
 ######################################################################
 ####
@@ -393,17 +393,7 @@ test CrossRefList-7.3 {unlink by index beyond the tail} {
     # signature here or jacl thinks the argument is an Object.
     $ca {unlink int} 8
     _testCrossRefListGetLinks $ca $cd
-} {{C D D B} {A A}}
-
-######################################################################
-####
-#
-test CrossRefList-7.4 {unlink by index in the middle} {
-    # NOTE: There is a bug in jacl, and we have to give the method
-    # signature here or jacl thinks the argument is an Object.
-    $ca {unlink int} 1
-    _testCrossRefListGetLinks $ca $cd
-} {{C D B} A}
+} {C {}}
 
 ######################################################################
 ####
@@ -417,3 +407,16 @@ test CrossRefList-8.0 {link first at 0 then at 2} {
     $ca insertLink 2 $cb
     _testCrossRefListGetLinks $ca $cb
 } {{B java0x0 B} {A A}}
+
+######################################################################
+####
+#
+test CrossRefList-9.0 {test get} {
+    set r1 [[java::cast ptolemy.kernel.util.NamedObj [$ca get 0]] getName]
+    set r2 [$ca get 1]
+    set r3 [[java::cast ptolemy.kernel.util.NamedObj [$ca get 2]] getName]
+    set r4 [$ca get 1]
+    set r5 [$ca get 1]
+    list $r1 $r2 $r3 $r4 $r5
+} {B java0x0 B java0x0 java0x0}
+

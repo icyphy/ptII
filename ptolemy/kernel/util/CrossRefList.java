@@ -129,6 +129,24 @@ public final class CrossRefList implements Serializable  {
         }
     }
 
+    /** Get the container at the specified index.  If there is no such
+     *  container, return null. Indices begin with 0.
+     *  @param index The index of the container to return.
+     */
+    public synchronized Object get(int index) {
+        if (index < 0 || index >= _size) return null;
+        int count = 0;
+        CrossRef result = _headNode;
+        while(result != null && count++ < index) {
+            result = result._next;
+        }
+        if (result != null) {
+            return result._farContainer();
+        } else {
+            return null;
+        }
+    }
+
     /** Enumerate the containers linked to this list.  The
      *  enumeration returns the container object itself and not the
      *  CrossRefList instance in this list that the object owns or
@@ -256,7 +274,7 @@ public final class CrossRefList implements Serializable  {
         }
     }
 
-    /** Delete a link to the specified container.  If there is no such
+    /** Delete all links to the specified container.  If there is no such
      *  link, ignore.  Back references are likewise updated.
      *  In the case of redundant links this deletes the first link
      *  to that container.
@@ -272,7 +290,6 @@ public final class CrossRefList implements Serializable  {
             Object far = p._farContainer();
             if (far != null && far.equals(obj)) {
                 p._dissociate();
-                return;
             }
             p = n;
         }

@@ -457,7 +457,7 @@ public class Port extends NamedObj {
 
     /** Unlink the specified Relation. If the Relation
      *  is not linked to this port, do nothing. If the relation is linked
-     *  more than once, then unlink the first link only.
+     *  more than once, then unlink all occurrences.
      *  If there is a container, notify it by calling connectionsChanged().
      *  This method is write-synchronized on the
      *  workspace and increments its version number.
