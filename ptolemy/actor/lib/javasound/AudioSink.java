@@ -183,7 +183,11 @@ public class AudioSink extends Sink {
      *  <p>
      *  It is safe to change this parameter during execution.
      *  However, doing so in file writing mode will cause all data
-     *  saved up until the change to be lost.
+     *  saved up until the change to be lost. If this
+     *  actor is used simultaneously with an AudioSink actor, it is
+     *  recommended that the same sample rate be used for both actors,
+     *  since most sound cards require the capture and playback rates
+     *  to be the same.
      *  <p>
      *  An exception will be thrown if an illegal value is used.
      */

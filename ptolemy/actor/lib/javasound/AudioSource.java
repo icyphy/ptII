@@ -199,7 +199,11 @@ public class AudioSource extends Source {
      *  <p>
      *  If this parameter is changed during execution when file writing
      *  mode is used, all data collected so far will be discarded, and
-     *  a new file with the updated sample rate will be created.
+     *  a new file with the updated sample rate will be created. If this
+     *  actor is used simultaneously with an AudioSink actor, it is
+     *  recommended that the same sample rate be used for both actors,
+     *  since most sound cards require the capture and playback rates
+     *  to be the same.
      *  <p>
      *  An exception will be occur if this parameter is set to an
      *  unsupported sample rate.
