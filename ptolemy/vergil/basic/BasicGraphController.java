@@ -387,8 +387,6 @@ public abstract class BasicGraphController extends AbstractGraphController
 
 	    AbstractBasicGraphModel graphModel =
                     (AbstractBasicGraphModel)getGraphModel();
-            // FIXME: This is not sufficient for some reason to get proper
-            // snap to grid.
             final double[] point = SnapConstraint.constrainPoint(x, y);
 	    final CompositeEntity toplevel = graphModel.getPtolemyModel();
 	    final String portName = toplevel.uniqueName("port");

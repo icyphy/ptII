@@ -318,9 +318,9 @@ public class ComponentEntity extends Entity {
 
     private void _addIcon() {
 	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"0\" y=\"0\" width=\"60\" " +
+                "<rect x=\"-30\" y=\"-20\" width=\"60\" " +
                 "height=\"40\" style=\"fill:white\"/>\n" +
-                "<polygon points=\"10,10 50,20 10,30\" " +
+                "<polygon points=\"-20,-10 20,0 -20,10\" " +
                 "style=\"fill:blue\"/>\n" +
                 "</svg>\n");
     }

@@ -46,8 +46,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.Iterator;
 
-// FIXME: Dependency on subpackage shouldn't be here.
-
 //////////////////////////////////////////////////////////////////////////
 //// LocatableNodeDragInteractor
 /**
@@ -116,23 +114,13 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         // The problem is that the location as set during a drag is a
         // queued mutation.  So the translation we get isn't right.
 
-        // NOTE: Unfortunately, vergil treats the location information
-        // as representing the center of the figure.  This means that the
-        // alignment of the figure is very sensitive to the label on the
-        // top of the figure, since that will change where the center is.
-        // It isn't the right thing to do to align the center of the figure
-        // to the grid.  So we align to the zero point of the figure,
-        // which is a little tough to get...
-        // NOTENOTE: Yes, but this doesn't have an effect here, since the
-        // label is not going to change during a drag...
-
         Iterator targets = targets();
         double[] originalUpperLeft = null;
         while (targets.hasNext()) {
             Figure figure = (Figure) targets.next();
             originalUpperLeft = new double[2];
-            originalUpperLeft[0] = figure.getBounds().getX();
-            originalUpperLeft[1] = figure.getBounds().getY();
+            originalUpperLeft[0] = figure.getOrigin().getX();
+            originalUpperLeft[1] = figure.getOrigin().getY();
             // Only snap the first figure in the set.
             break;
         }
@@ -175,8 +163,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
                     } else {
                         double[] location = new double[2];
-                        location[0] = figure.getBounds().getCenterX();
-                        location[1] = figure.getBounds().getCenterY();
+                        location[0] = figure.getOrigin().getX();
+                        location[1] = figure.getOrigin().getY();
                         _controller.setLocation(node, location);
                     }
                 }

@@ -57,6 +57,7 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 //////////////////////////////////////////////////////////////////////////
@@ -329,6 +330,18 @@ public class ExternalIOPortController extends AttributeController {
          */
         public LabelFigure getLabel () {
             return _label;
+        }
+
+        /** Return the origin of the child figure in the enclosing
+         *  transform context.
+         *  @return The origin of the background figure.
+         */
+        public Point2D getOrigin () {
+            if ( _child != null ) {
+                return _child.getOrigin();
+            } else {
+                return super.getOrigin();
+            }
         }
 
         /** Get the shape of this figure. This is the shape

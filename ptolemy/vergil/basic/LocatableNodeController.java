@@ -121,37 +121,6 @@ public class LocatableNodeController extends BasicNodeController {
 	Figure nf = getController().getFigure(node);
 	if(hasLocation(node)) {
 	    double[] location = getLocation(node);
-            // NOTE: It might make sense to modify the translation of
-            // all objects so that the logical zero location is located
-            // at a grid point.  This would take over the rather complicated
-            // operation in LocatableNodeDragInteractor.  However, this
-            // would be tricky for composite figures.  Best to leave it
-            // alone.  EAL
-            if (nf instanceof TerminalFigure) {
-                // Snap connect site to grid.
-                Site connectSite = ((TerminalFigure)nf).getConnectSite();
-                Point2D connectPoint = connectSite.getPoint();
-                Rectangle2D bounds = nf.getBounds();
-                double[] preSnapSiteLocation = new double[2];
-                preSnapSiteLocation[0] = location[0]
-                       + connectPoint.getX() - bounds.getCenterX();
-                preSnapSiteLocation[1] = location[1]
-                       + connectPoint.getY() - bounds.getCenterY();
-                double[] postSnapSiteLocation = SnapConstraint
-                       .constrainPoint(preSnapSiteLocation);
-                // Translate back.
-                location[0] = postSnapSiteLocation[0]
-                       - connectPoint.getX() + bounds.getCenterX();
-                location[1] = postSnapSiteLocation[1]
-                       - connectPoint.getY() + bounds.getCenterY();
-                // Record the new location, otherwise it will get
-                // quantized again.
-                try {
-                    setLocation(node, location);
-                } catch (IllegalActionException ex) {
-                    // Ignore... not critical, and shouldn't happen.
-                }
-            }
 	    CanvasUtilities.translateTo(nf, location[0], location[1]);
         }
     }

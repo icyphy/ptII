@@ -140,6 +140,12 @@ public class EditorDropTarget extends DropTarget {
          *  @param dtde The drop event.
          */
         public void drop(DropTargetDropEvent dtde) {
+
+            // FIXME: This should really drop the center of the figure
+            // to the specified location, not the origin, but it has to
+            // do this in such a way that you still get snap to grid.
+            // This is nontrivial.
+
 	    Iterator iterator = null;
             if(dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
 		try {

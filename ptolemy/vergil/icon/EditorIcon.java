@@ -195,7 +195,8 @@ public class EditorIcon extends Attribute {
      *  @return A figure representing a rectangular white box.
      */
     protected static Figure _createDefaultBackgroundFigure() {
-	return new BasicRectangle(0, 0, 60, 40, Color.white, 1);
+        // NOTE: center at the origin.
+	return new BasicRectangle(-30, -20, 60, 40, Color.white, 1);
     }
 
     /** Recreate the figure.  Call this to cause createIcon() to call
