@@ -253,7 +253,8 @@ public class ODReceiver extends TimedQueueReceiver
      *  is not allowed.
      */
     public boolean hasToken() {
-        return true;
+        // FIXME: This needs to be changed back to "return true;" after testing
+        return super.hasToken();
         /*
         throw new IllegalActionException( getContainer(), "This domain"
                 + " does not allow polling of output queues.");
