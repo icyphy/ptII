@@ -1,4 +1,4 @@
-# FIXME: Makefile for Ptolemy II xxxx tests
+# Makefile for Ptolemy II CSP kernel tests
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
