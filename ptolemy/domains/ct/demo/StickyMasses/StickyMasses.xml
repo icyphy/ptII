@@ -69,9 +69,9 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Look inside the "Sticky
-Mass model" actor to see
-the modal behavior.</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Right click to look inside
+the "Sticky Mass model" actor
+to see the modal behavior.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -84,7 +84,7 @@ the modal behavior.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 255.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 285.0">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={48, 299, 819, 459}}">
@@ -100,7 +100,7 @@ the modal behavior.</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 285.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 265.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -188,8 +188,8 @@ the modal behavior.</text></svg></configure>
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Look inside the states to see the model
-of the system behavior in the corresponding
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Right click to look inside the states to see the
+model of the system behavior in the corresponding
 mode of operation.</text></svg></configure>
                 </property>
                 <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
