@@ -171,7 +171,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/lang/java/*.java \
 			../ptolemy/lang/java/extended/*.java \
 			../ptolemy/lang/java/nodetypes/*.java \
-			../ptolemy/lang/tree/*.java \
+			../ptolemy/lang/java/tree/*.java \
 			../ptolemy/math/*.java \
 			../ptolemy/media/*.java \
 			../ptolemy/moml/*.java
