@@ -680,13 +680,13 @@ public class TMDirector extends Director {
     protected final void _displaySchedule(String actorName,
             double time, int scheduleEvent) {
         synchronized(this) {
-            //if (_scheduleDisplay != null) {
+            if (_scheduleListeners != null) {
                 Iterator listeners = _scheduleListeners.iterator();
                 while (listeners.hasNext()) {
                     ((ScheduleListener)listeners.next()).
                         event(actorName, time, scheduleEvent);
                 }
-                //}
+            }
         }
     }
 
