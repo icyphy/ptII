@@ -69,6 +69,9 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 MISC_FILES = \
 	alljtests.tcl \
 	auto
+	PtolemyPlatform.tcl \
+	testDefs.tcl
+
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
