@@ -68,6 +68,7 @@
           <group>
     <!-- Blank composite actor. -->
     <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor"/>
+    <entity name="continuous time composite actor" class="ptolemy.domains.ct.kernel.CTCompositeActor"/>
     <entity name="fsm actor" class="ptolemy.domains.fsm.kernel.FSMActor">
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
           <configure>
@@ -128,6 +129,7 @@
 	  </property>
          </property>
       </property>
+      <property name="HybridFSM" class="ptolemy.domains.fsm.kernel.HSDirector"/>
       <property name="Giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
       <property name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector"/>
 
