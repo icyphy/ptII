@@ -69,19 +69,37 @@ JSRCS1_1 = \
 
 JSRCS = $(JSRCS1_0) $(JSRCS1_1)
 
+# Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) pxgraph pxgraph.bat testpxgraph ptplot2mif.tcl index.html
 
+# Non-source files such as README files and subdirectories
 MISC_FILES = demo doc adm #bean #test 
+
+# Files to be removed by 'make realclean'
+REALCLEAN_STUFF = ptplotapplet.jar
 
 JCLASS1_0 = $(JSRCS1_0:%.java=%.class)
 JCLASS1_1 = $(JSRCS1_1:%.java=%.class)
 
 JCLASS = $(JCLASS1_0) $(JCLASS1_1)
 
-all: sources jclass suball $(JZIP) $(JARFILE)
+all: sources jclass suball $(JZIP) $(JARFILE) ptplotapplet.jar
 	chmod a+x pxgraph testpxgraph
-install: sources jclass javadocs subinstall $(JARFILE) $(JZIP) 
+install: sources jclass javadocs subinstall $(JARFILE) $(JZIP) ptplotapplet.jar
 	chmod a+x pxgraph testpxgraph
+
+# Jar file consisting of classes used by an applet.  Basically,
+# everything but Message and Pxgraph.
+ptplotapplet.jar:
+	(cd $(CLASSPATH); $(JAR) cfm $(JPACKAGE_DIR)/ptplotapplet.jar \
+		$(JPACKAGE_DIR)/CmdLineArgException.class \
+		$(JPACKAGE_DIR)/Plot.class \
+		$(JPACKAGE_DIR)/PlotApplet.class \
+		$(JPACKAGE_DIR)/PlotBox.class \
+		$(JPACKAGE_DIR)/PlotDataException.class \
+		$(JPACKAGE_DIR)/PlotLive.class \
+		$(JPACKAGE_DIR)/PlotPoint.class)
+
 docs: javadocs
 
 depend:
