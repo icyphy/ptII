@@ -1469,10 +1469,24 @@ public class MoMLParser extends HandlerBase {
                     // NOTE: Java sometimes throws ClassNotFoundException
                     // and sometimes NullPointerException when the class
                     // does not exist.  Hence the broad catch here.
-                    reference = _attemptToFindMoMLClass(className, source);
+		    try {
+			reference = _attemptToFindMoMLClass(className, source);
+		    } catch (Exception ex2) {
+			throw new Exception("Attempted to lookup '"
+					    + className + "', but got:\n" + error
+					    + "\nAttempted to find as a moml "
+					    + "class, but got: " + ex2);
+		    }
                 } catch (Error error) {
                     // Java might throw a ClassFormatError.
-                    reference = _attemptToFindMoMLClass(className, source);
+		    try {
+			reference = _attemptToFindMoMLClass(className, source);
+		    } catch (Exception ex2) {
+			throw new Exception("Attempted to lookup '"
+					    + className + "', but got:\n" + error
+					    + "\nAttempted to find as a moml "
+					    + "class, but got: " + ex2);
+		    }
                 }
             }
         }
