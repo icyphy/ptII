@@ -33,6 +33,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.LinkedList;
 
@@ -83,7 +84,11 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
     public final Scope getScope() {
         if (!wasVisitedBy(ResolveClassVisitor.visitorClass())) {
             //System.out.println("getScope() for " + _name + ": building scope");
-            _buildScope();
+            try {
+                _buildScope();
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to build a scope: e");
+            }
         }
         //System.out.println("getScope() for " + _name + ": scope already in place");
         return _scope;
@@ -141,8 +146,11 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         _interfaces = interfaces;
     }
 
-    /** Ensure that the source code for this ClassDecl is loaded. */
-    public void loadSource() {
+    /** Ensure that the source code for this ClassDecl is loaded.
+     *  @exception IOException Thrown if we can't get the canonical
+     *  name of the test library.
+     */
+    public void loadSource() throws IOException {
         if (_source == null) {
             _source = AbsentTreeNode.instance;
 
@@ -160,6 +168,8 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
                 }
             } else {
 
+                // openSource() might throw IOException if we can't
+                // get the canonical name of fileName.
                 File file = _pickLibrary(_container).openSource(fileName);
 
                 //System.out.println("ClassDecl: Reading in user type : " +
@@ -185,7 +195,10 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         _superClass = superClass;
     }
 
-    protected void _buildScope() {
+    /** @exception IOException Thrown if we can't get the canonical
+     *  name of a source file.
+     */
+    protected void _buildScope() throws IOException {
 	//System.out.println("ClassDecl._buildScope(): Building scope " +
         //				 "for class " + fullName());
         loadSource();
