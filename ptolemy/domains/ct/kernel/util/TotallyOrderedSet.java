@@ -69,7 +69,7 @@ public class TotallyOrderedSet {
 
     /** Return true if the given element is contained in this set.
      *  This is done by sequentially compare the given elements with
-     *  all the elements in this set, util the one that GREATER_THEN
+     *  all the elements in this set, until the one that GREATER_THEN
      *  the given one is reached. If any comparison returns 0, then
      *  return true; else return false. If the type of given element
      *  is uncomparable by the comparator, then a ClassCastException
@@ -101,7 +101,7 @@ public class TotallyOrderedSet {
         return _set.elements();
     }
 
-    /** Return the firstelement, ie. the <i>"smallest"</i> element.
+    /** Return the first element, ie. the <i>"smallest"</i> element.
      *  If the set is empty, then return null.
      *  @return The smallest element.
      */
@@ -153,7 +153,7 @@ public class TotallyOrderedSet {
 
     /** Remove the index-th element.
      *  @param index The index of the element.
-     *  @exception NoSuchElementException If the speified index is
+     *  @exception NoSuchElementException If the specified index is
      *        out of range.
      */
     public void removeAt(int index) {
@@ -174,7 +174,7 @@ public class TotallyOrderedSet {
         return _set.size();
     }
 
-    /** Return the firstelement, ie. the <i>"smallest"</i> element and
+    /** Return the first element, ie. the <i>"smallest"</i> element and
      *  remove it from the set.
      *  @return The smallest element.
      */
@@ -187,9 +187,9 @@ public class TotallyOrderedSet {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
+    // The comparator for the order.
     private final Comparator _comparator;
 
+    // The set.
     private LinkedList _set;
 }
