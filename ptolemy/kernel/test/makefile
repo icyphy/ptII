@@ -44,6 +44,7 @@ include $(CONFIG)
 CLASSPATH = ../../..
 
 JSRCS = \
+	RampApplet.java \
 	SDFPort.java \
 	SDFRamp.java \
 	SDFPlot.java \
@@ -53,7 +54,7 @@ JSRCS = \
 	SampleTarget.java \
 	SampleSDFExecutive.java
 
-EXTRA_SRCS =	$(JSRCS) ptjdriver
+EXTRA_SRCS =	$(JSRCS) RampApplet.html ptjdriver
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
