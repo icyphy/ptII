@@ -488,7 +488,7 @@ public class ProcessDirector extends Director {
 
     /** Determine if all of the threads containing actors controlled
      *  by this director have stopped due to a call of stopFire().
-     * @returns True if all active threads containing actors controlled
+     * @return True if all active threads containing actors controlled
      *  by this thread have stopped; otherwise return false.
      */
     protected synchronized boolean _areAllThreadsStopped() {
