@@ -56,7 +56,7 @@ all: codeDoc/tree.html
 
 codeDoc/tree.html: ../pn/*/*.java ../tcl/*.java ../tycho/*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
-	(cd ..; CLASSPATH=$(CLASSPATH):$(JAVAHOME)/lib/classes.zip $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
+	(cd ..; CLASSPATH=$(CLASSPATH):$(JAVAHOME)/lib/classes.zip:.. $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
 	@for x in codeDoc/*.html; do \
 		echo "Fixing paths in $$x"; \
 		sed -e 's|<a href="java|<a href="$(JAVAHTMLDIR)/java|g' \
