@@ -97,7 +97,7 @@ import java.net.*;
  * Using no marks is useful when lines connect the points in a plot,
  * which is done by default.
  * If the above directive appears before any DataSet directive, then it
- * specifies the default for all data sets.  If if appears after a DataSet
+ * specifies the default for all data sets.  If it appears after a DataSet
  * directive, then it applies only to that data set.
  * <p>
  * To disable connecting lines, use:
