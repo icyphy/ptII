@@ -156,7 +156,9 @@ public class TransitionController extends BasicEdgeController {
     protected Configuration _configuration;
 
     /** The configure action, which handles edit parameters requests. */
-    protected static ConfigureAction _configureAction;
+    protected static ConfigureAction _configureAction = 
+             new ConfigureAction("Configure (Ctrl-E)");
+    
 
     /** The menu creator. */
     protected MenuCreator _menuCreator;
