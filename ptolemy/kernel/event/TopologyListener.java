@@ -75,6 +75,22 @@ public interface TopologyListener {
      */
     public void portAdded (TopologyEvent event);
 
+    /** Notify that a port has been linked to a relation.
+     * The <b>relation</b> and <b>port</b> fields of the
+     * passed event will be valid.
+     *
+      * @param event The mutation event
+     */
+    public void portLinked (TopologyEvent event);
+
+    /** Notify that a port has been unlinked from a relation.
+     * The <b>relation</b> and <b>port</b> fields of the
+     * passed event will be valid.
+     *
+     * @param event The mutation event
+     */
+    public void portUnlinked (TopologyEvent event);
+
     /** Notify that a port has been removed from a entity.
      * The <b>entity</b> and <b>port</b> fields of the
      * passed event will be valid.
@@ -99,19 +115,6 @@ public interface TopologyListener {
      */
     public void relationRemoved (TopologyEvent event);
 
-    /** Notify that a port has been linked to a relation.
-     * The <b>relation</b> and <b>port</b> fields of the
-     * passed event will be valid.
-     *
-      * @param event The mutation event
-     */
-    public void portLinked (TopologyEvent event);
 
-    /** Notify that a port has been unlinked from a relation.
-     * The <b>relation</b> and <b>port</b> fields of the
-     * passed event will be valid.
-     *
-     * @param event The mutation event
-     */
-    public void portUnlinked (TopologyEvent event);
+
 }
