@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// UnitConstraints
 /**
 UnitConstraints represents a group, with duplicates allowed, of
-UnitContstraints. The are two general ways to create an instance of this class.
+UnitConstraints. The are two general ways to create an instance of this class.
 The first requires you to create an instance without any UnitConstraints and
 then add them with the method addConstraint. The second is to specify a
 TypedCompositeActor as well as specific nodes and relations in the
