@@ -197,6 +197,17 @@ public class Plot extends PlotBox {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a legend (displayed at the upper right) for the specified
+     *  data set with the specified string.  Short strings generally
+     *  fit better than long strings.
+     *  @param dataset The dataset index.
+     *  @param legend The label for the dataset.
+     */
+    public void addLegend(int dataset, String legend) {
+        _checkDatasetIndex(dataset);
+        super.addLegend(dataset, legend);
+    }
+
     /** In the specified data set, add the specified x, y point to the
      *  plot.  Data set indices begin with zero.  If the data set
      *  does not exist, create it.  The fourth argument indicates
@@ -333,6 +344,7 @@ public class Plot extends PlotBox {
      *  @param index The index of the point to erase.
      */
     public synchronized void erasePoint(int dataset, int index) {
+        _checkDatasetIndex(dataset);
         if (isShowing()) {
             _erasePoint(getGraphics(), dataset, index);
         }
@@ -1165,8 +1177,8 @@ public class Plot extends PlotBox {
      */
     protected void _checkDatasetIndex(int dataset) {
         if (dataset < 0) {
-            throw new IllegalArgumentException("Plot._addPoint: Cannot give "
-                    + "a negative number for the data set index.");
+            throw new IllegalArgumentException("Plot._checkDatasetIndex: Cannot"
+                    + " give a negative number for the data set index.");
         }
         while (dataset >= _points.size()) {
             _points.addElement(new Vector());
