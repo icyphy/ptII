@@ -84,6 +84,7 @@ JSRCS = AdaptiveMedian.java \
 	JAIToDoubleMatrix.java \
 	JAITranslate.java \
 	JAITranspose.java \
+	JAIWriter.java \
 	SaltAndPepper.java
 
 OTHER_FILES_TO_BE_JARED = \

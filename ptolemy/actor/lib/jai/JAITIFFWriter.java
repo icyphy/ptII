@@ -75,7 +75,7 @@ import com.sun.media.jai.codec.TIFFEncodeParam;
    @since Ptolemy II 3.0
 */
 
-public class JAITIFFWriter extends Sink {
+public class JAITIFFWriter extends JAIWriter {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -88,33 +88,13 @@ public class JAITIFFWriter extends Sink {
     public JAITIFFWriter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input.setTypeEquals(BaseType.OBJECT);
-        fileName = new FileParameter(this, "fileName");
-
         writeTiled = new Parameter(this, "writeTiled");
         writeTiled.setTypeEquals(BaseType.BOOLEAN);
         writeTiled.setToken(BooleanToken.FALSE);
-
-        confirmOverwrite = new Parameter(this, "confirmOverwrite");
-        confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
-        confirmOverwrite.setToken(BooleanToken.TRUE);
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-    /** The file name to which to write.  This is a string with
-     *  any form accepted by FileParameter.
-     *  @see FileParameter
-     */
-    public FileParameter fileName;
-
-    /** If <i>false</i>, then overwrite the specified file if it exists
-     *  without asking.  If <i>true</i> (the default), then if the file
-     *  exists, ask for confirmation before overwriting.
-     */
-    public Parameter confirmOverwrite;
 
     /** If <i>false</i> (the default), then write the data in strips.
      *  This is acceptable for smaller images.
@@ -126,22 +106,6 @@ public class JAITIFFWriter extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Initialize this actor.
-     *  Set the encoding parameters to either write in stripes or in
-     *  tiles.
-     *  @exception IllegalActionException If a contained method throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _file = fileName.asFile();
-        _fileRoot = _file.toString();
-        boolean writeTiledValue =
-            ((BooleanToken)writeTiled.getToken()).booleanValue();
-        _tiffEncodeParameters = new TIFFEncodeParam();
-        _tiffEncodeParameters.setWriteTiled(writeTiledValue);
-
-    }
-
     /** Read an input JAIImageToken and write it to the file.
      *  If the file does not exist then create it.  If the file
      *  already exists, then query the user for overwrite.
@@ -150,60 +114,12 @@ public class JAITIFFWriter extends Sink {
      *  of if the image in unable to be encoded.
      */
     public boolean postfire() throws IllegalActionException {
-        JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
-        RenderedOp image = jaiImageToken.getValue();
-        boolean confirmOverwriteValue
-            = ((BooleanToken)confirmOverwrite.getToken())
-            .booleanValue();
-        if (_file.exists()) {
-            if (confirmOverwriteValue) {
-                if (!MessageHandler.yesNoQuestion(
-                        "OK to overwrite " + _file + "?")) {
-                    throw new IllegalActionException(this,
-                            "Please select another file name.");
-                }
-            }
-        }
-        else {
-            //file doesn't exist, so create new file
-            try {
-                if (!_file.createNewFile()) {
-                    throw new IllegalActionException(this, "Couldn't" +
-                            " create file");
-                }
-            }
-            catch (IOException error) {
-                throw new IllegalActionException("Couldn't create file");
-            }
-        }
-        try {
-            _stream = new FileOutputStream(_fileRoot);
-        } catch (FileNotFoundException error) {
-            throw new IllegalActionException("Could not create stream");
-        }
-        ImageEncoder encoder = ImageCodec.createImageEncoder(
-                "TIFF", _stream, _tiffEncodeParameters);
-        try {
-            encoder.encode(image);
-            _stream.close();
-        } catch (IOException error) {
-            throw new IllegalActionException("Couldn't encode image");
-        }
-        return false;
+        _imageEncoderName = "TIFF";
+        TIFFEncodeParam tiffEncodeParam = new TIFFEncodeParam();
+        tiffEncodeParam.setWriteTiled(
+                ((BooleanToken)writeTiled.getToken()).booleanValue());
+
+        _imageEncodeParam = tiffEncodeParam;
+        return super.postfire();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The TIFF encoding parameters. */
-    private TIFFEncodeParam _tiffEncodeParameters;
-
-    /** The File to be saved to. */
-    private File _file;
-
-    /** The above file as a String. */
-    private String _fileRoot;
-
-    /** The FileOutputStream for file writing. */
-    private FileOutputStream _stream;
 }

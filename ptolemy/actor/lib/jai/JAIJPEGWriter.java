@@ -71,12 +71,12 @@ import com.sun.media.jai.codec.JPEGEncodeParam;
    exists, then this actor will ask for confirmation before overwriting.
 
    @see FileParameter
-   @author James Yeh
+   @author James Yeh, Christopher Hylands Brooks
    @version $Id$
    @since Ptolemy II 3.0
 */
 
-public class JAIJPEGWriter extends Sink {
+public class JAIJPEGWriter extends JAIWriter {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -89,84 +89,21 @@ public class JAIJPEGWriter extends Sink {
     public JAIJPEGWriter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input.setTypeEquals(BaseType.OBJECT);
-
-        fileName = new FileParameter(this, "fileName");
-
-        writeJFIFHeader = new Parameter(this, "writeJFIFHeader");
-        writeJFIFHeader.setTypeEquals(BaseType.BOOLEAN);
-        writeJFIFHeader.setToken(BooleanToken.TRUE);
-
-//          writeImageDataOnly = new Parameter(this, "writeImageDataOnly");
-//          writeImageDataOnly.setTypeEquals(BaseType.BOOLEAN);
-//          writeImageDataOnly.setToken(BooleanToken.FALSE);
-
-//          writeTableDataOnly = new Parameter(this, "writeTableDataOnly");
-//          writeTableDataOnly.setTypeEquals(BaseType.BOOLEAN);
-//          writeTableDataOnly.setToken(BooleanToken.FALSE);
 
         quality = new IntRangeParameter(this, "quality");
-
-//          useDefaultLuminanceTable
-//              = new Parameter(this, "useDefaultLuminanceTable");
-//          useDefaultLuminanceTable.setTypeEquals(BaseType.BOOLEAN);
-//          useDefaultLuminanceTable.setToken(BooleanToken.TRUE);
-
-//          userSpecifiedLuminanceTable
-//              = new Parameter(this, "userSpecifiedLuminanceTable",
-//                      new ArrayToken(_defaultSpecifiedTable));
-
-//          useDefaultChrominanceTable =
-//              new Parameter(this, "useDefaultChrominanceTable");
-//          useDefaultChrominanceTable.setTypeEquals(BaseType.BOOLEAN);
-//          useDefaultChrominanceTable.setToken(BooleanToken.TRUE);
-
-//          userSpecifiedChrominanceTable
-//              = new Parameter(this, "userSpecifiedChrominanceTable",
-//                      new ArrayToken(_defaultSpecifiedTable));
-
-//          horizontalSubsampling
-//              = new Parameter(this, "horizontalSubsampling",
-//                      new ArrayToken(_defaultSubsampling));
-
-//          verticalSubsampling
-//              = new Parameter(this, "verticalSubsampling",
-//                      new ArrayToken(_defaultSubsampling));
 
         restartInterval
             = new Parameter(this, "restartInterval",
                     new IntToken(0));
 
-        confirmOverwrite = new Parameter(this, "confirmOverwrite");
-        confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
-        confirmOverwrite.setToken(BooleanToken.TRUE);
-
+        writeJFIFHeader = new Parameter(this, "writeJFIFHeader");
+        writeJFIFHeader.setTypeEquals(BaseType.BOOLEAN);
+        writeJFIFHeader.setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The file name to which to write.  This is a string with
-     *  any form accepted by FileParameter.
-     *  @see FileParameter
-     */
-    public FileParameter fileName;
-
-    /** If <i>false</i>, then overwrite the specified file if it exists
-     *  without asking.  If <i>true</i> (the default), then if the file
-     *  exists, ask for confirmation before overwriting.
-     */
-    public Parameter confirmOverwrite;
-
-    /** The subsampling scheme in the horizontal direction.  This
-     *  parameter consists of three integers.  If there is only one
-     *  band, such as in grayscale, then only the first value is used.
-     *  Otherwise, all three values are used.  The default values are
-     *  (1, 2, 2) because the two chrominance bands can be subsampled
-     *  because the human visual system has a lower sensitivity to
-     *  errors in these two bands compared to the luminance band.
-     */
-    //public Parameter horizontalSubsampling;
 
     /** The quality of the file written.  The quality ranges from 0
      *  which is a high amount of compression, small file size, and
@@ -183,56 +120,6 @@ public class JAIJPEGWriter extends Sink {
      */
     public Parameter restartInterval;
 
-    /** If <i>true</i> (the default), then the encoder will use the
-     *  default chrominance quantization table.  The default table
-     *  depends on the Quality parameter.
-     *  If <i>false</i> then the encoder will use the user specified
-     *  luminance table.  The Quality parameter is ignored in the
-     *  creation of the chrominance table.
-     */
-    //public Parameter useDefaultChrominanceTable;
-
-    /** If <i>true</i> (the default), then the encoder will use the
-     *  default luminance quantization table.  The default table
-     *  depends on the Quality parameter.
-     *  If <i>false</i> then the encoder will use the user specified
-     *  luminance table.  The Quality parameter is ignored in the
-     *  creation of the luminance table.
-     */
-    //public Parameter useDefaultLuminanceTable;
-
-    /** If the user decides not to use the default chrominance
-     *  quantization table then the user must specify a table to use
-     *  in zig-zag order.  The table must be 8x8, hence then array
-     *  must have 64 values.
-     */
-    //public Parameter userSpecifiedChrominanceTable;
-
-    /** If the user decides not to use the default luminance
-     *  quantization table then the user must specify a table to use
-     *  in zig-zag order.  The table must be 8x8, hence then array
-     *  must have 64 values.
-     */
-    //public Parameter userSpecifiedLuminanceTable;
-
-    /** The subsampling scheme in the vertical direction.  This
-     *  parameter consists of three integers.  If there is only one
-     *  band, such as in grayscale, then only the first value is used.
-     *  Otherwise, all three values are used.  The default values are
-     *  (1, 2, 2) because the two chrominance bands can be subsampled
-     *  because the human visual system has a lower sensitivity to
-     *  errors in these two bands compared to the luminance band.
-     */
-    //public Parameter verticalSubsampling;
-
-    /** If <i>true</i>, the encoder will only write the image data
-     *  to the file.  If <i>false</i> (the default) and if
-     *  writeTableDataOnly is false, then the file will be written
-     *  with both table and image data.  If both are true, an
-     *  exception will be thrown.
-     */
-    //public Parameter writeImageDataOnly;
-
     /** If <i>true</i> (the default), the encoder will write a JFIF
      *  header, using a marker.The marker includes data such as
      *  version number, x and y pixel density, pixel aspect ratio.
@@ -240,72 +127,8 @@ public class JAIJPEGWriter extends Sink {
      */
     public Parameter writeJFIFHeader;
 
-    /** If <i>true</i>, the encoder will only write the table data
-     *  to the file.  If <i>false</i> (the default) and if
-     *  writeImageDataOnly is false, then the file will be written
-     *  with both table and image data.  If both are true, an
-     *  exception will be thrown.
-     */
-    //public Parameter writeTableDataOnly;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Initialize this actor.
-     *  Set the encoding parameters.
-     *  @exception IllegalActionException If a contained method throws,
-     *  it, or if both writeImageDataOnly and writeTableDataOnly are
-     *  set to true.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _file = fileName.asFile();
-        _fileRoot = _file.toString();
-        _jpegEncodeParameters = new JPEGEncodeParam();
-        _jpegEncodeParameters.setWriteJFIFHeader(
-                ((BooleanToken)writeJFIFHeader.getToken()).booleanValue());
-//          boolean writeImageDataOnlyValue =
-//              ((BooleanToken)writeImageDataOnly.getToken()).booleanValue();
-//          boolean writeTableDataOnlyValue =
-//              ((BooleanToken)writeTableDataOnly.getToken()).booleanValue();
-//          if (writeImageDataOnlyValue && writeTableDataOnlyValue) {
-//              throw new IllegalActionException("Both Parameters cannot be true");
-//          } else {
-//              _jpegEncodeParameters.setWriteTablesOnly(writeTableDataOnlyValue);
-//              _jpegEncodeParameters.setWriteImageOnly(writeImageDataOnlyValue);
-//          }
-        _jpegEncodeParameters.setQuality(0.01f * quality.getCurrentValue());
-//          if (!((BooleanToken)useDefaultLuminanceTable
-//                  .getToken()).booleanValue()) {
-
-//              // make a private method to do all this, one that returns
-//              // an int array
-
-//              _jpegEncodeParameters.setLumaQTable(
-//                      _tableFiller((ArrayToken)userSpecifiedLuminanceTable
-//                              .getToken()));
-//          }
-//          if (!((BooleanToken)useDefaultChrominanceTable
-//                  .getToken()).booleanValue()) {
-//              _jpegEncodeParameters.setChromaQTable(
-//                      _tableFiller((ArrayToken)userSpecifiedChrominanceTable
-//                              .getToken()));
-//          }
-
-//          Token horizontalSubsamplingData[]
-//              = ((ArrayToken)horizontalSubsampling.getToken()).arrayValue();
-//          Token verticalSubsamplingData[]
-//              = ((ArrayToken)verticalSubsampling.getToken()).arrayValue();
-        //for (int i = 0; i < 3; i = i + 1) {
-        //    _jpegEncodeParameters.setHorizontalSubsampling(i,
-        //            ((IntToken)horizontalSubsamplingData[i]).intValue());
-        //    _jpegEncodeParameters.setVerticalSubsampling(i,
-        //            ((IntToken)verticalSubsamplingData[i]).intValue());
-        //}
-        _jpegEncodeParameters.setRestartInterval(((IntToken)restartInterval
-                .getToken()).intValue());
-
-    }
 
     /** Read an input JAIImageToken and write it to the file.
      *  If the file does not exist then create it.  If the file
@@ -313,96 +136,19 @@ public class JAIJPEGWriter extends Sink {
      *  @exception IllegalActionException If the file cannot be opened
      *  or created, if the user refuses to overwrite an existing file,
      *  of if the image in unable to be encoded.
+     *  @return True if the execution can continue.
      */
     public boolean postfire() throws IllegalActionException {
-        JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
-        RenderedOp image = jaiImageToken.getValue();
-        boolean confirmOverwriteValue
-            = ((BooleanToken)confirmOverwrite.getToken()).booleanValue();
-        if (_file.exists()) {
-            if (confirmOverwriteValue) {
-                if (!MessageHandler.yesNoQuestion(
-                        "OK to overwrite " + _file + "?")) {
-                    throw new IllegalActionException(this,
-                            "Please select another file name.");
-                }
-            }
-        }
-        else {
-            //file doesn't exist, so create new file
-            try {
-                if (!_file.createNewFile()) {
-                    throw new IllegalActionException(this, "Couldn't" +
-                            " create file");
-                }
-            }
-            catch (IOException error) {
-                throw new IllegalActionException("Couldn't create file");
-            }
-        }
-        try {
-            _stream = new FileOutputStream(_fileRoot);
-        } catch (FileNotFoundException error) {
-            throw new IllegalActionException("Could not create stream");
-        }
-        ImageEncoder encoder = ImageCodec.createImageEncoder(
-                "JPEG", _stream, _jpegEncodeParameters);
-        try {
-            encoder.encode(image);
-            _stream.close();
-        } catch (IOException error) {
-            throw new IllegalActionException("Couldn't encode image");
-        }
-        //return false;
-        return true;
+        _imageEncoderName = "JPEG";
+
+        JPEGEncodeParam jpegEncodeParameters = new JPEGEncodeParam();
+        jpegEncodeParameters.setWriteJFIFHeader(
+                ((BooleanToken)writeJFIFHeader.getToken()).booleanValue());
+        jpegEncodeParameters.setQuality(0.01f * quality.getCurrentValue());
+        jpegEncodeParameters.setRestartInterval(((IntToken)restartInterval
+                .getToken()).intValue());
+
+        _imageEncodeParam = jpegEncodeParameters;
+        return super.postfire();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Takes a ArrayToken (assumed to be filled with IntTokens), and
-     *  returns the array of integers is contains.
-     */
-    private int[] _tableFiller(ArrayToken array) {
-        Token tokenArray[] = array.arrayValue();
-        int intArray[] = new int[tokenArray.length];
-        for (int i = 0; i < tokenArray.length; i = i + 1) {
-            int _value = ((IntToken)(tokenArray[i])).intValue();
-            intArray[i] = _value;
-        }
-        return intArray;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** IntTokens used in the creation of IntToken arrays. */
-    private IntToken _one = new IntToken(1);
-    private IntToken _two = new IntToken(2);
-
-    /** The default Subsampling array */
-    private IntToken _defaultSubsampling[] = {_one, _two, _two};
-
-    /** The default quantization table */
-    private IntToken _defaultSpecifiedTable[] =
-    {_one, _one, _one, _one, _one, _one, _one, _one,
-     _one, _one, _one, _one, _one, _one, _one, _one,
-     _one, _one, _one, _one, _one, _one, _one, _one,
-     _one, _one, _one, _one, _one, _one, _one, _one,
-     _one, _one, _one, _one, _one, _one, _one, _one,
-     _one, _one, _one, _one, _one, _one, _one, _one,
-     _one, _one, _one, _one, _one, _one, _one, _one,
-     _one, _one, _one, _one, _one, _one, _one, _one, };
-
-    /** The data structure that contains all the encoding parameters. */
-    private JPEGEncodeParam _jpegEncodeParameters;
-
-    /** The File to be saved to. */
-    private File _file;
-
-    /** The above file as a String. */
-    private String _fileRoot;
-
-    /** The FileOutputStream for file writing. */
-    private FileOutputStream _stream;
 }

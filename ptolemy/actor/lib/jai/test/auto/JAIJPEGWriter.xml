@@ -2,19 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="JAIJPEGWriter" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 257, 815, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {170, 250, 815, 509}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -40,59 +36,28 @@ with this actor.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 275.0">
         </property>
     </property>
-    <entity name="JAIJPEGWriter" class="ptolemy.actor.lib.jai.JAIJPEGWriter">
-        <property name="fileName" class="ptolemy.kernel.attributes.FileAttribute" value="PtolemyII.jpg">
-        </property>
-        <property name="writeJFIFHeader" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="writeImageDataOnly" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="writeTableDataOnly" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="quality" class="ptolemy.actor.parameters.IntRangeParameter" value="0">
-            <property name="min" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="max" class="ptolemy.data.expr.Parameter" value="100">
-            </property>
-        </property>
-        <property name="useDefaultLuminanceTable" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="userSpecifiedLuminanceTable" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}">
-        </property>
-        <property name="useDefaultChrominanceTable" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="userSpecifiedChrominanceTable" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}">
-        </property>
-        <property name="horizontalSubsampling" class="ptolemy.data.expr.Parameter" value="{1, 2, 2}">
-        </property>
-        <property name="verticalSubsampling" class="ptolemy.data.expr.Parameter" value="{1, 2, 2}">
-        </property>
-        <property name="restartInterval" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 205.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
+    </property>
     <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$CLASSPATH/doc/img/PtolemyII.jpg">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/PtolemyII.jpg">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 155.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
+    </entity>
+    <entity name="JAIJPEGWriter" class="ptolemy.actor.lib.jai.JAIJPEGWriter">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="PtolemyII.jpg">
+        </property>
+        <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="quality" class="ptolemy.actor.parameters.IntRangeParameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{335, 185}">
+        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="JAIJPEGWriter.input" relation="relation"/>
     <link port="JAIImageReader.output" relation="relation"/>
+    <link port="JAIJPEGWriter.input" relation="relation"/>
 </entity>

@@ -71,12 +71,12 @@ asking.  If <i>true</i> (the default), then if the file exists, then
 this actor will ask for confirmation before overwriting.
 
 @see ptolemy.kernel.attributes.FileAttribute
-@author James Yeh
+@author James Yeh, Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 3.1
 */
 
-public class JAIPNGWriter extends Sink {
+public class JAIPNGWriter extends JAIWriter {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -89,20 +89,12 @@ public class JAIPNGWriter extends Sink {
     public JAIPNGWriter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input.setTypeEquals(BaseType.OBJECT);
-
-        fileName = new FileParameter(this, "fileName");
-        fileName.setExpression("image.png");
-
-        confirmOverwrite = new Parameter(this, "confirmOverwrite");
-        confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
-        confirmOverwrite.setToken(BooleanToken.TRUE);
-
-        bitDepth = new Parameter(this, "bitDepth", new IntToken(8));
 
         adam7Interlacing = new Parameter(this, "adam7Interlacing");
         adam7Interlacing.setTypeEquals(BaseType.BOOLEAN);
         adam7Interlacing.setToken(BooleanToken.TRUE);
+
+        bitDepth = new Parameter(this, "bitDepth", new IntToken(8));
 
         setGamma = new Parameter(this, "setGamma");
         setGamma.setTypeEquals(BaseType.BOOLEAN);
@@ -120,13 +112,6 @@ public class JAIPNGWriter extends Sink {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-    /** The file name to which to write.  This is a string with
-     *  any form accepted by FileParameter.  The initial default value is
-     *  "image.png".
-     *  @see FileParameter
-     */
-    public FileParameter fileName;
 
     /** If the Adam7 Interlacing option is false, pixels are stored
      *  left to right and from top to bottom. If it is true (the
@@ -212,90 +197,50 @@ public class JAIPNGWriter extends Sink {
      *  of if the image in unable to be encoded.
      */
     public boolean postfire() throws IllegalActionException {
-        JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
-        RenderedOp image = jaiImageToken.getValue();
-        boolean confirmOverwriteValue
-            = ((BooleanToken)confirmOverwrite.getToken()).booleanValue();
-        if (_file.exists()) {
-            if (confirmOverwriteValue) {
-                if (!MessageHandler.yesNoQuestion(
-                        "OK to overwrite " + _file + "?")) {
-                    throw new IllegalActionException(this,
-                            "Please select another file name.");
+        if (input.hasToken(0)) {
+            _jaiImageToken = (JAIImageToken) input.get(0);
+            _alreadyReadImageToken = true;
+            _imageEncoderName = "PNG";
+            _image = _jaiImageToken.getValue();
+            PNGEncodeParam parameters =
+                PNGEncodeParam.getDefaultEncodeParam(_image);
+            if (parameters instanceof PNGEncodeParam.Gray) {
+                PNGEncodeParam.Gray parametersGray = new PNGEncodeParam.Gray();
+                parametersGray.setBitDepth(_bitDepth);
+                parametersGray.setInterlacing(_adam7Interlacing);
+                if (_setGamma) {
+                    parametersGray.setGamma((float)_gamma);
                 }
-            }
-        } else {
-            //file doesn't exist, so create new file
-            try {
-                if (!_file.createNewFile()) {
-                    throw new IllegalActionException(this, "Couldn't" +
-                            " create file");
-                }
-            }
-            catch (IOException error) {
-                throw new IllegalActionException("Couldn't create file");
-            }
-        }
-        try {
-            _stream = new FileOutputStream(_fileRoot);
-        } catch (FileNotFoundException error) {
-            throw new IllegalActionException("Could not create stream");
-        }
-        PNGEncodeParam parameters =
-            PNGEncodeParam.getDefaultEncodeParam(image);
-        if (parameters instanceof PNGEncodeParam.Gray) {
-            PNGEncodeParam.Gray parametersGray = new PNGEncodeParam.Gray();
-            parametersGray.setBitDepth(_bitDepth);
-            parametersGray.setInterlacing(_adam7Interlacing);
-            if (_setGamma) {
-                parametersGray.setGamma((float)_gamma);
-            }
-            if (_setBackground) {
-                if (_valueArray.length < 1) {
-                    throw new IllegalActionException("Need "
-                            + "one value to set Transparency");
-                } else {
-                    parametersGray.setBackgroundGray(_valueArray[0]);
-                }
-            }
-            ImageEncoder encoderGray = ImageCodec.createImageEncoder(
-                    "PNG", _stream, parametersGray);
-            try {
-                encoderGray.encode(image);
-                _stream.close();
-            } catch (IOException error) {
-                throw new IllegalActionException("Couldn't encode image");
-            }
-        } else if (parameters instanceof PNGEncodeParam.RGB) {
-            PNGEncodeParam.RGB parametersRGB = new PNGEncodeParam.RGB();
-            parametersRGB.setBitDepth(_bitDepth);
-            parametersRGB.setInterlacing(_adam7Interlacing);
-            if (_setGamma) {
-                parametersRGB.setGamma((float)_gamma);
-            }
-            if (_setBackground) {
-                if (_valueArray.length < 3) {
-                    throw new IllegalActionException("Need "
-                            + "three values to set transparency");
-                } else {
-                    int RGBvalues[] = new int[3];
-                    for (int i = 0; i < 3; i++) {
-                        RGBvalues[i] = _valueArray[i];
+                if (_setBackground) {
+                    if (_valueArray.length < 1) {
+                        throw new IllegalActionException("Need "
+                                + "one value to set Transparency");
+                    } else {
+                        parametersGray.setBackgroundGray(_valueArray[0]);
                     }
-                    parametersRGB.setBackgroundRGB(RGBvalues);
                 }
+                _imageEncodeParam = parametersGray;
+            } else if (parameters instanceof PNGEncodeParam.RGB) {
+                PNGEncodeParam.RGB parametersRGB = new PNGEncodeParam.RGB();
+                parametersRGB.setBitDepth(_bitDepth);
+                parametersRGB.setInterlacing(_adam7Interlacing);
+                if (_setGamma) {
+                    parametersRGB.setGamma((float)_gamma);
+                }
+                if (_setBackground) {
+                    if (_valueArray.length < 3) {
+                        throw new IllegalActionException("Need "
+                                + "three values to set transparency");
+                    } else {
+                        int RGBvalues[] = new int[3];
+                        for (int i = 0; i < 3; i++) {
+                            RGBvalues[i] = _valueArray[i];
+                        }
+                        parametersRGB.setBackgroundRGB(RGBvalues);
+                    }
+                }
+                _imageEncodeParam = parametersRGB;
             }
-            ImageEncoder encoderRGB = ImageCodec.createImageEncoder(
-                    "PNG", _stream, parametersRGB);
-            try {
-                encoderRGB.encode(image);
-                _stream.close();
-            } catch (IOException error) {
-                throw new IllegalActionException("Couldn't encode image");
-            }
-        } else {
-            throw new IllegalActionException("can't create encoding "
-                    + "parameters");
         }
         return super.postfire();
     }
