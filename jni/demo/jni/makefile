@@ -84,11 +84,14 @@ KRUFT = *.o *.obj *.dll *.so
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass $(PTCLASSJAR)
+all: libs jclass $(PTCLASSJAR)
+	@echo "To run all the demos, run 'make demo'"
+
+libs:
 	$(MAKE) SHAREDBASE=meaningOfLife shared
 	$(MAKE) SHAREDBASE=testDeux shared
 	$(MAKE) SHAREDBASE=testTrois shared
-	@echo "To run all the demos, run 'make demo'"
+
 
 install: all
 
