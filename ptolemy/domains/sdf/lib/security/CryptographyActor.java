@@ -109,11 +109,11 @@ public class CryptographyActor extends TypedAtomicActor {
 
         algorithm = new Parameter(this, "algorithm");
         algorithm.setTypeEquals(BaseType.STRING);
-        algorithm.setExpression("");
+        algorithm.setExpression("\"\"");
 
         provider = new Parameter(this, "provider");
         provider.setTypeEquals(BaseType.STRING);
-        provider.setExpression("SystemDefault");
+        provider.setExpression("\"SystemDefault\"");
 
         keySize = new Parameter(this, "keySize");
         keySize.setTypeEquals(BaseType.INT);

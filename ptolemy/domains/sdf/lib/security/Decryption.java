@@ -131,14 +131,14 @@ public class Decryption extends TypedAtomicActor {
 
         algorithm = new Parameter(this, "algorithm");
         algorithm.setTypeEquals(BaseType.STRING);
-        algorithm.setExpression("RSA");
+        algorithm.setExpression("\"RSA\"");
 
         provider = new Parameter(this, "provider");
         provider.setTypeEquals(BaseType.STRING);
-        provider.setExpression("");
+        provider.setExpression("\"\"");
 
         cryptoMode = new StringAttribute(this, "mode");
-        cryptoMode.setExpression("asymmetric");
+        cryptoMode.setExpression("\"asymmetric\"");
         _keyMode = _ASYMMETRIC;
     }
 
