@@ -36,6 +36,7 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+import ptolemy.moml.LibraryAttribute;
 
 import java.awt.Color;
 
@@ -46,23 +47,43 @@ This is a graph editor for ptolemy models.  It constructs an instance
 of ActorGraphFrame, which contains an editor pane based on diva.
 
 @see ActorGraphFrame
-@author  Steve Neuendorffer
+@author  Steve Neuendorffer and Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */
 public class ActorGraphTableau extends Tableau {
 
-    /** 
+    /** Create a tableau in the specified workspace.
+     *  @param workspace The workspace.
      */
     public ActorGraphTableau(Workspace workspace) 
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
     
-
+    /** Create a tableau with the specified container and name, with
+     *  no specified default library.
+     *  @param container The container.
+     *  @param name The name.
+     */
     public ActorGraphTableau(PtolemyEffigy container,
             String name)
             throws IllegalActionException, NameDuplicationException {
+        this(container, name, null);
+    }
+
+    /** Create a tableau with the specified container, name, and
+     *  default library.
+     *  @param container The container.
+     *  @param name The name.
+     *  @param defaultLibrary The default library, or null to not specify one.
+     */
+    public ActorGraphTableau(
+            PtolemyEffigy container,
+            String name,
+            LibraryAttribute defaultLibrary)
+            throws IllegalActionException, NameDuplicationException {
+
         super(container, name);
 
         if (container instanceof PtolemyEffigy) {
@@ -78,7 +99,8 @@ public class ActorGraphTableau extends Tableau {
             }
             CompositeEntity entity = (CompositeEntity)model;
             
-            ActorGraphFrame frame = new ActorGraphFrame(entity, this);
+            ActorGraphFrame frame = new ActorGraphFrame(
+                    entity, this, defaultLibrary);
             setFrame(frame);
             frame.setBackground(BACKGROUND_COLOR);
         }
@@ -130,8 +152,12 @@ public class ActorGraphTableau extends Tableau {
                 ActorGraphTableau tableau =
                     (ActorGraphTableau)effigy.getEntity("graphTableau");
                 if (tableau == null) {
+                    // Check to see whether this factory contains a
+                    // default library.
+                    LibraryAttribute library = (LibraryAttribute)getAttribute(
+                            "_library", LibraryAttribute.class);
                     tableau = new ActorGraphTableau(
-                            (PtolemyEffigy)effigy, "graphTableau");
+                            (PtolemyEffigy)effigy, "graphTableau", library);
                 }
 		// Don't call show() here, it is called for us in
 		// TableauFrame.ViewMenuListener.actionPerformed()

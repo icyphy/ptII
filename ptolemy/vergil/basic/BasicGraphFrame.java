@@ -161,11 +161,35 @@ public abstract class BasicGraphFrame extends PtolemyFrame
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
      *  This is typically done by calling show() on the controlling tableau.
+     *  This constructor results in a graph frame that obtains its library
+     *  either from the model (if it has one) or the default library defined
+     *  in the configuration.
      *  @see Tableau#show()
      *  @param entity The model to put in this frame.
      *  @param tableau The tableau responsible for this frame.
      */
     public BasicGraphFrame(CompositeEntity entity, Tableau tableau) {
+        this(entity, tableau, null);
+    }
+
+    /** Construct a frame associated with the specified Ptolemy II model.
+     *  After constructing this, it is necessary
+     *  to call setVisible(true) to make the frame appear.
+     *  This is typically done by calling show() on the controlling tableau.
+     *  This constructor results in a graph frame that obtains its library
+     *  either from the model (if it has one), or the <i>defaultLibrary</i>
+     *  argument (if it is non-null), or the default library defined
+     *  in the configuration.
+     *  @see Tableau#show()
+     *  @param entity The model to put in this frame.
+     *  @param tableau The tableau responsible for this frame.
+     *  @param defaultLibrary An attribute specifying the default library
+     *   to use if the model does not have a library.
+     */
+    public BasicGraphFrame(
+            CompositeEntity entity,
+            Tableau tableau,
+            LibraryAttribute defaultLibrary) {
         super(entity, tableau);
 
         entity.addChangeListener(this);
@@ -249,7 +273,21 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             } catch (CancelException e) {}
         }
         if (!gotLibrary) {
-            // The model does not contain a library.
+            try {
+                if (defaultLibrary != null) {
+                    // A default library has been specified.
+                    _topLibrary = defaultLibrary.getLibrary();
+                    gotLibrary = true;
+                }
+            } catch (Exception ex) {
+                try {
+                    MessageHandler.warning(
+                            "Invalid default library for the frame.", ex);
+                } catch (CancelException e) {}
+            }
+        }
+        if (!gotLibrary) {
+            // Neither the model nor the argument have specified a library.
             // See if there is a default library in the configuration.
             Configuration configuration = getConfiguration();
             if (configuration != null) {

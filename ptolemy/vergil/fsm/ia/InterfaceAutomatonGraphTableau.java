@@ -37,6 +37,7 @@ import ptolemy.actor.gui.TableauFactory;
 import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.fsm.FSMGraphTableau;
 
 import java.awt.Color;
@@ -44,6 +45,7 @@ import java.awt.Color;
 //////////////////////////////////////////////////////////////////////////
 //// InterfaceAutomatonGraphTableau
 /**
+An editor tableau for interface automata.
 
 @author  Steve Neuendorffer, Yuhong Xiong
 @version $Id$
@@ -51,10 +53,36 @@ import java.awt.Color;
 */
 public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
 
+    /** Create a new editor tableau with the specified container
+     *  and name, with no default library.
+     *  @param container The container.
+     *  @param name The name.
+     *  @throws IllegalActionException If the model associated with
+     *   the container effigy is not an FSMActor.
+     *  @throws NameDuplicationException If the container already
+     *   contains an object with the specified name.
+     */
     public InterfaceAutomatonGraphTableau(PtolemyEffigy container,
             String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+        this(container, name, null);
+    }
+
+    /** Create a new editor tableau with the specified container,
+     *  name, and default library.
+     *  @param container The container.
+     *  @param name The name.
+     *  @param defaultLibrary The default library, or null to not specify one.
+     *  @throws IllegalActionException If the model associated with
+     *   the container effigy is not an FSMActor.
+     *  @throws NameDuplicationException If the container already
+     *   contains an object with the specified name.
+     */
+    public InterfaceAutomatonGraphTableau(PtolemyEffigy container,
+            String name,
+            LibraryAttribute defaultLibrary)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name, defaultLibrary);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -63,10 +91,13 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
     /** Override the super class to create an instance of
      *  InterfaceAutomatonGraphFrame.
      *  @param model The Ptolemy II model to display in the graph frame.
+     *  @param defaultLibrary The default library, or null to not specify
+     *   one.
      */
-    public void createGraphFrame(CompositeEntity model) {
+    public void createGraphFrame(
+            CompositeEntity model, LibraryAttribute defaultLibrary) {
 	InterfaceAutomatonGraphFrame frame =
-            new InterfaceAutomatonGraphFrame(model, this);
+                new InterfaceAutomatonGraphFrame(model, this, defaultLibrary);
         try {
             setFrame(frame);
         } catch (IllegalActionException ex) {
@@ -115,9 +146,16 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
 		return null;
 	    PtolemyEffigy effigy = (PtolemyEffigy)proxy;
 	    if (effigy.getModel() instanceof InterfaceAutomaton) {
+                // Check to see whether this factory contains a
+                // default library.
+                LibraryAttribute library = (LibraryAttribute)getAttribute(
+                        "_library", LibraryAttribute.class);
+
 		InterfaceAutomatonGraphTableau tableau =
-		    new InterfaceAutomatonGraphTableau((PtolemyEffigy)proxy,
-                            proxy.uniqueName("tableau"));
+		        new InterfaceAutomatonGraphTableau(
+                        (PtolemyEffigy)proxy,
+                        proxy.uniqueName("tableau"),
+                        library);
 		return tableau;
 	    } else {
 		return null;

@@ -37,6 +37,7 @@ import ptolemy.actor.gui.TableauFactory;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+import ptolemy.moml.LibraryAttribute;
 
 import java.awt.Color;
 
@@ -51,7 +52,7 @@ import java.awt.Color;
 public class FSMGraphTableau extends Tableau {
 
     /** Create a new FSM editor tableau with the specified container
-     *  and name.
+     *  and name, with no default library.
      *  @param container The container.
      *  @param name The name.
      *  @throws IllegalActionException If the model associated with
@@ -62,6 +63,23 @@ public class FSMGraphTableau extends Tableau {
     public FSMGraphTableau(PtolemyEffigy container,
             String name)
             throws IllegalActionException, NameDuplicationException {
+        this(container, name, null);
+    }
+
+    /** Create a new FSM editor tableau with the specified container,
+     *  name, and default library.
+     *  @param container The container.
+     *  @param name The name.
+     *  @param defaultLibrary The default library, or null to not specify one.
+     *  @throws IllegalActionException If the model associated with
+     *   the container effigy is not an FSMActor.
+     *  @throws NameDuplicationException If the container already
+     *   contains an object with the specified name.
+     */
+    public FSMGraphTableau(PtolemyEffigy container,
+            String name,
+            LibraryAttribute defaultLibrary)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
@@ -69,7 +87,7 @@ public class FSMGraphTableau extends Tableau {
             throw new IllegalActionException(this,
                     "Cannot edit a model that is not an FSMActor.");
         }
-	createGraphFrame((FSMActor)model);
+	createGraphFrame((FSMActor)model, defaultLibrary);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -82,7 +100,22 @@ public class FSMGraphTableau extends Tableau {
      *  @param model The Ptolemy II model to display in the graph frame.
      */
     public void createGraphFrame(CompositeEntity model) {
-	FSMGraphFrame frame = new FSMGraphFrame(model, this);
+        createGraphFrame(model, null);
+    }
+
+    /** Create the graph frame that displays the model associated with
+     *  this tableau together with the specified library.
+     *  This method creates a FSMGraphFrame. If a subclass
+     *  uses another frame, this method should be overridden to create
+     *  that frame.
+     *  @param model The Ptolemy II model to display in the graph frame.
+     *  @param defaultLibrary The default library, or null to not specify
+     *   one.
+     */
+    public void createGraphFrame(
+            CompositeEntity model, LibraryAttribute defaultLibrary) {
+
+	FSMGraphFrame frame = new FSMGraphFrame(model, this, defaultLibrary);
         try {
             setFrame(frame);
         } catch (IllegalActionException ex) {
@@ -128,9 +161,15 @@ public class FSMGraphTableau extends Tableau {
             }
             NamedObj model = ((PtolemyEffigy)effigy).getModel();
 	    if (model instanceof FSMActor) {
+                // Check to see whether this factory contains a
+                // default library.
+                LibraryAttribute library = (LibraryAttribute)getAttribute(
+                        "_library", LibraryAttribute.class);
+
 		FSMGraphTableau tableau =
 		        new FSMGraphTableau((PtolemyEffigy)effigy,
-                        effigy.uniqueName("tableau"));
+                        effigy.uniqueName("tableau"),
+                        library);
 		return tableau;
 	    } else {
 		return null;

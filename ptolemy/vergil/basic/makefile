@@ -59,6 +59,7 @@ JSRCS = \
 	BasicGraphController.java \
 	BasicGraphFrame.java \
 	EditorDropTarget.java \
+	ExtendedGraphFrame.java \
 	IconController.java \
 	LocatableNodeController.java \
 	LocatableNodeDragInteractor.java \

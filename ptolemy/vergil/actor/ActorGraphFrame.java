@@ -47,7 +47,8 @@ import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.moml.LibraryAttribute;
+import ptolemy.vergil.basic.ExtendedGraphFrame;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -71,19 +72,42 @@ to associate with the editor an instance of ActorEditorGraphController.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class ActorGraphFrame extends BasicGraphFrame {
+public class ActorGraphFrame extends ExtendedGraphFrame {
 
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
      *  This is typically done by calling show() on the controlling tableau.
+     *  This constructor results in a graph frame that obtains its library
+     *  either from the model (if it has one) or the default library defined
+     *  in the configuration.
      *  @see Tableau#show()
      *  @param entity The model to put in this frame.
      *  @param tableau The tableau responsible for this frame.
      */
+    public ActorGraphFrame(CompositeEntity entity, Tableau tableau) {
+	this(entity, tableau, null);
+    }
+
+    /** Construct a frame associated with the specified Ptolemy II model.
+     *  After constructing this, it is necessary
+     *  to call setVisible(true) to make the frame appear.
+     *  This is typically done by calling show() on the controlling tableau.
+     *  This constructor results in a graph frame that obtains its library
+     *  either from the model (if it has one), or the <i>defaultLibrary</i>
+     *  argument (if it is non-null), or the default library defined
+     *  in the configuration.
+     *  @see Tableau#show()
+     *  @param entity The model to put in this frame.
+     *  @param tableau The tableau responsible for this frame.
+     *  @param defaultLibrary An attribute specifying the default library
+     *   to use if the model does not have a library.
+     */
     public ActorGraphFrame(
-            CompositeEntity entity, ActorGraphTableau tableau) {
-	super(entity, tableau);
+            CompositeEntity entity,
+            Tableau tableau,
+            LibraryAttribute defaultLibrary) {
+        super(entity, tableau, defaultLibrary);
     }
 
     ///////////////////////////////////////////////////////////////////
