@@ -123,7 +123,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     public void fire() throws IllegalActionException {
         if (_debugging) _debug(getName(), " fire.");
         if (_firstFire) {
-            Actor[] actors = getController().currentState().getRefinement();
+            Actor[] actors = _st.getRefinement();
             _enabledRefinements = new LinkedList();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
@@ -134,12 +134,11 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             }
             _firstFire = false;
         }
-        FSMActor ctrl = getController();
-        ctrl._setInputVariables();
-        if (_debugging) _debug(getName(), " find FSMActor " + ctrl.getName());
-        State st = ctrl.currentState();
+        _ctrl._setInputVariables();
+        if (_debugging) _debug(getName(), " find FSMActor " + _ctrl.getName());
         Transition tr =
-            ctrl._chooseTransition(st.preemptiveTransitionList());
+            _ctrl._chooseTransition(_st.preemptiveTransitionList());
+        _ctrl._executeTransition(tr);
         if (tr != null) {
 
             Actor[] actors = tr.destinationState().getRefinement();
@@ -172,9 +171,12 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                     actor.fire();
         }
 
-        ctrl._setInputsFromRefinement();
+        _ctrl._setInputsFromRefinement();
 
-        tr = ctrl._chooseTransition(st.nonpreemptiveTransitionList());
+        tr = _ctrl._chooseTransition(_st.nonpreemptiveTransitionList());
+        _ctrl._executeTransition(tr);
+
+        // execute the refinements of the enabled transition
         if(tr != null) {
             Actor[] transitionActors = tr.getRefinement();
             if (transitionActors != null) {
@@ -189,7 +191,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                         transitionActors[i].postfire();
                     }
                 }
-                ctrl._setInputsFromRefinement();
+                _ctrl._setInputsFromRefinement();
                 // execute the output actions, since these are normally
                 // executed in chooseTransition, but the outputs may
                 // have been changed by the transition refinemenets
@@ -243,10 +245,21 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 Actor refinement = (Actor) refinements.next();
                 if (refinement instanceof CTStepSizeControlActor) {
                     result = result && ((CTStepSizeControlActor)
-                            refinement).isThisStepAccurate();
+                                        refinement).isThisStepAccurate();
                 }
             }
         }
+        // check if the transition is accurate
+        // FIXME: only handle the non-preemptive transitions
+        /*
+                 Transition tr = _ctrl._chooseTransition(_st.nonpreemptiveTransitionList());
+                 if (tr == null) {
+            return result;
+                 } else {
+
+                 }
+         */
+
         return result;
     }
 
@@ -277,7 +290,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *   enabled.
      */
     public boolean postfire() throws IllegalActionException {
-        FSMActor ctrl = getController();
         Iterator refinements = _enabledRefinements.iterator();
         while (refinements.hasNext()) {
             Actor refinement = (Actor)refinements.next();
@@ -288,15 +300,14 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 IOPort p = (IOPort)outports.next();
                 transferOutputs(p);
             }
-            ctrl._setInputsFromRefinement();
+            _ctrl._setInputsFromRefinement();
         }
-        State st = ctrl.currentState();
         Transition tr =
-            ctrl._chooseTransition(st.outgoingPort.linkedRelationList());
+            _ctrl._chooseTransition(_st.outgoingPort.linkedRelationList());
         if (_debugging && tr != null) {
             _debug(tr.getFullName(), "is chosen.");
         }
-
+        _ctrl._executeTransition(tr);
         return super.postfire();
     }
 
@@ -323,11 +334,12 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return result;
     }
 
-    /** Set the modelErrorHandler. Call super.preinitialize().
+    /** Set the controller. Call super.prefire().
      */
-    public void preinitialize() throws IllegalActionException {
-        //setModelErrorHandler(new AssertionModelErrorHandler());
-        super.preinitialize();
+    public boolean prefire() throws IllegalActionException {
+        _ctrl = getController();
+        _st = _ctrl.currentState();
+        return super.prefire();
     }
 
     /** Return the step size refined by all the enabled refinements,
@@ -356,5 +368,17 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         }
         return result;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Cached reference to mode controller.
+    private FSMActor _ctrl = null;
+
+    // Cached reference to current state.
+    private State _st = null;
+
+    // Lcoal variable to indicate whether the transition is accurate.
+    private boolean transitionAccurate = true;
 
 }

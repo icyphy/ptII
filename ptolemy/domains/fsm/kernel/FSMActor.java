@@ -674,14 +674,12 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         if (_debugging) relation.addDebugListener(new StreamListener());
     }
 
-    /** Return the enabled transition among the given list of transitions
-     *  and execute the choice actions contained by the transition.
+    /** Return the enabled transition among the given list of transitions.
      *  Throw an exception if there is more than one transition enabled.
      *  @param transitionList A list of transitions.
      *  @return An enabled transition, or null if none is enabled.
      *  @exception IllegalActionException If there is more than one
-     *   transition enabled, or if thrown by any choice action contained
-     *   by the enabled transition.
+     *   transition enabled.
      */
     protected Transition _chooseTransition(List transitionList)
             throws IllegalActionException {
@@ -701,16 +699,24 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                 result = transition;
             }
         }
-        if (result != null) {
-            if (_debugging) _debug("Enabled transition: "+result.getFullName());
-            Iterator actions = result.choiceActionList().iterator();
+        _lastChosenTransition = result;
+        return result;
+    }
+
+    /** Execute the choice actions contained by the transition.
+     *  @param transition An enabled transition.
+     *  @exception IllegalActionException If thrown by any choice
+     *  action contained by the enabled transition.
+     */
+    protected void _executeTransition(Transition transition) throws IllegalActionException {
+        if (transition != null) {
+            if (_debugging) _debug("Enabled transition: "+ transition.getFullName());
+            Iterator actions = transition.choiceActionList().iterator();
             while (actions.hasNext()) {
                 Action action = (Action)actions.next();
                 action.execute();
             }
         }
-        _lastChosenTransition = result;
-        return result;
     }
 
     /** Execute all commit actions contained by the transition chosen
