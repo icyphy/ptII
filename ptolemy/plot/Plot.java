@@ -30,7 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.plot;
 
 // TO DO:
-//   - support for oscilloscope-like plots (where x axis wraps around).
 //   - steps between points rather than connected lines.
 //   - cubic spline interpolation
 //   - fix missing fill button under MacOS8.x/Netscape4.04
@@ -1918,7 +1917,8 @@ public class Plot extends PlotBox {
      * whether the point should be connected by a line to the previous
      * point.  However, this argument is ignored if setConnected() has
      * been called with a false argument.  In that case, a point is never
-     * connected to the previous point.
+     * connected to the previous point.  That argument is also ignored
+     * if the point is the first in the specified dataset.
      * The point is drawn on the screen only if is visible.
      * Otherwise, it is drawn the next time paint() is called.
      */
@@ -1926,6 +1926,17 @@ public class Plot extends PlotBox {
             int dataset, double x, double y, double yLowEB, double yHighEB,
             boolean connected, boolean errorBar) {
         _checkDatasetIndex(dataset);
+
+        if(_wrap && _xRangeGiven) {
+            double width = _xhighgiven - _xlowgiven;
+            if (x < _xlowgiven) {
+                x += width*Math.floor(1.0 + (_xlowgiven-x)/width);
+            } else if (x > _xhighgiven) {
+                x -= width*Math.floor(1.0 + (x-_xhighgiven)/width);
+                // NOTE: Could quantization errors be a problem here?
+                if (x == _xlowgiven) x = _xhighgiven;
+            }
+        }
 
         // For auto-ranging, keep track of min and max.
         if (x < _xBottom) _xBottom = x;
@@ -1951,15 +1962,27 @@ public class Plot extends PlotBox {
 
         Vector pts = (Vector)_points.elementAt(dataset);
         // If this is the first point in the dataset, clear the connected bit.
-        if (pts.size() == 0) pt.connected = false;
+        int size = pts.size();
+        if (size == 0) {
+            pt.connected = false;
+        } else if(_wrap && _xRangeGiven) {
+            // Do not connect points if wrapping...
+            PlotPoint old = (PlotPoint)(pts.elementAt(size-1));
+            if (old.x > x) pt.connected = false;
+        }
         pts.addElement(pt);
         if (_pointsPersistence > 0) {
-            if (pts.size() > _pointsPersistence)
+            if (size > _pointsPersistence)
                 erasePoint(dataset, 0);
         }
         // Draw the point on the screen only if the plot is showing.
         if (_showing) {
             _drawPlotPoint(getGraphics(), dataset, pts.size() - 1);
+        }
+
+        if(_wrap && _xRangeGiven && x == _xhighgiven) {
+            // Plot a second point at the low end of the range.
+            _addPoint(dataset, _xlowgiven, y, yLowEB, yHighEB, false, errorBar);
         }
     }
 
