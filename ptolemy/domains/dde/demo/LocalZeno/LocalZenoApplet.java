@@ -386,8 +386,8 @@ public class LocalZenoApplet extends PtolemyApplet {
 	 */
 	public LocalZenoGraphController() {
 	    // The interactors attached to nodes and edges
-	    setNodeController(new NodeController(this));
-	    setEdgeController(new EdgeController(this));
+	    setNodeController(new BasicNodeController(this));
+	    setEdgeController(new BasicEdgeController(this));
 	    getNodeController().setNodeRenderer(new ThreadRenderer(this));
 	    getEdgeController().setEdgeRenderer(new LocalEdgeRenderer());
 	}
