@@ -56,7 +56,7 @@ first channel being read, then no output is produced.
 <p>
 For the benefit of domains like SDF, which need to know the token consumption
 or production rate for all ports before they can construct a firing schedule,
-this actor sets the TokenProductionRate parameter for the output port
+this actor sets the tokenProductionRate parameter for the output port
 to equal the number of input channels.
 This parameter is set each time that a link is established with
 the input port, or when a link is removed.  The director is notified
@@ -83,10 +83,10 @@ public class Commutator extends Transformer implements SequenceActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
-        new Parameter(input, "TokenConsumptionRate", new IntToken(1));
-        _productionRate = new Parameter(output,"TokenProductionRate",
+        new Parameter(input, "tokenConsumptionRate", new IntToken(1));
+        _productionRate = new Parameter(output,"tokenProductionRate",
                 new IntToken(0));
-        new Parameter(output,"TokenInitProduction", new IntToken(0));
+        new Parameter(output,"tokenInitProduction", new IntToken(0));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -103,7 +103,7 @@ public class Commutator extends Transformer implements SequenceActor {
 	    throws CloneNotSupportedException {
         Commutator newobj = (Commutator)super.clone(ws);
         newobj._productionRate = (Parameter)
-            (newobj.output.getAttribute("TokenProductionRate"));
+            (newobj.output.getAttribute("tokenProductionRate"));
         return newobj;
     }
 

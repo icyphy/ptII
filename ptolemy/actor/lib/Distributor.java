@@ -55,7 +55,7 @@ not receive a token in the previous iteration.
 <p>
 For the benefit of domains like SDF, which need to know the token consumption
 or production rate for all ports before they can construct a firing schedule,
-this actor sets the TokenConsumptionRate parameter for the input port
+this actor sets the tokenConsumptionRate parameter for the input port
 to equal the number of output channels.
 This parameter is set each time that a link is established with
 the input port, or when a link is removed.  The director is notified
@@ -82,7 +82,7 @@ public class Distributor extends Transformer implements SequenceActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         // These parameters are required for SDF
-        _consumptionRate = new Parameter(input, "TokenConsumptionRate",
+        _consumptionRate = new Parameter(input, "tokenConsumptionRate",
                 new IntToken(0));
 
         output.setMultiport(true);
@@ -102,7 +102,7 @@ public class Distributor extends Transformer implements SequenceActor {
 	    throws CloneNotSupportedException {
         Distributor newobj = (Distributor)super.clone(ws);
         newobj._consumptionRate = (Parameter)
-            (newobj.input.getAttribute("TokenConsumptionRate"));
+            (newobj.input.getAttribute("tokenConsumptionRate"));
         return newobj;
     }
 
