@@ -368,7 +368,8 @@ public class PetriNetDirector extends Director {
             throws IllegalActionException {
 
                 boolean readyToFire = true;
-                LinkedList placeList =  _findBackwardConnectedPlaces(transition);
+                LinkedList placeList =
+                           _findBackwardConnectedPlaces(transition);
                 Iterator placeLists = placeList.iterator();
                 while (placeLists.hasNext()) {
                     Place place = (Place) placeLists.next();
@@ -383,13 +384,15 @@ public class PetriNetDirector extends Director {
 
                 LinkedList temporarySourcePortList = new LinkedList();
                 while(newRelationList.size() > 0 )  {
-                    IORelation weights = (IORelation) newRelationList.getFirst();
+                    IORelation weights =
+                                 (IORelation) newRelationList.getFirst();
                     if (weights != null) {
                         Iterator weightPorts =
                             weights.linkedSourcePortList().iterator();
                         while(weightPorts.hasNext()) {
                             IOPort weightPort = (IOPort) weightPorts.next();
-                            if (!temporarySourcePortList.contains(weightPort)) {
+                            if (!temporarySourcePortList.
+                                                    contains(weightPort)) {
                                 temporarySourcePortList.add(weightPort);
                                 Nameable weightPlace =
                                     (Nameable) weightPort.getContainer();
@@ -455,13 +458,15 @@ public class PetriNetDirector extends Director {
                 }
                 LinkedList temporaryDestinationPortList = new LinkedList();
                 while(newRelationList.size() > 0 )  {
-                    IORelation weights = (IORelation) newRelationList.getFirst();
+                    IORelation weights = 
+                                  (IORelation) newRelationList.getFirst();
                     if (weights != null) {
                         Iterator weightPorts =
                             weights.linkedDestinationPortList().iterator();
                         while(weightPorts.hasNext()) {
                             IOPort weightPort = (IOPort) weightPorts.next();
-                            if (!temporaryDestinationPortList.contains(weightPort)) {
+                            if (!temporaryDestinationPortList.
+                                                      contains(weightPort)) {
                                 temporaryDestinationPortList.add(weightPort);
                                 Nameable weightPlace =
                                     (Nameable) weightPort.getContainer();
@@ -488,7 +493,8 @@ public class PetriNetDirector extends Director {
                             forwardConnectedPlaces.iterator();
                         int itemCount = 0;
                         while (forwardConnectedPlace.hasNext()) {
-                            Place forwardPlace = (Place) forwardConnectedPlace.next();
+                            Place forwardPlace =
+                                       (Place) forwardConnectedPlace.next();
                             itemCount++;
                             int oldToken = forwardPlace.getMarking();
                             forwardPlace.increaseMarking(weightNumber);
@@ -513,7 +519,8 @@ public class PetriNetDirector extends Director {
 
                 LinkedList temporarySourcePortList = new LinkedList();
                 while(backRelationList.size() > 0 )  {
-                    IORelation weights = (IORelation) backRelationList.getFirst();
+                    IORelation weights =
+                                   (IORelation) backRelationList.getFirst();
                     if (weights != null) {
                         Iterator weightPorts =
                             weights.linkedSourcePortList().iterator();
@@ -547,7 +554,8 @@ public class PetriNetDirector extends Director {
                                 _debug("                        the "
                                         + backPlaceCount
                                         + " place  is "
-                                        + item.getFullName() + " old " + oldMarking
+                                        + item.getFullName() + " old "
+                                        + oldMarking
                                         + " new  " + item.getMarking());
                             }
                             if(item.getMarking() < 0) {
@@ -585,7 +593,8 @@ public class PetriNetDirector extends Director {
                 while (actors.hasNext()) {
                     Nameable component = (Nameable) actors.next();
                     if (component instanceof PetriNetActor)  {
-                        PetriNetActor petriNetActor = (PetriNetActor) component;
+                        PetriNetActor petriNetActor =
+                                    (PetriNetActor) component;
                         if( petriNetActor.prefire()) {
                             readyComponentList.add(petriNetActor);
                         }
@@ -632,7 +641,8 @@ public class PetriNetDirector extends Director {
                         _debug( componentCount + " transitions ready");
                     }
                     int randomCount = generator.nextInt(componentCount);
-                    Nameable chosenTransition = (Nameable) components.get(randomCount);
+                    Nameable chosenTransition =
+                                (Nameable) components.get(randomCount);
 
                     if(chosenTransition instanceof PetriNetActor) {
                         PetriNetActor realPetriNetActor =
@@ -799,7 +809,8 @@ public class PetriNetDirector extends Director {
                     Variable weightAttribute = (Variable) temporaryAttribute;
                     Token weightToken = (Token) weightAttribute.getToken();
                     if (weightToken instanceof ScalarToken) {
-                        ScalarToken weightScalarToken = (ScalarToken) weightToken;
+                        ScalarToken weightScalarToken =
+                                        (ScalarToken) weightToken;
                         return weightScalarToken.intValue();
                     }
                     else {
