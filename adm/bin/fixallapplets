@@ -1,0 +1,15 @@
+#!/bin/sh
+# Script that runs fixapplets on all the .htm files that contain applets
+
+ptii=`echo $PTII | sed 's@\\\@/@g'`
+
+htmFiles=`"$PTII/adm/bin/ptIItxtfiles" | grep '.htm$'`
+for file in $htmFiles
+do
+	grep -q '<OBJECT' $file
+	retval=$?
+	if [ "$retval" = "0" ]; then	
+		echo $file
+		$PTII/adm/bin/fixapplets $file
+	fi
+done
