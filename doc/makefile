@@ -171,6 +171,7 @@ HYVISUALPACKAGES = \
 			ptolemy.domains.fsm.kernel \
 			ptolemy.domains.sdf.kernel \
 			ptolemy.domains.sdf.lib \
+			ptolemy.domains.sdf.lib.security \
 			ptolemy.domains.sdf.lib.vq \
 			ptolemy.media.javasound \
 			ptolemy.vergil.fsm.modal
@@ -378,6 +379,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/petrinet/kernel/*.java \
 			../ptolemy/domains/sdf/kernel/*.java \
 			../ptolemy/domains/sdf/lib/*.java \
+			../ptolemy/domains/sdf/lib/security/*.java \
 			../ptolemy/domains/sdf/lib/vq/*.java \
 			../ptolemy/domains/sr/kernel/*.java \
 			../ptolemy/domains/sr/lib/*.java \
