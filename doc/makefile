@@ -83,6 +83,7 @@ EXTRA_SRCS = \
 	javahtml.awk \
 	main.htm \
 	mainheader.htm \
+	oldFeatures.htm \
 	ptII$(PTVERSION).release.htm \
 	ptIIfaq.htm \
 	removeasd \
