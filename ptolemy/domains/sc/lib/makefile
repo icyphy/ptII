@@ -40,13 +40,13 @@ include $(CONFIG)
 DIRS = 		#test #doc
 
 # Used to build zip files
-TYPACKAGE = 	ptolemy.domains.sc.lib
-TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = ptolemy/domains/sc/lib
-TYVERSION =	1.0
-TYDIST =	$(TYPACKAGE)$(TYVERSION)
-TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
-JARFILE = 	$(TYPACKAGE).jar
+PTPACKAGE = 	ptolemy.domains.sc.lib
+PTPACKAGE_ROOTDIR = $(CLASSPATH)
+PTPACKAGE_DIR = ptolemy/domains/sc/lib
+PTVERSION =	1.0
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSZIP =	$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 CLASSPATH = ../../../..
 
