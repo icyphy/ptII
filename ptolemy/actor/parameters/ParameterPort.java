@@ -186,7 +186,7 @@ public class ParameterPort extends TypedIOPort {
     }
     
     /** Get the associated parameter.
-     *  @returns The associated parameter.
+     *  @return The associated parameter.
      */
     public PortParameter getParameter() {
         return _parameter;
