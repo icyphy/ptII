@@ -70,29 +70,28 @@ public class FixMatrixToken extends MatrixToken {
      *  so changes on the specified array after this token is
      *  constructed will not affect the content of this token.
      *  @param value the 2D array of FixPoint values.
+     *  @exception IllegalActionException If the precisions of the
+     *   entries in the array are not all identical.
      *  @exception NullPointerException If the specified array
      *   is null.
      */
-    public FixMatrixToken(FixPoint[][] value ) {
+    public FixMatrixToken(FixPoint[][] value ) throws IllegalActionException {
 	_rowCount = value.length;
 	_columnCount = value[0].length;
 	_value = new FixPoint[_rowCount][_columnCount];
 	for (int i = 0; i < _rowCount; i++) {
 	    for (int j = 0; j < _columnCount; j++) {
 		_value[i][j] = value[i][j];
+                Precision precision = value[i][j].getPrecision();
+                if (_precision != null && !_precision.equals(precision)) {
+                    throw new IllegalActionException(
+                        "Attempt to create a FixMatrixToken"
+                        + " with unequal precisions.");
+                }
+                _precision = precision;
 	    }
 	}
     }
-
-    // FIXME: finish this method after array is added to the
-    // 	      expression language.
-    // Construct an FixMatrixToken from the specified string.
-    // @param init A string expression of a 2-D double array.
-    // @exception IllegalArgumentException If the string does
-    //  not contain a parsable 2-D int array.
-    //
-    // public FixMatrixToken(String init) {
-    // }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -341,7 +340,12 @@ public class FixMatrixToken extends MatrixToken {
 	    }
 	    result[i][i] = Quantizer.round( 1.0, _precision );
 	}
-	return new FixMatrixToken(result);
+        try {
+            return new FixMatrixToken(result);
+        } catch (IllegalActionException ex) {
+            // precisions are all the same, so this should not be thrown.
+            throw new InternalErrorException("Unequal precisions!");
+        }
     }
 
     /** Return a new Token representing the right multiplicative
@@ -359,7 +363,12 @@ public class FixMatrixToken extends MatrixToken {
 	    }
 	    result[i][i] = Quantizer.round( 0.0, _precision);
 	}
-	return new FixMatrixToken(result);
+        try {
+            return new FixMatrixToken(result);
+        } catch (IllegalActionException ex) {
+            // precisions are all the same, so this should not be thrown.
+            throw new InternalErrorException("Unequal precisions!");
+        }
     }
 
     /** Return a new Token representing the additive identity with the
@@ -377,7 +386,12 @@ public class FixMatrixToken extends MatrixToken {
 		result[i][j] = zero;
 	    }
 	}
-	return new FixMatrixToken(result);
+        try {
+            return new FixMatrixToken(result);
+        } catch (IllegalActionException ex) {
+            // precisions are all the same, so this should not be thrown.
+            throw new InternalErrorException("Unequal precisions!");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -25,10 +25,39 @@
  
   <entity name="DoubleToFix"
           class="ptolemy.actor.lib.conversions.DoubleToFix">
+    <property name="quantization">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="round" value="round"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="truncate" value="truncate"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
   </entity>
 
   <entity name="FixToDouble"
           class="ptolemy.actor.lib.conversions.FixToDouble">
+  </entity>
+
+  <entity name="FixToFix"
+          class="ptolemy.actor.lib.conversions.FixToFix">
+    <property name="quantization">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="round" value="round"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="truncate" value="truncate"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
+    <property name="overflow">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="saturate" value="saturate"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="overflow_to_zero" value="overflow_to_zero"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
+
   </entity>
 
 <entity name="IntToBits" class="ptolemy.domains.sdf.lib.IntToBits">

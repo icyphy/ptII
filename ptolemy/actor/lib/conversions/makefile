@@ -55,6 +55,7 @@ JSRCS = \
 	ComplexToReal.java \
 	DoubleToFix.java \
 	FixToDouble.java \
+	FixToFix.java \
 	PolarToComplex.java \
 	PolarToRectangular.java \
 	RectangularToPolar.java \

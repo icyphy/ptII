@@ -228,7 +228,9 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 		// Do nothing, we haven't found the correct function
 	    } catch (InvocationTargetException ex) {
 		// get the exception produced by the invoked function
+                ex.getTargetException().printStackTrace();
 		throw new IllegalActionException(
+                        "Error invoking function " + _funcName + "\n" +
                         ex.getTargetException().getMessage());
 	    } catch (Exception ex)  {
 		new IllegalActionException(ex.getMessage());
@@ -294,6 +296,5 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     public static Node jjtCreate(PtParser p, int id) {
         return new ASTPtFunctionNode(p, id);
     }
-
 }
 

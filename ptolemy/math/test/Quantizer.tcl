@@ -61,10 +61,10 @@ test Quantizer-1.0 {The round function} {
 [$c2 toBitString] [ $c2 toString ][[$c2 getError] getDescription] 
 [$c3 toBitString] [ $c3 toString ][[$c3 getError] getDescription] "
 } {{
-101.100100101101 5.573486328125 No overflow Occurred 
-101.10010010110010100101011110101000 5.573400000110269 No overflow Occurred 
--101.110001010010 -4.22998046875 No overflow Occurred 
--101.11000101000111101011100001010010 -4.2299999999813735 No overflow Occurred }}
+101.100100101101 5.573486328125 No overflow occurred 
+101.10010010110010100101011110101000 5.573400000110269 No overflow occurred 
+-101.110001010010 -4.22998046875 No overflow occurred 
+-101.11000101000111101011100001010010 -4.2299999999813735 No overflow occurred }}
 
 test Quantizer-1.1 {The round function} {
     set p0 [java::new ptolemy.math.Precision "(16/4)" ]
@@ -88,10 +88,10 @@ test Quantizer-1.1 {The round function} {
 [$c2 toBitString] [ $c2 toString ][[$c2 getError] getDescription] 
 [$c3 toBitString] [ $c3 toString ][[$c3 getError] getDescription] "
 } {{
-101.100100101101 5.573486328125 No overflow Occurred 
-100.001110101110 4.22998046875 No overflow Occurred 
--110.011011010011 -5.573486328125 No overflow Occurred 
--101.110001010010 -4.22998046875 No overflow Occurred }}
+101.100100101101 5.573486328125 No overflow occurred 
+100.001110101110 4.22998046875 No overflow occurred 
+-110.011011010011 -5.573486328125 No overflow occurred 
+-101.110001010010 -4.22998046875 No overflow occurred }}
 
 test Quantizer-1.2 {the round function} {
     set p0 [java::new ptolemy.math.Precision "(16/4)" ]
@@ -112,10 +112,10 @@ test Quantizer-1.2 {the round function} {
 [$c2 toBitString] [ $c2 toString ][[$c2 getError] getDescription] 
 [$c3 toBitString] [ $c3 toString ][[$c3 getError] getDescription] "
 } {{
-101.100100101101 5.573486328125 No overflow Occurred 
-11.1111111111111 3.9998779296875 Overflow Occurred 
-1.11111111111111 1.99993896484375 Overflow Occurred 
-0.111111111111111 0.999969482421875 Overflow Occurred }}
+101.100100101101 5.573486328125 No overflow occurred 
+11.1111111111111 3.9998779296875 Overflow occurred 
+1.11111111111111 1.99993896484375 Overflow occurred 
+0.111111111111111 0.999969482421875 Overflow occurred }}
 
 test Quantizer-1.3 {the round function} {
     set p0 [java::new ptolemy.math.Precision "(16/4)" ]
@@ -136,10 +136,10 @@ test Quantizer-1.3 {the round function} {
 [$c2 toBitString] [ $c2 toString ][[$c2 getError] getDescription] 
 [$c3 toBitString] [ $c3 toString ][[$c3 getError] getDescription] "
 } {{
--110.011011010011 -5.573486328125 No overflow Occurred 
--100.0000000000000 -4.0 Overflow Occurred 
--10.00000000000000 -2.0 Overflow Occurred 
--1.000000000000000 -1.0 Overflow Occurred }}
+-110.011011010011 -5.573486328125 No overflow occurred 
+-100.0000000000000 -4.0 Overflow occurred 
+-10.00000000000000 -2.0 Overflow occurred 
+-1.000000000000000 -1.0 Overflow occurred }}
 
 ####################################################################
 
@@ -160,10 +160,10 @@ test Quantizer-2.0 {The truncate function} {
 [$c2 toBitString] [ $c2 toString ][[$c2 getError] getDescription] 
 [$c3 toBitString] [ $c3 toString ][[$c3 getError] getDescription] "
 } {{
-101.100100101100 5.5732421875 No overflow Occurred 
-101.10010010110010100101011110100111 5.573399999877438 No overflow Occurred 
--101.010001010010 -4.72998046875 No overflow Occurred 
--101.01000101000111101011100001010010 -4.7299999999813735 No overflow Occurred }}
+101.100100101100 5.5732421875 No overflow occurred 
+101.10010010110010100101011110100111 5.573399999877438 No overflow occurred 
+-101.010001010010 -4.72998046875 No overflow occurred 
+-101.01000101000111101011100001010010 -4.7299999999813735 No overflow occurred }}
 
 test Quantizer-2.1 {The truncate function} {
     set p0 [java::new ptolemy.math.Precision "(16/4)" ]
@@ -187,10 +187,10 @@ test Quantizer-2.1 {The truncate function} {
 [$c2 toBitString] [ $c2 toString ][[$c2 getError] getDescription] 
 [$c3 toBitString] [ $c3 toString ][[$c3 getError] getDescription] "
 } {{
-101.100100101100 5.5732421875 No overflow Occurred 
-100.001110101110 4.22998046875 No overflow Occurred 
--111.111011010100 -6.0732421875 No overflow Occurred 
--101.010001010010 -4.72998046875 No overflow Occurred }}
+101.100100101100 5.5732421875 No overflow occurred 
+100.001110101110 4.22998046875 No overflow occurred 
+-111.111011010100 -6.0732421875 No overflow occurred 
+-101.010001010010 -4.72998046875 No overflow occurred }}
 
 test Quantizer-2.2 {the truncate function} {
     set p0 [java::new ptolemy.math.Precision "(16/4)" ]
@@ -211,10 +211,10 @@ test Quantizer-2.2 {the truncate function} {
 [$c2 toBitString] [ $c2 toString ][[$c2 getError] getDescription] 
 [$c3 toBitString] [ $c3 toString ][[$c3 getError] getDescription] "
 } {{
-101.100100101100 5.5732421875 No overflow Occurred 
-11.1111111111111 3.9998779296875 Overflow Occurred 
-1.11111111111111 1.99993896484375 Overflow Occurred 
-0.111111111111111 0.999969482421875 Overflow Occurred }}
+101.100100101100 5.5732421875 No overflow occurred 
+11.1111111111111 3.9998779296875 Overflow occurred 
+1.11111111111111 1.99993896484375 Overflow occurred 
+0.111111111111111 0.999969482421875 Overflow occurred }}
 
 test Quantizer-2.3 {the truncate function} {
     set p0 [java::new ptolemy.math.Precision "(16/4)" ]
@@ -235,7 +235,7 @@ test Quantizer-2.3 {the truncate function} {
 [$c2 toBitString] [ $c2 toString ][[$c2 getError] getDescription] 
 [$c3 toBitString] [ $c3 toString ][[$c3 getError] getDescription] "
 } {{
--111.111011010100 -6.0732421875 No overflow Occurred 
--101.1000000000001 -4.4998779296875 Overflow Occurred 
--11.10000000000001 -2.49993896484375 Overflow Occurred 
--10.100000000000001 -1.499969482421875 Overflow Occurred }}
+-111.111011010100 -6.0732421875 No overflow occurred 
+-101.1000000000001 -4.4998779296875 Overflow occurred 
+-11.10000000000001 -2.49993896484375 Overflow occurred 
+-10.100000000000001 -1.499969482421875 Overflow occurred }}

@@ -41,10 +41,10 @@ import ptolemy.data.type.*;
 //////////////////////////////////////////////////////////////////////////
 //// FixToken
 /**
-A token that contains an instance of a FixPoint.
+A token that contains an instance of FixPoint.
 
-<p>
 @author Bart Kienhuis
+@contributor Edward A. Lee
 @see ptolemy.data.Token
 @see ptolemy.math.FixPoint
 @see ptolemy.math.Precision
@@ -58,22 +58,17 @@ public class FixToken extends ScalarToken {
      *  @param value A FixPoint value.
      */
     public FixToken(FixPoint value) {
-	_value = value;
+        _value = value;
     }
 
-    /** Construct a FixToken with a value given as a double and a
-     *  precision. Since FixToken uses a finite number of bits to
-     *  represent a value, quantization errors and overflow may
-     *  occur. This constructor uses the <i>Quantizer.round</i> method
-     *  of class Quantizer, which means that a FixToken is produced
-     *  with a value nearest to the value that can be presented with
-     *  the given precision.
+    /** Construct a FixToken representing the specified value with the
+     *  specified precision.  The specified value is quantized to the
+     *  closest value representable with the specified precision.
      *
-     *  @param value the value that needs to be converted into a FixToken.
-     *  @param precision the precision of the FixToken.
-     *  @exception IllegalArgumentException If the format of the
-     *  precision string is incorrect.
-     *  @see ptolemy.math.Quantizer
+     *  @param value The value to represent.
+     *  @param precision The precision to use.
+     *  @exception IllegalArgumentException If the supplied precision
+     *   is invalid.
      */
     public FixToken(double value, Precision precision)
             throws IllegalArgumentException {
@@ -84,24 +79,15 @@ public class FixToken extends ScalarToken {
         }
     }
 
-    /** Construct a FixToken for a specific value with the precision
-     *  given in the total number of bits available and the number of
-     *  bits available for the integer part. Since FixToken uses a
-     *  finite number of bits to represent a value, quantization
-     *  errors may occur. This constructor uses the <i>Round</i>
-     *  quantization method of class Quantizer, which means that a
-     *  FixToken is produced which value is nearest to the value that
-     *  can be represented with the given precision.
+    /** Construct a FixToken representing the specified value with the
+     *  specified precision.  The specified value is quantized to the
+     *  closest value representable with the specified precision.
      *
-     *  @param value the value that needs to be converted into a
-     *  FixToken.
-     *  @param numberOfBits total number of bits available for the
-     *  FixToken.
-     *  @param integerBits the number of integer bits available for
-     *  the FixToken.
+     *  @param value The value to represent.
+     *  @param numberOfBits The total number of bits.
+     *  @param integerBits The number of integer bits.
      *  @exception IllegalArgumentException If the supplied precision
-     *  is incorrect.
-     *  @see ptolemy.math.Quantizer
+     *   is invalid.
      */
     public FixToken(double value, int numberOfBits, int integerBits)
             throws IllegalArgumentException {
@@ -117,27 +103,21 @@ public class FixToken extends ScalarToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a new FixToken containing the absolute value of the
-     *  value of this token.
-     *
-     *  @return A FixToken.
+    /** Return a new FixToken containing the absolute value of this token.
+     *  @return A new instance of FixToken.
      */
     public ScalarToken absolute() {
 	return new FixToken(_value.abs());
     }
 
     /** Return a new token whose value is the sum of this token
-     *  and the argument. The type of the specified token
-     *  must be such that either it can be converted to the type
-     *  of this token, or the type of this token can be converted
-     *  to the type of the specified token, without loss of
-     *  information. The type of the returned token is one of the
-     *  above two types that allows lossless conversion from the other.
-     *  @param token A Token.
-     *  @return A new Token.
+     *  and the argument. The type of the specified token must
+     *  be lower than FixToken in the type lattice, meaning that
+     *  it can be losslessly converted to an instance of FixToken.
+     *  @param token The token to add to this one.
+     *  @return A new token representing the sum.
      *  @exception IllegalActionException If the specified token
-     *   is not of a type that can be added to this Tokens value in
-     *   a lossless fashion.
+     *   is not of a type that can be added to this token.
      */
     public Token add(Token token)
 	    throws IllegalActionException {
@@ -160,11 +140,12 @@ public class FixToken extends ScalarToken {
 
     /** Return a new token whose value is the sum of this token
      *  and the argument. The type of the specified token must
-     *  be lower than FixToken.
+     *  be lower than FixToken in the type lattice, meaning that
+     *  it can be losslessly converted to an instance of FixToken.
      *  @param token The token to add this Token to.
      *  @return A new Token containing the result.
-     *  @exception IllegalActionException If the type of the specified
-     *   token is not lower than FixToken.
+     *  @exception IllegalActionException If the specified token
+     *   is not of a type that can be added to this token.
      */
     public Token addReverse(Token token)
 	    throws IllegalActionException {
@@ -182,11 +163,10 @@ public class FixToken extends ScalarToken {
     }
 
     /** Return the fixed point value of this token as a double. The
-     *  conversion from a fixed point to a double is not lossless, and
+     *  conversion from a fixed point to a double is not lossless, so
      *  the doubleValue() cannot be used. Therefore an explicit lossy
      *  conversion method is provided.
-     *
-     *  @return A double.
+     *  @return A double representation of the value of this token.
      */
     public double convertToDouble() {
         return _value.doubleValue();
@@ -489,5 +469,4 @@ public class FixToken extends ScalarToken {
 
     /** The FixPoint value contained in this FixToken. */
     private FixPoint _value;
-
 }

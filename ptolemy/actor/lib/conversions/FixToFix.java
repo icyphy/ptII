@@ -1,4 +1,5 @@
-/* Actor that converts a DoubleToken into a FixToken.
+/* Actor that converts a FixToken into another FixToken with possibly
+   different precision.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -41,19 +42,18 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// DoubleToFix
+//// FixToFix
 /**
-This actor converts a DoubleToken into a FixToken with a specified
-precision. Note that this conversion is lossy, in that the output
-is an approximation of the input.  The approximation can be
+This actor converts a FixToken into another FixToken with a specified
+precision. Note that this conversion may be lossy, in that the output
+may be an approximation of the input.  The approximation can be
 constructed using rounding or truncation, depending on the value
 of the <i>quantization</i> parameter. If <i>quantization</i> is
 "round" (the default), then the output will be the
-FixToken of the specified precision
-that is nearest to the input value.  If <i>quantization</i> is
-"truncate", then the output will be the FixToken of the specified precision
-that is nearest but to the input value, but no greater than the input
-value in magnitude.
+FixToken of the specified precision that is nearest to the input value.
+If <i>quantization</i> is "truncate", then the output will be the
+FixToken of the specified precision that is nearest but to the
+input value, but no greater than the input value in magnitude.
 <p>
 The precision of the output is given by the <i>precision</i> parameter,
 which is an integer matrix of the form [<i>m</i>, <i>n</i>], where
@@ -61,16 +61,23 @@ the total number of bits in the output is <i>m</i>, of which
 <i>n</i> are integer bits. The default precision is [16, 2], which means
 that an output has 16 bits, of which 2 bits represent the
 integer part.
+<p>
+The input may be out of range for the output precision.  If so, then by
+default, the output will be saturated, meaning that its value will be
+either the maximum or the minimum that is representable in the specified
+precision, depending on the sign of the input.  However, if the
+<i>overflow</i> parameter is changed from "saturate" to
+"overflow_to_zero", then the output is set to zero whenever overflow
+occurs.
 
-@author Bart Kienhuis
-@contributor Edward A. Lee
+@author Bart Kienhuis and Edward A. Lee
 @version $Id$
 @see ptolemy.math.Quantizer
 @see ptolemy.data.FixToken
 @see ptolemy.math.Precision
 */
 
-public class DoubleToFix extends Transformer {
+public class FixToFix extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -80,10 +87,10 @@ public class DoubleToFix extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DoubleToFix(CompositeEntity container, String name)
+    public FixToFix(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input.setTypeEquals(BaseType.DOUBLE);
+        input.setTypeEquals(BaseType.FIX);
 	output.setTypeEquals(BaseType.FIX);
 
 	precision = new Parameter(this, "precision");
@@ -92,10 +99,10 @@ public class DoubleToFix extends Transformer {
 
 	quantization = new StringAttribute(this, "quantization");
         quantization.setExpression("round");
-    }
 
-    // FIXME: This actor needs an overflow parameter. However,
-    // the Quantizer class, for some bizarre reason, doesn't support this.
+	overflow = new StringAttribute(this, "overflow");
+        overflow.setExpression("saturate");
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -105,6 +112,9 @@ public class DoubleToFix extends Transformer {
 
     /** The quantization strategy used. */
     public StringAttribute quantization;
+
+    /** The overflow strategy used to convert a double into a fix point. */
+    public StringAttribute overflow;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -133,27 +143,38 @@ public class DoubleToFix extends Transformer {
                 throw new IllegalActionException(this,
                 "Unrecognized quantization: " + spec);
             }
+        } else if (attribute == overflow) {
+            String spec = overflow.getExpression();
+            if (spec.equals("saturate")) {
+                _overflow = 0;
+            } else if (spec.equals("overflow_to_zero")) {
+                _overflow = 1;
+            } else {
+                throw new IllegalActionException(this,
+                "Unrecognized overflow strategy: " + spec);
+            }
         } else {
             super.attributeChanged(attribute);
         }
     }
 
     /** Read at most one token from the input and convert it to a fixed-point
-     *  value with the precision given by the <i>precision</i> parameter.
+     *  value with the precision given by the <i>precision</i> parameter
+     *  and overflow strategy given by the <i>overflow</i> parameter.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        FixToken result = null;
 	if (input.hasToken(0)) {
-    	    DoubleToken in = (DoubleToken)input.get(0);
-            switch( _quantization ) {
+            FixToken result = null;
+    	    FixToken in = (FixToken)input.get(0);
+            switch(_quantization) {
             case 1:
                 result = new FixToken(
-                        Quantizer.truncate(in.doubleValue(), _precision));
+                    Quantizer.truncate(in.fixValue(), _precision, _overflow));
                 break;
             default:
                 result = new FixToken(
-                        Quantizer.round(in.doubleValue(), _precision));
+                        Quantizer.round(in.fixValue(), _precision, _overflow));
             }
             output.send(0, result);
         }
@@ -167,4 +188,7 @@ public class DoubleToFix extends Transformer {
 
     // The quantization strategy, encoded as an int.
     private int _quantization = 0;
+
+    // The overflow strategy, encoded as an int.
+    private int _overflow = 0;
 }

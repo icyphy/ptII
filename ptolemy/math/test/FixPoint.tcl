@@ -61,10 +61,10 @@ test FixPoint-1.0 {constructors} {
 [$c2 toBitString] [ $c2 toString ][[$c2 getError] getDescription] 
 [$c3 toBitString] [ $c3 toString ][[$c3 getError] getDescription] "
 } {{
-101.100100101101 5.573486328125 No overflow Occurred 
-101.10010010110010100101011110101000 5.573400000110269 No overflow Occurred 
--101.110001010010 -4.22998046875 No overflow Occurred 
--101.11000101000111101011100001010010 -4.2299999999813735 No overflow Occurred }}
+101.100100101101 5.573486328125 No overflow occurred 
+101.10010010110010100101011110101000 5.573400000110269 No overflow occurred 
+-101.110001010010 -4.22998046875 No overflow occurred 
+-101.11000101000111101011100001010010 -4.2299999999813735 No overflow occurred }}
 
 test FixPoint-1.1 {constructors} {
     set p0 [java::new ptolemy.math.Precision "(16/4)" ]
@@ -85,10 +85,10 @@ test FixPoint-1.1 {constructors} {
 [$c2 toBitString] [ $c2 toString ][[$c2 getError] getDescription] 
 [$c3 toBitString] [ $c3 toString ][[$c3 getError] getDescription] "
 } {{
-101.100100101101 5.573486328125 No overflow Occurred 
-11.1111111111111 3.9998779296875 Overflow Occurred 
-1.11111111111111 1.99993896484375 Overflow Occurred 
-0.111111111111111 0.999969482421875 Overflow Occurred }}
+101.100100101101 5.573486328125 No overflow occurred 
+11.1111111111111 3.9998779296875 Overflow occurred 
+1.11111111111111 1.99993896484375 Overflow occurred 
+0.111111111111111 0.999969482421875 Overflow occurred }}
 
 test FixPoint-1.2 {constructors} {
     set p0 [java::new ptolemy.math.Precision "(16/4)" ]
@@ -109,10 +109,10 @@ test FixPoint-1.2 {constructors} {
 [$c2 toBitString] [ $c2 toString ][[$c2 getError] getDescription] 
 [$c3 toBitString] [ $c3 toString ][[$c3 getError] getDescription] "
 } {{
--110.011011010011 -5.573486328125 No overflow Occurred 
--100.0000000000000 -4.0 Overflow Occurred 
--10.00000000000000 -2.0 Overflow Occurred 
--1.000000000000000 -1.0 Overflow Occurred }}
+-110.011011010011 -5.573486328125 No overflow occurred 
+-100.0000000000000 -4.0 Overflow occurred 
+-10.00000000000000 -2.0 Overflow occurred 
+-1.000000000000000 -1.0 Overflow occurred }}
 
 test FixPoint-1.3 {constructors} {
     set p0 [java::new ptolemy.math.Precision "(1.0)" ]
@@ -147,15 +147,15 @@ test FixPoint-1.3 {constructors} {
 [$c7 toBitString] [ $c7 toString ][[$c7 getError] getDescription] 
 [$c8 toBitString] [ $c8 toString ][[$c8 getError] getDescription] "
 } {{
-0 0.0 Overflow Occurred
--1 -1.0 No overflow Occurred 
-0 0.0 No overflow Occurred
-0.1 0.5 Overflow Occurred
--1.0 -1.0 No overflow Occurred 
-0.0 0.0 No overflow Occurred
-1 1.0 No overflow Occurred
--1 -1.0 No overflow Occurred 
-0 0.0 No overflow Occurred }}
+0 0.0 Overflow occurred
+-1 -1.0 No overflow occurred 
+0 0.0 No overflow occurred
+0.1 0.5 Overflow occurred
+-1.0 -1.0 No overflow occurred 
+0.0 0.0 No overflow occurred
+1 1.0 No overflow occurred
+-1 -1.0 No overflow occurred 
+0 0.0 No overflow occurred }}
 
 test FixPoint-1.4 {constructors} {
     catch { set p0 [java::new ptolemy.math.Precision "(0.0)" ] } msg

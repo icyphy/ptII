@@ -1,4 +1,4 @@
-/* This object quantizes a value into a Fixed point value.
+/* A collection of methods for creating fixed point values.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -38,34 +38,16 @@ import java.math.BigDecimal;
 //// Quantizer
 
 /**
-
-To create an instance of a FixPoint, one has to use static function of
-this Quantizer class. These functions implement different quantizers
-to convert a double value or integer value into a FixPoint value.
-
-<p>
-
-Currently the following quantizers exist:
-
-<ol>
-
-<li> <b>Quantizer.round</b>: Return a FixPoint that is nearest to the
-value that can be represented with the given precision, possibly
-introducing quantization errors.
-
-<li> <b>Quantizer.truncate</b>: Return a FixPoint that is the nearest
-value towards zero that can be represented with the given precision,
-possibly introducing quantization errors.
-
-</ol>
-
-In case a value is given that falls outside the range of values that
-can be achieved with the given precision, the value is set to the
-maximum or depending on the sign of the value to the minimum value
-possible with the precision. Also, the overflow flag is set to
-indicate that an overflow occured for the FixPoint value.
+This class provides a set of static methods for creating instances
+of the FixPoint class from doubles, integers, or fixed point numbers.
+The various round() methods return a fixed point value that is nearest
+to the specified number, but has the specified precision.
+The various truncate() methods return a fixed point value that is
+nearest to the specified number, but no greater in magnitude.
+All of these methods may introduce quantization errors and/or overflow.
 
 @author Bart Kienhuis
+@contributor Edward A. Lee
 @version $Id$
 @see FixPoint
 @see Precision
@@ -80,36 +62,38 @@ public class Quantizer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a FixPoint that is nearest to the value that can be
-     *  represented with the given precision, possibly introducing
-     *  quantization or overflow errors. If the value does not fit
-     *  within the range, possible with the precision, an overflow
-     *  error occurs. In that case, the FixPoint is set depending on
-     *  the sign of the value to either the maximum or minimum value
-     *  possible with the given precision. Also a flag is set for the
-     *  FixPoint to indicate that an overflow error took place.
+    /** Return the fixed point number that is nearest to the specified
+     *  value, but has the given precision, possibly introducing
+     *  quantization or overflow errors.
+     *  An overflow error occurs if the specified number does not fit
+     *  within the range possible with the specified precision. In that
+     *  case, the returned value is either the maximum or minimum value
+     *  possible with the given precision, depending on the sign of the
+     *  specified number. In this case, a flag is set in the returned
+     *  value to indicate that an overflow error occurred.
      *
-     *  @param value The value for which to create a FixPoint
-     *  @param precision The precision of the FixPoint
-     *  @return A FixPoint for the value with a given precision
+     *  @param value The value to represent.
+     *  @param precision The precision of the representation.
+     *  @return A fixed-point representation of the value.
      */
     public static FixPoint round(double value, Precision precision) {
         BigDecimal newValue = new BigDecimal( value );
         return round( newValue, precision);;
     }
 
-    /** Return a FixPoint that is nearest to the value that can be
-     *  represented with the given precision, possibly introducing
-     *  quantization or overflow errors. If the value does not fit
-     *  within the range, possible with the precision, an overflow
-     *  error occurs. In that case, the FixPoint is set depending on
-     *  the sign of the value to either the maximum or minimum value
-     *  possible with the given precision. Also a flag is set for the
-     *  FixPoint to indicate that an overflow error took place.
+    /** Return the fixed point number that is nearest to the specified
+     *  value, but has the given precision, possibly introducing
+     *  quantization or overflow errors.
+     *  An overflow error occurs if the specified number does not fit
+     *  within the range possible with the specified precision. In that
+     *  case, the returned value is either the maximum or minimum value
+     *  possible with the given precision, depending on the sign of the
+     *  specified number. In this case, a flag is set in the returned
+     *  value to indicate that an overflow error occurred.
      *
-     *  @param value The value for which to create a FixPoint
-     *  @param precision The precision of the FixPoint
-     *  @return A FixPoint for the value with a given precision
+     *  @param value The value to represent.
+     *  @param precision The precision of the representation.
+     *  @return A fixed-point representation of the value.
      */
     public static FixPoint round(BigDecimal value, Precision precision) {
 	BigInteger tmpValue;
@@ -166,26 +150,24 @@ public class Quantizer {
         return fxp;
     }
 
-    /** Return a new FixPoint number which is the given FixPoint
-     *  rounded to the next value possible with the given new
-     *  precision, possibly introducing quantization or overflow
-     *  errors. In case of an overflow, the value of the FixPoint is
-     *  determined depending on the overflow mode selected.
+    /** Return the fixed point number that is nearest to the specified
+     *  value, but has the given precision, possibly introducing
+     *  quantization or overflow errors.
+     *  An overflow error occurs if the specified number does not fit
+     *  within the range possible with the specified precision. In that
+     *  case, the returned value depends on the specified mode.
+     *  If the mode is SATURATE, then the return value is either
+     *  the maximum or minimum value possible with the given
+     *  precision, depending on the sign of the
+     *  specified number.  If the mode is OVERFLOW_TO_ZERO,
+     *  then the return value is zero.
+     *  In either case, a flag is set in the returned
+     *  value to indicate that an overflow error occurred.
      *
-     *   <ul>
-     *
-     *   <li> mode = 0, <b>Saturate</b>: The fixed point value is set,
-     *   depending on its sign, equal to the Maxium or Minimum value
-     *   possible with the new given precision.
-     *
-     *   <li> mode = 1, <b>Zero Saturate</b>: The fixed point value is
-     *   set equal to zero.
-     *
-     *   </ul>
-     *
-     *  @param newprecision The new precision of the FixPoint.
+     *  @param value The value to represent.
+     *  @param newprecision The precision of the representation.
      *  @param mode The overflow mode.
-     *  @return A new FixPoint with the given precision.
+     *  @return A new fixed-point representation of the value.
      */
     public static FixPoint round(
             FixPoint value,
@@ -206,7 +188,7 @@ public class Quantizer {
             FixPoint result;
             //Not in range. Can lead to an overflow problem.
             switch(mode) {
-            case 0: //SATURATE
+            case SATURATE:
                 if ( x.signum() >= 0) {
                     result = Quantizer.round( maxValue, newprecision );
                 } else {
@@ -215,7 +197,7 @@ public class Quantizer {
                 result.setError(FixPoint.OVERFLOW);
                 //return result;
                 break;
-            case 1: //ZERO_SATURATE:
+            case OVERFLOW_TO_ZERO:
                 result = new FixPoint(newprecision, BigInteger.ZERO);
                 result.setError(FixPoint.OVERFLOW);
                 //return result;
@@ -229,38 +211,40 @@ public class Quantizer {
         return newvalue;
     }
 
-    /** Return a FixPoint that is the nearest value towards zero that
-     *  can be represented with the given precision, possibly
-     *  introducing quantization or overflow errors. If the value does
-     *  not fit within the range, possible with the precision, an
-     *  overflow error occurs. In that case, the FixPoint is set
-     *  depending on the sign of the value to either the maximum or
-     *  minimum value possible with the given precision. Also a flag
-     *  is set for the FixPoint to indicate that an overflow error
-     *  took place.
+    /** Return the fixed point number that is nearest to the specified
+     *  value, but has magnitude no greater that the specified value,
+     *  and has the given precision, possibly introducing
+     *  quantization or overflow errors.
+     *  An overflow error occurs if the specified number does not fit
+     *  within the range possible with the specified precision. In that
+     *  case, the returned value is either the maximum or minimum value
+     *  possible with the given precision, depending on the sign of the
+     *  specified number. In this case, a flag is set in the returned
+     *  value to indicate that an overflow error occurred.
      *
-     *  @param value The double value for which to create a FixPoint
-     *  @param precision The precision of the FixPoint
-     *  @return A FixPoint for the value with a given precision
+     *  @param value The value to represent.
+     *  @param precision The precision of the representation.
+     *  @return A fixed-point representation of the value.
      */
     public static FixPoint truncate(double value, Precision precision) {
         BigDecimal newValue = new BigDecimal( value );
         return truncate( newValue, precision);
     }
 
-    /** Return a FixPoint that is the nearest value towards zero that
-     *  can be represented with the given precision, possibly
-     *  introducing quantization or overflow errors. If the value does
-     *  not fit within the range, possible with the precision, an
-     *  overflow error occurs. In that case, the FixPoint is set
-     *  depending on the sign of the value to either the maximum or
-     *  minimum value possible with the given precision. Also a flag
-     *  is set for the FixPoint to indicate that an overflow error
-     *  took place.
+    /** Return the fixed point number that is nearest to the specified
+     *  value, but has magnitude no greater that the specified value,
+     *  and has the given precision, possibly introducing
+     *  quantization or overflow errors.
+     *  An overflow error occurs if the specified number does not fit
+     *  within the range possible with the specified precision. In that
+     *  case, the returned value is either the maximum or minimum value
+     *  possible with the given precision, depending on the sign of the
+     *  specified number. In this case, a flag is set in the returned
+     *  value to indicate that an overflow error occurred.
      *
-     *  @param value The value for which to create a FixPoint
-     *  @param precision The precision of the FixPoint
-     *  @return A FixPoint for the value with a given precision
+     *  @param value The value to represent.
+     *  @param precision The precision of the representation.
+     *  @return A fixed-point representation of the value.
      */
     public static FixPoint truncate(BigDecimal value, Precision precision) {
 
@@ -326,26 +310,25 @@ public class Quantizer {
         return fxp;
     }
 
-    /** Return a new FixPoint number which is the given FixPoint
-     *  truncated to the next value possible with the given new
-     *  precision, possibly introducing quantization or overflow
-     *  errors. In case of an overflow, the value of the FixPoint is
-     *  determined depending on the overflow mode selected.
+    /** Return the fixed point number that is nearest to the specified
+     *  value, but has magnitude no greater than the specified value,
+     *  and has the given precision, possibly introducing
+     *  quantization or overflow errors.
+     *  An overflow error occurs if the specified number does not fit
+     *  within the range possible with the specified precision. In that
+     *  case, the returned value depends on the specified mode.
+     *  If the mode is SATURATE, then the return value is either
+     *  the maximum or minimum value possible with the given
+     *  precision, depending on the sign of the
+     *  specified number.  If the mode is OVERFLOW_TO_ZERO,
+     *  then the return value is zero.
+     *  In either case, a flag is set in the returned
+     *  value to indicate that an overflow error occurred.
      *
-     *   <ul>
-     *
-     *   <li> mode = 0, <b>Saturate</b>: The fixed point value is set,
-     *   depending on its sign, equal to the Maxium or Minimum value
-     *   possible with the new given precision.
-     *
-     *   <li> mode = 1, <b>Zero Saturate</b>: The fixed point value is
-     *   set equal to zero.
-     *
-     *   </ul>
-     *
-     *  @param newprecision The new precision of the FixPoint.
+     *  @param value The value to represent.
+     *  @param newprecision The precision of the representation.
      *  @param mode The overflow mode.
-     *  @return A new FixPoint with the given precision.
+     *  @return A new fixed-point representation of the value.
      */
     public static FixPoint truncate(
             FixPoint value,
@@ -366,7 +349,7 @@ public class Quantizer {
             FixPoint result;
             //Not in range. Can lead to an overflow problem.
             switch(mode) {
-            case 0: //SATURATE
+            case SATURATE:
                 if ( x.signum() >= 0) {
                     result = Quantizer.truncate( maxValue, newprecision );
                 } else {
@@ -375,7 +358,7 @@ public class Quantizer {
                 result.setError(FixPoint.OVERFLOW);
                 //return result;
                 break;
-            case 1: //ZERO_SATURATE:
+            case OVERFLOW_TO_ZERO:
                 result = new FixPoint(newprecision, BigInteger.ZERO);
                 result.setError(FixPoint.OVERFLOW);
                 //return result;
@@ -389,6 +372,19 @@ public class Quantizer {
         return newvalue;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** Indicate that overflow should saturate. */
+    public static final int SATURATE = 0;
+
+    /** Indicate that overflow should result in a zero value. */
+    public static final int OVERFLOW_TO_ZERO = 1;
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /** Get the BigDecimal which is the 2^exponent. If the value is
      *  already calculated, return this cached value, else calculate
      *  the value.
@@ -397,7 +393,7 @@ public class Quantizer {
      *  @return the BigDecimal representing 2^exponent.
      */
     private static BigDecimal _getTwoRaisedTo(int number) {
-        if ( number <= 128 || number >= 0 ) {
+        if ( number < 32 && number >= 0 ) {
             return _twoRaisedTo[number];
         } else {
             BigInteger two = _two.toBigInteger();
@@ -408,30 +404,28 @@ public class Quantizer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** Static reference to the BigDecimal representation of one. */
+    private static BigDecimal _one  = new BigDecimal("1");
+
     /** Calculate the table containing 2^x, with 0 < x < 64. Purpose
-        is to speed up calculations involving calculating 2^x. The table is
-        calculated using BigDecimal, since this make the transformation from
-        string of bits to a double easier.
-    */
-    private static BigDecimal[] _twoRaisedTo = new BigDecimal[128];
+     *  is to speed up calculations involving calculating 2^x. The table is
+     *  calculated using BigDecimal, since this make the transformation from
+     *  string of bits to a double easier.
+     */
+    private static BigDecimal[] _twoRaisedTo = new BigDecimal[32];
 
     /** Static reference to the BigDecimal representation of two. */
     private static BigDecimal _two = new BigDecimal("2");
 
-    /** Static reference to the BigDecimal representation of one. */
-    private static BigDecimal _one  = new BigDecimal("1");
-
     //////////////////////
-    // static class
+    // static initializer
     //////////////////////
 
-    // Static Class Constructor
     static {
         BigDecimal p2  = _one;
-        for (int i = 0; i <= 64; i++) {
+        for (int i = 0; i < 32; i++) {
             _twoRaisedTo[i] = p2;
             p2 = p2.multiply( _two );
         }
     }
-
 }
