@@ -1,9 +1,11 @@
 ptolemy.vergil.basic.BasicGraphFrame		ptolemy.vergil.ptolemy.GraphFrame		
 ptolemy.vergil.basic.BasicGraphController	ptolemy.vergil.ptolemy.kernel.PtolemyGraphController	
 ptolemy.vergil.basic.IconController		ptolemy.vergil.ptolemy.kernel.IconController		
+ptolemy.vergil.basic.EditorDropTarget		ptolemy.vergil.ptolemy.EditorDropTarget
 ptolemy.vergil.basic.LocatableNodeController	ptolemy.vergil.ptolemy.LocatableNodeController
 ptolemy.vergil.basic.NamedObjController		ptolemy.vergil.ptolemy.kernel.PtolemyNodeController     
-ptolemy.vergil.basic.AbstractBasicGraphModel		ptolemy.vergil.ptolemy.AbstractPtolemyGraphModel   
+ptolemy.vergil.basic.NamedObjNodeModel		ptolemy.vergil.ptolemy.PtolemyNodeModel     
+ptolemy.vergil.basic.AbstractBasicGraphModel	ptolemy.vergil.ptolemy.AbstractPtolemyGraphModel   
 ptolemy.vergil.actor.ActorGraphFrame		ptolemy.vergil.ptolemy.kernel.KernelGraphFrame		
 ptolemy.vergil.actor.ActorGraphTableau		ptolemy.vergil.ptolemy.kernel.KernelGraphTableau
 ptolemy.vergil.actor.ActorViewerGraphController	ptolemy.vergil.ptolemy.kernel.ViewerGraphController	

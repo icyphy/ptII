@@ -12,12 +12,6 @@
 #   make clean fast
 
 
-# EDIT THE NEXT LINE - New directories to create.
-newdirs="ptolemy/vergil/actor ptolemy/vergil/basic ptolemy/vergil/fsm ptolemy/vergil/fsm/ia ptolemy/vergil/fsm/modal ptolemy/vergil/icon ptolemy/vergil/kernel"
-
-# maketemplate names the template makefile we use to create new makefiles.
-maketemplate=$PTII/adm/bin/renamefiles.mk.in
-
 # EDIT THE FILE NAMED by classesToMove
 # This file contains the classes to move in the format
 # foo.new.Bar  foo.old.Bif
@@ -25,56 +19,33 @@ maketemplate=$PTII/adm/bin/renamefiles.mk.in
 #
 classesToMove=$PTII/adm/bin/renamefiles.files
 
+# maketemplate names the template makefile we use to create new makefiles.
+maketemplate=$PTII/adm/bin/renamefiles.mk.in
 
 # Hopefully, you need not edit below here.
 
+
 ####################################################################
-# Create the new directories
-for dir in $newdirs
+# Sanity check the files to rename
+
+# Check that the source files exist
+sourceClasses=`awk '{print $2}' $classesToMove`
+for sourceClass in $sourceClasses
 do
-    if [ ! -d $PTII/$dir ]; then
-	mkdir $PTII/$dir
-    fi	
+    sourceFile=`echo $sourceClass | sed 's@\.@/@g'`
+    sourceFullFile="$PTII/${sourceFile}.java"
+    if [ ! -f $sourceFullFile ]; then
+	# The rename function may have saved the source file as .old
+	if [ ! -f ${sourceFullFile}.old ]; then
+	    echo "$0: Error '$sourceFullFile' does not exist"
+	    exit 5
+	fi
+    fi
 done
 
 ####################################################################
 echo "### Fixing up makefiles"
-destinationClasses=`awk '{print $2}' $classesToMove`
-
-for destinationClass in $destinationClasses
-do
-    destinationFile=`echo $destinationClass | sed 's@\.@/@g'`
-    destinationMakefile=$PTII/`dirname $destinationFile`/makefile
-    if [ ! -f $destinationMakefile ]; then
-	echo "$0: WARNING: $destinationMakefile does not exist"
-    else	
-	echo "$destinationMakefile"
-	destinationShortFile=`basename $destinationFile`.java
-	grep -v $destinationShortFile $destinationMakefile > /tmp/renamefiles.tmp
-	diff $destinationMakefile /tmp/renamefiles.tmp
-	cp /tmp/renamefiles.tmp $destinationMakefile
-    fi
-done
-
-
-####################################################################
-echo "### Create the new makefiles if necessary, "
-echo "###   using $maketemplate"
-
-for dir in $newdirs
-do
-    if [ ! -f $PTII/$dir/makefile ]; then
-	echo "Creating $PTII/$dir/makefile"
-	basedir=`basename $dir`
-	sed -e "s=@dir@=$dir=g" \
-	    -e "s=@basedir@=$basedir=g" \
-            < $maketemplate > $PTII/$dir/makefile 
-    fi	
-done
-
-####################################################################
-echo "### Add the new classes to the makefile if necessary"
-sourceClasses=`awk '{print $1}' $classesToMove`
+sourceClasses=`awk '{print $2}' $classesToMove`
 
 for sourceClass in $sourceClasses
 do
@@ -85,25 +56,53 @@ do
     else	
 	echo "$sourceMakefile"
 	sourceShortFile=`basename $sourceFile`.java
-	grep $sourceShortFile $sourceMakefile > /tmp/renamefiles.tmp
-	retval=$?
-	if [ $retval = 0 ]; then
-	    echo "$sourceMakefile already contains $sourceShortFile"
-	else    
-	    # FIXME: these are not in alphabetical order
-	    
-	    awk '{if ( $0 ~ /^JSRCS/ ) {
+	grep -v $sourceShortFile $sourceMakefile > /tmp/renamefiles.tmp
+	diff $sourceMakefile /tmp/renamefiles.tmp
+	cp /tmp/renamefiles.tmp $sourceMakefile
+    fi
+done
+
+####################################################################
+echo "### Create the new makefiles if necessary, "
+echo "###   using $maketemplate"
+echo "### Add the new classes to the makefile if necessary"
+destinationClasses=`awk '{print $1}' $classesToMove`
+
+for destinationClass in $destinationClasses
+do
+    destinationFile=`echo $destinationClass | sed 's@\.@/@g'`
+    destinationFullDir=$PTII/`dirname $destinationFile`
+    if [ ! -d $destinationFullDir ]; then
+	mkdir $destinationFullDir
+    fi
+    destinationMakefile=$destinationFullDir/makefile
+    if [ ! -f $destinationMakefile ]; then
+	echo "Creating $destinationMakefile"
+	destinationDir=`dirname $destinationFile`	
+	basedir=`basename $destinationDir`
+	sed -e "s=@dir@=$destinationDir=g" \
+	    -e "s=@basedir@=$basedir=g" \
+            < $maketemplate > $destinationMakefile
+    fi	    
+    echo "$destinationMakefile"
+    destinationShortFile=`basename $destinationFile`.java
+    grep $destinationShortFile $destinationMakefile > /tmp/renamefiles.tmp
+    retval=$?
+    if [ $retval = 0 ]; then
+	echo "$destinationMakefile already contains $destinationShortFile"
+    else    
+    # FIXME: these are not in alphabetical order
+    awk '{if ( $0 ~ /^JSRCS/ ) {
 		    print $0
-		    print "	" sourceShortFile " \\"
+		    print "	" destinationShortFile " \\"
 		  } else {   
 		    print $0
 		  }
-		}' sourceShortFile=${sourceShortFile} \
-		 $sourceMakefile > /tmp/renamefiles.tmp
+		}' destinationShortFile=${destinationShortFile} \
+		 $destinationMakefile > /tmp/renamefiles.tmp
 
-	    diff $sourceMakefile /tmp/renamefiles.tmp
-	    cp /tmp/renamefiles.tmp $sourceMakefile
-	fi
+    diff $destinationMakefile /tmp/renamefiles.tmp
+    cp /tmp/renamefiles.tmp $destinationMakefile
     fi
 done
 
