@@ -1,4 +1,4 @@
-/* An actor that sends its input as a UDP datagram packet.
+/* An actor that sends its <i>data</i> input as a UDP datagram packet.
 
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
@@ -46,37 +46,40 @@ import java.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// DatagramSender
 /**
-This actor sends its input as a Datagram over the Ethernet using the UDP
-protocol.  Before sending it, the data is encoded as a text string
-representing the value being sent.  The address and port number to which the
-datagram is sent is given by optional inputs.  Each optional input comes
-with a parameter which gives its default value.  (This is cumbersome.
-Is there a way to merge the concepts of Parameter and TypedIoPort?)
-The data and the optional inputs may arrive at any time.  Optional
-inputa arriving along with or before data control the data's destination.
+This actor sends its input as a Datagram over the network using the
+UDP protocol.  Before being sent, the data is optionally encoded as a
+text string representing the value being sent.  Any Ptolemy data type
+may be represented.  See the <i>encodeForPtolemyParser</i> parameter.
 
-Initially, the local port number is set to -1 to indicate no port at
-all.  This prevents the actor still "in the barn" from having a port
-number conflict with the actor that is being placed into the graph
-editor's work area.
+The address and socket number towards which the datagram is sent are 
+given by optional inputs <i>remoteAddress</i> and <i>remoteSocketNumber</i>.  
+Each optional input has an associated parameter giving its default value.  
+The default values are used unless/until replaced by a token arriving at 
+that optional input.
 
-@author Winthrop Williams, Joern Janneck,  Xiaojun Liu, Edward A. Lee
+Each instance of this actor needs to allocate a local socket from
+which to transmit datagrams.  Initially, the local socket number is
+set to -1 to cause no socket to be allocated at all.  This prevents
+the library's instance of this actor from having a socket number
+conflict with the actor that is being placed into the graph editor's
+work area.  FIXME - Try allocating the socket in initialize() instead
+of preinitialize() to better avoid this conflict.
+
+@author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
 (Based on TiltSensor actor writen by Chamberlain Fong, Xiaojun Liu, Edward Lee)
-@version $Id$
-*/
+@version $Id$ */
 
 
-/** Construct a DatagramSender actor with given name in the given container.
- *  Set up ports and parameters and default values.  Two of the parameters
- *  are used to give default values for the remoteAddress and remotePort
- *  ports.
+/** Construct a DatagramSender actor with given name in the given
+ *  container.  Set up ports, parameters and default values.  Two of
+ *  the parameters are used to give default values for the
+ *  <i>remoteAddress</i> and <i>remoteSocketNumber</i> ports.
  *  @param container The container.
  *  @param name The name for this actor.
  *  @exception NameDuplicationException If the container already has an
  *   actor with this name.
  *  @exception IllegalActionException If the actor cannot be contained by
- *   this container
- */
+ *   this container */
 public class DatagramSender extends TypedAtomicActor {
 
     public DatagramSender(CompositeEntity container, String name)
@@ -89,10 +92,10 @@ public class DatagramSender extends TypedAtomicActor {
         remoteAddress.setMultiport(true);
         remoteAddress.setTypeEquals(BaseType.STRING);
 
-        remotePort = new TypedIOPort(this, "remotePort");
-        remotePort.setInput(true);
-        remotePort.setMultiport(true);
-        remotePort.setTypeEquals(BaseType.INT);
+        remoteSocketNumber = new TypedIOPort(this, "remoteSocketNumber");
+        remoteSocketNumber.setInput(true);
+        remoteSocketNumber.setMultiport(true);
+        remoteSocketNumber.setTypeEquals(BaseType.INT);
 
         data = new TypedIOPort(this, "data");
         data.setInput(true);
@@ -103,24 +106,56 @@ public class DatagramSender extends TypedAtomicActor {
                 new StringAttribute(this, "defaultRemoteAddress");
         defaultRemoteAddress.setExpression("localhost");
 
-        defaultRemotePort =
-                new Parameter(this, "defaultRemotePort");
-        defaultRemotePort.setTypeEquals(BaseType.INT);
-        defaultRemotePort.setExpression("-1");
+        defaultRemoteSocketNumber =
+                new Parameter(this, "defaultRemoteSocketNumber");
+        defaultRemoteSocketNumber.setTypeEquals(BaseType.INT);
+        defaultRemoteSocketNumber.setExpression("-1");
 
-        // Pure parameter
-        localPort = new Parameter(this, "localPort");
-        localPort.setTypeEquals(BaseType.INT);
-        localPort.setExpression("-1");
+        // Pure parameters
+        localSocketNumber = new Parameter(this, "localSocketNumber");
+        localSocketNumber.setTypeEquals(BaseType.INT);
+        localSocketNumber.setExpression("-1");
+
+	/** When encodeForPtolemyParser is true, fire() applies
+         *  <i>toString().getBytes()</i> to the <i>data</i> token
+         *  prior to transmission.  This allows reconstruction of any
+         *  data type upon reception.  When this parameter is false,
+         *  the data must be an array of integers.  In this case, the
+         *  data transmitted is the series of bytes generated by
+         *  taking the least significant 8 bits from each integer.
+         */
+	encodeForPtolemyParser = new Parameter(this, "encodeForPtolemyParser");
+	encodeForPtolemyParser.setTypeEquals(BaseType.BOOLEAN);
+	encodeForPtolemyParser.setExpression("true");
+
+	// Added for SDF usability.  No real output, just a trigger.
+  	triggerOutput = new TypedIOPort(this, "triggerOutput"); 
+	 // Had had ', true, false' before ');' above.
+        triggerOutput.setTypeEquals(BaseType.GENERAL);
+	 // 'INT' workes too in place of 'GENERAL'.
+        triggerOutput.setOutput(true);
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The local port-number for this actor's socket.
-     *  Integer in the range 0..65535.
+    /** The triggerOutput port.  The type of this port is GENERAL,
+     *  forcing input ports connected here to also be of type GENERAL,
+     *  (as trigger inputs typically are).  This port always transmits
+     *  a Token with nothing in it.  This is used to trigger the next
+     *  actor in SDF.  
      */
-    public Parameter localPort;
+    public TypedIOPort triggerOutput;
+
+    /** Whether to encode for parsing upon reception.
+     *  Boolean.  Default value is true.
+     */
+    public Parameter encodeForPtolemyParser;
+
+    /** The local socket number for this actor's socket.  Integer in
+     *  the range 0..65535.  Default is -1 and must be changed before
+     *  using the actor.  */
+    public Parameter localSocketNumber;
 
     /** Data to be sent.  Data will be encoded as a text string, much as
      *  if it were printed.  This text string is what is sent.  Thus any
@@ -133,47 +168,48 @@ public class DatagramSender extends TypedAtomicActor {
      *  This is a string.  It will get looked up to find the IP address.
      *  (Legal forms of this string include "128.32.239.10" and "localhost".)
      */
-    // FIXME Why is this not simply a 'Parameter' like localPort?
+    // FIXME Why is this not simply a 'Parameter' like localSocketNumber?
     public StringAttribute defaultRemoteAddress;
 
     /** The remote address towards which to launch the packet.
      */
     public TypedIOPort remoteAddress;
 
-    /** The default remote (UDP (are there other kinds?) ) port to
+    /** The default remote (UDP (are there other kinds?) ) socket to
      *  which to send datagrams.  This is an integer in 0..65535.
      */
-    public Parameter defaultRemotePort;
+    public Parameter defaultRemoteSocketNumber;
 
-    /** The remote (UDP (Can TCP reuse a UDP number?) ) port number.
+    /** The remote (UDP (Can TCP reuse a UDP number?) ) socket number.
      */
-    public TypedIOPort remotePort;
+    public TypedIOPort remoteSocketNumber;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    /** If the parameter changed is <i>localPort</i>, then if the model
-     *  is running (as evedenced by socket != null) then close socket
-     *  and reopen with new port number (even if same as old port
-     *  number).
+    /** If the parameter changed is <i>localSocketNumber</i>, then if
+     *  the model is running (as evedenced by socket != null) then
+     *  close socket and reopen with new socket number (even if same
+     *  as old socket number).
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If cannot create socket.
-     */
+     *  @exception IllegalActionException If cannot create socket.  */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == localPort) {
+        if (attribute == localSocketNumber) {
             synchronized(this) {
                 if (_socket != null) {
                     if (_debugging) _debug("Current socket port is "
                                        + _socket.getLocalPort());
 
-                    int portNum =
-                        ((IntToken)(localPort.getToken())).intValue();
-                    if (_debugging) _debug("Port number is " + portNum);
+                    _localSocketNumber =
+                        ((IntToken)(localSocketNumber.getToken())).intValue();
+                    if (_debugging) _debug("Socket number is " 
+		            + _localSocketNumber);
                     try {
                         if (_debugging) _debug("Try create socket for port "
-                                           + portNum);
-                        DatagramSocket newSocket = new DatagramSocket(portNum);
+                                + _localSocketNumber);
+                        DatagramSocket newSocket = 
+                                new DatagramSocket(_localSocketNumber);
                         if (_debugging) _debug("A socket is created!!");
                         _socket.close();
                         _socket = newSocket;
@@ -181,7 +217,7 @@ public class DatagramSender extends TypedAtomicActor {
                     catch (SocketException ex) {
                         throw new IllegalActionException(this,
                                 "Cannot create socket on the given "
-                                + "local port: " + ex.getMessage());
+                                + "local socket number: " + ex.getMessage());
                     }
                 }
 	    }
@@ -191,11 +227,14 @@ public class DatagramSender extends TypedAtomicActor {
     }
 
     /** Does up to three things, in this order: Set new remote address value,
-     *  Set new remote port value, transmit data as a UDP packet over the
+     *  Set new remote socket number, transmit data as a UDP packet over the
      *  ethernet.  The first two can, of course, affect where the datagram
      *  goes.
      */
     public void fire() throws IllegalActionException {
+
+	//System.out.println(this + " fire() method beginsXXX");
+
         if (remoteAddress.getWidth() > 0 && remoteAddress.hasToken(0)) {
             String address =
                 ((StringToken)(remoteAddress.get(0))).stringValue();
@@ -209,17 +248,34 @@ public class DatagramSender extends TypedAtomicActor {
             }
         }
 
-        if (remotePort.getWidth() > 0 && remotePort.hasToken(0)) {
-            // Valid port numbers are 0..65535 so keep only lower 16 bits.
-            _remotePortNum = 65535 & ((IntToken)remotePort.get(0)).intValue();
+        if (remoteSocketNumber.getWidth() > 0 && 
+                remoteSocketNumber.hasToken(0)) {
+            // Valid socket numbers are 0..65535 so keep only lower 16 bits.
+            _remoteSocketNumber = 65535 & 
+                    ((IntToken)remoteSocketNumber.get(0)).intValue();
         }
 
         if (data.hasToken(0)) {
-            byte[] dataBytes = data.get(0).toString().getBytes();
-            DatagramPacket packet =
-                    new DatagramPacket(dataBytes, dataBytes.length,
-                    _address, _remotePortNum);
-
+	    boolean forParser = ((BooleanToken)(
+                    encodeForPtolemyParser.getToken())).booleanValue();
+	    byte[] dataBytes = { (byte)1, (byte)2, (byte)3 };
+	    if (forParser) {
+		dataBytes = data.get(0).toString().getBytes();
+	    } else {
+		//An exception, thrown as this line calls *Token, is 
+		//likely because the actor's input is not an integer array.
+		//Please configure the <i>data</i> port as {int}.
+		ArrayToken dataIntArrayToken = (ArrayToken) data.get(0);
+		dataBytes = new byte[dataIntArrayToken.length()];
+                for (int j = 0; j < dataIntArrayToken.length(); j++) {
+                    IntToken dataIntOneToken =
+                            (IntToken)dataIntArrayToken.getElement(j);
+                    dataBytes[j] = (byte)dataIntOneToken.intValue();
+                }
+ 	    }
+	    DatagramPacket packet = new 
+                    DatagramPacket(dataBytes, dataBytes.length,
+                    _address, _remoteSocketNumber);
             try {
                 _socket.send(packet);
             }
@@ -232,37 +288,46 @@ public class DatagramSender extends TypedAtomicActor {
                 //     then it threw it right away!? )
                 // Would TCP stall here awaiting reply??  I doubt it!
             }
+	    triggerOutput.broadcast(new Token());
+	    //triggerOutput.broadcast(new IntToken(7)); // Works w/ 'INT'
         }
+
+	//System.out.println(this + " fire() method endsXXX");
 
     }
 
     /** Preinitialize allocates the socket and makes use of default
      *  parameters for the remote address and socket to which datagrams
      *  will be sent.  InetAddress.getByName does the address lookup,
-     *  and can fail (see below).  The remote port number need only
-     *  be in the 0 .. 65535 range.  However, the local port number
-     *  must be in range and must allow new DatagramSocket(portNum) to
-     *  successfully create a socket with that port number.
-     *  @exception IllegalActionException If port number is beyond 16 bits,
-     *   the socket cannot be created with the given port number,
+     *  and can fail (see below).  The remote socket number need only
+     *  be in the 0 .. 65535 range.  However, the local socket number
+     *  must be in range and must allow new DatagramSocket() to
+     *  successfully create a socket at that number.
+     *  @exception IllegalActionException If socket number is beyond 16 bits,
+     *   the socket cannot be created with the given socket number,
      *   translation of remote address fails to make IP address from
-     *   address string, or the romote port number is beyond 16 bits.
+     *   address string, or the remote socket number is beyond 16 bits.
      */
     public void preinitialize() throws IllegalActionException {
+
+	//System.out.println("preinitialize() called in " + this);
+
         super.preinitialize();
-        int portNum = ((IntToken)(localPort.getToken())).intValue();
-        if (portNum < 0 || portNum > 65535) {
-            throw new IllegalActionException(this, "Local port number is "
+        _localSocketNumber = 
+                ((IntToken)(localSocketNumber.getToken())).intValue();
+        if (_localSocketNumber < 0 || _localSocketNumber > 65535) {
+            throw new IllegalActionException(this, "Local socket number is "
                     + "invalid, must be between 0 and 65535.");
         }
         try {
-            if (_debugging) _debug("PI Try create socket for port " + portNum);
-            _socket = new DatagramSocket(portNum);
+            if (_debugging) _debug("PI Try create socket number " 
+                    + _localSocketNumber);
+            _socket = new DatagramSocket(_localSocketNumber);
             if (_debugging) _debug("PI A socket is created!!");
         }
         catch (SocketException ex) {
             throw new IllegalActionException(this, "Cannot create socket on "
-                    + "the specified local port: " + ex.getMessage());
+                    + "the specified local socket number: " + ex.getMessage());
         }
 
         String address =
@@ -276,17 +341,18 @@ public class DatagramSender extends TypedAtomicActor {
                     + ex.getMessage());
         }
 
-        int remotePortNum =
-                ((IntToken)defaultRemotePort.getToken()).intValue();
-        if (remotePortNum < 0 || remotePortNum > 65535) {
-            throw new IllegalActionException(this, "Default remote port number"
-                    + " is invalid, must be between 0 and 65535.");
-        } else {
-            _remotePortNum = remotePortNum;
-        }
+        _remoteSocketNumber =
+                ((IntToken)defaultRemoteSocketNumber.getToken()).intValue();
+        if (_remoteSocketNumber < 0 || _remoteSocketNumber > 65535) {
+            //System.out.println(this + " defaultRemoteSocketNumber is "
+	    //        + _remoteSocketNumber + " .  Must be in 0..65535.");
+	    _remoteSocketNumber &= 65535; // Truncate to 16 bits.
+	    throw new IllegalActionException(this, "defaultRemoteSocketNumber"
+                    + " is out of range, must be between 0 and 65535.");
+	}
     }
 
-    /** Wrap up.  Free the socket, allowing the port number to be reused.
+    /** Wrap up.  Free the socket, allowing the socket number to be reused.
      *  @exception IllegalActionException If the socket was already null.
      */
     public void wrapup() throws IllegalActionException {
@@ -295,8 +361,9 @@ public class DatagramSender extends TypedAtomicActor {
                 _socket.close();
                 _socket = null;
             } else {
-                throw new IllegalActionException("Socket was already null "
-                        +  "at wrapup!?");
+		//System.out.println("Socket was already null in " + this);
+                //throw new IllegalActionException("Socket was already null "
+	        //        +  "at wrapup!?");
             }
         }
     }
@@ -304,12 +371,13 @@ public class DatagramSender extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Remote Address and port number for construction of packet.
+    // Remote Address and socket number for construction of packet.
     private InetAddress _address;
-    private int _remotePortNum;
+    private int _remoteSocketNumber;
 
-    // The socked from which to transmit datagram packets.
+    // The socket (& socket number) from which to transmit datagram packets.
     private DatagramSocket _socket;
+    private int _localSocketNumber;
 }
 
 
