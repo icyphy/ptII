@@ -121,7 +121,7 @@ public class MoMLParser extends HandlerBase {
      *  It is guaranteed that this will be the last method called.
      */
     public void endDocument() throws Exception {
-System.out.println(_toplevel.description());
+// FIXME: System.out.println(_toplevel.description());
     }
 
     /** End an element. This method pops the current container from
