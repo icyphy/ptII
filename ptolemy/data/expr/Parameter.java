@@ -145,7 +145,18 @@ public class Parameter extends Attribute implements ParameterListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the parameter.
+    /** Register a Parameter:istener with this Parameter.
+     *  @param newListener The ParameterListener that is will be notified
+     *   whenever the value of this Parameter changes.
+     */
+     public void addParameterListener(ParameterListener newListener) {
+         if (_listeners == null) {
+             _listeners = new LinkedList();
+         }
+         _listeners.insertLast(newListener);
+     }
+
+     /** Clone the parameter.
      *  The state of the cloned parameter will be identical to the original
      *  parameter, but without the ParameterListener dependencies set up.
      *  To achieve this evaluate() should be called after cloning the
@@ -224,7 +235,7 @@ public class Parameter extends Attribute implements ParameterListener {
 		}
 		_parseTree = _parser.generateParseTree(
 			_currentExpression, getScope());
-	    }
+            }
 	    if ( _parseTree == null){
 		// ERROR: should not get here.
 		throw new InternalErrorException("Parameter.evaluate():" +
@@ -255,12 +266,15 @@ public class Parameter extends Attribute implements ParameterListener {
      *  a clash in the names of the two scoping levels, the parameter from
      *  the top level is considered not to be visible in the scope of this
      *  Parameter. A parameter also cannot reference itself.
+     *  This method is read-synchronized on the workspace.
      *  @return The parameters on which this parameter can depend.
      */
     public NamedList getScope() {
         if (_scopeVersion == workspace().getVersion()) {
             return _scope;
-        } else {
+        } 
+        try {
+            workspace().getReadAccess();
             _scope = new NamedList();
             NamedObj container = (NamedObj)getContainer();
             if (container != null) {
@@ -275,10 +289,6 @@ public class Parameter extends Attribute implements ParameterListener {
                             if ((p instanceof Parameter) && (p != this) ){
                                 _scope.append(p);
                             }
-                        } catch (IllegalActionException ex) {
-                            // since we're basically copying a namedlist,
-                            // this exceptions should not occur
-                            throw new InternalErrorException(ex.getMessage());
                         } catch (NameDuplicationException ex) {
                             // since we're basically copying a namedlist,
                             // this exceptions should not occur
@@ -293,10 +303,6 @@ public class Parameter extends Attribute implements ParameterListener {
                             if (p instanceof Parameter) {
                                 _scope.append(p);
                             }
-                        } catch (IllegalActionException ex) {
-                            // since we're basically copying a namedlist,
-                            // this exceptions should not occur
-                            throw new InternalErrorException(ex.getMessage());
                         } catch (NameDuplicationException ex) {
                             // Name clash between the two levels of scope.
                             // The top level is hidden.
@@ -306,6 +312,12 @@ public class Parameter extends Attribute implements ParameterListener {
             }
             _scopeVersion = workspace().getVersion();
             return _scope;
+        } catch (IllegalActionException ex) {
+            // since we're basically copying namedlists,
+            // this exception should not occur
+            throw new InternalErrorException(ex.getMessage());
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -330,18 +342,32 @@ public class Parameter extends Attribute implements ParameterListener {
         return _paramType;
     }
 
-    /** Register an interest with this Parameter.
-     *  @param newListener The ParameterListener that is will be notified
-     *   whenever the token stored in this Parameter changes.
+    /** Unregister a ParameterListener of this Parameter.
+     *  @param oldListener The ParameterListener that is will no 
+     *  longer be notified when the value of this Parameter changes.
      */
-     public void registerListener(ParameterListener newListener) {
+     public void removeParameterListener(ParameterListener oldListener) {
          if (_listeners == null) {
-             _listeners = new LinkedList();
+             return;
          }
-         _listeners.insertLast(newListener);
+         // Search through LinkedList and remove this listener.
+         // When we move to JDK1.2 this should be updated to use an arrayList
+         LinkedList newList = new LinkedList();
+         Enumeration oldList = _listeners.elements();
+         while(oldList.hasMoreElements()) {
+             ParameterListener nextList = 
+                     (ParameterListener)oldList.nextElement();
+             if (oldListener != nextList) {
+                 newList.insertFirst(nextList);
+             } else {
+                 //System.out.println("Remove dependency on " + getName());
+             }
+         }
+         _listeners = newList;
+         return;
      }
 
-    /** Reset the current value of this parameter to the first seen
+     /** Reset the current value of this parameter to the first seen
      *  token or expression. If the Parameter was initially given a
      *  Token, set the current Token to that Token. Otherwise evaluate
      *  the original expression given to the Parameter.
@@ -350,7 +376,6 @@ public class Parameter extends Attribute implements ParameterListener {
      *   changed since then) or the token resulting from reevaluating
      *   the original expression.
      */
-
     public void reset() throws IllegalArgumentException {
         if (_noTokenYet) return;
         if (_origToken != null) {
@@ -367,6 +392,9 @@ public class Parameter extends Attribute implements ParameterListener {
      *  is set to null. If it is not null, the expression is stored
      *  to be evaluated at a later stage. To evaluate the expression
      *  now, invoke the method evaluate on this parameter.
+     *  If the previous Token in the Parameter was the result of 
+     *  evaluating an expression, the dependencies registered with 
+     *  other Parameters for that expression are cleared.
      *  @param str The expression for this parameter.
      */
     public void setExpression(String str) {
@@ -378,12 +406,19 @@ public class Parameter extends Attribute implements ParameterListener {
         } catch (IllegalArgumentException ex) {
             // cannot happen.
         }
+        if (_parseTree != null) {
+            _clearDependencies(_parseTree);
+            _parseTree = null;
+        }
         _currentExpression = str;
         _needsEvaluation = true;
     }
 
     /** Put a new Token in this Parameter. This is the way to give the
      *  give the Parameter a new simple value.
+     *  If the previous Token in the Parameter was the result of 
+     *  evaluating an expression, the dependencies registered with 
+     *  other Parameters for that expression are cleared.
      *  @param token The new Token to be stored in this Parameter.
      *  @exception IllegalArgumentException If the token cannot be placed
      *   in this parameter.
@@ -391,7 +426,10 @@ public class Parameter extends Attribute implements ParameterListener {
     public void setToken(ptolemy.data.Token token)
           throws IllegalArgumentException {
         _token = token;
-        _parseTree = null;
+        if (_parseTree != null) {
+            _clearDependencies(_parseTree);
+            _parseTree = null;
+        }
         _currentExpression = null;
         _needsEvaluation = false;
         if ( (_token != null) && (_noTokenYet) ) {
@@ -443,7 +481,7 @@ public class Parameter extends Attribute implements ParameterListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /* Checks to see if the new token type is compatible with the initial
+    /*  Checks to see if the new token type is compatible with the initial
      *  Token type stored. If the new Token cannot be converted in a lossless
      *  manner to the original type, an exception is thrown.
      *  @param tryType The class of the token that is trying to be placed
@@ -477,7 +515,36 @@ public class Parameter extends Attribute implements ParameterListener {
         }
     }
 
-    /* Notify any ParameterListeners that have registered an
+   /*  Clear the dependencies this Parameter has registered 
+    *  with other Parameters. If this is not done a phanton web 
+    *  of dependencies may exist which could lead to false 
+    *  dependency loops being detected. Normally this method is 
+    *  called with the roor node of the parse tree and recursively 
+    *  calls itself to visit the whole tree.
+    *  @param node The node in the tree below which all dependencies 
+    *   are cleared. 
+    */
+    private void _clearDependencies(Node node) {
+        int children = node.jjtGetNumChildren();
+        if (children > 0) {
+            for (int i = 0; i < children; i++) {
+                _clearDependencies(node.jjtGetChild(i));
+            }
+            return;
+        }
+        if ( !(node instanceof ASTPtLeafNode) ) {
+            throw new InternalErrorException("If a node has no children, " +
+                   "it must be a leaf node.");
+        }
+        ASTPtLeafNode leaf = (ASTPtLeafNode)node;
+        if (leaf._param != null) {
+            //System.out.println("Clearing dependence for " + getName() + " from " + leaf._param.getName());
+            leaf._param.removeParameterListener(this);
+        }
+    }
+
+
+   /*  Notify any ParameterListeners that have registered an
     *  interest/dependency in this parameter.
     */
     private void _notifyListeners() {
