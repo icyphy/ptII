@@ -38,20 +38,7 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 proc createAndExecute {file} {
-    set parser [java::new ptolemy.moml.MoMLParser]
-    set toplevel [java::cast ptolemy.actor.CompositeActor \
-            [$parser parseFile $file]]
-    set manager [java::new ptolemy.actor.Manager \
-            [$toplevel workspace] "manager"]
-    # FailedChangeListener throws a RuntimeException if a change request
-    # fails.  If we do not add this listener, then tests that have
-    # failed change requests will be counted as passing.
-    set failedChangeListener \
-	    [java::new util.testsuite.FailedChangeListener]
-    $toplevel setManager $manager
-    $toplevel addChangeListener  $failedChangeListener
-    # Success is just not throwing an exception.
-    $manager execute
+    java::new ptolemy.actor.gui.MoMLSimpleApplication $file
 }
 
 foreach file [glob auto/*.xml] {
