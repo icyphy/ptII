@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor
 
-DIRS = 		util sched process gui lib corba parameters test
+DIRS = 		util sched process hoc gui lib corba parameters test
 
 # Root of the Ptolemy II directory
 ROOT =		../..
@@ -48,6 +48,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	hoc/hoc.jar \
 	gui/gui.jar \
 	lib/lib.jar \
 	parameters/parameters.jar \
