@@ -58,6 +58,7 @@ JSRCS1_0 = \
 	PlotLive.java \
 	PlotLiveDemo.java \
 	PlotPoint.java \
+	PlayString.java
 
 # Sources that require JDK1.1 and later.
 JSRCS1_1 = \
@@ -80,7 +81,8 @@ JCLASS1_0 = \
 	PlotFourierSeries.class \
 	PlotLive.class \
 	PlotLiveDemo.class \
-	PlotPoint.class
+	PlotPoint.class \
+	PlayString.class
 
 JCLASS1_1 = \
 	Message.class \
