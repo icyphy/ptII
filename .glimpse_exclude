@@ -17,4 +17,6 @@ OLD
 */logs/*
 */tclIndex
 */.glimpse_exclude
+*/ptIIweb/*
+*/public_html/*
 *htmlchek*
