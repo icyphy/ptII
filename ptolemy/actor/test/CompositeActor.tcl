@@ -168,11 +168,14 @@ test CompositeActor-6.1 {Invoke all the action methods} {
     list $output
 } {{Called preinitialize()
 Called initialize()
-Called prefire()
+Calling prefire()
 Prefire returns (from director) true
+Called prefire()
+Calling fire()
 Called fire()
-Called postfire()
+Calling postfire()
 Postfire returns (from director) true
+Called postfire()
 Called wrapup()
 Called terminate()
 Called stop()
