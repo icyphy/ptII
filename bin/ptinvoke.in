@@ -388,7 +388,7 @@ SAXON_JAR=${CLASSPATHSEPARATOR}${PTII}/lib/saxon7.jar
 # does not understand /cygdrive/c syntax, so we hack
 TOSJARS=
 TOS_PROPERTIES=
-if [ ! -x "$TOSROOT" ]; then 
+if [ ! -z "$TOSROOT" ]; then 
     TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
     TOSJARS=${CLASSPATHSEPARATOR}${TOSROOT_NO_CYGDRIVE}
     TOS_PROPERTIES="-Dptolemy.ptII.tosroot=\"${TOSROOT_NO_CYGDRIVE}\""
