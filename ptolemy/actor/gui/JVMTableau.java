@@ -111,9 +111,8 @@ public class JVMTableau extends Tableau {
 	    // Button to request GC.
 	    JButton GCButton = new JButton("Request Garbage Collection");
 	    GCButton.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent evt) {
+		    public void actionPerformed(ActionEvent event) {
 			System.gc();
-			// FIXME: we should sleep here.
 			updateMemoryStatistics(memoryArea);
 		    }
 		});
@@ -132,7 +131,7 @@ public class JVMTableau extends Tableau {
 				      + lineSeparator);
 	    }
             final JTextArea messageArea =
-		new JTextArea(propertyBuffer.toString(),20,100);
+		new JTextArea(propertyBuffer.toString(), 20, 100);
 
             messageArea.setEditable(false);
 	    JScrollPane scrollPane = new JScrollPane(messageArea);
@@ -200,7 +199,7 @@ public class JVMTableau extends Tableau {
 
 
     // Update the memory statistics in textArea.
-    private void updateMemoryStatistics( JTextArea textArea) {
+    private void updateMemoryStatistics(JTextArea textArea) {
 	// Report memory usage statistics.
 	Runtime runtime = Runtime.getRuntime();
 	long totalMemory = runtime.totalMemory()/1024;
