@@ -208,7 +208,6 @@ public class LineReader extends Source {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
-        _reachedEOF = false;
         _reader = fileOrURL.openForReading();
         _reachedEOF = false;
         try {
