@@ -227,7 +227,7 @@ public final class SDFIOPort extends TypedIOPort {
      *  on this port during initialization.
      *
      *  @return The number of tokens produced on the port, as specified in
-     *  the TokenInitProduction parameter.
+     *  the tokenInitProduction parameter.
      */
     public int getTokenInitProduction() throws IllegalActionException {
 	return ((IntToken)tokenInitProduction.getToken()).intValue();
