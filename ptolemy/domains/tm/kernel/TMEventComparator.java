@@ -99,11 +99,6 @@ public class TMEventComparator implements CQComparator {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    // The bin width.
-    private TMEvent _binWidth = new TMEvent(null, null, 1, 0.0);
-
-    // The zero reference.
-    private TMEvent _zeroReference = new TMEvent(null, null, 0, 0.0);
 
 }
 

@@ -32,7 +32,7 @@ package ptolemy.domains.tm.kernel;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.TypedCompositeActor;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Effigy;
@@ -49,8 +49,6 @@ import ptolemy.plot.Plot;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////
