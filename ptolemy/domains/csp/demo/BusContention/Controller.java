@@ -240,10 +240,10 @@ public class Controller extends CSPActor {
                     requestOutput.send(ch, posAck);
 
                     // Send Negative Ack
-                    Iterator enum = _losingPortChannelCodes.iterator();
+                    Iterator losingPorts = _losingPortChannelCodes.iterator();
                     PortChannelCode pcc = null;
-                    while ( enum.hasNext() ) {
-                        pcc = (PortChannelCode)enum.next();
+                    while ( losingPorts.hasNext() ) {
+                        pcc = (PortChannelCode)losingPorts.next();
                         ch = pcc.getChannel();
                         requestOutput.send(ch, negAck);
                     }
