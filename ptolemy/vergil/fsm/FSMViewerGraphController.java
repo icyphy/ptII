@@ -51,6 +51,8 @@ import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.kernel.AttributeController;
+import ptolemy.vergil.fsm.modal.ModalController;
+import ptolemy.vergil.fsm.modal.ModalTransitionController;
 
 import javax.swing.JMenu;
 import javax.swing.JToolBar;
@@ -162,7 +164,13 @@ public class FSMViewerGraphController extends RunnableGraphController {
     /** Return the edge controller appropriate for the given node.
      */
     public EdgeController getEdgeController(Object edge) {
-        return _transitionController;
+        if( ((FSMGraphModel)getGraphModel()).getPtolemyModel()
+            instanceof ModalController) {
+            return _modalTransitionController;
+        }
+        else {
+                return _transitionController;
+        }
     }
 
     /** Set the configuration.  This is may be used by derived controllers
@@ -174,6 +182,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
         _attributeController.setConfiguration(configuration);
         _stateController.setConfiguration(configuration);
         _transitionController.setConfiguration(configuration);
+        _modalTransitionController.setConfiguration(configuration);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -192,7 +201,8 @@ public class FSMViewerGraphController extends RunnableGraphController {
                 AttributeController.PARTIAL);
 	_stateController = new StateController(this,
                 AttributeController.PARTIAL);
-	_transitionController = new TransitionController(this);
+	_modalTransitionController = new ModalTransitionController(this);
+        _transitionController = new TransitionController(this);
     }
 
     /** Initialize all interaction on the graph pane. This method
@@ -255,6 +265,9 @@ public class FSMViewerGraphController extends RunnableGraphController {
     /** The transition controller. */
     protected TransitionController _transitionController;
 
+    /** The modal transition controller. */
+    protected ModalTransitionController _modalTransitionController;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
