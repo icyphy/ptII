@@ -1566,6 +1566,11 @@ fi
 # PTJAVA3D_DIR is set to gr and used in
 # $PTII/ptolemy/actor/lib/makefile if Java 3D was found
 PTJAVA3D_DIR=
+
+# Name of the jar file that includes the GR domain if Java 3D was found
+# Used in domains/makefile
+PTGRDOMAIN_JAR=
+
 # We only need to look for Java3D if the gr domain is present
 JAVA3D_USER_DIR="$PTII/ptolemy/domains/gr"
 
@@ -1582,6 +1587,7 @@ else
     if "$JAVAC" java3dTest.java ; then
        AC_MSG_RESULT(ok)
        PTJAVA3D_DIR=gr
+       PTGRDOMAIN_JAR=gr/gr.jar
     else
        AC_MSG_WARN(['"$JAVAC" java3dTest.java' failed.
 	http://java.sun.com/products/java-media/3D/download.html
@@ -2623,6 +2629,10 @@ AC_SUBST(PTGMP_LD_FLAGS)
 # Set to -L$PTII/mescal/lib or -L/usr/local/lib if the gmp libraries are found
 # and used in $PTII/mescal/relsat
 AC_SUBST(PTGMP_LIB)
+
+# Name of the jar file that includes the GR domain if Java 3D was found.
+# Used in domains/makefile.
+AC_SUBST(PTGRDOMAIN_JAR)
 
 # Location of the the PTII directory
 # $PTII/ptolemy/plot/ptplot.jnlp.in reads this
