@@ -34,13 +34,6 @@ package ptolemy.graph;
 import ptolemy.graph.analysis.Analysis;
 import ptolemy.graph.analysis.SelfLoopAnalysis;
 
-import ptolemy.graph.exception.GraphActionException;
-import ptolemy.graph.exception.GraphConstructionException;
-import ptolemy.graph.exception.GraphElementException;
-import ptolemy.graph.exception.GraphException;
-import ptolemy.graph.exception.GraphStateException;
-import ptolemy.graph.exception.GraphWeightException;
-
 import java.lang.reflect.Method;
 import java.text.CharacterIterator;
 
@@ -204,7 +197,7 @@ public class Graph implements Cloneable {
      *  @param node1 The first node.
      *  @param node2 The second node.
      *  @return The edge.
-     *  @exception GraphelementException If the first node or second
+     *  @exception GraphElementException If the first node or second
      *  node is not already in the graph.
      */
     public Edge addEdge(Node node1, Node node2) {

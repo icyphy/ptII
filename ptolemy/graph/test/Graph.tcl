@@ -7,26 +7,26 @@
 #
 # @Copyright (c) 1997-2002 The Regents of the University of California.
 # All rights reserved.
-# 
+#
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
-# 
+#
 # IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 # FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-# 
+#
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-# 
+#
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 #######################################################################
@@ -43,14 +43,14 @@ if {[string compare test [info procs test]] == 1} then {
 
 # If a file contains non-graphical tests, then it should be named .tcl
 # If a file contains graphical tests, then it should be called .itcl
-# 
+#
 # It would be nice if the tests would work in a vanilla itkwish binary.
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
 ######################################################################
 ####
-# 
+#
 test Graph-2.1 {Create an empty instance} {
     set p [java::new ptolemy.graph.Graph]
     $p containsNodeWeight null
@@ -58,7 +58,7 @@ test Graph-2.1 {Create an empty instance} {
 
 ######################################################################
 ####
-# 
+#
 test Graph-2.2 {Create a graph with 2 nodes} {
     set p [java::new ptolemy.graph.Graph]
     set n1 [java::new {java.lang.String String} node1]
@@ -79,7 +79,7 @@ test Graph-2.3 {try to add duplicate nodes} {
     set z [$p addNodeWeight $n1]
     catch {$p {addNode ptolemy.graph.Node} $z} msg
     list $msg
-} {{ptolemy.graph.exception.GraphConstructionException: Attempt to add a node that is already contained in the graph.
+} {{ptolemy.graph.GraphConstructionException: Attempt to add a node that is already contained in the graph.
 Dumps of the offending node and graph follow.
 The offending node:
 node1
@@ -103,7 +103,7 @@ test Graph-2.4 {try to add duplicate edges} {
     # use the graph above
     catch {$p {addEdge ptolemy.graph.Edge} $newEdge} msg
     list $msg
-} {{ptolemy.graph.exception.GraphConstructionException: Attempt to add an edge that is already in the graph.
+} {{ptolemy.graph.GraphConstructionException: Attempt to add an edge that is already in the graph.
 Dumps of the offending edge and graph follow.
 The offending edge:
 (node1, node2)
@@ -658,7 +658,7 @@ test Graph-9.3 {testing the GraphElementException} {
     $n4 setWeight $nw2
     catch {$gr validateWeight $n4} msg
     list $msg
-} {{ptolemy.graph.exception.GraphElementException: The specified node is not in the graph.
+} {{ptolemy.graph.GraphElementException: The specified node is not in the graph.
 Dumps of the offending node and graph follow.
 The offending node:
 weight2
@@ -745,7 +745,7 @@ test Graph-9.6 {testing validateWeight(Node, Weight) exceptions} {
     set set11 [[java::new java.util.Vector [$gr nodes $nw2]] size]
     set set12 [[java::new java.util.Vector [$gr nodes null]] size]
     list $msg1 $msg2 $msg3 $msg4 $set7 $set8 $set9 $set10 $set11 $set12
-} {{ptolemy.graph.exception.GraphElementException: The specified node is not in the graph.
+} {{ptolemy.graph.GraphElementException: The specified node is not in the graph.
 Dumps of the offending node and graph follow.
 The offending node:
 weight2
@@ -759,7 +759,7 @@ Edge Set:
 
 }
 
-} {ptolemy.graph.exception.GraphWeightException: Incorrect previous weight specified.
+} {ptolemy.graph.GraphWeightException: Incorrect previous weight specified.
 The weight is of class java.lang.String and its description follows:
 weight2
 A Dump of the offending graph follows.
@@ -772,7 +772,7 @@ Edge Set:
 
 }
 
-} {ptolemy.graph.exception.GraphWeightException: Incorrect previous weight specified.
+} {ptolemy.graph.GraphWeightException: Incorrect previous weight specified.
 The weight is of class java.lang.String and its description follows:
 null
 A Dump of the offending graph follows.
@@ -785,7 +785,7 @@ Edge Set:
 
 }
 
-} {ptolemy.graph.exception.GraphWeightException: Incorrect previous weight specified.
+} {ptolemy.graph.GraphWeightException: Incorrect previous weight specified.
 The weight is of class java.lang.String and its description follows:
 null
 A Dump of the offending graph follows.
@@ -860,7 +860,7 @@ test Graph-10.3 {checking restoration of an edge whose one node is deleted} {
     $oneg removeNode $node1
     catch {$oneg {restoreEdge ptolemy.graph.Edge} $edge} msg
     list $msg
-} {{ptolemy.graph.exception.GraphElementException: Source node is not in the graph.
+} {{ptolemy.graph.GraphElementException: Source node is not in the graph.
 Dumps of the offending edge and graph follow.
 The offending edge:
 (node1, node2)
@@ -958,7 +958,7 @@ Edge Set:
 1: (<unweighted node>, <unweighted node>)
 2: (<unweighted node>, <unweighted node>)
 }
-} {ptolemy.graph.exception.GraphConstructionException: Attempt to add a node that is already contained in the graph.
+} {ptolemy.graph.GraphConstructionException: Attempt to add a node that is already contained in the graph.
 Dumps of the offending node and graph follow.
 The offending node:
 weight1

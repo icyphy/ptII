@@ -36,13 +36,6 @@ import ptolemy.graph.analysis.SinkNodeAnalysis;
 import ptolemy.graph.analysis.SourceNodeAnalysis;
 import ptolemy.graph.analysis.TransitiveClosureAnalysis;
 
-import ptolemy.graph.exception.GraphActionException;
-import ptolemy.graph.exception.GraphElementException;
-import ptolemy.graph.exception.GraphException;
-import ptolemy.graph.exception.GraphStateException;
-import ptolemy.graph.exception.GraphTopologyException;
-import ptolemy.graph.exception.GraphWeightException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -107,71 +100,6 @@ public class DirectedGraph extends Graph {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Sort a collection of graph nodes in their topological order as long as
-     *  no two of the given nodes are mutually reachable by each other.
-     *  This method uses the transitive closure matrix. Since generally
-     *  the graph is checked for cyclicity before this method is
-     *  called, the use of the transitive closure matrix should
-     *  not add any overhead. A bubble sort is used for the internal
-     *  implementation, so the complexity is <i>O(V^2)</i>.
-     *  @param nodes The collection of nodes to be sorted; each element is
-     *  a {@link Node}.
-     *  @return The nodes in their sorted order in the form of a list;
-     *  each element is a {@link Node}.
-     *  @exception GraphActionException If any two nodes are strongly
-     *  connected.
-     *  @see #topologicalSort(Object[])
-     */
-    public List topologicalSort(Collection nodeCollection)
-            throws GraphActionException {
-        boolean[][] transitiveClosure = transitiveClosure();
-
-        int N = nodeCollection.size();
-        Node[] nodeArray = new Node[N];
-        Iterator nodes = nodeCollection.iterator();
-        int i = 0;
-        while (nodes.hasNext()) {
-            nodeArray[i++] = (Node)(nodes.next());
-        }
-        for (i = 0; i < N-1; i++) {
-            for (int j = i+1; j < N; j++) {
-                int label1 = nodeLabel(nodeArray[i]);
-                int label2 = nodeLabel(nodeArray[j]);
-                if (transitiveClosure[label2][label1]) {
-                    if (transitiveClosure[label1][label2]) {
-                        throw new GraphActionException("Attempted to"
-                                + " topologically sort cyclic nodes.");
-                    } else {
-                        // Swap nodes
-                        Node node = nodeArray[i];
-                        nodeArray[i] = nodeArray[j];
-                        nodeArray[j] = node;
-                    }
-                }
-
-            }
-        }
-        return new ArrayList(Arrays.asList(nodeArray));
-    }
-
-    /** Sort the given nodes in their topological order as long as
-     *  no two of the given nodes are mutually reachable by each other
-     *  (weights version).
-     *  The set of nodes to sort is taken as the set of nodes whose
-     *  weights are contained in the specified weight set.
-     *  The weights of the sorted nodes are returned.
-     *  @param weights The weight set.
-     *  @return The weights of the sorted nodes.
-     *  @exception GraphActionException If any two nodes are strongly
-     *   connected.
-     *  @see #topologicalSort(Collection)
-     */
-    public Object[] topologicalSort(Object[] weights) throws
-            GraphActionException {
-        return weightArray(topologicalSort(
-                nodes(Arrays.asList(weights))));
-    }
 
     /** Find all the nodes that can be reached backward from the
      *  specified node.
@@ -323,8 +251,8 @@ public class DirectedGraph extends Graph {
      *  More specifically, test whether there exists an edge (n1, n2)
      *  such that
      *
-     *  <p><code> 
-     *      (n1.getWeight() == weight1) && (n2.getWeight() == weight2) 
+     *  <p><code>
+     *      (n1.getWeight() == weight1) && (n2.getWeight() == weight2)
      *  </code>.
      *
      *  @param weight1 The first (source) node weight.
@@ -706,7 +634,7 @@ public class DirectedGraph extends Graph {
      *
      *  @return An acyclic graph in the form of
      *          {@link DirectedAcyclicGraph}.
-     *  @exception GraphException This graph is not acyclic.
+     *  @exception GraphException If the graph is cyclic.
      */
     public DirectedAcyclicGraph toDirectedAcyclicGraph() {
         DirectedAcyclicGraph acyclicGraph;
@@ -718,6 +646,71 @@ public class DirectedGraph extends Graph {
                     + GraphException.graphDump(this));
         }
         return acyclicGraph;
+    }
+
+    /** Sort a collection of graph nodes in their topological order as long as
+     *  no two of the given nodes are mutually reachable by each other.
+     *  This method uses the transitive closure matrix. Since generally
+     *  the graph is checked for cyclicity before this method is
+     *  called, the use of the transitive closure matrix should
+     *  not add any overhead. A bubble sort is used for the internal
+     *  implementation, so the complexity is <i>O(V^2)</i>.
+     *  @param nodes The collection of nodes to be sorted; each element is
+     *  a {@link Node}.
+     *  @return The nodes in their sorted order in the form of a list;
+     *  each element is a {@link Node}.
+     *  @exception GraphActionException If any two nodes are strongly
+     *  connected.
+     *  @see #topologicalSort(Object[])
+     */
+    public List topologicalSort(Collection nodeCollection)
+            throws GraphActionException {
+        boolean[][] transitiveClosure = transitiveClosure();
+
+        int N = nodeCollection.size();
+        Node[] nodeArray = new Node[N];
+        Iterator nodes = nodeCollection.iterator();
+        int i = 0;
+        while (nodes.hasNext()) {
+            nodeArray[i++] = (Node)(nodes.next());
+        }
+        for (i = 0; i < N-1; i++) {
+            for (int j = i+1; j < N; j++) {
+                int label1 = nodeLabel(nodeArray[i]);
+                int label2 = nodeLabel(nodeArray[j]);
+                if (transitiveClosure[label2][label1]) {
+                    if (transitiveClosure[label1][label2]) {
+                        throw new GraphActionException("Attempted to"
+                                + " topologically sort cyclic nodes.");
+                    } else {
+                        // Swap nodes
+                        Node node = nodeArray[i];
+                        nodeArray[i] = nodeArray[j];
+                        nodeArray[j] = node;
+                    }
+                }
+
+            }
+        }
+        return new ArrayList(Arrays.asList(nodeArray));
+    }
+
+    /** Sort the given nodes in their topological order as long as
+     *  no two of the given nodes are mutually reachable by each other
+     *  (weights version).
+     *  The set of nodes to sort is taken as the set of nodes whose
+     *  weights are contained in the specified weight set.
+     *  The weights of the sorted nodes are returned.
+     *  @param weights The weight set.
+     *  @return The weights of the sorted nodes.
+     *  @exception GraphActionException If any two nodes are strongly
+     *   connected.
+     *  @see #topologicalSort(Collection)
+     */
+    public Object[] topologicalSort(Object[] weights) throws
+            GraphActionException {
+        return weightArray(topologicalSort(
+                nodes(Arrays.asList(weights))));
     }
 
     /** Return transitive closure for the graph. Transitive closure

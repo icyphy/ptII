@@ -32,9 +32,6 @@
 package ptolemy.graph;
 
 import ptolemy.graph.analysis.TransitiveClosureAnalysis;
-import ptolemy.graph.exception.GraphConstructionException;
-import ptolemy.graph.exception.GraphStateException;
-import ptolemy.graph.exception.GraphTopologyException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -137,6 +134,18 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         return _upSetShared(e);
     }
 
+    /** Compute the greatest element of a subset.
+     *  @param subset An array of Objects representing the subset.
+     *  @return An Object representing the greatest element of the subset,
+     *   or <code>null</code> if the greatest element does not exist.
+     *  @exception IllegalArgumentException If at least one Object in the
+     *   specified array is not an element of this CPO.
+     */
+    public Object greatestElement(Object[] subset) {
+        _validateDual();
+        return _leastElementShared(subset);
+    }
+
     /** Compute the greatest lower bound (GLB) of two elements.
      *  @param e1 An Object representing an element in this CPO.
      *  @param e2 An Object representing an element in this CPO.
@@ -164,18 +173,6 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     public Object greatestLowerBound(Object[] subset) {
         _validateDual();
         return _lubShared(subset);
-    }
-
-    /** Compute the greatest element of a subset.
-     *  @param subset An array of Objects representing the subset.
-     *  @return An Object representing the greatest element of the subset,
-     *   or <code>null</code> if the greatest element does not exist.
-     *  @exception IllegalArgumentException If at least one Object in the
-     *   specified array is not an element of this CPO.
-     */
-    public Object greatestElement(Object[] subset) {
-        _validateDual();
-        return _leastElementShared(subset);
     }
 
     /** Test if this CPO is a lattice.
@@ -402,87 +399,6 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    // call sequence (the lower methods are called by the higher ones):
-    //
-    // leastUpperBound     leastUpperBound([])     leastElement
-    // greatestLowerBound  greatestLowerBound([])  greatestElement
-    //         |                    |                    |
-    //         |                    |                    |
-    // _lubShared(Object) _lubShared(Object[])   _leastElementShared
-    //         |                    |                    |
-    //         -------------------------------------------
-    //                              |
-    //                  _leastElementNodeId(int[])
-    //
-    // downSet
-    // upSet
-    //   |
-    // _upSetShared
-
-    // compute transitive closure.  Throws GraphStateException if detects
-    // cycles.  Find bottom and top elements.
-    private void _validate() {
-        boolean[][] transitiveClosure = transitiveClosure();
-
-        if (!_transitiveClosureAnalysis.obsolete() && isAcyclic()) {
-            _closure = transitiveClosure;
-            return;
-        }
-
-        if (!isAcyclic()) {
-            throw new GraphStateException(
-                    "DirectedAcyclicGraph._validate: Graph is cyclic.");
-        }
-
-        // find bottom
-        _bottom = null;
-        for (int i = 0; i < nodeCount(); i++) {
-            if (inputEdgeCount(node(i)) == 0) {
-                if (_bottom == null) {
-                    _bottom = nodeWeight(i);
-                } else {
-            _bottom = null;
-            break;
-                }
-            }
-        }
-
-        // find top
-        _top = null;
-        for (int i = 0; i < nodeCount(); i++) {
-            if (outputEdgeCount(node(i)) == 0) {
-               if (_top == null) {
-                    _top = nodeWeight(i);
-                } else {
-                    _top = null;
-                    break;
-                }
-            }
-        }
-
-        _closure = transitiveClosure;
-        _tranClosureTranspose = null;
-    }
-
-    // compute the transposition of transitive closure and point _closure
-    // to the transposition
-    private void _validateDual() {
-        _validate();
-
-        boolean[][] transitiveClosure = transitiveClosure();
-        if (_tranClosureTranspose == null) {
-            int size = transitiveClosure.length;
-            _tranClosureTranspose = new boolean[size][size];
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {
-                    _tranClosureTranspose[i][j] = transitiveClosure[j][i];
-                }
-            }
-        }
-
-        _closure = _tranClosureTranspose;
-    }
 
     // compare two elements using their nodeIds using _closure.
     private int _compareNodeId(int i1, int i2) {
@@ -723,6 +639,87 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         }
 
         return upset.toArray();
+    }
+
+    // call sequence (the lower methods are called by the higher ones):
+    //
+    // leastUpperBound     leastUpperBound([])     leastElement
+    // greatestLowerBound  greatestLowerBound([])  greatestElement
+    //         |                    |                    |
+    //         |                    |                    |
+    // _lubShared(Object) _lubShared(Object[])   _leastElementShared
+    //         |                    |                    |
+    //         -------------------------------------------
+    //                              |
+    //                  _leastElementNodeId(int[])
+    //
+    // downSet
+    // upSet
+    //   |
+    // _upSetShared
+
+    // compute transitive closure.  Throws GraphStateException if detects
+    // cycles.  Find bottom and top elements.
+    private void _validate() {
+        boolean[][] transitiveClosure = transitiveClosure();
+
+        if (!_transitiveClosureAnalysis.obsolete() && isAcyclic()) {
+            _closure = transitiveClosure;
+            return;
+        }
+
+        if (!isAcyclic()) {
+            throw new GraphStateException(
+                    "DirectedAcyclicGraph._validate: Graph is cyclic.");
+        }
+
+        // find bottom
+        _bottom = null;
+        for (int i = 0; i < nodeCount(); i++) {
+            if (inputEdgeCount(node(i)) == 0) {
+                if (_bottom == null) {
+                    _bottom = nodeWeight(i);
+                } else {
+            _bottom = null;
+            break;
+                }
+            }
+        }
+
+        // find top
+        _top = null;
+        for (int i = 0; i < nodeCount(); i++) {
+            if (outputEdgeCount(node(i)) == 0) {
+               if (_top == null) {
+                    _top = nodeWeight(i);
+                } else {
+                    _top = null;
+                    break;
+                }
+            }
+        }
+
+        _closure = transitiveClosure;
+        _tranClosureTranspose = null;
+    }
+
+    // compute the transposition of transitive closure and point _closure
+    // to the transposition
+    private void _validateDual() {
+        _validate();
+
+        boolean[][] transitiveClosure = transitiveClosure();
+        if (_tranClosureTranspose == null) {
+            int size = transitiveClosure.length;
+            _tranClosureTranspose = new boolean[size][size];
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    _tranClosureTranspose[i][j] = transitiveClosure[j][i];
+                }
+            }
+        }
+
+        _closure = _tranClosureTranspose;
     }
 
     ///////////////////////////////////////////////////////////////////

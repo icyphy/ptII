@@ -27,10 +27,6 @@
 
 package ptolemy.graph;
 
-import ptolemy.graph.exception.GraphElementException;
-import ptolemy.graph.exception.GraphException;
-import ptolemy.graph.exception.GraphWeightException;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

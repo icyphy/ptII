@@ -42,7 +42,7 @@ if {[string compare test [info procs test]] == 1} then {
 
 # If a file contains non-graphical tests, then it should be named .tcl
 # If a file contains graphical tests, then it should be called .itcl
-# 
+#
 # It would be nice if the tests would work in a vanilla itkwish binary.
 # Check for necessary classes and adjust the auto_path accordingly.
 #
@@ -61,7 +61,7 @@ test DirectedAcyclicGraph-2.1 {Create an empty instance} {
 test DirectedAcyclicGraph-2.2 {test methods on the above empty instance} {
     catch {$p leastUpperBound null null} msg
     list [$p bottom] [$p top] $msg
-} {java0x0 java0x0 {ptolemy.graph.exception.GraphWeightException: Invalid weight argument.
+} {java0x0 java0x0 {ptolemy.graph.GraphWeightException: Invalid weight argument.
 The weight is of class java.lang.String and its description follows:
 null
 A Dump of the offending graph follows.
@@ -136,7 +136,7 @@ test DirectedAcyclicGraph-2.6 {catch exception on self loop} {
     # use the CPO above
     catch {$p addEdge $n1 $n1} msg
     list $msg
-} {{ptolemy.graph.exception.GraphConstructionException: Cannot add a self loop in an acyclic graph.
+} {{ptolemy.graph.GraphConstructionException: Cannot add a self loop in an acyclic graph.
 A self loop was attempted on the following node.
 node1}}
 
@@ -274,7 +274,7 @@ test DirectedAcyclicGraph-3.3 { top. sort cyclic graph, catch exceptin } {
 
     catch {$p topologicalSort} msg
     list $msg
-} {{ptolemy.graph.exception.GraphStateException: DirectedAcyclicGraph._validate: Graph is cyclic.}}
+} {{ptolemy.graph.GraphStateException: DirectedAcyclicGraph._validate: Graph is cyclic.}}
 
 ######################################################################
 ####
@@ -283,7 +283,7 @@ test DirectedAcyclicGraph-3.4 { reachable nodes on cyclic graph } {
     # use graph above
     catch {$p compare $n1 $n2} msg
     list $msg
-} {{ptolemy.graph.exception.GraphStateException: DirectedAcyclicGraph._validate: Graph is cyclic.}}
+} {{ptolemy.graph.GraphStateException: DirectedAcyclicGraph._validate: Graph is cyclic.}}
 
 ######################################################################
 ####

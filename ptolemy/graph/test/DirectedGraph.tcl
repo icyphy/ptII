@@ -63,7 +63,7 @@ test DirectedGraph-2.1 {Create an empty instance} {
 test DirectedGraph-2.2 {test reachableNodes on empty graph above} {
      catch {$p {reachableNodes Object} null} msg
      list $msg
-} {{ptolemy.graph.exception.GraphWeightException: The specified weight is not a node weight in this graph.
+} {{ptolemy.graph.GraphWeightException: The specified weight is not a node weight in this graph.
 The weight is of class java.lang.String and its description follows:
 null
 A Dump of the offending graph follows.
@@ -357,7 +357,7 @@ test DirectedGraph-7.2 {test toDirectedAcyclicGraph exception} {
     $dirg addEdge $e3
     catch {$dirg toDirectedAcyclicGraph} msg
     list $msg
-} {{ptolemy.graph.exception.GraphTopologyException: This graph is not acyclic.
+} {{ptolemy.graph.GraphTopologyException: This graph is not acyclic.
 A Dump of the offending graph follows.
 {ptolemy.graph.DirectedGraph
 Node Set:
