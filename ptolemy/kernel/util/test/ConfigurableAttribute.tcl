@@ -68,10 +68,10 @@ test ConfigurableAttribute-1.1 {test export moml.} {
 ######################################################################
 ####
 #
-test ConfigurableAttribute-1.5 {test value method.} {
+test ConfigurableAttribute-1.5 {test value, getText, getSource methods.} {
     # Uses Test 1.1 above 
-    $p1 value
-} {My Test String}
+    list [$p1 value] [$p1 getText] [$p1 getSource]
+} {{My Test String} {My Test String} {}}
 
 
 ######################################################################
@@ -150,10 +150,23 @@ test ConfigurableAttribute-4.1 {setExpression, getExpression} {
     list $r1 [$c1 getExpression]
 } {{My Test String} {Another Test String}}
 
+test ConfigurableAttribute-4.1.1 {value, getText, getSource} {
+    # Uses 4.1 above, testing that the StringAttributes don't show up
+    list [$c1 value] [$c1 getText] [$c1 getSource]
+} {{Another Test String} {Another Test String} {}}
 
-test ConfigurableAttribute-4.2 {getExpression exception} {
+test ConfigurableAttribute-4.2 {getExpression exception, check out getSource} {
     set c1 [java::new ptolemy.kernel.util.ConfigurableAttribute]
     $c1 configure [java::null] "NotAFile" {My Test String}
+    set r1 [$c1 getSource]
     catch {$c1 getExpression} errMsg
-    list $errMsg
-} {{java.net.MalformedURLException: no protocol: NotAFile}}
+    list $r1 $errMsg [$c1 getSource]
+} {NotAFile {java.net.MalformedURLException: no protocol: NotAFile} NotAFile}
+
+
+test ConfigurableAttribute-4.3 {getExpression from a real file} {
+    set c1 [java::new ptolemy.kernel.util.ConfigurableAttribute]
+    $c1 configure [java::null] "file:./ConfigurableAttribute.txt" {My Test String}
+    $c1 getExpression
+} {Test file for ConfigurableAttribute
+My Test String}
