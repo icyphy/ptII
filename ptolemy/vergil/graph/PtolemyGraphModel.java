@@ -161,7 +161,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	ComponentRelation relation = 
 	    (ComponentRelation)vertex.getContainer();
 	try {
-	    relation.setContainer(parent);
+	    _doChangeRequest(new PlaceRelation(vertex, relation, parent));
 	} catch (Exception ex) {
             throw new GraphException(ex);
 	}
@@ -177,7 +177,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
     public void addNode(Icon icon, CompositeEntity parent) {
 	ComponentEntity entity = (ComponentEntity)icon.getContainer();
 	try {
-	    entity.setContainer(parent);
+	    _doChangeRequest(new PlaceEntity(icon, entity, parent));
 	} catch (Exception ex) {
             throw new GraphException(ex);
 	}
@@ -192,7 +192,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
      */
     public void addNode(ComponentPort port, CompositeEntity parent) {
 	try {
-	    port.setContainer(parent);
+	    _doChangeRequest(new PlacePort(port, port, parent));
 	} catch (Exception ex) {
             throw new GraphException(ex);
 	}
@@ -897,6 +897,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 		request.execute();
 	} 
 	catch (Exception ex) {
+	    ex.printStackTrace();
 	    throw new GraphException(ex);
 	}
     }
