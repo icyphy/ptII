@@ -1,0 +1,130 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="IterateOverArray10" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 50.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="&quot;a&quot;">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="&quot;a&quot;">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 215.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 225.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="IterateOverArray" class="ptolemy.actor.hoc.IterateOverArray">
+        <doc>Iterate a contained actor over input arrays</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 225.0">
+        </property>
+        <property name="function" class="ptolemy.data.expr.Parameter" value="equals">
+            <property name="_stringMode" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </property>
+        <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter">
+            <property name="_stringMode" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </property>
+        <property name="secondString" class="ptolemy.actor.parameters.PortParameter">
+            <property name="_stringMode" class="ptolemy.kernel.util.Attribute">
+            </property>
+        </property>
+        <port name="firstString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="secondString" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
+            <property name="output"/>
+        </port>
+        <entity name="StringCompare" class="ptolemy.actor.lib.string.StringCompare">
+            <property name="function" class="ptolemy.data.expr.Parameter" value="$function">
+            </property>
+            <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="ignoreCase">
+            </property>
+            <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="$firstString">
+            </property>
+            <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="$secondString">
+            </property>
+            <doc>Output a comparison function of two strings</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 310.0">
+            </property>
+            <port name="firstString" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+            </port>
+            <port name="secondString" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <relation name="insideRelation1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="output" relation="insideRelation1"/>
+        <link port="StringCompare.output" relation="insideRelation1"/>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="Display.input" relation="relation2"/>
+    <link port="IterateOverArray.firstString" relation="relation"/>
+    <link port="IterateOverArray.output" relation="relation2"/>
+</entity>

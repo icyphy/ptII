@@ -8,7 +8,8 @@
       <doc>Higher-Order Computation Infrastructure.</doc>
 
       <entity name="IterateOverArray" class="ptolemy.actor.hoc.IterateOverArray">
-        <doc/>
+        <doc>Iterate a contained actor over input arrays</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon"/>
       </entity>
 
       <entity name="MultiInstanceComposite" class="ptolemy.actor.hoc.MultiInstanceComposite">

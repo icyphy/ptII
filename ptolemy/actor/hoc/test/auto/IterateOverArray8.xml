@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="IterateOverArray" class="ptolemy.actor.TypedCompositeActor">
+<entity name="IterateOverArray8" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -71,20 +71,24 @@
     <entity name="IterateOverArray" class="ptolemy.actor.hoc.IterateOverArray">
         <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 145.0">
         </property>
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <port name="output" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="413.078125, 125.390625">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="453.078125, 125.390625">
             </property>
         </port>
         <port name="input" class="ptolemy.actor.hoc.IterateOverArray$IteratePort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 200.0">
             </property>
         </port>
         <entity name="Scale" class="ptolemy.actor.lib.Scale">
-            <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="factor">
             </property>
-            <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="scaleOnLeft">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -92,7 +96,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 140.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 204.9375">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
