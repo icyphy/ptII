@@ -51,16 +51,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	Absent.java \
 	AbsentToken.java \
-	Latch.java \
-	NonStrictActor.java \
-	NonStrictClient.java \
+	InstantaneousDialogGenerator.java \
 	NonStrictDelay.java \
 	NonStrictDisplay.java \
 	NonStrictLogicFunction.java \
 	NonStrictThreeBitAdder.java \
-	SequenceTest.java \
-	Server.java \
-	SingleTokenDistributor.java \
 	Undefined.java
 
 OTHER_FILES_TO_BE_JARED = \

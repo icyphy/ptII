@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.sr.lib;
 
+import ptolemy.actor.lib.NonStrictActor;
 import ptolemy.actor.lib.gui.Display;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

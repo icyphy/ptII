@@ -1,4 +1,4 @@
-/* A nonstrict client that receives data from a server.
+/* An actor that generates instantaneous dialog with a LookupTable.
 
  Copyright (c) 1997-2001 The Regents of the University of California.
  All rights reserved.
@@ -32,6 +32,7 @@ package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.NonStrictActor;
 import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -39,19 +40,20 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// NonStrictClient
+//// InstantaneousDialogGenerator
 /**
-A nonstrict client that receives data from a server.  This actor outputs
-incrementing integers on the <i>indexOutput</i> port.  A server is expected to
-receive an index number and output a token associated with this index, which
-the client receives on the <i>dataInput</i> port.  The client then outputs this
-token on the <i>dataOutput</i> port.  All ports are single ports.
+An actor that generates instantaneous dialog with a LookupTable.  This actor 
+outputs incrementing integers on the <i>indexOutput</i> port.  A server is 
+expected to receive an index number and output a token associated with this 
+index, which the client receives on the <i>dataInput</i> port.  The client 
+then outputs this token on the <i>dataOutput</i> port.  All ports are single 
+ports.
 
 @author Paul Whitaker
 @version $Id$
 */
 
-public class NonStrictClient extends TypedAtomicActor
+public class InstantaneousDialogGenerator extends TypedAtomicActor
     implements NonStrictActor {
 
     /** Construct an actor in the specified container with the specified
@@ -63,7 +65,7 @@ public class NonStrictClient extends TypedAtomicActor
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public NonStrictClient(CompositeEntity container, String name)
+    public InstantaneousDialogGenerator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         dataInput = new TypedIOPort(this, "dataInput", true, false);

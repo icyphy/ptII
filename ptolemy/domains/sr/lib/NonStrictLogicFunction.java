@@ -30,6 +30,7 @@
 
 package ptolemy.domains.sr.lib;
 
+import ptolemy.actor.lib.NonStrictActor;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.lib.logic.LogicFunction;
 import ptolemy.data.Token;

@@ -30,6 +30,7 @@
 
 package ptolemy.domains.sr.lib;
 
+import ptolemy.actor.lib.NonStrictActor;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;

@@ -30,6 +30,7 @@
 
 package ptolemy.domains.sr.lib;
 
+import ptolemy.actor.lib.NonStrictActor;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
