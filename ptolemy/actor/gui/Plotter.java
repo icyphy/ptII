@@ -41,7 +41,12 @@ import java.awt.Panel;
 /** Base class for plotters.  This class contains an instance of the
  *  Plot class from the Ptolemy plot package as a public member.
  *  It provides a parameter that determines whether to fill the plot
- *  when wrapup is invoked.
+ *  when wrapup is invoked.  It also provides a parameter
+ *  <i>startingDataset</i>, which specifies the starting point
+ *  for the number of the dataset to use to create the plots.
+ *  This defaults to zero, but will typically be set to a positive
+ *  number when more than one instance of a plotter actor shares
+ *  the same plot object.
  *
  *  @author  Edward A. Lee
  *  @version $Id$
@@ -61,6 +66,8 @@ public class Plotter extends TypedAtomicActor implements Placeable {
         super(container, name);
         fillOnWrapup = new Parameter(this, "fillOnWrapup",
                 new BooleanToken(true));
+        startingDataset = new Parameter(this, "startingDataset",
+                new IntToken(0));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -74,41 +81,53 @@ public class Plotter extends TypedAtomicActor implements Placeable {
      */
     public Parameter fillOnWrapup;
 
+    /** @serial The starting dataset number to which data is plotted.
+     *  This parameter has type IntToken, with default value 0.
+     *  Its value must be non-negative.
+     */
+    public Parameter startingDataset;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Throw an exception if the specified new value for
+     *  <i>startingDataset</i> is negative.
+     *  @exception IllegalActionException If the specified attribute
+     *   is <i>startingDataset</i> and its value is negative.
+     */
+    public void attributeChanged(Attribute attribute)
+           throws IllegalActionException {
+        if (attribute == startingDataset) {
+            if(((IntToken)startingDataset.getToken()).intValue() < 0) {
+                throw new IllegalActionException(this,
+                "startingDataset: negative value is not allowed.");
+            }
+        }
+    }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has an
+     *   attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
-        try {
-            Plotter newobj = (Plotter)super.clone(ws);
-            newobj.fillOnWrapup
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        Plotter newobj = (Plotter)super.clone(ws);
+        newobj.fillOnWrapup
                 = (Parameter)newobj.getAttribute("fillOnWrapup");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        newobj.startingDataset
+                = (Parameter)newobj.getAttribute("startingDataset");
+        return newobj;
     }
 
     /** If the plot has not already been created, create it.
-     *  If a panel has been specified, and that panel is an instance
-     *  of Plot, then plot data to that instance.  If a panel has been
-     *  specified but it is not an instance of Plot, then create a new
-     *  instance of Plot and place the plot in that panel
-     *  using its add() method.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (plot == null) {
             setPanel(_panel);
-        } else {
-            plot.clear(false);
         }
         plot.repaint();
     }
@@ -157,8 +176,8 @@ public class Plotter extends TypedAtomicActor implements Placeable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
+    ////                         protected members                 ////
 
-    /** @serial Panel into which this histogram should be placed */
-    private Panel _panel;
+    /** @serial Panel into which this plot should be placed */
+    protected Panel _panel;
 }
