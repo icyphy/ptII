@@ -36,6 +36,7 @@
 #
 proc ctModel {{stopTime 1.0}} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    createBasicModelErrorHandler $e0
     set manager [java::new ptolemy.actor.Manager]
     $e0 setName top
     $e0 setManager $manager
@@ -53,6 +54,7 @@ proc ctModel {{stopTime 1.0}} {
 #
 proc deModel {{stopTime 1.0}} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    createBasicModelErrorHandler $e0
     set manager [java::new ptolemy.actor.Manager]
     $e0 setName top
     $e0 setManager $manager
@@ -84,6 +86,7 @@ proc getSettable {namedobj paramname} {
 #
 proc sdfModel {{iters 1}} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    createBasicModelErrorHandler $e0
     set manager [java::new ptolemy.actor.Manager]
     set director [java::new ptolemy.domains.sdf.kernel.SDFDirector]
     $e0 setDirector $director
@@ -96,3 +99,8 @@ proc sdfModel {{iters 1}} {
     return $e0
 }
 
+# Create an instance of the BasicModelErrorHandler for each model.
+proc createBasicModelErrorHandler {container} {
+    set basicModelErrorHandler [java::new ptolemy.kernel.util.BasicModelErrorHandler]
+    $container setModelErrorHandler $basicModelErrorHandler
+}
