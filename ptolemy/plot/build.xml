@@ -3,7 +3,7 @@
     <!ENTITY ptcommon SYSTEM "../../ant/ptcommon.xml">
 ]>
 
-<project name="ptolemy.plot" default="compile" basedir=".">
+<project name="ptolemy.plot" default="all" basedir=".">
   <description>
   Ant tasks for the Ptplot program
   </description>
@@ -64,9 +64,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
   <!-- Ant tasks that are common to most files -->
   &ptcommon;
 
-  <target name="antstructure"
-          description="Generate a DTD that contains all the known Ant tasks">
-    <antstructure output="project.dtd"/>
+  <target name="suball"
+    depends="compile">
+    <ant dir="plotml"/>
+  </target>
+
+  <target name="all"
+    depends="suball">
   </target>
 
 </project>
