@@ -162,19 +162,23 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         <?moml
           <group>
             <doc>default entity library</doc>
-            <input source="../actor/lib/sources.xml"/>
-            <input source="../actor/lib/sinks.xml"/>
-            <input source="../actor/lib/math.xml"/>
-            <input source="../actor/lib/flowcontrol.xml"/>
-            <input source="../actor/lib/logic/logic.xml"/>
-            <input source="../actor/lib/conversions/conversions.xml"/>
-            <input source="../actor/lib/array.xml"/>
-            <input source="../actor/lib/signalprocessing.xml"/>
-            <input source="../domains/ct/lib/ctentities.xml"/>
-            <input source="../domains/de/lib/deentities.xml"/>
-            <input source="../domains/sr/lib/srentities.xml"/>
-	    <input source="../domains/rtos/lib/rtosentities.xml"/>
-            <input source="../matlab/actors.xml"/>
+	    <!-- Do not use relative paths with ../ here, it is safer to use
+	     paths that start with ptolemy/ so that we can find these
+	     files if they are in a jar file besides the jar file that
+	     contains this file. -->
+            <input source="ptolemy/actor/lib/sources.xml"/>
+            <input source="ptolemy/actor/lib/sinks.xml"/>
+            <input source="ptolemy/actor/lib/math.xml"/>
+            <input source="ptolemy/actor/lib/flowcontrol.xml"/>
+            <input source="ptolemy/actor/lib/logic/logic.xml"/>
+            <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
+            <input source="ptolemy/actor/lib/array.xml"/>
+            <input source="ptolemy/actor/lib/signalprocessing.xml"/>
+            <input source="ptolemy/domains/ct/lib/ctentities.xml"/>
+            <input source="ptolemy/domains/de/lib/deentities.xml"/>
+            <input source="ptolemy/domains/sr/lib/srentities.xml"/>
+	    <input source="ptolemy/domains/rtos/lib/rtosentities.xml"/>
+            <input source="ptolemy/matlab/actors.xml"/>
           </group>
         ?>
       </configure>
@@ -187,7 +191,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         <?moml
           <group>
             <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector"/>
-            <input source="../domains/gr/lib/grentities.xml"/>
+            <input source="ptolemy/domains/gr/lib/grentities.xml"/>
           </group>
         ?>
       </configure>
