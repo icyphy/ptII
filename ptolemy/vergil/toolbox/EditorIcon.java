@@ -79,7 +79,8 @@ box.  For a more interesting icon, see the XMLIcon class.
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class EditorIcon extends Attribute {
+public class EditorIcon extends Attribute 
+    implements NotPersistent {
 
     /**
      * Create a new icon with the given name in the given container.
