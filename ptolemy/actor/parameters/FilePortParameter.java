@@ -183,7 +183,7 @@ import ptolemy.util.FileUtilities;
 
    </ol>
 
-   @see ptolemy.actor.parameters.FileParameter
+   @see ptolemy.data.expr.FileParameter
    @see ParameterPort
    @author Edward A. Lee
    @version $Id$
