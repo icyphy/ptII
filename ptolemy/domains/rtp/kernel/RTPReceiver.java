@@ -30,11 +30,13 @@
 
 package ptolemy.domains.rtp.kernel;
 
+import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.process.ProcessReceiver;
+import ptolemy.actor.process.Branch;
 import ptolemy.data.Token;
 
 //////////////////////////////////////////////////////////////////////////
@@ -84,11 +86,21 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
         return false;
     }
 
+    public boolean isConsumerReceiver() {
+        return false;
+    }
+
     public boolean isInsideBoundary() {
         return false;
     }
 
     public boolean isOutsideBoundary() {
+        return false;
+    }
+
+    /** 
+     */
+    public boolean isProducerReceiver() {
         return false;
     }
 
@@ -112,7 +124,15 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
         return false;
     }
 
+    public Token get(Branch controllingBranch) {
+        throw new InvalidStateException(getContainer(),
+                "hierarchy not supported yet.");
+    }
 
+    public void put(Token token, Branch controllingBranch) {
+        throw new InvalidStateException(getContainer(),
+                "hierarchy not supported yet.");
+    }
 
     /** Bolcking read on the token. This method will not return until
      *  there is a new token be put into the receiver.
