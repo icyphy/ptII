@@ -109,7 +109,6 @@ public class LevelCrossingDetector extends TypedAtomicActor
         _detectRisingCrossing = true;
         _detectFallingCrossing = true;
         
-        direction.setTypeEquals(BaseType.STRING);
         direction.addChoice("both");
         direction.addChoice("falling");
         direction.addChoice("rising");
@@ -128,6 +127,7 @@ public class LevelCrossingDetector extends TypedAtomicActor
         _errorTolerance = (double) 1e-4;
         errorTolerance = new Parameter(this, "errorTolerance",
                 new DoubleToken(_errorTolerance));
+        errorTolerance.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////

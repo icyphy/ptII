@@ -65,14 +65,14 @@
         <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
     </property>
-    <property name="ParameterValue2" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+    <property name="ParameterExpression" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
         </property>
         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="direction">
         </property>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="7">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[4.0, -16.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.0, -14.0]">
         </property>
     </property>
 </property>
