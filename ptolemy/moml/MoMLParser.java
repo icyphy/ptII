@@ -3328,6 +3328,13 @@ public class MoMLParser extends HandlerBase {
                     if (newClass == null) {
                         newClass = Attribute.class;
                     }
+                    
+                    // An attribute cannot be a top-level element.
+                    if (_current == null) {
+                        throw new IllegalActionException(
+                        "Attempt to create an attribute with no container: "
+                        + propertyName);
+                    }
         
                     // Invoke the constructor.
                     Object[] arguments = new Object[2];
