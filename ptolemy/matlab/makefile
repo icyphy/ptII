@@ -59,7 +59,7 @@ JSRCS = \
 	Expression.java
 
 OTHER_FILES_TO_BE_JARED = \
-	matlab.xml
+	matlab.xml \
 	matlab.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

@@ -145,8 +145,9 @@ public class Expression extends TypedAtomicActor {
 	    matlabEngine = new Engine();
 	} catch (LinkageError err) {
 	    throw new IllegalActionException(this, err,
-	         "There was a problem invoking the Ptolemy II Matlab interface"
-                 + ".\nThe interface only works under Windows, and requires\n"
+                 "Failed to invoke the Ptolemy II Matlab interface.\n"
+                 + "For details, see $PTII/ptolemy/matlab/matlab.htm\n\n"
+                 + "The interface only works under Windows, and requires\n"
                  + "that Matlab be installed on the local machine, and that\n"
                  + "ptmatlab.dll be in the user's path.\n"
 	         + "ptmatlab.dll can be found in $PTII/bin\n"
