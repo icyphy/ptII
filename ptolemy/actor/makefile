@@ -77,7 +77,11 @@ JSRCS = \
 	QueueReceiver.java \
 	Receiver.java \
 	Scheduler.java \
-	StaticSchedulingDirector.java 
+	StaticSchedulingDirector.java \
+	TypedActor.java \
+	TypedAtomicActor.java \
+	TypedCompositeActor.java \
+	TypedIOPort.java
 
 EXTRA_SRCS =	$(JSRCS)
 
