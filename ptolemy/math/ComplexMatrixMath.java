@@ -388,7 +388,7 @@ public class ComplexMatrixMath {
     /** Return the determinate of a square matrix.
      *  If the matrix is not square, throw an IllegalArgumentException.
      *  This algorithm uses LU decomposition, and is taken from [1]
-     *  THIS IS NOT TESTED!
+     *  THIS IS NOW TESTED.
      */
     public static final Complex determinate(final Complex[][] matrix) {
         _checkSquare("determinate", matrix);
@@ -565,7 +565,7 @@ public class ComplexMatrixMath {
     /** Return a new matrix that is constructed by inverting the input
      *  matrix. If the input matrix is singular, null is returned.
      *  This method is from [1]
-     *  THIS IS NOT TESTED!
+     *  THIS IS NOW TESTED.
      */
     public static final Complex[][] inverse(final Complex[][] A) {
         _checkSquare("inverse", A);

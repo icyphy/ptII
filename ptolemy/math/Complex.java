@@ -277,6 +277,18 @@ public class Complex implements Cloneable, Serializable {
                 (imag*divisor.real-real*divisor.imag)/denominator);
     }
 
+    /** Divide the dividend by the divisor, and return the result
+     *  in a new Complex object.
+     *  @param divisor The denominator in the division.
+     *  @return A new complex number.
+     */
+    public static final Complex divide(Complex dividend, Complex divisor) {
+        // This algorithm results from writing a/b as (ab*)/magSquared(b).
+        double denominator = divisor.magnitudeSquared();
+        return new Complex((dividend.real*divisor.real+dividend.imag*divisor.imag)/denominator,
+                (dividend.imag*divisor.real-dividend.real*divisor.imag)/denominator);
+    }
+
     /** Return true if both the real and imaginary parts of this
      *  complex number are close to those of the argument.  The
      *  epsilon field is used to determine closeness.
@@ -381,6 +393,16 @@ public class Complex implements Cloneable, Serializable {
      */
     public Complex multiply(Complex w) {
         return new Complex(w.real*real-w.imag*imag, w.real*imag+w.imag*real);
+    }
+
+    /** Return a new complex number that is formed by multiplying a
+     *  complex number by the second complex number.
+     *  @param w A complex number.
+     *  @return A new complex number.
+     *  @see Complex#scale
+     */
+    public static final Complex multiply(Complex x, Complex w) {
+        return new Complex(w.real*x.real-w.imag*x.imag, w.real*x.imag+w.imag*x.real);
     }
 
     /** Return a new complex number that is formed by the negatives of both
@@ -564,6 +586,13 @@ public class Complex implements Cloneable, Serializable {
         return new Complex(real-w.real, imag-w.imag);
     }
 
+    /** Return a new complex number formed by subtracting the specified
+     *  complex number from another complex number.
+     */
+    public static final Complex subtract(Complex x, Complex w) {
+        return new Complex(x.real-w.real, x.imag-w.imag);
+    }
+
     /** Return a new complex number with value equal to the tangent
      *  of this complex number.  This is defined by:
      *  <pre>
@@ -598,6 +627,20 @@ public class Complex implements Cloneable, Serializable {
         } else {
             return Double.toString(real) + " - "
                 + Double.toString(-imag) + "i";
+        }
+    }
+
+
+    /** Return a string representation of the given Complex.
+     * @return A string of the form "<em>x</em> + <em>y</em>i".
+     */
+    public static final String toString(Complex value) {
+        if (value.imag >= 0) {
+            return Double.toString(value.real) + " + "
+                + Double.toString(value.imag) + "i";
+        } else {
+            return Double.toString(value.real) + " - "
+                + Double.toString(-value.imag) + "i";
         }
     }
 
