@@ -43,11 +43,11 @@ public class PNPrimeExample {
             IllegalStateException, IllegalActionException, 
             NameDuplicationException {
         PNUniverse myUniverse = new PNUniverse();
-        myUniverse.setMode(Integer.parseInt(args[0]));
-        myUniverse.setNoCycles(Integer.parseInt(args[1]));
+        //myUniverse.setMode(Integer.parseInt(args[0]));
+        myUniverse.setNoCycles(Integer.parseInt(args[0]));
         PNRamp ramp = new PNRamp(myUniverse, "ramp");
         ramp.initialize(2);
-        ramp.setCycles(Integer.parseInt(args[1]));
+        ramp.setCycles(Integer.parseInt(args[0]));
         PNSieve sieve = new PNSieve(myUniverse, "2_sieve");
         sieve.initialize(2);
         IORelation queue = new IORelation(myUniverse, "2_queue");
