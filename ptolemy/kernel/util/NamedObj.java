@@ -27,7 +27,7 @@
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 
-FIXME: Downgraded to Yellow: Review needed for modelError(),
+FIXME: Downgraded to Yellow: Review needed for
 getModelErrorHandler(), setModelErrorHandler(), and
 validateSettables() methods.
 */
@@ -830,8 +830,7 @@ public class NamedObj implements Nameable, Debuggable,
 
     /** Get the model error handler specified by setErrorHandler().
      *  @return The error handler, or null if none.
-     *  @see #modelError()
-     *  @see #setModelErrorHandler()
+     *  @see #setModelErrorHandler(ModelErrorHandler handler)
      */
     public ModelErrorHandler getModelErrorHandler() {
         return _modelErrorHandler;
@@ -976,10 +975,9 @@ public class NamedObj implements Nameable, Debuggable,
      *  @return True, unless the error is ignored, in which case false.
      *  @exception IllegalActionException If the handler handles the
      *   error by throwing an exception.
-     *  @see #setModelErrorHandler()
+     *  @see #setModelErrorHandler(ModelErrorHandler handler)
      */
-    public boolean handleError(
-            NamedObj context,
+    public boolean handleError(NamedObj context,
             IllegalActionException exception)
             throws IllegalActionException {
         if (_modelErrorHandler != null) {
@@ -1090,7 +1088,6 @@ public class NamedObj implements Nameable, Debuggable,
 
     /** Set the model error handler.
      *  @param handler The error handler, or null to specify no handler.
-     *  @see #modelError()
      *  @see #getModelErrorHandler()
      */
     public void setModelErrorHandler(ModelErrorHandler handler) {
@@ -1172,7 +1169,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  implement the Settable interface by calling their validate() method.
      *  Errors that are triggered by this validation are handled by calling
      *  handleError().
-     *  @see #handleError()
+     *  @see #handleError(NamedObj context, IllegalActionException exception)
      */
     public void validateSettables() throws IllegalActionException {
         // This base class contains only attributes, so check those.
