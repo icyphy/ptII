@@ -262,7 +262,7 @@ public abstract class ODESolver extends NamedObj {
 
     /** Set the convergence flag. Integrators may call this method
      *  to change the convergence.
-     *  @param converge The flag setting.
+     *  @param convergence The flag setting.
      */
     public void setConvergence(boolean convergence) {
         _isConverged = convergence;

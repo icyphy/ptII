@@ -105,7 +105,6 @@ public class WirelessReceiver extends DEReceiver {
      *  @param time The time in the future.
      *  @exception IllegalActionException If there are problems creating
      *  the RecordToken or if the parent class throws it.
-     *  @see ptolemy.domains.de.kernel.DEReceiver#put(ptolemy.data.Token, double)
      */
     public synchronized void put(Token token, Time time)
             throws IllegalActionException {
