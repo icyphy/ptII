@@ -24,18 +24,12 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating red (winthrop@eecs.berkeley.edu)
-@AcceptedRating red (winthrop@eecs.berkeley.edu)
+@ProposedRating Red (winthrop@eecs.berkeley.edu)
+@AcceptedRating Red (winthrop@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.net;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
@@ -53,6 +47,13 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DatagramWriter
@@ -81,7 +82,8 @@ until the model is run.
 (Based on TiltSensor actor written by
  Chamberlain Fong, Xiaojun Liu, Edward Lee)
 @version $Id$
-@since Ptolemy II 2.0 */
+@since Ptolemy II 2.0
+*/
 public class DatagramWriter extends TypedAtomicActor {
 
     /** Construct a DatagramWriter actor with given name in the given
@@ -524,14 +526,4 @@ public class DatagramWriter extends TypedAtomicActor {
     private boolean _encodeForPtolemyParser = true;
     private boolean _encodeFromIntegerArray = false;
     private int _encodedBytesPerInteger = 1;
-
 }
-
-
-
-
-
-
-
-
-

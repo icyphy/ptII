@@ -24,16 +24,12 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating red (winthrop@robotics.eecs.berkeley.edu)
-@AcceptedRating red (winthrop@robotics.eecs.berkeley.edu)
+@ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
+@AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.net;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.SocketException;
 import ptolemy.actor.Actor;
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.Director;
@@ -58,6 +54,11 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DatagramReader
@@ -430,12 +431,13 @@ public class DatagramReader extends TypedAtomicActor {
      *  */
     public Parameter defaultReturnSocketNumber;
 
-    /** The default for the <i>output</i> output.  This default token is broadcast when the
-     *  actor is fired, but no actual datagram data is available to
-     *  broadcast and <i>blockAwaitingDatagram</i> is false.  If
-     *  blocking were true, the actor would simply stall in fire()
-     *  until a datagram arrives.  Type is defined by the expression
-     *  entered.  Default type & value is the integer 0.
+    /** The default for the <i>output</i> output.  This default token
+     *  is broadcast when the actor is fired, but no actual datagram
+     *  data is available to broadcast and
+     *  <i>blockAwaitingDatagram</i> is false.  If blocking were true,
+     *  the actor would simply stall in fire() until a datagram
+     *  arrives.  Type is defined by the expression entered.  Default
+     *  type & value is the integer 0.
      */
     public Parameter defaultOutput;
 
@@ -1402,8 +1404,7 @@ public class DatagramReader extends TypedAtomicActor {
                         fireAtWillBeCalled = true;
                         _packetsAlreadyAwaitingFire++;
                     }
-
-                } // Close sync block
+                }
 
                 if (fireAtWillBeCalled) {
                     try {
@@ -1416,13 +1417,10 @@ public class DatagramReader extends TypedAtomicActor {
                         throw new RuntimeException("-fireAt* catch-");
                     }
                 }
-
-            } // Close while (true)
-        } // Close run()
-
-    } // Close private class SocketReadingThread
-
-} // Close the whole java file
+            }
+        }
+    }
+}
 
 
 
