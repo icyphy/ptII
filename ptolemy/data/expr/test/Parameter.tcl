@@ -135,21 +135,20 @@ test Parameter-3.3 {Check type constraints: ok to put int in a double} {
 } {.entity.id1 4.4 .entity.id1 7}
 
 test Parameter-3.4 {Check setting type constraints (conversion)} {
-    set double [java::new ptolemy.data.DoubleToken 0.0]
-    set doubleClass [$double getClass]
+    set doubleClass [java::field ptolemy.data.type.BaseType DOUBLE]
     $param1 setTypeEquals $doubleClass
     [$param1 getToken] stringValue
 } {7.0}
 
 test Parameter-3.5 {Check that we can't convert down} {
-    set int [java::new ptolemy.data.IntToken 0]
-    set intClass [$int getClass]
+    set intClass [java::field ptolemy.data.type.BaseType INT]
     catch {$param1 setTypeEquals $intClass} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: .entity.id1:
 Variable.setTypeEquals(): the currently contained token ptolemy.data.DoubleToken(7.0) is not compatible with the desired type int}}
 
 test Parameter-3.6 {Check that a new token is converted} {
+    set int [java::new ptolemy.data.IntToken 0]
     $param1 setToken $int
     [$param1 getToken] stringValue
 } {0.0}

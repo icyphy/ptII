@@ -211,8 +211,7 @@ test Variable-5.0 {Check types} {
 } {double int complex double string}
 
 test Variable-5.1 {Set types without first clearing} {
-    set double [java::new ptolemy.data.DoubleToken 0.0]
-    set doubleClass [$double getClass]
+    set doubleClass [java::field ptolemy.data.type.BaseType DOUBLE]
     catch {$p1 setTypeEquals $doubleClass} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: .E.P1:
@@ -232,8 +231,7 @@ test Variable-5.4 {Check setting expression to null} {
     $p1 setExpression 1
     set r1 [[$p1 getToken] toString]
     $p1 setExpression ""
-    set int [java::new ptolemy.data.IntToken 0]
-    set intClass [$int getClass]
+    set intClass [java::field ptolemy.data.type.BaseType INT]
     $p1 setTypeEquals $intClass
     set r2 [$p1 getToken]
     list $r1 [string compare $r2 [java::null]]
