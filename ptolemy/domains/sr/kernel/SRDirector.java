@@ -33,7 +33,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.lib.NonStrictActor;
+import ptolemy.actor.lib.NonStrictActor;  // FIXME: remove
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
@@ -78,7 +78,7 @@ change again in the course of the iteration.
 An actor is considered <i>ready to fire</i> if sufficient known inputs are 
 available.  In a sense, an actor firing is triggered by these known inputs, 
 because the director only fires an actor if it is ready to fire.  Unless an 
-actor implements the NonStrictActor interface, it is assumed to be a strict 
+actor implements the NonStrictActor FIXME, it is assumed to be a strict 
 actor, meaning that it requires all of its inputs to be known before it is 
 fired.  This is very important since once an actor defines a particular 
 output, it is not allowed to change that value in a subsequent firing in the 
@@ -409,7 +409,7 @@ public class SRDirector extends StaticSchedulingDirector {
         // Non strict actors should fire every phase in case more inputs
         // become available (the inputs might be, for example, cached and
         // used in a subsequent iteration.
-        if (actor instanceof NonStrictActor) return false;
+        if (_isNonStrict(actor)) return false;
 
         Iterator outputPorts = actor.outputPortList().iterator();
 
@@ -536,13 +536,19 @@ public class SRDirector extends StaticSchedulingDirector {
                 !_actorsNotAllowedToIterate.contains(actor));
     }
 
+    /** Return true if the specified actor is a nonstrict actor.
+     */
+    private boolean _isNonStrict(Actor actor) {
+        return (actor instanceof NonStrictActor);
+    }
+
     /** Return true if the specified actor is ready to fire.  An actor is
      *  ready to fire if sufficient known inputs are available.
      */
     private boolean _isReadyToFire(Actor actor) throws IllegalActionException {
 
         // Non strict actors are allowed to fire even if no inputs are known.
-        if (actor instanceof NonStrictActor) {
+        if (_isNonStrict(actor)) {
             return true;
         }
 
@@ -611,7 +617,7 @@ public class SRDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
 
         // Nonstrict actors may intend to output undefined values.
-        if (!(actor instanceof NonStrictActor)) {
+        if (!_isNonStrict(actor)) {
             // No need to do anything if this actor has defined all of its 
             // outputs.
             if (!_hasCompletedFiring(actor)) {
