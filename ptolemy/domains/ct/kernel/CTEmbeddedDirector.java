@@ -271,7 +271,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
-    /** Check whether the container implements the CTStepSizeControlActor 
+    /** Check whether the container implements the CTStepSizeControlActor
      *  interface. If not, then throw an exception.
      *  @exception IllegalActionException If the container of this
      *  director does not implement CTStepSizeControlActor, or one of

@@ -193,17 +193,17 @@ public class CTScheduler extends Scheduler {
      *  CTReceiver.
      *  Signal type: CONTINUOUS.
      */
-    public static final CTReceiver.SignalType CONTINUOUS = 
+    public static final CTReceiver.SignalType CONTINUOUS =
         CTReceiver.CONTINUOUS;
 
     /**  Signal type: DISCRETE.
      */
-    public static final CTReceiver.SignalType DISCRETE = 
+    public static final CTReceiver.SignalType DISCRETE =
         CTReceiver.DISCRETE;
 
     /**  Signal type: UNKNOWN.
      */
-    public static final CTReceiver.SignalType UNKNOWN = 
+    public static final CTReceiver.SignalType UNKNOWN =
         CTReceiver.UNKNOWN;
 
 
@@ -374,7 +374,7 @@ public class CTScheduler extends Scheduler {
         Iterator containerInPorts = container.inputPortList().iterator();
         while (containerInPorts.hasNext()) {
           IOPort inPort = (IOPort) containerInPorts.next();
-          //System.out.println("Examine and propagate type from port" + 
+          //System.out.println("Examine and propagate type from port" +
           //    inPort.getFullName());
           if (!isCTComposite) {
             _signalTypeMap.setType(inPort, DISCRETE);
@@ -564,7 +564,7 @@ public class CTScheduler extends Scheduler {
                                 + "signal type for port "
                                 + port.getFullName()
                                 + ". If you are certain about the signal type"
-                                + ", you can set them manually.\n" 
+                                + ", you can set them manually.\n"
                                 + " To do this, you can add a parameter "
                                 + "called \'signalType\' with value "
                                 + "\'\"CONTINUOUS\"\' or \'\"DISCRETE\"\'"
@@ -846,7 +846,7 @@ public class CTScheduler extends Scheduler {
 
 
     // Static Emumerations of signal types.
-    
+
 
 
     ///////////////////////////////////////////////////////////////////
@@ -900,10 +900,10 @@ public class CTScheduler extends Scheduler {
             //   signalTypeToString(type));
             if (!_map.containsKey(port)) {
                 _map.put(port, type);
-                // If it is an input port, 
+                // If it is an input port,
                 // set the signal type to all the receivers in the port.
                 if (((port.getContainer() != CTScheduler.this.getContainer()
-                        .getContainer()) && port.isInput())) { 
+                        .getContainer()) && port.isInput())) {
                   try {
                         Receiver[][] receivers = port.getReceivers();
                         for (int i = 0; i < receivers.length; i++) {
@@ -948,14 +948,14 @@ public class CTScheduler extends Scheduler {
                     _discreteActors.add(actor);
                 }
             } else {
-                CTReceiver.SignalType previousType = 
+                CTReceiver.SignalType previousType =
                   (CTReceiver.SignalType) _map.get(port);
                 if (previousType != type) {
                     throw new NotSchedulableException(port.getFullName()
                             + " has a signal type conflict: \n"
                             + "Its signal type was set/resolved to "
                             + signalTypeToString(previousType)
-                            + ", but is going to be set to " 
+                            + ", but is going to be set to "
                             + signalTypeToString(type) + " now.");
                 }
             }
@@ -970,7 +970,7 @@ public class CTScheduler extends Scheduler {
         // a NonSchedulableException.
         public void propagateType(IOPort port)
                 throws NotSchedulableException {
-          
+
             if (!_map.containsKey(port)) {
                 throw new InternalErrorException(port.getFullName()
                         + " type unknown.");
@@ -981,9 +981,9 @@ public class CTScheduler extends Scheduler {
             Iterator connectedPorts = port.sinkPortList().iterator();
             while (connectedPorts.hasNext()) {
                 IOPort nextPort = (IOPort)connectedPorts.next();
-                
-                //System.out.println("Propagate type from port " 
-                //    + port.getFullName() + " to port " 
+
+                //System.out.println("Propagate type from port "
+                //    + port.getFullName() + " to port "
                 //    + nextPort.getFullName());
                 if (!_map.containsKey(nextPort)) {
                     setType(nextPort, getType(port));
@@ -1013,7 +1013,7 @@ public class CTScheduler extends Scheduler {
         // a NonSchedulableException.
         public void propagateTypeInside(IOPort port)
                 throws NotSchedulableException {
-          
+
             if (!_map.containsKey(port)) {
                 throw new InternalErrorException(port.getFullName()
                         + " type unknown.");
@@ -1024,9 +1024,9 @@ public class CTScheduler extends Scheduler {
             Iterator connectedPorts = port.insideSinkPortList().iterator();
             while (connectedPorts.hasNext()) {
                 IOPort nextPort = (IOPort)connectedPorts.next();
-                
-                //System.out.println("Propagate type from port " 
-                //    + port.getFullName() + " to port " 
+
+                //System.out.println("Propagate type from port "
+                //    + port.getFullName() + " to port "
                 //    + nextPort.getFullName());
                 if (!_map.containsKey(nextPort)) {
                     setType(nextPort, getType(port));

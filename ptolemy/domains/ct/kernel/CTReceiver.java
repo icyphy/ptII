@@ -45,15 +45,15 @@ import java.io.Serializable;
 /**
 The receiver for the continuous time (mixed-signal) domain. The receiver
 can be of one of the two types: CONTINUOUS and DISCRETE. Conceptually,
-a CONTINUOUS CTReceiver contains a sample of a continuous signal at a 
-particular time (defined by the CTDirector). Thus, there is one and 
+a CONTINUOUS CTReceiver contains a sample of a continuous signal at a
+particular time (defined by the CTDirector). Thus, there is one and
 only one token at all time in a CONTINUOUS CTReceiver. A DISCRETE
-CTReceiver contains a discrete event. Thus a DISCRETE CTReceiver may 
-be empty if an event is not present.  
+CTReceiver contains a discrete event. Thus a DISCRETE CTReceiver may
+be empty if an event is not present.
 <P>
-The receiver is implemented as a Mailbox of capacity one. Any token put 
-in the receiver overwrites any token previously present in the receiver. 
-As a consequence, hasRoom() method always returns true. 
+The receiver is implemented as a Mailbox of capacity one. Any token put
+in the receiver overwrites any token previously present in the receiver.
+As a consequence, hasRoom() method always returns true.
 <P>
 The behavior of the get() method depends on the type of the receiver.
 If it is CONTINUOUS, then get() only reads the value. Consequitive get()
@@ -89,7 +89,7 @@ public class CTReceiver extends Mailbox {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** Signal type: continuous */
     public static SignalType CONTINUOUS = new SignalType();
 
@@ -120,11 +120,11 @@ public class CTReceiver extends Mailbox {
     /** Return the contained token if it is not null. If the receiver
      *  is CONTINUOUS, then the token is still available for the next
      *  get, i.e. the token is not set to null. If the receiver is
-     *  DISCRETE, then the token is removed from the receiver, and 
+     *  DISCRETE, then the token is removed from the receiver, and
      *  the receiver contains null, which means that is another get()
      *  is called before a calling of put, then an exception will be
-     *  thrown. If the receiver contains null, then thrown a 
-     *  NoTokenException. 
+     *  thrown. If the receiver contains null, then thrown a
+     *  NoTokenException.
      *  @exception NoTokenException If the receiver contains null.
      *  @exception InvalidStateException If this method is called and
      *  the signal type of this receiver is UNKNOWN.
@@ -149,7 +149,7 @@ public class CTReceiver extends Mailbox {
 
     }
 
-    /** Return the signal type of this receiver. 
+    /** Return the signal type of this receiver.
      *  @return The signal type of the receiver.
      */
     public SignalType getSignalType() {
@@ -183,7 +183,7 @@ public class CTReceiver extends Mailbox {
         // System.out.println(getContainer().getFullName() +
         //        " received " + token);
     }
-  
+
     /** Set the signal type of this receiver. This method must be called
      *  by the CTScheduler before any get() method are called.
      *  @param type The SignalType to set to the receiver.
@@ -195,5 +195,5 @@ public class CTReceiver extends Mailbox {
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
     private SignalType _type;
- 
+
 }
