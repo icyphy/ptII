@@ -204,7 +204,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
  	if (_isEmbedded()) {
 
-	    // whatever, the currentTime should be updated by the director of upper container.
+	    // whatever, the currentTime should be updated by the
+	    // director of upper container.
 	    setCurrentTime ((((CompositeActor) getContainer()).getExecutiveDirector()).getCurrentTime());
 
 	}
@@ -230,8 +231,11 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    return false;
 	} else {
 
-	    // only works for DE domain
-	    _expectedNextIterationTime = getCurrentTime();
+	    // only works for DE domain 
+
+            // This screws up in the face of simultaneous
+            // events... It's better without.
+            // _expectedNextIterationTime = getCurrentTime();
 
 	    if (getCurrentTime() < _expectedNextIterationTime) {
 		if (_debugging) {
@@ -326,8 +330,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		}
 	    }
         }
-	// We only do synchronization to real time here
-	// and leave time update to upper level directors or the postfile process.
+	// We only do synchronization to real time here and leave time
+	// update to upper level directors or the postfile process.
 
 	if (_synchronizeToRealTime) {
 	    long elapsedTime = System.currentTimeMillis() - _realStartTime;
@@ -390,20 +394,21 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 Parameter initialValueParameter = (Parameter)
                     ((NamedObj) port).getAttribute("initialValue");
                 if (initialValueParameter != null) {
-		// since we delay the transfer of outputs, we have to make the receivers
-		// of the port call 'update' instead of 'put' only.
-
-		port.broadcast(initialValueParameter.getToken());
-
-		Receiver[][] channelArray = port.getRemoteReceivers();
-		for (int i = 0; i < channelArray.length; i++) {
-		    Receiver[] receiverArray = channelArray[i];
-		    for (int j = 0; j < receiverArray.length; j++) {
-			GiottoReceiver receiver =
-			    (GiottoReceiver) receiverArray[j];
-			receiver.update();
-		    }
-		}
+                    // Since we delay the transfer of outputs, we have to
+                    // make the receivers of the port call 'update'
+                    // instead of 'put' only.
+                    
+                    port.broadcast(initialValueParameter.getToken());
+                    
+                    Receiver[][] channelArray = port.getRemoteReceivers();
+                    for (int i = 0; i < channelArray.length; i++) {
+                        Receiver[] receiverArray = channelArray[i];
+                        for (int j = 0; j < receiverArray.length; j++) {
+                            GiottoReceiver receiver =
+                                (GiottoReceiver) receiverArray[j];
+                            receiver.update();
+                        }
+                    }
                 }
             }
         }
@@ -509,8 +514,11 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 Token t = port.get(i);
                 if (insideReceivers != null && insideReceivers[i] != null) {
                     if (_debugging) _debug(getName(),
-                            "transferring input from " + port.getName());
+                            "transferring input from " + port.getName() +
+                            " channel " + i);
                     for (int j = 0; j < insideReceivers[i].length; j++) {
+                        if (_debugging) _debug("Sending token to receiver of "
+                                + insideReceivers[i][j].getContainer());
                         insideReceivers[i][j].put(t);
                         ((GiottoReceiver)insideReceivers[i][j]).update();
                     }
