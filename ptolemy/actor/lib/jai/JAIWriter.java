@@ -71,7 +71,7 @@ import com.sun.media.jai.codec.ImageEncoder;
 
 
    @see FileParameter
-   @author Christopher Hylands Brooks,James Yeh
+   @author Christopher Hylands Brooks, James Yeh
    @version $Id$
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (cxh)
