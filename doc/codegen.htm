@@ -38,165 +38,95 @@ Java from this AST.  Thus, we hope that in the future, we will have
 code generators that produce C code for embedded processors,
 or VHDL code for hardware design.
 <p>
-The deep code generation framework
-was created by Jeff Tsay
-as part of his Masters project.
-(Jeff Tsay, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/codegen/" target="_top">A Code Generation Framework for Ptolemy II</a>," ERL Technical Report UCB/ERL No. M00/25, Dept. EECS, University of California, Berkeley, CA  94720, May 19, 2000.)
- <p>Shuvra Bhattacharyya created the shallow code generator.
- <p>Christopher Hylands and Edward A. Lee contributed to both code generators
-<p>
+In 2000, Jeff Tsay created an initial implementation of Deep code
+generation as part of his  his Masters project:
+Jeff Tsay, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/codegen/" target="_top">A Code Generation Framework for Ptolemy II</a>," ERL Technical Report UCB/ERL No. M00/25, Dept. EECS, University of California, Berkeley, CA  94720, May 19, 2000.
+
+ <p>There is a shorter summary of Jeff's work at:
+ <p>Jeff Tsay, Christopher Hylands and Edward Lee, 
+<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/javacodegen">"A Code Generation Framework for Java Component-Based Designs,"</a>
+ CASES 00, November 17-19, 2000, San Jose, CA.
+
+ <p>Jeff's work was a prototype of how we could do code generation in a
+different manner, described in the above references and below.
+Unfortunately, his prototype code was not easy to extend to match
+changes in the Ptolemy type system.  More specfically, the type system
+is Yuhong Xiong's area of research, and Jeff's work was not easy to
+extend to deal with ArrayTokens.
+
+<h2>Ptolemy Classic code generation</h2>
+
+In Ptolemy Classic code generation, each separate platform had a
+separate domain. This was a slight misuse of the domain
+concept, since all most all of the separate platforms really had SDF
+semantics, and each separate platform was really a target for the SDF
+domain.  However, because of assumptions in the Ptolemy Classic
+software architecture, it was easier to add new code generation
+targets as separate domains.
+
+ <p>In Ptolemy Classic, if you wanted to generate code for a new
+processor, you had to create a new domain and then populate the domain
+with new basic blocks that contained codeblocks of code that were
+generated when the basic block was used.  This is a bit of a
+simplification, but basically it meant that for each new processor,
+the author had to generate a new Ramp basic block, a new Add basic
+block etc.  This was very time consuming, and tended to have problems,
+since if a bug was fixed in one Ramp actor, the bug needed to be fixed
+in other Ramp actors in each domain.
+
+The Adaptive Computing System (ACS) domain was an effort to work
+around this issue, where the interface to each actor was shared
+between multiple implementations.  This helped make it easier to
+switch between different target implementations, since the ACS Ramp
+actor always had the same interface, whereas if there were two Ramp
+actors in two separate domains, then they might have different port
+names, which made switching between the domains difficult.
+
+ <p>More information about the ACS domain can be found in
+E. K. Pauer, C. S. Myers, P. D. Fiore, J. M. Smith, C. M. Crawford, E. A. Lee, J. Lundblad and C. Hylands,
+<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/98/ACSmapping/">Algorithm Analysis and Mapping Environment for Adaptive Computing Systems,"</a>
+ Presented at the Second Annual Workshop on High Performance
+ Embedded Computing, MIT Labs, Lexington, MA, September, 1998. 
+
+ <p>The ACS domain is part of Ptolemy 0.7.2devel, see
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyclassic/pt0.7.2/"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyclassic/pt0.7.2/</CODE></a>
+
+
+The Ptolemy Classic style of code generation was used to customize
+different actors to take advantage of different features of a
+processor.  For example, the Motorola 56x FIR filter actor would pick
+a different codeblock depending on how the FIR filter was configured.
+
+ <p>However, the downside of this approach is that the inter-actor
+communication tended to consume quite a bit of time, so even with
+really great actor implementations, we were getting performance hits
+when data was passed between these actors.  It seems to us that
+looking at the whole model would yield further performance
+improvements.
+
 
 <h2>Deep Code Generation</h2>
 
  <p>The Ptolemy II code generation system parses Ptolemy II actor
-code, generates an Abstract Syntax Tree (AST), optimizes the tree and
-then generates standalone Java files.  This approach is different from
-the Ptolemy Classic code generation approach, where each actor
-contains target specific code.  With Ptolemy Classic, we found that
-the interblock communication glue code ended up consuming a significant
-portion of time, so we decided to try a different approach.
-
-<p>The code generation facility is not complete, but it is possible
-to generate Java code for SDF systems and run it.  We were able
-to run simple Ptolemy II simulations on the under PalmOS by using
-KVM.
-
-<h2>Deep Code Demonstrations</h2>
-<h3>Print out the AST</h3>
-<pre>
-cd $PTII/ptolemy/lang/java
-make PrintTree
-</pre>
-This rule sets the CLASSPATH and then runs
-<pre>
-java ptolemy.lang.java.PrintTree ./nodetypes/IntLitNode.java
-</pre>
-and prints out the AST.
-
-<h3>Regenerate Code</h3>
-<pre>
-cd $PTII/ptolemy/lang/java
-make RegenerateCode
-</pre>
-This rule sets the CLASSPATH and then runs
-<pre>
-java ptolemy.lang.java.RegenerateCode ./nodetypes/IntLitNode.java
-</pre>
-which reads in IntLitNote.java and then regenerates code for it without
-comments and whitespace
-
-<h3>Static Semantic Analysis</h3>
-<pre>
-cd $PTII/ptolemy/lang/java
-make analysis
-</pre>
-This rule sets the CLASSPATH and then runs
-<pre>
-java ptolemy.lang.java.Main ./nodetypes/IntLitNode.java
-</pre>
-which reads in IntLitNote.java and then performs static
-semantic analysis, which resolves names.
-
-<h3>SDF Code generation</h3>
-<pre>
-cd $PTII/ptolemy/lang/java
-make codegen
-</pre>
-This rule sets the CLASSPATH and then reads in the Ptolemy
-simulation from
-<a href="../ptolemy/domains/sdf/demo/OrthogonalCom"><code>ptolemy/domains/sdf/demo/OrthogonalCom</code></a> and generates code in
-<code>$PTII/cg/OrthogonalCom</code>
-<pre>
-java -verbose:class  ptolemy.domains.sdf.codegen.SDFCodeGenerator \
-     -class  ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalComSystem \
-     -iterations 50 \
-     -outdir $(ROOT) -outpkg cg.OrthogonalCom
-</pre>
-<dl>
-<dt><code>-iterations</code
-<dd>Number of iterations.  If set to <code>0</code>, then run forever
-<dt><code>-outdir</code
-<dd>Root directory for output, usually set to $PTII
-<dt><code>-outpkg</code
-<dd>Package of output classes, usually set to <code>cg.<i>system</i></code>.
-If <code>outdir</code> is set to <code>$PTII</code>, and
-<code>outpkg</code> is set to <code>cg.OrthogonalCom</code>, then
-the output classes will be created in <code>$PTII/cg/OrthogonalCom</code>
-
-</dl>
-Compile the newly created java classes with:
-<pre>
-cd $PTII/cg/OrthogonalCom
-javac -classpath ../.. CG_Main.java
-</pre>
-
-Run the code generation classes
-<pre>
-cd $PTII/cg/OrthogonalCom
-java -classpath ../.. cg.OrthogonalCom.CG_Main
-</pre>
+code, generates an Abstract Syntax Tree (AST), optimizes the tree
+using standard and custom compiler optimization techniques and then
+generates .class files that use very few of the Ptolemy II java
+classes .  This approach is different from the Ptolemy Classic code
+generation approach, where each actor contains target specific code.
 
 
-<h2>How Deep Code Generation Works</h2>
-Code Generation parses a Java file that contains a Ptolemy II system and
-then generates Java code in a separate directory.
-<h3>Packages and directories</h3>
-<dl>
-<dt><a href="../ptolemy/lang"><code>ptolemy/codegen</code></a>
-<dd> Domain independent classes that implement Tokens, Exceptions and
-generate code for actors.
-<dt><a href="../ptolemy/lang"><code>ptolemy/lang</code></a>
-<dd>
-<dt><a href="../ptolemy/lang/java"><code>ptolemy/lang/java</code></a>
-<dd>
-<dt><a href="../ptolemy/lang/java/extended"><code>ptolemy/lang/java/extended</code></a>
-<dd>
-<dt><a href="../ptolemy/lang/java/nodetypes"><code>ptolemy/lang/java/nodetypes</code></a>
-<dd> The <code>.java</code> files in this directory are
-generated by running <code>make run_GenerateVisitor</code>
-in <code>$PTII/ptolemy/lang/java</code> which reads in
-<code>$PTII/ptolemy/lang/java/NodeTypes.def</code> which reads in
+ <p>Currently, in Ptolemy II, it is not possible to generate custom code 
+using a codeblock.
 
-<dt><a href="../ptolemy/lang/java"><code>ptolemy/lang/java/ptbyacc</code></a>
-<dd> C Source code for a Ptolemy II specific version of
-<a href="#ptbyacc"><code>ptbyacc</code></a>.
-
-<dt><a href="../ptolemy/domains/sdf/codegen"><code>ptolemy/domains/sdf/codegen</code></a>
-<dd> Classes used to generate Java code with SDF semantics including
-SDF code generator and buffer handling.
-The SDFTypeIdentifier class identifies TypedAtomicActor and SDF ports.
-</dl>
-
-<h2><a name="ptbyacc"><code>ptbyacc</code></a></h2>
-<code>ptbyacc</code> is a parser generator written in C that
-read in
-<a href="../ptolemy/lang/java/jparser.y"><code>ptolemy/lang/java/jparser.y</code></a>,
-and generates
-<a href="../ptolemy/lang/java/JavaParserval.java"><code>ptolemy/lang/java/JavaParserval.java</code></a>
-and the <code>.tbl</code> files in
-<code>ptolemy/lang/java</code>
-
-<p> The original <code>byacc</code> source can be found at
-<a href="http://www.lincom-asg.com/~rjamison/byacc" target="_top">http://www.lincom-asg.com/~rjamison/byacc</a>.  The top of JavaParser.java contains
-a list of the modifications we have made.
-
-<p> Usually it is only necessary to build or run <code>ptbyacc</code>
-if there are large scale modifications to the Java parser.  Often, one
-can just modify JavaParser.java directly.
-
-<p> When JavaParser runs, it needs to load tables that contain
-the parse data.  JavaParser first looks for <code>.bin</code> files
-the directory where the JavaParser class is located.  If the <code>.bin</code>
-files cannot be found, then the <code>.tbl</code> files are loaded
-and <code>.bin</code> files are generated.
-To regenerate the <code>.bin</code> files, run
-<code>make update_tables</code> in
-<code>$PTII/ptolemy/lang/java</code>.
-<br><bold>FIXME: make the read method static so that this is true</bold>
 
 <h2><a name="soot">Soot</a></h2>
 Another approach we are trying is to use Soot, which is a 
 Java optimization framework that we hope will have a better AST.
+
+ <p>Currently, Steve Neuendorffer is developing a code generation system
+using Soot.  Professor Shuvra S. Bhattacharyya of the University of Maryland
+is working on C code generation using Soot.
+
 
 <menu>
 <li> <a href="http://www.sable.mcgill.ca/soot/" target="_top"><CODE>http://www.sable.mcgill.ca/soot/</CODE></a> 
@@ -216,6 +146,7 @@ fully dot qualified name of an object who's base name was 'String'.
 <p>Jeff Tsay's work was a proof of concept demonstration on what
 could be done.  We hope that by using Soot, we can generate a stable system
 for use in a production environment.
+
 
 <h3><a name="disassemblers">Disassemblers</a></h3>
 Soot works with byte codes.  A Java decompiler or disassembler 
@@ -240,13 +171,41 @@ can help with debugging
 
 <a href="http://www.meurrens.org/ip-Links/Java/codeEngineering/jad15.html" target="_top">Mirror, though downloads do not work</a>
 
-
 </dl>
 
 Other possibilities:
 <menu>
 <li> <a href="http://bcel.sourceforge.net/" target="_top"><CODE>http://bcel.sourceforge.net/</CODE></a>
 </menu>
+
+
+<h2>The code generator user interface</h2>
+Christopher Hylands and Professor Edward A. Lee developed a user
+interface to control code generation.  
+
+
+<h2>Multiprocessors and DSP targets</h2>
+
+Partitioning a model between multiple processors is fairly tricky, and
+was a large area of research in Ptolemy Classic.  Only models with a
+high degree of parallelism are amenable to running on multiple
+processors.  Simply assigning each actor to a processor is not likely
+to yield performance improvements, since the inter-actor communication
+will really bog things down, especially on a high latency system like
+a switched ethernet network.
+
+ <p>Java can take advantage of multiple processors, so in theory, if
+we use the process domains in Ptolemy II without code generation on a
+multi processor machine, we should see that each Java thread will be
+run on a separate processor.  However we have not done much work in
+this area.  We'd like to see someone take the PN domain and work on
+running it on multiple processors and seeing what sort of improvements
+can be made.
+
+ <p>In theory, once we have deep code generation, and we are creating
+an AST and generating .class files, we can generate code for any
+processor by either writing a new back end, or using a native Java
+compiler like gcj.
 
 <h2>Java To C converters</h2>
 <dl>
