@@ -310,10 +310,11 @@ public class DEDirector extends Director {
         if (attribute == stopWhenQueueIsEmpty) {
             _stopWhenQueueIsEmpty =
                 ((BooleanToken)stopWhenQueueIsEmpty.getToken()).booleanValue();
-        }
-        if (attribute == synchronizeToRealTime) {
+        } else if (attribute == synchronizeToRealTime) {
             _synchronizeToRealTime =
                 ((BooleanToken)synchronizeToRealTime.getToken()).booleanValue();
+        } else {
+            super.attributeChanged(attribute);
         }
     }
 
@@ -989,7 +990,6 @@ public class DEDirector extends Director {
      *  @param receiver The destination receiver.
      *  @param token The token destined for that receiver.
      *  @param time The time stamp of the event.
-     *  @param depth The depth.
      *  @exception IllegalActionException If the delay is negative.
      */
     protected void _enqueueEvent(DEReceiver receiver, Token token,
@@ -1026,7 +1026,6 @@ public class DEDirector extends Director {
      *
      *  @param receiver The destination receiver.
      *  @param token The token destined for that receiver.
-     *  @param depth The depth.
      *  @exception IllegalActionException If the delay is negative.
      */
     protected void _enqueueEvent(DEReceiver receiver, Token token)
