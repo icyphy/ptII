@@ -143,6 +143,20 @@ public class Port extends GenericPort {
         return false;
     }
 
+
+
+    /** Prepare for a new connection by returning a port. 
+     * @return Return the real port.
+     * @exception NullReferenceException Attempt to pass null object
+     * references as arguments.
+     */	
+    public Port prepareForConnection() throws NullReferenceException {
+	GenericPort genericPort = realPort();
+
+	return (Port)genericPort;
+    }
+
+
     /** Set the MuliPort which contains this Port.
      * @param multiPort The MultiPort which will be the container of this Port.
      * @exception NullReferenceException Attempt to pass null object 
