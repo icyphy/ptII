@@ -43,6 +43,7 @@ import javax.swing.JOptionPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Event;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -60,7 +61,7 @@ import javax.swing.filechooser.FileFilter;
 //////////////////////////////////////////////////////////////////////////
 //// Top
 /**
-This is a top-level window with a menubar and status bar.
+This is a top-level window with a menubar and an optional status bar.
 Derived classes should add components to the content pane using a
 line like:
 <pre>
@@ -116,14 +117,30 @@ is first packed.
 */
 public abstract class Top extends JFrame {
 
-    /** Construct an empty top-level frame.  After constructing this,
+    /** Construct an empty top-level frame with the default status
+     *  bar.  After constructing this, it is necessary to call
+     *  pack() to have the menus added, and then setVisible(true)
+     *  to make the frame appear.  It may also be desirable to
+     *  call centerOnScreen().  This can be done after
+     *  pack() and before setVisible().
+     */
+    public Top() {
+        this(new StatusBar());
+    }
+
+    /** Construct an empty top-level frame with the specified status
+     *  bar.  After constructing this,
      *  it is necessary to call pack() to have the menus added, and
      *  then setVisible(true) to make the frame appear.  It may also
      *  be desirable to call centerOnScreen().  This can be done after
      *  pack() and before setVisible().
+     *  @param statusBar A status bar, or null to not insert one.
      */
-    public Top() {
+    public Top(StatusBar statusBar) {
         super();
+
+        _statusBar = statusBar;
+
         // Ensure that user is prompted before closing if the data
         // has been modified.
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -182,20 +199,26 @@ public abstract class Top extends JFrame {
 	report("", ex);
     }
 
-    /** Report a message to the user by displaying it in a status bar.
+    /** Report a message to the user by displaying it in a status bar,
+     *  if there is one.
      *  @param message The message to report.
      */
     public void report(String message) {
-	_statusBar.setMessage(message);
+        if (_statusBar != null) {
+            _statusBar.setMessage(message);
+        }
     }
 
     /** Report an exception.  This pops up a window with the option
-     *  of examining the stack trace.
+     *  of examining the stack trace, and reports the specified message
+     *  in the status bar, if there is one.
      *  @param message The message.
      *  @param ex The exception to report.
      */
     public void report(String message, Exception ex) {
-        _statusBar.setMessage("Exception. " + message);
+        if (_statusBar != null) {
+            _statusBar.setMessage("Exception. " + message);
+        }
         MessageHandler.error(message, ex);
     }
 
@@ -312,8 +335,10 @@ public abstract class Top extends JFrame {
 
             setJMenuBar(_menubar);
 
-            // Add a status bar.
-            getContentPane().add(_statusBar, BorderLayout.SOUTH);
+            // Add the status bar, if there is one.
+            if (_statusBar != null) {
+                getContentPane().add(_statusBar, BorderLayout.SOUTH);
+            }
         }
 	super.pack();
         if (_centering) {
@@ -325,6 +350,15 @@ public abstract class Top extends JFrame {
      */
     public void setBounds(int x, int y, int width, int height) {
         super.setBounds(x, y, width, height);
+    }
+
+    /** Override the base class to also call pack() and to deiconify
+     *  the window, if necessary.
+     */
+    public void show() {
+        pack();
+        setState(Frame.NORMAL);
+        super.show();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -418,7 +452,7 @@ public abstract class Top extends JFrame {
 
     /** Get the name of this object, which in this base class is
      *  either the name of the file that has been associated with this
-     *  object, or the string "Unnamed" is none.
+     *  object, or the string "Unnamed" if none.
      *  @return The name.
      */
     protected String _getName() {
@@ -653,7 +687,7 @@ public abstract class Top extends JFrame {
     protected JMenuBar _menubar = new JMenuBar();
 
     /** The status bar. */
-    protected StatusBar _statusBar = new StatusBar();
+    protected StatusBar _statusBar = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

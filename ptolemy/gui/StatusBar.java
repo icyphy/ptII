@@ -53,7 +53,7 @@ public class StatusBar extends JPanel {
      */
     public StatusBar() {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        _message = new JTextField(30);
+        _message = new JTextField(20);
         _message.setEditable(false);
         _message.setAlignmentX(LEFT_ALIGNMENT);
         add(_message);
