@@ -382,8 +382,7 @@ script instead of the X11 <CODE>pxgraph</CODE> binary within Ptolemy.
 <LI> Obtain and install a Java Development Kit (JDK) for your
 platform from
 <A HREF="http://www.javasoft.com"><CODE>www.javasoft.com</CODE></A>.
-Pxgraph works best under JDK1.1.6.  Under JDK1.0.2,
-the <CODE>Print</CODE> and <CODE>About</CODE> buttons will not work.
+Pxgraph works best under JDK1.1.6.
 
 <li> Obtain the Ptplot tar file from
 <A HREF="http://ptolemy.eecs.berkeley.edu/java/ptplot"><CODE>http://ptolemy.eecs.berkeley.edu/java/ptplot</CODE></A>.
@@ -849,8 +848,7 @@ public class Pxgraph extends Frame {
 
     /* Spawn a browser and run the applet Plot class so that the
      * user can print.  Note that we use the JDK1.1 PrintJob
-     * class here.  If you are compiling under 1.0.2, you can
-     * just comment out the body of this method.
+     * class here. 
      */
     private void _print () {
         // awt.print.destination   - can be "printer" or "file"
