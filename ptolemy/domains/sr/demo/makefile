@@ -1,7 +1,7 @@
 # Makefile for PtolemyII SR demos
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
+# @Author: Christopher Hylands (makefile only)
 #
 # @Copyright (c) 1998-2001 The Regents of the University of California.
 # All rights reserved.
@@ -39,14 +39,16 @@ ROOT =		../../../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-
 # Used to build jar files
-PTPACKAGE =
+PTPACKAGE =	demo
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =
+PTCLASSALLJARS = \
+	ReflexGame/ReflexGame.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

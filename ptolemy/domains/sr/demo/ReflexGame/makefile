@@ -41,14 +41,17 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =
+PTPACKAGE =	ReflexGame
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	ReflexGame.xml
+
 EXTRA_SRCS = \
-	ReflexGame.xml \
-	$(JSRCS)
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
