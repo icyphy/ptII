@@ -375,11 +375,11 @@ $(PTAUXALLJAR): $(PTAUXALLJARS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
 	-cp *.class $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	for jar in $(PTAUXALLJARS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED); do \
 		echo "Unjarring $$jar"; \
-		(cd $(PTJAR_TMPDIR); jar -xf ../$$jar); \
+		(cd $(PTJAR_TMPDIR); "$(JAR)" -xvf ../$$jar); \
 	done
 	rm -rf $(PTJAR_TMPDIR)/META-INF
 	@echo "Creating $@"
-	(cd $(PTJAR_TMPDIR); jar -cvf tmp.jar .)
+	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
 	rm -rf $(PTJAR_TMPDIR)
 
