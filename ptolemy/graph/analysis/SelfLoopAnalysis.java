@@ -38,7 +38,7 @@ import java.util.Collections;
 
 A <em>self-loop</em> (also called a <em>self-loop edge</em>) in a graph is an 
 edge whose source and sink nodes are identical.  The <code>result</code> method
-(see {@link Analysis.#result()})
+(see {@link Analysis#result()})
 of this analysis returns the self-loop edges in the associated graph.
 The self-loop edges are returned in the form of a 
 {@link java.util.Collection}, where each element in the collection is an
