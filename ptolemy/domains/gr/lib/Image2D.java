@@ -29,6 +29,8 @@
 */
 package ptolemy.domains.gr.lib;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.MediaTracker;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -112,17 +114,10 @@ public class Image2D extends GRActor2D {
 
         URL url = fileOrURL.asURL();
        
-        ImageIcon image = new ImageIcon(url);
+        Image image = Toolkit.getDefaultToolkit().createImage(url);
 
-        if(image.getImageLoadStatus() == MediaTracker.ERRORED){
-            throw new IllegalActionException("Image file ' " + url +
-                    " ' not found.");
-        }
-
-        ImageFigure figure = new ImageFigure(image.getImage());
-        //figure.translate(-figure.getBounds().getCenterX(),
-        //-figure.getBounds().getCenterY());
-
+        ImageFigure figure = new ImageFigure(image);
+  
         return figure;
     }
 
