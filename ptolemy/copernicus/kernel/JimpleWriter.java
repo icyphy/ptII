@@ -37,10 +37,12 @@ import soot.util.*;
 import soot.toolkits.graph.*;
 import java.util.*;
 import java.io.*;
+
 /** 
-
+A transformer that writes Jimple text.
+@author Stephen Neuendorffer, Christopher Hylands
+@version $Id$
 */
-
 public class JimpleWriter extends SceneTransformer {
     private static JimpleWriter instance = new JimpleWriter();
     private JimpleWriter() {}
@@ -53,6 +55,16 @@ public class JimpleWriter extends SceneTransformer {
         return super.getDeclaredOptions() + " debug outDir"; 
     }
     
+    /** Write out the Jimple file.
+     *  Sample option arguments:
+     *	<code>-p wjtp.writeJimple1 outDir:jimple1</code>
+     *
+     *  @param phaseName The name of the phase, for example 
+     *  <code>wjtp.writeJimple2</code>.
+     *  @param options The options Map.  This method uses the
+     *  <code>outdir</code> option to specify where the .jimple
+     *  file should be written
+     */ 
     protected void internalTransform(String phaseName, Map options)
     {
         System.out.println("JimpleWriter.internalTransform("
@@ -84,6 +96,13 @@ public class JimpleWriter extends SceneTransformer {
             }
             catch (IOException e) {
                 System.out.println("Failed to output jimple for file " + fileName);
+            }
+            finally {
+                writerOut.close();
+                try {
+                    streamOut.close();
+                } catch (IOException io) {
+                }
             }
         }
     }
