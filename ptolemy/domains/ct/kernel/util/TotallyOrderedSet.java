@@ -48,11 +48,14 @@ import java.util.List;
    @Pt.ProposedRating Yellow (liuj)
    @Pt.AcceptedRating Red (johnr)
 */
+
 public class TotallyOrderedSet {
-    /** Construct the set with the given comparator. comparator is a blank
-     *  final field that can't be changed after creation.
+
+    /** Construct the set with the given comparator.
+     * @param comparator The Comparator to compare elements.  Note that
+     * the comparator cannot be changed after this TotallyOrderedSet
+     * is instantiated.
      * @see java.util.Comparator
-     * @param comparator The Comparator to compare elements.
      */
     public TotallyOrderedSet(Comparator comparator) {
         _comparator = comparator;
@@ -61,8 +64,10 @@ public class TotallyOrderedSet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** Return the index-th element. If the index is out of range
      *  a NoSuchElementException will be thrown.
+     *  @param index The index of the element to return.
      *  @return The requested element.
      */
     public Object at(int index) {
@@ -80,20 +85,21 @@ public class TotallyOrderedSet {
      *  If the type of given element
      *  is uncomparable by the comparator, then a ClassCastException
      *  will be thrown.
+     *  @param object The object to search for.
      *  @return True If the elements is contained according to the
      *        comparator.
      */
-    public boolean contains(Object obj) {
+    public boolean contains(Object object) {
         boolean result = false;
         Iterator elements = _set.iterator();
         while (elements.hasNext()) {
             Object next = elements.next();
-            int com = _comparator.compare(obj, next);
-            if (com == 0) {
+            int comparator = _comparator.compare(object, next);
+            if (comparator == 0) {
                 result = true;
                 break;
             }
-            if (com < 0) {
+            if (comparator < 0) {
                 break;
             }
         }
@@ -168,7 +174,7 @@ public class TotallyOrderedSet {
         _set.addLast(obj);
     }
 
-    /** Return true if the set is empty
+    /** Return true if the set is empty.
      *  @return True if the set is empty.
      */
     public boolean isEmpty() {
@@ -250,7 +256,8 @@ public class TotallyOrderedSet {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The comparator for the order.
+    // The comparator for the order.  The comparator is a blank final
+    // field that can't be changed after creation.
     private final Comparator _comparator;
 
     // The set.

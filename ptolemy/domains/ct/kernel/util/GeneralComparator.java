@@ -44,10 +44,10 @@ public class GeneralComparator implements Comparator{
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Return -1, 0, or 1 if the first object is less than, equal to, or 
-     *  bigger than the second object. 
+    /** Return -1, 0, or 1 if the first object is less than, equal to, or
+     *  bigger than the second object.
      *
-     *  <p>If any of the argument is not a Comparable object, a 
+     *  <p>If any of the argument is not a Comparable object, a
      *  ClassCastException will be thrown.
      *  @param first The first Comparable object.
      *  @param second The second Comparable object.
