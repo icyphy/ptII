@@ -43,7 +43,10 @@ and factorial functions, respectively.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 290.0">
         </property>
     </property>
-    <entity name="Factorial" class="caltrop.ptolemy.actors.CalInterpreter">
+    <entity name="Factorial" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+          <property name="attributeName" value="calCode"/>
+        </property>
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Factorial () int X ==&gt; int Out :&#10;&#10;  function fac (T n) --&gt; T : &#10;    if n &lt;= 1 then 1 else n * fac(n - 1) end end&#10;&#10;  action [k] ==&gt; [fac(k)] end&#10;end">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
@@ -91,7 +94,10 @@ and factorial functions, respectively.</text></svg></configure>
 </plot>?>
         </configure>
     </entity>
-    <entity name="Power" class="caltrop.ptolemy.actors.CalInterpreter">
+    <entity name="Power" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+          <property name="attributeName" value="calCode"/>
+        </property>
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Power () double X, int Y ==&gt; double Out :&#10;&#10;  function pow (a, b)  : &#10;      if b &lt; 1 then 1 else&#10;	a * pow(a, b - 1)&#10;      end&#10;  end&#10;&#10;  action [x], [y] ==&gt; [pow(x, y)] end&#10;end">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
@@ -108,7 +114,10 @@ and factorial functions, respectively.</text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Const" class="caltrop.ptolemy.actors.CalInterpreter">
+    <entity name="Const" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+          <property name="attributeName" value="calCode"/>
+        </property>
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Const (v) ==&gt; Out:&#10;&#10;  action ==&gt; [v] end&#10;end">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
@@ -123,7 +132,10 @@ and factorial functions, respectively.</text></svg></configure>
             </property>
         </port>
     </entity>
-    <entity name="Ramp" class="caltrop.ptolemy.actors.CalInterpreter">
+    <entity name="Ramp" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+          <property name="attributeName" value="calCode"/>
+        </property>
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Ramp (init, step) &#10;	==&gt; Out:&#10;&#10;  n := init;&#10;&#10;  action ==&gt; [oldN]&#10;  var &#10;    T oldN = n &#10;  do&#10;    n := n + step;&#10;  end&#10;end">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>

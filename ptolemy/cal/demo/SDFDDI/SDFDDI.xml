@@ -53,7 +53,10 @@ model is about to be run, and signal an error if it is found to be violated.
         <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 235.0">
         </property>
     </property>
-    <entity name="A" class="caltrop.ptolemy.actors.CalInterpreter">
+    <entity name="A" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+          <property name="attributeName" value="calCode"/>
+        </property>
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor A (k1, k2) A ==&gt; B :&#10;&#10;  action [x] repeat k1 ==&gt; [x] &#10;  guard #x = k2 end&#10;&#10;  action [x] repeat k2 ==&gt; [x] end &#10;end">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
@@ -71,7 +74,10 @@ model is about to be run, and signal an error if it is found to be violated.
             <property name="output"/>
         </port>
     </entity>
-    <entity name="B" class="caltrop.ptolemy.actors.CalInterpreter">
+    <entity name="B" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+          <property name="attributeName" value="calCode"/>
+        </property>
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor B (k) X1, X2 ==&gt; Y :&#10;&#10;  action [x1], [x2] ==&gt; [x1, x2] repeat k end&#10;end">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
@@ -90,7 +96,10 @@ model is about to be run, and signal an error if it is found to be violated.
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Upsample" class="caltrop.ptolemy.actors.CalInterpreter">
+    <entity name="Upsample" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+          <property name="attributeName" value="calCode"/>
+        </property>
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Upsample (k) X ==&gt; Y :&#10;&#10;  function up(x, k) :&#10;    if k = 0 then [] &#10;    else [x] + up(x, k - 1) end&#10;  end&#10;&#10;  action [x] ==&gt; [up(x, k)] repeat k end&#10;end">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
@@ -122,7 +131,10 @@ model is about to be run, and signal an error if it is found to be violated.
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Ramp" class="caltrop.ptolemy.actors.CalInterpreter">
+    <entity name="Ramp" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+          <property name="attributeName" value="calCode"/>
+        </property>
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Ramp (init, step) ==&gt; Out :&#10;&#10;  v := init;&#10;&#10;  action ==&gt; [old v]&#10;  do&#10;    v := v + step;&#10;  end&#10;end ">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>

@@ -48,7 +48,10 @@ as input.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 230.0">
         </property>
     </property>
-    <entity name="PrimeSieve" class="caltrop.ptolemy.actors.CalInterpreter">
+    <entity name="PrimeSieve" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+          <property name="attributeName" value="calCode"/>
+        </property>
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor PrimeSieve ()&#10;            int Input ==&gt; int Output:&#10;  filter := lambda (a)  : false end;&#10;  function divides (a, b) :&#10;    b mod a = 0&#10;  end&#10;&#10;  action [a] ==&gt; [0] guard filter(a) end&#10;&#10;  action [a] ==&gt; [a] guard not filter(a)&#10;                     var f = filter&#10;  do&#10;    filter := lambda(Integer b): f(b) or divides(a, b) end;&#10;  end&#10;&#10;  action [a] ==&gt; [-1] end&#10;end">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
@@ -96,7 +99,10 @@ as input.</text></svg></configure>
 </plot>?>
         </configure>
     </entity>
-    <entity name="Ramp" class="caltrop.ptolemy.actors.CalInterpreter">
+    <entity name="Ramp" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+          <property name="attributeName" value="calCode"/>
+        </property>
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Ramp (init, step) &#10;	==&gt; Out:&#10;&#10;  n := init;&#10;&#10;  action ==&gt; [old n]&#10;  do&#10;    n := n + step;&#10;  end&#10;end">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>

@@ -50,7 +50,10 @@ as recursion and mutually recursive functions.
         <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 275.0">
         </property>
     </property>
-    <entity name="ConstFunction" class="caltrop.ptolemy.actors.CalInterpreter">
+    <entity name="ConstFunction" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+          <property name="attributeName" value="calCode"/>
+        </property>
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor F () ==&gt; Out :&#10;&#10;  function fac (n) :&#10;    if n &lt;= 1 then 1 else n * fac(n -1) end&#10;  end&#10;&#10;  action ==&gt; [fac] end&#10;end">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
@@ -125,7 +128,10 @@ as recursion and mutually recursive functions.
 </plot>?>
         </configure>
     </entity>
-    <entity name="ApplyFunction" class="caltrop.ptolemy.actors.CalInterpreter">
+    <entity name="ApplyFunction" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+          <property name="attributeName" value="calCode"/>
+        </property>
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor A (f) X ==&gt; Out :&#10;&#10;  action [x] ==&gt; [f(x)] end&#10;end">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
@@ -143,7 +149,10 @@ as recursion and mutually recursive functions.
             </property>
         </port>
     </entity>
-    <entity name="Ramp" class="caltrop.ptolemy.actors.CalInterpreter">
+    <entity name="Ramp" class="ptolemy.caltrop.actors.CalInterpreter">
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+          <property name="attributeName" value="calCode"/>
+        </property>
         <property name="calCode" class="ptolemy.kernel.util.StringAttribute" value="actor Ramp (init, step) &#10;	==&gt; Out:&#10;&#10;  n := init;&#10;&#10;  action ==&gt; [old n]&#10;  do&#10;    n := n + step;&#10;  end&#10;end">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
