@@ -257,7 +257,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             ExternalIOPortController._GENERIC_OUTPUT, "New output port",
             KeyEvent.VK_O);
 
-    /** Action for creating a new inout port. */
+    /** Action for creating a new input/output port. */
     private Action _newInoutPortAction = new NewPortAction(
             ExternalIOPortController._GENERIC_INOUT, "New input/output port",
             KeyEvent.VK_P);
