@@ -32,7 +32,7 @@
 
 ME =		ptolemy/vergil/actor
 
-DIRS =		lib
+DIRS =		lib img
 
 # Root of the Java directory
 ROOT =		../../..
@@ -46,7 +46,14 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	actor
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	img/img.jar \
+	lib/lib.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	ActorController.java \
@@ -72,6 +79,7 @@ OPTIONAL_FILES = \
 	'ActorController$$1.class' \
 	'ActorController$$DebugListenerAction.class' \
 	'ActorController$$EntityLayout.class' \
+	'ActorController$$ListenToActorAction.class' \
 	'ActorController$$LookInsideAction.class' \
 	'ActorEditorGraphController$$1.class' \
 	'ActorEditorGraphController$$LinkCreator.class' \
@@ -92,6 +100,7 @@ OPTIONAL_FILES = \
 	'ExternalIOPortController$$PortRenderer.class' \
 	'IOPortController$$1.class' \
 	'IOPortController$$EntityPortRenderer.class' \
+	'IOPortController$$ListenToPortAction.class' \
 	'LinkController$$1.class' \
 	'LinkController$$LinkDropper.class' \
 	'LinkController$$LinkRenderer.class' \
