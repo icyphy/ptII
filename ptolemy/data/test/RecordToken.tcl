@@ -312,7 +312,7 @@ test RecordToken-labelSet.0 {Test labelSet} {
     set v1 [java::new {ptolemy.data.Token[]} {0} {}]
     set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
 
-   iterToObjects [[$r1 labelSet] iterator]
+   listToStrings [$r1 labelSet]
 } {}
 
 ######################################################################
@@ -328,7 +328,7 @@ test RecordToken-labelSet.1 {Test labelSet} {
 
     set r2 [java::new {ptolemy.data.RecordToken} $l2 $v2]
 
-   lsort [iterToObjects [[$r2 labelSet] iterator]]
+    lsort [listToStrings [$r2 labelSet]]
 } {name value}
 
 ######################################################################
