@@ -315,7 +315,26 @@ public class Graph implements Cloneable {
      *  @return The clone graph.
      */
     public Object clone() {
-        Graph cloneGraph = new Graph();
+        return cloneAs(this);
+    }
+
+    /** Return a clone of this graph in the form of the argument graph type
+     *  (i.e., the run-time type of the returned graph is that of the
+     *  argument graph). The clone has the 
+     *  same set of nodes and edges. Changes to the node or edge weights 
+     *  affect the
+     *  clone simultaneously. If the run-time type of the argument graph is
+     *  equal to that of this graph, then the clone is equal to this
+     *  graph, as determined by {@link #equals(Object)}. However, 
+     *  modifications to the graph topology
+     *  make the clone not equal to this graph.
+     *
+     *  @param graph The graph that gives the run-time type of the clone.
+     *  @return A clone of this graph.
+     */
+    public Graph cloneAs(Graph graph) {
+        Graph cloneGraph = graph._emptyGraph();
+        // copy nodes and edges
         Iterator nodes = nodes().iterator();
         while (nodes.hasNext()) {
             cloneGraph.addNode((Node)nodes.next());
@@ -1152,6 +1171,7 @@ public class Graph implements Cloneable {
 
     /** Create and register all of the change listeners for this graph, and
      *  initialize the change counter of the graph.
+     *  @see GraphListener.
      */
     protected void _initializeListeners() {
         _listenerList = new ArrayList();
@@ -1163,6 +1183,7 @@ public class Graph implements Cloneable {
      *  This method must be called after any change to the graph
      *  that may affect (invalidate) any of the computations associated with
      *  the change listeners in the graph.
+     *  @see GraphListener.
      */
     protected void _registerChange() {
         if (_changeCount == Long.MAX_VALUE) {
