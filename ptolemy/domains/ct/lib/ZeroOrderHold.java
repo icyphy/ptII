@@ -35,6 +35,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
+import ptolemy.actor.lib.Transformer;
 
 //////////////////////////////////////////////////////////////////////////
 //// ZeroOrderHold
@@ -52,7 +53,7 @@ DoubleToken, and no parameter.
 
 //FIXME: Consider make it type polymorphic.
 
-public class ZeroOrderHold extends TypedAtomicActor
+public class ZeroOrderHold extends Transformer
     implements CTWaveformGenerator{
 
     /** Construct an actor in the specified container with the specified
@@ -69,32 +70,30 @@ public class ZeroOrderHold extends TypedAtomicActor
      */
     public ZeroOrderHold(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-        input = new TypedIOPort(this, "input");
-        input.setMultiport(false);
-        input.setInput(true);
-        input.setOutput(false);
+        super(container, name);        
+        // FIXME: Are they always DOUBLE? 
         input.setTypeEquals(BaseType.DOUBLE);
-        output = new TypedIOPort(this, "output");
-        output.setMultiport(false);
-        output.setInput(false);
-        output.setOutput(true);
         output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** The input port. Single port with type DoubleToken.
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the ports.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   an attribute that cannot be cloned.
      */
-    public TypedIOPort input;
+     public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        ZeroOrderHold newobj = (ZeroOrderHold)super.clone(ws);
+        newobj.input.setTypeEquals(BaseType.DOUBLE);
+        newobj.output.setTypeEquals(BaseType.DOUBLE);
+        return newobj;
+    }
 
-    /** The output port. Single port with type DoubleToken.
-     */
-    public TypedIOPort output;
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
 
     /** consume the input event if there is any. This event will be
      *  hold for further firings until this method is called for the

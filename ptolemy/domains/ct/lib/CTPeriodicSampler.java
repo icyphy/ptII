@@ -37,6 +37,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.TimedActor;
+import ptolemy.actor.lib.Transformer;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -51,7 +52,7 @@ channel.
 @author Jie Liu
 @version $Id$
 */
-public class CTPeriodicSampler extends TypedAtomicActor
+public class CTPeriodicSampler extends Transformer
     implements CTEventGenerator, TimedActor {
 
     /** Construct an actor in the specified container with the specified
@@ -72,15 +73,10 @@ public class CTPeriodicSampler extends TypedAtomicActor
     public CTPeriodicSampler(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input = new TypedIOPort(this, "input");
         input.setMultiport(true);
-        input.setInput(true);
-        input.setOutput(false);
         input.setTypeEquals(BaseType.DOUBLE);
-        output = new TypedIOPort(this, "output");
+
         output.setMultiport(true);
-        output.setInput(false);
-        output.setOutput(true);
         output.setTypeEquals(BaseType.DOUBLE);
 
         _samplePeriod = (double)0.1;
@@ -91,14 +87,6 @@ public class CTPeriodicSampler extends TypedAtomicActor
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
-
-    /** The multi-input port with type double.
-     */
-    public TypedIOPort input;
-
-    /** The multi-output port with type double.
-     */
-    public TypedIOPort output;
 
     /** The parameter for the sampling period; the type is double; the
      *  default value is 1.0.
@@ -122,6 +110,24 @@ public class CTPeriodicSampler extends TypedAtomicActor
         } else {
             _samplePeriod = p;
         }
+    }
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the ports.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   an attribute that cannot be cloned.
+     */
+     public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        CTPeriodicSampler newobj = (CTPeriodicSampler)super.clone(ws);
+        newobj.input.setMultiport(true);
+        newobj.input.setTypeEquals(BaseType.DOUBLE);
+        newobj.output.setMultiport(true);
+        newobj.output.setTypeEquals(BaseType.DOUBLE);
+        newobj.samplePeriod = (Parameter)newobj.getAttribute("samplePeriod");
+        return newobj;
     }
 
     /** Emit the current event, which has the token of the latest input

@@ -36,6 +36,7 @@ import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
+import ptolemy.actor.lib.Transformer;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -51,7 +52,7 @@ zero crossing is defined.
 @author Jie Liu
 @version $Id$
 */
-public class ZeroCrossingDetector extends TypedAtomicActor
+public class ZeroCrossingDetector extends Transformer
     implements CTStepSizeControlActor, CTEventGenerator {
 
     /** Construct an actor in the specified container with the specified
@@ -72,21 +73,11 @@ public class ZeroCrossingDetector extends TypedAtomicActor
     public ZeroCrossingDetector(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input = new TypedIOPort(this, "input");
-        input.setMultiport(false);
-        input.setInput(true);
-        input.setOutput(false);
         input.setTypeEquals(BaseType.DOUBLE);
-        trigger = new TypedIOPort(this, "trigger");
-        trigger.setMultiport(false);
-        trigger.setInput(true);
-        trigger.setOutput(false);
-        trigger.setTypeEquals(BaseType.DOUBLE);
-        output = new TypedIOPort(this, "output");
-        output.setMultiport(false);
-        output.setInput(false);
-        output.setOutput(true);
         output.setTypeEquals(BaseType.DOUBLE);
+        trigger = new TypedIOPort(this, "trigger", true, false);
+        trigger.setMultiport(false);
+        trigger.setTypeEquals(BaseType.DOUBLE);
         _errorTolerance = (double)1e-4;
         errorTolerance = new Parameter(this, "errorTolerance",
                 new DoubleToken(_errorTolerance));
@@ -95,14 +86,6 @@ public class ZeroCrossingDetector extends TypedAtomicActor
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
-
-    /** The input port. Single port with type DoubleToken.
-     */
-    public TypedIOPort input;
-
-    /** The output port. Single port with type DoubleToken.
-     */
-    public TypedIOPort output;
 
     /** The trigger port. Single port with type DoubleToken.
      */
@@ -126,6 +109,26 @@ public class ZeroCrossingDetector extends TypedAtomicActor
                     "Error tolerance must be greater than 0.");
         }
         _errorTolerance = p;
+    }
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the ports.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   an attribute that cannot be cloned.
+     */
+     public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        ZeroCrossingDetector newobj = (ZeroCrossingDetector)super.clone(ws);
+        newobj.input.setTypeEquals(BaseType.DOUBLE);
+        newobj.output.setTypeEquals(BaseType.DOUBLE);
+        newobj.trigger = (TypedIOPort)newobj.getPort("trigger");
+        newobj.trigger.setMultiport(false);
+        newobj.trigger.setTypeEquals(BaseType.DOUBLE);
+        newobj.errorTolerance = 
+            (Parameter)newobj.getAttribute("errorTolerance");
+        return newobj;
     }
 
     /** Emit the event at current time if there is any. There will be no
