@@ -340,7 +340,7 @@ subjars:
 PTJAR_TMPDIR =  ptjar_tmpdir
 
 alljars: $(PTCLASSALLJAR)
-$(PTCLASSALLJAR): $(PTCLASSALLJARS)
+$(PTCLASSALLJAR): $(PTCLASSALLJARS) $(JCLASS)
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	# Copy any class files from this directory
