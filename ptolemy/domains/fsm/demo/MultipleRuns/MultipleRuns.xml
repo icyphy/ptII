@@ -18,13 +18,13 @@
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[682, 388]">
         </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[63, 133]">
         </property>
         <property name="count" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="run" class="ptolemy.data.expr.Parameter" value="6">
+        <property name="run" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="annotation2" class="ptolemy.kernel.util.Attribute">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -43,8 +43,10 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="461.5, 131.0">
+            <property name="_location" class="ptolemy.moml.Location" value="296.5, 61.0">
             </property>
+        </property>
+        <property name="numberOfRuns" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <entity name="mode1" class="ptolemy.domains.fsm.kernel.State">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="mode1">
@@ -53,7 +55,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="475.0, 270.0">
+            <property name="_location" class="ptolemy.moml.Location" value="310.0, 205.0">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -67,7 +69,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="400.0, 175.0">
+            <property name="_location" class="ptolemy.moml.Location" value="475.0, 175.0">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -81,7 +83,7 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.ptolemy.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="575.0, 235.0">
+            <property name="_location" class="ptolemy.moml.Location" value="100.0, 130.0">
             </property>
             <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
             </port>
@@ -93,25 +95,9 @@
             </property>
             <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = 0; mode1.XYPlotter.startingDataset = 0; run = 1; mode1.freq2 = PI/(25.0*run)">
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="mode1.XYPlotter.startingDataset = 0; run = 1; mode1.freq2 = 1.0/100.0; mode1.blockSize = 2000">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
-            </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-        </relation>
-        <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="count &lt; 400 &amp;&amp; run &lt; 10">
-            </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-            </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = count + 1">
-            </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.0171975511965976">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -121,15 +107,15 @@
             </property>
         </relation>
         <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="count &gt;= 400">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="run &lt; numberOfRuns">
             </property>
             <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = 0; mode1.XYPlotter.startingDataset = run; run = run + 1; mode1.freq2 = PI/(25.0*run)">
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="mode1.XYPlotter.startingDataset = run; run = run + 1; mode1.freq2 = 1.0/(100.0*run)">
             </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.48860495533819703">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.848604955338197">
             </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -137,7 +123,7 @@
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="run &gt;= 10">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="run &gt;= numberOfRuns">
             </property>
             <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
             </property>
@@ -153,32 +139,32 @@
             </property>
         </relation>
         <link port="mode1.incomingPort" relation="relation"/>
-        <link port="mode1.incomingPort" relation="relation2"/>
         <link port="mode1.incomingPort" relation="relation3"/>
-        <link port="mode1.outgoingPort" relation="relation2"/>
         <link port="mode1.outgoingPort" relation="relation3"/>
         <link port="mode1.outgoingPort" relation="relation4"/>
         <link port="init.outgoingPort" relation="relation"/>
         <link port="stop.incomingPort" relation="relation4"/>
     </entity>
     <entity name="mode1" class="ptolemy.vergil.ptolemy.fsm.modal.Refinement">
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
         </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
         </property>
         <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="blockSize">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="85.0, 35.0">
             </property>
         </property>
-        <property name="freq1" class="ptolemy.data.expr.Parameter" value="PI/400.0">
+        <property name="freq1" class="ptolemy.data.expr.Parameter" value="1/400.0">
         </property>
-        <property name="freq2" class="ptolemy.data.expr.Parameter" value="0.020944">
+        <property name="freq2" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        </property>
+        <property name="blockSize" class="ptolemy.data.expr.Parameter" value="2000">
         </property>
         <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
             <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -222,7 +208,7 @@
             <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="1.0">
                 <doc>The sampling frequency, in the same units as the frequency.</doc>
             </property>
-            <property name="frequency" class="ptolemy.data.expr.Parameter" value="0.017952">
+            <property name="frequency" class="ptolemy.data.expr.Parameter" value="freq2">
                 <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
             </property>
             <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -261,7 +247,7 @@
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="5">
+            <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="9">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="285.0, 145.0">
             </property>
@@ -277,20 +263,20 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>XYPlotter</title>
+<title></title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-0.9999999999551583" max="0.9999997655435656"/>
-<yRange min="-0.9999967736528299" max="0.999996064925599"/>
-<noGrid/>
+<xRange min="-0.9900000000000001" max="0.9900000000000001"/>
+<yRange min="-0.9900000000000001" max="0.9900000000000001"/>
+<default marks="dots"/>
 </plot>?>
             </configure>
         </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </relation>
