@@ -73,28 +73,22 @@ public class FlowThrough extends TypedAtomicActor {
 
     /**
      */
+    public void initialize() throws IllegalActionException {
+	super.initialize();
+	_inRcvrs = input.getReceivers();
+    }
+
+    /**
+     */
     public void fire() throws IllegalActionException {
 	Token token = null;
-	Receiver[][] inRcvrs = input.getReceivers();
-	if( inRcvrs.length == 0 ) {
+	// Receiver[][] _inRcvrs = input.getReceivers();
+	if( _inRcvrs.length == 0 ) {
 	    _continueIterations = false;
 	}
-	for( int i = 0; i < inRcvrs.length; i++ ) {
-	    for( int j = 0; j < inRcvrs[i].length; j++ ) {
-		DDEReceiver inRcvr = (DDEReceiver)inRcvrs[i][j];
-		/*
-                  System.out.println("\n");
-                  System.out.println("\n");
-                  System.out.println("*****");
-                  System.out.println(getName() + ":   receiver["+i+"]["+j+"];");
-		*/
-		/*
-                  Thread aThread = Thread.currentThread();
-                  if( aThread instanceof DDEThread ) {
-                  Actor actor = ((DDEThread)aThread).getActor();
-                  String name = ((Nameable)actor).getName();
-                  }
-		*/
+	for( int i = 0; i < _inRcvrs.length; i++ ) {
+	    for( int j = 0; j < _inRcvrs[i].length; j++ ) {
+		DDEReceiver inRcvr = (DDEReceiver)_inRcvrs[i][j];
 		if( inRcvr.hasToken() ) {
 		    token = inRcvr.get();
 		    Receiver[][] outRcvrs = output.getRemoteReceivers();
@@ -108,17 +102,6 @@ public class FlowThrough extends TypedAtomicActor {
 			    }
 			}
 		    }
-		} else {
-		    /*
-                      System.out.println("actorThru: Weird error; hasToken = false");
-                      Thread thr = Thread.currentThread();
-                      if( thr instanceof DDEThread ) {
-                      TimeKeeper kpr = ((DDEThread)thr).getTimeKeeper();
-                      if( kpr.getNextTime() == 0.0 ) {
-                      System.out.println("IGNORE Token not at front");
-                      }
-                      }
-		    */
 		}
 	    }
 	}
@@ -143,5 +126,6 @@ public class FlowThrough extends TypedAtomicActor {
     public TypedIOPort input;
     private int _outChannel = -1;
     private boolean _continueIterations = true;
+    private Receiver[][] _inRcvrs;
 
 }
