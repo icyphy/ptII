@@ -446,7 +446,7 @@ public class Argument extends Attribute implements Settable {
                     + getName(), e);
         }
         // Make sure the new value is exported in MoML.  EAL 12/03.
-        setPersistent(true);
+        setOverrideDepth(0);
     }
 
     /** Set the expression of the argument from its attributes
