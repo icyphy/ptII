@@ -58,6 +58,7 @@ public class ProcessThread extends PtolemyThread {
         super();
 	_actor = actor;
         _director = director;
+         _manager = ((CompositeActor)_director.getContainer()).getManager();
     }
 
     /** Construct a thread to be used for the execution of the 
@@ -70,7 +71,8 @@ public class ProcessThread extends PtolemyThread {
     public ProcessThread(Actor actor, ProcessDirector director, String name) {
         super(name);
 	_actor = actor;
-        _director = director;
+        _director = director; 
+        _manager = ((CompositeActor)_director.getContainer()).getManager();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -88,34 +90,28 @@ public class ProcessThread extends PtolemyThread {
      */
     public void run() {
 	try {
-	    while (_iterate());		   
-	    // System.out.println(((Entity)_actor).getName()+" finished iterations");	    
-	} catch (TerminateProcessException t) {
+            boolean iterate = true;
+	    while (iterate) {
+                // container is checked for null to detect the 
+                // termination of the actor
+                if (((Entity)_actor).getContainer()!=null && _actor.prefire()){
+                    _actor.fire();
+                    iterate =  _actor.postfire();
+                }
+                iterate = false;
+            }
+        } catch (TerminateProcessException t) {
+            // Process was terminated.
         } catch (IllegalActionException e) {
-            ((CompositeActor)_director.getContainer()).getManager().fireExecutionError(e);
-        } catch (NameDuplicationException e) {
-            ((CompositeActor)_director.getContainer()).getManager().fireExecutionError(e);
+            _manager.fireExecutionError(e);
         } finally {
             try {
                 _actor.wrapup();
             } catch (IllegalActionException e) {
-                ((CompositeActor)_director.getContainer()).getManager().fireExecutionError(e);
+                _manager.fireExecutionError(e);
             }
             _director.decreaseActiveCount();
         }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    //container is checked for null to detect the termination of the actor
-    private boolean _iterate() 
-	    throws NameDuplicationException, IllegalActionException {
-	if (((Entity)_actor).getContainer()!=null && _actor.prefire()) {
-            _actor.fire();
-     	    return _actor.postfire();
-	}
-	return false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,7 +119,7 @@ public class ProcessThread extends PtolemyThread {
     
     private Actor _actor;
     private ProcessDirector _director;
-
+    private Manager _manager;
 }
 
 
