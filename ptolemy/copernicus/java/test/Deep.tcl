@@ -92,7 +92,7 @@ test Deep-1.2 {Compile and run the SDF IIR test} {
 test Deep-1.3 {Compile and run the SDF ArrayAppend test} {
     set result [sootDeepCodeGeneration \
   	    [file join $relativePathToPTII ptolemy actor lib test auto \
-  	    ArrayAppend.xml]]
+  	    ArrayAppend.xml "Deep"]]
     list {}
 } {{}}
 
