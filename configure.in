@@ -231,6 +231,9 @@ AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
 # We only need to look for kvm if $PTII/ptolemy/apps/lego
 COMMAPI_USER_DIR="$PTII/ptolemy/apps/lego"
 COMMAPI_PRESENT=no
+# PTLEGO_DIR is set to lego
+# $PTII/ptolemy/apps/makefile if the Java Communications API was found
+PTLEGO_DIR=
 if test ! -d "$COMMAPI_USER_DIR"; then
     AC_MSG_RESULT([$COMMAPI_USER_DIR is not present, so we need not
 find commapi])
@@ -244,6 +247,8 @@ else
 
     if test -f "$COMMAPI_DIR/comm.jar"; then
 	AC_MSG_RESULT([$COMMAPI_DIR])
+	# Subdirectory that contains Java Communications API specific code
+	PTLEGO_DIR=lego
 	COMMAPI_PRESENT=yes
     else    
         AC_MSG_WARN(['Failed to find $COMMAPI_DIR/comm.jar'])
@@ -510,6 +515,10 @@ AC_SUBST(PTJAVA_DIR)
 # Set to jspaces and used in 
 # $PTII/ptolemy/actor/lib/makefile if jini was found
 AC_SUBST(PTJSPACES_DIR)
+
+# Set to lego and used in 
+# $PTII/ptolemy/apps/makefile if the Java Communications API was found
+AC_SUBST(PTLEGO_DIR)
 
 # Location of the PtII directory
 AC_SUBST(PTII_DEFAULT)

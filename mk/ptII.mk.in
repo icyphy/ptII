@@ -157,8 +157,9 @@ JTCLSH =	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH)\$(CLASSPATHSEPARATOR)$(PTJACL_JAR
 # http://java.sun.com/products/javacomm/
 COMMAPI_DIR =   @COMMAPI_DIR@
 
-# If Commapi is present, then set to yes, otherwise set to no
-COMMAPI_PRESENT = @COMMAPI_PRESENT@
+# Set to lego and used in $PTII/ptolemy/apps/makefile if
+# the Java Communications API was found
+PTLEGO_DIR =	@PTLEGO_DIR@
 
 # Location of the diva.jar file.  Diva is (among other things) a graph
 # visualization tool used by some of the demos.  For more information, see

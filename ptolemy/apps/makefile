@@ -31,7 +31,11 @@
 
 ME =		ptolemy/apps
 
-DIRS =		$(LEGO)
+
+# $PTII/configure looks for the Java Communications API and sets
+#  PTLEGO_DIR in $PTII/mk/ptII.mk to lego if the commapi was found.
+#  Otherwise, PTLEGO_DIR is empty
+DIRS =		$(PTLEGO_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		../..
@@ -39,12 +43,6 @@ ROOT =		../..
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-
-# This line has to be after the include ptII.mk
-ifeq ($(COMMAPI_PRESENT),yes)
-LEGO = lego
-endif
-
 
 # Used to build jar files
 PTPACKAGE =
