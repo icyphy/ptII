@@ -31,7 +31,9 @@
 
 ME =		ptolemy/configs
 
-DIRS =		doc dsp hybrid jxta ptiny test
+# If you add a configuration, be sure to add the jar file
+# in PTCLASSALLJARS below
+DIRS =		doc dsp full hybrid jxta ptiny test
 
 # Root of the Java directory
 ROOT =		../..
@@ -77,15 +79,15 @@ OTHER_FILES_TO_BE_JARED = \
 	runConfiguration.xml \
 	runPanelConfiguration.xml \
 	runWelcomeWindow.xml \
-	utilitiesLibrary.xml \
-	vergilConfiguration.xml \
-	vergilWelcomeWindow.xml
+	utilitiesLibrary.xml
 
 # Include these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		doc/doc.jar \
 		dsp/dsp.jar \
+		full/full.jar \
 		hybrid/hybrid.jar \
+		jxta/jxta.jar \
 		ptiny/ptiny.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
