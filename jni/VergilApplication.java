@@ -35,6 +35,7 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.gui.MessageHandler;
+import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.VergilErrorHandler;
 
 import java.net.URL;
@@ -71,7 +72,7 @@ public class VergilApplication extends MoMLApplication {
 
         // Create register an error handler with the parser so that
         // MoML errors are tolerated more than the default.
-        _parser.setErrorHandler(new VergilErrorHandler());
+        MoMLParser.setErrorHandler(new VergilErrorHandler());
         java.util.Locale.setDefault(java.util.Locale.US);
     }
 
@@ -93,7 +94,7 @@ public class VergilApplication extends MoMLApplication {
         // If the -test arg was set, then exit after 2 seconds.
         if (_test) {
             try {
-                Thread.currentThread().sleep(2000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
             }
             System.exit(0);
