@@ -104,6 +104,7 @@ public class DiningPhilosophers {
             // Set up the actors and connections
             CSPPhilosopher p1 = new CSPPhilosopher(univ, "Aristotle");
             CSPPhilosopher p2 = new CSPPhilosopher(univ, "Plato");
+            CSPPhilosopher p4 = new CSPPhilosopher(univ, "Descartes");
             CSPPhilosopher p3 = new CSPPhilosopher(univ, "Sartre");
 
             CSPPhilosopher p5 = new CSPPhilosopher(univ, "Socrates");
