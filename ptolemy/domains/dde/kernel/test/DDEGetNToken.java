@@ -35,8 +35,10 @@ import ptolemy.actor.*;
 import ptolemy.domains.dde.kernel.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -60,21 +62,23 @@ public class DDEGetNToken extends DDEGet {
 
     /**
      */
-    public DDEGetNToken(TypedCompositeActor cont, String name, int numTokens)
+    public DDEGetNToken(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
-        _numTokens = numTokens;
-        _tokens = new Token[_numTokens];
-        _beforeTimes = new double[_numTokens];
-        _afterTimes = new double[_numTokens];
-        _name = name;
-
-        for (int i = 0; i < _numTokens; i++ ) {
-            _beforeTimes[i] = -1.0;
-            _afterTimes[i] = -1.0;
-        }
+        numTokens = new Parameter(this, "numTokens");
+        numTokens.setToken(new IntToken(3));
     }
+
+    /**
+     */
+    public DDEGetNToken(TypedCompositeActor cont, String name, int tokens)
+            throws IllegalActionException, NameDuplicationException {
+        this(cont, name);
+        numTokens.setToken(new IntToken(tokens));
+    }
+
+    Parameter numTokens;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -97,6 +101,18 @@ public class DDEGetNToken extends DDEGet {
 	return _tokens[cntr];
     }
 
+    public void initialize() throws IllegalActionException {
+        _numTokens = ((IntToken)numTokens.getToken()).intValue();
+        _tokens = new Token[_numTokens];
+        _beforeTimes = new double[_numTokens];
+        _afterTimes = new double[_numTokens];
+
+        for (int i = 0; i < _numTokens; i++ ) {
+            _beforeTimes[i] = -1.0;
+            _afterTimes[i] = -1.0;
+        }
+    }
+
     /**
      */
     public void fire() throws IllegalActionException {
@@ -114,7 +130,7 @@ public class DDEGetNToken extends DDEGet {
 			DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
 			if ( rcvr.hasToken() ) {
                             // System.out.println("#####");
-                            // System.out.println("#####Past DDEGetNToken.rcvr.hasToken()");
+                            System.out.println("#####Past DDEGetNToken.rcvr.hasToken()");
                             // System.out.println("#####");
 			    _tokens[cnt] = rcvr.get();
 			    _afterTimes[cnt] = timeKeeper.getCurrentTime();
@@ -138,6 +154,5 @@ public class DDEGetNToken extends DDEGet {
     private Token[] _tokens = null;
     private double[] _beforeTimes = null;
     private double[] _afterTimes = null;
-    private String _name;
 
 }
