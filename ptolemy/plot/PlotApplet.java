@@ -176,5 +176,5 @@ public class PlotApplet extends Applet {
     ////                         protected variables               ////
 
     // The Plot component we are running.
-    private Plot _myPlot;
+    private transient Plot _myPlot;
 }
