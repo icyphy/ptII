@@ -143,7 +143,8 @@ public class PtExecuteApplication extends MoMLApplication
     public List models() {
         LinkedList result = new LinkedList();
         ModelDirectory directory
-            = (ModelDirectory)_configuration.getEntity("directory");
+            = (ModelDirectory)_configuration
+            .getEntity(Configuration._DIRECTORY_NAME);
         Iterator effigies = directory.entityList().iterator();
         while (effigies.hasNext()) {
             Effigy effigy = (Effigy)effigies.next();
