@@ -36,7 +36,6 @@
 if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
-
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -66,16 +65,21 @@ test Connect-1.0 {test adding a new entity and connecting it} {
             [java::new ptolemy.kernel.util.StreamListener]
     $m initialize
     $m iterate
-    set ramp [java::new ptolemy.actor.lib.Ramp [$const workspace]]
-    $ramp setName ramp
-    set c1 [java::new ptolemy.kernel.event.AddEntity $e0 $ramp $e0]
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
+    set c1 [java::new ptolemy.kernel.event.SetParameter $e0 \
+            [java::field $ramp step] 0.01]
     set c2 [java::new ptolemy.kernel.event.Connect $e0 \
             [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]
+    set c3 [java::new ptolemy.kernel.event.InitializeActor $e0 $ramp]
+    set c4 [java::new ptolemy.kernel.event.SetParameter $e0 \
+            [java::field $ramp init] 0.01]
     set changelist [java::new ptolemy.kernel.event.ChangeList $e0 "list"]
     $m requestChange $changelist
     $changelist add $c1
+    $changelist add $c4
     $changelist add $c2
+    $changelist add $c3
 
     $m iterate
     $m iterate
@@ -83,4 +87,4 @@ test Connect-1.0 {test adding a new entity and connecting it} {
     $m wrapup
     list [enumToTokenValues [$rec getRecord 0]] \
             [enumToTokenValues [$rec getRecord 1]]
-} {{1 1 1 1} {_ 0 1 2}}
+} {{1 1 1 1} {_ 0.01 0.02 0.03}}

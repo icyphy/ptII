@@ -51,7 +51,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	AddEntity.java \
 	ChangeFailedException.java \
 	ChangeList.java \
 	ChangeListener.java \

@@ -38,10 +38,20 @@ import ptolemy.kernel.util.*;
 Abstract base class for change requests.  A change request is any
 modification to a model that might be performed during execution of the
 model, but where there might only be certain phases of execution during
-which it is safe to make the modification.  Instances of ChangeRequest
-can be collected into a ChangeList and queued with the director
-for later execution.  Use of a ChangeList ensures that all the changes
-in the list are executed at the same time.
+which it is safe to make the modification.  Such changes are called
+<i>mutations</i>.
+<p>
+A typical use of this class is to define an anonymous inner class that
+implements the execute() method to bring about the desired change.
+The instance of that anonymous inner class is then queued with the
+director or manager using the requestChange() method.
+<p>
+Alternatively, a set of concrete derived classes are provided that
+implement a few of the more common sorts of mutations. These derived
+classes can be instantiated and queued with the director or manager.
+To ensure that a group of such changes is executed together,
+use ChangeList to collect them, and queue the instance of
+ChangeList with the director or manager.
 
 @author  Edward A. Lee
 @version $Id$
