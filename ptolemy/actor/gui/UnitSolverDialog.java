@@ -50,7 +50,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.data.unit.Solver;
+import ptolemy.data.unit.Solution;
 import ptolemy.data.unit.UnitConstraints;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
@@ -190,8 +190,9 @@ public class UnitSolverDialog
     public void actionPerformed(ActionEvent aEvent) {
         String command = aEvent.getActionCommand();
         if (aEvent.getSource() == _runMinimalSpanSolverButton) {
-            _uConstraints = new UnitConstraints(_model, _entities, _relations);
             try {
+                _uConstraints =
+                    new UnitConstraints(_model, _entities, _relations);
                 _solutions = _uConstraints.minimalSpanSolutions();
             } catch (IllegalActionException e) {
                 MessageHandler.error("Minimal Span Solver failed: ", e);
@@ -202,9 +203,10 @@ public class UnitSolverDialog
 
         } else if (aEvent.getSource() == _runFullSolverButton) {
             _solutionsList.clearSelection();
-            _uConstraints = new UnitConstraints(_model, _entities, _relations);
             try {
-                Solver solution = _uConstraints.completeSolve();
+                _uConstraints =
+                    new UnitConstraints(_model, _entities, _relations);
+                Solution solution = _uConstraints.completeSolution();
                 _fullSolutionResult.setText(solution.getStateDesc());
             } catch (IllegalActionException e) {
                 MessageHandler.error("Full Solver failed: ", e);
@@ -294,7 +296,7 @@ public class UnitSolverDialog
         int index = _solutionsList.getSelectedIndex();
         if (index >= 0) {
             _showMembers();
-            Solver solution = (Solver) (_solutions.elementAt(index));
+            Solution solution = (Solution) (_solutions.elementAt(index));
             solution.annotateGraph();
         }
     }
@@ -302,7 +304,7 @@ public class UnitSolverDialog
     public class SolutionListModel extends AbstractListModel {
         Vector _solutions = new Vector();
         public Object getElementAt(int index) {
-            return ((Solver) (_solutions.elementAt(index)))
+            return ((Solution) (_solutions.elementAt(index)))
                 .getShortDescription();
         }
         public int getSize() {
