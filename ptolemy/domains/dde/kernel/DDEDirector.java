@@ -121,6 +121,12 @@ public class DDEDirector extends ProcessDirector {
     /** Increment the count of actors blocked on a read.
      */
     synchronized void addReadBlock() {
+	String name = "";
+	Thread thr = Thread.currentThread();
+	if( thr instanceof DDEThread ) {
+	    name = ((Nameable)((DDEThread)thr).getActor()).getName();
+	}
+        System.out.println(name+": Added read block.");
         _readBlocks++;
 	notifyAll();
     }
@@ -259,6 +265,12 @@ public class DDEDirector extends ProcessDirector {
     /** Decrement the count of actors blocked on a read.
      */
     public synchronized void removeReadBlock() {
+	String name = "";
+	Thread thr = Thread.currentThread();
+	if( thr instanceof DDEThread ) {
+	    name = ((Nameable)((DDEThread)thr).getActor()).getName();
+	}
+        System.out.println(name+": Removed read block.");
         if( _readBlocks > 0 ) {
             _readBlocks--;
         }
@@ -333,6 +345,7 @@ public class DDEDirector extends ProcessDirector {
             incrementLowestCapacityPort();
         } else {
             // Real Non-timed Deadlock
+	    System.out.println("Real deadlock!! Read blocks = " + _readBlocks);
             return true;
         }
         
