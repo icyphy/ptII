@@ -50,7 +50,7 @@ import ptolemy.math.ComplexMatrixMath;
 //////////////////////////////////////////////////////////////////////////
 //// Engine
 
-// NOTE: PLEASE DO NOT remove the leading '*'s from this javadoc... 
+// NOTE: PLEASE DO NOT remove the leading '*'s from this javadoc...
 // javadoc screws up the formatting of the tables for some reason
 // if the lines are all left aligned without '*'s. (Next time we'll
 // have to switch to html tables... :-)
@@ -60,7 +60,7 @@ import ptolemy.math.ComplexMatrixMath;
  * the java environment using the Java Native Interface and the matlab
  * environment using the matlab engine API and associated
  * mx-functions.<p>
- * 
+ *
  * The intermediary layer is built as a DLL on Windows systems
  * (ptmatlab.dll).  This shared library is placed into the $PTII/bin
  * directory (that should be in the user's path) when this package is
@@ -68,10 +68,10 @@ import ptolemy.math.ComplexMatrixMath;
  * (libeng and libmx) that should also be installed in the user's path
  * (usually the case when matlab is installed and matlab's bin
  * directory is added to the path).<p>
- * 
+ *
  * The bulk of the work done by this class is the conversion between
  * PtolemyII Tokens and matlab variables ("mxArrays").<p>
- * 
+ *
  * {@link #get(String name)} converts a matlab engine mxArray (ma)
  * variable to a Ptolemy II Token. Recursion is used if ma is a struct
  * or cell.  The type of the Token returned is determined according to
@@ -98,7 +98,7 @@ import ptolemy.math.ComplexMatrixMath;
  *     ------------------------------------------------------------------
  * </pre>
  * <p>
- * 
+ *
  * {@link #put(String name, Token t)} converts a PtolemyII Token to a
  * matlab engine mxArray. Recursion is used if t is a RecordToken or
  * ArrayToken.  The type of mxArray created is determined according to
@@ -123,10 +123,10 @@ import ptolemy.math.ComplexMatrixMath;
  * Debug statements to stdout are enabled by calling {@link
  * #setDebugging} with a byte parameter > 0. 1 enables basic tracing,
  * 2 includes traces from the dll as well.<p>
- * 
+ *
  * {@link #evalString(String)} send a string to the matlab engine for
  * evaluation.<p>
- * 
+ *
  * {@link #open} and {@link #close} are used to open / close the
  * connection to the matlab engine.<p>
  *
@@ -135,7 +135,7 @@ import ptolemy.math.ComplexMatrixMath;
  * overlapping calls to the same method from different threads. Use
  * Engine.{@link #semaphore} to synchronize accross multiple method calls
  * if needed.<p>
- * 
+ *
  * @author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited.
  * @version $Id$ */
 
@@ -161,9 +161,9 @@ public class Engine {
     static Integer semaphore = new Integer(0);
 
     /** Construct an instance of the matlab engine interface.
-     * The matlab engine is not activated at this time. 
+     * The matlab engine is not activated at this time.
      * <p>
-     * Ptmatlab.dll is loaded by the system library loader the 
+     * Ptmatlab.dll is loaded by the system library loader the
      * first time this class is loaded.
      * @see #open().
      */
@@ -178,12 +178,12 @@ public class Engine {
         debug = d;
     }
 
-    /** Open a connection to the default matlab engine installed on 
+    /** Open a connection to the default matlab engine installed on
      * this host.
      * @see #open(String) below.
      */
     public void open() throws IllegalActionException {
-        open(null);              // Use default invocation, no 
+        open(null);              // Use default invocation, no
                                         // output buffering
     }
 
@@ -225,7 +225,7 @@ public class Engine {
             }
             if (eng == 0) {
                 throw new IllegalActionException("matlabEngine.open(" + startCmd
-                                                 + ") : can't find matlab" 
+                                                 + ") : can't find matlab"
                                                  + "engine.");
             }
         }
@@ -393,7 +393,7 @@ public class Engine {
 			int n, int m, long valueMxArray);
     private native void
 	ptmatlabSetString(String name, long mxArray,
-			  int n, String s, int slen); 
+			  int n, String s, int slen);
     private native void
 	ptmatlabSetStructField(String name, long mxArray, String fieldName,
 			       int n, int m, long valueMxArray);
@@ -462,9 +462,9 @@ public class Engine {
                         long fma = ptmatlabGetFieldByNumber(ma, k, n, m);
                         if (fma != 0) {
                             fieldValues[k] = _convertMxArrayToToken(fma);
-                        } else {	
+                        } else {
                             throw new IllegalActionException("can't get field "
-                                                             + fieldNames[k] + 
+                                                             + fieldNames[k] +
                                                              "from matlab struct "
                                                              + nRows+"x"+ nCols);
                         }
@@ -524,7 +524,7 @@ public class Engine {
     // @exception IllegalActionException If array creation failed, or if the
     // Token was not one of the types supported by _createMxArray().
     // @see Engine
-    
+
     private long _createMxArray(String name, Token t)
 	throws IllegalActionException {
         long ma = 0;
@@ -533,13 +533,13 @@ public class Engine {
             if (!(ta[0] instanceof StringToken)) {
                 ma = ptmatlabCreateCellMatrix(name, 1, ta.length);
                 if (ma == 0) {
-		    throw new IllegalActionException("couldn't create cell " 
+		    throw new IllegalActionException("couldn't create cell "
 						     + "array "+name);
 		}
                 for (int n = 0; n < ta.length; n++) {
                     long fma = _createMxArray("("+n+")", ta[n]);
                     if (fma == 0) {
-			throw new IllegalActionException("couldn't create " 
+			throw new IllegalActionException("couldn't create "
 							 + "array for index "
 							 + n
 							 + " in cell array "
@@ -552,7 +552,7 @@ public class Engine {
                 ma = ptmatlabCreateString(name, s, ta.length, s.length());
                 for (int n = 1; n < ta.length; n++) {
                   s = ((StringToken)ta[n]).stringValue();
-                  ptmatlabSetString(name, ma, n, s, s.length()); 
+                  ptmatlabSetString(name, ma, n, s, s.length());
                 }
             }
         } else if (t instanceof RecordToken) {

@@ -139,7 +139,7 @@ public class Expression extends TypedAtomicActor {
         // _time is not needed, fire() sets a matlab variable directly
         _iteration = new Variable(this, "iteration", new IntToken(1));
 
-        TransientSingletonConfigurableAttribute 
+        TransientSingletonConfigurableAttribute
             iconDescription = new TransientSingletonConfigurableAttribute(
                                this, "_iconDescription");
         iconDescription.configure(null,null,
