@@ -164,7 +164,7 @@ public class DoubleMatrixToJAI extends Transformer {
         double data[][] = doubleMatrixToken.doubleMatrix();
         int width = doubleMatrixToken.getRowCount();
         int height = doubleMatrixToken.getColumnCount();
-        double newdata[] = new double[width*height];
+        double newData[] = new double[width*height];
         _maxValue = 1;
         _minValue = 0;
         if (_scale) {
@@ -200,16 +200,16 @@ public class DoubleMatrixToJAI extends Transformer {
             if (_dataFormat == _DOUBLE || _dataFormat == _FLOAT) {
                 for (int i = 0; i < width; i++) {
                     for (int j = 0; j < height; j++) {
-                        newdata[i*height + j] = data[i][j];
-                        newdata[i*height + j] = newdata[i*height + j] - 0.5D;
-                        newdata[i*height + j] = newdata[i*height + j]*2;
-                        newdata[i*height + j] = newdata[i*height + j]*_maxValue;
+                        newData[i*height + j] = data[i][j];
+                        newData[i*height + j] = newData[i*height + j] - 0.5D;
+                        newData[i*height + j] = newData[i*height + j]*2;
+                        newData[i*height + j] = newData[i*height + j]*_maxValue;
                     }
                 }
             } else {
                 for (int i = 0; i < width; i++) {
                     for (int j = 0; j < height; j++) {
-                        newdata[i*height + j] =
+                        newData[i*height + j] =
                             data[i][j]*(_maxValue - _minValue) + _minValue;
                     }
                 }
@@ -218,13 +218,13 @@ public class DoubleMatrixToJAI extends Transformer {
             // Convert the matrix of doubles into an array of doubles
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
-                    newdata[i*height + j] = data[i][j];
+                    newData[i*height + j] = data[i][j];
                 }
             }
         }
         // Create a new dataBuffer from the array of doubles
         DataBufferDouble dataBuffer =
-            new DataBufferDouble(newdata, width*height);
+            new DataBufferDouble(newData, width*height);
 
         // The length of the bandOffset array indicates how many bands
         // there are.  Since we are just dealing with a single
