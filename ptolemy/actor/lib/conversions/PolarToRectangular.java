@@ -41,15 +41,15 @@ import java.lang.Math.*;
 
 ///////////////////////////////////////////////////////////////
 /// PolarToRectangular
-/** This actor takes in two double tokens radius and angle (polar)
-    from two different ports and gives back two double tokens xValue 
-    and yValue (rectangular) to two different ports.
+/** This actor takes in two double tokens radius and angle (polar form)
+    from two different ports and output two new double tokens xValue
+    and yValue (rectangular form) to two different ports.
 
 @author Michael Leung
 @version $Id$
 */
 
-public class PolarToRectangular extends Transformer {
+public class PolarToRectangular extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -63,11 +63,11 @@ public class PolarToRectangular extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        magInput = new TypedIOPort(this, "magInput", true, false);
-        magInput.setTypeEquals(DoubleToken.class);
+        magnitudeInput = new TypedIOPort(this, "magnitudeInput", true, false);
+        magnitudeInput.setTypeEquals(DoubleToken.class);
 
-        angInput = new TypedIOPort(this, "angInput", true, false);
-        angInput.setTypeEquals(DoubleToken.class);
+        angleInput = new TypedIOPort(this, "angleInput", true, false);
+        angleInput.setTypeEquals(DoubleToken.class);
 
         xOutput = new TypedIOPort(this, "xOutput", false, true);
         xOutput.setTypeEquals(DoubleToken.class);
@@ -80,12 +80,14 @@ public class PolarToRectangular extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The input port. */
-    public TypedIOPort magInput;
-    public TypedIOPort angInput;
+    /** The magnitude part. This has type DoubleToken. */
+    public TypedIOPort magnitudeInput;
+    /** The angle part. This has type DoubleToken. Angle in radian */
+    public TypedIOPort angleInput;
 
-    /** The output ports. */
+    /** The xValue part . This has type DoubleToken. */
     public TypedIOPort xOutput;
+    /** The yValue part. This has type DoubleToken. */
     public TypedIOPort yOutput;
 
     ///////////////////////////////////////////////////////////////////
@@ -100,8 +102,8 @@ public class PolarToRectangular extends Transformer {
     public Object clone(Workspace ws) {
         try {
             PolarToRectangular newobj = (PolarToRectangular)(super.clone(ws));
-            newobj.magInput = (TypedIOPort)newobj.getPort("magInput");
-            newobj.angInput = (TypedIOPort)newobj.getPort("angInput");
+            newobj.magnitudeInput = (TypedIOPort)newobj.getPort("magnitudeInput");
+            newobj.angleInput = (TypedIOPort)newobj.getPort("angleInput");
             newobj.xOutput = (TypedIOPort)newobj.getPort("xOutput");
             newobj.yOutput = (TypedIOPort)newobj.getPort("yOutput");
                 return newobj;
@@ -112,40 +114,31 @@ public class PolarToRectangular extends Transformer {
         }
     }
 
-    /** initialization
-     */
-
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-    
-    }  
-
-    /** Consume the inputs and produce the outputs of the PolarToRectangular
-     *  actor. Magnitude is double and Angle (in radian)is double also.
+    /** Consume two double token (magnitude and angle) from different
+     *  input port and output two new double token (xValue and yValue)
+     *  as rectangular form. Calculations of angle are in radian domain.
      *
-     *  xValue = magnitude * cos(angle)
-     *  yValue = magnitude * sin(angle)
-     *  (calculations of angle are in radian domain)
-     * 
-     *  @exception IllegalActionException Not Thrown.
+     *  @exception IllegalActionException will be thrown if attempt to
+     *  fire this actor when there is no director.
      */
     public void fire() throws IllegalActionException {
 
-        DoubleToken mag = (DoubleToken) (magInput.get(0));    
-        double  magnitude = mag.doubleValue();
-        DoubleToken ang = (DoubleToken) (angInput.get(0));    
-        double angle = ang.doubleValue();
+        DoubleToken magnitudeValue = (DoubleToken) (magnitudeInput.get(0));
+        double  magnitude = magnitudeValue.doubleValue();
+        DoubleToken angleValue = (DoubleToken) (angleInput.get(0));
+         double angle = angleValue.doubleValue();
 
         double xValue = magnitude * Math.cos(angle);
         double yValue = magnitude * Math.sin(angle);
 
         DoubleToken x = new DoubleToken (xValue);
         DoubleToken y = new DoubleToken (yValue);
-       
+
         xOutput.broadcast(x);
         yOutput.broadcast(y);
     }
 }
+
 
 
 
