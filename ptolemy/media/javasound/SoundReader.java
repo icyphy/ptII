@@ -146,14 +146,12 @@ public class SoundReader {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ///  Public Methods                                         ///
+    ////                       public methods                      ////
 
     /** Return the number of audio channels. This method should
      *  be called while the file is open (i.e., before closeFile()
      *  is called). Otherwise an exception will occur.
-     *
      *  @return The number of audio channels.
-     *
      *  @exception IllegalStateException If this method is called
      *   before openFile() is called or after closeFile()
      *   is called.
@@ -170,9 +168,7 @@ public class SoundReader {
 
     /** Return the sampling rate in Hz. An exception will occur if
      *  this method is invoked after closeFile() is called.
-     *
      *  @return The sample rate in Hz.
-     *
      *  @exception IllegalStateException If this method is called
      *   after closeFile()
      *   is called.
