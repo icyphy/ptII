@@ -141,8 +141,8 @@ public class TypeTerm implements InequalityTerm {
 
     /** If this term is associated with an undeclared TypedIOPort,
      *  set the resolved type of that TypedIOPort.
-     *  @exception If this term is not associated with a TypedIOPort, or the
-     *  port has a declared type.
+     *  @exception IllegalActionException If this term is not associated
+     *  with a TypedIOPort, or the port has a declared type.
      */
     public void setValue(Object e)
 	    throws IllegalActionException {
