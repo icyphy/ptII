@@ -67,7 +67,7 @@ like this one that implement the CTStepSizeControlActor interface.
 @see CTTransparentDirector
 */
 public class CTCompositeActor extends TypedCompositeActor
-    implements CTStepSizeControlActor {
+    implements CTEventGenerator, CTStepSizeControlActor {
 
     /** Construct a CTCompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
@@ -128,6 +128,20 @@ public class CTCompositeActor extends TypedCompositeActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** This method is delegated to the local director if the local
+     *  director is an instance of CTTransparentDirector. Otherwise,
+     *  return false, indicating that this composite actor does not
+     *  have an event at the current time.
+     *  @return True if there is an event at the current time.
+     */
+    public boolean hasCurrentEvent() {
+        Director dir = getDirector();
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).hasCurrentEvent();
+        }
+        return false;
+    }
 
     /** This method is delegated to the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise,
