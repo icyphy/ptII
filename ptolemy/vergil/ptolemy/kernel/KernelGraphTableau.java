@@ -165,22 +165,29 @@ public class KernelGraphTableau extends Tableau {
 
 	/** Create a tableau in the default workspace with no name for the 
 	 *  given Effigy.  The tableau will created with a new unique name
-	 *  in the given model proxy.  If this factory cannot create a tableau
-	 *  for the given proxy (perhaps because the proxy is not of the
+	 *  in the given model effigy.  If this factory cannot create a tableau
+	 *  for the given effigy (perhaps because the effigy is not of the
 	 *  appropriate subclass) then return null.
-	 *  @param proxy The model proxy.
-	 *  @return A new KernelGraphTableau, if the proxy is a 
+	 *  @param effigy The model effigy.
+	 *  @return A new KernelGraphTableau, if the effigy is a 
 	 *  PtolemyEffigy, or null otherwise.
 	 *  @exception Exception If an exception occurs when creating the
 	 *  tableau.
 	 */
-	public Tableau createTableau(Effigy proxy) throws Exception {
-	    if(!(proxy instanceof PtolemyEffigy)) 
+	public Tableau createTableau(Effigy effigy) throws Exception {
+	    if(effigy instanceof PtolemyEffigy) {
+                // First see whether the effigy already contains a RunTableau.
+                KernelGraphTableau tableau =
+                        (KernelGraphTableau)effigy.getEntity("graphTableau");
+                if (tableau == null) {
+                    tableau = new KernelGraphTableau(
+                            (PtolemyEffigy)effigy, "graphTableau");
+                }
+                tableau.show();
+                return tableau;
+	    } else {
 		return null;
-	    KernelGraphTableau tableau = 
-		new KernelGraphTableau((PtolemyEffigy)proxy,
-				       proxy.uniqueName("tableau"));
-	    return tableau;
+	    }
 	}
     }
 }
