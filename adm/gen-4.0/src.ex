@@ -43,6 +43,7 @@ doc/uml
 doc/uml/*
 java.hprof.txt
 jsdatabase
+jni/test/jni
 junk
 mail
 make.out
