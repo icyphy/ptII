@@ -87,8 +87,8 @@ public interface ArrayStringFormat {
      *  "{x[0], x[1], x[2], ... , x[n-1]}",
      *  where x[i] is the ith element of the array.
      */
-    public static class JavaArrayStringFormat implements
-                                                                                            ArrayStringFormat {
+    public static class JavaArrayStringFormat
+        implements ArrayStringFormat {
 
         public JavaArrayStringFormat() {}
 
