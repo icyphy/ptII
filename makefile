@@ -45,12 +45,14 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	ptII
+PTVERSION =	1.1devel
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 
-# Jar files that contain demos.  Thi
-PTDEMOJARS = \
+# Jar files that contain demos and docs
+PTDEMODOCJARS = \
+		doc/docConfig.jar \
 		ptolemy/actor/lib/javasound/demo/demo.jar \
 		ptolemy/data/type/demo/demo.jar \
 		ptolemy/domains/ct/demo/demo.jar \
@@ -65,23 +67,29 @@ PTDEMOJARS = \
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		doc/docConfig.jar \
+		doc/codeDoc.jar \
 		lib/diva.jar \
 		$(PTAUXALLJARS) \
 		ptolemy/domains/experimentalDomains.jar \
-		$(PTDEMOJARS) \
+		$(PTDEMODOCJARS) \
+		ptolemy/ptolemy.jar \
+		ptolemy/vergil/vergil.jar
+
+PTCLASSALLJARS = \
+		$(PTDEMODOCJARS) \
 		ptolemy/ptolemy.jar \
 		ptolemy/vergil/vergil.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
-
 
 EXTRA_SRCS = \
 	README.txt \
 	copyright.txt \
 	configure.in \
 	configure \
-	vergil.jnlp.in
+	vergil.jnlp.in \
+	vergilDSP.jnlp.in \
+	vergilPtiny.jnlp.in
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to report an error on them.
@@ -108,7 +116,9 @@ OPTIONAL_FILES = \
 
 # Files to be removed by 'make clean'
 KRUFT = \
-	vergil.jnlp
+	vergil.jnlp \
+	vergilDSP.jnlp \
+	vergilPtiny.jnlp
 
 # Files to be removed by 'make distclean'
 DISTCLEAN_STUFF = \
@@ -150,54 +160,8 @@ configure: configure.in
 	@echo "this problem."
 	autoconf
 
-# Java Network Launch Protocol aka Web Start
-vergil.jnlp: vergil.jnlp.in
-	@echo "Don't forget that if you change vergil.jnlp.in, you need"
-	@echo " to run 'make jnlp_sign' which will update vergil.jnlp"
-	@echo " in ptII.jar."
-	sed 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' $< > $@
-
-# Makefile variables used to set up keys for jar signing.
-# To use Web Start, we have to sign the jars.
-KEYDNAME = "CN=Claudius Ptolemaus, OU=Ptolemy Project, O=UC Berkeley, L=Berkeley, S=California, C=US"
-KEYSTORE = ptKeystore
-KEYALIAS = claudius
-# The password should not be stored in a makefile, for production
-# purposes, run:
-#  make STOREPASSWORD= KEYPASSWORD= jnlp_sign
-STOREPASSWORD = -storepass this.is.not.secure,it.is.for.testing.only
-KEYPASSWORD = -keypass this.is.not.secure,it.is.for.testing.only
-KEYTOOL = $(PTJAVA_DIR)/bin/keytool
-$(KEYSTORE): 
-	"$(KEYTOOL)" -genkey \
-		-dname $(KEYDNAME) \
-		-keystore $(KEYSTORE) \
-		-alias $(KEYALIAS) \
-		$(STOREPASSWORD) \
-		$(KEYPASSWORD)
-	"$(KEYTOOL)" -selfcert \
-		-keystore $(KEYSTORE) \
-		-alias $(KEYALIAS) \
-		$(STOREPASSWORD)
-	"$(KEYTOOL)" -list \
-		-keystore $(KEYSTORE) \
-		$(STOREPASSWORD)
-
-# vergil.jnlp is for Web Start.  For jar signing to work with Web Start,
-# the .jnlp file itself must be included in the signed jar file
-# and not be changed (See Section 5.4 of the JNLP specification).
-jnlp_sign: vergil.jnlp $(PTCLASSALLJAR) $(KEYSTORE)
-	@echo "Updating JNLP-INF/APPLICATION.JNLP with vergil.jnlp"
-	rm -rf JNLP-INF
-	mkdir JNLP-INF
-	cp vergil.jnlp JNLP-INF/APPLICATION.JNLP
-	"$(JAR)" -uf $(PTCLASSALLJAR) JNLP-INF/APPLICATION.JNLP
-	rm -rf JNLP-INF
-	@echo "Signing the jar file"
-	"$(PTJAVA_DIR)/bin/jarsigner" \
-		-keystore $(KEYSTORE) \
-		$(STOREPASSWORD) \
-		$(PTCLASSALLJAR) $(KEYALIAS)
+# Include rules to build Web Start JNLP files
+include $(ROOT)/mk/jnlp.mk
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
