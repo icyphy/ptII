@@ -183,7 +183,7 @@ test LongMatrixToken-7.0 {Test multiply operator between longs.} {
     catch {$q3 multiply $p} res3
 
     list [$res1 toString] [$res2 toString] $res3
-} {{[22, 9; 12, 5]} {[22, 9, 39; 12, 5, 21]} {ptolemy.kernel.util.IllegalActionException: Cannot multiply matrix with 3 columns by a matrix with 2 rows.}} {not yet implemented}
+} {{[22, 9; 12, 5]} {[22, 9, 39; 12, 5, 21]}
 
 ######################################################################
 ####
@@ -194,5 +194,5 @@ test LongMatrixToken-8.0 {Test subtract operator between longs.} {
     set res1 [$p subtract $q]
 
     list [$res1 toString] 
-} {{[3, 3; 0, 1]}} {not yet implemented}
+} {{[3, 3; 0, 1]}}
 
