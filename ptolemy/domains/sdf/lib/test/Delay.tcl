@@ -95,7 +95,7 @@ test Delay-2.4 {test with type change} {
     $initialOutputs setExpression {[7.0, 4.0]}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {7.0 4.0 0 1 2}
+} {7.0 4.0 0.0 1.0 2.0}
 
 test Delay-2.5 {test with type change to error condition} {
     $initialOutputs setExpression {[true, false]}
