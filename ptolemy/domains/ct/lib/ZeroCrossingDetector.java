@@ -102,13 +102,17 @@ public class ZeroCrossingDetector extends Transformer
      *  The new parameter will be used only after this method is called.
      */
     public void attributeChanged(Attribute att) throws IllegalActionException{
-        double p = ((DoubleToken)errorTolerance.getToken()
-                    ).doubleValue();
-        if(p <= 0) {
-            throw new IllegalActionException(this,
-                    "Error tolerance must be greater than 0.");
+        if (att == errorTolerance) {
+            double p = ((DoubleToken)errorTolerance.getToken()
+                        ).doubleValue();
+            if(p <= 0) {
+                throw new IllegalActionException(this,
+                        "Error tolerance must be greater than 0.");
+            }
+            _errorTolerance = p;
+        } else {
+            super.attributeChanged(att);
         }
-        _errorTolerance = p;
     }
 
     /** Clone the actor into the specified workspace. This calls the
