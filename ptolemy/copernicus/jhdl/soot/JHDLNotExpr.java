@@ -27,7 +27,7 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.copernicus.jhdl.util;
+package ptolemy.copernicus.jhdl.soot;
 
 import soot.*;
 import soot.jimple.*;

@@ -30,6 +30,7 @@
 package ptolemy.copernicus.jhdl;
 
 import ptolemy.copernicus.jhdl.util.*;
+import ptolemy.copernicus.jhdl.soot.*;
 
 import java.util.Iterator;
 import java.util.Collection;
@@ -40,10 +41,11 @@ import java.util.LinkedList;
 
 import ptolemy.copernicus.jhdl.util.BlockGraphToDotty;
 import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
-import ptolemy.copernicus.jhdl.util.CompoundBooleanExpression;
-import ptolemy.copernicus.jhdl.util.CompoundOrExpression;
-import ptolemy.copernicus.jhdl.util.CompoundAndExpression;
 import ptolemy.copernicus.jhdl.util.JHDLUnsupportedException;
+
+import ptolemy.copernicus.jhdl.soot.CompoundBooleanExpression;
+import ptolemy.copernicus.jhdl.soot.CompoundOrExpression;
+import ptolemy.copernicus.jhdl.soot.CompoundAndExpression;
 
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Node;

@@ -110,8 +110,9 @@ import ptolemy.copernicus.jhdl.util.HashListMap;
 import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
 import ptolemy.copernicus.jhdl.util.BlockGraphToDotty;
 import ptolemy.copernicus.jhdl.util.JHDLUnsupportedException;
-import ptolemy.copernicus.jhdl.util.CompoundBooleanExpression;
-import ptolemy.copernicus.jhdl.util.JHDLNotExpr;
+
+import ptolemy.copernicus.jhdl.soot.JHDLNotExpr;
+import ptolemy.copernicus.jhdl.soot.CompoundBooleanExpression;
 
 //////////////////////////////////////////////////////////////////////////
 //// BlockDataFlowGraph

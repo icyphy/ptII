@@ -46,11 +46,11 @@ import java.util.Map;
 import ptolemy.copernicus.jhdl.util.JHDLUnsupportedException;
 import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
 import ptolemy.copernicus.jhdl.util.JHDLTestbench;
-import ptolemy.copernicus.jhdl.util.JHDLNotExpr;
-import ptolemy.copernicus.jhdl.util.CompoundBooleanExpression;
-import ptolemy.copernicus.jhdl.util.CompoundAndExpression;
-import ptolemy.copernicus.jhdl.util.CompoundOrExpression;
-import ptolemy.copernicus.jhdl.util.JHDLNotExpr;
+
+import ptolemy.copernicus.jhdl.soot.CompoundBooleanExpression;
+import ptolemy.copernicus.jhdl.soot.CompoundAndExpression;
+import ptolemy.copernicus.jhdl.soot.CompoundOrExpression;
+import ptolemy.copernicus.jhdl.soot.JHDLNotExpr;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.Node;

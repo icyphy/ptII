@@ -47,7 +47,12 @@ JSRCS = SootASTVisitor.java \
 	SootASTException.java \
 	SootBlockDirectedGraph.java \
 	SootDFGBuilder.java \
-	ControlSootDFGBuilder.java
+	ControlSootDFGBuilder.java \
+	JHDLNotExpr.java \
+	CompoundBooleanExpression.java \
+	AbstractCompoundExpression.java \
+	CompoundAndExpression.java \
+	CompoundOrExpression.java
 
 # should include: (move from above directory)
 # - ConditionalControlCompactor.java
