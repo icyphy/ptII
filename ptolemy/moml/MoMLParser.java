@@ -37,6 +37,7 @@ import ptolemy.actor.gui.Documentation;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
+import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
 
 // Java imports.
@@ -289,6 +290,20 @@ public class MoMLParser extends HandlerBase {
                 MessageHandler.warning("Evaluating parameter "
                 + param.getFullName() + " triggers exception:\n\n"
                 + ex.getMessage());
+            }
+        }
+        // If there were any unrecognized elements, warn the user.
+        if (_unrecognized != null) {
+            StringBuffer warning = new StringBuffer(
+                    "Warning: Unrecognized elements:");
+            Iterator elements = _unrecognized.iterator();
+            while (elements.hasNext()) {
+                warning.append(" " + elements.next().toString());
+            }
+            try {
+                MessageHandler.warning(warning.toString());
+            } catch (CancelException ex) {
+                // Ignore, since this is a one-time notification.
             }
         }
     }
@@ -621,6 +636,7 @@ public class MoMLParser extends HandlerBase {
      */
     public void startDocument() {
         _paramsToParse.clear();
+        _unrecognized = null;
     }
 
     /** Start an element.
@@ -1206,6 +1222,12 @@ public class MoMLParser extends HandlerBase {
                 _namespaces.push(_namespace);
                 _current = vertex;
                 _namespace = DEFAULT_NAMESPACE;
+            } else {
+                // Unrecognized element name.  Collect it.
+                if (_unrecognized == null) {
+                    _unrecognized = new LinkedList();
+                }
+                _unrecognized.add(elementName);
             }
         } catch (InvocationTargetException ex) {
             // NOTE: While debugging, we print a stack trace here.
@@ -2145,6 +2167,9 @@ public class MoMLParser extends HandlerBase {
 
     // Top-level entity.
     private NamedObj _toplevel = null;
+
+    // List of unrecognized elements.
+    private List _unrecognized;
 
     // The workspace for this model.
     private Workspace _workspace;
