@@ -50,18 +50,22 @@ exported into MoML.
 ParseTreeEvaluatorForGuardExpression.  The common usage would be
 like:
 
-<p> <i>// Construct a relation list for a transition.  // The first
-argument of the constructor is a // transition.</i> _relationList =
-new RelationList(this, "relationList");
+<p> <i>Construct a relation list for a transition with the first
+argument of the constructor is a transition.</i> 
+<pre> 
+_relationList = new RelationList(this, "relationList");
+</pre>
 
-<p> <i>// Associate the relation list with the
-ParseTreeEvaluatorForGuardExpression</i> _parseTreeEvaluator
-= new ParseTreeEvaluatorForGuardExpression(_relationList);
+<p> <i>Associate the relation list with the 
+ParseTreeEvaluatorForGuardExpression</i> 
+<pre>
+_parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(_relationList);
+</pre>
 
 @author Haiyang Zheng
 @version $Id$
 @since Ptolemy II 4.0
-@Pt.ProposedRating Red (hyzheng)
+@Pt.ProposedRating Yellow (hyzheng)
 @Pt.AcceptedRating Red (hyzheng)
 @see ParseTreeEvaluatorForGuardExpression
 @see ptolemy.domains.fsm.kernel.Transition
@@ -129,17 +133,18 @@ public class RelationList extends Attribute {
         _relationList.clear();
     }
 
-    /** Return the former difference of the relation which has the
+    /** Return the previous difference of the relation which has the
      *  maximum current difference.
      *  @return The former distance of a relation.
      */
-    public double getFormerMaximumDistance() {
+    public double getPreviousMaximumDistance() {
         return ((RelationNode) _relationList.get(
-                        _maximumDifferenceIndex)).getFormerDifference();
+                        _maximumDifferenceIndex)).gePreviousDifference();
     }
 
     /** Return true if there is some event caused by some relation
-     *  type change.  Return True If there is some event detected.
+     *  type change.  
+     *  @return True If there is some event detected.
      */
     public boolean hasEvent() {
         boolean result = false;
@@ -237,7 +242,7 @@ public class RelationList extends Attribute {
             _currentType = type;
             _formerType = type;
             _difference = difference;
-            _formerDifference = difference;
+            _previousDifference = difference;
         }
 
         ///////////////////////////////////////////////////////////////
@@ -249,7 +254,7 @@ public class RelationList extends Attribute {
          */
         public void clear() {
             _formerType = 0;
-            _formerDifference = 0.0;
+            _previousDifference = 0.0;
         }
 
         /** Update the relation node former type and difference information
@@ -257,7 +262,7 @@ public class RelationList extends Attribute {
          */
         public void commit() {
             _formerType = _currentType;
-            _formerDifference = _difference;
+            _previousDifference = _difference;
         }
 
         public int getCurrentValue() {
@@ -268,8 +273,8 @@ public class RelationList extends Attribute {
             return _difference;
         }
 
-        public double getFormerDifference() {
-            return Math.abs(_formerDifference);
+        public double gePreviousDifference() {
+            return Math.abs(_previousDifference);
         }
 
         public int getFormerValue() {
@@ -311,7 +316,7 @@ public class RelationList extends Attribute {
 
         private int _currentType;
         private double _difference;
-        private double _formerDifference;
+        private double _previousDifference;
         // the relations have five integer values with meanings:
         // 1: true; 2: false; 3: equal/inequal; 4: less_than: 5: bigger_than.
         private int _formerType;
