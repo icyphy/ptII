@@ -153,6 +153,17 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
     }
 
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    PtolemyThread pThread;
+    protected boolean _isWaiting = true;
+
+    protected static Object _monitor = new Object();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     // Empty all receivers of all input ports.
     private void _emptyPorts() {
         Enumeration ports = inputPorts();
@@ -170,17 +181,4 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
             }
         }
     }
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
-
-    PtolemyThread pThread;
-    protected boolean _isWaiting = true;
-
-    protected static Object _monitor = new Object();
-
 }
