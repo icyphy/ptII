@@ -362,7 +362,6 @@ test Manager-10.1 {Test execution listener with one arg} {
     #9/02 - 'processing mutations' moved from line 4 to line 2
     list $stdoutResultsWithoutStackTrace
 } {{preinitializing
-processing mutations
 resolving types
 initializing
 executing number 1
