@@ -117,7 +117,10 @@ public class DebugListenerTableau extends Tableau {
         }
         _debug = debuggable;
         if (_debug != null) {
-            _debug.addDebugListener((DebugListenerFrame)getFrame());
+            DebugListenerFrame debugFrame = (DebugListenerFrame)getFrame();
+            _debug.addDebugListener(debugFrame);
+
+            debugFrame.setTitle(((NamedObj)_debug).getFullName());
         }
     }
 
