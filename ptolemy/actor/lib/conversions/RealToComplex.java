@@ -1,4 +1,4 @@
-/* An actor that converse real to complex
+/* An actor that converts two real tokens into a complex token.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -31,17 +31,17 @@
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.*;
-import ptolemy.kernel.util.*;
+import ptolemy.actor.lib.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.*;
-import ptolemy.actor.lib.*;
+import ptolemy.kernel.util.*;
 import ptolemy.math.Complex;
 
 ///////////////////////////////////////////////////////////////
 /// RealToComplex
-/** This actor takes in a double token for real part and another
-    double token for imaginary part and output a complex token.
+/** This actor takes in two double tokens (the real part and imaginary parts
+    of the output token) and outputs a complex token.
 
 @author Michael Leung
 @version $Id$
@@ -92,25 +92,19 @@ public class RealToComplex extends TypedAtomicActor {
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
-    public Object clone(Workspace ws) {
-        try {
-            RealToComplex newobj = (RealToComplex)(super.clone(ws));
-            newobj.realInput = (TypedIOPort)newobj.getPort("realInput");
-            newobj.imagInput = (TypedIOPort)newobj.getPort("imagInput");
-            newobj.output = (TypedIOPort)newobj.getPort("output");
-                return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        RealToComplex newobj = (RealToComplex)(super.clone(ws));
+        newobj.realInput = (TypedIOPort)newobj.getPort("realInput");
+        newobj.imagInput = (TypedIOPort)newobj.getPort("imagInput");
+        newobj.output = (TypedIOPort)newobj.getPort("output");
+        return newobj;
     }
 
-    /** Consume one token from each input port and output a new complex token
-     *  with real and imaginary parts given by the input tokens.
-     *
-     *  @exception IllegalActionException will be thrown if attempt to
-     *  fire this actor when there is no director.
+    /** Consume one token from each input port 
+     *  (the real and imaginary parts of the output complex token) and output
+     *  a new complex token.
+     *  
+     *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
 

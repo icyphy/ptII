@@ -1,5 +1,5 @@
-/* An actor that converse the complex to its real and imaginary part
-
+/* An actor that converts a complex token into two real tokens.
+ 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -31,17 +31,16 @@
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.*;
-import ptolemy.kernel.util.*;
+import ptolemy.actor.lib.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.actor.lib.*;
+import ptolemy.kernel.util.*;
 import ptolemy.math.Complex;
 
 ///////////////////////////////////////////////////////////////
 /// ComplexToReal
-/** This actor takes in a complex token and output the real and the imaginary
-    part of the complex token to two different port.
+/** This actor takes in a complex token and outputs the real and the imaginary
+    part to two different ports.
 
 @author Michael Leung
 @version $Id$
@@ -92,26 +91,19 @@ public class ComplexToReal extends TypedAtomicActor {
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
-    public Object clone(Workspace ws) {
-        try {
-            ComplexToReal newobj = (ComplexToReal)(super.clone(ws));
-            newobj.input = (TypedIOPort)newobj.getPort("input");
-            newobj.realOutput = (TypedIOPort)newobj.getPort("realOutput");
-            newobj.imagOutput = (TypedIOPort)newobj.getPort("imagOutput");
-                return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
-    }
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        ComplexToReal newobj = (ComplexToReal)(super.clone(ws));
+        newobj.input = (TypedIOPort)newobj.getPort("input");
+        newobj.realOutput = (TypedIOPort)newobj.getPort("realOutput");
+        newobj.imagOutput = (TypedIOPort)newobj.getPort("imagOutput");
+        return newobj;
+     }
 
     /** Consume a complex token from input port and
-     *  output two new double token as the real and imaginary parts
-     *  given by the input complex token.
+     *  output two new double tokens (the real and imaginary parts
+     *  of the input complex token).
      *
-     *  @exception IllegalActionException will be thrown if attempt to
-     *  fire this actor when there is no director.
+     *  @exception IllegalActionException If there is no director.
      */
 
     public final void fire() throws IllegalActionException  {

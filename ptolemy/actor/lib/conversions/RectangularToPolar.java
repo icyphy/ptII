@@ -1,4 +1,4 @@
-/* An actor that converse rectangular to polar
+/* An actor that converts numbers from rectangular form to polar form.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -31,25 +31,25 @@
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.*;
-import ptolemy.kernel.util.*;
+import ptolemy.actor.lib.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.actor.lib.*;
-import ptolemy.math.Complex;
-import java.lang.Math.*;
+import ptolemy.kernel.util.*;
+
 
 ///////////////////////////////////////////////////////////////
 /// RectangularToPolar
-/** This actor takes in two double tokens xValue and yValue (rectangular)
- *  from two different ports and gives back two double tokens radius and
-    angle (polar) to two different ports.
+/** This actor takes in two double tokens (xValue and yValue)
+ *  from each input port, and outputs two new double tokens (magnitude and
+    angle) to two different ports.
+    The output is a polar form representation of the vector given at the 
+    inputs in rectangular form. The angle is in radians.
 
 @author Michael Leung
 @version $Id$
 */
 
-public class RectangularToPolar extends Transformer {
+public class RectangularToPolar extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -100,29 +100,22 @@ public class RectangularToPolar extends Transformer {
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
-    public Object clone(Workspace ws) {
-        try {
-            RectangularToPolar newobj = (RectangularToPolar)(super.clone(ws));
-            newobj.xInput = (TypedIOPort)newobj.getPort("xInput");
-            newobj.yInput = (TypedIOPort)newobj.getPort("yInput");
-            newobj.magnitudeOutput =
-                (TypedIOPort)newobj.getPort("magnitudeOutput");
-            newobj.angleOutput = (TypedIOPort)newobj.getPort("angleOutput");
-                return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        RectangularToPolar newobj = (RectangularToPolar)(super.clone(ws));
+        newobj.xInput = (TypedIOPort)newobj.getPort("xInput");
+        newobj.yInput = (TypedIOPort)newobj.getPort("yInput");
+        newobj.magnitudeOutput =
+            (TypedIOPort)newobj.getPort("magnitudeOutput");
+        newobj.angleOutput = (TypedIOPort)newobj.getPort("angleOutput");
+        return newobj;
     }
 
-    /** Consume two double token representing the rectangular coordinate
-     *  from two separate input ports and output two new double tokens
-     *  of polar representation of the input tokens to two separate output
-     *  ports.
+    /** Consume two double tokens (xValue and yvalue) from each input port, 
+     *  and output two new double tokens (magnitude and angle). The output is a 
+     *  polar form representation of the vector given at the inputs in 
+     *  rectangular form. The angle is in radians.
      *
-     *  @exception IllegalActionException will be thrown if attempt to
-     *  fire this actor when there is no director.
+     *  @exception IllegalActionException If there is no director.
      */
 
     public void fire() throws IllegalActionException {
@@ -132,8 +125,8 @@ public class RectangularToPolar extends Transformer {
         DoubleToken yValue = (DoubleToken) (yInput.get(0));
         double y = yValue.doubleValue();
 
-        double magnitudeValue = Math.sqrt(x*x + y*y);
-        double angleValue = Math.atan(y/x);
+        double magnitudeValue = Math.sqrt (x * x + y * y);
+        double angleValue = Math.atan(y / x);
 
         DoubleToken magnitude = new DoubleToken (magnitudeValue);
         DoubleToken angle = new DoubleToken (angleValue);

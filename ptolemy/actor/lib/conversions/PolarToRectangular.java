@@ -1,4 +1,4 @@
-/* An actor that converse polar to rectangular
+/* An actor that converts numbers from polar form to rectangular form.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -31,19 +31,18 @@
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.*;
-import ptolemy.kernel.util.*;
+import ptolemy.actor.lib.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.actor.lib.*;
-import ptolemy.math.Complex;
-import java.lang.Math.*;
+import ptolemy.kernel.util.*;
+
 
 ///////////////////////////////////////////////////////////////
 /// PolarToRectangular
-/** This actor takes in two double tokens radius and angle (polar form)
-    from two different ports and output two new double tokens xValue
-    and yValue (rectangular form) to two different ports.
+/** This actor takes in two double tokens (magnitude and angle)
+    one from each input port and output two new double tokens (xValue
+    and yValue). The output is a rectangular form representation of the vector
+    given at the inputs in polar form. The angle is in radians. 
 
 @author Michael Leung
 @version $Id$
@@ -99,35 +98,29 @@ public class PolarToRectangular extends TypedAtomicActor {
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
-    public Object clone(Workspace ws) {
-        try {
-            PolarToRectangular newobj = (PolarToRectangular)(super.clone(ws));
-            newobj.magnitudeInput =
-                (TypedIOPort)newobj.getPort("magnitudeInput");
-            newobj.angleInput = (TypedIOPort)newobj.getPort("angleInput");
-            newobj.xOutput = (TypedIOPort)newobj.getPort("xOutput");
-            newobj.yOutput = (TypedIOPort)newobj.getPort("yOutput");
-                return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        PolarToRectangular newobj = (PolarToRectangular)(super.clone(ws));
+        newobj.magnitudeInput =
+            (TypedIOPort)newobj.getPort("magnitudeInput");
+        newobj.angleInput = (TypedIOPort)newobj.getPort("angleInput");
+        newobj.xOutput = (TypedIOPort)newobj.getPort("xOutput");
+        newobj.yOutput = (TypedIOPort)newobj.getPort("yOutput");
+        return newobj;
     }
 
-    /** Consume two double token (magnitude and angle) from different
-     *  input port and output two new double token (xValue and yValue)
-     *  as rectangular form. Calculations of angle are in radian domain.
+    /** Consume two double token (magnitude and angle) from each
+     *  input port and output two new double token (xValue and yValue).
+     *  The output is a rectangular form representation of the vector given
+     *  at the inputs in polar form. The angle is in radians.
      *
-     *  @exception IllegalActionException will be thrown if attempt to
-     *  fire this actor when there is no director.
+     *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
 
         DoubleToken magnitudeValue = (DoubleToken) (magnitudeInput.get(0));
         double  magnitude = magnitudeValue.doubleValue();
         DoubleToken angleValue = (DoubleToken) (angleInput.get(0));
-         double angle = angleValue.doubleValue();
+        double angle = angleValue.doubleValue();
 
         double xValue = magnitude * Math.cos(angle);
         double yValue = magnitude * Math.sin(angle);
