@@ -106,7 +106,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         return true;
     }
 
-    /** Always return flase indicating that this director cannot
+    /** Always return false indicating that this director cannot
      *  be a top level director.
      *  @return False always.
      */
@@ -148,9 +148,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     public void fireAt(Actor actor, double time)
             throws IllegalActionException{
         super.fireAt(actor, time);
-        CompositeActor ca = (CompositeActor) getContainer();
-        Director exeDir = ca.getExecutiveDirector();
-        exeDir.fireAt(ca, time);
+        CompositeActor container = (CompositeActor)getContainer();
+        Director exeDirector = container.getExecutiveDirector();
+        exeDirector.fireAt(container, time);
     }
 
     /** Return true if the current integration step
@@ -213,7 +213,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     }
 
     /** Return true always. Recompute the schedules if there
-     *  was a mutation. Synchronize time with the outter domain,
+     *  was a mutation. Synchronize time with the outer domain,
      *  and adjust the contents of the breakpoint table with
      *  respect to the current time.
      *  @return True always.
@@ -234,20 +234,20 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             scheduler.schedule();
             setScheduleValid(true);
         }
-        double timeAcc = getTimeResolution();
         Director exe = ca.getExecutiveDirector();
         _outsideTime = exe.getCurrentTime();
         if(_debugging) _debug(getName(), "Outside Time = "+ _outsideTime);
-        double nextIterTime = exe.getNextIterationTime();
-        if(_debugging) _debug(getName(), "Next Iter Time = " + nextIterTime);
+        double nextIterationTime = exe.getNextIterationTime();
+        if(_debugging) _debug(getName(), "Next Iteration Time = " 
+                + nextIterationTime);
         setCurrentTime(_outsideTime);
         // if break point now, change solver.
         double bp;
-        Double tnow = new Double(_outsideTime);
+        Double now = new Double(_outsideTime);
         TotallyOrderedSet breakPoints = getBreakPoints();
         if(breakPoints != null && !breakPoints.isEmpty()) {
-            breakPoints.removeAllLessThan(tnow);
-            if(breakPoints.contains(tnow)) {
+            breakPoints.removeAllLessThan(now);
+            if(breakPoints.contains(now)) {
                 if(_debugging)
                     _debug(getName(), " Break point now at" + _outsideTime);
                 // Breakpoints iterations are always successful
@@ -262,10 +262,10 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             }
 
         }
-        _outsideStepSize = nextIterTime - _outsideTime;
+        _outsideStepSize = nextIterationTime - _outsideTime;
         setCurrentStepSize(_outsideStepSize);
         if(_debugging) _debug(getName(), "at" + getCurrentTime(),
-                "breakpt table contains ", getBreakPoints().toString());
+                "breakpoint table contains ", getBreakPoints().toString());
         return true;
     }
 
