@@ -439,24 +439,6 @@ public class UtilityFunctions {
         return new ObjectToken(classname);
     }
 
-	/** Return true if the first argument is close in value to the second,
-	 *  where "close" means that it is within the distance given by the
-	 *  third argument. Exactly what this means depends on the data type.
-	 *  This method uses the isCloseTo() method of the first token.
-	 *  @param token1 The first token.
-	 *  @param token2 The second token.
-	 * 	@param distance The distance criterion.
-	 *  @return a true-valued token if the first two arguments are close
-	 *   enough.
-	 *  @exception IllegalActionException If the first two arguments cannot
-	 *   be compared.
-	 */
-	public static BooleanToken neighborhood(
-			Token token1, Token token2, double distance)
-			throws IllegalActionException {
-		return token1.isCloseTo(token2, distance);
-	}
-
     /** Get the specified property from the environment. An empty string
      *  is returned if the argument environment variable does not exist.
      *  See the javadoc page for java.util.System.getProperties() for
@@ -770,6 +752,23 @@ public class UtilityFunctions {
         ASTPtRootNode parseTree = parser.generateParseTree(string);
         ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
         return evaluator.traceParseTreeEvaluation(parseTree, null).toString();
+    }
+    /** Return true if the first argument is close in value to the second,
+     *  where "close" means that it is within the distance given by the
+     *  third argument. Exactly what this means depends on the data type.
+     *  This method uses the isCloseTo() method of the first token.
+     *  @param token1 The first token.
+     *  @param token2 The second token.
+     * 	@param distance The distance criterion.
+     *  @return a true-valued token if the first two arguments are close
+     *   enough.
+     *  @exception IllegalActionException If the first two arguments cannot
+     *   be compared.
+     */
+    public static BooleanToken within(
+            Token token1, Token token2, double distance)
+            throws IllegalActionException {
+        return token1.isCloseTo(token2, distance);
     }
 
     /** Return a double zero matrix with the given number of rows and

@@ -442,84 +442,84 @@ test Function-min {Test min} {
      } {1.0 -1.0 -1 1ub -1L 1.0 1 1L 1ub}
 
 ####################################################################
-# neighborhood
+# within
 
-test Function-neighborhood-double {Test neighborhood on doubles} {
-   list [evaluate {neighborhood (1.0, 1.1, 0.1)}] \
-        [evaluate {neighborhood (-1.0, -0.9, 0.1)}] \
-        [evaluate {neighborhood (1.0, 1.1, 0.0)}] \
-        [evaluate {neighborhood (1.0, 1.0, 0.0)}] \
-        [evaluate {neighborhood (1.0, 1.1, 0.05)}]
+test Function-within-double {Test within on doubles} {
+   list [evaluate {within (1.0, 1.1, 0.1)}] \
+        [evaluate {within (-1.0, -0.9, 0.1)}] \
+        [evaluate {within (1.0, 1.1, 0.0)}] \
+        [evaluate {within (1.0, 1.0, 0.0)}] \
+        [evaluate {within (1.0, 1.1, 0.05)}]
     } {true true false true false}
 
 # NOTE: Couldn't find a way to make complex as precise as double.
-test Function-neighborhood-complex {Test neighborhood on complex} {
-   list [evaluate {neighborhood (1.0i, 1.1i, 0.10001)}] \
-        [evaluate {neighborhood (1.0i, 1.1i, 0.0)}] \
-        [evaluate {neighborhood (1.0i, 1.0i, 0.0)}] \
-        [evaluate {neighborhood (1.0, 1.1i, 0.05)}]
+test Function-within-complex {Test within on complex} {
+   list [evaluate {within (1.0i, 1.1i, 0.10001)}] \
+        [evaluate {within (1.0i, 1.1i, 0.0)}] \
+        [evaluate {within (1.0i, 1.0i, 0.0)}] \
+        [evaluate {within (1.0, 1.1i, 0.05)}]
     } {true false true false}
 
-test Function-neighborhood-int {Test neighborhood on ints} {
-   list [evaluate {neighborhood (1, 2, 1)}] \
-        [evaluate {neighborhood (1, 2, 0)}] \
-        [evaluate {neighborhood (1, 1, 0)}] \
-        [evaluate {neighborhood (1, 3, 1)}] \
-        [evaluate {neighborhood (-1, -2, 1)}] \
-        [evaluate {neighborhood (-2, -1, 1)}] \
-        [evaluate {neighborhood (-1, -3, 1)}] \
-        [evaluate {neighborhood (-1, -3, 1)}]
+test Function-within-int {Test within on ints} {
+   list [evaluate {within (1, 2, 1)}] \
+        [evaluate {within (1, 2, 0)}] \
+        [evaluate {within (1, 1, 0)}] \
+        [evaluate {within (1, 3, 1)}] \
+        [evaluate {within (-1, -2, 1)}] \
+        [evaluate {within (-2, -1, 1)}] \
+        [evaluate {within (-1, -3, 1)}] \
+        [evaluate {within (-1, -3, 1)}]
     } {true false true false true true false false}
 
-test Function-neighborhood-long {Test neighborhood on longs} {
-   list [evaluate {neighborhood (1L, 2L, 1)}] \
-        [evaluate {neighborhood (1L, 2L, 0)}] \
-        [evaluate {neighborhood (1L, 1L, 0)}] \
-        [evaluate {neighborhood (1L, 3L, 1)}]
+test Function-within-long {Test within on longs} {
+   list [evaluate {within (1L, 2L, 1)}] \
+        [evaluate {within (1L, 2L, 0)}] \
+        [evaluate {within (1L, 1L, 0)}] \
+        [evaluate {within (1L, 3L, 1)}]
     } {true false true false}
 
-test Function-neighborhood-ub {Test neighborhood on unsigned bytes} {
-   list [evaluate {neighborhood (1ub, 2ub, 1)}] \
-        [evaluate {neighborhood (1ub, 2ub, 0)}] \
-        [evaluate {neighborhood (1ub, 1ub, 0)}] \
-        [evaluate {neighborhood (1ub, 3ub, 1)}]
+test Function-within-ub {Test within on unsigned bytes} {
+   list [evaluate {within (1ub, 2ub, 1)}] \
+        [evaluate {within (1ub, 2ub, 0)}] \
+        [evaluate {within (1ub, 1ub, 0)}] \
+        [evaluate {within (1ub, 3ub, 1)}]
     } {true false true false}
 
-test Function-neighborhood-fix {Test neighborhood on fixed point} {
-   list [evaluate {neighborhood (fix(1,8,4), fix(2,8,4), 1)}] \
-        [evaluate {neighborhood (fix(1,8,4), fix(2,8,4), 0)}] \
-        [evaluate {neighborhood (fix(1,8,4), fix(1,8,4), 0)}] \
-        [evaluate {neighborhood (fix(1,8,4), fix(3,8,4), 1)}]
+test Function-within-fix {Test within on fixed point} {
+   list [evaluate {within (fix(1,8,4), fix(2,8,4), 1)}] \
+        [evaluate {within (fix(1,8,4), fix(2,8,4), 0)}] \
+        [evaluate {within (fix(1,8,4), fix(1,8,4), 0)}] \
+        [evaluate {within (fix(1,8,4), fix(3,8,4), 1)}]
     } {true false true false}
 
-test Function-neighborhood-array {Test neighborhood on arrays} {
-   list [evaluate {neighborhood ({1.0, -1.0}, {1.1, -0.9}, 0.1)}] \
-        [evaluate {neighborhood ({1.0, 1.0}, {1.1, 1.0}, 0.0)}] \
-        [evaluate {neighborhood ({1.0, -2.0}, {1.0, -2.0}, 0.0)}] \
-        [evaluate {neighborhood ({1.0, -1.0}, {1.1, -1.1}, 0.05)}]
+test Function-within-array {Test within on arrays} {
+   list [evaluate {within ({1.0, -1.0}, {1.1, -0.9}, 0.1)}] \
+        [evaluate {within ({1.0, 1.0}, {1.1, 1.0}, 0.0)}] \
+        [evaluate {within ({1.0, -2.0}, {1.0, -2.0}, 0.0)}] \
+        [evaluate {within ({1.0, -1.0}, {1.1, -1.1}, 0.05)}]
     } {true false true false}
 
-test Function-neighborhood-matrix {Test neighborhood on matrices} {
-   list [evaluate {neighborhood ([1.0, -1.0], [1.1, -0.9], 0.1)}] \
-        [evaluate {neighborhood ([1.0, 1.0], [1.1, 1.0], 0.0)}] \
-        [evaluate {neighborhood ([1.0, -2.0], [1.0, -2.0], 0.0)}] \
-        [evaluate {neighborhood ([1.0, -1.0], [1.1, -1.1], 0.05)}]
+test Function-within-matrix {Test within on matrices} {
+   list [evaluate {within ([1.0, -1.0], [1.1, -0.9], 0.1)}] \
+        [evaluate {within ([1.0, 1.0], [1.1, 1.0], 0.0)}] \
+        [evaluate {within ([1.0, -2.0], [1.0, -2.0], 0.0)}] \
+        [evaluate {within ([1.0, -1.0], [1.1, -1.1], 0.05)}]
     } {true false true false}
 
-test Function-neighborhood-array {Test neighborhood on records} {
-   list [evaluate {neighborhood ({a=1.0, b=-1.0}, {a=1.1, b=-0.9}, 0.1)}] \
-        [evaluate {neighborhood ({a=1.0, b=1.0}, {a=1.1, b=1.0}, 0.0)}] \
-        [evaluate {neighborhood ({a=1.0, b=-2.0}, {a=1.0, b=-2.0}, 0.0)}] \
-        [evaluate {neighborhood ({a=1.0, b=-1.0}, {a=1.1, b=-1.1}, 0.05)}]
+test Function-within-array {Test within on records} {
+   list [evaluate {within ({a=1.0, b=-1.0}, {a=1.1, b=-0.9}, 0.1)}] \
+        [evaluate {within ({a=1.0, b=1.0}, {a=1.1, b=1.0}, 0.0)}] \
+        [evaluate {within ({a=1.0, b=-2.0}, {a=1.0, b=-2.0}, 0.0)}] \
+        [evaluate {within ({a=1.0, b=-1.0}, {a=1.1, b=-1.1}, 0.05)}]
     } {true false true false}
 
-test Function-neighborhood-misc {Test neighborhood on misc} {
-   list [evaluate {neighborhood ("a", "b", 0.0)}] \
-        [evaluate {neighborhood("a", "a", 0.0)}] \
-        [evaluate {neighborhood({a=1}, {b=1}, 1.0)}] \
-        [evaluate {neighborhood({a=1}, {a=1, b=1}, 1.0)}] \
-        [evaluate {neighborhood([1], [1, 2], 1.0)}] \
-        [evaluate {neighborhood({1}, {1, 2}, 1.0)}]
+test Function-within-misc {Test within on misc} {
+   list [evaluate {within ("a", "b", 0.0)}] \
+        [evaluate {within("a", "a", 0.0)}] \
+        [evaluate {within({a=1}, {b=1}, 1.0)}] \
+        [evaluate {within({a=1}, {a=1, b=1}, 1.0)}] \
+        [evaluate {within([1], [1, 2], 1.0)}] \
+        [evaluate {within({1}, {1, 2}, 1.0)}]
 } {false true false false false false}
 
 ####################################################################
