@@ -350,7 +350,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public boolean isReadBlocked() {
         // NOTE: This method used to be synchronized on this
-        // receiver, but since it calls synchronized methods in
+        // receiver, but since it is called by synchronized methods in
         // the director, that can cause deadlock.
         synchronized (_director) {
         	return _readBlocked;
@@ -364,7 +364,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public boolean isWriteBlocked() {
         // NOTE: This method used to be synchronized on this
-        // receiver, but since it calls synchronized methods in
+        // receiver, but since it is called by synchronized methods in
         // the director, that can cause deadlock.
         synchronized (_director) {
             return _writeBlocked;
