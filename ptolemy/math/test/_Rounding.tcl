@@ -50,6 +50,7 @@ test Rounding-1.0 {names} {
     set round_convergent [java::call ptolemy.math.Rounding forName "convergent"];
     set round_down [java::call ptolemy.math.Rounding forName "down"];
     set round_floor [java::call ptolemy.math.Rounding forName "floor"];
+    set round_general [java::call ptolemy.math.Rounding forName "general"];
     set round_half_ceiling [java::call ptolemy.math.Rounding forName "half_ceiling"];
     set round_half_down [java::call ptolemy.math.Rounding forName "half_down"];
     set round_half_even [java::call ptolemy.math.Rounding forName "half_even"];
@@ -57,6 +58,7 @@ test Rounding-1.0 {names} {
     set round_half_up [java::call ptolemy.math.Rounding getName "half_up"];
     set round_nearest [java::call ptolemy.math.Rounding getName "nearest"];
     set round_truncate [java::call ptolemy.math.Rounding getName "truncate"];
+    set round_unknown [java::call ptolemy.math.Rounding getName "unknown"];
     set round_unnecessary [java::call ptolemy.math.Rounding getName "unnecessary"];
     set round_up [java::call ptolemy.math.Rounding getName "up"];
     catch { set round_zzz [java::call ptolemy.math.Rounding getName "zzz"]; } msg
@@ -69,6 +71,7 @@ test Rounding-1.0 {names} {
 [ $round_convergent toString ] 
 [ $round_down toString ] 
 [ $round_floor toString ] 
+[ $round_general toString ] 
 [ $round_half_ceiling toString ] 
 [ $round_half_down toString ] 
 [ $round_half_even toString ] 
@@ -76,6 +79,7 @@ test Rounding-1.0 {names} {
 [ $round_half_up toString ] 
 [ $round_nearest toString ] 
 [ $round_truncate toString ] 
+[ $round_unknown toString ] 
 [ $round_unnecessary toString ] 
 [ $round_up toString ] 
 $msg "
@@ -84,6 +88,7 @@ ceiling
 half_even 
 down 
 floor 
+general 
 half_ceiling 
 half_down 
 half_even 
@@ -91,9 +96,22 @@ half_floor
 half_up 
 half_ceiling 
 floor 
+unknown 
 unnecessary 
 up 
 java.lang.IllegalArgumentException: Unknown rounding strategy "zzz". }}
+
+####################################################################
+test Overflow-1.5 {clone} {
+    set clone [$round_ceiling clone]
+    list \
+	[$clone equals $round_ceiling] \
+	[expr {[$clone hashCode] == [$round_ceiling hashCode]}] \
+	[$clone equals $round_convergent] \
+	[expr {[$clone hashCode] == [$round_convergent hashCode]}]
+} {1 1 0 0}
+
+
 
 ####################################################################
 
@@ -252,6 +270,59 @@ test Rounding-2.2 {round_floor} {
 -5 0.50000 -5 
 -5 0.50001 -5 
 -5 0.99999 -5 }}
+
+
+test Rounding-2.2.1 {round_general} {
+    list "
+[$big_pos_even toString] 0.00000 [[$round_general quantize $big_pos_even 0.00000 ] toString] 
+[$big_pos_even toString] 0.00001 [[$round_general quantize $big_pos_even 0.00001 ] toString] 
+[$big_pos_even toString] 0.49999 [[$round_general quantize $big_pos_even 0.49999 ] toString] 
+[$big_pos_even toString] 0.50000 [[$round_general quantize $big_pos_even 0.50000 ] toString] 
+[$big_pos_even toString] 0.50001 [[$round_general quantize $big_pos_even 0.50001 ] toString] 
+[$big_pos_even toString] 0.99999 [[$round_general quantize $big_pos_even 0.99999 ] toString]
+[$big_pos_odd toString] 0.00000 [[$round_general quantize $big_pos_odd 0.00000 ] toString] 
+[$big_pos_odd toString] 0.00001 [[$round_general quantize $big_pos_odd 0.00001 ] toString] 
+[$big_pos_odd toString] 0.49999 [[$round_general quantize $big_pos_odd 0.49999 ] toString] 
+[$big_pos_odd toString] 0.50000 [[$round_general quantize $big_pos_odd 0.50000 ] toString] 
+[$big_pos_odd toString] 0.50001 [[$round_general quantize $big_pos_odd 0.50001 ] toString] 
+[$big_pos_odd toString] 0.99999 [[$round_general quantize $big_pos_odd 0.99999 ] toString]
+[$big_neg_even toString] 0.00000 [[$round_general quantize $big_neg_even 0.00000 ] toString] 
+[$big_neg_even toString] 0.00001 [[$round_general quantize $big_neg_even 0.00001 ] toString] 
+[$big_neg_even toString] 0.49999 [[$round_general quantize $big_neg_even 0.49999 ] toString] 
+[$big_neg_even toString] 0.50000 [[$round_general quantize $big_neg_even 0.50000 ] toString] 
+[$big_neg_even toString] 0.50001 [[$round_general quantize $big_neg_even 0.50001 ] toString] 
+[$big_neg_even toString] 0.99999 [[$round_general quantize $big_neg_even 0.99999 ] toString]
+[$big_neg_odd toString] 0.00000 [[$round_general quantize $big_neg_odd 0.00000 ] toString] 
+[$big_neg_odd toString] 0.00001 [[$round_general quantize $big_neg_odd 0.00001 ] toString] 
+[$big_neg_odd toString] 0.49999 [[$round_general quantize $big_neg_odd 0.49999 ] toString] 
+[$big_neg_odd toString] 0.50000 [[$round_general quantize $big_neg_odd 0.50000 ] toString] 
+[$big_neg_odd toString] 0.50001 [[$round_general quantize $big_neg_odd 0.50001 ] toString] 
+[$big_neg_odd toString] 0.99999 [[$round_general quantize $big_neg_odd 0.99999 ] toString] "
+} {{
+4 0.00000 4 
+4 0.00001 4 
+4 0.49999 4 
+4 0.50000 5 
+4 0.50001 5 
+4 0.99999 5
+5 0.00000 5 
+5 0.00001 5 
+5 0.49999 5 
+5 0.50000 6 
+5 0.50001 6 
+5 0.99999 6
+-6 0.00000 -6 
+-6 0.00001 -6 
+-6 0.49999 -6 
+-6 0.50000 -5 
+-6 0.50001 -5 
+-6 0.99999 -5
+-5 0.00000 -5 
+-5 0.00001 -5 
+-5 0.49999 -5 
+-5 0.50000 -4 
+-5 0.50001 -4 
+-5 0.99999 -4 }}
 
 test Rounding-2.3 {round_half_ceiling} {
     list "
@@ -510,6 +581,58 @@ test Rounding-2.7 {round_half_up} {
 -5 0.00001 -5 
 -5 0.49999 -5 
 -5 0.50000 -5 
+-5 0.50001 -4 
+-5 0.99999 -4 }}
+
+test Rounding-2.7.5 {round_unknown} {
+    list "
+[$big_pos_even toString] 0.00000 [[$round_unknown quantize $big_pos_even 0.00000 ] toString] 
+[$big_pos_even toString] 0.00001 [[$round_unknown quantize $big_pos_even 0.00001 ] toString] 
+[$big_pos_even toString] 0.49999 [[$round_unknown quantize $big_pos_even 0.49999 ] toString] 
+[$big_pos_even toString] 0.50000 [[$round_unknown quantize $big_pos_even 0.50000 ] toString] 
+[$big_pos_even toString] 0.50001 [[$round_unknown quantize $big_pos_even 0.50001 ] toString] 
+[$big_pos_even toString] 0.99999 [[$round_unknown quantize $big_pos_even 0.99999 ] toString]
+[$big_pos_odd toString] 0.00000 [[$round_unknown quantize $big_pos_odd 0.00000 ] toString] 
+[$big_pos_odd toString] 0.00001 [[$round_unknown quantize $big_pos_odd 0.00001 ] toString] 
+[$big_pos_odd toString] 0.49999 [[$round_unknown quantize $big_pos_odd 0.49999 ] toString] 
+[$big_pos_odd toString] 0.50000 [[$round_unknown quantize $big_pos_odd 0.50000 ] toString] 
+[$big_pos_odd toString] 0.50001 [[$round_unknown quantize $big_pos_odd 0.50001 ] toString] 
+[$big_pos_odd toString] 0.99999 [[$round_unknown quantize $big_pos_odd 0.99999 ] toString]
+[$big_neg_even toString] 0.00000 [[$round_unknown quantize $big_neg_even 0.00000 ] toString] 
+[$big_neg_even toString] 0.00001 [[$round_unknown quantize $big_neg_even 0.00001 ] toString] 
+[$big_neg_even toString] 0.49999 [[$round_unknown quantize $big_neg_even 0.49999 ] toString] 
+[$big_neg_even toString] 0.50000 [[$round_unknown quantize $big_neg_even 0.50000 ] toString] 
+[$big_neg_even toString] 0.50001 [[$round_unknown quantize $big_neg_even 0.50001 ] toString] 
+[$big_neg_even toString] 0.99999 [[$round_unknown quantize $big_neg_even 0.99999 ] toString]
+[$big_neg_odd toString] 0.00000 [[$round_unknown quantize $big_neg_odd 0.00000 ] toString] 
+[$big_neg_odd toString] 0.00001 [[$round_unknown quantize $big_neg_odd 0.00001 ] toString] 
+[$big_neg_odd toString] 0.49999 [[$round_unknown quantize $big_neg_odd 0.49999 ] toString] 
+[$big_neg_odd toString] 0.50000 [[$round_unknown quantize $big_neg_odd 0.50000 ] toString] 
+[$big_neg_odd toString] 0.50001 [[$round_unknown quantize $big_neg_odd 0.50001 ] toString] 
+[$big_neg_odd toString] 0.99999 [[$round_unknown quantize $big_neg_odd 0.99999 ] toString] "
+} {{
+4 0.00000 4 
+4 0.00001 4 
+4 0.49999 4 
+4 0.50000 5 
+4 0.50001 5 
+4 0.99999 5
+5 0.00000 5 
+5 0.00001 5 
+5 0.49999 5 
+5 0.50000 6 
+5 0.50001 6 
+5 0.99999 6
+-6 0.00000 -6 
+-6 0.00001 -6 
+-6 0.49999 -6 
+-6 0.50000 -5 
+-6 0.50001 -5 
+-6 0.99999 -5
+-5 0.00000 -5 
+-5 0.00001 -5 
+-5 0.49999 -5 
+-5 0.50000 -4 
 -5 0.50001 -4 
 -5 0.99999 -4 }}
 
