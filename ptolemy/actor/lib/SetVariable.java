@@ -35,11 +35,13 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
 
@@ -131,23 +133,38 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener {
             ChangeRequest request =
                 new ChangeRequest(this, "SetVariable change request") {
                 protected void _execute() throws IllegalActionException {
-                    Variable variable =
-                        (Variable) container.getAttribute(
-                            _variableName,
-                            Variable.class);
+                    Attribute variable = container.getAttribute(_variableName);
                     if (variable == null) {
                         try {
-                            variable = new Variable(container, _variableName);
-                            variable.setPersistent(false);
+                            workspace().getWriteAccess();
+                            // Have to do this again after getting write access.
+                            variable = container.getAttribute(_variableName);
+                            if (variable == null) {
+                                variable = new Variable(container, _variableName);
+                                variable.setPersistent(false);
+                            }
                         } catch (NameDuplicationException ex) {
                             throw new IllegalActionException(SetVariable.this, ex,
                             "Cannot create variable named: " + _variableName);
+                        } finally {
+                            workspace().doneWriting();
                         }
                     }
-                    variable.setToken(value);
-                    // NOTE: If we don't call validate(), then the
-                    // change will not propagate to dependents.
-                    variable.validate();
+                    if (variable instanceof Variable) {
+                        ((Variable)variable).setToken(value);
+                        // NOTE: If we don't call validate(), then the
+                        // change will not propagate to dependents.
+                        ((Variable)variable).validate();
+                    } else if (variable instanceof Settable) {
+                        ((Settable)variable).setExpression(value.toString());
+                        // NOTE: If we don't call validate(), then the
+                        // change will not propagate to dependents.
+                        ((Settable)variable).validate();
+                    } else {
+                        throw new IllegalActionException(SetVariable.this,
+                        "Cannot set the value of the variable named: "
+                        + _variableName);
+                    }
                 }
             };
             // To prevent prompting for saving the model, mark this
@@ -173,21 +190,26 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener {
             throw new IllegalActionException(this, "No container.");
         }
         _variableName = variableName.getExpression();
-        Variable variable =
-            (Variable) container.getAttribute(_variableName, Variable.class);
+        Attribute variable = container.getAttribute(_variableName);
         if (variable == null) {
             try {
-                variable = new Variable(this, _variableName);
+                workspace().getWriteAccess();
+                // Have to do this again after getting write access.
+                variable = container.getAttribute(_variableName);
+                if (variable == null) {
+                    variable = new Variable(container, _variableName);
+                    variable.setPersistent(false);
+                }
             } catch (NameDuplicationException ex) {
-                throw new IllegalActionException(
-                    this, ex,
-                    "Existing attribute that is not a Variable with specified name: "
-                    + _variableName
-                    + ". It is: "
-                    + container.getAttribute(_variableName));
+                throw new IllegalActionException(SetVariable.this, ex,
+                "Cannot create variable named: " + _variableName);
+            } finally {
+                workspace().doneWriting();
             }
         }
-        variable.setTypeSameAs(input);
+        if (variable instanceof Variable) {
+            ((Variable)variable).setTypeSameAs(input);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
