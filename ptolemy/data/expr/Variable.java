@@ -835,7 +835,9 @@ public class Variable extends Attribute implements Typeable {
      *  of this variable.  If the value has been set by an expression,
      *  then return that expression.  If the value has been set via
      *  a token, then return a string representation of the value of that
-     *  token.  If neither, then return an empty string.
+     *  token that can be passed to the expression language in order to 
+     *  return a token with the same value.  If neither, then return an 
+     *  empty string.
      *  @return A string representation of this variable.
      */
     public String stringRepresentation() {
@@ -846,7 +848,13 @@ public class Variable extends Attribute implements Typeable {
                 token = getToken();
             } catch (IllegalActionException ex) {}
             if (token != null) {
-                value = token.toString();
+                if(token instanceof ptolemy.data.StringToken) {
+                    // Double quotes must be added to the value of a 
+                    // string token.
+                    value = "\"" + token.toString() + "\"";
+                } else {
+                    value = token.toString();
+                }
             }
         }
         if (value == null) {
