@@ -473,16 +473,20 @@ public class CompositeEntity extends ComponentEntity {
             _workspace.getReadAccess();
             LinkedList result = new LinkedList();
 
-            Iterator entities = _containedEntities.elementList().iterator();
+            // This might be called from within a superclass constructor,
+            // in which case there are no contained entities yet.
+            if (_containedEntities != null) {
+                Iterator entities = _containedEntities.elementList().iterator();
 
-            while (entities.hasNext()) {
-                ComponentEntity entity = (ComponentEntity)entities.next();
-                if (!entity.isClassDefinition()) {
-                    if (entity.isOpaque()) {
-                        result.add(entity);
-                    } else {
-                        result.addAll(
-                                ((CompositeEntity)entity).deepEntityList());
+                while (entities.hasNext()) {
+                    ComponentEntity entity = (ComponentEntity)entities.next();
+                    if (!entity.isClassDefinition()) {
+                        if (entity.isOpaque()) {
+                            result.add(entity);
+                        } else {
+                            result.addAll(
+                                    ((CompositeEntity)entity).deepEntityList());
+                        }
                     }
                 }
             }
@@ -552,11 +556,15 @@ public class CompositeEntity extends ComponentEntity {
         try {
             _workspace.getReadAccess();
             List result = new LinkedList();
-            Iterator entities = _containedEntities.elementList().iterator();
-            while (entities.hasNext()) {
-                ComponentEntity entity = (ComponentEntity)entities.next();
-                if (filter.isInstance(entity) && !entity.isClassDefinition()) {
-                    result.add(entity);
+            // This might be called from within a superclass constructor,
+            // in which case there are no contained entities yet.
+            if (_containedEntities != null) {
+                Iterator entities = _containedEntities.elementList().iterator();
+                while (entities.hasNext()) {
+                    ComponentEntity entity = (ComponentEntity)entities.next();
+                    if (filter.isInstance(entity) && !entity.isClassDefinition()) {
+                        result.add(entity);
+                    }
                 }
             }
             return result;
@@ -800,6 +808,11 @@ public class CompositeEntity extends ComponentEntity {
     public ComponentEntity getEntity(String name) {
         try {
             _workspace.getReadAccess();
+            // This might be called from within a superclass constructor,
+            // in which case there are no contained entities yet.
+            if (_containedEntities == null) {
+                return null;
+            }
             String[] subnames = _splitName(name);
             if (subnames[1] == null) {
                 return (ComponentEntity)_containedEntities.get(name);
