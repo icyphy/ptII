@@ -352,7 +352,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		lib/jython.jar \
 		lib/mapss.jar \
 		lib/ptCal.jar \
-		lib/saxon.jar
+		lib/saxon.jar \
 		lib/sootclasses.jar \
 		lib/synthesis.jar \
 		mk/ptII.mk \
