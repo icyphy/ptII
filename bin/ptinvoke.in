@@ -225,7 +225,7 @@ esac
 
 # Special check for Jacl with a better error message
 if [ "$jarfile" = "$PTJACL_JAR" ]; then
-    if [ ! -f $PTJACL_JAR ]; then
+    if [ ! -f "$PTJACL_JAR" ]; then
 	echo "$0: Warning '$PTJACL_JAR' not found."
 	echo "    ptjacl.jar can be found at"
 	echo "	  http://ptolemy.eecs.berkeley.edu/~cxh/java/jacl/ptjacl.html"
