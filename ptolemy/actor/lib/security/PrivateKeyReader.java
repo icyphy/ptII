@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
