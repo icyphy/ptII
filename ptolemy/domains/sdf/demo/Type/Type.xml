@@ -30,7 +30,7 @@ of types through the system.
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">NaT</text>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">unknown</text>
            </svg>
            </configure>
         </property>
@@ -41,7 +41,7 @@ of types through the system.
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">NaT</text>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">unknown</text>
            </svg>
            </configure>
         </property>
@@ -52,7 +52,7 @@ of types through the system.
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">NaT</text>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">unknown</text>
            </svg>
            </configure>
         </property>
@@ -63,7 +63,7 @@ of types through the system.
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">NaT</text>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">unknown</text>
            </svg>
            </configure>
         </property>
@@ -74,7 +74,7 @@ of types through the system.
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">NaT</text>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">unknown</text>
            </svg>
            </configure>
         </property>
@@ -85,7 +85,7 @@ of types through the system.
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">NaT</text>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">unknown</text>
            </svg>
            </configure>
         </property>
@@ -96,7 +96,7 @@ of types through the system.
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">NaT</text>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">unknown</text>
            </svg>
            </configure>
         </property>
@@ -107,7 +107,7 @@ of types through the system.
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">NaT</text>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">unknown</text>
            </svg>
            </configure>
         </property>
@@ -118,7 +118,7 @@ of types through the system.
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">NaT</text>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">unknown</text>
            </svg>
            </configure>
         </property>
@@ -129,7 +129,7 @@ of types through the system.
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">NaT</text>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">unknown</text>
            </svg>
            </configure>
         </property>
@@ -140,7 +140,7 @@ of types through the system.
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">NaT</text>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:red" y="20">unknown</text>
            </svg>
            </configure>
         </property>
