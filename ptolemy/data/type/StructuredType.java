@@ -44,7 +44,7 @@ All the types of the same structured type (e.g. all the array types)
 must form a lattice. Each instance of a structured type must know how
 to compare itself with another instance of the same structured type,
 and compute the least upper bound and greatest lower bound. This
-interface defines methods for these operations.
+class defines methods for these operations.
 <p>
 Subclasses should override clone() to do a deep cloning.
 
@@ -65,19 +65,19 @@ public abstract class StructuredType implements Type {
 
     /** Set the elements that have declared type BaseType.ANY to the
      *  specified type.
-     *  This method is called at the beginning of type resolution.
+     *  @param type A Type.
      */
-    public abstract void initialize(Type t);
+    public abstract void initialize(Type type);
 
     /** Update this StructuredType to the specified Structured Type.
      ** The specified type must have the same structure as this type.
      *  This method will only update the component type that is BaseType.ANY,
      *  and leave the constant part of this type intact.
-     *  @param st A StructuredType.
+     *  @param newType A StructuredType.
      *  @exception IllegalActionException If the specified type has a
      *   different structure.
      */
-    public abstract void updateType(StructuredType st)
+    public abstract void updateType(StructuredType newType)
             throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
@@ -91,12 +91,12 @@ public abstract class StructuredType implements Type {
      *  ptolemy.graph.CPO.INCOMPARABLE, indicating this type is lower
      *  than, equal to, higher than, or incomparable with the
      *  specified type in the type hierarchy, respectively.
-     *  @param t a StructuredType.
+     *  @param type a StructuredType.
      *  @return An integer.
      *  @exception IllegalArgumentException If the specified type is
      *   not the same structured type as this one.
      */
-    protected abstract int _compare(StructuredType t);
+    protected abstract int _compare(StructuredType type);
 
     /** Return a static instance of this structured type. The return
      *  value is used by TypeLattice to represent this type.
@@ -107,21 +107,21 @@ public abstract class StructuredType implements Type {
     /** Return the greatest lower bound of this type with the specified
      *  type. The specified type must be of the same structured type,
      *  otherwise an exception will be thrown.
-     *  @param t a StructuredType.
+     *  @param type a StructuredType.
      *  @return a StructuredType.
      *  @exception IllegalArgumentException If the specified type is
      *   not the same structured type as this one.
      */
-    protected abstract StructuredType _greatestLowerBound(StructuredType t);
+    protected abstract StructuredType _greatestLowerBound(StructuredType type);
 
     /** Return the least upper bound of this type with the specified
      *  type. The specified type must be of the same structured type,
      *  otherwise an exception will be thrown.
-     *  @param t a StructuredType.
+     *  @param type a StructuredType.
      *  @return a StructuredType.
      *  @exception IllegalArgumentException If the specified type is
      *   not the same structured type as this one.
      */
-    protected abstract StructuredType _leastUpperBound(StructuredType t);
+    protected abstract StructuredType _leastUpperBound(StructuredType type);
 }
 

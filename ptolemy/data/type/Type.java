@@ -38,8 +38,6 @@ import ptolemy.data.Token;
 //// Type
 /**
 An interface representing the type of a Token.
-All instances of Type must be immutable to avoid circular containment
-in structured types.
 
 @author Yuhong Xiong, Steve Neuendorffer
 @version $Id$
@@ -54,12 +52,12 @@ public interface Type {
 
     /** Convert the specified token into a token having the type
      *  represented by this object.
-     *  @param t a token.
+     *  @param token a token.
      *  @return a token.
      *  @exception IllegalActionException If lossless conversion
      *   cannot be done.
      */
-    public Token convert(Token t) throws IllegalActionException;
+    public Token convert(Token token) throws IllegalActionException;
 
     /** Test if the argument token is compatible with this type.
      *  Compatible is defined as follows: If this type is a constant, the
@@ -67,10 +65,10 @@ public interface Type {
      *  of this type; If this type is a variable, the argument is compatible
      *  if its type is a substitution instance of this type, or if it can
      *  be converted losslessly to a substitution instance of this type.
-     *  @param t A Token.
+     *  @param token A Token.
      *  @return True if the argument is compatible with this type.
      */
-    public boolean isCompatible(Token t);
+    public boolean isCompatible(Token token);
 
     /** Test if this Type is a constant. A Type is a constant if it
      *  does not contain BaseType.NAT in any level within it.
@@ -79,11 +77,11 @@ public interface Type {
     public boolean isConstant();
 
     /** Determine if the argument represents the same type as this object.
-     *  @param t A Type.
+     *  @param type A Type.
      *  @return True if the argument represents the same type as this
      *   object; false otherwise.
      */
-    public boolean isEqualTo(Type t);
+    public boolean isEqualTo(Type type);
 
     /** Determine if this Type corresponds to an instantiable token
      *  class.
@@ -97,8 +95,8 @@ public interface Type {
      *  either the same as this type, or it must be a type that can be
      *  obtained by replacing the BaseType.NAT component of this type by
      *  another type.
-     *  @parameter type A Type.
-     *  @return True is the argument is a substitution instance of this type.
+     *  @param type A Type.
+     *  @return True if the argument is a substitution instance of this type.
      */
     public boolean isSubstitutionInstance(Type type);
 
