@@ -62,6 +62,9 @@ import thales.vergil.navigable.NavigationTreeModel;
    @Pt.AcceptedRating Red (cxh)
 */
 public class NavigableEffigy extends PtolemyEffigy {
+    
+    // FIXME: This class has a huge amount of code duplication
+    // with PtolemyEffigy.  This makes it very difficult to maintain.
 
     private NavigationTreeModel _navigModel = null;
 
@@ -175,8 +178,9 @@ public class NavigableEffigy extends PtolemyEffigy {
          *  <i>input</i> URL. If the <i>input</i> URL is null, then
          *  create a blank effigy.
          *  The blank effigy will have a new model associated with it.
-         *  If this effigy factory contains an entity named "blank", then
-         *  the new model will be a clone of that entity.  Otherwise,
+         *  If this effigy factory contains an entity or an attribute
+         *  named "blank", then
+         *  the new model will be a clone of that object.  Otherwise,
          *  it will be an instance of TypedCompositeActor.
          *  If the URL does not end with extension ".xml" or ".moml", then
          *  return null.  If the URL points to an XML file that is not
@@ -207,9 +211,18 @@ public class NavigableEffigy extends PtolemyEffigy {
                 // If this factory contains an entity called "blank", then
                 // clone that.
                 NamedObj entity = getEntity("blank");
+                Attribute attribute = getAttribute("blank");
                 NamedObj newModel;
                 if (entity != null) {
                     newModel = (NamedObj) entity.clone(new Workspace());
+                    // The cloning process results an object that defers change
+                    // requests.  By default, we do not want to defer change
+                    // requests, but more importantly, we need to execute
+                    // any change requests that may have been queued
+                    // during cloning. The following call does that.
+                    newModel.setDeferringChangeRequests(false);
+                } else if (attribute != null) {
+                    newModel = (NamedObj)attribute.clone(new Workspace());
                     // The cloning process results an object that defers change
                     // requests.  By default, we do not want to defer change
                     // requests, but more importantly, we need to execute
