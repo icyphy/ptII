@@ -67,12 +67,12 @@ JSRCS = \
 	Executable.java \
 	ExecutionListener.java \
 	FiringEvent.java \
+	FunctionDependency.java \
+	FunctionDependencyOfAtomicActor.java \
+	FunctionDependencyOfCompositeActor.java \
 	GraphReader.java \
-	HasIODependencies.java \
+	HasFunctionDependencies.java \
 	InvariantViolationException.java \
-	IODependency.java \
-	IODependencyOfAtomicActor.java \
-	IODependencyOfCompositeActor.java \
 	IOPort.java \
 	IORelation.java \
 	Mailbox.java \

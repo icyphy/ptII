@@ -47,7 +47,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	IODependencyOfModalModel.java \
+	FunctionDependencyOfModalModel.java \
 	ModalController.java \
 	ModalModel.java \
 	ModalPort.java \
