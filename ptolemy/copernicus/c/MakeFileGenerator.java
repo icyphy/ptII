@@ -75,8 +75,13 @@ public class MakeFileGenerator {
         // Garbage collection.
         String gcDir = Options.v().get("gcDir");
         boolean gc = !(gcDir.equals(""));
-
         StringBuffer code = new StringBuffer();
+        boolean isStatic = true;
+
+        if (java.io.File.pathSeparatorChar != ';') {
+            // We are not under windows, so use dynamic linking
+            isStatic = false;
+        }
 
         code.append("#Standard variables\n");
         code.append("PTII = ../../../..\n");
@@ -96,12 +101,28 @@ public class MakeFileGenerator {
         if (gc) {
             code.append("\n# Garbage Collector.\n");
             code.append("GC_LIB = $(PTII)/lib/libgc.a\n");
+            code.append("# Uncomment the next line for dynamic linking\n");
+            if (isStatic) {
+                code.append("#");
+            }
+            // FIXME: cd to $(PTII) so that we don't end up with a relative
+            // path in the ld path under Solaris which will cause problems
+            // when we move the executable around
+            code.append("GC_LIB = -Wl,-R`cd $(PTII); pwd`/lib -L$(PTII)/lib -lgc\n");
             code.append("GC_DIR = " + gcDir + "\n\n");
         }
 
+        code.append("STATIC= -static");
+        code.append("# Uncomment the next line for dynamic linking\n");
+        if (isStatic) {
+            code.append("#");
+        }
+        code.append("STATIC=\n");
+
         // The -g flag is for gdb debugging.
         //code.append("CFLAGS = -O2 -static -s -Wall -pedantic -I .");
-        code.append("CFLAGS = -g -static -Wall -pedantic -I .");
+        code.append("CFLAGS = -g $(STATIC) -Wall -pedantic -I .");
+
         if (gc) {
             code.append(" -DGC");
         }
