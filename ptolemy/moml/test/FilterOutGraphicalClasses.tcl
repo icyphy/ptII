@@ -168,7 +168,7 @@ proc createAndExecute {file} {
     global KNOWN_FAILED
     #java::new ptolemy.actor.gui.MoMLSimpleApplication $file
     set parser [java::new ptolemy.moml.MoMLParser]
-    $parser setMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
+    $parser setMoMLFilter [java::new ptolemy.moml.FilterBackwardCompatibility]
     set namedObj [$parser parseFile $file]
     set toplevel [java::cast ptolemy.actor.CompositeActor $namedObj]
 
@@ -201,6 +201,8 @@ proc createAndExecute {file} {
     }
 
 
+    #set newMoML [$toplevel exportMoML]
+    #puts $newMoML
 
     set workspace [$toplevel workspace]
     set manager [java::new ptolemy.actor.Manager \
@@ -208,10 +210,13 @@ proc createAndExecute {file} {
     
     $toplevel setManager $manager
     $manager execute
+
 }
+
 
 # Find all the files in the compat directory
 
+#foreach file compat/ComplexToCartesianAndBack.xml {
 foreach file [glob compat/*.xml] {
     puts "------------------ testing $file"
     test "Auto" "Automatic test in file $file" {
