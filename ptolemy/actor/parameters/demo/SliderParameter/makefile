@@ -32,7 +32,7 @@
 ME =		ptolemy/actor/parameters/demo/SliderParameter
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
