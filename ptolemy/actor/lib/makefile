@@ -126,6 +126,7 @@ JSRCS = \
 	MathFunction.java \
 	MaxIndex.java \
 	Maximum.java \
+	MaximumElement.java \
 	Minimum.java \
 	MonitorValue.java \
         Multiplexor.java \
