@@ -77,6 +77,11 @@ FilterOutGraphicalClasses.</text></svg></configure>
 #
 test FilterOutGraphicalClasses-1.1 {This annotation already has a _hideName} { 
     set parser [java::new ptolemy.moml.MoMLParser]
+
+    # The list of filters is static, so we reset it in case there
+    # filters were already added.
+    $parser setMoMLFilters [java::null]
+
     set filter [java::new ptolemy.moml.FilterOutGraphicalClasses]
 
     # ptolemy.copernicus.kernel.KernelMain does this
@@ -91,7 +96,7 @@ test FilterOutGraphicalClasses-1.1 {This annotation already has a _hideName} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FilterOutGraphicalClassesHide" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">

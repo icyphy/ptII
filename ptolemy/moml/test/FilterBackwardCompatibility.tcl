@@ -62,6 +62,11 @@ test FilterBackwardCompatibility-1.1 {Const: added an _icon} {
     # the nightly build
     
     set parser [java::new ptolemy.moml.MoMLParser]
+
+    # The list of filters is static, so we reset it in case there
+    # filters were already added.
+    $parser setMoMLFilters [java::null]
+
     $parser addMoMLFilter [java::new ptolemy.moml.FilterBackwardCompatibility]
 
     #$parser addMoMLFilter [java::new ptolemy.moml.filter.AddEditorFactory]
@@ -496,8 +501,13 @@ proc createAndExecute {file} {
     
     #java::new ptolemy.actor.gui.MoMLSimpleApplication $file
     set parser [java::new ptolemy.moml.MoMLParser]
+
+    # The list of filters is static, so we reset it in case there
+    # filters were already added.
+    $parser setMoMLFilters [java::null]
     $parser addMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
     $parser addMoMLFilter [java::new ptolemy.moml.FilterBackwardCompatibility]
+
     set namedObj [$parser parseFile $file]
     set toplevel [java::cast ptolemy.actor.CompositeActor $namedObj]
 
