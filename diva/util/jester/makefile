@@ -1,4 +1,4 @@
-# Makefile for util classes and packages-Ptolemy II specific version of Diva
+# Makefile for util/jester classes - Ptolemy II specific version of Diva
 #
 # @Version: $Id$
 # @Authors: Christopher Hylands (makefile only)
@@ -28,12 +28,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		diva/util
+ME =		diva/util/jester
 
-DIRS = 		aelfred java2d xml jester test
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../..
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -42,42 +42,18 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	util
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	aelfred/aelfred.jar \
-	java2d/java2d.jar \
-	xml/xml.jar
-
-# Don't include jester in the jar file, jester is the diva test harness
-#	jester/jester.xml
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	jester
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	ArrayIterator.java \
-	BasicPropertyContainer.java \
-	CompoundIterator.java \
-	Filter.java \
-	FilteredArrayIterator.java \
-	FilteredIterator.java \
-	IteratorAdapter.java \
-	IteratorIterator.java \
-	IteratorUtilities.java \
-	LoggableOp.java \
-	ModelParser.java \
-	ModelWriter.java \
-	NullArrayIterator.java \
-	NullIterator.java \
-	PropertyChangeMulticaster.java \
-	PropertyContainer.java \
-	ProxyIterator.java \
-	ReverseIterator.java \
-	SemanticObjectContainer.java \
-	UnitIterator.java \
-	UserObjectContainer.java
+	EventPlayer.java \
+	EventRecorder.java \
+	TestCase.java \
+	TestFailedException.java \
+	TestHarness.java \
+	TestSuite.java \
+	TestUtilities.java
+
 
 EXTRA_SRCS =	$(JSRCS)
 
