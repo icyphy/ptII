@@ -423,6 +423,22 @@ public final class IntMatrixToken extends MatrixToken {
 	return new IntMatrixToken(result);
     }
 
+    /** Return a String representing the value of this token.
+     */
+    public String toString() {
+	String s = "{\n";
+	for (int i = 0; i < _rowCount; i++) {
+	    s += "{"; 
+            for (int j = 0; j < _columnCount; j++) {
+                s += _value[i * _columnCount + j] + ", ";
+            }
+	    s += "}\n";
+        }
+	s += "}";
+	return s;
+    }
+
+
     /** Return a new Token representing the additive identity.
      *  The returned token contains a matrix whose elements are
      *  all zero, and the size of the matrix is the same as the
