@@ -255,8 +255,8 @@ awk 'BEGIN {
     # FIXME: set to Sin
     map["Sin"] = "ptolemy.actor.lib.TrigFunction"
     # FIXME Leave off sampleTime, convert integers to doubles
-    map["Step"] = "ptolemy.domains.ct.lib.ContinuousClock"
-    #map["Step"] = "vendors.ecsl_dp.ptolemy.Step"
+    #map["Step"] = "ptolemy.domains.ct.lib.ContinuousClock"
+    map["Step"] = "vendors.ecsl_dp.ptolemy.ECSLStep"
     #map["Sum"] = "ptolemy.actor.lib.AddSubtract"
     map["Sum"] = "vendors.ecsl_dp.ptolemy.ECSLSum"
     map["Switch"] = "ptolemy.actor.lib.Switch"

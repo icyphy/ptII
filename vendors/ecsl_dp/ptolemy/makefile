@@ -52,6 +52,7 @@ PTCLASSJAR =    ecslptolemy.jar
 JSRCS = \
         ECSLGain.java \
 	ECSLIntegrator.java \
+	ECSLStep.java \
 	ECSLSum.java
 
 OTHER_FILES_TO_BE_JARED = \

@@ -1,4 +1,4 @@
-/* An actor that outputs a scaled version of the input for use with ECSL.
+/* A continuous clock source for use with ECSL.
 
 Copyright (c) 2004 The Regents of the University of California.
 All rights reserved.
@@ -34,6 +34,7 @@ import ptolemy.actor.lib.Scale;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.ct.lib.ContinuousClock;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -41,9 +42,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
-//// Gain
+//// ECSLStep
 /**
-   An actor that outputs a scaled version of the input for use with ECSL.
+   A continuous clock source for use with ECSL.
 
    @author Christopher Brooks.
    @version $Id$
@@ -52,7 +53,7 @@ import ptolemy.kernel.util.Settable;
    @Pt.AcceptedRating Red (cxh)
 */
 
-public class ECSLGain extends Scale {
+public class ECSLStep extends ContinuousClock {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -63,28 +64,28 @@ public class ECSLGain extends Scale {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public ECSLGain(CompositeEntity container, String name)
+    public ECSLStep(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input.setTypeEquals(BaseType.DOUBLE);
-        output.setTypeEquals(BaseType.DOUBLE);
 
-        // Hide the factor port.
-        factor.setVisibility(Settable.EXPERT);
-        factor.setTypeEquals(BaseType.DOUBLE);
-
-        Gain = new Parameter(this, "Gain");
-        Gain.setTypeEquals(BaseType.DOUBLE);
-        Gain.setExpression("1.0");
+        After = new Parameter(this, "After");
+ 
+        // Hide the SampleTime port.
+        SampleTime = new Parameter(this, "SampleTime");
+        SampleTime.setVisibility(Settable.EXPERT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
 
-    /** The Gain.
+    /** After.
      */
-    public Parameter Gain;
+    public Parameter After;
+
+    /** The sample time.  This parameter is hidden.
+     */
+    public Parameter SampleTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -95,8 +96,9 @@ public class ECSLGain extends Scale {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == Gain) {
-            factor.setToken(Gain.getToken());
+        if (attribute == After) {
+            // FIXME: Ther is probably a better way to do this.
+            values.setExpression("{0.0, " + After.getToken());
         } else {
             super.attributeChanged(attribute);
         }
