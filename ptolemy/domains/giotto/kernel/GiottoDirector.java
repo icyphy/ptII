@@ -420,13 +420,13 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		    while (inPorts.hasNext()) {
 			TypedIOPort port = (TypedIOPort) inPorts.next();
 			if (outParas == "") {
-			    typedOutParas += port.getTypeTerm()
+			    typedOutParas += port.getType()
                                 + " "
                                 + port.getName();
 			    outParas += port.getName();
 			} else {
 			    typedOutParas += ", "
-                                + port.getTypeTerm()
+                                + port.getType()
                                 + " "
                                 + port.getName();
 			    outParas += ", " + port.getName();
