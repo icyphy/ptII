@@ -69,7 +69,7 @@ public class SDFApplet extends PtolemyApplet {
             pinfo[i] = basepinfo[i];
         }
         String newinfo[][] = {
-            {"iterations", "", "number of interations"},
+            {"iterations", "", "number of iterations"},
             {"defaultiterations", "1", "default number of iterations"}
         };
         pinfo[basepinfo.length] = newinfo[0];
