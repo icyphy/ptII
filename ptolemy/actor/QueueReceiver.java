@@ -130,12 +130,20 @@ public class QueueReceiver implements Receiver {
         return _container;
     }
 
-    /** Return true if put() will succeed in accepting a token. */
+    /** Return true if put() will succeed in accepting a token.
+     *
+     *  @exception IllegalActionException If the Receiver implementation
+     *  does not support this query.
+     */
     public boolean hasRoom() throws IllegalActionException {
         return !_queue.full();
     }
 
-    /** Return true if get() will succeed in returning a token. */
+    /** Return true if get() will succeed in returning a token.
+     *
+     *  @exception IllegalActionException If the Receiver implementation
+     *  does not support this query.
+     */
     public boolean hasToken() throws IllegalActionException {
         return _queue.size() > 0;
     }
