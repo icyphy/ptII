@@ -379,7 +379,7 @@ GraphicalLocator)</text></svg></configure>
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0000000000003, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[146.7911113762055, 171.4424780626906]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -818,8 +818,8 @@ location can be found, then plot that location.</text></svg></configure>
 <title>Detected Sound Positions</title>
 <xLabel>meters</xLabel>
 <yLabel>meters</yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="500.0"/>
+<yRange min="-500.0" max="0.0"/>
 <noGrid/>
 <default connected="no" marks="dots"/>
 </plot>?>
