@@ -113,14 +113,13 @@ test FSMDirector-4.1 {test action methods} {
     [java::field [java::cast ptolemy.actor.lib.Source $clk] output] link $r0
     [java::field [java::cast ptolemy.actor.lib.Source $src] trigger] link $r0
     [java::field $src step] setExpression "3"
-    set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
-    set dir [java::new ptolemy.domains.fsm.kernel.FSMDirector $e1 dir]
+    set e1 [java::new ptolemy.domains.fsm.modal.ModalModel $e0 e1]
+    set dir [java::cast ptolemy.domains.fsm.kernel.FSMDirector [$e1 getDirector]]
     set e2 [java::new ptolemy.actor.lib.Const $e1 e2]
     set tok [java::new {ptolemy.data.IntToken int} 6]
     [java::field $e2 value] setToken $tok
-    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e1 fsm]
-    [java::field $dir controllerName] setExpression fsm
-    set p0 [java::new ptolemy.actor.TypedIOPort $e1 p0]
+    set fsm [$e1 getController]
+    set p0 [java::new ptolemy.domains.fsm.modal.ModalPort $e1 p0]
     $p0 setInput true
     set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
     [java::field [java::cast ptolemy.actor.lib.Source $src] output] link $r1
@@ -134,7 +133,7 @@ test FSMDirector-4.1 {test action methods} {
     $p0 link $r2
     $p1 link $r2
     [java::field [java::cast ptolemy.actor.lib.Source $e2] output] link $r2
-    set p3 [java::new ptolemy.actor.TypedIOPort $e1 p3]
+    set p3 [java::new ptolemy.domains.fsm.modal.ModalPort $e1 p3]
     $p3 setOutput true
     $p3 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
     set r3 [java::new ptolemy.actor.TypedIORelation $e1 r3]
@@ -180,10 +179,9 @@ test FSMDirector-4.1 {test action methods} {
 #
 test FSMDirector-5.1 {test fireAt} {
     set e0 [deModel 3.0]
-    set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
-    set dir [java::new ptolemy.domains.fsm.kernel.FSMDirector $e1 dir]
-    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e1 fsm]
-    [java::field $dir controllerName] setExpression fsm
+    set e1 [java::new ptolemy.domains.fsm.modal.ModalModel $e0 e1]
+    set dir [java::cast ptolemy.domains.fsm.kernel.FSMDirector [$e1 getDirector]]
+    set fsm [$e1 getController]
     set p2 [java::new ptolemy.actor.TypedIOPort $fsm p2]
     $p2 setOutput true
     $p2 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
@@ -297,14 +295,12 @@ test FSMDirector-7.1 {test clone a modal model} {
     [java::field [java::cast ptolemy.actor.lib.Source $src] trigger] link $r0
     [java::field $src step] setExpression "3"
 
-    set e1 [java::new ptolemy.actor.TypedCompositeActor]
-    $e1 setName e1
-    set dir [java::new ptolemy.domains.fsm.kernel.FSMDirector $e1 dir]
+    set e1 [java::new ptolemy.domains.fsm.modal.ModalModel $e0 e1]
+    set dir [java::cast ptolemy.domains.fsm.kernel.FSMDirector [$e1 getDirector]]
     set e2 [java::new ptolemy.actor.lib.Const $e1 e2]
     set tok [java::new {ptolemy.data.IntToken int} 6]
     [java::field $e2 value] setToken $tok
-    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e1 fsm]
-    [java::field $dir controllerName] setExpression fsm
+    set fsm [$e1 getController]
     set p0 [java::new ptolemy.actor.TypedIOPort $e1 p0]
     $p0 setInput true
     set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
@@ -349,8 +345,9 @@ test FSMDirector-7.1 {test clone a modal model} {
     set act2 [java::field $t2 outputActions]
     $act2 setExpression "p2 = 0"
 
-    set e1clone [java::cast ptolemy.actor.TypedCompositeActor \
+    set e1clone [java::cast ptolemy.domains.fsm.modal.ModalModel \
             [$e1 clone]]
+    $e1clone setName e1clone
     $e1clone setContainer $e0
     set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
     [java::field [java::cast ptolemy.actor.lib.Source $src] output] link $r1
