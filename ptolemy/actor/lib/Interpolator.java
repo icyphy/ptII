@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating 
-@AcceptedRating 
+@ProposedRating red (sarah@eecs.berkeley.edu)
+@AcceptedRating red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -48,16 +48,16 @@ when those values should be produced.  The <i>order</i> parameter
 specifies which order of interpolation to apply  whenever the 
 iteration count does not match an index in <i>indexes</i>. 
 The values and indexes parameters must both contain one dimensional 
-arrays, and have equal lengths or an exception will be thrown by the 
-attributeChanged() method.  The <i>indexes</i> array must be increasing 
+arrays, and have equal lengths or an exception will be thrown.
+The <i>indexes</i> array must be increasing 
 and non-negative and the <i>order</i> must be 0, 1 or 3, or an exception 
 will be thrown by attributeChanged().
 <p>
 The <i>values</i> and <i>indexes</i> parameters have type DoubleMatrixToken 
 and IntMatrixToken respectively; the <i>indexes</i> order is an integer.
 If not set by the user, <i>values</i> contains by default a DoubleMatrix 
-of form {{1,0}} (one row, two columns, with values 1 and 0).  Similarly, 
-by default <i>indexes</i> contains an IntMatrixToken containing {{0,1}}.  
+of form [1.0, 0.0] (one row, two columns, with values 1.0 and 0.0).  Similarly, 
+by default <i>indexes</i> contains an IntMatrixToken containing [0, 1].  
 The default for order is zero.
 <p>
 This actor counts iterations.  Whenever the iteration count matches an entry 
@@ -87,8 +87,14 @@ public class Interpolator extends SequenceSource {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        /** construct the parameters containing the values and indices.  attributeChanged will create transient arrays containing the values and indices.  these arrays pad the given values array with zeros on either end, and the given indices array with consecutive indices on each end.  this facilitates later computations (approximations for inter-index iteration numbers depend at most on values corresponding to the two nearest indices on each side of the iteration number).
-         */
+        // construct the parameters containing the values and indices.
+	// attributeChanged will create transient arrays containing the 
+	// values and indices.  these arrays pad the given values array 
+	// with zeros on either end, and the given indices array with 
+	// consecutive indices on each end.  this facilitates later 
+	// computations (approximations for inter-index iteration numbers 
+	// depend at most on values corresponding to the two nearest indices 
+	// on each side of the iteration number).
  
         indexes = new Parameter(this, "indexes", defaultIndexToken);
         indexes.setTypeEquals(BaseType.INT_MATRIX);
@@ -109,33 +115,33 @@ public class Interpolator extends SequenceSource {
     public Parameter indexes;
 
     /** The values that will be produced at the specified indexes.
+     *  This parameter can contain any MatrixToken.
      */
     public Parameter values;
 
     /** The order of interpolation for non-index iterations.
+     *  This parameter must contain an IntToken.
      */
     public Parameter order;
-    
+ 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Locally cache the values and indexes, padded on ends by zeros.
+    /** If the argument is the <i>values</i> or the <i>indexes</i> parameter,
+     *  check that they contain one dimensional arrays.
      *  @exception IllegalActionException If specified parameters aren't
      *  valid.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
                 
-                /** For simplicity of code name the data in the parameters
-                 */
         _values = ((DoubleMatrixToken)values.getToken()).doubleMatrix();      
         _indexes = ((IntMatrixToken)indexes.getToken()).intMatrix();
         _order = ((IntToken)order.getToken()).intValue();
         
-        /** Verify that the tokens in the values and indexes parameters 
-         *  contain arrays which are one dimensional (have only one row) 
-         *  and of equal lengths.  If not, throw IllegalActionException.
-         */
+        // Verify that the tokens in the values and indexes parameters 
+        // contain arrays which are one dimensional (have only one row) 
+        // and of equal lengths.  If not, throw IllegalActionException.
         if (((DoubleMatrixToken)(values.getToken())).getRowCount() > 1) {
             throw new IllegalActionException(this,
                     "Values must be a one-dimensional array.");
@@ -145,10 +151,9 @@ public class Interpolator extends SequenceSource {
                     "Indexes must be a one-dimensional array.");
         }
         
-        /** Verify that the token in the indexes parameter contains an 
-         *  array whose elements are nonnegative and strictly increasing.  
-         *  If not, throw IllegalActionException.      
-         */
+        // Verify that the token in the indexes parameter contains an 
+        // array whose elements are nonnegative and strictly increasing.  
+        // If not, throw IllegalActionException.      
         int previous = -1;
         for (int j=0; j<_indexes[0].length; j++) {
             if (_indexes[0][j] <= previous) {
@@ -159,26 +164,23 @@ public class Interpolator extends SequenceSource {
             previous = _indexes[0][j];
         }      
         
-        /** Verify that the tokens in the indexes and values parameter 
-         *  contain arrays of the same length.  If not, throw 
-         *  IllegalActionException.     
-         */
+        // Verify that the tokens in the indexes and values parameter 
+        // contain arrays of the same length.  If not, throw 
+        // IllegalActionException.     
         if (_indexes[0].length != _values[0].length) {
             throw new IllegalActionException(this,
                     "Indexes and Values must have the same length.");
         }            
         
-        /** Verify that the token in the order parameter contains a
-         *  value of 0, 1 or 3.  If not, throw IllegalActionException.  
-         */
+        // Verify that the token in the order parameter contains a
+        // value of 0, 1 or 3.  If not, throw IllegalActionException.  
         if ((_order != 0) && (_order != 1) && (_order != 3)) {
             throw new IllegalActionException(this,
                     "Order must be 0, 1 or 3.");
         }            
         
-        /** Create arrays from the values and indexes, padded on each 
-         *  end as described in the constructor.
-         */
+        // Create arrays from the values and indexes, padded on each 
+        // end as described in the constructor.
         indexessize = _indexes[0].length;
         valuessize = _values[0].length;
         _valuesarray = new double[valuessize + 4];
@@ -229,16 +231,21 @@ public class Interpolator extends SequenceSource {
      *  previous values with respect to the specified order and output the 
      *  approximation corresponding to the current iteration count.
      *  If iteration count is out of range of indexes, output zeros.
+     *  @exception IllegalActionException If the <i>values</i> and
+     *   <i>indexes</i> parameters do not contain arrays of the same length.
      */  
     public void fire() throws IllegalActionException {
+
+	if (_valuesarray.length != _indexesarray.length) {
+	    throw new IllegalActionException(this, "The values and the " +
+		"index parameters do not contain arrays of the same length.");
+	}
    
-        /** Create relevant named variables to make simpler approximation 
-         *  calculations later
-         */
+        // Create relevant named variables to make simpler approximation 
+        // calculations later
         if (_indexCount < _indexes[0].length) {
             
-            /** Iteration is still within the range of the indexes
-             */
+            // Iteration is still within the range of the indexes
             int currentIndex = _indexesarray[_indexCount + 2];
             double currentValue = _valuesarray[_indexCount + 2];
             int previousIndex = _indexesarray[_indexCount + 1];
@@ -273,25 +280,22 @@ public class Interpolator extends SequenceSource {
                 return;     
             } else {
                     
-                /** _iterationCount hasn't caught up to _currentIndex yet 
-                 *  (in particular it isn't an index), so interpolate
-                 *  to approximate a value to associate with _iterationCount.
-                 *  Output this value. 
-                 */ 
+                // _iterationCount hasn't caught up to _currentIndex yet 
+                // (in particular it isn't an index), so interpolate
+                // to approximate a value to associate with _iterationCount.
+                // Output this value. 
                 
-                /** If interpolation is order 0, the interpolated value is 0.
-                 *  Output this result.
-                 */
+                // If interpolation is order 0, the interpolated value is 0.
+                // Output this result.
                 if (_order == 0) {
                     InterpolatedResult = 0;
                     ResultToken = new DoubleToken(InterpolatedResult);
                 }  
                 
-                /** If interpolation is order 1, use a linear approximation 
-                 *  to associate a value with _iterationCount based on 
-                 *  the adjacent indexes and the corresponding values.  
-                 *  Output this result.
-                 */
+                // If interpolation is order 1, use a linear approximation 
+                // to associate a value with _iterationCount based on 
+                // the adjacent indexes and the corresponding values.  
+                // Output this result.
                 if (_order == 1) {
                     InterpolatedResult = previousValue + _iterationCount*(
                             currentValue - previousValue)/(
@@ -299,15 +303,13 @@ public class Interpolator extends SequenceSource {
                     ResultToken = new DoubleToken(InterpolatedResult);
                 }
                 
-                /** If interpolation is order 3, use a cubic Hermite 
-                 *  approximation to associate a value with 
-                 *  _iterationCount based on the adjacent indexes and 
-                 *  the corresponding values.  Output this result.
-                 */
+                // If interpolation is order 3, use a cubic Hermite 
+                // approximation to associate a value with 
+                // _iterationCount based on the adjacent indexes and 
+                // the corresponding values.  Output this result.
                 if (_order == 3) {
                     
-                    /** Create the Hermite matrix M based on indices.
-                     */
+                    // Create the Hermite matrix M based on indices.
                     M = new double[4][4];
                     for(int col=0; col<=2; col++) {
                         M[0][col] = Math.pow(previousIndex, 3-col);
@@ -326,46 +328,41 @@ public class Interpolator extends SequenceSource {
                     M[2][2] = 1;
                     M[3][2] = 1;
                     
-                    /** Create the constraints vector P=(Vo,V,So,S) 
-                     *  where Vo and V are values corresponding to 
-                     *  previous and current indexes, So and S are the 
-                     *  tangents contrived to correspond to the previous 
-                     *  and current index.
-                     */
+                    // Create the constraints vector P=(Vo,V,So,S) 
+                    // where Vo and V are values corresponding to 
+                    // previous and current indexes, So and S are the 
+                    // tangents contrived to correspond to the previous 
+                    // and current index.
                     P = new double[4][1];
                     P[0][0] = previousValue;
                     P[1][0] = currentValue;
                     P[2][0] = previousTangent;
                     P[3][0] = currentTangent;
                     
-                    /** Create the polynomial vector T=(t^3,t^2,t,1) 
-                     *  where t=iterationCount
-                     */
+                    // Create the polynomial vector T=(t^3,t^2,t,1) 
+                    // where t=iterationCount
                     T = new double[1][4];
                     for(int col=0; col<=3; col++) {
                         T[0][col] = Math.pow(_iterationCount, 3 - col);
                     }
                     
-                    /** Invert M.  THIS SHOULD BE DONE SYMBOLICALLY 
-                     *  ONCE AND HARDWIRED IN FOR EFFICIENCY!!!  But, 
-                     *  to avoid doing it by hand someone should feed 
-                     *  it into Mathematica.
-                     */
+                    // Invert M.  THIS SHOULD BE DONE SYMBOLICALLY 
+                    // ONCE AND HARDWIRED IN FOR EFFICIENCY!!!  But, 
+                    // to avoid doing it by hand someone should feed 
+                    // it into Mathematica.
                     double[][] Minverse;                        
                     Minverse = MatrixMath.inverse(M);
                     
-                    /** Multiply MinverseP to obtain Coefficient matrix 
-                     *  for interpolation (the Coefficient matrix contains 
-                     *  the coefficients of the (local) approximating cubic 
-                     *  polynomial.
-                     */
+                    // Multiply MinverseP to obtain Coefficient matrix 
+                    // for interpolation (the Coefficient matrix contains 
+                    // the coefficients of the (local) approximating cubic 
+                    // polynomial.
                     double[][] Coefficient; 
                     Coefficient = MatrixMath.multiply(
                             Minverse,P);
                     
-                    /** Use Coefficient matrix to evaluate approximating 
-                     *  cubic on the particular _iterationCount.  
-                     */
+                    // Use Coefficient matrix to evaluate approximating 
+                    // cubic on the particular _iterationCount.  
                     InterpolatedResult = MatrixMath.multiply(
                             T,Coefficient)[0][0];
                     ResultToken = new DoubleToken(InterpolatedResult);
@@ -375,8 +372,7 @@ public class Interpolator extends SequenceSource {
             }
         } else {
             
-            /** Iteration is now out of range of indices.  Output zeros.
-             */
+            // Iteration is now out of range of indices.  Output zeros.
             InterpolatedResult = 0;
             ResultToken = new DoubleToken(InterpolatedResult);
             output.send(0, ResultToken);
@@ -385,7 +381,7 @@ public class Interpolator extends SequenceSource {
     }
     
     /** Set the iteration count to zero.
-     *  @exception IllegalActionException If the parent class throws it.
+     *  @exception IllegalActionException If the super class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -393,7 +389,8 @@ public class Interpolator extends SequenceSource {
         _indexCount = 0;
     }
 
-    /** Update the interation counters.
+    /** Update the interation counters, then call the super class method.
+     *  @return A boolean returned by the super class method.
      */
     public boolean postfire() throws IllegalActionException {
         ++_iterationCount;
@@ -404,7 +401,8 @@ public class Interpolator extends SequenceSource {
     }
 
     /** Start an interation.
-     *  @exception IllegalActionException If the base class throws it.
+     *  @return A boolean returned by the super class method.
+     *  @exception IllegalActionException If the super class throws it.
      */
     public boolean prefire() throws IllegalActionException {
         _match = false;

@@ -242,10 +242,10 @@ public class Clock extends TimedSource {
     }
 
     /** Output the current value of the clock.
-     *  @exception IllegalActionException If the values and offsets parameters
-     *   do not have the same dimension, or if the value in the offsets
-     *   parameter is encountered that is greater than the period, or
-     *   if there is no director.
+     *  @exception IllegalActionException If the <i>values</i> and
+     *   <i>offsets</i> parameters do not have the same dimension, or if
+     *   the value in the offsets parameter is encountered that is greater
+     *   than the period, or if there is no director.
      */
     public void fire() throws IllegalActionException {
         super.fire();
