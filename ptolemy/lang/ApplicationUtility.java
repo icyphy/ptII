@@ -114,6 +114,9 @@ public class ApplicationUtility {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
     /** If true, enable assertions. */
     public static boolean enableAsserts  = true;
 
