@@ -871,6 +871,10 @@ public class SDFScheduler extends Scheduler implements ValueListener {
     private void _declareDependency(ConstVariableModelAnalysis analysis,
             Port port, String name, List dependents) 
             throws IllegalActionException {
+        if(_debugging && VERBOSE) {
+            _debug("declaring dependency for rate variable " + 
+                    name + " in port " + port.getFullName());
+        }
         Variable variable = (Variable)_getRateVariable(port, name);
         DependencyDeclaration declaration = (DependencyDeclaration)
             variable.getAttribute(
@@ -1831,19 +1835,20 @@ public class SDFScheduler extends Scheduler implements ValueListener {
                 Iterator connectedPorts =
                     port.insideSourcePortList().iterator();
                 IOPort foundOutputPort = null;
+                int inferredRate = 0;
                 while (connectedPorts.hasNext()) {
                     IOPort connectedPort = (IOPort) connectedPorts.next();
-                    int connectedRate;
+                    
+                    int newRate;
                     if (connectedPort.isOutput()) {
-                        connectedRate = getTokenInitProduction(connectedPort);
+                        newRate = getTokenInitProduction(connectedPort);
                     } else {
-                        connectedRate = 0;
+                        newRate = 0;
                     }
                     // If we've already set the rate, then check that the
                     // rate for any other internal port is correct.
                     if (foundOutputPort != null &&
-                            getTokenInitProduction(foundOutputPort) !=
-                            connectedRate) {
+                            newRate != inferredRate) {
                         throw new NotSchedulableException(
                                 "External output port " + port
                                 + " is connected on the inside to ports "
@@ -1851,16 +1856,14 @@ public class SDFScheduler extends Scheduler implements ValueListener {
                                 + foundOutputPort + " and "
                                 + connectedPort);
                     }
-                    _setIfNotDefined(port, "tokenInitProduction",
-                            connectedRate);
-                    if (_debugging && VERBOSE) {
-                        _debug("Setting tokenInitProduction to "
-                                + getTokenInitProduction(connectedPort));
-                    }
                     foundOutputPort = connectedPort;
+                    inferredRate = newRate;
                 }
+                _setIfNotDefined(port, "tokenInitProduction",
+                        inferredRate);
                 if (_debugging && VERBOSE) {
-                    _debug("tokenInitProduction = " + rate);
+                    _debug("Setting tokenInitProduction to "
+                            + inferredRate);
                 }
             } else {
                 throw new NotSchedulableException(port,
