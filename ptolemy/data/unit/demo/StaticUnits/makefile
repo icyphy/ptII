@@ -50,12 +50,16 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	NonAppletStaticUnits.htm \
 	StaticUnits.xml \
+	StaticUnits2.xml \
 	StaticUnits1.gif \
 	StaticUnits2.gif \
 	StaticUnits3.gif \
 	StaticUnits4.gif \
 	StaticUnits5.gif \
-	StaticUnits6.gif
+	StaticUnits6.gif \
+	StaticUnits7.gif \
+	StaticUnits8.gif \
+	StaticUnits9.gif
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \

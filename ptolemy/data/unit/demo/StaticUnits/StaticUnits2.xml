@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="StaticUnits" class="ptolemy.actor.TypedCompositeActor">
+<entity name="StaticUnits2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
@@ -50,13 +50,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {334, 141, 948, 780}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {83, 69, 1073, 780}, maximized = false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[733, 654]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[760, 654]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{366.5, 327.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{380.0, 327.0}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demonstration of statically checked unit system.&#10;&#10;This is a model of the growth process in a fermenter. There are three&#10;submodels:&#10;&#10;1) Growth models the number of cells being produced as a&#10;    function of the current number of cells and the vat temperature;&#10;2) HeatProduction models the amount of heat produced (in calories) as&#10;    a function of the amount of work done (in joules); and&#10;3) HeatExchanger models the removal of heat from the vat as a&#10;    function of the rate at which water flows through the cooling&#10;    jacket around the vat.&#10;&#10;Some of the units constraints in the model are inconsistent. See the&#10;red notes. The UnitsConstraint Solver can be used to discover, and&#10;analyse these inconsistencies. (Right mouse-click and select&#10;UnitsConstraint Solver).">
@@ -65,7 +65,7 @@
         </property>
     </property>
     <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The HeatProduction.heat port has units&#10;calories, but the HeatExchanger.output&#10;has units calories/second. The&#10;AddSubtract actor requires that the units on&#10;the plus, and minus ports be the same.&#10;Therefore, the units constraints in this&#10;part of the model are inconsistent.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Heatproduction.heat port has units&#10;calories, but the HeatExchanger.output&#10;has units calories/second. The&#10;AddSubtract actor requires that the units on&#10;the plus, and minus ports be the same.&#10;Therefore, the units constraints in this&#10;part of the model are inconsistent.">
         </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
@@ -75,13 +75,13 @@
         </property>
     </property>
     <property name="annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The HeatProduction.work port has units joules, but&#10;is connected to the growth.population port which has&#10;units count.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This relation has been modified so that the&#10;units population coming from growth.population&#10;gets converted to joules which matches the units&#10;on HeatProduction.work.">
         </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[232.5, 17.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 5.0]">
         </property>
     </property>
     <property name="annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -99,7 +99,7 @@
     <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/data/unit/demo/StaticUnits/NonAppletStaticUnits.htm">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The flow.output port has&#10;units gallonUS while the&#10;HeatExchanger.flow port&#10;has units gallonUS/hour.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The flow actor has been&#10;replaced with the flow&#10;rate actor which has&#10;units gallonUS/hour.">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
@@ -115,7 +115,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 80.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -443,8 +443,6 @@
         </property>
         <property name="_unitConstraints" class="ptolemy.data.unit.UnitAttribute" value="$plus=$minus;$output=$minus">
         </property>
-        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
-        </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -501,7 +499,7 @@
             </property>
         </port>
     </entity>
-    <entity name="flow" class="ptolemy.actor.lib.Const">
+    <entity name="flow rate" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="400">
         </property>
         <doc>Create a constant sequence</doc>
@@ -515,23 +513,49 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="gallonUS">
+            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="gallonUS hour^-1">
+            </property>
+        </port>
+    </entity>
+    <entity name="Convert Population to Joule" class="ptolemy.actor.lib.Expression">
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 80.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+            <property name="_units" class="ptolemy.data.unit.UnitAttribute" value="joule">
+            </property>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[585.0, 75.0]">
+        <vertex name="vertex1" value="[585.0, 80.0]">
         </vertex>
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
@@ -544,13 +568,15 @@
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="_explanation" class="ptolemy.kernel.util.StringAttribute">
         </property>
     </relation>
     <link port="TimedPlotter.input" relation="relation5"/>
     <link port="Growth.population" relation="relation5"/>
     <link port="Growth.vatTemp" relation="relation4"/>
-    <link port="HeatProduction.work" relation="relation5"/>
+    <link port="HeatProduction.work" relation="relation8"/>
     <link port="HeatProduction.heat" relation="relation"/>
     <link port="HeatExchanger.TempVessel" relation="relation4"/>
     <link port="HeatExchanger.TempCW" relation="relation6"/>
@@ -562,5 +588,7 @@
     <link port="Integrator.input" relation="relation3"/>
     <link port="Integrator.output" relation="relation4"/>
     <link port="TempCW.output" relation="relation6"/>
-    <link port="flow.output" relation="relation7"/>
+    <link port="flow rate.output" relation="relation7"/>
+    <link port="Convert Population to Joule.output" relation="relation8"/>
+    <link port="Convert Population to Joule.input" relation="relation5"/>
 </entity>

@@ -77,9 +77,9 @@ the model is inconsistent in terms of the units constraints.
 <p>
 The UnitConstraint Solver is used to discover, analyze, and, in some cases, fix,
 any unit inconsistencies that exist in a model.
-The UnitConstraintSolver ialog
+The UnitConstraintSolver Dialog
 <p>
-The following is a step-by-step example of units, that, among other things, involve using the UCSD.
+The following is a step-by-step example of units, that, among other things, involve using the UnitConstraintsSolver Dialog.
 For a detailed reference explanation of just the UnitConstraints Solver Dialog,
 <a href="../../../../actor/gui/doc/unitConstraintsSolver.htm">click here</a>.
 <p>
@@ -93,7 +93,7 @@ UnitsConstraint Solver as shown below.
 </p>
 <p>
 This will cause the UnitConstraints Solver Dialog to appear as shown below.
-Although, no components were selected prior to starting the UCSD it is assumed that all
+Although, no components were selected prior to starting the UnitConstraintsSolver Dialog it is assumed that all
 of the components will be used. A component is highlighted with yellow if it is a member of this set.
 <p>
 <center>
@@ -113,9 +113,9 @@ This is indicated in the results pane with the label
 This is a shortened version of the results and indicates three properties
 <ul>
 <li>The soultion is inconsistent.
-<li>To become consistent relation5 would need to have an actor inserted that
+<li>To become consistent relation5 would need to be replaced with an actor that
 transforms the input by joule/population.
-<li>To become consistent relation7 would need to have an actor inserted that
+<li>To become consistent relation7 would need to be replaced with an actor that
 transforms the input by 1/hour.
 </ul>
 <p>
@@ -123,17 +123,63 @@ If the result <b>Inconsistent relation5 joule/population relation7 1/hour</b> is
 the result is then displayed in the graph viewer.
 The components that are part of the minimal span solution are colored with green signifying that
 a component is consistent and red signifying that it is inconsistent.
-In the above illustration, relation7 connects the flow actor to the HeaExchanger actor with
+In the above graphic, relation7 connects the flow actor to the HeaExchanger actor with
 flow.output having units gallonUS, and HeatExchanger.flow having units gallonUS/hour.
 This relation is red indicating that it is inconsistent.
-In addition, the illustration also shows that if the cursor is placed over the relation on
-the graph viewer the requisite transformation is displayed as a tooltip.
+In addition, the graphic also shows that if the cursor is placed over the relation on
+the graph viewer the requisite transformation <b>1/hour</b> is displayed as a tooltip.
 <p>
 The graph viewer also displays the inconsistency found on relation5 (this is in a portion
-of the graph viewer not shown in the above illustration).
+of the graph viewer not shown in the above graphic).
 In this case the growth.population port has units population and is connedted (via relation5)
 to the HeatProduction.work port that has units joules.
 Placing the cursor over this relation causes the tooltip <b>joule/population</b> to appear.
+<h2>Fixing unit inconsistencies</h2>
+These inconsistencies can be fixed by making two modifications;
+<li> The flow actor is replaced with an actor that has an output port with units <b>gallonUS/hour</b>.
+<li> An actor is inserted between growth.population and HeatProduction.work that converts
+population to joules.
+<p>These changes have been implemented in the model StaticUnits2.xml which is located
+in the same directory as StaticUnits.xml used above.
+The following graphic shows these changes.
+<p>
+<center>
+<img src="StaticUnits7.gif" alt="The StaticUnits2 model">
+</center>
+</p>
+Now, that these inconsistencies have been fixed the UnitConstraints Solver can
+be used to find other inconsistencies.
+For example,
+the HeatProduction.heat port has units
+calories, but the HeatExchanger.output
+has units calories/second. The
+AddSubtract actor requires that the units on
+the plus, and minus ports be the same.
+Therefore, the units constraints in this
+part of the model are inconsistent.
+In contrast to the inconsistencies described above, this inconsistency is
+<i>ambiguous</i> in that it can be caused by two different situations.
+<br>1)
+The HeatExchanger.output port could be integrated so that both the plus and minus ports have units calories.
+<br> 2)
+Or, the HeatProduction.heat port could be differentiated so that both the plus and minus ports
+have units calorie/second.
+<p> The following graphics illustrate these situations.
+<p>
+<center>
+<img src="StaticUnits8.gif" alt="Unit inconsistencies in StaticUnits2">
+</center>
+</p>
+The relation between HeatExchanger.output and AddSubtract.minus is inconsistent.
+<hr>
+<p>
+<center>
+<img src="StaticUnits9.gif" alt="Unit inconsistencies in StaticUnits2">
+</center>
+</p>
+The relation between HeatProduction.heat and AddSubtract.plus is inconsistent.
+<hr>
+<p>
 </body>
 </html>
 
