@@ -144,7 +144,8 @@ public class CSPSource extends AtomicActor {
         try {
             int limit =
                 ((IntToken)tokenLimit.getToken()).intValue();
-            Random rand = new Random();
+            // FIXME: Why is Random called here???
+            Random rand = new Random();            
             while ( (_value < limit) || (limit < 0) ) {
                 Token t = new IntToken(_value);
                 output.send(0, t);
