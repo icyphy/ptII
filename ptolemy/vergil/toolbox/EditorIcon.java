@@ -114,10 +114,8 @@ public class EditorIcon extends Attribute {
         // FIXME this is a bad way to do this.  
         if(!(container instanceof Attribute) || 
                 container instanceof ptolemy.actor.Director) {
-            LabelFigure label = new LabelFigure(container.getName());
-            label.setFont(new Font("SansSerif", Font.PLAIN, 12));
-            label.setPadding(1);
-            label.setAnchor(SwingConstants.SOUTH_WEST);
+            LabelFigure label = new LabelFigure(container.getName(),
+                    _labelFont, 1.0, SwingConstants.SOUTH_WEST);
             label.translateTo(backBounds.getX(), backBounds.getY());
             ((CompositeFigure)figure).add(label);
         }
@@ -198,4 +196,6 @@ public class EditorIcon extends Attribute {
 
     // The cached Swing icon.
     private javax.swing.Icon _iconCache = null;
+
+    private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
 }
