@@ -101,7 +101,7 @@ public class CWriter extends SceneTransformer {
             fileName += sootClass.getName();
             //fileName = sootClass.getName();
 
-            // FIXME: move these out of the loop
+            // FIXME: move these out of the loop?
             HeaderFileGenerator hGenerator = new HeaderFileGenerator();
             CodeFileGenerator cGenerator = new CodeFileGenerator();
             InterfaceFileGenerator iGenerator = new InterfaceFileGenerator();
