@@ -52,6 +52,7 @@ JSRCS =
 JSIMPLE_TESTS = \
 	Documentation.tcl \
 	EntityLibrary.tcl \
+	ImportAttribute.tcl \
 	LibraryAttribute.tcl \
 	Location.tcl \
 	MoMLAttribute.tcl \
@@ -61,9 +62,9 @@ JSIMPLE_TESTS = \
 	URLAttribute.tcl \
 	Vertex.tcl
 
-# Don't included these right now
-#	MoMLWriter.tcl \
-#	MoMLWriterTiming.tcl \
+# Don't include these, they generate lots of test failures
+#	MoMLWriter.tcl
+#	MoMLWriterTiming.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
