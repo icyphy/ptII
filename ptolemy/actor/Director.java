@@ -542,11 +542,12 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
-    /** Return true if it 
-     *  transfers data from an input port of the container to the
-     *  ports it is connected to on the inside.  The port argument must
-     *  be an opaque input port.  If any channel of the input port
-     *  has no data, then that channel is ignored.
+    /** Return true if it transfers data from an input port of the
+     *  container to the ports it is connected to on the inside.
+     *  The port argument must  be an opaque input port.  If any
+     *  channel of the input port has no data, then that channel is
+     *  ignored. This method will transfer exactly one token on
+     *  each input channel that has at least one token available.
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
@@ -584,11 +585,12 @@ public class Director extends NamedObj implements Executable {
         return trans;
     }
 
-    /** Return true if it 
-     *  transfers data from an output port of the container to the
-     *  ports it is connected to on the outside.  The port argument must
-     *  be an opaque output port.  If any channel of the output port
-     *  has no data, then that channel is ignored.
+    /** Return true if it transfers data from an output port of the
+     *  container to the ports it is connected to on the outside.
+     *  The port argument must be an opaque output port.  If any
+     *  channel of the output port has no data, then that channel is
+     *  ignored. This method will transfer exactly one token on
+     *  each output channel that has at least one token available.
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
