@@ -30,12 +30,23 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
-# Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
+
+# Get the value of ptolemy.ptII.isRunningNightlyBuild and save it,
+# then reset the property to the empty string.
+# If we are running as the nightly build, we usually want to
+# throw an exception if the trainingMode parameter is set to true.
+# However, while testing the Test actor itself, we want to 
+# be able to set the trainingMode parameter to true
+
+set oldIsRunningNightlyBuild \
+    [java::call ptolemy.util.StringUtilities getProperty \
+     "ptolemy.ptII.isRunningNightlyBuild"]
+java::call System setProperty "ptolemy.ptII.isRunningNightlyBuild" ""
 
 ######################################################################
 #### Test the Test actor in an SDF model
@@ -240,3 +251,9 @@ test Test-2.1 {Test the Test actor in an SDF model with two ramps} {
     set correctValues [getParameter $test correctValues]
     list [$correctValues getExpression]
 } {{{{0.0, 0.0}, {1.0, 2.0}, {2.0, 4.0}, {3.0, 6.0}, {4.0, 8.0}}}}
+
+
+
+# Reset the isRunningNightlyBuild property
+java::call System setProperty "ptolemy.ptII.isRunningNightlyBuild" \
+    $oldIsRunningNightlyBuild 
