@@ -2174,8 +2174,9 @@ void genDef ()
 		    free(dst);
 		}
 	}
-	//if (miscCode[0])
-	//	fprintf (fp, "%s\n", miscCode);
+	// Handle User defined methods such as CGCFix::checkOverflow()
+	if (miscCode[0])
+		fprintf (fp, "%s\n", miscCode);
 	//if (pureFlag) {
 	//	fprintf (fp,
 	//		 "\n// %s is an abstract class: no KnownBlock entry\n",
