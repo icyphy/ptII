@@ -265,6 +265,9 @@ PTWABA_DIR =	@PTWABA_DIR@
 # http://www-cad.eecs.berkeley.edu/diva/
 DIVA_JAR = $(PTII)/lib/diva.jar
 
+# JSAT jar location
+JSAT_JAR = $(PTII)/mescal/lib/jsat.jar
+
 # Commands used to install scripts and data
 # Use $(ROOT) instead of $(PTII) for install so that we don't
 # need to have PTII set under Ptolemy classic when installing Ptplot
