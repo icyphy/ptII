@@ -69,6 +69,7 @@ JSRCS1_1 = \
 	PlotApplet.java \
 	PlotDataException.java \
 	PlotLive.java \
+	PlotLiveApplet.java \
 	PlotPoint.java \
 	Message.java \
 	Pxgraph.java
