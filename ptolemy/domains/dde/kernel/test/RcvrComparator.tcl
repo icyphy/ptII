@@ -1,4 +1,4 @@
-# Tests for the RcvrComparator class
+# Tests for the ReceiverComparator class
 #
 # @Author: John S. Davis II
 #
@@ -58,7 +58,7 @@ set globalIgnoreTime -1
 ######################################################################
 ####
 #
-test RcvrComparator-2.1 {compareTo() on times, same priorities} {
+test ReceiverComparator-2.1 {compareTo() on times, same priorities} {
 
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
@@ -68,7 +68,7 @@ test RcvrComparator-2.1 {compareTo() on times, same priorities} {
     set tok [java::new ptolemy.data.Token]
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
-    set cmp [java::new ptolemy.domains.dde.kernel.RcvrComparator $keeper]
+    set cmp [java::new ptolemy.domains.dde.kernel.ReceiverComparator $keeper]
 
     set rcvr1 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
     $rcvr1 put $tok 0.0
@@ -103,9 +103,9 @@ test RcvrComparator-2.1 {compareTo() on times, same priorities} {
 ######################################################################
 ####
 # Continued from above...
-test RcvrComparator-2.2 {compareTo() on times and priorities} {
+test ReceiverComparator-2.2 {compareTo() on times and priorities} {
 
-    set cmp [java::new ptolemy.domains.dde.kernel.RcvrComparator $keeper]
+    set cmp [java::new ptolemy.domains.dde.kernel.ReceiverComparator $keeper]
 
     set rcvr1 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
     $rcvr1 put $tok 0.0
