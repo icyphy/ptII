@@ -63,7 +63,7 @@ test Exceptions-1.1 {Generate all required files for Exceptions.java} {
     
     # Move all extra files.
     cd ../..
-    foreach i "[glob {*Exception*.[cho]}] [glob {*Exception*.class}]" {
+    foreach i "[glob {*Exception*.[cho]}] [glob {*?Exception?*.class}]" {
         file rename -force $i $outputDir
     }
 

@@ -65,7 +65,7 @@ test Interface1-1.1 {Generate all required files for Interface1_Main.java} {
 " $template "" template
     
     cd ../..
-    foreach i "[glob {Interface1*.[cho]}] [glob {Interface1*.class}]" {
+    foreach i "[glob {Interface1*.[cho]}] [glob {Interface1_C*.class}]" {
         file rename -force $i $outputDir
     }
 
