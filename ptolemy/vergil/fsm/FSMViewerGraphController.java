@@ -95,7 +95,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
     }
 
     /** React to an event by highlighting the new state.
-     *  @param state The debug event.
+     *  @param event The debug event.
      */
     public void event(DebugEvent event) {
         if (event instanceof StateEvent) {

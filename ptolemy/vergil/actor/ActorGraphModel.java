@@ -1000,7 +1000,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  This class queues a new change request with the ptolemy model
          *  to make this modification.
          *  @param edge The edge, which is assumed to be a link.
-         *  @param newLinkhead The new head for the edge, which is assumed to
+         *  @param newLinkHead The new head for the edge, which is assumed to
          *  be a location representing a port, a port or a vertex.         */
         public void setHead(final Object edge, final Object newLinkHead) {
             final Link link = (Link)edge;
