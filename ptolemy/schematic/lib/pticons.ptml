@@ -1,0 +1,19 @@
+<!-- The PtolemyII iconlibrary root -->
+<!-- Do not edit. Do not add SCCS keywords. -->
+
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE iconlibrary  PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/ptml.dtd">
+
+<iconlibrary name="root" version="1.0">
+<header>
+    <description>Icons for use within SDF</description>
+    <sublibrary url="../../domains/generic/icons/sources.ptml"/>
+    <sublibrary url="../../domains/generic/icons/sinks.ptml"/>
+    <sublibrary url="../../domains/generic/icons/filters.ptml"/>
+    <sublibrary url="../../domains/generic/icons/math.ptml"/>
+</header>
+
+<!-- Normally, icons go here. This top-level library has no icons. -->
+
+</iconlibrary>
+

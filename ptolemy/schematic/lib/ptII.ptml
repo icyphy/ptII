@@ -7,7 +7,8 @@
 <domainlibrary name="Dataflow" version="1.0">
     <actorpackage name="domain polymorphic" package="ptolemy.lib"/>
 
-    <domain name="Static Dataflow">
+    <domain name="SDF">
+	<description>Static dataflow</description>
 	<actorpackage name="SDF default" package="ptolemy.domains.sdf.lib"/>
 	<actorpackage name="VQ" package="ptolemy.domains.sdf.lib.VQ"/>
 	<actorpackage name="local working" package="local.domains.sdf.lib"/>
@@ -20,7 +21,8 @@
 		class="lbl.SDFAlphaFarmDirector"/>
     </domain>
 
-    <domain name="Continuous Time">
+    <domain name="CT">
+	<description>Continuous time</description>
 	<actorpackage name="CT default" package="ptolemy.domains.ct.lib"/>
 	<director name="Runge-Kutta"
 		class="ptolemy.domains.ct.kernel.CTRKDirector"/>
