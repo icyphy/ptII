@@ -72,7 +72,7 @@ public class SquareWaveResponse extends CTApplet {
         _query.setBackground(_getBackground());
         //_query.addQueryListener(new ParameterListener());
         controlpanel.add("West", _query);
-        _query.addLine("stopT", "Stop Time", "4.0");
+        _query.addLine("stopT", "Stop Time", "6.0");
         _query.addLine("solver", "DefaultSolver",
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
         _query.addLine("bpsolver", "BreakpointSolver",
@@ -98,7 +98,7 @@ public class SquareWaveResponse extends CTApplet {
             TimedPlotter myplot = new TimedPlotter( _toplevel, "Sink");
             myplot.setPanel(this);
             myplot.plot.setGrid(true);
-            myplot.plot.setXRange(0.0, 5.0);
+            myplot.plot.setXRange(0.0, 6.0);
             myplot.plot.setYRange(-2.0, 2.0);
             myplot.plot.setSize(600, 400);
             myplot.plot.addLegend(0,"response");
@@ -136,9 +136,9 @@ public class SquareWaveResponse extends CTApplet {
 
             gain1.gain.setToken(new DoubleToken(500.0));
 
-            gain2.gain.setToken(new DoubleToken(-25.0));
+            gain2.gain.setToken(new DoubleToken(-10.0));
 
-            gain3.gain.setToken(new DoubleToken(-2500.0));
+            gain3.gain.setToken(new DoubleToken(-1000.0));
 
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException("NameDuplication");
