@@ -101,9 +101,10 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.mt",
                 ShallowModelTransformer.v(_toplevel),
                 "targetPackage:" + _targetPackage);
-
+        
        addTransform(pack, "wjtp.ls7",
                         new TransformerAdapter(LocalSplitter.v()));
+      
        addTransform(pack, "wjtp.ta5",
                new TransformerAdapter(TypeAssigner.v()));
        addTransform(pack, "wjtp.ib3",
@@ -117,7 +118,8 @@ public class Main extends KernelMain {
         // Convert to grimp.
         addTransform(pack, "wjtp.gt",
                 GrimpTransformer.v());
-        // This snapshot should be last...
+        /*   */
+       // This snapshot should be last...
         addTransform(pack, "wjtp.finalSnapshotJimple",
                 JimpleWriter.v(),
                 "outDir:" + _outputDirectory);

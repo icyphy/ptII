@@ -133,6 +133,7 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
             }
 
             String className = attribute.getClass().getName();
+            Scene.v().loadClassAndSupport(className);
             Type attributeType = RefType.v(className);
             String attributeName = attribute.getName(context);
             String fieldName = getFieldNameForAttribute(attribute, context);
@@ -371,6 +372,12 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
             Entity entity = (Entity)entities.next();
             System.out.println("ShallowModelTransformer: entity: " + entity);
             Local local;
+            // If we are doing shallow, then use the base actor
+            // classes.  Note that the entity might actually be
+            // a MoML class (like Sinewave).
+            String className = entity.getClass().getName();
+            Scene.v().loadClassAndSupport(className);
+
             if (createdSet.contains(entity.getFullName())) {
                 // Get a reference to the previously created entity.
                 local = Jimple.v().newLocal("entity",
@@ -384,13 +391,9 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                 body.getUnits().add(
                         Jimple.v().newAssignStmt(local,
                                 Jimple.v().newCastExpr(entityLocal,
-                                        PtolemyUtilities.componentEntityType)));    
+                                        RefType.v(className))));    
             } else {
-                // If we are doing shallow, then use the base actor
-                // classes.  Note that the entity might actually be
-                // a MoML class (like Sinewave).
-                String className = entity.getClass().getName();
-                // Create a new local variable.
+               // Create a new local variable.
                 // The name of the local is determined automatically.
                 // The name of the NamedObj is the same as in the model.
                 // (Note that this might not be a valid Java identifier.)
@@ -446,6 +449,7 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
             String fieldName = getFieldNameForPort(port, container);
             Local portLocal;
 
+            Scene.v().loadClassAndSupport(className);
             portLocal = Jimple.v().newLocal("port",
                     PtolemyUtilities.componentPortType);
             body.getLocals().add(portLocal);
@@ -480,10 +484,10 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                                         IntConstant.v(1))));
                     }
                 }
-               // and then cast to portLocal
+                // and then cast to portLocal
                 body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
                         Jimple.v().newCastExpr(tempPortLocal,
-                                PtolemyUtilities.componentPortType)));
+                                RefType.v(className))));
             } else {
                 // If the class does not create the attribute,
                 // then create a new attribute with the right name.
@@ -518,7 +522,7 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                 // and then cast to portLocal
                 body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
                         Jimple.v().newCastExpr(local,
-                                PtolemyUtilities.componentPortType)));
+                                RefType.v(className))));
 
             }
 
