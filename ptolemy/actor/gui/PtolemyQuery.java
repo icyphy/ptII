@@ -255,7 +255,7 @@ public class PtolemyQuery extends Query
                 // exception, but then a lot of code (including
                 // the base class), would need to be changed.
                 System.err.println("parameter change failed, reverting" + 
-                        " to previous expression.");
+                        " to previous expression.\n" + e.toString());
                 String finalExpression = var.stringRepresentation();
                 set(name, finalExpression);
             }
