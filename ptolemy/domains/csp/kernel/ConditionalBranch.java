@@ -62,88 +62,88 @@ fields!
 
 public abstract class ConditionalBranch {
 
-  /** Create a conditional branch. 
-   * @param port The IOPort to try and rendezvous with.
-   *  that this branch will try to rendezvous with.
-   * @param branch The identification number assigned to this branch
-   *   upon creation by the CSPActor. 
-   *  @exception IllegalActionException thrown if the channel has more 
-   *   than one receiver or if the receiver is not of type CSPReceiver.
-   */
-  public ConditionalBranch(IOPort port, int branch)
-       throws IllegalActionException {
-	 // FIXME: should this allow CSPCompositeActor?
-	 Nameable tmp = port.getContainer();
-	 if (!(tmp instanceof CSPActor)) {
-	   String str = " A conditional branch can only be created with a po";
-	   throw new IllegalActionException(port, "rt contained by CSPActor");
-	 }
-	 _parent = (CSPActor)tmp;
-	 _branchNumber = branch;
-  }
-  
-  ////////////////////////////////////////////////////////////////////////
-  ////                         public methods                         ////
+    /** Create a conditional branch. 
+     *  @param port The IOPort to try and rendezvous with.
+     *   that this branch will try to rendezvous with.
+     *  @param branch The identification number assigned to this branch
+     *   upon creation by the CSPActor. 
+     *  @exception IllegalActionException thrown if the channel has more 
+     *   than one receiver or if the receiver is not of type CSPReceiver.
+     */
+    public ConditionalBranch(IOPort port, int branch)
+            throws IllegalActionException {
+        // FIXME: should this allow CSPCompositeActor?
+        Nameable tmp = port.getContainer();
+        if (!(tmp instanceof CSPActor)) {
+            String str = " A conditional branch can only be created with a po";
+            throw new IllegalActionException(port, "rt contained by CSPActor");
+        }
+        _parent = (CSPActor)tmp;
+        _branchNumber = branch;
+    }
+    
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public methods                         ////
+    
+    /** Returns the identification number of this branch(according to its
+     *  parent).
+     *  @return The identification number of this branch.
+     */
+    public int getBranchNumber() {
+        return _branchNumber;
+    }
+    
+    /** Return the CSPActor that created this branch.
+     *  @return The CSPActor that created this branch.
+     */
+    public CSPActor getParent() {
+        return _parent;
+    }
+    
+    /** Return the CSPReceiver this branch is trying to rendezvous with.
+     *  @return The CSPReceiver this branch is trying to rendezvous with.
+     */
+    public CSPReceiver getReceiver() {
+        return _receiver;
+    }
+    
+    /** Boolean indicating if this branch is still alive. If it is false, it 
+     *  indicates another conditional branch was able to rendezvous before 
+     *  this branch. The branch should stop trying to rendezvous with 
+     *  its receiver and terminate
+     *  @return boolean indicating if this branch is still alive(needed).
+     */
+    public boolean isAlive() {
+        return _alive;
+    }
+    
+    /** Set whether this branch is still alive.
+     *  FIXME: this method is only ever called with a false value, perhaps
+     *  should modify method to public void finishUp ??
+     *
+     *  @param value boolean indicating whether this branch is still alive.
+     */
+    public void setAlive(boolean value) {
+        _alive = value;
+    }
 
-  /** Returns the identification number of this branch(according to its
-   *  parent).
-   *  @return The identification number of this branch.
-   */
-  public int getBranchNumber() {
-    return _branchNumber;
-  }
-
-  /** Return the CSPActor that created this branch.
-   * @return The CSPActor that created this branch.
-   */
-  public CSPActor getParent() {
-    return _parent;
-  }
-  
-  /** Return the CSPReceiver this branch is trying to rendezvous with.
-   *  @return The CSPReceiver this branch is trying to rendezvous with.
-   */
-  public CSPReceiver getReceiver() {
-    return _receiver;
-  }
-  
-  /** Boolean indicating if this branch is still alive. If it is false, it 
-   *  indicates another conditional branch was able to rendezvous before 
-   *  this branch. The branch should stop trying to rendezvous with 
-   *  its receiver and terminate
-   *  @return boolean indicating if this branch is still alive(needed).
-   */
-  public boolean isAlive() {
-    return _alive;
-  }
-
-  /** Set whether this branch is still alive.
-   * FIXME: this method is only ever called with a false value, perhaps
-   * should modify method to public void finishUp ??
-   *
-   * @param value boolean indicating whether this branch is still alive.
-   */
-  public void setAlive(boolean value) {
-    _alive = value;
-  }
-
-  ////////////////////////////////////////////////////////////////////////
-  ////                         prrotected variables                   ////
-
-  // The receiver this thread is trying to rendezvous with. It is immutable.
-  protected CSPReceiver _receiver;
-
-  ////////////////////////////////////////////////////////////////////////
-  ////                         private variables                      ////
-
-  // Has another branch successfully rendezvoused? 
-  private boolean _alive = true;
-
-  // The parent this thread is trying to perform a conditional rendezous for.
-  private CSPActor _parent;
-
-  // The identification number of this branch (according to its parent)
-  private int _branchNumber;
+    ////////////////////////////////////////////////////////////////////////
+    ////                         prrotected variables                   ////
+    
+    // The receiver this thread is trying to rendezvous with. It is immutable.
+    protected CSPReceiver _receiver;
+    
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private variables                      ////
+    
+    // Has another branch successfully rendezvoused? 
+    private boolean _alive = true;
+    
+    // The parent this thread is trying to perform a conditional rendezous for.
+    private CSPActor _parent;
+    
+    // The identification number of this branch (according to its parent)
+    private int _branchNumber;
 }
 	  
 	       

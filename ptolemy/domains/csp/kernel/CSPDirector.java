@@ -112,26 +112,26 @@ public class CSPDirector extends Director {
     ////                         public methods                    ////
 
   
-  /** Checks for deadLock each time a Actor blocks. Also updates 
-   *  count of number of blocked actores.
-   *  FIXME: need to put in code to account for delays here.
-   */
-  public void actorBlocked() {
-    try {
-      workspace().getReadAccess();
-      _actorsBlocked++;
-      if (_actorsAlive == _actorsBlocked) {
-	// simulation has ended in deadlock, so terminate
-	terminateSimulation();
-      }
-    } finally {
-      workspace().doneReading();
+    /** Checks for deadLock each time a Actor blocks. Also updates 
+     *  count of number of blocked actores.
+     *  FIXME: need to put in code to account for delays here.
+     */
+    public void actorBlocked() {
+        try {
+            workspace().getReadAccess();
+            _actorsBlocked++;
+            if (_actorsAlive == _actorsBlocked) {
+                // simulation has ended in deadlock, so terminate
+                terminateSimulation();
+            }
+        } finally {
+            workspace().doneReading();
+        }
     }
-  }
-  
-  /** Update the count of active actor processes each time a new actor is 
-   *  fired up.
-   */
+    
+    /** Update the count of active actor processes each time a new actor is 
+     *  fired up.
+     */
     public void actorStarted() {
         // No need to synchronize this because the action is atomic
         // and synchronization would just ensure that no write action
@@ -140,42 +140,41 @@ public class CSPDirector extends Director {
         _actorsAlive++;
         workspace().doneReading();
     }
-  
-  /** Checks for deadlock each time an Actor stops(finishes). Also updates 
-   *  count of number of actors still alive.
-   */
-  public void actorStopped() {
-     try {
-       workspace().getReadAccess();
-      _actorsAlive--;
-      System.out.println("actor stopped, still alive:" + _actorsAlive);
-     
-      if (_simulationTerminated) {
-	return; 
-	// simulation has already been terminated so do not need to
-	// terminate it agin!
-      }
-      if (_actorsAlive == _actorsBlocked) {
-	// simulation has ended in deadlock, so terminate
-	terminateSimulation();
-      }
-    } finally {
-      workspace().doneReading();
+    
+    /** Checks for deadlock each time an Actor stops(finishes). Also updates 
+     *  count of number of actors still alive.
+     */
+    public void actorStopped() {
+        try {
+            workspace().getReadAccess();
+            _actorsAlive--;
+            System.out.println("actor stopped, still alive:" + _actorsAlive);
+            
+            if (_simulationTerminated) {
+                return; 
+                // simulation has already been terminated so do not need to
+                // terminate it agin!
+            }
+            if (_actorsAlive == _actorsBlocked) {
+                // simulation has ended in deadlock, so terminate
+                terminateSimulation();
+            }
+        } finally {
+            workspace().doneReading();
+        }
     }
-  }
-  
-  /** A actor has unblocked, update count of blocked actors.
-   */
-  public void actorUnblocked() {
-     // No need to synchronize this because the action is atomic
-     // and synchronization would just ensure that no write action
-      // is in progress.
-      workspace().getReadAccess();
-      _actorsBlocked--;
-      workspace().doneReading();
-  }
-  }
-  
+    
+    /** A actor has unblocked, update count of blocked actors.
+     */
+    public void actorUnblocked() {
+        // No need to synchronize this because the action is atomic
+        // and synchronization would just ensure that no write action
+        // is in progress.
+        workspace().getReadAccess();
+        _actorsBlocked--;
+        workspace().doneReading();
+    }
+
     /** Clone the director into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -196,25 +195,25 @@ public class CSPDirector extends Director {
 	_simulationTerminated = false;
         return newobj;
     }
-
-  /** Returns the threadGroup in which all the threads corresponding to 
-   *  CSP actors are started. If this is an executive director this 
-   *  returns null.
-   * 
-   *  @return The ThreadGroup for the actors controlled by this director.
-   */
-  public ThreadGroup getProcessGroup() {
-      if (isExecutiveDirector()) {
-          // this is a local director
-          if (_processGroup == null) {
-              String str = "ThreadGroup for " + getName() + " director";
-              _processGroup = new ThreadGroup(str);
-          }          
-      }
-      return _processGroup;
-  }
-
-  /** If this is the local director of the container, then invoke the fire
+    
+    /** Returns the threadGroup in which all the threads corresponding to 
+     *  CSP actors are started. If this is an executive director this 
+     *  returns null.
+     * 
+     *  @return The ThreadGroup for the actors controlled by this director.
+     */
+    public ThreadGroup getProcessGroup() {
+        if (isExecutiveDirector()) {
+            // this is a local director
+            if (_processGroup == null) {
+                String str = "ThreadGroup for " + getName() + " director";
+                _processGroup = new ThreadGroup(str);
+            }          
+        }
+        return _processGroup;
+    }
+    
+    /** If this is the local director of the container, then invoke the fire
      *  methods of all its deeply contained actors.  Otherwise, invoke the
      *  fire() method of the container.  In general, this may be called more
      *  than once in the same iteration, where an iteration is defined as one
@@ -241,13 +240,13 @@ public class CSPDirector extends Director {
                 }
 		System.out.println("invoked fire methods of all actors, now wait for the simulation to terminate: " + getName());
 		try {
-		  while (!_simulationTerminated) {
-		    // a HORRIBLE hack, waits until all processes are 
-		    // stopped to invoke their postfire methods.
-		    Thread.currentThread().sleep(2000);
-		  }
+                    while (!_simulationTerminated) {
+                        // a HORRIBLE hack, waits until all processes are 
+                        // stopped to invoke their postfire methods.
+                        Thread.currentThread().sleep(2000);
+                    }
 		} catch (InterruptedException ex) {
-		  System.out.println("Local cspDirector interrupted while waiting for firing to finish");
+                    System.out.println("Local cspDirector interrupted while waiting for firing to finish");
 		}
             } else {
                 // This is the executive director.
@@ -255,64 +254,65 @@ public class CSPDirector extends Director {
             }
         }
     }
-
+    
     /** Return a new CSPReceiver compatible with this director.
      *  In the CSP domain, we use CSPReceivers.
      *  @return A new CSPReceiver.
      */
     public Receiver newReceiver() {
-      return new CSPReceiver();
+        return new CSPReceiver();
     }
-
-  /** The action to terminate all actors under control of this local 
-   *  director because a real deadlock has occured. It could also 
-   *  be called when a UI deides to terminate a simulation prematurely.
-   *  <p>
-   *  FIXME: this method is designed to be used with a local director. 
-   *  How should an executive director call the local director to make 
-   *  this happen?
-   */
-  public void terminateSimulation() {
-    System.out.println("about to terminate simulation");
-    // FIXME: check this is a local director.
-    try {
-      workspace().getReadAccess();
-      if (_simulationTerminated) {
-	// simulation has already been terminated!
-	return;
-      }
-      _simulationTerminated = true;
-      
-      CSPCompositeActor cont = (CSPCompositeActor)getContainer();
-      Enumeration allMyActors = cont.deepGetEntities(); 
-              
-      while (allMyActors.hasMoreElements()) {
-          try {
-              CSPActor actor = (CSPActor)allMyActors.nextElement(); 
-              // the method in the CSPActor should set a flag in each receiver 
-              // & notifyAll thread waiting on the lock for that receiver.
-              actor.terminate();
-              System.out.println("CSPDirector: terminating actor " + actor.getName());
-          } catch (Exception ex) {
-	    System.out.println("CSPDirector: unable to terminate all actors");
-	    //FIXME: should not catch general exception
-          }
-      }      
-    } finally {
-      workspace().doneReading();
+    
+    /** The action to terminate all actors under control of this local 
+     *  director because a real deadlock has occured. It could also 
+     *  be called when a UI deides to terminate a simulation prematurely.
+     *  <p>
+     *  FIXME: this method is designed to be used with a local director. 
+     *  How should an executive director call the local director to make 
+     *  this happen?
+     */
+    public void terminateSimulation() {
+        System.out.println("about to terminate simulation");
+        // FIXME: check this is a local director.
+        try {
+            workspace().getReadAccess();
+            if (_simulationTerminated) {
+                // simulation has already been terminated!
+                return;
+            }
+            _simulationTerminated = true;
+            
+            CSPCompositeActor cont = (CSPCompositeActor)getContainer();
+            Enumeration allMyActors = cont.deepGetEntities(); 
+            
+            while (allMyActors.hasMoreElements()) {
+                try {
+                    CSPActor actor = (CSPActor)allMyActors.nextElement(); 
+                    // the method in the CSPActor should set a flag in each 
+                    // receiver & notifyAll thread waiting on the lock 
+                    // for that receiver.
+                    actor.terminate();
+                    System.out.println("CSPDirector: terminating actor " + actor.getName());
+                } catch (Exception ex) {
+                    System.out.println("CSPDirector: unable to terminate all actors");
+                    //FIXME: should not catch general exception
+                }
+            }      
+        } finally {
+            workspace().doneReading();
+        }
     }
-  }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-  private int _actorsBlocked = 0;
-  private int _actorsAlive = 0;
-  private int _actorsDelayed = 0;
-  
-  // The threadgroup in which all the stars are created.
-  private ThreadGroup _processGroup;
-  
-  // Set to true when the simulation is terminated
-  private boolean _simulationTerminated = false;
+    private int _actorsBlocked = 0;
+    private int _actorsAlive = 0;
+    private int _actorsDelayed = 0;
+    
+    // The threadgroup in which all the stars are created.
+    private ThreadGroup _processGroup;
+    
+    // Set to true when the simulation is terminated
+    private boolean _simulationTerminated = false;
 }

@@ -65,7 +65,8 @@ stopped, and there are mutations to perfrom. Also could allow an actor
 construct such as waitForNextIteration() which would halt the current 
 thread until a new iteration is started.
 <p>
-FIXME: should a bunch of the methods in this class be protected? In Particular, actorBlocked, actor Stopped etc?
+FIXME: should a bunch of the methods in this class be protected? In 
+Particular, actorBlocked, actor Stopped etc?
 
 @author Neil Smyth
 @version $Id$
@@ -204,7 +205,7 @@ public class CSPActor extends AtomicActor implements Runnable {
                 //start the branches
                 int priority = Thread.currentThread().getPriority() -1;
                 _branchesActive = 0;
-                for (int i = (branches.length -1); i>=0; i--) {
+                for (int i = 0; i< branches.length; i++) {
                     if (branches[i] != null) {
                         // start a thread with this branch
                         Thread t = new Thread((Runnable)branches[i]);
@@ -276,8 +277,7 @@ public class CSPActor extends AtomicActor implements Runnable {
         CSPActor newobj = (CSPActor)super.clone(ws);
         newobj._branchesActive = 0;
 	newobj._branchTrying = -1;
-        newobj._branchFailedLock = new Object();
-	newobj._internalLock = new Object();
+        newobj._internalLock = new Object();
 	newobj._myThread = null;
         newobj._successfulBranch = -1;
 	newobj._token = null;
