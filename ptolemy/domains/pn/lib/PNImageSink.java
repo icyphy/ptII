@@ -85,9 +85,9 @@ public class PNImageSink extends AtomicActor {
         PrintWriter out = new PrintWriter(_file, true);
         out.println("P1");
         out.println("#File written by PNImageSink in Ptolemy II");
-        out.print(image.length);
+        out.print(image[0].length);
         out.print(" ");
-        out.println(image[0].length);
+        out.println(image.length);
         for (int i=0; i<image.length; i++) {
             for (int j=0; j<image[0].length; j++) {
                 out.print(image[i][j]);

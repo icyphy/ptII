@@ -32,6 +32,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
+import ptolemy.media.*;
 import java.io.*;
 import java.util.Enumeration;
 
@@ -100,10 +101,10 @@ public class PNImageSource extends AtomicActor {
                 int datarow = 0;
                 int datacol = 0;
                 if (datastr.nextToken() == StreamTokenizer.TT_NUMBER) {
-                    datarow = (int)datastr.nval;
+                    datacol = (int)datastr.nval;
                 }
                 if (datastr.nextToken() == StreamTokenizer.TT_NUMBER) {
-                    datacol = (int)datastr.nval;
+                    datarow = (int)datastr.nval;
                 }
                 System.out.println("Rows ="+datarow+" and col = "+datacol);
                 int[][] image = new int[datarow][datacol];
@@ -115,6 +116,22 @@ public class PNImageSource extends AtomicActor {
                         image[i][j] = (int)datastr.nval;
                     }
                 }
+
+                //Converting it to a format that can use media.Picture
+                //Note that it is currently is a hack for BW pbm images alone.
+                //int[] display = new int[datarow*datacol];
+                //int alpha = 0;
+                //for (int i=0; i<datarow; i++) {
+                    //for (int j=0; j<datacol; j++) {
+                        //int col = image[i][j]*255;
+                        //display[i*datacol+j] = 
+                              //(alpha << 24) | (col << 16) | (col << 8) | col;
+                        //}
+                    //}
+                //Picture pic = new Picture(datarow, datacol);
+                //pic.setImage(display);
+                //pic.displayImage();
+
                 //System.out.println("i = "+i+" j ="+j);
                 IntMatrixToken dataToken = new IntMatrixToken(image);
                 _output.broadcast(dataToken);
