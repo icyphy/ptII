@@ -29,7 +29,7 @@ output for each token that is consumed on the input.
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.dde.demo.helloWorld;
+package ptolemy.domains.dde.demo.HelloWorld;
 
 import ptolemy.domains.dde.kernel.*;
 import ptolemy.kernel.util.*;

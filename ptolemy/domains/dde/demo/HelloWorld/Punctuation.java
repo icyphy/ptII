@@ -29,7 +29,7 @@ that it consumes.
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.dde.demo.helloWorld;
+package ptolemy.domains.dde.demo.HelloWorld;
 
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;

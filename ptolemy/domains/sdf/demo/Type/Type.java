@@ -124,7 +124,8 @@ public class Type extends MoMLViewerApplet implements ValueListener {
                      */
                     protected void _execute() throws Exception {
                         _display.setContainer(null);
-                        _plotter.setContainer(_toplevelCopy);
+                        // FIXME: doesn't look right...
+                        _plotter.setContainer((CompositeActor)_toplevelCopy);
                         _plotter.input.link(_displayRelation);
                     }
                 };
@@ -137,7 +138,8 @@ public class Type extends MoMLViewerApplet implements ValueListener {
                      */
                     protected void _execute() throws Exception {
                         _plotter.setContainer(null);
-                        _display.setContainer(_toplevelCopy);
+                        // FIXME: doesn't look right...
+                        _display.setContainer((CompositeActor)_toplevelCopy);
                         _display.input.link(_displayRelation);
                     }
                 };
@@ -155,34 +157,35 @@ public class Type extends MoMLViewerApplet implements ValueListener {
      *  @param workspace The workspace in which to create the model.
      *  @exception Exception If something goes wrong.
      */    
-    protected CompositeActor _createModel(Workspace workspace)
+    protected NamedObj _createModel(Workspace workspace)
 	    throws Exception {
-        _toplevel = super._createModel(workspace);
+        CompositeActor toplevel = (CompositeActor)super._createModel(workspace);
         _manager.addExecutionListener(this);
-        _director = (SDFDirector)_toplevel.getDirector();
-        _ramp1 = (Ramp)_toplevel.getEntity("Ramp1");
-        _ramp2 = (Ramp)_toplevel.getEntity("Ramp2");
-        _expr = (Expression)_toplevel.getEntity("Expression");
+        _director = (SDFDirector)toplevel.getDirector();
+        _ramp1 = (Ramp)toplevel.getEntity("Ramp1");
+        _ramp2 = (Ramp)toplevel.getEntity("Ramp2");
+        _expr = (Expression)toplevel.getEntity("Expression");
         _exprInput1 = (TypedIOPort)_expr.getPort("input1");
         _exprInput2 = (TypedIOPort)_expr.getPort("input2");
-	_display = (Display)_toplevel.getEntity("Display");
-        _displayRelation = _toplevel.getRelation("displayRelation");
+	_display = (Display)toplevel.getEntity("Display");
+        _displayRelation = toplevel.getRelation("displayRelation");
 
         // Create a plotter to keep in reserve.  Have to first construct
         // in the toplevel, then remove it.
-        _plotter = new SequencePlotter(_toplevel, "Plotter");
+        _plotter = new SequencePlotter(toplevel, "Plotter");
         _plotter.setContainer(null);
         // Rename so name is the same as the display.
         _plotter.setName("Display");
         // Copy the location from the printer.
         Attribute location = _display.getAttribute("_location");
-        Attribute copy = (Attribute)location.clone(_toplevel.workspace());
+        Attribute copy = (Attribute)location.clone(toplevel.workspace());
         copy.setContainer(_plotter);
 
-        Parameter selector = (Parameter)_toplevel.getAttribute("Use Plotter");
+        Parameter selector = (Parameter)toplevel.getAttribute("Use Plotter");
         selector.addValueListener(this);
 
-        return _toplevel;
+        _toplevelCopy = toplevel;
+        return toplevel;
     }
 
     /** Create the on-screen Diva displays.
@@ -424,7 +427,7 @@ public class Type extends MoMLViewerApplet implements ValueListener {
     // The copy is needed for this class to compile under jdk1.2. For some
     // reason, jdk1.2 does not allow inner class to access _toplevel, but
     // jdk1.3 does.
-    private CompositeActor _toplevelCopy = _toplevel;
+    private NamedObj _toplevelCopy = _toplevel;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

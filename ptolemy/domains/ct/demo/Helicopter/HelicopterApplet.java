@@ -32,6 +32,7 @@ package ptolemy.domains.ct.demo.Helicopter;
 
 import java.util.StringTokenizer;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.PtolemyApplet;
 import ptolemy.actor.gui.ModelPane;
 
@@ -93,8 +94,8 @@ public class HelicopterApplet extends PtolemyApplet {
             }
         }
 
-        ModelPane pane = new 
-            HelicopterModelPane(_toplevel, orientation, controls);
+        ModelPane pane = new HelicopterModelPane(
+                (CompositeActor)_toplevel, orientation, controls);
         pane.setBackground(null);
         getContentPane().add(pane);
     }

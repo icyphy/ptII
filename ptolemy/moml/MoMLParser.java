@@ -1445,6 +1445,7 @@ public class MoMLParser extends HandlerBase {
     private NamedObj _createEntity(
             String className, String entityName, String source)
             throws Exception {
+
         if (_current != null && !(_current instanceof CompositeEntity)) {
             throw new XmlException("Cannot create an entity inside "
                     + "of another that is not a CompositeEntity.",
@@ -1543,10 +1544,15 @@ public class MoMLParser extends HandlerBase {
                     }
 
                     // Set the classname and source of the import.
-                    // NOTE: This isn't right. It results in the class
-                    // name of the master being the master itself, which
-                    // is self-referential.
-                    // reference.getMoMLInfo().className = className;
+                    // NOTE: We have gone back and forth on whether this
+                    // is right, because previously, the className field
+                    // was overloaded to contain the class name in some
+                    // circumstances, and the base class name in others.
+                    // We now have a field for the base class, so this can
+                    // be done again.  Moreover, it is necessary, or
+                    // further instances of this class will not be cloned
+                    // from this same reference (which breaks look inside).
+                    reference.getMoMLInfo().className = className;
 
                     // NOTE: This might be a relative file reference, which
                     // won't be of much use if a MoML file is moved.

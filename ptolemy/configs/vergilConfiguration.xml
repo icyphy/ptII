@@ -85,6 +85,7 @@
       <property name="DT" class="ptolemy.domains.dt.kernel.DTDirector"/>
       <property name="PN" class="ptolemy.domains.pn.kernel.PNDirector"/>
       <property name="DE" class="ptolemy.domains.de.kernel.DEDirector"/>
+      <property name="OCP" class="ptolemy.domains.de.kernel.OCPDirector"/>
       <property name="CSP" class="ptolemy.domains.csp.kernel.CSPDirector"/>
       <property name="DDE" class="ptolemy.domains.dde.kernel.DDEDirector"/>
       <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">

@@ -89,18 +89,19 @@ public class HTVQApplet extends MoMLApplet {
         prnPanel.add(new JLabel("SNR (dB)"), BorderLayout.NORTH);
         displayPanel.add(prnPanel, BorderLayout.EAST);
 
-        ImageDisplay consumer = (ImageDisplay)_toplevel.getEntity("Compressed");
+        CompositeEntity toplevel = (CompositeEntity)_toplevel;
+        ImageDisplay consumer = (ImageDisplay)toplevel.getEntity("Compressed");
         consumer.place(compressedPanel);
         consumer.setBackground(null);
 
-        ImageDisplay original = (ImageDisplay)_toplevel.getEntity("Original");
+        ImageDisplay original = (ImageDisplay)toplevel.getEntity("Original");
         original.place(originalPanel);
         original.setBackground(null);
 
         // Display actor puts the text at the right of the
         // applet window. Text Area size is set to be 7*10 (row* column)
         // in order to fit well with the image size.
-        Display prn = (Display)_toplevel.getEntity("Display");
+        Display prn = (Display)toplevel.getEntity("Display");
         // To control the position, we put this in its own panel.
         JPanel textPanel = new JPanel();
         prnPanel.add(textPanel, BorderLayout.SOUTH);

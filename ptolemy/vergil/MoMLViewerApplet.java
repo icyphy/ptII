@@ -45,18 +45,19 @@ import com.microstar.xml.XmlException;
 import ptolemy.gui.*;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.MoMLApplet;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.gui.PtolemyApplet;
 import ptolemy.actor.gui.HTMLViewer;
-import ptolemy.kernel.ComponentEntity;
+import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.*;
 import ptolemy.vergil.ptolemy.*;
 import ptolemy.vergil.ptolemy.kernel.*;
+import ptolemy.vergil.ptolemy.fsm.FSMGraphController;
+import ptolemy.vergil.ptolemy.fsm.FSMGraphModel;
 import ptolemy.vergil.toolbox.EditParametersFactory;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
@@ -145,27 +146,48 @@ public class MoMLViewerApplet extends MoMLApplet {
     ////                         protected methods                 ////
 
     /** Override the base class to create a schematic view instead of
-     *  a ModelPane.
+     *  a ModelPane.  If the toplevel model created by _createModel()
+     *  is not an instance of CompositeEntity, then do nothing.
      */
     protected void _createView() {
-        ViewerGraphController controller = new ViewerGraphController();
-        GraphModel model = new PtolemyGraphModel(_toplevel);
+        if (!(_toplevel instanceof CompositeEntity)) return;
 
-	_getDocumentationAction = new GetDocumentationAction();
-	controller.getAttributeController().setMenuFactory(
-                new ObjectContextMenuFactory(controller));
-	controller.getEntityController().setMenuFactory(
-                new ObjectContextMenuFactory(controller));
- 	controller.getEntityPortController().setMenuFactory(
-                new PortContextMenuFactory(controller));
-  	controller.getPortController().setMenuFactory(
-                new PortContextMenuFactory(controller));
-  	controller.getRelationController().setMenuFactory(
-                new ObjectContextMenuFactory(controller));
-  	controller.getLinkController().setMenuFactory(
-                new ObjectContextMenuFactory(controller));
+        // FIXME: Temporary hack so we can view FSMs properly.
+        // This should be replaced with a proper tableau mechanism.
+        GraphPane pane = null;
+        if (_toplevel instanceof FSMActor) {
+            FSMGraphController controller = new FSMGraphController();
+            FSMGraphModel graphModel = new FSMGraphModel((FSMActor)_toplevel);
+
+            pane = new GraphPane(controller, graphModel);
+
+            controller.getStateController().setMenuFactory(
+                    new StateContextMenuFactory(controller));
+            controller.getTransitionController().setMenuFactory(
+                    new TransitionContextMenuFactory(controller));
+        } else {
+            // top level is not an FSM actor.
+
+            ViewerGraphController controller = new ViewerGraphController();
+            GraphModel model = new PtolemyGraphModel(
+                    (CompositeEntity)_toplevel);
+
+            _getDocumentationAction = new GetDocumentationAction();
+            controller.getAttributeController().setMenuFactory(
+                    new ObjectContextMenuFactory(controller));
+            controller.getEntityController().setMenuFactory(
+                    new ObjectContextMenuFactory(controller));
+            controller.getEntityPortController().setMenuFactory(
+                    new PortContextMenuFactory(controller));
+            controller.getPortController().setMenuFactory(
+                    new PortContextMenuFactory(controller));
+  	    controller.getRelationController().setMenuFactory(
+                    new ObjectContextMenuFactory(controller));
+  	    controller.getLinkController().setMenuFactory(
+                    new ObjectContextMenuFactory(controller));
       
-        GraphPane pane = new GraphPane(controller, model);
+            pane = new GraphPane(controller, model);
+        }
         JGraph modelViewer = new JGraph(pane);
 
         // Get dimensions from the model, if they are present.
@@ -242,8 +264,7 @@ public class MoMLViewerApplet extends MoMLApplet {
 	}
     };
 
-   /**
-     * The factory for creating context menus on visible attributes
+   /** The factory for creating context menus on visible attributes
      */
     private class ObjectContextMenuFactory extends PtolemyMenuFactory {
 	public ObjectContextMenuFactory(GraphController controller) {
@@ -253,8 +274,7 @@ public class MoMLViewerApplet extends MoMLApplet {
         }
     }
 
-    /**
-     * The factory for creating context menus on ports.
+    /** The factory for creating context menus on ports.
      */
     public class PortContextMenuFactory extends PtolemyMenuFactory {
 	public PortContextMenuFactory(GraphController controller) {
@@ -308,6 +328,25 @@ public class MoMLViewerApplet extends MoMLApplet {
 	    protected String _getName() {
 		return null;
 	    }
+	}
+    }
+
+    /** The factory for creating context menus on states.
+     */
+    private class StateContextMenuFactory extends PtolemyMenuFactory {
+	public StateContextMenuFactory(GraphController controller) {
+	    super(controller);
+	    addMenuItemFactory(new EditParametersFactory());
+	}
+    }
+
+    /** The factory for creating context menus on transitions between states.
+     */
+    private class TransitionContextMenuFactory
+	extends PtolemyMenuFactory {
+	public TransitionContextMenuFactory(GraphController controller) {
+	    super(controller);
+	    addMenuItemFactory(new EditParametersFactory());
 	}
     }
 }

@@ -34,10 +34,7 @@ package ptolemy.data.expr;
 import ptolemy.data.StringToken;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.data.DoubleMatrixToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.MatrixToken;
-import ptolemy.data.Token;
+import ptolemy.data.*;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -63,9 +60,15 @@ types of the arguments.
 */
 public class UtilityFunctions {
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** FIXME.
+     */
+    public static ObjectToken model(String classname)
+            throws IllegalActionException {
+        return new ObjectToken(classname);
+    }
 
     /** Get the specified property from the environment. An empty string
      *  is returned if the argument environment variable does not exist.

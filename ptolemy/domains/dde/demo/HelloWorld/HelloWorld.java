@@ -29,7 +29,7 @@ DDE feedforward topologies.
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.dde.demo.helloWorld;
+package ptolemy.domains.dde.demo.HelloWorld;
 
 import ptolemy.domains.dde.kernel.*;
 import ptolemy.domains.dde.lib.*;

@@ -52,14 +52,11 @@ JSRCS = \
 	ND_5.java \
 	StreamToMatrix.java \
 	SourceMatrix.java \
-	ArrayIndex.java \
-	QR.java
-
+	ArrayIndex.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
 	QR.htm \
-	QRprocessnetwork.gif \
-	QRvr.wmf \
+	QRVergil.htm \
 	QR.xml
 
 # Sources that may or may not be present, but if they are present, we don't

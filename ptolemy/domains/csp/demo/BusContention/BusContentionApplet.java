@@ -116,67 +116,68 @@ public class BusContentionApplet extends PtolemyApplet {
      *   exception to allow derived classes wide lattitude as to which
      *   exception to throw.
      */
-    protected CompositeActor _createModel(Workspace workspace)
+    protected NamedObj _createModel(Workspace workspace)
             throws Exception {
-        _toplevel = new TypedCompositeActor(workspace);
-        _toplevel.setName("BusContention");
-	new CSPDirector(_toplevel, "CSPDirector");
+        TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
+        _toplevel = toplevel;
+        toplevel.setName("BusContention");
+	new CSPDirector(toplevel, "CSPDirector");
 
         // Instantiate Actors
-        _contentionActor = new Controller( _toplevel, "controller" );
-        _alarmActor = new ContentionAlarm( _toplevel, "alarm" );
-        _memoryActor = new Memory( _toplevel, "memory" );
-        _processActor1 = new Processor( _toplevel, "proc1", 1 );
-        _processActor2 = new Processor( _toplevel, "proc2", 2 );
-        _processActor3 = new Processor( _toplevel, "proc3", 3 );
+        _contentionActor = new Controller( toplevel, "controller" );
+        _alarmActor = new ContentionAlarm( toplevel, "alarm" );
+        _memoryActor = new Memory( toplevel, "memory" );
+        _processActor1 = new Processor( toplevel, "proc1", 1 );
+        _processActor2 = new Processor( toplevel, "proc2", 2 );
+        _processActor3 = new Processor( toplevel, "proc3", 3 );
         
         TypedIORelation inReqs, outReqs,
                 reads, writes, outContends, inContends;
 
 	// Set up connections
-        inReqs = (TypedIORelation)_toplevel.connect(
+        inReqs = (TypedIORelation)toplevel.connect(
                 _contentionActor.requestInput,
                 _processActor1.requestOutput );
-	inReqs = (TypedIORelation)_toplevel.connect(
+	inReqs = (TypedIORelation)toplevel.connect(
                 _contentionActor.requestInput,
                 _processActor2.requestOutput );
-        inReqs = (TypedIORelation)_toplevel.connect(
+        inReqs = (TypedIORelation)toplevel.connect(
                 _contentionActor.requestInput,
                 _processActor3.requestOutput );
-	outContends = (TypedIORelation)_toplevel.connect(
+	outContends = (TypedIORelation)toplevel.connect(
                 _contentionActor.contendOutput,
                 _alarmActor.input );
-        inContends = (TypedIORelation)_toplevel.connect(
+        inContends = (TypedIORelation)toplevel.connect(
                 _contentionActor.contendInput,
                 _alarmActor.output );
-        outReqs = (TypedIORelation)_toplevel.connect(
+        outReqs = (TypedIORelation)toplevel.connect(
                 _contentionActor.requestOutput,
                 _processActor1.requestInput );
-        outReqs = (TypedIORelation)_toplevel.connect(
+        outReqs = (TypedIORelation)toplevel.connect(
                 _contentionActor.requestOutput,
                 _processActor2.requestInput );
-        outReqs = (TypedIORelation)_toplevel.connect(
+        outReqs = (TypedIORelation)toplevel.connect(
                 _contentionActor.requestOutput,
                 _processActor3.requestInput );
-        reads = (TypedIORelation)_toplevel.connect(
+        reads = (TypedIORelation)toplevel.connect(
                 _memoryActor.output,
                 _processActor1.memoryInput );
-        reads = (TypedIORelation)_toplevel.connect(
+        reads = (TypedIORelation)toplevel.connect(
                 _memoryActor.output,
                 _processActor2.memoryInput );
-        reads = (TypedIORelation)_toplevel.connect(
+        reads = (TypedIORelation)toplevel.connect(
                 _memoryActor.output,
                 _processActor3.memoryInput );
-        writes = (TypedIORelation)_toplevel.connect(
+        writes = (TypedIORelation)toplevel.connect(
                 _memoryActor.input,
                 _processActor1.memoryOutput );
-        writes = (TypedIORelation)_toplevel.connect(
+        writes = (TypedIORelation)toplevel.connect(
                 _memoryActor.input,
                 _processActor2.memoryOutput );
-        writes = (TypedIORelation)_toplevel.connect(
+        writes = (TypedIORelation)toplevel.connect(
                 _memoryActor.input,
                 _processActor3.memoryOutput );
-        return _toplevel;
+        return toplevel;
     }
 
     /** Create an animation pane.

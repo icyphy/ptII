@@ -3,49 +3,140 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="hierarchy" class="ptolemy.actor.TypedCompositeActor">
     <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
-        <property name="iterations" value="10">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
             <doc>Number of iterations in an execution.</doc>
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="80.0, 46.0">
+        </property>
     </property>
-    <entity name="const" class="ptolemy.actor.lib.Const">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[590, 247]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[67, 152]">
+    </property>
+    <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="376.0, 44.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model includes two submodels, each of which has its
+own Giotto scheduler. The lower composite and the plotter
+have a frequency of two, so they run twice as often as the
+source and the upper composite.</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+    <property name="1:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="222.0, 235.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">Frequency = 2.</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+    <property name="0:1:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="374.0, 193.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">Frequency = 2.</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+    <entity name="Source" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="82.0, 164.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
     </entity>
-
-    <import source="composite.xml"/>
-
-    <entity name="composite1" class=".composite">
+    <entity name="Upper Composite" class="ptolemy.domains.giotto.demo.Hierarchy.composite">
+        <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="68.0, 35.0">
+            </property>
+        </property>
+        <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[177, 222]">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="231.0, 123.0">
+        </property>
     </entity>
-    <entity name="composite2" class=".composite">
+    <entity name="Lower Composite" class="ptolemy.domains.giotto.demo.Hierarchy.composite">
+        <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="68.0, 35.0">
+            </property>
+        </property>
+        <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[177, 222]">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="234.0, 198.0">
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
     </entity>
-
-    <entity name="display" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <port name="input"></port>
-        <!-- Configure provided in both a referenced file and local data -->
-        <configure source="plotConfigure.xml"><![CDATA[
-            <?xml version="1.0" standalone="no"?>
-            <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-                "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-            <plot>
-                <size width="600" height="400"/>
-                <title>A Simple Hierarchical Giotto Model</title>
-            </plot>
-        ]]></configure>
+    <entity name="Plotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="upper, lower">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="370.0, 155.0">
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title></title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.16487297921478064" max="0.29087759815242503"/>
+<yRange min="1.8206278026905807" max="5.451121076233186"/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
     </entity>
-
     <relation name="r1" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="165.0, 169.0">
+        </vertex>
     </relation>
-    <relation name="r2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="r3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="const.output" relation="r1"/>
-    <link port="composite1.input" relation="r1"/>
-    <link port="composite2.input" relation="r1"/>
-    <link port="composite1.output" relation="r2"/>
-    <link port="display.input" relation="r2"/>
-    <link port="composite2.output" relation="r3"/>
-    <link port="display.input" relation="r3"/>
+    <link port="Source.output" relation="r1"/>
+    <link port="Upper Composite.input" relation="r1"/>
+    <link port="Upper Composite.output" relation="relation3"/>
+    <link port="Lower Composite.input" relation="r1"/>
+    <link port="Lower Composite.output" relation="relation4"/>
+    <link port="Plotter.input" relation="relation3"/>
+    <link port="Plotter.input" relation="relation4"/>
 </entity>
-
-
-
-

@@ -5,15 +5,23 @@
     <property name="PNDirector" class="ptolemy.domains.pn.kernel.BasePNDirector">
         <property name="Initial_queue_capacity" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="70.71429443359375, 211.0">
+        </property>
     </property>
-    <property name="Antennas" class="ptolemy.data.expr.Parameter" value="16">
+    <property name="Antennas" class="ptolemy.data.expr.Parameter" value="6">
         <doc>The number of Antennas from which data is read.</doc>
     </property>
-    <property name="Updates" class="ptolemy.data.expr.Parameter" value="100">
+    <property name="Updates" class="ptolemy.data.expr.Parameter" value="10">
         <doc>The number of QR opdates to perform on the antenna data.</doc>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[614, 297]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <entity name="plot" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -21,22 +29,30 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="515.7142944335938, 82.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="20.0"/>
+<yRange min="-89.09954694329122" max="270.84312802801554"/>
+<noGrid/>
+<default connected="no" marks="dots" stems="yes"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="ND_1" class="ptolemy.domains.pn.demo.QR.ND_1">
         <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="61.28571701049805, 48.0">
         </property>
         <port name="WP_2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -50,6 +66,8 @@
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="64.28571701049805, 115.0">
+        </property>
         <port name="WP_4" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -61,6 +79,8 @@
         <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="235.4285659790039, 60.0">
         </property>
         <port name="RP_1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -88,6 +108,8 @@
         <property name="N" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="203.8571434020996, 190.99999618530273">
         </property>
         <port name="RP_5" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -128,6 +150,8 @@
         </property>
         <property name="K" class="ptolemy.data.expr.Parameter" value="Updates">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="381.0, 70.0">
+        </property>
         <port name="RP_11" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -141,6 +165,8 @@
     <entity name="StreamToMatrix" class="ptolemy.domains.pn.demo.QR.StreamToMatrix">
         <property name="dimension" class="ptolemy.data.expr.Parameter" value="Antennas">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="386.1428527832031, 202.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -152,6 +178,8 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="300">
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="502.71429443359375, 201.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -166,49 +194,59 @@
     </relation>
     <relation name="_R3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="_R4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="_R5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R6" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="_R7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R9" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="_R10" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="_R11" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="_R12" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="448.5714285714285, 87.0">
+        </vertex>
     </relation>
     <relation name="_R13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation0" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="184.0, 21.0">
+        </vertex>
+    </relation>
+    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="139.0, 241.0">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="153.0, 258.0">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="148.0, 155.0">
+        </vertex>
     </relation>
     <link port="plot.input" relation="_R12"/>
     <link port="ND_1.WP_2" relation="_R0"/>
     <link port="ND_1.WP_6" relation="_R1"/>
     <link port="ND_2.WP_4" relation="_R2"/>
     <link port="ND_2.WP_8" relation="_R3"/>
-    <link port="ND_3.RP_1" relation="_R4"/>
+    <link port="ND_3.RP_1" relation="relation0"/>
     <link port="ND_3.RP_2" relation="_R0"/>
     <link port="ND_3.RP_3" relation="_R9"/>
     <link port="ND_3.RP_4" relation="_R2"/>
-    <link port="ND_3.WP_1" relation="_R4"/>
+    <link port="ND_3.WP_1" relation="relation0"/>
     <link port="ND_3.WP_11" relation="_R5"/>
     <link port="ND_3.WP_10" relation="_R6"/>
-    <link port="ND_4.RP_5" relation="_R7"/>
+    <link port="ND_4.RP_5" relation="relation3"/>
     <link port="ND_4.RP_6" relation="_R1"/>
-    <link port="ND_4.RP_7" relation="_R10"/>
+    <link port="ND_4.RP_7" relation="relation2"/>
     <link port="ND_4.RP_8" relation="_R3"/>
-    <link port="ND_4.RP_9" relation="_R11"/>
+    <link port="ND_4.RP_9" relation="relation1"/>
     <link port="ND_4.RP_10" relation="_R6"/>
-    <link port="ND_4.WP_5" relation="_R7"/>
+    <link port="ND_4.WP_5" relation="relation3"/>
     <link port="ND_4.WP_12" relation="_R8"/>
     <link port="ND_4.WP_3" relation="_R9"/>
-    <link port="ND_4.WP_7" relation="_R10"/>
-    <link port="ND_4.WP_9" relation="_R11"/>
+    <link port="ND_4.WP_7" relation="relation2"/>
+    <link port="ND_4.WP_9" relation="relation1"/>
     <link port="ND_5.RP_11" relation="_R5"/>
     <link port="ND_5.RP_12" relation="_R8"/>
     <link port="ND_5.out0" relation="_R12"/>

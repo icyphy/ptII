@@ -69,29 +69,29 @@ public class HysteresisApplet extends PtolemyApplet {
 
     /** Create the model.
      */
-    protected CompositeActor _createModel(Workspace workspace) throws Exception {
+    protected NamedObj _createModel(Workspace workspace) throws Exception {
 
-        _toplevel = new TypedCompositeActor(workspace);
-        new SDFDirector(_toplevel, "director");
+        TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
+        new SDFDirector(toplevel, "director");
         
         // Create and configure ramp source
-        Ramp rampSig = new Ramp(_toplevel, "rampSig");
+        Ramp rampSig = new Ramp(toplevel, "rampSig");
         
         // Create and configure TrigFunction transformer
         TrigFunction trigFunction =
-                new TrigFunction(_toplevel, "trigFunction");
-        Scale scale = new Scale(_toplevel, "Scale");
+                new TrigFunction(toplevel, "trigFunction");
+        Scale scale = new Scale(toplevel, "Scale");
         scale.factor.setToken(new DoubleToken(0.1));
         
         // Create and configure noise source
-        Gaussian noise = new Gaussian(_toplevel, "noise");
+        Gaussian noise = new Gaussian(toplevel, "noise");
         noise.standardDeviation.setToken(new DoubleToken(0.2));
         
         // Create the adder.
-        AddSubtract add = new AddSubtract(_toplevel, "add");
+        AddSubtract add = new AddSubtract(toplevel, "add");
         
         // Create and configure hystplotter
-        SequencePlotter hystplotter = new SequencePlotter(_toplevel, "plot1");
+        SequencePlotter hystplotter = new SequencePlotter(toplevel, "plot1");
         
         // Place the hystplotter in the applet in such a way that it fills
         // the available space.
@@ -109,7 +109,7 @@ public class HysteresisApplet extends PtolemyApplet {
         // Create and configure the SDF test acotor which refines
         // to a FSM.
         TypedCompositeActor hdfActor =
-                new TypedCompositeActor(_toplevel, "hdfActor");
+                new TypedCompositeActor(toplevel, "hdfActor");
         
         // create ports
         TypedIOPort hdfActorInPort =
@@ -257,15 +257,15 @@ public class HysteresisApplet extends PtolemyApplet {
         (ctrlActInPort).link(rel2);
         
         // Conect the actors.
-        _toplevel.connect(rampSig.output, scale.input);
-        _toplevel.connect(scale.output, trigFunction.input);
-        _toplevel.connect(trigFunction.output, add.plus);
-        _toplevel.connect(noise.output, add.plus);
+        toplevel.connect(rampSig.output, scale.input);
+        toplevel.connect(scale.output, trigFunction.input);
+        toplevel.connect(trigFunction.output, add.plus);
+        toplevel.connect(noise.output, add.plus);
         
-        _toplevel.connect(hdfActorOutPort, hystplotter.input);
+        toplevel.connect(hdfActorOutPort, hystplotter.input);
         
         TypedIORelation noisyRel =
-                 (TypedIORelation)_toplevel.newRelation("noisyRel");
+                 (TypedIORelation)toplevel.newRelation("noisyRel");
         (add.output).link(noisyRel);
         (hdfActorInPort).link(noisyRel);
         (hystplotter.input).link(noisyRel);
@@ -276,7 +276,7 @@ public class HysteresisApplet extends PtolemyApplet {
         // The 2 argument requests a go and stop button.
         //getContentPane().add(_createRunControls(2));
 
-        return _toplevel;
+        return toplevel;
     }
 
     ///////////////////////////////////////////////////////////////////

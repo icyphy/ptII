@@ -46,7 +46,6 @@ import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
 import ptolemy.actor.lib.gui.TimedPlotter;
 import ptolemy.domains.dde.lib.*;
-import ptolemy.domains.dde.gui.*;
 import ptolemy.domains.dde.kernel.*;
 import ptolemy.domains.dde.kernel.test.*;
 
@@ -181,61 +180,62 @@ public class LocalZenoApplet extends PtolemyApplet {
     /** Construct the Ptolemy model; instantiate all
      *  actors and make connections.
      */
-    protected CompositeActor _createModel(Workspace workspace)
+    protected NamedObj _createModel(Workspace workspace)
             throws Exception {
 
-        _toplevel = new TypedCompositeActor(workspace);
-        DDEDirector director = new DDEDirector(_toplevel, "DDE Director");
+        TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
+        _toplevel = toplevel;
+        DDEDirector director = new DDEDirector(toplevel, "DDE Director");
         director.stopTime.setExpression("90.0");
 
         // Instantiate the Actors
-        _clock = new ListenClock( _toplevel, "Clock" );
+        _clock = new ListenClock( toplevel, "Clock" );
         _clock.values.setExpression( "[1, 1, 1]" );
         _clock.period.setToken( new DoubleToken(20.0) );
         _clock.offsets.setExpression( "[5.0, 10.0, 15.0]" );
         _clock.stopTime.setToken( new DoubleToken(90.0) );
 
-        _join1 = new ListenWire( _toplevel, "UpperJoin" );
-        _fork1 = new ListenFork( _toplevel, "UpperFork" );
-        _fBack1 = new ListenFeedBackDelay( _toplevel, "UpperFeedBack" );
-        _join2 = new ListenWire( _toplevel, "LowerJoin" );
-        _fork2 = new ListenFork( _toplevel, "LowerFork" );
-        _fBack2 = new ZenoDelay( _toplevel, "LowerFeedBack" );
+        _join1 = new ListenWire( toplevel, "UpperJoin" );
+        _fork1 = new ListenFork( toplevel, "UpperFork" );
+        _fBack1 = new ListenFeedBackDelay( toplevel, "UpperFeedBack" );
+        _join2 = new ListenWire( toplevel, "LowerJoin" );
+        _fork2 = new ListenFork( toplevel, "LowerFork" );
+        _fBack2 = new ZenoDelay( toplevel, "LowerFeedBack" );
 
-        _rcvr1 = new ListenSink( _toplevel, "UpperRcvr" );
-        _rcvr2 = new ListenSink( _toplevel, "LowerRcvr" );
+        _rcvr1 = new ListenSink( toplevel, "UpperRcvr" );
+        _rcvr2 = new ListenSink( toplevel, "LowerRcvr" );
         
-        _upperTime = new TimeAdvance( _toplevel, "upperTime" );
-        _upperPlotter = new TimedPlotter( _toplevel, "upperPlotter" );
+        _upperTime = new TimeAdvance( toplevel, "upperTime" );
+        _upperPlotter = new TimedPlotter( toplevel, "upperPlotter" );
 
-        _lowerTime = new TimeAdvance( _toplevel, "lowerTime" );
-        _lowerPlotter = new TimedPlotter( _toplevel, "lowerPlotter" );
+        _lowerTime = new TimeAdvance( toplevel, "lowerTime" );
+        _lowerPlotter = new TimedPlotter( toplevel, "lowerPlotter" );
 
         _fBack1.setDelay(4.5);
         _fBack2.setDelay(4.5);
 
         // Set up ports, relations and connections
         Relation clkRelation =
-                _toplevel.connect( _clock.output, _join1.input );
+                toplevel.connect( _clock.output, _join1.input );
         _join2.input.link( clkRelation );
 
-        _toplevel.connect( _join1.output, _fork1.input );
-        _toplevel.connect( _fork1.output1, _rcvr1.input );
-        _toplevel.connect( _fork1.output2, _fBack1.input );
-        _toplevel.connect( _fBack1.output, _join1.input );
+        toplevel.connect( _join1.output, _fork1.input );
+        toplevel.connect( _fork1.output1, _rcvr1.input );
+        toplevel.connect( _fork1.output2, _fBack1.input );
+        toplevel.connect( _fBack1.output, _join1.input );
 
-        _toplevel.connect( _join2.output, _fork2.input );
-        _toplevel.connect( _fork2.output1, _rcvr2.input );
-        _toplevel.connect( _fork2.output2, _fBack2.input );
-        _toplevel.connect( _fBack2.output, _join2.input );
+        toplevel.connect( _join2.output, _fork2.input );
+        toplevel.connect( _fork2.output1, _rcvr2.input );
+        toplevel.connect( _fork2.output2, _fBack2.input );
+        toplevel.connect( _fBack2.output, _join2.input );
 
-        _toplevel.connect( _fork1.output1, _upperTime.input );
-        _toplevel.connect( _upperTime.output, _upperPlotter.input );
+        toplevel.connect( _fork1.output1, _upperTime.input );
+        toplevel.connect( _upperTime.output, _upperPlotter.input );
         
-        _toplevel.connect( _fork2.output1, _lowerTime.input );
-        _toplevel.connect( _lowerTime.output, _lowerPlotter.input );
+        toplevel.connect( _fork2.output1, _lowerTime.input );
+        toplevel.connect( _lowerTime.output, _lowerPlotter.input );
 
-        return _toplevel;
+        return toplevel;
     }
 
     /** Create a custom view to control execution of the model and display

@@ -52,7 +52,7 @@ import javax.swing.JApplet;
 /**
 This class provides a convenient way to make applets out of Ptolemy II
 models.  It assumes that the model is defined as a Java class that
-extends CompositeActor, with the classname given by the
+extends NamedObj, with the classname given by the
 <i>modelClass</i> applet parameter. If that model does not contain
 a manager, then this class will create one for it.
 <p>
@@ -85,7 +85,7 @@ the buttons.  If the word "directorParameters" is included,
 then controls for the director parameters are also included.
 <li>
 <i>modelClass</i>: The fully qualified class name of a Java class
-that extends CompositeActor.  This class defines the model.
+that extends NamedObj.  This class defines the model.
 <li>
 <i>orientation</i>: This can have value "horizontal", "vertical", or
 "controls_only" (case insensitive).  If it is "vertical", then the
@@ -162,7 +162,7 @@ public class PtolemyApplet extends BasicJApplet
      */
     public String[][] getParameterInfo() {
         String newinfo[][] = {
-            {"modelClass", "", "Classname for an instance of CompositeActor"},
+            {"modelClass", "", "Classname for an instance of NamedObj"},
             {"orientation", "",
                      "Orientation: vertical, horixontal, or controls_only"},
             {"controls", "", "List of on-screen controls"},
@@ -185,12 +185,14 @@ public class PtolemyApplet extends BasicJApplet
         _workspace = new Workspace(getClass().getName());
         try {
             _toplevel = _createModel(_workspace);
-            if (_toplevel.getManager() == null) {
-                _manager = new Manager(_workspace, "manager");
-                _manager.addExecutionListener(this);
-                _toplevel.setManager(_manager);
-            } else {
-                _manager = _toplevel.getManager();
+            if (_toplevel instanceof CompositeActor ) {
+                if (((CompositeActor)_toplevel).getManager() == null) {
+                    _manager = new Manager(_workspace, "manager");
+                    _manager.addExecutionListener(this);
+                    ((CompositeActor)_toplevel).setManager(_manager);
+                } else {
+                    _manager = ((CompositeActor)_toplevel).getManager();
+                }
             }
         } catch (Exception ex) {
             _setupOK = false;
@@ -249,7 +251,7 @@ public class PtolemyApplet extends BasicJApplet
     /** Create a model.  In this base class, we check to see whether
      *  the applet has a parameter <i>modelClass</i>, and if so, then we
      *  instantiate the class specified in that parameter.  If not,
-     *  then we create an empty instance of CompositeActor.
+     *  then we create an empty instance of NamedObj.
      *  It is required that the class specified in the modelClass
      *  parameter have a constructor that takes one argument, an instance
      *  of Workspace.
@@ -261,9 +263,9 @@ public class PtolemyApplet extends BasicJApplet
      *   exception to allow derived classes wide lattitude as to which
      *   exception to throw.
      */
-    protected CompositeActor _createModel(Workspace workspace)
+    protected NamedObj _createModel(Workspace workspace)
             throws Exception {
-        CompositeActor result = null;
+        NamedObj result = null;
         // Look for modelClass applet parameter.
         String modelSpecification = getParameter("modelClass");
         if (modelSpecification != null) {
@@ -284,8 +286,7 @@ public class PtolemyApplet extends BasicJApplet
                     }
                 }
                 if (match) {
-                    result = (CompositeActor)constructor
-                             .newInstance(arguments);
+                    result = (NamedObj)constructor.newInstance(arguments);
                     foundConstructor = true;
                 }
             }
@@ -338,6 +339,9 @@ public class PtolemyApplet extends BasicJApplet
     protected void _createView() {
 
         // Parse applet parameters that determine visual appearance.
+        // Here, these are only relevant if the model is an instance
+        // of CompositeActor, since we create run panel controls.
+        if (!(_toplevel instanceof CompositeActor)) return;
 
         // Start with orientation.
         String orientationSpec = getParameter("orientation");
@@ -376,7 +380,8 @@ public class PtolemyApplet extends BasicJApplet
             }
         }
 
-        ModelPane pane = new ModelPane(_toplevel, orientation, controls);
+        ModelPane pane = new ModelPane(((CompositeActor)_toplevel),
+                 orientation, controls);
         pane.setBackground(null);
         getContentPane().add(pane);
     }
@@ -415,7 +420,7 @@ public class PtolemyApplet extends BasicJApplet
     protected boolean _setupOK = true;
 
     /** The top-level composite actor, created in the init() method. */
-    protected CompositeActor _toplevel;
+    protected NamedObj _toplevel;
 
     /** The workspace that the applet is built in. Each applet has
      *  it own workspace.

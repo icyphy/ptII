@@ -111,17 +111,20 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
      *  @param workspace The workspace in which to create the model.
      *  @exception Exception If something goes wrong.
      */    
-    protected CompositeActor _createModel(Workspace workspace)
+    protected NamedObj _createModel(Workspace workspace)
 	    throws Exception {
         _toplevel = super._createModel(workspace);
-	TypeListener typeListener = new PortTypeListener();
-        Iterator entities = _toplevel.entityList().iterator();
-        while(entities.hasNext()) {
-            Entity entity = (Entity)entities.next();
-            Iterator ports = entity.portList().iterator();
-            while(ports.hasNext()) {
-                TypedIOPort port = (TypedIOPort)ports.next();
-                port.addTypeListener(typeListener);
+        if (_toplevel instanceof CompositeEntity) {
+            CompositeEntity toplevel = (CompositeEntity)_toplevel;
+            TypeListener typeListener = new PortTypeListener();
+            Iterator entities = toplevel.entityList().iterator();
+            while(entities.hasNext()) {
+                Entity entity = (Entity)entities.next();
+                Iterator ports = entity.portList().iterator();
+                while(ports.hasNext()) {
+                    TypedIOPort port = (TypedIOPort)ports.next();
+                    port.addTypeListener(typeListener);
+                }
             }
         }
         return _toplevel;
@@ -133,13 +136,16 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
     // Update the type designator for all ports contained by
     // entities contained by the toplevel.
     private void _updateAllTypeDisplays() {
-        Iterator entities = _toplevel.entityList().iterator();
-        while(entities.hasNext()) {
-            Entity entity = (Entity)entities.next();
-            Iterator ports = entity.portList().iterator();
-            while(ports.hasNext()) {
-                TypedIOPort port = (TypedIOPort)ports.next();
-                _updateTypeDisplay(port);
+        if (_toplevel instanceof CompositeEntity) {
+            CompositeEntity toplevel = (CompositeEntity)_toplevel;
+            Iterator entities = toplevel.entityList().iterator();
+            while(entities.hasNext()) {
+                Entity entity = (Entity)entities.next();
+                Iterator ports = entity.portList().iterator();
+                while(ports.hasNext()) {
+                    TypedIOPort port = (TypedIOPort)ports.next();
+                    _updateTypeDisplay(port);
+                }
             }
         }
     }

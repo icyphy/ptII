@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Butterfly
+PTPACKAGE = 	Hierarchy
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
@@ -50,7 +50,6 @@ EXTRA_SRCS = \
 	composite.xml \
 	Hierarchy.htm \
 	Hierarchy.xml \
-	plotConfigure.xml \
 	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't

@@ -193,7 +193,7 @@ public class FSMGraphFrame extends GraphFrame {
     ////                     private inner classes                 ////
 
     /**
-     * The factory for creating context menus on entities.
+     * The factory for creating context menus on states.
      */
     private class StateContextMenuFactory extends PtolemyMenuFactory {
 	public StateContextMenuFactory(GraphController controller) {
@@ -229,7 +229,7 @@ public class FSMGraphFrame extends GraphFrame {
     }
 
     /**
-     * The factory for creating context menus on relations.
+     * The factory for creating context menus on transitions between states.
      */
     private class TransitionContextMenuFactory
 	extends PtolemyMenuFactory {

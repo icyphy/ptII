@@ -570,11 +570,13 @@ public abstract class TableauFrame extends Top {
     // PtolemyEffigy that matches the specified model.
     private PtolemyEffigy _findEffigyForModel(
             CompositeEntity composite, NamedObj model) {
+
         if (composite != null) {
             Iterator effigies =
                 composite.entityList(PtolemyEffigy.class).iterator();
             while (effigies.hasNext()) {
                 PtolemyEffigy effigy = (PtolemyEffigy)effigies.next();
+
                 // First see whether this effigy matches.
                 if (effigy.getModel() == model) {
                     return effigy;
@@ -586,6 +588,7 @@ public abstract class TableauFrame extends Top {
                 }
             }
         }
+
         return null;
     }
 

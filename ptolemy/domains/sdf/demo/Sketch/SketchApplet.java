@@ -35,7 +35,8 @@ import java.awt.event.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
-import ptolemy.actor.gui.*;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.gui.MoMLApplet;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.lib.gui.SequencePlotter;
 import ptolemy.actor.lib.gui.SketchedSource;
@@ -83,14 +84,15 @@ public class SketchApplet extends MoMLApplet implements EditListener {
         super._createView();
         try {
             // Find out how many iterations the director expects to run for.
-            SDFDirector director = (SDFDirector)_toplevel.getDirector();
+            CompositeActor toplevel = (CompositeActor)_toplevel;
+            SDFDirector director = (SDFDirector)toplevel.getDirector();
             int iterations =
                 ((IntToken)(director.iterations.getToken())).intValue();
 
             SketchedSource source = (SketchedSource)
-                    _toplevel.getEntity("Sketched Source");
+                    toplevel.getEntity("Sketched Source");
             SequencePlotter plotter = (SequencePlotter)
-                    _toplevel.getEntity("Plotter");
+                    toplevel.getEntity("Plotter");
 
             // Note: The order of the following is important.
             // First, specify how long the sketched plot should be.

@@ -45,10 +45,8 @@ import com.microstar.xml.XmlException;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
-import ptolemy.actor.CompositeActor;
 import ptolemy.gui.*;
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.Documentation;
@@ -158,7 +156,7 @@ public class MoMLApplet extends PtolemyApplet {
      *  @return A model.
      *  @throws Exception If something goes wrong.
      */
-    protected CompositeActor _createModel(Workspace workspace)
+    protected NamedObj _createModel(Workspace workspace)
             throws Exception {
         String modelURL = getParameter("modelURL");
         if (modelURL == null) {
@@ -172,20 +170,17 @@ public class MoMLApplet extends PtolemyApplet {
         URL docBase = getDocumentBase();
         URL xmlFile = new URL(docBase, modelURL);
         _manager = null;
-        CompositeActor result = null;
         NamedObj toplevel = parser.parse(docBase, xmlFile);
         _workspace = toplevel.workspace();
         if (toplevel instanceof CompositeActor) {
-            result = (CompositeActor)toplevel;
+            CompositeActor result = (CompositeActor)toplevel;
             _manager = result.getManager();
             if (_manager == null) {
                 _manager = new Manager(_workspace, "manager");
                 result.setManager(_manager);
             }
             _manager.addExecutionListener(this);
-        } else {
-            throw new Exception("Model is not an instance of CompositeActor");
         }
-        return result;
+        return toplevel;
     }
 }
