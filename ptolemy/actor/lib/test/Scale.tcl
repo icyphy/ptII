@@ -57,7 +57,7 @@ test Scale-2.1 {test with the default parameter values} {
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
     set init [getParameter $ramp init]
     set step [getParameter $ramp step]
-    set gain [getParameter $scale gain]
+    set factor [getParameter $scale factor]
     # Use clone of scale to make sure that is ok.
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     $e0 connect \
@@ -72,15 +72,15 @@ test Scale-2.1 {test with the default parameter values} {
 } {0 1 2 3 4}
 
 test Scale-2.2 {test with the alternative parameter values} {
-    $gain setExpression {0.1}
-    [$gain getToken] stringValue
+    $factor setExpression {0.1}
+    [$factor getToken] stringValue
     [$e0 getManager] execute
     ptclose [enumToTokenValues [$rec getRecord 0]] {0.0 0.1 0.2 0.3 0.4}
 } {1}
 
 test Scale-2.3 {test with the alternative parameter values} {
     $step setExpression {0.1}
-    [$gain getToken] stringValue
+    [$factor getToken] stringValue
     [$e0 getManager] execute
     ptclose [enumToTokenValues [$rec getRecord 0]] {0.0 0.01 0.02 0.03 0.04}
 } {1}
@@ -95,8 +95,8 @@ test Scale-2.3 {test with the alternative parameter values} {
 #     $value setExpression {[1; 2]}
 # 
 #     set scale [java::new ptolemy.actor.lib.Scale $e0 scale]
-#     set gain [getParameter $scale gain]
-#     $gain setExpression {[2, 3; 4, 5]}
+#     set factor [getParameter $scale factor]
+#     $factor setExpression {[2, 3; 4, 5]}
 # 
 #     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
 #     $e0 connect \

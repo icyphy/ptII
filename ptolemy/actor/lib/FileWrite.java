@@ -80,6 +80,8 @@ public class FileWrite extends Sink {
      *  base class and then creates new ports.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @throws CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) {
         FileWrite newobj = (FileWrite)super.clone(ws);

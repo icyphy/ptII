@@ -127,6 +127,8 @@ public class Expression extends TypedAtomicActor {
      *  base class and then creates new ports and parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @throws CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) {
         try {
@@ -144,7 +146,7 @@ public class Expression extends TypedAtomicActor {
         }
     }
 
-    /** Evaluate the expression and broadcast its result to the output.
+    /** Evaluate the expression and send its result to the output.
      *  @exception IllegalActionException If the evaluation of the expression
      *   triggers it, or the evaluation yields a null result, or the evaluation
      *   yields an incompatible type, or if there is no director.

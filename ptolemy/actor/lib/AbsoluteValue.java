@@ -81,7 +81,7 @@ public class AbsoluteValue extends Transformer {
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has
-     *   has an attribute that cannot be cloned.
+     *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {

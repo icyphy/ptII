@@ -43,16 +43,12 @@ Produce an output token on each firing with a value that is
 equal to the sine of the input, scaled and shifted according to the
 parameters. The input and output types
 are DoubleToken. The actor implements the function:
-<br>
-y = A*sin(w*x+p)
-<br>
-where: <br>
-x is the input;<br>
-y is the output; <br>
-A is the amplitude, which has default value 1; <br>
-w is omega, which has default value 1. 
-When x is time, omega is the frequency; <br>
-p is the phase, which has default value 0.<br>
+<br><i>
+output = amplitude*sin(omega*input+phase)
+</i><br>
+<i>amplitude</i> and <i>omega</i> have default value 1. When <i>input</i>
+is time, <i>omega</i> is the frequency in radians. <i>phase</i> has default
+value 0.
 <p>
 A cosine function can be implemented using this actor by setting
 the phase to pi/2.

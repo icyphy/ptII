@@ -78,6 +78,8 @@ public class CurrentTime extends TimedSource {
      *  public members to the parameters of the new actor.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @throws CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) {
         Ramp newobj = (Ramp)super.clone(ws);

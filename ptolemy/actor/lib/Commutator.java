@@ -45,7 +45,7 @@ a single output sequence.  The commutator has an input port
 The types of the ports are undeclared and will be resolved by the type
 resolution mechanism, with the constraint that the output type must be
 greater than or equal to the input type. On each call to the fire method, the
-actor reads one token from each input channel and broadcasts the token
+actor reads one token from each input channel and send the token
 to the output port. The order in which the tokens are produced
 is the order of the channels in the input multiport. If any input
 channel has no token, then the fire method returns at that point.

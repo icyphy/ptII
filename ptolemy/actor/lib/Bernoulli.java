@@ -87,6 +87,8 @@ public class Bernoulli extends RandomSource {
      *  base class and then sets the public variables.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @throws CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) {
         Bernoulli newobj = (Bernoulli)super.clone(ws);

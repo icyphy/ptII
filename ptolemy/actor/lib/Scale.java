@@ -41,8 +41,8 @@ import ptolemy.data.expr.Parameter;
 Produce an output token on each firing with a value that is
 equal to a scaled version of the input.  The actor is polymorphic
 in that it can support any token type that supports multiplication
-by the <i>gain</i> parameter.  The output type is constrained to be at least
-as general as both the input and the <i>gain</i> parameter.
+by the <i>factor</i> parameter.  The output type is constrained to be at least
+as general as both the input and the <i>factor</i> parameter.
 For data types where multiplication is not commutative (such
 as matrices), the parameter is multiplied on the left, and the input
 on the right.
@@ -64,19 +64,21 @@ public class Scale extends Transformer {
     public Scale(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        gain = new Parameter(this, "gain", new IntToken(1));
+        factor = new Parameter(this, "factor", new IntToken(1));
 
 	// set the type constraints.
 	output.setTypeAtLeast(input);
-	output.setTypeAtLeast(gain);
+	output.setTypeAtLeast(factor);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The gain.  The default value of this parameter is the integer 1.
+    /** The factor.
+     *  This parameter can contain any token that supports multiplication.
+     *  The default value of this parameter is the IntToken 1.
      */
-    public Parameter gain;
+    public Parameter factor;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -100,25 +102,25 @@ public class Scale extends Transformer {
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has
-     *   has an attribute that cannot be cloned.
+     *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Scale newobj = (Scale)super.clone(ws);
-        newobj.gain = (Parameter)newobj.getAttribute("gain");
+        newobj.factor = (Parameter)newobj.getAttribute("factor");
 	newobj.output.setTypeAtLeast(newobj.input);
-	newobj.output.setTypeAtLeast(newobj.gain);
+	newobj.output.setTypeAtLeast(newobj.factor);
         return newobj;
     }
 
-    /** Compute the product of the input and the <i>gain</i>.
+    /** Compute the product of the input and the <i>factor</i>.
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             Token in = input.get(0);
-            Token gainToken = gain.getToken();
-            Token result = gainToken.multiply(in);
+            Token factorToken = factor.getToken();
+            Token result = factorToken.multiply(in);
             output.send(0, result);
         }
     }

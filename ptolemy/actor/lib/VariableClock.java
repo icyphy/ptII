@@ -50,7 +50,7 @@ than the period.  Thus, the default values and offsets are different
 from those of the base class.  The output value, by default, is
 just the constant integer 1, and the offset is 0.0.  The default
 value of <i>period</i> is changed to 1.0. This gives
-a very simple behavior, where the output is always the same, but
+a very simply behavior, where the output is always the same, but
 the time between outputs is controlled by the <i>periodControl</i>
 input.
 <p>
@@ -105,6 +105,8 @@ public class VariableClock extends Clock {
      *  to the parameters of the new actor.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @throws CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) {
         VariableClock newobj = (VariableClock)super.clone(ws);
