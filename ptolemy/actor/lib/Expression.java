@@ -184,7 +184,8 @@ public class Expression extends TypedAtomicActor {
     /** Evaluate the expression and send its result to the output.
      *  @exception IllegalActionException If the evaluation of the expression
      *   triggers it, or the evaluation yields a null result, or the evaluation
-     *   yields an incompatible type, or if there is no director.
+     *   yields an incompatible type, or if there is no director, or if a
+     *   connected input has no tokens.
      */
     public void fire() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
@@ -195,6 +196,9 @@ public class Expression extends TypedAtomicActor {
                 if (port.hasToken(0)) {
                     Token inputToken = port.get(0);
                     _tokenMap.put(port.getName(), inputToken);
+                } else {
+                    throw new IllegalActionException(this,
+                    "Input port " + port.getName() + " has no data.");
                 }
             }
         }
