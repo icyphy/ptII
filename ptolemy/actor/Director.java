@@ -93,9 +93,17 @@ any actors that are new to the composite have their initialize() methods
 invoked.
 <p>
 An initialize() method may queue further mutations with the director.
+<p>
+The director also provides methods to optimize the iteration portion of a
+simulation. This is done by letting the workspace to be write-protected during
+an iteration. In this base class, the default implementation prevent the
+workspace to be write-protected. Derived classes (e.g. domain specific 
+directors) should override the _writeAccessPreference() method to let 
+the workspace to be write-protected. (Note that the workspace might still be
+not-write-protected, it all depends on other directors in the simulation).
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
-@version: $Id$
+@version: @(#)Director.java	1.50 10/13/98
 */
 public class Director extends NamedObj implements Executable {
 
@@ -225,6 +233,55 @@ public class Director extends NamedObj implements Executable {
                 actor.initialize();
             }
         }
+    }
+
+    /** Return whether this director and all its lower level directors would
+     *  ever need write access on the workspace. This method first check
+     *  the 'personal' preference of this director, if this director wants
+     *  write access then just return true. Otherwise, this method continue by
+     *  recursively call ones in the lower level directors. If any of those 
+     *  lower level directors disagree to have the workspace write-protected, 
+     *  then return true.
+     *  @return true If this director disagree to have the workspace
+     *  write protected, false otherwise.
+     *   
+     */
+    // FIXME: should this be 'package friendly' ?
+    public boolean needWriteAccess() {
+        if (_writeAccessPreference()) {
+            return true;
+        }
+        CompositeActor container = ((CompositeActor)getContainer());
+        if (container!= null) {
+            Enumeration allactors = container.deepGetEntities();
+            while (allactors.hasMoreElements()) {
+                Actor actor = (Actor)allactors.nextElement();
+                // find out which of those actors has a local director.
+                if (actor instanceof CompositeActor && 
+                        ((CompositeActor)actor).isOpaque()) {
+                    CompositeActor ca = (CompositeActor) actor;
+                    // ca.getDirector() is guaranteed to return a local
+                    // director, not the executive director.
+                    if (ca.getDirector().needWriteAccess()) {
+                        // If any of the directors need a write access, then 
+                        // everyone has to respect it.
+                        return true;
+                    }
+                    
+                }
+            }
+            // Up to this point, all lower level directors have been queried
+            // and none of them returned true (or else we would have returned)
+            // Therefore, return false.
+            return false;
+        } else {
+            System.out.println("Is this a bug, can a director not have a " + 
+                    "container.");
+            
+        }
+        // This is hack, since otherwise the compiler will barf.
+        // I choose to return the safe default case.
+        return true;
     }
 
     /** Return a new receiver of a type compatible with this director.
@@ -492,6 +549,17 @@ public class Director extends NamedObj implements Executable {
         _pendingMutations.clear();
         return result;
     }
+
+    /** Indicate whether this director would like to have write access
+     *  during its iteration. By default, the return value is true, indicating
+     *  the need for a write access.
+     *
+     *  @return True if this director need write access, false otherwise.
+     */ 
+    protected boolean _writeAccessPreference() { 
+        return true;
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

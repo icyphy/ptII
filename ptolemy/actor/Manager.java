@@ -56,10 +56,21 @@ execution of the model, it is important that all the processing for the
 model occur in a separate thread.   The Manager is responsible for creating 
 and managing the java thread in which execution begins, although some 
 domains may spawn additional threads of their own.  
+<p>
+Manager also tries to optimize the simulation by making the workspace
+<i>write-protected</i> during the iteration period when all the 
+directors 'agree'.
+Calling getReadAccess() and doneReading() on a <i>write-protected</i> 
+workspace will return immediately (No writer, no problem). On the other hand,
+calling getWriteAccess() and doneWriting() on a <i>write-protected</i>
+workspace will result in an exception being thrown, so don't write-protect the
+workspace if write access will ever be needed. A domain-specific director, by
+default, will not 'agree' to have the workspace write-protected. To override
+the default behaviour, override the Director._writeAccessPreference() method.
 
-@author Steve Neuendorffer
-// Contributors: Mudit Goel, Edward A. Lee, Lukito Muliadi
-@version: @(#)Manager.java	$Id$
+@author Steve Neuendorffer, Lukito Muliadi
+// Contributors: Mudit Goel, Edward A. Lee
+@version: $Id$
 */
 
 public final class Manager extends NamedObj {
@@ -151,12 +162,18 @@ public final class Manager extends NamedObj {
                 // Initialize the topology
                 toplevel.initialize();
                 
+                // Figure out the appropriate write access.
+                _needWriteAccessDuringIteration = _checkIfWriteAccessNeededDuringIteration();
+
                 // Call _iterate() until:
                 // _isRunning is set to false (presumably by stop())
                 // postfire() returns false.
-                while (_isRunning && _iterate())
-                
-
+                while (_isRunning && _iterate()) {
+                    
+                    // finished iteration, remove the write protection
+                    // on the workspace.
+                    workspace().setWriteProtected(false);
+                    
                     try {
                         // if a pause has been requested
                         if(_isPaused) {
@@ -193,6 +210,8 @@ public final class Manager extends NamedObj {
                         // We don't care if we were interrupted..
                         // Just ignore.
                     }
+                    
+                } // while (_isRunning && _iterate())
             }
             finally {
                 // if we are done, then always be sure to reset the flags.
@@ -469,6 +488,7 @@ public final class Manager extends NamedObj {
     private boolean _iterate() throws IllegalActionException {
 
         _iteration++;
+
         CompositeActor toplevel = (CompositeActor)getToplevel();
         if (toplevel == null) {
             throw new InvalidStateException("Manager "+ getName() +
@@ -503,7 +523,13 @@ public final class Manager extends NamedObj {
                     l.executionError(event);
                 }
             }
-                
+            
+            // Set the appropriate write access, because we're about to
+            // go into an interation.
+            if (!_needWriteAccessDuringIteration) {
+                workspace().setWriteProtected(true);
+            } 
+      
             if (toplevel.prefire()) {
                 toplevel.fire();
                 return toplevel.postfire();
@@ -511,6 +537,12 @@ public final class Manager extends NamedObj {
             return false;
         } finally {
             workspace().doneReading();
+            // FIXME: Is this the right place to put the code.
+            // About to leave this _iterate() method, so restore the write
+            // protection.
+            if (!_needWriteAccessDuringIteration) {
+                workspace().setWriteProtected(false);
+            } 
         }
     }
 
@@ -528,7 +560,30 @@ public final class Manager extends NamedObj {
             workspace().remove(this);
         }
         _toplevel = ca;
-     }
+    }
+    
+    /** Check if write access in the workspace will be needed during an
+     *  iteration.
+     *  An iteration is defined to be one invocation of prefire(), fire(), and
+     *  postfire() methods of the top level composite actor. 
+     *  <p>
+     *  This method recursively call the needWriteAccess() method of all lower
+     *  level directors. Intuitively, the workspace will only be made write-
+     *  protected, if all the directors permit it.
+     */
+    // FIXME: What's the appropriate protection level for this method ?
+    // FIXME: public ? private ?
+    protected boolean _checkIfWriteAccessNeededDuringIteration() {
+        // Get the top level composite actor.
+        CompositeActor toplevel = (CompositeActor)getToplevel();
+        if (toplevel == null) {
+            throw new InvalidStateException("Manager "+ getName() +
+                    " attempted execution with no topology to execute!");
+        }
+        // Call the needWriteAccess() method of the local director of the
+        // top level composite actor.
+        return toplevel.getDirector().needWriteAccess();
+    }
 
     /** This method serves at the implementation for both go() and go(int).
      *  Starts a new ManagerExecutionThread which will call
@@ -564,11 +619,14 @@ public final class Manager extends NamedObj {
     private boolean _isRunning;
     private boolean _isPaused;
     private int _iteration;
+    private boolean _needWriteAccessDuringIteration;
     private Thread _runningthread;
     private HashedSet _ExecutionListeners;
 
     // FIXME: a hack until mutation got implemented.
     private boolean _typeResolved = false;
 }
+
+
 
 
