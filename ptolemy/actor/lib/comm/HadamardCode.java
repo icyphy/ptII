@@ -47,7 +47,10 @@ The log base 2 of the matrix dimension is given by the <i>log2Length</i>
 parameter, which should be a non-negative integer smaller than 32.
 The row index is given by the <i>index</i> parameter or by the associated
 <i>index</i> port, which should be a non-negative integer smaller
-than the matrix dimension.
+than the matrix dimension. If the index changes value when the actor is
+in the middle of producing a sequence of Hadamard codeword, the actor
+will take on the new index value, and start to produce the new codeword
+from the beginning.
 <p>
 A Hadamard matrix is defined in the following way:
 <p>
@@ -149,27 +152,29 @@ public class HadamardCode extends Source {
         }
     }
 
-    /** Read from the associated <i>index</i> port if there is any
-     *  input and compute matirx dimension from <i>log2Length</i>.
-     *  Call _calculateRow to calculate the Hadamard row and send the
-     *  row elements to the output port in sequence. If it reaches the
-     *  end of the row, the next iteration will restart from the
-     *  beginning of the row.
+    /** Read from the associated <i>index</i> port if there is any input.
+     *  The actor compares the new index value with the old one.
+     *  If the value changes, the actor will interrupt the current
+     *  output sequence, compute the new Hadamard codeword, and send it
+     *  to the output in sequence.
+     *  If the index remains constant when it reaches the end of a
+     *  Hadamard codeword sequence, the next iteration will restart
+     *  from the beginning of that codeword.
      *  @exception IllegalActionException If <i>index</i> is out of range.
      */
     public void fire() throws IllegalActionException {
         super.fire();
         index.update();
-        if (_rowValueInvalid) {
+        _latestIndex = ((IntToken)index.getToken()).intValue();
+        if (_rowValueInvalid && _latestIndex != _previousIndex) {
             int log2LengthValue = ((IntToken)log2Length.getToken()).intValue();
-            int indexValue = ((IntToken)index.getToken()).intValue();
             // Power of two calculated using a shift.
             int matrixDimension = 1 << log2LengthValue;
-            if (indexValue >= matrixDimension) {
+            if (_latestIndex >= matrixDimension) {
                 throw new IllegalActionException(this,
                 "index is out of range.");
             }
-            _row = _calculateRow(matrixDimension, indexValue);
+            _row = _calculateRow(matrixDimension, _latestIndex);
             _rowValueInvalid = false;
             // Reset the index to start at the beginning of the
             // new sequence.
@@ -192,9 +197,18 @@ public class HadamardCode extends Source {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        // Since the actor should always compute the Hadamard
+        // sequence when it fires for the first time, the _previousIndex
+        // is set to a value that _latestIndex can never take.
+        // Thus the computation can be carried out.
+        _previousIndex = -1;
         _index = 0;
     }
 
+    public boolean postfire() throws IllegalActionException {
+        _previousIndex = _latestIndex;
+        return super.postfire();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -250,6 +264,12 @@ public class HadamardCode extends Source {
 
     // Index of the element in the Hadamard row.
     private int _index;
+
+    // The previous index value from the input port.
+    private int _previousIndex;
+
+    // The current index value from the input port.
+    private int _latestIndex;
 
     // Hadamard row computed from _calculateRow.
     private int[] _row;
