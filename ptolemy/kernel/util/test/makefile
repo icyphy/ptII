@@ -47,7 +47,8 @@ JSRCS = \
 	PtestWorkspace.java \
 	TestInvalidStateException.java \
 	TestNullNamedObj.java \
-	TestWorkspace.java
+	TestWorkspace.java \
+	TestWorkspace2.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
