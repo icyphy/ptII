@@ -177,7 +177,7 @@ public class PowerLossChannel extends LimitedRangeChannel {
      *  fields of the defaultProperties.
      *  @param properties The transmit properties.
      *  @param source The sending port.
-     *  @param destintion The receiving port.
+     *  @param destination The receiving port.
      *  @return The transformed properties.
      *  @exception IllegalActionException If the properties cannot
      *   be transformed. Not thrown in this base class.
