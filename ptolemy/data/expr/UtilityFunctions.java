@@ -358,6 +358,10 @@ public class UtilityFunctions {
         }
     }
     
+    /** Infer the return type of the max function below.
+     *  If the argument is an array type, then return its element type, 
+     *  otherwise return BaseType.UNKNOWN.
+     */
     public static Type _typeof_max(Type[] types) {
         Type type = types[0];
         if(type instanceof ArrayType) {
