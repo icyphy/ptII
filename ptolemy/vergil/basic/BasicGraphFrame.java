@@ -373,7 +373,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 setModified(persistent);
             }
         }
-        _graphPanner.repaint();
+        if (_graphPanner != null) {
+            _graphPanner.repaint();
+        }
     }
 
     /** React to the fact that a change has triggered an error by
