@@ -62,7 +62,7 @@
  </entity>
 
 
- <entity name="dB" class="ptolemy.actor.lib.conversions.dB">
+ <entity name="dB" class="ptolemy.actor.lib.dB">
        <port name="input"></port>
        <port name="output"></port>
  </entity>
