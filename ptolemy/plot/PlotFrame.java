@@ -202,15 +202,13 @@ public class PlotFrame extends Frame {
     /** Display basic information about the application.
      */
     protected void _about() {
-        // FIXME: Is the web address correct?
         Message message = new Message(
                 "Ptolemy plot frame\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
                 "Version 2.0, Build: $Id$\n\n"+
                 "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
-                Color.white, Color.black);
+                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n");
         message.setTitle("About Ptolemy Plot");
     }
 
@@ -223,8 +221,15 @@ public class PlotFrame extends Frame {
     /** Display more detailed information than given by _about().
      */
     protected void _help() {
-        // FIXME:  This is a pretty lame excuse for help...
-        Message message = new Message("Help information should go here!");
+        Message message = new Message(
+                "PlotFrame is a versatile two-dimensional data plotter " + 
+                "that runs as part of an application, but in its own " +
+                "window. It can read files compatible with the Ptolemy " +
+                "plot file format (currently only ASCII), or the " +
+                "application can interact directly with the contained " +
+                "Plot object, which is visible as a public member. " +
+                "For a description of the file format, see the Plot " +
+                "and PlotBox classes.");
         message.setTitle("Plot frame");
     }
 
