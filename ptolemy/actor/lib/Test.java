@@ -113,7 +113,7 @@ public class Test extends Sink {
         defaultEntries[0] = new BooleanToken(true);
         ArrayToken defaultArray = new ArrayToken(defaultEntries);
         correctValues = new Parameter(this, "correctValues", defaultArray);
-	correctValues.setTypeEquals(new ArrayType(BaseType.NAT));
+	correctValues.setTypeEquals(new ArrayType(BaseType.ANY));
 
         tolerance = new Parameter(this, "tolerance", new DoubleToken(1e-9));
         tolerance.setTypeEquals(BaseType.DOUBLE);

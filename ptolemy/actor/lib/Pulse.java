@@ -99,7 +99,7 @@ public class Pulse extends SequenceSource {
 	defaultValues[1] = new IntToken(0);
 	ArrayToken defaultValueToken = new ArrayToken(defaultValues);
         values = new Parameter(this, "values", defaultValueToken);
-	values.setTypeEquals(new ArrayType(BaseType.NAT));
+	values.setTypeEquals(new ArrayType(BaseType.ANY));
 
         // Set the Repeat Flag.
         repeat = new Parameter(this, "repeat", new BooleanToken(false));
