@@ -78,7 +78,10 @@ JSRCS = \
 	MailboxPort.java \
 	Receptionist.java \
 	TokenHolderFullException.java \
-	TransparentIOPort.java
+	TransparentIOPort.java \
+	CalendarQueue.java \
+	CQLink.java \
+	CQComparator.java
 
 EXTRA_SRCS =	$(JSRCS)
 
