@@ -122,7 +122,7 @@ image.</text></svg></configure>
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Above is an ellipse with a
-tranlucent fill color whose
+translucent fill color whose
 width and height are given
 by expressions (double click
 on it to see the expressions).
@@ -239,10 +239,6 @@ library, including, for example, this annotation and the enclosing rectangle.</t
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 185.0">
         </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -265,10 +261,6 @@ library, including, for example, this annotation and the enclosing rectangle.</t
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 200.0">
         </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -284,10 +276,6 @@ library, including, for example, this annotation and the enclosing rectangle.</t
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 255.0">
         </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -300,10 +288,6 @@ library, including, for example, this annotation and the enclosing rectangle.</t
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="275.0, 200.0">
         </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
     </relation>
     <link port="Ramp.output" relation="relation2"/>
     <link port="SetVariable.input" relation="relation2"/>
