@@ -10,6 +10,10 @@
 <entity name="PushConsumer" class="ptolemy.actor.corba.PushConsumer"/>
 <entity name="PullSupplier" class="ptolemy.actor.corba.PullSupplier"/>
 <entity name="PullConsumer" class="ptolemy.actor.corba.PullConsumer"/>
+
+<entity name="TaskCoordinator" class="ptolemy.actor.corba.TaskCoordinator"/>
+<entity name="TaskReceiver" class="ptolemy.actor.corba.TaskReceiver"/>
+<entity name="TaskReporter" class="ptolemy.actor.corba.TaskReporter"/>
       </group>
     ?>
   </configure>
