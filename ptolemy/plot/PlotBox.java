@@ -29,7 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						PT_COPYRIGHT_VERSION_2
 						COPYRIGHTENDKEY
 */
-/* FIXME: Confuses metrowerks java: package plot; */
+package plot;
 
 import java.awt.*;
 import java.applet.Applet;
