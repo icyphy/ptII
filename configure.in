@@ -45,6 +45,7 @@ if test -z "$PTII"; then
 	    # actually appears at the top of configure.
 	    ac_default_prefix=$PTII
 	else
+	    echo "You must set the PTII environment variable before running configure"
 	    exit 3
 	fi
     else
