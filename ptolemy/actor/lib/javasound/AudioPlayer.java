@@ -75,7 +75,7 @@ active. If this actor is used in conjunction with an AudioCapture
 actor, changing a parameter of this actor will cause the
 corresponding parameter value of the AudioCapture actor to
 automatically be set to the same value. This behavior is required
-because the AudioCapture and AudioPlayback actors both share access
+because the AudioCapture and AudioPlayer actors both share access
 to the audio hardware, which is associated with a single sample rate,
 bit resolution, and number of channels.
 <p>
@@ -474,7 +474,7 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 	    throw new IllegalActionException(this,
                     "This actor cannot start audio playback because " +
                     "another actor currently has access to the audio " +
-                    "playback resource. Only one AudioPlayback actor may " +
+                    "playback resource. Only one AudioPlayer actor may " +
                     "be used at a time.");
 	}
 	if (_debugInfo) {
