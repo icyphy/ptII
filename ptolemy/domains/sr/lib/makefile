@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	Delay.java \
 	Latch.java \
+	SequenceTest.java \
 	TriggeredTime.java
 
 OTHER_FILES_TO_BE_JARED = \
