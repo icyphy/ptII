@@ -88,6 +88,8 @@ JSRCS = \
 	BooleanMultiplexor.java \
 	BooleanSelect.java \
 	BooleanSwitch.java \
+	BusAssembler.java \
+	BusDisassembler.java \
 	ClassWrapper.java \
 	Clock.java \
 	Commutator.java \
@@ -168,6 +170,7 @@ OTHER_FILES_TO_BE_JARED = \
 	TimedSine.xml \
 	array.xml \
 	booleanflowcontrol.xml \
+	busses.xml \
 	communications.xml \
 	esoteric.xml \
 	filtering.xml \
