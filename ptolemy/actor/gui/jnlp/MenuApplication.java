@@ -39,18 +39,18 @@ import ptolemy.vergil.VergilApplication;
 //// MenuApplication
 /** A wrapper that starts up Vergil from a menu.
 
-<p>This class is primarily for use with the
+<p>MenuApplication is primarily for use with the
 Java Network Launching Protocol
 (JNLP) aka Web Start, but it can be used with any system that invokes
 applications via a menu choice such as the InstallAnywhere lax tool.
 
-<p>If this class detects that it was invoked from a menu, then
+<p>If MenuApplication detects that it was invoked from a menu, then
 it sets the current directory to the value of user's home directory
 so that when the user opens a file chooser to safe a file then
 the initial default directory is the user's home directory
 instead of the application directory
 
-<p>This class sets the security manager to null for two reasons:
+<p>The security manager is set to null for two reasons:
 <ol>
 <li> Get rid of the following message when we open the file browser:
 <br> "There is no disk in the drive. Please insert a disk into drive A"
@@ -69,11 +69,11 @@ handled is that the .jnlp file that defines the application
 is copied to the .jar file that defines the main() method for
 the application and the .jar file is signed.  Unfortunately, this means
 that two Web Start applications cannot share one jar file, so
-we create these wrapper classes that call the a class appropriate main class.
+we create wrappers that call the appropriate main method.
 
 <p>For more information about JNLP, see $PTII/mk/jnlp.in.
 
-<p>Each JNLP Application should extends this class and simply
+<p>Each JNLP Application should extend MenuApplication and simply
 have its main() call this main().  The makefile will need
 to be extended to create a jar file that includes
 <pre>
@@ -87,52 +87,52 @@ MenuApplication.class
 @version $Id$
 @since Ptolemy II 2.0
 */
-                                        public class MenuApplication {
-                                            public static void main(final String [] args) {
-                                                // If we were started from a menu choice instead of a command
-                                                // line, then the current working directory is likely
-                                                // somewhere odd, so set the current working directory (the
-                                                // user.dir property) to the home directory of the user (the
-                                                // user.home property)
+public class MenuApplication {
+    public static void main(final String [] args) {
+        // If we were started from a menu choice instead of a command
+        // line, then the current working directory is likely
+        // somewhere odd, so set the current working directory (the
+        // user.dir property) to the home directory of the user (the
+        // user.home property)
 
-                                                // Note that Java has a very poor notion of the current
-                                                // directory and that changing user.dir will not necessarily
-                                                // change the current directory for all aspects of Java.
-                                                // In particular, the File class does not seems to always respect
-                                                // the value of user.dir.  In general, changing user.dir
-                                                // is frowned upon, but we do what we can here.
+        // Note that Java has a very poor notion of the current
+        // directory and that changing user.dir will not necessarily
+        // change the current directory for all aspects of Java.
+        // In particular, the File class does not seems to always respect
+        // the value of user.dir.  In general, changing user.dir
+        // is frowned upon, but we do what we can here.
 
-                                                if (_invokedFromAMenu()) {
-                                                    try {
-                                                        System.setProperty("user.dir",
-                                                                StringUtilities.getProperty("user.home"));
-                                                    } catch (Exception ex) {
-                                                        // Don't crash here, just print a message and move on
-                                                        System.out.println("Warning, could not get user.home property "
-                                                                + "or set user.dir property:");
-                                                        ex.printStackTrace();
-                                                    }
-                                                }
+        if (_invokedFromAMenu()) {
+            try {
+                System.setProperty("user.dir",
+                        StringUtilities.getProperty("user.home"));
+            } catch (Exception ex) {
+                // Don't crash here, just print a message and move on
+                System.out.println("Warning, could not get user.home property "
+                        + "or set user.dir property:");
+                ex.printStackTrace();
+            }
+        }
 
-                                                // Note that VergilApplication.main() invokes the VergilApplication
-                                                // constructor in the Swing Event thread.
-                                                ptolemy.vergil.VergilApplication.main(args);
-                                            }
+        // Note that VergilApplication.main() invokes the VergilApplication
+        // constructor in the Swing Event thread.
+        ptolemy.vergil.VergilApplication.main(args);
+    }
 
-                                            ///////////////////////////////////////////////////////////////////
-                                            ////                         private methods                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
-                                            // Return true if this command was invoked from a menu.
-                                            private static boolean _invokedFromAMenu() {
-                                                // Check for Web Start
-                                                if (StringUtilities.getProperty("javawebstart.version").length() > 0) {
-                                                    return true;
-                                                }
-                                                if (StringUtilities.getProperty("lax.user.dir").length() > 0) {
-                                                    // If we are running under ZeroG's InstallAnywhere, then this
-                                                    // property will be present.
-                                                    return true;
-                                                }
-                                                return false;
-                                            }
-                                        }
+    // Return true if this command was invoked from a menu.
+    private static boolean _invokedFromAMenu() {
+        // Check for Web Start
+        if (StringUtilities.getProperty("javawebstart.version").length() > 0) {
+            return true;
+        }
+        if (StringUtilities.getProperty("lax.user.dir").length() > 0) {
+            // If we are running under ZeroG's InstallAnywhere, then this
+            // property will be present.
+            return true;
+        }
+        return false;
+    }
+}
