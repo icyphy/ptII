@@ -6,9 +6,6 @@
     <?moml
       <group>
         <doc>JMF processing actors</doc>
-	
-	<entity name="BufferToImageConversion" class="ptolemy.actor.lib.jmf.BufferToImageConversion">
-	</entity>
 
 	<entity name="ColorFinder" class="ptolemy.actor.lib.jmf.ColorFinder">
 	</entity>

@@ -49,7 +49,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	BufferToImageConversion.java \
 	ColorFinder.java\
 	JMFImageToken.java \
 	PlaySound.java \
