@@ -13,7 +13,7 @@
 #fi
 mailto=$1
 
-ADMDIR=/home/bldmastr/ptII/adm
+ADMDIR=/users/ptII/adm/
 # If you change the version number, then edit 
 # ptolemy/web/nightly/toc.htm
 # and ptII/adm/gen-xxx/makefile
@@ -29,8 +29,8 @@ echo "The Ptolemy II nightly build is run from a bldmaster cronjob" >> $mailmsg
 echo "See http://www.gigascale.org/buildmaster" >> $mailmsg
 
 # The log of the build
-#ptbuildlog=/users/ptII/logs/java`date  '+%m%d'`
-ptbuildlog=/home/bldmastr/ptII/adm/logs/ptIInightly.txt
+ptbuildlog=/users/ptII/logs/java`date  '+%m%d'`
+#ptbuildlog=/home/bldmastr/ptII/adm/logs/ptIInightly.txt
 #(cd /users/ptII/logs; rm -f javalastnight; ln -s java`date  '+%m%d'` javalastnight)
 
 # Remove logs older than 45 days
