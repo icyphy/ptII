@@ -30,6 +30,7 @@
 
 package pt.kernel;
 
+import java.io.Serializable;
 import collections.LinkedList;
 import collections.CollectionEnumeration;
 
@@ -46,7 +47,7 @@ although they are not required to do so in order to use the workspace.
 @author Edward A. Lee
 @version $Id$
 */
-public class Workspace implements Nameable {
+public class Workspace implements Nameable, Serializable {
 
     /** Create a workspace with an empty string as its name.
      */	

@@ -29,6 +29,7 @@
 
 package pt.kernel;
 
+import java.io.Serializable;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
@@ -71,7 +72,7 @@ as its own workspace.
 @version $Id$
 */
 
-public class NamedObj implements Nameable {
+public class NamedObj implements Nameable, Serializable {
 
     /** Construct an object in the default workspace with an empty string
      *  as its name.
