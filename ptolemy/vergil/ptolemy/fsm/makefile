@@ -79,6 +79,8 @@ OPTIONAL_FILES = \
 	'FSMGraphController$$NewStateAction.class' \
 	'FSMGraphController$$StateCreator.class' \
 	'FSMGraphFrame$$LookInsideAction.class' \
+	'FSMGraphFrame$$PortContextMenuFactory.class' \
+	'FSMGraphFrame$$PortContextMenuFactory$$PortDescriptionFactory.class' \
 	'FSMGraphFrame$$StateContextMenuFactory.class' \
 	'FSMGraphFrame$$TransitionContextMenuFactory.class' \
 	'FSMGraphController$$LinkCreator.class' \
@@ -87,11 +89,15 @@ OPTIONAL_FILES = \
 	'FSMGraphModel$$3.class' \
 	'FSMGraphModel$$4.class' \
 	'FSMGraphModel$$5.class' \
+	'FSMGraphModel$$6.class' \
 	'FSMGraphModel$$ArcModel.class' \
+	'FSMGraphModel$$RemoveableNodeModel.class' \
+	'FSMGraphModel$$PortModel.class' \
 	'FSMGraphModel$$StateModel.class' \
 	'FSMGraphModel$$ToplevelModel.class' \
-	'FSMGraphModel$$RemoveableNodeModel.class' \
 	'FSMGraphTableau$$Factory.class' \
+	'FSMPortController$$NameWrapper.class' \
+	'FSMPortController$$PortRenderer.class' \
 	'FSMStateController$$StateRenderer.class' \
 	'FSMStateController$$EntityRenderer.class' \
 	'FSMTransitionController$$LinkRenderer.class' \
