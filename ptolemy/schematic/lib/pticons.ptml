@@ -11,6 +11,8 @@
     <sublibrary name="Sinks" url="../../domains/generic/icons/sinks.ptml"/>
     <sublibrary name="Filters" url="../../domains/generic/icons/filters.ptml"/>
     <sublibrary name="Math" url="../../domains/generic/icons/math.ptml"/>
+    <sublibrary name="Pins" url="../../domains/generic/icons/pins.ptml"/>
+    <sublibrary name="Composites" url="../../domains/generic/icons/composites.ptml"/>
 </header>
 
 <!-- Normally, icons go here. This top-level library has no icons. -->
