@@ -1,6 +1,13 @@
 
 To Do:
 
+set up new vergil alias
+create new package actor.lib.nonstrict?
+move sr tests around
+search and replace for name changes
+cvs update
+talk to xiaojun
+
 FIXMEs
 
 add SRDirector and srentities to vergil library
