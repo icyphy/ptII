@@ -327,14 +327,8 @@ public class DTDirector extends SDFDirector {
      *  @return the current time
      */
     public double getCurrentTime() {
-        double timeValue;
 
-        if (_pseudoTimeEnabled == true) {
-            timeValue = _insideDirector.getCurrentTime();
-        } else {
-            timeValue = _currentTime;
-        }
-        return timeValue;
+        return _currentTime;
     }
 
 
@@ -344,8 +338,13 @@ public class DTDirector extends SDFDirector {
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
-        // FIXME: This is a currently a hack to get DT to work with CT
-        return Double.MAX_VALUE;
+        double period = 0.0;
+        try {
+            period = getPeriod();
+        } catch (IllegalActionException exception) {
+            // FIXME: handle this
+        }
+        return _currentTime + period;
     }
 
 
@@ -358,8 +357,7 @@ public class DTDirector extends SDFDirector {
      *  is not of type DoubleToken or IntToken.
      */
     public double getPeriod() throws IllegalActionException {
-    //  -getPeriod-
-    //  FIXME: This method is very inefficient. Implementation should cache a
+    //  FIXME:  A faster implementation of this method should cache a
     //  private local _period variable instead. Also the implementation might
     //  need to update the inside DT director's period value
     //  FIXME: It is inefficient to calculate and set the inside
