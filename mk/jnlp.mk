@@ -98,6 +98,7 @@ DSP_JNLP_JARS =	\
 PTINY_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/javasound/demo/demo.jar \
 	ptolemy/data/type/demo/demo.jar \
+	ptolemy/data/unit/demo/demo.jar \
 	ptolemy/domains/ct/demo/demo.jar \
 	ptolemy/domains/de/demo/demo.jar \
 	ptolemy/domains/fsm/demo/demo.jar \
