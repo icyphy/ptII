@@ -59,7 +59,7 @@ import ptolemy.kernel.util.Workspace;
 /**
 This director extends DE director and handles hierarchical DE models.
 <p>
-This director uses IODependencies, which specify the input and output
+This director uses FunctionDependencies, which specify the input and output
 relations of an actor, to do topological sort and scheduling. This director
 excludes the models with cyclic loops in the graph composed of IO ports 
 of actors, and throws an exception complaining that no valid schedules
@@ -380,7 +380,13 @@ public class DEEDirector extends DEDirector {
                     + " while event time is " + time);
         }
         // FIXME: what depth for this pure event? 
-        // If the actor has different depths...
+        // If the actor has different depths because of 
+        // multiple inputs?
+        
+        // Or, we constrain that there is only one input for
+        // each actor to accept the inputs, and a Merge actor
+        // is necessary to sort the multiple inputs?
+        
         //int depth = _getDepth(actor);
         int depth = 0;
         

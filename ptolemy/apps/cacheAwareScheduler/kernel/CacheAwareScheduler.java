@@ -695,9 +695,9 @@ public class CacheAwareScheduler extends SDFScheduler {
         // director. If there is no such attribute, construct one.
         FunctionDependency functionDependency = castContainer.getFunctionDependencies();
          
-        // The IODependence attribute is used to construct
+        // The FunctionDependency attribute is used to construct
         // the schedule. If the schedule needs recalculation,
-        // the IODependence also needs recalculation.
+        // the FunctionDependency also needs recalculation.
         functionDependency.invalidate();
       
         // FIXME: The following may be a very costly test. 
@@ -730,14 +730,14 @@ public class CacheAwareScheduler extends SDFScheduler {
         actors = castContainer.deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
-            // Get the IODependence attribute of current actor.
+            // Get the FunctionDependency attribute of current actor.
             functionDependency = actor.getFunctionDependencies();
-            // The following check may not be necessary since the IODependence
+            // The following check may not be necessary since the FunctionDependency
             // attribute is constructed before. However, we check
             // it anyway. 
             if (functionDependency == null) {
                 throw new IllegalActionException(this, "doesn't " +
-                        "contain a valid IODependence attribute.");
+                        "contain a valid FunctionDependency attribute.");
             }
 
             // get all the input ports of the current actor

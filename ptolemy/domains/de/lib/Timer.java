@@ -118,14 +118,6 @@ public class Timer extends DETransformer {
             throws CloneNotSupportedException {
         Timer newObject = (Timer)super.clone(workspace);
         newObject.output.setTypeSameAs(value);
-//      FIXME:
-//      The following code is not necessary with the usage of IODependence.
-//      The code will be deleted after the IODependence matures enough.
-//        try {
-//            newObject.input.delayTo(newObject.output);
-//        } catch (IllegalActionException ex) {
-//            throw new InternalErrorException("Clone failed.");
-//        }
         return newObject;
     }
 
