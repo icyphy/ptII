@@ -397,7 +397,7 @@ public class TimeKeeper {
 			    ((DDEReceiver)rcvrs[i][j]).getLastTime() ) {
                         ((DDEReceiver)rcvrs[i][j]).put(
                                 new NullToken(), time );
-                    }
+		    }
 	if( name.equals("fBack") ) {
 	    System.out.println(name+": Inside TimeKeeper.sendOutNullTokens() AGAIN "
 		    + " i = " + i + "  j = " + j);
@@ -524,7 +524,6 @@ public class TimeKeeper {
 	}
 	_searchingForIgnoredTokens = true;
 	if( _ignoredReceivers ) {
-	    // System.out.println("###Call to updateIgnoredReceivers()###");
 	    RcvrTimeTriple triple; 
 	    DDEReceiver rcvr; 
 	    for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
@@ -532,7 +531,6 @@ public class TimeKeeper {
 		rcvr = (DDEReceiver)triple.getReceiver(); 
 		if( rcvr.getRcvrTime() == 
 			TimedQueueReceiver.IGNORE ) {
-		    // System.out.println("###Ignore Token Found!!!###");
 		    rcvr.clearIgnoredTokens();
 		}
 	    }
