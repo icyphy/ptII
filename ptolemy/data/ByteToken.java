@@ -36,17 +36,20 @@ import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
-import ptolemy.data.type.*;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeLattice;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ByteToken
 /**
-  A token that contains a byte number in the range 0 through 255.
-  This is in contrast to Java's default that a byte is in the range
-  -128 through 127.  To get our desired behavior...
+A token that contains a byte number in the range 0 through 255.
+This is in contrast to Java's default that a byte is in the range
+-128 through 127.  To get our desired behavior...
 
-  @author Winthrop Williams
-  @version $ByteToken.java$
+@author Winthrop Williams
+@version $Id$
 */
 public class ByteToken extends ScalarToken {
 
@@ -88,7 +91,8 @@ public class ByteToken extends ScalarToken {
 
     /** Return an ByteToken containing the absolute value (which IS
      *  ALREADY the value) of this token.
-     *  @return An ByteToken.  */
+     *  @return An ByteToken.
+     */
     public ScalarToken absolute() {
         ByteToken result;
 
@@ -586,7 +590,8 @@ public class ByteToken extends ScalarToken {
      *  keeping just the least significant 8 bits.  It pays no
      *  attention to sign in that conversion.
      *  @param byte The byte to convert.
-     *  @return An integer between 0 and 255.  */
+     *  @return An integer between 0 and 255.
+     */
     public int unsignedConvert(byte value) {
         int intValue = value;
         if(intValue < 0) {
