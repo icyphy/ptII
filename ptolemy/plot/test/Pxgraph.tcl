@@ -70,7 +70,7 @@ pxgraphFiles
 #
 proc pxgraphTest { args } {
     set jargs [java::new {String[]} [llength $args] $args ]
-    set pxgraph [java::new ptolemy.plot.Pxgraph $jargs]
+    set pxgraph [java::new ptolemy.plot.compat.PxgraphApplication $jargs]
     set stream [java::new java.io.ByteArrayOutputStream]
     set printStream [java::new \
 	    {java.io.PrintStream java.io.OutputStream} $stream]
@@ -88,7 +88,6 @@ proc pxgraphTest { args } {
 #### pxgraphTest
 # Test out set labeling
 #
-proc Pxgraph-1.x {} {
 test Pxgraph-1.1 {Test set labeling} {
     global pxgraphfile1 pxgraphfile2
     pxgraphTest  -0 '' -binary ../demo/data/bin.plt
@@ -455,185 +454,1208 @@ test Pxgraph-2.22 {Flags: -v (Version)} {
     global pxgraphfile1
     pxgraphTest  -v $pxgraphfile1
 } {}
-}
-set VERBOSE 1
+
 ######################################################################
 ####
 #
 test Pxgraph-3.1 {Options: -bd <color> (Unsupported)} {
     global $pxgraphfile1
     pxgraphTest  -bd blue $pxgraphfile1
-} {# Ptolemy plot, version 2.0
-DataSet: Set 0
-move: 0.0, 0.0
-2.0, 2.0
-3.0, -0.2
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<dataset>
+<m x="0.0" y="0.0"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.0"/>
+<p x="3.0" y="-0.2"/>
+</dataset>
+</plot>
 }
 
 test Pxgraph-3.2 {Options: -bg <color> } {
     global $pxgraphfile1
     #FIXME: the background is not written out
     pxgraphTest  -bg red $pxgraphfile1
-} {# Ptolemy plot, version 2.0
-DataSet: Set 0
-move: 0.0, 0.0
-2.0, 2.0
-3.0, -0.2
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<dataset>
+<m x="0.0" y="0.0"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.0"/>
+<p x="3.0" y="-0.2"/>
+</dataset>
+</plot>
 }
 
 
 test Pxgraph-3.3 {Options: -brb <base> (Unsupported)} {
     global $pxgraphfile1
     pxgraphTest  -brb 1.0 -bar $pxgraphfile1
-} {# Ptolemy plot, version 2.0
-Lines: off
-Bars: 0.5, 0.05
-DataSet: Set 0
-move: 0.0, 0.0
-move: 2.0, 2.0
-move: 3.0, -0.2
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<default connected="no"/>
+<barGraph width="0.5" offset="0.05"/>
+<dataset>
+<m x="0.0" y="0.0"/>
+<m x="1.0" y="1.0"/>
+<m x="2.0" y="2.0"/>
+<m x="3.0" y="-0.2"/>
+</dataset>
+</plot>
 }
 
 test Pxgraph-3.4 { Options -brw <width> } {
     global $pxgraphfile1
     pxgraphTest  -brw 0.8 -bar $pxgraphfile1
-} {# Ptolemy plot, version 2.0
-Lines: off
-Bars: 0.8, 0.0
-DataSet: Set 0
-move: 0.0, 0.0
-move: 2.0, 2.0
-move: 3.0, -0.2
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<default connected="no"/>
+<barGraph width="0.8" offset="0.0"/>
+<dataset>
+<m x="0.0" y="0.0"/>
+<m x="1.0" y="1.0"/>
+<m x="2.0" y="2.0"/>
+<m x="3.0" y="-0.2"/>
+</dataset>
+</plot>
 }
 
 test Pxgraph-3.5 {Options:  -fg <color> } {
     global $pxgraphfile1
     #FIXME: the foreground is not written out
     pxgraphTest  -fg green $pxgraphfile1
-} {# Ptolemy plot, version 2.0
-DataSet: Set 0
-move: 0.0, 0.0
-2.0, 2.0
-3.0, -0.2
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<dataset>
+<m x="0.0" y="0.0"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.0"/>
+<p x="3.0" y="-0.2"/>
+</dataset>
+</plot>
 }
 
 test Pxgraph-3.6 {Options:  -gw <pixels> (Unsupported)} {
     global $pxgraphfile1
     pxgraphTest  -gw 10 $pxgraphfile1
-} {# Ptolemy plot, version 2.0
-DataSet: Set 0
-move: 0.0, 0.0
-2.0, 2.0
-3.0, -0.2
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<dataset>
+<m x="0.0" y="0.0"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.0"/>
+<p x="3.0" y="-0.2"/>
+</dataset>
+</plot>
 }
 
 test Pxgraph-3.7 {Options:  -lf <label fontname> } {
     global $pxgraphfile1
     # FIXME: the label font is not stored
     pxgraphTest  -lf helvetica-ITALIC-20 $pxgraphfile1
-} {# Ptolemy plot, version 2.0
-DataSet: Set 0
-move: 0.0, 0.0
-2.0, 2.0
-3.0, -0.2
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<dataset>
+<m x="0.0" y="0.0"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.0"/>
+<p x="3.0" y="-0.2"/>
+</dataset>
+</plot>
 }
 
 test Pxgraph-3.8 {Options:  -lx <xl,xh>} {
     global $pxgraphfile1
     pxgraphTest  -lx 0.5,1.5 $pxgraphfile1
-} {# Ptolemy plot, version 2.0
-XRange: 0.5, 1.5
-DataSet: Set 0
-move: 0.0, 0.0
-2.0, 2.0
-3.0, -0.2
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<xRange min="0.5" max="1.5"/>
+<dataset>
+<m x="0.0" y="0.0"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.0"/>
+<p x="3.0" y="-0.2"/>
+</dataset>
+</plot>
 }
 
 test Pxgraph-3.9 {Options:  -ly <yl,yh>} {
     global $pxgraphfile1
     pxgraphTest  -ly 0.5,1.5 $pxgraphfile1
-} {# Ptolemy plot, version 2.0
-YRange: 0.5, 1.5
-DataSet: Set 0
-move: 0.0, 0.0
-2.0, 2.0
-3.0, -0.2
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<yRange min="0.5" max="1.5"/>
+<dataset>
+<m x="0.0" y="0.0"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.0"/>
+<p x="3.0" y="-0.2"/>
+</dataset>
+</plot>
 }
 
 test Pxgraph-3.10 {Options:  -lx <xl,xh>  -ly <yl,yh> } {
     global $pxgraphfile1
     pxgraphTest  -lx 0.5,1.5 -ly 0.5,1.5 $pxgraphfile1
-} {# Ptolemy plot, version 2.0
-XRange: 0.5, 1.5
-YRange: 0.5, 1.5
-DataSet: Set 0
-move: 0.0, 0.0
-2.0, 2.0
-3.0, -0.2
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<xRange min="0.5" max="1.5"/>
+<yRange min="0.5" max="1.5"/>
+<dataset>
+<m x="0.0" y="0.0"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.0"/>
+<p x="3.0" y="-0.2"/>
+</dataset>
+</plot>
 }
 
 test Pxgraph-3.11 {Options: -t <title> } {
     global $pxgraphfile1
     pxgraphTest  -t "This is the Title" $pxgraphfile1
-} {# Ptolemy plot, version 2.0
-TitleText: This is the Title
-DataSet: Set 0
-move: 0.0, 0.0
-2.0, 2.0
-3.0, -0.2
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<title>This is the Title</title>
+<dataset>
+<m x="0.0" y="0.0"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.0"/>
+<p x="3.0" y="-0.2"/>
+</dataset>
+</plot>
 }
 
 test Pxgraph-3.12 {Options: -tf <fontname> } {
     global $pxgraphfile1
     # FIXME: the title font is not written out
     pxgraphTest  -tf Courier-BOLD-16 $pxgraphfile1
-} {# Ptolemy plot, version 2.0
-DataSet: Set 0
-move: 0.0, 0.0
-2.0, 2.0
-3.0, -0.2
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<dataset>
+<m x="0.0" y="0.0"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.0"/>
+<p x="3.0" y="-0.2"/>
+</dataset>
+</plot>
 }
 
 test Pxgraph-3.13 {Options: -x -y} {
     global $pxgraphfile1
     pxgraphTest  -x Years -y "$ Profit" $pxgraphfile1
-} {# Ptolemy plot, version 2.0
-XLabel: Years
-YLabel: $ Profit
-DataSet: Set 0
-move: 0.0, 0.0
-2.0, 2.0
-3.0, -0.2
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<xLabel>Years</xLabel>
+<yLabel>$ Profit</yLabel>
+<dataset>
+<m x="0.0" y="0.0"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.0"/>
+<p x="3.0" y="-0.2"/>
+</dataset>
+</plot>
 }
 
 test Pxgraph-3.14 {Option: -zg <color> (Unsupported)} {
     global $pxgraphfile1
     pxgraphTest  -zg Yellow $pxgraphfile1
-} {# Ptolemy plot, version 2.0
-DataSet: Set 0
-move: 0.0, 0.0
-2.0, 2.0
-3.0, -0.2
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<dataset>
+<m x="0.0" y="0.0"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.0"/>
+<p x="3.0" y="-0.2"/>
+</dataset>
+</plot>
 }
 
 test Pxgraph-3.15 {Option: -zw <width> (Unsupported)} {
     global $pxgraphfile1
     pxgraphTest  -zw 5 $pxgraphfile1
-} {# Ptolemy plot, version 2.0
-DataSet: Set 0
-move: 0.0, 0.0
-2.0, 2.0
-3.0, -0.2
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<dataset>
+<m x="0.0" y="0.0"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.0"/>
+<p x="3.0" y="-0.2"/>
+</dataset>
+</plot>
 }
 
 test Pxgraph-3.16 {Option: =WxH+X+Y} {
     global $pxgraphfile1
     pxgraphTest  =200x250+300+350 $pxgraphfile1
-} {# Ptolemy plot, version 2.0
-DataSet: Set 0
-move: 0.0, 0.0
-2.0, 2.0
-3.0, -0.2
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<dataset>
+<m x="0.0" y="0.0"/>
+<p x="1.0" y="1.0"/>
+<p x="2.0" y="2.0"/>
+<p x="3.0" y="-0.2"/>
+</dataset>
+</plot>
 }
 
     # Test out stdin
@@ -646,123 +1668,286 @@ test Pxgraph-4.1 {Test out file args} {
     # Test out file args
     pxgraphTest  ../demo/bargraph.plt
 
-} {# Ptolemy plot, version 2.0
-TitleText: Software Downloads
-XLabel: Year
-YLabel: Downloads
-XRange: 0.0, 10.0
-YRange: 0.0, 10000.0
-XTicks: "1993" 0.0, "1994" 1.0, "1995" 2.0, "1996" 3.0, "1997" 4.0, "1998" 5.0, "1999" 6.0, "2000" 7.0, "2001" 8.0, "2002" 9.0, "2003" 10.0
-Lines: off
-Bars: 0.5, 0.2
-DataSet: program a
-move: 0.0, 100.0
-move: 1.0, 300.0
-move: 2.0, 600.0
-move: 3.0, 1000.0
-move: 4.0, 4000.0
-move: 5.0, 6000.0
-move: 6.0, 3000.0
-move: 7.0, 1000.0
-move: 8.0, 400.0
-DataSet: program b
-move: 2.0, 50.0
-move: 3.0, 100.0
-move: 4.0, 800.0
-move: 5.0, 400.0
-move: 6.0, 1000.0
-move: 7.0, 5000.0
-move: 8.0, 2000.0
-move: 9.0, 300.0
-move: 10.0, 0.0
-DataSet: program c
-move: 3.0, 10.0
-move: 4.0, 100.0
-move: 5.0, 400.0
-move: 6.0, 2000.0
-move: 7.0, 5000.0
-move: 8.0, 9000.0
-move: 9.0, 7000.0
-move: 10.0, 1000.0
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<title>Software Downloads</title>
+<xLabel>Year</xLabel>
+<yLabel>Downloads</yLabel>
+<xRange min="0.0" max="10.0"/>
+<yRange min="0.0" max="10000.0"/>
+<xTicks>
+  <tick label="1993" position="0.0"/>
+  <tick label="1994" position="1.0"/>
+  <tick label="1995" position="2.0"/>
+  <tick label="1996" position="3.0"/>
+  <tick label="1997" position="4.0"/>
+  <tick label="1998" position="5.0"/>
+  <tick label="1999" position="6.0"/>
+  <tick label="2000" position="7.0"/>
+  <tick label="2001" position="8.0"/>
+  <tick label="2002" position="9.0"/>
+  <tick label="2003" position="10.0"/>
+</xTicks>
+<default connected="no"/>
+<barGraph width="0.5" offset="0.2"/>
+<dataset name="program a">
+<m x="0.0" y="100.0"/>
+<m x="1.0" y="300.0"/>
+<m x="2.0" y="600.0"/>
+<m x="3.0" y="1000.0"/>
+<m x="4.0" y="4000.0"/>
+<m x="5.0" y="6000.0"/>
+<m x="6.0" y="3000.0"/>
+<m x="7.0" y="1000.0"/>
+<m x="8.0" y="400.0"/>
+<m x="9.0" y="0.0"/>
+<m x="10.0" y="0.0"/>
+</dataset>
+<dataset name="program b">
+<m x="0.0" y="0.0"/>
+<m x="1.0" y="0.0"/>
+<m x="2.0" y="50.0"/>
+<m x="3.0" y="100.0"/>
+<m x="4.0" y="800.0"/>
+<m x="5.0" y="400.0"/>
+<m x="6.0" y="1000.0"/>
+<m x="7.0" y="5000.0"/>
+<m x="8.0" y="2000.0"/>
+<m x="9.0" y="300.0"/>
+<m x="10.0" y="0.0"/>
+</dataset>
+<dataset name="program c">
+<m x="0.0" y="0.0"/>
+<m x="1.0" y="0.0"/>
+<m x="2.0" y="0.0"/>
+<m x="3.0" y="10.0"/>
+<m x="4.0" y="100.0"/>
+<m x="5.0" y="400.0"/>
+<m x="6.0" y="2000.0"/>
+<m x="7.0" y="5000.0"/>
+<m x="8.0" y="9000.0"/>
+<m x="9.0" y="7000.0"/>
+<m x="10.0" y="1000.0"/>
+</dataset>
+</plot>
 }
 
 test Pxgraph-4.1 {Test out file args} {
     # Test out file args
     pxgraphTest  http://ptolemy.eecs.berkeley.edu/java/ptplot/demo/data.plt
-} {# Ptolemy plot, version 2.0
-TitleText: My Plot
-XLabel: X Axis
-YLabel: Y Axis
-XTicks: "zero" 0.0, "one" 1.0, "two" 2.0, "three" 3.0, "four" 4.0, "five" 5.0
-Grid: off
-Color: off
-Marks: various
-Lines: off
-DataSet: dot
-move: 0.0, -4.0
-1.0, -3.0
-2.0, -2.0
-3.0, -1.0
-4.0, 0.0
-DataSet: cross
-move: 0.0, -3.5
-1.0, -2.5
-2.0, -1.5
-3.0, -0.5
-4.0, 0.5
-DataSet: square
-move: 0.0, -3.0
-move: 1.0, -2.0
-move: 2.0, -1.0
-move: 3.0, 0.0
-move: 4.0, 1.0
-DataSet: triangle
-move: 0.0, -2.5
-move: 1.0, -1.5
-move: 2.0, -0.5
-move: 3.0, 0.5
-move: 4.0, 1.5
-DataSet: diamond
-move: 0.0, -2.0
-move: 1.0, -1.0
-move: 2.0, 0.0
-move: 3.0, 1.0
-move: 4.0, 2.0
-DataSet: circle
-move: 0.0, -1.5
-move: 1.0, -0.5
-move: 2.0, 0.5
-move: 3.0, 1.5
-move: 4.0, 2.5
-DataSet: plus
-move: 0.0, -1.0
-move: 1.0, 0.0
-move: 2.0, 1.0
-move: 3.0, 2.0
-move: 4.0, 3.0
-DataSet: square
-move: 0.0, -0.5
-move: 1.0, 0.5
-move: 2.0, 1.5
-move: 3.0, 2.5
-move: 4.0, 3.5
-DataSet: triangle
-move: 0.0, 0.0
-move: 1.0, 1.0
-move: 2.0, 2.0
-move: 3.0, 3.0
-move: 4.0, 4.0
-DataSet: diamond
-move: 0.0, 0.5
-move: 1.0, 1.5
-move: 2.0, 2.5
-move: 3.0, 3.5
-move: 4.0, 4.5
-DataSet: dot
-move: 0.0, 1.0
-move: 1.0, 2.0
-move: 2.0, 3.0
-move: 3.0, 4.0
+} {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot [
+<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | 
+	title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | 
+     yRange | yTicks)*>
+  <!ELEMENT barGraph EMPTY>
+    <!ATTLIST barGraph width CDATA #IMPLIED>
+    <!ATTLIST barGraph offset CDATA #IMPLIED>
+  <!ELEMENT bin EMPTY>
+    <!ATTLIST bin width CDATA #IMPLIED>
+    <!ATTLIST bin offset CDATA #IMPLIED>
+  <!ELEMENT dataset (m | move | p | point)*>
+    <!ATTLIST dataset connected (yes | no) #IMPLIED>
+    <!ATTLIST dataset marks (none | dots | points | various) #IMPLIED>
+    <!ATTLIST dataset name CDATA #IMPLIED>
+    <!ATTLIST dataset stems (yes | no) #IMPLIED>
+  <!ELEMENT default EMPTY>
+    <!ATTLIST default connected (yes | no) "yes">
+    <!ATTLIST default marks (none | dots | points | various) "none">
+    <!ATTLIST default stems (yes | no) "no">
+  <!ELEMENT noColor EMPTY>
+  <!ELEMENT noGrid EMPTY>
+  <!ELEMENT title (#PCDATA)>
+  <!ELEMENT wrap EMPTY>
+  <!ELEMENT xLabel (#PCDATA)>
+  <!ELEMENT xLog EMPTY>
+  <!ELEMENT xRange EMPTY>
+    <!ATTLIST xRange min CDATA #REQUIRED>
+    <!ATTLIST xRange max CDATA #REQUIRED>
+  <!ELEMENT xTicks (tick)+>
+  <!ELEMENT yLabel (#PCDATA)>
+  <!ELEMENT yLog EMPTY>
+  <!ELEMENT yRange EMPTY>
+    <!ATTLIST yRange min CDATA #REQUIRED>
+    <!ATTLIST yRange max CDATA #REQUIRED>
+  <!ELEMENT yTicks (tick)+>
+    <!ELEMENT tick EMPTY>
+      <!ATTLIST tick label CDATA #REQUIRED>
+      <!ATTLIST tick position CDATA #REQUIRED>
+    <!ELEMENT m EMPTY>
+      <!ATTLIST m x CDATA #IMPLIED>
+      <!ATTLIST m x CDATA #REQUIRED>
+      <!ATTLIST m lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST m highErrorBar CDATA #IMPLIED>
+    <!ELEMENT move EMPTY>
+      <!ATTLIST move x CDATA #IMPLIED>
+      <!ATTLIST move x CDATA #REQUIRED>
+      <!ATTLIST move lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST move highErrorBar CDATA #IMPLIED>
+    <!ELEMENT p EMPTY>
+      <!ATTLIST p x CDATA #IMPLIED>
+      <!ATTLIST p x CDATA #REQUIRED>
+      <!ATTLIST p lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST p highErrorBar CDATA #IMPLIED>
+    <!ELEMENT point EMPTY>
+      <!ATTLIST point x CDATA #IMPLIED>
+      <!ATTLIST point x CDATA #REQUIRED>
+      <!ATTLIST point lowErrorBar CDATA #IMPLIED>
+      <!ATTLIST point highErrorBar CDATA #IMPLIED>
+]>
+<plot>
+<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<title>My Plot</title>
+<xLabel>X Axis</xLabel>
+<yLabel>Y Axis</yLabel>
+<xTicks>
+  <tick label="zero" position="0.0"/>
+  <tick label="one" position="1.0"/>
+  <tick label="two" position="2.0"/>
+  <tick label="three" position="3.0"/>
+  <tick label="four" position="4.0"/>
+  <tick label="five" position="5.0"/>
+</xTicks>
+<noGrid/>
+<noColor/>
+<default connected="no" marks="various"/>
+<dataset name="dot">
+<m x="0.0" y="-4.0"/>
+<p x="1.0" y="-3.0"/>
+<p x="2.0" y="-2.0"/>
+<p x="3.0" y="-1.0"/>
+<p x="4.0" y="0.0"/>
+</dataset>
+<dataset name="cross">
+<m x="0.0" y="-3.5"/>
+<p x="1.0" y="-2.5"/>
+<p x="2.0" y="-1.5"/>
+<p x="3.0" y="-0.5"/>
+<p x="4.0" y="0.5"/>
+</dataset>
+<dataset name="square">
+<m x="0.0" y="-3.0"/>
+<m x="1.0" y="-2.0"/>
+<m x="2.0" y="-1.0"/>
+<m x="3.0" y="0.0"/>
+<m x="4.0" y="1.0"/>
+</dataset>
+<dataset name="triangle">
+<m x="0.0" y="-2.5"/>
+<m x="1.0" y="-1.5"/>
+<m x="2.0" y="-0.5"/>
+<m x="3.0" y="0.5"/>
+<m x="4.0" y="1.5"/>
+</dataset>
+<dataset name="diamond">
+<m x="0.0" y="-2.0"/>
+<m x="1.0" y="-1.0"/>
+<m x="2.0" y="0.0"/>
+<m x="3.0" y="1.0"/>
+<m x="4.0" y="2.0"/>
+</dataset>
+<dataset name="circle">
+<m x="0.0" y="-1.5"/>
+<m x="1.0" y="-0.5"/>
+<m x="2.0" y="0.5"/>
+<m x="3.0" y="1.5"/>
+<m x="4.0" y="2.5"/>
+</dataset>
+<dataset name="plus">
+<m x="0.0" y="-1.0"/>
+<m x="1.0" y="0.0"/>
+<m x="2.0" y="1.0"/>
+<m x="3.0" y="2.0"/>
+<m x="4.0" y="3.0"/>
+</dataset>
+<dataset name="square">
+<m x="0.0" y="-0.5"/>
+<m x="1.0" y="0.5"/>
+<m x="2.0" y="1.5"/>
+<m x="3.0" y="2.5"/>
+<m x="4.0" y="3.5"/>
+</dataset>
+<dataset name="triangle">
+<m x="0.0" y="0.0"/>
+<m x="1.0" y="1.0"/>
+<m x="2.0" y="2.0"/>
+<m x="3.0" y="3.0"/>
+<m x="4.0" y="4.0"/>
+</dataset>
+<dataset name="diamond">
+<m x="0.0" y="0.5"/>
+<m x="1.0" y="1.5"/>
+<m x="2.0" y="2.5"/>
+<m x="3.0" y="3.5"/>
+<m x="4.0" y="4.5"/>
+</dataset>
+<dataset name="dot">
+<m x="0.0" y="1.0"/>
+<m x="1.0" y="2.0"/>
+<m x="2.0" y="3.0"/>
+<m x="3.0" y="4.0"/>
+</dataset>
+</plot>
 }
 
 ######################################################################
