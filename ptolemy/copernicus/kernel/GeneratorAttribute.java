@@ -330,7 +330,7 @@ public class GeneratorAttribute extends SingletonAttribute
         }
 
         ((Variable)getAttribute("ptIIUserDirectoryAsURL"))
-            .setExpression("\"" +  ptIIUserDirectoryAsURL + "\"");
+            .setExpression(ptIIUserDirectoryAsURL);
         
         String targetPath = getParameter("targetPath");
 
