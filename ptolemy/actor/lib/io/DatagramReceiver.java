@@ -87,9 +87,9 @@ public class DatagramReceiver extends TypedAtomicActor {
     ////                     public methods                        ////
 
     /** If the parameter changed is <i>port</i>, then if the model
-     * is running (as evedenced by socket != null) then interrupt 
-     * thread & close socket, and then and reopen with new port number 
-     * & restart thread (even if same as old port number).  Thread is 
+     * is running (as evedenced by socket != null) then interrupt
+     * thread & close socket, and then and reopen with new port number
+     * & restart thread (even if same as old port number).  Thread is
      * not reinstanciated, just restarted on the new socket.
      */
     public void attributeChanged(Attribute attribute)
@@ -126,12 +126,12 @@ public class DatagramReceiver extends TypedAtomicActor {
 
     /** Broadcasts the return address of the packet received over the Ethernet.
      */
-    public void fire() throws IllegalActionException {      
+    public void fire() throws IllegalActionException {
         System.out.println("Actor is fired");
-        
-        InetAddress __address = ___packet.getAddress(); 
+
+        InetAddress __address = ___packet.getAddress();
         // this line stalls when __ vs ___
-        
+
         String _address = __address.getHostAddress();
 	_evalVar.setExpression(_dataStr);
 	output.broadcast(_evalVar.getToken());
@@ -156,7 +156,7 @@ public class DatagramReceiver extends TypedAtomicActor {
         if (portNum == -1) {
             System.out.println("Can't run with port=-1");
             throw new IllegalActionException("Cannot run w/ port=-1");
-            // *** sysout works but IAE does nothing 
+            // *** sysout works but IAE does nothing
             // *** (in presence of wrapup exception anyway)
         }
         try {
@@ -204,7 +204,7 @@ public class DatagramReceiver extends TypedAtomicActor {
     private ListenerThread _listenerThread;
     private Variable _evalVar;
     private String _dataStr;
-    
+
 
     // Variables maybe or maybe not used
     private byte _data;
@@ -214,7 +214,7 @@ public class DatagramReceiver extends TypedAtomicActor {
     private int _port;
 
     private class ListenerThread extends Thread {
-        /** Create a new thread to listen for packets at the socket 
+        /** Create a new thread to listen for packets at the socket
          * opened by the preinitialize method.
          */
         public ListenerThread(Actor _thisThreadsActor) {
@@ -279,18 +279,18 @@ public class DatagramReceiver extends TypedAtomicActor {
                     _dataStr = new String(__packet.getData(), 0, _length);
                 } catch (IOException ex) {
                     System.out.println("IOException in thread.");
-                } 
+                }
 
                 /*
                 } catch (Exception ex) {
                     getManager().notifyListenersOfException(ex);
                 } finally {
                     System.out.println("Thread Terminating :)");
-                }  
+                }
                 */
 
                 try {
-                    getDirector().fireAt(thisThreadsActor, 
+                    getDirector().fireAt(thisThreadsActor,
                             getDirector().getCurrentTime() + 0.0);
                 } catch (IllegalActionException ex) {
                     System.out.println("Illegal Act. Ex. in thread!!");
