@@ -154,23 +154,5 @@ test JavaCodeGenerator-3.2 {Generate code java.lang.Object using reflection} {
 	    [java::new ptolemy.lang.java.JavaCodeGenerator] 
     set run1 [$compileUnitNode accept $javaCodeGenerator]
     # Use lsort to handle platform dependencies
-    list [lrange $run1 0 4] [lsort $run1]
-} {{package {java.lang;} public class java.lang.Object} {{
-public Object() {
-super();
-}
-
-protected native java.lang.Object clone() throws java.lang.CloneNotSupportedException;
-public boolean equals(public java.lang.Object );
-protected void finalize() throws java.lang.Throwable;
-public final native java.lang.Class getClass();
-public native int hashCode();
-public final native void notify();
-public final native void notifyAll();
-private native static void registerNatives();
-public java.lang.String toString();
-public final void wait() throws java.lang.InterruptedException;
-public final native void wait(public abstract final long ) throws java.lang.InterruptedException;
-public final void wait(public abstract final long , public abstract final int ) throws java.lang.InterruptedException;
-} class java.lang.Object {java.lang;} package public}}
-
+    list [lrange $run1 0 4] [lsort [split [lindex $run1 5] "\n"]]
+} {{package {java.lang;} public class java.lang.Object} {{} {} {} {private native static void registerNatives();} {protected native java.lang.Object clone() throws java.lang.CloneNotSupportedException;} {protected void finalize() throws java.lang.Throwable;} public\ Object()\ \{ {public boolean equals(public java.lang.Object );} {public final native java.lang.Class getClass();} {public final native void notify();} {public final native void notifyAll();} {public final native void wait(public abstract final long ) throws java.lang.InterruptedException;} {public final void wait() throws java.lang.InterruptedException;} {public final void wait(public abstract final long , public abstract final int ) throws java.lang.InterruptedException;} {public java.lang.String toString();} {public native int hashCode();} {super();} \}}}
