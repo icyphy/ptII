@@ -81,7 +81,7 @@ public class ColtVonMises extends ColtRandomSource {
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new VonMises(1.0, randomNumberGenerator);
+        _rng = new VonMises(1.0, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -113,7 +113,7 @@ public class ColtVonMises extends ColtRandomSource {
 
         double freedom = ((DoubleToken) coltFreedom.getToken()).doubleValue();
 
-        _current = ((VonMises) rng).nextDouble(freedom);
+        _current = ((VonMises) _rng).nextDouble(freedom);
 
         return super.prefire();
     }

@@ -81,7 +81,7 @@ public class ColtPoissonSlow extends ColtRandomSource {
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new PoissonSlow(1.0, randomNumberGenerator);
+        _rng = new PoissonSlow(1.0, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -113,8 +113,8 @@ public class ColtPoissonSlow extends ColtRandomSource {
 
         double mean = ((DoubleToken) coltMean.getToken()).doubleValue();
 
-        ((PoissonSlow) rng).setMean(mean);
-        _current = ((PoissonSlow) rng).nextInt();
+        ((PoissonSlow) _rng).setMean(mean);
+        _current = ((PoissonSlow) _rng).nextInt();
 
         return super.prefire();
     }

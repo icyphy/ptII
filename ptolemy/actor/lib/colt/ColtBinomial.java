@@ -86,7 +86,7 @@ public class ColtBinomial extends ColtRandomSource {
         if (randomNumberGenerator == null)
             System.err.println("randomNumberGenerator is null!");
 
-        rng = new Binomial(1, 0.5, randomNumberGenerator);
+        _rng = new Binomial(1, 0.5, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -124,7 +124,7 @@ public class ColtBinomial extends ColtRandomSource {
         int n = ((IntToken) coltN.getToken()).intValue();
         double p = ((DoubleToken) coltP.getToken()).doubleValue();
 
-        _current = ((Binomial) rng).nextInt(n, p);
+        _current = ((Binomial) _rng).nextInt(n, p);
 
         return super.prefire();
     }

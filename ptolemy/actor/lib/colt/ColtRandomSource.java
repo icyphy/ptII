@@ -223,7 +223,7 @@ public abstract class ColtRandomSource extends RandomSource
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** rng.
+    /** _rng.
      *  This is the high-level RNG.
      */
     protected AbstractDistribution _rng;

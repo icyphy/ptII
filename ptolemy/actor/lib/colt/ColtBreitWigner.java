@@ -87,7 +87,7 @@ public class ColtBreitWigner extends ColtRandomSource {
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new BreitWigner(1.0, 1.0, 1.0, randomNumberGenerator);
+        _rng = new BreitWigner(1.0, 1.0, 1.0, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -131,7 +131,7 @@ public class ColtBreitWigner extends ColtRandomSource {
         double gamma = ((DoubleToken) coltGamma.getToken()).doubleValue();
         double cut = ((DoubleToken) coltCut.getToken()).doubleValue();
 
-        _current = ((BreitWigner) rng).nextDouble(mean, gamma, cut);
+        _current = ((BreitWigner) _rng).nextDouble(mean, gamma, cut);
 
         return super.prefire();
     }

@@ -81,7 +81,7 @@ public class ColtPoisson extends ColtRandomSource {
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new Poisson(1.0, randomNumberGenerator);
+        _rng = new Poisson(1.0, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -113,7 +113,7 @@ public class ColtPoisson extends ColtRandomSource {
 
         double mean = ((DoubleToken) coltMean.getToken()).doubleValue();
 
-        _current = ((Poisson) rng).nextInt(mean);
+        _current = ((Poisson) _rng).nextInt(mean);
 
         return super.prefire();
     }

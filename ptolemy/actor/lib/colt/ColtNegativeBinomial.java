@@ -83,7 +83,7 @@ public class ColtNegativeBinomial extends ColtRandomSource {
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new NegativeBinomial(1, 0.5, randomNumberGenerator);
+        _rng = new NegativeBinomial(1, 0.5, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,7 +123,7 @@ public class ColtNegativeBinomial extends ColtRandomSource {
         int n = ((IntToken) coltN.getToken()).intValue();
         double p = ((DoubleToken) coltP.getToken()).doubleValue();
 
-        _current = ((NegativeBinomial) rng).nextInt(n, p);
+        _current = ((NegativeBinomial) _rng).nextInt(n, p);
 
         return super.prefire();
     }

@@ -83,7 +83,7 @@ public class ColtBeta extends ColtRandomSource {
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new Beta(2.0, 2.0, randomNumberGenerator);
+        _rng = new Beta(2.0, 2.0, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -121,7 +121,7 @@ public class ColtBeta extends ColtRandomSource {
         double alpha = ((DoubleToken) coltAlpha.getToken()).doubleValue();
         double beta = ((DoubleToken) coltBeta.getToken()).doubleValue();
 
-        _current = ((Beta) rng).nextDouble(alpha, beta);
+        _current = ((Beta) _rng).nextDouble(alpha, beta);
 
         return super.prefire();
     }

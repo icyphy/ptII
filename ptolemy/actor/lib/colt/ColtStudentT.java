@@ -81,7 +81,7 @@ public class ColtStudentT extends ColtRandomSource {
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new StudentT(1.0, randomNumberGenerator);
+        _rng = new StudentT(1.0, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -113,7 +113,7 @@ public class ColtStudentT extends ColtRandomSource {
 
         double freedom = ((DoubleToken) coltFreedom.getToken()).doubleValue();
 
-        _current = ((StudentT) rng).nextDouble(freedom);
+        _current = ((StudentT) _rng).nextDouble(freedom);
 
         return super.prefire();
     }

@@ -81,7 +81,7 @@ public class ColtChiSquare extends ColtRandomSource {
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new ChiSquare(1.0, randomNumberGenerator);
+        _rng = new ChiSquare(1.0, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -113,7 +113,7 @@ public class ColtChiSquare extends ColtRandomSource {
 
         double freedom = ((DoubleToken) coltFreedom.getToken()).doubleValue();
 
-        _current = ((ChiSquare) rng).nextDouble(freedom);
+        _current = ((ChiSquare) _rng).nextDouble(freedom);
 
         return super.prefire();
     }

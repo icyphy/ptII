@@ -87,7 +87,7 @@ public class ColtHyperGeometric extends ColtRandomSource {
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new HyperGeometric(2, 1, 1, randomNumberGenerator);
+        _rng = new HyperGeometric(2, 1, 1, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -131,7 +131,7 @@ public class ColtHyperGeometric extends ColtRandomSource {
         int s = ((IntToken) colts.getToken()).intValue();
         int n = ((IntToken) coltn.getToken()).intValue();
 
-        _current = ((HyperGeometric) rng).nextInt(N, s, n);
+        _current = ((HyperGeometric) _rng).nextInt(N, s, n);
 
         return super.prefire();
     }

@@ -81,7 +81,7 @@ public class ColtExponential extends ColtRandomSource {
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new Exponential(1.0, randomNumberGenerator);
+        _rng = new Exponential(1.0, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -113,7 +113,7 @@ public class ColtExponential extends ColtRandomSource {
 
         double lambda = ((DoubleToken) coltLambda.getToken()).doubleValue();
 
-        _current = ((Exponential) rng).nextDouble(lambda);
+        _current = ((Exponential) _rng).nextDouble(lambda);
 
         return super.prefire();
     }

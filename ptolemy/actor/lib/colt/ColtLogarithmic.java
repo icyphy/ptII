@@ -81,7 +81,7 @@ public class ColtLogarithmic extends ColtRandomSource {
 
         randomNumberGeneratorClass = getRandomNumberGeneratorClass(container);
 
-        rng = new Logarithmic(0.5, randomNumberGenerator);
+        _rng = new Logarithmic(0.5, randomNumberGenerator);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -113,7 +113,7 @@ public class ColtLogarithmic extends ColtRandomSource {
 
         double p = ((DoubleToken) coltP.getToken()).doubleValue();
 
-        _current = ((Logarithmic) rng).nextDouble(p);
+        _current = ((Logarithmic) _rng).nextDouble(p);
 
         return super.prefire();
     }
