@@ -131,8 +131,8 @@ public class Server extends VariableDelay {
                     = (TimedEvent)_delayedOutputTokens.get();
                 Time eventTime = earliestEvent.timeStamp;
                 if (!eventTime.equals(currentTime)) {
-                    throw new InternalErrorException("Service time is " +
-                        "reached, but output is not available.");
+                    throw new InternalErrorException("Service time is "
+                            + "reached, but output is not available.");
                 }
                 _currentOutput = (Token)earliestEvent.contents;
                 output.send(0, _currentOutput);
@@ -180,7 +180,8 @@ public class Server extends VariableDelay {
                 && _delayedOutputTokens.isEmpty()) {
             _nextTimeFree = currentTime.add(_delay);
             _delayedOutputTokens.put(new TimedEvent(_nextTimeFree,
-                                             _delayedInputTokensList.removeFirst()));
+                                             _delayedInputTokensList
+                                             .removeFirst()));
             getDirector().fireAt(this, _nextTimeFree);
         }
         return !_stopRequested;

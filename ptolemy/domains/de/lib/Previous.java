@@ -119,8 +119,7 @@ public class Previous extends DETransformer {
     }
 
     /** Update the state of the actor.
-     *  @throws IllegalActionException Not thrown in this method, possibly
-     *  from the super class.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public boolean postfire() throws IllegalActionException {
         _previous = _tempPrevious;
@@ -156,8 +155,7 @@ public class Previous extends DETransformer {
     }
 
     /** Reset the state variables.
-     *  @throws IllegalActionException Not thrown in this method, possibly
-     *  from the super class.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();

@@ -154,7 +154,7 @@ public class Register extends Sampler {
 
     /** Return true if there is any token in the input or the trigger
      *  port.
-     *  @exception IllegalActionException Thrown in super class.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public boolean prefire() throws IllegalActionException {
         boolean writeRequest = false;
