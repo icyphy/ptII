@@ -139,4 +139,4 @@ Fire Actor ptolemy.actor.lib.Ramp {.Toplevel.Ramp}[(UpSample::input::tokenConsum
 Fire Actor ptolemy.domains.sdf.lib.UpSample {.Toplevel.UpSample}[(1) / (1)] times
 }[(1) / (1)] times
 Fire Actor ptolemy.actor.lib.Discard {.Toplevel.Discard}[(((1) * (UpSample::output::tokenProductionRate)) / 1) / (1)] times
-}[1] times}
+}[Director::vectorizationFactor] times}

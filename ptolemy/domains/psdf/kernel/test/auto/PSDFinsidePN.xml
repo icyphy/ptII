@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PSDFinsidePN" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -23,7 +23,7 @@
     <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 205.0">
         </property>
-        <property name="PSDF Director" class="ptolemy.domains.psdf.kernel.PSDFDirector">
+        <property name="PSDFDirector" class="ptolemy.domains.psdf.kernel.PSDFDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 60.0">
@@ -53,13 +53,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 130.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
         <port name="rate" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 125.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 125.0}">
             </property>
         </port>
         <port name="port" class="ptolemy.actor.TypedIOPort">

@@ -64,7 +64,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
             </property>
         </property>
-        <property name="PSDF Director" class="ptolemy.domains.psdf.kernel.PSDFDirector">
+        <property name="PSDFDirector" class="ptolemy.domains.psdf.kernel.PSDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 45.0">
             </property>
         </property>

@@ -74,7 +74,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 45.0">
             </property>
         </property>
-        <property name="PSDF Director" class="ptolemy.domains.psdf.kernel.PSDFDirector">
+        <property name="PSDFDirector" class="ptolemy.domains.psdf.kernel.PSDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 45.0">
             </property>
         </property>
@@ -94,7 +94,7 @@
         <entity name="Encoder" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 220.0]">
             </property>
-            <property name="PSDF Director" class="ptolemy.domains.psdf.kernel.PSDFDirector">
+            <property name="PSDFDirector" class="ptolemy.domains.psdf.kernel.PSDFDirector">
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="blockSize">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 65.0">
