@@ -177,7 +177,6 @@ DIVAPACKAGES = \
 	diva.gui.toolbox \
 	diva.resource \
 	diva.util \
-	diva.util.aelfred \
 	diva.util.java2d \
 	diva.util.jester \
 	diva.util.test \
