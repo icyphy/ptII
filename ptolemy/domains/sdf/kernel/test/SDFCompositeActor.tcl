@@ -54,17 +54,6 @@ if {[string compare sdfModel [info procs sdfModel]] != 0} \
 #
 test SDFCompositeActor-1.1 {SDF Bug when actors are connected through external ports} {
 
-    # The release notes say:
-    # The SDF scheduler reports that actors are
-    # disconnected, when they are connected through
-    # external ports.
-    # Workaround: Connect the actors in another way.
-    # This is usually possible when the connection is
-    # through an output port (since sources have
-    # trigger inputs that are usually disconnected in SDF),
-    # but somewhat more difficult when the connection is
-    # only through an input port
-
     set e0 [sdfModel 5]
     set const [java::new ptolemy.actor.lib.Const $e0 const]
     set scale [java::new ptolemy.actor.lib.Scale $e0 scale]
@@ -90,7 +79,7 @@ test SDFCompositeActor-1.1 {SDF Bug when actors are connected through external p
 
 
     [$e0 getManager] execute
-} {} {KNOWN_FAILURE}
+} {}
 
 
 
