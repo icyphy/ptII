@@ -277,7 +277,7 @@ public class Query extends JPanel {
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
      *  @param values The list of possible choices.
-     *  @param initiallySelected The initally selected choices, or null
+     *  @param initiallySelected The initially selected choices, or null
      *   to indicate that none are selected.
      */
     public void addSelectButtons(String name, String label,
