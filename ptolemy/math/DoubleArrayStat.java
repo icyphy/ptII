@@ -92,7 +92,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     /** Return the arithmetic mean of the elements in the array.
      */
     public static final double mean(double[] array) {
-        _nonZeroLength(array, "mean");
+        _nonZeroLength(array, "DoubleArrayStat.mean");
         return sumOfElements(array) / (double) array.length;
     }
 
@@ -167,11 +167,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      */
     public static double variance(double[] array, boolean sample) {
 
-        if (array.length < 1) {
-           throw new IllegalArgumentException(
-            "ptolemy.math.DoubleArrayStat.variance() : variance and " +
-            "standard deviation of an empty array are not defined.");
-        }
+        int length = _nonZeroLength(array, "DoubleArrayStat.variance");
 
         if (sample && (array.length < 2)) {
            throw new IllegalArgumentException(
@@ -180,7 +176,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
             "defined.");
         } 
 
-        int length = array.length;
         double ex2 = 0.0;
         double sum = 0.0;
         for (int i = 0; i < length; i++) {
@@ -388,7 +383,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
             if (p[i] < 0.0) {
                throw new IllegalArgumentException(
                 "ptolemy.math.DoubleArrayStat.entropy() : " +
-                "Negative probability encountered");
+                "Negative probability encountered.");
             } else if (p[i] == 0.0) {
                // do nothing
             } else {
@@ -417,6 +412,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      */
     public static final double relativeEntropy(double[] p, double[] q) {
 
+        _nonZeroLength(p, "DoubleArrayStat.relativeEntropy");
         int length = _commonLength(p, q, "DoubleArrayStat.relativeEntropy");
 
         double d = 0.0;
@@ -425,7 +421,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
             if ((p[i] < 0.0) || (q[i] < 0.0)) {
                throw new IllegalArgumentException(
                 "ptolemy.math.DoubleArrayStat.relativeEntropy() : " +
-                "Negative probability encountered");
+                "Negative probability encountered.");
             } else if (p[i] == 0.0) {
                // do nothing
             } else if (q[i] == 0.0) {
@@ -457,8 +453,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     /** Return a new array of Gaussian distributed doubles with a given
      *  mean and standard deviation. The number of elements to allocate 
      *  is given by N.
-     *  This algorithm is from [1]. Note this takes an random, unbounded
-     *  amount of time!
+     *  This algorithm is from [1]. 
      */
     public static final double[] randomGaussian(double mean, 
      double standardDeviation, int N) {

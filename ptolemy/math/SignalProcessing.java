@@ -968,15 +968,15 @@ public class SignalProcessing {
 
         case WINDOW_TYPE_BARTLETT:
         {
-          int halfM = length / 2;
+          int halfM = M / 2;
           double twoOverM = 2.0 / (double) M;
 
           for (n = 0; n <= halfM; n++) {
-              window[n] = twoOverM;
+              window[n] = n * twoOverM;
           }
 
           for (n = halfM + 1; n < length; n++) {
-              window[n] = 2.0 - twoOverM;
+              window[n] = 2.0 - n * twoOverM;
           }
         }
         break;
