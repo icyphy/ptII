@@ -169,7 +169,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         super(workspace, name);
         _initParameters();
         try {
-            setScheduler(new CTScheduler());
+            setScheduler(new CTScheduler(workspace));
         }catch(IllegalActionException e) {
             // Should never occur.
             throw new InternalErrorException(this.getFullName() +
