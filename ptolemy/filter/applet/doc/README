@@ -1,0 +1,9 @@
+./filter/applet/doc/README
+Version:$Id$
+
+This directory contain documentation for the Java files
+in the parent directory.
+The codeDoc directory is created by running 'make javadocs'
+while in the directory above this directory.
+This file is present to avoid problems with 'cvs update -P'
+removing the otherwise empty doc directory.
