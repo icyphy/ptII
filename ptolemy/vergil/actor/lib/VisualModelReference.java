@@ -204,7 +204,7 @@ public class VisualModelReference
                 "Unrecognized option for openOnFiring: " + openOnFiringValue);
             }
         } else if (attribute == closeOnPostfire) {
-            String closeOnPostfireValue = closeOnPostfire.getExpression();
+            String closeOnPostfireValue = closeOnPostfire.stringValue();
             if (closeOnPostfireValue.equals("do nothing")) {
                 _closeOnPostfireValue = _DO_NOTHING;
             } else if (closeOnPostfireValue.equals("close Vergil graph")) {
