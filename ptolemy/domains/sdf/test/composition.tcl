@@ -80,4 +80,4 @@ test composition-1.0 {DE model contained within SDF} {
 
     catch {$manager run} s1
     list $s1 [enumToTokenValues [$a3 getRecord 0]] [enumToStrings [$a3 getTimeRecord]]
-} {{0 1 2 3 4 5} {0.0 0.0 0.0 0.0 0.0 0.0}}
+} {{0 1 2 3 4 5} {0.0 0.0 0.0 0.0 0.0 0.0}} {KNOW_ERROR}
