@@ -260,14 +260,14 @@ fi
 
 
 #### Jython is Python implemented in Java
-# PTJYTHON_DIR is set to jython if configure found jython
+# PTJYTHON_DIR is set to python if configure found jython
 PTJYTHON_DIR=@PTJYTHON_DIR@
 JYTHON_JARS=""
-if [ "$PTJYTHON_DIR" = "jython" ]; then
+if [ "$PTJYTHON_DIR" = "python" ]; then
     JYTHON_DIR="@JYTHON_DIR@"
     # Jar file that contains Joystick interface,
     # see http://sourceforge.net/projects/javajoystick/
-    JYTHON_JARS="$(CLASSPATHSEPARATOR)${JYTHON_DIR}/jython.jar"
+    JYTHON_JARS="${CLASSPATHSEPARATOR}${JYTHON_DIR}/jython.jar"
 fi
 
 
