@@ -360,10 +360,7 @@ public class GraphEditor extends AbstractApplication {
                     TypedCompositeActor system = 
                         factory.createPtolemyModel(schematic);
                     Manager manager = system.getManager();
-                    // Hack director.
-                    Director director = 
-                        new ptolemy.domains.sdf.kernel.SDFDirector(system, "director");
-                    // end hack
+
                     manager.startRun();
                 } catch (Exception ex) {
                     ex.printStackTrace();
