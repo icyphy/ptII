@@ -76,6 +76,7 @@ JSRCS = \
 	QueueReceiver.java \
 	Receiver.java \
 	StreamExecutionListener.java \
+	TypeAttribute.java \
 	TypedActor.java \
 	TypedAtomicActor.java \
 	TypedCompositeActor.java \

@@ -36,6 +36,8 @@ import ptolemy.data.*;
 import ptolemy.data.type.*;
 import ptolemy.graph.*;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.lang.reflect.*;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -133,6 +135,26 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     public void addTypeListener(TypeListener listener) {
 	_typeListeners.add(listener);
+    }
+
+    /** React to a change in an attribute.  This method is called by
+     *  a contained attribute when its value changes.  This overrides
+     *  the base class so that if the attribute is an instance of
+     *  TypeAttribute, then it sets the type of the port.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute instanceof TypeAttribute) {
+            Type type = ((TypeAttribute)attribute).getType();
+            if (type != null) {
+                setTypeEquals(type);
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
     /** Clone this port into the specified workspace. The new port is
