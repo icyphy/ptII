@@ -51,7 +51,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -341,44 +340,52 @@ public class SRDirector extends StaticSchedulingDirector {
         // _isEmbedded = true;
         // Roda o SR embedded por um instante
         // iterations.setToken(new IntToken(1));
-        // FIXME: Introduces dependency on sdf
-        if (fatherDirector instanceof SDFDirector) {
-            Iterator outputPorts = actor.outputPortList().iterator();
 
-            while (outputPorts.hasNext()) {
-                IOPort port = (IOPort) outputPorts.next();
+        try {
+            Class sdfDirector =
+                Class.forName("ptolemy.domains.sdf.kernel.SDFDirector");
+            if (sdfDirector.isInstance(fatherDirector)) {
+                Iterator outputPorts = actor.outputPortList().iterator();
 
-                // FIXME: Introduces dependency on sdf
-                int initialToken = DFUtilities.getTokenInitProduction(port);
+                while (outputPorts.hasNext()) {
+                    IOPort port = (IOPort) outputPorts.next();
 
-                if (initialToken > 0) {
-                    Parameter parameter = (Parameter) port.getAttribute(
-                            "initialTokens");
+                    int initialToken =
+                        DFUtilities.getTokenInitProduction(port);
 
-                    if (parameter != null) {
-                        Token token = parameter.getToken();
+                    if (initialToken > 0) {
+                        Parameter parameter = (Parameter) port.getAttribute(
+                                "initialTokens");
 
-                        if (!(token instanceof ArrayToken)) {
-                            throw new IllegalActionException(port,
-                                    "initialTokens was " + token
-                                    + " which is not an array token.");
+                        if (parameter != null) {
+                            Token token = parameter.getToken();
+
+                            if (!(token instanceof ArrayToken)) {
+                                throw new IllegalActionException(port,
+                                        "initialTokens was " + token
+                                        + " which is not an array token.");
+                            }
+
+                            ArrayToken initValues = (ArrayToken) token;
+
+                            if (initValues.length() != initialToken) {
+                                throw new IllegalActionException(port,
+                                        "tokenInitProduction '" + initialToken
+                                        + "' does not match "
+                                        + "number of initialTokens '"
+                                        + initValues.length() + "'");
+                            }
+
+                            port.broadcast(initValues.arrayValue(),
+                                    initValues.length());
                         }
-
-                        ArrayToken initValues = (ArrayToken) token;
-
-                        if (initValues.length() != initialToken) {
-                            throw new IllegalActionException(port,
-                                    "tokenInitProduction '" + initialToken
-                                    + "' does not match "
-                                    + "number of initialTokens '"
-                                    + initValues.length() + "'");
-                        }
-
-                        port.broadcast(initValues.arrayValue(),
-                                initValues.length());
                     }
                 }
             }
+        } catch (ClassNotFoundException ex) {
+            // Ignore, SDFDirector was not found.
+        } catch (SecurityException ex2) {
+            // Ignore, SDFDirector was not found in an applet.
         }
     }
 
