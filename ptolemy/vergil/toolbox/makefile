@@ -56,9 +56,11 @@ JSRCS = \
 	GraphicElement.java \
 	MenuActionFactory.java \
 	MenuItemFactory.java \
+	PortSite.java \
 	PtolemyListCellRenderer.java \
 	PtolemyMenuFactory.java \
 	PtolemyTransferable.java \
+	SnapConstraint.java \
 	XMLIcon.java
 
 

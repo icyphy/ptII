@@ -60,7 +60,7 @@ public class RenameDialogFactory implements MenuItemFactory {
      *  @param object The object whose ports are being manipulated.
      */
     public JMenuItem create(final JContextMenu menu, NamedObj object) {
-        String name = "Rename";
+        String name = "Customize Name";
 
         // Removed this method since it was never used. EAL
         // final NamedObj target = _getItemTargetFromMenuTarget(object);

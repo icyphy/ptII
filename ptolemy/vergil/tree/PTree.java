@@ -32,20 +32,24 @@ package ptolemy.vergil.tree;
 
 import ptolemy.vergil.toolbox.PtolemyTransferable;
 
-// FIXME: Trim this.
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import diva.canvas.*;
-import diva.gui.toolbox.*;
-
 import java.awt.Component;
 import java.awt.Point;
-import java.awt.dnd.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.tree.*;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DragGestureEvent;
+import java.awt.dnd.DragGestureListener;
+import java.awt.dnd.DragSource;
+import java.awt.dnd.DragSourceContext;
+import java.awt.dnd.DragSourceDragEvent;
+import java.awt.dnd.DragSourceDropEvent;
+import java.awt.dnd.DragSourceEvent;
+import java.awt.dnd.DragSourceListener;
+
+import javax.swing.JTree;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.toolbox.PtolemyTransferable;
 
 /**
 This class provides a tree view of a ptolemy model, showing only the

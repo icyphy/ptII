@@ -30,121 +30,123 @@
 
 package ptolemy.vergil.toolbox;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import ptolemy.moml.*;
-import java.util.Enumeration;
-import java.util.NoSuchElementException;
-import diva.canvas.*;
-import diva.canvas.toolbox.*;
-import diva.gui.toolbox.*;
-import java.awt.*;
-import java.awt.geom.*;
-import java.io.Writer;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
+import java.io.Writer;
+
+import javax.swing.Icon;
 import javax.swing.SwingConstants;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicRectangle;
+import diva.canvas.toolbox.LabelFigure;
+import diva.gui.toolbox.FigureIcon;
+
+import ptolemy.actor.Director;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.NotPersistent;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorIcon
 /**
-An icon represnts the visual representation of a schematic entity.
-Every icon has a name, along with the data necessary for creating
-a visual representation.
-EditorIcons are capable of creating a visual representation representing
-the icon as either a Swing icon (e.g. an instance of javax.swing.Icon),
-or as a Diva figure (e.g. an instanceof of diva.canvas.Figure).
-In general, one or the other will form the basis of the visual representation,
-and the other will be created from the first, using either a SwingWrapper
-or a FigureIcon.  In other words, this class is a factory for visual
-representations.
+An icon is the visual representation of an entity. This class is a factory
+for such visual representations. This base class creates an icon as a
+a Diva figure (an instanceof of diva.canvas.Figure). It also provides
+a facility for generating a Swing icon (i.e. an instance of javax.swing.Icon)
+from that figure (the createIcon() method).
 <p>
-In this base class, the visual representation as a Diva
-figure is created by adding a label representing the name of the entity that
-contains this icon to a background figure which is created by the
-createBackgroundFigure method.  The visual representation as a Swing icon
-is created from the background figure using a FigureIcon.
-Thus, most subclasses that wish to modify the visual representation can
-simply override the createBackgroundFigure method.
+The icon consists of a background figure, created by the
+createBackgroundFigure() method, and a decorated version, created
+by the createFigure() method.  The decorated version has, in this
+base class, a label showing the name of the entity, unless the entity
+contains an attribute called "_suppressName".  The swing icon created
+by createIcon() does not include the decorations, but rather is only
+the background figure.  In this base class, the background figure is
+a simple white box.
 <p>
-Subclasses that wish to create the figure or the icon in a different way
-entirely (for example, starting with a Swing icon and creating the figure using
-a SwingWrapper) should override both the createBackgroundFigure and
-createIcon methods.
-<p>
-This visual representation created by this base class is just a simple white
-box.  For a more interesting icon, see the XMLIcon class.
+Derived classes most likely will customize the createBackgroundFigure()
+method.  This will affect both the Diva Figure and the Swing
+Icon representations.  Derived classes can also create the figure or
+the icon in a different way entirely (for example, starting with a
+Swing icon and creating the figure using a SwingWrapper) by overriding
+both createBackgroundFigure() and createIcon().
 
 @author Steve Neuendorffer, John Reekie
+@contributor Edward A. Lee
 @version $Id$
 */
-public class EditorIcon extends Attribute 
-    implements NotPersistent {
+public class EditorIcon extends Attribute implements NotPersistent {
 
-    /**
-     * Create a new icon with the given name in the given container.
-     * @param container The container.
-     * @param name The name of the attribute.
-     * @exception IllegalActionException If the attribute is not of an
-     *  acceptable class for the container.
-     * @exception NameDuplicationException If the name coincides with
-     *  an attribute already in the container.
+    /** Create a new icon with the given name in the given container.
+     *  @param container The container.
+     *  @param name The name of the attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public EditorIcon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
-    /**
-     * Create a new Diva figure that visually represents this icon.
-     * The figure will be an instance of
-     * CompositeFigure with the figure returned by createBackgroundFigure
-     * as its background.  This method adds a LabelFigure to the
-     * CompositeFigure that contains the name of the container of this icon.
-     * Subclasses of this
-     * class should never return null, even if the icon has not been properly
-     * initialized.
-     * @return A new CompositeFigure.
-     */
-    public Figure createFigure() {
-	Figure background = createBackgroundFigure();
-	Rectangle2D backBounds = background.getBounds();
-        Figure figure = new CompositeFigure(background);
-        Nameable container = getContainer();
-        // FIXME this is a bad way to do this.
-        if(!(container instanceof Attribute) ||
-                container instanceof ptolemy.actor.Director) {
-            LabelFigure label = new LabelFigure(container.getName(),
-                    _labelFont, 1.0, SwingConstants.SOUTH_WEST);
-            label.translateTo(backBounds.getX(), backBounds.getY());
-            ((CompositeFigure)figure).add(label);
-        }
-	return figure;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-    /**
-     * Create a new background figure based on this icon.  This should
-     * manufacture a new figure each time, since figures are cheap and contain
-     * their own location.  This base class returns a default background
-     * figure which is a simple white box.  Subclasses will generally override
-     * this method to create more interesting figures.  Subclasses of this
-     * class should never return null, even if the icon has not been properly
-     * initialized.
-     * @return A new figure.
+    /** Create a new background figure.  This should manufacture a new
+     *  figure each time, since figures are inexpensive and contain
+     *  their own location.  This base class returns a default background
+     *  figure, which is a simple white box.  Subclasses will generally
+     *  override this method to create more interesting figures.
+     *  This method should never return null.
+     *  @return A new figure.
      */
     public Figure createBackgroundFigure() {
 	return _createDefaultBackgroundFigure();
     }
 
-    /**
-     * Create a new Swing icon that visually represents this icon.
-     * The default implementation in this base class creates the Swing icon
-     * from the background figure, so it is not necessary to override this
-     * method in most cases.  Note that the Swing icon does NOT include a
-     * label for the name, since that is usually added separately in a
-     * Swing component.
-     * @return A new Swing Icon.
+    /** Create a new Diva figure that visually represents this icon.
+     *  The figure will be an instance of CompositeFigure with the
+     *  figure returned by createBackgroundFigure() as its background.
+     *  This method adds a LabelFigure to the CompositeFigure that
+     *  contains the name of the container of this icon, unless the
+     *  container has an attribute called "_suppressName".
+     *  This method should never return null, even if the icon has
+     *  not been properly initialized.
+     *  @return A new CompositeFigure consisting of the background figure
+     *   and a label.
+     */
+    public Figure createFigure() {
+	Figure background = createBackgroundFigure();
+	Rectangle2D backBounds = background.getBounds();
+        Figure figure = new CompositeFigure(background);
+        NamedObj container = (NamedObj)getContainer();
+        // Create the label, unless this is a visible attribute,
+        // which typically carries no label.
+        // NOTE: backward compatibility problem...
+        // Old style annotations now have labels...
+        if(container.getAttribute("_suppressName") == null) {
+            LabelFigure label = new LabelFigure(container.getName(),
+                    _labelFont, 1.0, SwingConstants.SOUTH_WEST);
+            // Shift the label slightly right so it doesn't collide with ports.
+            label.translateTo(backBounds.getX() + 5, backBounds.getY());
+            ((CompositeFigure)figure).add(label);
+        }
+	return figure;
+    }
+
+    /** Create a new Swing icon.  In this base class, this icon is created
+     *  from the background figure returned by createBackgroundFigure().
+     *  Note that the background figure does NOT include a label for the name.
+     *  This method might be suitable, for example, for creating a small icon
+     *  for use in a library.
+     *  @return A new Swing Icon.
      */
     public javax.swing.Icon createIcon() {
 	// In this class, we cache the rendered icon, since creating icons from
@@ -152,7 +154,6 @@ public class EditorIcon extends Attribute
         if(_iconCache != null) {
 	    return _iconCache;
         }
-
         // No cached object, so rerender the icon.
 	Figure figure = createBackgroundFigure();
 	_iconCache = new FigureIcon(figure, 20, 15);
@@ -160,8 +161,7 @@ public class EditorIcon extends Attribute
     }
 
     /** Write a MoML description of this object, which in this case is
-     *  empty.  Nothing is written.
-     *  MoML is an XML modeling markup language.
+     *  empty.  Nothing is written. MoML is an XML modeling markup language.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use instead of the current name.
@@ -173,19 +173,18 @@ public class EditorIcon extends Attribute
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
-    /**
-     * Create a new default background figure.
-     * Subclasses of this class should generally override
-     * the createBackgroundFigure method instead.  This method is provided
-     * so that subclasses are always able to create a default figure even if
-     * an error occurs or the subclass has not been properly initialized.
-     * @return A figure representing a rectangular white box.
+    /** Create a new default background figure, which is a white box.
+     *  Subclasses of this class should generally override
+     *  the createBackgroundFigure method instead.  This method is provided
+     *  so that subclasses are always able to create a default figure even if
+     *  an error occurs or the subclass has not been properly initialized.
+     *  @return A figure representing a rectangular white box.
      */
     protected static Figure _createDefaultBackgroundFigure() {
 	return new BasicRectangle(0, 0, 60, 40, Color.white, 1);
     }
 
-    /** Recreate the figure.  Call to cause createIcon() to call
+    /** Recreate the figure.  Call this to cause createIcon() to call
      *  createBackgroundFigure() to obtain a new figure.
      */
     protected void _recreateFigure() {
@@ -193,10 +192,13 @@ public class EditorIcon extends Attribute
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  ////
+    ////                        protected variables                ////
 
-    // The cached Swing icon.
-    private javax.swing.Icon _iconCache = null;
+    /** The cached Swing icon. */
+    protected javax.swing.Icon _iconCache = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private variables                  ////
 
     private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
 }

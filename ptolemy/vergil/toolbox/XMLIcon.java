@@ -30,35 +30,58 @@
 
 package ptolemy.vergil.toolbox;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.moml.*;
-import java.util.*;
+import java.io.Reader;
+import java.io.StringReader;
 import java.net.URL;
-import java.io.*;
+
+import javax.swing.Icon;
+
 import diva.canvas.Figure;
-import diva.canvas.toolbox.*;
-import diva.util.xml.*;
+import diva.canvas.toolbox.PaintedFigure;
+import diva.canvas.toolbox.SVGParser;
+import diva.gui.toolbox.FigureIcon;
 import diva.util.java2d.PaintedList;
+import diva.util.xml.XmlDocument;
+import diva.util.xml.XmlElement;
+import diva.util.xml.XmlReader;
+
+import ptolemy.kernel.util.ConfigurableAttribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.SingletonConfigurableAttribute;
+import ptolemy.kernel.util.ValueListener;
 
 //////////////////////////////////////////////////////////////////////////
 //// XMLIcon
 /**
-An icon is the graphical representation of a schematic entity.
-This icon contains a set of graphic elements.  These graphic elements can
-be added manually or created automatically by configuring the icon with
-appropriate XML code.  Each graphic element represents a primitive graphical
-object that will be used to create a figure or a Swing icon.   If this
-icon contains no graphic elements, then the default figure or Swing icon will
-be created.
+An icon is a visual representation of an entity. Three such visual
+representations are supported here.  A background figure is returned
+by the createBackgroundFigure() method.  This figure is specified by
+an attribute named "_iconDescription" of the container, if there is one.
+If there is no such attribute, then a default icon is used.
+The createFigure() method returns this same background figure, but
+decorated with a label giving the name of the container, unless the
+container contains an attribute named "_suppressName".  The createIcon()
+method returns a Swing icon given by an attribute named
+"_smallIconDescription", if there is one.  If there is no such
+attribute, then the icon is simply a small representation of the
+background figure.
+<p>
+The XML schema used in the "_iconDescription" and "_smallIconDescription"
+attributes is SVG (scalable vector graphics), although currently Diva
+only supports a small subset of SVG.
 
 @author Steve Neuendorffer, John Reekie
+@contributor Edward A. Lee
 @version $Id$
 */
 public class XMLIcon extends EditorIcon implements ValueListener {
 
     /** Create a new icon with the given name in the given container.
-     *  By default, the icon contains no graphic representations.
+     *  By default, the icon contains no graphic objects.
      *  @param container The container for this attribute.
      *  @param name The name of this attribute.
      */
@@ -80,8 +103,8 @@ public class XMLIcon extends EditorIcon implements ValueListener {
         // Get the description.
         NamedObj container = (NamedObj)getContainer();
         SingletonConfigurableAttribute description =
-            (SingletonConfigurableAttribute)container.getAttribute(
-                    "_iconDescription");
+                (SingletonConfigurableAttribute)container.getAttribute(
+                "_iconDescription");
         // If the description has changed...
         if(_description != description) {
             if(_description != null) {
@@ -102,19 +125,78 @@ public class XMLIcon extends EditorIcon implements ValueListener {
             _recreateFigure();
         }
 
-        // update the painted list, if necessary
-        paintedList();
+        // Update the painted list.
+        _updatePaintedList();
 
+        // If the paintedList is still null, then return the default figure.
         if(_paintedList == null) {
-            // If the paintedList is still null, then return the default
-            // figure.
             return _createDefaultBackgroundFigure();
-        } else {
-            return new PaintedFigure(_paintedList);
         }
+
+        return new PaintedFigure(_paintedList);
+    }
+
+    /** Create a new Swing icon.  This class looks for an attribute
+     *  called "_smallIconDescription", and if it exists, uses it to
+     *  create the icon.  If it does not exist, then it simply creates
+     *  a small version of the background figure returned by
+     *  createBackgroundFigure().
+     *  @return A new Swing Icon.
+     */
+    public javax.swing.Icon createIcon() {
+	// In this class, we cache the rendered icon, since creating icons from
+	// figures is expensive.
+        if(_iconCache != null) {
+	    return _iconCache;
+        }
+        // No cached object, so rerender the icon.
+        // Get the description.
+        NamedObj container = (NamedObj)getContainer();
+        SingletonConfigurableAttribute description =
+                (SingletonConfigurableAttribute)container.getAttribute(
+                "_smallIconDescription");
+        // If there is no separate small icon description, return
+        // a scaled version of the background figure, as done by the base
+        // class.
+        if (description == null) return super.createIcon();
+
+        // If the description has changed...
+        if(_smallIconDescription != description) {
+            if(_smallIconDescription != null) {
+                // Remove this as a listener if there
+                // was a previous description.
+                _smallIconDescription.removeValueListener(this);
+            }
+            _smallIconDescription = description;
+
+            // Listen for changes in value to the icon description.
+            _smallIconDescription.addValueListener(this);
+        }
+        // clear the caches
+        _recreateFigure();
+
+        // Update the painted list, if necessary
+        Figure figure;
+        try {
+            String text = _smallIconDescription.value();
+            Reader in = new StringReader(text);
+            // NOTE: Do we need a base here?
+            XmlDocument document = new XmlDocument((URL)null);
+            XmlReader reader = new XmlReader();
+            reader.parse(document, in);
+            XmlElement root = document.getRoot();
+            PaintedList paintedList = SVGParser.createPaintedList(root);
+            figure = new PaintedFigure(paintedList);
+        } catch (Exception ex) {
+            return super.createIcon();
+        }
+        // NOTE: The size is hardwired here.  Should it be?
+	_iconCache = new FigureIcon(figure, 20, 15);
+	return _iconCache;
     }
 
     /** Return the painted list contained by this icon.
+     *  This is used by the icon editor.
      *  @return The painted list contained by this icon.
      */
     public PaintedList paintedList() {
@@ -124,8 +206,7 @@ public class XMLIcon extends EditorIcon implements ValueListener {
         return _paintedList;
     }
 
-    /**
-     * Return a string this representing Icon.
+    /** Return a string representing this Icon.
      */
     public String toString() {
         String str = super.toString() + "(";
@@ -139,7 +220,9 @@ public class XMLIcon extends EditorIcon implements ValueListener {
      *  @param settable The object that has changed value.
      */
     public void valueChanged(Settable settable) {
-        if (((Nameable)settable).getName().equals("_iconDescription")) {
+        String name = ((Nameable)settable).getName();
+        if (name.equals("_iconDescription")
+                || name.equals("_smallIconDescription")) {
             _recreateFigure();
         }
     }
@@ -219,4 +302,7 @@ public class XMLIcon extends EditorIcon implements ValueListener {
 
     // The description of this icon in XML.
     private ConfigurableAttribute _description;
+
+    // The description of the small version of the icon in XML.
+    private ConfigurableAttribute _smallIconDescription;
 }

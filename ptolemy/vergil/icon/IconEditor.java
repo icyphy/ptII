@@ -47,7 +47,6 @@ import diva.gui.AbstractApplication;
 import diva.gui.BasicFrame;
 import diva.gui.ExtensionFileFilter;
 import diva.gui.GUIUtilities;
-import diva.util.java2d.PaintedList;
 import diva.util.java2d.PaintedObject;
 import diva.util.java2d.PaintedPath;
 import diva.util.java2d.PaintedShape;

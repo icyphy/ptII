@@ -66,6 +66,7 @@ import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.toolbox.FigureAction;
+import ptolemy.vergil.toolbox.SnapConstraint;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorGraphController
@@ -300,10 +301,10 @@ public class EditorGraphController extends ViewerGraphController {
 		y = getY();
 	    }
 
-	    PtolemyGraphModel graphModel =
-		(PtolemyGraphModel)getGraphModel();
-	    final double finalX = x;
-	    final double finalY = y;
+	    PtolemyGraphModel graphModel = (PtolemyGraphModel)getGraphModel();
+            // FIXME: This is not sufficient for some reason to get proper
+            // snap to grid.
+            final double[] point = SnapConstraint.constrainPoint(x, y);
 	    final CompositeEntity toplevel = graphModel.getPtolemyModel();
 	    final String portName = toplevel.uniqueName("port");
 	    final String locationName = "location1";
@@ -318,23 +319,16 @@ public class EditorGraphController extends ViewerGraphController {
 		new MoMLChangeRequest(this, toplevel, moml.toString()) {
                 protected void _execute() throws Exception {
                     super._execute();
+
                     // Set the location of the icon.
                     // Note that this really needs to be done after
                     // the change request has succeeded, which is why
                     // it is done here.  When the graph controller
                     // gets around to handling this, it will draw
                     // the icon at this location.
-
-                    // FIXME: Have to know whether this is an entity,
-                    // port, etc. For now, assuming it is an entity.
-                    NamedObj newObject =
-			toplevel.getPort(portName);
+                    NamedObj newObject = toplevel.getPort(portName);
                     Location location =
-			(Location) newObject.getAttribute(locationName);
-
-                    double point[] = new double[2];
-                    point[0] = ((int)finalX);
-                    point[1] = ((int)finalY);
+			     (Location) newObject.getAttribute(locationName);
                     location.setLocation(point);
                 }
             };
@@ -384,10 +378,8 @@ public class EditorGraphController extends ViewerGraphController {
 		y = getY();
 	    }
 
-	    PtolemyGraphModel graphModel =
-		(PtolemyGraphModel)getGraphModel();
-	    final double finalX = x;
-	    final double finalY = y;
+	    PtolemyGraphModel graphModel = (PtolemyGraphModel)getGraphModel();
+            final double[] point = SnapConstraint.constrainPoint(x, y);
 	    final CompositeEntity toplevel = graphModel.getPtolemyModel();
 
 	    final String relationName = toplevel.uniqueName("relation");
@@ -408,17 +400,8 @@ public class EditorGraphController extends ViewerGraphController {
                     // it is done here.  When the graph controller
                     // gets around to handling this, it will draw
                     // the icon at this location.
-
-                    // FIXME: Have to know whether this is an entity,
-                    // port, etc. For now, assuming it is an entity.
-                    NamedObj newObject =
-			toplevel.getRelation(relationName);
-                    Vertex vertex =
-			(Vertex) newObject.getAttribute(vertexName);
-
-                    double point[] = new double[2];
-                    point[0] = ((int)finalX);
-                    point[1] = ((int)finalY);
+                    NamedObj newObject = toplevel.getRelation(relationName);
+                    Vertex vertex = (Vertex) newObject.getAttribute(vertexName);
                     vertex.setLocation(point);
                 }
             };

@@ -100,7 +100,7 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 		// rendered in the tree.
 		if(object.getAttribute("_iconDescription") != null) {
 		    // FIXME: may want to use another type of icon
-		    // FIXME: this code is the same as in
+		    // NOTE: this code is the same as in
 		    // EntityController.
 		    EditorIcon icon;
 		    try {
@@ -130,7 +130,6 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 }
             }
 
-            // FIXME: Create a default icon if none has been defined.
             // FIXME: Create a special icon for libraries?
         }
 	return component;

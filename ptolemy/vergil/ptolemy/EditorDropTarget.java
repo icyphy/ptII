@@ -30,31 +30,37 @@
 
 package ptolemy.vergil.ptolemy;
 
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.gui.MessageHandler;
-import ptolemy.moml.ImportAttribute;
-import ptolemy.moml.Location;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.toolbox.PtolemyTransferable;
+import java.awt.Point;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
+import java.awt.geom.Point2D;
+import java.util.Iterator;
+import java.util.TooManyListenersException;
 
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
-import diva.gui.Application;
 
-// FIXME: Replace these with per-class imports.
-import java.awt.dnd.*;
-import java.awt.datatransfer.*;
-import java.awt.Point;
-import java.awt.geom.Point2D;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
+import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.ImportAttribute;
+import ptolemy.moml.Location;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.toolbox.PtolemyTransferable;
+import ptolemy.vergil.toolbox.SnapConstraint;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorDropTarget
@@ -152,13 +158,14 @@ public class EditorDropTarget extends DropTarget {
 		return;
             }
 
-	    Point originalPoint = dtde.getLocation();
+            Point2D originalPoint = SnapConstraint.constrainPoint(
+                    dtde.getLocation());
             GraphPane pane = ((JGraph)getComponent()).getGraphPane();
             final Point2D point = new Point2D.Double();
             // account for the scaling in the pane.
             try {
-                pane.getTransformContext().getInverseTransform().transform(originalPoint, 
-                        point);
+                pane.getTransformContext().getInverseTransform().transform(
+                        originalPoint, point);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 return;
@@ -281,6 +288,8 @@ public class EditorDropTarget extends DropTarget {
                 throw new InternalErrorException(
                         "Dropped object not found after change completed!");
             }
+            // Constrain point to snap to grid.
+            Point2D newPoint = SnapConstraint.constrainPoint(point);
 
             Location location = (Location) newObject.getAttribute("_location");
             // If there is no location, then manufacture one.
@@ -289,8 +298,8 @@ public class EditorDropTarget extends DropTarget {
             }
 
             double coords[] = new double[2];
-            coords[0] = ((int)point.getX());
-            coords[1] = ((int)point.getY());
+            coords[0] = ((int)newPoint.getX());
+            coords[1] = ((int)newPoint.getY());
             location.setLocation(coords);
         }
     }

@@ -38,13 +38,13 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
+import ptolemy.vergil.toolbox.PortSite;
 import ptolemy.gui.MessageHandler;
 import ptolemy.moml.Location;
 import ptolemy.moml.URLAttribute;
 
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
-import diva.canvas.connector.BoundsSite;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.basic.BasicLayoutTarget;
@@ -137,10 +137,18 @@ public class EntityController extends AttributeController {
      *  within an entity.
      */
     public class EntityLayout extends AbstractGlobalLayout {
+
+        /** Create a new layout manager. */
 	public EntityLayout() {
 	    super(new BasicLayoutTarget(getController()));
 	}
 
+        ///////////////////////////////////////////////////////////////
+        ////                     public methods                    ////
+
+        /** Layout the ports of the specified node.
+         *  @param node The node, which is assumed to be an entity.
+         */
 	public void layout(Object node) {
 	    GraphModel model = getController().getGraphModel();
 	    Iterator nodes = model.nodes(node);
@@ -185,23 +193,34 @@ public class EntityController extends AttributeController {
 
 	}
 
-	private void _placePortFigures(CompositeFigure figure, List portList,
-                int count, int direction) {
+        ///////////////////////////////////////////////////////////////
+        ////                     private methods                   ////
+
+        // Place the ports.
+	private void _placePortFigures(
+                CompositeFigure figure,
+                List portList,
+                int count,
+                int direction) {
 	    Iterator ports = portList.iterator();
 	    int number = 0;
 	    while(ports.hasNext()) {
-		number ++;
 		Object port = ports.next();
 		Figure portFigure = getController().getFigure(port);
 		// If there is no figure, then ignore this port.  This may
 		// happen if the port hasn't been rendered yet.
 		if(portFigure == null) continue;
-                Rectangle2D portBounds =
-		    portFigure.getShape().getBounds2D();
-		BoundsSite site =
-		    new BoundsSite(figure.getBackgroundFigure(), 0,
-                            direction,
-                            100.0 * number / (count+1));
+                Rectangle2D portBounds = portFigure.getShape().getBounds2D();
+		PortSite site = new PortSite(
+                        figure.getBackgroundFigure(),
+                        (IOPort)port,
+                        number,
+                        count);
+		number ++;
+                // NOTE: previous expression for port location was:
+                //    100.0 * number / (count+1)
+                // But this leads to squished ports with uneven spacing.
+
                 // Note that we don't use CanvasUtilities.translateTo because
                 // we want to only get the bounds of the background of the
                 // port figure.

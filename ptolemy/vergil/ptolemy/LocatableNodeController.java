@@ -30,37 +30,15 @@
 
 package ptolemy.vergil.ptolemy;
 
-// FIXME: Replace with per-class imports.
-import ptolemy.actor.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.gui.*;
-import ptolemy.moml.*;
-
-import diva.gui.*;
-import diva.gui.toolbox.*;
-import diva.graph.GraphController;
-import diva.graph.NodeController;
-import diva.graph.NodeInteractor;
+import diva.canvas.CanvasUtilities;
+import diva.canvas.Figure;
 import diva.graph.BasicNodeController;
-import diva.canvas.*;
-import diva.canvas.connector.*;
-import diva.canvas.event.*;
-import diva.canvas.interactor.*;
-import diva.canvas.toolbox.*;
-import diva.util.Filter;
+import diva.graph.GraphController;
+import diva.graph.NodeInteractor;
 
-import java.awt.geom.Rectangle2D;
-import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.ActionEvent;
-import java.util.LinkedList;
-import java.util.HashMap;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.net.URL;
-import javax.swing.*;
-import javax.swing.event.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.moml.Location;
+import ptolemy.vergil.toolbox.SnapConstraint;
 
 //////////////////////////////////////////////////////////////////////////
 //// LocatableNodeController
