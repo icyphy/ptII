@@ -35,6 +35,7 @@ import ptolemy.data.Token;
 import ptolemy.actor.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import collections.LinkedList;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -209,10 +210,12 @@ public class CSPActor extends AtomicActor {
                 //start the branches
                 int priority = Thread.currentThread().getPriority() -1;
                 _branchesActive = 0;
+                _threadList = new LinkedList();
                 for (int i = 0; i< branches.length; i++) {
                     if (branches[i] != null) {
                         // start a thread with this branch
                         Thread thread = new Thread((Runnable)branches[i]);
+                        _threadList.insertFirst(thread);
                         thread.setPriority(priority);
                         thread.start();
                         _branchesActive++;
@@ -223,8 +226,8 @@ public class CSPActor extends AtomicActor {
                     // should we return a flag?
                     System.out.println("No branches to create, returning");
                 }
-                //FIXME: we could perhaps get a performance gain by 
-                //testing if only one branch was started here?
+                // FIXME: we could perhaps get a performance gain by 
+                // testing if only one branch was started here?
   
                 // wait for a branch to succeed
                 while ((_successfulBranch == -1) && (_branchesActive > 0)) {
@@ -261,10 +264,11 @@ public class CSPActor extends AtomicActor {
             System.out.println(getName() + " interrupted in chooseBranch.");
         }
         if (_successfulBranch == -1) {
-            // Conditional construct was terminated prematurely
+            // Conditional construct was ended prematurely
             String msg = "CSPActor: exiting conditional branching due to";
             throw new TerminateProcessException(this, msg + " termination");
         }
+        _threadList = null;
         return _successfulBranch;
     }
 
@@ -344,6 +348,24 @@ public class CSPActor extends AtomicActor {
         System.out.println("Error: branch releasing first without possessing it! :" + _branchTrying + " & " + branchNumber);
     }
 
+    /** Terminate any threads created by this actor.   
+     */   
+    public void terminate() {
+        synchronized(_getInternalLock()) {
+            System.out.println("Terminating actor: " + getName());
+            // Now stop any threads created by this director.
+             if (_threadList != null) {
+                 Enumeration threads = _threadList.elements();
+                 while (threads.hasMoreElements()) {
+                     Thread next = (Thread)threads.nextElement();
+                     if (next.isAlive()) {
+                         next.stop();
+                     }
+                 }
+             }
+        }
+    }
+
     /** Defauly implementation for actors inheriting from this 
      *class. It simply prints out a message that the actor is wrapping up.
      */
@@ -395,6 +417,11 @@ public class CSPActor extends AtomicActor {
 
     // Contains the ID of the branch that successfully rendezvoused.
     private int _successfulBranch = -1;
+
+    // Threads created by this actor to perfrom a conditional rendezvous.
+    // Need to keep a list of them in case the simulation is 
+    // terminated abruptly.
+    private LinkedList _threadList = null;
 
     // Stores the result of a successful conditional receive.
     private Token _token;
