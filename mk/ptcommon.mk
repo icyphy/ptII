@@ -130,6 +130,21 @@ subinstall:
 		done ; \
 	fi
 
+
+# Run make demo in the subdirs
+subdemo:
+	@if [ "x$(DIRS)" != "x" ]; then \
+		set $(DIRS); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo making demo in $(ME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) demo ;\
+			) \
+		    fi ; \
+		done ; \
+	fi
+
 # Create the directory that contains the scripts
 bin_install_dir:
 	if [ ! -d "$(BIN_INSTALL_DIR)" ]; then \
