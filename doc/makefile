@@ -99,6 +99,7 @@ PTINYJSRCS = \
 			ptolemy.actor.lib \
 			ptolemy.actor.lib.conversions \
 			ptolemy.actor.lib.gui \
+			ptolemy.actor.lib.logic \
 			ptolemy.domains.ct.lib \
 			ptolemy.domains.de.lib \
 			ptolemy.domains.sdf.lib \
@@ -182,7 +183,9 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/*.java \
 			../ptolemy/actor/gui/*.java \
 			../ptolemy/actor/lib/*.java \
+			../ptolemy/actor/lib/conversions/*.java \
 			../ptolemy/actor/lib/gui/*.java \
+			../ptolemy/actor/lib/lib/*.java \
 			../ptolemy/actor/process/*.java \
 			../ptolemy/actor/sched/*.java \
 			../ptolemy/actor/util/*.java \
