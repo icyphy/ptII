@@ -398,10 +398,10 @@ public class StickyMassesApplet extends CTApplet {
         try {
             _ctGain.factor.setToken(new DoubleToken(
                     _query.doubleValue("sticky")));
-            _ctIncV1.InitialState.setToken(new DoubleToken(0.0));
-            _ctIncP1.InitialState.setToken(new DoubleToken(0.0));
-            _ctIncV2.InitialState.setToken(new DoubleToken(0.0));
-            _ctIncP2.InitialState.setToken(new DoubleToken(3.0));
+            _ctIncV1.initialState.setToken(new DoubleToken(0.0));
+            _ctIncP1.initialState.setToken(new DoubleToken(0.0));
+            _ctIncV2.initialState.setToken(new DoubleToken(0.0));
+            _ctIncP2.initialState.setToken(new DoubleToken(3.0));
             System.out.println("a new run");
 
             super._go();

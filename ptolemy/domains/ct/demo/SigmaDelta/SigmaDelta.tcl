@@ -207,7 +207,7 @@ $g3 setExpression -20.0
 #set con [$const getAttribute Value]
 #$con setExpression -0.5
 
-set ts [$sampler getAttribute SamplePeriod]
+set ts [$sampler getAttribute samplePeriod]
 $ts setExpression 0.02
 
 #plot parameters

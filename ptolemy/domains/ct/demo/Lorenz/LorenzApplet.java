@@ -173,9 +173,9 @@ public class LorenzApplet extends CTApplet {
             _dir.minStepSize.setToken(new DoubleToken(1e-6));
 
             // CTActorParameters
-            X1.InitialState.setToken(new DoubleToken(1.0));
-            X2.InitialState.setToken(new DoubleToken(1.0));
-            X3.InitialState.setToken(new DoubleToken(1.0));
+            X1.initialState.setToken(new DoubleToken(1.0));
+            X2.initialState.setToken(new DoubleToken(1.0));
+            X3.initialState.setToken(new DoubleToken(1.0));
 
             MINUS1.factor.setToken(new DoubleToken(-1.0));
             MINUS2.factor.setToken(new DoubleToken(-1.0));
