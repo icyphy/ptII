@@ -143,7 +143,7 @@ public class CTRateLimiter extends Transformer {
                             risingRate)).add(_lastToken);
                 } else if(rate < fallingRate) {
                     _newToken = (new DoubleToken(timeDifference*
-                             fallingRate)).add(_lastToken);
+                            fallingRate)).add(_lastToken);
                 }
                 output.send(0, _newToken);
             }

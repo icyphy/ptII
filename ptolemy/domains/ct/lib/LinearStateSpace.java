@@ -428,7 +428,7 @@ public class LinearStateSpace extends TypedCompositeActor {
         // to use some of the outputs
         DoubleMatrixToken d = (DoubleMatrixToken)D.getToken();
         if (c.getRowCount() != d.getRowCount()) {
-             throw new IllegalActionException(this,
+            throw new IllegalActionException(this,
                     "The number of rows of the D matrix should equal to "
                     + "the number of rows of the C matrix.");
         }

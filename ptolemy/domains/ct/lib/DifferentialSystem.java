@@ -347,7 +347,7 @@ public class DifferentialSystem extends TypedCompositeActor {
         // Check if any of the state variable names is an empty string.
         for(int i = 0; i < n; i++) {
             String name = (((StringToken)stateNames.getElement(i)).
-                stringValue()).trim();
+                    stringValue()).trim();
             if(name.equals("")) {
                 throw new IllegalActionException(this, "A state variable "
                         + "name should not be an empty string.");
@@ -355,9 +355,9 @@ public class DifferentialSystem extends TypedCompositeActor {
             // Check state equations.
             String equation = name + "_dot";
             if(getAttribute(equation) == null) {
-                 throw new IllegalActionException(this, "Please add a "
-                         + "parameter with name \""
-                         + equation + "\" to specify the state equation.");
+                throw new IllegalActionException(this, "Please add a "
+                        + "parameter with name \""
+                        + equation + "\" to specify the state equation.");
             }
         }
 
@@ -375,9 +375,9 @@ public class DifferentialSystem extends TypedCompositeActor {
             }
             // Check output maps.
             if(getAttribute(name) == null) {
-                 throw new IllegalActionException(this, "Please add a "
-                         + "parameter with name \""
-                         + name + "\" to specify the output map.");
+                throw new IllegalActionException(this, "Please add a "
+                        + "parameter with name \""
+                        + name + "\" to specify the output map.");
             }
         }
     }

@@ -186,7 +186,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
                 dir.requestInitialization(this);
             }
         } else {
-             super.attributeChanged(attribute);
+            super.attributeChanged(attribute);
         }
     }
 
@@ -266,7 +266,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
                             DoubleToken((b[i+1] - d * a[i+1])/a[0]));
                     // connections
                     nodes[i] = (IORelation)connect(integrators[i].output,
-                                feedforward[i].input, "node" + i);
+                            feedforward[i].input, "node" + i);
                     feedback[i].input.link(nodes[i]);
                     connect(feedback[i].output, inputAdder.plus);
                     connect(feedforward[i].output, outputAdder.plus);
