@@ -37,6 +37,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -246,13 +247,13 @@ public class CompositeProcessDirector extends ProcessDirector {
             if ( containersContainer == null ) {
                 // Use the overridden setCurrentTime() method 
                 // to set time backwards.
-                setCurrentTime(0.0);
+                setCurrentTime(new Time(this));
             } else {
-                double time =
+                Time currentTime =
                     containersContainer.getDirector().getCurrentTime();
                 // Use the overridden setCurrentTime() method 
                 // to set time backwards.
-                setCurrentTime(time);
+                setCurrentTime(currentTime);
             }
         }
 
@@ -318,7 +319,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  The new time may be earlier than the current time.
      *  @param newTime The new current simulation time.
      */
-    public void setCurrentTime(double newTime) 
+    public void setCurrentTime(Time newTime) 
         throws IllegalActionException {
         if (_debugging) {
             _debug("----- Setting current time to " + newTime);
