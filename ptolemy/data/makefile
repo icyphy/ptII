@@ -63,7 +63,6 @@ JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
 	BooleanToken.java \
-	ByteToken.java \
 	DoubleMatrixToken.java \
 	DoubleToken.java \
 	IntMatrixToken.java \
@@ -76,8 +75,8 @@ JSRCS = \
 	ScalarToken.java \
 	StringToken.java \
 	Token.java \
-	TokenPublisher.java \
-	VectorToken.java
+	TokenPublisher.java 
+	
 
 
 EXTRA_SRCS =	$(JSRCS)
