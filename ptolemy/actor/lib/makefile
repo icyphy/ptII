@@ -221,6 +221,9 @@ OPTIONAL_FILES = \
 	jspaces \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class' \
+	'Expression$$1.class' \
+	'Expression$$OutputTypeFunction.class' \
+	'Expression$$VariableScope.class' \
 	'RecordUpdater$$1.class' \
 	'RecordUpdater$$FunctionTerm.class' \
 	'Scale$$1.class' \
