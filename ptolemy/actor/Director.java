@@ -402,7 +402,8 @@ public class Director extends NamedObj implements Executable {
      *  current time.
      */
     // FIXME: complete this.
-    public void fireAfterDelay(Actor actor, double delay) {
+    public void fireAfterDelay(Actor actor, double delay) 
+            throws IllegalActionException {
         // do nothing.
     }
 
