@@ -141,12 +141,17 @@ public class UtilityFunctions {
      *  and make one long one line string?<p>
      *  Use readFile({@link #findFile}) to specify files relative to the
      *  current user directory or classpath.<p>
-     *
+     *  A StringToken can be converted to any valid Token it represents
+     *  with the Ptolemy II expression language eval() function.
+     *  eval() is implemented in ptolemy.data.expr.ASTPtFunctionNode.java.
+     *  For example: <code>eval(readFile("taps"))</code><p>
+     * 
      *  @param filename The file we want to read the text from.
      *  @return StringToken containing the text contained in
      *  the specified file.
      *  @exception IllegalActionException If for the given filename
      *  a file cannot be opened.
+     *  @see ptolemy.data.expr.ASTPtFunctionNode
      */
     public static StringToken readFile(String filename)
             throws IllegalActionException {
