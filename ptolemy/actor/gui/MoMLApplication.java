@@ -132,7 +132,6 @@ public class MoMLApplication extends CompositeActorApplication {
                     // base = new URL("file", null, directory);
                     base = file.toURL();
                 } catch (FileNotFoundException ex2) { 
-                    System.out.println("About to try getResource");
                     URL inurl = Class.forName("ptolemy.kernel.util.NamedObj").
                         getClassLoader().getResource(arg);
                     instream = inurl.openStream();
