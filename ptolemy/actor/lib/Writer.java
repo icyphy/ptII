@@ -96,7 +96,8 @@ public class Writer extends Sink {
             _writer.flush();
             return super.postfire();
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex.getMessage());
+            throw new IllegalActionException(this, ex,
+                    "attributeChanged(" + attribute + ") failed");
         }
     }
 
@@ -109,7 +110,8 @@ public class Writer extends Sink {
         try {
             if (_writer != null && _writer != _stdOut) _writer.close();
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex.getMessage());
+            throw new IllegalActionException(this, ex,
+                    "setWriter(" + writer + ") failed");
         }
         if (writer != null) {
             _writer = writer;
@@ -123,9 +125,12 @@ public class Writer extends Sink {
      */
     public void wrapup() throws IllegalActionException {
         try {
-            if (_writer != null) _writer.flush();
+            if (_writer != null) {
+                _writer.flush();
+            }
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex.getMessage());
+            throw new IllegalActionException(this, ex,
+                    "wrapup(" + _wrapup + ") failed");
         }
     }
 

@@ -159,7 +159,8 @@ public class Reader extends Source {
                     }
                 }
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex.getMessage());
+                throw new IllegalActionException(this, ex,
+                        "attributeChanged(" + attribute + ") failed");
             }
         }
         super.attributeChanged(attribute);
@@ -223,7 +224,7 @@ public class Reader extends Source {
             }
             return super.prefire();
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex.getMessage());
+            throw new IllegalActionException(this, ex, "prefire() failed");
         }
     }
 
@@ -237,7 +238,8 @@ public class Reader extends Source {
         try {
             if (_reader != null && _reader != _stdIn) _reader.close();
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex.getMessage());
+            throw new IllegalActionException(this, ex,
+                    "setReader(" + reader + ") failed");
         }
         if (reader != null) {
             _reader = reader;
@@ -253,7 +255,8 @@ public class Reader extends Source {
         try {
             if (_reader != null && _reader != _stdIn) _reader.close();
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex.getMessage());
+            throw new IllegalActionException(this, ex,
+                    "wrapup(" + reader + ") failed");
         }
     }
 
