@@ -126,8 +126,7 @@
 of a 4PSK signal through a complex Gaussian
 noise channel to coded transmission. The
 total number of errors in each case and
-error rate are displayed in the icons below.
-The ViterbiDecoder actor does trellis decoding.</text></svg></configure>
+error rate are displayed in the icons below.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -186,6 +185,10 @@ The ViterbiDecoder actor does trellis decoding.</text></svg></configure>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 205.0">
         </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -206,6 +209,10 @@ The ViterbiDecoder actor does trellis decoding.</text></svg></configure>
         <doc>Create a sequence of bernoulli random variables</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 480.0">
         </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -224,6 +231,10 @@ The ViterbiDecoder actor does trellis decoding.</text></svg></configure>
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 325.0">
+        </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -246,6 +257,10 @@ The ViterbiDecoder actor does trellis decoding.</text></svg></configure>
     </entity>
     <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 395.0">
+        </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -321,6 +336,10 @@ the error rate.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 215.0">
             </property>
+            <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -339,6 +358,10 @@ the error rate.</text></svg></configure>
             <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 205.0">
+            </property>
+            <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -372,6 +395,10 @@ the error rate.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 205.0">
             </property>
+            <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -390,6 +417,10 @@ the error rate.</text></svg></configure>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 280.0">
             </property>
+            <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -403,6 +434,10 @@ the error rate.</text></svg></configure>
         </entity>
         <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
             <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 245.0">
+            </property>
+            <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
             </property>
             <port name="multiply" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -467,6 +502,10 @@ the error rate.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="720.0, 205.0">
         </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -483,6 +522,10 @@ the error rate.</text></svg></configure>
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="695.0, 275.0">
+        </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -551,6 +594,10 @@ the error rate.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 215.0">
             </property>
+            <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -569,6 +616,10 @@ the error rate.</text></svg></configure>
             <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 205.0">
+            </property>
+            <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -602,6 +653,10 @@ the error rate.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 205.0">
             </property>
+            <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
@@ -620,6 +675,10 @@ the error rate.</text></svg></configure>
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 280.0">
             </property>
+            <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -633,6 +692,10 @@ the error rate.</text></svg></configure>
         </entity>
         <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
             <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 245.0">
+            </property>
+            <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
             </property>
             <port name="multiply" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -686,7 +749,7 @@ the error rate.</text></svg></configure>
         <link port="MultiplyDivide.output" relation="relation6"/>
     </entity>
     <entity name="Errors on Uncoded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="12">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="59">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -697,13 +760,17 @@ the error rate.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="640.0, 405.0">
         </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
     <entity name="Error Rate on Uncoded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0206896551724">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0311839323467">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -713,6 +780,10 @@ the error rate.</text></svg></configure>
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="620.0, 480.0">
+        </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -727,6 +798,10 @@ the error rate.</text></svg></configure>
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 195.0">
+        </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -746,6 +821,10 @@ the error rate.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 395.0">
         </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
@@ -763,6 +842,10 @@ the error rate.</text></svg></configure>
         <property name="wordLength" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 195.0">
+        </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -789,6 +872,10 @@ the error rate.</text></svg></configure>
         <property name="wordLength" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 385.0">
+        </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -829,6 +916,10 @@ the error rate.</text></svg></configure>
             <doc>Create a sequence of gaussian random variables</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 160.0">
             </property>
+            <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -846,6 +937,10 @@ the error rate.</text></svg></configure>
             </property>
             <doc>Create a sequence of gaussian random variables</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 250.0">
+            </property>
+            <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -865,6 +960,10 @@ the error rate.</text></svg></configure>
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 205.0">
+            </property>
+            <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -909,6 +1008,10 @@ the error rate.</text></svg></configure>
             <doc>Create a sequence of gaussian random variables</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 160.0">
             </property>
+            <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -926,6 +1029,10 @@ the error rate.</text></svg></configure>
             </property>
             <doc>Create a sequence of gaussian random variables</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 250.0">
+            </property>
+            <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -945,6 +1052,10 @@ the error rate.</text></svg></configure>
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 205.0">
+            </property>
+            <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -983,6 +1094,10 @@ the error rate.</text></svg></configure>
         <property name="constellation" class="ptolemy.data.expr.Parameter" value="constellation">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 205.0">
+        </property>
+        <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="2">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
