@@ -41,7 +41,7 @@ ME =		ptolemy
 # if libeng.def is found.
 DIRS = util kernel plot graph moml data actor gui math media	\
 	$(PTCOPERNICUS_DIR) \
-	$(PTMATLAB_DIR)	domains vergil apps configs
+	$(PTMATLAB_DIR)	domains vergil hsif apps configs
 
 # Root of Ptolemy II directory
 ROOT =		..
