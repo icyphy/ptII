@@ -85,19 +85,10 @@ public class CompositeEntity extends HierEntity {
 
 
     //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
-
-    //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
     /* The HierEntities contained by this CompositeEntity */
     /* FIXME: Develop HierEntityList */
-    private NamedObjList _contents;
+    private NamedObjList _contents = null;
 
 }
