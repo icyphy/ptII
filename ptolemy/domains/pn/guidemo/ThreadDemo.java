@@ -24,6 +24,8 @@ import ptolemy.kernel.util.*;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 
 /**
@@ -42,6 +44,10 @@ public class ThreadDemo {
     /** The JGraph where we display stuff
      */
     JGraph jgraph = new JGraph();
+
+    /** The window to display in
+     */
+    private TutorialWindow window;
 
     /* The actors
      */
@@ -83,8 +89,8 @@ public class ThreadDemo {
         // Run the model
 	System.out.println("Connections made");
         Parameter p = (Parameter)pnDir.getAttribute("Initial_queue_capacity");
-        p.setToken(new IntToken(500));
- 	compositeActor.getManager().startRun();
+        p.setToken(new IntToken(10));
+ 	compositeActor.getManager().run();
         System.out.println("Bye World\n");
 	return;
     }
@@ -223,25 +229,32 @@ public class ThreadDemo {
      * and then set the model once the window is showing.
      */
     public void displayGraph(JGraph g, GraphModel model) {
-        TutorialWindow f = new TutorialWindow("PN Thread Demo");
+        window = new TutorialWindow("PN Thread Demo");
         
-        // Display it
-        f.getContentPane().add("Center", g);
-        f.setSize(800, 300);
-        f.setLocation(100, 100);
-        f.setVisible(true);
+        // Display the window
+        window.getContentPane().add("Center", g);
+        window.setSize(800, 300);
+        window.setLocation(100, 100);
+        window.setVisible(true);
+
+        // Make sure we ahve the right renders and then
+        // display the graph
+        GraphPane gp = (GraphPane) g.getCanvasPane();
+        GraphView gv = gp.getGraphView();
+        gv.setNodeRenderer(new ThreadRenderer());
         g.setGraphModel(model);
 
         // Do the layout
         LevelLayout staticLayout = new LevelLayout();
         staticLayout.setOrientation(LevelLayout.HORIZONTAL);
-        GraphPane gp = (GraphPane) g.getCanvasPane();
-        GraphView gv = gp.getGraphView();
         staticLayout.layout(gv, model.getGraph());
         gp.repaint();
     }
 
-    /*****
+    ///////////////////////////////////////////////////////////////////
+    //// StateListener
+
+    /**
      * StateListener is an inner class that listens to state
      * events on the Ptolemy kernel and changes the color of
      * the nodes appropriately.
@@ -260,41 +273,90 @@ public class ThreadDemo {
         /** Respond to a state changed event.
          */
         public void processStateChanged(PNProcessEvent event) {
-            int state = event.getCurrentState();
+            final int state = event.getCurrentState();
             Actor actor = event.getActor();
 
             // Get the corresponding graph node and its figure
             Node node = (Node) nodeMap.get(actor);
-            BasicFigure figure = (BasicFigure)
+            LabelWrapper wrapper = (LabelWrapper)
                 _graphPane.getGraphView().getNodeFigure(node);
+            final BasicFigure figure = (BasicFigure)
+                wrapper.getChild();
 
             // Color it!
-            switch (state) {
-            case PNProcessEvent.PROCESS_BLOCKED:
-                figure.setFillPaint(Color.red);
-                break;
+            try {
+                SwingUtilities.invokeAndWait(new Runnable () {
+                    public void run () {
+                        switch (state) {
+                        case PNProcessEvent.PROCESS_BLOCKED:
+                            figure.setFillPaint(Color.red);
+                            break;
+                        
+                        case PNProcessEvent.PROCESS_FINISHED:
+                            figure.setFillPaint(Color.black);
+                            break;
+                        
+                        case PNProcessEvent.PROCESS_PAUSED:
+                            figure.setFillPaint(Color.yellow);
+                            break;
 
-            case PNProcessEvent.PROCESS_FINISHED:
-                figure.setFillPaint(Color.black);
-                break;
+                        case PNProcessEvent.PROCESS_RUNNING:
+                            figure.setFillPaint(Color.green);
+                            break;
 
-            case PNProcessEvent.PROCESS_PAUSED:
-                figure.setFillPaint(Color.yellow);
-                break;
-
-            case PNProcessEvent.PROCESS_RUNNING:
-                figure.setFillPaint(Color.green);
-                break;
-
-            default:
-                System.out.println("Unknown state: " + state);
-            }
+                        default:
+                            System.out.println("Unknown state: " + state);
+                        }
+                    }
+                });
+            } 
+            catch (Exception e) {}
         }
 
         /** Respond to a process finshed event.
          */
         public void processFinished(PNProcessEvent event) {
             // nothing yet
+        }
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    //// ThreadRenderer
+
+    /**
+     * ThreadRenderer draws the nodes to represent running threads.
+     */
+    public class ThreadRenderer implements NodeRenderer {
+
+        /** The rectangle size
+         */
+        private double _size = 50;
+
+        /**
+         * Return the rendered visual representation of this node.
+         */
+        public Figure render (Node n) {
+            ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
+
+            boolean isEllipse = 
+                   actor instanceof PNImageSource
+                || actor instanceof PNImageSink
+                || actor instanceof ImageDisplay;
+
+            
+            BasicFigure f;
+            if (isEllipse) {
+                f = new BasicEllipse(0, 0, _size, _size);
+            } else {
+                f = new BasicRectangle(0, 0, _size, _size);
+            }
+            String label = actor.getName();
+            System.out.println("Actor " + actor + " has label " + label);
+            LabelWrapper w = new LabelWrapper(f, label);
+            w.setAnchor(SwingConstants.SOUTH);
+            w.getLabel().setAnchor(SwingConstants.NORTH);
+            return w;
         }
     }
 }
