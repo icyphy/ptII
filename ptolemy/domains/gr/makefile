@@ -33,7 +33,7 @@
 
 ME =		ptolemy/domains/gr
 
-DIRS =		kernel lib demo
+DIRS =		kernel lib
 
 # Root of Ptolemy II directory
 ROOT =		../../..
