@@ -1,6 +1,6 @@
 /* A Relation links ports, and therefore the entities that contain them.
 
- Copyright (c) 1997 The Regents of the University of California.
+ Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -41,7 +41,7 @@ Ports may link themselves to Relations, but the other direction is
 not supported.
 
 @author Neil Smyth, Edward A. Lee
-@version @(#)Relation.java	1.58  01/20/98
+@version $Id$
 @see Port
 @see Entity
 */

@@ -1,6 +1,6 @@
 /* An Entity is an aggregation of ports.
 
- Copyright (c) 1997 The Regents of the University of California.
+ Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -49,7 +49,7 @@ so using only the default workspace will have the effect of
 serializing all method calls.
 
 @author John S. Davis II, Edward A. Lee
-@version @(#)Entity.java	1.15 01/20/98
+@version $Id$
 @see Port
 @see Relation
 */
