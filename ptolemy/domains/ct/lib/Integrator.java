@@ -117,10 +117,10 @@ public class Integrator extends CTBaseIntegrator {
                 new StringToken("CONTINUOUS"));
 	_attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" "
-                + "width=\"60\" height=\"40\" "
+                + "width=\"30\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"
-                + "<polyline points=\"33,10 29,13 27,15 30,20 33,25 31,27 27,30\" "
-                + "style=\"fill:blue\"/>\n"
+                + "<image x=\"11\" y=\"0\" width=\"8\" height=\"40\""
+                + "xlink:href=\"ptolemy/domains/ct/lib/integral.gif\"/>\n"
                 + "</svg>\n");
     }
 }
