@@ -48,7 +48,7 @@ This actor produces a signal that is piecewise constant, with transitions
 between levels taken at times given by a Poisson process.
 It has various uses.  Its simplest use in the DE domain
 is to generate a sequence of events at intervals that are spaced
-randomly, accordingly to an exponential distribution.
+randomly, according to an exponential distribution.
 In CT, it can be used to generate a piecewise constant waveform
 with randomly spaced transition times.
 In both domains, the output value can cycle through a set of values.
@@ -69,28 +69,16 @@ In the initialize() method and in each invocation of the fire() method,
 the actor uses the fireAt() method of the director to request
 the next firing.  The first firing is always at time zero.
 It may in addition fire at any time in response to a trigger
-input.  On such firings, it simply repeats the most recent output.
+input.  On such firings, it simply repeats the most recent output
+(or generate a new output if the time is suitable.)
 Thus, the trigger, in effect, asks the actor what its current
-output value is. Some domains, such as CT, may also fire the actor at
-other times, without requiring a trigger input.  Again, the actor
+output value is. Some directors, such as those in CT, may also fire the 
+actor at other times, without requiring a trigger input.  Again, the actor
 simply repeats the previous output.
 Thus, the output can be viewed as samples of the piecewise
 constant waveform,
 where the time of each sample is the time of the firing that
 produced it.
-<p>
-Some domains, such as SDF, are untimed, and ignore the fireAt() calls.
-They fire the actor according to their own schedule.  The output will
-be a sample at the current time, whatever that happens to be set to.
-If time does not advance beyond
-zero (an SDF top-level will behave this way), then the output will
-be a constant, so the actor will not be very useful.
-The implementation of this actor, moreover, assumes that no more
-than one event occurs between samples.  This is not assured when the
-fireAt() method is ignored by the director.  Thus this actor should
-probably not be used in untimed domains.  For this reason, it
-implements the TimedActor interface, and most untimed domains will
-refuse to execute it.
 <p>
 The type of the output can be any token type that has a corresponding
 matrix token type.  The type is inferred from the type of the
@@ -231,8 +219,8 @@ public class Poisson extends TimedSource {
     }
 
     /** Schedule the first firing at time zero and initialize local variables.
-     *  @exception IllegalActionException If the fireAt() method is not
-     *   supported by the director.
+     *  @exception IllegalActionException If the fireAt() method of the
+     *   director throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -242,8 +230,7 @@ public class Poisson extends TimedSource {
         getDirector().fireAt(this, currentTime);
     }
 
-    /** Update the state of the actor to the correspond to that tentatively
-     *  computed in the most recent firing and schedule the next firing,
+    /** Update the state of the actor and schedule the next firing,
      *  if appropriate.
      *  @exception IllegalActionException If the director throws it when
      *   scheduling the next firing.

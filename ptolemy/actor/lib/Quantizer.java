@@ -47,15 +47,15 @@ The <i>levels</i> parameter contains a DoubleMatrixToken
 specifying the quantization levels. The matrix must be a row vector
 (having only one row), and the elements in this row should be in
 an increasing order, or an exception will be thrown.
-The default value of <i>levels</I> is [-1.0, 1.0].
+The default value of <i>levels</i> is [-1.0, 1.0].
 <P>
-Suppose u is the input, and levels = [a, b, c], where a &lt; b &lt; c,
-then the output of the actor will be:
-<P>
+Suppose <i>u</i> is the input, and <i>levels = [a, b, c]</i>, where
+<i>a &lt; b &lt; c</i>, then the output of the actor will be:
+<P><i>
 y = a, for u &lt;= (b+a)/2;<BR>
 y = b, for (b+a)/2 &lt; u &lt;= (c+b)/2;<BR>
 y = c, for u &gt; (c+b)/2;<BR>
-<p>
+</i><p>
 We do not require that the quantization intervals be equal,
 i.e. we allow that (c-b) != (b-a).
 
@@ -91,6 +91,7 @@ public class Quantizer extends Transformer {
     ////                     ports and parameters                  ////
 
     /** The quantization levels.
+     *  This parameter must contain a DoubleMatrixToken.
      *  The default value of this parameter is a row vector {-1.0, 1.0}.
      */
     public Parameter levels;
@@ -102,7 +103,7 @@ public class Quantizer extends Transformer {
      *  is increasing and has the right dimension.  Recompute the
      *  quantization thresholds.
      *  @exception IllegalActionException If the levels array is not
-     *   nondecreasing and nonnegative, or it is not a row vector.
+     *   increasing, or it is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -114,15 +115,14 @@ public class Quantizer extends Transformer {
                 throw new IllegalActionException(this,
                         "Value of levels is not a row vector.");
             }
-            double previous = -java.lang.Double.MAX_VALUE;
             int length = lvls[0].length;
-            for (int j = 0; j < length; j++) {
-                if (lvls[0][j] <= previous) {
+            for (int j = 1; j < length; j++) {
+                if (lvls[0][j] <= lvls[0][j-1]) {
                     throw new IllegalActionException(this,
                             "Value of levels is not increasing ");
                 }
-                previous = lvls[0][j];
             }
+
             // Compute the quantization thresholds.
             _thresholds = new double[length-1];
             for (int j = 0; j < length-1; j++) {
@@ -138,7 +138,7 @@ public class Quantizer extends Transformer {
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has
-     *   has an attribute that cannot be cloned.
+     *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Quantizer newobj = (Quantizer)super.clone(ws);

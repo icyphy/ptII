@@ -68,9 +68,9 @@ public class Maximum extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read at most one token from each input and send the one with the
-     *  largest value to the output.  If there is no input, then
-     *  produce no output.
+    /** Read at most one token from each input channel and send the one 
+     *  with the largest value to the output.  If there is no input,
+     *  then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
