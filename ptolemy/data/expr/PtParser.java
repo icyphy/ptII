@@ -1354,7 +1354,7 @@ String tidied, x;
             } else {
                 // System.out.println("Defining <" + token.image + ">");
                 _undefined.add(token.image);
-                jjtn006._var = new Variable();
+                jjtn006._var = null;
             }
 
         }
