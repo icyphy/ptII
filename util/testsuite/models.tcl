@@ -30,6 +30,28 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
+# Create a DE model with no actors in it and return it.
+# The optional argument sets the stop time for the execution.
+# It defaults to 1.0.
+#
+proc deModel {{stopTime 1.0}} {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    set manager [java::new ptolemy.actor.Manager]
+    $e0 setName top
+    $e0 setManager $manager
+    set director \
+            [java::new ptolemy.domains.de.kernel.DEDirector $e0 DEDirector]
+    $director setStopTime $stopTime
+    return $e0
+}
+
+# Get a parameter by name, properly cast to Parameter.
+#
+proc getParameter {namedobj paramname} {
+    set p [$namedobj getAttribute $paramname]
+    return [java::cast ptolemy.data.expr.Parameter $p]
+}
+
 # Create an SDF model with no actors in it and return it.
 # The optional argument sets the number of iterations to be executed.
 # It defaults to one.
@@ -42,16 +64,8 @@ proc sdfModel {{iters 1}} {
     $e0 setName top
     $e0 setManager $manager
 
-    set iterparam [java::cast ptolemy.data.expr.Parameter \
-            [$director getAttribute iterations]]
+    set iterparam [getParameter $director iterations]
     $iterparam setToken [java::new ptolemy.data.IntToken $iters];
 
     return $e0
-}
-
-# Get a parameter by name, properly cast to Parameter.
-#
-proc getParameter {namedobj paramname} {
-    set p [$namedobj getAttribute $paramname]
-    return [java::cast ptolemy.data.expr.Parameter $p]
 }
