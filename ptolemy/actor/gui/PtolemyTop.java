@@ -36,11 +36,18 @@ import ptolemy.gui.Top;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.StringAttribute;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Iterator;
 import javax.swing.JFileChooser;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyTop
@@ -66,6 +73,16 @@ public abstract class PtolemyTop extends Top {
         super();
     }
 
+    /** Construct an empty top-level frame managed by the specified
+     *  tableau. After constructing this, it is necessary
+     *  to call setVisible(true) to make the frame appear.
+     *  It may also be desirable to call centerOnScreen().
+     */
+    public PtolemyTop(Tableau tableau) {
+        super();
+        setTableau(tableau);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -86,6 +103,42 @@ public abstract class PtolemyTop extends Top {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Add a View menu if a Tableau was given in the constructor.
+     */
+    protected void _addMenus() {
+        super._addMenus();
+        if (_tableau != null) {
+            Effigy tableauContainer = (Effigy)_tableau.getContainer();
+            if (tableauContainer != null) {
+                _factoryContainer = tableauContainer.getTableauFactory();
+                if (_factoryContainer != null) {
+                    // If setTableau() has been called on the effigy,
+                    // then there are multiple possible views of data
+                    // represented in this top-level window.
+                    // Thus, we create a View menu here.
+                    JMenu viewMenu = new JMenu("View");
+                    viewMenu.setMnemonic(KeyEvent.VK_V);
+                    _menubar.add(viewMenu);
+                    ViewMenuListener vml = new ViewMenuListener();
+                    Iterator factories =
+                            _factoryContainer.entityList(TableauFactory.class)
+                            .iterator();
+                    while (factories.hasNext()) {
+                        TableauFactory factory
+                                = (TableauFactory)factories.next();
+                        String name = factory.getName();
+                        JMenuItem item = new JMenuItem(name);
+                        // The "action command" is available to the listener.
+                        item.setActionCommand(name);
+                        item.setMnemonic(name.charAt(0));
+                        item.addActionListener(vml);
+                        viewMenu.add(item);
+                    }
+                }
+            }
+        }
+    }
+
     /** Read the specified URL.  This delegates to the ModelDirectory
      *  to ensure that the preferred tableau of the model is opened, and
      *  that a model is not opened more than once.
@@ -93,6 +146,10 @@ public abstract class PtolemyTop extends Top {
      *  @exception Exception If the URL cannot be read.
      */
     protected void _read(URL url) throws Exception {
+        if (_tableau == null) {
+            throw new Exception("No associated Tableau!"
+            + " Can't open a file.");
+        }
         // NOTE: Used to use for the first argument the following, but
         // it seems to not work for relative file references:
         // new URL("file", null, _directory.getAbsolutePath()
@@ -125,12 +182,12 @@ public abstract class PtolemyTop extends Top {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
 
-	    // update the name of the model proxy.
+	    // update the name of the model effigy.
             try {
 		String newKey = file.toURL().toExternalForm();
-		Effigy proxy = (Effigy)getTableau().getContainer();
+		Effigy effigy = (Effigy)getTableau().getContainer();
 	        StringAttribute id = 
-                       (StringAttribute)proxy.getAttribute("identifier");
+                       (StringAttribute)effigy.getAttribute("identifier");
 		id.setExpression(newKey);
 	    } catch (MalformedURLException ex) {
                 try {
@@ -157,6 +214,36 @@ public abstract class PtolemyTop extends Top {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The container of view factories, if one has been found.
+    private TableauFactory _factoryContainer = null;
+
     // The tableau that created this frame.
     private Tableau _tableau = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Listener for view menu commands. */
+    class ViewMenuListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            if (_factoryContainer != null) {
+                JMenuItem target = (JMenuItem)e.getSource();
+                String actionCommand = target.getActionCommand();
+                TableauFactory factory = (TableauFactory)
+                        _factoryContainer.getEntity(actionCommand);
+                if (factory != null) {
+                    Effigy tableauContainer = (Effigy)_tableau.getContainer();
+                    try {
+                        factory.createTableau(tableauContainer);
+                    } catch (Exception ex) {
+                        MessageHandler.error("Cannot create view", ex);
+                    }
+                }
+            }
+            // NOTE: The following should not be needed, but jdk1.3beta
+            // appears to have a bug in swing where repainting doesn't
+            // properly occur.
+            repaint();
+        }
+    }
 }

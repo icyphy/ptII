@@ -115,9 +115,8 @@ notation as a a factory
 */
 public class GraphTableau extends Tableau {
   
-    public GraphTableau(PtolemyEffigy container,
-			String name)
-	throws IllegalActionException, NameDuplicationException {
+    public GraphTableau(PtolemyEffigy container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
 	library = new StringAttribute(this, "library");
@@ -130,7 +129,7 @@ public class GraphTableau extends Tableau {
 	CompositeEntity entity = (CompositeEntity)model;
 	
 	System.out.println("entity = " + entity);
-	GraphFrame frame = new GraphFrame(entity);
+	GraphFrame frame = new GraphFrame(entity, this);
 	frame.setBackground(BACKGROUND_COLOR);
 	setFrame(frame);
 	frame.setTableau(this);
@@ -171,24 +170,30 @@ public class GraphTableau extends Tableau {
 	    super(container, name);
 	}
 
-	/** Create a tableau in the default workspace with no name for the 
-	 *  given Effigy.  The tableau will created with a new unique name
-	 *  in the given model proxy.  If this factory cannot create a tableau
-	 *  for the given proxy (perhaps because the proxy is not of the
-	 *  appropriate subclass) then return null.
-	 *  @param proxy The model proxy.
-	 *  @return A new RunView, if the proxy is a PtolemyEffigy, or null
-	 *  if the proxy is not a PtolemyEffigy, 
-	 *  or creating the tableau fails.
+	/** Create a graph tableau named "graphTableau" in the specified
+         *  effigy.  If such a tableau already exists, then show it instead.
+	 *  If the argument is not an instance of PtolemyEffigy, then
+         *  return null.
+	 *  @param effigy The model effigy.
+	 *  @return A new RunView, if the effigy is a PtolemyEffigy, or null
+	 *   if the effigy is not a PtolemyEffigy, 
+	 *   or creating the tableau fails.
+         *  @exception Exception If the factory should be able to create a
+         *   Tableau for the effigy, but something goes wrong.
 	 */
-	public Tableau createTableau(Effigy proxy) {
-	    try {
-		GraphTableau tableau = 
-		    new GraphTableau((PtolemyEffigy)proxy,
-				     proxy.uniqueName("tableau"));
-		return tableau;
-	    } catch (Exception ex) {
-		ex.printStackTrace();
+	public Tableau createTableau(Effigy effigy) throws Exception {
+	    if(effigy instanceof PtolemyEffigy) {
+                // First see whether the effigy already contains a GraphTableau.
+                GraphTableau previous =
+                        (GraphTableau)effigy.getEntity("graphTableau");
+                if (previous != null) {
+                    previous.show();
+                    return previous;
+                } else {
+                    return new GraphTableau((PtolemyEffigy)effigy,
+                           "graphTableau");
+                }
+	    } else {
 		return null;
 	    }
 	}

@@ -64,8 +64,7 @@ JSRCS = \
 	PtolemyDocument.java \
 	PtolemyGraphView.java \
 	PtolemyNotation.java \
-	PtolemyModule.java \
-	TreeTableau.java
+	PtolemyModule.java
 
 EXTRA_SRCS =	$(JSRCS)
 

@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (johnr@eecs.berkeley.edu)
-
 */
 
 package ptolemy.kernel;
@@ -198,41 +198,7 @@ public class ComponentEntity extends Entity {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if (container != null && _workspace != container.workspace()) {
-            throw new IllegalActionException(this, container,
-                    "Cannot set container because workspaces are different.");
-        }
-        try {
-            _workspace.getWriteAccess();
-            // NOTE: The following code is quite tricky.  It is very careful
-            // to leave a consistent state even in the face of unexpected
-            // exceptions.  Be very careful if modifying it.
-            CompositeEntity prevcontainer = (CompositeEntity)getContainer();
-            if (prevcontainer == container) return;
-
-            // Do this first, because it may throw an exception, and we have
-            // not yet changed any state.
-            if (container != null) {
-                container._addEntity(this);
-                if (prevcontainer == null) {
-                    _workspace.remove(this);
-                }
-            }
-            _container = container;
-            if (prevcontainer != null) {
-                // This is safe now because it does not throw an exception.
-                prevcontainer._removeEntity(this);
-            }
-            if (container == null) {
-                Enumeration ports = getPorts();
-                while (ports.hasMoreElements()) {
-                    Port port = (Port)ports.nextElement();
-                    port.unlinkAll();
-                }
-            }
-        } finally {
-            _workspace.doneWriting();
-        }
+        _setContainer(container);
     }
 
     /** Set the name of the ComponentEntity. If there is already
@@ -287,6 +253,56 @@ public class ComponentEntity extends Entity {
                     "Incompatible port class for this entity.");
         }
         super._addPort(port);
+    }
+
+    /** Set the container.  This method is provided so that derived
+     *  classes can bypass type checks. You should normally not
+     *  call this method directly, but instead call the public method
+     *  setContainer().
+     *  @param container The container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace.
+     *  @exception NameDuplicationException If the name of this entity
+     *   collides with a name already in the container.
+     */
+    protected void _setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        if (container != null && _workspace != container.workspace()) {
+            throw new IllegalActionException(this, container,
+                    "Cannot set container because workspaces are different.");
+        }
+        try {
+            _workspace.getWriteAccess();
+            // NOTE: The following code is quite tricky.  It is very careful
+            // to leave a consistent state even in the face of unexpected
+            // exceptions.  Be very careful if modifying it.
+            CompositeEntity prevcontainer = (CompositeEntity)getContainer();
+            if (prevcontainer == container) return;
+
+            // Do this first, because it may throw an exception, and we have
+            // not yet changed any state.
+            if (container != null) {
+                container._addEntity(this);
+                if (prevcontainer == null) {
+                    _workspace.remove(this);
+                }
+            }
+            _container = container;
+            if (prevcontainer != null) {
+                // This is safe now because it does not throw an exception.
+                prevcontainer._removeEntity(this);
+            }
+            if (container == null) {
+                Enumeration ports = getPorts();
+                while (ports.hasMoreElements()) {
+                    Port port = (Port)ports.nextElement();
+                    port.unlinkAll();
+                }
+            }
+        } finally {
+            _workspace.doneWriting();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

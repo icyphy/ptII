@@ -81,9 +81,13 @@ public class PtExecuteApplication extends MoMLApplication
      *  @param manager The manager calling this method.
      *  @param ex The exception being reported.
      */
-    public void executionError(Manager manager, Exception ex) {
-        _runningCount--;
-        if (_runningCount == 0) {
+    public synchronized void executionError(Manager manager, Exception ex) {
+// FIXME
+System.out.println("*************** before adjustment: " + _activeCount + " " + this);
+        _activeCount--;
+// FIXME
+System.out.println("*************** error: " + _activeCount + " " + this);
+        if (_activeCount == 0) {
             notifyAll();
         }
     }
@@ -94,8 +98,12 @@ public class PtExecuteApplication extends MoMLApplication
      *  @param manager The manager calling this method.
      */
     public synchronized void executionFinished(Manager manager) {
-        _runningCount--;
-        if (_runningCount == 0) {
+// FIXME
+System.out.println("*************** before adjustment: " + _activeCount + " " + this);
+        _activeCount--;
+// FIXME
+System.out.println("*************** finished: " + _activeCount + " " + this);
+        if (_activeCount == 0) {
             notifyAll();
         }
     }
@@ -150,7 +158,12 @@ public class PtExecuteApplication extends MoMLApplication
     /** Wait for all executing runs to finish, then return.
      */
     public synchronized void waitForFinish() {
-        while (_runningCount > 0) {
+// FIXME
+System.out.println("*************** calling waiting: " + _activeCount + " " + this);
+        while (_activeCount > 0) {
+// FIXME
+System.out.println("*************** waiting: " + _activeCount + " " + this);
+
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -190,7 +203,7 @@ public class PtExecuteApplication extends MoMLApplication
      *  @exception Exception If an argument is not understood or triggers
      *   an error.
      */
-    protected void _parseArgs(String args[]) throws Exception {
+    protected synchronized void _parseArgs(String args[]) throws Exception {
         _commandTemplate = "ptexecute [ options ] file ...";
 
         super._parseArgs(args);
@@ -203,14 +216,17 @@ public class PtExecuteApplication extends MoMLApplication
                 // Create a manager if necessary.
                 Manager manager = actor.getManager();
                 if (manager == null) {
-                    actor.setManager(
-                            new Manager(actor.workspace(), "manager"));
-                    manager = actor.getManager();
+                    manager = new Manager(actor.workspace(), "manager");
+                    actor.setManager(manager);
                 }
                 manager.addExecutionListener(this);
+// FIXME
+System.out.println("*************** before adjustment: " + _activeCount + " " + this);
+                _activeCount++;
+// FIXME
+System.out.println("*************** " + _activeCount + " " + this);
                 // Run the model in a new thread.
                 manager.startRun();
-                _runningCount++;
             }
         }
     }
@@ -222,5 +238,5 @@ public class PtExecuteApplication extends MoMLApplication
     private Configuration _configuration;
 
     // The count of currently executing runs.
-    private int _runningCount = 0;
+    private int _activeCount = 0;
 }

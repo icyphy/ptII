@@ -138,18 +138,16 @@ public class Configuration extends CompositeEntity {
      *  @exception Exception if an error occurs while creating the tableau.
      */
     protected void _createPrimaryTableau(Effigy effigy) throws Exception {
-	// Create a tableau if there is a tableau factory.
-	TableauFactory factory = (TableauFactory)getEntity("factory");
-	if (factory != null) {
+        // Create a tableau if there is a tableau factory.
+        TableauFactory factory = (TableauFactory)getEntity("factory");
+        if (factory != null) {
             Tableau tableau = factory.createTableau(effigy);
-	    if (tableau == null) {
-                    throw new Exception("Unable to create a Tableau.");
-                }
-            tableau.setName(effigy.uniqueName("tableau"));
-	    tableau.setContainer(effigy);
-	    // The first tableau is always master.
-	    tableau.setMaster(true);            
-	}
+            if (tableau == null) {
+                throw new Exception("Unable to create a Tableau.");
+            }
+            // The first tableau is a master.
+            tableau.setMaster(true);
+        }
     }
 
     /** Remove the specified entity; if that entity is the model directory,

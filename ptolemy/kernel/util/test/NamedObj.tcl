@@ -134,8 +134,8 @@ test NamedObj-5.2 {Test getName(parent)} {
     catch {$a2 getName [java::null]} msg2
     list $msg1 $msg2 [$a2 getName $a1] [$a2 getName $a]
 } {{ptolemy.kernel.util.IllegalActionException: .A.A1.A2 and .A.A1.A2:
-Attempt to get the name with respect to an object that is not a parent.} {ptolemy.kernel.util.IllegalActionException: .A.A1.A2:
-Attempt to get the name with respect to a null parent.} A2 A1.A2}
+Cannot get the name with respect to an object that is not a parent.} {ptolemy.kernel.util.IllegalActionException: .A.A1.A2:
+Cannot get the name with respect to a null parent.} A2 A1.A2}
 
 ######################################################################
 ####

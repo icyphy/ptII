@@ -57,7 +57,7 @@ public class PtolemyEffigy extends Effigy {
 	super(workspace);
     }
 
-    /** Create a new proxy for the given model with the given name.
+    /** Create a new proxy in the given directory with the given name.
      *  @param container The directory that contains this proxy.
      *  @param name The name of this proxy.
      */

@@ -32,15 +32,15 @@ package ptolemy.vergil.ptolemy;
 
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
 import ptolemy.gui.MessageHandler;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -51,7 +51,9 @@ import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyTop;
 import ptolemy.actor.gui.RunTableau;
+import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.style.EditableChoiceStyle;
+import ptolemy.moml.EntityLibrary;
 import ptolemy.moml.Locatable;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLParser;
@@ -70,7 +72,8 @@ import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PtolemyListCellRenderer;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import ptolemy.vergil.toolbox.XMLIcon;
-import ptolemy.vergil.tree.LibraryTreeModel;
+import ptolemy.vergil.tree.EntityTreeModel;
+import ptolemy.vergil.tree.PTree;
 
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Site;
@@ -148,6 +151,8 @@ import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 
+import javax.swing.tree.TreePath;
+
 //////////////////////////////////////////////////////////////////////////
 //// GraphFrame
 /**
@@ -160,17 +165,21 @@ notation as a a factory
 @version $Id$
 */
 public class GraphFrame extends PtolemyTop
-    implements Printable, ClipboardOwner {
+        implements Printable, ClipboardOwner {
    
     public GraphFrame(CompositeEntity entity) {
+        this(entity, null);
+    }
+
+    public GraphFrame(CompositeEntity entity, Tableau tableau) {
+        super(tableau);
+
 	_model = entity;
 
-	getContentPane().setLayout(new BorderLayout());
-	
-	// create the graph editor, using the visual notation.
+	// Create the graph editor, using the visual notation.
 	// These two things control the view of a ptolemy model.
 	EditorGraphController controller = new EditorGraphController();
-	PtolemyGraphModel model = new PtolemyGraphModel(entity);
+	PtolemyGraphModel model = new PtolemyGraphModel(_model);
 	
 	GraphPane pane = new GraphPane(controller, model);
 	// FIXME	VisualNotation notation = _getVisualNotation(entity);
@@ -183,8 +192,8 @@ public class GraphFrame extends PtolemyTop
 	
 	ActionListener deletionListener = new DeletionListener();
 	_jgraph.registerKeyboardAction(deletionListener, "Delete",
-				       KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
-				       JComponent.WHEN_IN_FOCUSED_WINDOW);
+                  KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+                  JComponent.WHEN_IN_FOCUSED_WINDOW);
 	_jgraph.setRequestFocusEnabled(true);
 	_jgraph.addMouseListener(new FocusMouseListener());
 	_jgraph.setAlignmentX(1);
@@ -197,10 +206,12 @@ public class GraphFrame extends PtolemyTop
 	
 	// wrap the graph editor in a scroll pane.
 	_graphScrollPane = new JScrollPane(_jgraph);
-	_graphScrollPane.setVerticalScrollBarPolicy(_graphScrollPane.VERTICAL_SCROLLBAR_NEVER);
-	_graphScrollPane.setHorizontalScrollBarPolicy(_graphScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	_graphScrollPane.setVerticalScrollBarPolicy(
+                _graphScrollPane.VERTICAL_SCROLLBAR_NEVER);
+	_graphScrollPane.setHorizontalScrollBarPolicy(
+                _graphScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-	// create the panner.
+	// Create the panner.
 	_graphPanner = new JPanner();
 	_graphPanner.setPreferredSize(new Dimension(200, 150));
 	_graphPanner.setMaximumSize(new Dimension(200, 150));
@@ -208,18 +219,59 @@ public class GraphFrame extends PtolemyTop
 	_graphPanner.setBorder(BorderFactory.createEtchedBorder());
         _graphPanner.setViewport(_graphScrollPane.getViewport());
 
-	// create the palette.
-	// FIXME get the library from someplace reasonable.
-	//	try {
-	    // Get the url for the entity library.
-	//    URL entityLibURL = 
-	//	MoMLApplication.specToURL(((Settable)getTableau().getAttribute("library")).getExpression());
-	    // Create the library browser.
-	//    _library = LibraryTreeModel.createTree(entityLibURL);
-	//} catch (IOException ex) {
-	    _library = LibraryTreeModel.createTree(null);
-	    //}
+	// Create the library of actors.
+        // FIXME: How do we make this topLibrary persistent?
+        Workspace workspace = _model.workspace();
+        CompositeEntity topLibrary = new CompositeEntity(workspace);
+        try {
+            topLibrary.setName("topLibrary");
+        } catch (Exception ex) {}
+        if (false) {
+            // The model contains a library.
+            // FIXME
+        } else {
+            // The model does not contain a library.
+            // See if there is a default library in the configuration.
+            if (tableau != null) {
+                NamedObj toplevel = tableau.toplevel();
+                if (toplevel instanceof CompositeEntity) {
+                    // FIXME: Should we get this by name "library" instead?
+                    Iterator libraries = ((CompositeEntity)toplevel)
+                            .entityList(EntityLibrary.class).iterator();
+                    while (libraries.hasNext()) {
+                        EntityLibrary lib = (EntityLibrary)libraries.next();
+                        try {
+                            EntityLibrary clone =
+                                    (EntityLibrary)lib.clone(workspace);
+                            clone.setContainer(topLibrary);
+                        } catch (Exception ex) {
+                            throw new InternalErrorException(
+                            "Failed to add library to top library! " + ex);
+                        }
+                    }
+                }
+            }
+        }
+
+        // FIXME
+        // System.out.println("---------------------------------------");
+        // System.out.println(topLibrary.exportMoML());
+        // System.out.println("---------------------------------------");
+
+        EntityTreeModel treeModel = new EntityTreeModel(topLibrary);
+        _library = new PTree(treeModel);
+        _library.setRootVisible(false);
         _library.setBackground(BACKGROUND_COLOR);
+
+        // Expand the top-level libraries.
+        Object[] path = new Object[2];
+        path[0] = topLibrary;
+        Iterator libraries = topLibrary.entityList().iterator();
+        while(libraries.hasNext()) {
+            path[1] = libraries.next();
+            _library.expandPath(new TreePath(path));
+        }
+
         _libraryScrollPane = new JScrollPane(_library);
         _libraryScrollPane.setMinimumSize(new Dimension(200, 200));
         _libraryScrollPane.setPreferredSize(new Dimension(200, 200));
@@ -237,171 +289,80 @@ public class GraphFrame extends PtolemyTop
 	_splitPane.setRightComponent(_graphScrollPane);
 	getContentPane().add(_splitPane, BorderLayout.CENTER);
 
-	// Now add the actions.
+	_newPortAction = controller.getNewPortAction();
+	_newRelationAction = controller.getNewRelationAction();
+
 	// FIXME: hotkeys, shortcuts and move to a base class.
 	_toolbar = new JToolBar();
 	getContentPane().add(_toolbar, BorderLayout.NORTH);
 
-	_cutAction = new CutAction();
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _cutAction);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _cutAction);
-
-	_copyAction = new CopyAction();
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _copyAction);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _copyAction);
-	
-	_pasteAction = new PasteAction();
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _pasteAction);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _pasteAction);
-	
-	_layoutAction = new LayoutAction();
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _layoutAction);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _layoutAction);
-	
-	// FIXME what about other notations?  publish a list of actions
-	// like EditorKit?
-	_newPortAction = controller.getNewPortAction();
-	_editMenu.add(_newPortAction);
-	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newPortAction);
-
-	_newRelationAction = controller.getNewRelationAction();
-	_editMenu.add(_newRelationAction);
-	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newRelationAction);
-
-	// FIXME make a service.
-	_directorModel = new DefaultComboBoxModel();
-	try {
-	    // FIXME MoMLize
-	    Director dir;
-	    dir = new ptolemy.domains.sdf.kernel.SDFDirector();
-	    dir.setName("SDF");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.dt.kernel.DTDirector();
-	    dir.setName("DT");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.pn.kernel.PNDirector();
-	    dir.setName("PN");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.de.kernel.DEDirector();
-	    dir.setName("DE");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.csp.kernel.CSPDirector();
-	    dir.setName("CSP");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.dde.kernel.DDEDirector();
-	    dir.setName("DDE");
-	    _directorModel.addElement(dir);
-	    dir = new ptolemy.domains.fsm.kernel.FSMDirector();
-	    dir.setName("FSM");
-	    _directorModel.addElement(dir);
-
-	    dir = new ptolemy.domains.ct.kernel.CTMixedSignalDirector();
-	    dir.setName("CT");
-	    Parameter solver;
-	    solver = (Parameter)dir.getAttribute("ODESolver");
-	    EditableChoiceStyle style;
-	    style = new EditableChoiceStyle(solver, "style");
-	    new Parameter(style, "choice0", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver"));
-	    new Parameter(style, "choice1", new StringToken(
-                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
-	    new Parameter(style, "choice2", new StringToken(
-	        "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver"));
-
-	    solver = (Parameter)dir.getAttribute("breakpointODESolver");
-	    style = new EditableChoiceStyle(solver, "style");
-	    new Parameter(style, "choice0", new StringToken(
-                "ptolemy.domains.ct.kernel.solver.DerivativeResolver"));
-	    new Parameter(style, "choice1", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
-	    new Parameter(style, "choice2", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.ImpulseBESolver"));
-            _directorModel.addElement(dir);
-
-            dir = new ptolemy.domains.ct.kernel.CTEmbeddedDirector();	    
-	    dir.setName("CTEmbedded");
-	    //Parameter solver;
-	    solver = (Parameter)dir.getAttribute("ODESolver");
-	    //EditableChoiceStyle style;
-	    style = new EditableChoiceStyle(solver, "style");
-	    new Parameter(style, "choice0", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver"));
-	    new Parameter(style, "choice1", new StringToken(
-                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
-	    new Parameter(style, "choice2", new StringToken(
-	        "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver"));
-
-	    solver = (Parameter)dir.getAttribute("breakpointODESolver");
-	    style = new EditableChoiceStyle(solver, "style");
-	    new Parameter(style, "choice0", new StringToken(
-                "ptolemy.domains.ct.kernel.solver.DerivativeResolver"));
-	    new Parameter(style, "choice1", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
-	    new Parameter(style, "choice2", new StringToken(
-		"ptolemy.domains.ct.kernel.solver.ImpulseBESolver"));
-	    _directorModel.addElement(dir);
-
-	    dir = new ptolemy.domains.giotto.kernel.GiottoDirector();
-	    dir.setName("Giotto");
-	    _directorModel.addElement(dir);
-            dir = new ptolemy.domains.rtp.kernel.RTPDirector();
-	    dir.setName("RTP");
-	    _directorModel.addElement(dir);
-	}
-	catch (Exception ex) {
-	    MessageHandler.error("Director combobox creation failed", ex);
-	}
-	//FIXME find these names somehow.
-	_directorComboBox = new JComboBox(_directorModel);
-	_directorComboBox.setRenderer(new PtolemyListCellRenderer());
-	_directorComboBox.setMaximumSize(_directorComboBox.getMinimumSize());
-        _directorComboBox.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-		    // When a director is selected, update the 
-		    // director of the model in the current document.
-		    final Director director = (Director) e.getItem();
-		    PtolemyEffigy effigy = 
-			(PtolemyEffigy)getTableau().getContainer();
-		    if(effigy == null) return;
-		    CompositeEntity entity = 
-			(CompositeEntity)effigy.getModel();
-		    if(entity instanceof CompositeActor) {
-			final CompositeActor actor = (CompositeActor) entity;
-			final Director oldDirector = actor.getDirector();
-                        if((oldDirector == null) || (director.getClass()
-                                != oldDirector.getClass())) {
-                            actor.requestChange(new ChangeRequest(
-                                   this, "Set Director") {
-                                protected void _execute() throws Exception {
-                                    Director clone = (Director)
-                                            director.clone(actor.workspace());
-                                    actor.setDirector(clone);
-                                }
-                            });
-                        }					      
-		    }
-                }
-            }
-        });
-        _toolbar.add(_directorComboBox);
-
-	_executeSystemAction = new ExecuteSystemAction();
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _executeSystemAction);
-	diva.gui.GUIUtilities.addMenuItem(_executeMenu, _executeSystemAction);
-	diva.gui.GUIUtilities.addToolBarButton(_toolbar, 
-					       _executeSystemAction);
-	
 	_editIconAction = new EditIconAction();
 	_lookInsideAction = new LookInsideAction();
 	_getDocumentationAction = new GetDocumentationAction();
-	controller.getEntityController().setMenuFactory(new EntityContextMenuFactory(controller));
- 	controller.getEntityPortController().setMenuFactory(new PortContextMenuFactory(controller));
-  	controller.getPortController().setMenuFactory(new PortContextMenuFactory(controller));
-  	controller.getRelationController().setMenuFactory(new RelationContextMenuFactory(controller));
-  	controller.getLinkController().setMenuFactory(new RelationContextMenuFactory(controller));
+	controller.getEntityController().setMenuFactory(
+                new EntityContextMenuFactory(controller));
+ 	controller.getEntityPortController().setMenuFactory(
+                new PortContextMenuFactory(controller));
+  	controller.getPortController().setMenuFactory(
+                new PortContextMenuFactory(controller));
+  	controller.getRelationController().setMenuFactory(
+                new RelationContextMenuFactory(controller));
+  	controller.getLinkController().setMenuFactory(
+                new RelationContextMenuFactory(controller));
     }
 
+    /** Get the currently selected objects from this document, if any,
+     * and place them on the given clipboard. 
+     */
+    public void copy () {
+	Clipboard clipboard = 
+	    java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
+	GraphPane graphPane = _jgraph.getGraphPane();
+	GraphController controller =
+	    (GraphController)graphPane.getGraphController();
+	SelectionModel model = controller.getSelectionModel();
+	GraphModel graphModel = controller.getGraphModel();
+	Object selection[] = model.getSelectionAsArray();
+	HashSet objectSet = new HashSet();
+	for(int i = 0; i < selection.length; i++) {
+	    if(selection[i] instanceof Figure) {
+		Object userObject = ((Figure)selection[i]).getUserObject();
+		NamedObj object = (NamedObj)userObject;
+		NamedObj actual = 
+		    (NamedObj)graphModel.getSemanticObject(object);
+		if(objectSet.contains(actual)) continue;
+		objectSet.add(actual);
+	    }
+	}
+	
+	StringWriter buffer = new StringWriter();	   
+	try {
+	    buffer.write("<group>\n");
+	    Iterator elements = objectSet.iterator();
+	    while(elements.hasNext()) {
+		NamedObj element = (NamedObj) elements.next();
+		// first level to avoid obnoxiousness with 
+		// toplevel translations.
+		element.exportMoML(buffer, 1);
+	    }
+	    CompositeEntity container = (CompositeEntity)graphModel.getRoot();
+	    buffer.write(container.exportLinks(1, objectSet));
+	    buffer.write("</group>\n");
+	 
+	    // The code below does not use a PtolemyTransferable, 
+	    // to work around
+	    // a bug in the JDK that should be fixed as of jdk1.3.1.  The bug
+	    // is that cut and paste through the system clipboard to native
+	    // applications doesn't work unless you use string selection. 
+	    clipboard.setContents(new StringSelection(buffer.toString()), 
+				  this);
+	}
+	catch (Exception ex) {
+	    ex.printStackTrace();
+	}
+
+    }
+ 
     /** Remove the currently selected objects from this document, if any,
      * and place them on the given clipboard.  If the document does not
      * support such an operation, then do nothing.
@@ -499,66 +460,167 @@ public class GraphFrame extends PtolemyTop
     /** Create the menus that are used by this frame.
      */
     protected void _addMenus() {
+        // Enable the "New" item in the File menu.
+        _fileMenuItems[1].setEnabled(true);
+
        	_editMenu = new JMenu("Edit");
         _editMenu.setMnemonic(KeyEvent.VK_E);
 	_menubar.add(_editMenu);
-	_executeMenu = new JMenu("Execute");
-        _executeMenu.setMnemonic(KeyEvent.VK_X);
-	_menubar.add(_executeMenu);
-    }
 
-    /** Get the currently selected objects from this document, if any,
-     * and place them on the given clipboard. 
-     */
-    public void copy () {
-	Clipboard clipboard = 
-	    java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
-	GraphPane graphPane = _jgraph.getGraphPane();
-	GraphController controller =
-	    (GraphController)graphPane.getGraphController();
-	SelectionModel model = controller.getSelectionModel();
-	GraphModel graphModel = controller.getGraphModel();
-	Object selection[] = model.getSelectionAsArray();
-	HashSet objectSet = new HashSet();
-	for(int i = 0; i < selection.length; i++) {
-	    if(selection[i] instanceof Figure) {
-		Object userObject = ((Figure)selection[i]).getUserObject();
-		NamedObj object = (NamedObj)userObject;
-		NamedObj actual = 
-		    (NamedObj)graphModel.getSemanticObject(object);
-		if(objectSet.contains(actual)) continue;
-		objectSet.add(actual);
-	    }
-	}
+	// Now add the actions.
+	_cutAction = new CutAction();
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _cutAction);
+	diva.gui.GUIUtilities.addMenuItem(_editMenu, _cutAction);
+
+	_copyAction = new CopyAction();
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _copyAction);
+	diva.gui.GUIUtilities.addMenuItem(_editMenu, _copyAction);
 	
-	StringWriter buffer = new StringWriter();	   
-	try {
-	    buffer.write("<group>\n");
-	    Iterator elements = objectSet.iterator();
-	    while(elements.hasNext()) {
-		NamedObj element = (NamedObj) elements.next();
-		// first level to avoid obnoxiousness with 
-		// toplevel translations.
-		element.exportMoML(buffer, 1);
-	    }
-	    CompositeEntity container = (CompositeEntity)graphModel.getRoot();
-	    buffer.write(container.exportLinks(1, objectSet));
-	    buffer.write("</group>\n");
-	 
-	    // The code below does not use a PtolemyTransferable, 
-	    // to work around
-	    // a bug in the JDK that should be fixed as of jdk1.3.1.  The bug
-	    // is that cut and paste through the system clipboard to native
-	    // applications doesn't work unless you use string selection. 
-	    clipboard.setContents(new StringSelection(buffer.toString()), 
-				  this);
-	}
-	catch (Exception ex) {
-	    ex.printStackTrace();
-	}
+	_pasteAction = new PasteAction();
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _pasteAction);
+	diva.gui.GUIUtilities.addMenuItem(_editMenu, _pasteAction);
+	
+	_layoutAction = new LayoutAction();
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _layoutAction);
+	diva.gui.GUIUtilities.addMenuItem(_editMenu, _layoutAction);
+	
+	// FIXME what about other notations?  publish a list of actions
+	// like EditorKit?
+	_editMenu.add(_newPortAction);
+	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newPortAction);
 
+	_editMenu.add(_newRelationAction);
+	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newRelationAction);
+	// FIXME make a service.
+	_directorModel = new DefaultComboBoxModel();
+	try {
+	    // FIXME MoMLize
+	    Director dir;
+	    dir = new ptolemy.domains.sdf.kernel.SDFDirector();
+	    dir.setName("SDF");
+	    _directorModel.addElement(dir);
+	    dir = new ptolemy.domains.dt.kernel.DTDirector();
+	    dir.setName("DT");
+	    _directorModel.addElement(dir);
+	    dir = new ptolemy.domains.pn.kernel.PNDirector();
+	    dir.setName("PN");
+	    _directorModel.addElement(dir);
+	    dir = new ptolemy.domains.de.kernel.DEDirector();
+	    dir.setName("DE");
+	    _directorModel.addElement(dir);
+	    dir = new ptolemy.domains.csp.kernel.CSPDirector();
+	    dir.setName("CSP");
+	    _directorModel.addElement(dir);
+	    dir = new ptolemy.domains.dde.kernel.DDEDirector();
+	    dir.setName("DDE");
+	    _directorModel.addElement(dir);
+	    dir = new ptolemy.domains.fsm.kernel.FSMDirector();
+	    dir.setName("FSM");
+	    _directorModel.addElement(dir);
+
+	    dir = new ptolemy.domains.ct.kernel.CTMixedSignalDirector();
+	    dir.setName("CT");
+	    Parameter solver;
+	    solver = (Parameter)dir.getAttribute("ODESolver");
+	    EditableChoiceStyle style;
+	    style = new EditableChoiceStyle(solver, "style");
+	    new Parameter(style, "choice0", new StringToken(
+		"ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver"));
+	    new Parameter(style, "choice1", new StringToken(
+                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
+	    new Parameter(style, "choice2", new StringToken(
+	        "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver"));
+
+	    solver = (Parameter)dir.getAttribute("breakpointODESolver");
+	    style = new EditableChoiceStyle(solver, "style");
+	    new Parameter(style, "choice0", new StringToken(
+                "ptolemy.domains.ct.kernel.solver.DerivativeResolver"));
+	    new Parameter(style, "choice1", new StringToken(
+		"ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
+	    new Parameter(style, "choice2", new StringToken(
+		"ptolemy.domains.ct.kernel.solver.ImpulseBESolver"));
+            _directorModel.addElement(dir);
+
+            dir = new ptolemy.domains.ct.kernel.CTEmbeddedDirector();	    
+	    dir.setName("CTEmbedded");
+	    //Parameter solver;
+	    solver = (Parameter)dir.getAttribute("ODESolver");
+	    //EditableChoiceStyle style;
+	    style = new EditableChoiceStyle(solver, "style");
+	    new Parameter(style, "choice0", new StringToken(
+		"ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver"));
+	    new Parameter(style, "choice1", new StringToken(
+                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
+	    new Parameter(style, "choice2", new StringToken(
+	        "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver"));
+
+	    solver = (Parameter)dir.getAttribute("breakpointODESolver");
+	    style = new EditableChoiceStyle(solver, "style");
+	    new Parameter(style, "choice0", new StringToken(
+                "ptolemy.domains.ct.kernel.solver.DerivativeResolver"));
+	    new Parameter(style, "choice1", new StringToken(
+		"ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
+	    new Parameter(style, "choice2", new StringToken(
+		"ptolemy.domains.ct.kernel.solver.ImpulseBESolver"));
+	    _directorModel.addElement(dir);
+
+	    dir = new ptolemy.domains.giotto.kernel.GiottoDirector();
+	    dir.setName("Giotto");
+	    _directorModel.addElement(dir);
+            dir = new ptolemy.domains.rtp.kernel.RTPDirector();
+	    dir.setName("RTP");
+	    _directorModel.addElement(dir);
+	} catch (Exception ex) {
+	    MessageHandler.error("Director combobox creation failed", ex);
+	}
+	// FIXME find these names somehow.
+	_directorComboBox = new JComboBox(_directorModel);
+	_directorComboBox.setRenderer(new PtolemyListCellRenderer());
+	_directorComboBox.setMaximumSize(_directorComboBox.getMinimumSize());
+        _directorComboBox.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+		    // When a director is selected, update the 
+		    // director of the model in the current document.
+		    final Director director = (Director) e.getItem();
+		    PtolemyEffigy effigy = 
+			(PtolemyEffigy)getTableau().getContainer();
+		    if(effigy == null) return;
+		    CompositeEntity entity = 
+			(CompositeEntity)effigy.getModel();
+		    if(entity instanceof CompositeActor) {
+			final CompositeActor actor = (CompositeActor) entity;
+			final Director oldDirector = actor.getDirector();
+                        if((oldDirector == null) || (director.getClass()
+                                != oldDirector.getClass())) {
+                            actor.requestChange(new ChangeRequest(
+                                   this, "Set Director") {
+                                protected void _execute() throws Exception {
+                                    Director clone = (Director)
+                                            director.clone(actor.workspace());
+                                    actor.setDirector(clone);
+                                }
+                            });
+                        }					      
+		    }
+                }
+            }
+        });
+        _toolbar.add(_directorComboBox);
+
+	_executeSystemAction = new ExecuteSystemAction();
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _executeSystemAction);
+	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _executeSystemAction);
+
+        super._addMenus();
     }
- 
+
+    /** Open a new Ptolemy II model.
+     */
+    protected void _new() {
+        // FIXME: This should probably be handled in the base class.
+    }
+
     /** Write the model to the specified file.
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
@@ -569,9 +631,6 @@ public class GraphFrame extends PtolemyTop
         fout.close();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     public inner classes                  ////
-    
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
 
@@ -1021,7 +1080,6 @@ public class GraphFrame extends PtolemyTop
     private JSplitPane _splitPane;
 	
     private JMenu _editMenu;
-    private JMenu _executeMenu;
     private JToolBar _toolbar;
 
     private Action _getDocumentationAction;

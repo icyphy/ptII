@@ -1036,10 +1036,13 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
     /** @serial List of contained entities. */
-    private NamedList _containedEntities = new NamedList(this);
+    protected NamedList _containedEntities = new NamedList(this);
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** @serial List of contained ports. */
     private NamedList _containedRelations = new NamedList(this);

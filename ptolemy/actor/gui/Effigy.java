@@ -122,6 +122,15 @@ public class Effigy extends CompositeEntity {
         return newobj;
     }
 
+    /** Get a tableau factory that offers multiple views of this effigy, or
+     *  null if none has been specified.
+     *  This can be used by a contained tableau to set up a View menu.
+     *  @returns A tableau factory offering multiple views.
+     */
+    public TableauFactory getTableauFactory() {
+        return _factory;
+    }
+
     /** Override the base class so that tableaux contained by this object
      *  are removed before this effigy is removed from the ModelDirectory.
      *  This causes the frames associated with those tableaux to be 
@@ -149,6 +158,14 @@ public class Effigy extends CompositeEntity {
 		"The container can only be set to an " + 
 		"instance of ModelDirectory");
 	}
+    }
+
+    /** Specify a tableau factory that offers multiple views of this effigy.
+     *  This can be used by a contained tableau to set up a View menu.
+     *  @param factory A tableau factory offering multiple views.
+     */
+    public void setTableauFactory(TableauFactory factory) {
+        _factory = factory;
     }
 
     /** Make all tableaux associated with this model visible by raising
@@ -179,5 +196,11 @@ public class Effigy extends CompositeEntity {
 	    }
 	}
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    // A tableau factory affering multiple views.
+    private TableauFactory _factory = null;
 }
 

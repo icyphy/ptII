@@ -54,8 +54,8 @@ JSRCS = \
 	PTree.java \
 	PtolemyTreeCellRenderer.java \
 	TreeEditor.java \
-	TreeEditorPanel.java
-
+	TreeEditorPanel.java \
+	TreeTableau.java
 
 EXTRA_SRCS =	$(JSRCS)
 

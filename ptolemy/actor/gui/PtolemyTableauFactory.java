@@ -1,4 +1,4 @@
-/* An object that can create a tableau for a model.
+/* An object that can create a tableau for a Ptolemy II model.
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -43,21 +43,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
-//// TableauFactory
+//// PtolemyTableauFactory
 /**
-A configuration contains an instance of this class, and uses it to create
-a tableau for a model represented by an effigy.  This base class assumes
-that it contains other tableau factories. Its createTableau() method defers
-to each contained factory in order until one is capable of creating a
-tableau for the specified effigy.  Subclasses of this class will usually
-be inner classes of a Tableau, and will create the Tableau, or might
-themselves be aggregates of instances of TableauFactory.
-<p>
-When there are multiple distinct TableauFactory classes that are capable
-of providing views on the same effigy, then instances of these
-factories should be aggregated into a single factory contained herein.
-Those instances can be presented as alternative views of the data when
-any single view is opened.
+This is an intermediate container tableau factory that is designed to contain
+all tableau factories in a configuration that are capable of displaying a
+Ptolemy II model.  This class sets up the effigy with a set of available
+views.  Tableaux can use that to set up a View menu which offers alternative
+views besides the default view. Subclasses of this class will usually
+be inner classes of a Tableau, and will create the Tableau.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
@@ -65,7 +58,7 @@ any single view is opened.
 @see Effigy
 @see Tableau
 */
-public class TableauFactory extends CompositeEntity {
+public class PtolemyTableauFactory extends TableauFactory {
 
     /** Create a factory with the given name and container.
      *  @param container The container.
@@ -75,7 +68,7 @@ public class TableauFactory extends CompositeEntity {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public TableauFactory(CompositeEntity container, String name)
+    public PtolemyTableauFactory(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -85,22 +78,26 @@ public class TableauFactory extends CompositeEntity {
 
     /** Create a tableau for the specified effigy. The tableau will
      *  created with a new unique name with the specified effigy as its
-     *  container.  If this factory cannot create a tableau
-     *  for the given effigy (perhaps because the effigy is not of the
-     *  appropriate subclass), then return null.  This base class assumes
-     *  that it contains other tableau factories. This method defers
-     *  to each contained factory in order until one is capable of creating a
-     *  tableau for the specified effigy.  Subclasses of this class will
-     *  usually be inner classes of a Tableau, and will create the Tableau.
-     *  A subclass that actually creates a tableau is resonsible for setting
-     *  the container of the table to the specified effigy, and for naming
-     *  the tableau.
+     *  container.  If the effigy is not an instance of PtolemyEffigy,
+     *  then return null.  Otherwise, set up the list of alternative
+     *  views in the PtolemyEffigy and then delegate to the first
+     *  contained factory that can display the model.
      *  @param effigy The model effigy.
      *  @return A tableau for the effigy, or null if one cannot be created.
      *  @exception Exception If the factory should be able to create a
      *   Tableau for the effigy, but something goes wrong.
      */
     public Tableau createTableau(Effigy effigy) throws Exception {
+        if (!(effigy instanceof PtolemyEffigy)) return null;
+
+        // Indicate to the effigy that this factory contains effigies
+        // offering multiple views of the effigy data.
+        effigy.setTableauFactory(this);
+
+        // Delegate to the first contained effigy to open a view.
+        // As a precaution, we delegate until one creates a view,
+        // but by convention, all them should be capable of creating one,
+        // so the first one will succeed.
 	Tableau tableau = null;
 	Iterator factories = entityList(TableauFactory.class).iterator();
 	while(factories.hasNext() && tableau == null) {

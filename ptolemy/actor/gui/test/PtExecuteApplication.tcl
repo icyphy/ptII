@@ -49,9 +49,9 @@ test PtExecuteApplication-1.0 {test reading MoML file} {
 } {{}}
 
 test PtExecuteApplication-1.1 {check result of running the model} {
+    $app waitForFinish
     set models [listToObjects [$app models]]
     set result {}
-    $app waitForFinish
     foreach model $models {
         set modelc [java::cast ptolemy.actor.CompositeActor $model]
         set rec [java::cast ptolemy.actor.lib.Recorder \

@@ -75,6 +75,7 @@ JSRCS = \
 	PtolemyApplication.java \
 	PtolemyEffigy.java \
 	PtolemyQuery.java \
+	PtolemyTableauFactory.java \
 	PtolemyTop.java \
 	RunTableau.java \
 	TextEditor.java \

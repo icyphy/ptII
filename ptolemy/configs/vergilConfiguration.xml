@@ -2,21 +2,54 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="configuration" class="ptolemy.actor.gui.Configuration">
+
   <doc>Configuration to run but not edit Ptolemy II models</doc>
+
+  <!-- The directory of open models, each represented by an effigy. -->
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
-    <entity name="doc" class="ptolemy.actor.gui.Effigy">
-      <property name="identifier" value="ptolemy/configs/intro.htm"/>
-      <entity name="tableau" class="ptolemy.actor.gui.HTMLViewerTableau">
-        <property name="url" value="ptolemy/configs/intro.htm"/>
+  </entity>
+
+  <!-- The reader is responsible for reading XML files. -->
+  <entity name="reader" class="ptolemy.actor.gui.ModelReader">
+  </entity>
+
+  <!-- Factories for tableaux. -->
+  <entity name="factory" class="ptolemy.actor.gui.TableauFactory">
+    <!-- Factories for tableaux that offer views of Ptolemy II entities. -->
+    <entity name="factory1" class="ptolemy.actor.gui.PtolemyTableauFactory">
+      <!-- These will appear in the View menu of an entity tableau. -->
+      <entity name="Graph Editor" class="ptolemy.vergil.ptolemy.GraphTableau$Factory">
+      </entity>
+      <entity name="Run Window" class="ptolemy.actor.gui.RunTableau$Factory">
+      </entity>
+      <entity name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory">
       </entity>
     </entity>
-   </entity>  
-  <entity name="factory" class="ptolemy.actor.gui.TableauFactory">
-    <entity name="factory1" class="ptolemy.vergil.ptolemy.TreeTableau$Factory">
-    </entity>
-    <entity name="factory2" class="ptolemy.vergil.ptolemy.GraphTableau$Factory">
-    </entity>
+    <!-- FIXME: text editor, plot data tableau, HTML viewer, etc. -->
   </entity>
-  <entity name="reader" class="ptolemy.actor.gui.ModelReader">
+
+  <!-- Default entity library to appear in the library browser. -->
+  <entity name="library" class="ptolemy.moml.EntityLibrary">
+    <doc>default entity library</doc>
+    <configure>
+      <?moml
+        <group>
+          <input source="../actor/lib/sources.xml"/>
+          <input source="../actor/lib/sinks.xml"/>
+          <input source="../actor/lib/math.xml"/>
+          <input source="../actor/lib/flowcontrol.xml"/>
+          <input source="../actor/lib/conversions/conversions.xml"/>
+          <input source="../actor/lib/signalprocessing.xml"/>
+          <input source="../domains/sdf/lib/sdfentities.xml"/>
+          <input source="../domains/ct/lib/ctentities.xml"/>
+          <input source="../domains/de/lib/deentities.xml"/>
+<!--
+          <input source="../domains/fsm/lib/fsmentities.xml"/>
+          <input source="../apps/lego/legoentities.xml"/>
+          <input source="../apps/agilent/agilententities.xml"/>
+-->
+        </group>
+      ?>
+    </configure>
   </entity>
 </model>

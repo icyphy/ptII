@@ -39,6 +39,7 @@ import java.lang.reflect.Constructor;
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
+import javax.swing.UIManager;
 
 // Ptolemy imports
 import ptolemy.actor.Director;
@@ -105,6 +106,17 @@ public class MoMLApplication {
      */
     public MoMLApplication(String args[]) throws Exception {
 	super();
+
+        // The Java look & feel is pretty lame, so we use the native
+        // look and feel of the platform we are running on.
+        // NOTE: This creates the only dependence on Swing in this
+        // class.  Should this be left to derived classes?
+        try {
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            // Ignore exceptions, which only result in the wrong look and feel.
+        }
 
         _parseArgs(args);
     }

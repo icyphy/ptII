@@ -73,7 +73,17 @@ public class ModelFrame extends PtolemyTop implements ExecutionListener {
      *  @param model The model to put in this frame, or null if none.
      */
     public ModelFrame(CompositeActor model) {
-        super();
+        this(model, null);
+    }
+
+    /** Construct a frame to control the specified Ptolemy II model.
+     *  After constructing this, it is necessary
+     *  to call setVisible(true) to make the frame appear.
+     *  @param model The model to put in this frame, or null if none.
+     *  @param tableau The tableau responsible for this frame.
+     */
+    public ModelFrame(CompositeActor model, Tableau tableau) {
+        super(tableau);
         _model = model;
 
         // Create first with no model to avoid duplicating work when

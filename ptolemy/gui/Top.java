@@ -44,7 +44,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Event;
 import java.awt.Toolkit;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.print.PrinterJob;
 import java.io.*;
 import java.net.URL;
@@ -98,7 +102,8 @@ putting a new menu into an arbitrary position.  For this reason,
 derived classes should insert new menus into the menu bar only
 in the _addMenus() protected method.  This ensures that the File
 menu is always the rightmost menu, and the Help menu is always
-the leftmost menu.
+the leftmost menu.  The _addMenus() method is called when the window
+is first made visible.
 
 @author Edward A. Lee and Steve Neuendorffer
 @version $Id$
@@ -123,68 +128,6 @@ public abstract class Top extends JFrame {
 	});
 
         getContentPane().setLayout(new BorderLayout());
-
-        // Set up the menus.
-        _fileMenu.setMnemonic(KeyEvent.VK_F);
-        _helpMenu.setMnemonic(KeyEvent.VK_H);
-
-        // Open button = ctrl-o.
-        _fileMenuItems[0].setAccelerator(
-                KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
-
-        // New button = ctrl-n.
-        _fileMenuItems[1].setAccelerator(
-                KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK));
-        // New button disabled by default.
-        _fileMenuItems[1].setEnabled(false);
-
-        // Save button = ctrl-s.
-        _fileMenuItems[2].setAccelerator(
-                KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
-
-        // Print button = ctrl-p.
-        _fileMenuItems[4].setAccelerator(
-                KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
-        // Print button disabled by default.
-        _fileMenuItems[4].setEnabled(false);
-
-        // Close button = ctrl-w.
-        _fileMenuItems[5].setAccelerator(
-                KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
-
-        FileMenuListener fml = new FileMenuListener();
-        // Set the action command and listener for each menu item.
-        for(int i = 0; i < _fileMenuItems.length; i++) {
-            _fileMenuItems[i].setActionCommand(_fileMenuItems[i].getText());
-            _fileMenuItems[i].addActionListener(fml);
-            _fileMenu.add(_fileMenuItems[i]);
-        }
-        _menubar.add(_fileMenu);
-
-        HelpMenuListener sml = new HelpMenuListener();
-        // Set the action command and listener for each menu item.
-        for(int i = 0; i < _helpMenuItems.length; i++) {
-            _helpMenuItems[i].setActionCommand(
-                    _helpMenuItems[i].getText());
-            _helpMenuItems[i].addActionListener(sml);
-            _helpMenu.add(_helpMenuItems[i]);
-        }
-
-        // Unfortunately, at this time, Java provides no mechanism for
-        // derived classes to insert menus at arbitrary points in the
-        // menu bar.  Also, the menubar ignores the alignment property
-        // of the JMenu.  By convention, however, we want the help menu to
-        // be the rightmost menu.  Thus, we use a strategy pattern here,
-        // and call a protected method that derived classes can use to
-        // add menus.
-        _addMenus();
-
-        _menubar.add(_helpMenu);
-
-        setJMenuBar(_menubar);
-
-        // Add a status bar.
-        getContentPane().add(_statusBar, BorderLayout.SOUTH);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -254,6 +197,84 @@ public abstract class Top extends JFrame {
      */
     public void setModified(boolean modified) {
         _modified = modified;
+    }
+
+    /** If the argument is true, then make the window visible; otherwise,
+     *  make it invisible.  This
+     *  overrides the base class to populate the menu bar if the argument
+     *  is true and they have not already been populated.  This
+     *  is done here rather than in the constructor so that derived
+     *  classes are assured that their constructors have been fully
+     *  executed when _addMenus() is called.
+     *  @param flag True to make the window visible.
+     */
+    public void setVisible(boolean flag) {
+        if (flag && !_menuPopulated) {
+            _menuPopulated = true;
+
+            // Set up the menus.
+            _fileMenu.setMnemonic(KeyEvent.VK_F);
+            _helpMenu.setMnemonic(KeyEvent.VK_H);
+            
+            // Open button = ctrl-o.
+            _fileMenuItems[0].setAccelerator(
+                    KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
+
+            // New button = ctrl-n.
+            _fileMenuItems[1].setAccelerator(
+                    KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK));
+            // New button disabled by default.
+            _fileMenuItems[1].setEnabled(false);
+
+            // Save button = ctrl-s.
+            _fileMenuItems[2].setAccelerator(
+                    KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
+
+            // Print button = ctrl-p.
+            _fileMenuItems[4].setAccelerator(
+                    KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
+            // Print button disabled by default.
+            _fileMenuItems[4].setEnabled(false);
+
+            // Close button = ctrl-w.
+            _fileMenuItems[5].setAccelerator(
+                    KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
+
+            FileMenuListener fml = new FileMenuListener();
+            // Set the action command and listener for each menu item.
+            for(int i = 0; i < _fileMenuItems.length; i++) {
+                _fileMenuItems[i].setActionCommand(_fileMenuItems[i].getText());
+                _fileMenuItems[i].addActionListener(fml);
+                _fileMenu.add(_fileMenuItems[i]);
+            }
+            _menubar.add(_fileMenu);
+
+            HelpMenuListener sml = new HelpMenuListener();
+            // Set the action command and listener for each menu item.
+            for(int i = 0; i < _helpMenuItems.length; i++) {
+                _helpMenuItems[i].setActionCommand(
+                        _helpMenuItems[i].getText());
+                _helpMenuItems[i].addActionListener(sml);
+                _helpMenu.add(_helpMenuItems[i]);
+            }
+
+            // Unfortunately, at this time, Java provides no mechanism for
+            // derived classes to insert menus at arbitrary points in the
+            // menu bar.  Also, the menubar ignores the alignment property
+            // of the JMenu.  By convention, however, we want the help menu to
+            // be the rightmost menu.  Thus, we use a strategy pattern here,
+            // and call a protected method that derived classes can use to
+            // add menus.
+            _addMenus();
+
+            _menubar.add(_helpMenu);
+            
+            setJMenuBar(_menubar);
+            
+            // Add a status bar.
+            getContentPane().add(_statusBar, BorderLayout.SOUTH);
+        }
+        super.setVisible(flag);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -369,7 +390,10 @@ public abstract class Top extends JFrame {
 
     /** Open a new window or model.  In this base class, this does
      *  nothing, and the corresponding menu item is disabled.
-     *  To enable it, FIXME: instructions.
+     *  To enable it, put the following in the _addMenus() method:
+     *  <pre>
+     *      _fileMenuItems[1].setEnabled(true);
+     *  </pre>
      */
     protected void _new() {
     }
@@ -483,6 +507,9 @@ public abstract class Top extends JFrame {
 
     // Indicator that the data represented in the window has been modified.
     private boolean _modified = false;
+
+    // Indicator that the menu has been populated.
+    private boolean _menuPopulated = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

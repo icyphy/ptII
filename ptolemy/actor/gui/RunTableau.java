@@ -83,10 +83,9 @@ public class RunTableau extends Tableau {
 	    manager = actor.getManager();
         }
 
-	ModelFrame frame = new RunFrame(actor);
+	ModelFrame frame = new RunFrame(actor, this);
 	setFrame(frame);
 	frame.setBackground(BACKGROUND_COLOR);
-	frame.setTableau(this);
 	frame.setVisible(true);
 	frame.pack();
     }
@@ -102,14 +101,16 @@ public class RunTableau extends Tableau {
 	 *  After constructing this, it is necessary
 	 *  to call setVisible(true) to make the frame appear.
 	 *  @param model The model to put in this frame, or null if none.
+         *  @param tableau The tableau responsible for this.
 	 */
-	public RunFrame(CompositeActor model) {
-	    super(model);
+	public RunFrame(CompositeActor model, Tableau tableau) {
+	    super(model, tableau);
 	}
 
         /** Add a Debug menu.
         */
         protected void _addMenus() {
+            super._addMenus();
             JMenuItem[] debugMenuItems = {
                 new JMenuItem("Listen to Manager", KeyEvent.VK_M),
                 new JMenuItem("Listen to Director", KeyEvent.VK_D),
@@ -162,8 +163,8 @@ public class RunTableau extends Tableau {
                     }
                 } catch (KernelException ex) {
                     try {
-                        MessageHandler.warning("Failed to create debug listener: "
-                        + ex);
+                        MessageHandler.warning(
+                               "Failed to create debug listener: " + ex);
                     } catch (CancelException exception) {}
                 }
             }
@@ -194,20 +195,29 @@ public class RunTableau extends Tableau {
 	}
 
 	/** Create a tableau in the default workspace with no name for the 
-	 *  given effigy.  The tableau will created with a new unique name
-	 *  in the given effigy.  If this factory cannot create a tableau
-	 *  for the given effigy (perhaps because the effigy is not of the
-	 *  appropriate subclass) then return null.
+	 *  given effigy.  The tableau will created with the name "runTableau"
+	 *  in the given effigy.  If there is already a tableau with this
+         *  name, then thie method just calls show on that tableau and
+         *  returns it.  If this factory cannot create a tableau
+	 *  for the given effigy (if it is not an instance of
+         *  PtolemyEffigy) then return null.
 	 *  @param effigy The model effigy.
 	 *  @return A new RunView, if the effigy is a PtolemyEffigy, or null
 	 *   otherwise.
          *  @exception Exception If the factory should be able to create a
          *   Tableau for the effigy, but something goes wrong.
 	 */
-	public Tableau createTableau(Effigy proxy) throws Exception {
-	    if(proxy instanceof PtolemyEffigy) {
-                return new RunTableau((PtolemyEffigy)proxy,
-                       proxy.uniqueName("tableau"));
+	public Tableau createTableau(Effigy effigy) throws Exception {
+	    if(effigy instanceof PtolemyEffigy) {
+                // First see whether the effigy already contains a RunTableau.
+                RunTableau previous =
+                        (RunTableau)effigy.getEntity("runTableau");
+                if (previous != null) {
+                    previous.show();
+                    return previous;
+                } else {
+                    return new RunTableau((PtolemyEffigy)effigy, "runTableau");
+                }
 	    } else {
 		return null;
 	    }

@@ -38,7 +38,6 @@ import ptolemy.moml.MoMLParser;
 
 // Java imports
 import java.net.URL;
-import javax.swing.UIManager;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyApplication
@@ -130,15 +129,6 @@ public class PtolemyApplication extends MoMLApplication {
      */
     protected void _parseArgs(String args[]) throws Exception {
         _commandTemplate = "ptolemy [ options ] [file ...]";
-
-        // The Java look & feel is pretty lame, so we use the native
-        // look and feel of the platform we are running on.
-        try {
-            UIManager.setLookAndFeel(
-                    UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            // Ignore exceptions, which only result in the wrong look and feel.
-        }
 
         super._parseArgs(args);
     }

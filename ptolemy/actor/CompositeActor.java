@@ -286,8 +286,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public Director getExecutiveDirector() {
         try {
             _workspace.getReadAccess();
-            CompositeActor container = (CompositeActor)getContainer();
-            if (container != null) return container.getDirector();
+            Nameable container = getContainer();
+            if (container instanceof Actor) {
+                return ((Actor)container).getDirector();
+            }
             return null;
         } finally {
             _workspace.doneReading();
@@ -678,20 +680,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
                     "CompositeActor can only be contained by instances of " +
                     "CompositeActor.");
         }
-        // Invalidate the schedule and type resolution of the old director.
-        Director oldDirector = getDirector();
-        if (oldDirector != null) {
-            oldDirector.invalidateSchedule();
-            oldDirector.invalidateResolvedTypes();
-        }
-        // Invalidate the schedule and type resolution of the new director.
-        if (container != null) {
-            Director director = ((CompositeActor)container).getDirector();
-            if (director != null) {
-                director.invalidateSchedule();
-                director.invalidateResolvedTypes();
-            }
-        }
         super.setContainer(container);
     }
 
@@ -966,6 +954,34 @@ public class CompositeActor extends CompositeEntity implements Actor {
             _director.exportMoML(output, depth);
         }
         super._exportMoMLContents(output, depth);
+    }
+
+    /** Override the base class to invalidate the schedule and
+     *  resolved types of the director.
+     *  @param entity The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace.
+     *  @exception NameDuplicationException If the container already has
+     *   an entity with the name of this entity.
+     */
+    protected void _setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        // Invalidate the schedule and type resolution of the old director.
+        Director oldDirector = getDirector();
+        if (oldDirector != null) {
+            oldDirector.invalidateSchedule();
+            oldDirector.invalidateResolvedTypes();
+        }
+
+        super._setContainer(container);
+
+        Director director = getDirector();
+        // Invalidate the schedule and type resolution of the new director.
+        if (director != null) {
+            director.invalidateSchedule();
+            director.invalidateResolvedTypes();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

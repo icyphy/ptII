@@ -258,7 +258,6 @@ public class MoMLParser extends HandlerBase {
      *  parsing process. As a consequence, it is guaranteed that all
      *  dependencies between parameters used in the XML description
      *  are resolved.
-     *  @see TypedActorLibrary
      *  @exception CancelException If an error occurs parsing one of the
      *   parameter values, and the user clicks on "cancel" to cancel the
      *   parse.
@@ -603,7 +602,7 @@ public class MoMLParser extends HandlerBase {
                     // NOTE: Used to set _toplevel to newEntity, but
                     // this isn't quite right because the entity may have a
                     // composite name.
-                    _toplevel = (NamedObj)getTopLevel(newEntity);
+                    _toplevel = newEntity.toplevel();
                 }
                 newEntity.setMoMLElementName("class");
                 _current = newEntity;
@@ -736,7 +735,7 @@ public class MoMLParser extends HandlerBase {
                     // NOTE: We used to set _toplevel to newEntity, but
                     // this isn't quite right because the entity may have a
                     // composite name.
-                    _toplevel = (NamedObj)getTopLevel(newEntity);
+                    _toplevel = newEntity.toplevel();
                 }
                 _current = newEntity;
                 _namespace = DEFAULT_NAMESPACE;
@@ -927,7 +926,7 @@ public class MoMLParser extends HandlerBase {
                     // NOTE: We used to set _toplevel to newEntity, but
                     // this isn't quite right because the entity may have a
                     // composite name.
-                    _toplevel = (NamedObj)getTopLevel(newModel);
+                    _toplevel = newModel.toplevel();
                 }
                 _current = newModel;
                 _namespace = DEFAULT_NAMESPACE;
@@ -958,11 +957,17 @@ public class MoMLParser extends HandlerBase {
                     }
                 } else {
                     // No previously existing port with this name.
-                    _checkForNull(className, "No class for element \"port\"");
-                    Object[] arguments = new Object[2];
-                    arguments[0] = container;
-                    arguments[1] = portName;
-                    port = (Port)_createInstance(newClass, arguments);
+                    if (className == null) {
+                        // Classname is not given.  Invoke newPort() on the
+                        // container.
+                        port = container.newPort(portName);
+                    } else {
+                        // Classname is given.
+                        Object[] arguments = new Object[2];
+                        arguments[0] = container;
+                        arguments[1] = portName;
+                        port = (Port)_createInstance(newClass, arguments);
+                    }
 
                     // If the container is cloned from something, then
                     // add to it a MoML description of the port, so that
@@ -1109,14 +1114,18 @@ public class MoMLParser extends HandlerBase {
                 Relation relation = container.getRelation(relationName);
                 if (relation == null) {
                     // No previous relation with this name.
-                    _checkForNull(newClass,
-                            "No class for element \"relation\"");
-                    Object[] arguments = new Object[2];
-                    arguments[0] = (CompositeEntity)_current;
-                    arguments[1] = relationName;
+                    NamedObj newRelation = null;
                     _containers.push(_current);
                     _namespaces.push(_namespace);
-                    NamedObj newRelation = _createInstance(newClass, arguments);
+                    if (newClass == null) {
+                        // No classname. Use the newRelation() method.
+                        newRelation = container.newRelation(relationName);
+                    } else {
+                        Object[] arguments = new Object[2];
+                        arguments[0] = (CompositeEntity)_current;
+                        arguments[1] = relationName;
+                        newRelation = _createInstance(newClass, arguments);
+                    }
                     _namespace = DEFAULT_NAMESPACE;
 
                     // If the container is cloned from something, then
@@ -1225,8 +1234,8 @@ public class MoMLParser extends HandlerBase {
         } catch (InvocationTargetException ex) {
             // NOTE: While debugging, we print a stack trace here.
             // This is because XmlException loses it.
-            // System.err.println("******** original error:");
-            // ex.printStackTrace();
+            System.err.println("******** original error:");
+            ex.printStackTrace();
 
             // A constructor or method invoked via reflection has
             // triggered an exception.
@@ -1584,17 +1593,6 @@ public class MoMLParser extends HandlerBase {
         _checkForNull(port, "No port named \"" + portspec
                 + "\" in " + context.getFullName());
         return (ComponentPort)port;
-    }
-
-    // Return the top level of the specified object.
-    private Nameable getTopLevel(Nameable obj) {
-        Nameable candidate = obj;
-        Nameable container = obj.getContainer();
-        while (container != null) {
-            candidate = container;
-            container = candidate.getContainer();
-        }
-        return candidate;
     }
 
     /** Use the specified parser to parse the a file or URL,

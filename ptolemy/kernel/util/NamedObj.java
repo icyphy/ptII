@@ -767,7 +767,7 @@ public class NamedObj implements Nameable, Debuggable,
         return _name;
     }
 
-    /** Get the name of this object, relative to the given container. 
+    /** Get the name of this object relative to the specified container. 
      *  A recursive structure, where this object is directly or indirectly
      *  contained by itself, may result in a runtime exception of class
      *  InvalidStateException if it is detected.  Note that it is
@@ -780,11 +780,13 @@ public class NamedObj implements Nameable, Debuggable,
      *  This method is read-synchronized on the workspace.
      *  @param parent An object that deeply contains this object.
      *  @return A string of the form "name2...nameN".
+     *  @exception IllegalActionException If the specified parent does not
+     *   deeply contain this object.
      */
     public String getName(NamedObj parent) throws IllegalActionException {
 	if(parent == null) {
-	    throw new IllegalActionException(this, "Attempt to get the name" +
-					" with respect to a null parent.");
+	    throw new IllegalActionException(this,
+            "Cannot get the name with respect to a null parent.");
 	}
         try {
             _workspace.getReadAccess();
@@ -811,9 +813,8 @@ public class NamedObj implements Nameable, Debuggable,
             }
 	    if(container == null) {
 		throw new IllegalActionException(this, parent, 
-				        "Attempt to get the name" +
-					" with respect to an object that is" +
-					" not a parent.");
+                       "Cannot get the name" +
+                       " with respect to an object that is not a parent.");
 	    }
 	    return name;
         } finally {

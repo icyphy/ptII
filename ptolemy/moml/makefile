@@ -47,7 +47,8 @@ PTPACKAGE = 	moml
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS =	Icon.java \
+JSRCS =	EntityLibrary.java \
+	Icon.java \
 	Locatable.java \
 	Location.java \
 	Vertex.java \
