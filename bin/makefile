@@ -112,13 +112,13 @@ $(SHELL_FILES): ptinvoke
 		chmod a+x "$$file"; \
 	done
 
-$(BAT_FILES): ptinvoke
+makebat: ptinvoke
 	rm -f makebat
 	ln -s ptinvoke makebat
-	for file in $(SHELL_FILES); do \
-		rm -f "$$file.bat"; \
-		./makebat "$$file"; \
-	done
+
+$(BAT_FILES): makebat
+	rm -f "$@"
+	./makebat -q "`basename $@ .bat`"
 
 
 ptinvoke: ptinvoke.in ../config.status
