@@ -864,7 +864,7 @@ $(REMOTE2PTJACL_JAR):
 		cd tcl;	\
 		PTII=$(REMOTE2PTIIDIST) \
 		PATH=/usr/local/j2se/bin:$$PATH \
-		$(MAKE) -k install)
+		$(MAKE) -k sources all install)
 	ls -l $@
 	@echo "$@ `date`"
 
@@ -1117,7 +1117,7 @@ remote4build:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) sources all install)
+	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) fast install)
 
 
 # Run the deep tests, this is likely to take 6 hours.
@@ -1188,7 +1188,7 @@ remote5build:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE5PTIIDIST);	PTII=$(REMOTE5PTIIDIST) $(MAKE) sources fast all install)
+	(cd $(REMOTE5PTIIDIST);	PTII=$(REMOTE5PTIIDIST) $(MAKE) fast install)
 
 
 # Run the shallow tests, this is likely to take 3 hours.
