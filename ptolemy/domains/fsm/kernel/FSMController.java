@@ -501,7 +501,12 @@ public class FSMController extends CompositeEntity implements TypedActor {
         super.setContainer(container);
     }
 
-
+    /** Set the initial state for the FSM. This method must be
+     *  called exactly once to set the starting state.
+     *  @param state The initial state, an instance of FSMState.
+     *  @exception IllegalActionException thrown if this method
+     *  is called more than once.
+     */
     public void setInitialState(FSMState initialState)
             throws IllegalActionException {
         if (initialState != null && initialState.getContainer() != this) {
