@@ -262,8 +262,16 @@ troubleshootingVergil.htm: troubleshooting.htm
 whatsnew.htm: ptII$(PTVERSION).release.htm
 	awk -f whatsnew.awk ptII$(PTVERSION).release.htm > $@  
 
+# Convert demo/*/*.htm to demo/*/*.xml
+# Pull out the links to the domains/*/doc/body.htm
+# For example:
+#  <a href="../ptolemy/domains/tm/doc/body.htm" target="body">Timed Multitasking Domain</a>
+# becomes:
+#  Timed Multitasking Domain
+#
 whatsnewVergil.htm: whatsnew.htm
-	sed 's@\(demo/[^/]*/[^/]*\).htm@\1.xml@g' \
+	sed -e 's@\(demo/[^/]*/[^/]*\).htm@\1.xml@g' \
+	    -e 's@<a href="[^"]*/domains/[^/]*/doc/body.htm" target="[^"]*">\([^<]*\)</a>@\1@' \
 		< whatsnew.htm > whatsnewVergil.htm
 	-diff whatsnew.htm whatsnewVergil.htm
 
