@@ -1,4 +1,4 @@
-/* A event generator that responses to button clicks.
+/* An event generator that responses to button clicks.
 
  Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.

@@ -36,7 +36,7 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// CTZeroOrderHold
 /**
-An actor that convert event into continuous signal. This class act
+An actor that converts event into continuous signal. This class act
 as the zero order hold. It consume the token when the consumeCurrentEvent()
 is called. This value will be hold and emitted every time it is
 fired, until the next consumeCurrentEvent() is called. This actor has one
