@@ -9,6 +9,9 @@
   <entity name="effigyFactory" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
     <doc name="description">Block Diagram Model</doc>
   </entity>
+  <entity name="FSMEffigyFactory" class="ptolemy.vergil.ptolemy.fsm.FSMEffigyFactory">
+    <doc name="description">FSM Diagram Model</doc>
+  </entity>
 
   <!-- The directory of open models, each represented by an effigy. -->
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
@@ -20,6 +23,8 @@
 
   <!-- Factories for tableaux. -->
   <entity name="factory" class="ptolemy.actor.gui.TableauFactory">
+    <entity name="FSM Editor" class="ptolemy.vergil.ptolemy.fsm.FSMGraphTableau$Factory">
+    </entity>
     <!-- Factories for tableaux that offer views of Ptolemy II entities. -->
     <entity name="factory1" class="ptolemy.actor.gui.PtolemyTableauFactory">
       <!-- These will appear in the View menu of an entity tableau. -->
