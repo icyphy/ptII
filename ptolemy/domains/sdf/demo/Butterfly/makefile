@@ -78,7 +78,7 @@ demo_applet: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) appletviewer Butterfly.htm
 
 demo_application: $(PTCLASSJAR)
-	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.sdf.demo.Butterfly.ButterflyApplication
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" ptolemy.domains.sdf.demo.Butterfly.ButterflyApplication
 
 depend:
 	@echo "no dependencies in this directory"

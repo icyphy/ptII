@@ -30,33 +30,27 @@
 
 package ptolemy.domains.sdf.demo.Butterfly;
 
+import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.data.IntToken;
+import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
+
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import ptolemy.actor.lib.conversions.*;
-import ptolemy.actor.gui.*;
-import ptolemy.actor.util.*;
-import ptolemy.domains.sdf.gui.*;
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.domains.sdf.lib.*;
-
-import ptolemy.plot.*;
-
 //////////////////////////////////////////////////////////////////////////
 //// ButterflyApplication
 /**
- Standalone Butterfly Application, useful for profiling
+Standalone Butterfly Application, useful for profiling.
 
 @author Christopher Hylands
-@version : ptmkmodel,v 1.7 1999/07/16 01:17:49 cxh Exp ButterflyApplet.java.java,v 1.1 1999/05/06 20:14:28 cxh Exp $
+@version $Id$
 */
 public class ButterflyApplication extends JFrame {
 
@@ -78,24 +72,25 @@ public class ButterflyApplication extends JFrame {
             }
         });
 
-        Workspace w = new Workspace("w");
-        TypedCompositeActor toplevel = new TypedCompositeActor(w);
+        Workspace workspace = new Workspace("workspace");
+        TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
         toplevel.setName("toplevel");
         SDFDirector director = new SDFDirector(toplevel, "director");
-        Manager manager = new Manager(w, "manager");
+        Manager manager = new Manager(workspace, "manager");
         toplevel.setManager(manager);
 
         try {
-	    Butterfly.init(toplevel, getContentPane(),
-                    getContentPane().getSize());
+	    Butterfly butterfly = new Butterfly(toplevel, "butterfly",
+						getContentPane());
 	    director.iterations.setToken(new IntToken(1200));
+	    // Map to the screen.
+	    show();
 	    manager.run();
-        } catch (Exception ex) {
-            System.err.println("Error constructing model." + ex);
+        } catch (Exception exception) {
+            System.err.println("Error constructing model: " + exception);
         }
 
-        // Map to the screen.
-	show();
+
     }
 
     /** Create a new window with the Butterfly plot in it and map it

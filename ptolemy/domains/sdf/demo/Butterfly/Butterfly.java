@@ -30,121 +30,121 @@
 
 package ptolemy.domains.sdf.demo.Butterfly;
 
-import java.awt.event.*;
-import java.awt.Container;
-import java.awt.Dimension;
-
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.actor.*;
-import ptolemy.actor.gui.*;
-import ptolemy.actor.lib.*;
-import ptolemy.actor.lib.conversions.*;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedIORelation;
+import ptolemy.actor.lib.AddSubtract;
+import ptolemy.actor.lib.Expression;
+import ptolemy.actor.lib.MultiplyDivide;
+import ptolemy.actor.lib.Ramp;
+import ptolemy.actor.lib.Scale;
+import ptolemy.actor.lib.conversions.PolarToRectangular;
 import ptolemy.actor.lib.gui.XYPlotter;
-import ptolemy.actor.util.*;
-import ptolemy.domains.sdf.gui.*;
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.domains.sdf.lib.*;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
-import ptolemy.plot.*;
+import java.awt.Container;
 
 //////////////////////////////////////////////////////////////////////////
 //// Butterfly
 /**
- This class implements the Butterfly demo that is also present in Ptolemy
- Classic.
+This class implements the Butterfly demo that is also present in Ptolemy
+Classic.
+Most models are written using MoML.  This demo is a example of
+how to write a demo using Java.
 
 @author Christopher Hylands
-@version : ptmkmodel,v 1.7 1999/07/16 01:17:49 cxh Exp ButterflyApplet.java.java,v 1.1 1999/05/06 20:14:28 cxh Exp $
+@version $Id$
 */
-public class Butterfly {
+public class Butterfly extends TypedCompositeActor {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Initialize the demo
+    /** Create the Butterfly model
      */
-    public static void init(TypedCompositeActor toplevel, Container panel,
-            Dimension size)
-            throws Exception {
+    public Butterfly(CompositeEntity container, String name, Container panel)
+            throws IllegalActionException, NameDuplicationException {
+	super(container, name);
 
-	Scale scale1 = new Scale(toplevel,"scale1");
+	Scale scale1 = new Scale(this,"scale1");
 	scale1.factor.setToken(new DoubleToken(4.0));
-	Scale scale2 = new Scale(toplevel,"scale2");
+	Scale scale2 = new Scale(this,"scale2");
 	scale2.factor.setToken(new DoubleToken(1.0/12.0));
-	Scale scale3 = new Scale(toplevel,"scale3");
+	Scale scale3 = new Scale(this,"scale3");
 	scale3.factor.setToken(new DoubleToken(-2.0));
 
-	AddSubtract add1 = new AddSubtract(toplevel,"add1");
-	MultiplyDivide mpy1 = new MultiplyDivide(toplevel,"mpy1");
-	MultiplyDivide mpy2 = new MultiplyDivide(toplevel,"mpy2");
-	MultiplyDivide mpy3 = new MultiplyDivide(toplevel,"mpy3");
+	AddSubtract add1 = new AddSubtract(this,"add1");
+	MultiplyDivide multiplyDivide1 =
+	    new MultiplyDivide(this,"multiplyDivide1");
+	MultiplyDivide multiplyDivide2 =
+	    new MultiplyDivide(this,"multiplyDivide2");
+	MultiplyDivide multiplyDivide3 =
+	    new MultiplyDivide(this,"multiplyDivide3");
 
-	Ramp ramp = new Ramp(toplevel, "ramp");
+	Ramp ramp = new Ramp(this, "ramp");
 	ramp.step.setToken(new DoubleToken(Math.PI/100.0));
 
 	PolarToRectangular polarToRect1 =
-	    new PolarToRectangular(toplevel, "polarToRect1");
+	    new PolarToRectangular(this, "polarToRect1");
 
-	Expression sin1 = new Expression(toplevel, "sin1");
+	Expression sin1 = new Expression(this, "sin1");
 	TypedIOPort sin1Input = new TypedIOPort(sin1, "sin1Input",
                 true, false);
 	sin1.expression.setExpression("sin(sin1Input)");
 
-	Expression cos1 = new Expression(toplevel, "cos1");
+	Expression cos1 = new Expression(this, "cos1");
 	TypedIOPort cos1Input = new TypedIOPort(cos1, "cos1Input",
                 true, false);
 	cos1.expression.setExpression("cos(cos1Input))");
 
 	// Here, we collapse two actors into one expression actor.
-	Expression cos2 = new Expression(toplevel, "cos2");
+	Expression cos2 = new Expression(this, "cos2");
 	TypedIOPort cos2Input = new TypedIOPort(cos2, "cos2Input",
                 true, false);
 	cos2.expression.setExpression("exp(cos(cos2Input))");
 	cos2.output.setTypeEquals(BaseType.DOUBLE);
 
-	XYPlotter xyPlotter = new XYPlotter(toplevel, "xyPlotter");
+	XYPlotter xyPlotter = new XYPlotter(this, "xyPlotter");
 	xyPlotter.place(panel);
-
+	
         // Make the plot transparent so that the background shows through.
 	xyPlotter.plot.setOpaque(false);
         xyPlotter.plot.setGrid(false);
 	xyPlotter.plot.setXRange(-3, 4);
 	xyPlotter.plot.setYRange(-4, 4);
 
-	toplevel.connect(scale2.output, sin1Input);
-	toplevel.connect(scale1.output, cos1Input);
-	toplevel.connect(cos1.output, scale3.input);
+	this.connect(scale2.output, sin1Input);
+	this.connect(scale1.output, cos1Input);
+	this.connect(cos1.output, scale3.input);
 
-	TypedIORelation node4 = new TypedIORelation(toplevel, "node4");
+	TypedIORelation node4 = (TypedIORelation) newRelation("node4");
 
-	mpy1.output.link(node4);
-	mpy2.multiply.link(node4);
-	mpy2.multiply.link(node4);
-	toplevel.connect(mpy2.output, mpy3.multiply);
+	multiplyDivide1.output.link(node4);
+	multiplyDivide2.multiply.link(node4);
+	multiplyDivide2.multiply.link(node4);
+	this.connect(multiplyDivide2.output, multiplyDivide3.multiply);
 
-	TypedIORelation node6 = new TypedIORelation(toplevel, "node6");
+	TypedIORelation node6 = (TypedIORelation) newRelation("node6");
 	sin1.output.link(node6);
-	mpy1.multiply.link(node6);
-	mpy1.multiply.link(node6);
-	mpy3.multiply.link(node6);
+	multiplyDivide1.multiply.link(node6);
+	multiplyDivide1.multiply.link(node6);
+	multiplyDivide3.multiply.link(node6);
 
-	toplevel.connect(scale3.output, add1.plus);
-	toplevel.connect(mpy3.output, add1.plus);
-	toplevel.connect(cos2.output, add1.plus);
+	connect(scale3.output, add1.plus);
+	connect(multiplyDivide3.output, add1.plus);
+	connect(cos2.output, add1.plus);
 
-	toplevel.connect(add1.output, polarToRect1.magnitude);
+	connect(add1.output, polarToRect1.magnitude);
 
-	TypedIORelation node9 = new TypedIORelation(toplevel, "node9");
+	TypedIORelation node9 = (TypedIORelation) newRelation("node9");
 	ramp.output.link(node9);
 	scale1.input.link(node9);
 	scale2.input.link(node9);
 	polarToRect1.angle.link(node9);
 	cos2Input.link(node9);
 
-	toplevel.connect(polarToRect1.x, xyPlotter.inputX);
-	toplevel.connect(polarToRect1.y, xyPlotter.inputY);
+	connect(polarToRect1.x, xyPlotter.inputX);
+	connect(polarToRect1.y, xyPlotter.inputY);
     }
 }

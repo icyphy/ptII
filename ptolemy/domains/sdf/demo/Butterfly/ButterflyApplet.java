@@ -30,17 +30,16 @@
 
 package ptolemy.domains.sdf.demo.Butterfly;
 
-import ptolemy.domains.sdf.gui.*;
-import ptolemy.plot.*;
+import ptolemy.domains.sdf.gui.SDFApplet;
 
 import java.awt.BorderLayout;
 
 //////////////////////////////////////////////////////////////////////////
 //// ButterflyApplet
 /**
-
+Butterfly Applet.
 @author Christopher Hylands
-@version : ptmkmodel,v 1.7 1999/07/16 01:17:49 cxh Exp ButterflyApplet.java.java,v 1.1 1999/05/06 20:14:28 cxh Exp $
+@version : $Id$
 */
 public class ButterflyApplet extends SDFApplet {
 
@@ -53,7 +52,8 @@ public class ButterflyApplet extends SDFApplet {
         super.init();
         try {
 	    // Pass in the panel so that we can pass it to the plotter.
-	    Butterfly.init(_toplevel, getContentPane(), getSize());
+	    Butterfly butterfly = 
+		new Butterfly(_toplevel, "butterfly", getContentPane());
         } catch (Exception ex) {
             report("Error constructing model.", ex);
         }
