@@ -1,7 +1,7 @@
 #!/bin/sh
 # plot compile times
 
-ls -ltr /users/ptdesign/logs.sol2.5 | \
+ls -ltr /users/ptII/logs | \
 awk ' BEGIN { print "TitleText: Ptolemy II build times"
 	print "XTicks: Jun 151, Jul 181, Aug 212, Sep 243, Oct 273, Nov 304, Dec 334"
 	print "XLabel: build date"
@@ -9,7 +9,10 @@ awk ' BEGIN { print "TitleText: Ptolemy II build times"
 	}
 $NF ~ /java[0-9]*/ { 	split($7,f,":")
 	if (f[1] < 6) {
-		time=f[1]*60+f[2] - (4*60+30)
+		# crontab on maury for ptII starts the build at 12:15,
+		# so we subtract 15 minutes.  This might not be
+		# totally correct, but it gives us an idea
+		time=f[1]*60+f[2] - 15
 		date=substr($NF,length($NF)-3,4)
 		day=date%100
 		month=(date-day)/100
