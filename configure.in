@@ -401,6 +401,29 @@ else
 fi
 
 #--------------------------------------------------------------------
+#	Test for javax.sound
+#--------------------------------------------------------------------
+# PTJAVASOUND_DIR is set to javasound and used in 
+# $PTII/ptolemy/actor/lib/makefile if javasound was found
+PTJAVASOUND_DIR=
+
+AC_MSG_CHECKING([for javax.sound])
+# We need to run javac in the config directory so that javac from jdk1.1.6
+# under NT and cygwin works properly
+startdir=`pwd`
+cd $srcdir/config
+# Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+if $JAVAC javasoundTest.java ; then
+    AC_MSG_RESULT(ok)
+    PTJAVASOUND=javasound	
+else
+   AC_MSG_WARN(['$JAVAC javasoundTest.java' failed.  Perhaps you are running
+  under JDK1.2?  javasound is used in actor.lib, but you can probably
+  get away without it.])
+fi
+cd $startdir
+
+#--------------------------------------------------------------------
 #       Jini is connection technology from Sun, see http://www.sun.com/jini/
 #       See if there was a command-line option for where Jini is
 #       If not, look in $PTII/vendors/sun/jini/jini1_0_1
@@ -562,6 +585,10 @@ AC_SUBST(PTJACL_JFLAG)
 
 # Location of the JDK
 AC_SUBST(PTJAVA_DIR)
+
+# Set to javasound and used in 
+# $PTII/ptolemy/actor/lib/makefile if javasound was found
+AC_SUBST(PTJAVASOUND_DIR)
 
 # Set to jspaces and used in 
 # $PTII/ptolemy/actor/lib/makefile if jini was found
