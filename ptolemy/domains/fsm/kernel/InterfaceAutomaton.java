@@ -187,17 +187,11 @@ public class InterfaceAutomaton extends FSMActor {
         // compute the product automaton
         InterfaceAutomaton composition = _computeProduct(automaton);
 
-System.out.println(composition.exportMoML());
-
         // prune illegal states
         _pruneIllegalStates();
 
-System.out.println("after prune.");
-
         // remove states unreacheable from the initial state.
         composition._removeUnreacheableStates();
-
-System.out.println("after remove unreacheable.");
 
         // Create ports for the composition.  Internal transition parameters 
         // were created automatically when the transition labels were set.
@@ -338,7 +332,7 @@ System.out.println("after remove unreacheable.");
             Triple triple = new Triple(state, stateInThis, stateInArgument);
             frontier.put(name, triple);
         }
-	return state;
+        return state;
     }
 
     // Add a transition to between two states in an automaton
@@ -504,8 +498,7 @@ System.out.println("after remove unreacheable.");
     //       frontier = (this.initialState x automaton.initialSate, 
     //                   this.initialState, automaton.initialState)
     // iterate: pick (remove) a state p x q from frontier;
-    //          pick a step pTr from p, if r x q is not in product, add it to
-    //          both the product and the frontier. switch:
+    //          pick a step pTr from p
     //            (case 1) T is input for p:
     //              (1A) T is input of product: add T to product
     //              (1B) T is shared:
@@ -538,8 +531,8 @@ System.out.println("after remove unreacheable.");
             // init
             _illegalStates = new HashSet();
             InterfaceAutomaton product = new InterfaceAutomaton();
-	    product.setName(this.getName() + NAME_CONNECTOR
-	                    + automaton.getName());
+            product.setName(this.getName() + NAME_CONNECTOR
+                            + automaton.getName());
             HashMap frontier = new HashMap();
 
             // create initial state
@@ -576,27 +569,9 @@ System.out.println("after remove unreacheable.");
                             (InterfaceAutomatonTransition)transitions.next();
 
                     State destinationInThis = transition.destinationState();
-/*
-                    // if destination state is not in product, add it to both
-                    // the product and the frontier.
-                    String destinationName = destinationInThis.getName()
-                            + NAME_CONNECTOR
-                            + stateInArgument.getName();
-                    State destinationInProduct =
-                                    (State)product.getEntity(destinationName);
-                    if (destinationInProduct == null) {
-                        // not in product
-                        destinationInProduct = new State(product,
-                                                         destinationName);
-                        Triple destinationTriple = new Triple(
-                                destinationInProduct,
-                                destinationInThis, triple._stateInArgument);
-                        frontier.put(destinationName, destinationTriple);
-                    }
-*/
 
                     // get transitionLabel, transitionName and relation name
-		    // for later use
+                    // for later use
                     String transitionLabel = transition.getLabel();
                     // remove ending "?"
                     String transitionName = transitionLabel.substring(0,
@@ -611,8 +586,8 @@ System.out.println("after remove unreacheable.");
                         if (_inputNames.contains(transitionName)) {
                             // case 1A. Add transition to product as input
                             // transition
-			    State destinationInProduct = _addState(product,
-			        destinationInThis, stateInArgument, frontier);
+                            State destinationInProduct = _addState(product,
+                                destinationInThis, stateInArgument, frontier);
                             _addTransition(product,
                               this.getName() + NAME_CONNECTOR + relationName,
                               stateInProduct, destinationInProduct,
@@ -620,14 +595,14 @@ System.out.println("after remove unreacheable.");
                         } else {
                             // case 1B. transition is shared in product
                             String outName = transitionName + "!";
-			    State destinationInArgument = _getDestinationState(
-			        stateInArgument, outName);
+                            State destinationInArgument = _getDestinationState(
+                                stateInArgument, outName);
                             if (destinationInArgument != null) {
                                 // case 1Ba. q has T output. Add T to product
                                 // as internal transition
                                 State destinationInProduct = _addState(product,
-				    destinationInThis, destinationInArgument,
-				    frontier);
+                                    destinationInThis, destinationInArgument,
+                                    frontier);
                                 _addTransition(product,
                                   this.getName() + NAME_CONNECTOR
                                       + automaton.getName() + NAME_CONNECTOR
@@ -646,8 +621,8 @@ System.out.println("after remove unreacheable.");
                         if (_outputNames.contains(transitionName)) {
                             // case 2A. T is output of product. Add T to
                             // product as output transition
-			    State destinationInProduct = _addState(product,
-			        destinationInThis, stateInArgument, frontier);
+                            State destinationInProduct = _addState(product,
+                                destinationInThis, stateInArgument, frontier);
                             _addTransition(product,
                               this.getName() + NAME_CONNECTOR + relationName,
                               stateInProduct, destinationInProduct,
@@ -655,8 +630,8 @@ System.out.println("after remove unreacheable.");
                         } else {
                             // case 2B. transition is shared in product
                             String inName = transitionName + "?";
-			    State destinationInArgument = _getDestinationState(
-			        stateInArgument, inName);
+                            State destinationInArgument = _getDestinationState(
+                                stateInArgument, inName);
                             if (destinationInArgument != null) {
                                 // case 2Ba. q has T input. Need to add T
                                 // to product as internal transition. However,
@@ -673,8 +648,8 @@ System.out.println("after remove unreacheable.");
                     } else if (transitionType ==
                             InterfaceAutomatonTransition.INTERNAL_TRANSITION) {
                         // case 3. T is internal for p. Add T to product
-			State destinationInProduct = _addState(product,
-			        destinationInThis, stateInArgument, frontier);
+                        State destinationInProduct = _addState(product,
+                                destinationInThis, stateInArgument, frontier);
                         _addTransition(product,
                           this.getName() + NAME_CONNECTOR + relationName,
                           stateInProduct, destinationInProduct,
@@ -694,27 +669,9 @@ System.out.println("after remove unreacheable.");
                             (InterfaceAutomatonTransition)transitions.next();
 
                     State destinationInArgument = transition.destinationState();
-/*
-                    // if destination state is not in product, add it to both
-                    // the product and the frontier.
-                    String destinationName = stateInThis.getName()
-                            + NAME_CONNECTOR
-                            + destinationInArgument.getName();
-                    State destinationInProduct =
-                                    (State)product.getEntity(destinationName);
-                    if (destinationInProduct == null) {
-                        // not in product
-                        destinationInProduct = new State(product,
-                                                         destinationName);
-                        Triple destinationTriple = new Triple(
-                                destinationInProduct,
-                                stateInThis, destinationInArgument);
-                        frontier.put(destinationName, destinationTriple);
-                    }
-*/
 
                     // get transitionLabel, transitionName and relation name
-		    // for later use
+                    // for later use
                     String transitionLabel = transition.getLabel();
                     // remove ending "?"
                     String transitionName = transitionLabel.substring(0,
@@ -729,8 +686,8 @@ System.out.println("after remove unreacheable.");
                         if (_inputNames.contains(transitionName)) {
                             // case 1A. Add transition to product as input
                             // transition
-			    State destinationInProduct = _addState(product,
-			        stateInThis, destinationInArgument, frontier);
+                            State destinationInProduct = _addState(product,
+                                stateInThis, destinationInArgument, frontier);
                             _addTransition(product,
                               automaton.getName() + NAME_CONNECTOR
                                   + relationName,
@@ -739,18 +696,18 @@ System.out.println("after remove unreacheable.");
                         } else {
                             // case 1B. transition is shared in product
                             String outName = transitionName + "!";
-			    State destinationInThis = _getDestinationState(
-			        stateInThis, outName);
+                            State destinationInThis = _getDestinationState(
+                                stateInThis, outName);
                             if (destinationInThis != null) {
                                 // case 1Ba. p has T output. Add T to product
                                 // as internal transition
-				State destinationInProduct = _addState(product,
-				    destinationInThis, destinationInArgument,
-				    frontier);
+                                State destinationInProduct = _addState(product,
+                                    destinationInThis, destinationInArgument,
+                                    frontier);
                                 _addTransition(product,
-				  this.getName() + NAME_CONNECTOR
-				      + automaton.getName() + NAME_CONNECTOR
-				      + relationName,
+                                  this.getName() + NAME_CONNECTOR
+                                      + automaton.getName() + NAME_CONNECTOR
+                                      + relationName,
                                   stateInProduct, destinationInProduct,
                                   transitionName + ";");
                             } else {
@@ -765,18 +722,18 @@ System.out.println("after remove unreacheable.");
                         if (_outputNames.contains(transitionName)) {
                             // case 2A. T is output of product. Add T to
                             // product as output transition
-			    State destinationInProduct = _addState(product,
-			        stateInThis, destinationInArgument, frontier);
+                            State destinationInProduct = _addState(product,
+                                stateInThis, destinationInArgument, frontier);
                             _addTransition(product,
-			      automaton.getName() + NAME_CONNECTOR
-			          + relationName,
+                              automaton.getName() + NAME_CONNECTOR
+                                  + relationName,
                               stateInProduct, destinationInProduct,
                               transitionLabel);
                         } else {
                             // case 2B. transition is shared in product
                             String inName = transitionName + "?";
-			    State destinationInThis = _getDestinationState(
-			        stateInThis, inName);
+                            State destinationInThis = _getDestinationState(
+                                stateInThis, inName);
                             if (destinationInThis != null) {
                                 // case 2Ba. p has T input. Need to add T
                                 // to product as internal transition. However,
@@ -793,10 +750,10 @@ System.out.println("after remove unreacheable.");
                     } else if (transitionType ==
                             InterfaceAutomatonTransition.INTERNAL_TRANSITION) {
                         // case 3. T is internal for q. Add T to product
-			State destinationInProduct = _addState(product,
-			    stateInThis, destinationInArgument, frontier);
+                        State destinationInProduct = _addState(product,
+                            stateInThis, destinationInArgument, frontier);
                         _addTransition(product,
-			  automaton.getName() + NAME_CONNECTOR + relationName,
+                          automaton.getName() + NAME_CONNECTOR + relationName,
                           stateInProduct, destinationInProduct,
                           transitionLabel);
                     } else {
@@ -1061,8 +1018,21 @@ System.out.println("after remove unreacheable.");
 
         // remove all states not reacheable from initial state
         List states = entityList();
-        states.removeAll(reacheableStates);
+
+        // the method removeAll() is not supported by this List (it throws
+        // UnsupportedOperationException), so manually construct the set
+        // of unreacheable states.
+        // states.removeAll(reacheableStates);
+        Set unreacheableStates = new HashSet();
         Iterator iterator = states.iterator();
+        while (iterator.hasNext()) {
+            Object state = iterator.next();
+            if ( !reacheableStates.contains(state)) {
+                unreacheableStates.add(state);
+            }
+        }
+
+        iterator = unreacheableStates.iterator();
         while (iterator.hasNext()) {
             State state = (State)iterator.next();
             _removeStateAndTransitions(state);
