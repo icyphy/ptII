@@ -224,9 +224,9 @@ public class PSDFScheduler extends BaseSDFScheduler {
         psdfGraph.printEdgeRateExpressions();
         _debug("Invoking the P-APGAN algorithm\n");
         PSDFAPGANStrategy scheduler = new PSDFAPGANStrategy(psdfGraph);
-        ptolemy.graph.sched.Schedule schedule = scheduler.schedule();
+        ptolemy.graph.sched.Schedule graphSchedule = scheduler.schedule();
         _debug("Returned from P-APGAN; the schedule follows.\n");
-        _debug(schedule.toString() + "\n");
+        _debug(graphSchedule.toString() + "\n");
 
         SymbolicScheduleElement result =
             _expandAPGAN(psdfGraph, scheduler.getClusteredGraphRoot(),
@@ -246,8 +246,15 @@ public class PSDFScheduler extends BaseSDFScheduler {
                         + _bufferSizeMap.get(relation) + "\n");
             }
         }
-
-        return (Schedule)result;
+        System.out.println("result = " + result);
+        if(result instanceof Schedule) {
+            return (Schedule)result;
+        } else {
+            // Must be ScheduleElement.
+            Schedule schedule = new Schedule();
+            schedule.add((ScheduleElement)result);
+            return schedule;
+        }
     }
 
     // Evaluate the given parse tree in the scope of the the model
@@ -390,8 +397,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
     /** An actor firing with an iteration count that is determined by
      *  a symbolic expression.
      */
-    private class SymbolicFiring extends Firing implements
-                                                                                                SymbolicScheduleElement {
+    private class SymbolicFiring extends Firing 
+        implements SymbolicScheduleElement {
         /** Construct a firing with the given actor and the given
          *  expression.  The given actor
          *  is assumed to fire the number of times determined by
@@ -478,8 +485,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
 
     /** A schedule whose iteration count is given by an expression.
      */
-    private class SymbolicSchedule extends Schedule  implements
-                                                                                                          SymbolicScheduleElement {
+    private class SymbolicSchedule extends Schedule 
+        implements SymbolicScheduleElement {
         /** Construct a symbolic schedule with the given expression.
          *  This schedule is assumed to fire the number of times determined
          *  by evaluating the given expression.
