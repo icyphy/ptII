@@ -130,7 +130,8 @@ public class KeyStoreActor extends TypedAtomicActor {
         keyPassword = new PortParameter(this, "keyPassword");
         keyPassword.setTypeEquals(BaseType.STRING);
         keyPassword.setStringMode(true);
-        keyPassword.setExpression("this.is.not.secure,it.is.for.testing.only");
+        keyPassword.setExpression(
+                "this.is.not.secure,it.is.for.testing.only");
 
         // Add the possible keystore types.
         keyStoreType = new StringParameter(this, "keyStoreType");

@@ -142,7 +142,8 @@ public class KeyWriter extends KeyStoreActor {
                 output.broadcast(BooleanToken.TRUE);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to store keyStore or close '" + fileOrURL + "'");
+                        "Failed to store keyStore or close '"
+                        + fileOrURL + "'");
             }
         }
         return super.postfire();

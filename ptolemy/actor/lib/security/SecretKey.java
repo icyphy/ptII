@@ -196,6 +196,19 @@ public class SecretKey extends Source {
 
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The name of the algorithm to be used. */
+    protected String _algorithm;
+
+    /** The key size to be used when processing information. */
+    protected int _keySize;
+
+    /** The provider to be used for a provider specific implementation. */
+    protected String _provider;
+
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Update the secret key by calling KeyGenerator.getInstance()
@@ -224,15 +237,6 @@ public class SecretKey extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The name of the algorithm to be used. */
-    protected String _algorithm;
-
-    /** The key size to be used when processing information. */
-    protected int _keySize;
-
-    /** The provider to be used for a provider specific implementation. */
-    protected String _provider;
 
     /* The public key to be used for asymmetric encryption. */
     private javax.crypto.SecretKey _secretKey = null;
