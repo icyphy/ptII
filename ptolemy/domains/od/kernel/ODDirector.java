@@ -81,7 +81,6 @@ public class ODDirector extends ProcessDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        System.out.println("made it here!");
     }
     
     /** 
