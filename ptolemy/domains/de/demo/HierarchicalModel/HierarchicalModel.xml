@@ -4,13 +4,7 @@
 <entity name="HierarchicalModel" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
-    <property name="DEE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 55.0">
-        </property>
-    </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-4, -4, 1027, 711}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {278, 217, 1027, 720}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[812, 602]">
     </property>
@@ -24,6 +18,10 @@
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,1.0,1.0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 290.0">
+        </property>
+    </property>
+    <property name="DEE Director" class="ptolemy.domains.de.kernel.DEEDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 40}">
         </property>
     </property>
     <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
@@ -448,7 +446,7 @@ to another. Then delete this annotation.</text>
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {258, 206, 508, 355}, maximized = false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
