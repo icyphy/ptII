@@ -71,6 +71,14 @@ public class GiottoReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clear this receiver of any contained tokens.
+     *  FIXME.
+     *  Should rename and replace all the reset() with clear().
+     */
+    public void clear() {
+        reset();
+    }
+     
     /** Get the contained and available token, i.e., get the last
      *  token that has been put into the receiver before the last
      *  update.
