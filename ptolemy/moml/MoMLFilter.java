@@ -55,8 +55,20 @@ public interface MoMLFilter {
      *  @param attributeName The name of the attribute, ignored
      *  in this method.
      *  @param attributeValue The value of the attribute.
-     *  @return the filtered attributeValue.
+     *  @return the filtered attributeValue or null if we are to
+     *  skip the current attribute.
      */
     public String filterAttributeValue(NamedObj container,
             String attributeName, String attributeValue);
+
+    /** Given the elementName, perform any filter operations
+     *  that are appropriate for the MOMLParser.endElement() method.
+     *  @param container  The container for this attribute.
+     *  in this method.
+     *  @param elementName The element type name. 
+     *  @return the filtered element name, or null if 
+     *  MoMLParser.endElement() should immediately return.
+     */  
+    public String filterEndElement(NamedObj container, String elementName)
+    throws Exception;
 }

@@ -391,6 +391,23 @@ public class MoMLParser extends HandlerBase {
      *  @param elementName The element type name.
      */
     public void endElement(String elementName) throws Exception {
+
+        // Apply MoMLFilters here.
+        if (_filterList != null) {
+	    Iterator filters = _filterList.iterator();
+	    String filteredElementName = elementName;
+	    while (filters.hasNext()) {
+		MoMLFilter filter = (MoMLFilter)filters.next();
+		filteredElementName =
+		    filter.filterEndElement(_current, filteredElementName);
+	    }
+
+	    elementName = filteredElementName;
+	    if (elementName == null) {
+		return;
+	    }
+	}
+
         // FIXME: Instead of doing string comparisons, do a hash lookup.
         if (elementName.equals("configure")) {
             // Count configure tags so that they can nest.
@@ -1606,7 +1623,7 @@ public class MoMLParser extends HandlerBase {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         package freindly variables        ////
+    ////                         package friendly variables        ////
 
     // Indicator that the MoML currently being evaluated is the result
     // of propagating a change from a master to something that was cloned

@@ -45,6 +45,7 @@ if {[string compare test [info procs test]] == 1} then {
 test FilterOutGraphicalClasses-1.1 {filterAttributeValue} { 
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser addMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
+    $parser addMoMLFilter [java::new ptolemy.moml.FilterHideAnnotationNames]
     set toplevel [$parser parseFile "./FilterOutGraphicalClasses.xml"]
     set newMoML [$toplevel exportMoML]
     list $newMoML
@@ -56,9 +57,7 @@ test FilterOutGraphicalClasses-1.1 {filterAttributeValue} {
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
+    <property name="annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">A simple example that has an annotation
 and some actors with icons.
@@ -78,6 +77,8 @@ FilterOutGraphicalClasses.</text></svg></configure>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="190.0, 5.0">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -153,7 +154,6 @@ FilterOutGraphicalClasses.</text></svg></configure>
 </entity>
 }}
 
-
 test FilterOutGraphicalClasses-2.2 {Try running old models, first check that the makefile created the compat/ directory} { 
     if {! [file exists compat]} {
 	error "compat directory does not exist.  This could happen\
@@ -163,6 +163,9 @@ test FilterOutGraphicalClasses-2.2 {Try running old models, first check that the
     }
 } {1}
 
+if {[info procs jdkStackTrace] == 1} then {
+    source [file join $PTII util testsuite jdkTools.tcl]
+}
 # createAndExecute a file with a MoMLFilter
 proc createAndExecute {file} {
     global KNOWN_FAILED
@@ -217,7 +220,7 @@ proc createAndExecute {file} {
 
 # Find all the files in the compat directory
 
-#foreach file [list compat/test1.xml compat/FIR1.xml] {
+
 #foreach file [list compat/ComplexToCartesianAndBack.xml compat/testAudioReaderAudioPlayer.xml compat/test1.xml compat/FIR1.xml] {
 foreach file [lsort [glob compat/*.xml]] {
     puts "------------------ testing $file"

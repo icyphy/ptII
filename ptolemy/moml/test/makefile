@@ -118,14 +118,43 @@ compat:
 			compat/sdftest1.xml; \
 		cp $(OLDTREE)/ptolemy/domains/sdf/lib/vq/test/auto/test1.xml \
 			compat/vqtest1.xml; \
+		echo "Removing tests that failed in earlier releases"; \
+		rm compat/MaximumEntropy.xml \
+			compat/OutputActionsAttribute.xml \
+
+	fi
+
+# Directory that contains models from the demo directory 
+# to check for compatibility
+compatDemo:
+	@if [ ! -d $(OLDTREE) ]; then \
+		echo "$(OLDTREE) does not exist"; \
+		echo "skipping compatibility tests"; \
+	else \
+		echo "Generating compat/ from $(OLDTREE)"; \
+		(cd $(OLDTREE); \
+			find . -name "*.xml" -print | \
+			grep demo | \
+			awk '{print "$(OLDTREE)/" $$1}' > /tmp/oldxmls); \
+		mkdir compatDemo; \
+		echo "Copying old xmls over"; \
+		cp `cat /tmp/oldxmls` compatDemo; \
 	fi
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass compat $(KERNEL_TESTDEFS) alljtests.tcl
-	$(JTCLSH) alljtests.tcl 
+test_jsimple: $(EXTRA_SRCS) jclass compat compatDemo \
+	$(KERNEL_TESTDEFS) alljtests.tcl $(JTCLSH) alljtests.tcl 
 
+
+# Run vergil on each of the demos in compatDemo
+demo: compatDemo
+	set compatDemo/*.xml; \
+	for x do \
+		echo $$x;\
+		$(ROOT)/bin/vergil $$x; \
+	done
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

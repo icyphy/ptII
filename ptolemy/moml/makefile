@@ -52,6 +52,7 @@ JSRCS =	Documentation.java \
 	ErrorHandler.java \
 	FilterBackwardCompatibility.java \
 	FilterOutGraphicalClasses.java \
+	FilterHideAnnotationNames.java \
 	ImportAttribute.java \
 	LibraryAttribute.java \
 	Location.java \

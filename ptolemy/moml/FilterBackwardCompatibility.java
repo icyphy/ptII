@@ -214,6 +214,23 @@ public class FilterBackwardCompatibility implements MoMLFilter {
         return attributeValue;
     } 
 
+    /** Given the elementName, perform any filter operations
+     *  that are appropriate for the MOMLParser.endElement() method.
+     *  @param container  The container for this attribute.
+     *  in this method.
+     *  @param elementName The element type name. 
+     *  @return the filtered element name, or null if 
+     *  MoMLParser.endElement() should immediately return.
+     */  
+    public String filterEndElement(NamedObj container, String elementName)
+	throws Exception {
+	return elementName;
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     // FIXME: this should go away
     private void _debug(String printString) {
 	//System.out.println(printString);
