@@ -254,8 +254,7 @@ public class JNIUtilities {
         actor.removeAllPorts();
         actor.createPorts();
 
-        //Nommage de l'acteur en fonction de ses parameters
-
+        // Name of the actor and function
         String nativeFunction = _getNativeFunction(actor);
         String nativeLibrary = getNativeLibrary(actor);
 
@@ -434,7 +433,7 @@ public class JNIUtilities {
             + interNativeFunction
             + "******************\n"
             + "*****************************************************/\n\n"
-            + "//Declaration de la fonction existante\n"
+            + "//Declaration of the preexisting function\n"
             + "//extern \"C\" "
             + returnType
             + " "
@@ -477,7 +476,7 @@ public class JNIUtilities {
         }
 
         results.append("\n"
-                       + _indent1 + "// structure en sortie de la fonction C\n"
+                       + _indent1 + "// structure and  exit of the C function\n"
                        + _indent1 + "//target_location_struct *target_location = "
                        + "new target_location_struct;\n\n"
                        + _indent1 + "// appel de la librairie existante\n\n");
@@ -1398,7 +1397,7 @@ public class JNIUtilities {
     }
 
     /**
-     *  @return the signature of the interface fonction.
+     *  @return the signature of the interface function.
      */
     protected static String _signature(String typ) {
         StringBuffer returnValue = new StringBuffer();
@@ -1430,7 +1429,7 @@ public class JNIUtilities {
     }
 
     /**
-     *  @return the signature of the interface fonction.
+     *  @return the signature of the interface function.
      */
     protected static String _signatureSendResults(GenericJNIActor actor) {
         String returnValue = "(";
