@@ -349,6 +349,24 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
+    /** Return false if some actor returns false from its postfire method
+     *  or a stop is requested.
+     *  @return false if some actor returns false from its postfire method or
+     *  a stop is requested.
+     *  @exception IllegalActionException If thrown by any actor during its
+     *  postfire method.
+     */
+    public boolean postfire() throws IllegalActionException {
+        if (getExecutionPhase()
+                == CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE) {
+            super.updateContinuousStates();
+        } else if (getExecutionPhase()
+                == CTExecutionPhase.POSTFIRING_EVENT_GENERATORS_PHASE) {
+            super.postfireEventGenerators();
+        }
+        return super.postfire();
+    }
+
     /** Return the predicted next step size, which is the minimum
      *  of the prediction from all step size control actors.
      *  @return The predicted step size from this subsystem.
@@ -401,24 +419,6 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
                     + "time composite actor.");
         }
         super.preinitialize();
-    }
-
-    /** Return false if some actor returns false from its postfire method
-     *  or a stop is requested.
-     *  @return false if some actor returns false from its postfire method or
-     *  a stop is requested.
-     *  @exception IllegalActionException If thrown by any actor during its
-     *  postfire method.
-     */
-    public boolean postfire() throws IllegalActionException {
-        if (getExecutionPhase()
-                == CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE) {
-            super.updateContinuousStates();
-        } else if (getExecutionPhase()
-                == CTExecutionPhase.POSTFIRING_EVENT_GENERATORS_PHASE) {
-            super.postfireEventGenerators();
-        }
-        return super.postfire();
     }
 
     /** Return the refined step size if the current fire is not accurate.
