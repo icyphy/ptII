@@ -53,12 +53,12 @@ token is received on the <i>trigger</i> port, then no output is
 produced.  The inputs can be of any token type, and the output
 is constrained to be of a type at least that of the <i>input</i>. <p>
 
-An additional output <i>nextOut</i> has been added which allows the
-model to know what's next to come out.  This new output produces a
+An additional output port, <i>nextOut</i>, has been added which allows
+the model to know what's next to come out.  This new output produces a
 token whenever the queue has been empty and a new token is queued and
-whenever token is taken from the queue and at least one token remains.
-The token produced is the oldest token remaining in the queue.
-Otherwise, no output token is produced.  This output, also, is
+whenever a token is taken from the queue and at least one token
+remains.  Otherwise, no output token is produced.  The token produced
+is the oldest token remaining in the queue.  This output, also, is
 constrained to be at least that of <i>input</i> <p>
 
 @author Winthrop Williams (based closely on Queue by Steve Neuendorffer)
