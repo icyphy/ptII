@@ -34,13 +34,21 @@ import ptolemy.actor.lib.Source;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.ArrayType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// HadamardCode
 /**
-FIXME: document
+This actor produces a Hadamard codeword. The parameter <i>index</i> 
+specifies the code index, which is the row index in the Hadamard matrix. 
+The parameter <i>log2Length</i> is log base 2 of the codeword length, 
+which equals the dimension of the matrix.
+
+Note: it is required that <i>log2Length</i> is a strictly positive integer 
+smaller than 32. The <i>index</i> should be a non-negtive integer smaller 
+than the matrix dimension. Otherwise, an exception will be thrown. 
 
 @author Edward A. Lee and Rachel Zhou
 @version $Id$
@@ -83,7 +91,7 @@ public class HadamardCode extends Source {
     public Parameter index;
 
     /** Log base 2 of the length of the code.  This is an integer with
-     *  default 6.  It is required to be greater than 0.
+     *  default 5.  It is required to be greater than 0.
      */
     public Parameter log2Length;
 
@@ -176,7 +184,14 @@ public class HadamardCode extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // FIXME: Document
+    /**Calculate Hardmard row given by the Hadamard matrix dimension 
+     * and the row index. The method computes iteratively by degrading 
+     * the matrix dimension into half. The smallest Hadamard matrix is
+     * a 2*2 matrix, defined as [1,1;1,-1].   
+     * @param matrixDimension the Hadamard matrix dimension
+     * @param index the row index
+     * @return the desired hadamard row     
+     */
     private int[] _calculateRow(int matrixDimension, int index) {
         // NOTE: Don't need to check the arguments for validity
         // because this is a private method, and the usage pattern
@@ -215,11 +230,17 @@ public class HadamardCode extends Source {
         }
     }
 
-    // FIXME: Document these.
+    //index of the element in the hadamard row.
     private int _index;
+    
+    //the hadamard row computed from _calculateRow
     private int[] _row;
+    
+    //By definition, rows of the 2*2 Hadamard matrix 
     private static int[] _row0 = {1, 1};
     private static int[] _row1 = {1, -1};
+    
+    //A flag indicating that the private variable _row is invalid
     private transient boolean _rowValueInvalid = true;
 
     // Since this actor always sends one of two tokens, we statically

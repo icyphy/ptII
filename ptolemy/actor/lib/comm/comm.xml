@@ -10,8 +10,9 @@
 <entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder"/>
 <entity name="LMSAdaptive" class="ptolemy.domains.sdf.lib.LMSAdaptive"/>
 <entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine"/>
-
-      </group>
+<entity name="Hadamard2" class="ptolemy.actor.lib.comm.Hadamard2"/>
+<entity name="PNcode" class="ptolemy.actor.lib.comm.PNcode"/>
+     </group>
     ?>
   </configure>
 </entity>

@@ -49,8 +49,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	HadamardCode.java
-
+	HadamardCode.java \
+	Hadamard2.java \
+	PNcode.java
 OTHER_FILES_TO_BE_JARED = \
 	comm.xml
 
