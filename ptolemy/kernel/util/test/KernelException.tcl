@@ -99,4 +99,14 @@ test KernelException-7.4 {Create a KernelException with a named NamedObj \
     list [$pe getMessage]
 } {{.NamedObj 1 and .NamedObj 2: Detail Message}}
 
+######################################################################
+####
+#
+test KernelException-7.5 {Create a KernelException with a unnamed NamedObj \
+	and an unamed NamedObj and a null message} {
+    set n1 [java::new pt.kernel.util.NamedObj]
+    set n2 [java::new pt.kernel.util.NamedObj]
+    set pe [java::new pt.kernel.util.KernelException $n1 $n2 [java::null]]
+    list [$pe getMessage]
+} {{. and .: Detail Message}}
 
