@@ -62,10 +62,13 @@ public class Integrator extends CTBaseIntegrator {
 	if(icon == null) {
 	    icon = new NonpersistentProcessedString(this, "iconDescription");
 	}
-	icon.setInstruction("graphml");
-	icon.setString("<xmlgraphic>\n" + 
-	    "<rectangle coords=\"0 0 60 40\" fill=\"white\"/>\n" +
-	    "<line coords=\"33 10 29 13 27 15 30 20 33 25 31 27 27 30\"/>\n" +
-	    "</xmlgraphic>\n");
+        // FIXME: should be 'svg'
+	icon.setInstruction(null);
+	icon.setString("<svg>\n" +
+                "<rect x=\"0\" y=\"0\" width=\"60\" " +
+                "height=\"40\" style=\"fill:white\"/>\n" +
+                "<polyline points=\"33,10 29,13 27,15 30,20 33,25 31,27 27,30\" " +
+                "style=\"fill:blue\"/>\n" +
+                "</svg>\n");
     }
 }
