@@ -97,20 +97,20 @@ public class TrapezoidalRuleSolver extends ODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return 2 to indicate that an integrator under this solver needs
-     *  2 auxiliary variables.
-     *  @return 2.
-     */
-    public int getIntegratorAuxVariableCount() {
-        return 2;
-    }
-
     /** Return 0 to indicate that this solver needs no
      *  history information.
      *  @return 0.
      */
     public int getHistoryCapacityRequirement() {
         return 0;
+    }
+
+    /** Return 2 to indicate that an integrator under this solver needs
+     *  2 auxiliary variables.
+     *  @return 2.
+     */
+    public int getIntegratorAuxVariableCount() {
+        return 2;
     }
 
     /** The fire() method for integrators under this solver. It performs
@@ -210,8 +210,8 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  schedule from the scheduler and fire until the fixed point
      *  is reached.
      *
-     * @exception IllegalActionException Not thrown in this base
-     *  class. May be needed by the derived class.
+     * @exception IllegalActionException Not thrown in this base class
+     *  May be needed by the derived class.
      */
     public boolean resolveStates() throws IllegalActionException {
         _debug(getFullName() + ": in resolveState().");
