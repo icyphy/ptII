@@ -51,7 +51,7 @@ a custom conversion <i>unsignedConvert()</i> from byte to integer.
 Conversion to byte already gives the desired behavior of truncating
 the value, keeping the lowest 8 bits.  Thus, for example, the integers
 -1 and 1023 both truncate to the byte 255.  Throughout the code, casts
-(byte) to byte occurr.  These are necessary because Java converts to
+(byte) to byte occur.  These are necessary because Java converts to
 integer or higher by default when doing arithmetic.  Java does this
 even when the types of both operands are byte.
 
@@ -103,7 +103,7 @@ public class ByteToken extends ScalarToken {
      *  the byte as ranging from 0 through 255, its absolute value is
      *  equal to itself.  Although this method does not actually do
      *  anything, it is included to make the ByteToken interface
-     *  compatable with the interfaces of the other types.
+     *  compatible with the interfaces of the other types.
      *  @return An ByteToken.
      */
     public ScalarToken absolute() {
@@ -201,7 +201,7 @@ public class ByteToken extends ScalarToken {
             return token;
         }
 
-	// This is where conversion from a lower type (such as nybble)
+	// This is where conversion from a lower type (such as nibble)
         // would be carried out.  But byte is the bottom of this string
         // in the CPO so nothing is done here.  (However, when creating
         // this byte type, I had to also add a section here to the int
@@ -313,7 +313,7 @@ public class ByteToken extends ScalarToken {
     /** Test the value and units of this token and the argument token
      *  for equality.  Units need not match, this merely causes the
      *  test to return false.  Type resolution also occurs here, and
-     *  lossless conversion is performend prior to comparison.  The
+     *  lossless conversion is performed prior to comparison.  The
      *  returned type is boolean, regardless of the types compared.
      *  @param token The token with which to test equality.
      *  @return a boolean token that contains the value true if both
