@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II I/O actors.
+# Makefile for Ptolemy II I/O actors
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -31,7 +31,9 @@
 
 ME =            ptolemy/actor/lib/io
 
-DIRS =		
+# $PTII/configure looks for the Java Communications API and sets PTJSPACES_DIR
+# in $PTII/mk/ptII.mk if was found.  Otherwise, PTCOMM_DIR is empty.
+DIRS =		$(PTCOMM_DIR)	
 
 # Root of the Java directory
 ROOT =          ../../../..
