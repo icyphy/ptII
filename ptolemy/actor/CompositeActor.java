@@ -539,8 +539,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *
      *  @param director The Director responsible for execution.
      *  @exception IllegalActionException If the director is not in
-     *  the same workspace as this actor.  It may also be throw in derived
-     *  classed if the director is not compatible.
+     *  the same workspace as this actor. It may also be thrown in derived
+     *  classes if the director is not compatible.
      */
     public void setDirector(Director director) throws IllegalActionException {
         if (director != null && workspace() != director.workspace()) {
@@ -678,8 +678,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
                     " implement the Actor interface.");
         }
         super._addEntity(entity);
-        _director.invalidateSchedule();
-        _director.invalidateResolvedTypes();
+        if (_director != null) {
+            _director.invalidateSchedule();
+            _director.invalidateResolvedTypes();
+        }
     }
 
     /** Add a port to this actor. This overrides the base class to
