@@ -49,23 +49,28 @@ public class Port extends GenericPort {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Return the MultiPort which contains this Port. Return null if
-     *  this Port is not part of a MultiPort.
+    /** Connect this Port to a Relation.
      * @param relation The Relation to which this Port will be connected.
+     * @return Return true if the connection is successful. Return false
+     * if the connection is unsuccessful because this Port already is
+     * already connected to a non-null Relation.
      * @exception NullReferenceException Attempt to pass null object 
      * references as arguments.
      * @exception NameDuplicationException Attempt to store two instances of
      * the same class with identical names in the same container.
      */	
-    public void connectToRelation(Relation relation) 
+    public boolean connectToRelation(Relation relation) 
 	throws NullReferenceException, NameDuplicationException {
+	if( relation_ != null ) {
+	     return false;
+	}
 	relation_ = relation;
 	if( relation_ == null ) {
 	     throw new NullReferenceException( 
 	     "Null Relation passed to Port.connectToRelation()" );
 	}
 	relation_.connectPort( this );
-        return;
+        return true;
     }
 
     /** Disconnect this Port from its Relation.
@@ -77,6 +82,7 @@ public class Port extends GenericPort {
 	     return null;
 	}
 	relation_.disconnectPort(this);
+	relation_ = null;
 	return relation_.getName();
     }
 
