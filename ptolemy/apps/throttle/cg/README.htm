@@ -14,6 +14,9 @@ This version uses the custom Sign actor.
  <p>Below are instructions on how to run this model
 <ol>
 
+<li> You may want to turn off virus checking so as to get the 
+maximum speed.
+
 <li> Run
 <pre>
 cd $PTII
@@ -28,12 +31,22 @@ some day)
     c:\users\cxh\ptII\ptolemy\apps\throttle\cg 
 </pre>
 
-<li> Start up Vergil and display this file.
+<li> Start up Vergil and display this README file.
 <pre>
 $PTII/bin/vergil ptolemy/apps/throttle/cg/README.htm
 </pre>
 
 <li> Select <a href="sliding2.xml"><CODE>sliding2.xml</CODE></a>
+
+
+<li> Run the demo, go to the window where you started up vergil.
+ <br>You will see the memory usage:
+<pre>
+1622 ms. Memory: 11372K Free: 4828K (42%)
+</pre>
+
+<li> You may want to create a copy of <CODE>sliding2.xml</CODE>
+that has a SequencePlotter instead of a FileWriter and run that.
 
 
 <li>  View -&gt; Generate Code
@@ -65,8 +78,20 @@ need to make them each time
 
 
 <li>  Hit the Generate Button.  The run will take roughly 3.5 minutes
+ <br> Note the timing and memory results, and compare them 
+with the interpreted run above. 
 
+
+<li> The output will be in the current directory
+<a href="./"><CODE>$PTII/ptolemy/apps/throttle/cg/</CODE></a>
+
+<li> To display the java code, run the following command in
+a Cygwin window:
+<pre>
+$PTII/bin/jode ptolemy.apps.throttle.cg.Main
+</pre>
 </ol>
+
 
 
 <dt> <a href="Controller.xml"><CODE>Controller.xml</CODE></a>
