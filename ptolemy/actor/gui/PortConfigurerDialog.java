@@ -72,6 +72,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.DropListener;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
@@ -500,8 +501,7 @@ public class PortConfigurerDialog
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////
 
-    /** apply any changes that may have been made in the table.
-     *
+    /** Apply any changes that may have been made in the table.
      */
     private void _apply() {
         Iterator portIterator;
@@ -790,6 +790,7 @@ public class PortConfigurerDialog
             MoMLChangeRequest request =
                 new MoMLChangeRequest(this, _target, moml.toString(), null);
             request.setUndoable(true);
+            request.setMergeWithPreviousUndo(true);
             // NOTE: There is no need to listen for completion
             // or errors in this change request, since, in theory,
             // it will just work.  Will someone report the error
