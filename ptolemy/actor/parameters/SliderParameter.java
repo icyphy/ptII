@@ -74,7 +74,7 @@ public class SliderParameter extends Parameter {
         setToken(new IntToken(50));
         setTypeEquals(BaseType.INT);
 
-	_attachText("_iconDescription", "<svg>\n"
+        _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-2\" "
                 + "width=\"60\" height=\"4\" "
                 + "style=\"fill:white\"/>\n"
