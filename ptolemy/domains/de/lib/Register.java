@@ -1,4 +1,4 @@
-/* A register.
+/* A register with one trigger port that accepts read requests.
 
    Copyright (c) 1998-2004 The Regents of the University of California.
    All rights reserved.
@@ -36,7 +36,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// Register
 /**
-   In the fire() method, if there is an event on the <i>trigger</i>
+   A register is a stateful actor with a trigger port that accepts 
+   read requests.
+   
+   <p>In the fire() method, if there is an event on the <i>trigger</i>
    input port, this actor will produce an output event. The value
    of the output event will be the previously recorded event
    from the <i>input</i> port, or the value of the <i>initialValue</i>
@@ -49,8 +52,12 @@ import ptolemy.kernel.util.NameDuplicationException;
    is constrained to be of a type at least that of the <i>input</i>
    port and the <i>initialValue</i> parameter.
    
-   <p> Unlike its base class, the Sampler actor, this actor can be used
-   to break dependencies in a feedback loop.
+   <p> This class extends Sampler. Unlike its base class, this actor 
+   can be used to break dependencies in a feedback loop in that
+   the input tokens are consumed from the input ports after the outputs 
+   are genrated. Another difference is that the Register actor can be 
+   fired when either the trigger port or the input port has a token, while
+   the Sampler can only be fired when the trigger port receives a token. 
 
    <p> Both the <i>input</i> port and the <i>output</i> port are multiports.
    Generally, their widths should match. Otherwise, if the width of the
@@ -64,9 +71,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    most recent inputs are forgotten, as if the execution of the model
    were starting over.
    
-   <p> This class extends Sampler because its interface is identical
-   and its behavior is similar.
-
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.1
@@ -104,6 +108,7 @@ public class Register extends Sampler {
      *  previous input tokens, but the <i>initialValue</i> parameter
      *  has been set, emit the value of the <i>initialValue</i> parameter.
      *  Otherwise, emit nothing.
+     *  Comsume
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -117,7 +122,8 @@ public class Register extends Sampler {
             _lastInputs = new Token[inputWidth];
         }
 
-        // If we have a trigger...
+        // If there is a token in the trigger port that indicates 
+        // a read request, the register output the latest inputs. 
         if (trigger.hasToken(0)) {
             // Consume the trigger token.
             trigger.get(0);
@@ -127,30 +133,35 @@ public class Register extends Sampler {
                 }
             }
         }
-    }
 
-    /** Record any input values available on the <i>input</i> port.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public boolean postfire() throws IllegalActionException {
-        int inputWidth = input.getWidth();
-        int outputWidth = output.getWidth();
-        int commonWidth = Math.min(inputWidth, outputWidth);
-
+        // If there is a token in the input port that indicates 
+        // a write request, the register consumes and stores the
+        // inputs. Note that if multiple inputs are available, 
+        // only the last inputs are stored. 
         // Consume the inputs we save.
         for (int i = 0; i < commonWidth; i++) {
             while (input.hasToken(i)) {
                 _lastInputs[i] = input.get(i);
             }
         }
-
         // Consume the inputs we don't save.
         for (int i = commonWidth; i < inputWidth; i++) {
             while (input.hasToken(i)) {
                 input.get(i);
             }
         }
-        return super.postfire();
+    }
+
+    /** Return true if there is any token in the input or the trigger
+     *  port. 
+     *  @exception IllegalActionException Thrown in super class.
+     */
+    public boolean prefire() throws IllegalActionException {
+        boolean writeRequest = false;
+        if (input.getWidth() > 0) {
+            writeRequest =  input.hasToken(0);
+        }
+        return writeRequest || super.prefire();
     }
 
     /** Override the base class to declare that the <i>output</i>

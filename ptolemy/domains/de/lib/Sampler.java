@@ -70,6 +70,9 @@ import ptolemy.kernel.util.Workspace;
    stream of events based on the presence or absence of events from
    another input.  This actor reacts to the presence of the other event,
    whereas Inhibit reacts to the absence of it.
+   
+   <p> This actor is different from the Register actor in that the input 
+   tokens are consumed from the input ports before the outputs are genrated. 
 
    @author Jie Liu, Edward A. Lee, Steve Neuendorffer, Elaine Cheong
    @version $Id$
@@ -77,6 +80,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (eal)
    @see ptolemy.domains.de.lib.Inhibit
+   @see ptolemy.domains.de.lib.Register
 */
 
 public class Sampler extends DETransformer {
@@ -150,7 +154,8 @@ public class Sampler extends DETransformer {
         return newObject;
     }
 
-    /** If there is a token in the <i>trigger</i> port, emit the most
+    /** Comsume all the tokens in the input ports and record them. 
+     *  If there is a token in the <i>trigger</i> port, emit the most
      *  recent token from the <i>input</i> port. If there has been no
      *  input token, but the <i>initialValue</i> parameter has been
      *  set, emit the value of the <i>initialValue</i> parameter.
