@@ -279,7 +279,8 @@ public class Tableau extends CompositeEntity {
                         (Tableau.this).setContainer(null);
                     } catch (KernelException ex) {
                         try {
-                            MessageHandler.warning("Cannot remove tableau: " + ex);
+                            MessageHandler.warning("Cannot remove tableau: "
+                                    + ex);
                         } catch (CancelException exception) {}
                     }
                 }

@@ -143,7 +143,8 @@ public class BrowserTableau extends Tableau {
                 Iterator effigies = effigy
                     .entityList(BrowserEffigy.class).iterator();
                 while (effigies.hasNext()) {
-                    BrowserEffigy browserEffigy = (BrowserEffigy)effigies.next();
+                    BrowserEffigy browserEffigy =
+                        (BrowserEffigy)effigies.next();
                     if (browserEffigy.getName().equals("browserEffigy")) {
                         return createTableau(browserEffigy);
                     }
