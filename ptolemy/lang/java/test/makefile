@@ -53,11 +53,13 @@ JSRCS = \
 	CharTest.java \
 	ClassAccess.java \
 	ExceptionTest.java \
+	Fields.java \
 	FindExtraImportsVisitorTest.java \
-	ForTest.java \
+	For.java \
 	IFace.java \
 	InnerClass.java \
 	InnerIFace.java \
+	Methods.java \
 	OneFM.java \
 	OneField.java \
 	ReflectTest.java \
@@ -66,7 +68,8 @@ JSRCS = \
 	Simple.java \
 	Simple2.java \
 	Switch.java \
-	TestSuper.java \
+	Super.java \
+	SuperChild.java \
 	UseFields.java \
 	UseMethods.java
 
