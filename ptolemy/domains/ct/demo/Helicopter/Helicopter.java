@@ -583,7 +583,7 @@ public class Helicopter extends TypedCompositeActor {
         default:
             break;
         }
-
+        /*
         ZeroOrderHold hPx = new ZeroOrderHold(sub, "HPx");
         ZeroOrderHold hDPx = new ZeroOrderHold(sub, "HDPx");
         ZeroOrderHold hDDPx = new ZeroOrderHold(sub, "HDDPx");
@@ -594,7 +594,7 @@ public class Helicopter extends TypedCompositeActor {
         ZeroOrderHold hDDPz = new ZeroOrderHold(sub, "HDDPz");
         ZeroOrderHold hD3Pz = new ZeroOrderHold(sub, "HD3Pz");
         ZeroOrderHold hD4Pz = new ZeroOrderHold(sub, "HD4Pz");
-
+         
         sub.connect(hPx.input, subinPx);
         sub.connect(hDPx.input, subinDPx);
         sub.connect(hDDPx.input, subinDDPx);
@@ -618,10 +618,29 @@ public class Helicopter extends TypedCompositeActor {
         sub.connect(hDDPz.output, (ComponentPort)lin.getPort("inputDDPz"));
         sub.connect(hD3Pz.output, (ComponentPort)lin.getPort("inputD3Pz"));
         sub.connect(hD4Pz.output, (ComponentPort)lin.getPort("inputD4Pz"));
+         */
+
+        sub.connect(subinPx, (ComponentPort)lin.getPort("inputPx"));
+        sub.connect(subinDPx, (ComponentPort)lin.getPort("inputDPx"));
+        sub.connect(subinDDPx, (ComponentPort)lin.getPort("inputDDPx"));
+        sub.connect(subinD3Px, (ComponentPort)lin.getPort("inputD3Px"));
+        sub.connect(subinD4Px, (ComponentPort)lin.getPort("inputD4Px"));
+        
+        Relation rInPz = sub.connect(subinPz, 
+            (ComponentPort)lin.getPort("inputPz"));
+        //sub.connect(hPz.output, (ComponentPort)lin.getPort("inputPz"));
+        sub.connect(subinDPz, (ComponentPort)lin.getPort("inputDPz"));
+        sub.connect(subinDDPz, (ComponentPort)lin.getPort("inputDDPz"));
+        sub.connect(subinD3Pz, (ComponentPort)lin.getPort("inputD3Pz"));
+        sub.connect(subinD4Pz, (ComponentPort)lin.getPort("inputD4Pz"));
+
+
 
         sub.connect(suboutVx, (ComponentPort)lin.getPort("outputVx"));
         sub.connect(suboutVz, (ComponentPort)lin.getPort("outputVz"));
-
+         
+        
+        
         Relation rV = sub.connect(suboutV,
                 (ComponentPort)lin.getPort("outputV"));
         Relation rR = sub.connect(suboutR,
