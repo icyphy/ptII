@@ -41,6 +41,7 @@ import java.util.Enumeration;
 Stores an image file (int the ASCII PBM format) and creates a matrix token
 
 @author Mudit Goel
+@version $Id$
 */
 
 public class RLEncoder extends AtomicActor {
@@ -110,7 +111,7 @@ public class RLEncoder extends AtomicActor {
                 value = newval;
 		if (value == 1) outval = (byte)128;
 		else outval = 0;
-                count =1;
+                count = 1;
             }
         }
         //_output.broadcast(new IntToken(value));
