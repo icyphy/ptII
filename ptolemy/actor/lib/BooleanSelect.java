@@ -57,7 +57,7 @@ import ptolemy.kernel.util.StringAttribute;
    <p> The actor indicates a willingness to fire in its prefire() method
    if there is an input available on the channel specified by the most
    recently seen token on the <i>control</i> port.  If no token has ever
-   been received on the <i>control</i> port, then <i>falseInput<i> is
+   been received on the <i>control</i> port, then <i>falseInput</i> is
    assumed to be the one to read.
 
    <p> This actor is similar to the BooleanMultiplexor actor, except that
@@ -162,7 +162,7 @@ public class BooleanSelect extends TypedAtomicActor {
         }
     }
 
-    /** Initialize this actor so that the <i>falseInput<i> is read
+    /** Initialize this actor so that the <i>falseInput</i> is read
      *  from until a token arrives on the <i>control</i> input.
      *  @exception IllegalActionException If the parent class throws it.
      */
