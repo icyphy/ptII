@@ -39,14 +39,13 @@ import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.gui.MessageHandler;
-import ptolemy.moml.MoMLWriter;
-
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.Writer;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
@@ -382,12 +381,14 @@ public class EntityLibrary
     public String getText() {
         try {
             StringWriter stringWriter = new StringWriter();
-            MoMLWriter writer = new MoMLWriter(stringWriter);
-            writer.write("<group>\n");
-            writer.writeContents(this, new EntityLibrary(), 1);
-            writer.write("</group>");
-            String string = stringWriter.toString();
-            return string;
+            stringWriter.write("<group>\n");
+            Iterator entities = entityList().iterator();
+            while (entities.hasNext()) {
+                ComponentEntity entity = (ComponentEntity)entities.next();
+                entity.exportMoML(stringWriter, 1);
+            }
+            stringWriter.write("</group>");
+            return stringWriter.toString();
         } catch (IOException ex) {
             return "";
         }
