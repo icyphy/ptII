@@ -599,20 +599,19 @@ public class Graph implements Cloneable {
         return edges;
     }
 
-    /** Test if a graph is equal to this one. If the
-     *  argument graph has the same set of nodes and edges as this graph,
-     *  they are equal.
+    /** Test if a graph is equal to this one. It is equal 
+     *  if it is of the same class, and has the same sets of nodes 
+     *  and edges.
      *
-     *  @param graph The reference graph with which to compare.
-     *  @return True if this graph is the same as the argument
-     *  graph; false otherwise.
+     *  @param graph The graph with which to compare this graph.
+     *  @return True if the graph is equal to this one.
      */
     public boolean equals(Object graph) {
         boolean result = true;
         if (graph == null) {
             result = false;
         }
-        else if (!(graph instanceof Graph)) {
+        else if (graph.getClass() != getClass()) {
             return false;
         } else {
             Graph argumentGraph = (Graph)graph; 
