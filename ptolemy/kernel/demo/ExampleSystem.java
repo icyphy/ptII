@@ -179,8 +179,8 @@ public class ExampleSystem implements Serializable {
 
     /**
      * Print the linked ports for a given ComponentRelation. The ports
-     * are restricted in the same level of hierachy
-     * @see ptolemy.kernel.Relation#getLinkedPorts()
+     * are restricted in the same level of hierarchy
+     * @see ptolemy.kernel.Relation#linkedPorts()
      * @param ComponentRelation Print the linked ports for this relation.
      */
     public String printLinkedPorts(ComponentRelation r) {
@@ -198,7 +198,7 @@ public class ExampleSystem implements Serializable {
      * Print the deeply linked ports for a given
      * ComponetRelation. Look through all transparent ports and return
      * only non transparent ports (those with no inside links).
-     * @see ptolemy.kernel.ComponentRelation#deepGetLinkedPorts()
+     * @see ptolemy.kernel.ComponentRelation#deepLinkedPorts()
      * @param ComponentRelation Print the deeply linked ports for this
      * relation.
      */
@@ -216,7 +216,7 @@ public class ExampleSystem implements Serializable {
     /**
      * Print the connected ports for a given ComponentPort.  Restricted
      * to the same level of hierachy.
-     * @see ptolemy.kernel.Port#getConnectedPorts()
+     * @see ptolemy.kernel.Port#connectedPorts()
      * @param ComponentPort Print the connected ports for this Port.
      */
     public String printConnectedPorts(ComponentPort p) {
@@ -234,7 +234,7 @@ public class ExampleSystem implements Serializable {
      * Print the deeply connected ports for a given ComponentPort. Look through
      * all transparent ports and return only non transparent ports (those
      * with no inside links).
-     * @see ptolemy.kernel.ComponentPort#deepGetConnectedPorts()
+     * @see ptolemy.kernel.ComponentPort#deepConnectedPorts()
      * @param ComponentPort Print the deeply connected ports for this Port.
      */
     public String printDeepConnectedPorts(ComponentPort p) {
@@ -248,7 +248,12 @@ public class ExampleSystem implements Serializable {
         return(st+"\n");
     }
 
-    /** Create an Example System, then print it out. */
+    /** Create an Example System, then print it out.
+     * @exception NameDuplicationException if the example system cannot
+     * be built because of a duplicate name
+     * @exception IllegalActionException if the example system cannot
+     * be built.
+     */
     public static void main(String args[])
             throws NameDuplicationException, IllegalActionException {
         ExampleSystem exsys = new ExampleSystem();

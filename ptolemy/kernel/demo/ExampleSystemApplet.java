@@ -47,7 +47,12 @@ See Ptolemy 2 design document, Figure 11
 */
 public class ExampleSystemApplet extends ExampleApplet
 {
-    /** Construct the graph. */
+    /** Construct the graph.
+     * @exception NameDuplicationException if the example system cannot
+     * be built because of a duplicate name
+     * @exception IllegalActionException if the example system cannot
+     * be built.
+     */
     public ExampleSystemApplet()
             throws IllegalActionException, NameDuplicationException {
         super();
@@ -58,11 +63,8 @@ public class ExampleSystemApplet extends ExampleApplet
     ////                         public methods                    ////
 
     /** Action when click on the button
-    *  Print all results in the text area. Override ExampleApplet.buttonAction
-    *  @see ptolemy.kernel.demo.Figure8.ExampleApplet#buttonAction()
-    *  @see java.awt.buttton
-    *  @param java.awt.event
-    */
+     *  Print all results in the text area. Override ExampleApplet.buttonAction
+     */
     public boolean buttonAction(java.awt.Event event) {
         clearTextArea();
         printInTextArea(_exsys.toString());
@@ -83,7 +85,12 @@ public class ExampleSystemApplet extends ExampleApplet
         } catch ( java.lang.Exception ex ) {}
     }
 
-    /** Create and Example System window standalone application. */
+    /** Create and Example System window standalone application.
+     * @exception NameDuplicationException if the example system cannot
+     * be built because of a duplicate name
+     * @exception IllegalActionException if the example system cannot
+     * be built.
+     */
     public static void main(String args[])
             throws NameDuplicationException,
             IllegalActionException {
