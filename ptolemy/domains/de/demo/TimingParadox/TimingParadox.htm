@@ -1,0 +1,104 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II DE Demo</title>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>Illustration of an Embedded System Timing Anomaly</H1>
+
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+<!-- The HTML below is for the Java Plugin.  The first
+     section is for IE, the second is for Netscape
+ -->
+<!-- HTML CONVERTER -->
+<SCRIPT LANGUAGE="JavaScript"><!--
+    var _info = navigator.userAgent; 
+    var _ns = false; 
+    var _ns6 = false;
+    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
+//--></SCRIPT>
+    <COMMENT>
+        <SCRIPT LANGUAGE="JavaScript1.1"><!--
+        var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
+        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
+//--></SCRIPT>
+    </COMMENT>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+    if (_ie == true) document.writeln('\
+        <OBJECT \
+            classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
+            width = "600" \
+            height = "480"  \
+            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_1_02-windows-i586.cab#Version=1,4,1,02"> \
+            <PARAM NAME = "code" \
+                   VALUE = "ptolemy.actor.gui.MoMLApplet" > \
+	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
+	    <PARAM NAME = "archive" \
+                   VALUE = "ptolemy/ptsupport.jar,ptolemy/domains/de/de.jar" > \
+            <PARAM NAME = "type" \
+                   VALUE = "application/x-java-applet;jpi-version=1.4.1_02" > \
+            <PARAM NAME = "scriptable" VALUE = "false" > \
+            <PARAM NAME = "name" VALUE = "TimingParadox" > \
+	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
+	    <PARAM NAME = "model" VALUE = "TimingParadox.xml" > \
+            <a href="TimingParadox.xml">MoML specification for this model.</a> \
+        </OBJECT> \
+        ');
+    else if (_ns == true || _ns6 == true)
+         document.writeln('\
+        <COMMENT> \
+          <EMBED \
+            type = "application/x-java-applet;jpi-version=1.4.1_02" \
+            code = "ptolemy.actor.gui.MoMLApplet" \
+            codebase = "../../../../.." \
+            archive = "ptolemy/ptsupport.jar,ptolemy/domains/de/de.jar" \
+            width = "600" \
+            height = "480" \
+            name = "TimingParadox" background = "#faf0e6" model = "TimingParadox.xml"  \
+            scriptable = "false" \
+            pluginspage = "http://java.sun.com/j2se/1.4.1/download.html"> \
+              <NOEMBED> \
+              <a href="TimingParadox.xml">MoML specification for this model.</a> \
+              </NOEMBED> \
+           </EMBED> \
+        <COMMENT> \
+        ');
+    else document.writeln('\
+        <APPLET \
+            code = "ptolemy.actor.gui.MoMLApplet" \
+            codebase = "../../../../.." \
+            archive = "ptolemy/ptsupport.jar,ptolemy/domains/de/de.jar" \
+            width = "600" \
+            height = "480" \
+            > \
+            <PARAM NAME = "name" VALUE = "TimingParadox" > \
+	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
+	    <PARAM NAME = "model" VALUE = "TimingParadox.xml" > \
+            <a href="TimingParadox.xml">MoML specification for this model.</a> \
+        </APPLET> \
+        ');
+//--></SCRIPT>
+<!-- /HTML CONVERTER -->
+</center>
+<P>
+The above applet uses the Ptolemy II Discrete Event (DE) domain
+to illustrate an anomaly that can occur in an embedded system interacting with the physical world.
+The anomaly occurs when an embedded system is reading data from a sensor to which it is poorly synchronized.  In this case, we have considered a sensor and an embedded system which are both approximately periodic with the same period.  Nominally, the embedded system would read the value of the sensor immediately after the sensor produces a value.  This would result in completing the computation at the earliest possible time.  However, we consider that both the production of sensor data and the reading of that data to start the computation have a small, random delay.  For instance, there might be unknown processing delay internal to the sensor itself, resulting in a random delay of the arrival of sensor data.  Similarly, the embedded system might be implemented using a multithreaded Real-Time operating system which introduces small delays through preemption.  Strangely, the result of these small delay may be that the embedded computation is performed on data that is extremely old!  
+
+<p> This situation is illustrated in the above histogram, where the sensor and computation operate nominally every second.  The histogram in red plots, for every computation, the time since the most recent sensor reading.  The delay applied to each is an independant, identically distributed rayleigh random variable.  When the delay applied to the sensor is greater than that of the computational process, the computational process must used the most recent data from the previous sensor reading.  When this happens the time since the most recent sensor reading is inevitably greater than the cycle time of the computation.
+
+<p> This anomaly can have significant impact, especially in embedded digital control systems.  In such systems, the delay in the controller has a great impact on the stability of the closed loop system.  If the delay is small, then it is much easier to ensure that the closed loop system is asymptotically stable.  It is common in such systems to build controllers that are <i>robust</i>, meaning that they are still stable in the presence of small errors in sensor values and small variations in the delay of the system.  This anomaly illustrates one way in which even small variations in the timing of an embedded system can greatly increase the delay around a closed-loop system.  A control engineer must be aware of these implementation issues in order to select the correct robustness margins for a control system design.
+
+<p> One solution to the problem is to artifically delay the computation, reducing (but not eliminating) the probability that the computation will begin before a new sensor reading is present.  This is shown in the above diagram by histograms in different colors, each representing a different delay time.  In this case, a artifical delay of 0.4 seconds places the most likely overall delay directly between two computational cycles.  It also virtually eliminates the chance of a extremely large delay.  Unfortunately, in a control system, the introduction of artifical delay can also make the closed loop system unstable.  Part of the design and implementation of a good embedded control system must take this tradeoff into account.
+
+This applet is implemented in MoML, as shown
+in a <a href="TimingParadoxVergil.htm">Vergil block diagram</a>.
+<p>
+</BODY>
+</HTML>
