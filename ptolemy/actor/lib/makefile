@@ -58,7 +58,6 @@ JSRCS = \
 	Clock.java \
 	Commutator.java \
 	Const.java \
-	Cosine.java \
 	CurrentTime.java \
 	Distributor.java \
 	Expression.java \

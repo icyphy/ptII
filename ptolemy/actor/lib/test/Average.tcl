@@ -70,3 +70,23 @@ test Average-2.1 {test with the default output values} {
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {0.0 0.5 1.0 1.5 2.0}
+
+test Average-2.2 {test with the typed output values} {
+    set e0 [sdfModel 5]
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
+    set init [getParameter $ramp init]
+    set step [getParameter $ramp step]
+    $init setExpression {0}
+    $step setExpression {1}
+    set average [java::new ptolemy.actor.lib.Average $e0 average]
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    $e0 connect \
+       [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
+       [java::field [java::cast ptolemy.actor.lib.Transformer $average] input]
+    $e0 connect \
+       [java::field \
+       [java::cast ptolemy.actor.lib.Transformer $average] output] \
+       [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {0.0 0.5 1.0 1.5 2.0}

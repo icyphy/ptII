@@ -49,7 +49,8 @@ where: <br>
 x is the input;<br>
 y is the output; <br>
 A is the amplitude, which has default value 1; <br>
-w is the frequency, which has default value 1; <br>
+w is omega, which has default value 1. 
+When x is time, omega is the frequency; <br>
 p is the phase, which has default value 0.<br>
 <p>
 A cosine function can be implemented using this actor by setting
@@ -75,7 +76,7 @@ public class Sine extends Transformer {
 
         // parameters
         amplitude = new Parameter(this, "amplitude", new DoubleToken(1.0));
-        frequency = new Parameter(this, "frequency", new DoubleToken(1.0));
+        omega = new Parameter(this, "omega", new DoubleToken(1.0));
         phase = new Parameter(this, "phase", new DoubleToken(0.0));
 
 
@@ -91,11 +92,11 @@ public class Sine extends Transformer {
      */
     public Parameter amplitude;
 
-    /** The frequency (in radians).  Note that this is a frequency
+    /** The omega (in radians).  Note that this is a frequency
      *  only if the input is time.
      *  The default value of this parameter is the double 1.0.
      */
-    public Parameter frequency;
+    public Parameter omega;
 
     /** The phase.
      *  The default value of this parameter is the double 0.0.
@@ -114,7 +115,7 @@ public class Sine extends Transformer {
         if (input.hasToken(0)) {
             DoubleToken in = (DoubleToken)input.get(0);
             double A = ((DoubleToken)amplitude.getToken()).doubleValue();
-            double w = ((DoubleToken)frequency.getToken()).doubleValue();
+            double w = ((DoubleToken)omega.getToken()).doubleValue();
             double p = ((DoubleToken)phase.getToken()).doubleValue();
 
             double result = A*Math.sin(w*in.doubleValue()+p);
