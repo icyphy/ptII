@@ -456,18 +456,34 @@ public class SoundPlayback {
 	// All channels had better have the same number
 	// of samples! This is not checked!
 	int lengthInSamples = doubleArray[0].length;
-	double mathDotPow = Math.pow(2, 8 * bytesPerSample - 1);
+	//double  maxSample = Math.pow(2, 8 * bytesPerSample - 1);
+	// Could use above line, but hopefully, code below will
+	// be faster.
+	double maxSample;
+	if (bytesPerSample == 2) {
+	    maxSample = 32768;
+	} else if (bytesPerSample == 1) {
+	    maxSample = 128;
+	} else if (bytesPerSample == 3) {
+	    maxSample = 8388608;
+	} else if (bytesPerSample == 4) {
+	    maxSample = 147483648e9;
+	} else {
+	    // Should not happen.
+	    maxSample = 0;
+	}
+
 	byte[] byteArray = 
 	    new byte[lengthInSamples * bytesPerSample * channels];
 	byte[] b = new byte[bytesPerSample];
 	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
 	    
-	    
 	    // For each channel,
 	    for (int currChannel = 0; currChannel < channels; currChannel++) {
 		// signed long representation of current sample of the
 		// current channel.
-		long l = Math.round((doubleArray[currChannel][currSamp] * mathDotPow));
+		long l = 
+		    (long)(doubleArray[currChannel][currSamp] * maxSample);
 		// Create byte representation of current sample.
 		for (int i = 0; i < bytesPerSample; i += 1, l >>= 8)
 		    b[bytesPerSample - i - 1] = (byte) l;
@@ -485,35 +501,22 @@ public class SoundPlayback {
     ////                         private variables                 ////
 
     private int _productionRate;
-
     private String _fileName;
-
     private String _playbackMode;
-
     private int _sampleSizeInBits;
-
-    private int _putSamplesSize;
-    
-    private float _sampleRate;
-    
+    private int _putSamplesSize;    
+    private float _sampleRate;   
     private int _channels;
-
     private int _bufferSize;
-
     // This is a stupid name, but it is consistant with
     // the Java Sound API naming conventions. It is
     // really a "target."
     private SourceDataLine _sourceLine;
-
     // Array of audio samples in byte format.
     private byte[] _data;
-
     private int _frameSizeInBytes;
-
     private ArrayList _toFileBuffer;
-
     // This is the format of _toFileBuffer.
     private AudioFormat _playToFileFormat;
-
     private int _bytesPerSample;
 }

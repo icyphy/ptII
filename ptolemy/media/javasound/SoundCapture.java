@@ -197,6 +197,7 @@ public class SoundCapture {
 	    if (_targetLine != null) {
 		_targetLine.close();
 	    }
+
 	} catch (IOException e) {
 	    System.out.println("AudioSource: error closing"+
                     " audio resources: " +e);
@@ -236,18 +237,7 @@ public class SoundCapture {
 		numBytesRead =
 		    _properFormatAudioInputStream.read(_data);
 	    }
-	    // FIXME: Optimize ordering here.
-            if (numBytesRead == -1) {
-                // Ran out of samples to play. This generally means
-                // that the end of the sound file has been reached.
-		//System.out.println("SoundCapture: getSamples(): returning null 1");
-                return null;
-            } else if (numBytesRead != _data.length) {
-                // Read fewer samples than productionRate many samples.
-
-                // FIXME: Output the samples that were read + zeros?
-                return null;
-            } else {
+            if (numBytesRead == _data.length) {
 		// Convert byte array to double array.
 		_audioInDoubleArray =
 		    _byteArrayToDoubleArray(_data, 
@@ -255,12 +245,55 @@ public class SoundCapture {
 					    _channels);
 		//System.out.println("SoundCapture: getSamples(): returning some data");
 		return _audioInDoubleArray;
+            } else if (numBytesRead != _data.length) {
+                // Read fewer samples than productionRate many samples.
+
+                // FIXME: Output the samples that were read + zeros?
+                return null;
+            } else if (numBytesRead == -1) {
+		// Ran out of samples to play. This generally means
+                // that the end of the sound file has been reached.
+		//System.out.println("SoundCapture: getSamples(): returning null 1");
+                return null;
 	    }
         } catch (IOException ex) {
-            System.out.println("Could not capture audio: " + ex);
+            System.err.println("Could not capture audio: " + ex);
 	    ex.printStackTrace();
         }
 	return null;
+    }
+
+    /** Return the number of audio channels. This method should
+     *  be called while audio capture is active, i.e., after
+     *  <i>startCapture()</i> is called and before <i>stopCapture</i>
+     *  is called.
+     * @return The number of audio channels. Return null if
+     *  this method is called before <i>startCapture()</i>.
+     */
+    public int getChannels() {
+	return _channels;
+    }
+
+    /** Return the number of bits per audio sample. This method should
+     *  be called while audio capture is active, i.e., after
+     *  <i>startCapture()</i> is called and before <i>stopCapture</i>
+     *  is called.
+     * @return The sample size in bits. Return null if
+     *  this method is called before <i>startCapture()</i>.
+     */
+    public int getSampleSizeInBits() {
+	return _sampleSizeInBits;
+    }
+
+    /** Return the sampling rate in Hz. This method should
+     *  be called while audio capture is active, i.e., after
+     *  <i>startCapture()</i> is called and before <i>stopCapture</i>
+     *  is called.
+     * @return The sample rate in Hz. Return null if
+     *  this method is called before <i>startCapture()</i>.
+     */
+    public float getSampleRate() {
+	return _sampleRate;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -435,23 +468,43 @@ public class SoundCapture {
 					       int channels) {
 	int lengthInSamples = byteArray.length / (bytesPerSample*channels);
 	double[][] doubleArray = new double[channels][lengthInSamples];
-	double mathDotPow = Math.pow(2, 8 * bytesPerSample - 1);
+	//double maxSampleReciprical = 1/(Math.pow(2, 8 * bytesPerSample - 1));
+	// Could use above line, but hopefully, code below will
+	// be faster.
+	double maxSampleReciprical;
+	if (bytesPerSample == 2) {
+	    // 1 / 32768
+	    maxSampleReciprical = 3.0517578125e-5;
+	} else if (bytesPerSample == 1) {
+	    // 1 / 128
+	    maxSampleReciprical = 7.8125e-3;
+	} else if (bytesPerSample == 3) {
+	    // 1 / 8388608
+	    maxSampleReciprical = 1.1920928955e07;
+	} else if (bytesPerSample == 4) {
+	    // 1 / 147483648e9
+	    maxSampleReciprical = 4.655661287308e-10;
+	} else {
+	    // Should not happen.
+	    maxSampleReciprical = 0;
+	}
+
 	byte[] b = new byte[bytesPerSample];
 
 	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
 
 	    // For each channel,
 	    for (int currChannel = 0; currChannel < channels; currChannel++) {
-
 		for (int i = 0; i < bytesPerSample; i += 1) {
 		    // Assume we are dealing with big endian.
-		    b[i] = byteArray[currSamp*bytesPerSample*channels + bytesPerSample*currChannel + i];
+		    b[i] = byteArray[currSamp*bytesPerSample*channels + 
+				    bytesPerSample*currChannel + i];
 		}
 		long result = (b[0] >> 7) ;
 		for (int i = 0; i < bytesPerSample; i += 1)
 		    result = (result << 8) + (b[i] & 0xff);
-		doubleArray[currChannel][currSamp] = ((double) result/
-					    (mathDotPow));
+		doubleArray[currChannel][currSamp] = 
+		    ((double) result*maxSampleReciprical);
 	    }
         }
 	return doubleArray;
@@ -461,37 +514,21 @@ public class SoundCapture {
     ////                         private variables                 ////
 
     private AudioInputStream  _properFormatAudioInputStream;
-
     private AudioInputStream _audioInputStream;
-
     private int _productionRate;
-
     // Array of audio samples in double format.
     private double[][] _audioInDoubleArray;
-
     // Array of audio samples in byte format.
     private byte[] _data;
-
     private int _index;
-
     private int _frameSizeInBytes;
-
     private boolean _isURL;
-
     private boolean _isRealTime;
-
     private String _fileName;
-
-
     private int _sampleSizeInBits;
-    
     private float _sampleRate;
-    
     private int _channels;
-
     private int _bufferSize;
-
     private TargetDataLine _targetLine;
-
     private int _bytesPerSample;
 }
