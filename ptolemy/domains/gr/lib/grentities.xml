@@ -13,7 +13,6 @@
 <entity name="CircularSweep3D" class="ptolemy.domains.gr.lib.CircularSweep3D">
 </entity>
 
-
 <entity name="Cone3D" class="ptolemy.domains.gr.lib.Cone3D">
 </entity>
 
@@ -50,10 +49,13 @@
 <entity name="MouseInput3D" class="ptolemy.domains.gr.lib.MouseInput3D">
 </entity>
 
-<entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen">
+<entity name="ViewScreen2D" class="ptolemy.domains.gr.lib.ViewScreen2D">
 </entity>
 
-<entity name="ViewScreen2D" class="ptolemy.domains.gr.lib.ViewScreen2D">
+<entity name="ViewScreen3D" class="ptolemy.domains.gr.lib.ViewScreen">
+</entity>
+
+<entity name="IconViewScreen3D" class="ptolemy.domains.gr.lib.IconViewScreen3D">
 </entity>
 
       </group>
