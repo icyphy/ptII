@@ -398,18 +398,18 @@ public class GeneratorTableau extends Tableau {
                                 } catch (Exception ex) {
                                     throw new IllegalActionException(model, ex, null);
                                 }
-                            } else if (codeGenerator.equals("c")
-                                    && compile) {
-                                exec.updateStatusBar("Starting c "
-                                        + "code generation");
-                                // FIXME: How come the status bar
-                                // does not get updated?
-                                ptolemy.copernicus.c
-                                    .Main.generate((CompositeActor)model,
-                                            targetPath);
-                                exec.updateStatusBar("C Code generation "
-                                        + "complete.");
-                                decompile = true;
+//                              } else if (codeGenerator.equals("c")
+//                                      && compile) {
+//                                  exec.updateStatusBar("Starting c "
+//                                          + "code generation");
+//                                  // FIXME: How come the status bar
+//                                  // does not get updated?
+//                                  ptolemy.copernicus.c
+//                                      .Main.generate((CompositeActor)model,
+//                                              targetPath);
+//                                  exec.updateStatusBar("C Code generation "
+//                                          + "complete.");
+//                                  decompile = true;
 
                             } else if (codeGenerator.equals("java")) {
                                 // Soot is a memory pig, so we run
@@ -436,17 +436,17 @@ public class GeneratorTableau extends Tableau {
                                 } catch (Exception ex) {
                                     throw new IllegalActionException(model, ex, null);
                                 }
-                            } else if (codeGenerator.equals("jhdl")
-                                    && compile) {
-                                exec.updateStatusBar("Starting jhdl "
-                                        + "code generation");
-                                // FIXME: How come the status bar
-                                // does not get updated?
-                                ptolemy.copernicus.jhdl
-                                    .Main.generate((CompositeActor)model,
-                                            targetPath);
-                                exec.updateStatusBar("JHDL Code generation "
-                                        + "complete.");
+//                              } else if (codeGenerator.equals("jhdl")
+//                                      && compile) {
+//                                  exec.updateStatusBar("Starting jhdl "
+//                                          + "code generation");
+//                                  // FIXME: How come the status bar
+//                                  // does not get updated?
+//                                  ptolemy.copernicus.jhdl
+//                                      .Main.generate((CompositeActor)model,
+//                                              targetPath);
+//                                  exec.updateStatusBar("JHDL Code generation "
+//                                          + "complete.");
 
 
                             } else if (codeGenerator.equals("shallow")) {
