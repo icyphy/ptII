@@ -59,6 +59,7 @@ public class AnalysisUtilities{
     /** Returns the set of classes needed by a field. These are the
      * declaring class of the field, and the type class (if any)  of the field.
      * @param field The field.
+     * @return The set of classes required to define the field.
      */
     public static LinkedList classesRequiredBy(SootField field) {
         LinkedList classes = new LinkedList();
