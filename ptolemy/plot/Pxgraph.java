@@ -235,13 +235,24 @@ Line style pattern of normal grid lines.
 <DL>
 <DT><code>-lf</code> <code><i>&lt;fontname&gt;</i></code> <DD>
 Label font. All axis labels and grid labels are drawn
-using this font. A font name may be specified exactly
-(e.g. &quot;9x15&quot; or &quot;-*-courier-bold-r-normal-*-140-*") or
-in an abbreviated form: &lt;family&gt;-&lt;size&gt;. The family is
-the family name (like helvetica) and the size is the
-font size in points (like 12). The default for this
-parameter is &quot;helvetica-12".
-<b>Unsupported in the Java version.</b>
+using this font. 
+<b>Note that the Java version does not use X11 style font specification.</b>
+In the Java version, fonts may be specified as
+<menu>
+<li><code><i>fontname</i></code>, where 
+<code><i>fontname</i></code> is one of <code>helvetica</code>,
+ <code>TimesRoman</code>, <code>Courier</code>,  <code>Dialog</code>,
+<code>DialogInput</code>, <code>ZapfDingbats</code>.
+
+<li><code><i>fontname</i>-<i>style</i></code>, where
+<code><i>style</i></code> is one of
+<code>PLAIN</code>, <code>ITALIC</code>, <code>BOLD</code>,
+ i.e. <code>helvetica-ITALIC</code>
+<li><code><i>fontname</i>-<i>size</i></code>, or
+<li><code><i>fontname</i>-<i>style</i>-<i>size</i></code>, where
+<code><i>size</i></code> is an integer font size in points.
+</menu>
+The default is <code>helvetica-PLAIN-12</code>.
 <P>
 </DD>
 </DL>
@@ -344,13 +355,9 @@ of the graph.
 <DL>
 <DT><code>-tf</code> <code><i>&lt;fontname&gt;</i></code> <DD>
 Title font. This is the name of the font to use for
-the graph title. A font name may be specified exactly
-(e.g. &quot;9x15&quot; or &quot;-*-courier-bold-r-normal-*-140-*") or
-in an abbreviated form: &lt;family&gt;-&lt;size&gt;. The family is
-the family name (like helvetica) and the size is the
-font size in points (like 12). The default for this
-parameter is &quot;helvetica-bold-14".
-<b>Unsupported in the Java version.</b>
+the graph title.  See the <code>-lf</code> description above
+for how to specify fonts.
+The default is <code>helvetica-BOLD-14</code>
 <P>
 </DD>
 </DL>
@@ -510,12 +517,12 @@ public class Pxgraph extends Frame {
 	    {"-bw",  "<size>", "BorderSize",  "1", "(Unsupported)"},
 	    {"-fg",  "<color>", "Foreground",  "Black", ""},
 	    {"-gw",  "<pixels>", "GridStyle",  "1", "(Unsupported)"},
-	    {"-lf",  "<fontname>", "LabelFont",  "helvetica-12", "(Unsupported)"},
+	    {"-lf",  "<fontname>", "LabelFont",  "helvetica-12", ""},
 	    {"-lw",  "<width>", "LineWidth",  "0", "(Unsupported)"},
 	    {"-lx",  "<xl,xh>", "XLowLimit, XHighLimit",  "0", ""},
 	    {"-ly",  "<yl,yh>", "YLowLimit, YHighLimit",  "0", ""},
 	    {"-t",   "<title>", "TitleText",  "An X Graph", ""},
-	    {"-tf",  "<fontname>", "TitleFont",  "helvetica-18", "(Unsupported)"},
+	    {"-tf",  "<fontname>", "TitleFont",  "helvetica-b-14", ""},
 	    {"-x",   "<unitName>", "XUnitText",  "X", ""},
 	    {"-y",   "<unitName>", "YUnitText",  "Y", ""},
 	    {"-zg",  "<color>", "ZeroColor",  "Black", "(Unsupported)"},
