@@ -497,13 +497,13 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
     static {
  	long startTime= System.currentTimeMillis();
-        System.out.println("StaticResolution<static>: --- Creating two new PackageDecls ---" + (System.currentTimeMillis() - startTime));
+        System.out.println("StaticResolution<static>: --- Creating two new PackageDecls ---" + (System.currentTimeMillis() - startTime) + " ms");
         SYSTEM_PACKAGE  = new PackageDecl("", null);
         UNNAMED_PACKAGE = new PackageDecl("", SYSTEM_PACKAGE);
-        System.out.println("StaticResolution<static>: SYSTEM_PACKAGE: " + 
-			   SYSTEM_PACKAGE.getEnviron().toString());
-        System.out.println("StaticResolution<static>: UNNAMED_PACKAGE: " + 
-			   UNNAMED_PACKAGE.getEnviron().toString());
+        ApplicationUtility.trace("StaticResolution<static>: " +
+                "SYSTEM_PACKAGE: " +  SYSTEM_PACKAGE.getEnviron().toString());
+        ApplicationUtility.trace("StaticResolution<static>: " +
+                "UNNAMED_PACKAGE: " + UNNAMED_PACKAGE.getEnviron().toString());
 
         // dummy environment
         Environ env = new Environ();
