@@ -2,11 +2,11 @@
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
 <model name="hello world" class="ptolemy.actor.TypedCompositeActor">
-    <doc>ramp-recorder...  a good first start</doc>
-    <director class="ptolemy.domains.sdf.kernel.SDFDirector">
+    <director name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="25">
         </property>
     </director>
+    <doc>ramp-recorder...  a good first start</doc>
     <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -15,7 +15,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location x="50" y="50"/>
+            <location value="50.0, 50.0"/>
             <configure>generic.source</configure>
         </rendition>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -28,8 +28,12 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location x="150" y="50"/>
+            <location value="156.0, 51.0"/>
             <configure>generic.sink</configure>
         </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -37,7 +41,7 @@
     </entity>
     <relation name="R1" class="ptolemy.actor.TypedIORelation">
         <vertex name="root" class="ptolemy.moml.Vertex">
-            <location x="100" y="50"/>
+            <location value="100.0, 50.0"/>
         </vertex>
     </relation>
     <link port="Ramp1.output" relation="R1"/>
