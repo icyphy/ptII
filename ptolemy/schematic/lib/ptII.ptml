@@ -7,25 +7,32 @@
 <domainlibrary name="Dataflow" version="1.0">
     <actorpackage name="domain polymorphic" package="ptolemy.lib"/>
 
+    <domain name="CT">
+	<description>Continuous Time</description>
+	<actorpackage name="CT default" package="ptolemy.domains.ct.lib"/>
+
+	<director name="Single Solver"
+		class="ptolemy.domains.ct.kernel.CTSingleSolverDirector"/>
+	<director name="Multiple Solver"
+		class="ptolemy.domains.ct.kernel.CTMultiSolverDirector"/>
+	<director name="Mixed-signal"
+		class="ptolemy.domains.ct.kernel.CTMixedSignalDirector"/>
+    </domain>
+
+    <domain name="PN">
+	<description>Process networks</description>
+	<actorpackage name="PN default" package="ptolemy.domains.pn.lib"/>
+
+	<director name="Bounded memory"
+		class="ptolemy.domains.pn.kernel.PNDirector"/>
+    </domain>
+
     <domain name="SDF">
 	<description>Static dataflow</description>
 	<actorpackage name="SDF default" package="ptolemy.domains.sdf.lib"/>
-	<actorpackage name="VQ" package="ptolemy.domains.sdf.lib.VQ"/>
-	<actorpackage name="local working" package="local.domains.sdf.lib"/>
 
 	<director name="Multirate"
 		class="ptolemy.domains.sdf.kernel.SDFDirector"/>
-	<director name="Discrete Timed"
-		class="ptolemy.domains.sdf.kernel.DTDirector"/>
-	<director name="Remote Director for LBL's supercomputer"
-		class="lbl.SDFAlphaFarmDirector"/>
-    </domain>
-
-    <domain name="CT">
-	<description>Continuous time</description>
-	<actorpackage name="CT default" package="ptolemy.domains.ct.lib"/>
-	<director name="Runge-Kutta"
-		class="ptolemy.domains.ct.kernel.CTRKDirector"/>
     </domain>
 
 </domainlibrary>
