@@ -55,7 +55,7 @@ PTPACKAGE = 	ptII
 # If you change the version number, be sure to edit doc/*,
 # ptolemy/configs/*, ptolemy/configs/doc and
 # ptolemy/kernel/attributes/VersionAttribute.java
-PTVERSION =	4.0-beta
+PTVERSION =	4.0
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
