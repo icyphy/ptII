@@ -70,8 +70,8 @@ test Add-1.1 {use default value} {
 
     #create adder
     set adder [java::new ptolemy.actor.lib.Add $e0 Adder]
-    set adderIn [java::cast ptolemy.actor.TypedIOPort [$adder getPort Input]]
-    set adderOut [java::cast ptolemy.actor.TypedIOPort [$adder getPort Output]]
+    set adderIn [java::cast ptolemy.actor.TypedIOPort [$adder getPort input]]
+    set adderOut [java::cast ptolemy.actor.TypedIOPort [$adder getPort output]]
 
     #create sink
     set sink [java::new ptolemy.actor.lib.test.TestSink $e0 Sink]
@@ -198,7 +198,7 @@ test Add-3.1 {Add another source that generates type conflict} {
     catch {$manager resolveTypes} msg
     list $msg
 } {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .E0 on the following ports:
-  .E0.Adder.Output: ptolemy.data.StringToken
+  .E0.Adder.output: ptolemy.data.StringToken
 }}
 
 ######################################################################

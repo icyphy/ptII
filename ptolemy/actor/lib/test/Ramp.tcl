@@ -1,4 +1,4 @@
-# Test Ramp..
+# Test Ramp.
 #
 # @Author: Yuhong Xiong
 #
