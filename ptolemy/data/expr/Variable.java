@@ -287,7 +287,7 @@ public class Variable extends Attribute
     /** Add a listener to be notified when the value of this variable changes.
      *  @param listener The listener to add.
      */
-    public void addValueListener(ValueListener listener) {
+    public synchronized void addValueListener(ValueListener listener) {
         if (_valueListeners == null) {
             _valueListeners = new LinkedList();
         }
@@ -628,7 +628,7 @@ public class Variable extends Attribute
      *  exists, do nothing.
      *  @param listener The listener to remove.
      */
-    public void removeValueListener(ValueListener listener) {
+    public synchronized void removeValueListener(ValueListener listener) {
         if (_valueListeners != null) {
             _valueListeners.remove(listener);
         }
@@ -1316,7 +1316,15 @@ public class Variable extends Attribute
      */
     protected void _notifyValueListeners() {
         if (_valueListeners != null) {
-            Iterator listeners = _valueListeners.iterator();
+            // Synchronize to be sure that listeners are not being
+            // added or removed while we clone the list.  We clone
+            // the list because notification can result in arbitrary
+            // code executing, which if this were to happen within
+            // the synchronized block, would create risk of deadlock.
+            Iterator listeners;
+            synchronized(this) {
+                listeners = (new LinkedList(_valueListeners)).iterator();
+            }
             while (listeners.hasNext()) {
                 ValueListener listener = (ValueListener)listeners.next();
                 listener.valueChanged(this);
@@ -1400,9 +1408,10 @@ public class Variable extends Attribute
         List result = null;
         if (_valueListeners != null) {
             // Avoid co-modification exception.
-            LinkedList list = new LinkedList();
-            list.addAll(_valueListeners);
-            Iterator listeners = list.iterator();
+            Iterator listeners;
+            synchronized(this) {
+                listeners = (new LinkedList(_valueListeners)).iterator();
+            }
             while (listeners.hasNext()) {
                 ValueListener listener = (ValueListener)listeners.next();
                 // Avoid doing this more than once if the the value
