@@ -186,6 +186,7 @@ public class CommitActionsAttribute
                                     _debug(getFullName() + " port: "
                                             + destination.getName()
                                             + " broadcast token: " + token);
+                                }
                             }
                         }
                     } catch (NoRoomException ex) {
