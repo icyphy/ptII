@@ -125,7 +125,7 @@ public class Context {
         return _includeFileSet.iterator();
     }
 
-    /** Return an Iteratorover the set of array Instance names in the context.
+    /** Return an Iterator over the set of array Instance names in the context.
      *  Each element in the Iterator is a String representing the name of the
      *  array instance.
      *  @return The Iterator over the set of array Instances
