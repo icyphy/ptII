@@ -49,7 +49,7 @@ FIXME: If more than receiver or sender were alowed, what would this mean?
 Is the synchronization below provable? Or is it just reasoned?
 
 @author Neil Smyth
-@version @(#)CSPReceiver.java	1.4 08/28/98
+@version $Id$
 
 */
 

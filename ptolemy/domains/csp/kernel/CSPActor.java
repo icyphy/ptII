@@ -47,7 +47,7 @@ conditional rendezvous construct gets followed.
 FIXME: add longer description.
 
 @author Neil Smyth
-@version @(#)CSPActor.java	1.5 08/28/98
+@version $Id$
 */
 
 public class CSPActor extends AtomicActor implements Runnable {

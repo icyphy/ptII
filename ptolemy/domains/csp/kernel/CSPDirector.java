@@ -67,7 +67,7 @@ FIXME: find a better place to place thread group creation.
 <p>
 
 @author Neil Smyth
-@version @(#)CSPDirector.java	1.3 08/28/98
+@version $Id$
 @see ptolemy.actor.Director;
 
 */
