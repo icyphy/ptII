@@ -33,6 +33,7 @@ package ptolemy.vergil.toolbox;
 import java.awt.event.*;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
+import javax.swing.JButton;
 import javax.swing.AbstractAction;
 import javax.swing.event.*;
 import diva.canvas.*;
@@ -65,23 +66,49 @@ public class FigureAction extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
 	Object source = e.getSource();
 	if(source instanceof LayerEvent) {
+	    _sourceType = CANVAS_TYPE;
 	    // Action activated using an ActionInteractor.
 	    LayerEvent event = (LayerEvent) source;
+	    CanvasLayer layer = event.getLayerSource();
+	    GraphPane pane = (GraphPane)layer.getCanvasPane();
+	    GraphController controller = pane.getGraphController();
+	    GraphModel model = controller.getGraphModel();
+	   
 	    Figure figure = (Figure) event.getFigureSource();
-	    Icon icon = (Icon) figure.getUserObject();
-	    _target = (NamedObj) icon.getContainer();
+	    // Set the target.
+	    if(figure == null) {	
+		_target = (NamedObj) model.getRoot();
+	    } else {
+		Object object = figure.getUserObject();
+		_target = (NamedObj) model.getSemanticObject(object);
+	    }
 	    _x = event.getX();
 	    _y = event.getY();
 	} else if(source instanceof JMenuItem) {
 	    // Action activated using a context menu.
 	    JMenuItem item = (JMenuItem) source;
-	    JContextMenu menu = (JContextMenu)item.getParent();
-	    _target = (NamedObj) menu.getTarget();
-	    _x = item.getX();
-	    _y = item.getY();
+	    if(item.getParent() instanceof JContextMenu) {
+		_sourceType = CONTEXTMENU_TYPE;
+		JContextMenu menu = (JContextMenu)item.getParent();
+		_target = (NamedObj) menu.getTarget();
+		_x = item.getX();
+		_y = item.getY();
+	    } else {
+		// Not implicit location.. should there be?
+		_sourceType = MENUBAR_TYPE;
+	    }
+	} else if(source instanceof JButton) {
+	    // presumably we are in a toolbar...
+	    _sourceType = TOOLBAR_TYPE;
+	    _target = null;
 	} else {
+	    _sourceType = null;
 	    _target = null;
 	}
+    }
+
+    public SourceType getSourceType() {
+	return _sourceType;
     }
 
     public NamedObj getTarget() {
@@ -96,6 +123,34 @@ public class FigureAction extends AbstractAction {
 	return _y;
     }
 
+    public static class SourceType {
+	private SourceType(String name) {
+	    _name = name;
+	}
+	
+	public String getName() {
+	    return _name;
+	}
+	private String _name;
+    }
+
+    /** When the action was fired from a canvas interactor.
+     */
+    public static SourceType CANVAS_TYPE = new SourceType("canvas");
+
+    /** When the action was fired from a context menu.
+     */
+    public static SourceType CONTEXTMENU_TYPE = new SourceType("contextmenu");
+
+    /** When the action was fired from a toolbar icon.
+     */
+    public static SourceType TOOLBAR_TYPE = new SourceType("toolbar");
+
+    /** When the action was fired from a menubar.
+     */
+    public static SourceType MENUBAR_TYPE = new SourceType("menubar");
+
+    private SourceType _sourceType = null;
     private NamedObj _target = null;
     private int _x = 0;
     private int _y = 0;
