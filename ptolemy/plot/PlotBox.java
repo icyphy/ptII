@@ -244,6 +244,14 @@ public class PlotBox extends Panel {
         }
     }
 
+    /** Export an EPS description of the plot.
+     */
+    public void exportEPS (FileWriter file) {
+        EPSGraphics g = new EPSGraphics(file, _width, _height);
+        _drawPlot(g, false);
+        g.showpage();
+    }
+
     /** Rescale so that the data that is currently plotted just fits.
      *  This is done based on the protected variables _xBottom, _xTop,
      *  _yBottom, and _yTop.  It is up to derived classes to ensure that
@@ -351,7 +359,14 @@ public class PlotBox extends Panel {
      *  @param graphics The graphics context.
      */
     public void paint(Graphics graphics) {
-        _drawPlot(graphics, true);
+        // Return the if size has not been set.
+        if (_buffer == null) return;
+        
+        // Double buffer for maximally smooth rendering.
+        Graphics gBuffer = _buffer.getGraphics();
+        super.paint(gBuffer);
+        _drawPlot(gBuffer, true);
+        graphics.drawImage(_buffer, 0, 0, null);
     }
 
     /** Syntactic sugar for parseFile(filespec, documentBase).
@@ -535,6 +550,7 @@ public class PlotBox extends Panel {
     public void setBounds(int x, int y, int width, int height) {
         _width = width;
         _height = height;
+        _buffer = createImage(width, height);
         super.setBounds(x, y, _width, _height);
     }
 
@@ -553,6 +569,13 @@ public class PlotBox extends Panel {
             add(_fillButton);
         }
         _fillButton.setVisible(visible);
+
+        if (_exportButton == null) {
+            _exportButton = new Button("export");
+            _exportButton.addActionListener(new ExportButtonListener());
+            add(_exportButton);
+        }
+        _exportButton.setVisible(visible);
     }
 
     /** Set the size of the plot.
@@ -562,6 +585,7 @@ public class PlotBox extends Panel {
     public void setSize(int width, int height) {
         _width = width;
         _height = height;
+        _buffer = createImage(width, height);
         super.setSize(width, height);
     }
 
@@ -699,7 +723,7 @@ public class PlotBox extends Panel {
     /** Override update so that it doesn't clear the plot.
      *  This prevents flashing of dynamic plots.
      *  Note that this means that calls to update are not passed to
-     *  lightlweight components.  But currently we have no lightweight
+     *  lightweight components.  But currently we have no lightweight
      *  components, so this is not a problem.
      */
     public void update(Graphics g) {
@@ -1933,8 +1957,8 @@ public class PlotBox extends Panel {
      *  @param x The final x position.
      *  @param y The final y position.
      */
-    public synchronized void _zoom(int x, int y) {
-        // FIXME: This is public because Netscape 4.0.3 cannot access it if
+    synchronized void _zoom(int x, int y) {
+        // FIXME: This is friendly because Netscape 4.0.3 cannot access it if
         // it is private!
 
         // We make this method synchronized so that we can draw the drag
@@ -2016,8 +2040,8 @@ public class PlotBox extends Panel {
      *  @param x The x position.
      *  @param y The y position.
      */
-    public synchronized void _zoomBox(int x, int y) {
-        // FIXME: This is public because Netscape 4.0.3 cannot access it if
+    synchronized void _zoomBox(int x, int y) {
+        // FIXME: This is friendly because Netscape 4.0.3 cannot access it if
         // it is private!
 
         // We make this method synchronized so that we can draw the drag
@@ -2102,8 +2126,8 @@ public class PlotBox extends Panel {
      *  @param x The x position.
      *  @param y The y position.
      */
-    public synchronized void _zoomStart(int x, int y) {
-        // FIXME: This is public because Netscape 4.0.3 cannot access it if
+    synchronized void _zoomStart(int x, int y) {
+        // FIXME: This is friendly because Netscape 4.0.3 cannot access it if
         // it is private!
 
         // constrain to be in range
@@ -2117,6 +2141,9 @@ public class PlotBox extends Panel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // Image to draw onto to avoid flashing.
+    private Image _buffer;
 
     /** @serial The file to be opened. */
     private String _filespec = null;
@@ -2176,6 +2203,9 @@ public class PlotBox extends Panel {
     // A button for filling the plot
     private transient Button _fillButton = null;
 
+    // A button for exporting an EPS description of the plot
+    private transient Button _exportButton = null;
+
     // Variables keeping track of the interactive zoom box.
     // Initialize to impossible values.
     private transient int _zoomx = -1;
@@ -2190,6 +2220,13 @@ public class PlotBox extends Panel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
+    class ExportButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            // The "null" sends the output to the clipboard.
+            exportEPS(null);
+        }
+    }
 
     class FillButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {

@@ -416,35 +416,6 @@ public class Plot extends PlotBox {
         return Integer.MAX_VALUE;
     }
 
-    /** Start a new thread to paint the component contents.
-     *  This is done in a new thread so that large data sets can
-     *  can be displayed without freezing the user interface.
-     *  When repainting is completed, the protected variable _painted
-     *  is set to true, and notifyAll() is called.
-     *  @param graphics The graphics context.
-     */
-    public void paint(Graphics graphics) {
-        _drawPlot(graphics, true);
-
-        // NOTE: jdk 1.1.4 cannot compile the following preferred method:
-        //         Thread paintthread = new Thread() {
-        //             public void run() {
-        //                 _drawPlot(graphics, true);
-        //             }
-        //         };
-        //        paintthread.start();
-        // NOTE: This strategy fails due to a bug in jdk 1.1
-        // Anything drawn to the graphics object in another thread
-        // never appears.
-        //        _painted = false;
-        //         if (_painter == null) {
-        //             _painter = new Painter(graphics);
-        //         }
-        //         // Stop the thread if still drawing from previous call.
-        //         if (_painting) _painter.stop();
-        //         _painter.start();
-    }
-
     /** Parse pxgraph style command line arguments.
      *  This method exists only for backward compatibility with the X11 pxgraph
      *  program.
@@ -1203,13 +1174,6 @@ public class Plot extends PlotBox {
     public void setSweepsPersistence(int persistence) {
         //   * FIXME: No file format yet.
         _sweepsPersistence = persistence;
-    }
-
-    /** Override the base class to not clear the component first.
-     *  @param graphics The graphics context.
-     */
-    public void update(Graphics g) {
-        paint(g);
     }
 
     ///////////////////////////////////////////////////////////////////

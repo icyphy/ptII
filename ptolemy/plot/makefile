@@ -57,6 +57,7 @@ DIRS = 		$(SRCDIRS) doc test
 # Java Sources
 JSRCS = \
 	CmdLineArgException.java \
+	EPSGraphics.java \
 	Plot.java \
 	PlotApplet.java \
 	PlotApplication.java \
@@ -66,10 +67,12 @@ JSRCS = \
 	PlotLive.java \
 	PlotLiveApplet.java \
 	PlotPoint.java \
-	Pxgraph.java \
 	LogicAnalyzer.java \
 	LogicAnalyzerFrame.java \
 	Message.java
+
+# removed
+#	Pxgraph.java
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) ptplot pxgraph.bat index.html copyright.txt
