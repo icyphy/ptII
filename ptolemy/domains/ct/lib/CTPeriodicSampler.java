@@ -144,12 +144,8 @@ public class CTPeriodicSampler extends Transformer
                     output.send(i, input.get(i));
                 }
             }
-            _hasCurrentEvent = false;
-            // register for the next event.
-            _nextSamplingTime += _samplePeriod;
-            getDirector().fireAt(this, _nextSamplingTime);
             if (_debugging) _debug(getFullName(), " produces event at: "
-                    + director.getCurrentTime());
+                + getDirector().getCurrentTime());
         }
     }
 
@@ -169,24 +165,33 @@ public class CTPeriodicSampler extends Transformer
         return _hasCurrentEvent;
     }
 
-    /** Request the first sampling time by calling director.fireAt().
+    /** Set the next sampling time as the start time (i.e. the current time).
+     *  We do not register the start time as a breakpoint, since the 
+     *  director will fire at the start time any way.
      *  @exception IllegalActionException If thrown by the supper class.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        // clear receivers
-        for (int i = 0; i < Math.min(input.getWidth(), output.getWidth());
-             i++) {
-            if (input.hasToken(i)) {
-                input.get(i);
-            }
-        }
-        _hasCurrentEvent = false;
         CTDirector dir = (CTDirector) getDirector();
         _nextSamplingTime = dir.getCurrentTime();
-        dir.fireAt(this, dir.getCurrentTime());
         if (_debugging) _debug(getFullName() + ": next sampling time = "
                 + _nextSamplingTime);
+    }
+
+    /** Set the next sampling time and return true. 
+     *  It computes the next sampling time,
+     *  and registers it as a breakpoint.
+     *  @return True.
+     */
+    public boolean postfire() throws IllegalActionException {
+        _hasCurrentEvent = false;
+        CTDirector director = (CTDirector)getDirector();
+        if (director.isDiscretePhase()) {
+            // register for the next event.
+            _nextSamplingTime += _samplePeriod;
+            getDirector().fireAt(this, _nextSamplingTime);
+        }
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
