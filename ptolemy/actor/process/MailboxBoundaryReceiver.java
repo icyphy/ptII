@@ -105,7 +105,7 @@ public class MailboxBoundaryReceiver extends Mailbox
                 _readBlock = true;
                 prepareToBlock(branch);
                 while( _readBlock && !_terminate ) {
-                    checkIfBranchIterationIsOver(branch);
+                    // checkIfBranchIterationIsOver(branch);
                     workspace.wait(this);
                 }
             }
@@ -113,8 +113,8 @@ public class MailboxBoundaryReceiver extends Mailbox
             if( _terminate ) {
             	throw new TerminateProcessException("");
             } else {
-                checkIfBranchIterationIsOver(branch);
-                waitForBranchPermission(branch);
+                // checkIfBranchIterationIsOver(branch);
+                // waitForBranchPermission(branch);
             	result = super.get();
                 if( _writeBlock ) {
                     wakeUpBlockedPartner();
@@ -130,7 +130,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      */
     public synchronized void wakeUpBlockedPartner() {
         if( _otherBranch != null ) {
-            // _otherBranch.registerRcvrUnBlocked(this);
+            _otherBranch.registerRcvrUnBlocked(this);
         } else {
             ProcessDirector director = ((ProcessDirector)((Actor)
         	    (getContainer().getContainer())).getDirector());
@@ -141,14 +141,12 @@ public class MailboxBoundaryReceiver extends Mailbox
     }
     
     /**
-     */
     public synchronized void waitForBranchPermission(Branch branch) 
     	    throws TerminateBranchException {
         if( branch == null ) {
             return;
         }
         
-	/*
         Workspace workspace = getContainer().workspace();
         while( !branch.isBranchPermitted() && !branch.isIterationOver() ) {
             branch.registerRcvrBlocked(this);
@@ -156,32 +154,28 @@ public class MailboxBoundaryReceiver extends Mailbox
         }
         branch.registerRcvrUnBlocked(this);
         checkIfBranchIterationIsOver(branch);
-	*/
     }
+     */
             
     /**
-     */
     public synchronized void checkIfBranchIterationIsOver(Branch branch) 
     	    throws TerminateBranchException {
         if( branch != null ) {
-	    /*
             if( branch.isIterationOver() ) {
                 throw new TerminateBranchException("The current "
                         + "iteration has ended.");
             }
-	    */
         }
     }
+     */
     
     /**
      */
     public synchronized void prepareToBlock(Branch branch) 
             throws TerminateBranchException {
         if( branch != null ) {
-	    /*
             branch.registerRcvrBlocked(this);
             _otherBranch = branch;
-	    */
         } else {
             ProcessDirector director = ((ProcessDirector)((Actor)
         	    (getContainer().getContainer())).getDirector());
@@ -257,7 +251,7 @@ public class MailboxBoundaryReceiver extends Mailbox
                 _writeBlock = true;
                 prepareToBlock(branch);
                 while( _writeBlock && !_terminate ) {
-                    checkIfBranchIterationIsOver(branch);
+                    // checkIfBranchIterationIsOver(branch);
                     workspace.wait(this);
                 }
             }
@@ -266,8 +260,8 @@ public class MailboxBoundaryReceiver extends Mailbox
             	throw new TerminateProcessException("");
             } else {
                 
-                checkIfBranchIterationIsOver(branch);
-                waitForBranchPermission(branch);
+                // checkIfBranchIterationIsOver(branch);
+                // waitForBranchPermission(branch);
                 
                 super.put(token);
                 if( _readBlock ) {
