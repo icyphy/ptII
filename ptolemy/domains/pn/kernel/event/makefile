@@ -48,10 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =	PNProcessEvent.java \
-        PNProcessListener.java \
-	ReceiverActionEvent.java \
-	ReceiverListener.java
-
+        PNProcessListener.java
 
 EXTRA_SRCS =	$(JSRCS)
 
