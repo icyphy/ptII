@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/sdf/lib/vq
 
-DIRS =		test
+DIRS =		test data
 
 # Root of the Java directory
 ROOT =		../../../../..
