@@ -243,7 +243,7 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 		return;
 	    }
 	} catch (IOException ex) {
-	    throw new IllegalActionException(
+	    throw new IllegalActionException(this,
                             "Cannot perform audio playback " +
 			    "with the specified parameter values." +
                             ex);
@@ -264,7 +264,7 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 	try {
 	    _initializePlayback();
 	} catch (IOException ex) {
-	    throw new IllegalActionException(
+	    throw new IllegalActionException(this,
                             "Cannot initialize audio playback " +
                             ex);
 	}
@@ -325,7 +325,7 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
 		    // write out samples to speaker and/or file.
 		    LiveSound.putSamples(this, _audioPutArray);
 		} catch (Exception ex) {
-		    throw new IllegalActionException(
+		    throw new IllegalActionException(this,
                             "Cannot playback audio:\n" +
                             ex);
 		}
@@ -444,7 +444,7 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
             try {
                 LiveSound.stopPlayback(this);
             } catch (IOException ex) {
-                throw new IllegalActionException(
+                throw new IllegalActionException(this,
                         "Cannot free audio resources:\n" +
                         ex);
             }

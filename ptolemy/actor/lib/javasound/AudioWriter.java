@@ -282,7 +282,7 @@ public class AudioWriter extends Sink {
 		    // write out samples to speaker and/or file.
 		    _soundWriter.putSamples(_audioPutArray);
 		} catch (Exception ex) {
-		    throw new IllegalActionException(
+		    throw new IllegalActionException(this,
                             "Cannot write audio: \n" +
                             ex.getMessage());
 		}
@@ -337,7 +337,7 @@ public class AudioWriter extends Sink {
             try {
                 _soundWriter.closeFile();
             } catch (IOException ex) {
-                throw new IllegalActionException(
+                throw new IllegalActionException(this,
                         "Error closing file:\n" +
                         ex.getMessage());
             }
@@ -366,7 +366,7 @@ public class AudioWriter extends Sink {
             try {
                 _soundWriter.closeFile();
             } catch (IOException ex) {
-                throw new IllegalActionException(
+                throw new IllegalActionException(this,
                         "Cannot write audio: \n" +
                         ex.getMessage());
             }

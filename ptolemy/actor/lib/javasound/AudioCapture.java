@@ -220,7 +220,7 @@ public class AudioCapture extends Source implements LiveSoundListener {
 		return;
 	    }
 	} catch (IOException ex) {
-	    throw new IllegalActionException(
+	    throw new IllegalActionException(this,
 		 "Cannot perform audio capture " +
 		 "with the specified parameter values." +
 					     ex);
@@ -242,7 +242,7 @@ public class AudioCapture extends Source implements LiveSoundListener {
 	 try {
 	     _initializeCapture();
 	 } catch (IOException ex) {
-	     throw new IllegalActionException(
+	     throw new IllegalActionException(this,
                             "Cannot initialize audio capture " +
                             ex);
 	 }
@@ -291,7 +291,7 @@ public class AudioCapture extends Source implements LiveSoundListener {
 		    // Read in audio data.
 		    _audioInDoubleArray = LiveSound.getSamples(this);
 		} catch (Exception ex) {
-		    throw new IllegalActionException(
+		    throw new IllegalActionException(this,
                             "Cannot capture audio: " +
                             ex);
 		}
@@ -444,7 +444,7 @@ public class AudioCapture extends Source implements LiveSoundListener {
 	    try {
 		LiveSound.stopCapture(this);
 	    } catch (IOException ex) {
-		throw new IllegalActionException(
+		throw new IllegalActionException(this,
                         "Error stopping audio capture : \n" +
                         ex);
 	    }
@@ -513,7 +513,7 @@ public class AudioCapture extends Source implements LiveSoundListener {
 	    // Start capturing audio.
 	    LiveSound.startCapture(this);
 	    } catch (IOException ex) {
-		throw new IllegalActionException(
+		throw new IllegalActionException(this,
                         "Cannot capture audio:\n" +
                         ex);
 	    }
