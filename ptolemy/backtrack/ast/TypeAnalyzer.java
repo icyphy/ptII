@@ -97,6 +97,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 
 import ptolemy.backtrack.ast.transform.AssignmentHandler;
 import ptolemy.backtrack.ast.transform.ClassHandler;
+import ptolemy.backtrack.ast.transform.ConstructorHandler;
 import ptolemy.backtrack.ast.transform.HandlerList;
 import ptolemy.backtrack.util.PathFinder;
 
@@ -154,6 +155,25 @@ public class TypeAnalyzer extends ASTVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
+    /** Add a name of a type to the set of types to be cross-analyzed.
+     * 
+     *  @param fullName The name of the type to be added.
+     *  @see #addCrossAnalyzedTypes(String[])
+     */
+    public void addCrossAnalyzedType(String fullName) {
+        _state.getCrossAnalyzedTypes().add(fullName);
+    }
+    
+    /** Add an array of names of types to the set of types to be
+     *  cross-analyzed.
+     * 
+     *  @param fullNames The array of names of types to be added.
+     *  @see #addCrossAnalyzedType(String)
+     */
+    public void addCrossAnalyzedTypes(String[] fullNames) {
+        _state.getCrossAnalyzedTypes().addAll(Arrays.asList(fullNames));
+    }
+    
     /** End the visit of an anonymous class declaration and close its
      *  scope. The current class is set back to the last visited class.
      *  @param node
@@ -271,6 +291,16 @@ public class TypeAnalyzer extends ASTVisitor {
        Expression expression = node.getExpression();
        if (expression != null)
             Type.setOwner(node, Type.getType(expression));
+       
+       if (_handlers.hasConstructorHandler()) {
+           List handlerList = _handlers.getConstructorHandlers();
+           Iterator handlersIter = handlerList.iterator();
+           while (handlersIter.hasNext()) {
+               ConstructorHandler handler = 
+                   (ConstructorHandler)handlersIter.next();
+               handler.handle(node, _state);
+           }
+       }
     }
 
     /** Visit a conditional expression node and set its type to be
@@ -459,6 +489,15 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param node The node to be visited.
      */
     public void endVisit(MethodDeclaration node) {
+        if (node.isConstructor() && _handlers.hasConstructorHandler()) {
+            List handlerList = _handlers.getConstructorHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                ConstructorHandler handler = 
+                    (ConstructorHandler)handlersIter.next();
+                handler.handle(node, _state);
+            }
+        }
         _closeScope();
         Type.propagateType(node, node.getReturnType());
     }
@@ -994,7 +1033,10 @@ public class TypeAnalyzer extends ASTVisitor {
         } catch (ClassNotFoundException e) {
             throw new ASTClassNotFoundException(typeName);
         }
-
+        
+        // Add the class to be cross-analyzed.
+        addCrossAnalyzedType(currentClass.getName());
+        
         // A class declaration starts a new scope.
         _openScope();
         _state.setClassScope();

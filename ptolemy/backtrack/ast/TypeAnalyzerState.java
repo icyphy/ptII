@@ -84,6 +84,14 @@ public class TypeAnalyzerState {
     public LocalClassLoader getClassLoader() {
         return _loader;
     }
+    
+    /** Get the set of cross-analyzed types.
+     * 
+     *  @return The set of names of types to be cross-analyzed.
+     */
+    public Set getCrossAnalyzedTypes() {
+        return _crossAnalyzedTypes;
+    }
 
     /** Get the current class (the class currently being inspected).
      * 
@@ -286,4 +294,8 @@ public class TypeAnalyzerState {
     /** The set of scopes that correspond to class declarations.
      */
     private Set _classScopes = new HashSet();
+    
+    /** The set of names of types to be cross-analyzed.
+     */
+    private Set _crossAnalyzedTypes = new HashSet();
 }

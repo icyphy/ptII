@@ -428,6 +428,204 @@ public final class FieldRecord {
         return new IndividualIterator(index);
     }
     
+    /** Restore the old value at the timestamp to the field.
+     *  <p>
+     *  The given timestamp refers to the time when the field still possesses
+     *  its old value. If the timestamp is increased at an assignment, the old
+     *  value at that timestamp refers to the value of the field before
+     *  assignment.
+     * 
+     *  @param current The current value of the field.
+     *  @param timestamp The timestamp.
+     *  @param trim If <tt>true</tt>, any values newer than the restored value
+     *   are deleted from the record.
+     *  @return The old value to be assigned back to the field.
+     */
+    public boolean restoreBoolean(boolean current, int timestamp, 
+            boolean trim) {
+        Iterator recordIter = iterator(0);
+        Record record = _findRecord(recordIter, timestamp, trim);
+        if (record == null)
+            return current;
+        else
+            return ((Boolean)record.getValue()).booleanValue();
+    }
+    
+    /** Restore the old value at the timestamp to the field.
+     *  <p>
+     *  The given timestamp refers to the time when the field still possesses
+     *  its old value. If the timestamp is increased at an assignment, the old
+     *  value at that timestamp refers to the value of the field before
+     *  assignment.
+     * 
+     *  @param current The current value of the field.
+     *  @param timestamp The timestamp.
+     *  @param trim If <tt>true</tt>, any values newer than the restored value
+     *   are deleted from the record.
+     *  @return The old value to be assigned back to the field.
+     */
+    public byte restoreByte(byte current, int timestamp, boolean trim) {
+        Iterator recordIter = iterator(0);
+        Record record = _findRecord(recordIter, timestamp, trim);
+        if (record == null)
+            return current;
+        else
+            return ((Byte)record.getValue()).byteValue();
+    }
+    
+    /** Restore the old value at the timestamp to the field.
+     *  <p>
+     *  The given timestamp refers to the time when the field still possesses
+     *  its old value. If the timestamp is increased at an assignment, the old
+     *  value at that timestamp refers to the value of the field before
+     *  assignment.
+     * 
+     *  @param current The current value of the field.
+     *  @param timestamp The timestamp.
+     *  @param trim If <tt>true</tt>, any values newer than the restored value
+     *   are deleted from the record.
+     *  @return The old value to be assigned back to the field.
+     */
+    public char restoreChar(char current, int timestamp, boolean trim) {
+        Iterator recordIter = iterator(0);
+        Record record = _findRecord(recordIter, timestamp, trim);
+        if (record == null)
+            return current;
+        else
+            return ((Character)record.getValue()).charValue();
+    }
+    
+    /** Restore the old value at the timestamp to the field.
+     *  <p>
+     *  The given timestamp refers to the time when the field still possesses
+     *  its old value. If the timestamp is increased at an assignment, the old
+     *  value at that timestamp refers to the value of the field before
+     *  assignment.
+     * 
+     *  @param current The current value of the field.
+     *  @param timestamp The timestamp.
+     *  @param trim If <tt>true</tt>, any values newer than the restored value
+     *   are deleted from the record.
+     *  @return The old value to be assigned back to the field.
+     */
+    public double restoreDouble(double current, int timestamp, boolean trim) {
+        Iterator recordIter = iterator(0);
+        Record record = _findRecord(recordIter, timestamp, trim);
+        if (record == null)
+            return current;
+        else
+            return ((Double)record.getValue()).doubleValue();
+    }
+    
+    /** Restore the old value at the timestamp to the field.
+     *  <p>
+     *  The given timestamp refers to the time when the field still possesses
+     *  its old value. If the timestamp is increased at an assignment, the old
+     *  value at that timestamp refers to the value of the field before
+     *  assignment.
+     * 
+     *  @param current The current value of the field.
+     *  @param timestamp The timestamp.
+     *  @param trim If <tt>true</tt>, any values newer than the restored value
+     *   are deleted from the record.
+     *  @return The old value to be assigned back to the field.
+     */
+    public double restoreFloat(float current, int timestamp, boolean trim) {
+        Iterator recordIter = iterator(0);
+        Record record = _findRecord(recordIter, timestamp, trim);
+        if (record == null)
+            return current;
+        else
+            return ((Float)record.getValue()).floatValue();
+    }
+    
+    /** Restore the old value at the timestamp to the field.
+     *  <p>
+     *  The given timestamp refers to the time when the field still possesses
+     *  its old value. If the timestamp is increased at an assignment, the old
+     *  value at that timestamp refers to the value of the field before
+     *  assignment.
+     * 
+     *  @param current The current value of the field.
+     *  @param timestamp The timestamp.
+     *  @param trim If <tt>true</tt>, any values newer than the restored value
+     *   are deleted from the record.
+     *  @return The old value to be assigned back to the field.
+     */
+    public int restoreInt(int current, int timestamp, boolean trim) {
+        Iterator recordIter = iterator(0);
+        Record record = _findRecord(recordIter, timestamp, trim);
+        if (record == null)
+            return current;
+        else
+            return ((Integer)record.getValue()).intValue();
+    }
+    
+    /** Restore the old value at the timestamp to the field.
+     *  <p>
+     *  The given timestamp refers to the time when the field still possesses
+     *  its old value. If the timestamp is increased at an assignment, the old
+     *  value at that timestamp refers to the value of the field before
+     *  assignment.
+     * 
+     *  @param current The current value of the field.
+     *  @param timestamp The timestamp.
+     *  @param trim If <tt>true</tt>, any values newer than the restored value
+     *   are deleted from the record.
+     *  @return The old value to be assigned back to the field.
+     */
+    public double restoreLong(long current, int timestamp, boolean trim) {
+        Iterator recordIter = iterator(0);
+        Record record = _findRecord(recordIter, timestamp, trim);
+        if (record == null)
+            return current;
+        else
+            return ((Long)record.getValue()).longValue();
+    }
+    
+    public Object restoreObject(Object current, int timestamp, boolean trim) {
+        int indices = _records.length;
+        if (indices == 1) {
+            Iterator recordIter = iterator(0);
+            Record record = _findRecord(recordIter, timestamp, trim);
+            return record.getValue();
+        } else {
+            Iterator recordIter = iterator();
+            while (recordIter.hasNext()) {
+                Record record = (Record)recordIter.next();
+                if (record.getTimestamp() < timestamp)
+                    break;
+                else
+                    current = _restoreField(current, record);
+                if (trim)
+                    recordIter.remove();
+            }
+            return current;
+        }
+    }
+    
+    /** Restore the old value at the timestamp to the field.
+     *  <p>
+     *  The given timestamp refers to the time when the field still possesses
+     *  its old value. If the timestamp is increased at an assignment, the old
+     *  value at that timestamp refers to the value of the field before
+     *  assignment.
+     * 
+     *  @param current The current value of the field.
+     *  @param timestamp The timestamp.
+     *  @param trim If <tt>true</tt>, any values newer than the restored value
+     *   are deleted from the record.
+     *  @return The old value to be assigned back to the field.
+     */
+    public double restoreShort(short current, int timestamp, boolean trim) {
+        Iterator recordIter = iterator(0);
+        Record record = _findRecord(recordIter, timestamp, trim);
+        if (record == null)
+            return current;
+        else
+            return ((Short)record.getValue()).shortValue();
+    }
+    
     //////////////////////////////////////////////////////////////////////////
     //// CombinedIterator
     /**
@@ -496,15 +694,22 @@ public final class FieldRecord {
          *  @return The index.
          */
         private int _maxTimestampIndex() {
-            int max = -1;
+            int maxIdentifier = -1;
+            int maxTimestamp = -1;
             int maxIndex = -1;
             for (int i = 0; i < _currentRecords.length; i++) {
                 RecordList list = _currentRecords[i];
-                int timestamp;
-                if (list != null && 
-                        (timestamp = list._getRecord().getTimestamp()) > max) {
-                    max = timestamp;
-                    maxIndex = i;
+                if (list != null) {
+                    Record record = list._getRecord();
+                    int timestamp = record.getTimestamp();
+                    int identifier = record.getIdentifier();
+                    if (timestamp > maxTimestamp ||
+                            (timestamp == maxTimestamp) &&
+                            (identifier > maxIdentifier)) {
+                        maxIdentifier = identifier;
+                        maxTimestamp = timestamp;
+                        maxIndex = i;
+                    }
                 }
             }
             return maxIndex;
@@ -611,6 +816,16 @@ public final class FieldRecord {
     */
     public class Record {
         
+        /** Get the identifier of this record. Each record for a field has a
+         *  unique identifier. Identifiers increase over time. Records for
+         *  different fields may have the same identifier.
+         * 
+         *  @return The identifier.
+         */
+        public int getIdentifier() {
+            return _identifier;
+        }
+        
         /** Get the indices on the left-hand side of the assignment.
          * 
          *  @return The indices, or <tt>null</tt> if no index is used.
@@ -674,6 +889,7 @@ public final class FieldRecord {
             _indices = indices;
             _value = value;
             _timestamp = timestamp;
+            _identifier = FieldRecord.this._identifier++;
         }
         
         /** The indices.
@@ -687,6 +903,10 @@ public final class FieldRecord {
         /** The timestamp.
          */
         private int _timestamp;
+        
+        /** The identifier of this record (unique for each field).
+         */
+        private int _identifier;
     }
     
     //////////////////////////////////////////////////////////////////////////
@@ -785,6 +1005,71 @@ public final class FieldRecord {
         _totalNum++;
     }
     
+    /** Find the record with the smallest timestamp that is larger than the
+     *  given timestamp.
+     * 
+     *  @param recordListIterator The iterator with which the records are
+     *   searched.
+     *  @param timestamp The timestamp.
+     *  @param trim If <tt>true</tt>, the records found with timestamps equal
+     *   to or larger than the given timestamp are deleted.
+     *  @return The record, if found; otherwise, <tt>null</tt>.
+     */
+    private Record _findRecord(Iterator recordListIterator, int timestamp, 
+            boolean trim) {
+        Record lastRecord = null;
+        while (recordListIterator.hasNext()) {
+            Record record = (Record)recordListIterator.next();
+            if (record.getTimestamp() >= timestamp)
+                lastRecord = record;
+            else
+                break;
+            if (trim)
+                recordListIterator.remove();
+        }
+        return lastRecord;
+    }
+    
+    private Object _restoreField(Object field, Record record) {
+        int[] indices = record.getIndices();
+        if (indices == null || indices.length == 0)
+            return record.getValue();
+        else {
+            int length = indices.length;
+            Object array = field;
+            for (int i = 0; i < length - 1; i++)
+                array = ((Object[])array)[indices[i]];
+            int lastIndex = indices[length - 1];
+            if (array instanceof boolean[])
+                ((boolean[])array)[lastIndex] = 
+                    ((Boolean)record.getValue()).booleanValue();
+            else if (array instanceof byte[])
+                ((byte[])array)[lastIndex] = 
+                    ((Byte)record.getValue()).byteValue();
+            else if (array instanceof char[])
+                ((char[])array)[lastIndex] = 
+                    ((Character)record.getValue()).charValue();
+            else if (array instanceof double[])
+                ((double[])array)[lastIndex] = 
+                    ((Double)record.getValue()).doubleValue();
+            else if (array instanceof float[])
+                ((float[])array)[lastIndex] = 
+                    ((Float)record.getValue()).floatValue();
+            else if (array instanceof int[])
+                ((int[])array)[lastIndex] = 
+                    ((Integer)record.getValue()).intValue();
+            else if (array instanceof long[])
+                ((long[])array)[lastIndex] = 
+                    ((Long)record.getValue()).longValue();
+            else if (array instanceof short[])
+                ((short[])array)[lastIndex] = 
+                    ((Short)record.getValue()).shortValue();
+            else
+                ((Object[])array)[lastIndex] = record.getValue();
+            return field;
+        }
+    }
+    
     /** The record lists for all the dimensions.
      */
     private RecordList[] _records;
@@ -793,4 +1078,8 @@ public final class FieldRecord {
      *  explicitly managed when records are added or removed.
      */
     private int _totalNum = 0;
+    
+    /** An increasing identifier for each record.
+     */
+    private int _identifier = 0;
 }

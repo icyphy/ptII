@@ -26,13 +26,15 @@ COPYRIGHTENDKEY
 
 */
 
-package ptolemy.backtrack;
+package ptolemy.backtrack.ast.transform;
 
-import java.util.Iterator;
-import java.util.List;
+import org.eclipse.jdt.core.dom.ClassInstanceCreation;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+
+import ptolemy.backtrack.ast.TypeAnalyzerState;
 
 //////////////////////////////////////////////////////////////////////////
-//// CheckPoint
+//// ConstructorHandler
 /**
  
  
@@ -42,41 +44,9 @@ import java.util.List;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Checkpoint {
-    
-    public Checkpoint(Rollbackable object) {
-        addObject(object);
-    }
-    
-    public void addObject(Rollbackable object) {
-        _state.getMonitoredObjects().add(object);
-    }
-    
-    public synchronized int createCheckpoint() {
-        return _state.createCheckpoint();
-    }
+public interface ConstructorHandler {
 
-    public synchronized int getTimestamp() {
-        return _state.getTimestamp();
-    }
+    public void handle(MethodDeclaration node, TypeAnalyzerState state);
     
-    public boolean isCheckpointing() {
-        return _state != null;
-    }
-    
-    public synchronized void rollback(int timestamp, boolean trim) {
-        Iterator objectsIter = _state.getMonitoredObjects().iterator();
-        while (objectsIter.hasNext())
-            ((Rollbackable)objectsIter.next()).$RESTORE(timestamp, trim);
-    }
-    
-    public void setCheckpoint(Checkpoint checkpoint) {
-        List objects = _state.getMonitoredObjects();
-        while (objects.size() > 0) {
-            Rollbackable object = (Rollbackable)objects.remove(0);
-            object.$SET$CHECKPOINT(checkpoint);
-        }
-    }
-    
-    private CheckpointState _state = new CheckpointState();
+    public void handle(ClassInstanceCreation node, TypeAnalyzerState state);
 }

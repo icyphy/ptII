@@ -66,6 +66,24 @@ public class HandlerList {
         _classHandlers.add(handler);
     }
     
+    /** Add a constructor handler to the list.
+     * 
+     *  @param handler The constructor handler.
+     *  @see ConstructorHandler
+     */
+    public void addConstructorHandler(ConstructorHandler handler) {
+        _constructorHandlers.add(handler);
+    }
+    
+    /** Add a cross-analysis handler to the list.
+     * 
+     *  @param handler The cross-analysis handler.
+     *  @see CrossAnalysisHandler
+     */
+    public void addCrossAnalysisHandler(CrossAnalysisHandler handler) {
+        _crossAnalysisHandlers.add(handler);
+    }
+    
     /** Get the list of assignment handlers.
      * 
      *  @return The list of assignment handlers.
@@ -80,6 +98,22 @@ public class HandlerList {
      */
     public List getClassHandlers() {
         return _classHandlers;
+    }
+    
+    /** Get the list of constructor handlers.
+     * 
+     *  @return The list of constructor handlers.
+     */
+    public List getConstructorHandlers() {
+        return _constructorHandlers;
+    }
+    
+    /** Get the list of cross-analysis handlers.
+     * 
+     *  @return The list of cross-analysis handlers.
+     */
+    public List getCrossAnalysisHandlers() {
+        return _crossAnalysisHandlers;
     }
     
     /** Test if there is any assignment handler.
@@ -98,6 +132,22 @@ public class HandlerList {
         return !_classHandlers.isEmpty();
     }
     
+    /** Test is there is any constructor handler.
+     * 
+     *  @return <tt>true</tt> if there are constructor handlers.
+     */
+    public boolean hasConstructorHandler() {
+        return !_constructorHandlers.isEmpty();
+    }
+    
+    /** Test is there is any cross-analysis handler.
+     * 
+     *  @return <tt>true</tt> if there are cross-analysis handlers.
+     */
+    public boolean hasCrossAnalysisHandler() {
+        return !_crossAnalysisHandlers.isEmpty();
+    }
+    
     /** Remove an assignment handler.
      * 
      *  @param handler The assignment handler to be removed.
@@ -113,6 +163,22 @@ public class HandlerList {
     public void removeClassHandler(ClassHandler handler) {
         _classHandlers.remove(handler);
     }
+    
+    /** Remove a constructor handler.
+     * 
+     *  @param handler The constructor handler to be removed.
+     */
+    public void removeConstructorHandler(ConstructorHandler handler) {
+        _constructorHandlers.remove(handler);
+    }
+
+    /** Remove a cross-analysis handler.
+     * 
+     *  @param handler The cross-analysis handler to be removed.
+     */
+    public void removeCrossAnalysisHandler(CrossAnalysisHandler handler) {
+        _crossAnalysisHandlers.remove(handler);
+    }
 
     /** The list of assignment handlers.
      */
@@ -121,4 +187,12 @@ public class HandlerList {
     /** The list of class declaration handlers.
      */
     private List _classHandlers = new LinkedList();
+    
+    /** The list of constructor handlers.
+     */
+    private List _constructorHandlers = new LinkedList();
+    
+    /** The list of cross-analysis handlers.
+     */
+    private List _crossAnalysisHandlers = new LinkedList();
 }

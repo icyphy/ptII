@@ -43,6 +43,7 @@ import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.ArrayType;
 import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.Block;
+import org.eclipse.jdt.core.dom.CastExpression;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.ExpressionStatement;
@@ -50,20 +51,21 @@ import org.eclipse.jdt.core.dom.FieldAccess;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.InfixExpression;
+import org.eclipse.jdt.core.dom.Initializer;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Modifier;
-import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.ParenthesizedExpression;
 import org.eclipse.jdt.core.dom.PrimitiveType;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
-import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 
 import ptolemy.backtrack.Checkpoint;
+import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.ast.ASTClassNotFoundException;
 import ptolemy.backtrack.ast.Type;
 import ptolemy.backtrack.ast.TypeAnalyzerState;
@@ -86,7 +88,7 @@ import ptolemy.backtrack.util.FieldRecord;
    @Pt.ProposedRating Red (tfeng)
    @Pt.AcceptedRating Red (tfeng)
 */
-public class AssignmentTransformer
+public class AssignmentTransformer extends AbstractTransformer
         implements AssignmentHandler, ClassHandler {
 
     ///////////////////////////////////////////////////////////////////
@@ -210,8 +212,8 @@ public class AssignmentTransformer
      *  the same class has been visited, and all the field assignments in it
      *  are handled with {@link #handle(Assignment, TypeAnalyzerState)}.
      * 
-     *  @param node
-     *  @param state
+     *  @param node The AST node of the anonymous class declaration.
+     *  @param state The current state of the type analyzer.
      */
     public void handle(AnonymousClassDeclaration node, 
             TypeAnalyzerState state) {
@@ -224,8 +226,8 @@ public class AssignmentTransformer
      *  the same class has been visited, and all the field assignments in it
      *  are handled with {@link #handle(Assignment, TypeAnalyzerState)}.
      * 
-     *  @param node
-     *  @param state
+     *  @param node The AST node of the anonymous class declaration.
+     *  @param state The current state of the type analyzer.
      */
     public void handle(TypeDeclaration node, TypeAnalyzerState state) {
         _handleDeclaration(node, node.bodyDeclarations(), state);
@@ -234,13 +236,9 @@ public class AssignmentTransformer
     ///////////////////////////////////////////////////////////////////
     ////                       public fields                       ////
 
-    /** The prefix of assignment methors.
+    /** The prefix of assignment methods.
      */
     public static String ASSIGN_PREFIX = "$ASSIGN$";
-    
-    /** The name of the checkpoint object.
-     */
-    public static String CHECKPOINT_NAME = "$CHECKPOINT";
     
     /** Whether to refactor private static fields.
      */
@@ -250,14 +248,22 @@ public class AssignmentTransformer
      */
     public static boolean OPTIMIZE_CALL = true;
     
+    /** The name of the proxy class created in each anonymous class.
+     */
+    public static String PROXY_NAME = "_PROXY_";
+    
     /** The prefix of records (new fields to be added to a class).
      */
     public static String RECORD_PREFIX = "$RECORD$";
     
+    /** The name of restore methods.
+     */
+    public static String RESTORE_NAME = "$RESTORE";
+    
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
 
-    /** Create assignment methods for each access field that has been
+    /** Create assignment methods for each accessed field that has been
      *  recorded. If a field is a multi-dimensional array, access with
      *  different numbers of indices is recorded with multiple entries.
      *  For each of those entries, an extra method is created for each
@@ -276,8 +282,6 @@ public class AssignmentTransformer
     private MethodDeclaration _createAssignMethod(Class currentClass, AST ast, 
             String fieldName, Type fieldType, int indices, boolean isStatic, 
             ClassLoader loader) {
-        
-        MethodDeclaration method = ast.newMethodDeclaration();
         String methodName = _getAssignMethodName(fieldName);
         
         // Check if the method is duplicated (possibly because the source
@@ -287,6 +291,8 @@ public class AssignmentTransformer
             throw new ASTDuplicatedMethodException(currentClass.getName(), 
                     methodName);
         
+        MethodDeclaration method = ast.newMethodDeclaration();
+
         // Get the type of the new value. The return value has the same
         // type. 
         int dimensions = fieldType.dimensions();
@@ -443,6 +449,23 @@ public class AssignmentTransformer
         return block;
     }
     
+    private FieldDeclaration _createCheckpointField(AST ast) {
+        VariableDeclarationFragment fragment = 
+            ast.newVariableDeclarationFragment();
+        fragment.setName(ast.newSimpleName(CHECKPOINT_NAME));
+        
+        ClassInstanceCreation checkpoint = ast.newClassInstanceCreation();
+        checkpoint.setName(_createName(ast, Checkpoint.class.getName()));
+        checkpoint.arguments().add(ast.newThisExpression());
+        fragment.setInitializer(checkpoint);
+        
+        FieldDeclaration checkpointField = ast.newFieldDeclaration(fragment);
+        checkpointField.setType(_createType(ast, Checkpoint.class.getName()));
+        checkpointField.setModifiers(Modifier.PRIVATE);
+        
+        return checkpointField;
+    }
+    
     /** Create the record of a field. The record is stored in an extra private
      *  field of the current class.
      * 
@@ -493,51 +516,255 @@ public class AssignmentTransformer
         return field;
     }
     
-    /** Create an AST name node with a name string (possibly partitioned with
-     *  ".").
-     * 
-     *  @param ast The {@link AST} object.
-     *  @param name The name.
-     *  @return The AST name node.
-     */
-    private Name _createName(AST ast, String name) {
-        int pos = _indexOf(name, new char[]{'.', '$'}, 0);
-        String subname = pos == -1 ? name : name.substring(0, pos);
-        Name fullName = ast.newSimpleName(subname);
-        while (pos != -1) {
-            pos = _indexOf(name, new char[]{'.', '$'}, pos + 1);
-            name = pos == -1 ? name : name.substring(0, pos);
-            SimpleName simpleName = ast.newSimpleName(subname);
-            fullName = ast.newQualifiedName(fullName, simpleName);
-        }
-        return fullName;
+    private TypeDeclaration _createProxyClass(AST ast) {
+        // Create the nested class.
+        TypeDeclaration classDeclaration = ast.newTypeDeclaration();
+        classDeclaration.setName(ast.newSimpleName(_getProxyName()));
+        classDeclaration.superInterfaces().add(
+                _createName(ast, Rollbackable.class.getName()));
+        
+        // Add a restore method.
+        MethodDeclaration proxy = ast.newMethodDeclaration();
+        proxy.setName(ast.newSimpleName(_getRestoreMethodName(false)));
+        
+        // Add two parameters.
+        SingleVariableDeclaration timestamp = 
+            ast.newSingleVariableDeclaration();
+        timestamp.setType(ast.newPrimitiveType(PrimitiveType.INT));
+        timestamp.setName(ast.newSimpleName("timestamp"));
+        proxy.parameters().add(timestamp);
+        
+        SingleVariableDeclaration trim = 
+            ast.newSingleVariableDeclaration();
+        trim.setType(ast.newPrimitiveType(PrimitiveType.BOOLEAN));
+        trim.setName(ast.newSimpleName("trim"));
+        proxy.parameters().add(trim);
+        
+        // Add a call to the restore method in the enclosing anonymous class.
+        MethodInvocation invocation = ast.newMethodInvocation();
+        invocation.setName(ast.newSimpleName(_getRestoreMethodName(true)));
+        invocation.arguments().add(ast.newSimpleName("timestamp"));
+        invocation.arguments().add(ast.newSimpleName("trim"));
+
+        Block body = ast.newBlock();
+        body.statements().add(ast.newExpressionStatement(invocation));
+        proxy.setBody(body);
+        
+        proxy.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
+        classDeclaration.bodyDeclarations().add(proxy);
+        
+        // Add a set checkpoint method.
+        MethodDeclaration setCheckpoint = ast.newMethodDeclaration();
+        setCheckpoint.setName(
+                ast.newSimpleName(_getSetCheckpointMethodName(false)));
+        
+        // Add a single checkpoint parameter.
+        SingleVariableDeclaration checkpoint = 
+            ast.newSingleVariableDeclaration();
+        checkpoint.setType(_createType(ast, Checkpoint.class.getName()));
+        checkpoint.setName(ast.newSimpleName("checkpoint"));
+        setCheckpoint.parameters().add(checkpoint);
+        
+        // Add a call to the restore method in the enclosing anonymous class.
+        invocation = ast.newMethodInvocation();
+        invocation.setName(ast.newSimpleName(_getSetCheckpointMethodName(true)));
+        invocation.arguments().add(ast.newSimpleName("checkpoint"));
+
+        body = ast.newBlock();
+        body.statements().add(ast.newExpressionStatement(invocation));
+        setCheckpoint.setBody(body);
+        
+        setCheckpoint.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
+        classDeclaration.bodyDeclarations().add(setCheckpoint);
+        
+        classDeclaration.setModifiers(Modifier.FINAL);
+        return classDeclaration;
     }
     
-    /** Create an AST type node with a type string (possibly partitioned with
-     *  "." and "[]").
-     *  
+    /** Create a restore method for a class, which restores all its state
+     *  variables.
+     * 
+     *  @param currentClass The current class.
      *  @param ast The {@link AST} object.
-     *  @param type The type.
-     *  @return The AST type node.
+     *  @param fieldNames The list of all the accessed fields.
+     *  @param fieldTypes The types corresponding to the accessed fields.
+     *  @param isAnonymous Whether the current class is anonymous.
+     *  @return The declaration of the method that restores the old value
+     *   of all the private fields.
      */
-    private org.eclipse.jdt.core.dom.Type _createType(AST ast, String type) {
-        String elementName = Type.getElementType(type);
-        int dimensions = Type.dimensions(type);
+    private MethodDeclaration _createRestoreMethod(Class currentClass, AST ast,  
+            List fieldNames, List fieldTypes, boolean isAnonymous) {
+        String methodName = _getRestoreMethodName(isAnonymous);
         
-        org.eclipse.jdt.core.dom.Type elementType;
-        if (Type.isPrimitive(elementName))
-            elementType = 
-                ast.newPrimitiveType(PrimitiveType.toCode(elementName));
-        else {
-            Name element = _createName(ast, elementName);
-            elementType = ast.newSimpleType(element);
+        // Check if the method is duplicated (possibly because the source
+        // program is refactored twice).
+        if (_isMethodDuplicated(currentClass, methodName, 
+                new Class[]{int.class, boolean.class}))
+            throw new ASTDuplicatedMethodException(currentClass.getName(), 
+                    methodName);
+
+        MethodDeclaration method = ast.newMethodDeclaration();
+        
+        // Set the method name.
+        method.setName(ast.newSimpleName(methodName));
+        
+        // Add a timestamp parameter.
+        SingleVariableDeclaration timestamp = 
+            ast.newSingleVariableDeclaration();
+        timestamp.setType(ast.newPrimitiveType(PrimitiveType.INT));
+        timestamp.setName(ast.newSimpleName("timestamp"));
+        method.parameters().add(timestamp);
+        
+        // Add a trim parameter.
+        SingleVariableDeclaration trim = 
+            ast.newSingleVariableDeclaration();
+        trim.setType(ast.newPrimitiveType(PrimitiveType.BOOLEAN));
+        trim.setName(ast.newSimpleName("trim"));
+        method.parameters().add(trim);
+        
+        // Return type default to "void".
+        
+        // The method body.
+        Block body = ast.newBlock();
+        method.setBody(body);
+        
+        Iterator namesIter = fieldNames.iterator();
+        Iterator typesIter = fieldTypes.iterator();
+        while (namesIter.hasNext()) {
+            String fieldName = (String)namesIter.next();
+            Type fieldType = (Type)typesIter.next();
+
+            MethodInvocation restoreMethodCall = ast.newMethodInvocation();
+            restoreMethodCall.setExpression(
+                    ast.newSimpleName(_getRecordName(fieldName)));
+        
+            // Set the restore method name.
+            String restoreMethodName;
+            if (fieldType.isPrimitive()) {
+                String typeName = fieldType.getName();
+                restoreMethodName = "restore" +
+                        Character.toUpperCase(typeName.charAt(0)) +
+                        typeName.substring(1);
+            } else
+                restoreMethodName = "restoreObject";
+            
+            restoreMethodCall.arguments().add(ast.newSimpleName(fieldName));
+            restoreMethodCall.setName(ast.newSimpleName(restoreMethodName));
+        
+            // Add two arguments to the restore method call.
+            restoreMethodCall.arguments().add(ast.newSimpleName("timestamp"));
+            restoreMethodCall.arguments().add(ast.newSimpleName("trim"));
+        
+            Assignment assignment = ast.newAssignment();
+            assignment.setLeftHandSide(ast.newSimpleName(fieldName));
+            if (fieldType.isPrimitive())
+                assignment.setRightHandSide(restoreMethodCall);
+            else {
+                CastExpression castExpression = ast.newCastExpression();
+                castExpression.setType(_createType(ast, fieldType.getName()));
+                castExpression.setExpression(restoreMethodCall);
+                assignment.setRightHandSide(castExpression);
+            }
+        
+            ExpressionStatement assignStatement = 
+                ast.newExpressionStatement(assignment);
+            body.statements().add(assignStatement);
         }
         
-        org.eclipse.jdt.core.dom.Type returnType = elementType;
-        for (int i = 1; i < dimensions; i++)
-            returnType = ast.newArrayType(returnType);
+        method.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
+        return method;
+    }
+    
+    /** Create a set checkpoint method for a class, which sets its checkpoint
+     *  object.
+     * 
+     *  @param currentClass The current class.
+     *  @param ast The {@link AST} object.
+     *  @param isAnonymous Whether the current class is anonymous.
+     *  @return The declaration of the method that restores the old value
+     *   of all the private fields.
+     */
+    private MethodDeclaration _createSetCheckpointMethod(Class currentClass,  
+            AST ast, boolean isAnonymous) {
+        String methodName = _getSetCheckpointMethodName(isAnonymous);
         
-        return returnType;
+        // Check if the method is duplicated (possibly because the source
+        // program is refactored twice).
+        if (_isMethodDuplicated(currentClass, methodName, 
+                new Class[]{Checkpoint.class}))
+            throw new ASTDuplicatedMethodException(currentClass.getName(), 
+                    methodName);
+
+        MethodDeclaration method = ast.newMethodDeclaration();
+        
+        // Set the method name.
+        method.setName(ast.newSimpleName(methodName));
+        
+        // Add a checkpoint parameter.
+        SingleVariableDeclaration checkpoint = 
+            ast.newSingleVariableDeclaration();
+        checkpoint.setType(_createType(ast, Checkpoint.class.getName()));
+        checkpoint.setName(ast.newSimpleName("checkpoint"));
+        method.parameters().add(checkpoint);
+        
+        // Return type default to "void".
+        
+        // The test.
+        IfStatement test = ast.newIfStatement();
+        InfixExpression testExpression = ast.newInfixExpression();
+        testExpression.setLeftOperand(ast.newSimpleName(CHECKPOINT_NAME));
+        testExpression.setOperator(InfixExpression.Operator.NOT_EQUALS);
+        testExpression.setRightOperand(ast.newSimpleName("checkpoint"));
+        test.setExpression(testExpression);
+        
+        // The "then" branch of the test.
+        Block thenBranch = ast.newBlock();
+        test.setThenStatement(thenBranch);
+        Block body = ast.newBlock();
+        body.statements().add(test);
+        method.setBody(body);
+        
+        // Backup the old checkpoint.
+        VariableDeclarationFragment fragment = 
+            ast.newVariableDeclarationFragment();
+        fragment.setName(ast.newSimpleName("oldCheckpoint"));
+        fragment.setInitializer(ast.newSimpleName(CHECKPOINT_NAME));
+        VariableDeclarationStatement tempDeclaration = 
+            ast.newVariableDeclarationStatement(fragment);
+        tempDeclaration.setType(_createType(ast, Checkpoint.class.getName()));
+        thenBranch.statements().add(tempDeclaration);
+        
+        // Assign the new checkpoint.
+        Assignment assignment = ast.newAssignment();
+        assignment.setLeftHandSide(ast.newSimpleName(CHECKPOINT_NAME));
+        assignment.setRightHandSide(ast.newSimpleName("checkpoint"));
+        ExpressionStatement statement = 
+            ast.newExpressionStatement(assignment);
+        thenBranch.statements().add(statement);
+        
+        // Propagate the change to other objects monitored by the same old
+        // checkpoint.
+        MethodInvocation propagate = ast.newMethodInvocation();
+        propagate.setExpression(ast.newSimpleName("oldCheckpoint"));
+        propagate.setName(ast.newSimpleName("setCheckpoint"));
+        propagate.arguments().add(ast.newSimpleName("checkpoint"));
+        thenBranch.statements().add(ast.newExpressionStatement(propagate));
+        
+        // Add this object to the list in the checkpoint.
+        MethodInvocation addInvocation = ast.newMethodInvocation();
+        addInvocation.setExpression(ast.newSimpleName("checkpoint"));
+        addInvocation.setName(ast.newSimpleName("addObject"));
+        if (isAnonymous) {
+            ClassInstanceCreation proxy = ast.newClassInstanceCreation();
+            proxy.setName(ast.newSimpleName(_getProxyName()));
+            addInvocation.arguments().add(proxy);
+        } else
+            addInvocation.arguments().add(ast.newThisExpression());
+        thenBranch.statements().add(
+                ast.newExpressionStatement(addInvocation));
+        
+        method.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
+        return method;
     }
     
     /** Get the list of indices of an accessed field. If the field is not of an
@@ -568,6 +795,14 @@ public class AssignmentTransformer
         return ASSIGN_PREFIX + fieldName;
     }
     
+    /** Get the name of the proxy class to be created in each anonymous class.
+     * 
+     *  @return The proxy class name.
+     */
+    private String _getProxyName() {
+        return PROXY_NAME;
+    }
+    
     /** Get the name of the record.
      * 
      *  @param fieldName The field name.
@@ -575,6 +810,24 @@ public class AssignmentTransformer
      */
     private String _getRecordName(String fieldName) {
         return RECORD_PREFIX + fieldName;
+    }
+    
+    /** Get the name of the restore method.
+     * 
+     *  @param isAnonymous Whether the current class is an anonymous class.
+     *  @return The name of the restore method.
+     */
+    private String _getRestoreMethodName(boolean isAnonymous) {
+        return RESTORE_NAME + (isAnonymous ? "_ANONYMOUS" : "");
+    }
+    
+    /** Get the name of the set checkpoint method.
+     * 
+     *  @param isAnonymous Whether the current class is an anonymous class.
+     *  @return
+     */
+    private String _getSetCheckpointMethodName(boolean isAnonymous) {
+        return SET_CHECKPOINT_NAME + (isAnonymous ? "_ANONYMOUS" : "");
     }
     
     /** Handle a class declaration or anonymous class declaration. Records and
@@ -590,6 +843,10 @@ public class AssignmentTransformer
         Class currentClass = state.getCurrentClass();
         List newMethods = new LinkedList();
         List newFields = new LinkedList();
+        
+        // The lists for _createRestoreMethod.
+        List fieldNames = new LinkedList();
+        List fieldTypes = new LinkedList();
         
         // Iterate over all the body declarations.
         Iterator bodyIter = bodyDeclarations.iterator();
@@ -638,6 +895,9 @@ public class AssignmentTransformer
                                     state.getClassLoader()));
                         }
                         
+                        fieldNames.add(fieldName);
+                        fieldTypes.add(type);
+                        
                         // Create a record field.
                         newFields.add(_createFieldRecord(currentClass, ast, 
                                 fieldName, type.dimensions(), isStatic));
@@ -646,54 +906,42 @@ public class AssignmentTransformer
             }
         }
         
+        AST ast = node.getAST();
+
+        newMethods.add(_createRestoreMethod(currentClass, ast, fieldNames, 
+                fieldTypes, node instanceof AnonymousClassDeclaration));
+        
+        newMethods.add(_createSetCheckpointMethod(currentClass, ast, 
+                node instanceof AnonymousClassDeclaration));
+        
+        // Add an interface.
+        if (node instanceof TypeDeclaration)
+            ((TypeDeclaration)node).superInterfaces().add(
+                    _createName(ast, Rollbackable.class.getName()));
+        else
+            bodyDeclarations.add(_createProxyClass(ast));
+        
         // Add all the methods and then all the fields.
         bodyDeclarations.addAll(newMethods);
         bodyDeclarations.addAll(newFields);
         
-        // Add a special checkpoint object field.
-        AST ast = node.getAST();
-        VariableDeclarationFragment fragment = 
-            ast.newVariableDeclarationFragment();
-        fragment.setName(ast.newSimpleName(CHECKPOINT_NAME));
-        FieldDeclaration checkpointField = ast.newFieldDeclaration(fragment);
-        checkpointField.setType(_createType(ast, Checkpoint.class.getName()));
-        checkpointField.setModifiers(Modifier.PRIVATE);
-        bodyDeclarations.add(checkpointField);
-    }
-    
-    /** Find the first appearance of any of the given characters in a string.
-     * 
-     *  @param s The string.
-     *  @param chars The array of characters.
-     *  @param startPos The starting position from which the search begins.
-     *  @return The index of the first appearance of any of the given
-     *   characters in the string, or -1 if none of them is found.
-     */
-    private int _indexOf(String s, char[] chars, int startPos) {
-        int pos = -1;
-        for (int i = 0; i < chars.length; i++) {
-            int newPos = s.indexOf(chars[i], startPos);
-            if (pos == -1 || newPos < pos)
-                pos = newPos;
-        }
-        return pos;
-    }
-    
-    /** Test if a field to be added already exists.
-     * 
-     *  @param c The current class.
-     *  @param fieldName The field name.
-     *  @return <tt>true</tt> if the field is already in the class.
-     *  @see #_isMethodDuplicated(Class, String, Type, int, boolean, 
-     *   ClassLoader)
-     */
-    private boolean _isFieldDuplicated(Class c, String fieldName) {
-        // Does NOT check fields inherited from interfaces.
-        try {
-            c.getDeclaredField(fieldName);
-            return true;
-        } catch (NoSuchFieldException e) {
-            return false;
+        if (node instanceof AnonymousClassDeclaration) {
+            // Create a simple initializer.
+            Initializer initializer = ast.newInitializer();
+            Block body = ast.newBlock();
+            initializer.setBody(body);
+            MethodInvocation addInvocation = ast.newMethodInvocation();
+            addInvocation.setExpression(ast.newSimpleName(CHECKPOINT_NAME));
+            addInvocation.setName(ast.newSimpleName("addObject"));
+            ClassInstanceCreation proxy = ast.newClassInstanceCreation();
+            proxy.setName(ast.newSimpleName(_getProxyName()));
+            addInvocation.arguments().add(proxy);
+            body.statements().add(ast.newExpressionStatement(addInvocation));
+            bodyDeclarations.add(initializer);
+        } else {
+            // Add a special checkpoint object field.
+            FieldDeclaration checkpointField = _createCheckpointField(ast);
+            bodyDeclarations.add(checkpointField);
         }
     }
     
@@ -706,7 +954,6 @@ public class AssignmentTransformer
      *  @param isStatic Whether the field is static.
      *  @param loader The class loader to be used.
      *  @return <tt>true</tt> if the method is already in the class.
-     *  @see #_isFieldDuplicated(Class, String)
      */
     private boolean _isMethodDuplicated(Class c, String methodName, 
             Type fieldType, int indices, boolean isStatic, 
@@ -758,25 +1005,6 @@ public class AssignmentTransformer
         Integer iIndices = new Integer(indices);
         if (!indicesList.contains(iIndices))
             indicesList.add(iIndices);
-    }
-    
-    /** Replace an AST node with another one by substituting the corresponding
-     *  child of its parent.
-     * 
-     *  @param node The node to be replace.
-     *  @param newNode The new node.
-     */
-    private void _replaceNode(ASTNode node, ASTNode newNode) {
-        ASTNode parent = node.getParent();
-        StructuralPropertyDescriptor location = node.getLocationInParent();
-        if (location.isChildProperty())
-            parent.setStructuralProperty(location, newNode);
-        else {
-            List properties = 
-                (List)parent.getStructuralProperty(location);
-            int position = properties.indexOf(node);
-            properties.set(position, newNode);
-        }
     }
     
     /** The table of access fields and their indices. Keys are class names;

@@ -28,11 +28,11 @@ COPYRIGHTENDKEY
 
 package ptolemy.backtrack;
 
-import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
-//// CheckPoint
+//// CheckpointState
 /**
  
  
@@ -42,41 +42,21 @@ import java.util.List;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Checkpoint {
+public class CheckpointState {
     
-    public Checkpoint(Rollbackable object) {
-        addObject(object);
+    public int createCheckpoint() {
+        return ++_currentTimestamp;
     }
     
-    public void addObject(Rollbackable object) {
-        _state.getMonitoredObjects().add(object);
+    public int getTimestamp() {
+        return _currentTimestamp;
     }
     
-    public synchronized int createCheckpoint() {
-        return _state.createCheckpoint();
+    public List getMonitoredObjects() {
+        return _monitoredObjects;
     }
 
-    public synchronized int getTimestamp() {
-        return _state.getTimestamp();
-    }
+    private int _currentTimestamp = 0;
     
-    public boolean isCheckpointing() {
-        return _state != null;
-    }
-    
-    public synchronized void rollback(int timestamp, boolean trim) {
-        Iterator objectsIter = _state.getMonitoredObjects().iterator();
-        while (objectsIter.hasNext())
-            ((Rollbackable)objectsIter.next()).$RESTORE(timestamp, trim);
-    }
-    
-    public void setCheckpoint(Checkpoint checkpoint) {
-        List objects = _state.getMonitoredObjects();
-        while (objects.size() > 0) {
-            Rollbackable object = (Rollbackable)objects.remove(0);
-            object.$SET$CHECKPOINT(checkpoint);
-        }
-    }
-    
-    private CheckpointState _state = new CheckpointState();
+    private List _monitoredObjects = new LinkedList();
 }
