@@ -30,12 +30,17 @@ package ptolemy.domains.gr.lib;
 import java.net.URL;
 
 import javax.media.j3d.Node;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.vecmath.Vector3d;
 
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -48,12 +53,13 @@ import com.sun.j3d.utils.geometry.Primitive;
 /** This actor contains the geometry and appearance specifications for a GR
     cylinder.  The output port is used to connect this actor to the Java3D
     scene graph. This actor will only have meaning in the GR domain.
+    Note that most of the parameters are described in the base class documentation.
 
     @author C. Fong, Adam Cataldo, Edward A. Lee
     @version $Id$
     @since Ptolemy II 1.0
-    @Pt.ProposedRating Red (chf)
-    @Pt.AcceptedRating Red (chf)
+    @Pt.ProposedRating Green (eal)
+    @Pt.AcceptedRating Green (liuxj)
 */
 public class Cylinder3D extends GRShadedShape {
 
@@ -69,8 +75,10 @@ public class Cylinder3D extends GRShadedShape {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        radius = new Parameter(this, "radius", new DoubleToken(0.5));
-        height = new Parameter(this, "height", new DoubleToken(0.7));
+        radius = new Parameter(this, "radius");
+        radius.setExpression("0.5");
+        height = new Parameter(this, "height");
+        height.setExpression("0.7");
 
         height.moveToFirst();
         radius.moveToFirst();
@@ -104,7 +112,7 @@ public class Cylinder3D extends GRShadedShape {
 
     /** The number of divisions on the side of the cone.
      *  This is an integer with default value "1". This parameter
-     *  probably only needs to change when the <i>wire</i> option
+     *  probably only needs to change when the <i>wireFrame</i> option
      *  is set to true.
      */
     public Parameter sideDivisions;
@@ -115,8 +123,35 @@ public class Cylinder3D extends GRShadedShape {
     public Parameter radius;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         public methods                    ////
 
+    /** If the dimensions change, then update the box.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        // Check that a box has been previously created.
+        if (attribute == radius
+                || attribute == height) {
+            if (_scaleTransform != null) {
+                float radiusValue = (float)
+                        ((DoubleToken)radius.getToken()).doubleValue();
+                float heightValue = (float)
+                        ((DoubleToken)height.getToken()).doubleValue();
+
+                _scaleTransform.setScale(new Vector3d(
+                        radiusValue, heightValue, radiusValue));
+                // The following seems to be needed so the new scale
+                // takes effect.
+                ((TransformGroup)_containedNode).setTransform(_scaleTransform);
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    
     /** Create the shape and appearance of the encapsulated cylinder.
      *  @exception IllegalActionException If the value of some
      *   parameter can't be obtained.
@@ -124,23 +159,51 @@ public class Cylinder3D extends GRShadedShape {
     protected void _createModel() throws IllegalActionException {
         super._createModel();
 
-        double currentRadius = ((DoubleToken)radius.getToken()).doubleValue();
-        double currentHeight = ((DoubleToken)height.getToken()).doubleValue();
+        float radiusValue = (float)
+                ((DoubleToken)radius.getToken()).doubleValue();
+        float heightValue = (float)
+                ((DoubleToken)height.getToken()).doubleValue();
+
+        boolean allowChanges = ((BooleanToken)
+                allowRuntimeChanges.getToken()).booleanValue();
 
         int primitiveFlags = Primitive.GENERATE_NORMALS;
         URL textureURL = texture.asURL();
-        if (textureURL != null) {
+        if (textureURL != null || allowChanges) {
             primitiveFlags = primitiveFlags
                 | Primitive.GENERATE_TEXTURE_COORDS;
         }
+        
+        if (allowChanges) {
+            // Sharing the geometry leads to artifacts when changes
+            // are made at run time.
+            primitiveFlags = primitiveFlags | Primitive.GEOMETRY_NOT_SHARED;
+        }
 
         int circleDivisionsValue
-            = ((IntToken)circleDivisions.getToken()).intValue();
+                = ((IntToken)circleDivisions.getToken()).intValue();
         int sideDivisionsValue
-            = ((IntToken)circleDivisions.getToken()).intValue();
-        _containedNode = new Cylinder((float) _getRadius(),
-                (float) _getHeight(), primitiveFlags, circleDivisionsValue,
-                sideDivisionsValue, _appearance);
+                = ((IntToken)sideDivisions.getToken()).intValue();
+        
+        if (allowChanges) {
+            Cylinder cylinder = new Cylinder(1.0f, 1.0f,
+                    primitiveFlags, circleDivisionsValue,
+                    sideDivisionsValue, _appearance);
+
+            TransformGroup scaler = new TransformGroup();
+            scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+            _scaleTransform = new Transform3D();
+            _scaleTransform.setScale(
+                    new Vector3d(radiusValue, heightValue, radiusValue));
+            scaler.setTransform(_scaleTransform);
+            scaler.addChild(cylinder);
+            _containedNode = scaler;            
+        } else {
+            _containedNode = new Cylinder(radiusValue, heightValue,
+                    primitiveFlags, circleDivisionsValue,
+                    sideDivisionsValue, _appearance);
+            _scaleTransform = null;
+        }
     }
 
     /** Return the encapsulated Java3D node of this 3D actor.
@@ -152,28 +215,13 @@ public class Cylinder3D extends GRShadedShape {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Return the value of the height parameter.
-     *  @return The height of the cylinder.
-     *  @exception IllegalActionException If the parameter cannot
-     *   be obtained (e.g. the expression doesn't parse).
-     */
-    private double _getHeight() throws IllegalActionException  {
-        return ((DoubleToken) height.getToken()).doubleValue();
-    }
-
-    /** Return the value of the radius parameter.
-     *  @return The radius of the cylinder.
-     *  @exception IllegalActionException If the parameter cannot
-     *   be obtained (e.g. the expression doesn't parse).
-     */
-    private double _getRadius() throws IllegalActionException {
-        return ((DoubleToken) radius.getToken()).doubleValue();
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Cylinder _containedNode;
+    /** If changes to the radius are allowed, this is the transform 
+     *  that applies them.
+     */
+    private Transform3D _scaleTransform;
+
+    /** The contained cylinder. */
+    private Node _containedNode;
 }

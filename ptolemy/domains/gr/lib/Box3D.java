@@ -30,11 +30,16 @@ package ptolemy.domains.gr.lib;
 import java.net.URL;
 
 import javax.media.j3d.Node;
+import javax.media.j3d.Transform3D;
+import javax.media.j3d.TransformGroup;
+import javax.vecmath.Vector3d;
 
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
@@ -48,9 +53,9 @@ import com.sun.j3d.utils.geometry.Primitive;
 /** This actor contains the geometry and appearance specifications for a
     box.  The output port is used to connect this actor to the Java3D scene
     graph. This actor will only have meaning in the GR domain.
-
     The parameters <i>xLength</i>, <i>yHeight</i>, and <i>zWidth</i>
-    determine the dimensions of box.
+    determine the dimensions of box. The rest of the parameters are
+    described in the base class.
 
     @author Chamberlain Fong, Edward A. Lee
     @version $Id$
@@ -111,8 +116,39 @@ public class Box3D extends GRShadedShape {
     public Parameter zWidth;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         public methods                    ////
 
+    /** If the dimensions change, then update the box.
+     */
+    public void attributeChanged(Attribute attribute)
+    		throws IllegalActionException {
+    	// Check that a box has been previously created.
+    	if (attribute == xLength
+                || attribute == yHeight
+                || attribute == zWidth) {
+            if (_scaleTransform != null) {
+                float height = (float)(((DoubleToken)
+                        yHeight.getToken()).doubleValue()/2.0);
+
+                float length = (float)(((DoubleToken)
+                        xLength.getToken()).doubleValue()/2.0);
+
+                float width = (float)(((DoubleToken)
+                        zWidth.getToken()).doubleValue()/2.0);
+
+                _scaleTransform.setScale(new Vector3d(length, height, width));
+                // The following seems to be needed so the new scale
+                // takes effect.
+                ((TransformGroup)_containedNode).setTransform(_scaleTransform);
+            }
+        } else {
+        	super.attributeChanged(attribute);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    
     /** Create the shape and appearance of the box.
      *  @exception IllegalActionException If the value of some
      *   parameters can't be obtained.
@@ -120,10 +156,34 @@ public class Box3D extends GRShadedShape {
     protected void _createModel() throws IllegalActionException {
         super._createModel();
 
-        int primitiveFlags = Primitive.GENERATE_NORMALS;
+        _createBox();
+    }
+
+	/** Return the Java3D box.
+     *  @return The Java3D box.
+     */
+    protected Node _getNodeObject() {
+        return _containedNode;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Create a box with the current parameter values.
+	 *  @throws IllegalActionException If the parameters are malformed.
+	 */
+	private void _createBox() throws IllegalActionException {
+		int primitiveFlags = Primitive.GENERATE_NORMALS;
+		boolean allowChanges = ((BooleanToken)
+				allowRuntimeChanges.getToken()).booleanValue();
         URL textureURL = texture.asURL();
-        if (textureURL != null) {
+        if (textureURL != null || allowChanges) {
             primitiveFlags = primitiveFlags | Primitive.GENERATE_TEXTURE_COORDS;
+        }
+        if (allowChanges) {
+        	// Sharing the geometry leads to artifacts when changes
+        	// are made at run time.
+        	primitiveFlags = primitiveFlags | Primitive.GEOMETRY_NOT_SHARED;
         }
         
         // Although it is completely undocument in Java3D, the "dimension"
@@ -138,20 +198,33 @@ public class Box3D extends GRShadedShape {
         float width = (float)(((DoubleToken)
                 zWidth.getToken()).doubleValue()/2.0);
 
-        _containedNode = new Box(length, height, width,
-                primitiveFlags, _appearance);
-    }
+        if (allowChanges) {
+            Box box = new Box(1.0f, 1.0f, 1.0f,
+                    primitiveFlags, _appearance);
 
-    /** Return the Java3D box.
-     *  @return The Java3D box.
-     */
-    protected Node _getNodeObject() {
-        return _containedNode;
-    }
-    
+            TransformGroup scaler = new TransformGroup();
+            scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+            _scaleTransform = new Transform3D();
+            _scaleTransform.setScale(
+                    new Vector3d(length, height, width));
+            scaler.setTransform(_scaleTransform);
+            scaler.addChild(box);
+            _containedNode = scaler;            
+        } else {
+            _containedNode = new Box(length, height, width,
+                    primitiveFlags, _appearance);
+            _scaleTransform = null;
+        }
+	}
+
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables               ////
+    ////                         zprivate variables               ////
+
+    /** If changes to the dimensions are allowed, this is the transform 
+     *  that applies them.
+     */
+    private Transform3D _scaleTransform;
 
     /** The box. */
-    private Box _containedNode;
+    private Node _containedNode;
 }

@@ -35,6 +35,7 @@ import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Vector3d;
 
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -54,12 +55,13 @@ import com.sun.j3d.utils.geometry.Sphere;
     sphere.  The output port is used to connect this actor to the Java3D scene
     graph. This actor may be used along with the Scale3D transformer to produce
     ellipsoid shapes. This actor will only have meaning in the GR domain.
+    Note that most of the parameters are described in the base class documentation.
 
     @author C. Fong, Edward A. Lee
     @version $Id$
     @since Ptolemy II 1.0
-    @Pt.ProposedRating Red (chf)
-    @Pt.AcceptedRating Red (chf)
+    @Pt.ProposedRating Green (eal)
+    @Pt.AcceptedRating Green (liuxj)
 */
 public class Sphere3D extends GRShadedShape {
 
@@ -105,46 +107,78 @@ public class Sphere3D extends GRShadedShape {
     ////                         public methods                    ////
 
 
+    /** If the specified attribute is the <i>radius</i>, then modify the
+     *  sphere to the new radius. Note that this will take effect
+     *  only if the <i>allowRuntimeChanges</i> parameter has value true.
+     *  @param attribute The attribute to change.
+     */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == radius) {
-            if (scaleTransform != null) {
-                double scale = _getRadius();
-                scaleTransform.setScale(new Vector3d(scale, scale, scale));
-                _scaler.setTransform(scaleTransform);
+            if (_scaleTransform != null) {
+                double scale = ((DoubleToken) radius.getToken()).doubleValue();
+                _scaleTransform.setScale(new Vector3d(scale, scale, scale));
+                // The following seems to be needed so the new scale
+                // takes effect.
+                ((TransformGroup)_containedNode).setTransform(_scaleTransform);
             }
+        } else {
+            super.attributeChanged(attribute);            
         }
-        super.attributeChanged(attribute);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the shape and appearance of the encapsulated sphere
+    /** Create the shape and appearance of the sphere.
      *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
+     *   be obtained.
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
 
+        boolean allowChanges = ((BooleanToken)
+                allowRuntimeChanges.getToken()).booleanValue();
+
         int primitiveFlags = Primitive.GENERATE_NORMALS;
         URL textureURL = texture.asURL();
-        if (textureURL != null) {
-            primitiveFlags = primitiveFlags | Primitive.GENERATE_TEXTURE_COORDS;
+        if (textureURL != null || allowChanges) {
+            primitiveFlags = primitiveFlags 
+                    | Primitive.GENERATE_TEXTURE_COORDS;
+        }
+
+        if (allowChanges) {
+            // Sharing the geometry leads to artifacts when changes
+            // are made at run time.
+            primitiveFlags = primitiveFlags | Primitive.GEOMETRY_NOT_SHARED;
         }
 
         int divisionsValue = ((IntToken)divisions.getToken()).intValue();
-        _containedNode = new Sphere(1.0f,
+        double radiusValue = ((DoubleToken) radius.getToken()).doubleValue();
+        
+        // If changes are not allowed, set the radius of the sphere once
+        // and for all. Otherwise, use a transform.
+        double scale = radiusValue;
+        if (allowChanges) {
+            scale = 1.0;
+        }
+        _containedNode = new Sphere((float)scale,
                 primitiveFlags,
                 divisionsValue,
                 _appearance);
-        _scaler = new TransformGroup();
-        _scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-        scaleTransform = new Transform3D();
-        double scale = _getRadius();
-        scaleTransform.setScale(new Vector3d(scale, scale, scale));
-        _scaler.setTransform(scaleTransform);
-        _scaler.addChild(_containedNode);
+        
+        if (allowChanges) {
+            TransformGroup scaler = new TransformGroup();
+            scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+            _scaleTransform = new Transform3D();
+            _scaleTransform.setScale(
+                    new Vector3d(radiusValue, radiusValue, radiusValue));
+            scaler.setTransform(_scaleTransform);
+            scaler.addChild(_containedNode);
+            _containedNode = scaler;            
+        } else {
+        	_scaleTransform = null;
+        }
     }
 
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
@@ -153,25 +187,17 @@ public class Sphere3D extends GRShadedShape {
      *  @return the Java3D Sphere
      */
     protected Node _getNodeObject() {
-        return (Node) _scaler;
-    }
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /**  Return the value of the radius parameter
-     *  @return the radius of the sphere
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
-     */
-    private double _getRadius() throws IllegalActionException {
-        return ((DoubleToken) radius.getToken()).doubleValue();
+        return (Node) _containedNode;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private Transform3D scaleTransform;
-    private TransformGroup _scaler;
-    private Sphere _containedNode;
+
+    /** If changes to the radius are allowed, this is the transform 
+     *  that applies them.
+     */
+    private Transform3D _scaleTransform;
+    
+    /** The sphere. */
+    private Node _containedNode;
 }
