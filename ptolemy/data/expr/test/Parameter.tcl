@@ -109,7 +109,7 @@ test Parameter-3.2 {Check type constriants on contained Token type} {
     set value2 [[$param1 getToken] getValue]
 
     list $name1 $value1 $errmsg
-} {.entity.id1 4 {java.lang.IllegalArgumentException: Cannot store a Token of type pt.data.DoubleToken in a Parameter restricted to tokens of type pt.data.IntTokenor lower}}
+} {.entity.id1 4 {java.lang.IllegalArgumentException: Cannot store a Token of type pt.data.DoubleToken in a Parameter restricted to tokens of type pt.data.IntToken or lower}}
 #################################
 ####
 #
