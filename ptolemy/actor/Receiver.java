@@ -140,16 +140,14 @@ public interface Receiver {
      */
     public void put(Token t);
 
-    /** Put a portion of a token array into this receiver. The vector
-     *  length parameter specifies the number of elements of the
-     *  token array to put into this receiver, starting with the
-     *  first element. Note that the thrown exception is a runtime
+    /** Put a portion of a token array into this receiver. The first
+     *  <i>vectorLength</i> elements of the token array are put
+     *  into this receiver. Note that the thrown exception is a runtime
      *  exception, therefore the caller is not required to catch it.
      *  @param tokenArray The array containing data to put into this
      *   receiver.
      *  @param vectorLength The number of elements of of the token
-     *   array, starting with the first element, to put into this
-     *   receiver.
+     *   array to put into this receiver.
      *  @exception NoRoomException If the token array cannot be put.
      */
     public void putArray(Token[] tokenArray, int vectorLength);

@@ -469,7 +469,14 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Get an array of tokens from the specified channel.
+    /** Get an array of tokens from the specified channel. The 
+     *  parameter <i>channelIndex</i> specifies the channel and
+     *  the parameter <i>vectorLength</i> specifies the number of 
+     *  valid tokens to get in the returned array. The length of 
+     *  the returned array can be greater than the specified vector
+     *  length, in which case, only the first <i>vectorLength</i> 
+     *  elements are guaranteed to be valid.
+     *  <p>
      *  If the channel has a group with more than one receiver (something
      *  that is possible if this is a transparent port), then this method
      *  calls get() on all receivers, but returns only the first non-null
@@ -478,11 +485,6 @@ public class IOPort extends ComponentPort {
      *  If there are not enough tokens to fill the array, then throw 
      *  an exception.
      *  <p>
-     *  It is important to note that the length of the
-     *  returned array can be greater than <i>vectorLength</i>. 
-     *  In this case, only the first <i>vectorLength</i> 
-     *  elements are guaranteed to be valid.
-     *  <p>
      *  Some of this method is read-synchronized on the workspace.
      *  Since it is possible for a thread to block while executing a get,
      *  it is important that the thread does not hold read access on
@@ -490,11 +492,11 @@ public class IOPort extends ComponentPort {
      *  read access on the workspace before calling get.
      *
      *  @param channelIndex The channel index.
-     *  @param vectorLength A Token array that will contain the requested
-     *   tokens when this method returns.
+     *  @param vectorLength The number of valid tokens to get in the
+     *   returned array.
      *  @return A token array from the specified channel containing
      *   <i>vectorLength</i> valid tokens.
-     *  @exception NoTokenException If there is no token.
+     *  @exception NoTokenException If there is no array of tokens.
      *  @exception IllegalActionException If there is no director, and hence
      *   no receivers have been created, if the port is not an input port, or
      *   if the channel index is out of range.
@@ -1118,8 +1120,11 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Send the specified token array to all receivers connected to the
-     *  specified channel.  Tokens are in general immutable, so each receiver
+    /** Send the specified portion of a token array to all receivers connected 
+     *  to the specified channel. The first <i>vectorLength</i> tokens
+     *  of the token array are sent.
+     *  <p>
+     *  Tokens are in general immutable, so each receiver
      *  is given a reference to the same token and no clones are made.
      *  If the port is not connected to anything, or receivers have not been
      *  created in the remote port, or the channel index is out of
@@ -1127,7 +1132,7 @@ public class IOPort extends ComponentPort {
      *  then just silently return.  This behavior makes it
      *  easy to leave output ports unconnected when you are not interested
      *  in the output.  The transfer is
-     *  accomplished by calling the put() method of the remote receivers.
+     *  accomplished by calling the vectorized put() method of the remote receivers.
      *  If the port is not connected to anything, or receivers have not been
      *  created in the remote port, then just return.
      *  <p>

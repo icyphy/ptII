@@ -179,10 +179,9 @@ public abstract class AbstractReceiver implements Receiver {
      */
     public abstract void put(Token token);
 
-    /** Put a portion of a token array into this receiver. The vector
-     *  length parameter specifies the number of elements of the
-     *  token array to put into this receiver, starting with the
-     *  first element. Note that the thrown exception is a runtime
+    /** Put a portion of a token array into this receiver. The first
+     *  <i>vectorLength</i> elements of the token array are put
+     *  into this receiver. Note that the thrown exception is a runtime
      *  exception, therefore the caller is not required to catch it.
      *  <p>
      *  This base class method is not performance optimized, since

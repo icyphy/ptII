@@ -138,9 +138,9 @@ public class Sine extends Transformer {
         }
     }
 
-    /** Invoke a specified number of iterations of this actor. One
-     *  iteration computes the sine of a single token. This
-     *  method therefore computes the sine of <i>count</i> input
+    /** Invoke a specified number of iterations of this actor. Each
+     *  iteration computes the sine of a single token. An invocation
+     *  of this method therefore computes the sine of <i>count</i> input
      *  tokens. An invocation of this method will cause this actor
      *  to consume and produce <i>count</i> tokens.
      *  <p>
@@ -150,8 +150,8 @@ public class Sine extends Transformer {
      *  @param count The number of iterations to perform.
      *  @return True if the actor was successfully iterated the
      *   specified number of times. Otherwise, return false.
-     *  @exception IllegalActionException If one of the Executable
-     *   methods throws it.
+     *  @exception IllegalActionException If iterating cannot be
+     *  performed.
      */
     public boolean iterate(int count) throws IllegalActionException {
 	// Check if we need to reallocate the output token array.
