@@ -275,6 +275,9 @@ but adding the directory to your path is likely to work best.])
     fi
 fi
 
+# PTJAVA_DIR without /cygdrive
+PTJAVA_DIR_CLEAN="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
+
 #
 # Check that we have the javac that corresponds with PTJAVA_DIR in our path
 #
@@ -2455,6 +2458,16 @@ else
 fi
 
 #--------------------------------------------------------------------
+#	TinyOS	
+#--------------------------------------------------------------------
+# The problem is that the nesc/configure script does not understand
+# "c:/" style syntax, it works with "/cygdrive/c/", yet Java
+# does not understand /cygdrive/c syntax, so we hack
+if [ ! -z "$TOSROOT" ]; then 
+    TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+fi
+
+#--------------------------------------------------------------------
 #       GiottoSDK is an embedded implementation of the Giotto language
 #	www.eecs.berkeley.edu/~fresco/giotto
 #
@@ -2858,6 +2871,9 @@ AC_SUBST(PTJAI_PACKAGES)
 # Location of the JDK
 AC_SUBST(PTJAVA_DIR)
 
+# Location of the JDK
+AC_SUBST(PTJAVA_DIR_CLEAN)
+
 # Value of java.home property, location of the JDK with /cygdrive/c/ converted to c:/
 AC_SUBST(PTJAVA_HOME)
 
@@ -2874,6 +2890,10 @@ AC_SUBST(PTJMF_DIR)
 # Ptolemy II packages that use Java Media Framwork
 # PTJMF_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTJMF_PACKAGES)
+
+# Set to jni and used in 
+# $PTII/makefile if gcc or cc was found
+AC_SUBST(PTJNI_DIR)
 
 # JNI architecture, used to compile C files
 AC_SUBST(PTJNI_ARCHITECTURE)
@@ -2993,6 +3013,9 @@ AC_SUBST(TINI_DIR)
 
 # Location of tools.jar, usually $(PTJAVA_HOME)/../lib/tools.jar
 AC_SUBST(TOOLS_JAR)
+
+# Location of TinyOS, used by nc domain
+AC_SUBST(TOSROOT_NO_CYGDRIVE)
 
 # giotto/gdk.jar file used by GiottoSDK
 AC_SUBST(GIOTTO_CLASSES)
