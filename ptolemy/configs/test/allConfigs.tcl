@@ -124,8 +124,10 @@ foreach i $configs {
 			catch {
 			    set fieldObj [java::field $realActor $field]
 			}
-			if {![java::isnull $fieldObj]} { 
-			    if {"[$fieldObj getName]" != "$field"} {
+			if {![java::isnull $fieldObj]} {
+			    set dottedName [$fieldObj getName $entity]
+			    set sanitizedName [java::call ptolemy.copernicus.kernel.SootUtilities sanitizeName $dottedName]
+			    if {"$sanitizedName" != "$field"} {
 				set msg "\n\nIn '$className'\n\
 					The getName() method returns\n \
 					'[$fieldObj getName]' but the \
