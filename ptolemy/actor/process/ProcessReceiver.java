@@ -54,12 +54,12 @@ public interface ProcessReceiver extends Receiver {
     /** Set the local flag that the simulation has been paused.
      *  @param value The new value of the paused flag.
      */     
-    public void setSimulationPaused(boolean value);
+    public void setPause(boolean value);
     
     /** Set the local flag that the simulation has been finished.
      *  @param value The new value of the finished flag.
      */     
-    public void setSimulationFinished();
+    public void setFinish();
 }
 
 

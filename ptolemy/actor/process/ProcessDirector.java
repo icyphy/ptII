@@ -360,7 +360,7 @@ public class ProcessDirector extends Director {
      **  @exception IllegalActionException if a method accessing the topology
      *   throws it.
      */
-    public synchronized void wrapup() throws IllegalActionException {
+    public void wrapup() throws IllegalActionException {
 	CompositeActor cont = (CompositeActor)getContainer();
         Enumeration allMyActors = cont.deepGetEntities();
         
