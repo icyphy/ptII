@@ -69,9 +69,12 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
 
-        //System.out.println("resolve name on " +
-        //        node.getDefinedProperty(IDENT_KEY));
-
+        System.out.print("Resolve name on ");
+        Object identProperty = node.getProperty(IDENT_KEY);
+        String identString = (identProperty == null) ? 
+               "<unidentified>" : (String)identProperty;
+        System.out.println(identString);
+        
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
         NameContext c = new NameContext();
@@ -81,9 +84,8 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         TNLManip.traverseList(this, childArgs, node.getDefTypes());
 
-        //System.out.println("finished resolve name on " +
-        //        node.getDefinedProperty(IDENT_KEY));
-
+        System.out.println("Finished resolve name on " + identString);
+                
         return node;
     }
 
