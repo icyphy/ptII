@@ -43,6 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 EXTRA_SRCS = \
+	README \
 	copyright.txt \
 	configure.in \
 	configure \
@@ -50,12 +51,13 @@ EXTRA_SRCS = \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) mk bin
+MISC_FILES =	$(DIRS) adm bin collections config lib logs mk \
+		public_html tcl vendors 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	config.log config.status config.cache
+	config.log config.status config.cache confTest.class
 
 # Files to be removed by 'make clean'
 KRUFT =	\
