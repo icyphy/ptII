@@ -1,6 +1,6 @@
-/* An actor which pops up a keystroke-sensing JFrame.
+/* Make all references to attributes point to attribute fields
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2001-2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -23,392 +23,378 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-
-@ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
-@AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.lib.gui;
+package ptolemy.copernicus.java;
 
-// Imports from ptolemy/vergil/basic/BasicGraphFrame.java (not pruned)
-import diva.gui.toolbox.FocusMouseListener;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.KeyStroke;
-import java.awt.BorderLayout;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-//import java.awt.event.MouseListener;
+import soot.*;
+import soot.jimple.*;
+import soot.jimple.toolkits.invoke.SiteInliner;
+import soot.jimple.toolkits.invoke.StaticInliner;
+import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
+import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
+import soot.jimple.toolkits.invoke.InvokeGraph;
+import soot.jimple.toolkits.invoke.VariableTypeAnalysis;
+import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
+import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
+import soot.jimple.toolkits.scalar.CopyPropagator;
+import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
+import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
+import soot.jimple.toolkits.scalar.Evaluator;
+import soot.jimple.toolkits.typing.TypeAssigner;
+import soot.toolkits.graph.*;
+import soot.toolkits.scalar.*;
+import soot.dava.*;
+import soot.util.*;
+import java.io.*;
+import java.util.*;
 
-// Imports from ptolemy/actor/lib/net/DatagramReader.java (not pruned)
-//import ptolemy.actor.AtomicActor;
-//import ptolemy.actor.IOPort;
-  import ptolemy.actor.TypedAtomicActor;
-  import ptolemy.actor.TypedIOPort;
-  import ptolemy.data.ArrayToken;
-//import ptolemy.data.BooleanToken;
-  import ptolemy.data.IntToken;
-  import ptolemy.data.StringToken;
-  import ptolemy.data.Token;
-//import ptolemy.data.expr.Parameter;
-  import ptolemy.data.type.ArrayType;
-  import ptolemy.data.type.BaseType;
-//import ptolemy.data.type.Type;
-  import ptolemy.kernel.CompositeEntity;
-//import ptolemy.kernel.util.Attribute;
-  import ptolemy.kernel.util.IllegalActionException;
-  import ptolemy.kernel.util.NameDuplicationException;
-//import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.*;
+import ptolemy.kernel.*;
+import ptolemy.actor.*;
+import ptolemy.moml.*;
+import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.data.*;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.type.Typeable;
+
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.copernicus.kernel.SootUtilities;
+
 
 //////////////////////////////////////////////////////////////////////////
-//// ArrowKeySensor
+//// FieldsForEntitiesTransformer
 /**
-When this actor is preinitialized, it pops up a new JFrame window on
-the desktop, usually in the upper left hand corner of the screen.
-When this JFrame has the focus (such as when it has been clicked on)
-it is capable of sensing keystrokes.  <p>
+A transformer that is responsible for replacing references to
+entities.  Any calls to the getContainer(), and getEntity() methods
+are replaced with a field reference to the field of the appropriate
+class.
 
-This actor senses only the four non-numeric-pad arrow-key keystrokes.
-This actor is almost identical to KeystrokeSensor.java.  One
-difference is the different set of keystrokes sensed.  The other
-difference, is that this actor responds to key releases as well as key
-presses.  Upon each key press, the integer 1 is broadcast from the
-corresponding output.  Upon each key release, the integer 0 is
-output.<p>
+FIXME: deal with this also?
 
-This actor contains a private inner class which generated the JFrame.
-The frame sets up call-backs which react to the keystrokes.  When called,
-these call the director's fireAtCurrentTime() method.  This causes
-the director to call fire() on the actor.   The actor then broadcasts
-tokens from one or both outputs depending on which keystroke(s) have
-occurred since the actor was last fired.  <p>
-
-NOTE: This actor only works in the DE domain due to its reliance on
-this director's fireAtCurrentTime() method.
-
-@author Winthrop Williams
+@author Stephen Neuendorffer
 @version $Id$
-@since Ptolemy II 2.1
+@since Ptolemy II 2.0
 */
-public class ArrowKeySensor extends TypedAtomicActor {
-
-    /** Construct an actor with the given container and name.
-     *  @param container The container.
-     *  @param name The name of this actor.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
+public class FieldsForEntitiesTransformer extends SceneTransformer {
+    /** Construct a new transformer
      */
-    public ArrowKeySensor(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
-        super(container, name);
-
-        // Outputs
-
-        upArrow = new TypedIOPort(this, "upArrow");
-        upArrow.setTypeEquals(BaseType.INT);
-        upArrow.setOutput(true);
-
-        leftArrow = new TypedIOPort(this, "leftArrow");
-        leftArrow.setTypeEquals(BaseType.INT);
-        leftArrow.setOutput(true);
-
-        rightArrow = new TypedIOPort(this, "rightArrow");
-        rightArrow.setTypeEquals(BaseType.INT);
-        rightArrow.setOutput(true);
-
-        downArrow = new TypedIOPort(this, "downArrow");
-        downArrow.setTypeEquals(BaseType.INT);
-        downArrow.setOutput(true);
+    private FieldsForEntitiesTransformer(CompositeActor model) {
+        _model = model;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort upArrow;
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort leftArrow;
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort rightArrow;
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort downArrow;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-
-    /** Broadcast the integer value 1 for each key pressed and 0 for
-     *  each released.
+    /** Return an instance of this transformer that will operate on
+     *  the given model.  The model is assumed to already have been
+     *  properly initialized so that resolved types and other static
+     *  properties of the model can be inspected.
      */
-    public void fire() throws IllegalActionException {
-        if (_debugging) _debug("fire has been called");
-
-
-	// Broadcast key presses
-
-	if (_upKeyPressed) {
-	    _upKeyPressed = false;
-	    upArrow.broadcast(new IntToken(1));
-	}
-
-	if (_leftKeyPressed) {
-	    _leftKeyPressed = false;
-	    leftArrow.broadcast(new IntToken(1));
-	}
-
-	if (_rightKeyPressed) {
-	    _rightKeyPressed = false;
-	    rightArrow.broadcast(new IntToken(1));
-	}
-
-	if (_downKeyPressed) {
-	    _downKeyPressed = false;
-	    downArrow.broadcast(new IntToken(1));
-	}
-
-
-	// Broadcast key releases
-
-	if (_upKeyReleased) {
-	    _upKeyReleased = false;
-	    upArrow.broadcast(new IntToken(0));
-	}
-
-	if (_leftKeyReleased) {
-	    _leftKeyReleased = false;
-	    leftArrow.broadcast(new IntToken(0));
-	}
-
-	if (_rightKeyReleased) {
-	    _rightKeyReleased = false;
-	    rightArrow.broadcast(new IntToken(0));
-	}
-
-	if (_downKeyReleased) {
-	    _downKeyReleased = false;
-	    downArrow.broadcast(new IntToken(0));
-	}
-
-	if (_debugging) _debug("fire has completed");
+    public static FieldsForEntitiesTransformer v(CompositeActor model) {
+        return new FieldsForEntitiesTransformer(model);
     }
 
-    /** Create the JFrame window capable of detecting the key-presses. */
-    public void initialize() {
-        if (_debugging) _debug("frame will be constructed");
-        _myFrame = new MyFrame();
-        if (_debugging) _debug("frame was constructed");
+    public String getDefaultOptions() {
+        return "";
     }
 
-    /** Dispose of the JFrame, causing the window to vanish. */
-    public void wrapup() {
-	_myFrame.dispose();
+    public String getDeclaredOptions() {
+        return super.getDeclaredOptions() + " targetPackage debug";
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables
-
-    /** The JFrame */
-    private MyFrame _myFrame;
-
-    /** The flags indicating which keys have been pressed or released
-     *  since the last firing of the actor.  <i>Pressed</i> and
-     *  <i>Released</i> are are not allowed to both be true for the
-     *  same key (Though both may be false).  The most recent action
-     *  (press or release) takes precedence.
+    /** Given an object in the model, return the first object above it
+     *  in the hierarchy that is an entity.  If the object is itself
+     *  an entity, then simply return its container.
      */
-    private boolean _upKeyPressed = false;
-    private boolean _leftKeyPressed = false;
-    private boolean _rightKeyPressed = false;
-    private boolean _downKeyPressed = false;
-    private boolean _upKeyReleased = false;
-    private boolean _leftKeyReleased = false;
-    private boolean _rightKeyReleased = false;
-    private boolean _downKeyReleased = false;
+    public static Entity getEntityContainerOfObject(Nameable object) {
+        Nameable container = object.getContainer();
+        if(container instanceof Entity) {
+            return (Entity)container;
+        } else {
+            return getEntityContainerOfObject(container);
+        }
+    }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     private inner classes                 ////
+    /** Given an entity that we are generating code for, return a
+     *  reference to the instance field created for that entity.
+     *  @exception RuntimeException If no field was created for the
+     *  given entity.
+     */
+    public static StaticFieldRef getFieldRefForEntity(Entity entity) {
+        SootField entityField = (SootField)
+            _entityToFieldMap.get(entity);
+        if (entityField != null) {
+            return Jimple.v().newStaticFieldRef(entityField);
+        } else {
+            throw new RuntimeException(
+                    "Failed to find field for entity " + entity);
+        }
+    }
 
-    private class MyFrame extends JFrame {
+    protected void internalTransform(String phaseName, Map options) {
+        int localCount = 0;
+        System.out.println("FieldsForEntitiesTransformer.internalTransform("
+                + phaseName + ", " + options + ")");
 
-        /** Construct a frame.  After constructing this, it is
-         *  necessary to call setVisible(true) to make the frame
-         *  appear.  This is done by calling show() at the end of this
-         *  constructor.
-         *  @see Tableau#show()
-         *  @param entity The model to put in this frame.
-         *  @param tableau The tableau responsible for this frame.  */
-        public MyFrame() {
-            if (_debugging) _debug("frame constructor called");
+        _options = options;
+        _debug = Options.getBoolean(options, "debug");
+        _entityToFieldMap = new HashMap();
+        _fieldToEntityMap = new HashMap();
+        _classToObjectMap = new HashMap();
 
-	    // up-arrow call-backs
-            ActionListener myUpPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_upKeyPressed = true;
-			_upKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
+        _createEntityInstanceFields(ModelTransformer.getModelClass(),
+                _model);
 
-            ActionListener myUpReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_upKeyReleased = true;
-			_upKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
+        _replaceEntityCalls(ModelTransformer.getModelClass(),
+                _model);
+    }
 
-	    // left-arrow call-backs
-            ActionListener myLeftPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_leftKeyPressed = true;
-			_leftKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
+    private void _replaceEntityCalls(SootClass actorClass,
+            ComponentEntity actor) {
 
-            ActionListener myLeftReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_leftKeyReleased = true;
-			_leftKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
+        // Replace calls to entity method with field references.
+        for (Iterator methods = actorClass.getMethods().iterator();
+             methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+            if(_debug)
+                System.out.println("Replacing entity calls in " + method);
 
-	    // right-arrow call-backs
-            ActionListener myRightPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_rightKeyPressed = true;
-			_rightKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
+            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
-            ActionListener myRightReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_rightKeyReleased = true;
-			_rightKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
+            CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
+            // this will help us figure out where locals are defined.
+            SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
 
-	    // down-arrow call-backs
-            ActionListener myDownPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_downKeyPressed = true;
-			_downKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
+            for (Iterator units = body.getUnits().snapshotIterator();
+                 units.hasNext();) {
+                Stmt unit = (Stmt)units.next();
+                if (!unit.containsInvokeExpr()) {
+                    continue;
+                }
+                ValueBox box = (ValueBox)unit.getInvokeExprBox();
+                Value value = box.getValue();
+                if (value instanceof InstanceInvokeExpr) {
+                    InstanceInvokeExpr r = (InstanceInvokeExpr)value;
+                    if (r.getMethod().getSubSignature().equals(
+                                PtolemyUtilities
+                                .getContainerMethod.getSubSignature())) {
 
-            ActionListener myDownReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_downKeyReleased = true;
-			_downKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
+                        Value newFieldRef =
+                            _getContainerMethodReplacementFieldRef(
+                                    (Local)r.getBase(),
+                                    unit, localDefs);
+                        box.setValue(newFieldRef);
+                        if(_debug) System.out.println("replacing " + unit);
+                    } else if (r.getMethod().equals(
+                                       PtolemyUtilities.toplevelMethod)) {
+                        // Replace with reference to the toplevel
+                        Value newFieldRef =
+                            Jimple.v().newStaticFieldRef((SootField)
+                                    _entityToFieldMap.get(_model));
+                        box.setValue(newFieldRef);
+                        if(_debug) System.out.println("replacing " + unit);
+                   } else if (r.getMethod().getSubSignature().equals(
+                                       PtolemyUtilities.getEntityMethod.getSubSignature())) {
+                        Value nameValue = r.getArg(0);
+                        if (Evaluator.isValueConstantValued(nameValue)) {
+                            StringConstant nameConstant =
+                                (StringConstant)
+                                Evaluator.getConstantValueOf(nameValue);
+                            String name = nameConstant.value;
 
-            getContentPane().setLayout(new BorderLayout());
-            JLabel label = new JLabel("Copy and/or Paste here!");
-            getContentPane().add(label);
+                            Value newFieldRef =
+                                _getEntityMethodReplacementFieldRef(
+                                        (Local)r.getBase(), name,
+                                        unit, localDefs);
+                            box.setValue(newFieldRef);
+                            if(_debug) System.out.println("replacing " + unit);
+                        } else {
+                            String string = "Entity cannot be " +
+                                "statically determined";
+                            throw new RuntimeException(string);
+                        }
 
-	    // As of jdk1.4, the .registerKeyboardAction() method below is
-            // considered obsolete.  Docs recommend using these two methods:
-	    //  .getInputMap().put(aKeyStroke, aCommand);
-	    //  .getActionMap().put(aCommmand, anAction);
-	    // with the String aCommand inserted to link them together.
-	    // See javax.swing.Jcomponent.registerKeyboardAction().
-
-	    // Registration of up-arrow call-backs.
-            label.registerKeyboardAction(myUpPressedListener,
-                    "UpPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_UP, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myUpReleasedListener,
-                    "UpReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_UP, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-	    // Registration of left-arrow call-backs.
-            label.registerKeyboardAction(myLeftPressedListener,
-                    "LeftPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_LEFT, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myLeftReleasedListener,
-                    "LeftReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_LEFT, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-	    // Registration of right-arrow call-backs.
-            label.registerKeyboardAction(myRightPressedListener,
-                    "RightPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_RIGHT, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myRightReleasedListener,
-                    "RightReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_RIGHT, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-	    // Registration of down-arrow call-backs.
-            label.registerKeyboardAction(myDownPressedListener,
-                    "DownPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_DOWN, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myDownReleasedListener,
-                    "DownReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_DOWN, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.setRequestFocusEnabled(true);
-            label.addMouseListener(new FocusMouseListener());
-            // Set the default size.
-            // Note that the location is of the frame, while the size
-            // is of the scrollpane.
-            pack();
-	    show();
-            if (_debugging) _debug("frame constructor completes");
+                    }
+                }
+            }
+            TypeAssigner.v().transform(body, "ta", "");
         }
 
-	/** This is simply the try-catch clause for the call to the
-         *  director.  It has been pulled out to make the code terser
-         *  and more readable.
-         */
-	private void tryCallingFireAtCurrentTime() {
-	    try {
-		getDirector().fireAtCurrentTime(ArrowKeySensor.this);
-	    } catch (IllegalActionException ex) {
-		System.out.println("--" + ex.toString() + "--");
-		System.out.println(this + "Ex calling fireAtCurrentTime");
-		throw new RuntimeException("-fireAt* catch-");
-	    }
-	}
+        if(actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
+            CompositeEntity model = (CompositeEntity)actor;
+            // Loop over all the entity classes and replace getAttribute calls.
+            for (Iterator i = model.deepEntityList().iterator();
+                 i.hasNext();) {
+                ComponentEntity entity = (ComponentEntity)i.next();
+                String className =
+                    ActorTransformer.getInstanceClassName(entity, _options);
+                SootClass entityClass =
+                    Scene.v().loadClassAndSupport(className);
+                _replaceEntityCalls(entityClass, entity);
 
+            }
+        }
     }
+
+    private Value _getContainerMethodReplacementFieldRef(Local baseLocal,
+            Unit unit, LocalDefs localDefs) {
+
+        // FIXME: This is not enough.
+        RefType type = (RefType)baseLocal.getType();
+        NamedObj object = (NamedObj)_classToObjectMap.get(type.getSootClass());
+        if (object != null) {
+            // Then we are dealing with a getContainer call on one of the
+            // classes we are generating.
+            Entity container = (Entity)object.getContainer();
+            return getFieldRefForEntity(container);
+        } else {
+            DefinitionStmt stmt = _getFieldDef(baseLocal, unit, localDefs);
+            System.out.println("stmt = " + stmt);
+            FieldRef ref = (FieldRef) stmt.getRightOp();
+            SootField field = ref.getField();
+            ValueTag tag = (ValueTag) field.getTag("_CGValue");
+            if(tag == null) {
+                return NullConstant.v();
+            }
+            object = (NamedObj)tag.getObject();
+            CompositeEntity container = (CompositeEntity)object.getContainer();
+            return getFieldRefForEntity(container);
+
+            //            throw new RuntimeException("unimplemented case");
+          //   // Walk back and get the definition of the field.
+//             DefinitionStmt definition =
+//                 _getFieldDef(baseLocal, unit, localDefs);
+//             InstanceFieldRef fieldRef = (InstanceFieldRef)
+//                 definition.getRightOp();
+//             SootField baseField = fieldRef.getField();
+//             System.out.println("baseField = " + baseField);
+//             return _getContainerMethodReplacementFieldRef(
+//                     (Local)fieldRef.getBase(),
+//                     baseField.getName() + "." + name, definition,
+//                     localDefs);
+//             //baseField.getDeclaringClass().getFieldByName(
+//             //    baseField.getName() + "_" + name);
+        }
+    }
+
+    private FieldRef _getEntityMethodReplacementFieldRef(Local baseLocal,
+            String name, Unit unit, LocalDefs localDefs) {
+
+        // FIXME: This is not enough.
+        RefType type = (RefType)baseLocal.getType();
+        NamedObj object = (NamedObj)_classToObjectMap.get(type.getSootClass());
+        if (object != null) {
+            // Then we are dealing with a getEntity call on one of the
+            // classes we are generating.
+            Entity entity = (Entity)((CompositeEntity)object).getEntity(name);
+            return getFieldRefForEntity(entity);
+        } else {
+            DefinitionStmt stmt = _getFieldDef(baseLocal, unit, localDefs);
+            FieldRef ref = (FieldRef) stmt.getRightOp();
+            SootField field = ref.getField();
+            CompositeEntity container = (CompositeEntity) _fieldToEntityMap.get(field);
+            return getFieldRefForEntity(container.getEntity(name));
+        }
+    }
+
+    /** Attempt to determine the constant value of the given local,
+     *  which is assumed to have a variable type.  Walk backwards
+     *  through all the possible places that the local may have been
+     *  defined and try to symbolically evaluate the value of the
+     *  variable. If the value can be determined, then return it,
+     *  otherwise return null.
+     */
+    private static DefinitionStmt _getFieldDef(Local local,
+            Unit location, LocalDefs localDefs) {
+        List definitionList = localDefs.getDefsOfAt(local, location);
+        if (definitionList.size() == 1) {
+            DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
+            Value value = (Value)stmt.getRightOp();
+            if (value instanceof CastExpr) {
+                return _getFieldDef((Local)((CastExpr)value).getOp(),
+                        stmt, localDefs);
+            } else if (value instanceof FieldRef) {
+                return stmt;
+            } else {
+                throw new RuntimeException("unknown value = " + value);
+            }
+        } else {
+            System.out.println("more than one definition of = " + local);
+            for (Iterator i = definitionList.iterator();
+                 i.hasNext();) {
+                System.out.println(i.next().toString());
+            }
+        }
+        return null;
+    }
+
+    private void _createEntityInstanceFields(SootClass actorClass,
+            ComponentEntity actor) {
+
+        // Create a static field in the actor class.  This field
+        // will reference the singleton instance of the actor class.
+        SootField field = new SootField(
+                "_CGInstance",
+                RefType.v(actorClass),
+                Modifier.PUBLIC | Modifier.STATIC);
+        actorClass.addField(field);
+
+        field.addTag(new ValueTag(actor));
+        _entityToFieldMap.put(actor, field);
+        _fieldToEntityMap.put(field, actor);
+
+        // Add code to the end of each class initializer to set the
+        // instance field.
+        for(Iterator methods = actorClass.getMethods().iterator();
+            methods.hasNext();) {
+            SootMethod method = (SootMethod) methods.next();
+            if(method.getName().equals("<init>")) {
+                JimpleBody body = (JimpleBody)method.getActiveBody();
+                body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(
+                                Jimple.v().newStaticFieldRef(field),
+                                body.getThisLocal()),
+                        body.getUnits().getLast());
+            }
+        }
+
+
+        _classToObjectMap.put(actorClass, actor);
+
+        // Loop over all the actor instance classes and get
+        // fields for ports.
+        if(actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {
+            // Then recurse
+            CompositeEntity model = (CompositeEntity)actor;
+            for (Iterator i = model.deepEntityList().iterator();
+                 i.hasNext();) {
+                ComponentEntity entity = (ComponentEntity)i.next();
+                String className =
+                    ActorTransformer.getInstanceClassName(entity, _options);
+                SootClass entityClass =
+                    Scene.v().loadClassAndSupport(className);
+                _createEntityInstanceFields(entityClass, entity);
+            }
+        }
+    }
+
+    private CompositeActor _model;
+    private Map _options;
+    private boolean _debug;
+    private static Map _entityToFieldMap;
+    private static Map _fieldToEntityMap;
+    private Map _classToObjectMap;
 }
+
+
+
+
+
+
+
+
+
 
 
 

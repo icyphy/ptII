@@ -1,6 +1,6 @@
-/* An actor which pops up a keystroke-sensing JFrame.
+/* The base type of matrix token classes.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 1997-2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -24,393 +24,235 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
-@AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
+@ProposedRating Red (yuhong@eecs.berkeley.edu)
+@AcceptedRating Red
 */
 
-package ptolemy.actor.lib.gui;
+package ptolemy.data.type;
 
-// Imports from ptolemy/vergil/basic/BasicGraphFrame.java (not pruned)
-import diva.gui.toolbox.FocusMouseListener;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.KeyStroke;
-import java.awt.BorderLayout;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-//import java.awt.event.MouseListener;
+import java.lang.reflect.Modifier;
+import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
+import java.io.Serializable;
 
-// Imports from ptolemy/actor/lib/net/DatagramReader.java (not pruned)
-//import ptolemy.actor.AtomicActor;
-//import ptolemy.actor.IOPort;
-  import ptolemy.actor.TypedAtomicActor;
-  import ptolemy.actor.TypedIOPort;
-  import ptolemy.data.ArrayToken;
-//import ptolemy.data.BooleanToken;
-  import ptolemy.data.IntToken;
-  import ptolemy.data.StringToken;
-  import ptolemy.data.Token;
-//import ptolemy.data.expr.Parameter;
-  import ptolemy.data.type.ArrayType;
-  import ptolemy.data.type.BaseType;
-//import ptolemy.data.type.Type;
-  import ptolemy.kernel.CompositeEntity;
-//import ptolemy.kernel.util.Attribute;
-  import ptolemy.kernel.util.IllegalActionException;
-  import ptolemy.kernel.util.NameDuplicationException;
-//import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.graph.CPO;
+import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// ArrowKeySensor
+//// TopMatrixType
 /**
-When this actor is preinitialized, it pops up a new JFrame window on
-the desktop, usually in the upper left hand corner of the screen.
-When this JFrame has the focus (such as when it has been clicked on)
-it is capable of sensing keystrokes.  <p>
+The least upper bound for all matrix types.
 
-This actor senses only the four non-numeric-pad arrow-key keystrokes.
-This actor is almost identical to KeystrokeSensor.java.  One
-difference is the different set of keystrokes sensed.  The other
-difference, is that this actor responds to key releases as well as key
-presses.  Upon each key press, the integer 1 is broadcast from the
-corresponding output.  Upon each key release, the integer 0 is
-output.<p>
-
-This actor contains a private inner class which generated the JFrame.
-The frame sets up call-backs which react to the keystrokes.  When called,
-these call the director's fireAtCurrentTime() method.  This causes
-the director to call fire() on the actor.   The actor then broadcasts
-tokens from one or both outputs depending on which keystroke(s) have
-occurred since the actor was last fired.  <p>
-
-NOTE: This actor only works in the DE domain due to its reliance on
-this director's fireAtCurrentTime() method.
-
-@author Winthrop Williams
+@author Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 2.1
+@since Ptolemy II 2.0
 */
-public class ArrowKeySensor extends TypedAtomicActor {
 
-    /** Construct an actor with the given container and name.
-     *  @param container The container.
-     *  @param name The name of this actor.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
+public class TopMatrixType extends StructuredType
+    implements Serializable {
+
+    /** Construct a new matrix type that represents the top element of all
+     *  matrix types.
      */
-    public ArrowKeySensor(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
-        super(container, name);
-
-        // Outputs
-
-        upArrow = new TypedIOPort(this, "upArrow");
-        upArrow.setTypeEquals(BaseType.INT);
-        upArrow.setOutput(true);
-
-        leftArrow = new TypedIOPort(this, "leftArrow");
-        leftArrow.setTypeEquals(BaseType.INT);
-        leftArrow.setOutput(true);
-
-        rightArrow = new TypedIOPort(this, "rightArrow");
-        rightArrow.setTypeEquals(BaseType.INT);
-        rightArrow.setOutput(true);
-
-        downArrow = new TypedIOPort(this, "downArrow");
-        downArrow.setTypeEquals(BaseType.INT);
-        downArrow.setOutput(true);
+    private TopMatrixType() {
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort upArrow;
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort leftArrow;
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort rightArrow;
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort downArrow;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-    /** Broadcast the integer value 1 for each key pressed and 0 for
-     *  each released.
+    /** Return this, that is, return the reference to this object.
+     *  @return A MatrixType.
      */
-    public void fire() throws IllegalActionException {
-        if (_debugging) _debug("fire has been called");
-
-
-	// Broadcast key presses
-
-	if (_upKeyPressed) {
-	    _upKeyPressed = false;
-	    upArrow.broadcast(new IntToken(1));
-	}
-
-	if (_leftKeyPressed) {
-	    _leftKeyPressed = false;
-	    leftArrow.broadcast(new IntToken(1));
-	}
-
-	if (_rightKeyPressed) {
-	    _rightKeyPressed = false;
-	    rightArrow.broadcast(new IntToken(1));
-	}
-
-	if (_downKeyPressed) {
-	    _downKeyPressed = false;
-	    downArrow.broadcast(new IntToken(1));
-	}
-
-
-	// Broadcast key releases
-
-	if (_upKeyReleased) {
-	    _upKeyReleased = false;
-	    upArrow.broadcast(new IntToken(0));
-	}
-
-	if (_leftKeyReleased) {
-	    _leftKeyReleased = false;
-	    leftArrow.broadcast(new IntToken(0));
-	}
-
-	if (_rightKeyReleased) {
-	    _rightKeyReleased = false;
-	    rightArrow.broadcast(new IntToken(0));
-	}
-
-	if (_downKeyReleased) {
-	    _downKeyReleased = false;
-	    downArrow.broadcast(new IntToken(0));
-	}
-
-	if (_debugging) _debug("fire has completed");
+    public Object clone() {
+        return this;
     }
 
-    /** Create the JFrame window capable of detecting the key-presses. */
-    public void initialize() {
-        if (_debugging) _debug("frame will be constructed");
-        _myFrame = new MyFrame();
-        if (_debugging) _debug("frame was constructed");
-    }
-
-    /** Dispose of the JFrame, causing the window to vanish. */
-    public void wrapup() {
-	_myFrame.dispose();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables
-
-    /** The JFrame */
-    private MyFrame _myFrame;
-
-    /** The flags indicating which keys have been pressed or released
-     *  since the last firing of the actor.  <i>Pressed</i> and
-     *  <i>Released</i> are are not allowed to both be true for the
-     *  same key (Though both may be false).  The most recent action
-     *  (press or release) takes precedence.
+    /** Convert the specified token to a token having the type
+     *  represented by this object.
+     *  @param token A token.
+     *  @return A token.
+     *  @exception IllegalActionException If lossless conversion cannot
+     *   be done.
      */
-    private boolean _upKeyPressed = false;
-    private boolean _leftKeyPressed = false;
-    private boolean _rightKeyPressed = false;
-    private boolean _downKeyPressed = false;
-    private boolean _upKeyReleased = false;
-    private boolean _leftKeyReleased = false;
-    private boolean _rightKeyReleased = false;
-    private boolean _downKeyReleased = false;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     private inner classes                 ////
-
-    private class MyFrame extends JFrame {
-
-        /** Construct a frame.  After constructing this, it is
-         *  necessary to call setVisible(true) to make the frame
-         *  appear.  This is done by calling show() at the end of this
-         *  constructor.
-         *  @see Tableau#show()
-         *  @param entity The model to put in this frame.
-         *  @param tableau The tableau responsible for this frame.  */
-        public MyFrame() {
-            if (_debugging) _debug("frame constructor called");
-
-	    // up-arrow call-backs
-            ActionListener myUpPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_upKeyPressed = true;
-			_upKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            ActionListener myUpReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_upKeyReleased = true;
-			_upKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-	    // left-arrow call-backs
-            ActionListener myLeftPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_leftKeyPressed = true;
-			_leftKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            ActionListener myLeftReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_leftKeyReleased = true;
-			_leftKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-	    // right-arrow call-backs
-            ActionListener myRightPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_rightKeyPressed = true;
-			_rightKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            ActionListener myRightReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_rightKeyReleased = true;
-			_rightKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-	    // down-arrow call-backs
-            ActionListener myDownPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_downKeyPressed = true;
-			_downKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            ActionListener myDownReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_downKeyReleased = true;
-			_downKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            getContentPane().setLayout(new BorderLayout());
-            JLabel label = new JLabel("Copy and/or Paste here!");
-            getContentPane().add(label);
-
-	    // As of jdk1.4, the .registerKeyboardAction() method below is
-            // considered obsolete.  Docs recommend using these two methods:
-	    //  .getInputMap().put(aKeyStroke, aCommand);
-	    //  .getActionMap().put(aCommmand, anAction);
-	    // with the String aCommand inserted to link them together.
-	    // See javax.swing.Jcomponent.registerKeyboardAction().
-
-	    // Registration of up-arrow call-backs.
-            label.registerKeyboardAction(myUpPressedListener,
-                    "UpPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_UP, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myUpReleasedListener,
-                    "UpReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_UP, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-	    // Registration of left-arrow call-backs.
-            label.registerKeyboardAction(myLeftPressedListener,
-                    "LeftPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_LEFT, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myLeftReleasedListener,
-                    "LeftReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_LEFT, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-	    // Registration of right-arrow call-backs.
-            label.registerKeyboardAction(myRightPressedListener,
-                    "RightPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_RIGHT, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myRightReleasedListener,
-                    "RightReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_RIGHT, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-	    // Registration of down-arrow call-backs.
-            label.registerKeyboardAction(myDownPressedListener,
-                    "DownPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_DOWN, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myDownReleasedListener,
-                    "DownReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_DOWN, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.setRequestFocusEnabled(true);
-            label.addMouseListener(new FocusMouseListener());
-            // Set the default size.
-            // Note that the location is of the frame, while the size
-            // is of the scrollpane.
-            pack();
-	    show();
-            if (_debugging) _debug("frame constructor completes");
+    public Token convert(Token token)
+            throws IllegalActionException {
+        // Any matrix token is a valid instance of this type.
+        // This is useful because there are some things like
+        // the matrix visualizer that can meaningfully accept any token
+        // type.
+        if(token instanceof MatrixToken) {
+            return token;
+        } else {
+            throw new IllegalActionException("Cannot convert " + token +
+                    " to TopMatrixType");
         }
-
-	/** This is simply the try-catch clause for the call to the
-         *  director.  It has been pulled out to make the code terser
-         *  and more readable.
-         */
-	private void tryCallingFireAtCurrentTime() {
-	    try {
-		getDirector().fireAtCurrentTime(ArrowKeySensor.this);
-	    } catch (IllegalActionException ex) {
-		System.out.println("--" + ex.toString() + "--");
-		System.out.println(this + "Ex calling fireAtCurrentTime");
-		throw new RuntimeException("-fireAt* catch-");
-	    }
-	}
-
     }
+
+    /** Determine if the argument represents the same MatrixType as this
+     *  object.
+     *  @param type A Type.
+     *  @return True if the argument type is a matrix type representing the
+     *  same class, with the same number of rows and columns.
+     */
+    public boolean equals(Object object) {
+        return object == getInstance();
+    }
+
+    /** Return the singleton instance of this class.
+     */
+    public static TopMatrixType getInstance() {
+        return _instance;
+    }
+
+    /** Return the class for tokens that this type represents.
+     */
+    public Class getTokenClass() {
+        return Token.class;
+    }
+
+    /** Return a hash code value for this object.
+     *  @return The hash code for the TopMatrixType class.
+     */
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    /** Set the elements that have declared type BaseType.UNKNOWN to the
+     *  specified type.
+     *  @param type A Type.
+     */
+    public void initialize(Type type) {
+        throw new InternalErrorException(
+                "TopMatrixType.initialize: Cannot " +
+                "initialize the element type to " + type + ".");
+    }
+
+    /** Test if the argument type is compatible with this type. The method
+     *  returns true if this type is UNKNOWN, since any type is a substitution
+     *  instance of it. If this type is not UNKNOWN, this method returns true
+     *  if the argument type is less than or equal to this type in the type
+     *  lattice, and false otherwise.
+     *  @param type An instance of Type.
+     *  @return True if the argument is compatible with this type.
+     */
+    public boolean isCompatible(Type type) {
+        int typeInfo = TypeLattice.compare(this, type);
+        return (typeInfo == CPO.SAME || typeInfo == CPO.HIGHER);
+    }
+
+    /** Test if this Type is a constant. A Type is a constant if it
+     *  does not contain BaseType.UNKNOWN in any level within it.
+     *  @return False.
+     */
+    public boolean isConstant() {
+        return true;
+    }
+
+    /** Test if this type corresponds to an instantiable token
+     *  classes.
+     *  @return False.
+     */
+    public boolean isInstantiable() {
+        return false;
+    }
+
+    /** Test if the argument is a substitution instance of this type.
+     *  @param type A Type.
+     *  @return False.
+     */
+    public boolean isSubstitutionInstance(Type type) {
+        return false;
+    }
+
+    /** Return the string representation of this type.
+     *  @return A String.
+     */
+    public String toString() {
+        return "[general]";
+    }
+
+    /** Update this StructuredType to the specified Structured Type.
+     ** The specified type must have the same structure as this type.
+     *  This method will only update the component type that is
+     *  BaseType.UNKNOWN, and leave the constant part of this type intact.
+     *  @param newType A StructuredType.
+     *  @exception IllegalActionException If the specified type has a
+     *   different structure.
+     */
+    public void updateType(StructuredType newType)
+            throws IllegalActionException {
+        throw new InternalErrorException(
+                "TopMatrixType.updateType: Cannot " +
+                "updateType the element type to " + newType + ".");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Compare this type with the specified type. The specified type
+     *  must be of the same structured type, otherwise an exception will
+     *  be thrown.
+     *  This method returns one of ptolemy.graph.CPO.LOWER,
+     *  ptolemy.graph.CPO.SAME, ptolemy.graph.CPO.HIGHER,
+     *  ptolemy.graph.CPO.INCOMPARABLE, indicating this type is lower
+     *  than, equal to, higher than, or incomparable with the
+     *  specified type in the type hierarchy, respectively.
+     *  @param type a StructuredType.
+     *  @return An integer.
+     *  @exception IllegalArgumentException If the specified type is
+     *   not the same structured type as this one.
+     */
+    protected int _compare(StructuredType type) {
+        if(equals(type)) {
+            return CPO.SAME;
+        } else {
+            return CPO.HIGHER;
+        }
+    }
+
+    /** Return a static instance of this structured type. The return
+     *  value is used by TypeLattice to represent this type.
+     *  @return a StructuredType.
+     */
+    protected StructuredType _getRepresentative() {
+        return this;
+    }
+
+    /** Return the greatest lower bound of this type with the specified
+     *  type. The specified type must be of the same structured type,
+     *  otherwise an exception will be thrown.
+     *  @param type a StructuredType.
+     *  @return a StructuredType.
+     *  @exception IllegalArgumentException If the specified type is
+     *   not the same structured type as this one.
+     */
+    protected StructuredType _greatestLowerBound(StructuredType type) {
+        if(equals(type)) {
+            return this;
+        } else {
+            return type;
+        }
+    }
+
+    /** Return the least upper bound of this type with the specified
+     *  type. The specified type must be of the same structured type,
+     *  otherwise an exception will be thrown.
+     *  @param type a StructuredType.
+     *  @return a StructuredType.
+     *  @exception IllegalArgumentException If the specified type is
+     *   not the same structured type as this one.
+     */
+    protected StructuredType _leastUpperBound(StructuredType type) {
+        return this;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+
+    private static TopMatrixType _instance = new TopMatrixType();
 }
-
-
-
-
 

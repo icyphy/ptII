@@ -1,6 +1,6 @@
-/* An actor which pops up a keystroke-sensing JFrame.
+/* A transformer that removes unused fields from classes.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2001-2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -23,392 +23,191 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-
-@ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
-@AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.lib.gui;
+package ptolemy.copernicus.kernel;
 
-// Imports from ptolemy/vergil/basic/BasicGraphFrame.java (not pruned)
-import diva.gui.toolbox.FocusMouseListener;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.KeyStroke;
-import java.awt.BorderLayout;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-//import java.awt.event.MouseListener;
+import soot.*;
+import soot.jimple.*;
+import soot.jimple.toolkits.invoke.SiteInliner;
+import soot.jimple.toolkits.invoke.StaticInliner;
+import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
+import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
+import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
+import soot.jimple.toolkits.scalar.CopyPropagator;
+import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
+import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
+import soot.jimple.toolkits.scalar.Evaluator;
+import soot.toolkits.graph.*;
+import soot.toolkits.scalar.*;
+import soot.dava.*;
+import soot.util.*;
+import java.io.*;
+import java.util.*;
 
-// Imports from ptolemy/actor/lib/net/DatagramReader.java (not pruned)
-//import ptolemy.actor.AtomicActor;
-//import ptolemy.actor.IOPort;
-  import ptolemy.actor.TypedAtomicActor;
-  import ptolemy.actor.TypedIOPort;
-  import ptolemy.data.ArrayToken;
-//import ptolemy.data.BooleanToken;
-  import ptolemy.data.IntToken;
-  import ptolemy.data.StringToken;
-  import ptolemy.data.Token;
-//import ptolemy.data.expr.Parameter;
-  import ptolemy.data.type.ArrayType;
-  import ptolemy.data.type.BaseType;
-//import ptolemy.data.type.Type;
-  import ptolemy.kernel.CompositeEntity;
-//import ptolemy.kernel.util.Attribute;
-  import ptolemy.kernel.util.IllegalActionException;
-  import ptolemy.kernel.util.NameDuplicationException;
-//import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.*;
+import ptolemy.kernel.*;
+import ptolemy.actor.*;
+import ptolemy.moml.*;
+import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.data.*;
+import ptolemy.data.expr.Variable;
+import ptolemy.copernicus.kernel.SootUtilities;
+
 
 //////////////////////////////////////////////////////////////////////////
-//// ArrowKeySensor
+//// UnusedFieldRemover
 /**
-When this actor is preinitialized, it pops up a new JFrame window on
-the desktop, usually in the upper left hand corner of the screen.
-When this JFrame has the focus (such as when it has been clicked on)
-it is capable of sensing keystrokes.  <p>
+A Transformer that removes any private fields from a class that are
+never read.  This transformer also transforms the bodies of the
+methods in a class to remove any writes to a removed field.
 
-This actor senses only the four non-numeric-pad arrow-key keystrokes.
-This actor is almost identical to KeystrokeSensor.java.  One
-difference is the different set of keystrokes sensed.  The other
-difference, is that this actor responds to key releases as well as key
-presses.  Upon each key press, the integer 1 is broadcast from the
-corresponding output.  Upon each key release, the integer 0 is
-output.<p>
-
-This actor contains a private inner class which generated the JFrame.
-The frame sets up call-backs which react to the keystrokes.  When called,
-these call the director's fireAtCurrentTime() method.  This causes
-the director to call fire() on the actor.   The actor then broadcasts
-tokens from one or both outputs depending on which keystroke(s) have
-occurred since the actor was last fired.  <p>
-
-NOTE: This actor only works in the DE domain due to its reliance on
-this director's fireAtCurrentTime() method.
-
-@author Winthrop Williams
+@author Stephen Neuendorffer
 @version $Id$
-@since Ptolemy II 2.1
+@since Ptolemy II 2.0
+
 */
-public class ArrowKeySensor extends TypedAtomicActor {
+public class UnusedFieldRemover extends SceneTransformer {
 
-    /** Construct an actor with the given container and name.
-     *  @param container The container.
-     *  @param name The name of this actor.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
+    /** Return an instance of this transformer that will operate on
+     *  the given model.  The model is assumed to already have been
+     *  properly initialized so that resolved types and other static
+     *  properties of the model can be inspected.
      */
-    public ArrowKeySensor(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
-        super(container, name);
-
-        // Outputs
-
-        upArrow = new TypedIOPort(this, "upArrow");
-        upArrow.setTypeEquals(BaseType.INT);
-        upArrow.setOutput(true);
-
-        leftArrow = new TypedIOPort(this, "leftArrow");
-        leftArrow.setTypeEquals(BaseType.INT);
-        leftArrow.setOutput(true);
-
-        rightArrow = new TypedIOPort(this, "rightArrow");
-        rightArrow.setTypeEquals(BaseType.INT);
-        rightArrow.setOutput(true);
-
-        downArrow = new TypedIOPort(this, "downArrow");
-        downArrow.setTypeEquals(BaseType.INT);
-        downArrow.setOutput(true);
+    public static UnusedFieldRemover v() {
+        return _instance;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort upArrow;
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort leftArrow;
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort rightArrow;
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort downArrow;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-
-    /** Broadcast the integer value 1 for each key pressed and 0 for
-     *  each released.
-     */
-    public void fire() throws IllegalActionException {
-        if (_debugging) _debug("fire has been called");
-
-
-	// Broadcast key presses
-
-	if (_upKeyPressed) {
-	    _upKeyPressed = false;
-	    upArrow.broadcast(new IntToken(1));
-	}
-
-	if (_leftKeyPressed) {
-	    _leftKeyPressed = false;
-	    leftArrow.broadcast(new IntToken(1));
-	}
-
-	if (_rightKeyPressed) {
-	    _rightKeyPressed = false;
-	    rightArrow.broadcast(new IntToken(1));
-	}
-
-	if (_downKeyPressed) {
-	    _downKeyPressed = false;
-	    downArrow.broadcast(new IntToken(1));
-	}
-
-
-	// Broadcast key releases
-
-	if (_upKeyReleased) {
-	    _upKeyReleased = false;
-	    upArrow.broadcast(new IntToken(0));
-	}
-
-	if (_leftKeyReleased) {
-	    _leftKeyReleased = false;
-	    leftArrow.broadcast(new IntToken(0));
-	}
-
-	if (_rightKeyReleased) {
-	    _rightKeyReleased = false;
-	    rightArrow.broadcast(new IntToken(0));
-	}
-
-	if (_downKeyReleased) {
-	    _downKeyReleased = false;
-	    downArrow.broadcast(new IntToken(0));
-	}
-
-	if (_debugging) _debug("fire has completed");
+    public String getDefaultOptions() {
+        return "";
     }
 
-    /** Create the JFrame window capable of detecting the key-presses. */
-    public void initialize() {
-        if (_debugging) _debug("frame will be constructed");
-        _myFrame = new MyFrame();
-        if (_debugging) _debug("frame was constructed");
+    public String getDeclaredOptions() {
+        return super.getDeclaredOptions();
     }
 
-    /** Dispose of the JFrame, causing the window to vanish. */
-    public void wrapup() {
-	_myFrame.dispose();
-    }
+    protected void internalTransform(String phaseName, Map options) {
+        int localCount = 0;
+        System.out.println("UnusedFieldRemover.internalTransform("
+                + phaseName + ", " + options + ")");
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables
+        SootClass stringClass =
+            Scene.v().loadClassAndSupport("java.lang.String");
+        Type stringType = RefType.v(stringClass);
+        SootClass objectClass =
+            Scene.v().loadClassAndSupport("java.lang.Object");
+        SootMethod toStringMethod =
+            objectClass.getMethod("java.lang.String toString()");
+        SootClass namedObjClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
+        SootMethod getAttributeMethod = namedObjClass.getMethod(
+                "ptolemy.kernel.util.Attribute getAttribute(java.lang.String)");
+        SootMethod attributeChangedMethod = namedObjClass.getMethod(
+                "void attributeChanged(ptolemy.kernel.util.Attribute)");
 
-    /** The JFrame */
-    private MyFrame _myFrame;
+        SootClass attributeClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
+        Type attributeType = RefType.v(attributeClass);
+        SootClass settableClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
+        Type settableType = RefType.v(settableClass);
+        SootMethod getExpressionMethod =
+            settableClass.getMethod("java.lang.String getExpression()");
+        SootMethod setExpressionMethod =
+            settableClass.getMethod("void setExpression(java.lang.String)");
 
-    /** The flags indicating which keys have been pressed or released
-     *  since the last firing of the actor.  <i>Pressed</i> and
-     *  <i>Released</i> are are not allowed to both be true for the
-     *  same key (Though both may be false).  The most recent action
-     *  (press or release) takes precedence.
-     */
-    private boolean _upKeyPressed = false;
-    private boolean _leftKeyPressed = false;
-    private boolean _rightKeyPressed = false;
-    private boolean _downKeyPressed = false;
-    private boolean _upKeyReleased = false;
-    private boolean _leftKeyReleased = false;
-    private boolean _rightKeyReleased = false;
-    private boolean _downKeyReleased = false;
+        SootClass tokenClass =
+            Scene.v().loadClassAndSupport("ptolemy.data.Token");
+        Type tokenType = RefType.v(tokenClass);
+        SootClass parameterClass =
+            Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");
+        SootMethod getTokenMethod =
+            parameterClass.getMethod("ptolemy.data.Token getToken()");
+        SootMethod setTokenMethod =
+            parameterClass.getMethod("void setToken(ptolemy.data.Token)");
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     private inner classes                 ////
+        Set unusedFieldSet = new HashSet();
+        // Loop over all the actor instance classes and create the set of
+        // all fields.
+        for (Iterator i = Scene.v().getApplicationClasses().iterator();
+             i.hasNext();) {
+            SootClass entityClass = (SootClass)i.next();
 
-    private class MyFrame extends JFrame {
-
-        /** Construct a frame.  After constructing this, it is
-         *  necessary to call setVisible(true) to make the frame
-         *  appear.  This is done by calling show() at the end of this
-         *  constructor.
-         *  @see Tableau#show()
-         *  @param entity The model to put in this frame.
-         *  @param tableau The tableau responsible for this frame.  */
-        public MyFrame() {
-            if (_debugging) _debug("frame constructor called");
-
-	    // up-arrow call-backs
-            ActionListener myUpPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_upKeyPressed = true;
-			_upKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            ActionListener myUpReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_upKeyReleased = true;
-			_upKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-	    // left-arrow call-backs
-            ActionListener myLeftPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_leftKeyPressed = true;
-			_leftKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            ActionListener myLeftReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_leftKeyReleased = true;
-			_leftKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-	    // right-arrow call-backs
-            ActionListener myRightPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_rightKeyPressed = true;
-			_rightKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            ActionListener myRightReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_rightKeyReleased = true;
-			_rightKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-	    // down-arrow call-backs
-            ActionListener myDownPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_downKeyPressed = true;
-			_downKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            ActionListener myDownReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_downKeyReleased = true;
-			_downKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            getContentPane().setLayout(new BorderLayout());
-            JLabel label = new JLabel("Copy and/or Paste here!");
-            getContentPane().add(label);
-
-	    // As of jdk1.4, the .registerKeyboardAction() method below is
-            // considered obsolete.  Docs recommend using these two methods:
-	    //  .getInputMap().put(aKeyStroke, aCommand);
-	    //  .getActionMap().put(aCommmand, anAction);
-	    // with the String aCommand inserted to link them together.
-	    // See javax.swing.Jcomponent.registerKeyboardAction().
-
-	    // Registration of up-arrow call-backs.
-            label.registerKeyboardAction(myUpPressedListener,
-                    "UpPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_UP, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myUpReleasedListener,
-                    "UpReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_UP, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-	    // Registration of left-arrow call-backs.
-            label.registerKeyboardAction(myLeftPressedListener,
-                    "LeftPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_LEFT, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myLeftReleasedListener,
-                    "LeftReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_LEFT, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-	    // Registration of right-arrow call-backs.
-            label.registerKeyboardAction(myRightPressedListener,
-                    "RightPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_RIGHT, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myRightReleasedListener,
-                    "RightReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_RIGHT, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-	    // Registration of down-arrow call-backs.
-            label.registerKeyboardAction(myDownPressedListener,
-                    "DownPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_DOWN, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myDownReleasedListener,
-                    "DownReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_DOWN, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.setRequestFocusEnabled(true);
-            label.addMouseListener(new FocusMouseListener());
-            // Set the default size.
-            // Note that the location is of the frame, while the size
-            // is of the scrollpane.
-            pack();
-	    show();
-            if (_debugging) _debug("frame constructor completes");
+            unusedFieldSet.addAll(entityClass.getFields());
         }
 
-	/** This is simply the try-catch clause for the call to the
-         *  director.  It has been pulled out to make the code terser
-         *  and more readable.
-         */
-	private void tryCallingFireAtCurrentTime() {
-	    try {
-		getDirector().fireAtCurrentTime(ArrowKeySensor.this);
-	    } catch (IllegalActionException ex) {
-		System.out.println("--" + ex.toString() + "--");
-		System.out.println(this + "Ex calling fireAtCurrentTime");
-		throw new RuntimeException("-fireAt* catch-");
-	    }
-	}
+        // Loop through all the methods and kill all the used fields.
+        for (Iterator i = Scene.v().getApplicationClasses().iterator();
+             i.hasNext();) {
+            SootClass entityClass = (SootClass)i.next();
+            for (Iterator methods = entityClass.getMethods().iterator();
+                 methods.hasNext();) {
+                SootMethod method = (SootMethod)methods.next();
+                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                for(Iterator stmts = body.getUnits().iterator();
+                    stmts.hasNext();) {
+                    Stmt stmt = (Stmt)stmts.next();
+                    for (Iterator boxes = stmt.getUseBoxes().iterator();
+                         boxes.hasNext();) {
+                        ValueBox box = (ValueBox)boxes.next();
+                        Value value = box.getValue();
+                        if(value instanceof FieldRef) {
+                            Object field = ((FieldRef)value).getField();
+                            unusedFieldSet.remove(field);
+                        }
+                    }
+                }
+            }
+        }
 
+        // Loop through the methods again, and kill the statements
+        // that write to an unused field.
+        for (Iterator i = Scene.v().getApplicationClasses().iterator();
+             i.hasNext();) {
+            SootClass entityClass = (SootClass)i.next();
+            for (Iterator methods = entityClass.getMethods().iterator();
+                 methods.hasNext();) {
+                SootMethod method = (SootMethod)methods.next();
+                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                for(Iterator stmts = body.getUnits().snapshotIterator();
+                    stmts.hasNext();) {
+                    Stmt stmt = (Stmt)stmts.next();
+                    for (Iterator boxes = stmt.getDefBoxes().iterator();
+                         boxes.hasNext();) {
+                        ValueBox box = (ValueBox)boxes.next();
+                        Value value = box.getValue();
+                        if(value instanceof FieldRef) {
+                            Object field = ((FieldRef)value).getField();
+                            if(unusedFieldSet.contains(field)) {
+                                body.getUnits().remove(stmt);
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (Iterator fields = entityClass.getFields().snapshotIterator();
+                 fields.hasNext();) {
+                SootField field = (SootField)fields.next();
+                if(unusedFieldSet.contains(field)) {
+                    entityClass.removeField(field);
+                }
+            }
+        }
     }
+    private static UnusedFieldRemover _instance = new UnusedFieldRemover();
 }
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,6 +1,6 @@
-/* An actor which pops up a keystroke-sensing JFrame.
+/* An analysis that finds the free variables in a ptolemy model
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2001-2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -23,394 +23,307 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-
-@ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
-@AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.lib.gui;
+package ptolemy.copernicus.java;
 
-// Imports from ptolemy/vergil/basic/BasicGraphFrame.java (not pruned)
-import diva.gui.toolbox.FocusMouseListener;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.KeyStroke;
-import java.awt.BorderLayout;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-//import java.awt.event.MouseListener;
+import soot.*;
+import soot.jimple.*;
+import soot.toolkits.graph.CompleteUnitGraph;
+import soot.toolkits.graph.UnitGraph;
+import soot.toolkits.scalar.ForwardFlowAnalysis;
+import soot.toolkits.scalar.LocalDefs;
+import soot.toolkits.scalar.SimpleLocalDefs;
+import soot.toolkits.scalar.SimpleLocalUses;
+import soot.toolkits.scalar.LocalUses;
 
-// Imports from ptolemy/actor/lib/net/DatagramReader.java (not pruned)
-//import ptolemy.actor.AtomicActor;
-//import ptolemy.actor.IOPort;
-  import ptolemy.actor.TypedAtomicActor;
-  import ptolemy.actor.TypedIOPort;
-  import ptolemy.data.ArrayToken;
-//import ptolemy.data.BooleanToken;
-  import ptolemy.data.IntToken;
-  import ptolemy.data.StringToken;
-  import ptolemy.data.Token;
-//import ptolemy.data.expr.Parameter;
-  import ptolemy.data.type.ArrayType;
-  import ptolemy.data.type.BaseType;
-//import ptolemy.data.type.Type;
-  import ptolemy.kernel.CompositeEntity;
-//import ptolemy.kernel.util.Attribute;
-  import ptolemy.kernel.util.IllegalActionException;
-  import ptolemy.kernel.util.NameDuplicationException;
-//import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.*;
+import ptolemy.kernel.*;
+import ptolemy.actor.*;
+import ptolemy.data.*;
+import ptolemy.data.expr.*;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.TypeLattice;
+import ptolemy.domains.fsm.kernel.*;
+import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.copernicus.kernel.FastForwardFlowAnalysis;
+
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// ArrowKeySensor
+//// ConstVariableModelAnalysis
 /**
-When this actor is preinitialized, it pops up a new JFrame window on
-the desktop, usually in the upper left hand corner of the screen.
-When this JFrame has the focus (such as when it has been clicked on)
-it is capable of sensing keystrokes.  <p>
+An analysis that traverses a model to determine all the constant
+variables in a hierarchical model.  Basically, a constant variable in
+a particular model is any variable in the model that is defined by a
+expression of constants, or any variable that is defined by an
+expression whos list of variables is contained within all the constant
+variables in scope of that variable.
 
-This actor senses only the four non-numeric-pad arrow-key keystrokes.
-This actor is almost identical to KeystrokeSensor.java.  One
-difference is the different set of keystrokes sensed.  The other
-difference, is that this actor responds to key releases as well as key
-presses.  Upon each key press, the integer 1 is broadcast from the
-corresponding output.  Upon each key release, the integer 0 is
-output.<p>
+<p> This class computes the set of constant variables by computing the
+set of variables that are not constant and then performing the
+complement.  This is somewhat easier to compute.  The computation is
+performed in two passes, the first of which extracts the set of
+variables which must be not-constant either by inclusion in an initial
+set, or by assignment from within a modal model.  The second pass
+collects all the variables which are not constant because they depend
+on other variables which are not constant.
 
-This actor contains a private inner class which generated the JFrame.
-The frame sets up call-backs which react to the keystrokes.  When called,
-these call the director's fireAtCurrentTime() method.  This causes
-the director to call fire() on the actor.   The actor then broadcasts
-tokens from one or both outputs depending on which keystroke(s) have
-occurred since the actor was last fired.  <p>
-
-NOTE: This actor only works in the DE domain due to its reliance on
-this director's fireAtCurrentTime() method.
-
-@author Winthrop Williams
+@author Stephen Neuendorffer
 @version $Id$
-@since Ptolemy II 2.1
+@since Ptolemy II 2.0
 */
-public class ArrowKeySensor extends TypedAtomicActor {
+public class ConstVariableModelAnalysis {
 
-    /** Construct an actor with the given container and name.
-     *  @param container The container.
-     *  @param name The name of this actor.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
+    /** Analyze the given model to determine which variables must be
+     *  constants and which variables may change dynamically during
+     *  execution.  In addition, store the intermediate results for
+     *  contained actors so they can be retrieved by the
+     *  getConstVariables() method.
+     *  @exception IllegalActionException If an exception occurs
+     *  during analysis.
      */
-    public ArrowKeySensor(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
-        super(container, name);
-
-        // Outputs
-
-        upArrow = new TypedIOPort(this, "upArrow");
-        upArrow.setTypeEquals(BaseType.INT);
-        upArrow.setOutput(true);
-
-        leftArrow = new TypedIOPort(this, "leftArrow");
-        leftArrow.setTypeEquals(BaseType.INT);
-        leftArrow.setOutput(true);
-
-        rightArrow = new TypedIOPort(this, "rightArrow");
-        rightArrow.setTypeEquals(BaseType.INT);
-        rightArrow.setOutput(true);
-
-        downArrow = new TypedIOPort(this, "downArrow");
-        downArrow.setTypeEquals(BaseType.INT);
-        downArrow.setOutput(true);
+    public ConstVariableModelAnalysis(Entity model)
+            throws IllegalActionException {
+        this(model, new HashSet());
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort upArrow;
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort leftArrow;
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort rightArrow;
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort downArrow;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-
-    /** Broadcast the integer value 1 for each key pressed and 0 for
-     *  each released.
+    /** Analyze the given model to determine which variables must be
+     *  constants and which variables may change dynamically during
+     *  execution, given that all variables in the given set may
+     *  change dynamically.  In addition, store the intermediate
+     *  results for contained actors so they can be retrieved by the
+     *  getConstVariables() method.
+     *  @exception IllegalActionException If an exception occurs
+     *  during analysis.
      */
-    public void fire() throws IllegalActionException {
-        if (_debugging) _debug("fire has been called");
+    public ConstVariableModelAnalysis(Entity model, Set variableSet)
+            throws IllegalActionException {
+        _entityToNotConstVariableSet = new HashMap();
+        _entityToConstVariableSet = new HashMap();
+        _notConstantVariableSet = new HashSet(variableSet);
+        _collectNotConstantVariables(model, _notConstantVariableSet);
 
-
-	// Broadcast key presses
-
-	if (_upKeyPressed) {
-	    _upKeyPressed = false;
-	    upArrow.broadcast(new IntToken(1));
-	}
-
-	if (_leftKeyPressed) {
-	    _leftKeyPressed = false;
-	    leftArrow.broadcast(new IntToken(1));
-	}
-
-	if (_rightKeyPressed) {
-	    _rightKeyPressed = false;
-	    rightArrow.broadcast(new IntToken(1));
-	}
-
-	if (_downKeyPressed) {
-	    _downKeyPressed = false;
-	    downArrow.broadcast(new IntToken(1));
-	}
-
-
-	// Broadcast key releases
-
-	if (_upKeyReleased) {
-	    _upKeyReleased = false;
-	    upArrow.broadcast(new IntToken(0));
-	}
-
-	if (_leftKeyReleased) {
-	    _leftKeyReleased = false;
-	    leftArrow.broadcast(new IntToken(0));
-	}
-
-	if (_rightKeyReleased) {
-	    _rightKeyReleased = false;
-	    rightArrow.broadcast(new IntToken(0));
-	}
-
-	if (_downKeyReleased) {
-	    _downKeyReleased = false;
-	    downArrow.broadcast(new IntToken(0));
-	}
-
-	if (_debugging) _debug("fire has completed");
+        _analyzeAllVariables(model);
     }
 
-    /** Create the JFrame window capable of detecting the key-presses. */
-    public void initialize() {
-        if (_debugging) _debug("frame will be constructed");
-        _myFrame = new MyFrame();
-        if (_debugging) _debug("frame was constructed");
-    }
-
-    /** Dispose of the JFrame, causing the window to vanish. */
-    public void wrapup() {
-	_myFrame.dispose();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables
-
-    /** The JFrame */
-    private MyFrame _myFrame;
-
-    /** The flags indicating which keys have been pressed or released
-     *  since the last firing of the actor.  <i>Pressed</i> and
-     *  <i>Released</i> are are not allowed to both be true for the
-     *  same key (Though both may be false).  The most recent action
-     *  (press or release) takes precedence.
+    /** Return the computed free variables for the given entity.
+     *  @exception RuntimeException If the constant variables for the
+     *  entity have not already been computed.
      */
-    private boolean _upKeyPressed = false;
-    private boolean _leftKeyPressed = false;
-    private boolean _rightKeyPressed = false;
-    private boolean _downKeyPressed = false;
-    private boolean _upKeyReleased = false;
-    private boolean _leftKeyReleased = false;
-    private boolean _rightKeyReleased = false;
-    private boolean _downKeyReleased = false;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     private inner classes                 ////
-
-    private class MyFrame extends JFrame {
-
-        /** Construct a frame.  After constructing this, it is
-         *  necessary to call setVisible(true) to make the frame
-         *  appear.  This is done by calling show() at the end of this
-         *  constructor.
-         *  @see Tableau#show()
-         *  @param entity The model to put in this frame.
-         *  @param tableau The tableau responsible for this frame.  */
-        public MyFrame() {
-            if (_debugging) _debug("frame constructor called");
-
-	    // up-arrow call-backs
-            ActionListener myUpPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_upKeyPressed = true;
-			_upKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            ActionListener myUpReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_upKeyReleased = true;
-			_upKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-	    // left-arrow call-backs
-            ActionListener myLeftPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_leftKeyPressed = true;
-			_leftKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            ActionListener myLeftReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_leftKeyReleased = true;
-			_leftKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-	    // right-arrow call-backs
-            ActionListener myRightPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_rightKeyPressed = true;
-			_rightKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            ActionListener myRightReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_rightKeyReleased = true;
-			_rightKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-	    // down-arrow call-backs
-            ActionListener myDownPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_downKeyPressed = true;
-			_downKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            ActionListener myDownReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_downKeyReleased = true;
-			_downKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            getContentPane().setLayout(new BorderLayout());
-            JLabel label = new JLabel("Copy and/or Paste here!");
-            getContentPane().add(label);
-
-	    // As of jdk1.4, the .registerKeyboardAction() method below is
-            // considered obsolete.  Docs recommend using these two methods:
-	    //  .getInputMap().put(aKeyStroke, aCommand);
-	    //  .getActionMap().put(aCommmand, anAction);
-	    // with the String aCommand inserted to link them together.
-	    // See javax.swing.Jcomponent.registerKeyboardAction().
-
-	    // Registration of up-arrow call-backs.
-            label.registerKeyboardAction(myUpPressedListener,
-                    "UpPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_UP, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myUpReleasedListener,
-                    "UpReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_UP, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-	    // Registration of left-arrow call-backs.
-            label.registerKeyboardAction(myLeftPressedListener,
-                    "LeftPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_LEFT, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myLeftReleasedListener,
-                    "LeftReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_LEFT, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-	    // Registration of right-arrow call-backs.
-            label.registerKeyboardAction(myRightPressedListener,
-                    "RightPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_RIGHT, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myRightReleasedListener,
-                    "RightReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_RIGHT, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-	    // Registration of down-arrow call-backs.
-            label.registerKeyboardAction(myDownPressedListener,
-                    "DownPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_DOWN, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myDownReleasedListener,
-                    "DownReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_DOWN, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.setRequestFocusEnabled(true);
-            label.addMouseListener(new FocusMouseListener());
-            // Set the default size.
-            // Note that the location is of the frame, while the size
-            // is of the scrollpane.
-            pack();
-	    show();
-            if (_debugging) _debug("frame constructor completes");
+    public Set getConstVariableNames(Entity entity) {
+        Set constVariables = (Set)_entityToConstVariableSet.get(entity);
+        if(constVariables == null) {
+            throw new RuntimeException("Entity " + entity.getFullName() +
+                    " has not been analyzed.");
         }
 
-	/** This is simply the try-catch clause for the call to the
-         *  director.  It has been pulled out to make the code terser
-         *  and more readable.
-         */
-	private void tryCallingFireAtCurrentTime() {
-	    try {
-		getDirector().fireAtCurrentTime(ArrowKeySensor.this);
-	    } catch (IllegalActionException ex) {
-		System.out.println("--" + ex.toString() + "--");
-		System.out.println(this + "Ex calling fireAtCurrentTime");
-		throw new RuntimeException("-fireAt* catch-");
-	    }
-	}
-
+        return Collections.unmodifiableSet(constVariables);
     }
+
+    /** Return the computed free variables for the given entity.
+     *  @exception RuntimeException If the constant variables for the
+     *  entity have not already been computed.
+     */
+    public Set getConstVariables(Entity entity) {
+        Set constVariables = (Set)_entityToConstVariableSet.get(entity);
+        if(constVariables == null) {
+            throw new RuntimeException("Entity " + entity.getFullName() +
+                    " has not been analyzed.");
+        }
+
+        Set set = new HashSet();
+        for(Iterator names = constVariables.iterator();
+            names.hasNext();) {
+            set.add(entity.getAttribute((String)names.next()));
+        }
+        return Collections.unmodifiableSet(set);
+    }
+
+    /** Return the computed free variables for the given entity.
+     *  @exception RuntimeException If the constant variables for the
+     *  entity have not already been computed.
+     */
+    public Set getNotConstVariableNames(Entity entity) {
+        Set variables = (Set)_entityToNotConstVariableSet.get(entity);
+        if(variables == null) {
+            throw new RuntimeException("Entity " + entity.getFullName() +
+                    " has not been analyzed.");
+        }
+
+        return Collections.unmodifiableSet(variables);
+    }
+
+    /** Return the computed free variables for the given entity.
+     *  @exception RuntimeException If the constant variables for the
+     *  entity have not already been computed.
+     */
+    public Set getNotConstVariables(Entity entity) {
+        Set variables = (Set)_entityToNotConstVariableSet.get(entity);
+        if(variables == null) {
+            throw new RuntimeException("Entity " + entity.getFullName() +
+                    " has not been analyzed.");
+        }
+
+        Set set = new HashSet();
+        for(Iterator names = variables.iterator();
+            names.hasNext();) {
+            set.add(entity.getAttribute((String)names.next()));
+        }
+        return Collections.unmodifiableSet(set);
+    }
+
+    private static void _collectNotConstantVariables(
+            AbstractActionsAttribute action, Set set)
+            throws IllegalActionException {
+        for(Iterator names = action.getDestinationNameList().iterator();
+            names.hasNext();) {
+            String name = (String)names.next();
+            NamedObj object = action.getDestination(name);
+            if(object instanceof Variable) {
+                set.add(object);
+            }
+        }
+    }
+
+    // Collect the set of variables in the given entity which might
+    // change during execution.
+    private void _collectNotConstantVariables(Entity entity, Set set)
+            throws IllegalActionException {
+        if(entity instanceof FSMActor) {
+            for(Iterator states = ((FSMActor)entity).entityList().iterator();
+                states.hasNext();) {
+                State state = (State)states.next();
+                for(Iterator transitions =
+                        state.outgoingPort.linkedRelationList().iterator();
+                    transitions.hasNext();) {
+                    Transition transition = (Transition)transitions.next();
+                    for(Iterator actions =
+                            transition.choiceActionList().iterator();
+                        actions.hasNext();) {
+                        AbstractActionsAttribute action =
+                            (AbstractActionsAttribute)actions.next();
+                        _collectNotConstantVariables(action, set);
+                    }
+                    for(Iterator actions =
+                            transition.commitActionList().iterator();
+                        actions.hasNext();) {
+                        AbstractActionsAttribute action =
+                            (AbstractActionsAttribute)actions.next();
+                        _collectNotConstantVariables(action, set);
+                    }
+                }
+            }
+        } else if(entity instanceof CompositeEntity) {
+            CompositeEntity composite = (CompositeEntity)entity;
+            for(Iterator entities = composite.entityList().iterator();
+                entities.hasNext();) {
+                _collectNotConstantVariables((Entity)entities.next(), set);
+            }
+        }
+    }
+
+    // Recursively compute the set of const variables for all actors
+    // deeply contained in the given model.
+    private void _analyzeAllVariables(Entity model)
+            throws IllegalActionException {
+        // Sets of variables used to track the fixed point iteration.
+        Set notTestedSet = new HashSet();
+        Set testedSet = new HashSet();
+        // Set of the names of constant attributes that we are computing.
+        Set notConstants = new HashSet();
+
+        // initialize the work list to the set of attributes.
+        List variableList = model.attributeList(Variable.class);
+        notTestedSet.addAll(variableList);
+
+        PtParser parser = new PtParser();
+        ParseTreeFreeVariableCollector collector =
+            new ParseTreeFreeVariableCollector();
+
+        // The fixed point of the constant set.
+        boolean doneSomething = true;
+        while(doneSomething) {
+            doneSomething = false;
+            while(!notTestedSet.isEmpty()) {
+                Variable variable = (Variable)notTestedSet.iterator().next();
+                notTestedSet.remove(variable);
+
+                // Perform the test.
+                boolean isNotConstant = false;
+                if(_notConstantVariableSet.contains(variable)) {
+                    isNotConstant = true;
+                } else {
+                    // Analyze the expression.
+                    String expression = variable.getExpression();
+                    // compute the variables.
+                    try {
+                        ASTPtRootNode root =
+                            parser.generateParseTree(expression);
+                        Set freeVarNames = new HashSet(
+                                collector.collectFreeVariables(root));
+                        for(Iterator names = freeVarNames.iterator();
+                            names.hasNext() && !isNotConstant;) {
+                            String name = (String)names.next();
+                            Variable scopeVariable =
+                                ModelScope.getScopedVariable(variable, name);
+                            // Free variables must be not constants.
+                            if(scopeVariable == null ||
+                                    _notConstantVariableSet.contains(scopeVariable)) {
+                                isNotConstant = true;
+                            }
+                        }
+                    } catch (IllegalActionException ex) {
+                        // Assume that this will be changed later...
+                        // i.e. input_isPresent in FSM.
+                        isNotConstant = true;
+                    }
+                }
+                if(isNotConstant) {
+                    // Then the variable is also not constant.
+                    notConstants.add(variable.getName());
+                    _notConstantVariableSet.add(variable);
+                    doneSomething = true;
+                    isNotConstant = true;
+                } else {
+                    // It may still be constant, so add it back to the pool.
+                    testedSet.add(variable);
+                }
+            }
+            // Reset worklist for next iteration.
+            notTestedSet.addAll(testedSet);
+            testedSet.clear();
+        }
+
+        _entityToNotConstVariableSet.put(model, notConstants);
+
+        Set constants = new HashSet();
+        for(Iterator variables = variableList.iterator();
+            variables.hasNext();) {
+            constants.add(((Variable)variables.next()).getName());
+            constants.removeAll(notConstants);
+        }
+        _entityToConstVariableSet.put(model, constants);
+
+
+        // recurse down.
+        if(model instanceof CompositeEntity) {
+            for(Iterator entities =
+                    ((CompositeEntity)model).entityList().iterator();
+                entities.hasNext();) {
+                Entity entity = (Entity)entities.next();
+                _analyzeAllVariables(entity);
+            }
+        }
+    }
+
+    private HashSet _notConstantVariableSet;
+    private HashMap _entityToNotConstVariableSet;
+    private HashMap _entityToConstVariableSet;
+    private CompositeActor _model;
+
 }
-
-
-
-
-

@@ -1,416 +1,326 @@
-/* An actor which pops up a keystroke-sensing JFrame.
+/* A list of graph elements.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2001-2003 The University of Maryland
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   @ProposedRating Red (cxh@eecs.berkeley.edu)
+   @AcceptedRating Red (cxh@eecs.berkeley.edu)
+ */
 
-@ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
-@AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
-*/
+package ptolemy.graph;
 
-package ptolemy.actor.lib.gui;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 
-// Imports from ptolemy/vergil/basic/BasicGraphFrame.java (not pruned)
-import diva.gui.toolbox.FocusMouseListener;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.KeyStroke;
-import java.awt.BorderLayout;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-//import java.awt.event.MouseListener;
-
-// Imports from ptolemy/actor/lib/net/DatagramReader.java (not pruned)
-//import ptolemy.actor.AtomicActor;
-//import ptolemy.actor.IOPort;
-  import ptolemy.actor.TypedAtomicActor;
-  import ptolemy.actor.TypedIOPort;
-  import ptolemy.data.ArrayToken;
-//import ptolemy.data.BooleanToken;
-  import ptolemy.data.IntToken;
-  import ptolemy.data.StringToken;
-  import ptolemy.data.Token;
-//import ptolemy.data.expr.Parameter;
-  import ptolemy.data.type.ArrayType;
-  import ptolemy.data.type.BaseType;
-//import ptolemy.data.type.Type;
-  import ptolemy.kernel.CompositeEntity;
-//import ptolemy.kernel.util.Attribute;
-  import ptolemy.kernel.util.IllegalActionException;
-  import ptolemy.kernel.util.NameDuplicationException;
-//import ptolemy.kernel.util.StringAttribute;
-
-//////////////////////////////////////////////////////////////////////////
-//// ArrowKeySensor
+////////////////////////////////////////////////////////////////////////// //
+//ElementList
 /**
-When this actor is preinitialized, it pops up a new JFrame window on
-the desktop, usually in the upper left hand corner of the screen.
-When this JFrame has the focus (such as when it has been clicked on)
-it is capable of sensing keystrokes.  <p>
+   A list of graph elements. This class manages the storage and weight
+   information associated with a list of unique graph elements.
+   This class is normally for use internally within graph classes.
 
-This actor senses only the four non-numeric-pad arrow-key keystrokes.
-This actor is almost identical to KeystrokeSensor.java.  One
-difference is the different set of keystrokes sensed.  The other
-difference, is that this actor responds to key releases as well as key
-presses.  Upon each key press, the integer 1 is broadcast from the
-corresponding output.  Upon each key release, the integer 0 is
-output.<p>
+   @author Shuvra S. Bhattacharyya
+   @version $Id$
+   @since Ptolemy II 2.0
+ */
+public class ElementList extends LabeledList {
 
-This actor contains a private inner class which generated the JFrame.
-The frame sets up call-backs which react to the keystrokes.  When called,
-these call the director's fireAtCurrentTime() method.  This causes
-the director to call fire() on the actor.   The actor then broadcasts
-tokens from one or both outputs depending on which keystroke(s) have
-occurred since the actor was last fired.  <p>
-
-NOTE: This actor only works in the DE domain due to its reliance on
-this director's fireAtCurrentTime() method.
-
-@author Winthrop Williams
-@version $Id$
-@since Ptolemy II 2.1
-*/
-public class ArrowKeySensor extends TypedAtomicActor {
-
-    /** Construct an actor with the given container and name.
-     *  @param container The container.
-     *  @param name The name of this actor.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
+    /** Construct an empty element list.
+     *  @param descriptor A one-word description of the type of elements
+     *  that are to be stored in this list.
+     *  @param graph The graph associated with this element list.
      */
-    public ArrowKeySensor(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
-        super(container, name);
-
-        // Outputs
-
-        upArrow = new TypedIOPort(this, "upArrow");
-        upArrow.setTypeEquals(BaseType.INT);
-        upArrow.setOutput(true);
-
-        leftArrow = new TypedIOPort(this, "leftArrow");
-        leftArrow.setTypeEquals(BaseType.INT);
-        leftArrow.setOutput(true);
-
-        rightArrow = new TypedIOPort(this, "rightArrow");
-        rightArrow.setTypeEquals(BaseType.INT);
-        rightArrow.setOutput(true);
-
-        downArrow = new TypedIOPort(this, "downArrow");
-        downArrow.setTypeEquals(BaseType.INT);
-        downArrow.setOutput(true);
+    public ElementList(String descriptor, Graph graph) {
+        super();
+        _descriptor = descriptor;
+        _graph = graph;
+        _weightMap = new HashMap();
+        _unweightedSet = new HashSet();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort upArrow;
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort leftArrow;
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort rightArrow;
-
-    /** Output port, which has type IntToken. */
-    public TypedIOPort downArrow;
+    /** Construct an empty element list with enough storage allocated for the
+     *  specified number of elements.  Memory management is more
+     *  efficient with this constructor if the number of elements is
+     *  known.
+     *  @param descriptor A one-word description of the type of elements
+     *  that are to be stored in this list.
+     *  @param graph The graph associated with this element list.
+     *  @param elementCount The number of elements.
+     */
+    public ElementList(String descriptor, Graph graph, int elementCount) {
+        super();
+        _descriptor = descriptor;
+        _graph = graph;
+        _weightMap = new HashMap(elementCount);
+        _unweightedSet = new HashSet(elementCount);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-    /** Broadcast the integer value 1 for each key pressed and 0 for
-     *  each released.
+    /** Disassociate the given element from its weight information.
+     *  @param element The element.
+     *  @return True if the weight information was disassociated.
      */
-    public void fire() throws IllegalActionException {
-        if (_debugging) _debug("fire has been called");
-
-
-	// Broadcast key presses
-
-	if (_upKeyPressed) {
-	    _upKeyPressed = false;
-	    upArrow.broadcast(new IntToken(1));
-	}
-
-	if (_leftKeyPressed) {
-	    _leftKeyPressed = false;
-	    leftArrow.broadcast(new IntToken(1));
-	}
-
-	if (_rightKeyPressed) {
-	    _rightKeyPressed = false;
-	    rightArrow.broadcast(new IntToken(1));
-	}
-
-	if (_downKeyPressed) {
-	    _downKeyPressed = false;
-	    downArrow.broadcast(new IntToken(1));
-	}
-
-
-	// Broadcast key releases
-
-	if (_upKeyReleased) {
-	    _upKeyReleased = false;
-	    upArrow.broadcast(new IntToken(0));
-	}
-
-	if (_leftKeyReleased) {
-	    _leftKeyReleased = false;
-	    leftArrow.broadcast(new IntToken(0));
-	}
-
-	if (_rightKeyReleased) {
-	    _rightKeyReleased = false;
-	    rightArrow.broadcast(new IntToken(0));
-	}
-
-	if (_downKeyReleased) {
-	    _downKeyReleased = false;
-	    downArrow.broadcast(new IntToken(0));
-	}
-
-	if (_debugging) _debug("fire has completed");
-    }
-
-    /** Create the JFrame window capable of detecting the key-presses. */
-    public void initialize() {
-        if (_debugging) _debug("frame will be constructed");
-        _myFrame = new MyFrame();
-        if (_debugging) _debug("frame was constructed");
-    }
-
-    /** Dispose of the JFrame, causing the window to vanish. */
-    public void wrapup() {
-	_myFrame.dispose();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables
-
-    /** The JFrame */
-    private MyFrame _myFrame;
-
-    /** The flags indicating which keys have been pressed or released
-     *  since the last firing of the actor.  <i>Pressed</i> and
-     *  <i>Released</i> are are not allowed to both be true for the
-     *  same key (Though both may be false).  The most recent action
-     *  (press or release) takes precedence.
-     */
-    private boolean _upKeyPressed = false;
-    private boolean _leftKeyPressed = false;
-    private boolean _rightKeyPressed = false;
-    private boolean _downKeyPressed = false;
-    private boolean _upKeyReleased = false;
-    private boolean _leftKeyReleased = false;
-    private boolean _rightKeyReleased = false;
-    private boolean _downKeyReleased = false;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     private inner classes                 ////
-
-    private class MyFrame extends JFrame {
-
-        /** Construct a frame.  After constructing this, it is
-         *  necessary to call setVisible(true) to make the frame
-         *  appear.  This is done by calling show() at the end of this
-         *  constructor.
-         *  @see Tableau#show()
-         *  @param entity The model to put in this frame.
-         *  @param tableau The tableau responsible for this frame.  */
-        public MyFrame() {
-            if (_debugging) _debug("frame constructor called");
-
-	    // up-arrow call-backs
-            ActionListener myUpPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_upKeyPressed = true;
-			_upKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            ActionListener myUpReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_upKeyReleased = true;
-			_upKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-	    // left-arrow call-backs
-            ActionListener myLeftPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_leftKeyPressed = true;
-			_leftKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            ActionListener myLeftReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_leftKeyReleased = true;
-			_leftKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-	    // right-arrow call-backs
-            ActionListener myRightPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_rightKeyPressed = true;
-			_rightKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            ActionListener myRightReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_rightKeyReleased = true;
-			_rightKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-	    // down-arrow call-backs
-            ActionListener myDownPressedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_downKeyPressed = true;
-			_downKeyReleased = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            ActionListener myDownReleasedListener = new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-			_downKeyReleased = true;
-			_downKeyPressed = false;
-			tryCallingFireAtCurrentTime();
-		    }
-	    };
-
-            getContentPane().setLayout(new BorderLayout());
-            JLabel label = new JLabel("Copy and/or Paste here!");
-            getContentPane().add(label);
-
-	    // As of jdk1.4, the .registerKeyboardAction() method below is
-            // considered obsolete.  Docs recommend using these two methods:
-	    //  .getInputMap().put(aKeyStroke, aCommand);
-	    //  .getActionMap().put(aCommmand, anAction);
-	    // with the String aCommand inserted to link them together.
-	    // See javax.swing.Jcomponent.registerKeyboardAction().
-
-	    // Registration of up-arrow call-backs.
-            label.registerKeyboardAction(myUpPressedListener,
-                    "UpPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_UP, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myUpReleasedListener,
-                    "UpReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_UP, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-	    // Registration of left-arrow call-backs.
-            label.registerKeyboardAction(myLeftPressedListener,
-                    "LeftPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_LEFT, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myLeftReleasedListener,
-                    "LeftReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_LEFT, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-	    // Registration of right-arrow call-backs.
-            label.registerKeyboardAction(myRightPressedListener,
-                    "RightPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_RIGHT, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myRightReleasedListener,
-                    "RightReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_RIGHT, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-	    // Registration of down-arrow call-backs.
-            label.registerKeyboardAction(myDownPressedListener,
-                    "DownPressed",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_DOWN, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.registerKeyboardAction(myDownReleasedListener,
-                    "DownReleased",
-                    KeyStroke.getKeyStroke(
-                    KeyEvent.VK_DOWN, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-            label.setRequestFocusEnabled(true);
-            label.addMouseListener(new FocusMouseListener());
-            // Set the default size.
-            // Note that the location is of the frame, while the size
-            // is of the scrollpane.
-            pack();
-	    show();
-            if (_debugging) _debug("frame constructor completes");
+    public boolean cancelWeight(Element element) {
+        // FIXME: needs better documentation
+        boolean removed = false;
+        if (element.hasWeight()) {
+            Object weight = element.getWeight();
+            ArrayList sameWeightList = (ArrayList)(_weightMap.get(weight));
+            if (sameWeightList == null) {
+                return false;
+            }
+            removed = sameWeightList.remove(element);
+            if (sameWeightList.size() == 0) {
+                _weightMap.remove(weight);
+            }
+        } else {
+            removed = _unweightedSet.remove(element);
         }
-
-	/** This is simply the try-catch clause for the call to the
-         *  director.  It has been pulled out to make the code terser
-         *  and more readable.
-         */
-	private void tryCallingFireAtCurrentTime() {
-	    try {
-		getDirector().fireAtCurrentTime(ArrowKeySensor.this);
-	    } catch (IllegalActionException ex) {
-		System.out.println("--" + ex.toString() + "--");
-		System.out.println(this + "Ex calling fireAtCurrentTime");
-		throw new RuntimeException("-fireAt* catch-");
-	    }
-	}
-
+        return removed;
     }
+
+    /** Given an element in this list, check if the weight has
+     *  changed (since the element was added to the graph or was
+     *  last validated, whichever is more recent), and if so,
+     *  change the current mapping of a weight to the element or
+     *  remove the element from the set of unweighted elements.
+     *
+     *  @param element The graph element.
+     *  @return True if the weight associated with the element has
+     *  changed as determined by the equals method.
+     */
+    public boolean changeWeight(Element element) {
+        boolean weightValueHasChanged = false;
+        boolean found = false;
+        Object newWeight = element.hasWeight() ? element.getWeight() : null;
+        if (_unweightedSet.contains(element)) {
+            weightValueHasChanged = (newWeight != null);
+            if (weightValueHasChanged) {
+                _unweightedSet.remove(element);
+                registerWeight(element);
+            }
+        } else {
+            // Find the weight that was previously associated with this
+            // element, if there was one.
+            Iterator weights = _weightMap.keySet().iterator();
+            Object nextWeight = null;
+            List nextList = null;
+            while (weights.hasNext() && !found) {
+                nextWeight = weights.next();
+                nextList = (List)_weightMap.get(nextWeight);
+                found = nextList.contains(element);
+            }
+            if (found) {
+                // Note that the weight can change without the weight
+                // comparison here changing (if the change does not affect
+                // comparison under the equals method).
+                weightValueHasChanged = !nextWeight.equals(newWeight);
+                if (weightValueHasChanged) {
+                    nextList.remove(element);
+                    if (nextList.size() == 0) {
+                        _weightMap.remove(nextWeight);
+                    }
+                    registerWeight(element);
+                }
+            } else {
+                // FIXME: use an internal error exception here.
+                throw new RuntimeException("Internal error: the specified "
+                        + _descriptor + " is neither unweighted nor associated "
+                        + "with a weight."
+                        + GraphException.elementDump(element, _graph));
+
+            }
+        }
+        return weightValueHasChanged;
+    }
+
+    /** Clear all of the elements in this list.
+     */
+    public void clear() {
+        super.clear();
+        _weightMap.clear();
+        _unweightedSet.clear();
+    }
+
+    /** Test if the specified object is an element weight in this
+     *  list. Equality is
+     *  determined by the <code>equals</code> method. If the specified
+     *  weight is null, return false.
+     *
+     *  @param weight The element weight to be tested.
+     *  @return True if the specified object is an element weight in this list.
+     */
+    public boolean containsWeight(Object weight) {
+        // FIXME: on null, return true if there is an unweighted element.
+        return _weightMap.containsKey(weight);
+    }
+
+    /** Return an element in this list that has a specified weight. If multiple
+     *  elements have the specified weight, then return one of them
+     *  arbitrarily. If the specified weight is null, return an unweighted
+     *  element (again arbitrarily chosen if there are multiple unweighted
+     *  elements).
+     *  @param weight The specified weight.
+     *  @return An element that has this weight.
+     *  @exception GraphWeightException If the specified weight
+     *  is not an element weight in this list or if the specified weight
+     *  is null but the list does not contain any unweighted edges.
+     */
+    public Element element(Object weight) {
+        Collection elements = elements(weight);
+        if (elements.size() == 0) {
+            throw new GraphWeightException(weight, null, _graph,
+                    "Invalid weight argument.");
+        }
+        return (Element)(elements.iterator().next());
+    }
+
+    /** Return all the elements in this list in the form of an unmodifiable
+     *  collection.
+     *  @return All the elements in this list.
+     */
+    public Collection elements() {
+        return Collections.unmodifiableCollection(this);
+    }
+
+    /** Return all the elements in this graph that have a specified weight.
+     *  The elements are returned in the form of an unmodifiable collection.
+     *  If the specified weight is null, return all the unweighted elements.
+     *  If no elements have the specified weight (or if the argument is null and
+     *  there are no unweighted elements), return an empty collection.
+     *  Each element in the returned collection is an instance of
+     *  {@link Element}.
+     *  @param weight The specified weight.
+     *  @return The elements in this graph that have the specified weight.
+     */
+    public Collection elements(Object weight) {
+        if (weight == null) {
+            return Collections.unmodifiableCollection(_unweightedSet);
+        } else {
+            Collection sameWeightElements = (Collection)_weightMap.get(weight);
+            if (sameWeightElements == null) {
+                return _emptyCollection;
+            } else {
+                return Collections.unmodifiableCollection(sameWeightElements);
+            }
+        }
+    }
+
+    /** Associate a graph element to its weight given the relevant mapping of
+     *  weights to elements, and the set of unweighted elements of the same
+     *  type (nodes or edges). If the element is unweighted, add it to the set
+     *  of unweighted elements.
+     *  @param element The element.
+     */
+    public void registerWeight(Element element) {
+        if (element.hasWeight()) {
+            Object weight = element.getWeight();
+            ArrayList sameWeightList = (ArrayList)(_weightMap.get(weight));
+            if (sameWeightList == null) {
+                sameWeightList = new ArrayList();
+                _weightMap.put(weight, sameWeightList);
+            }
+            sameWeightList.add(element);
+        } else {
+            _unweightedSet.add(element);
+        }
+    }
+
+    /** Remove an element from this list if it exists in the list.
+     *  This is an <em>O(1)</em> operation.
+     * @param element The element to be removed.
+     * @return True if the element was removed.
+     */
+    public boolean remove(Element element) {
+        boolean removed = super.remove(element);
+        if (removed) {
+            cancelWeight(element);
+        }
+        return removed;
+    }
+
+    /** Validate the weight of a given graph element, given the previous
+     *  weight of that element.
+     *  @param element The element.
+     *  @param oldWeight The previous weight (null if the element was previously
+     *  unweighted).
+     */
+    public boolean validateWeight(Element element, Object oldWeight) {
+        boolean changed = false;
+        Object newWeight = element.hasWeight() ? element.getWeight() : null;
+        if (oldWeight == null) {
+            if (!_unweightedSet.contains(element)) {
+                // This 'dump' of a null weight will also dump the graph.
+                throw new GraphWeightException(oldWeight, null, _graph,
+                        "Incorrect previous weight specified.");
+            }
+            if (newWeight == null) {
+                return false;
+            }
+            _unweightedSet.remove(element);
+            changed = true;
+        } else {
+            // The weight may have changed in value even if comparison under
+            // the equals method has not changed. Thus we proceed
+            // with the removal unconditionally.
+            List elementList = (List)_weightMap.get(oldWeight);
+            if ((elementList == null) || !elementList.remove(element)) {
+                throw new GraphWeightException(oldWeight, null, _graph,
+                        "Incorrect previous weight specified.");
+            }
+            changed = !oldWeight.equals(newWeight);
+        }
+        registerWeight(element);
+        return changed;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // A one-word description of the type of elements stored in this list
+    private String _descriptor;
+
+    // The graph that this element list is associated with.
+    private Graph _graph;
+
+    // An unmodifiable, empty collection.
+    private static final Collection _emptyCollection =
+    Collections.unmodifiableCollection(new ArrayList(0));
+
+    // The set of elements that do not have weights. Each member is an
+    // Element.
+    private HashSet _unweightedSet;
+
+    // A mapping from element weights to the associated elements. Unweighted
+    // elements are not represented in this map. Keys in this this map
+    // are instances of of Object, and values instances of ArrayList
+    // whose elements are instances of Element.
+    private HashMap _weightMap;
+
+
 }
-
-
-
-
-
