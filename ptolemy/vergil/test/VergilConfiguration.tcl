@@ -98,14 +98,21 @@ proc expandConfiguration {configuration} {
 ####
 #
 test VergilConfiguration-1.1 {make sure that everything inside the DSP configuration can be expanded} {
-    expandConfiguration "ptolemy/configs/vergilConfigurationDSP.xml"
+    expandConfiguration "ptolemy/configs/dsp/configuration.xml"
 } {0}
 
 ######################################################################
 ####
 #
 test VergilConfiguration-1.2 {make sure that everything inside the Ptiny configuration can be expanded} {
-    expandConfiguration "ptolemy/configs/vergilConfigurationPtiny.xml"
+    expandConfiguration "ptolemy/configs/ptiny/configuration.xml"
+} {0}
+
+######################################################################
+####
+#
+test VergilConfiguration-1.2.1 {make sure that everything inside the Hybrid configuration can be expanded} {
+    expandConfiguration "ptolemy/configs/hybrid/configuration.xml"
 } {0}
 
 ######################################################################
@@ -117,7 +124,7 @@ test VergilConfiguration-1.3 {make sure that everything inside the Full configur
     set parser [java::new ptolemy.moml.MoMLParser]
     set loader [[$parser getClass] getClassLoader]
 
-    set URL [$loader getResource "ptolemy/configs/vergilConfiguration.xml"]
+    set URL [$loader getResource "ptolemy/configs/full/configuration.xml"]
     puts "URL of vergilConfiguration.xml: [$URL toString]"
     if { "$tcl_platform(host_platform)" == "windows"} {
 	set inFile [string range [$URL getPath] 1 end]
