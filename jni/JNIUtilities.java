@@ -171,10 +171,24 @@ public class JNIUtilities {
 
         //compile Cfile
         header.waitFor();
+
         /*Process make = r3.exec(cmd);
         make.waitFor();*/
         _exportDSP(actor);
 	_exportMakefile(actor);
+
+        cmd = new String[5];
+        cmd[0] = "make";
+	cmd[1] = "-C";
+        cmd[2] = "jni/jni" + libName;
+        cmd[3] = "-f";
+        cmd[4] = "Jni" + actor.getName() + ".mk";
+
+        Runtime r3 = Runtime.getRuntime();
+
+        //waiting for the compilation to be done
+        Process make = r3.exec(cmd);
+	make.waitFor();
     }
 
     /** Create the interface Java File.
@@ -919,6 +933,10 @@ public class JNIUtilities {
         }
         libName = libName.substring(1, libName.length() - 1);
         String interlibName = "jni" + libName;
+	String libraryPath = dllDir;
+	if (libraryPath.equals("")) {
+	    libraryPath = ".";
+	}
         results
 	    .append("# Makefile automatically generated for JNI\n"
 		    + "ROOT =\t\t" 
@@ -929,11 +947,12 @@ public class JNIUtilities {
 		    + interlibName + ":\n"
 		    + "\t$(PTCC) \\\n"
 		    + "\t\t-I$(PTJAVA_DIR)/include \\\n"
-		    + "\t\t-I$(PTJAVA_DIR)/include/win32 \\\n"
+		    + "\t\t-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE) \\\n"
 		    + "\t\t-fno-exceptions \\\n"
-		    + "\t\t-L" + dllDir + "-l" + libName + " \\\n"
-		    + "\t\t-c -o " + libName + "\\\n"
-		    + "\t\t" + actor.getName() + ".cpp\n\n"
+		    + "\t\t-L" + libraryPath + " -l" + libName + " \\\n"
+		    + "\t\t-c -o " + libName
+		    + ".$(PTJNI_SHAREDLIBRARY_SUFFIX) \\\n"
+		    + "\t\tjni" + actor.getName() + ".cpp\n\n"
                     + "# Get the rest of the rules\n"
 		    + "include $(ROOT)/mk/ptcommon.mk\n"
 		    );
