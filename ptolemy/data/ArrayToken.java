@@ -97,6 +97,25 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return an array of tokens populated with the contents of this
+     *  array token.  The returned array is a copy so the caller is
+     *  free to modify it.
+     *  @return An array of tokens.
+     */
+    public Token[] arrayValue() {
+        Token[] result = new Token[_value.length];
+        // This code will create a token array of a more specific type
+        // than token.  Eventually, we would like to use this code
+        // since it will simplify writing some actors, but for the
+        // moment the code generator cannot deal with it.
+        // (Token[])
+        //             java.lang.reflect.Array.newInstance(
+        //                     getElementType().getTokenClass(),
+        //                     _value.length);
+        System.arraycopy(_value, 0, result, 0, _value.length);
+        return result;
+    }
+
     /** Add the given token to each element of this array.
      *  @return A new array token.
      *  @exception IllegalActionException If the argument token is not
@@ -120,25 +139,6 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         return new ArrayToken(result);
     }
 
-    /** Return an array of tokens populated with the contents of this
-     *  array token.  The returned array is a copy so the caller is
-     *  free to modify it.
-     *  @return An array of tokens.
-     */
-    public Token[] arrayValue() {
-        Token[] result = new Token[_value.length];
-        // This code will create a token array of a more specific type
-        // than token.  Eventually, we would like to use this code
-        // since it will simplify writing some actors, but for the
-        // moment the code generator cannot deal with it.
-        // (Token[])
-        //             java.lang.reflect.Array.newInstance(
-        //                     getElementType().getTokenClass(),
-        //                     _value.length);
-        System.arraycopy(_value, 0, result, 0, _value.length);
-        return result;
-    }
-
     /** Divide each element of this array by the given token.
      *  @return An array token.
      *  @exception IllegalActionException If the argument token is not
@@ -157,6 +157,75 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // arguments that were passed in.
             throw new IllegalActionException(null, ex,
                     notSupportedMessage("elementDivide",
+                            this, token));
+        }
+        return new ArrayToken(result);
+    }
+
+    /** Modulo each element of this array by the given token.
+     *  @return An array token.
+     *  @exception IllegalActionException If the argument token is not
+     *  of a type that can be used with modulo.
+     */
+    public ArrayToken elementModulo(Token token)
+            throws IllegalActionException {
+        Token[] result = new Token[_value.length];
+        try {
+            for (int i = 0; i < _value.length; i++) {
+                result[i] = _value[i].modulo(token);
+            }
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("elementModulo",
+                            this, token));
+        }
+        return new ArrayToken(result);
+    }
+
+    /** Multiply each element of this array by the given token.
+     *  @return An array token.
+     *  @exception IllegalActionException If the argument token is
+     *  not of a type that can be multiplied to an element of this token.
+     */
+    public ArrayToken elementMultiply(Token token)
+            throws IllegalActionException {
+        Token[] result = new Token[_value.length];
+        try {
+            for (int i = 0; i < _value.length; i++) {
+                result[i] = _value[i].multiply(token);
+            }
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("elementMultiply",
+                            this, token));
+        }
+        return new ArrayToken(result);
+    }
+
+    /** Subtract the given token from each element of this array.
+     *  @return An array token.
+     *  @exception IllegalActionException If the argument token is not
+     *  of a type that can be subtracted from an element of this token.
+     */
+    public ArrayToken elementSubtract(Token token)
+            throws IllegalActionException {
+        Token[] result = new Token[_value.length];
+        try {
+            for (int i = 0; i < _value.length; i++) {
+                result[i] = _value[i].subtract(token);
+            }
+        } catch (IllegalActionException ex) {
+            // If the type-specific operation fails, then create a
+            // better error message that has the types of the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("elementSubtract",
                             this, token));
         }
         return new ArrayToken(result);
@@ -232,52 +301,6 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         return _value.length;
     }
 
-    /** Modulo each element of this array by the given token.
-     *  @return An array token.
-     *  @exception IllegalActionException If the argument token is not
-     *  of a type that can be used with modulo.
-     */
-    public ArrayToken elementModulo(Token token)
-            throws IllegalActionException {
-        Token[] result = new Token[_value.length];
-        try {
-            for (int i = 0; i < _value.length; i++) {
-                result[i] = _value[i].modulo(token);
-            }
-        } catch (IllegalActionException ex) {
-            // If the type-specific operation fails, then create a
-            // better error message that has the types of the
-            // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("elementModulo",
-                            this, token));
-        }
-        return new ArrayToken(result);
-    }
-
-    /** Multiply each element of this array by the given token.
-     *  @return An array token.
-     *  @exception IllegalActionException If the argument token is
-     *  not of a type that can be multiplied to an element of this token.
-     */
-    public ArrayToken elementMultiply(Token token)
-            throws IllegalActionException {
-        Token[] result = new Token[_value.length];
-        try {
-            for (int i = 0; i < _value.length; i++) {
-                result[i] = _value[i].multiply(token);
-            }
-        } catch (IllegalActionException ex) {
-            // If the type-specific operation fails, then create a
-            // better error message that has the types of the
-            // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("elementMultiply",
-                            this, token));
-        }
-        return new ArrayToken(result);
-    }
-
     /** Return a new ArrayToken representing the multiplicative
      *  identity.  The returned token contains an array of the same
      *  size as the array contained by this token, and each element of
@@ -293,29 +316,6 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             oneValueArray[i] = _value[i].one();
         }
         return new ArrayToken(oneValueArray);
-    }
-
-    /** Subtract the given token from each element of this array.
-     *  @return An array token.
-     *  @exception IllegalActionException If the argument token is not
-     *  of a type that can be subtracted from an element of this token.
-     */
-    public ArrayToken elementSubtract(Token token)
-            throws IllegalActionException {
-        Token[] result = new Token[_value.length];
-        try {
-            for (int i = 0; i < _value.length; i++) {
-                result[i] = _value[i].subtract(token);
-            }
-        } catch (IllegalActionException ex) {
-            // If the type-specific operation fails, then create a
-            // better error message that has the types of the
-            // arguments that were passed in.
-            throw new IllegalActionException(null, ex,
-                    notSupportedMessage("elementSubtract",
-                            this, token));
-        }
-        return new ArrayToken(result);
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -408,7 +408,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @param token The token to compare to this token.
      *  @exception IllegalActionException If the elements do not support
      *   this comparison.
-     *  @return A true-valued token if the first argument is close to this token.
+     *  @return A true-valued token if the first argument is close
+     *  to this token.
      */
     protected BooleanToken _isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
