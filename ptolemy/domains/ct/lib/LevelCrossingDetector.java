@@ -102,7 +102,7 @@ public class LevelCrossingDetector extends Transformer
                 new DoubleToken(0.0));
         output.setTypeAtLeast(defaultEventValue);
 
-        useEventValue = new Parameter(this, "useDefaultEventValue");
+        useEventValue = new Parameter(this, "useEventValue");
         useEventValue.setTypeEquals(BaseType.BOOLEAN);
         useEventValue.setToken(BooleanToken.FALSE);
 
