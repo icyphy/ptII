@@ -85,6 +85,50 @@ You can automatically startup the Java Virtual Machine as you launch
  Note: This doesn't seem to work on NT3.51
 </pre>
 
+<h3>Memory Leaks</h3>
+Under C and C++, one must manage memory by hand.  
+
+ <p>Java has a garbage collector, which helps, but memory leaks are
+still possible. Usually, an object is marked as being eligible for GC
+when it goes out of scope.  Or, if the value of the object is null,
+then it may be GC'd.  However, an object will not be garbage collected
+if the object has references to it.  This is how we get memory leaks.
+
+ <p>We can <B>ask</B> that the garbage collector be run with
+<pre>
+System.gc();
+</pre>
+For example, we do this in the code generator after building
+the large AST that represents the java.lang and ptolemy.kernel classes.
+
+ <p>Finalization is what happens before an object is GC'd.  We
+can force the system to run the <CODE>finalize</CODE> method
+on all objects that are waiting to be finalized with:
+<pre>
+System.runFinalization();
+</pre>
+
+
+For futher information, see
+<a href="http://www.javasoft.com/docs/books/tutorial/java/data/garbagecollection.html">Java Tutorial Page about Garbage Collection</a>
+
+<h3>Heap Analysis Tool</h3>
+Heap Analysis Tool (HAT) is a freely available tool from Sun that
+can process -Xrunhprof data.
+ <p>See the 
+<a href="http://developer.java.sun.com/developer/onlineTraining/Programming/JDCBook/perf3.html">JDC Book that discusses Heap Analysis Tool</a> for
+downloads and further information.
+
+ <p>Generate a hprof file:
+<pre>
+ java -Xrunhprof:file=vergil.hprof,format=b -classpath $PTII/lib/diva.jar\;$PTII/ptolemy/vergil/vergil.jar\;$PTII/ptolemy/ptolemy.jar\;$PTII ptolemy.vergil.VergilApplication
+</pre>
+
+<pre>Run HAT:
+java -classpath hat.zip\;$PTII/lib/diva.jar\;$PTII/ptolemy/vergil/vergil.jar\;$PTII/ptolemy/ptolemy.jar\;$PTII -mx100m hat.Main vergil.hprof
+</pre>
+
+
 <h2><a name="remoteresources">Remote resources</a></h2>
 
 <h3>Commercial Profilers</h3>
@@ -111,6 +155,10 @@ You can automatically startup the Java Virtual Machine as you launch
 
 <li> <a href="http://developer.java.sun.com/developer//technicalArticles/Programming/perfanal/index.html" target="_top">PerfAnal: A Performance Analysis Tool</a>
 (March 2000 Java Developer Connection Article - The JDC requires registration, but is free to join)
+
+ <li><a href="http://developer.java.sun.com/developer/onlineTraining/Programming/JDCBook/perf3.html">JDC Book that discusses Heap Analysis Tool</a>
+
+<li> <a href="http://developer.java.sun.com/developer/TechTips/2000/tt0124.html#tip2">Java.sun.com article - TechUsing Hprof to Tune performance</a>
 
 <li> <a href="http://www.javaworld.com/javaworld/jw-09-1998/jw-09-speed.html" target="_top"> September 1998 Javaworld article</a> - includes a benchmark applet
 <li> <a href="http://www.javaworld.com/javaworld/jw-04-1997/jw-04-optimize.html" target="_top">March 1997 Javaworld article</a> - includes a benchmark applet
