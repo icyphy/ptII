@@ -48,6 +48,7 @@
 # 16) Warn about catching CloneNotSupported
 # 17) Warn about import ... *;
 # 18) Warn if the clone method copies port or parameters
+# 19) Warn if there is no trailing newline
 for file in $@
 do
 
@@ -299,6 +300,12 @@ do
 			}
 		    }  
 		 }' $file
+	fi
+
+        # 19) Warn if there is no trailing newline
+	results=`tail -1 $file | od -b | head -1 | grep '012$'`
+	if [ "x$results" = "x" ]; then
+		echo "$file: does not have a trailing newline"
 	fi
 
 done
