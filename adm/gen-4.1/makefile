@@ -788,6 +788,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel/ia \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/psdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/moml/filter \
 	$(REMOTE1PTIIDIST)/com/JLex \
