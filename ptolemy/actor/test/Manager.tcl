@@ -93,15 +93,68 @@ test Manager-8.1 {Test type checking} {
 ######################################################################
 ####
 #
-test Manager-8.2 {Test run-time type checking} {
+test Manager-8.2 {Test run-time type checking, TypedIOPort.broadcast(token)} {
     #use setup above
     set token [java::new {ptolemy.data.IntToken int} 3]
     $director preinitialize
+
+    # cover debug() clause in TypedIOPort.broadcast
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set listener [java::new ptolemy.kernel.util.StreamListener $printStream]
+    $p1 addDebugListener $listener
+
     $p1 broadcast $token
+
+    $p1 removeDebugListener $listener
+
     set rtoken [$p2 get 0]
-    list [[$rtoken getClass] getName] \
+    $printStream flush
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$stream toString] "\n" output
+    list $output [[$rtoken getClass] getName] \
 	    [[java::cast ptolemy.data.DoubleToken $rtoken] doubleValue]
-} {ptolemy.data.DoubleToken 3.0}
+} {{broadcast 3
+} ptolemy.data.DoubleToken 3.0}
+
+######################################################################
+####
+#
+test Manager-8.2 {Test run-time type checking, TypedIOPort.broadcast(token)} {
+
+    #use setup above
+    set tokenArray [java::new {ptolemy.data.IntToken[]} 3 \
+	    [list \
+	    [java::new  {ptolemy.data.IntToken int} 0]  \
+	    [java::new  {ptolemy.data.IntToken int} 1]  \
+	    [java::new  {ptolemy.data.IntToken int} 2]]]
+
+
+    $director preinitialize
+
+    # cover debug() clause in TypedIOPort.broadcast
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set listener [java::new ptolemy.kernel.util.StreamListener $printStream]
+    $p1 addDebugListener $listener
+
+    # Have to use 1 here or we get a full mail
+    $p1 broadcast $tokenArray 1
+
+    $p1 removeDebugListener $listener
+
+    set rtoken [$p2 get 0]
+    $printStream flush
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$stream toString] "\n" output
+    list $output [[$rtoken getClass] getName] \
+	    [[java::cast ptolemy.data.DoubleToken $rtoken] doubleValue]
+} {{broadcast token array of length 1
+} ptolemy.data.DoubleToken 0.0}
 
 ######################################################################
 ####
@@ -304,7 +357,6 @@ test Manager-10.1 {Test execution listener with one arg} {
     # Strip out the stack frames
     regsub -all {	at .*$\n} $stdoutResultsWithoutTime "" \
 	    stdoutResultsWithoutStackTrace	   
-	puts $stdoutResults
     #puts "------- result: [enumToTokenValues [$rec getRecord 0]]"
     list $stdoutResultsWithoutStackTrace
 } {{preinitializing
