@@ -621,7 +621,8 @@ public class IOPort extends ComponentPort {
      *  The returned value is an array of arrays of the same form
      *  as that returned by getReceivers() with no arguments.  Note that a
      *  single relation may represent multiple channels because it may be
-     *  a bus.
+     *  a bus. If the receivers have not yet been created by createReceivers(),
+     *  then return null.
      *  <p>
      *  This method is read-synchronized on the workspace.
      *
@@ -654,10 +655,10 @@ public class IOPort extends ComponentPort {
             // If the port is opaque, return the local Receivers for the
             // relation.
             if(opaque) {
-                // FIXME: What happens if _localReceiversTable is null?
-                // see test/IOPort.tcl IOPort-10.7
-                // The problem is that we don't call createReceiverw, so
-                // _localReceiversTable is null
+                // If _localReceiversTable is null, then createReceivers()
+                // hasn't been called, so there is nothing to return.
+                if (_localReceiversTable == null) return null;
+
                 if( _localReceiversTable.containsKey(relation) ) {
                     // Get the list of receivers for this relation.
                     result = (Receiver[][])_localReceiversTable.get(relation);
@@ -1255,17 +1256,9 @@ public class IOPort extends ComponentPort {
                     result += " ";
                 }
                 result += "receivers {\n";
-                ///try {
-                    /// FIXME FIXME FIXME
-                    // This is here because of a null pointer bug in
-                    // getReceivers. See the ptdesign log 11/29/98.
+                try {
                     Receiver[][] recvrs = null;
-                    try {
-                        recvrs = getReceivers();
-                    }
-                    catch (Exception e) {
-                        result += "ERROR: getReceivers() failed";
-                    }
+                    recvrs = getReceivers();
                     if (recvrs != null) {
                         for (int i = 0; i < recvrs.length; i++) {
                             // One list item per group
@@ -1284,10 +1277,10 @@ public class IOPort extends ComponentPort {
                             result += _getIndentPrefix(indent+1) + "}\n";
                         }
                     }
-                    ///} catch (IllegalActionException ex) {
-                    ///result += _getIndentPrefix(indent+1) +
-                    ///   ex.getMessage() + "\n";
-                    ///}
+                } catch (IllegalActionException ex) {
+                    result += _getIndentPrefix(indent+1) +
+                             ex.getMessage() + "\n";
+                }
                 result += _getIndentPrefix(indent) + "}";
             }
             if ((detail & REMOTERECEIVERS) != 0) {
@@ -1295,16 +1288,8 @@ public class IOPort extends ComponentPort {
                     result += " ";
                 }
                 result += "remotereceivers {\n";
-                // FIXME FIXME FIXME
-                // This is here because of a null pointer bug in
-                // getReceivers. See the ptdesign log 11/29/98.
                 Receiver[][] recvrs = null;
-                try {
-                    recvrs = getRemoteReceivers();;
-                }
-                catch (Exception e) {
-                    result += "ERROR: getRemoteReceivers() failed";
-                }
+                recvrs = getRemoteReceivers();;
                 if (recvrs != null) {
                     for (int i = 0; i<recvrs.length; i++) {
                         // One list item per group
