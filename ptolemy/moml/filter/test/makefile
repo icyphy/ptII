@@ -35,7 +35,7 @@ ME =		ptolemy/moml/filter/test
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -230,6 +230,11 @@ compat3:
 		echo "Removing tests that failed in earlier releases"; \
 		rm -f $@/MaximumEntropy.xml \
 			$@/OutputActionsAttribute.xml; \
+		echo "Copy data files"; \
+		cp $(OLDTREE3)/ptolemy/actor/lib/io/test/auto/data.ptd $@; \
+		mkdir $@/data; \
+		cp $(OLDTREE3)/ptolemy/actor/lib/io/test/auto/data/data.txt \
+			$@/data; \
 	fi
 
 # Directory that contains models from the demo directory 
