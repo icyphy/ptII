@@ -77,21 +77,28 @@ import ptolemy.util.StringUtilities;
    by giving a MoML file or a -class argument, then parameters of that
    model can be set on the command line.  The syntax is:
    <pre>
-   ptolemy <i>modelFile.xml</i> -<i>parameterName</i> "<i>value</i>"
+   ptolemy <i>modelFile.xml</i> -<i>parameterName</i> <i>value</i>
    </pre>
-   where <i>parameterName</i> is the name of a parameter relative to the top level
-   of a model or the director of a model.  For instance, if foo.xml defines
-   a toplevel entity named "x" and x contains an entity named "y" and a parameter
-   named "a", and y contains a parameter named "b", then:
+   where <i>parameterName</i> is the name of a parameter relative to
+   the top level of a model or the director of a model.  For instance,
+   if foo.xml defines a toplevel entity named <code>x</code> and
+   <code>x</code> contains an entity named <code>y</code> and a
+   parameter named <code>a</code>, and <code>y</code> contains a
+   parameter named <code>b</code>, then:
    <pre>
    ptolemy foo.xml -a 5 -y.b 10
    </pre>
    would set the values of the two parameters.
-   <p>Note that strings need to be carefully backslashed, it might
-   be necessary to do something like
+
+   <p>Note that strings need to be carefully backslashed, so to set a
+   parameter named <code>c</code> to the string <code>"bar"</code> it
+   might be necessary to do something like:
    <pre>
-   ptolemy foo.xml -a 5 -y.b 10 -c \"bar\"
+   ptolemy foo.xml -a 5 -y.b 10 -c \\\"bar\\\"
    </pre>
+   The reason the backslashes are necessary is because <code>ptolemy</code>
+   is a shell script which tends to strip off the double quotes.
+
    <p>
    Derived classes may provide default configurations. In particular, the
    protected method _createDefaultConfiguration() is called before any
