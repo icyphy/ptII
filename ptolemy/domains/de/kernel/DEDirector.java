@@ -821,7 +821,7 @@ public class DEDirector extends Director {
                 if (rec != null) {
                     // Transfer the event to the receiver.
                     if(_debugging) _debug(getName(),
-                            "put tigger event to",
+                            "put trigger event to",
                             rec.getContainer().getName());
                     rec._triggerEvent(currentEvent.token());
                 }
