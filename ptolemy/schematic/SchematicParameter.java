@@ -39,6 +39,12 @@ import collections.HashedMap;
 A SchematicParameter encapsulate a parameter that can be set on a 
 SchematicElement.  Every parameter has three pieces of data, the name,
 type and value.
+<!-- parameter elements will be parsed into class SchematicParameter -->
+<!ELEMENT parameter EMPTY>
+<!ATTLIST parameter
+name ID #REQUIRED
+value CDATA ""
+type (string|double|doubleArray) #REQUIRED>
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
