@@ -76,11 +76,29 @@ public class GRShadedShape extends GRActor {
 
         shininess = new Parameter(this,"shininess",new DoubleToken(0.0));
 
-        pose = new Parameter(this,"pose",
+        /*pose = new Parameter(this,"pose",
                 new DoubleMatrixToken(_pose));
+         */
 
         _color = new Color3f(1.0f,1.0f,1.0f);
     }
+    
+    /** Return false if the scene graph is already initialized.
+     *
+     *  @return false if the scene graph is already initialized.
+     *  @exception IllegalActionException will not be thrown..
+     */
+    public boolean prefire() throws IllegalActionException {
+        // -prefire-
+        // Note: Actors return false on prefire if they don't want to be
+        // fired and postfired in the current iteration.
+        if (_isSceneGraphInitialized) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
@@ -94,21 +112,16 @@ public class GRShadedShape extends GRActor {
      */
     public Parameter rgbColor;
 
-    /** The shininess of the 3D shape
+    /** The shininess of the 3D shape.
+     *  This parameter should contain a DoubleToken.
+     *  The default value of this parameter is ??FIXME
      */
     public Parameter shininess;
-
-    /** The initial pose of the 3D shape
-     */
-    public Parameter pose;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public void makeSceneGraphConnection() throws IllegalActionException {
-        sceneGraphOut.send(0,new ObjectToken(getNodeObject()));
-    }
-
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -145,6 +158,11 @@ public class GRShadedShape extends GRActor {
 
         _createAppearance();
     }
+    
+    protected void _makeSceneGraphConnection() throws IllegalActionException {
+        sceneGraphOut.send(0,new ObjectToken(_getNodeObject()));
+    }
+
 
 
     ///////////////////////////////////////////////////////////////////
@@ -154,10 +172,7 @@ public class GRShadedShape extends GRActor {
     protected Appearance _appearance;
     protected Material _material;
     protected float _shine;
-    protected double[][] _pose = new double[][] {{1.0, 0.0, 0.0, 0.0},
-        {0.0, 1.0, 0.0, 0.0},
-            {0.0, 0.0, 1.0, 0.0},
-                {0.0, 0.0, 0.0, 1.0}};
+    
 
     protected static final Color3f whiteColor = new Color3f(1.0f,1.0f,1.0f);
     protected static final Color3f blueColor = new Color3f(0.0f,0.0f,1.0f);

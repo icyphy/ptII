@@ -86,10 +86,11 @@ public class Sphere3D extends GRShadedShape {
 
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
      *  node for this actor is a Java3D sphere.
+     *
      *  @return the Java3D Sphere
      */
-    public Node getNodeObject() {
-        return (Node) containedNode;
+    protected Node _getNodeObject() {
+        return (Node) _containedNode;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -101,7 +102,7 @@ public class Sphere3D extends GRShadedShape {
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
-        containedNode = new Sphere((float)_getRadius(),Sphere.GENERATE_NORMALS,_appearance);
+        _containedNode = new Sphere((float)_getRadius(),Sphere.GENERATE_NORMALS,_appearance);
     }
 
 
@@ -120,5 +121,5 @@ public class Sphere3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Sphere containedNode;
+    private Sphere _containedNode;
 }

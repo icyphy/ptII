@@ -120,9 +120,10 @@ public class Rotate3D extends GRTransform {
 
     /** Connect other Java3D nodes as children of the encapsulated node in
      *  this actor
+     *
      *  @param node The child Java3D node.
      */
-    public void addChild(Node node) {
+    protected void _addChild(Node node) {
         _bottomTranslate.addChild(node);
     }
 
@@ -133,6 +134,7 @@ public class Rotate3D extends GRTransform {
      *  can't be obtained.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (angle.getWidth() != 0) {
             if (angle.hasToken(0)) {
                 double in = ((DoubleToken)angle.get(0)).doubleValue();
@@ -163,9 +165,10 @@ public class Rotate3D extends GRTransform {
 
     /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
      *  node for this actor TransformGroup
+     *
      *  @return the Java3D TransformGroup
      */
-    public Node getNodeObject() {
+    protected Node _getNodeObject() {
         return (Node) _topTranslate;
     }
 
@@ -212,9 +215,9 @@ public class Rotate3D extends GRTransform {
         topTransform.setTranslation(new Vector3d(_baseX,_baseY,_baseZ));
         _topTranslate.setTransform(topTransform);
 
-        Quat4d quat = new Quat4d();
-        quat.set(new AxisAngle4d(_xAxis,_yAxis,_zAxis,originalAngle));
-        _rotation.set(quat);
+        Quat4d quaternion = new Quat4d();
+        quaternion.set(new AxisAngle4d(_xAxis,_yAxis,_zAxis,originalAngle));
+        _rotation.set(quaternion);
         _middleRotate.setTransform(_rotation);
 
         Transform3D bottomTransform = new Transform3D();

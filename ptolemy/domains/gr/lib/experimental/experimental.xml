@@ -7,8 +7,12 @@
       <group>
   <doc>experimental actors</doc>
 
-<entity name="Switch3D" class="ptolemy.domains.gr.lib.Switch3D">
+<entity name="Switch3D" class="ptolemy.domains.gr.lib.experimental.Switch3D">
 </entity>
+
+<entity name="VrmlLoader3D" class="ptolemy.domains.gr.lib.experimental.VrmlLoader3D">
+</entity>
+
 
       </group>
     ?>

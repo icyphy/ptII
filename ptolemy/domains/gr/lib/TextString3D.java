@@ -72,20 +72,32 @@ public class TextString3D extends GRShadedShape {
 
     public Parameter text;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Create the shape and appearance of the encapsulated text
+     *
+     *  @exception IllegalActionException If the value of some parameters 
+     *  can't be obtained
+     */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
         Font3D font3D = new Font3D(new Font("Helvetica", Font.PLAIN, 1),
                 new FontExtrusion());
         Text3D textGeom = new Text3D(font3D, new String(_getText()));
         textGeom.setAlignment(Text3D.ALIGN_CENTER);
-        containedNode = new Shape3D();
-        containedNode.setGeometry(textGeom);
-        containedNode.setAppearance(_appearance);
+        _containedNode = new Shape3D();
+        _containedNode.setGeometry(textGeom);
+        _containedNode.setAppearance(_appearance);
     }
 
-
-    public Node getNodeObject() {
-        return (Node) containedNode;
+    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
+     *  node for this actor is a Java3D Text3D
+     *
+     *  @return the Java3D Text3D
+     */
+    protected Node _getNodeObject() {
+        return (Node) _containedNode;
     }
 
 
@@ -96,5 +108,5 @@ public class TextString3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Shape3D containedNode;
+    private Shape3D _containedNode;
 }

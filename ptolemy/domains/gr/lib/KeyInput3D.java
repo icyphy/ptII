@@ -58,29 +58,17 @@ public class KeyInput3D extends GRActor {
 
     public TypedIOPort keycode;
 
-    public void makeSceneGraphConnection() throws IllegalActionException {
-        if (_root == null) {
-            throw new IllegalActionException(
-                      "GR error: no ViewScreen actor");
-        } else {
-            _root.addChild(getNodeObject());
-        }
-    }
-
     public void initialize() throws IllegalActionException {
         super.initialize();
         userInputNode = new BranchGroup();
-        _react = new _React();
+        _react = new React();
         _react.setSchedulingBounds(new BoundingSphere());
         userInputNode.addChild(_react);
         _hasData = false;
     }
 
-    public Node getNodeObject() {
-        return (Node) userInputNode;
-    }
-
     public void fire() throws IllegalActionException  {
+        super.fire();
         if (_hasData) {
             keycode.send(0, new IntToken((int)_keycode));
             // FIXME: uncomment for debugging
@@ -88,8 +76,29 @@ public class KeyInput3D extends GRActor {
             _hasData = false;
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
-    private class _React extends Behavior {
+    
+    protected Node _getNodeObject() {
+        return (Node) userInputNode;
+    }
+    
+    protected void _makeSceneGraphConnection() throws IllegalActionException {
+        if (_root == null) {
+            throw new IllegalActionException(
+                      "GR error: no ViewScreen actor");
+        } else {
+            ViewScreen viewScreen = (ViewScreen) _root;
+            viewScreen.addChild(_getNodeObject());
+        }
+    }
+
+
+
+
+    private class React extends Behavior {
 
         public void initialize() {
             this.wakeupOn(new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED));
@@ -115,8 +124,11 @@ public class KeyInput3D extends GRActor {
         }
     }
 
-    protected _React _react;
     protected BranchGroup userInputNode;
-    boolean _hasData;
-    char _keycode;
+        
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private React _react;
+    private boolean _hasData;
+    private char _keycode;
 }

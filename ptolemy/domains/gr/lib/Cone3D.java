@@ -92,8 +92,8 @@ public class Cone3D extends GRShadedShape {
      *  node for this actor is a cone.
      *  @return the Java3D cone.
      */
-    public Node getNodeObject() {
-        return (Node) containedNode;
+    public Node _getNodeObject() {
+        return (Node) _containedNode;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -105,7 +105,7 @@ public class Cone3D extends GRShadedShape {
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
-        containedNode = new Cone((float)_getRadius(),(float) _getHeight(),
+        _containedNode = new Cone((float)_getRadius(),(float) _getHeight(),
                 Cone.GENERATE_NORMALS,_appearance);
     }
 
@@ -130,5 +130,5 @@ public class Cone3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Cone containedNode;
+    private Cone _containedNode;
 }

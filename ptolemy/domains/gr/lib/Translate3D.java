@@ -131,6 +131,8 @@ public class Translate3D extends GRTransform {
      *   can't be obtained
      */
     public void fire() throws IllegalActionException {
+    //  all state changes must be done in postfire()
+        super.fire();
         boolean applyTransform = false;
         double xOffset = _initialXTranslation;
         double yOffset = _initialYTranslation;
@@ -185,15 +187,20 @@ public class Translate3D extends GRTransform {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _initialXTranslation = ((DoubleToken) initialXTranslation.getToken()).doubleValue();
-        _initialYTranslation = ((DoubleToken) initialYTranslation.getToken()).doubleValue();
-        _initialZTranslation = ((DoubleToken) initialZTranslation.getToken()).doubleValue();
+        _initialXTranslation = ((DoubleToken) 
+                                  initialXTranslation.getToken()).doubleValue();
+        _initialYTranslation = ((DoubleToken)
+                                  initialYTranslation.getToken()).doubleValue();
+        _initialZTranslation = ((DoubleToken)
+                                  initialZTranslation.getToken()).doubleValue();
 
         transformNode = new TransformGroup();
         transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
         Transform3D transform = new Transform3D();
-        transform.setTranslation(new Vector3d(_initialXTranslation,_initialYTranslation,_initialZTranslation));
+        transform.setTranslation(new Vector3d(_initialXTranslation,
+                                              _initialYTranslation,
+                                              _initialZTranslation));
         transformNode.setTransform(transform);
 
         _accumulatedX = 0.0;
@@ -201,14 +208,23 @@ public class Translate3D extends GRTransform {
         _accumulatedZ = 0.0;
     }
 
-    public Node getNodeObject() {
+
+    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
+     *  node for this actor TransformGroup
+     *
+     *  @return the Java3D TransformGroup
+     */
+    protected Node _getNodeObject() {
         return (Node) transformNode;
     }
 
 
-    /** Add a scene graph child node to this actor
+    /** Connect other Java3D nodes as children of the encapsulated node in
+     *  this actor
+     *
+     *  @param node The child Java3D node.
      */
-    public void addChild(Node node) {
+    protected void _addChild(Node node) {
         transformNode.addChild(node);
     }
 

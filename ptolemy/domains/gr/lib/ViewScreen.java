@@ -174,22 +174,35 @@ public class ViewScreen extends GRActor implements Placeable {
             _frame.getContentPane().add(_canvas,BorderLayout.CENTER);
             _canvas.setSize(new Dimension(horizontalDimension,verticalDimension));
             _frame.setSize(horizontalDimension+50,verticalDimension);
-            if (simpleU == null) simpleU = new SimpleUniverse(_canvas);
-            simpleU.getViewingPlatform().setNominalViewingTransform();
+            if (simpleUniverse == null) simpleUniverse = new SimpleUniverse(_canvas);
+            simpleUniverse.getViewingPlatform().setNominalViewingTransform();
             _frame.setVisible(true);
         } else {
             container.add("Center",_canvas);
             _canvas.setSize(new Dimension(horizontalDimension,verticalDimension));
-            if (simpleU == null) simpleU = new SimpleUniverse(_canvas);
-            simpleU.getViewingPlatform().setNominalViewingTransform();
+            if (simpleUniverse == null) simpleUniverse = new SimpleUniverse(_canvas);
+            simpleUniverse.getViewingPlatform().setNominalViewingTransform();
+            
+            /* FIXME: experimental code for changing views
+            TransformGroup VPTG = new TransformGroup();
+            VPTG = simpleUniverse.getViewingPlatform().getMultiTransformGroup().getTransformGroup(0);
+            Transform3D VPT3D = new Transform3D();
+            //VPT3D.lookAt(new Point3d(0.0,0.0,10.0), new Point3d(0.0,0.0,0.0), new Vector3d(0.0,1.0,0.0));
+            //VPT3D.setTranslation(new Vector3f(0.0f,0.0f,10.0f));
+            //VPT3D.rotX(Math.PI/2.0);
+            VPT3D.rotX(Math.PI/2);
+            VPT3D.setTranslation(new Vector3f(0.0f,-10.0f,0.0f));
+            
+            VPTG.setTransform(VPT3D);
+            */
         }
     }
 
-    public void addChild(Node node) {
-        _userTransformation.addChild(node);
-    }
     
+    /*
+     */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_iterationSynchronized)  {
             _canvas.swap();
             _canvas.startRenderer();
@@ -207,13 +220,13 @@ public class ViewScreen extends GRActor implements Placeable {
         if (_frame != null) {
             _frame.setVisible(true);
         }
-        if (simpleU == null) simpleU = new SimpleUniverse(_canvas);
-        Enumeration e = simpleU.getLocale().getAllBranchGraphs();
+        if (simpleUniverse == null) simpleUniverse = new SimpleUniverse(_canvas);
+        Enumeration e = simpleUniverse.getLocale().getAllBranchGraphs();
 
         while (e.hasMoreElements()) {
             BranchGroup bg = (BranchGroup) e.nextElement();
             if (bg.getCapability(BranchGroup.ALLOW_DETACH)) {
-                simpleU.getLocale().removeBranchGraph(bg);
+                simpleUniverse.getLocale().removeBranchGraph(bg);
             }
         }
 
@@ -283,6 +296,8 @@ public class ViewScreen extends GRActor implements Placeable {
             _userTransformation.addChild(zAxisGroup);
         }
 
+
+        // setup the lights
         BranchGroup lightRoot = new BranchGroup();
 
         AmbientLight lightA = new AmbientLight(new Color3f(0.8f,0.8f,0.8f));
@@ -298,25 +313,15 @@ public class ViewScreen extends GRActor implements Placeable {
         lightRoot.addChild(lightD1);
 
 
-        simpleU.getViewer().getView().setLocalEyeLightingEnable(true);
-        simpleU.addBranchGraph(lightRoot);
+        simpleUniverse.getViewer().getView().setLocalEyeLightingEnable(true);
+        simpleUniverse.addBranchGraph(lightRoot);
         
         if (_iterationSynchronized) {
             if (_canvas != null) _canvas.stopRenderer();
         }
     }
 
-    public void makeSceneGraphConnection() throws IllegalActionException {
-        int width = sceneGraphIn.getWidth();
-        for(int i=0;i<width;i++) {
-            ObjectToken objectToken = (ObjectToken) sceneGraphIn.get(i);
-            Node node = (Node) objectToken.getValue();
-            addChild(node);
-        }
-        branchRoot.compile();
-        simpleU.addBranchGraph(branchRoot);
-    }
-
+    
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _userTransformation.getTransform(_lastTransform);
@@ -326,14 +331,45 @@ public class ViewScreen extends GRActor implements Placeable {
             if (mouseRotate != null) mouseRotate.stopped();
             _canvas.startRenderer();
         }
+        _isSceneGraphInitialized = false;
     }
 
-    public Node getNodeObject() {
-        return null;
+    
+    public void addChild(Node node) {
+        _userTransformation.addChild(node);
     }
  
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                       protected methods                   ////
+
+    /**
+     */
+    protected void _addChild(Node node) {
+        _userTransformation.addChild(node);
+    }
+    
+
+    /** The ViewScreen does not have an associated Java3D node
+     *
+     *  @return null
+     */
+    protected Node _getNodeObject() {
+        return null;
+    }
+    
+    /**
+     */
+    protected void _makeSceneGraphConnection() throws IllegalActionException {
+        int width = sceneGraphIn.getWidth();
+        for(int i=0;i<width;i++) {
+            ObjectToken objectToken = (ObjectToken) sceneGraphIn.get(i);
+            Node node = (Node) objectToken.getValue();
+            _addChild(node);
+        }
+        branchRoot.compile();
+        simpleUniverse.addBranchGraph(branchRoot);
+    }
+
 
     /** Start the internal Java3D renderer
      */
@@ -396,7 +432,19 @@ public class ViewScreen extends GRActor implements Placeable {
                 _viewContainer.startRenderer();
                     
             }
+            /* FIXME: experimental code for changing xforms
+            double[] db = new double[16];
+            
+            db[0]=1.0;db[1]=db[2]=db[3]=0.0;
+            db[4]=0.0;db[5]=1.0;db[6]=db[7]=0.0;
+            db[8]=db[9]=0.0;db[10]=1.0;db[11]=0.0;
+            db[12]=db[13]=db[14]=0.0;db[15]=1.0;
+            currXform.set(db);
+            */
+            
             super.processStimulus(criteria);
+            
+            
             if (stopped !=true ) {
                 _viewContainer.stopRenderer();
             }
@@ -406,8 +454,27 @@ public class ViewScreen extends GRActor implements Placeable {
             stopped = true;
         }
         
-        public void transfromChanged(Transform3D t) {
-        }
+        /* FIXME experimental code for changing xforms
+        public void transformChanged(Transform3D transform) {
+            double[] db = new double[16];
+            
+            transform.get(db);
+            for(int i=0;i<16;i++) {
+                if (i%4 ==0) {
+                    System.out.println(" ");
+                }
+                System.out.print(" "+db[i]);
+            }
+            System.out.println(" ");
+            System.out.println("---------------------------------------------------------------");
+            db[0]=1.0;db[1]=db[2]=db[3]=0.0;
+            db[4]=0.0;db[5]=1.0;db[6]=db[7]=0.0;
+            db[8]=db[9]=0.0;db[10]=1.0;db[11]=0.0;
+            db[12]=db[13]=db[14]=0.0;db[15]=1.0;
+            Transform3D td = new Transform3D();
+            td.set(db);
+            //currXform.set(db);
+        }*/
         
         boolean stopped = false;
         ViewScreen _viewContainer;
@@ -415,8 +482,9 @@ public class ViewScreen extends GRActor implements Placeable {
 ;
     private MouseRotateView mouseRotate;
     private Canvas3D _canvas;
-    private SimpleUniverse simpleU;
+    private SimpleUniverse simpleUniverse;
     private boolean _iterationSynchronized = false;
+    // The main connection branch that connects to the universe 
     private BranchGroup branchRoot;
     private Transform3D _lastTransform = new Transform3D();
     private TransformGroup _userTransformation = new TransformGroup();

@@ -88,13 +88,7 @@ public class Cylinder3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
-     *  node for this actor is a Java3D Cylinder.
-     *  @return the Java3D Cylinder
-     */
-    public Node getNodeObject() {
-        return (Node) containedNode;
-    }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -105,8 +99,17 @@ public class Cylinder3D extends GRShadedShape {
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
-        containedNode = new Cylinder((float) _getRadius(),(float) _getHeight(),
+        _containedNode = new Cylinder((float) _getRadius(),(float) _getHeight(),
                 Cylinder.GENERATE_NORMALS,_appearance);
+    }
+    
+    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
+     *  node for this actor is a Java3D Cylinder.
+     *
+     *  @return the Java3D Cylinder
+     */
+    protected Node _getNodeObject() {
+        return (Node) _containedNode;
     }
 
 
@@ -135,5 +138,5 @@ public class Cylinder3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Cylinder containedNode;
+    private Cylinder _containedNode;
 }

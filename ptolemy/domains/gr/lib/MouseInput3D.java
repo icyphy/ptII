@@ -68,18 +68,15 @@ public class MouseInput3D extends GRActor {
 
     public void initialize() throws IllegalActionException {
         super.initialize();
-        obj = new BranchGroup();
-        _react = new _React();
+        _containedNode = new BranchGroup();
+        _react = new React();
         _react.setSchedulingBounds(new BoundingSphere());
-        obj.addChild(_react);
+        _containedNode.addChild(_react);
         _hasData = false;
     }
 
-    public Node getNodeObject() {
-        return (Node) obj;
-    }
-
     public void fire() throws IllegalActionException  {
+        super.fire();
         if (_hasData) {
             x.send(0, new IntToken(_xClicked));
             y.send(0, new IntToken(_yClicked));
@@ -88,17 +85,25 @@ public class MouseInput3D extends GRActor {
             //System.out.println("clicked location -> "+_xClicked+" "+_yClicked);
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    
+    public Node _getNodeObject() {
+        return (Node) _containedNode;
+    }
 
-    public void makeSceneGraphConnection() throws IllegalActionException {
+    protected void _makeSceneGraphConnection() throws IllegalActionException {
         if (_root == null) {
             throw new IllegalActionException(
                       "GR error: no ViewScreen actor");
         } else {
-            _root.addChild(getNodeObject());
+            ViewScreen viewScreen = (ViewScreen) _root;
+            viewScreen.addChild(_getNodeObject());
         }
     }
 
-    private class _React extends Behavior {
+    private class React extends Behavior {
 
         public void initialize() {
             this.wakeupOn(new WakeupOnAWTEvent(MouseEvent.MOUSE_PRESSED));
@@ -125,10 +130,14 @@ public class MouseInput3D extends GRActor {
         }
     }
 
-    protected _React _react;
-    protected BranchGroup obj;
+    protected BranchGroup _containedNode;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-    boolean _hasData;
-    int _xClicked;
-    int _yClicked;
+
+    private React _react;
+    private boolean _hasData;
+    private int _xClicked;
+    private int _yClicked;
 }

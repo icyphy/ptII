@@ -80,13 +80,21 @@ public class Scale3D extends GRTransform {
         zScale = new Parameter(this, "zScale", new DoubleToken(1.0));
     }
 
-    public Node getNodeObject() {
+
+    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
+     *  node for this actor TransformGroup
+     *
+     *  @return the Java3D TransformGroup
+     */
+    protected Node _getNodeObject() {
         return (Node) transformNode;
     }
 
     /** Add a scene graph child node to this actor
+     *
+     *  @param node The child node to be attached
      */
-    public void addChild(Node node) {
+    protected void _addChild(Node node) {
         transformNode.addChild(node);
     }
 

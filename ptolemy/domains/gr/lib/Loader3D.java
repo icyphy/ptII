@@ -78,7 +78,7 @@ public class Loader3D extends GRShadedShape {
     public Parameter filename;
 
 
-    public Node getNodeObject() {
+    public Node _getNodeObject() {
         return (Node) obj.getSceneGroup();
     }
 

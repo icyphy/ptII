@@ -105,14 +105,6 @@ public class Torus3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
-     *  node for this actor is a circular sweep.
-     *  @return the Java3D circular sweep
-     */
-    public Node getNodeObject() {
-        return (Node) containedNode;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -195,9 +187,18 @@ public class Torus3D extends GRShadedShape {
         st.stripify(gi);
         gi.recomputeIndices();
 
-        containedNode = new Shape3D();
-        containedNode.setAppearance(_appearance);
-        containedNode.setGeometry(gi.getGeometryArray());
+        _containedNode = new Shape3D();
+        _containedNode.setAppearance(_appearance);
+        _containedNode.setGeometry(gi.getGeometryArray());
+    }
+    
+    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
+     *  node for this actor is a customized torus.
+     *
+     *  @return the torus node
+     */
+    protected Node _getNodeObject() {
+        return (Node) _containedNode;
     }
 
 
@@ -243,6 +244,5 @@ public class Torus3D extends GRShadedShape {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private Shape3D containedNode;
+    private Shape3D _containedNode;
 }

@@ -98,20 +98,7 @@ public class GRTransform extends GRActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    public void makeSceneGraphConnection() throws IllegalActionException {
-        int width = sceneGraphIn.getWidth();
-        for(int i=0;i<width;i++) {
-            if (sceneGraphIn.hasToken(i)) {
-                ObjectToken o = (ObjectToken) sceneGraphIn.get(i);
-                Node n = (Node) o.getValue();
-                addChild(n);
-            }
-        }
-        sceneGraphOut.send(0,new ObjectToken(getNodeObject()));
-    }
-
-
+    
     /** Setup the transform object
      */
     public void initialize() throws IllegalActionException {
@@ -131,4 +118,15 @@ public class GRTransform extends GRActor {
         return ((BooleanToken) accumulate.getToken()).booleanValue();
     }
 
+    protected void _makeSceneGraphConnection() throws IllegalActionException {
+        int width = sceneGraphIn.getWidth();
+        for(int i=0;i<width;i++) {
+            if (sceneGraphIn.hasToken(i)) {
+                ObjectToken o = (ObjectToken) sceneGraphIn.get(i);
+                Node n = (Node) o.getValue();
+                _addChild(n);
+            }
+        }
+        sceneGraphOut.send(0,new ObjectToken(_getNodeObject()));
+    }
 }

@@ -27,7 +27,7 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.gr.lib;
+package ptolemy.domains.gr.lib.experimental;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
@@ -38,6 +38,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.gui.Display;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.lib.*;
+import ptolemy.domains.gr.lib.*;
 
 import java.util.Enumeration;
 
@@ -83,7 +84,7 @@ public class VrmlLoader3D extends GRShadedShape {
     public Parameter filename;
 
 
-    public Node getNodeObject() {
+    protected Node _getNodeObject() {
         return (Node) obj.getSceneGroup();
     }
 

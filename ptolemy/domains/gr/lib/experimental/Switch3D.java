@@ -127,11 +127,11 @@ public class Switch3D extends GRTransform {
     }
 
 
-    public Node getNodeObject() {
+    protected Node _getNodeObject() {
         return null;
     }
 
-    public void makeSceneGraphConnection() throws IllegalActionException {
+    protected void _makeSceneGraphConnection() throws IllegalActionException {
         _previousIndex = -1;
         int width = sceneGraphIn.getWidth();
         int i;

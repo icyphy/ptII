@@ -98,15 +98,6 @@ public class Box3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
-     *  node for this actor is a Java3D box.
-     *  @return the Java3D box.
-     */
-    public Node getNodeObject() {
-        return (Node) containedNode;
-    }
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -116,9 +107,18 @@ public class Box3D extends GRShadedShape {
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
-        containedNode = new Box((float)_getLength(),(float) _getWidth(),
+        _containedNode = new Box((float)_getLength(),(float) _getWidth(),
                 (float) _getHeight(), Box.GENERATE_NORMALS,_appearance);
     }
+    
+    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
+     *  node for this actor is a Java3D box.
+     *  @return the Java3D box.
+     */
+    protected Node _getNodeObject() {
+        return (Node) _containedNode;
+    }
+
 
 
     ///////////////////////////////////////////////////////////////////
@@ -158,5 +158,5 @@ public class Box3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Box containedNode;
+    private Box _containedNode;
 }
