@@ -465,33 +465,9 @@ public class Main extends KernelMain {
         }
     }
 
-    /** Add transforms corresponding to the standard soot optimizations
-     *  to the given pack.
-     */
-    private static void _addStandardOptimizations(Pack pack, int time) {
-        addTransform(pack, "wjtp.SOcse" + time,
-                new TransformerAdapter(CommonSubexpressionEliminator.v()));
-        addTransform(pack, "wjtp.SOcp" + time,
-                new TransformerAdapter(CopyPropagator.v()));
-        addTransform(pack, "wjtp.SOcpf" + time,
-                new TransformerAdapter(ConstantPropagatorAndFolder.v()));
-        addTransform(pack, "wjtp.SOcbf" + time,
-                new TransformerAdapter(ConditionalBranchFolder.v()));
-        addTransform(pack, "wjtp.SOdae" + time,
-                new TransformerAdapter(DeadAssignmentEliminator.v()));
-        addTransform(pack, "wjtp.SOuce1" + time,
-                new TransformerAdapter(UnreachableCodeEliminator.v()));
-        addTransform(pack, "wjtp.SOubf1" + time,
-                new TransformerAdapter(UnconditionalBranchFolder.v()));
-        addTransform(pack, "wjtp.SOuce2" + time,
-                new TransformerAdapter(UnreachableCodeEliminator.v()));
-        addTransform(pack, "wjtp.SOubf2" + time,
-                new TransformerAdapter(UnconditionalBranchFolder.v()));
-        addTransform(pack, "wjtp.SOule" + time,
-                new TransformerAdapter(UnusedLocalEliminator.v()));
-    }
-    
-    private static String[] _parseArgs(String args[]) {
+    /** Parse any Copernicus arguments.
+     */ 
+    protected static String[] _parseArgs(String args[]) {
         // Ignore the first argument.
         for(int i = 1; i < args.length; i++) {
             if(args[i].equals("-targetPackage")) {
@@ -550,7 +526,33 @@ public class Main extends KernelMain {
         sootArgs[0] = args[0];
         return sootArgs;
     }
-    
+
+    /** Add transforms corresponding to the standard soot optimizations
+     *  to the given pack.
+     */
+    private static void _addStandardOptimizations(Pack pack, int time) {
+        addTransform(pack, "wjtp.SOcse" + time,
+                new TransformerAdapter(CommonSubexpressionEliminator.v()));
+        addTransform(pack, "wjtp.SOcp" + time,
+                new TransformerAdapter(CopyPropagator.v()));
+        addTransform(pack, "wjtp.SOcpf" + time,
+                new TransformerAdapter(ConstantPropagatorAndFolder.v()));
+        addTransform(pack, "wjtp.SOcbf" + time,
+                new TransformerAdapter(ConditionalBranchFolder.v()));
+        addTransform(pack, "wjtp.SOdae" + time,
+                new TransformerAdapter(DeadAssignmentEliminator.v()));
+        addTransform(pack, "wjtp.SOuce1" + time,
+                new TransformerAdapter(UnreachableCodeEliminator.v()));
+        addTransform(pack, "wjtp.SOubf1" + time,
+                new TransformerAdapter(UnconditionalBranchFolder.v()));
+        addTransform(pack, "wjtp.SOuce2" + time,
+                new TransformerAdapter(UnreachableCodeEliminator.v()));
+        addTransform(pack, "wjtp.SOubf2" + time,
+                new TransformerAdapter(UnconditionalBranchFolder.v()));
+        addTransform(pack, "wjtp.SOule" + time,
+                new TransformerAdapter(UnusedLocalEliminator.v()));
+    }
+   
     private static String _generatorAttributeFileName = "unsetParameter";
     private static String _watchDogTimer = "unsetParameter";
     private static String _targetPackage = "unsetParameter";
