@@ -213,10 +213,6 @@ public class ClassChanges implements MoMLFilter {
         _classChanges.put("ptolemy.kernel.attributes.IDAttribute",
                 "ptolemy.vergil.kernel.attributes.IDAttribute");
 
-        // The following change is too aggressive.
-        //        _classChanges.put("ptolemy.domains.de.kernel.DEDirector",
-        //            "ptolemy.domains.de.kernel.DEEDirector");
-
         _classChanges.put("ptolemy.domains.gr.lib.ViewScreen",
                 "ptolemy.domains.gr.lib.ViewScreen3D");
 
