@@ -117,7 +117,7 @@ public class CTPeriodicalSampler extends CTActor
 
         CTMixedSignalDirector dir = (CTMixedSignalDirector) getDirector();
         double tnow = dir.getCurrentTime();
-        if( Math.abs(tnow- _nextSamplingTime)<dir.getTimeAccuracy()) {
+        if( Math.abs(tnow- _nextSamplingTime)<dir.getTimeResolution()) {
             dir.setFireEndTime(tnow);
             if(DEBUG) {
                 System.out.println("set FireEndTime:" + tnow);
@@ -133,7 +133,7 @@ public class CTPeriodicalSampler extends CTActor
         CTMixedSignalDirector dir = (CTMixedSignalDirector) getDirector();
         if(input.hasToken(0)) {
             double tnow = dir.getCurrentTime();
-            if(Math.abs(tnow-_nextSamplingTime)<dir.getTimeAccuracy()) {
+            if(Math.abs(tnow-_nextSamplingTime)<dir.getTimeResolution()) {
                 DoubleToken value = (DoubleToken) input.get(0);
                 if(DEBUG) {
                     System.out.println(" Emit an event at" + tnow
@@ -183,7 +183,7 @@ public class CTPeriodicalSampler extends CTActor
     public boolean hasMissedEvent() {
         CTDirector dir = (CTDirector)getDirector();
         double tnow = dir.getCurrentTime();
-        if(Math.abs(tnow - _nextSamplingTime)<dir.getTimeAccuracy()) {
+        if(Math.abs(tnow - _nextSamplingTime)<dir.getTimeResolution()) {
             return false;
         }
         if (tnow>_nextSamplingTime){
