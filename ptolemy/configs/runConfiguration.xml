@@ -4,6 +4,5 @@
 <model name="configuration" class="ptolemy.actor.gui.Configuration">
   <doc>Configuration to run but not edit Ptolemy II models</doc>
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/>
-  <entity name="tableauFactory" class="ptolemy.actor.gui.RunTableau$Factory"/>
   <entity name="effigyFactory" class="ptolemy.actor.gui.PtolemyEffigy$Factory"/>
 </model>
