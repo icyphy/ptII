@@ -90,6 +90,9 @@ KVM_CLASSES = @KVM_CLASSES@
 # Directory that contains the kvm used by PalmOS
 KVM_DIR = @KVM_DIR@
 
+# Directory the Palm Pilot Hot Sync program looks for downloads
+PALM_ADD_ON_DIR = /Program\ Files/Palm/Add-on
+
 ########## You should not have to change anything below this line ######
 
 # The 'javac' compiler.
@@ -101,7 +104,7 @@ JAVAC = 	$(PTJAVA_DIR)/bin/javac
 # causes the build to take much longer
 JDEPENDFLAG =	@JDEPENDFLAG@   
 JDEBUG =	-g
-JOPTIMIZE =	#-O
+JOPTIMIZE =	-O
 JFLAGS = 	$(JDEBUG) $(JOPTIMIZE)
 
 # The 'javadoc' program
