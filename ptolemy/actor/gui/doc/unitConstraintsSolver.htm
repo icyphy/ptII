@@ -8,26 +8,37 @@
 <h1>Unit Constraints Solver</h1>
 This dialog is used to run the Unit Constraints solver on selected parts of the model.
 It can be started by right mouse-click on a model and selecting "UnitConstraints Solver".
+For a tutorial about units, including examples of using the UnitConstraints Solver Dialog,
+<a href="../../../data/unit/demo/StaticUnits/NonAppletStaticUnits.htm#UnitConstraintsSolver">click here</a>.
+<p>
 An example of the dialog is shown below.
 <p>
 <center>
 <img src="unitConstraintsSolver1.gif" alt="image of UnitsConstraint Solver">
 </center>
 </p>
+<p>
+The UnitConstraints Solver Dialog uses the graph viewer to help
+display information about the operation of the solver and the results that it generates.
+When the UCSD starts the components that will be used to generate solutions are highlighted in yellow
+on the graph viewer.
+(Actually, the manner in which selected links are highlighted is overriden so that they are highlighted
+in yellow instead of rendering handles on the ends of the links.)
+<p>
 There are three different subpanels of the dialog.
 <br><br>
-<b>Members</b> - Provides the means to modifiy the members of the model that are analyzed by the solver.
+<b>Components</b> - Provides the means to modifiy the components of the model that are analyzed by the solver.
 When the dialog is created the model is inspected to see if any actors, and/or relations
 are selected.
 If so, then those actors and links are used in the solution process.
 If none are selected then <i>all</i> of the actors and relations are used.
 The membership can be modified by selecting the desired actors and/or relations and
 then pressing the <b>Set To Selected</b> button on the Memebers panel.
-The current membership can be viewed by pressing the <b>Show Members</b> button which
-will cause the current members to be selected.
+The current membership can be viewed by pressing the <b>Show Components</b> button which
+will cause the current components to be selected.
 <br><br>
 <b>Full Solver</b> - Interface to the full solver.
-Pressing the <b>Run</b> button causes the solver to run to completion on the members.
+Pressing the <b>Run</b> button causes the solver to run to completion on the components.
 The results are displayed in the panel below the <b>Run</b> button.
 The possible results are
 <ul>
@@ -44,7 +55,7 @@ This usuallly means that the model is "correct" from a Units perspective.
 <br><br>
 <b>Minimal Spanning Solver</b> Interface to solver that runs in a mode that attempts
 to isolate inconsistencies.
-The solver is run multiple times, each on a subset of the members.
+The solver is run multiple times, each on a subset of the components.
 In this mode the solver stops when an inconsistency is found.
 This produces a set of solutions, each presenting a different perspective on the
 inconsistencies in the model.
