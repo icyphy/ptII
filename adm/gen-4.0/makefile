@@ -74,6 +74,9 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 #   for pid 0, Win32 error 6
 
 # 1.14 can be found at ftp://ftp.gnu.org/pub/gnu/tar
+windows:
+	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII-4.0 COMPRESS=gzip TAR=/bin/tar clean all src.jar 
+
 # make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII-4.0 COMPRESS=gzip TAR=/bin/tar clean all src.jar 
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
@@ -319,16 +322,17 @@ src_jar: #$(PTII_SRC)
 
 # Location of the jar binary.  Cygwin /bin/jar is broken.
 JAR=c:/j2sdk1.4.2_05/bin/jar
+HYVISUAL_SRC_JAR = hyvisual$(VERSION).src.jar
 
 # The Jar file that we create.
 hyvisual.jar: $(HYVISUAL_SRC_JAR)
-$(HYVISUAL_SRC_JAR): hyvisual_src_jar
-bar:
+$(HYVISUAL_SRC_JAR): src_jar/hyvisual$(VERSION)
 	(cd src_jar/hyvisual$(VERSION); $(JAR) -cf ../../hyvisual$(VERSION).src.jar .)
 
 # The directory we jar up.
 # We include DE because some of the kernel/util tests use it.  CT demos also.
-hyvisual_src_jar: ptII$(VERSION).src.jar
+hyvisual_src_jar: src_jar/hyvisual$(VERSION)
+src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 	if [ ! -d src_jar/hyvisual$(VERSION) ]; then \
 		 mkdir -p src_jar/hyvisual$(VERSION); \
 	fi
@@ -387,7 +391,7 @@ hyvisual_src_jar: ptII$(VERSION).src.jar
 		ptolemy/domains/tm \
 		ptolemy/domains/wireless \
 		thales; \
-	   touch configure;
+	   touch configure; \
 	)
 
 	(cd src_jar/hyvisual$(VERSION); $(FINDCLEAN))
