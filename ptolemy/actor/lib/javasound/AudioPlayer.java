@@ -340,9 +340,6 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
      *  changed.
      *
      *  @param event The live sound change event.
-     *
-     *  @exception IllegalActionException If the change is not
-     *   allowed.
      */
     public void liveSoundChanged(LiveSoundEvent event) {
 	// Check to see what parameter was changed.
