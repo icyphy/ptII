@@ -41,10 +41,10 @@ public abstract class ColtRandomSource extends RandomSource
         super(container, name);
 
         if(-1 == index)
-        {
+            {
                 index = 0;
                 randomElement = new DRand(coltSeed);
-        }
+            }
 
         randomElementClass = new StringAttribute(this, "Random Number Generator");
         randomElementClass.setExpression(randomElementClassNames[index]);
@@ -52,10 +52,10 @@ public abstract class ColtRandomSource extends RandomSource
         style = new ChoiceStyle(randomElementClass, "style");
 
         for (int i = 0; i < randomElementClassNames.length; i++)
-        {
+            {
                 a = new StringAttribute(style, "style" + i);
                 a.setExpression(randomElementClassNames[i]);
-        }
+            }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -88,7 +88,7 @@ public abstract class ColtRandomSource extends RandomSource
     public void attributeChanged(Attribute attribute) throws IllegalActionException
     {
         if (null != seed) {
-                coltSeed = (int) ((LongToken) seed.getToken()).longValue();
+            coltSeed = (int) ((LongToken) seed.getToken()).longValue();
         }
 
         if (attribute == randomElementClass) {
