@@ -58,6 +58,8 @@ OTHER_FILES_TO_BE_JARED = \
 	copyright.htm \
 	demos.htm \
 	demosPtiny.htm \
+	portDialog.gif \
+	portDialog.htm \
 	vergilFsmEditorHelp.htm \
 	vergilGraphEditorHelp.htm
 
