@@ -45,6 +45,7 @@ java.hprof.txt
 jsdatabase
 jni/test/jni
 junk
+lib/cachedir
 mail
 make.out
 mems
@@ -63,6 +64,7 @@ ptolemy/actor/lib/jxta
 ptolemy/actor/lib/net/test_auto
 ptolemy/actor/lib/python/demo/HelloWorld
 ptolemy/actor/lib/python/demo/NotifyFailedTest
+ptolemy/actor/lib/security/test/auto/foo.keystore
 ptolemy/actor/lib/test/auto/FileWriter1Output.txt
 ptolemy/actor/lib/test/Const.txt
 ptolemy/actor/lib/test/ReadFile1Output.txt
@@ -84,14 +86,20 @@ ptolemy/data/test/EventToken.tcl
 ptolemy/gui/JPanelTest.java
 ptolemy/copernicus/actor/test/codeGenerator.tmp
 ptolemy/copernicus/*/cg
+ptolemy/copernicus/c/test/HashSetTest
+ptolemy/copernicus/c/test/j2c_lib
 ptolemy/copernicus/c/test/java.lang.Object.c
 ptolemy/copernicus/c/test/java.lang.Object.h
+ptolemy/copernicus/c/test/natives
 ptolemy/copernicus/deep
+ptolemy/copernicus/interpreted/test/codeGenerator.tmp
+ptolemy/copernicus/java/test/longjtests.tcl
 ptolemy/copernicus/java/test/ptolemy*
 ptolemy/copernicus/java/test/NamedObjConstructorAnalysis.class
 ptolemy/copernicus/java/test/NamedObjConstructorAnalysis.java
 ptolemy/copernicus/java/test/runSnapShot.stats
 ptolemy/copernicus/jhdl
+ptolemy/copernicus/shallow/test/codeGenerator.tmp
 ptolemy/copernicus/shallow/ptolemy.giotto
 ptolemy/data/expr/test/CParseTreeCodeGenerator.tcl
 ptolemy/data/test/EventToken.tcl
