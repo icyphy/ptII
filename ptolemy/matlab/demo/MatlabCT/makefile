@@ -68,7 +68,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
-install: all
+install: all jars
 
 # Run the demo in all its different formats
 demo: demo_ptolemy demo_vergil
