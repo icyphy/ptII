@@ -53,7 +53,8 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	HSIFEffigyFactory.java
+	HSIFEffigyFactory.java \
+	HSIFUtilities.java
 
 # make clean will remove these derived files
 KRUFT = \
