@@ -67,7 +67,11 @@ public class DDEGetNToken extends DDEGet {
 	 _tokens = new Token[_numTokens];
 	 _beforeTimes = new double[_numTokens];
 	 _afterTimes = new double[_numTokens];
-	 _rcvrTimes = new double[_numTokens];
+
+	 for(int i = 0; i < _numTokens; i++ ) {
+	     _beforeTimes[i] = -1.0;
+	     _afterTimes[i] = -1.0;
+	 }
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -97,12 +101,34 @@ public class DDEGetNToken extends DDEGet {
 	int cnt = 0; 
 	Token token;
 	while(cnt < _numTokens) {
+	    boolean finished = false;
             Thread thread = Thread.currentThread(); 
 	    if( thread instanceof DDEThread ) {
 		TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
 		_beforeTimes[cnt] = timeKeeper.getCurrentTime(); 
-	        _tokens[cnt] = getNextToken(); 
-		_afterTimes[cnt] = timeKeeper.getCurrentTime(); 
+		Receiver[][] rcvrs = inputPort.getReceivers();
+		for( int i = 0; i < rcvrs.length; i++ ) {
+		    for( int j = 0; j < rcvrs[i].length; j++ ) {
+			DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
+			if( rcvr.hasToken() ) {
+			    /*
+			    System.out.println("DDEGetNToken.hasToken()"
+				    + "returned true;   cnt = " + cnt);
+			    */
+			    _tokens[cnt] = rcvr.get(); 
+			    _afterTimes[cnt] = timeKeeper.getCurrentTime(); 
+			    System.out.println("DDEGetNToken time set to "
+				    + timeKeeper.getCurrentTime() +
+				    " for cnt " +cnt);
+			    j = rcvrs[i].length + 1;
+			    finished = true;
+			}
+		    }
+		    if( finished ) {
+			i = rcvrs.length + 1;
+		    }
+		}
+		// _tokens[cnt] = getNextToken(); 
 		cnt++;
 	    }
 	}
@@ -115,6 +141,5 @@ public class DDEGetNToken extends DDEGet {
     private Token[] _tokens = null;
     private double[] _beforeTimes = null;
     private double[] _afterTimes = null;
-    private double[] _rcvrTimes = null;
     
 }
