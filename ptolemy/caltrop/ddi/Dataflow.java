@@ -224,7 +224,6 @@ public class Dataflow extends AbstractDDI implements DDI {
      * @exception IllegalActionException If an error occurred during the
      * action selection.
      *
-     * @see SDF#_selectAction
      */
     public boolean prefire() throws IllegalActionException {
         try {
