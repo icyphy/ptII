@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 */
 package plot;
 
@@ -63,7 +63,7 @@ import java.applet.Applet;
  *
  * @author: Edward A. Lee
  * @version: 
-@(#)PlotLive.java	1.15    09/19/97
+@(#)PlotLive.java       1.15    09/19/97
  */
 public abstract class PlotLive extends Plot implements Runnable {
 
@@ -76,7 +76,7 @@ public abstract class PlotLive extends Plot implements Runnable {
      * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean action (Event evt, Object arg) {
-	// 
+        // 
         if (evt.target == _startButton) {
             _running = true;
             return true;
@@ -85,8 +85,8 @@ public abstract class PlotLive extends Plot implements Runnable {
             return true;
         } else {
             return super.action (evt, arg); // action() is deprecated in 1.1
-	    				    // but we need to compile under 
-	    				    // jdk1.0.2 for netscape3.x
+                                            // but we need to compile under 
+                                            // jdk1.0.2 for netscape3.x
         }
     }
 
@@ -104,8 +104,8 @@ public abstract class PlotLive extends Plot implements Runnable {
      */
     public String getAppletInfo() {
         return "PlotLive 1.0: A live data plotter.\n" +
-	    "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
-	    "(@(#)PlotLive.java	1.15 09/19/97)";
+            "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
+            "(@(#)PlotLive.java 1.15 09/19/97)";
     }
 
     /**
@@ -145,14 +145,15 @@ public abstract class PlotLive extends Plot implements Runnable {
                 Thread.yield();
             } else {
                 try {
-                    // NOTE: Using wait here with notifyAll in the action method
-                    // leads to inexplicable deadlocks.  So we just sleep.
+                    // NOTE: Using wait here with notifyAll in the action 
+                    // method leads to inexplicable deadlocks.
+                    // So we just sleep.
                     Thread.sleep(200);
                 } catch (InterruptedException e) {}
             }
         }
-	// Set to null so that if the applet is restarted the
-	// thread will be restarted.
+        // Set to null so that if the applet is restarted the
+        // thread will be restarted.
         _plotThread = null;
     }
 

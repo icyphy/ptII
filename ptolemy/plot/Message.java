@@ -38,10 +38,10 @@ public class Message extends Frame {
     /** Pop up a text widget with a close button.
       */
     public Message(String msg, Color background, Color foreground) {
- 	setBackground(background);
- 	setForeground(foreground);
+        setBackground(background);
+        setForeground(foreground);
 
-	// TextArea.SCROLLABARS_NONE is not in jdk1.0.2
+        // TextArea.SCROLLABARS_NONE is not in jdk1.0.2
         _txtarea = new TextArea(msg, 12, 40,TextArea.SCROLLBARS_NONE);
         _txtarea.setEditable(false);
         add("Center", _txtarea);
@@ -54,10 +54,10 @@ public class Message extends Frame {
     }
 
 //     public static void main(String args[]){
-// 	Message message = new Message("A message", Color.white,Color.black);
-// 	message.setTitle("A Message");
-// 	message.pack();
-// 	message.show();
+//      Message message = new Message("A message", Color.white,Color.black);
+//      message.setTitle("A Message");
+//      message.pack();
+//      message.show();
 //     }
 
     public boolean handleEvent(Event event) {
@@ -72,7 +72,7 @@ public class Message extends Frame {
     }
 
     public boolean action(Event event, Object arg) {
-	dispose();
+        dispose();
         return true;
     }
 

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 */
 package plot;
 
@@ -171,8 +171,8 @@ public class Plot extends PlotBox {
      * point.
      */
     public synchronized void addPoint(int dataset, double x, double y,
-				      boolean connected) {
-	_addPoint(_graphics, dataset, x, y, connected);
+            boolean connected) {
+        _addPoint(_graphics, dataset, x, y, connected);
     }
     
     /**
@@ -184,18 +184,18 @@ public class Plot extends PlotBox {
      * is true, clear the display first.
      */
     public synchronized void drawPlot(Graphics graphics,
-    				  boolean clearfirst) {
-    	// Draw the axes
-    	super.drawPlot(graphics, clearfirst);
-    	// Plot the points
-    	for (int dataset = 0; dataset < _numsets; dataset++) {
+            boolean clearfirst) {
+        // Draw the axes
+        super.drawPlot(graphics, clearfirst);
+        // Plot the points
+        for (int dataset = 0; dataset < _numsets; dataset++) {
             // FIXME: Make the following iteration more efficient.
             Vector data = _points[dataset];
-    	    for (int pointnum = 0; pointnum < data.size(); pointnum++) {
-    	        _drawPlotPoint(graphics, dataset, pointnum);
-    	    }
-    	}
-    	notify();
+            for (int pointnum = 0; pointnum < data.size(); pointnum++) {
+                _drawPlotPoint(graphics, dataset, pointnum);
+            }
+        }
+        notify();
     }
     
     /** 
@@ -206,7 +206,7 @@ public class Plot extends PlotBox {
      * to ensure that it is.
      */
     public synchronized void erasePoint(int dataset, int index) {
-	_erasePoint(_graphics, dataset, index);  
+        _erasePoint(_graphics, dataset, index);  
     }
 
     /**
@@ -214,9 +214,9 @@ public class Plot extends PlotBox {
      */
     public String getAppletInfo() {
         return "Plot 1.0: A flexible data plotter.\n" +
-	    "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
-	    "Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-	    "($Id$)";
+            "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
+            "Christopher Hylands, cxh@eecs.berkeley.edu\n" +
+            "($Id$)";
     }
 
     /**
@@ -238,34 +238,34 @@ public class Plot extends PlotBox {
         // Check to see if pxgraphargs has been given. 
         // Need the catch here because applets used as components have
         // no parameters. 
-	String pxgraphargs = null;
+        String pxgraphargs = null;
         try {
             pxgraphargs = getParameter("pxgraphargs");
-	    _parsePxgraphargs(pxgraphargs);
+            _parsePxgraphargs(pxgraphargs);
         } catch (NullPointerException e) {
-	} catch (CmdLineArgException e) {
-	    System.out.println("Plot: failed to parse `"+pxgraphargs+
-			       "': " +e);
-	}
+        } catch (CmdLineArgException e) {
+            System.out.println("Plot: failed to parse `"+pxgraphargs+
+                               "': " +e);
+        }
 
         super.init();
-	if (_dataurls != null ) {
-	    // If the pxgraphargs parameter was set, then we might have more
-	    // than one file to plot.
-	    Enumeration urls = _dataurls.elements();
-	    while (urls.hasMoreElements()) {
-		String url = (String) urls.nextElement();
-		if (_debug > 3) System.out.println("Plot: getting "+url);
-		parseFile(url);
-	    }
-	}
+        if (_dataurls != null ) {
+            // If the pxgraphargs parameter was set, then we might have more
+            // than one file to plot.
+            Enumeration urls = _dataurls.elements();
+            while (urls.hasMoreElements()) {
+                String url = (String) urls.nextElement();
+                if (_debug > 3) System.out.println("Plot: getting "+url);
+                parseFile(url);
+            }
+        }
     }
 
     /**
      * Draw the axes and the accumulated points.
      */
     public void paint(Graphics graphics) {
-	drawPlot(graphics,true);
+        drawPlot(graphics,true);
     }
 
     /** Parse pxgraph style command line arguments.
@@ -273,262 +273,262 @@ public class Plot extends PlotBox {
      * program.
      * @exception plot.CmdLineArgException if there is a problem parsing
      * the command line arguments passed in.
-     */	
+     */ 
     public int parseArgs(String args[])
-	throws CmdLineArgException
-	{
+        throws CmdLineArgException
+        {
         int i = 0, j, argsread;
-	int width;         // Default width of the graph.
-	int height;        // Default height of the graph.
+        int width;         // Default width of the graph.
+        int height;        // Default height of the graph.
 
-	// If we see both -nl and -bar, assume we do an impulse plot.
-	boolean sawbararg = false; // Saw -bar arg.
-	boolean sawnlarg = false;  // Saw -nl arg.
-	int savedmarks = 0;        // Save _marks in case we have -P -bar -nl.
+        // If we see both -nl and -bar, assume we do an impulse plot.
+        boolean sawbararg = false; // Saw -bar arg.
+        boolean sawnlarg = false;  // Saw -nl arg.
+        int savedmarks = 0;        // Save _marks in case we have -P -bar -nl.
 
-	// If this is a component, then getParameter might fail.  
-	try {
-	    width = Integer.valueOf(getParameter("width")).intValue();
-	} catch (NullPointerException e) {
-	    width = 400;
-	}
+        // If this is a component, then getParameter might fail.  
+        try {
+            width = Integer.valueOf(getParameter("width")).intValue();
+        } catch (NullPointerException e) {
+            width = 400;
+        }
 
-	try {
-	    height = Integer.valueOf(getParameter("height")).intValue();
-	} catch (NullPointerException e) {
-	    height = 400;
-	}
+        try {
+            height = Integer.valueOf(getParameter("height")).intValue();
+        } catch (NullPointerException e) {
+            height = 400;
+        }
 
         String arg;
-	String unsupportedOptions[] = {
-	    "-bd", "-brb", "-bw", "-gw", "-lw", "-zg", "-zw"
-	};
-	String unsupportedFlags[] = {
-	    "-bb", "-lnx", "-lny"
-	};
-	// Default URL to be opened
-	String dataurl = "";
+        String unsupportedOptions[] = {
+            "-bd", "-brb", "-bw", "-gw", "-lw", "-zg", "-zw"
+        };
+        String unsupportedFlags[] = {
+            "-bb", "-lnx", "-lny"
+        };
+        // Default URL to be opened
+        String dataurl = "";
 
-	String title = "A plot";
+        String title = "A plot";
 
         while (i < args.length && (args[i].startsWith("-") || 
             args[i].startsWith("=")) ) {
             arg = args[i++];
-	    if (_debug > 2) System.out.print("Plot: arg = " + arg + "\n");
+            if (_debug > 2) System.out.print("Plot: arg = " + arg + "\n");
 
-	    if (arg.startsWith("-")) {
-		// Search for unsupported options that take arguments
-		boolean badarg = false;
-		for(j = 0; j < unsupportedOptions.length; j++) {
-		    if (arg.equals(unsupportedOptions[j])) {
-			System.err.println("pxgraph: " + arg +
-					   " is not yet supported");
-			i++;
-			badarg = true;
-		    }
-		}
-		if (badarg) continue;
-		// Search for unsupported boolean flags
-		for(j = 0; j < unsupportedFlags.length; j++) {
-		    if (arg.equals(unsupportedFlags[j])) {
-			System.err.println("pxgraph: " + arg +
-					   " is not yet supported");
-			badarg = true;
-		    }
+            if (arg.startsWith("-")) {
+                // Search for unsupported options that take arguments
+                boolean badarg = false;
+                for(j = 0; j < unsupportedOptions.length; j++) {
+                    if (arg.equals(unsupportedOptions[j])) {
+                        System.err.println("pxgraph: " + arg +
+                                           " is not yet supported");
+                        i++;
+                        badarg = true;
+                    }
+                }
+                if (badarg) continue;
+                // Search for unsupported boolean flags
+                for(j = 0; j < unsupportedFlags.length; j++) {
+                    if (arg.equals(unsupportedFlags[j])) {
+                        System.err.println("pxgraph: " + arg +
+                                           " is not yet supported");
+                        badarg = true;
+                    }
 
-		}
-		if (badarg) continue;
-		if (arg.equals("-bg")) {
-		    setBackground(getColorByName(args[i++]));
-		    continue;
-		} else if (arg.equals("-brw")) {
-		    // -brw <width> BarWidth Bars: 
-		    if (!_parseLine("Bars: " + args[i++])) {
-			throw new 
-			    CmdLineArgException("Failed to parse `"+arg+"'");
-		    }
-		    continue;
-		} else if (arg.equals("-lf")) {
-		    // -lf <labelfont>
-		    setLabelFont(args[i++]);
-		    continue;
-		} else if (arg.equals("-lx")) {
-		    // -lx <xl,xh> XLowLimit, XHighLimit  XRange: 
-		    if (!_parseLine("XRange: " + args[i++])) {
-			throw new 
-			    CmdLineArgException("Failed to parse `"+arg+"'");
-		    }
-		    continue;
-		} else if (arg.equals("-ly")) {
-		    // -ly <yl,yh> YLowLimit, YHighLimit  YRange: 
-		    if (!_parseLine("YRange: " + args[i++])) {
-			throw new 
-			    CmdLineArgException("Failed to parse `"+arg+"'");
-		    }
-		    continue;
-		} else if (arg.equals("-t")) {
-		    // -t <title> TitleText "An X Graph"
-		    title =  args[i++];
-		    continue;
-		} else if (arg.equals("-tf")) {
-		    // -tf <titlefont>
-		    setTitleFont(args[i++]);
-		    continue;
-		} else if (arg.equals("-x")) {
-		    // -x <unitName> XUnitText XLabel:
-		    setXLabel(args[i++]); 
-		    continue;
-		} else if (arg.equals("-y")) {
-		    // -y <unitName> YUnitText YLabel:
-		    setYLabel(args[i++]); 
-		    continue;		    
-		} else if (arg.equals("-bar")) {
-		    //-bar BarGraph Bars: on Marks: none Lines: off
-		    // If we saw the -nl arg, then assume impulses 
-		    sawbararg = true;
-		    if (sawnlarg) {
-			setImpulses(true);
-		    } else {
-			setBars(true); 
-			// Save _marks in case we did -P -bar -nl.
-			savedmarks = _marks;
-			setMarksStyle("none");
-		    }
-		    setConnected(false);
-		    continue;
-		} else if (arg.equals("-binary")) {
-		    setBinary(true);
-		    continue;
-		} else if (arg.equals("-db")) {
-		    _debug = 6;
-		    continue;
-		} else if (arg.equals("-debug")) {
-		    // -debug is not in the original X11 pxgraph.
-		    _debug = (int)Integer.valueOf(args[i++]).intValue();
-		    continue;
-		} else if (arg.equals("-fg")) {
-		    setForeground(getColorByName(args[i++]));
-		    continue;
-		} else if (arg.equals("-help")) {
-		    // -help is not in the original X11 pxgraph.
-		    //_help();
-		    continue;
-		} else if (arg.equals("-impulses")) {
-		    // -impulses is not in the original X11 pxgraph.
-		    setImpulses(true);
-		    setConnected(false);
-		    continue;
-		} else if (arg.equals("-m")) {
-		    // -m Markers Marks: various
-		    setMarksStyle("various");
-		    continue;
-		} else if (arg.equals("-M")) {
-		    // -M StyleMarkers Marks: various
-		    setMarksStyle("various");
-		    continue;
-		} else if (arg.equals("-nl")) {
-		    // -nl NoLines Lines: off
-		    // If we saw the -bar arg, then assume impulses 
-		    sawnlarg = true;
-		    if (sawbararg) {
-			// Restore the _marks in case we did -P -bar -nl
-			_marks = savedmarks;
-			setBars(false); 
-			setImpulses(true);
-		    }
-		    setConnected(false);
-		    continue;
-		} else if (arg.equals("-p")) {
-		    // -p PixelMarkers Marks: points
-		    setMarksStyle("points");
-		    continue;
-		} else if (arg.equals("-P")) {
-		    // -P LargePixel Marks: dots\n 
-		    setMarksStyle("dots");
-		    continue;
-		} else if (arg.equals("-rv")) {
-		    setBackground(getColorByName("black"));
-		    setForeground(getColorByName("white"));
-		    continue;
-		} else if (arg.equals("-test")) {
-		    // -test is not in the original X11 pxgraph.
-		    //_test = true;
-		    continue;
-		} else if (arg.equals("-tk")) {
-		    setGrid(false);
-		    continue;
-		} else if (arg.equals("-v") || arg.equals("-version")) {
-		    // -version is not in the original X11 pxgraph.
-		    //_version();
-		    continue;
-		} else if (arg.equals("-m")) {
+                }
+                if (badarg) continue;
+                if (arg.equals("-bg")) {
+                    setBackground(getColorByName(args[i++]));
+                    continue;
+                } else if (arg.equals("-brw")) {
+                    // -brw <width> BarWidth Bars: 
+                    if (!_parseLine("Bars: " + args[i++])) {
+                        throw new 
+                            CmdLineArgException("Failed to parse `"+arg+"'");
+                    }
+                    continue;
+                } else if (arg.equals("-lf")) {
+                    // -lf <labelfont>
+                    setLabelFont(args[i++]);
+                    continue;
+                } else if (arg.equals("-lx")) {
+                    // -lx <xl,xh> XLowLimit, XHighLimit  XRange: 
+                    if (!_parseLine("XRange: " + args[i++])) {
+                        throw new 
+                            CmdLineArgException("Failed to parse `"+arg+"'");
+                    }
+                    continue;
+                } else if (arg.equals("-ly")) {
+                    // -ly <yl,yh> YLowLimit, YHighLimit  YRange: 
+                    if (!_parseLine("YRange: " + args[i++])) {
+                        throw new 
+                            CmdLineArgException("Failed to parse `"+arg+"'");
+                    }
+                    continue;
+                } else if (arg.equals("-t")) {
+                    // -t <title> TitleText "An X Graph"
+                    title =  args[i++];
+                    continue;
+                } else if (arg.equals("-tf")) {
+                    // -tf <titlefont>
+                    setTitleFont(args[i++]);
+                    continue;
+                } else if (arg.equals("-x")) {
+                    // -x <unitName> XUnitText XLabel:
+                    setXLabel(args[i++]); 
+                    continue;
+                } else if (arg.equals("-y")) {
+                    // -y <unitName> YUnitText YLabel:
+                    setYLabel(args[i++]); 
+                    continue;               
+                } else if (arg.equals("-bar")) {
+                    //-bar BarGraph Bars: on Marks: none Lines: off
+                    // If we saw the -nl arg, then assume impulses 
+                    sawbararg = true;
+                    if (sawnlarg) {
+                        setImpulses(true);
+                    } else {
+                        setBars(true); 
+                        // Save _marks in case we did -P -bar -nl.
+                        savedmarks = _marks;
+                        setMarksStyle("none");
+                    }
+                    setConnected(false);
+                    continue;
+                } else if (arg.equals("-binary")) {
+                    setBinary(true);
+                    continue;
+                } else if (arg.equals("-db")) {
+                    _debug = 6;
+                    continue;
+                } else if (arg.equals("-debug")) {
+                    // -debug is not in the original X11 pxgraph.
+                    _debug = (int)Integer.valueOf(args[i++]).intValue();
+                    continue;
+                } else if (arg.equals("-fg")) {
+                    setForeground(getColorByName(args[i++]));
+                    continue;
+                } else if (arg.equals("-help")) {
+                    // -help is not in the original X11 pxgraph.
+                    //_help();
+                    continue;
+                } else if (arg.equals("-impulses")) {
+                    // -impulses is not in the original X11 pxgraph.
+                    setImpulses(true);
+                    setConnected(false);
+                    continue;
+                } else if (arg.equals("-m")) {
+                    // -m Markers Marks: various
+                    setMarksStyle("various");
+                    continue;
+                } else if (arg.equals("-M")) {
+                    // -M StyleMarkers Marks: various
+                    setMarksStyle("various");
+                    continue;
+                } else if (arg.equals("-nl")) {
+                    // -nl NoLines Lines: off
+                    // If we saw the -bar arg, then assume impulses 
+                    sawnlarg = true;
+                    if (sawbararg) {
+                        // Restore the _marks in case we did -P -bar -nl
+                        _marks = savedmarks;
+                        setBars(false); 
+                        setImpulses(true);
+                    }
+                    setConnected(false);
+                    continue;
+                } else if (arg.equals("-p")) {
+                    // -p PixelMarkers Marks: points
+                    setMarksStyle("points");
+                    continue;
+                } else if (arg.equals("-P")) {
+                    // -P LargePixel Marks: dots\n 
+                    setMarksStyle("dots");
+                    continue;
+                } else if (arg.equals("-rv")) {
+                    setBackground(getColorByName("black"));
+                    setForeground(getColorByName("white"));
+                    continue;
+                } else if (arg.equals("-test")) {
+                    // -test is not in the original X11 pxgraph.
+                    //_test = true;
+                    continue;
+                } else if (arg.equals("-tk")) {
+                    setGrid(false);
+                    continue;
+                } else if (arg.equals("-v") || arg.equals("-version")) {
+                    // -version is not in the original X11 pxgraph.
+                    //_version();
+                    continue;
+                } else if (arg.equals("-m")) {
 
-		} if (arg.length() > 1  && arg.charAt(0) == '-') {
-		    // Process '-<digit> <datasetname>'
-		    try {
-			Integer datasetnumberint = new
-			    Integer(arg.substring(1));
-			int datasetnumber = datasetnumberint.intValue();
-			if (datasetnumber >= 0 &&
-			    datasetnumber <= getMaxDataSets()) {
+                } if (arg.length() > 1  && arg.charAt(0) == '-') {
+                    // Process '-<digit> <datasetname>'
+                    try {
+                        Integer datasetnumberint = new
+                            Integer(arg.substring(1));
+                        int datasetnumber = datasetnumberint.intValue();
+                        if (datasetnumber >= 0 &&
+                            datasetnumber <= getMaxDataSets()) {
                                 if (_debug > 8) 
-				    System.out.println("Plot: parseArgs: "+
-					       "calling addLegend "+
+                                    System.out.println("Plot: parseArgs: "+
+                                               "calling addLegend "+
                                                +datasetnumber+" "+args[i]);
                                 addLegend(datasetnumber, args[i++]);
                                 continue;
-			}
-		    } catch (NumberFormatException e) {}
-		}
-	    } else {
-		if (arg.startsWith("=")) {
-		    // Process =WxH+X+Y
-		    // Process =WxH+X+Y
-		    int endofheight;
-		    width = (int)Integer.valueOf(arg.substring(1,
-					       arg.indexOf('x'))).intValue();
-		    if (arg.indexOf('+') != -1) {
-			height = 
-			    (int)Integer.valueOf(arg.substring(
-					       arg.indexOf('x')+1,
-					       arg.indexOf('+'))).intValue();
-		    } else {
-			if (arg.length() > arg.indexOf('x')) {
-			    height =
-				Integer.valueOf(arg.substring(
-					       arg.indexOf('x')+1,
-					       arg.length())).intValue();
-			}
-		    }
-		    // FIXME: need to handle X and Y in =WxH+X+Y
-		    continue;
-		}
-	    }
-	    // If we got to here, then we failed to parse the arg 
-	    throw new 
-		CmdLineArgException("Failed to parse `" + arg + "'");
-	}
+                        }
+                    } catch (NumberFormatException e) {}
+                }
+            } else {
+                if (arg.startsWith("=")) {
+                    // Process =WxH+X+Y
+                    // Process =WxH+X+Y
+                    int endofheight;
+                    width = (int)Integer.valueOf(arg.substring(1,
+                                               arg.indexOf('x'))).intValue();
+                    if (arg.indexOf('+') != -1) {
+                        height = 
+                            (int)Integer.valueOf(arg.substring(
+                                               arg.indexOf('x')+1,
+                                               arg.indexOf('+'))).intValue();
+                    } else {
+                        if (arg.length() > arg.indexOf('x')) {
+                            height =
+                                Integer.valueOf(arg.substring(
+                                               arg.indexOf('x')+1,
+                                               arg.length())).intValue();
+                        }
+                    }
+                    // FIXME: need to handle X and Y in =WxH+X+Y
+                    continue;
+                }
+            }
+            // If we got to here, then we failed to parse the arg 
+            throw new 
+                CmdLineArgException("Failed to parse `" + arg + "'");
+        }
         if (i < args.length) {
             dataurl=args[i];
-	}
+        }
         argsread = i++;
-	// Now we call methods in the Plot applet and the Frame
-	// according to the defaults and the values that over rode them
-	setDataurl(dataurl); // Set the dataurl in PlotBox
-	setTitle(title);
-	resize(width,height);
+        // Now we call methods in the Plot applet and the Frame
+        // according to the defaults and the values that over rode them
+        setDataurl(dataurl); // Set the dataurl in PlotBox
+        setTitle(title);
+        resize(width,height);
 
         if (_debug > 0) {
-	    System.err.println("Plot: dataurl = " + dataurl);
-	    System.err.println("Plot: title= " + title);
-	}
-	if (_debug > 3) System.out.println("Plot: argsread = "+ argsread +
-					    " args.length = "+args.length);
-	 // Copy the file names into the _dataurls Vector for use later.
-	 _dataurls = new Vector();
-	 for(i = argsread+1; i < args.length; i++) {
+            System.err.println("Plot: dataurl = " + dataurl);
+            System.err.println("Plot: title= " + title);
+        }
+        if (_debug > 3) System.out.println("Plot: argsread = "+ argsread +
+                                            " args.length = "+args.length);
+         // Copy the file names into the _dataurls Vector for use later.
+         _dataurls = new Vector();
+         for(i = argsread+1; i < args.length; i++) {
             if (_debug > 3) System.out.println("Plot: saving "+args[i]);
-	    _dataurls.addElement(args[i]);
+            _dataurls.addElement(args[i]);
          }
         return argsread;
     }
@@ -599,24 +599,24 @@ public class Plot extends PlotBox {
      * than 1 or greater than an internal limit (usually 63).
      */
     public void setNumSets (int numsets) throws NumberFormatException {
-	if (numsets < 1) {
-	    throw new NumberFormatException("Number of data sets ("+
-					    numsets +
-					    ") must be " +
-					    "greater than 0.");
+        if (numsets < 1) {
+            throw new NumberFormatException("Number of data sets ("+
+                                            numsets +
+                                            ") must be " +
+                                            "greater than 0.");
 
-	}
-	if (numsets > _MAX_DATASETS) {
-	    throw new NumberFormatException("Number of data sets (" +
-					    numsets +
-					    ") must be less than the " +
-					    "internal limit of " +
-					    _MAX_DATASETS +
-					    "To increase this value, edit " +
-					    "_MAX_DATASETS and recompile");
-	}
+        }
+        if (numsets > _MAX_DATASETS) {
+            throw new NumberFormatException("Number of data sets (" +
+                                            numsets +
+                                            ") must be less than the " +
+                                            "internal limit of " +
+                                            _MAX_DATASETS +
+                                            "To increase this value, edit " +
+                                            "_MAX_DATASETS and recompile");
+        }
 
-	this._numsets = numsets;
+        this._numsets = numsets;
         _points = new Vector[numsets];
         _prevx = new long[numsets];
         _prevy = new long[numsets];
@@ -680,10 +680,11 @@ public class Plot extends PlotBox {
             int barrx = (int)(barlx + _barwidth * _xscale);
             if (barlx < _ulx) barlx = _ulx;
             if (barrx > _lrx) barrx = _lrx;
-	    if (_debug > 20)
-	    System.out.println("Plot:_drawPoint bar "+barlx+" "+ypos+" "+
-	                        barrx + " " + barlx + " " + _lry);
-            graphics.fillRect(barlx, (int)ypos, barrx - barlx, _lry - (int)ypos);
+            if (_debug > 20)
+            System.out.println("Plot:_drawPoint bar "+barlx+" "+ypos+" "+
+                                barrx + " " + barlx + " " + _lry);
+            graphics.fillRect(barlx, (int)ypos,
+                    barrx - barlx, _lry - (int)ypos);
         }
     }
 
@@ -714,8 +715,10 @@ public class Plot extends PlotBox {
             if (clip) {
                 // Rule out impossible cases.
                 if (_debug > 20) {
-                    System.out.println("bounds: " + _ulx +", "+ _uly +", "+ _lrx +", "+ _lry);
-                    System.out.println("before: " + startx +", "+ starty +", "+ endx +", "+ endy);
+                    System.out.println("bounds: " + _ulx +", "+
+                            _uly +", "+ _lrx +", "+ _lry);
+                    System.out.println("before: " + startx +", "+
+                            starty +", "+ endx +", "+ endy);
                 }
                 if (!((endx <= _ulx && startx <= _ulx) ||
                 (endx >= _lrx && startx >= _lrx) ||
@@ -723,16 +726,16 @@ public class Plot extends PlotBox {
                 (endy >= _lry && starty >= _lry))) {
                     // If the end point is out of x range, adjust
                     // end point to boundary.
-                    // The integer arithmetic has to be done with longs so as to
-                    // not loose precision on extremely close zooms.
+                    // The integer arithmetic has to be done with longs so as
+                    // to not loose precision on extremely close zooms.
                     if (startx != endx) {
                         if (endx < _ulx) {
                             endy = (int)(endy + ((long)(starty - endy) *
-					     (_ulx - endx))/(startx - endx));
+                                             (_ulx - endx))/(startx - endx));
                             endx = _ulx;
                         } else if (endx > _lrx) {
                             endy = (int)(endy + ((long)(starty - endy) *
-					     (_lrx - endx))/(startx - endx));
+                                             (_lrx - endx))/(startx - endx));
                             endx = _lrx;
                         }
                     }
@@ -742,10 +745,11 @@ public class Plot extends PlotBox {
                     if (starty != endy) {
                         if (endy < _uly) {
                             endx = (int)(endx + ((long)(startx - endx) *
-					     (_uly - endy))/(starty - endy));                            endy = _uly;
+                                             (_uly - endy))/(starty - endy));
+                           endy = _uly;
                         } else if (endy > _lry) {
                             endx = (int)(endx + ((long)(startx - endx) *
-					     (_lry - endy))/(starty - endy));
+                                             (_lry - endy))/(starty - endy));
                             endy = _lry;
                         }
                     }
@@ -754,22 +758,22 @@ public class Plot extends PlotBox {
                     if (startx != endx) {
                         if (startx < _ulx) {
                             starty = (int)(starty + ((long)(endy - starty) *
-					   (_ulx - startx))/(endx - startx));
+                                           (_ulx - startx))/(endx - startx));
                             startx = _ulx;
                         } else if (startx > _lrx) {
                             starty = (int)(starty + ((long)(endy - starty) *
-					   (_lrx - startx))/(endx - startx));
+                                           (_lrx - startx))/(endx - startx));
                             startx = _lrx;
                         }
                     }
                     if (starty != endy) {
                         if (starty < _uly) {
                             startx = (int)(startx + ((long)(endx - startx) *
-					   (_uly - starty))/(endy - starty));
+                                           (_uly - starty))/(endy - starty));
                             starty = _uly;
                         } else if (starty > _lry) {
                             startx = (int)(startx + ((long)(endx - startx) *
-					   (_lry - starty))/(endy - starty));
+                                           (_lry - starty))/(endy - starty));
                             starty = _lry;
                         }
                     }
@@ -781,13 +785,16 @@ public class Plot extends PlotBox {
                          startx >= _ulx && startx <= _lrx &&
                          starty >= _uly && starty <= _lry) {
                      if (_debug > 20) {
-                         System.out.println("after: " + startx +", "+ starty +", "+ endx +", "+ endy);
+                         System.out.println("after: " + startx +", "+ starty +
+                                 ", "+ endx +", "+ endy);
                      }
-                     graphics.drawLine((int)startx, (int)starty, (int)endx, (int)endy);
+                     graphics.drawLine((int)startx, (int)starty,
+                             (int)endx, (int)endy);
                  }
              } else {
                  // draw unconditionally.
-                 graphics.drawLine((int)startx, (int)starty, (int)endx, (int)endy);
+                 graphics.drawLine((int)startx, (int)starty,
+                         (int)endx, (int)endy);
              }
     }
 
@@ -803,12 +810,13 @@ public class Plot extends PlotBox {
             int dataset, long xpos, long ypos,
             boolean clip) {
         if (_debug > 20) {
-            System.out.println("Plot:_drawPoint "+dataset+" "+xpos+" "+ypos+" "+" "+clip);
+            System.out.println("Plot:_drawPoint "+dataset+" "+xpos+
+                    " "+ypos+" "+" "+clip);
         }
 
         // If the point is not out of range, draw it.
         if (!clip || (ypos <= _lry && ypos >= _uly &&
-	    xpos <= _lrx && xpos >= _ulx)) {
+            xpos <= _lrx && xpos >= _ulx)) {
             int xposi = (int)xpos;
             int yposi = (int)ypos;
             switch (_marks) {
@@ -824,7 +832,7 @@ public class Plot extends PlotBox {
             case 2:
                 // dots
                 graphics.fillOval(xposi-_radius, yposi-_radius,
-				   _diameter, _diameter); 
+                                   _diameter, _diameter); 
                 break;
             case 3:
                 // marks
@@ -835,19 +843,19 @@ public class Plot extends PlotBox {
                     case 0:
                         // filled circle
                         graphics.fillOval(xposi-_radius, yposi-_radius,
-					  _diameter, _diameter); 
+                                          _diameter, _diameter); 
                         break;
                     case 1:
                         // cross
                         graphics.drawLine(xposi-_radius, yposi-_radius,
-					  xposi+_radius, yposi+_radius); 
+                                          xposi+_radius, yposi+_radius); 
                         graphics.drawLine(xposi+_radius, yposi-_radius,
-					  xposi-_radius, yposi+_radius); 
+                                          xposi-_radius, yposi+_radius); 
                         break;
                     case 2:
                         // square
                         graphics.drawRect(xposi-_radius, yposi-_radius,
-					  _diameter, _diameter); 
+                                          _diameter, _diameter); 
                         break;
                     case 3:
                         // filled triangle
@@ -873,19 +881,19 @@ public class Plot extends PlotBox {
                     case 5:
                         // circle
                         graphics.drawOval(xposi-_radius, yposi-_radius,
-					  _diameter, _diameter); 
+                                          _diameter, _diameter); 
                         break;
                     case 6:
                         // plus sign
                         graphics.drawLine(xposi, yposi-_radius, xposi,
-					  yposi+_radius); 
+                                          yposi+_radius); 
                         graphics.drawLine(xposi-_radius, yposi, xposi+_radius,
-					  yposi); 
+                                          yposi); 
                         break;
                     case 7:
                         // filled square
                         graphics.fillRect(xposi-_radius, yposi-_radius,
-					  _diameter, _diameter); 
+                                          _diameter, _diameter); 
                         break;
                     case 8:
                         // triangle
@@ -917,7 +925,7 @@ public class Plot extends PlotBox {
     }
 
     /** Hook for child classes to do any file preprocessing
-     */	
+     */ 
     protected void _newFile(){
         _filecount++;
         _firstinset = true;
@@ -928,7 +936,7 @@ public class Plot extends PlotBox {
      * Read in a pxgraph format binary file.
      * @exception PlotDataException if there is a serious data format problem.
      * @exception java.io.IOException if an I/O error occurs.
-     */	
+     */ 
     protected void _parseBinaryStream(DataInputStream in) 
     throws PlotDataException,  IOException
     {
@@ -940,61 +948,62 @@ public class Plot extends PlotBox {
         if (_connected) connected = true;
 
         if (_debug > 8) {
-            System.out.println("Plot: _parseBinaryStream _connected = "+_connected);
+            System.out.println("Plot: _parseBinaryStream _connected = "+
+                    _connected);
         }
-	try {
-	    while (true) {
-		// Here, we read pxgraph binary format data.
-		// For speed reasons, the Ptolemy group extended 
-		// pxgraph to read binary format data.
-		// The format consists of a command character,
-		// followed by optional arguments
-		// d <4byte float> <4byte float> - Draw a X,Y point
-		// e                             - End of a data set
-		// n <chars> \n                  - New set name, ends in \n
-		// m                             - Move to a point
-		c = in.readByte();
-		switch (c) {
-		case 'd':
-		    {
-			// Data point.
-			float x = in.readFloat();
-			float y = in.readFloat();
+        try {
+            while (true) {
+                // Here, we read pxgraph binary format data.
+                // For speed reasons, the Ptolemy group extended 
+                // pxgraph to read binary format data.
+                // The format consists of a command character,
+                // followed by optional arguments
+                // d <4byte float> <4byte float> - Draw a X,Y point
+                // e                             - End of a data set
+                // n <chars> \n                  - New set name, ends in \n
+                // m                             - Move to a point
+                c = in.readByte();
+                switch (c) {
+                case 'd':
+                    {
+                        // Data point.
+                        float x = in.readFloat();
+                        float y = in.readFloat();
                         connected = _addLegendIfNecessary(connected);
                         addPoint(_currentdataset, x, y, connected);
-			if (_connected) connected = true;
-		    }
-		    break;
-		case 'e':
-		    // End of set name.
+                        if (_connected) connected = true;
+                    }
+                    break;
+                case 'e':
+                    // End of set name.
                     connected = false;
-		    break;
-		case 'n':
-		    {
-			StringBuffer datasetname = new StringBuffer();
+                    break;
+                case 'n':
+                    {
+                        StringBuffer datasetname = new StringBuffer();
                         _firstinset = true;
                         _sawfirstdataset = true;
                         _currentdataset++;
                         if (_currentdataset >= _MAX_MARKS) _currentdataset = 0;
-			// New set name, ends in \n.
-			while (c != '\n')
-			    datasetname.append(in.readChar());
-			addLegend(_currentdataset, datasetname.toString());
-			setConnected(true);
-		    }
-		    break;
-		case 'm':
+                        // New set name, ends in \n.
+                        while (c != '\n')
+                            datasetname.append(in.readChar());
+                        addLegend(_currentdataset, datasetname.toString());
+                        setConnected(true);
+                    }
+                    break;
+                case 'm':
                     // a disconnected point
                     connected = false;
-		    break;
-		default:
-		    throw new PlotDataException("Don't understand `" + 
-						(char)c + "' character " +
-						"(decimal value = " + c +
-						") in binary file");
-		}
-	    } 
-	} catch (EOFException e) {}	    
+                    break;
+                default:
+                    throw new PlotDataException("Don't understand `" + 
+                                                (char)c + "' character " +
+                                                "(decimal value = " + c +
+                                                ") in binary file");
+                }
+            } 
+        } catch (EOFException e) {}         
     }
 
     /**
@@ -1007,11 +1016,11 @@ public class Plot extends PlotBox {
         if (_connected) connected = true;
         // parse only if the super class does not recognize the line.
         if (super._parseLine(line)) {
-	    return true;
-	} else {
-	    // We convert the line to lower case so that the command
-	    // names are case insensitive
-	    String lcLine = new String(line.toLowerCase());
+            return true;
+        } else {
+            // We convert the line to lower case so that the command
+            // names are case insensitive
+            String lcLine = new String(line.toLowerCase());
             if (lcLine.startsWith("marks:")) {
                 String style = (line.substring(6)).trim();
                 setMarksStyle(style);
@@ -1053,69 +1062,69 @@ public class Plot extends PlotBox {
                     setBars(false);
                 } else {
                     setBars(true);
-         	        int comma = line.indexOf(",", 5);
-         	        String barwidth;
-         	        String baroffset = null;
-        	        if (comma > 0) {
+                        int comma = line.indexOf(",", 5);
+                        String barwidth;
+                        String baroffset = null;
+                        if (comma > 0) {
                         barwidth = (line.substring(5, comma)).trim();
                         baroffset = (line.substring(comma+1)).trim();
                     } else {
                         barwidth = (line.substring(5)).trim();
                     }
-        	        try {
-        	            Double bwidth = new Double(barwidth);
-        	            double boffset = _baroffset;
-        	            if (baroffset != null) {
-        	                boffset = (new Double(baroffset)).
-				    doubleValue();
-        	            }
-        	            setBars(bwidth.doubleValue(), boffset);
-        	        } catch (NumberFormatException e) {
-        	            // ignore if format is bogus.
-        	        }
+                        try {
+                            Double bwidth = new Double(barwidth);
+                            double boffset = _baroffset;
+                            if (baroffset != null) {
+                                boffset = (new Double(baroffset)).
+                                    doubleValue();
+                            }
+                            setBars(bwidth.doubleValue(), boffset);
+                        } catch (NumberFormatException e) {
+                            // ignore if format is bogus.
+                        }
                 }
                 return true;
             } else if (line.startsWith("move:")) {
                 // a disconnected point
                 connected = false;
-		// deal with 'move: 1 2' and 'move:2 2'
-		line = line.substring(5, line.length()).trim();
+                // deal with 'move: 1 2' and 'move:2 2'
+                line = line.substring(5, line.length()).trim();
             } else if (line.startsWith("move")) {
                 // a disconnected point
                 connected = false;
-		// deal with 'move 1 2' and 'move2 2'
-		line = line.substring(4, line.length()).trim();
+                // deal with 'move 1 2' and 'move2 2'
+                line = line.substring(4, line.length()).trim();
             } else if (line.startsWith("draw:")) {
                 // a connected point, if connect is enabled.
-		line = line.substring(5, line.length()).trim();
+                line = line.substring(5, line.length()).trim();
             } else if (line.startsWith("draw")) {
                 // a connected point, if connect is enabled.
-		line = line.substring(4, line.length()).trim();
+                line = line.substring(4, line.length()).trim();
             }
             // See if an x,y or x<Space>y x<Taby> point is given
-	        line = line.trim();
-         	int fieldsplit = line.indexOf(",");
-        	if (fieldsplit == -1) {
-		    fieldsplit = line.indexOf(" ");
-		}
-        	if (fieldsplit == -1) {
-		    fieldsplit = line.indexOf("	");  // a tab
-		}
+                line = line.trim();
+                int fieldsplit = line.indexOf(",");
+                if (fieldsplit == -1) {
+                    fieldsplit = line.indexOf(" ");
+                }
+                if (fieldsplit == -1) {
+                    fieldsplit = line.indexOf(" ");  // a tab
+                }
 
-        	if (fieldsplit > 0) {
+                if (fieldsplit > 0) {
                     String x = (line.substring(0, fieldsplit)).trim();
                     String y = (line.substring(fieldsplit+1)).trim();
-        	    try {
-        	        Double xpt = new Double(x);
-        	        Double ypt = new Double(y);
+                    try {
+                        Double xpt = new Double(x);
+                        Double ypt = new Double(y);
                         connected = _addLegendIfNecessary(connected);
                         addPoint(_currentdataset, xpt.doubleValue(),
-				 ypt.doubleValue(), connected);
-        	        return true;
-        	    } catch (NumberFormatException e) {
-        	        // ignore if format is bogus.
-        	    }
-        	}
+                                 ypt.doubleValue(), connected);
+                        return true;
+                    } catch (NumberFormatException e) {
+                        // ignore if format is bogus.
+                    }
+                }
         }
         return false;
     }
@@ -1161,7 +1170,7 @@ public class Plot extends PlotBox {
             _firstinset = true;
             _sawfirstdataset = true;
             addLegend(_currentdataset,
-		      new String("Dataset "+ _currentdataset));
+                      new String("Dataset "+ _currentdataset));
         }
         if (_firstinset) {
             connected = false;
@@ -1178,10 +1187,11 @@ public class Plot extends PlotBox {
      * point.
      */
     private synchronized void _addPoint(Graphics graphics,
-				      int dataset, double x, double y,
-				      boolean connected) {
+                                      int dataset, double x, double y,
+                                      boolean connected) {
         if (_debug > 100) {
-            System.out.println("Plot: addPoint " + dataset + " "+x+" "+y+" "+connected);
+            System.out.println("Plot: addPoint " + dataset + " "+
+                    x+" "+y+" "+connected);
         }
         if (dataset >= _numsets || dataset < 0) return;
         
@@ -1206,7 +1216,8 @@ public class Plot extends PlotBox {
 
     /* Draw the specified point and associated lines, if any.
      */
-    private synchronized void _drawPlotPoint(Graphics graphics, int dataset, int index) {
+    private synchronized void _drawPlotPoint(Graphics graphics,
+            int dataset, int index) {
         // Set the color
         if (_pointsPersistence > 0) {
             // To allow erasing to work by just redrawing the points.
@@ -1254,7 +1265,7 @@ public class Plot extends PlotBox {
      * (note: not to the previous point).
      */
     private synchronized void _erasePoint(Graphics graphics,
-					  int dataset, int index) {
+            int dataset, int index) {
         // Set the color
         if (_pointsPersistence > 0) {
             // To allow erasing to work by just redrawing the points.
@@ -1306,11 +1317,13 @@ public class Plot extends PlotBox {
         // to parse the arguments into a Vector and then copy
         // the vector into an array of Strings.  We use a Vector
         // so that we can handle an arbitrary number of arguments
-        if (_debug > 3) System.out.println("Plot: _parsePxgraphargs "+pxgraphargs);
+        if (_debug > 3) {
+            System.out.println("Plot: _parsePxgraphargs "+pxgraphargs);
+        }
 
         Vector argvector = new Vector();
         boolean prependdash = false; // true if we need to add a -
-	
+        
         StringBufferInputStream inp = new StringBufferInputStream(pxgraphargs);
         // StringBufferInput is deprecated, but StringReader is not in 1.0.2
 
@@ -1319,59 +1332,59 @@ public class Plot extends PlotBox {
         try {
             StreamTokenizer stoken = new StreamTokenizer(inp);
 
-	    // We don't want to parse numbers specially, so we reset
-	    // the syntax and then add back what we want.
-	    stoken.resetSyntax();
+            // We don't want to parse numbers specially, so we reset
+            // the syntax and then add back what we want.
+            stoken.resetSyntax();
             stoken.whitespaceChars(0, ' ');
-	    stoken.wordChars('(','~');
-	    stoken.quoteChar('"');
-	    stoken.quoteChar('\'');
+            stoken.wordChars('(','~');
+            stoken.quoteChar('"');
+            stoken.quoteChar('\'');
             int c;
 
          out:
             while (true) {
                 c = stoken.nextToken();
-		//System.out.print(c + " "+stoken.ttype+" "+stoken.sval+" "); 
+                //System.out.print(c + " "+stoken.ttype+" "+stoken.sval+" "); 
                 switch (stoken.ttype) {        // same as value of 'c'
                 case StreamTokenizer.TT_EOF:
                     break out;
                 case StreamTokenizer.TT_WORD:
                     //System.out.println("Word: " + stoken.sval);
-		    if (prependdash) {
-			prependdash = false;
-			argvector.addElement(new String("-"+stoken.sval));
-		    } else {
-			argvector.addElement(new String(stoken.sval));
-		    }
+                    if (prependdash) {
+                        prependdash = false;
+                        argvector.addElement(new String("-"+stoken.sval));
+                    } else {
+                        argvector.addElement(new String(stoken.sval));
+                    }
 
                     break;
-		case '-':
-		    prependdash = true;
-		    break;
-		case '"':
-		case '\'':
+                case '-':
+                    prependdash = true;
+                    break;
+                case '"':
+                case '\'':
                     //System.out.println("String: " + stoken.sval);
-		    argvector.addElement(new String(stoken.sval));
-		    break;
+                    argvector.addElement(new String(stoken.sval));
+                    break;
                 default:
                     throw new IOException("Failed to parse: '"+ (char)c +
-					  "' in `"+pxgraphargs+"'");
+                                          "' in `"+pxgraphargs+"'");
                 }
             }
-	 } catch (IOException e) {
+         } catch (IOException e) {
             e.printStackTrace();
-	 }
+         }
 
 
-	 // Create a array 
-	 String args[] = new String[argvector.size()];
-	 for(int i = 0; i<argvector.size(); i++) {
-	     args[i] = (String)argvector.elementAt(i);
-	     if (_debug > 2) System.out.print("<"+args[i]+ "> ");
-	 }
-	 if (_debug > 2) System.out.println(" ");
+         // Create a array 
+         String args[] = new String[argvector.size()];
+         for(int i = 0; i<argvector.size(); i++) {
+             args[i] = (String)argvector.elementAt(i);
+             if (_debug > 2) System.out.print("<"+args[i]+ "> ");
+         }
+         if (_debug > 2) System.out.println(" ");
 
-	 return parseArgs(args);
+         return parseArgs(args);
      }
 
     //////////////////////////////////////////////////////////////////////////
@@ -1384,7 +1397,7 @@ public class Plot extends PlotBox {
     private double _baroffset = 0.05;
     private boolean _connected = true;
     private boolean _impulses = false;
-    private boolean _firstinset = true;	// Is this the first datapoint in a set
+    private boolean _firstinset = true; // Is this the first datapoint in a set
     private int _filecount = 0;         // Number of files read in.
     // Have we seen a DataSet line in the current data file?
     private boolean _sawfirstdataset = false;

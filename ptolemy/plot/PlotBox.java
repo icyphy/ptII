@@ -28,8 +28,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 */
 package plot;
 
@@ -138,8 +138,8 @@ public class PlotBox extends Applet {
             return true;
         } else {
             return super.action (evt, arg); // action() is deprecated in 1.1
-	    				    // but we need to compile under 
-	    				    // jdk1.0.2 for netscape3.x
+                                            // but we need to compile under 
+                                            // jdk1.0.2 for netscape3.x
         }
     }
 
@@ -151,7 +151,7 @@ public class PlotBox extends Applet {
      */
     public void addLegend(int dataset, String legend) {
         if (_debug > 8) System.out.println("PlotBox addLegend: " +
-					   dataset + " " + legend);
+                                           dataset + " " + legend);
         _legendStrings.addElement(legend);
         _legendDatasets.addElement(new Integer(dataset));
     }
@@ -168,7 +168,7 @@ public class PlotBox extends Applet {
             _xticks = new Vector();
             _xticklabels = new Vector();
         }
-       	_xticks.addElement(new Double(position));
+        _xticks.addElement(new Double(position));
         _xticklabels.addElement(label);
     }
     
@@ -180,11 +180,11 @@ public class PlotBox extends Applet {
      * range.
      */
     public void addYTick (String label, double position) {
-       	if (_yticks == null) {
+        if (_yticks == null) {
             _yticks = new Vector();
-     	    _yticklabels = new Vector();
+            _yticklabels = new Vector();
         }
-       	_yticks.addElement(new Double(position));
+        _yticks.addElement(new Double(position));
         _yticklabels.addElement(label);
     }
     
@@ -194,29 +194,30 @@ public class PlotBox extends Applet {
       */
     public synchronized void drawPlot(Graphics graphics, boolean clearfirst) {
         if (graphics == null) {
-            System.out.println("Attempt to draw axes without a Graphics object.");
+            System.out.println("Attempt to draw axes without "+
+                    "a Graphics object.");
             return;
         }
         
         // Give other threads a chance, so that hopefully things are
         // up to date.
         Thread.yield();
-	    
+            
         // Find the width and height of the total drawing area, and clear it.
         Rectangle drawRect = bounds(); // FIXME: bounds() is deprecated
-	// in JDK1.1, but we need to compile under 1.0.2 for
-	// netscape3.x compatibilty.
+        // in JDK1.1, but we need to compile under 1.0.2 for
+        // netscape3.x compatibilty.
 
         graphics.setPaintMode();
         if (clearfirst) {
-	    // Clear all the way from the top so that we erase the title.
-	    // If we don't do this, then zooming in with the pxgraph application
-	    // ends up blurring the title.
+            // Clear all the way from the top so that we erase the title.
+            // If we don't do this, then zooming in with the pxgraph
+            // application ends up blurring the title.
             graphics.clearRect(0,0,drawRect.width, drawRect.height);
         }
         
-	// For use by all text displays below.
-	// FIXME - consolidate for efficiency.
+        // For use by all text displays below.
+        // FIXME - consolidate for efficiency.
         graphics.setFont(_titlefont);
         FontMetrics tfm = graphics.getFontMetrics();
         graphics.setFont(_superscriptfont);
@@ -224,7 +225,7 @@ public class PlotBox extends Applet {
         graphics.setFont(_labelfont);
         FontMetrics lfm = graphics.getFontMetrics();
 
-	// If an error message has been set, display it and return.
+        // If an error message has been set, display it and return.
         if (_errorMsg != null) {
             int fheight = lfm.getHeight() + 2;
             int msgy = fheight;
@@ -270,7 +271,7 @@ public class PlotBox extends Applet {
 
         // Draw scaling annotation for x axis.
         // NOTE: 5 pixel padding on bottom.
-	int ySPos = drawRect.height - 5; 
+        int ySPos = drawRect.height - 5; 
         if (_xExp != 0 && _xticks == null) {
             int xSPos = drawRect.x + drawRect.width - _rightPadding;
             String superscript = Integer.toString(_xExp);
@@ -328,17 +329,17 @@ public class PlotBox extends Applet {
         if (_yticks == null) {
             // automatic ticks
             // First, figure out how many digits after the decimal point
-	    // will be used.
+            // will be used.
             int numfracdigits = _numFracDigits(yStep);
 
             // NOTE: Test cases kept in case they are needed again.
             // System.out.println("0.1 with 3 digits: " + _formatNum(0.1, 3));
             // System.out.println("0.0995 with 3 digits: " +
-	    //                    _formatNum(0.0995, 3));
+            //                    _formatNum(0.0995, 3));
             // System.out.println("0.9995 with 3 digits: " +
-	    //                    _formatNum(0.9995, 3));
+            //                    _formatNum(0.9995, 3));
             // System.out.println("1.9995 with 0 digits: " +
-	    //                    _formatNum(1.9995, 0));
+            //                    _formatNum(1.9995, 0));
             // System.out.println("1 with 3 digits: " + _formatNum(1, 3));
             // System.out.println("10 with 0 digits: " + _formatNum(10, 0));
             // System.out.println("997 with 3 digits: " + _formatNum(997,3));
@@ -347,11 +348,11 @@ public class PlotBox extends Applet {
             // System.out.println("999 needs: " + _numFracDigits(999));
             // System.out.println("999.0001 needs: "+_numFracDigits(999.0001));
             // System.out.println("0.005 integer digits: " +
-	    //                    _numIntDigits(0.005));
+            //                    _numIntDigits(0.005));
             // System.out.println("1 integer digits: " + _numIntDigits(1));
             // System.out.println("999 integer digits: " + _numIntDigits(999));
             // System.out.println("-999.0001 integer digits: " +
-	    //                    _numIntDigits(999.0001));
+            //                    _numIntDigits(999.0001));
 
             for (double ypos=yStart; ypos <= _ytickMax; ypos += yStep) {
                 // Prevent out of bounds exceptions
@@ -379,7 +380,7 @@ public class PlotBox extends Applet {
             _ulx = drawRect.x + widesty + _leftPadding;
         }
         int legendwidth = _drawLegend(graphics,
-				      drawRect.width-_rightPadding, _uly);
+                                      drawRect.width-_rightPadding, _uly);
         _lrx = drawRect.width-legendwidth-_rightPadding;
         int width = _lrx-_ulx;
         _xscale = width/(_xMax - _xMin);
@@ -417,7 +418,7 @@ public class PlotBox extends Applet {
                 }
                 // NOTE: 4 pixel spacing between axis and labels.
                 graphics.drawString(ylabels[ind],
-				    _ulx-ylabwidth[ind++]-4, yCoord1+offset);
+                                    _ulx-ylabwidth[ind++]-4, yCoord1+offset);
             }
         
             // Draw scaling annotation for y axis.
@@ -425,8 +426,8 @@ public class PlotBox extends Applet {
                 graphics.drawString("x10", 2, titley);
                 graphics.setFont(_superscriptfont);
                 graphics.drawString(Integer.toString(_yExp),
-				    lfm.stringWidth("x10") + 2, 
-				    titley-halflabelheight);
+                                    lfm.stringWidth("x10") + 2, 
+                                    titley-halflabelheight);
                 graphics.setFont(_labelfont);
             }
         } else {
@@ -449,7 +450,7 @@ public class PlotBox extends Applet {
                 }
                 // NOTE: 3 pixel spacing between axis and labels.
                 graphics.drawString(label, _ulx - lfm.stringWidth(label) - 3,
-				    yCoord1+offset);
+                                    yCoord1+offset);
             }
         }
         
@@ -480,7 +481,7 @@ public class PlotBox extends Applet {
                 }
                 // Allow two extra digits (decimal point and sign).
                 int maxlabelwidth = charwidth *
-		    (numfracdigits + 2 + intdigits);
+                    (numfracdigits + 2 + intdigits);
                 // Compute new estimate of number of ticks.
                 int savenx = nx;
                 // NOTE: 10 additional pixels between labels.
@@ -538,12 +539,12 @@ public class PlotBox extends Applet {
         
         ///////////////////// Draw title and axis labels now.
         
-    	// Center the title and X label over the plotting region, not
-    	// the window.
+        // Center the title and X label over the plotting region, not
+        // the window.
         graphics.setColor(_foreground);
         
         if (_title != null) {
-         	graphics.setFont(_titlefont);
+                graphics.setFont(_titlefont);
             int titlex = _ulx + (width - tfm.stringWidth(_title))/2;
             graphics.drawString(_title,titlex,titley);
         }
@@ -583,9 +584,9 @@ public class PlotBox extends Applet {
      */
     public String getAppletInfo() {
         return "PlotBox 1.0: Base class for plots.\n" +
-	    "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
-	    "Christopher Hylands, cxh@eecs.berkeley.edu\n " +
-	    "($Id$)";
+            "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
+            "Christopher Hylands, cxh@eecs.berkeley.edu\n " +
+            "($Id$)";
     }
 
     /**
@@ -594,41 +595,41 @@ public class PlotBox extends Applet {
      * We need to compile under JDK1.0.2, so we use this method.
      */
     public Font getFontByName(String fullfontname) {
-	// Can't use Font.decode() here, it is not present in jdk1.0.2
+        // Can't use Font.decode() here, it is not present in jdk1.0.2
         //_labelfont = Font.decode(fullfontname);
 
-	String fontname = new String ("helvetica");
-	int style = Font.PLAIN;
-	int size = 12;
-	StringTokenizer stoken = new StringTokenizer(fullfontname,"-");
-	
-	if (stoken.hasMoreTokens()) {
-	    fontname = stoken.nextToken();
-	}
-	if (stoken.hasMoreTokens()) {
-		String stylename = stoken.nextToken();
-		// FIXME: we need to be able to mix and match these
-		if (stylename.equals("PLAIN")) {
-		    style = Font.PLAIN;
-		} else if (stylename.equals("BOLD")) {
-		    style = Font.BOLD;
-		} else if (stylename.equals("ITALIC")) {
-		    style = Font.ITALIC;
-		} else {
-		    // Perhaps this is a font size?
-		    try {
-			size = Integer.valueOf(stylename).intValue();
-		    } catch (NumberFormatException e) {}
-		}
-	}
-	if (stoken.hasMoreTokens()) {
-	    try {
-		size = Integer.valueOf(stoken.nextToken()).intValue();
-	    } catch (NumberFormatException e) {}
-	}
-	if (_debug > 7) System.out.println("PlotBox: getFontByName: "+
+        String fontname = new String ("helvetica");
+        int style = Font.PLAIN;
+        int size = 12;
+        StringTokenizer stoken = new StringTokenizer(fullfontname,"-");
+        
+        if (stoken.hasMoreTokens()) {
+            fontname = stoken.nextToken();
+        }
+        if (stoken.hasMoreTokens()) {
+                String stylename = stoken.nextToken();
+                // FIXME: we need to be able to mix and match these
+                if (stylename.equals("PLAIN")) {
+                    style = Font.PLAIN;
+                } else if (stylename.equals("BOLD")) {
+                    style = Font.BOLD;
+                } else if (stylename.equals("ITALIC")) {
+                    style = Font.ITALIC;
+                } else {
+                    // Perhaps this is a font size?
+                    try {
+                        size = Integer.valueOf(stylename).intValue();
+                    } catch (NumberFormatException e) {}
+                }
+        }
+        if (stoken.hasMoreTokens()) {
+            try {
+                size = Integer.valueOf(stoken.nextToken()).intValue();
+            } catch (NumberFormatException e) {}
+        }
+        if (_debug > 7) System.out.println("PlotBox: getFontByName: "+
                                            fontname+" "+style+" "+size);
-	return new Font(fontname, style, size);
+        return new Font(fontname, style, size);
     }
 
     /** 
@@ -636,28 +637,28 @@ public class PlotBox extends Applet {
      */
     public Color getColorByName(String name) {
         try {
-	    // Check to see if it is a hexadecimal
-	    // Can't use Color decode here, it is not in 1.0.2
+            // Check to see if it is a hexadecimal
+            // Can't use Color decode here, it is not in 1.0.2
             //Color col = Color.decode(name);
-	    Color col = new Color(Integer.parseInt(name,16));
-	    return col;
+            Color col = new Color(Integer.parseInt(name,16));
+            return col;
         } catch (NumberFormatException e) {}
-	// FIXME: This is a poor excuse for a list of colors and values.
-	// We should use a hash table here.
-	// Note that Color decode() wants the values to start with 0x.
-	String names[][] = {
-	    {"black","00000"},{"white","ffffff"},
-	    {"red","ff0000"}, {"green","00ff00"}, {"blue","0000ff"}
-	};
-	for(int i=0;i< names.length; i++) {
-	    if(name.equals(names[i][0])) {
-		try {
-		    Color col = new Color(Integer.parseInt(names[i][1],16));
-		    return col;
-		} catch (NumberFormatException e) {}
-	    }
-	}
-	return null;
+        // FIXME: This is a poor excuse for a list of colors and values.
+        // We should use a hash table here.
+        // Note that Color decode() wants the values to start with 0x.
+        String names[][] = {
+            {"black","00000"},{"white","ffffff"},
+            {"red","ff0000"}, {"green","00ff00"}, {"blue","0000ff"}
+        };
+        for(int i=0;i< names.length; i++) {
+            if(name.equals(names[i][0])) {
+                try {
+                    Color col = new Color(Integer.parseInt(names[i][1],16));
+                    return col;
+                } catch (NumberFormatException e) {}
+            }
+        }
+        return null;
     }
 
     /** 
@@ -667,10 +668,10 @@ public class PlotBox extends Applet {
     public Color getColorParameter(String param) {
         try {
             Color col = getColorByName(getParameter(param));
-	    return col;
+            return col;
         } catch (NullPointerException e) {
-	    return null;
-	}
+            return null;
+        }
     }
 
     /** 
@@ -690,13 +691,13 @@ public class PlotBox extends Applet {
      */
     public String[][] getParameterInfo () {
         String pinfo[][] = {
-	    {"background", "hexcolor value", "background color"},
-	    {"foreground", "hexcolor value", "foreground color"},
+            {"background", "hexcolor value", "background color"},
+            {"foreground", "hexcolor value", "foreground color"},
             {"dataurl",   "url",     "the URL of the data to plot"},
             {"pxgraphargs",   "args",    
-	     "pxgraph style command line arguments"}
+             "pxgraph style command line arguments"}
         };
-	return pinfo;
+        return pinfo;
     }
     
     /**
@@ -705,13 +706,13 @@ public class PlotBox extends Applet {
      */
     public void init() {
         super.init();
-		
-	if (_labelfont == null)  
-	    _labelfont = new Font("Helvetica", Font.PLAIN, 12);
-	if (_superscriptfont == null)  
-	    _superscriptfont = new Font("Helvetica", Font.PLAIN, 9);
-	if (_titlefont == null)  
-	    _titlefont = new Font("Helvetica", Font.BOLD, 14);
+                
+        if (_labelfont == null)  
+            _labelfont = new Font("Helvetica", Font.PLAIN, 12);
+        if (_superscriptfont == null)  
+            _superscriptfont = new Font("Helvetica", Font.PLAIN, 9);
+        if (_titlefont == null)  
+            _titlefont = new Font("Helvetica", Font.BOLD, 14);
         
         _xticks = null;
         _xticklabels = null;
@@ -720,38 +721,38 @@ public class PlotBox extends Applet {
 
         _graphics = getGraphics();
 
-	if (_graphics == null) {
-	    System.out.println("PlotBox::init(): Internal error: " +
-			       "_graphic was null");
-	    return;
-	}
+        if (_graphics == null) {
+            System.out.println("PlotBox::init(): Internal error: " +
+                               "_graphic was null");
+            return;
+        }
 
-	// If the foreground applet parameter is set, then get its value
-	// and set the foreground.  If the foreground parameter is not
-	// set, check the _foreground field and set the foreground if
-	// it is not null.
-	Color foreground = getColorParameter("foreground");
-	if (foreground != null) {
-	    setForeground(foreground);
-	    _foreground = foreground;
-	} else if (_foreground != null) {
-	    setForeground(_foreground);
-	} else {
-	    _foreground = Color.black;
-	}
+        // If the foreground applet parameter is set, then get its value
+        // and set the foreground.  If the foreground parameter is not
+        // set, check the _foreground field and set the foreground if
+        // it is not null.
+        Color foreground = getColorParameter("foreground");
+        if (foreground != null) {
+            setForeground(foreground);
+            _foreground = foreground;
+        } else if (_foreground != null) {
+            setForeground(_foreground);
+        } else {
+            _foreground = Color.black;
+        }
 
-	Color background = getColorParameter("background");
-	if (background != null) {
-	    setBackground(background);
-	    _background = background; 
-	} else if (_background != null) {
-	    setBackground(_background);
-	} else {
-	    _background = Color.white;
-	}
-	if (_debug > 6)
-	    System.out.println("PlotBox: color = "+foreground+" "+_foreground
-			       +" "+background+" "+_background);
+        Color background = getColorParameter("background");
+        if (background != null) {
+            setBackground(background);
+            _background = background; 
+        } else if (_background != null) {
+            setBackground(_background);
+        } else {
+            _background = Color.white;
+        }
+        if (_debug > 6)
+            System.out.println("PlotBox: color = "+foreground+" "+_foreground
+                               +" "+background+" "+_background);
 
 
         // Make a button that auto-scales the plot.
@@ -761,22 +762,22 @@ public class PlotBox extends Applet {
         setLayout(new FlowLayout(FlowLayout.RIGHT));
         _fillButton = new Button("fill");
         add(_fillButton);
-	validate();
+        validate();
 
         // Check to see whether a data URL has been given.
         // Need the catch here because applets used as components have
         // no parameters. 
-	String dataurl = null;
+        String dataurl = null;
         try {
             dataurl = getParameter("dataurl");
         } catch (NullPointerException e) {
-	    dataurl = _dataurl;
-	}
+            dataurl = _dataurl;
+        }
 
-	if (dataurl == null) dataurl = _dataurl;
-	parseFile(dataurl);
+        if (dataurl == null) dataurl = _dataurl;
+        parseFile(dataurl);
     }
-	
+        
     /**
      * Set the starting point for an interactive zoom box.
      * @deprecated As of JDK1.1 in java.awt.component 
@@ -945,8 +946,8 @@ public class PlotBox extends Applet {
       * only the axes.
       */
     public void paint(Graphics graphics) {
-	super.paint(graphics);
-	drawPlot(graphics, true);
+        super.paint(graphics);
+        drawPlot(graphics, true);
     }
 
      /**
@@ -955,102 +956,102 @@ public class PlotBox extends Applet {
       * getDocumentBase() might fail.
       */
     public void parseFile(String dataurl) {
-	DataInputStream in;
+        DataInputStream in;
         if (_debug > 2) System.out.println("PlotBox: parseFile("+ dataurl+
-					   ") _dataurl = "+_dataurl);
-	if (dataurl == null || dataurl.length() == 0) {
-	    // Open up stdin
-	    in = new DataInputStream(System.in);
-	} else {
-	   try {
-	       URL url;
-	       try {
-		   url = new URL(getDocumentBase(), dataurl);
-	       } catch (NullPointerException e) {
-		   // If we got a NullPointerException, then perhaps
-		   // we are calling this as an application, not as an applet.
-		   url = new URL(_dataurl);
-	       }
-	       in = new DataInputStream(url.openStream());
-	   } catch (MalformedURLException e) {
-	       try {
-		   // Just try to open it as a file.
-		   in = new DataInputStream(new FileInputStream(dataurl));
-	       } catch (FileNotFoundException me) {
-		   _errorMsg = new String [2];
-		   _errorMsg[0] = "Malformed URL: " + dataurl;
-		   _errorMsg[1] = e.getMessage();
-		   return;
-	       } catch (SecurityException me) {
-		   _errorMsg = new String [2];
-		   _errorMsg[0] = "Security Exception: " + dataurl;
-		   _errorMsg[1] = e.getMessage();
-		   return;
-	       }
-	   } catch (IOException ioe) {
+                                           ") _dataurl = "+_dataurl);
+        if (dataurl == null || dataurl.length() == 0) {
+            // Open up stdin
+            in = new DataInputStream(System.in);
+        } else {
+           try {
+               URL url;
+               try {
+                   url = new URL(getDocumentBase(), dataurl);
+               } catch (NullPointerException e) {
+                   // If we got a NullPointerException, then perhaps
+                   // we are calling this as an application, not as an applet.
+                   url = new URL(_dataurl);
+               }
+               in = new DataInputStream(url.openStream());
+           } catch (MalformedURLException e) {
+               try {
+                   // Just try to open it as a file.
+                   in = new DataInputStream(new FileInputStream(dataurl));
+               } catch (FileNotFoundException me) {
+                   _errorMsg = new String [2];
+                   _errorMsg[0] = "Malformed URL: " + dataurl;
+                   _errorMsg[1] = e.getMessage();
+                   return;
+               } catch (SecurityException me) {
+                   _errorMsg = new String [2];
+                   _errorMsg[0] = "Security Exception: " + dataurl;
+                   _errorMsg[1] = e.getMessage();
+                   return;
+               }
+           } catch (IOException ioe) {
                _errorMsg = new String [2];
                _errorMsg[0] = "Failure opening URL: " + dataurl;
                _errorMsg[1] = ioe.getMessage();
-	       return;
-	   }
-	}
+               return;
+           }
+        }
 
         _newFile(); // Hook for child classes to do any preprocessing.
 
-	// At this point, we've opened the data source, now read it in
-	try {
-	    if (_binary) {
-		_parseBinaryStream(in);
-	    } else {
+        // At this point, we've opened the data source, now read it in
+        try {
+            if (_binary) {
+                _parseBinaryStream(in);
+            } else {
 
-		String line = in.readLine(); // FIXME: readLine() is
- 		// deprecated in JDK1.1, but we need to compile under
-		//1.0.2 for netscape3.x compatibilty.
-		while (line != null) {
-		    _parseLine(line);
-		    line = in.readLine(); // readLine() is deprecated.
-		}
-	    }
-	} catch (MalformedURLException e) {
-	    _errorMsg = new String [2];
-	    _errorMsg[0] = "Malformed URL: " + dataurl;
-	    _errorMsg[1] = e.getMessage();
-	    return;
-	} catch (IOException e) {
-	    _errorMsg = new String [2];
-	    _errorMsg[0] = "Failure reading data: " + dataurl;
-	    _errorMsg[1] = e.getMessage();
-	} catch (PlotDataException e) {
-	    _errorMsg = new String [2];
-	    _errorMsg[0] = "Incorrectly formatted plot data in " + dataurl;
-	    _errorMsg[1] = e.getMessage();
-	} finally {
-	    try {
-		in.close();
-	    } catch (IOException me) {}
-	}
+                String line = in.readLine(); // FIXME: readLine() is
+                // deprecated in JDK1.1, but we need to compile under
+                //1.0.2 for netscape3.x compatibilty.
+                while (line != null) {
+                    _parseLine(line);
+                    line = in.readLine(); // readLine() is deprecated.
+                }
+            }
+        } catch (MalformedURLException e) {
+            _errorMsg = new String [2];
+            _errorMsg[0] = "Malformed URL: " + dataurl;
+            _errorMsg[1] = e.getMessage();
+            return;
+        } catch (IOException e) {
+            _errorMsg = new String [2];
+            _errorMsg[0] = "Failure reading data: " + dataurl;
+            _errorMsg[1] = e.getMessage();
+        } catch (PlotDataException e) {
+            _errorMsg = new String [2];
+            _errorMsg[0] = "Incorrectly formatted plot data in " + dataurl;
+            _errorMsg[1] = e.getMessage();
+        } finally {
+            try {
+                in.close();
+            } catch (IOException me) {}
+        }
         
     } 
   
     /** Set the background color.
      */
     public void setBackground (Color background) {
-	_background = background;
-	super.setBackground(_background);
+        _background = background;
+        super.setBackground(_background);
     }
 
     /** Set the foreground color.
      */
     public void setForeground (Color foreground) {
-	_foreground = foreground;
-	super.setForeground(_foreground);
+        _foreground = foreground;
+        super.setForeground(_foreground);
     }
 
     /** Set the binary flag to true if we are reading pxgraph format binary
      * data.
      */
     public void setBinary (boolean binary) {
-	_binary = binary;
+        _binary = binary;
     }
 
     /** Set the dataurl.  This method is used by Applications, applets
@@ -1058,7 +1059,7 @@ public class PlotBox extends Applet {
      * &lt;param name="dataurl" value="data.plt"&gt;
      */
     public void setDataurl (String dataurl) {
-	_dataurl = dataurl;
+        _dataurl = dataurl;
     }
 
     /**
@@ -1072,10 +1073,10 @@ public class PlotBox extends Applet {
      * Set the label font, which is used for axis labels and legend labels.
      */
     public void setLabelFont (String fullfontname) {
-	// Can't use Font.decode() here, it is not present in jdk1.0.2
+        // Can't use Font.decode() here, it is not present in jdk1.0.2
         //_labelfont = Font.decode(fullfontname);
 
-	_labelfont = getFontByName(fullfontname);
+        _labelfont = getFontByName(fullfontname);
     }
     /**
      * Set the title of the graph.  The title will appear on the subsequent
@@ -1089,10 +1090,10 @@ public class PlotBox extends Applet {
      * Set the title font.
      */
     public void setTitleFont (String fullfontname) {
-	// Can't use Font.decode() here, it is not present in jdk1.0.2
+        // Can't use Font.decode() here, it is not present in jdk1.0.2
         //_titlefont = Font.decode(fullfontname);
 
-	_titlefont = getFontByName(fullfontname);
+        _titlefont = getFontByName(fullfontname);
     }
 
     /** 
@@ -1152,16 +1153,15 @@ public class PlotBox extends Applet {
      * it is out of range.
      */
     protected void _drawPoint(Graphics graphics,
-				 int dataset, long xpos, long ypos,
-				 boolean clip) {
+            int dataset, long xpos, long ypos, boolean clip) {
         boolean pointinside = ypos <= _lry && ypos >= _uly && 
-	    xpos <= _lrx && xpos >= _ulx;
+            xpos <= _lrx && xpos >= _ulx;
         if (!pointinside && clip) {return;}
         graphics.fillRect((int)xpos-6, (int)ypos-6, 6, 6);
     }
 
     /** Hook for child classes to do any file preprocessing
-     */	
+     */ 
     protected void _newFile(){
     }
 
@@ -1171,9 +1171,9 @@ public class PlotBox extends Applet {
      * @exception java.io.IOException if an I/O error occurs.
      */
     protected void _parseBinaryStream(DataInputStream in) throws
-	PlotDataException, IOException {
-	    throw new PlotDataException("Binary data not supported in the" +
-					"baseclass");
+        PlotDataException, IOException {
+            throw new PlotDataException("Binary data not supported in the" +
+                                        "baseclass");
     }
 
     /**
@@ -1185,9 +1185,9 @@ public class PlotBox extends Applet {
         // Parse commands in the input file, ignoring lines with
         // syntax errors or unrecognized commands.
         if (_debug > 20) System.out.println("PlotBox: parseLine "+ line);
-	// We convert the line to lower case so that the command
-	// names are case insensitive.
-	String lcLine = new String(line.toLowerCase());
+        // We convert the line to lower case so that the command
+        // names are case insensitive.
+        String lcLine = new String(line.toLowerCase());
         if (lcLine.startsWith("#")) {
             // comment character
             return true;
@@ -1205,48 +1205,48 @@ public class PlotBox extends Applet {
             return true;
         }
         if (lcLine.startsWith("xrange:")) {
-        	int comma = line.indexOf(",", 7);
-        	if (comma > 0) {
-        	    String min = (line.substring(7,comma)).trim();
-        	    String max = (line.substring(comma+1)).trim();
-        	    try {
-        	        Double dmin = new Double(min);
-        	        Double dmax = new Double(max);
-        	        setXRange(dmin.doubleValue(), dmax.doubleValue());
-        	    } catch (NumberFormatException e) {
-        	        // ignore if format is bogus.
-        	    }
-        	}
-        	return true;
+                int comma = line.indexOf(",", 7);
+                if (comma > 0) {
+                    String min = (line.substring(7,comma)).trim();
+                    String max = (line.substring(comma+1)).trim();
+                    try {
+                        Double dmin = new Double(min);
+                        Double dmax = new Double(max);
+                        setXRange(dmin.doubleValue(), dmax.doubleValue());
+                    } catch (NumberFormatException e) {
+                        // ignore if format is bogus.
+                    }
+                }
+                return true;
         }
         if (lcLine.startsWith("yrange:")) {
-        	int comma = line.indexOf(",", 7);
-        	if (comma > 0) {
-        	    String min = (line.substring(7,comma)).trim();
-        	    String max = (line.substring(comma+1)).trim();
-        	    try {
-        	        Double dmin = new Double(min);
-        	        Double dmax = new Double(max);
-        	        setYRange(dmin.doubleValue(), dmax.doubleValue());
-        	    } catch (NumberFormatException e) {
-        	        // ignore if format is bogus.
-        	    }
-        	}
-        	return true;
+                int comma = line.indexOf(",", 7);
+                if (comma > 0) {
+                    String min = (line.substring(7,comma)).trim();
+                    String max = (line.substring(comma+1)).trim();
+                    try {
+                        Double dmin = new Double(min);
+                        Double dmax = new Double(max);
+                        setYRange(dmin.doubleValue(), dmax.doubleValue());
+                    } catch (NumberFormatException e) {
+                        // ignore if format is bogus.
+                    }
+                }
+                return true;
         }
         if (lcLine.startsWith("xticks:")) {
             // example:
             // XTicks "label" 0, "label" 1, "label" 3
             boolean cont = true;
             _parsePairs(line.substring(7), true);
-        	return true;
+                return true;
         }
         if (lcLine.startsWith("yticks:")) {
             // example:
             // YTicks "label" 0, "label" 1, "label" 3
             boolean cont = true;
             _parsePairs(line.substring(7), false);
-        	return true;
+                return true;
         }
         
         if (lcLine.startsWith("grid:")) {
@@ -1271,22 +1271,28 @@ public class PlotBox extends Applet {
     /** Set the visibility of the Fill button.
      */
     protected void _setButtonsVisibility(boolean vis) {
-	// _fillButton.setVisible(vis);
-	if (vis) {
-	    _fillButton.show(); // FIXME: show() is
-	    // deprecated in JDK1.1, but we need to compile under
-	    // 1.0.2 for netscape3.x compatibilty.
-	} else {
-	    _fillButton.hide(); // FIXME: hide() is
-	    // deprecated in JDK1.1, but we need to compile under
-	    // 1.0.2 for netscape3.x compatibilty.
-	}
+        // _fillButton.setVisible(vis);
+        if (vis) {
+            _fillButton.show(); // FIXME: show() is
+            // deprecated in JDK1.1, but we need to compile under
+            // 1.0.2 for netscape3.x compatibilty.
+        } else {
+            _fillButton.hide(); // FIXME: hide() is
+            // deprecated in JDK1.1, but we need to compile under
+            // 1.0.2 for netscape3.x compatibilty.
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                           protected variables                    ////
     
-    Graphics _graphics;
+    // If non-zero, print out debugging messages.
+    protected int _debug = 0;
+    
+    // The graphics context to operate in.  Note that printing will call
+    // paint with a different graphics object, so we have to pass this
+    // around properly.
+    protected Graphics _graphics;
 
     // The range of the plot.
     protected double _yMax, _yMin, _xMax, _xMin;
@@ -1463,44 +1469,44 @@ public class PlotBox extends Applet {
      * Parse a string of the form: "word num, word num, word num, ..."
      * where the word must be enclosed in quotes if it contains spaces,
      * and the number is interpreted as a floating point number.  Ignore
-     * any incorrectly formatted fields.  I <i>xtick</i> is true, then interpret
-     * the parsed string to specify the tick labels on the x axis.  Otherwise,
-     * do the y axis.
+     * any incorrectly formatted fields.  I <i>xtick</i> is true, then
+     * interpret the parsed string to specify the tick labels on the x axis.
+     * Otherwise, do the y axis.
      */
     private void _parsePairs (String line, boolean xtick) {    
         int start = 0;
         boolean cont = true;
         while (cont) {
-        	int comma = line.indexOf(",", start);
-        	String pair;
-        	if (comma > start) {
-        	    pair = (line.substring(start,comma)).trim();
+                int comma = line.indexOf(",", start);
+                String pair;
+                if (comma > start) {
+                    pair = (line.substring(start,comma)).trim();
             } else {
-      	        pair = (line.substring(start)).trim();
-       	        cont = false;
-       	    }
-       	    int close;
-       	    int open = 0;
-       	    if (pair.startsWith("\"")) {
-        	    close = pair.indexOf("\"",1);
-        	    open = 1;
-        	} else {
-                close = pair.indexOf(" ");	        
+                pair = (line.substring(start)).trim();
+                cont = false;
             }
-       	    if (close > 0) {
-       	        String label = pair.substring(open,close);
-       	        String index = (pair.substring(close+1)).trim();
-       	        try {
-       	            double idx = (Double.valueOf(index)).doubleValue();
-       	            if (xtick) addXTick(label, idx);
-       	            else addYTick(label,idx);
-       	        } catch (NumberFormatException e) {
-       	            // ignore if format is bogus.
-       	        }
-       	    }
+            int close;
+            int open = 0;
+            if (pair.startsWith("\"")) {
+                    close = pair.indexOf("\"",1);
+                    open = 1;
+                } else {
+                close = pair.indexOf(" ");              
+            }
+            if (close > 0) {
+                String label = pair.substring(open,close);
+                String index = (pair.substring(close+1)).trim();
+                try {
+                    double idx = (Double.valueOf(index)).doubleValue();
+                    if (xtick) addXTick(label, idx);
+                    else addYTick(label,idx);
+                } catch (NumberFormatException e) {
+                    // ignore if format is bogus.
+                }
+            }
             start = comma + 1;
-       	    comma = line.indexOf(",",start);
-       	}
+            comma = line.indexOf(",",start);
+        }
     }
 
     /*
@@ -1583,8 +1589,6 @@ public class PlotBox extends Applet {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    protected int _debug = 0;
-    
     // The URL to be opened.  This variable is not used if we are running
     // as an applet, but applications should call setDataurl().
     private String _dataurl = null;
@@ -1601,7 +1605,7 @@ public class PlotBox extends Applet {
     private double _ytickscale, _xtickscale;
 
     private Font _labelfont =null, _superscriptfont = null,
-	_titlefont = null;
+        _titlefont = null;
     
     // For use in calculating log base 10.  A log times this is a log base 10.
     private static final double _log10scale = 1/Math.log(10);

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 */
 package plot;
 
@@ -37,9 +37,7 @@ package plot;
 /** Thrown when an incorrect argument is passed to the plotter. 
   */
 class CmdLineArgException extends Throwable {
-
-  public CmdLineArgException() { super(); }
-  public CmdLineArgException(String s) { super(s); }
- 
+    public CmdLineArgException() { super(); }
+    public CmdLineArgException(String s) { super(s); }
 }
 

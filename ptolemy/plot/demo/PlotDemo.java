@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 */
 package plot;
 
@@ -42,14 +42,14 @@ public class PlotDemo extends Plot {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-   	
+        
     /**
      * Return a string describing this applet.
      */
     public String getAppletInfo() {
         return "PlotDemo 1.0: Demo of Plot.\n" +
-	    "By: Edward A. Lee, eal@eecs.berkeley.edu\n " +
-	    "($Id$)";
+            "By: Edward A. Lee, eal@eecs.berkeley.edu\n " +
+            "($Id$)";
     }
 
     /**

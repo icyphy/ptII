@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 */
 package plot;
 
@@ -37,7 +37,7 @@ import java.applet.Applet;
  * <code>PlotLive</code> class.
  *
  * @author: Edward A. Lee
- * @version: @(#)PlotLiveDemo.java	1.9    09/19/97
+ * @version: @(#)PlotLiveDemo.java      1.9    09/19/97
  */
 public class PlotLiveDemo extends PlotLive {
 
@@ -54,13 +54,13 @@ public class PlotLiveDemo extends PlotLive {
         addPoint(0, Math.sin(Math.PI*_count/25),
                 Math.cos(Math.PI * _count/100), false);
         addPoint(0, Math.sin(Math.PI*_count/45),
-		Math.cos(Math.PI * _count/70), true);
+                Math.cos(Math.PI * _count/70), true);
         addPoint(1, Math.sin(Math.PI*_count/45),
-		Math.cos(Math.PI * _count/70), false);
+                Math.cos(Math.PI * _count/70), false);
         addPoint(2, Math.sin(Math.PI*_count/20),
                 Math.cos(Math.PI * _count/100), false);
         addPoint(3, Math.sin(Math.PI*_count/50),
-		Math.cos(Math.PI * _count/70), false);
+                Math.cos(Math.PI * _count/70), false);
         _first = false;
         _count += 1.0;
         try {
@@ -73,8 +73,8 @@ public class PlotLiveDemo extends PlotLive {
      */
     public String getAppletInfo() {
         return "PlotLiveDemo 1.0: Demo of PlotLive.\n" +
-	    "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
-	    "(@(#)PlotLiveDemo.java	1.9 09/19/97)";
+            "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
+            "(@(#)PlotLiveDemo.java     1.9 09/19/97)";
     }
 
     /** 
