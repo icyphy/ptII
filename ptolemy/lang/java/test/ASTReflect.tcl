@@ -55,24 +55,76 @@ if {[info procs jdkCapture] == "" } then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
+# Return the depth of a list.  Note that tcl has some strange
+# ideas about lists with single elements:
+# list a returns a
+# list [list a] returns a
+# so, the depth of a list like {a {b}} is 1
+proc ldepth {list {count 0}} {
+    incr count
+    set greatestDepth $count
+    foreach element $list {
+	set subelement $element
+	if {$subelement != {} && $subelement != [lindex $subelement 0]} {
+	    set temp [ldepth $subelement $count]
+	    if {$greatestDepth < $temp} {
+		set greatestDepth $temp
+	    }
+	} 
+    }
+    return $greatestDepth
+}
+
+# Routine to test ldepth proc
+proc test_ldepth {} {
+    # Test case and expected results
+    set cases {
+	{ {} 1}
+	{ {a} 1}
+	{ {{a2}} 1}
+	{ {{{a3}}} 2}
+	{ {{{{a3}}}} 3}
+	{ {a4} 1}
+	{ {a b} 1}
+	{ {a {b}} 1}
+	{ {a {{b}}} 2}
+	{ {a {{{b}}}} 3}
+	{ {a b c} 1}
+	{ {a {b} c} 1}
+	{ {a {b c} d} 2}
+	{ {a {b {c}} d} 2}
+	{{a {b c} d {e {f g {h i}}}} 4}
+    }
+    foreach case $cases {
+	if {[ldepth [lindex $case 0]] != [lindex $case 1]} {
+	    puts "'ldepth [lindex $case 0]' is [ldepth [lindex $case 0]] != [lindex $case 1]"
+	}
+    }
+}
+
+# Uncomment these lines to run the test for ldepth
+#test_ldepth
+#exit
+
 # Sort a list by sorting each sublist as well.
 # Given a nested list like
 #                    {a c b {{f {n m} p} {d e} g} z}  
 # return             {a b c z {{d e} {f {m n} p} g}}
 # lsort would return {a b c z {{f {n m} p} {d e} g}}
 proc deeplsort {list} {
-    puts "deeplsort($list)"
+    # This is _really_ slow under jacl because it uses recursion,
+    # so we print dots to let the user know what is up
+    puts -nonewline "."
     # If all the elements in a list are leaves [llength <= 1], then
     # call lsort on the list
     set allLeaves 1
     foreach element $list {
-	if {[llength $element] > 1} {
+	if {[ldepth $element] > 1} {
 	    set allLeaves 0
 	    break
 	}
     }
     if {$allLeaves == 1} {
-	puts "calling lsort $list"
 	return [lsort $list]
     }
     
@@ -80,7 +132,7 @@ proc deeplsort {list} {
     # each element that has a length greater than 1 and create a new list
     # and then call lsort on the new list
     foreach element $list {
-	if {[llength $element] > 1} {
+	if {[ldepth $element] > 1} {
 	    lappend newlist [deeplsort $element]
 	} else {
 	    lappend newlist $element
@@ -103,7 +155,7 @@ proc deeplcompare {lista listb {indent ""}} {
 	    set a [lindex $lista $i]
 	    set b [lindex $listb $i]
 	    append indent " "
-	    if {[llength $a] > 1 ||  [llength $b] > 1} {
+	    if {[ldepth $a] > 1 ||  [ldepth $b] > 1} {
 		return "$indent checking '$a' '$b' \n [deeplcompare $a $b $indent]"
 	    } else {
 		return "$indent $a is not equal to $b"
@@ -112,12 +164,19 @@ proc deeplcompare {lista listb {indent ""}} {
     }
 }
 
+# Compare two lists.  If == says that they are not equal, then
+# deeply sort the lists and then deeply compare then
 proc lcompare {lista listb} {
     if {$lista == $listb } {
 	return 1
     }
-    return [deeplcompare [deeplsort $lista] [deeplsort $listb]]
+    puts -nonewline "lcompare: Doing deeplcompare "
+    set deepsortedlista [deeplsort $lista]
+    set deepsortedlistb [deeplsort $listb]
+    puts ""
+    return [deeplcompare $deepsortedlista $deepsortedlistb] 
 }
+
 #set a {a c b {{f {n m} p} {d e} g} z}  
 #set b {a c b {{f {n m} q} {d e} g} z}  
 #
@@ -129,8 +188,8 @@ proc lcompare {lista listb} {
 test ASTReflect-2.1 {check out constructor in Object} {
     set class [ java::call Class forName "java.lang.Object"]
     set astList [java::call ptolemy.lang.java.ASTReflect constructorsASTList $class]
-    list [listToStrings $astList]
-} {{{ {ConstructorDeclNode { 
+    lcompare [listToStrings $astList] \
+{{ {ConstructorDeclNode { 
   {Name {NameNode { 
          {Qualifier {AbsentTreeNode {leaf}}} 
          {Ident Object} 
@@ -144,7 +203,7 @@ test ASTReflect-2.1 {check out constructor in Object} {
   {ConstructorCall {SuperConstructorCallNode { 
                     {Args  {}} 
                   }}} 
-}}}}}
+}}}}} {}
 
 ######################################################################
 ####
@@ -152,8 +211,8 @@ test ASTReflect-2.1 {check out constructor in Object} {
 test ASTReflect-2.2 {check out constructors} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTest"]
     set astList [java::call ptolemy.lang.java.ASTReflect constructorsASTList $class]
-    list [listToStrings $astList]
-} {{{ {ConstructorDeclNode { 
+    lcompare [listToStrings $astList] \
+{{ {ConstructorDeclNode { 
   {Name {NameNode { 
          {Qualifier {AbsentTreeNode {leaf}}} 
          {Ident ReflectTest} 
@@ -215,7 +274,8 @@ test ASTReflect-2.2 {check out constructors} {
   {ConstructorCall {SuperConstructorCallNode { 
                     {Args  {}} 
                   }}} 
-}}}}}
+}}}}
+} {}
 
 ######################################################################
 ####
@@ -223,8 +283,8 @@ test ASTReflect-2.2 {check out constructors} {
 test ASTReflect-3.1 {check out fields} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTestFields"]
     set astList [java::call ptolemy.lang.java.ASTReflect fieldsASTList $class]
-    list [listToStrings $astList]
-} {{{ {FieldDeclNode { 
+    lcompare [listToStrings $astList] \
+{{ {FieldDeclNode { 
   {Name {NameNode { 
          {Qualifier {AbsentTreeNode {leaf}}} 
          {Ident myBoolean} 
@@ -392,7 +452,8 @@ test ASTReflect-3.1 {check out fields} {
   {Modifiers 2} 
   {DefType {DoubleTypeNode {leaf}}} 
   {InitExpr {AbsentTreeNode {leaf}}} 
-}}}}}
+}}}} 
+} {}
 
 ######################################################################
 ####
@@ -400,8 +461,8 @@ test ASTReflect-3.1 {check out fields} {
 test ASTReflect-4.1 {check out innerclasses} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTest"]
     set astList [java::call ptolemy.lang.java.ASTReflect innerClassesASTList $class]
-    list [listToStrings $astList]
-} {{{ {ClassDeclNode { 
+    lcompare [listToStrings $astList] \
+{{ {ClassDeclNode { 
   {Name {NameNode { 
          {Qualifier {AbsentTreeNode {leaf}}} 
          {Ident ReflectTest$innerPublicClass} 
@@ -489,7 +550,8 @@ test ASTReflect-4.1 {check out innerclasses} {
                          }}} 
                {Ident Object} 
              }}} 
-}}}}}
+}}}}
+} {} 
 
 ######################################################################
 ####
@@ -497,8 +559,8 @@ test ASTReflect-4.1 {check out innerclasses} {
 test ASTReflect-5.1 {check out methods} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTest"]
     set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
-    list [listToStrings $astList]
-} {{{ {MethodDeclNode { 
+    lcompare [listToStrings $astList] \
+{{ {MethodDeclNode { 
   {Name {NameNode { 
          {Qualifier {AbsentTreeNode {leaf}}} 
          {Ident publicMethod1} 
@@ -578,4 +640,5 @@ test ASTReflect-5.1 {check out methods} {
   {ThrowsList  {}} 
   {ReturnType {VoidTypeNode {leaf}}} 
   {Body {AbsentTreeNode {leaf}}} 
-}}}}}
+}}}} 
+} {}
