@@ -223,7 +223,7 @@ public abstract class TableauFrame extends Top {
                             tableau.setMaster(true);
                             // NOTE: This size is the same as what's in
                             // the welcome window XML files in configs.
-                            tableau.size.setExpression("600x280");
+                            tableau.size.setExpression("650x320");
                             tableau.show();
                             return;
                         }
