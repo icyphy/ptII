@@ -298,8 +298,8 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
                     // make sure d was a legal override/hide of member
                     if ((mm & FINAL_MOD) != 0) {
                         throw new RuntimeException(to.getName() +
-						 ": cannot override final " +
-						 memberName);
+                                ": cannot override final " +
+                                memberName);
                     }
 
                     /*

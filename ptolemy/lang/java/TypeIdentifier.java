@@ -50,7 +50,7 @@ public class TypeIdentifier implements JavaStaticSemanticConstants {
 
     public TypeIdentifier() {
 	//System.out.println("TypeIdentifier.TypeIdentifier()");
-}
+    }
 
     /** Return true iff the kind is a class kind. In derived classes, the
      *  kind() may return a different number for special classes, so this

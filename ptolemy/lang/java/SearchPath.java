@@ -191,7 +191,7 @@ public class SearchPath extends Vector {
             String path = (String) NAMED_PATH.get(i);
             for(int p = 0; p < ptolemyCorePackages.length &&
                     !foundPackages[p];
-                    p++) {
+                p++) {
                 String directoryName = path + ptolemyCorePackages[p];
                 File directory = new File(directoryName);
                 if (directory.isDirectory()) {
@@ -272,7 +272,7 @@ public class SearchPath extends Vector {
 	    systemJar = new JarFile(systemJarFile);
 	} catch (IOException e) {
 	    throw new IOException("Failed to read '" + systemJarFile +
-				       "': " + e);
+                    "': " + e);
 	}
 
 	for (Enumeration enumeration = systemJar.entries();
@@ -281,7 +281,7 @@ public class SearchPath extends Vector {
 	    File jarFile = new File(jarEntry.getName());
 	    if (jarEntry.isDirectory()) {
                 systemPackageSet.add(jarFile.getPath().
-				     replace(File.separatorChar, '.'));
+                        replace(File.separatorChar, '.'));
             } else {
                 if (jarFile.getPath().endsWith(".class")) {
 		    // Strip off the .class,
@@ -301,13 +301,13 @@ public class SearchPath extends Vector {
      *  Initially set to the value of the java.class.path JVM property.
      */
     public static final SearchPath NAMED_PATH =
-	new SearchPath("java.class.path", ".");
+            new SearchPath("java.class.path", ".");
 
     /** Vector containing directories to search for classes in.
      *  Initially set to the current directory "."
      */
     public static final SearchPath UNNAMED_PATH =
-	new SearchPath(null, ".");
+    new SearchPath(null, ".");
 
     /** Set of Strings that name all class files in the system jar file.
      *  Entries are fully qualified classname Strings like "java.lang.Object".
@@ -362,7 +362,7 @@ public class SearchPath extends Vector {
                 }
             } else {
                 path = paths.substring(begin, end).replace('/',
-							   File.separatorChar);
+                        File.separatorChar);
                 if (path.length() > 0) {
 		    add(path + File.separatorChar);
                 }
@@ -391,7 +391,7 @@ public class SearchPath extends Vector {
         }
 	if ( ! systemJar.canRead()) {
 	    throw new IOException("Can't read '" + systemJarPathName +
-				       "'");
+                    "'");
 	}
 	return systemJar;
     }

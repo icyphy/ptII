@@ -80,8 +80,8 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
         TNLManip.traverseList(this,
-         TNLManip.addFirst(node.getDefinedProperty(SCOPE_KEY)),
-         node.getDefTypes());
+                TNLManip.addFirst(node.getDefinedProperty(SCOPE_KEY)),
+                node.getDefTypes());
 
         return null;
     }

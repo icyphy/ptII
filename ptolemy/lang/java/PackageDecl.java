@@ -142,7 +142,7 @@ public class PackageDecl extends JavaDecl
         }
 
         if (SearchPath.systemPackageSet.contains(fullName('.'))) {
-                return;
+            return;
         }
 
 	System.out.println("PackageDecl._initScope(): " + fullName('.'));
@@ -263,11 +263,11 @@ public class PackageDecl extends JavaDecl
                     StringManip.partBeforeLast(className, '.');
                 if (systemPackageName.equals(packageName)) {
                     if (_scope.lookupLocal(className, CG_USERTYPE) == null) {
-                String shortClassName =
-                    className.substring(packageName.length() + 1);
-                //System.out.println("PackageDecl._initScope" +
-                //                "SystemPackages():"+
-                //                shortClassName);
+                        String shortClassName =
+                            className.substring(packageName.length() + 1);
+                        //System.out.println("PackageDecl._initScope" +
+                        //                "SystemPackages():"+
+                        //                shortClassName);
 
                         _scope.add(new ClassDecl(shortClassName, this));
                     }
@@ -308,7 +308,7 @@ public class PackageDecl extends JavaDecl
                     //System.out.println("PackageDecl._initScopeSystem" +
                     // "Packages(): adding toplevel package: " +
                     // systemPackageName);
-                _scope.add(new PackageDecl(systemPackageName, this));
+                    _scope.add(new PackageDecl(systemPackageName, this));
                 }
             }
         }

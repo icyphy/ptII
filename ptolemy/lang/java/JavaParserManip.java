@@ -102,7 +102,7 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
 	    p.init(filename);
 	} catch (Exception e) {
 	    throw new RuntimeException("error opening " + filename +
-					 " : " + e);
+                    " : " + e);
 	}
 
 	p.yydebug = debug;
@@ -113,11 +113,11 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
 	if (loadedAST==null) {
 	    File javaFile = new File(filename);
 	    throw new NullPointerException("JavaParserManip." +
-					   "parseCanonicalFileName(): "+
-					   "loadedAST is null: " + filename +
-					   (javaFile.exists() ?
-					    " " :" does not ") + "exist, " +
-					   " length: " + javaFile.length());
+                    "parseCanonicalFileName(): "+
+                    "loadedAST is null: " + filename +
+                    (javaFile.exists() ?
+                            " " :" does not ") + "exist, " +
+                    " length: " + javaFile.length());
 	}
 
 

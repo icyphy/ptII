@@ -134,11 +134,11 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 		superDecl = (ClassDecl) JavaDecl.getDecl(superClass);
 	    } catch (Exception e) {
 		throw new RuntimeException("ResolveClassVisitor.visitClassDeclNode() node=" +
-					   node + "\nargs.get(0) = " +
-					   args.get(0) + ")\n superClass = " +
-					   superClass + "\n" +
-					   superClass.toString() +
-					   ": " + e);
+                        node + "\nargs.get(0) = " +
+                        args.get(0) + ")\n superClass = " +
+                        superClass + "\n" +
+                        superClass.toString() +
+                        ": " + e);
 	    }
         }
 	//System.out.println("ResolveClassVisitor.visitClassDeclNode(): " +
@@ -365,15 +365,15 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 	    // javap sun.misc.URLClassPath\$Loader
 	    // javap sun.misc.URLClassPath\$JarLoader
 
-//              if ((modifiers & PRIVATE_MOD) != 0) {
-//                  modifiers |= FINAL_MOD;
-//              }
+            //              if ((modifiers & PRIVATE_MOD) != 0) {
+            //                  modifiers |= FINAL_MOD;
+            //              }
 
-//              int classMod = classDecl.getModifiers();
+            //              int classMod = classDecl.getModifiers();
 
-//              if ((classMod & (PRIVATE_MOD | FINAL_MOD)) != 0) {
-//                  modifiers |= FINAL_MOD;
-//              }
+            //              if ((classMod & (PRIVATE_MOD | FINAL_MOD)) != 0) {
+            //                  modifiers |= FINAL_MOD;
+            //              }
         } else {
             // we are inside an interface, all methods are abstract,
             // and public if the enclosing interface is public

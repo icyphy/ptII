@@ -206,9 +206,9 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
             if (ocl != null)  { // Redefinition in same package.
                 throw new RuntimeException("ResolvePackageVisitor: " +
-					 "User type name " + className +
-					 " conflicts with " + ocl.getName() +
-					 " in same package");
+                        "User type name " + className +
+                        " conflicts with " + ocl.getName() +
+                        " in same package");
             }
 
             // add to the package scope if it's an top-level class

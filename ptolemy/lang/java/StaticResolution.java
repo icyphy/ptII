@@ -76,7 +76,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         while (nodeItr.hasNext()) {
             CompileUnitNode node = (CompileUnitNode) nodeItr.next();
             node.accept(new ResolveInheritanceVisitor(_defaultTypePolicy),
-			null);
+                    null);
 
             String filename = (String) node.getDefinedProperty(IDENT_KEY);
 
@@ -104,17 +104,17 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  from the cache.
      */
     public static boolean invalidateCompileUnit(String canonicalFilename,
-						int pass) {
+            int pass) {
 	// This is called from ptolemy.codegen.ActorCodeGenerator
         if ((pass < 0) || (pass > 2)) {
             throw new IllegalArgumentException("invalid pass number : " +
-					       pass);
+                    pass);
         }
 
 	String noExtensionFilename = canonicalFilename;
 
 	if (canonicalFilename.indexOf(File.separatorChar) != -1 &&
-	    canonicalFilename.indexOf('.') != -1) {
+                canonicalFilename.indexOf('.') != -1) {
 	    // This is probably a real filename
 	    noExtensionFilename =
 		StringManip.partBeforeLast(canonicalFilename, '.');
@@ -127,10 +127,10 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
             if (!found) {
                 System.err.println("Warning: couldn't invalidate " +
-					noExtensionFilename);
+                        noExtensionFilename);
                 Set keySet = allPass2ResolvedMap.keySet();
                 System.err.println("Warning: pass 2 resolved files: " +
-					keySet.toString());
+                        keySet.toString());
 	    }
         }
 
@@ -152,17 +152,17 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		String className = noExtensionFilename;
                 ClassDecl classDecl =
 		    (ClassDecl) pkgScope.lookupLocal(StringManip.unqualifiedPart(className),
-						    CG_USERTYPE);
+                            CG_USERTYPE);
 
                 if (classDecl != null) {
                     classDecl.invalidate();
                 } else {
                     System.err.println("Warning: StaticResolution.invalidate" +
-					    "CompileUnit(): could" +
-					    " not find ClassDecl associated" +
-					    " with class " + className +
-					    " pkgScope: " + pkgScope +
-					    " " + unitNode.toString());
+                            "CompileUnit(): could" +
+                            " not find ClassDecl associated" +
+                            " with class " + className +
+                            " pkgScope: " + pkgScope +
+                            " " + unitNode.toString());
                 }
             }
         }
@@ -229,8 +229,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
             } else {
                 throw new RuntimeException("ambiguous reference to " +
-					 name.getIdent() +
-					 " in scope " + scope);
+                        name.getIdent() +
+                        " in scope " + scope);
             }
         }
 
@@ -295,7 +295,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                         // FIXME what's wrong with a normal constructor
                     }
                 } else if ((JavaDecl.getDecl(qualifier).category &
-			    CG_USERTYPE) != 0) {
+                        CG_USERTYPE) != 0) {
                     res = new TypeFieldAccessNode(name,
                             new TypeNameNode((NameNode) qualifier));
                 } else {
@@ -480,7 +480,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         default:
             throw new IllegalArgumentException("invalid pass number (" +
-					       pass + ")");
+                    pass + ")");
         }
     }
 
@@ -544,7 +544,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
     public static TypeVisitor _defaultTypeVisitor = new TypeVisitor();
     public static TypePolicy _defaultTypePolicy =
-	_defaultTypeVisitor.typePolicy();
+    _defaultTypeVisitor.typePolicy();
 
     static {
  	long startTime= System.currentTimeMillis();
@@ -662,9 +662,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     ////                         private methods                   ////
 
     private static ScopeIterator _findPossibles(NameNode name, Scope scope,
-					    TypeNameNode currentClass,
-					    JavaDecl currentPackage,
-					    int categories) {
+            TypeNameNode currentClass,
+            JavaDecl currentPackage,
+            int categories) {
 
 	//System.out.println("StaticResolution._findPossibles():" +  name.getIdent() + " " + currentPackage);
         ScopeIterator possibles = new ScopeIterator();
@@ -672,7 +672,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         if (name.getQualifier() == AbsentTreeNode.instance) {
             if ((categories &
                     (CG_FIELD | CG_METHOD | CG_LOCALVAR |
-		     CG_FORMAL | CG_USERTYPE)) != 0) {
+                            CG_FORMAL | CG_USERTYPE)) != 0) {
                 possibles = scope.lookupFirst(name.getIdent(), categories);
             } else {
                 //System.out.println("StaticResolution._findPossibles(): looking up package " + name.getIdent());
@@ -698,8 +698,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
             name.setQualifier(
                     resolveAName((NameNode) name.getQualifier(),
-				 scope, currentClass,
-				 currentPackage, newCategories));
+                            scope, currentClass,
+                            currentPackage, newCategories));
 
             JavaDecl container = JavaDecl.getDecl(name.getQualifier());
 
@@ -720,14 +720,14 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 TypeNode type = typedContainer.getType();
                 if (type instanceof PrimitiveTypeNode) {
                     throw new RuntimeException("cannot select " +
-					     name.getIdent() +
-					     " from non-reference type" +
-					     " represented by " + type);
+                            name.getIdent() +
+                            " from non-reference type" +
+                            " represented by " + type);
                 } else if (type instanceof ArrayTypeNode) {
                     possibles =
 			ARRAY_CLASS_DECL.getScope().lookupFirstLocal(
-                            name.getIdent(),
-			    categories & (CG_FIELD | CG_METHOD));
+                                name.getIdent(),
+                                categories & (CG_FIELD | CG_METHOD));
                 } else {
                     // what is this for ???
                     Scope e = JavaDecl.getDecl(type).getScope();
@@ -743,11 +743,11 @@ public class StaticResolution implements JavaStaticSemanticConstants {
   		ASTReflect.lookupClassDeclNode(currentPackage.fullName() +
                         "." + name.getIdent());
   	    // FIXME: what if this is an interface
-              ClassDecl classDecl = new ClassDecl(name.getIdent(),
-  				      CG_CLASS,
-  				      new TypeNameNode(classDeclNode.getName()),
-  				      classDeclNode.getModifiers(),
-  				      classDeclNode, currentPackage);
+            ClassDecl classDecl = new ClassDecl(name.getIdent(),
+                    CG_CLASS,
+                    new TypeNameNode(classDeclNode.getName()),
+                    classDeclNode.getModifiers(),
+                    classDeclNode, currentPackage);
   	    System.out.println("possibles.hasNext false, reflection: " + classDecl);
   	    classDecl.setScope(scope);
   	    scope.add(classDecl);
@@ -768,7 +768,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		((currentClass == null) ? "null " : currentClass.toString()) +
 		"Current Package: " +
 		((currentPackage == null) ?
-		 "null " : currentPackage.fullName()) +
+                        "null " : currentPackage.fullName()) +
 		" categories :" + categories;
 	    if (name.getIdent().equals("java")) {
 		message += "\nSince the missing symbol is 'java', perhaps\n" +
@@ -830,18 +830,18 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		// FIXME: seems like this should be something other
 		// than classDecl, perhaps interfaceDecl or userTypeDecl?
 		classDecl = new ClassDecl(name,
-					  CG_INTERFACE,
-					  new TypeNameNode(interfaceDeclNode.getName()),
-					  interfaceDeclNode.getModifiers(),
-					  interfaceDeclNode, null);
+                        CG_INTERFACE,
+                        new TypeNameNode(interfaceDeclNode.getName()),
+                        interfaceDeclNode.getModifiers(),
+                        interfaceDeclNode, null);
 
 		//interfaceDecl =
 		//   (ClassDecl) interfaceDeclNode.getDefinedProperty(DECL_KEY);
 		if (classDecl == null) {
 		    throw new RuntimeException("could not find class or " +
-					     "interface \"" + name +
-					     "\" in bootstrap scope: "
-					     + scope);
+                            "interface \"" + name +
+                            "\" in bootstrap scope: "
+                            + scope);
 		}
 		scope.add(classDecl);
 	    } {
@@ -849,18 +849,18 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		    ASTReflect.ASTClassDeclNode(myClass);
 
 		classDecl = new ClassDecl(name,
-					  CG_CLASS,
-					  new TypeNameNode(classDeclNode.getName()),
-					  classDeclNode.getModifiers(),
-					  classDeclNode, null);
+                        CG_CLASS,
+                        new TypeNameNode(classDeclNode.getName()),
+                        classDeclNode.getModifiers(),
+                        classDeclNode, null);
 
 		//classDecl =
 		//   (ClassDecl) classDeclNode.getDefinedProperty(DECL_KEY);
 		if (classDecl == null) {
 		    throw new RuntimeException("could not find class or " +
-					     "interface \"" + name +
-					     "\" in bootstrap scope: "
-					     + scope);
+                            "interface \"" + name +
+                            "\" in bootstrap scope: "
+                            + scope);
 		}
 		scope.add(classDecl);
 	    }
@@ -871,7 +871,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         } else {
 	    if ((decl.category & (CG_CLASS | CG_INTERFACE)) == 0) {
 		throw new RuntimeException("fatal error: " + decl.getName() +
-					 " should be a class or interface");
+                        " should be a class or interface");
 	    }
 	    classDecl = (ClassDecl) decl;
 	}
