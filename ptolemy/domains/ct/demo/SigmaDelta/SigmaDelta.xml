@@ -301,7 +301,7 @@
         </port>
     </entity>
     <entity name="Quantizer" class="ptolemy.actor.lib.Quantizer">
-        <property name="levels" class="ptolemy.data.expr.Parameter" value="[-1.0, 1.0]">
+        <property name="levels" class="ptolemy.data.expr.Parameter" value="{-1.0, 1.0}">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

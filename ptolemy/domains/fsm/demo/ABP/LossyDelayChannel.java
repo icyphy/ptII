@@ -76,7 +76,7 @@ public class LossyDelayChannel extends TypedCompositeActor {
         Switch loser = new Switch(this, "loser");
 
         DiscreteRandomSource loss = new DiscreteRandomSource(this, "loss");
-        loss.pmf.setExpression("[(1.0 - lossProbability) , lossProbability]");
+        loss.pmf.setExpression("{(1.0 - lossProbability) , lossProbability}");
         loss.values.setExpression("{0, 1}");
 
         // Connections.

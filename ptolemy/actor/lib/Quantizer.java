@@ -34,6 +34,7 @@ import ptolemy.actor.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
@@ -44,13 +45,12 @@ Produce an output token on each firing with a value that is
 a quantized version of the input.  The input and output types
 are both DoubleToken.
 <P>
-The <i>levels</i> parameter contains a DoubleMatrixToken
-specifying the quantization levels. The matrix must be a row vector
-(having only one row), and the elements in this row should be in
+The <i>levels</i> parameter contains an array of doubles
+specifying the quantization levels. The elements must be in
 an increasing order, or an exception will be thrown.
-The default value of <i>levels</i> is [-1.0, 1.0].
+The default value of <i>levels</i> is {-1.0, 1.0}.
 <P>
-Suppose <i>u</i> is the input, and <i>levels = [a, b, c]</i>, where
+Suppose <i>u</i> is the input, and <i>levels = {a, b, c}</i>, where
 <i>a &lt; b &lt; c</i>, then the output of the actor will be:
 <P><i>
 y = a, for u &lt;= (b+a)/2;<BR>
@@ -77,10 +77,9 @@ public class Quantizer extends Transformer {
     public Quantizer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        double defaultLevels[][] = {{-1.0, 1.0}};
-        levels = new Parameter(this, "levels",
-                new DoubleMatrixToken(defaultLevels));
-	levels.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        levels = new Parameter(this, "levels");
+        levels.setExpression("{-1.0, 1.0}");
+        levels.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         // Call this so that we don't have to copy its code here...
         attributeChanged(levels);
 
@@ -93,8 +92,8 @@ public class Quantizer extends Transformer {
     ////                     ports and parameters                  ////
 
     /** The quantization levels.
-     *  This parameter must contain a DoubleMatrixToken.
-     *  The default value of this parameter is a row vector {-1.0, 1.0}.
+     *  This parameter contains an array of doubles with default value
+     *  {-1.0, 1.0}.
      */
     public Parameter levels;
 
@@ -105,31 +104,29 @@ public class Quantizer extends Transformer {
      *  is increasing and has the right dimension.  Recompute the
      *  quantization thresholds.
      *  @exception IllegalActionException If the levels array is not
-     *   increasing, or it is not a row vector.
+     *   increasing.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == levels) {
-            // Check nondecreasing property.
-            double[][] levelsArray =
-                ((DoubleMatrixToken)levels.getToken()).doubleMatrix();
-            if (levelsArray.length != 1 || levelsArray[0].length == 0) {
-                throw new IllegalActionException(this,
-                        "Value of levels is not a row vector.");
-            }
-            int length = levelsArray[0].length;
-            for (int j = 1; j < length; j++) {
-                if (levelsArray[0][j] <= levelsArray[0][j-1]) {
+            ArrayToken levelsValue = (ArrayToken)levels.getToken();
+            double[] _levels = new double[levelsValue.length()];
+            double previous = Double.NEGATIVE_INFINITY;
+            for (int i = 0; i < levelsValue.length(); i++) {
+                _levels[i] = ((DoubleToken)levelsValue.getElement(i))
+                        .doubleValue();
+                // Check nondecreasing property.
+                if (_levels[i] < previous) {
                     throw new IllegalActionException(this,
-                            "Value of levels is not increasing ");
+                            "Value of levels is not nondecreasing.");
                 }
+                previous = _levels[i];
             }
 
             // Compute the quantization thresholds.
-            _thresholds = new double[length-1];
-            for (int j = 0; j < length-1; j++) {
-                _thresholds[j] = (levelsArray[0][j+1] +
-                        levelsArray[0][j])/2.0;
+            _thresholds = new double[_levels.length-1];
+            for (int j = 0; j < _levels.length - 1; j++) {
+                _thresholds[j] = (_levels[j+1] + _levels[j])/2.0;
             }
         } else {
             super.attributeChanged(attribute);
@@ -144,8 +141,7 @@ public class Quantizer extends Transformer {
         if (input.hasToken(0)) {
             double in = ((DoubleToken)input.get(0)).doubleValue();
             int index = _getQuantizationIndex(in);
-            output.send(0, ((DoubleMatrixToken)levels.getToken()).
-                    getElementAsToken(0, index));
+            output.send(0, ((ArrayToken)levels.getToken()).getElement(index));
         }
     }
 

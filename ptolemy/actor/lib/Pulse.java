@@ -90,6 +90,7 @@ public class Pulse extends SequenceSource {
 
         indexes = new Parameter(this, "indexes");
         indexes.setExpression("{0, 1}");
+        indexes.setTypeEquals(new ArrayType(BaseType.INT));
         // Call this so that we don't have to copy its code here...
         attributeChanged(indexes);
 
@@ -127,7 +128,7 @@ public class Pulse extends SequenceSource {
     public Parameter values;
 
     /** The flag that indicates whether the pulse sequence needs to be
-     *  repeated.
+     *  repeated. This is a boolean, and defaults to false.
      */
     public Parameter repeat;
 

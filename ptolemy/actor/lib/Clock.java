@@ -53,8 +53,9 @@ waveforms that cycle through a set of values.
 At the beginning of each time interval of length given by <i>period</i>,
 it initiates a sequence of output events with values given by
 <i>values</i> and offset into the period given by <i>offsets</i>.
-These parameters contain arrays, which are required to have the length.
-The <i>offsets</i> array must be nondecreasing and nonnegative,
+These parameters contain arrays, which are required to have the same length.
+The <i>offsets</i> array contains doubles, which
+must be nondecreasing and nonnegative,
 or an exception will be thrown when it is set.
 Moreover, its largest entry must be smaller than <i>period</i>
 or an exception will be thrown by the fire() method.
@@ -120,6 +121,7 @@ public class Clock extends TimedSource {
 
         offsets = new Parameter(this, "offsets");
         offsets.setExpression("{0.0, 1.0}");
+        offsets.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         // Call this so that we don't have to copy its code here...
         attributeChanged(offsets);
 
@@ -144,17 +146,19 @@ public class Clock extends TimedSource {
     ////                     ports and parameters                  ////
 
     /** The offsets at which the specified values will be produced.
-     *  This parameter must contain an array of doubles.
+     *  This parameter must contain an array of doubles, and it defaults
+     *  to {0.0, 1.0}.
      */
     public Parameter offsets;
 
     /** The period of the output waveform.
-     *  This parameter must contain a DoubleToken.
+     *  This parameter must contain a DoubleToken, and it defaults to 2.0.
      */
     public Parameter period;
 
     /** The values that will be produced at the specified offsets.
-     *  This parameter must contain an ArrayToken.
+     *  This parameter must contain an ArrayToken, and it defaults to
+     *  {1, 0}
      */
     public Parameter values;
 

@@ -49,12 +49,12 @@ import ptolemy.math.SignalProcessing;
 An actor that produces tokens with a given probability mass function.
 <p>
 The probability mass function is a parameter, <i>pmf</i>, of this
-actor. The <i>pmf</i> must be a row vector that contains entries that
-are all between 0 and 1, and sum to 1. By default, <i>pmf</i> is
-initialized to [0.5, 0.5].
+actor. The <i>pmf</i> must be an array that contains entries that
+are all between 0.0 and 1.1, and sum to 1.0. By default, <i>pmf</i> is
+initialized to {0.5, 0.5}.
 <p>
 Output values are selected at random from the <i>values</i> parameter,
-which contains an ArrayToken. This array must have the same dimensions as
+which contains an ArrayToken. This array must have the same length as
 <i>pmf</i>.  Thus the <i>i</i>-th token in <i>values</i> has probability
 <i>pmf</i>[<i>i</i>]. The output port has the same type as the elements of
 the <i>values</i> array.  The default <i>values</i> are {0, 1}, which are
@@ -77,9 +77,9 @@ public class DiscreteRandomSource extends RandomSource {
     public DiscreteRandomSource(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        pmf = new Parameter(this, "pmf", new DoubleMatrixToken(
-                new double[][] {{0.5, 0.5}}));
-        pmf.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        pmf = new Parameter(this, "pmf");
+        pmf.setExpression("{0.5, 0.5}");
+        pmf.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
 	// set the values parameter
 	IntToken[] defaultValues = new IntToken[2];
@@ -99,8 +99,8 @@ public class DiscreteRandomSource extends RandomSource {
     ////                     ports and parameters                  ////
 
     /** The probability mass function.
-     *  This parameter contains a DoubleMatrixToken, with default value
-     *  [0.5, 0.5].
+     *  This parameter contains an array of doubles, with default value
+     *  {0.5, 0.5}.
      */
     public Parameter pmf;
 
@@ -123,14 +123,14 @@ public class DiscreteRandomSource extends RandomSource {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == pmf) {
-            DoubleMatrixToken pmfMatrixToken
-                = (DoubleMatrixToken) pmf.getToken();
-            if (pmfMatrixToken.getRowCount() != 1) {
-                throw new IllegalActionException(this,
-                        "Parameter pmf is required to be a row vector.");
+
+            ArrayToken pmfValue = (ArrayToken)pmf.getToken();
+            _pmf = new double[pmfValue.length()];
+            double sum = 0.0;
+            for (int i = 0; i < _pmf.length; i++) {
+                _pmf[i] = ((DoubleToken)pmfValue.getElement(i)).doubleValue();
+                sum += _pmf[i];
             }
-            double[] pmfArray = pmfMatrixToken.doubleMatrix()[0];
-            double sum = DoubleArrayMath.sum(pmfArray);
             // Allow for roundoff error.
             if (!SignalProcessing.close(sum, 1.0)) {
                 throw new IllegalActionException(this,
@@ -178,24 +178,22 @@ public class DiscreteRandomSource extends RandomSource {
     public boolean prefire() throws IllegalActionException {
         // Generate a double between 0 and 1, uniformly distributed.
         double randomValue = _random.nextDouble();
-        DoubleMatrixToken pmfMatrixToken = (DoubleMatrixToken) pmf.getToken();
-        double[] pmfArray = pmfMatrixToken.doubleMatrix()[0];
         ArrayToken valuesToken = (ArrayToken) values.getToken();
-        if (pmfArray.length != valuesToken.length()) {
+        if (_pmf.length != valuesToken.length()) {
             throw new IllegalActionException(this,
-                    "Parameters values and pmf are required to be row vectors "
-                    + "of the same dimension.");
+                    "Parameters values and pmf are required to be arrays "
+                    + "with the same length.");
         }
         double cdf = 0.0;
-        for (int i = 0; i < pmfArray.length; i++) {
-            cdf += pmfArray[i];
+        for (int i = 0; i < _pmf.length; i++) {
+            cdf += _pmf[i];
             if (randomValue <= cdf) {
                 _current = valuesToken.getElement(i);
                 return true;
             }
         }
         // We shouldn't get here, but if we do, we output the last value.
-        _current = valuesToken.getElement(pmfArray.length - 1);
+        _current = valuesToken.getElement(_pmf.length - 1);
         return true;
     }
 
@@ -204,4 +202,7 @@ public class DiscreteRandomSource extends RandomSource {
 
     /** Random value calculated in prefire(). */
     private Token _current;
+
+    /** Cache of probability mass function. */
+    private transient double[] _pmf;
 }

@@ -125,7 +125,7 @@ public class PoissonClock extends TimedSource {
     public Parameter meanTime;
 
     /** The values that will be produced at the output.
-     *  This parameter can contain any MatrixToken.
+     *  This parameter can contain any ArrayToken, and it defaults to {1, 0}.
      */
     public Parameter values;
 
@@ -196,8 +196,6 @@ public class PoissonClock extends TimedSource {
             }
             _boundaryCrossed = true;
         }
-
-
     }
 
     /** Schedule the first firing at time zero and initialize local variables.
