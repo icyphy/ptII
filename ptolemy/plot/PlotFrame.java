@@ -1,4 +1,4 @@
-/* A simple application that uses the ptolemy.plot package.
+/* 2-D plotter widget
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
