@@ -298,7 +298,7 @@ test IntMatrixToken-4.0 {Test dividing ints.} {
 
     list $e1
 
-} {{ptolemy.kernel.util.IllegalActionException: divide method not supported on ptolemy.data.IntMatrixToken objects.}}
+} {{ptolemy.kernel.util.IllegalActionException: Division not supported for ptolemy.data.IntMatrixToken divided by ptolemy.data.IntMatrixToken.}}
 
 
 
@@ -340,7 +340,7 @@ test IntMatrixToken-6.0 {Test modulo between ints.} {
 
     list $e1
 
-} {{ptolemy.kernel.util.IllegalActionException: modulo method not supported on ptolemy.data.IntMatrixToken objects.}}
+} {{ptolemy.kernel.util.IllegalActionException: Modulo operation not supported: ptolemy.data.IntMatrixToken modulo ptolemy.data.IntMatrixToken.}}
 
 
 
