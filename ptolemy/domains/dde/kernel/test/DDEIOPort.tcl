@@ -50,7 +50,66 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test DDEIOPort-2.1 {Check send()} {
+test DDEIOPort-2.1 {Constructor tests} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set d1 [java::new ptolemy.domains.dde.kernel.DDEIOPort]
+    $d1 setName D1
+    set e1 [java::new ptolemy.actor.TypedAtomicActor $w]
+    $e1 setName E1
+    set d3 [java::new ptolemy.domains.dde.kernel.DDEIOPort $e1 D3]
+    set d4 [java::new ptolemy.domains.dde.kernel.DDEIOPort $e1 D4 true false]
+    list [$d1 getFullName] [$d3 getFullName] [$d4 getFullName]
+} {.D1 .E1.D3 .E1.D4}
+
+
+######################################################################
+####
+#
+test DDEIOPort-2.2 {Container must be atomic} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
+    $e0 setName E0
+    catch {set d3 [java::new ptolemy.domains.dde.kernel.DDEIOPort \
+		       $e0 D3]} errMsg3
+    catch {set d4 [java::new ptolemy.domains.dde.kernel.DDEIOPort \
+		       $e0 D4 true false]} errMsg4
+    list $errMsg3 $errMsg4
+} {{ptolemy.kernel.util.IllegalActionException: A DDEIOPort can not be contained by a composite actor.
+  in .E0 and .E0.D3} {ptolemy.kernel.util.IllegalActionException: A DDEIOPort can not be contained by a composite actor.
+  in .E0 and .E0.D4}}
+
+######################################################################
+####
+#
+test DDEIOPort-3.1 {setContainer: Container must be atomic} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
+    $e0 setName E0
+    set d1 [java::new ptolemy.domains.dde.kernel.DDEIOPort]
+    catch {$d1 setContainer $e0} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: A DDEIOPort can not be contained by a composite actor.
+  in .E0 and .<Unnamed Object>}}
+
+
+test DDEIOPort-3.2 {setContainer} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set e1 [java::new ptolemy.actor.TypedAtomicActor $w]
+    $e1 setName E1
+    set d2 [java::new ptolemy.domains.dde.kernel.DDEIOPort $e1 D2]
+    set e2 [java::new ptolemy.actor.TypedAtomicActor $w]
+    $e2 setName E2
+
+    $d2 setContainer $e2
+    list [$d2 getFullName]
+} {.E2.D2}
+
+
+######################################################################
+####
+#
+test DDEIOPort-4.0 {Check send()} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
