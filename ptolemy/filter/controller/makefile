@@ -34,7 +34,7 @@
 ROOT =          /users/ptdesign/tycho
 
 # Get configuration info
-CONFIG =        $(ROOT)/mk/tycho.mk
+CONFIG =        $(ROOT)/mk/ptII.mk
 include $(CONFIG)
  
 JPACKAGE =      ptolemy.filter.controller 

@@ -49,7 +49,7 @@ ME =		ptolemy
 VPATH =		$(ROOT)/$(ME)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/tycho.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Include rules for directories that contain only subdirectories.

@@ -37,10 +37,10 @@ ROOT =		../../..
 
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/tycho.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Flags to pass to javadoc. (Override value in tycho.mk)
+# Flags to pass to javadoc. (Override value in ptII.mk)
 JDOCFLAGS = 	-author -version -public
 
 DIRS = 		test #doc

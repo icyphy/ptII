@@ -34,7 +34,7 @@ ROOT =		../../../../..
 
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/tycho.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 #JAVAHOME =      /opt/jdk1.2latest
 

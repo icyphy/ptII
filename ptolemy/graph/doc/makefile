@@ -35,7 +35,7 @@ ROOT =		../../../..
 VPATH =		$(ROOT)/java/ptolemy/praph/doc
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/tycho.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 EXTRA_SRCS = 

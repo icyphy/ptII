@@ -36,7 +36,7 @@ ROOT =		../..
 VPATH =		$(ROOT)/doc/internals
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/tycho.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 EXTRA_SRCS =	\
