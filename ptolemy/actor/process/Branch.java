@@ -270,12 +270,12 @@ public class Branch {
      */
     public void transferTokens() {
         try {
-	    // beginEngagement();
             Token token = _prodRcvr.get(this);
             _consRcvr.put(token, this);
-	    // completeEngagement();
+            _controller.engagementSucceeded(this);
         } catch( TerminateBranchException e ) {
 	    // Iteration is over
+            _controller.disengageBranch(this);
 	    reset();
             return;
         }

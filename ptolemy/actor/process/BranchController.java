@@ -181,7 +181,6 @@ public class BranchController implements Runnable {
 	Receiver[][] prodRcvrs = null;
 	Receiver[][] consRcvrs = null;
 
-	// System.out.println("Port Width = " + port.getWidth());
 	for( int i=0; i < port.getWidth(); i++ ) {
 	    if( port.isInput() ) {
 		prodRcvrs = port.getReceivers();
@@ -192,10 +191,7 @@ public class BranchController implements Runnable {
 	    } else {
 		throw new IllegalActionException("Bad news");
 	    }
-	    /*
-	    String name = ((Nameable)port).getName();
-	    System.out.println("Port name: " + name + " get prod/cons receivers");
-	    */
+            
 	    prodRcvr = (BoundaryReceiver)prodRcvrs[i][0];
 	    consRcvr = (BoundaryReceiver)consRcvrs[i][0];
 
@@ -246,8 +242,6 @@ public class BranchController implements Runnable {
                 if( branch.numberOfCompletedEngagements() == 0 ) {
                     _engagements.remove(branch);
                 }
-            } else {
-                // throw exception here.
             }
         }
     }
@@ -270,28 +264,36 @@ public class BranchController implements Runnable {
      *  the number of engagements per iteration is unbounded
      *  then or this controller is not active, then simply 
      *  return.
-     *  @param branch The Branch with a successful engagement.
+     * @param branch The Branch with a successful engagement.
+     * @exception TerminateBranchException If this controller
+     *  is inactive, its iteration is over or the branch is
+     *  not currently engaged.
      */
-    public void engagementSucceeded(Branch branch) {
+    public void engagementSucceeded(Branch branch) throws 
+            TerminateBranchException {
         synchronized(this) {
-            if( !isActive() ) {
-                // FIXME: Should we throw an exception?
-                return;
+            if( !isActive() || _iterationIsOverCache ) {
+                throw new TerminateBranchException("Branch "
+                        + "can not succeed while controller "
+                        + "is not active or iteration is over");
             }
             if( _maxEngagements < 0 && _maxEngagers < 0 ) {
                 return;
             }
             
             if( !_engagements.contains(branch) ) {
-                // FIXME: throw exception here.
-            } else if( _iterationIsOverCache ) {
-                // FIXME: throw exception here.
+                throw new TerminateBranchException("Branch "
+                        + "can not succeed if not previously "
+                        + "engaged to controller.");
             }
             
             if( branch.numberOfCompletedEngagements() < _maxEngagements ) {
                 branch.completeEngagement();
             } else {
-                // throw exception here.
+                throw new TerminateBranchException("Branch "
+                        + "can not succeed if it already has "
+                        + "more successful engagements than "
+                        + "permitted.");
             }
             notifyAll();
         }
@@ -326,7 +328,7 @@ public class BranchController implements Runnable {
      * @return True if this controller is active; false otherwise.
      */
     public boolean isActive() {
-	return _active;
+	return _isActive;
     }
 
     /** Return true if all of the branches controlled by this
@@ -362,21 +364,27 @@ public class BranchController implements Runnable {
      */
     public boolean isEngagementEnabled(Branch branch) {
         synchronized(this) {
-	    if( !_iterationIsOverCache || !isActive() ) {
+	    if( _iterationIsOverCache || !isActive() ) {
 		return false;
 	    }
             if( _maxEngagements < 0 && _maxEngagers < 0 ) {
+                branch.beginEngagement();
                 return true;
             }
             
             if( _engagements.contains(branch) ) {
                 if( branch.numberOfCompletedEngagements() < _maxEngagements ) {
+                    branch.beginEngagement();
                     return true;
                 } 
                 return false;
             } else if( _engagements.size() < _maxEngagers ) {
-            	_engagements.add( branch );
-                return true;
+                if( branch.numberOfCompletedEngagements() < _maxEngagements ) {
+            	    _engagements.add( branch );
+                    branch.beginEngagement();
+                    return true;
+                } 
+                return false ;
             }
             return false;
         }
@@ -419,7 +427,6 @@ public class BranchController implements Runnable {
 
 	_engagements.clear();
 	_branchesBlocked = 0;
-        _branchesActive = 0;
 
 	Branch branch = null;
 	Iterator branches = _branches.iterator();
@@ -469,7 +476,7 @@ public class BranchController implements Runnable {
     /**
      */
     public void setActive(boolean active) {
-	_active = active;
+	_isActive = active;
     }
 
     /**
@@ -561,12 +568,7 @@ public class BranchController implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Contains the number of conditional branches that are still
-    // active.
-    private int _branchesActive = 0;
-
     // The number of branches that are blocked
-    // trying to rendezvous.
     private int _branchesBlocked = 0;
     
     // The CompositeActor who owns this controller object.
@@ -575,14 +577,12 @@ public class BranchController implements Runnable {
     private LinkedList _branches = new LinkedList(); 
     private LinkedList _ports = new LinkedList();
     private LinkedList _engagements = new LinkedList();
+    private LinkedList _blockedReceivers = new LinkedList();
     
     private int _maxEngagements = -1;
     private int _maxEngagers = -1;
 
-    private boolean _active = false;
-
-    private LinkedList _blockedReceivers = new LinkedList();
-    
-    private boolean _iterationIsOverCache = false;
+    private boolean _iterationIsOverCache = true;
+    private boolean _isActive = false;
 
 }
