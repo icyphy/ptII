@@ -36,15 +36,18 @@ import collections.LinkedList;
 //// Entity
 /** 
 An Entity is an aggregation of ports.
-It is meant to represent a vertex in a slight generalization of
-non-hierarchical graphs, where the arcs connecting vertices are
-grouped.  The role of Ports is to organize such aggregates.
-Derived classes support hierarchy by defining entities that
-aggregate other entities.
+Entities are meant to represent vertices in a slight generalization of
+graphs where the arcs connecting vertices are grouped.
+The role of Ports is to organize such groupings; in Ptolemy vernacular we
+say that Ports are aggregations of links.
+
+Note that Entities are intended for flat graphs, however, derived classes 
+support hierarchy in the graphs by defining entities that aggregate other 
+entities.
 
 An Entity is created within a Workspace.  If the workspace is
 not specified as a constructor argument, then the default workspace
-is used.  Almost all actions are synchronized on the workspace,
+is used. Almost all actions are synchronized on the workspace,
 so using only the default workspace will have the effect of
 serializing all method calls.
 
@@ -70,7 +73,7 @@ public class Entity extends NamedObj {
      *  is null, then the name is set to the empty string.
      *  The object is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *  @param name Name of this object.
+     *  @param name The name of this object.
      */
     public Entity(String name) {
 	super(name);
@@ -83,8 +86,8 @@ public class Entity extends NamedObj {
      *  is null, then the name is set to the empty string.
      *  The object is added to the list of objects in the workspace.
      *  Increment the version of the workspace.
-     *  @param workspace Object for synchronization and version tracking
-     *  @param name Name of this object.
+     *  @param workspace An object for synchronization and version tracking
+     *  @param name The name of this object.
      */
     public Entity(Workspace workspace, String name) {
 	super(workspace, name);
@@ -102,11 +105,11 @@ public class Entity extends NamedObj {
      *  is null, do nothing.
      *  This method is sychronized on the
      *  workspace and increments its version number.
-     *  @param port
-     *  @exception IllegalActionException Port is not of the expected class
-     *   (thrown in derived classes only), or port has no name.
-     *  @exception NameDuplicationException Name collides with a name already
-     *   on the port list.
+     *  @param port The port being added to this entity.
+     *  @exception IllegalActionException if the port is not of the expected 
+     *   class (thrown in derived classes only), or the port has no name.
+     *  @exception NameDuplicationException if the name collides with a name 
+     *   already on the port list.
      */	
     public void addPort(Port port) 
             throws IllegalActionException, NameDuplicationException {
@@ -150,7 +153,7 @@ public class Entity extends NamedObj {
     }
 
     /** Return a description of the object.
-     *  @param verbosity The level of verbosity.
+     *  @param verbosity The level of verbosity in the description given.
      */
     public String description(int verbosity){
         String results = new String();
@@ -227,11 +230,11 @@ public class Entity extends NamedObj {
      *  The container of the port is set to this entity.
      *  This method is sychronized on the workspace, and increments
      *  its version number.
-     *  @param name
+     *  @param name The name of the newly created port.
      *  @return The new port
-     *  @exception IllegalActionException Argument is null.
-     *  @exception NameDuplicationException Entity already has a port with
-     *  that name.
+     *  @exception IllegalActionException if the argument is null.
+     *  @exception NameDuplicationException if the entity already has a port 
+     *   with the specified name.
      */	
     public Port newPort(String name) 
             throws IllegalActionException, NameDuplicationException {
@@ -246,8 +249,8 @@ public class Entity extends NamedObj {
      *  As a side effect, the ports will be unlinked from all relations.
      *  This method is sychronized on the workspace, and increments
      *  its version number.
-     *  @exception InvalidStateException Inconsistent port-container
-     *   relationship.
+     *  @exception InvalidStateException if an inconsistent port-container
+     *   relationship is encountered.
      */	
     public void removeAllPorts()
             throws InvalidStateException {
@@ -275,11 +278,11 @@ public class Entity extends NamedObj {
      *  As a side effect, the port will be unlinked from all relations.
      *  This method is sychronized on the workspace, and increments
      *  its version number.
-     *  @param port Port to remove.
-     *  @exception IllegalActionException Port does not belong to me,
-     *   or the argument is null.
-     *  @exception InvalidStateException Inconsistent port-container
-     *   relationship.
+     *  @param port The port being removed.
+     *  @exception IllegalActionException if the port does not belong to
+     *   this entity or the argument is null.
+     *  @exception InvalidStateException if an inconsistent port-container
+     *   relationship is encountered.
      */	
     public void removePort(Port port)
             throws IllegalActionException, InvalidStateException {
@@ -313,10 +316,10 @@ public class Entity extends NamedObj {
      *  This method is sychronized on the workspace.
      *  It assumes the port is in the workspace as this entity, but does
      *  not check.  The caller should check.
-     *  @param port Port to contain.
-     *  @exception IllegalActionException Argument has no name.
-     *  @exception NameDuplicationException Name collides with a name already
-     *   on the entity port list.
+     *  @param port The port being added to this entity.
+     *  @exception IllegalActionException if the port argument has no name.
+     *  @exception NameDuplicationException if the port name collides with a 
+     *   name already on the entity port list.
      */	
     protected void _addPort(Port port)
             throws IllegalActionException, NameDuplicationException {
@@ -330,7 +333,7 @@ public class Entity extends NamedObj {
      *  nothing happens). Unlike the corresponding public method, this
      *  method does not alter the container of the port.
      *  This method is sychronized on the workspace.
-     *  @param port Port to remove
+     *  @param port The port being removed from this entity.
      */	
     protected void _removePort(Port port) {
         synchronized(workspace()) {
