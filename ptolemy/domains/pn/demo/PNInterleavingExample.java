@@ -45,57 +45,43 @@ class PNInterleavingExample {
 	    IllegalStateException, IllegalActionException, 
             NameDuplicationException {
 	PNUniverse myUniverse = new PNUniverse();
-        //myUniverse.setMode(Integer.parseInt(args[0]));
-        myUniverse.setNoCycles(Integer.parseInt(args[0]));
+        myUniverse.setCycles(Integer.parseInt(args[0]));
         PNInterleave _interleave = new PNInterleave(myUniverse, "interleave");
-        _interleave.initialize();
-        _interleave.setCycles(Integer.parseInt(args[0]));
         PNAlternate _alternate = new PNAlternate(myUniverse, "alternate");
-        _alternate.initialize();
         PNRedirect _redirect0 = new PNRedirect(myUniverse, "redirect0");
-        _redirect0.initialize(0);
+        _redirect0.setInitState(0);
         PNRedirect _redirect1 = new PNRedirect(myUniverse, "redirect1");
-        _redirect1.initialize(1);
+        _redirect1.setInitState(1);
 
         //FIXME: Find a neat way of specifying the queue length of input port!
         //FIXME: Need a nice way of doing the following.
         //Maybe a nice method that set all star parameters and links all ports
-        IORelation _queueX = new IORelation(myUniverse, "QX");
-        PNPort port = (PNPort)_interleave.getPort("output");
-        port.link(_queueX);
-        port = (PNPort)_alternate.getPort("input");
-        port.getQueue().setCapacity(1);
-        port.link(_queueX);
+        PNOutPort portout = (PNOutPort)_interleave.getPort("output");
+        PNInPort portin = (PNInPort)_alternate.getPort("input");
+        IORelation queue = (IORelation)myUniverse.connect(portin, portout, "QX");
+        //portin.getQueue().setCapacity(1);
+
  
-        IORelation _queueY = new IORelation(myUniverse, "QY");
-        port = (PNPort)_redirect0.getPort("output");
-        port.link(_queueY);
-        port = (PNPort)_interleave.getPort("input1");
-        port.getQueue().setCapacity(1);
-        port.link(_queueY);        
+        portout = (PNOutPort)_redirect0.getPort("output");
+        portin = (PNInPort)_interleave.getPort("input0");
+        queue = (IORelation)myUniverse.connect(portin, portout, "QY");
+        //portin.getQueue().setCapacity(1);
  
-        IORelation _queueZ = new IORelation(myUniverse, "QZ");
-        port = (PNPort)_redirect1.getPort("output");
-        port.link(_queueZ);
-        port = (PNPort)_interleave.getPort("input2");
-        port.getQueue().setCapacity(1);
-        port.link(_queueZ);
+        portout = (PNOutPort)_redirect1.getPort("output");
+        portin = (PNInPort)_interleave.getPort("input1");
+        queue = (IORelation)myUniverse.connect(portin, portout, "QZ");
+        //portin.getQueue().setCapacity(1);
  
-        IORelation _queueT1 = new IORelation(myUniverse, "QT1");
-        port = (PNPort)_alternate.getPort("output1");
-        port.link(_queueT1);
-        port = (PNPort)_redirect0.getPort("input");
-        port.getQueue().setCapacity(1);
-        port.link(_queueT1);
+        portout = (PNOutPort)_alternate.getPort("output0");
+        portin = (PNInPort)_redirect0.getPort("input");
+        queue = (IORelation)myUniverse.connect(portin, portout, "QT1");       
+        //portin.getQueue().setCapacity(1);
  
-        IORelation _queueT2 = new IORelation(myUniverse, "QT2");
-        port = (PNPort)_alternate.getPort("output2");
-        port.link(_queueT2);
-        port = (PNPort)_redirect1.getPort("input");
-        port.getQueue().setCapacity(1);
-        port.link(_queueT2);
+        portout = (PNOutPort)_alternate.getPort("output1");
+        portin = (PNInPort)_redirect1.getPort("input");
+        queue = (IORelation)myUniverse.connect(portin, portout, "QT2");
+        //portin.getQueue().setCapacity(1);
  
-        //FIXME: Should I use connect() rather than all the above stuff??
  	myUniverse.execute();
         System.out.println("Bye World\n");
 	return;
