@@ -86,7 +86,8 @@ MISC_FILES =	$(DIRS) test
 OPTIONAL_FILES = \
 	doc \
 	'CTBaseIntegrator$$DoubleDouble.class' \
-	'CTBaseIntegrator$$History.class'
+	'CTBaseIntegrator$$History.class' \
+	'CTScheduler$$SignalTypes.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

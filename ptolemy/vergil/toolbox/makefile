@@ -74,6 +74,7 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'AnnotationEditorFactory$$AnnotationTextEditor.class' \
 	'EditParameterStylesFactory$$1.class' \
 	'EditParametersFactory$$1.class' \
 	'FigureAction$$1.class' \

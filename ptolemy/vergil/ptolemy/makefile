@@ -95,7 +95,11 @@ OPTIONAL_FILES = \
 	'GraphFrame$$LayoutAction.class' \
 	'GraphFrame$$PasteAction.class' \
 	'GraphFrame$$PtolemyLayout.class' \
-	'GraphFrame$$PtolemyLayoutTarget.class'
+	'GraphFrame$$PtolemyLayoutTarget.class' \
+	'GraphFrame$$ZoomFitAction.class' \
+	'GraphFrame$$ZoomInAction.class' \
+	'GraphFrame$$ZoomOutAction.class' \
+	'GraphFrame$$ZoomResetAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

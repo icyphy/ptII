@@ -70,7 +70,11 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'HierarchicalStateController$$1.class' \
+	'HierarchicalStateController$$AddRefinementAction.class' \
+	'HierarchicalStateController$$RemoveRefinementAction.class' \
+	'ModalModel$$ModalTableauFactory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

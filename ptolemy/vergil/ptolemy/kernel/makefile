@@ -80,6 +80,9 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'AbstractPtolemyGraphModel$$GraphChangeListener.class' \
+	'AnimationRenderer$$1.class' \
+	'AnimationRenderer$$2.class' \
+	'AttributeController$$Access.class' \
 	'AttributeController$$AttributeRenderer.class' \
 	'EditorDropTarget$$1.class' \
 	'EditorDropTarget$$DTListener.class' \
@@ -95,10 +98,14 @@ OPTIONAL_FILES = \
 	'EntityController$$EntityContextMenuFactory.class' \
 	'EntityController$$EntityLayout.class' \
 	'EntityController$$EntityRenderer.class' \
+	'EntityController$$LookInsideAction.class' \
+	'EntityPortController$$1.class' \
 	'EntityPortController$$EntityPortRenderer.class' \
 	'EntityPortController$$PortContextMenuFactory$$PortDescriptionFactory.class' \
 	'EntityPortController$$PortContextMenuFactory.class' \
+	'IconController$$IconRenderer.class' \
 	'KernelGraphFrame$$AttributeContextMenuFactory.class' \
+	'KernelGraphFrame$$DebugMenuListener.class' \
 	'KernelGraphFrame$$EntityContextMenuFactory.class' \
 	'KernelGraphFrame$$LookInsideAction.class' \
 	'KernelGraphFrame$$PortContextMenuFactory$$PortDescriptionFactory.class' \
@@ -109,13 +116,19 @@ OPTIONAL_FILES = \
 	'Link$$2.class' \
 	'Link$$3.class' \
 	'Link$$4.class' \
+	'LinkController$$1.class' \
 	'LinkController$$LinkContextMenuFactory.class' \
 	'LinkController$$LinkDropper.class' \
 	'LinkController$$LinkRenderer.class' \
 	'LinkController$$LinkTarget.class' \
+	'ParameterizedNodeController$$1.class' \
+	'PortController$$1.class' \
 	'PortController$$NameWrapper.class' \
 	'PortController$$PortRenderer.class' \
 	'PortDialogFactory$$1.class' \
+	'PtolemyGraphController$$1.class' \
+	'PtolemyGraphController$$NewPortAction.class' \
+	'PtolemyGraphController$$SchematicContextMenuFactory.class' \
 	'PtolemyGraphModel$$1.class' \
 	'PtolemyGraphModel$$2.class' \
 	'PtolemyGraphModel$$3.class' \
@@ -128,15 +141,16 @@ OPTIONAL_FILES = \
 	'PtolemyGraphModel$$AttributeModel.class' \
 	'PtolemyGraphModel$$ExternalPortModel.class' \
 	'PtolemyGraphModel$$IconModel.class' \
-	'PtolemyGraphModel$$LinkModel.class' \
 	'PtolemyGraphModel$$LinkModel$$LinkChangeListener.class' \
+	'PtolemyGraphModel$$LinkModel.class' \
 	'PtolemyGraphModel$$PortModel.class' \
 	'PtolemyGraphModel$$RemoveableNodeModel.class' \
 	'PtolemyGraphModel$$ToplevelModel.class' \
 	'PtolemyGraphModel$$VertexModel.class' \
-	'RenameDialogFactory$$1.class' \
+	'PtolemyNodeController$$GetDocumentationAction.class' \
 	'RelationController$$RelationContextMenuFactory.class' \
 	'RelationController$$RelationRenderer.class' \
+	'RenameDialogFactory$$1.class' \
 	'ViewerGraphController$$EditDirectorParameterStylesFactory.class' \
 	'ViewerGraphController$$EditDirectorParametersFactory.class' \
 	'ViewerGraphController$$SchematicContextMenuFactory.class'
