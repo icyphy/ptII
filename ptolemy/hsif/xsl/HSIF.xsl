@@ -189,7 +189,7 @@ CT-ModalModel-CTEmbedded.
         <!-- Construct the Modal model director. -->
         <xsl:call-template name="composite">
             <xsl:with-param name="name" select="@name"/>
-            <xsl:with-param name="class" select="'ptolemy.vergil.fsm.modal.ModalModel'"/>
+            <xsl:with-param name="class" select="'ptolemy.domains.fsm.modal.ModalModel'"/>
             <xsl:with-param name="type" select="'Modal'"/>
         </xsl:call-template>
 
@@ -201,7 +201,7 @@ CT-ModalModel-CTEmbedded.
         <!-- I/O ports -->
         <xsl:for-each select="IntegerVariable">
             <xsl:call-template name="variable">
-                <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.ModalPort'"/>
+                <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.ModalPort'"/>
                 <xsl:with-param name="dataType" select="'int'"/>
                 <xsl:with-param name="environment" select = "'HA'"/>
             </xsl:call-template>
@@ -209,7 +209,7 @@ CT-ModalModel-CTEmbedded.
 
         <xsl:for-each select="RealVariable">
             <xsl:call-template name="variable">
-                <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.ModalPort'"/>
+                <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.ModalPort'"/>
                 <xsl:with-param name="dataType" select="'double'"/>
                 <xsl:with-param name="environment" select = "'HA'"/>
             </xsl:call-template>
@@ -217,7 +217,7 @@ CT-ModalModel-CTEmbedded.
 
         <xsl:for-each select="BooleanVariable">
             <xsl:call-template name="variable">
-                <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.ModalPort'"/>
+                <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.ModalPort'"/>
                 <xsl:with-param name="dataType" select="'boolean'"/>
                 <xsl:with-param name="environment" select = "'HA'"/>
             </xsl:call-template>
@@ -227,7 +227,7 @@ CT-ModalModel-CTEmbedded.
         <xsl:element name="entity">
             <!-- attributes of entity -->
             <xsl:attribute name="name">_Controller</xsl:attribute>
-            <xsl:attribute name="class">ptolemy.vergil.fsm.modal.ModalController</xsl:attribute>
+            <xsl:attribute name="class">ptolemy.domains.fsm.modal.ModalController</xsl:attribute>
             <xsl:call-template name="_Controller">
             </xsl:call-template>
          </xsl:element>
@@ -335,7 +335,7 @@ For more help, choose Help from the upper menu bar.</text>
         <!-- _tableau -->
         <xsl:element name="property">
             <xsl:attribute name="name">_tableauFactory</xsl:attribute>
-            <xsl:attribute name="class">ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory</xsl:attribute>
+            <xsl:attribute name="class">ptolemy.vergil.fsm.modal.ModalTableauFactory</xsl:attribute>
         </xsl:element>
 
     <xsl:element name="property">
@@ -378,7 +378,7 @@ For more help, choose Help from the upper menu bar.</text>
     <!-- I/O ports (RefinementPorts in _Controller) -->
     <xsl:for-each select="IntegerVariable">
         <xsl:call-template name="variable">
-            <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.RefinementPort'"/>
+            <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.RefinementPort'"/>
             <xsl:with-param name="dataType" select="'int'"/>
             <xsl:with-param name="environment" select = "'controller'"/>
         </xsl:call-template>
@@ -386,7 +386,7 @@ For more help, choose Help from the upper menu bar.</text>
 
     <xsl:for-each select="RealVariable">
         <xsl:call-template name="variable">
-            <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.RefinementPort'"/>
+            <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.RefinementPort'"/>
             <xsl:with-param name="dataType" select="'double'"/>
             <xsl:with-param name="environment" select = "'controller'"/>
         </xsl:call-template>
@@ -394,7 +394,7 @@ For more help, choose Help from the upper menu bar.</text>
 
     <xsl:for-each select="BooleanVariable">
         <xsl:call-template name="variable">
-            <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.RefinementPort'"/>
+            <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.RefinementPort'"/>
             <xsl:with-param name="dataType" select="'boolean'"/>
             <xsl:with-param name="environment" select = "'controller'"/>
         </xsl:call-template>
@@ -536,7 +536,7 @@ For more help, choose Help from the upper menu bar.</text>
     <xsl:element name="entity">
         <xsl:call-template name="composite">
             <xsl:with-param name="name" select="@name"/>
-            <xsl:with-param name="class" select="'ptolemy.vergil.fsm.modal.Refinement'"/>
+            <xsl:with-param name="class" select="'ptolemy.domains.fsm.modal.Refinement'"/>
             <xsl:with-param name="type" select="'CTEmbedded'"/>
         </xsl:call-template>
         <xsl:element name="property">
@@ -560,7 +560,7 @@ For more help, choose Help from the upper menu bar.</text>
         <!-- I/O port (RefinementPort) -->
         <xsl:for-each select="../IntegerVariable">
             <xsl:call-template name="variable">
-                <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.RefinementPort'"/>
+                <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.RefinementPort'"/>
                 <xsl:with-param name="dataType" select="'int'"/>
                 <xsl:with-param name="environment" select = "'FSM'"/>
             </xsl:call-template>
@@ -568,7 +568,7 @@ For more help, choose Help from the upper menu bar.</text>
 
         <xsl:for-each select="../RealVariable">
             <xsl:call-template name="variable">
-                <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.RefinementPort'"/>
+                <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.RefinementPort'"/>
                 <xsl:with-param name="dataType" select="'double'"/>
                 <xsl:with-param name="environment" select = "'FSM'"/>
             </xsl:call-template>
@@ -576,7 +576,7 @@ For more help, choose Help from the upper menu bar.</text>
 
         <xsl:for-each select="../BooleanVariable">
             <xsl:call-template name="variable">
-                <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.RefinementPort'"/>
+                <xsl:with-param name="portType" select="'ptolemy.domains.fsm.modal.RefinementPort'"/>
                 <xsl:with-param name="dataType" select="'boolean'"/>
                 <xsl:with-param name="environment" select = "'FSM'"/>
             </xsl:call-template>
