@@ -379,18 +379,6 @@ public class GenericJNIActor extends TypedAtomicActor {
     }
 
     /** Load the generated class and search for its fire method.
-     *  The class is searched for in the following locations in
-     *  order
-     *  <ol>
-     *  <li> The directory named by the value
-     *  the <i>libraryDirectory</i> parameter relative to the current directory.
-     *  (The current directory is named by the user.dir property)
-     *  <li> The directory named by the value
-     *  the <i>libraryDirectory</i> parameter relative to $PTII, which is named
-     *  by the ptolemy.ptII.dir property.
-     *  <li> Elsewhere in the path named by the the java.library.path
-     *  property.
-     *  </ol>
      */
     public void initialize() throws IllegalActionException {
         String nativeLibraryValue = "";
@@ -444,7 +432,7 @@ public class GenericJNIActor extends TypedAtomicActor {
             ClassLoader cl = new URLClassLoader(tab);
             _class = cl.loadClass(className);
         } catch (Throwable ex) {
-	    throw new IllegalActionException(this, ex, 
+	    throw new IllegalActionException(this, ex,
 					     "Could not load JNI C class '"
 					     + className + "' relative to "
 					     + tab[0]); 

@@ -102,15 +102,21 @@ AUXCLASSPATH = $(CLASSPATHSEPARATOR).
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	PATH="`pwd`:`pwd`/jni/meaningOfLife:`pwd`/jni/testDeux:`pwd`/jni/testTrois:`pwd`jni/jnimeaningOfLifeImeaningOfLife:$(PATH)"; export PATH; \
+	LD_LIBRARY_PATH="`pwd`:`pwd`/jni/meaningOfLife:`pwd`/jni/testDeux:`pwd`/jni/testTrois:`pwd`jni/jnimeaningOfLifeImeaningOfLife:/usr/local/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
 	$(JTCLSH) alljtests.tcl
 
 #PATH=/cygdrive/c/cxh/ptII/jni/test/jni/jnimeaningOfLifeImeaningOfLife:c:/cxh/ptII/jni/test/jni/jnimeaningOfLifeImeaningOfLife:${PATH}
 # export PATH
 #CLASSPATH="../..;c:\cxh\ptII/lib/diva.jar;.;c:\cxh\ptII/lib/ptjacl.jar" "/cygdrive/c/j2sdk1.4.1_01/bin/java"  "-Dptolemy.ptII.dir=c:\cxh\ptII"  tcl.lang.Shell alljtests.tcl
 
-shared:
-	gcc -shared $(PTJNI_SHAREDLIBRARY_CFLAG) \
-		-o $(SHAREDBASE).$(PTJNI_SHAREDLIBRARY_SUFFIX) \
+# PTCC is set in $PTII/mk/ptII.mk
+# See also ptolemy/matlab/makefile
+SHARED_LIBRARY = $(PTJNI_SHAREDLIBRARY_PREFIX)$(SHAREDBASE).$(PTJNI_SHAREDLIBRARY_SUFFIX)
+
+shared: $(SHARED_LIBRARY)
+$(SHARED_LIBRARY):
+	$(PTCC) -shared $(PTJNI_SHAREDLIBRARY_CFLAG) \
+		-o $@ \
 		$(SHAREDBASE).c
 
 # Get the rest of the rules

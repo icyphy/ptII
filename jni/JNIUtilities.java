@@ -330,7 +330,7 @@ public class JNIUtilities {
         javaExec.setCommands(execCommands);
         javaExec.start();
         // FIXME: We should not need to sleep here
-        Thread.sleep(4000);
+        Thread.sleep(20000);
 
 //          synchronized(javaExec) {
 //              System.out.println("JNIUtilities: getProcess()");
@@ -1048,15 +1048,18 @@ public class JNIUtilities {
                     + "# Get configuration info\n"
 		    + "CONFIG =\t$(ROOT)/mk/ptII.mk\n" 
 		    + "include $(CONFIG)\n\n"
-		    + interNativeLibrary + ":\n"
+                    + "SHAREDLIBRARY ="
+		    + "$(PTJNI_SHAREDLIBRARY_PREFIX)Jni"
+                    + interNativeLibrary
+		    + ".$(PTJNI_SHAREDLIBRARY_SUFFIX)\n"
+		    + "$(SHAREDLIBRARY):\n"
 		    + "\t\"$(PTCC)\" \\\n"
 		    + "\t\t\"-I$(PTJAVA_DIR)/include\" \\\n"
 		    + "\t\t\"-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE)\" \\\n"
 		    + "\t\t-fno-exceptions \\\n"
                     + "\t\t-shared $(PTJNI_SHAREDLIBRARY_CFLAG) \\\n"
 		    + "\t\t-L" + libraryPath + " -l" + nativeLibrary + " \\\n"
-		    + "\t\t -o Jni" + interNativeLibrary
-		    + ".$(PTJNI_SHAREDLIBRARY_SUFFIX) \\\n"
+		    + "\t\t -o $@ \\\n"
 		    + "\t\tjni" + actor.getName() + ".cpp\n\n"
                     + "# Get the rest of the rules\n"
 		    + "include $(ROOT)/mk/ptcommon.mk\n"

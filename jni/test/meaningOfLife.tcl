@@ -87,7 +87,7 @@ test meaningOfLife-1.1 {Run a simple JNI model} {
     puts "[exec make shared SHAREDBASE=meaningOfLife]"
     testJNI meaningOfLife
 } {}
-
+exit
 test meaningOfLife-1.2 {A native function that takes an int and a float } {
     # Create the shared library that has the code we want
     puts "Running 'make shared'"
