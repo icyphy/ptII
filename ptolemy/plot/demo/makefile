@@ -67,6 +67,7 @@ EXTRA_SRCS = $(JSRCS) \
 	Marks.html \
 	Ptplot.html \
 	Ptplot.js \
+	PtplotHelp.html \
 	Sinusoids.html \
 	bargraph.plt \
 	data.plt \
