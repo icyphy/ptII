@@ -74,9 +74,9 @@ public class CSPPausingSource extends AtomicActor {
                 System.out.println(getName() + " sent Token: " + t.toString());
                 if (count % 3 == 0) {
                     try {
-                        ((CSPDirector)getDirector()).setPauseRequested();
+                        ((CSPDirector)getDirector()).pause();
                         Thread.currentThread().sleep((long)(2000));
-                        ((CSPDirector)getDirector()).setResumeRequested();
+                        ((CSPDirector)getDirector()).resume();
                     } catch (InterruptedException ex) {
                         System.out.println("CSPPausingSource: unable to " +
                                 "complete pause or resume.");
