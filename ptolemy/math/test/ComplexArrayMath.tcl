@@ -375,3 +375,21 @@ test ComplexArrayMath-14.2 {phase} {
     epsilonDiff [$da2 getrange 0] \
 	    {1.10714871779 -0.927295218002 -2.25561757274 2.28962632642}
 } {}
+
+####################################################################
+test ComplexArrayMath-15.1 {_nonZeroLength with null arg} {
+    catch {java::call ptolemy.math.test.TestComplexArrayMath testNonZeroLength [java::null] "aTest"} errMsg
+
+    set r2 [java::call ptolemy.math.test.TestComplexArrayMath \
+	    testNonZeroLength $ca1 "aTest2"]
+    list $errMsg $r2
+
+} {{java.lang.IllegalArgumentException: ptolemy.math.aTest() : input array is null.} 4}
+
+
+####################################################################
+test ComplexArrayMath-15.1 {_nonZeroLength with 0 length array} {
+    catch {java::call ptolemy.math.test.TestComplexArrayMath testNonZeroLength $ca0 "anotherTest"} errMsg
+    list $errMsg
+
+} {{java.lang.IllegalArgumentException: ptolemy.math.anotherTest() : input array has length 0.}}

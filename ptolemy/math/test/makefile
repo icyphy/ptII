@@ -46,6 +46,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	TestComplexArrayMath.java \
 	TestComplexBinaryOperation.java \
 	TestComplexUnaryOperation.java \
 	TestDoubleBinaryOperation.java \
