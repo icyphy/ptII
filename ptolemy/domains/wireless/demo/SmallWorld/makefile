@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II WirlessSoundDetection demo
+# Makefile for Ptolemy II SmallWorld demo
 #
 # @Authors: Christopher Hylands Brooks (makefile only)
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/wireless/demo/WirelessSoundDetection
+ME =		ptolemy/domains/wireless/demo/SmallWorld
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,20 +41,17 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	WirelessSoundDetection
+PTPACKAGE = 	SmallWorld
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	WirelessSoundDetection.xml
+	SmallWorld.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED)
-
-#	WirelessSoundDetection.htm 
-#	WirelessSoundDetectionVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -74,22 +71,16 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 # Run the demo in all its different formats
-# Run demo_application first so that we generate WirelessSoundDetection.xml
 demo: demo_ptolemy demo_vergil
 
 #demo_applet: $(PTCLASSJAR)
-#	CLASSPATH="$(CLASSPATH)" appletviewer WirelessSoundDetection.htm
-
-#demo_application: $(PTCLASSJAR)
-#	CLASSPATH="$(CLASSPATH)" \
-#	 "$(JAVA)" ptolemy.actor.gui.CompositeActorApplication \
-		-class ptolemy.domains.sdf.demo.WirelessSoundDetection.WirelessSoundDetection
+#	CLASSPATH="$(CLASSPATH)" appletviewer SmallWorld.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" WirelessSoundDetection.xml
+	"$(PTII)/bin/ptolemy" SmallWorld.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" WirelessSoundDetection.xml
+	"$(PTII)/bin/vergil" SmallWorld.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -1,6 +1,6 @@
 # Makefile for Ptolemy II CircularRange demo
 #
-# @Authors: Christopher Hylands
+# @Authors: Christopher Hylands Brooks (makefile only)
 #
 # @Version: $Id$
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sdf/demo/CircularRange
+ME =		ptolemy/domains/wireless/demo/CircularRange
 
 # Root of the Java directory
 ROOT =		../../../../..
