@@ -184,6 +184,14 @@ public abstract class TopologyChangeRequest {
         }
     }
 
+    /** Return an enumartion over the queued events.
+     *
+     * @returns An enumeration of the events in this request.
+     */
+    public Enumeration queuedEvents () {
+        return _events.elements();
+    }
+
     /** Create a mutation event and add it to the internal
      * queue of pending events. When invoked, the event will
      * add <code>entity</code> to <code>compositeEntity</code>.
