@@ -404,6 +404,9 @@ public class Director extends Attribute implements Executable {
                     .getDirector().getCurrentTime();
                 _currentTime = time;
             } else {
+                // There is no reason to set the current time to 0.0.
+                // Instead, it has to be set to start time of a model. 
+                // FIXME: to simplify the initilize method of DE director
                 _currentTime = 0.0;
             }
             Iterator actors = ((CompositeActor)container)
@@ -651,6 +654,8 @@ public class Director extends Attribute implements Executable {
             }
         }
         _stopRequested = false;
+        // initialize the starting time of model
+        _currentTime = Double.NEGATIVE_INFINITY;
         if (_debugging) _debug("Finished preinitialize().");
     }
 
