@@ -221,18 +221,6 @@ OPTIONAL_FILES = \
 	jspaces \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class' \
-	'ArrowKeySensor$$1.class' \
-	'ArrowKeySensor$$2.class' \
-	'ArrowKeySensor$$3.class' \
-	'ArrowKeySensor$$4.class' \
-	'ArrowKeySensor$$5.class' \
-	'ArrowKeySensor$$6.class' \
-	'ArrowKeySensor$$7.class' \
-	'ArrowKeySensor$$8.class' \
-	'ArrowKeySensor$$MyFrame.class' \
-	'KeystrokeSensor$$1.class' \
-	'KeystrokeSensor$$2.class' \
-	'KeystrokeSensor$$MyFrame.class' \
 	'RecordUpdater$$1.class' \
 	'RecordUpdater$$FunctionTerm.class' \
 	'Scale$$1.class' \
