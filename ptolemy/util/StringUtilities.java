@@ -711,6 +711,7 @@ public class StringUtilities {
         string = substitute(string, "&lt;", "<");
         string = substitute(string, "&gt;", ">");
         string = substitute(string, "&#10;", "\n");
+        string = substitute(string, "&#13;", "\r");
         return string;
     }
 
