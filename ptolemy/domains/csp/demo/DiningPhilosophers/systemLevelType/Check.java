@@ -52,8 +52,11 @@ that the MoML files for these models are in the current directory.
 The number of philosophers around the dining table can be controlled on
 the command line. The usage is:
 <pre>
-java ptolemy.domains.csp.demo.DiningPhilosophers.systemLevelType.Check <numberOfPhilosophers>
+java ptolemy.domains.csp.demo.DiningPhilosophers.systemLevelType.Check <numberOfPhilosophers> <useSimple>
 </pre>
+The useSimple argument is either "simple" or "full", indicating if the simple
+or the full conditional send model is used. This argument is optional. The
+default is simple.
 
 @author Yuhong Xiong
 @version $Id$
@@ -64,8 +67,10 @@ public class Check {
      *  @param numberOfPhilosophers The number of philosophers.
      *  @exception Exception If the automata cannot be loaded.
      */
-    public Check(int numberOfPhilosophers) throws Exception {
+    public Check(int numberOfPhilosophers, boolean useSimple )
+            throws Exception {
         _numberOfPhilosophers = numberOfPhilosophers;
+	_useSimple = useSimple;
 
         // path to the automata MoML files. Set to current directory for now,
         // should set it to
@@ -81,14 +86,20 @@ public class Check {
         MoMLParser parser = new MoMLParser();
         _receiver = (InterfaceAutomaton)parser.parse(url, url);
 
-        url = MoMLApplication.specToURL(base + "ConditionalSend.xml");
-        parser = new MoMLParser();
-        _send = (InterfaceAutomaton)parser.parse(url, url);
+        if (useSimple) {
+            url = MoMLApplication.specToURL(base + "SimpleSend.xml");
+            parser = new MoMLParser();
+            _simpleSend = (InterfaceAutomaton)parser.parse(url, url);
+        } else {
+            url = MoMLApplication.specToURL(base + "ConditionalSend.xml");
+            parser = new MoMLParser();
+            _send = (InterfaceAutomaton)parser.parse(url, url);
 
-        url = MoMLApplication.specToURL(base
-                                      + "ConditionalBranchController.xml");
-        parser = new MoMLParser();
-        _controller = (InterfaceAutomaton)parser.parse(url, url);
+            url = MoMLApplication.specToURL(base
+                                          + "ConditionalBranchController.xml");
+            parser = new MoMLParser();
+            _controller = (InterfaceAutomaton)parser.parse(url, url);
+	}
 
         url = MoMLApplication.specToURL(base + "Philosopher.xml");
         parser = new MoMLParser();
@@ -132,9 +143,19 @@ public class Check {
 System.out.println("finish " + i + "th phiAndReceiver:");
 System.out.println(phiAndReceiver.getInfo());
 
+            phiAndReceiver.combineInternalTransitions();
+
+System.out.println("finish " + i + "th phiAndReceiver, after combine internals:");
+System.out.println(phiAndReceiver.getInfo());
+
             InterfaceAutomaton choAndReceiver = _composeChoAndReceiver(i);
 
-System.out.println("finish " + i + "th choAndReceiver:");
+System.out.println("finish " + i + "th cho, receiver and send:");
+System.out.println(choAndReceiver.getInfo());
+
+            choAndReceiver.combineInternalTransitions();
+
+System.out.println("finish " + i + "th cho, receiver and send, after combine internals:");
 System.out.println(choAndReceiver.getInfo());
 
             phiCho[i] = phiAndReceiver.compose(choAndReceiver);
@@ -157,15 +178,23 @@ System.out.println(all.exportMoML());
         // check for deadlock
     }
 
-    /** Get the number of philosopher parameter from the command line
-     *  argument and pass it to the constructor.
-     *  @param args The command line arguments.
+    /** Obtain the command line arguments and create a checker.
+     *  @param args The command line arguments. The first argument is the
+     *   number of philosophers, the second is "simple" or "full", indicating
+     *   if the simple or the full version of conditional send model is
+     *   used. The second argument is optional, the default is simple.
      */
     public static void main (String[] args) {
         try {
             int number = (Integer.valueOf(args[0])).intValue();
-            Check check = new Check(number);
-          check.go();
+	    boolean useSimple = true;
+	    if (args.length > 1) {
+	        if (args[1].equals("full")) {
+		    useSimple = false;
+		}
+	    }
+            Check check = new Check(number, useSimple);
+            check.go();
         } catch (Exception ex) {
             System.out.println(ex.getClass().getName() + ": "
                              + ex.getMessage());
@@ -245,90 +274,6 @@ System.out.println(all.exportMoML());
 
             rightReceiver.renameTransitionLabels(nameMap);
 
-            // create conditional branch controller
-            InterfaceAutomaton controller =
-                                   (InterfaceAutomaton)_controller.clone();
-            controller.setName("c" + index + "c");
-
-            nameMap = new HashMap();
-            nameMap.put("iA1", "c" + index + "iAl");
-            nameMap.put("iA1T", "c" + index + "iAlT");
-            nameMap.put("iA1F", "c" + index + "iAlF");
-
-            nameMap.put("iF1", "c" + index + "iFl");
-            nameMap.put("iF1T", "c" + index + "iFlT");
-            nameMap.put("iF1F", "c" + index + "iFlF");
-
-            nameMap.put("r1", "c" + index + "rl");
-            nameMap.put("d1", "c" + index + "dl");
-
-            nameMap.put("iA2", "c" + index + "iAr");
-            nameMap.put("iA2T", "c" + index + "iArT");
-            nameMap.put("iA2F", "c" + index + "iArF");
-
-            nameMap.put("iF2", "c" + index + "iFr");
-            nameMap.put("iF2T", "c" + index + "iFrT");
-            nameMap.put("iF2F", "c" + index + "iFrF");
-
-            nameMap.put("r2", "c" + index + "rr");
-            nameMap.put("d2", "c" + index + "dr");
-
-            nameMap.put("c", "c" + index + "c");
-            nameMap.put("c1", "c" + index + "cl");
-            nameMap.put("c2", "c" + index + "cr");
-
-            controller.renameTransitionLabels(nameMap);
-
-            // create left conditional send
-            InterfaceAutomaton leftSend = (InterfaceAutomaton)_send.clone();
-            leftSend.setName("c" + index + "sl");
-
-            nameMap = new HashMap();
-            nameMap.put("p", "c" + index + "pl");
-            nameMap.put("pR", "c" + index + "plR");
-
-            nameMap.put("iGW", "c" + index + "iGWl");
-            nameMap.put("iGWT", "c" + index + "iGWlT");
-            nameMap.put("iGWF", "c" + index + "iGWlF");
-
-            nameMap.put("iA", "c" + index + "iAl");
-            nameMap.put("iAT", "c" + index + "iAlT");
-            nameMap.put("iAF", "c" + index + "iAlF");
-
-            nameMap.put("iF", "c" + index + "iFl");
-            nameMap.put("iFT", "c" + index + "iFlT");
-            nameMap.put("iFF", "c" + index + "iFlF");
-
-            nameMap.put("r", "c" + index + "rl");
-            nameMap.put("d", "c" + index + "dl");
-
-            leftSend.renameTransitionLabels(nameMap);
-
-            // create right conditional send
-            InterfaceAutomaton rightSend = (InterfaceAutomaton)_send.clone();
-            rightSend.setName("c" + index + "sr");
-
-            nameMap = new HashMap();
-            nameMap.put("p", "c" + index + "pr");
-            nameMap.put("pR", "c" + index + "prR");
-
-            nameMap.put("iGW", "c" + index + "iGWr");
-            nameMap.put("iGWT", "c" + index + "iGWrT");
-            nameMap.put("iGWF", "c" + index + "iGWrF");
-
-            nameMap.put("iA", "c" + index + "iAr");
-            nameMap.put("iAT", "c" + index + "iArT");
-            nameMap.put("iAF", "c" + index + "iArF");
-
-            nameMap.put("iF", "c" + index + "iFr");
-            nameMap.put("iFT", "c" + index + "iFrT");
-            nameMap.put("iFF", "c" + index + "iFrF");
-
-            nameMap.put("r", "c" + index + "rr");
-            nameMap.put("d", "c" + index + "dr");
-
-            rightSend.renameTransitionLabels(nameMap);
-
             // compose
             InterfaceAutomaton choWithReceivers = cho.compose(leftReceiver);
             choWithReceivers = choWithReceivers.compose(rightReceiver);
@@ -336,16 +281,14 @@ System.out.println(all.exportMoML());
 System.out.println("Chopstick and two receivers:");
 System.out.println(choWithReceivers.getInfo());
 
-            InterfaceAutomaton conWithSend = controller.compose(leftSend);
-            conWithSend = conWithSend.compose(rightSend);
+           choWithReceivers.combineInternalTransitions();
 
-System.out.println("Controller and two send:");
-System.out.println(conWithSend.getInfo());
+System.out.println("Chopstick and two receivers, after combining internals:");
+System.out.println(choWithReceivers.getInfo());
 
-            InterfaceAutomaton whole = choWithReceivers.compose(conWithSend);
+            InterfaceAutomaton send = _composeSend(index);
 
-System.out.println("Chopstick, receivers, controller and send:");
-System.out.println(whole.getInfo());
+            InterfaceAutomaton whole = choWithReceivers.compose(send);
 
             return whole;
         } catch (CloneNotSupportedException cnse) {
@@ -436,13 +379,150 @@ System.out.println(whole.getInfo());
         }
     }
 
+    // compose the simple or the full version of conditional send.
+    private InterfaceAutomaton _composeSend(int index)
+            throws CloneNotSupportedException, IllegalActionException,
+	           NameDuplicationException {
+        InterfaceAutomaton send;
+        if (_useSimple) {
+            send = (InterfaceAutomaton)_simpleSend.clone();
+	    send.setName("c" + index + "s");
+
+	    HashMap nameMap = new HashMap();
+	    nameMap.put("p1", "c" + index + "pl");
+	    nameMap.put("p1R", "c" + index + "plR");
+
+	    nameMap.put("iGW1", "c" + index + "iGWl");
+	    nameMap.put("iGW1T", "c" + index + "iGWlT");
+	    nameMap.put("iGW1F", "c" + index + "iGWlF");
+
+	    nameMap.put("p2", "c" + index + "pr");
+	    nameMap.put("p2R", "c" + index + "prR");
+
+	    nameMap.put("iGW2", "c" + index + "iGWr");
+	    nameMap.put("iGW2T", "c" + index + "iGWrT");
+	    nameMap.put("iGW2F", "c" + index + "iGWrF");
+
+	    nameMap.put("c", "c" + index + "c");
+	    nameMap.put("c1", "c" + index + "cl");
+	    nameMap.put("c2", "c" + index + "cr");
+
+            send.renameTransitionLabels(nameMap);
+	    return send;
+	} else {
+            // create conditional branch controller
+            InterfaceAutomaton controller =
+                                   (InterfaceAutomaton)_controller.clone();
+            controller.setName("c" + index + "c");
+
+            HashMap nameMap = new HashMap();
+            nameMap.put("iA1", "c" + index + "iAl");
+            nameMap.put("iA1T", "c" + index + "iAlT");
+            nameMap.put("iA1F", "c" + index + "iAlF");
+
+            nameMap.put("iF1", "c" + index + "iFl");
+            nameMap.put("iF1T", "c" + index + "iFlT");
+            nameMap.put("iF1F", "c" + index + "iFlF");
+
+            nameMap.put("r1", "c" + index + "rl");
+            nameMap.put("d1", "c" + index + "dl");
+
+            nameMap.put("iA2", "c" + index + "iAr");
+            nameMap.put("iA2T", "c" + index + "iArT");
+            nameMap.put("iA2F", "c" + index + "iArF");
+
+            nameMap.put("iF2", "c" + index + "iFr");
+            nameMap.put("iF2T", "c" + index + "iFrT");
+            nameMap.put("iF2F", "c" + index + "iFrF");
+
+            nameMap.put("r2", "c" + index + "rr");
+            nameMap.put("d2", "c" + index + "dr");
+
+            nameMap.put("c", "c" + index + "c");
+            nameMap.put("c1", "c" + index + "cl");
+            nameMap.put("c2", "c" + index + "cr");
+
+            controller.renameTransitionLabels(nameMap);
+
+            // create left conditional send
+            InterfaceAutomaton leftSend = (InterfaceAutomaton)_send.clone();
+            leftSend.setName("c" + index + "sl");
+
+            nameMap = new HashMap();
+            nameMap.put("p", "c" + index + "pl");
+            nameMap.put("pR", "c" + index + "plR");
+
+            nameMap.put("iGW", "c" + index + "iGWl");
+            nameMap.put("iGWT", "c" + index + "iGWlT");
+            nameMap.put("iGWF", "c" + index + "iGWlF");
+
+            nameMap.put("iA", "c" + index + "iAl");
+            nameMap.put("iAT", "c" + index + "iAlT");
+            nameMap.put("iAF", "c" + index + "iAlF");
+
+            nameMap.put("iF", "c" + index + "iFl");
+            nameMap.put("iFT", "c" + index + "iFlT");
+            nameMap.put("iFF", "c" + index + "iFlF");
+
+            nameMap.put("r", "c" + index + "rl");
+            nameMap.put("d", "c" + index + "dl");
+
+            leftSend.renameTransitionLabels(nameMap);
+
+            // create right conditional send
+            InterfaceAutomaton rightSend = (InterfaceAutomaton)_send.clone();
+            rightSend.setName("c" + index + "sr");
+
+            nameMap = new HashMap();
+            nameMap.put("p", "c" + index + "pr");
+            nameMap.put("pR", "c" + index + "prR");
+
+            nameMap.put("iGW", "c" + index + "iGWr");
+            nameMap.put("iGWT", "c" + index + "iGWrT");
+            nameMap.put("iGWF", "c" + index + "iGWrF");
+
+            nameMap.put("iA", "c" + index + "iAr");
+            nameMap.put("iAT", "c" + index + "iArT");
+            nameMap.put("iAF", "c" + index + "iArF");
+
+            nameMap.put("iF", "c" + index + "iFr");
+            nameMap.put("iFT", "c" + index + "iFrT");
+            nameMap.put("iFF", "c" + index + "iFrF");
+
+            nameMap.put("r", "c" + index + "rr");
+            nameMap.put("d", "c" + index + "dr");
+
+            rightSend.renameTransitionLabels(nameMap);
+
+            send = controller.compose(leftSend);
+            send = send.compose(rightSend);
+
+System.out.println("Controller and two send:");
+System.out.println(send.getInfo());
+
+            send.combineInternalTransitions();
+
+System.out.println("Controller and two send, after combining internals:");
+System.out.println(send.getInfo());
+        }
+	return send;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private InterfaceAutomaton _receiver;
+
+    // if useSimple is false:
     private InterfaceAutomaton _send;
     private InterfaceAutomaton _controller;
+    // if useSimple is true:
+    private InterfaceAutomaton _simpleSend;
+
     private InterfaceAutomaton _philosopher;
+
     private InterfaceAutomaton _chopstick;
 
     private int _numberOfPhilosophers;
+
+    private boolean _useSimple = true;
 }
