@@ -333,7 +333,7 @@ public class ComponentEntity extends Entity {
                 "style=\"fill:blue\"/>\n" +
                 "</svg>\n");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -187,7 +187,7 @@ public class Director extends Attribute implements Executable {
      *  main simulation thread.  Actors that create their own
      *  asynchronous threads should used the fireAtCurrentTime()
      *  method to schedule firings.
-     * 
+     *
      *  This method does nothing in this base class. Derived classes
      *  should override this method.  <p> Note that this method is not
      *  made abstract to facilitate the use of the test suite.
@@ -218,7 +218,7 @@ public class Director extends Attribute implements Executable {
      *  the model.  When invoked from an asynchronous thread, this
      *  method will attempt to fire the actor at the earliest time
      *  that this director is fired.
-     * 
+     *
      *  This base class checks to see if the director is embedded
      *  within a hierarchical model and, if so, calls the
      *  fireAtCurrentTime method of its executive director. Derived
@@ -847,7 +847,7 @@ public class Director extends Attribute implements Executable {
                 getContainer().getContainer() != null);
     }
 
-    /** Return true if this is a top-level director. 
+    /** Return true if this is a top-level director.
      *  Parts of this method is read synchronized on the workspace.
      * @return True if this director is at the top-level.
      */
