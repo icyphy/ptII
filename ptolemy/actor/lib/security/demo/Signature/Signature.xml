@@ -10,9 +10,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {66, 64, 815, 517}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {10, 19, 934, 591}, maximized = false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 408]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[719, 475]">
     </property>
     <property name="arraySize" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -58,7 +58,7 @@ password.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 270.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 290.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -81,12 +81,12 @@ which then causes an exception to be thrown.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 10.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 10.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0506730874466">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{325.53125, 201.28625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{382.1616145833358, 233.1705729166681}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor throws an exception&#10;if there is a man in the middle&#10;attack.">
@@ -95,7 +95,15 @@ which then causes an exception to be thrown.</text></svg></configure>
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 235.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Christopher Hylands Brooks">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 430.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -145,13 +153,13 @@ which then causes an exception to be thrown.</text></svg></configure>
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/security/demo/Signature/ptKeystore">
         </property>
         <doc>Read a key public or private key from a key store&#10;	   and output it.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 250.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 255.0]">
         </property>
     </entity>
-    <entity name="ArrayToSequence2" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+    <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
         <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="arraySize">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 210.0]">
         </property>
     </entity>
     <entity name="SignatureSigner" class="ptolemy.actor.lib.security.SignatureSigner">
@@ -169,9 +177,9 @@ which then causes an exception to be thrown.</text></svg></configure>
         </property>
     </entity>
     <entity name="Man in the middle" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 125.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {130, 262, 815, 509}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {130, 262, 815, 516}, maximized = false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -199,7 +207,7 @@ which then causes an exception to be thrown.</text></svg></configure>
             </property>
         </property>
         <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This composite actor simulates a Man in the Middle attack,&#10;where the Bernoulli actor usually generates a 0 that is&#10;added to the value of the data stream.&#10;However, the Bernoulli actor will randomly generate a 1,&#10;which will be added to the data stream and thus &#10;corrupt the data.">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This composite actor simulates a Man in the Middle attack,&#10;where the Bernoulli actor usually generates a 0 that is&#10;added to the value of the data stream.&#10;&#10;However, the Bernoulli actor will randomly generate a 0,&#10;which will be added to the data stream and thus &#10;corrupt the data.">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 215.0">
             </property>
@@ -265,7 +273,7 @@ which then causes an exception to be thrown.</text></svg></configure>
             </port>
         </entity>
         <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
-            <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="0.2">
+            <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
             <doc>Create a sequence of bernoulli random variables</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 160.0">
@@ -274,7 +282,7 @@ which then causes an exception to be thrown.</text></svg></configure>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
             <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Man in the Middle">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {654, 532, 292, 222}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {654, 532, 292, 229}, maximized = false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 160.0">
             </property>
@@ -308,11 +316,11 @@ which then causes an exception to be thrown.</text></svg></configure>
         <link port="Display.input" relation="relation5"/>
     </entity>
     <entity name="Ramp Output" class="ptolemy.actor.lib.gui.Display">
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Ramp Outpu">
+        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Ramp Output">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {650, 286, 292, 222}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {352, 531, 292, 229}, maximized = false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 225.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -342,8 +350,8 @@ which then causes an exception to be thrown.</text></svg></configure>
     <link port="SequenceToArray.output" relation="relation3"/>
     <link port="PrivateKeyReader.output" relation="relation6"/>
     <link port="PublicKeyReader.output" relation="relation2"/>
-    <link port="ArrayToSequence2.input" relation="relation11"/>
-    <link port="ArrayToSequence2.output" relation="relation7"/>
+    <link port="ArrayToSequence.input" relation="relation11"/>
+    <link port="ArrayToSequence.output" relation="relation7"/>
     <link port="SignatureSigner.input" relation="relation3"/>
     <link port="SignatureSigner.output" relation="relation5"/>
     <link port="SignatureSigner.privateKey" relation="relation6"/>
