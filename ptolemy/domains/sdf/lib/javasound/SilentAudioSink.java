@@ -177,29 +177,6 @@ public class SilentAudioSink extends SDFAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        SilentAudioSink newobj = (SilentAudioSink)super.clone(ws);
-        newobj.input = (SDFIOPort)newobj.getPort("input");
-        newobj.sink = (Parameter)newobj.getAttribute("sink");
-        newobj.pathName = (Parameter)newobj.getAttribute("pathName");
-        newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
-        newobj.sampleSizeInBits =
-            (Parameter)newobj.getAttribute("sampleSizeInBits");
-        newobj.channels = (Parameter)newobj.getAttribute("channels");
-        newobj.bufferSize = (Parameter)newobj.getAttribute("bufferSize");
-        newobj.tokenConsumptionRate =
-            (Parameter)newobj.getAttribute("tokenConsumptionRate");
-        return newobj;
-    }
-
     /** Read <i>tokenConsumptionRate</i> tokens from each channel.
      *  Write these tokens to a sound file and/or send them to
      *  the speaker, depending on the current mode, which is

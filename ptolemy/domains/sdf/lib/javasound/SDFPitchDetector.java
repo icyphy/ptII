@@ -119,25 +119,6 @@ public class SDFPitchDetector extends SDFAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the <code>isPeriodic</code> and <code>pathName</code>
-     *  public members to the parameters of the new actor.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        SDFPitchDetector newobj = (SDFPitchDetector)super.clone(ws);
-        newobj.output = (SDFIOPort)newobj.getPort("output");
-        newobj.input = (SDFIOPort)newobj.getPort("input");
-        newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
-        newobj.consumptionProductionRate =
-            (Parameter)newobj.getAttribute("consumptionProductionRate");
-        return newobj;
-    }
-
     /** Output the sample value of the sound file corresponding to the
      *  current index.
      */

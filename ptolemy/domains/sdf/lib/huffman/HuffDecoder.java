@@ -95,20 +95,6 @@ public class HuffDecoder extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        HuffDecoder newobj = (HuffDecoder)(super.clone(ws));
-        newobj.codeBookInput = (TypedIOPort)newobj.getPort("codeBookInput");
-        newobj.bitInput = (TypedIOPort)newobj.getPort("bitInput");
-        newobj.output = (TypedIOPort)newobj.getPort("output");
-        return newobj;
-    }
-
     /**
      * Initialize this actor
      * @exception IllegalActionException If a contained method throws it.
