@@ -91,57 +91,57 @@ public class DoubleMatrixToJAI extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         DoubleMatrixToken doubleMatrixToken = (DoubleMatrixToken) input.get(0);
         double data[][] = doubleMatrixToken.doubleMatrix();
         int width = doubleMatrixToken.getRowCount();
         int height = doubleMatrixToken.getColumnCount();
         double newdata[] = new double[width*height];
-        
+
         // Convert the matrix of doubles into an array of doubles
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 newdata[i*height + j] = data[i][j];
             }
         }
-        
+
         // Create a new dataBuffer from the array of doubles
-        DataBufferDouble dataBuffer = 
+        DataBufferDouble dataBuffer =
             new DataBufferDouble(newdata, width*height);
-        
+
         // The length of the bandOffset array indicates how many bands
-        // there are.  Since we are just dealing with a single 
+        // there are.  Since we are just dealing with a single
         // DoubleMatrixToken, the length of this array will be one.
         // The values of the array indicate the offset to be added
         // To the bands.  This is set to 0.
         int bandOffset[] = new int[1];
         bandOffset[0] = 0;
-        
+
         // Create a ComponentSampleModel, with type double, the same width
         // and height as the matrix, a pixel stride of one (the final image
         // is single-banded), and a scanline stride equal to the width.
-        ComponentSampleModelJAI sampleModel = 
-            new ComponentSampleModelJAI(DataBuffer.TYPE_DOUBLE, 
-                    width, height, 1, width, bandOffset); 
-        
+        ComponentSampleModelJAI sampleModel =
+            new ComponentSampleModelJAI(DataBuffer.TYPE_DOUBLE,
+                    width, height, 1, width, bandOffset);
+
         // Create a new raster that has its origin at (0,0).
-        Raster raster = 
+        Raster raster =
             Raster.createWritableRaster(sampleModel, dataBuffer, new Point());
-        
-        // Create a grayscale colormodel.  
-        ComponentColorModel colorModel = 
+
+        // Create a grayscale colormodel.
+        ComponentColorModel colorModel =
             new ComponentColorModel(
                     new ICC_ColorSpace(
                             ICC_ProfileGray.getInstance(ColorSpace.CS_GRAY)),
-                    false, false, 
+                    false, false,
                     ComponentColorModel.OPAQUE, DataBuffer.TYPE_DOUBLE);
-        TiledImage tiledImage = 
+        TiledImage tiledImage =
             new TiledImage(0,0,width,height,0,0,sampleModel, colorModel);
         tiledImage.setData(raster);
         ParameterBlock parameters = new ParameterBlock();
         parameters.addSource(tiledImage);
         parameters.add(DataBuffer.TYPE_DOUBLE);
-        RenderedOp newImage = JAI.create("format", parameters);  
+        RenderedOp newImage = JAI.create("format", parameters);
         output.send(0, new JAIImageToken(newImage));
     }
 }

@@ -46,7 +46,7 @@ import ptolemy.kernel.util.*;
 //// JAIToDoubleMatrix
 /**
    This actor takes a single banded image and outputs a DoubleMatrixToken
-   containing the data.  
+   containing the data.
 
    To convert multiple banded images (for instance, color images or the
    output of a Discrete Fourier Transform), use either the BandSelect or
@@ -82,20 +82,20 @@ public class JAIToDoubleMatrix extends Transformer {
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void fire() throws IllegalActionException {
-        super.fire();      
+        super.fire();
         JAIImageToken jaiImageToken = (JAIImageToken) input.get(0);
         RenderedOp jaiImage = jaiImageToken.getValue();
         int height = jaiImage.getHeight();
         int width = jaiImage.getWidth();
         Raster raster = jaiImage.getData();
         DataBuffer dataBuffer = raster.getDataBuffer();
-        //Construct a matrix of doubles. 
+        //Construct a matrix of doubles.
         double data[][] = new double[width][height];
         for(int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 data[i][j] = dataBuffer.getElemDouble(i*height + j);
             }
-        }      
+        }
         output.send(0, new DoubleMatrixToken(data));
     }
 }

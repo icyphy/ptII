@@ -93,12 +93,12 @@ public class JAIImageReader extends Source {
     /** Output a JAIImageToken containing the image
      *  @exception IllegalActionException If there is no director.
      */
-    
+
     public void fire() throws IllegalActionException {
         super.fire();
         output.send(0, new JAIImageToken(_outputtedImage));
     }
-    
+
     /** An attempt is made at loading the file.  If this is successful,
      *  then at time 0.0, request firing.
      *  @exception IllegalActionException If the filename is null, if
