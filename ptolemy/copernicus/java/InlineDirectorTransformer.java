@@ -30,7 +30,7 @@
 package ptolemy.copernicus.java;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.copernicus.kernel.ActorTransformer;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.Entity;
@@ -78,6 +78,7 @@ import java.util.StringTokenizer;
 
 /**
 A transformer that inlines an SDF director.
+
 @author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
 @version $Id$
 */

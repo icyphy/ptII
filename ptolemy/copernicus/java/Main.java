@@ -30,7 +30,7 @@
 package ptolemy.copernicus.java;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.copernicus.kernel.ActorTransformer;
+
 import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.ImprovedDeadAssignmentEliminator;
@@ -115,6 +115,19 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(new Transform("wjtp.mt",
                 ModelTransformer.v(_toplevel)));
         
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.writeJimple1",
+                JimpleWriter.v()));
+
+        // Find all the classes that are reachable from the model
+        // and make them library classes, allowing us to analyze
+        // their bodies later on.
+        // There is a tradeoff here between memory usage and 
+        // analysis power...  It is possible that limiting this 
+        // could greatly improve memory efficiency, with a likely 
+        // tradeoff of less powerful optimizations later.
+        //Scene.v().getPack("wjtp").add(new Transform("wjtp.rlc",
+        //                ReachableLibraryCollector.v()));
+        
         // Add a command line interface (i.e. Main)
         Scene.v().getPack("wjtp").add(new Transform("wjtp.clt",
                 CommandLineTransformer.v(_toplevel)));
@@ -128,7 +141,7 @@ public class Main extends KernelMain {
                FieldsForAttributesTransformer.v(_toplevel)));
         // In each actor and composite actor, ensure that there
         // is a field for every port, and replace calls
-        // to getPortwith references to those fields.
+        // to getPort with references to those fields.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.ffpt",
                 FieldsForPortsTransformer.v(_toplevel)));
 
@@ -187,35 +200,19 @@ public class Main extends KernelMain {
      
         //Scene.v().getPack("wjtp").add(new Transform("wjtp.ta",
         //        new TransformerAdapter(TypeAssigner.v())));
-
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.umr",
-                UnreachableMethodRemover.v()));
- 
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.cse",
-                new TransformerAdapter(CommonSubexpressionEliminator.v())));
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.cp",
-                new TransformerAdapter(CopyPropagator.v())));
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.cpf",
-                new TransformerAdapter(ConstantPropagatorAndFolder.v())));
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.cbf",
-                new TransformerAdapter(ConditionalBranchFolder.v())));
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.uce",
-                new TransformerAdapter(UnreachableCodeEliminator.v())));
-        
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
         //        InvokeGraphBuilder.v()));
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.si",
         //        StaticInliner.v()));
 
              
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.smr",
-                SideEffectFreeInvocationRemover.v()));
+        //    Scene.v().getPack("wjtp").add(new Transform("wjtp.smr",
+        //        SideEffectFreeInvocationRemover.v()));
         
         // Unroll loops with constant loop bounds.
         //  Scene.v().getPack("jtp").add(new Transform("jtp.clu",
         //        ConstantLoopUnroller.v()));
-
-
+        
         // Remove tests of object equality that can be statically
         // determined.  The generated code ends up with alot of
         // these that are really just dead code.
@@ -223,14 +220,14 @@ public class Main extends KernelMain {
                 InstanceEqualityEliminator.v()));
 
         // Remove casts and instanceof Checks.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.cie",
-                new TransformerAdapter(CastAndInstanceofEliminator.v())));
+        //  Scene.v().getPack("wjtp").add(new Transform("wjtp.cie",
+        //        new TransformerAdapter(CastAndInstanceofEliminator.v())));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.writeJimple1",
                 JimpleWriter.v()));
        
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.ttn",
         //        TokenToNativeTransformer.v(_toplevel)));
-
+        
         // Some cleanup.
         // Remove object creations that are now dead (i.e. aren't used
         // and have no side effects).  This currently only deals with
@@ -253,15 +250,18 @@ public class Main extends KernelMain {
         // have access to the result.
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.cie",
-                new TransformerAdapter(CastAndInstanceofEliminator.v())));
-
+        //   Scene.v().getPack("wjtp").add(new Transform("wjtp.cie",
+        //        new TransformerAdapter(CastAndInstanceofEliminator.v())));
+       
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.umr",
+                UnreachableMethodRemover.v()));
+ 
         Scene.v().getPack("wjtp").add(new Transform("wjtp.writeJimple2",
                 JimpleWriter.v()));
  
         // Removes references to instancefields that come from 'this'.
-        Scene.v().getPack("jop").add(new Transform("jop.dae",
-                ImprovedDeadAssignmentEliminator.v()));
+        // Scene.v().getPack("jop").add(new Transform("jop.dae",
+        //        ImprovedDeadAssignmentEliminator.v()));
         
     }
 

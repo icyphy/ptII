@@ -34,6 +34,7 @@ import soot.jimple.*;
 import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.graph.UnitGraph;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
+import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.toolkits.scalar.SimpleLocalUses;
 
@@ -46,6 +47,7 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
 
 import java.util.*;
 
@@ -64,7 +66,6 @@ public class TokenTypeAnalysis extends ForwardFlowAnalysis {
         _localDefs = null;
         _localUses = null;
     }
-    
     /** Return the set of other fields and locals that must reference
      *  the same object as the given field, at a point before
      *  the given unit.
@@ -89,6 +90,54 @@ public class TokenTypeAnalysis extends ForwardFlowAnalysis {
             throw new RuntimeException("Unknown token type for unit: " + local + " in " + unit);
         }
         return (ptolemy.data.type.Type)object;
+    }
+   
+    /** Inline the given invocation point in the given box, unit, and method.
+     *  Use the given type analysis and local definition information to 
+     *  perform the inlining.
+     */
+    public void inlineTypeLatticeMethods(SootMethod method,
+            Unit unit, ValueBox box, StaticInvokeExpr expr, 
+            LocalDefs localDefs) {
+        SootMethod tokenTokenCompareMethod = PtolemyUtilities.typeLatticeClass.getMethod(
+                "int compare(ptolemy.data.Token,ptolemy.data.Token)");
+        SootMethod tokenTypeCompareMethod = PtolemyUtilities.typeLatticeClass.getMethod(
+                "int compare(ptolemy.data.Token,ptolemy.data.type.Type)");
+        SootMethod typeTokenCompareMethod = PtolemyUtilities.typeLatticeClass.getMethod(
+                "int compare(ptolemy.data.type.Type,ptolemy.data.Token)");
+        SootMethod typeTypeCompareMethod = PtolemyUtilities.typeLatticeClass.getMethod(
+                "int compare(ptolemy.data.type.Type,ptolemy.data.type.Type)");
+        
+        ptolemy.data.type.Type type1;
+        ptolemy.data.type.Type type2;
+        if(expr.getMethod().equals(tokenTokenCompareMethod)) {
+            Local tokenLocal1 = (Local)expr.getArg(0);
+            Local tokenLocal2 = (Local)expr.getArg(1);
+            type1 = getTypeOfBefore(tokenLocal1, unit);
+            type2 = getTypeOfBefore(tokenLocal2, unit);
+        } else if(expr.getMethod().equals(typeTokenCompareMethod)) {
+            Local typeLocal = (Local)expr.getArg(0);
+            Local tokenLocal = (Local)expr.getArg(1);
+            type1 = PtolemyUtilities.getTypeValue(
+                    method, typeLocal, unit, localDefs);
+            type2 = getTypeOfBefore(tokenLocal, unit);
+        } else if(expr.getMethod().equals(tokenTypeCompareMethod)) {
+            Local tokenLocal = (Local)expr.getArg(0);
+            Local typeLocal = (Local)expr.getArg(1);
+            type1 = getTypeOfBefore(tokenLocal, unit);
+            type2 = PtolemyUtilities.getTypeValue(
+                    method, typeLocal, unit, localDefs);
+        } else if(expr.getMethod().equals(typeTypeCompareMethod)) {
+            Local typeLocal1 = (Local)expr.getArg(0);
+            Local typeLocal2 = (Local)expr.getArg(1);
+            type1 = PtolemyUtilities.getTypeValue(
+                    method, typeLocal1, unit, localDefs);
+            type2 = PtolemyUtilities.getTypeValue(
+                    method, typeLocal2, unit, localDefs);
+        } else {
+            throw new RuntimeException("attempt to inline unhandled typeLattice method: " + unit);
+        }
+        box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
     }
 
     // Formulation:

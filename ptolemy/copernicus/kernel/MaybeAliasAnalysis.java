@@ -179,6 +179,10 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
                         if(field.isPrivate() && targetsAreInDifferentClass) {
                             continue;
                         } else {
+                            if(_debug) {
+                                System.out.println("unit " + unit + 
+                                    " kills " + field);
+                            }
                             _killAlias(out, object);
                         }
                     }

@@ -54,13 +54,14 @@ import ptolemy.moml.*;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
-import ptolemy.copernicus.kernel.ActorTransformer;
+
+import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 
 
 /**
 A Transformer that is responsible for inlining the values of tokens.
-The values of the parameters are taken from the model specified for this 
+The values of the tokens are taken from the model specified for this 
 transformer.
 */
 public class InlineTokenTransformer extends SceneTransformer {

@@ -63,14 +63,13 @@ import ptolemy.data.type.TypeLattice;
 
 import ptolemy.data.expr.Variable;
 import ptolemy.graph.*;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.copernicus.kernel.MustAliasAnalysis;
 
 
 /**
-A Transformer that is responsible for inlining the values of parameters.
-The values of the parameters are taken from the model specified for this 
-transformer.
+
 */
 public class TypeSpecializer extends SceneTransformer {
     /** Construct a new transformer

@@ -31,6 +31,7 @@ package ptolemy.copernicus.java;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.Entity;
 

@@ -48,10 +48,10 @@ DIRS =
 
 # Keep this list alphabetized.
 JSRCS = \
-	ActorTransformer.java \
 	AliasAnalysis.java \
 	CastAndInstanceofEliminator.java \
 	ClassWriter.java \
+	EntitySootClass.java \
 	ImprovedDeadAssignmentEliminator.java \
 	InstanceEqualityEliminator.java \
 	JimpleWriter.java \
@@ -59,6 +59,7 @@ JSRCS = \
 	MaybeAliasAnalysis.java \
 	MustAliasAnalysis.java \
 	NullPointerAnalysis.java \
+	PtolemyUtilities.java \
 	SideEffectAnalysis.java \
 	SideEffectFreeInvocationRemover.java \
 	SootUtilities.java \

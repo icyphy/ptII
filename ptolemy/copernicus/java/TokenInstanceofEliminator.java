@@ -37,6 +37,8 @@ import soot.util.*;
 import soot.toolkits.graph.*;
 import java.util.*;
 
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+
 /** 
 An attempt to remove unnecessary casts and instanceof checks.
 

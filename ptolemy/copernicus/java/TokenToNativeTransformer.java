@@ -59,6 +59,7 @@ import ptolemy.moml.*;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
 import ptolemy.copernicus.kernel.MustAliasAnalysis;
@@ -302,8 +303,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                 StaticInvokeExpr r = (StaticInvokeExpr)value;
                                 // Inline typelattice methods.
                                 if(r.getMethod().getDeclaringClass().equals(PtolemyUtilities.typeLatticeClass)) {
-                                    PtolemyUtilities.inlineTypeLatticeMethods(method,
-                                            unit, box, r, typeAnalysis, localDefs);
+                                    typeAnalysis.inlineTypeLatticeMethods(method,
+                                            unit, box, r, localDefs);
                                 }
 
                                 // System.out.println("static invoking = " + r.getMethod());

@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Java deep and shallow code generation
+# Makefile for Ptolemy II Java shallow code generation
 #
 # @Authors: Steve Neuendorffer, Christopher Hylands
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/copernicus/java
+ME =		ptolemy/copernicus/shallow
 
 # Root of the Java directory
 ROOT =		../../..
@@ -48,26 +48,8 @@ DIRS =		test
 
 # Keep this list alphabetized.
 JSRCS = \
-	CommandLineTemplate.java \
-	CommandLineTransformer.java \
-	ConstantLoopUnroller.java \
-	DeadObjectEliminator.java \
-	FieldsForAttributesTransformer.java \
-	FieldsForPortsTransformer.java \
-	FieldOptimizationTransformer.java \
-	InlineDirectorTransformer.java \
-	InlineParameterTransformer.java \
-	InlinePortTransformer.java \
-	InlineTokenTransformer.java \
 	Main.java \
-	ModelTransformer.java \
-	ReachableLibraryCollector.java \
-	TokenInstanceofEliminator.java \
-	TokenToNativeTransformer.java \
-	TokenTypeAnalysis.java \
-	TypeSpecializer.java \
-	UnreachableMethodRemover.java \
-	ValueTag.java	
+	ShallowModelTransformer.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -84,40 +66,33 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-	@echo "To run the demo, run 'make demo' or 'make shallowDemo' or 'make deepDemo'"
+	@echo "To run the demo, run 'make demo'"
 
 install: all
 
 depend:
 	@echo "no dependencies in this directory"
 
-demo: shallowDemo deepDemo
+demo: shallowDemo
 shallowDemo: compileShallowDemo runShallowDemo
-deepDemo: compileDeepDemo runDeepDemo
 
-SHALLOWTARGETPACKAGE = 	ptolemy.copernicus.java.cg.shallow
-SHALLOWTARGETPATH =	ptolemy/copernicus/java/cg/shallow
+TARGETPACKAGE = 	ptolemy.copernicus.shallow.cg
+TARGETPATH =		ptolemy/copernicus/shallow/cg
 
 JADTARGETPACKAGE =	ptolemy.copernicus.java.cg.jad
-JADTARGETPATH =		$(ROOT)/ptolemy/copernicus/java/cg/jad
+JADTARGETPATH =		$(ROOT)/ptolemy/copernicus/shallow/cg/jad
 
 # Orthocom
 DEEPSOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
 DEEPMODEL = OrthogonalCom 
 DEEPSOURCECLASS = $(DEEPSOURCEPACKAGE).$(DEEPMODEL)
-DEEPTARGETCLASS = $(SHALLOWTARGETPACKAGE).CGToplevelModel
+DEEPTARGETCLASS = $(TARGETPACKAGE).CGToplevelModel
 #make DEEPSOURCECLASS=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDeepDemo
 
 # IIR
 MODEL = IIR
 SOURCECLASS = $(ROOT)/ptolemy/actor/lib/test/auto/$(MODEL).xml
-#DEEPSOURCECLASS = $(SOURCECLASS)
-SHALLOWTARGETCLASS = $(SHALLOWTARGETPACKAGE).CG$(MODEL)
-
-
-DEEPTARGETPACKAGE = ptolemy.copernicus.java.cg.deep
-DEEPTARGETCLASS = $(DEEPTARGETPACKAGE).$(MODEL)
-
+SHALLOWTARGETCLASS = $(TARGETPACKAGE).CG$(MODEL)
 
 JVM_SIZE = -Xmx256m
 
@@ -131,11 +106,8 @@ compileShallowDemo: $(JCLASS)
 	@echo "generate shallow code for '$(SOURCECLASS)'"
 	$(JAVA) $(JVM_SIZE) \
 	 -classpath "$(CLASSPATH)" \
-	ptolemy.copernicus.java.Main "$(SOURCECLASS)" -d "$(ROOT)"  \
-		-p wjtp.at targetPackage:$(SHALLOWTARGETPACKAGE) \
-		-p wjtp.mt targetPackage:$(SHALLOWTARGETPACKAGE) \
-		-p wjtp.umr disabled \
-		-p wjtp.iee disabled \
+	ptolemy.copernicus.shallow.Main "$(SOURCECLASS)" -d "$(ROOT)"  \
+		-p wjtp.mt targetPackage:$(TARGETPACKAGE) \
 		$(SOOT_USER_ARGS)
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(SHALLOWTARGETCLASS)
@@ -152,8 +124,8 @@ JAD=jad
 # Generate a .java file from a class file and recompile it
 recompileShallowDemo:
 	@echo "Convert .class file back to .java file, compile it, run it"
-	$(JAD) -o -d $(JADTARGETPATH) $(ROOT)/$(SHALLOWTARGETPATH)/CG$(MODEL)
-	sed 's/$(SHALLOWTARGETPACKAGE)/$(JADTARGETPACKAGE)/' \
+	$(JAD) -o -d $(JADTARGETPATH) $(ROOT)/$(TARGETPATH)/CG$(MODEL)
+	sed 's/$(TARGETPACKAGE)/$(JADTARGETPACKAGE)/' \
 		$(JADTARGETPATH)/CG$(MODEL).jad > \
 		$(JADTARGETPATH)/CG$(MODEL).jad2
 	sh test/jad2java $(JADTARGETPATH)/CG$(MODEL).jad2 \
@@ -162,45 +134,6 @@ recompileShallowDemo:
 	$(JAVA) -Xfuture -classpath "$(ROOT)" \
 		ptolemy.actor.gui.CompositeActorApplication \
 		-class $(JADTARGETPACKAGE).CG$(MODEL)
-
-
-compileDeepDemo: $(JCLASS)
-	@echo "generate deep code for $(DEEPSOURCEPACKAGE)"
-	$(JAVA) $(JVM_SIZE) \
-	 -classpath "$(CLASSPATH)" \
-	ptolemy.copernicus.java.Main $(DEEPSOURCECLASS) -d "$(ROOT)"  \
-		-p wjtp.at deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.mt deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.clt deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.fot deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.ffat deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.ffpt deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.idt deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.iat deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.ipt deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.itt deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.ttn deep,disabled,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.writeJimple1 outDir:jimple1 \
-		-p wjtp.writeJimple2 outDir:jimple2 \
-		-p wjtp.ts deep \
-		-p wjtp.iee debug \
-		-p wjtp.umr deep \
-		$(SOOT_USER_ARGS)
-#	@echo "Here is that javap output"
-#	javap -verbose -l -s -classpath $(ROOT) $(DEEPTARGETCLASS)
-
-runDeepDemo:
-	@echo "Run the deep model"
-	$(JAVA) \
-	-Xfuture -classpath "$(CLASSPATH)" \
-	$(DEEPTARGETPACKAGE).Main 
-
-runStaticDeepDemo:
-	@echo "Run the deep model static"
-	$(JAVA) \
-	-Xfuture -classpath "$(CLASSPATH)" \
-	$(DEEPTARGETPACKAGE).StaticMain 
-# -iterations 50
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

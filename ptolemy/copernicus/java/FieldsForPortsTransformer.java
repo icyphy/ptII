@@ -31,7 +31,7 @@ import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Typeable;
-import ptolemy.copernicus.kernel.ActorTransformer;
+
 import ptolemy.copernicus.kernel.SootUtilities;
 
 
