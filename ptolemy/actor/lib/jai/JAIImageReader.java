@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
 import javax.media.jai.RenderedOp;
 
 import ptolemy.actor.lib.Source;
@@ -90,8 +91,8 @@ public class JAIImageReader extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** An attempt is made to acquire the file name.  If it is 
-     *  successful, create the RenderedOp to be fired.
+    /** An attempt is made to acquire the file name.  If it null,
+     *  throw an exception.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the URL is null.
      */
@@ -103,12 +104,6 @@ public class JAIImageReader extends Source {
                 throw new IllegalActionException("URLToken was null");
             } else {
                 _fileRoot = url.getFile();
-                try {
-                    _stream = new FileSeekableStream(_fileRoot);
-                } catch (IOException error) {
-                    throw new IllegalActionException("Unable to load file");
-                }
-                _outputtedImage = JAI.create("stream", _stream);                
             }
         } else {
             super.attributeChanged(attribute);
@@ -121,6 +116,18 @@ public class JAIImageReader extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        try {
+            _stream = new FileSeekableStream(_fileRoot);
+        } catch (IOException error) {
+            throw new IllegalActionException("Unable to load file");
+        }
+        _outputtedImage = JAI.create("stream", _stream);
+        PlanarImage dummy = _outputtedImage.getRendering();
+        try {
+            _stream.close();
+        } catch (IOException error) {
+            throw new IllegalActionException("Unable to close stream");
+        }
         output.send(0, new JAIImageToken(_outputtedImage));
     }
 
