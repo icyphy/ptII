@@ -101,3 +101,40 @@ test DirectedGraph-3.2 {an acyclic graph with 4 nodes forming a diamond} {
 	 [$reach get 0]
 } {1 node4}
 
+######################################################################
+####
+# 
+test DirectedGraph-4.1 { backwardReachableNodes } {
+    # Note: Use the previous set up.
+    set reach [$p {backwardReachableNodes Object} $n4]
+    list [$reach get 0] [$reach get 1] [$reach get 2]
+} {node1 node2 node3}
+
+######################################################################
+####
+# 
+test DirectedGraph-4.2 { backwardReachableNodes for a set of nodes } {
+    set p [java::new ptolemy.graph.DirectedGraph]
+    set n1 [java::new {java.lang.String String} node1]
+    set n2 [java::new {java.lang.String String} node2]
+    set n3 [java::new {java.lang.String String} node3]
+    set n4 [java::new {java.lang.String String} node4]
+    set n5 [java::new {java.lang.String String} node5]
+    set n6 [java::new {java.lang.String String} node6]
+    $p add $n1
+    $p add $n2
+    $p add $n3
+    $p add $n4
+    $p add $n5
+    $p add $n6
+    $p addEdge $n1 $n2
+    $p addEdge $n1 $n3
+    $p addEdge $n2 $n4
+    $p addEdge $n3 $n4
+    $p addEdge $n5 $n6
+    
+    set nodeArray [java::new {java.lang.String[]} 2 [list $n4 $n6]]
+    set reach [$p {backwardReachableNodes Object[]} $nodeArray]
+    list [$reach get 0] [$reach get 1] [$reach get 2] [$reach get 3]
+} {node1 node2 node3 node5}
+
