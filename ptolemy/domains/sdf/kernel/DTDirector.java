@@ -162,8 +162,6 @@ public class DTDirector extends SDFDirector {
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
-     *  @exception CloneNotSupportedException If the fire() method of the
-     *   container or one of the deeply contained actors throws it.
      *  @exception IllegalActionException If the fire() method of the
      *   container or one of the deeply contained actors throws it.
      */
