@@ -142,7 +142,7 @@ public final class IntMatrixToken extends MatrixToken {
 	} else if (compare == CPO.LOWER) {
 	    return t.addReverse(this);
 	} else {
-	    // type of the specified token <= IntMatrixToken
+ 	    // type of the specified token <= IntMatrixToken
 	    int[][] result = null;
 
 	    if (t instanceof ScalarToken) {
@@ -443,6 +443,113 @@ public final class IntMatrixToken extends MatrixToken {
 	    result[i][i] = 1;
 	}
 	return new IntMatrixToken(result);
+    }
+
+    /** Return a new Token whose value is the value of the argument Token
+     *  subtracted from the value of this Token.
+     *  It should be overridden in derived classes to provide type specific
+     *  actions for subtract.
+     *  @param rightArg The token whose value we subtract from this Token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+    public Token subtract(Token t)
+	    throws IllegalActionException {
+
+	int compare = TypeLattice.compare(this, t);
+	if (compare == CPO.INCOMPARABLE) {
+	    String msg = "subtract method not supported between " +
+                this.getClass().getName() + " and " +
+                t.getClass().getName();
+	    throw new IllegalActionException(msg);
+	} else if (compare == CPO.LOWER) {
+	    return t.subtractReverse(this);
+	} else {
+ 	    // type of the specified token <= IntMatrixToken
+	    int[][] result = null;
+
+	    if (t instanceof ScalarToken) {
+		int scalar = ((ScalarToken)t).intValue();
+		result = new int[_rowCount][_columnCount];
+		for (int i = 0; i < _rowCount; i++) {
+		    for (int j = 0; j < _columnCount; j++) {
+			result[i][j] =
+                            _value[i * _columnCount + j] - scalar;
+		    }
+		}
+	    } else {
+		// the specified token is not a scalar.
+		IntMatrixToken tem = (IntMatrixToken)this.convert(t);
+	    	if (tem.getRowCount() != _rowCount ||
+                        tem.getColumnCount() != _columnCount) {
+		    throw new IllegalActionException("Cannot subtract two " +
+                            "matrices with different dimension.");
+	    	}
+
+		result = tem.intMatrix();
+		for (int i = 0; i < _rowCount; i++) {
+		    for (int j = 0; j < _columnCount; j++) {
+			result[i][j] = _value[i * _columnCount + j] -
+                            result[i][j];
+		    }
+		}
+	    }
+	    return new IntMatrixToken(result);
+	}
+    }
+
+    /** Return a new Token whose value is the value of this Token
+     *  subtracted from the value of the argument Token.
+     *  It should be overridden in derived classes to provide type specific
+     *  actions for subtract.
+     *  @param leftArg The token to subtract the value of this Token from.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+    public Token subtractReverse(Token t)
+	    throws IllegalActionException {
+
+	int compare = TypeLattice.compare(this, t);
+	if (compare == CPO.INCOMPARABLE) {
+	    String msg = "subtractReverse method not supported between " +
+                this.getClass().getName() + " and " +
+                t.getClass().getName();
+	    throw new IllegalActionException(msg);
+	} else if (compare == CPO.LOWER) {
+	    return t.subtract(this);
+	} else {
+ 	    // type of the specified token <= IntMatrixToken
+	    int[][] result = null;
+
+	    if (t instanceof ScalarToken) {
+		int scalar = ((ScalarToken)t).intValue();
+		result = new int[_rowCount][_columnCount];
+		for (int i = 0; i < _rowCount; i++) {
+		    for (int j = 0; j < _columnCount; j++) {
+			result[i][j] = scalar -
+                            _value[i * _columnCount + j];
+		    }
+		}
+	    } else {
+		// the specified token is not a scalar.
+		IntMatrixToken tem = (IntMatrixToken)this.convert(t);
+	    	if (tem.getRowCount() != _rowCount ||
+                        tem.getColumnCount() != _columnCount) {
+		    throw new IllegalActionException("Cannot subtract two " +
+                            "matrices with different dimension.");
+	    	}
+
+		result = tem.intMatrix();
+		for (int i = 0; i < _rowCount; i++) {
+		    for (int j = 0; j < _columnCount; j++) {
+			result[i][j] -= _value[i * _columnCount + j];
+		    }
+		}
+	    }
+	    return new IntMatrixToken(result);
+	}
     }
 
     /** Return a new Token representing the additive identity.

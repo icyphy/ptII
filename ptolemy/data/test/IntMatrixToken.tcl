@@ -388,5 +388,5 @@ test IntMatrixToken-8.0 {Test subtract operator between ints.} {
 
     list [$res1 toString] 
 
-} {} {subtract is not yet implemented}
+} {{[3, 3; 0, 1]}}
 
