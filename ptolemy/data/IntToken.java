@@ -60,6 +60,12 @@ public class IntToken extends ScalarToken {
 	_value = value;
     }
 
+    /** Get the value of the token.
+     */
+    public int getValue() {
+	return _value;
+    }
+
     // Return a reference to a Complex. The real part of the Complex
     // is the value in the token, the imaginary part is set to 0.
     // FIXME: finish after the Complex class is available.
