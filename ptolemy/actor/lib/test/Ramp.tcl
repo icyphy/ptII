@@ -125,3 +125,93 @@ test Ramp-2.3 {check types of the above model} {
 } {{{name:string, value:double}} {{name:string, value:double}}}
 
 
+test Ramp-2.4 {test with record containing array} {
+    # first record is {name="a", value=1, anArray=[1.5, 2.5], extra1=2}
+    set l1 [java::new {String[]} {4} {{name} {value} {anArray} {extra1}}]
+
+    set nt1 [java::new {ptolemy.data.StringToken String} a]
+    set vt1 [java::new {ptolemy.data.IntToken int} 1]
+
+    set val0 [java::new {ptolemy.data.DoubleToken double} 1.5]
+    set val1 [java::new {ptolemy.data.DoubleToken double} 2.5]
+    set valArray [java::new {ptolemy.data.Token[]} 2 [list $val0 $val1]]
+    set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
+    set et1 [java::new {ptolemy.data.IntToken int} 2]
+    set v1 [java::new {ptolemy.data.Token[]} 4 [list $nt1 $vt1 $valToken $et1]]
+
+    set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
+
+    # second record is {name="b", value=2.5, anArray=[10, 20]}
+    set l2 [java::new {String[]} {3} {{name} {value} {anArray}}]
+
+    set nt2 [java::new {ptolemy.data.StringToken String} b]
+    set vt2 [java::new {ptolemy.data.DoubleToken double} 2.5]
+
+    set val0_2 [java::new {ptolemy.data.IntToken int} 10]
+    set val1_2 [java::new {ptolemy.data.IntToken int} 20]
+    set valArray_2 [java::new {ptolemy.data.Token[]} 2 [list $val0_2 $val1_2]]
+    set valToken_2 [java::new {ptolemy.data.ArrayToken} $valArray_2]
+
+
+    set v2 [java::new {ptolemy.data.Token[]} 3 [list $nt2 $vt2 $valToken_2]]
+
+    set r2 [java::new {ptolemy.data.RecordToken} $l2 $v2]
+
+    # set Ramp parameters
+    set init [getParameter $ramp init]
+    set step [getParameter $ramp step]
+    $init setToken $r1
+    $step setToken $r2
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {{{name="a", anArray=[1.5, 2.5], value=1.0}} {{name="ab", anArray=[11.5, 22.5], value=3.5}} {{name="abb", anArray=[21.5, 42.5], value=6.0}} {{name="abbb", anArray=[31.5, 62.5], value=8.5}} {{name="abbbb", anArray=[41.5, 82.5], value=11.0}}}
+
+test Ramp-2.5 {check types of the above model} {
+    list [[$constOut getType] toString] [[$recIn getType] toString]
+} {{{name:string, anArray:(double)array, value:double}} {{name:string, anArray:(double)array, value:double}}}
+
+test Ramp-2.6 {test an array of record} {
+    # init is [{name="a", value=1}, {name="b", value=2}]
+    set l1 [java::new {String[]} {2} {{name} {value}}]
+    set nt1 [java::new {ptolemy.data.StringToken String} a]
+    set vt1 [java::new {ptolemy.data.IntToken int} 1]
+    set v1 [java::new {ptolemy.data.Token[]} 2 [list $nt1 $vt1]]
+    set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
+
+    set nt2 [java::new {ptolemy.data.StringToken String} b]
+    set vt2 [java::new {ptolemy.data.IntToken int} 2]
+    set v2 [java::new {ptolemy.data.Token[]} 2 [list $nt2 $vt2]]
+    set r2 [java::new {ptolemy.data.RecordToken} $l1 $v2]
+
+    set valArray [java::new {ptolemy.data.Token[]} 2 [list $r1 $r2]]
+    set initToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
+    # step is [{name="c", value=1.5}, {name="d", value=2.5}]
+    set nt1 [java::new {ptolemy.data.StringToken String} c]
+    set vt1 [java::new {ptolemy.data.DoubleToken double} 1.5]
+    set v1 [java::new {ptolemy.data.Token[]} 2 [list $nt1 $vt1]]
+    set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
+
+    set nt2 [java::new {ptolemy.data.StringToken String} d]
+    set vt2 [java::new {ptolemy.data.DoubleToken double} 2.5]
+    set v2 [java::new {ptolemy.data.Token[]} 2 [list $nt2 $vt2]]
+    set r2 [java::new {ptolemy.data.RecordToken} $l1 $v2]
+
+    set valArray [java::new {ptolemy.data.Token[]} 2 [list $r1 $r2]]
+    set stepToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
+    # set Ramp parameters
+    set init [getParameter $ramp init]
+    set step [getParameter $ramp step]
+    $init setToken $initToken
+    $step setToken $stepToken
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {{[{name="a", value=1.0}, {name="b", value=2.0}]} {[{name="ac", value=2.5}, {name="bd", value=4.5}]} {[{name="acc", value=4.0}, {name="bdd", value=7.0}]} {[{name="accc", value=5.5}, {name="bddd", value=9.5}]} {[{name="acccc", value=7.0}, {name="bdddd", value=12.0}]}}
+
+test Ramp-2.7 {check types of the above model} {
+    list [[$constOut getType] toString] [[$recIn getType] toString]
+} {{({name:string, value:double})array} {({name:string, value:double})array}}
+
+

@@ -124,4 +124,66 @@ test Const-2.4 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
 } {{{name:string, value:int}} {{name:string, value:int}}}
 
+test Const-2.5 {test RecordToken containing ArrayToken} {
+    # RecordToken is {name="foo", value=5, anArray=[1.5, 2.5]}
+    set l [java::new {String[]} {3} {{name} {value} {anArray}}]
+
+    set nt [java::new {ptolemy.data.StringToken String} foo]
+    set vt [java::new {ptolemy.data.IntToken int} 5]
+
+    set val0 [java::new {ptolemy.data.DoubleToken double} 1.5]
+    set val1 [java::new {ptolemy.data.DoubleToken double} 2.5]
+    set valArray [java::new {ptolemy.data.Token[]} 2 [list $val0 $val1]]
+    set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
+    set v [java::new {ptolemy.data.Token[]} 3 [list $nt $vt $valToken]]
+
+    set r [java::new {ptolemy.data.RecordToken} $l $v]
+
+    # set new token
+    $p setToken $r
+
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {{{name="foo", anArray=[1.5, 2.5], value=5}}}
+
+test Const-2.6 {check types of the above model} {
+    list [[$constOut getType] toString] [[$recIn getType] toString]
+} {{{name:string, anArray:(double)array, value:int}} {{name:string, anArray:(double)array, value:int}}}
+
+test Const-2.7 {test an array of record} {
+    # first record is {name="foo", value=5}
+    set l [java::new {String[]} {2} {{name} {value}}]
+
+    set nt [java::new {ptolemy.data.StringToken String} foo]
+    set vt [java::new {ptolemy.data.IntToken int} 5]
+    set v [java::new {ptolemy.data.Token[]} 2 [list $nt $vt]]
+
+    set r1 [java::new {ptolemy.data.RecordToken} $l $v]
+
+    # second record is {name="bar", value=3}
+    set l [java::new {String[]} {2} {{name} {value}}]
+
+    set nt [java::new {ptolemy.data.StringToken String} bar]
+    set vt [java::new {ptolemy.data.IntToken int} 3]
+    set v [java::new {ptolemy.data.Token[]} 2 [list $nt $vt]]
+
+    set r2 [java::new {ptolemy.data.RecordToken} $l $v]
+
+    # construct the array token
+    set valArray [java::new {ptolemy.data.Token[]} 2 [list $r1 $r2]]
+    set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
+    # set new token
+    $p setToken $valToken
+
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {{[{name="foo", value=5}, {name="bar", value=3}]}}
+
+test Const-2.6 {check types of the above model} {
+    list [[$constOut getType] toString] [[$recIn getType] toString]
+} {{({name:string, value:int})array} {({name:string, value:int})array}}
+
+
 # FIXME: Need a mechanism to test a change in parameter during a run.
