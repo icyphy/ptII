@@ -30,22 +30,9 @@
 
 package ptolemy.moml;
 
-import java.util.List;
-import java.util.LinkedList;
+import ptolemy.kernel.util.*;
 
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.SingletonAttribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj; // for javadoc
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.StringUtilities;
-import ptolemy.kernel.util.ValueListener;
-import ptolemy.kernel.util.Workspace;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
