@@ -334,22 +334,21 @@ public class RecordType extends StructuredType {
 
     /** Set the elements that have declared type BaseType.ANY (the leaf
      *  type variable) to the specified type.
-     *  This method is called at the beginning of type resolution.
-     *  @param t the type to set the leaf type variable to.
+     *  @param type the type to set the leaf type variable to.
      */
-    public void initialize(Type t) {
+    public void initialize(Type type) {
         try {
             Iterator iter = _fields.keySet().iterator();
             while (iter.hasNext()) {
                 String label = (String)iter.next();
                 FieldType fieldType = (FieldType)_fields.get(label);
                 if (fieldType.isSettable()) {
-                    fieldType.initialize(t);
+                    fieldType.initialize(type);
                 }
             }
         } catch (IllegalActionException iae) {
             throw new InternalErrorException("RecordType.initialize: Cannot " +
-                    "initialize the element type to " + t + " " +
+                    "initialize the element type to " + type + " " +
                     iae.getMessage());
         }
     }
@@ -359,7 +358,7 @@ public class RecordType extends StructuredType {
      *  as this one.
      *  This method will only update the component whose declared type is
      *  BaseType.ANY, and leave the constant part of this type intact.
-     *  @param st A StructuredType.
+     *  @param newType A StructuredType.
      *  @exception IllegalActionException If the specified type is not a
      *   RecordType or it does not have the same structure as this one.
      */
@@ -405,26 +404,26 @@ public class RecordType extends StructuredType {
      *  ptolemy.graph.CPO.INCOMPARABLE, indicating this type is lower
      *  than, equal to, higher than, or incomparable with the
      *  specified type in the type hierarchy, respectively.
-     *  @param t a RecordType.
+     *  @param type a RecordType.
      *  @return An integer.
      *  @exception IllegalArgumentException If the specified type is
      *   not a RecordType.
      */
-    protected int _compare(StructuredType t) {
-        if ( !(t instanceof RecordType)) {
+    protected int _compare(StructuredType type) {
+        if ( !(type instanceof RecordType)) {
             throw new IllegalArgumentException("RecordType.compare: " +
                     "The argument is not a RecordType.");
         }
 
-        if (this.isEqualTo(t)) {
+        if (this.isEqualTo(type)) {
             return CPO.SAME;
         }
 
-        if (_isLessThanOrEqualTo(this, (RecordType)t)) {
+        if (_isLessThanOrEqualTo(this, (RecordType)type)) {
             return CPO.LOWER;
         }
 
-        if (_isLessThanOrEqualTo((RecordType)t, this)) {
+        if (_isLessThanOrEqualTo((RecordType)type, this)) {
             return CPO.HIGHER;
         }
 
@@ -441,19 +440,19 @@ public class RecordType extends StructuredType {
     /** Return the greatest lower bound of this type with the specified
      *  type. The specified type must be a RecordType, otherwise an
      *  exception will be thrown.
-     *  @param t a RecordType.
+     *  @param type a RecordType.
      *  @return a RecordType.
      *  @exception IllegalArgumentException If the specified type is
      *   not a RecordType.
      */
-    protected StructuredType _greatestLowerBound(StructuredType t) {
-        if ( !(t instanceof RecordType)) {
+    protected StructuredType _greatestLowerBound(StructuredType type) {
+        if ( !(type instanceof RecordType)) {
             throw new IllegalArgumentException(
                     "RecordType.greatestLowerBound: The argument is not a " +
                     "RecordType.");
         }
 
-        RecordType argRecType = (RecordType)t;
+        RecordType argRecType = (RecordType)type;
 
         // the label set of the GLB is the union of the two label sets.
         Set unionSet = new HashSet();
@@ -464,14 +463,13 @@ public class RecordType extends StructuredType {
         unionSet.addAll(argLabelSet);
 
         // construct the GLB RecordToken
-        int size = unionSet.size();
+        Object[] labelsObj = unionSet.toArray();
+	int size = labelsObj.length;
         String[] labels = new String[size];
         Type[] types = new Type[size];
 
-        Iterator iter = unionSet.iterator();
-        int i = 0;
-        while (iter.hasNext()) {
-            labels[i] = (String)iter.next();
+        for (int i=0; i<size; i++) {
+	    labels[i] = (String)labelsObj[i];
             Type type1 = this.get(labels[i]);
             Type type2 = argRecType.get(labels[i]);
             if (type1 == null) {
@@ -482,7 +480,6 @@ public class RecordType extends StructuredType {
                 types[i] = (Type)TypeLattice.lattice().greatestLowerBound(
                         type1, type2);
             }
-            i++;
         }
 
         return new RecordType(labels, types);
@@ -491,18 +488,18 @@ public class RecordType extends StructuredType {
     /** Return the least Upper bound of this type with the specified
      *  type. The specified type must be a RecordType, otherwise an
      *  exception will be thrown.
-     *  @param t a RecordType.
+     *  @param type a RecordType.
      *  @return a RecordType.
      *  @exception IllegalArgumentException If the specified type is
      *   not a RecordType.
      */
-    protected StructuredType _leastUpperBound(StructuredType t) {
-        if ( !(t instanceof RecordType)) {
+    protected StructuredType _leastUpperBound(StructuredType type) {
+        if ( !(type instanceof RecordType)) {
             throw new IllegalArgumentException("RecordType.leastUpperBound: "
                     + "The argument is not a RecordType.");
         }
 
-        RecordType argRecType = (RecordType)t;
+        RecordType argRecType = (RecordType)type;
 
         // the label set of the LUB is the intersection of the two label sets.
         Set intersectionSet = new HashSet();
@@ -513,19 +510,16 @@ public class RecordType extends StructuredType {
         intersectionSet.retainAll(argLabelSet);
 
         // construct the GLB RecordToken
-        int size = intersectionSet.size();
+        Object[] labelsObj = intersectionSet.toArray();
+	int size = labelsObj.length;
         String[] labels = new String[size];
         Type[] types = new Type[size];
-
-        Iterator iter = intersectionSet.iterator();
-        int i = 0;
-        while (iter.hasNext()) {
-            labels[i] = (String)iter.next();
+        for (int i=0; i<size; i++) {
+            labels[i] = (String)labelsObj[i];
             Type type1 = this.get(labels[i]);
             Type type2 = argRecType.get(labels[i]);
             types[i] = (Type)TypeLattice.lattice().leastUpperBound(
                     type1, type2);
-            i++;
         }
 
         return new RecordType(labels, types);
@@ -565,7 +559,7 @@ public class RecordType extends StructuredType {
 
     // the representative in the type lattice is the empty record.
     private static RecordType _representative =
-    new RecordType(new String[0], new Type[0]);
+            new RecordType(new String[0], new Type[0]);
 
     ///////////////////////////////////////////////////////////////////
     ////                           inner class                     ////
@@ -576,9 +570,9 @@ public class RecordType extends StructuredType {
 
         // Pass the RecordType reference in the constructor so it can be
         // returned by getAssociatedObject().
-        private FieldType(RecordType rt, Type declaredType) {
+        private FieldType(RecordType recordType, Type declaredType) {
             try {
-                _recordType = rt;
+                _recordType = recordType;
                 _declaredType = (Type)declaredType.clone();
                 _resolvedType = _declaredType;
             } catch (CloneNotSupportedException cnse) {
@@ -623,8 +617,7 @@ public class RecordType extends StructuredType {
          *  @exception IllegalActionException If this type is not settable,
          *   or the argument is not a Type.
          */
-        public void initialize(Object e)
-                throws IllegalActionException {
+        public void initialize(Object e) throws IllegalActionException {
             if ( !isSettable()) {
                 throw new IllegalActionException("RecordType$FieldType." +
                         "initialize: The type is not settable.");
