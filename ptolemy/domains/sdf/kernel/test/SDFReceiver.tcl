@@ -335,3 +335,85 @@ test SDFReceiver-5.3 {Check setCapacity errors} {
 
     list $result1 $result2
 } {{ptolemy.kernel.util.IllegalActionException: Queue contains more elements than the proposed capacity.} {ptolemy.kernel.util.IllegalActionException: Queue Capacity cannot be negative}}
+
+test SDFReceiver-6.0 {Check the *History methods} {
+    set receiver [java::new ptolemy.domains.sdf.kernel.SDFReceiver]
+
+    set results1 [$receiver getHistoryCapacity]
+    set historyElements [$receiver historyElements]
+    set results2 [enumToStrings $historyElements]
+    set results3 [$receiver historySize]
+    list $results1 $results2 $results3
+} {0 {} 0}
+
+test SDFReceiver-6.1 {setHistoryCapacity} {
+    set receiver [java::new ptolemy.domains.sdf.kernel.SDFReceiver]
+
+    $receiver setHistoryCapacity 3
+    set results1 [$receiver getHistoryCapacity]
+    set historyElements [$receiver historyElements]
+    set results2 [enumToStrings $historyElements]
+    set results3 [$receiver historySize]
+    list $results1 $results2 $results3
+} {3 {} 0}
+
+test SDFReceiver-6.3 {try to get historyElements} {
+    set receiver [java::new ptolemy.domains.sdf.kernel.SDFReceiver]
+    $receiver setHistoryCapacity 3
+
+    # Check that hasRoom returns true when the receiver is empty
+    # and returns false after a token has been put in the
+    # receiver.
+    $receiver setCapacity 1
+
+    # Tokens to put
+    set token [java::new ptolemy.data.StringToken foo]
+    set token2 [java::new ptolemy.data.StringToken bar]
+    set token3 [java::new ptolemy.data.StringToken bif]
+    set token4 [java::new ptolemy.data.StringToken baz]
+
+    # Now put a token.
+    $receiver {put ptolemy.data.Token} $token
+
+    # Get a token
+    set receivedToken1 [$receiver get]
+
+    set results1 [$receiver getHistoryCapacity]
+    set historyElements [$receiver historyElements]
+    set results2 [enumToStrings $historyElements]
+    set results3 [$receiver historySize]
+
+    # Put another token.
+    $receiver {put ptolemy.data.Token} $token2
+
+    # Get another token
+    set receivedToken2 [$receiver get]
+
+    set results4 [$receiver getHistoryCapacity]
+    set historyElements [$receiver historyElements]
+    set results5 [enumToStrings $historyElements]
+    set results6 [$receiver historySize]
+
+    # Put another token.
+    $receiver {put ptolemy.data.Token} $token3
+
+    # Get another token
+    set receivedToken3 [$receiver get]
+
+    # Put another token.
+    $receiver {put ptolemy.data.Token} $token4
+
+    # Get another token
+    set receivedToken4 [$receiver get]
+
+    # The history capacity is 3, but we've seen 4 tokens
+    set results7 [$receiver getHistoryCapacity]
+    set historyElements [$receiver historyElements]
+    set results8 [enumToStrings $historyElements]
+    set results9 [$receiver historySize]
+
+    list \
+	    [list $results1 $results2 $results3] \
+	    [list $results4 $results5 $results6] \
+	    [list $results7 $results8 $results9] \
+} {{3 {{"foo"}} 1} {3 {{"foo"} {"bar"}} 2} {3 {{"bar"} {"bif"} {"baz"}} 3}}
