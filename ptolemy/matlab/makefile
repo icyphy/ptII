@@ -100,11 +100,13 @@ ptmatlab.h:	Engine.class
 
 # $(PTCC) is set to gcc by configure in $PTII/mk/ptII.mk
 # $(PTDLLTOOL) is set to dlltool by configure in $PTII/mk/ptII.mk
+# -fno-exceptions  - see note at bottom
 $(PTLIB): ptmatlab.h ptmatlab.cc Engine.class libeng.a libmx.a
 	$(PTCC) \
 		"-I$(MATLAB_DIR)/extern/include" \
 		"-I$(PTJAVA_DIR)/include" \
 		"-I$(PTJAVA_DIR)/include/win32" \
+		-fno-exceptions \
 		 -c -o ptmatlab.obj ptmatlab.cc
 	$(PTDLLTOOL) --add-stdcall-alias --dllname ptmatlab.dll \
 		--output-exp ptmatlab_exp.obj ptmatlab.obj
@@ -130,3 +132,8 @@ libmx.a:	$(MATLAB_DIR)/extern/include/libmx.def ../../bin/ptinvoke
 
 ptmatlab_clean:
 	rm -f ptmatlab.h *.obj $(PTLIB) libeng.a libmx.a
+
+# Note: -fno-exceptions was added to remove the exception handling frames,
+# which for gcc 3.2-3 (prerelease) was introducing an unresolved
+# gcc_personality_v0 external, nowhere to be found within the cygwin libraries
+# and object files...
