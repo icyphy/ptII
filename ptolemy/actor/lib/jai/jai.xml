@@ -20,6 +20,8 @@
 	      </property>   
 	  </property>
 	</entity>
+	<entity name="JAIBandSelect" class="ptolemy.actor.lib.jai.JAIBandSelect">
+	</entity>
 	<entity name="JAIBoxFilter" class="ptolemy.actor.lib.jai.JAIBoxFilter">
 	</entity>
 	<entity name="JAIBMPWriter" class="ptolemy.actor.lib.jai.JAIBMPWriter">
