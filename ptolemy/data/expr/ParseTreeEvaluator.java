@@ -413,29 +413,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ParseTreeSpecializer specializer = new ParseTreeSpecializer();
         specializer.specialize(cloneTree,
                 node.getArgumentNameList(), _scope);
-                 
-        // // collect all free variables in the function definition
-//         ParseTreeFreeVariableCollector collector =
-//             new ParseTreeFreeVariableCollector();
-//         Set freeVariableNames = collector.collectFreeVariables(
-//                 node, _scope);
-//         // construct a NamedConstantsScope that maps the free variables to
-//         // their current value in the scope
-//         Map map = new HashMap();
-//         Iterator variableNameIterator = freeVariableNames.iterator();
-//         while (variableNameIterator.hasNext()) {
-//             String name = (String)variableNameIterator.next();
-//             if(_scope != null) {
-//                 ptolemy.data.Token value = _scope.get(name);
-//                 if(value != null) {
-//                     map.put(name, value);
-//                     continue;
-//                 }
-//             }
-//             throw new IllegalActionException(
-//                     "The ID " + name + " is undefined.");
-//         }
-//        NamedConstantsScope constantsScope = new NamedConstantsScope(map);
+               
          // Infer the return type.
         if(_typeInference == null) {
             _typeInference = new ParseTreeTypeInference();

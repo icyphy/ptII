@@ -94,20 +94,9 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
     public void visitFunctionNode(ASTPtFunctionNode node)
             throws IllegalActionException {
         int argCount = node.jjtGetNumChildren() - 1;
-        String functionName = node.getFunctionName();
-        if(functionName == null) {
-            _visitChild(node, 0);
-        }
-        for(int i = 0; i < argCount; ++i) {
-            _visitChild(node, i + 1);
-            
-        }
-        
-        if(functionName == null) {
-            throw new IllegalActionException(
-                    "unimplemented case");
-        }
-
+     
+        _visitAllChildren(node);
+   
         // Get the child types.
         Type[] childTypes = new Type[argCount];
         for (int i = 0; i < argCount; i++) {
@@ -118,56 +107,59 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                         node + " has null type.");
             }
         }
+ 
+        Type baseType = ((ASTPtRootNode) node.jjtGetChild(0)).getType();
 
-        if(_isValidName(functionName)) {
-            // Handle as an array or matrix index into a named
-            // variable reference.
-            Type type = _getTypeForName(node.getFunctionName());
-            if(type instanceof FunctionType) {
-                FunctionType functionType = (FunctionType)type;
-                _setType(node, ((FunctionType)type).getReturnType());
-                return;
-            } else if(argCount == 1) {
-                if(type instanceof ArrayType) {
-                    _setType(node, ((ArrayType)type).getElementType());
-                    return;
-                } else {
-                    _assert(true, node, "Cannot use array "
-                            + "indexing on '" + node.getFunctionName()
-                            + "' because it does not have an array type.");
-                }
-            } else if(argCount == 2) {
-                if(type instanceof UnsizedMatrixType) {
-                    _setType(node, ((UnsizedMatrixType) type).getElementType());
-                    return;
-                } else {
-                    _assert(true, node, "Cannot use matrix "
-                            + "indexing on '" + node.getFunctionName()
-                            + "' because it does not have a matrix type.");
-                }
+        // Handle as an array or matrix index into a named
+        // variable reference.
+        if(baseType instanceof FunctionType) {
+            FunctionType functionType = (FunctionType)baseType;
+            _setType(node, ((FunctionType)baseType).getReturnType());
+            return;
+        } else if(argCount == 1) {
+            if(baseType instanceof ArrayType) {
+                _setType(node, ((ArrayType)baseType).getElementType());
+                return;            } else {
+                _assert(true, node, "Cannot use array "
+                        + "indexing on '" + node.getFunctionName()
+                        + "' because it does not have an array type.");
             }
+        } else if(argCount == 2) {
+            if(baseType instanceof UnsizedMatrixType) {
+                _setType(node, ((UnsizedMatrixType) baseType).getElementType());
+                return;
+            } else {
+                _assert(true, node, "Cannot use matrix "
+                        + "indexing on '" + node.getFunctionName()
+                        + "' because it does not have a matrix type.");
+            }
+        }
+ 
+        String functionName = node.getFunctionName();
+        if(functionName == null) {
             throw new IllegalActionException("Wrong number of indices "
                     + "when referencing " + node.getFunctionName());
         }
+
         // temporary hack for casts.
         if (functionName.compareTo("cast") == 0 && argCount == 2) {
             _setType(node, 
                     ((ASTPtRootNode) node.jjtGetChild(0 + 1)).getType());
             return;
         }
-
+        
         if (functionName.compareTo("eval") == 0) {
             // We can't infer the type of eval expressions...
             _setType(node, BaseType.GENERAL);
             return;
         }
-
+        
         if (functionName.compareTo("matlab") == 0) {
             // We can't infer the type of eval expressions...
             _setType(node, BaseType.GENERAL);
             return;
         }
-
+        
         // Otherwise, try to reflect the method name.
         CachedMethod cachedMethod =
             CachedMethod.findMethod(functionName,
@@ -429,8 +421,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             return Constants.get(name).getType();
         }
         
-        throw new IllegalActionException(
-                "The ID " + name + " is undefined.");
+        return BaseType.GENERAL;
     }
 
     /** Test if the given identifier is valid.

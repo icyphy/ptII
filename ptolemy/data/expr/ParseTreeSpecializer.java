@@ -82,7 +82,16 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
     }
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
-        _visitAllChildren(node);
+        List excludedNames = new LinkedList(_excludedNames);
+        // Don't substitute any names in the parse tree that are
+        // bound in the definition.
+        excludedNames.addAll(node.getArgumentNameList());
+        List oldExcludedNames = _excludedNames;
+        _excludedNames = excludedNames;
+        //   _visitAllChildren(node);
+        node.getExpressionTree().visit(this);
+        _excludedNames = oldExcludedNames;
+
     }
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
