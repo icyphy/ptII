@@ -36,6 +36,17 @@ ROOT =		../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Variables and rules used to create source file distributions
+PTPACKAGE = 	ptolemy.plot
+PTPACKAGE_ROOTDIR = $(CLASSPATH)
+PTPACKAGE_DIR = ptolemy/plot
+# If you change PTVERSION, modify the version numbers in:
+#    Pxgraph.java, index.html, doc/internals/changes.html
+PTVERSION =	2.0a2
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
 CLASSPATH =	../..
 
 SRCDIRS = 	demo
@@ -55,9 +66,9 @@ JSRCS = \
 	PlotLiveApplet.java \
 	PlotPoint.java \
 	Pxgraph.java \
-	Message.java \
 	LogicAnalyzer.java \
-	LogicAnalyzerFrame.java
+	LogicAnalyzerFrame.java \
+	Message.java
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) ptplot pxgraph.bat index.html copyright.txt
@@ -104,7 +115,7 @@ all: sources jclass $(PTZIP) $(PTCLASSJAR) ptolemy.plotapplet.jar
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
-install: sources jclass javadocs subinstall $(PTCLASSJAR) $(PTCLASSZIP) ptolemy.plotapplet.jar
+install: sources jclass javadocs subinstall $(PTCLASSJAR) ptolemy.plotapplet.jar
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
@@ -139,17 +150,6 @@ depend:
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
 
-# Variables and rules used to create source file distributions
-PTPACKAGE = 	ptolemy.plot
-PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/plot
-# If you change PTVERSION, modify the version numbers in:
-#    Pxgraph.java, index.html, doc/internals/changes.html
-PTVERSION =	2.0a1
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
-PTCLASSJAR = 	$(PTPACKAGE).jar
-
 # Include rules necessary to build a distribution
 include $(ROOT)/mk/ptdist.mk
 
@@ -166,4 +166,8 @@ fixtmpdist:
 	echo "$(PTDIST) - A Java plotting package" > \
 		 $(PTTMPDIR)/$(PTDIST)/README
 	echo "See ptolemy/plot/index.html" >> $(PTTMPDIR)/$(PTDIST)/README
-
+	@echo "Remove LogicAnalyzer from makefile"
+	grep -v LogicAnalyzer \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/plot/makefile > /tmp/ptplotfix
+	mv /tmp/ptplotfix $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/makefile
+	rm -f $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/LogicAnalyzer*
