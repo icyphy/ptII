@@ -195,7 +195,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  connection from an output port to an input. If both the input
      *  and output ports have declared types, this method checks if the
      *  output type is less than or equal to the input. If not, it
-     *  throws a TypeConflictException.  
+     *  throws a TypeConflictException.
      *  <p>
      *  This method is read-synchronized on the workspace.
      *  @return an Enumerations of Inequality.

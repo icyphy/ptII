@@ -62,8 +62,8 @@ In general, an input port might have more than one receiver for
 each channel.  This occurs particularly for transparent input ports,
 which treat the receivers of the ports linked on the inside as its own.
 But might also occur for opaque ports in some derived classes.
-Each receiver in the group is sent the same data. Thus, an input port in 
-general will have <i>w</i> distinct groups of receivers, and can receive 
+Each receiver in the group is sent the same data. Thus, an input port in
+general will have <i>w</i> distinct groups of receivers, and can receive
 <i>w</i> distinct channels.
 <p>
 By default, the maximum width of the port is one, so only one
@@ -167,7 +167,7 @@ public class IOPort extends ComponentPort {
             if(fr == null) {
                 return;
             }
-            
+
             for (int j = 0; j < fr.length; j++) {
                 send(j, token);
             }
@@ -204,27 +204,27 @@ public class IOPort extends ComponentPort {
         return newobj;
     }
 
-    /** Create receivers for this port. This method should only be 
-     *  called on opaque ports. It should also normally only be called 
+    /** Create receivers for this port. This method should only be
+     *  called on opaque ports. It should also normally only be called
      *  during the initialize and prefire methods of the director.
-     *  Receivers are created and cached for each relation connected 
-     *  to this port. If, for a given relation, this port already has 
-     *  the correct number of receivers, then no new receivers are 
-     *  created. However if new receivers are created, then any 
-     *  receivers previously associated with that relation will 
+     *  Receivers are created and cached for each relation connected
+     *  to this port. If, for a given relation, this port already has
+     *  the correct number of receivers, then no new receivers are
+     *  created. However if new receivers are created, then any
+     *  receivers previously associated with that relation will
      *  be overwritten.
      *  <p>
-     *  If the port is an input port, receivers are created as neccessary 
+     *  If the port is an input port, receivers are created as neccessary
      *  for each relation connecting to the port from the outside.
      *  <p>
-     *  If the port is an output port, receivers are created as neccessary 
-     *  for each relation connected to the port from the inside. Note that 
-     *  only composite entities will have relations connecting to ports 
+     *  If the port is an output port, receivers are created as neccessary
+     *  for each relation connected to the port from the inside. Note that
+     *  only composite entities will have relations connecting to ports
      *  from the inside.
      *  <p>
      *  It is <i>not</i> write-synchronized on the workspace, so the
-     *  caller should be. 
-     *  @exception IllegalActionException If this port is not 
+     *  caller should be.
+     *  @exception IllegalActionException If this port is not
      *   an opaque input port or if there is no director.
      */
     public void createReceivers() throws IllegalActionException {
@@ -236,12 +236,12 @@ public class IOPort extends ComponentPort {
         int portWidth = getWidth();
         if (portWidth <= 0) return;
 
-        // Create the hashtable of receivers in this port, keyed by 
+        // Create the hashtable of receivers in this port, keyed by
         // relation, if it does not already exist.
         if (_localReceiversTable == null) {
             _localReceiversTable = new Hashtable();
         }
-        
+
         boolean input = isInput();
         boolean output = isOutput();
 
@@ -250,22 +250,22 @@ public class IOPort extends ComponentPort {
             while (outsideRelations.hasMoreElements()) {
                 IORelation relation = (IORelation) outsideRelations.nextElement();
                 int width = relation.getWidth();
-                
+
                 Receiver[][] result = null;
                 if(_localReceiversTable.containsKey(relation) ) {
                     // There is a list of receivers for this relation.
                     result = (Receiver[][])_localReceiversTable.get(relation);
                 }
-                
-                // If there was no list of receivers for this relation, or 
-                // if the width of the relation has changed, we need to 
+
+                // If there was no list of receivers for this relation, or
+                // if the width of the relation has changed, we need to
                 // create new receivers for this relation.
                 if ((result == null) || (result.length != width)) {
                     // No valid table entry in the cache for this relation.
                     // Create a new set of receivers compatible with the
                     // executive director.
                     result = new Receiver[width][1];
-                
+
                     for (int i = 0; i< width; i++) {
                         // This throws an exception if there is no director.
                         result[i][0] = _newReceiver();
@@ -274,7 +274,7 @@ public class IOPort extends ComponentPort {
                 // Save it, possibly replacing a previous version.
                 // NOTE: if a previous version is replaced, then any data
                 // in the receivers is lost.
-                _localReceiversTable.put(relation, result);    
+                _localReceiversTable.put(relation, result);
             }
         }
         if (output) {
@@ -282,15 +282,15 @@ public class IOPort extends ComponentPort {
             while (insideRelations.hasMoreElements()) {
                 IORelation relation = (IORelation)insideRelations.nextElement();
                 int width = relation.getWidth();
-                
+
                 Receiver[][] result = null;
                 if(_localReceiversTable.containsKey(relation) ) {
                     // There is a list of receivers for this relation.
                     result = (Receiver[][])_localReceiversTable.get(relation);
                 }
-                
-                // If there was no list of receivers for this relation, or 
-                // if the width of the relation has changed, we need to 
+
+                // If there was no list of receivers for this relation, or
+                // if the width of the relation has changed, we need to
                 // create new receivers for this relation.
                 if ((result == null) || (result.length != width)) {
                     result = new Receiver[width][1];
@@ -312,8 +312,8 @@ public class IOPort extends ComponentPort {
                 _localReceiversTable.put(relation, result);
             }
         }
-    } 
-       
+    }
+
 
     /** Deeply enumerate the input ports connected to this port on the
      *  outside.  This method calls deepConnectedPorts() of the super
@@ -436,7 +436,7 @@ public class IOPort extends ComponentPort {
         try {
             workspace().getReadAccess();
             if (!isInput()) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "get: Tokens can only be retrieved from " +
                         "an input port.");
             }
@@ -839,8 +839,8 @@ public class IOPort extends ComponentPort {
 
     /** Return true if the specified channel can accept a token via the
      *  put() method.  If this port is not an output, or the channel index
-     *  is out of range, then throws IllegalActionException.  If there 
-     *  are multiple receivers in the group associated with the channel, 
+     *  is out of range, then throws IllegalActionException.  If there
+     *  are multiple receivers in the group associated with the channel,
      *  then return true only if all the receivers can accept a token.
      *
      *  @return True if there is room for a token in the channel.
@@ -868,9 +868,9 @@ public class IOPort extends ComponentPort {
 
     /** Return true if the specified channel has a token to deliver
      *  via the get() method.  If this port is not an input, or if the
-     *  channel index is out of range, then throws IllegalActionException. 
-     *  Note that this does not report any tokens in inside receivers 
-     *  of an output port. Those are accessible only through 
+     *  channel index is out of range, then throws IllegalActionException.
+     *  Note that this does not report any tokens in inside receivers
+     *  of an output port. Those are accessible only through
      *  getInsideReceivers().
      *
      *  @return True if there is a token in the channel.
@@ -880,8 +880,8 @@ public class IOPort extends ComponentPort {
      *   of range.
      */
     public boolean hasToken(int channelindex) throws IllegalActionException {
-        if (!isInput()) {                
-            throw new IllegalActionException(this, 
+        if (!isInput()) {
+            throw new IllegalActionException(this,
                     "hasToken: Tokens can only be retrieved from " +
                     "an input port.");
         }
@@ -1050,7 +1050,7 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If the port is not an output or if
      *   the index is out of range.
      */
-    public void send(int channelindex, Token token) 
+    public void send(int channelindex, Token token)
             throws IllegalActionException, NoRoomException {
         Receiver[][] farRec;
         try {

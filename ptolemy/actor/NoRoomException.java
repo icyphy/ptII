@@ -1,5 +1,5 @@
-/* Exception thrown on an attempt to put a token (via the put() method) 
-   into a receiver that doesn't have room to accomodate one (i.e. 
+/* Exception thrown on an attempt to put a token (via the put() method)
+   into a receiver that doesn't have room to accomodate one (i.e.
    hasRoom() returns false).
 
  Copyright (c) 1997- The Regents of the University of California.
@@ -36,8 +36,8 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// NoRoomException
 /**
-This exception is thrown on an attempt to put a token (via the 
-put() method) into a receiver that doesn't have room to accomodate one 
+This exception is thrown on an attempt to put a token (via the
+put() method) into a receiver that doesn't have room to accomodate one
 (i.e. hasRoom() returns false).
 @author Lukito Muliadi
 @version $Id$

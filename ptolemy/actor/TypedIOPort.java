@@ -173,7 +173,7 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
 	} else {
 	    return (new InequalityTerm[0]);
 	}
-    } 
+    }
 
     /** Checks if the type of this port is undeclared.
      *  This method is for use by the type resolution algorithm.
@@ -436,7 +436,7 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
         }
         super._link((TypedIORelation)relation);
     }
- 
+
     /** Override parent method to ensure compatibility of the relation.
      *  <p>
      *  This method should not be used directly.  Use the public version

@@ -215,10 +215,10 @@ public class Director extends NamedObj implements Executable {
         return _container;
     }
 
-    /** If this is the local director of its container, first create the 
+    /** If this is the local director of its container, first create the
      *  receivers and then invoke the initialize()
      *  methods of all its deeply contained actors.  If this is the executive
-     *  director of its container, first create the receivers and then 
+     *  director of its container, first create the receivers and then
      *  invoke the initialize() method of the container.
      *  <p>
      *  This method should be invoked once per execution, before any
@@ -247,10 +247,10 @@ public class Director extends NamedObj implements Executable {
             }
         }
     }
-    
-    /** Returns true if this director is an executive director. Otherwise 
+
+    /** Returns true if this director is an executive director. Otherwise
      *  it returns false.
-     *  @return Boolean indicating whather or not this director is an 
+     *  @return Boolean indicating whather or not this director is an
      *   executive director.
      */
     public boolean isExecutiveDirector() {
@@ -332,11 +332,11 @@ public class Director extends NamedObj implements Executable {
      *  any actors that are added by those mutations.  This sequence is
      *  repeated until no more mutations are performed. This way, the
      *  initialize() method in actors can perform mutations, and the
-     *  mutations will be fully executed before proceeding.  
-     *  Then, if this is the local director of its container, first create 
-     *  any new receivers if mutations occured. Then invoke the 
-     *  prefire() methods of all its deeply contained actors, and return the 
-     *  logical AND of what they return.  If this is the executive director 
+     *  mutations will be fully executed before proceeding.
+     *  Then, if this is the local director of its container, first create
+     *  any new receivers if mutations occured. Then invoke the
+     *  prefire() methods of all its deeply contained actors, and return the
+     *  logical AND of what they return.  If this is the executive director
      *  of its container, then invoke the prefire() method of the container and
      *  return what it returns.  Otherwise, return false.
      *  <p>
@@ -351,7 +351,7 @@ public class Director extends NamedObj implements Executable {
      *   pending mutation throws it, or if all receivers could not be created.
      *  @exception NameDuplicationException If a pending mutation throws it.
      */
-    public boolean prefire() 
+    public boolean prefire()
         throws IllegalActionException, NameDuplicationException {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {

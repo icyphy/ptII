@@ -158,7 +158,7 @@ public class StaticSchedulingDirector extends Director{
      *  it in the further execution. A false argument indicate that
      *  the CompositeActor has been significantly changed so that the
      *  cached schedule is no longer valid, and the director should
-     *  invoke the scheduler again for a new schedule. This calls the 
+     *  invoke the scheduler again for a new schedule. This calls the
      *  setValid() method of Scheduler.
      *  @param true to set the schedule to be valid.
      *  @exception IllegalActionException IF there's no scheduler.

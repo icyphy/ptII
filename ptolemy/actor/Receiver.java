@@ -71,7 +71,7 @@ public interface Receiver {
     /** Return the container. */
     public IOPort getContainer();
 
-    /** Return true if the receiver has room for putting a token into 
+    /** Return true if the receiver has room for putting a token into
      *  (via the put() method).
      *  Returning true in this method should also guarantee that calling
      *  the put() method will not result in an exception.
@@ -82,7 +82,7 @@ public interface Receiver {
     public boolean hasRoom() throws IllegalActionException;
 
     /** Return true if the receiver contains a token that can be obtained
-     *  by calilng the get() method. 
+     *  by calilng the get() method.
      *  Returning true in this method should also guarantee that calling
      *  the get() method will not result in an exception.
      *

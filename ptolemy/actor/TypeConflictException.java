@@ -51,7 +51,7 @@ public class TypeConflictException extends KernelException {
      *  The port is the place where type conflict occured. The detailed
      *  message of this Exception will include the name of the port and
      *  the specified message.
-     *  @param port a TypedIOPort with type conflict. 
+     *  @param port a TypedIOPort with type conflict.
      *  @param detail a message.
      */
     public TypeConflictException(TypedIOPort port, String detail) {

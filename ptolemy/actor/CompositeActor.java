@@ -473,7 +473,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  @exception NameDuplicationException If the prefire() method of the
      *   director throws it (while performing mutations, if any).
      */
-    public boolean prefire() 
+    public boolean prefire()
             throws IllegalActionException, NameDuplicationException {
         try {
             workspace().getReadAccess();

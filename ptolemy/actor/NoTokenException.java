@@ -1,4 +1,4 @@
-/* Exception thrown on an attempt to get a token (via the get() method) 
+/* Exception thrown on an attempt to get a token (via the get() method)
    from a receiver that doesn't have a token (i.e. hasToken() returns false).
 
  Copyright (c) 1997- The Regents of the University of California.
@@ -34,7 +34,7 @@ import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// NoTokenException
-/** 
+/**
 This exception is thrown on an attempt to get a token (via the get() method)
 from a receiver that doesn't have a token (i.e. hasToken() returns false).
 
