@@ -65,6 +65,7 @@ OPTIONAL_FILES = \
 	doc \
 	'GenerateVisitor$$ClassField.class' \
 	'GenerateVisitor$$MethodSignature.class' \
+	'GiottoCodeGenerator$$GiottoEditorFactory.class' \
 	'GiottoScheduler$$1.class' \
 	'GiottoScheduler$$GiottoActorComparator.class'
 
