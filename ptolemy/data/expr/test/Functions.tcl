@@ -285,6 +285,63 @@ test Function-abs-3 {Test abs on matrices} {
 
 
 ####################################################################
+# close
+
+test Function-close-double {Test close on doubles} {
+   list [evaluate {close (1.0, 1.1, 0.1)}] \
+        [evaluate {close (1.0, 1.1, 0.0)}] \
+        [evaluate {close (1.0, 1.0, 0.0)}] \
+        [evaluate {close (1.0, 1.1, 0.05)}]
+    } {true false true false}
+
+# NOTE: Couldn't find a way to make complex as precise as double.
+test Function-close-complex {Test close on complex} {
+   list [evaluate {close (1.0i, 1.1i, 0.10001)}] \
+        [evaluate {close (1.0i, 1.1i, 0.0)}] \
+        [evaluate {close (1.0i, 1.0i, 0.0)}] \
+        [evaluate {close (1.0, 1.1i, 0.05)}]
+    } {true false true false}
+
+test Function-close-int {Test close on ints} {
+   list [evaluate {close (1, 2, 1)}] \
+        [evaluate {close (1, 2, 0)}] \
+        [evaluate {close (1, 1, 0)}] \
+        [evaluate {close (1, 3, 1)}] \
+        [evaluate {close (-1, -2, 1)}] \
+        [evaluate {close (-2, -1, 1)}] \
+        [evaluate {close (-1, -3, 1)}] \
+        [evaluate {close (-1, -3, 1)}]
+    } {true false true false true true false false}
+
+test Function-close-long {Test close on longs} {
+   list [evaluate {close (1L, 2L, 1)}] \
+        [evaluate {close (1L, 2L, 0)}] \
+        [evaluate {close (1L, 1L, 0)}] \
+        [evaluate {close (1L, 3L, 1)}]
+    } {true false true false}
+
+test Function-close-ub {Test close on unsigned bytes} {
+   list [evaluate {close (1ub, 2ub, 1)}] \
+        [evaluate {close (1ub, 2ub, 0)}] \
+        [evaluate {close (1ub, 1ub, 0)}] \
+        [evaluate {close (1ub, 3ub, 1)}]
+    } {true false true false}
+
+test Function-close-fix {Test close on fixed point} {
+   list [evaluate {close (fix(1,8,4), fix(2,8,4), 1)}] \
+        [evaluate {close (fix(1,8,4), fix(2,8,4), 0)}] \
+        [evaluate {close (fix(1,8,4), fix(1,8,4), 0)}] \
+        [evaluate {close (fix(1,8,4), fix(3,8,4), 1)}]
+    } {true false true false}
+
+test Function-close-array {Test close on arrays} {
+   list [evaluate {close ({1.0, -1.0}, {1.1, -0.9}, 0.1)}] \
+        [evaluate {close ({1.0, 1.0}, {1.1, 1.0}, 0.0)}] \
+        [evaluate {close ({1.0, -2.0}, {1.0, -2.0}, 0.0)}] \
+        [evaluate {close ({1.0, -1.0}, {1.1, -1.1}, 0.05)}]
+    } {true false true false}
+
+####################################################################
 # ceil
 
 test Function-ceil {Test ceil} {

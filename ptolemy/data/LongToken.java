@@ -323,12 +323,13 @@ public class LongToken extends ScalarToken {
 	 */
 	protected BooleanToken _isCloseTo(
 			ScalarToken rightArgument, double epsilon) {
-		double difference
-				= (double)(longValue() - ((LongToken)rightArgument).longValue());
-		if (difference <= epsilon) {
-			return BooleanToken.TRUE;
-		} else {
+		long right = ((LongToken)rightArgument).longValue();
+		long left = longValue();
+		long distance = Math.round(Math.floor(epsilon));
+		if (right > left + distance || right < left - distance) {
 			return BooleanToken.FALSE;
+		} else {
+			return BooleanToken.TRUE;
 		}
 	}
 	

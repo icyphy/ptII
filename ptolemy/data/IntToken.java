@@ -337,13 +337,13 @@ public class IntToken extends ScalarToken {
 	 */
     protected BooleanToken _isCloseTo(
             ScalarToken rightArgument, double epsilon) {
-        double difference
-        	    = (double)(intValue() - ((IntToken)rightArgument).intValue());
-        if (difference <= epsilon) {
-        	return BooleanToken.TRUE;
-        } else {
-        	return BooleanToken.FALSE;
-        }
+        double right = ((IntToken)rightArgument).doubleValue();
+        double left = doubleValue();
+		if (right > left + epsilon || right < left - epsilon) {
+			return BooleanToken.FALSE;
+		} else {
+			return BooleanToken.TRUE;
+		}
     }
 
     /** Test for ordering of the values of this Token and the argument

@@ -408,9 +408,14 @@ public class UnsignedByteToken extends ScalarToken {
 	 */
     protected BooleanToken _isCloseTo(
             ScalarToken rightArgument, double epsilon) {
-        return BooleanToken.getInstance(
-                Math.abs(doubleValue()
-                - ((UnsignedByteToken)rightArgument).doubleValue()) <= epsilon);
+		long right = ((UnsignedByteToken)rightArgument).longValue();
+		long left = longValue();
+		long distance = Math.round(Math.floor(epsilon));
+		if (right > left + distance || right < left - distance) {
+			return BooleanToken.FALSE;
+		} else {
+			return BooleanToken.TRUE;
+		}
     }
 
     /** Test for ordering of the values of this Token and the argument
