@@ -11,9 +11,6 @@
 </entity>
 <entity name="ArrayMem" class="ptolemy.domains.hde.lib.ArrayMem">
 </entity>
-<entity name="HDEMerge" class="ptolemy.domains.hde.lib.HDEMerge">
-</entity>
-
       </group>
     ?>
   </configure>
