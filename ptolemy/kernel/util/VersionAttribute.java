@@ -66,7 +66,7 @@ not implement version-strings.
 @author Christopher Hylands
 @version $Id$ */
 public class VersionAttribute
-        extends StringAttribute implements Comparable {
+    extends StringAttribute implements Comparable {
 
     /** Construct an object in the default workspace with the empty string
      *  as its name. The object is added to the list of objects in the
@@ -133,7 +133,7 @@ public class VersionAttribute
 	    tuples = _tupleList.iterator();
 	}
         while (versionTuples.hasNext()
-	       || (tuples != null && tuples.hasNext())){
+                || (tuples != null && tuples.hasNext())){
             String versionTuple, tuple;
 
             // FIXME: deal with * and + in the JNLP Version String spec.
@@ -220,7 +220,7 @@ public class VersionAttribute
      *   space, which violates the JNLP Version format specification.
      */
     public void setExpression(String expression)
-	throws IllegalActionException {
+            throws IllegalActionException {
 	super.setExpression(expression);
         if (expression.indexOf(' ') != -1 ) {
             throw new IllegalActionException(this,

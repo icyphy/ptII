@@ -374,7 +374,7 @@ public class NamedObj implements Nameable, Debuggable,
                 while (parameters.hasNext()) {
                     Attribute parameter = (Attribute)parameters.next();
                     Attribute newParameter
-                            = (Attribute)parameter.clone(workspace);
+                        = (Attribute)parameter.clone(workspace);
                     try {
                         newParameter.setContainer(newObject);
                     } catch (KernelException exception) {
@@ -421,14 +421,14 @@ public class NamedObj implements Nameable, Debuggable,
                 /* NOTE: This is what we used to do, which isn't right
                    because we don't know whether the class is being
                    cloned or extended.
-                // If the master is a class, then the name of the master
-                // becomes the class name of the instance.
-                if (getMoMLInfo().elementName.equals("class")) {
-                    newObject._setDeferMoMLDefinitionTo(this);
-                    newObject._MoMLInfo.className = getFullName();
-                } else {
-                    newObject._MoMLInfo.className = _MoMLInfo.className;
-                }
+                   // If the master is a class, then the name of the master
+                   // becomes the class name of the instance.
+                   if (getMoMLInfo().elementName.equals("class")) {
+                   newObject._setDeferMoMLDefinitionTo(this);
+                   newObject._MoMLInfo.className = getFullName();
+                   } else {
+                   newObject._MoMLInfo.className = _MoMLInfo.className;
+                   }
                 */
             }
             // If the new object has any public fields whose name
@@ -757,10 +757,10 @@ public class NamedObj implements Nameable, Debuggable,
         if (attribute != null) {
             if (!attributeClass.isInstance(attribute)) {
                 throw new IllegalActionException(attribute,
-                "Expected attribute of class "
-                + attributeClass.getName()
-                + " but got attribute of class "
-                + attribute.getClass().getName());
+                        "Expected attribute of class "
+                        + attributeClass.getName()
+                        + " but got attribute of class "
+                        + attribute.getClass().getName());
             }
         }
         return attribute;
@@ -1322,7 +1322,7 @@ public class NamedObj implements Nameable, Debuggable,
                     while (parameters.hasNext()) {
                         Attribute parameter = (Attribute)parameters.next();
                         result += parameter._description(detail, indent+1, 2) +
-                                "\n";
+                            "\n";
                     }
                 }
                 result += _getIndentPrefix(indent) + "}";

@@ -34,47 +34,47 @@ import java.io.Serializable;
 //////////////////////////////////////////////////////////////////////////
 //// Settable
 /**
-This is an interface for attributes that can have their values
-externally set.  An attribute class that implements this interface has to
-be able to have a value set by a string, via the setExpression()
-method.  A string representation is returned by the getExpression()
-method.  An expression may be an ordinary string with no further
-interpretation, or it may be a string that needs to be evaluated.
-In the latter case, an implementation of this attribute may not
-evaluate the string when the setExpression() method is called.
-It may instead only evaluate the string when the validate() method
-is called.  Often this will not be called until the value of the
-expression is actually needed (this is known as "lazy evaluation").
-Such an implementation will defer notification of listeners and the
-container until the string is evaluated. In a typical use of this
-interface, therefore, it is necessary to be sure that validate()
-is called sometime after setExpression() is called.
-<p>
-In addition, an attribute class that implements this interface
-needs to maintain a list of listeners that are informed whenever
-the value of the attribute changes.  It should inform those
-listeners whenever setExpression() is called.
-<p>
-Among other uses, this interface marks attributes whose value
-can be set via the value attribute of a MoML property element.
-For example, if class XXX implements Settable, then the following
-is valid MoML:
-<pre>
-  &lt;property name="xxx" class="XXX" value="yyy"/&gt;
-</pre>
-<p>
-This interface also supports annotations that hint to a user
-interface the level of visibility that an instance should have.
-The visibility is specified as one of the static instances of
-the inner class Visibility, currently NONE, EXPERT and FULL.
-NONE indicates that the user should never see the instance,
-and should not be able to set its value through the user interface.
-EXPERT means that only expert users should see the instance.
-FULL means that the instance is always visible, and a user interface
-should always allow it to be set.
+   This is an interface for attributes that can have their values
+   externally set.  An attribute class that implements this interface has to
+   be able to have a value set by a string, via the setExpression()
+   method.  A string representation is returned by the getExpression()
+   method.  An expression may be an ordinary string with no further
+   interpretation, or it may be a string that needs to be evaluated.
+   In the latter case, an implementation of this attribute may not
+   evaluate the string when the setExpression() method is called.
+   It may instead only evaluate the string when the validate() method
+   is called.  Often this will not be called until the value of the
+   expression is actually needed (this is known as "lazy evaluation").
+   Such an implementation will defer notification of listeners and the
+   container until the string is evaluated. In a typical use of this
+   interface, therefore, it is necessary to be sure that validate()
+   is called sometime after setExpression() is called.
+   <p>
+   In addition, an attribute class that implements this interface
+   needs to maintain a list of listeners that are informed whenever
+   the value of the attribute changes.  It should inform those
+   listeners whenever setExpression() is called.
+   <p>
+   Among other uses, this interface marks attributes whose value
+   can be set via the value attribute of a MoML property element.
+   For example, if class XXX implements Settable, then the following
+   is valid MoML:
+   <pre>
+   &lt;property name="xxx" class="XXX" value="yyy"/&gt;
+   </pre>
+   <p>
+   This interface also supports annotations that hint to a user
+   interface the level of visibility that an instance should have.
+   The visibility is specified as one of the static instances of
+   the inner class Visibility, currently NONE, EXPERT and FULL.
+   NONE indicates that the user should never see the instance,
+   and should not be able to set its value through the user interface.
+   EXPERT means that only expert users should see the instance.
+   FULL means that the instance is always visible, and a user interface
+   should always allow it to be set.
 
-@author Edward A. Lee
-@version $Id$
+   @author Edward A. Lee
+   @version $Id$
 */
 
 public interface Settable extends Nameable {
