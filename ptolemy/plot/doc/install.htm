@@ -7,13 +7,15 @@
 </head>
 <body>
 <h1>Installing Ptplot</h1>
-Ptplot 5.1 requires Swing, which is shipped as part of JDK1.2.
+Ptplot 5.1 requires Swing, which is shipped as part of JDK1.3.
 (In theory, it is possible to install Swing with JDK1.1, but we have not
-tried it).  To run Ptplot 5.1 applets, you must install the version 1.2
+tried it).  To run Ptplot 5.1 applets, you must install the version 1.3
 or later of the
-<a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plugin</a>
+<a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plugin</a>.
+In theory, it should be possible to run Ptplot using the JDK1.2 plugin,
+but we recommend upgrading to the JDK1.3 plugin.
 
-<p>If you do not want to require your users to install the JDK1.2 plugin,
+<p>If you do not want to require your users to install the JDK1.3 plugin,
 then you should stick with Ptplot3.1, which does not use Swing.
 
 <p>Ptplot is distributed in several formats.
@@ -49,7 +51,7 @@ then see
 with Cygwin.
 <ol>
 
-<li> Be sure that JDK1.2 is installed, and that <CODE>javac</CODE>
+<li> Be sure that JDK1.3 is installed, and that <CODE>javac</CODE>
 is in your path.
 
 <li> Untar or unzip the Ptplot distribution.
@@ -99,12 +101,6 @@ added to your Start menu under Ptolemy -&gt; Ptplot.
 <li> When the Installer Applet is run under Windows, the
 Installer Window is not listed in the Windows Start Bar.
 
-<li> The File browser does not work very well.  Installshield says
-that this is because we are using JDK1.2.  The standalone
-applications require JDK1.2 so that they can use Swing.  Note that
-the applets can still be run with JDK1.1.x, so we don't require
-JDK1.2.
-
 <li> Installing Ptplot in a directory whose pathname has a  space  in it
 seem to cause problems with the start up scripts.
 
@@ -114,7 +110,7 @@ seem to cause problems with the start up scripts.
 This is probably because the format window uses Swing facilities that
 are not in <CODE>jview</CODE>
 
-<li> Ideally, Ptplot should be installed on machines with JDK1.2.
+<li> Ideally, Ptplot should be installed on machines with JDK1.3.
 It is best if you install Java before installing Ptplot.  However
 The Installshield applet installer can download and install a JRE for you.
 Usually the JRE that can be downloaded via the Installshield applet installer
@@ -169,7 +165,7 @@ PTJAVA_DIR=@PTJAVA_DIR@
 becomes
 <pre>
 PTII_DEFAULT=/users/cxh/ptII
-PTJAVA_DIR=/opt/jdk1.2.1
+PTJAVA_DIR=/opt/jdk1.3
 </pre>
 
 
