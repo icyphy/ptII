@@ -47,6 +47,8 @@ import java.lang.*;
  * X and Y axis labels, tick marks, and a legend are all supported.
  * Zooming in and out is supported.  To zoom in, drag the mouse
  * downwards to draw a box.  To zoom out, drag the mouse upward.
+ * Zooming out stops automatically at the point where the data fills
+ * the drawing rectangle.
  *
  * The box can be configured either through a file with commands or
  * through direct invocation of the public methods of the class.
@@ -78,7 +80,7 @@ import java.lang.*;
  * <p>
  * The tick marks for the axes are usually computed automatically from
  * the ranges.  Every attempt is made to choose reasonable positions
- * for the tick marks regardless of the data ranges (i.e. powers of
+ * for the tick marks regardless of the data ranges (powers of
  * ten multiplied by 1, 2, or 5 are used).  However, they can also be
  * specified explicitly using commands like:
  * <pre>
@@ -191,14 +193,14 @@ public class PlotBox extends Applet {
       * If the argument is true, clear the display before redrawing.
       */
     public synchronized void drawPlot(Graphics graphics, boolean clearfirst) {
-	if (graphics == null) {
-	    System.out.println("Attempt to draw axes without a Graphics object.");
-	    return;
-	    }
-	    
-	// Give other threads a chance, so that hopefully things are
-	// up to date.
-	Thread.yield();
+        if (graphics == null) {
+            System.out.println("Attempt to draw axes without a Graphics object.");
+            return;
+        }
+        
+        // Give other threads a chance, so that hopefully things are
+        // up to date.
+        Thread.yield();
 	    
         // Find the width and height of the total drawing area, and clear it.
         Rectangle drawRect = bounds(); // FIXME: bounds() is deprecated
@@ -208,7 +210,7 @@ public class PlotBox extends Applet {
         graphics.setPaintMode();
         if (clearfirst) {
 	    // Clear all the way from the top so that we erase the title.
-	    // If we don't dothis, then zooming in with the pxgraph application
+	    // If we don't do this, then zooming in with the pxgraph application
 	    // ends up blurring the title.
             graphics.clearRect(0,0,drawRect.width, drawRect.height);
         }
@@ -314,12 +316,14 @@ public class PlotBox extends Applet {
         // Meanwhile, find the width of the widest label.
         // The labels are quantized so that they don't have excess resolution.
         int widesty = 0;
+
         // These do not get used unless ticks are automatic, but the
         // compiler is not smart enough to allow us to reference them
         // in two distinct conditional clauses unless they are
         // allocated outside the clauses.
         String ylabels[] = new String[ny];
         int ylabwidth[] = new int[ny];
+
         int ind = 0;
         if (_yticks == null) {
             // automatic ticks
@@ -381,7 +385,7 @@ public class PlotBox extends Applet {
         _xscale = width/(_xMax - _xMin);
         _xtickscale = width/(_xtickMax - _xtickMin);
         
-        // White background for the plotting rectangle
+        // background for the plotting rectangle
         graphics.setColor(_background);
         graphics.fillRect(_ulx,_uly,width,height);
 
@@ -726,7 +730,7 @@ public class PlotBox extends Applet {
 	}
 
 	// If the foreground applet parameter is set, then get its value
-	// and set the foreground.  If the foregrund parameter is not
+	// and set the foreground.  If the foreground parameter is not
 	// set, check the _foreground field and set the foreground if
 	// it is not null.
 	Color foreground = getColorParameter("foreground");
@@ -782,27 +786,31 @@ public class PlotBox extends Applet {
      * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean mouseDown(Event evt, int x, int y) { // deprecated
-        // ignore if out of range
-        if (y <= _lry && y >= _uly && x <= _lrx && x >= _ulx) {
-            _zoomx = x;
-            _zoomy = y;
-            return true;
-        }
-        return false;
+        // constrain to be in range
+        if (y > _lry) y=_lry;
+        if (y < _uly) y=_uly;
+        if (x > _lrx) x=_lrx;
+        if (x < _ulx) x=_ulx;
+        _zoomx = x;
+        _zoomy = y;
+        return true;
     }
     
     /**
-     * Set the starting point for an interactive zoom box.
+     * Draw a box for an interactive zoom box.
      * Return a boolean indicating whether or not we have dealt with
      * the event.
      * @deprecated As of JDK1.1 in java.awt.component 
      * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean mouseDrag(Event evt, int x, int y) {
-        boolean pointinside = y <= _lry && y >= _uly &&
-	    x <= _lrx && x >= _ulx;
+        // Bound the rectangle so it doesn't go outside the box.
+        if (y > _lry) y=_lry;
+        if (y < _uly) y=_uly;
+        if (x > _lrx) x=_lrx;
+        if (x < _ulx) x=_ulx;
         // erase previous rectangle, if there was one.
-        if ((_zoomx != -1 || _zoomy != -1) && pointinside) {
+        if ((_zoomx != -1 || _zoomy != -1)) {
             // Ability to zoom out added by William Wu.
             // If we are not already zooming, figure out whether we
             // are zooming in or out.
@@ -866,14 +874,11 @@ public class PlotBox extends Applet {
     }
 
     /**
-     * Set the starting point for an interactive zoom box.
+     * Zoom in or out based on the box that has been drawn.
      * @deprecated As of JDK1.1 in java.awt.component 
      * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean mouseUp(Event evt, int x, int y) { // deprecated
-        // ignore if there hasn't been a drag, or if x,y is out of range
-        boolean pointinside = y <= _lry && y >= _uly &&
-	    x <= _lrx && x >= _ulx;
         boolean handled = false;
         if ((_zoomin == true) && (_drawn == true)){  
             if (_zoomxn != -1 || _zoomyn != -1) {
@@ -885,9 +890,13 @@ public class PlotBox extends Applet {
                 _graphics.setXORMode(_background);
                 _graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
                 _graphics.setPaintMode();
-                // if in range, zoom
-                if ((pointinside) && (Math.abs(_zoomx-x) > 5) 
-                                  && (Math.abs(_zoomy-y) > 5)) {
+                // constrain to be in range
+                if (y > _lry) y=_lry;
+                if (y < _uly) y=_uly;
+                if (x > _lrx) x=_lrx;
+                if (x < _ulx) x=_ulx;
+                // NOTE: ignore if total drag less than 5 pixels.
+                if ((Math.abs(_zoomx-x) > 5) && (Math.abs(_zoomy-y) > 5)) {
                     double a = _xMin + (_zoomx - _ulx)/_xscale;
                     double b = _xMin + (x - _ulx)/_xscale;
                     if (a < b) setXRange(a, b);
@@ -908,22 +917,21 @@ public class PlotBox extends Applet {
             _graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
                     30+x_diff*2, 30+y_diff*2);
             _graphics.setPaintMode();
-            if (pointinside) {
-                // Calculate zoom factor.
-                double a = (double)(Math.abs(_zoomx - x)) / 30.0;
-                double b = (double)(Math.abs(_zoomy - y)) / 30.0;
-                double newx1 = _xMax + (_xMax - _xMin) * a;
-                double newx2 = _xMin - (_xMax - _xMin) * a;
-                if (newx1 > _xTop) newx1 = _xTop; 
-                if (newx2 < _xBottom) newx2 = _xBottom; 
-                double newy1 = _yMax + (_yMax - _yMin) * b;
-                double newy2 = _yMin - (_yMax - _yMin) * b;
-                if (newy1 > _yTop) newy1 = _yTop; 
-                if (newy2 < _yBottom) newy2 = _yBottom; 
-                setXRange(newx2, newx1);
-                setYRange(newy2, newy1);
-                drawPlot(_graphics, true);
-            } 
+
+            // Calculate zoom factor.
+            double a = (double)(Math.abs(_zoomx - x)) / 30.0;
+            double b = (double)(Math.abs(_zoomy - y)) / 30.0;
+            double newx1 = _xMax + (_xMax - _xMin) * a;
+            double newx2 = _xMin - (_xMax - _xMin) * a;
+            if (newx1 > _xTop) newx1 = _xTop; 
+            if (newx2 < _xBottom) newx2 = _xBottom; 
+            double newy1 = _yMax + (_yMax - _yMin) * b;
+            double newy2 = _yMin - (_yMax - _yMin) * b;
+            if (newy1 > _yTop) newy1 = _yTop; 
+            if (newy2 < _yBottom) newy2 = _yBottom; 
+            setXRange(newx2, newx1);
+            setYRange(newy2, newy1);
+            drawPlot(_graphics, true);
             handled = true;
         } else if (_drawn == false){
             drawPlot(_graphics, true);
@@ -1024,6 +1032,16 @@ public class PlotBox extends Applet {
 	setBackground(_background);
     }
 
+    /** Set the foreground color.  The color is not actually changed
+     * until a  later time.
+     */
+    public void saveForeground (Color foreground) {
+	// Can't call this setForeground, or we will get confused
+	// with the Component method.
+	_foreground = foreground;
+	setForeground(_foreground);
+    }
+
     /** Set the binary flag to true if we are reading pxgraph format binary
      * data.
      */
@@ -1037,16 +1055,6 @@ public class PlotBox extends Applet {
      */
     public void setDataurl (String dataurl) {
 	_dataurl = dataurl;
-    }
-
-    /** Set the foreground color.  The color is not actually changed
-     * until a  later time.
-     */
-    public void saveForeground (Color foreground) {
-	// Can't call this setForeground, or we will get confused
-	// with the Component method.
-	_foreground = foreground;
-	setForeground(_foreground);
     }
 
     /**
@@ -1093,15 +1101,6 @@ public class PlotBox extends Applet {
     }
 
     /** 
-     * Set the label for the Y (vertical) axis.  The label will
-     * appear on the subsequent call to <code>paint()</code> or
-     * <code>drawPlot()</code>.
-     */
-    public void setYLabel (String label) {
-        _ylabel = label;
-    }
-
-    /** 
      * Set the X (horizontal) range of the plot.  If this is not done
      * explicitly, then the range is computed automatically from data
      * available when <code>paint()</code> or <code>drawPlot()</code>
@@ -1111,6 +1110,15 @@ public class PlotBox extends Applet {
     public void setXRange (double min, double max) {
         _setXRange(min,max);
         _xRangeGiven = true;
+    }
+
+    /** 
+     * Set the label for the Y (vertical) axis.  The label will
+     * appear on the subsequent call to <code>paint()</code> or
+     * <code>drawPlot()</code>.
+     */
+    public void setYLabel (String label) {
+        _ylabel = label;
     }
 
     /**
@@ -1423,12 +1431,12 @@ public class PlotBox extends Applet {
  
     /*
      * Return the number of fractional digits required to display the
-     * given number.  No number larger than 50 is returned (if
-     * more than 50 digits are required, 50 is returned).
+     * given number.  No number larger than 15 is returned (if
+     * more than 15 digits are required, 15 is returned).
      */
     private int _numFracDigits (double num) {
         int numdigits = 0;
-        while (numdigits <= 50 && num != Math.floor(num)) {
+        while (numdigits <= 15 && num != Math.floor(num)) {
             num *= 10.0;
             numdigits += 1;
         }
@@ -1437,12 +1445,12 @@ public class PlotBox extends Applet {
  
     /*
      * Return the number of integer digits required to display the
-     * given number.  No number larger than 50 is returned (if
-     * more than 50 digits are required, 50 is returned).
+     * given number.  No number larger than 15 is returned (if
+     * more than 15 digits are required, 15 is returned).
      */
     private int _numIntDigits (double num) {
         int numdigits = 0;
-        while (numdigits <= 50 && (int)num != 0.0) {
+        while (numdigits <= 15 && (int)num != 0.0) {
             num /= 10.0;
             numdigits += 1;
         }
@@ -1453,8 +1461,9 @@ public class PlotBox extends Applet {
      * Parse a string of the form: "word num, word num, word num, ..."
      * where the word must be enclosed in quotes if it contains spaces,
      * and the number is interpreted as a floating point number.  Ignore
-     * any incorrectly formatted fields.  Append the words in order to the
-     * vector wordved and the numbers (as Doubles) to the vector numvec.
+     * any incorrectly formatted fields.  I <i>xtick</i> is true, then interpret
+     * the parsed string to specify the tick labels on the x axis.  Otherwise,
+     * do the y axis.
      */
     private void _parsePairs (String line, boolean xtick) {    
         int start = 0;
