@@ -78,7 +78,7 @@ EXTRA_SRCS = \
 	javahtml.awk \
 	main.htm \
 	mainheader.htm \
-	ptII1.0.release.htm \
+	ptII1.1.release.htm \
 	ptIIfaq.htm \
 	toc.css \
 	toc.htm \
@@ -88,7 +88,7 @@ EXTRA_SRCS = \
 # Derived files that are preprocessed for use within vergil.
 VERGIL_DOCS = \
 	mainVergil.htm \
-	ptII1.0.releaseVergil.htm \
+	ptII1.1.releaseVergil.htm \
 	troubleshootingVergil.htm
 
 # Include these jars in PTAUXALLJAR
@@ -243,7 +243,7 @@ mainVergil.htm: main.htm
 
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
-ptII1.0.releaseVergil.htm: ptII1.0.release.htm
+ptII1.1.releaseVergil.htm: ptII1.1.release.htm
 	awk -f javahtml.awk $< > $@  
 troubleshootingVergil.htm: troubleshooting.htm
 	awk -f javahtml.awk $< > $@  
