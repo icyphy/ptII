@@ -47,7 +47,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
@@ -151,7 +151,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
         ConstVariableModelAnalysis constantAnalysis;
         try {
             constantAnalysis = new ConstVariableModelAnalysis(_model);
-        } catch (IllegalActionException ex) {
+        } catch (KernelException ex) {
             throw new RuntimeException(ex.getMessage());
         }
         // For every variable and settable attribute in the model, create a
