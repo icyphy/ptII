@@ -23,12 +23,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
+@ProposedRating Red
+@AcceptedRating Red
 */
-/** a demo for the SDF domain.  demonstrates an actor with more than one
- *  on each port.
- *  @author Steve Neuendorffer
- *  @version $Id$
- */
 
 package ptolemy.domains.sdf.demo;
 
@@ -41,14 +38,15 @@ import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.sdf.lib.*;
 import java.util.Enumeration;
 
-
-/**
- * @version $Id$
+/** a demo for the SDF domain.  demonstrates an actor with more than one
+ *  token on each port.
+ *  @author Steve Neuendorffer
+ *  @version $Id$
  */
 public class SDFdemo2 {
 
     private SDFRamp ramp;
-    private SDF2Delay delay;
+    private SDFDelay delay;
     private SDFPrint print;
     private Manager m = new Manager();
     private CompositeActor c = new CompositeActor();
@@ -58,34 +56,45 @@ public class SDFdemo2 {
 
     public static void main(String args[])
             throws IllegalActionException, NameDuplicationException
-         {
-             //            DebugListener debugger = new DebugListener();
-             //Debug.register(debugger);
+        {
+            SDFdemo2 demo = new SDFdemo2();
+            demo.execute();
+        }
 
-        SDFdemo2 demo=new SDFdemo2();
-        demo.execute();
-    }
     public void execute()
             throws IllegalActionException, NameDuplicationException
         {
 
-                c.setManager(m);
-                c.setDirector(d);
-                d.setScheduler(s);
-                d.setScheduleValid(false);
+            Manager m = new Manager();
+            CompositeActor c = new CompositeActor();
+            SDFDirector d = new SDFDirector();
+            SDFScheduler s = new SDFScheduler();
+            IORelation r;
 
-                print=new SDFPrint(c,"print");
-                ramp=new SDFRamp(c,"ramp");
-                delay=new SDF2Delay(c,"delay");
+            c.setManager(m);
+            c.setDirector(d);
+            d.setScheduler(s);
+            d.setScheduleValid(false);
 
-                r=(IORelation) c.connect(ramp.outputport,delay.inputport,"R1");
-                r=(IORelation) c.connect(delay.outputport,print.inputport,"R2");
+            SDFPrint print = new SDFPrint(c, "print");
+            SDFRamp ramp = new SDFRamp(c, "ramp");
+            SDFDelay delay = new SDFDelay(c, "delay");
 
+            IOPort rampoutput = (IOPort)ramp.getPort("output");
+            IOPort delayinput = (IOPort)delay.getPort("input");
+            IOPort delayoutput = (IOPort)delay.getPort("output");
+            IOPort printinput = (IOPort)print.getPort("input");
 
-                Parameter p = (Parameter) d.getAttribute("Iterations");
-                p.setToken(new IntToken(6));
+            delay.setTokenConsumptionRate(delayinput, 2);
+            delay.setTokenProductionRate(delayoutput, 2);
 
-                m.run();
+            r = (IORelation) c.connect(rampoutput, delayinput, "R1");
+            r = (IORelation) c.connect(delayoutput, printinput, "R2");
+
+            Parameter p = (Parameter) d.getAttribute("Iterations");
+            p.setToken(new IntToken(6));
+
+            m.run();
         }
 }
 

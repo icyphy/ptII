@@ -23,6 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
+@ProposedRating Red
+@AcceptedRating Red
 */
 package ptolemy.domains.sdf.demo;
 
@@ -38,24 +40,17 @@ import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
 /**
+ * This class demonstrates a very simple SDF system.
+ * @author Steve Neuendorffer
  * @version $Id$
  */
 public class SDFdemo {
-
-    private SDFRamp ramp;
-    private SDFDelay delay;
-    private SDFPrint print;
-    private Manager m = new Manager();
-    private CompositeActor c = new CompositeActor();
-    private SDFDirector d = new SDFDirector();
-    private SDFScheduler s = new SDFScheduler();
-    private IORelation r;
 
     public static void main(String args[])
             throws IllegalActionException, NameDuplicationException
         {
             DebugListener debugger = new DebugListener();
-            
+
             Debug.register(debugger);
             SDFdemo demo = new SDFdemo();
             demo.execute();
@@ -63,26 +58,32 @@ public class SDFdemo {
     public void execute()
             throws IllegalActionException, NameDuplicationException
         {
+            Manager m = new Manager();
+            CompositeActor c = new CompositeActor();
+            SDFDirector d = new SDFDirector();
+            SDFScheduler s = new SDFScheduler();
+            IORelation r;
 
-                c.setDirector(d);
-                c.setManager(m);
-                d.setScheduler(s);
-                d.setScheduleValid(false);
+            c.setDirector(d);
+            c.setManager(m);
+            d.setScheduler(s);
+            d.setScheduleValid(false);
 
-                print = new SDFPrint(c, "print");
-                ramp = new SDFRamp(c, "ramp");
-                delay = new SDFDelay(c, "delay");
+            SDFPrint print = new SDFPrint(c, "print");
+            SDFRamp ramp = new SDFRamp(c, "ramp");
+            SDFDelay delay = new SDFDelay(c, "delay");
 
-                IOPort delayinput = (IOPort) delay.getPort("input");
-                IOPort delayoutput = (IOPort) delay.getPort("output");
+            IOPort rampoutput = (IOPort) ramp.getPort("output");
+            IOPort delayinput = (IOPort) delay.getPort("input");
+            IOPort delayoutput = (IOPort) delay.getPort("output");
+            IOPort printinput = (IOPort) print.getPort("input");
 
-                r = (IORelation) c.connect(ramp.outputport,delayinput, "R1");
-                r = (IORelation) c.connect(delayoutput,print.inputport, "R2");
+            r = (IORelation) c.connect(rampoutput, delayinput, "R1");
+            r = (IORelation) c.connect(delayoutput, printinput, "R2");
 
-
-                Parameter p = (Parameter) d.getAttribute("Iterations");
-                p.setToken(new IntToken(6));
-                m.run();
+            Parameter p = (Parameter) d.getAttribute("Iterations");
+            p.setToken(new IntToken(6));
+            m.run();
         }
 }
 
