@@ -50,8 +50,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	ODFConsonants.java \
+	ODFInPunctuation.java \
 	ODFPrintString.java \
 	ODFPunctuation.java \
+	ODFStringMerge.java \
 	ODFStringSource.java \
 	ODFVowels.java
 
