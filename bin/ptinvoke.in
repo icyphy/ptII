@@ -321,6 +321,15 @@ if [ "$PTCOPERNICUS_DIR" = "copernicus" ]; then
 fi
 
 
+#### JNI
+# PTJNI_DIR is set to jni if configure found gcc or cc
+PTJNI_DIR=@PTJNI_DIR@
+PTJNI_PROPERTIES=""
+if [ "$PTJNI_DIR" = "jni" ]; then
+    # Properties for compiling
+    JNI_PROPERTIES="-Dptolemy.ptII.jni.architecture=@PTJNI_ARCHITECTURE@ -Dptolemy.ptII.java.dir=\"@PTJAVA_DIR@\""
+fi
+
 #### Joystick
 # PTJOYSTICK_DIR is set to joystick if configure found joystick
 PTJOYSTICK_DIR=@PTJOYSTICK_DIR@
@@ -377,8 +386,11 @@ SAXON_JAR=${CLASSPATHSEPARATOR}${PTII}/lib/saxon7.jar
 # The problem is that the nesc/configure script does not understand
 # "c:/" style syntax, it works with "/cygdrive/c/", yet Java
 # does not understand /cygdrive/c syntax, so we hack
-TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
-TOSJARS=${CLASSPATHSEPARATOR}${TOSROOT_NO_CYGDRIVE}
+if [ ! -x "$TOSROOT" ]; then 
+    TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+    TOSJARS=${CLASSPATHSEPARATOR}${TOSROOT_NO_CYGDRIVE}
+    TOS_PROPERTIES="-Dptolemy.ptII.tosroot=\"${TOSROOT_NO_CYGDRIVE}\"
+fi
 
 #### X10 is the interface library for power line communication, see
 # http://x10.homelinux.org/download.html
@@ -397,7 +409,7 @@ fi
 # CALTROP_JARS contains java_cup.jar and jasminclasses.jar contains
 # a version of java cup
 ALL_JAR="${DIVA_JAR}${JINI_JARS}${CALTROP_JARS}${CHIC_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JAR}${TOSJARS}${X10_JARS}"
-ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} -Xmx256M"
+ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} ${JNI_PROPERTIES} ${TOS_PROPERTIES} -Xmx256M"
 
 #### Sandbox
 # Use a fairly tight sandbox to provide security when running models
