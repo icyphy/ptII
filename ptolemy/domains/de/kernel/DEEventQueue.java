@@ -1,4 +1,4 @@
-/* The interface for DE domain event queue.
+/* The interface for DE domain event queues.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@ProposedRating Green (liuj@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.kernel;
@@ -35,7 +35,6 @@ import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEEventQueue
-//
 /** This interface defines the global event queue used by DE directors
  *  to sort and manage events. Events are sorted according to their time
  *  stamps, microstep and the depth of the destination actor.
@@ -43,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  a smaller time stamp, or when the time stamps are identical,
  *  it has a smaller microstep, or when both time stamps and
  *  microsteps are identical, it has a smaller depth.
- *  If both three entries are are identical, the events are stored in
+ *  If all three entries are identical, the events are stored in
  *  a FIFO way.
  *
  *  @author Lukito Muliadi, Jie Liu
@@ -52,7 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @see ptolemy.actor.util.CalendarQueue
  *  @see DEDirector
  */
-public interface DEEventQueue extends Debuggable{
+public interface DEEventQueue extends Debuggable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -63,7 +62,7 @@ public interface DEEventQueue extends Debuggable{
 
     /** Return the event associated with the earliest tag in this
      *  event queue. Note that the event is not dequeued.
-     *  @return Return the earliest event.
+     *  @return The earliest event.
      *  @exception IllegalActionException If the queue is empty.
      */
     public DEEvent get() throws IllegalActionException;

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
@@ -38,27 +38,28 @@ import ptolemy.actor.util.CalendarQueue;
 //////////////////////////////////////////////////////////////////////////
 //// DECQEventQueue
 //
-/** A calendar queue implementation of the DE event queue. It store DE
+/** A calendar queue implementation of the DE event queue. This stores DE
  *  events in the order of their time stamps, microstep and the depth
  *  of the destination actor. One DEEvent is said to be earlier than
  *  another, if it has
- *  a smaller time stamp, or when the time stamps are identical,
+ *  a smaller time stamp, or when the time stamps are identical
  *  it has a smaller microstep, or when both time stamps and
- *  microsteps are identical, it has a smaller depth.
+ *  microsteps are identical it has a smaller depth.
  *  <P>
  *  Its complexity is
  *  theoretically O(1) for both enqueue and dequeue operations, assuming
  *  a reasonable distribution of time stamps.
  *
- *  @author Lukito Muliadi
+ *  @author Lukito Muliadi, Jie Liu
  *  @version $Id$
  *  @see DEReceiver
- *  @see CalendarQueue
+ *  @see ptolemy.actor.util.CalendarQueue
+ *  @see DEEventQueue
  *  @see DEDirector
  */
 public class DECQEventQueue implements DEEventQueue {
 
-    /** Construct an empty event queue.  The calender queue takes its
+    /** Construct an empty event queue.  The calendar queue takes its
      *  default parameter, i.e. minBinCount is 2, binCountFactor is 2,
      *  and isAdaptive is true.
      */
@@ -99,7 +100,7 @@ public class DECQEventQueue implements DEEventQueue {
         _cQueue.clear();
     }
 
-    /** Return the smallest event in the queue without dequeueing it.
+    /** Return the earliest event in the queue without dequeueing it.
      *  This method is synchronized since there
      *  may be actors running under different threads in the DE domain.
      *  @return The smallest event in the queue.
@@ -110,6 +111,8 @@ public class DECQEventQueue implements DEEventQueue {
     }
 
     /** Return true if this event queue is empty.
+     *  This method is synchronized since there
+     *  may be actors running under different threads in the DE domain.
      *  @return True if the queue is empty.
      */
     public synchronized final boolean isEmpty() {
