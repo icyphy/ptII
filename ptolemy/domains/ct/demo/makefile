@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/ct/demo
 
-DIRS = Helicopter Lorenz SigmaDelta StickyBall Thermostat
+DIRS = Helicopter Lorenz SigmaDelta SquareWave StickyBall Thermostat
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -60,8 +60,7 @@ TCL_SRCS = \
 	WaveBERK23.tcl
 
 
-JSRCS = \
-	WaveBERK23.java 
+JSRCS = 
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
 
