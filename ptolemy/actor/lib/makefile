@@ -65,6 +65,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AddSubtract.java \
 	AbsoluteValue.java \
+	ArrayAppend.java \
 	Average.java \
 	Bernoulli.java \
 	BooleanExpression.java \
