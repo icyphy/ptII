@@ -28,7 +28,7 @@
 
 */
 
-package ptolemy.domains.csp.lib;
+package ptolemy.domains.csp.demo.DiningPhilosophers;
 
 import ptolemy.domains.csp.kernel.*;
 import ptolemy.domains.csp.demo.DiningPhilosophers.*;
