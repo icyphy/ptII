@@ -35,13 +35,15 @@ import java.text.NumberFormat;
 //////////////////////////////////////////////////////////////////////////
 //// DoubleToken
 /**
- * A token that contains a double precision number.
- *
- * @author Yuhong Xiong, Neil Smyth
- * @see ptolemy.data.Token
- * @see java.text.NumberFormat
- * @version $Id$
- */
+A token that contains a double precision number.
+FIXME: what do do about long in the operator overloading methods?*
+<p>
+@author Neil Smyth, Yuhong Xiong 
+@see ptolemy.data.Token
+@see java.text.NumberFormat
+@version $Id$ %G
+
+*/
 public class DoubleToken extends ScalarToken {
 
     /** Construct a token with double 0.0.
@@ -56,18 +58,30 @@ public class DoubleToken extends ScalarToken {
 	_value = value;
     }
 
+    /** Construct an IntToken from the specified string.
+     *  @exception IllegalArgumentException If the Token could not 
+     *   be created with the given String.
+  
+    public DoubleToken(String init) throws IllegalArgumentException {
+	try {
+	    _value = (Double.valueOf(init)).doubleValue();
+	} catch (NumberFormatException e) {
+	    throw new IllegalArgumentException(e.getMessage());
+	}
+    }
+    */
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
 
-    /** Add the value of the argument Token to this Token. Type resolution
-     *  also occurs here, with the returned Token type chosen to achieve
-     *  a lossless conversion.
-     * FIXME: what do do about long in the next six methods?
+    /** Return a new token whose value is the sum of this token 
+     *  and the argument. Type resolution also occurs here, with 
+     *  the returned Token type chosen to achieve a lossless conversion.
      *  @param tok The token to add to this Token.
-     *  @exception IllegalActionException Thrown if the passed token
+     *  @exception IllegalActionException If the passed token
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
+     *  @return A new Token containing the result.
      */
     public Token add(ptolemy.data.Token tok) throws IllegalActionException {
         int typeInfo = TypeCPO.compare(this, tok);
@@ -92,13 +106,15 @@ public class DoubleToken extends ScalarToken {
         }
     }
 
-    /** Add the value of this Token to the argument Token. Type resolution
-     *  also occurs here, with the returned Token type chosen to achieve
+    /** Return a new token whose value is the sum of this token 
+     *  and the argument. Type resolution also occurs here, with
+     *  the returned Token type chosen to achieve
      *  a lossless conversion.
      *  @param tok The token to add this Token to.
-     *  @exception IllegalActionException Thrown if the passed token
+     *  @exception IllegalActionException If the passed token
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
+     *  @return A new Token containing the result.
      */
     public Token addR(ptolemy.data.Token tok) throws IllegalActionException {
         DoubleToken tmp = (DoubleToken)this.convert(tok);
@@ -118,8 +134,10 @@ public class DoubleToken extends ScalarToken {
     /** Used to convert Token types further down the type hierarchy to
      *  the type of this Token
      *  @param tok The token to be converted to a DoubleToken.
-     *  @exception IllegalActionException Thrown if the conversion
+     *  @exception IllegalActionException If the conversion
      *  cannot be carried out in a lossless fashion.
+     *  @return A new Token containing the argument Token converted 
+     *   to the type of this Token.
      */
     public Token convert(Token tok) throws IllegalActionException{
         if (tok instanceof IntToken) {
@@ -137,24 +155,26 @@ public class DoubleToken extends ScalarToken {
         }
     }
 
-    /** Divide the value of this Token with the value of the argument Token.
+    /** Return a new Token whose value is the value of this token 
+     *  divided by the value of the argument token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
-     *  @param tok The token to divide this Token by
-     *  @exception IllegalActionException Thrown if the passed token is
+     *  @param divisor The token to divide this Token by
+     *  @exception IllegalActionException If the passed token is
      *  not of a type that can be divide this Tokens value by in a
      *  lossless fashion.
+     *  @return A new Token containing the result.
      */
-    public Token divide(Token tok) throws IllegalActionException {
-        int typeInfo = TypeCPO.compare(this, tok);
+    public Token divide(Token divisor) throws IllegalActionException {
+        int typeInfo = TypeCPO.compare(this, divisor);
         try {
             if (typeInfo == CPO.LOWER) {
-                return tok.divideR(this);
-            } else if (tok instanceof DoubleToken) {
-                double result = _value / ((DoubleToken)tok).getValue();
+                return divisor.divideR(this);
+            } else if (divisor instanceof DoubleToken) {
+                double result = _value / ((DoubleToken)divisor).getValue();
                 return new DoubleToken(result);
             } else if (typeInfo == CPO.HIGHER) {
-                DoubleToken tmp = (DoubleToken)this.convert(tok);
+                DoubleToken tmp = (DoubleToken)this.convert(divisor);
                 double result = _value / tmp.getValue();
                 return new DoubleToken(result);
             } else {
@@ -163,26 +183,29 @@ public class DoubleToken extends ScalarToken {
         } catch (Exception ex) {
             String str = "divide method not supported between";
             str = str + this.getClass().getName() + " and ";
-            str = str + tok.getClass().getName();
+            str = str + divisor.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
 
-    /** Divide the value of the argument Token by this Token. Type resolution
+     /** Return a new Token whose value is the value of the argument token 
+     *  divided by the value of this token. Type resolution
      *  also occurs here, with the returned Token type chosen to achieve
      *  a lossless conversion.
-     *  @param tok The token to be divided by the value of this Token.
-     *  @exception IllegalActionException Thrown if the passed token
+     *  @param dividend The token to be divided by the value of this Token.
+     *  @exception IllegalActionException If the passed token
      *   is not of a type that can be divided by this Tokens value in
      *   a lossless fashion.
+     *  @return A new Token containing the result.
      */
-    public Token divideR(ptolemy.data.Token tok) throws IllegalActionException {
-        DoubleToken tmp = (DoubleToken)this.convert(tok);
+    public Token divideR(ptolemy.data.Token dividend) throws IllegalActionException {
+        DoubleToken tmp = (DoubleToken)this.convert(dividend);
         double result = tmp.getValue() / _value;
         return new DoubleToken(result);
     }
 
     /** Return the value in the token as a double.
+     *  @return The value contained in this token as a double.
      */
     public double doubleValue() {
 	return _value;
@@ -191,22 +214,23 @@ public class DoubleToken extends ScalarToken {
     /** Test the values of this Token and the argument Token for equality.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
-     *  @param tok The token to divide this Token by
-     *  @exception IllegalActionException Thrown if the passed token is
+     *  @param token The token to test equality of this token with.
+     *  @exception IllegalActionException If the passed token is
      *  not of a type that can be compared with this Tokens value.
+     *  @return BooleanToken indicating whether the values are equal.
      */
-    public BooleanToken equality(Token tok) throws IllegalActionException {
-        int typeInfo = TypeCPO.compare(this, tok);
+    public BooleanToken equals(Token token) throws IllegalActionException {
+        int typeInfo = TypeCPO.compare(this, token);
         try {
             if (typeInfo == CPO.LOWER) {
-                return tok.equality(this);
-            } else if (tok instanceof DoubleToken) {
-                if ( _value == ((DoubleToken)tok).getValue()) {
+                return token.equals(this);
+            } else if (token instanceof DoubleToken) {
+                if ( _value == ((DoubleToken)token).getValue()) {
                     return new BooleanToken(true);
                 }
                 return new BooleanToken(false);
             } else if (typeInfo == CPO.HIGHER) {
-                DoubleToken tmp = (DoubleToken)this.convert(tok);
+                DoubleToken tmp = (DoubleToken)this.convert(token);
                 if ( _value == tmp.getValue()) {
                     return new BooleanToken(true);
                 }
@@ -217,48 +241,38 @@ public class DoubleToken extends ScalarToken {
         } catch (Exception ex) {
             String str = "equality method not supported between";
             str = str + this.getClass().getName() + " and ";
-            str = str + tok.getClass().getName();
+            str = str + token.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
 
-    /** Set the value in the token to the value represented by the
-     *  specified string.
-     *  @exception IllegalArgumentException The string does not contain
-     *  a parsable number.
-     */
-    public void fromString(String init)
-	    throws IllegalArgumentException {
-	try {
-	    _value = (Double.valueOf(init)).doubleValue();
-	} catch (NumberFormatException e) {
-	    throw new IllegalArgumentException(e.getMessage());
-	}
-    }
-
+    
     /** Get the double value contained by this token.
+     *  @return The double value contained by this token.
      */
     public double getValue() {
         return _value;
     }
 
-    /** Get the value of this Token modulo the value of the argument Token.
+    /** Return a new Token whose value is the value of this token 
+     *  modulo the value of the argument token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
-     *  @param tok The token to modulo this Token by
-     *  @exception IllegalActionException Thrown if the passed token is
+     *  @param token The token to modulo this Token by
+     *  @exception IllegalActionException If the passed token is
      *  not of a type that can be  used with modulo in a lossless fashion.
+     *  @return A new Token containing the result.
      */
-    public Token modulo(Token tok) throws IllegalActionException {
-        int typeInfo = TypeCPO.compare(this, tok);
+    public Token modulo(Token token) throws IllegalActionException {
+        int typeInfo = TypeCPO.compare(this, token);
         try {
             if (typeInfo == CPO.LOWER) {
-                return tok.moduloR(this);
-            } else if (tok instanceof DoubleToken) {
-                double result = _value % ((DoubleToken)tok).getValue();
+                return token.moduloR(this);
+            } else if (token instanceof DoubleToken) {
+                double result = _value % ((DoubleToken)token).getValue();
                 return new DoubleToken(result);
             } else if (typeInfo == CPO.HIGHER) {
-                DoubleToken tmp = (DoubleToken)this.convert(tok);
+                DoubleToken tmp = (DoubleToken)this.convert(token);
                 double result = _value % tmp.getValue();
                 return new DoubleToken(result);
             } else {
@@ -267,43 +281,48 @@ public class DoubleToken extends ScalarToken {
         } catch (Exception ex) {
             String str = "modulo method not supported between";
             str = str + this.getClass().getName() + " and ";
-            str = str + tok.getClass().getName();
+            str = str + token.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
-    /** Modulo the value of the argument Token by this Token.
+
+    /** Return a new Token whose value is the value of the argument token 
+     *  modulo the value of this token.
      *  Type resolution also occurs here, with the returned Token
      *  type chosen to achieve a lossless conversion.
-     *  @param tok The token to apply modulo to by the value of this Token.
-     *  @exception IllegalActionException Thrown if the passed token
+     *  @param token The token to apply modulo to by the value of this Token.
+     *  @exception IllegalActionException If the passed token
      *   is not of a type that can apply modulo by this Tokens value in
      *   a lossless fashion.
+     *  @return A new Token containing the result.
      */
-    public Token moduloR(ptolemy.data.Token tok) throws IllegalActionException {
-        DoubleToken tmp = (DoubleToken)this.convert(tok);
+    public Token moduloR(Token token) throws IllegalActionException {
+        DoubleToken tmp = (DoubleToken)this.convert(token);
         double result = tmp.getValue() %  _value;
         return new DoubleToken(result);
     }
 
 
-    /** Multiply the value of this Token with the value of the argument Token.
+    /** Return a new Token whose value is the value of this Token 
+     *  multiplied with the value of the argument Token.
      *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
-     *  @param tok The token to multiply this Token by.
-     *  @exception IllegalActionException Thrown if the passed token is
+     *  @param rightFactor The token to multiply this Token by.
+     *  @exception IllegalActionException If the passed token is
      *  not of a type that can be multiplied by this Tokens value in
      *  a lossless fashion.
+     *  @return A new Token containing the result.
      */
-    public Token multiply(Token tok) throws IllegalActionException {
-        int typeInfo = TypeCPO.compare(this, tok);
+    public Token multiply(Token rightFactor) throws IllegalActionException {
+        int typeInfo = TypeCPO.compare(this, rightFactor);
         try {
             if (typeInfo == CPO.LOWER) {
-                return tok.multiplyR(this);
-            } else if (tok instanceof DoubleToken) {
-                double result = _value * ((DoubleToken)tok).getValue();
+                return rightFactor.multiplyR(this);
+            } else if (rightFactor instanceof DoubleToken) {
+                double result = _value * ((DoubleToken)rightFactor).getValue();
                 return new DoubleToken(result);
             } else if (typeInfo == CPO.HIGHER) {
-                DoubleToken tmp = (DoubleToken)this.convert(tok);
+                DoubleToken tmp = (DoubleToken)this.convert(rightFactor);
                 double result = _value * tmp.getValue();
                 return new DoubleToken(result);
             } else {
@@ -312,64 +331,64 @@ public class DoubleToken extends ScalarToken {
         } catch (Exception ex) {
             String str = "multiply method not supported between";
             str = str + this.getClass().getName() + " and ";
-            str = str + tok.getClass().getName();
+            str = str + rightFactor.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
 
-    /** Multiply the value of the argument Token by this Token.
+    /** Return a new Token whose value is the value of the argument Token 
+     *  multiplied with the value of this Token.
      *  Type resolution also occurs here, with the returned Token
      *  type chosen to achieve a lossless conversion.
-     *  @param tok The token to be multiplied by the value of this Token.
-     *  @exception IllegalActionException Thrown if the passed token
+     *  @param leftFactor The token to be multiplied by the value of 
+     *   this Token.
+     *  @exception IllegalActionException If the passed token
      *   is not of a type that can be multiplied by this Tokens value in
      *   a lossless fashion.
+     *  @return A new Token containing the result.
      */
-    public Token multiplyR(ptolemy.data.Token tok) throws IllegalActionException {
-        DoubleToken tmp = (DoubleToken)this.convert(tok);
+    public Token multiplyR(Token leftFactor) throws IllegalActionException {
+        DoubleToken tmp = (DoubleToken)this.convert(leftFactor);
         double result = tmp.getValue() * _value;
         return new DoubleToken(result);
     }
 
-    /** Returns the multiplicativeive identity.
+    /** Returns a new Token representing the multiplicative identity. 
+     *  @return A new Token containing the multiplicative identity.
      */
     public Token one() {
         return new DoubleToken(1.0);
     }
 
-    /** Set the value in the token
-     *  @param d The new value for the token
-     */
-    public void setValue(double d) {
-        _value = d;
-    }
-
     /** Get the value contained in this Token as a String.
      *  It uses java.text.NumberFormat to format the number.
+     *  @return The value contained in this token as a String.
      */
     public String stringValue() {
         NumberFormat nf = NumberFormat.getNumberInstance();
         return nf.format(_value);
     }
 
-    /** Subtract the value of the argument Token from this Token. Type
-     *  resolution also occurs here, with the returned Token type chosen to
-     *  achieve a lossless conversion.
-     *  @param tok The token to subtract to this Token.
-     *  @exception IllegalActionException Thrown if the passed token is
+    /** Return a new Token whose value is the value of the argument Token 
+     *  subtracted from the value of this Token.
+     *  Type resolution also occurs here, with the returned Token type 
+     *  chosen to achieve a lossless conversion.
+     *  @param rightArg The token to subtract to this Token.
+     *  @exception IllegalActionException If the passed token is
      *   not of a type that can be subtracted from this Tokens value in
      *   a lossless fashion.
+     *  @return A new Token containing the result.
      */
-    public Token subtract(ptolemy.data.Token tok) throws IllegalActionException {
-        int typeInfo = TypeCPO.compare(this, tok);
+    public Token subtract(Token rightArg) throws IllegalActionException {
+        int typeInfo = TypeCPO.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
-                return tok.addR(this);
-            } else if (tok instanceof DoubleToken) {
-                double result = _value -  ((DoubleToken)tok).getValue();
+                return rightArg.addR(this);
+            } else if (rightArg instanceof DoubleToken) {
+                double result = _value -  ((DoubleToken)rightArg).getValue();
                 return new DoubleToken(result);
             } else if (typeInfo == CPO.HIGHER) {
-                DoubleToken tmp = (DoubleToken)this.convert(tok);
+                DoubleToken tmp = (DoubleToken)this.convert(rightArg);
                 double result = _value - tmp.getValue();
                 return new DoubleToken(result);
             } else {
@@ -378,39 +397,42 @@ public class DoubleToken extends ScalarToken {
         } catch (Exception ex) {
             String str = "subtract method not supported between";
             str = str + this.getClass().getName() + " and ";
-            str = str + tok.getClass().getName();
+            str = str + rightArg.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
 
-    /** Subtract the value of this Token from the argument Token. Type
-     *  resolution also occurs here, with the returned Token type
+    /** Return a new Token whose value is the value of this Token 
+     *  subtracted from the value of the argument Token.
+     *  Type resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
-     *  @param tok The token to add this Token to.
-     *  @exception IllegalActionException Thrown if the passed token
+     *  @param leftArg The token to add this Token to.
+     *  @exception IllegalActionException If the passed token
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
+     *  @return A new Token containing the result.
      */
-    public Token subtractR(ptolemy.data.Token tok) throws IllegalActionException {
-        DoubleToken tmp = (DoubleToken)this.convert(tok);
+    public Token subtractR(Token leftArg) throws IllegalActionException {
+        DoubleToken tmp = (DoubleToken)this.convert(leftArg);
         double result = _value - tmp.getValue();
         return new DoubleToken(result);
     }
 
     /** Return a description of the token as a string.
      *  In this base class, we return the fully qualified class name.
+     *  @return A String representation of this token.
      */
     public String toString() {
         String str =  getClass().getName() + "(" + stringValue() + ")";
         return str;
     }
 
-    /** Returns the additive identity.
+    /** Returns a new token representing the additive identity. 
+     *  @return A new Token containing the additive identity.
      */
     public Token zero() {
         return new DoubleToken(0);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -52,63 +52,52 @@ public class BooleanToken extends Token {
 	_value = b;
     }
 
+    /** Construct a token with the specified string.
+     
+    public void fromString(String init) throws IllegalArgumentException {
+        _value = (Boolean.valueOf(init)).booleanValue();
+    }
+    */
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Test to see if the argument Token has the same truth value as this
+    /** Return a new BooleanToken whose value depends on whether 
+     *  the argument Token has the same truth value as this
      *  Token.
      *  @param the Token to compare truth values against.
-     *  @exception IllegalActionException Thrown if the argument Token 
-     *  is not a BooleanToken
+     *  @exception IllegalActionException If the argument Token 
+     *  is not a BooleanToken.
+     *  @return A new BooleanToken containing the result.
      */
-    public BooleanToken equality(Token a) throws IllegalActionException {
-        if ( !(a instanceof BooleanToken)) {
+    public BooleanToken equals(Token token) throws IllegalActionException {
+        if ( !(token instanceof BooleanToken)) {
             String str = "Cannot compare a BooleanToken with a ";
             throw new IllegalActionException(str + "non-BooleanToken");
         }
-        boolean arg = ((BooleanToken)a).getValue();
+        boolean arg = ((BooleanToken)token).getValue();
         if ((_value && arg) || !(_value || arg)) {
             return new BooleanToken(true);
         }
         return new BooleanToken(false);
     }
 
-    /** Set the value in the token to the value represented by the
-     *  specified string. If string is true, then set to true. Else false.
-     *  @exception IllegalArgumentException The string does not contain
-     *  a parsable number.
-     */
-    public void fromString(String init)
-	    throws IllegalArgumentException {
-        _value = (Boolean.valueOf(init)).booleanValue();
-    }
-
     /** Returns the value currently stored in this BooleanToken
+     *  @return The boolean value contained in this Token.
      */
     public boolean getValue() {
         return _value;
     }
 
-    /** Negate the value stored by this BooleanToken 
-        FIXME: should this return a new BooleanToken?
+    /** Return a new BooleanToken with the logical not of the value 
+     *  stored in this token.
+     *  @return a new BooleanToken with the opposite value to this token.
     */
-    public void negate() {
-        if (_value) {
-            _value = false;
-        } else {
-            _value = true;
-        }
-    }
-
-
-    /** Set the value of the token to be the specified value.
-     *  @param The boolean value to be contained in this token
-     */
-    public void setValue(boolean b) {
-	_value = b;
+    public BooleanToken negate() {
+        return new BooleanToken(!getValue());
     }
 
     /** Create a string representation of the value in the token.
+     *  @return A String representation of this Token.
      */
     public String toString() {
         String str = getClass().getName() + "(" + _value + ")";

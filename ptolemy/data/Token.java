@@ -25,50 +25,46 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
+@AcceptedRating none
 
 */
 
 //////////////////////////////////////////////////////////////////////////
 //// Token
 /**
-Abstract base class for data capsules.
-This class declares that tokens are cloneable and promotes
+Abstract base class for data capsules. Tokens are immutable.
+FIXME: This class declares that tokens are cloneable and promotes
 the protected clone() method of the Object base class to public.
-It contains a TokenPublisher object which is used to update any
-objects that refer to this token when the value of the Token changes.
-In addition, it defines interfaces to initialize the token from
-a string and to return a description of the token as a string.
+<p>
 Operator overloading between tokens is supported with methods
-for each operator. These methods carry out the operation if it
-can be performed in a lossless manner.
+for each operator. The operators that are overloaded 
+are +, -, *, / == and %. These methods carry out the operation 
+if it can be performed in a lossless manner.
 Not all derived classes are required to implement these methods,
-so the default implementation here triggers an exception.
+so the default implementation in this base class triggers an exception.
+<p>
 
 @author Neil Smyth, Edward A. Lee
 @version $Id$
-@see java.util.Observable
+ 
 */
 
 package ptolemy.data;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-
-import java.util.Observable;
+import ptolemy.kernel.util.IllegalActionException;
 
 public abstract class Token implements Cloneable {
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add the value of the argument Token to the current Token. It should be
-     *  overridden in derived classes to provide type specific actions for
-     *  add. 
-     *  @param a The token whose value we add to this Token.
-     *  @exception IllegalActionException Thrown if this method is not
+    /** Return a new token whose value is the sum of this token 
+     *  and the argument. It should be overridden in derived 
+     *  classes to provide type specific actions for add. 
+     *  @param a The token whose value we add to the value of this token.
+     *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
-     *  @return A token containing the result.
+     *  @return A new Token containing the result.
      */
     public Token add(Token a) throws IllegalActionException {
         String str = "Add method not supported on ";
@@ -76,13 +72,14 @@ public abstract class Token implements Cloneable {
         throw new IllegalActionException(str);
     }
 
-    /** Add the value of the this Token to the argument Token. It should
-     *  be overridden in derived classes to provide type specific actions for
-     *  add. 
-     *  @param a The token to which we add the value of this Token.
+    /** Return a new token whose value is the sum of this token 
+     *  and the argument. It should be overridden in derived classes 
+     *  to provide type specific actions for add. 
+     *  @param a The token containing the value to which we add the 
+     *   value of this token to get the value of the new token.
      *  @exception IllegalActionException Thrown if this method is not
-     *  supported by the derived class.
-     *  @return A token containing the result.
+     *   supported by the derived class.
+     *  @return A new Token containing the result.
      */
     public Token addR(Token a) throws IllegalActionException {
         String str = "Addr method not supported on ";
@@ -98,7 +95,6 @@ public abstract class Token implements Cloneable {
     public Object clone()
             throws CloneNotSupportedException {
         Token result = (Token)super.clone();
-        result._publisher = null;
         return result;
         
     }
@@ -109,23 +105,23 @@ public abstract class Token implements Cloneable {
      *  token. The derived classes should override this method to
      *  convert a token type further down the type hierarchy to the
      *  type of itself.
-     *  @param token a Token to be converted to an instance of this class
-     *  @return the Token in the argument
-     *  @exception IllegalActionException not thrown in this base class
+     *  @param token The Token to be converted to an instance of this class.
+     *  @return A new Token of the same type as this token.
+     *  @exception IllegalActionException not thrown in this base class.
      */
-    public Token convert(Token token)
-	    throws IllegalActionException {
+    public Token convert(Token token) throws IllegalActionException {
 	return token;
     }
 
-    /** Divide the value of this Token with the value of the divisor.
+    /** Return a new Token whose value is the value of this token 
+     *  divided by the value of the argument token. 
      *  It should be overridden in derived classes to provide type specific
      *  actions for divide. 
-     *  @param divisor The token whose value we divide the value of this 
+     *  @param divisor The Token whose value we divide the value of this 
      *   Token by.
      *  @exception IllegalActionException Thrown if this method is not
      *   supported by the derived class.
-     *  @return A token containing the result.
+     *  @return A new Token containing the result.
      */
     public Token divide(Token divisor) throws  IllegalActionException {
         String str = "Divide method not supported on ";
@@ -133,14 +129,15 @@ public abstract class Token implements Cloneable {
         throw new IllegalActionException(str);
     }
 
-    /** Divide the value of the argument Token with the value of this Token.
+    /** Return a new Token whose value is the value of the argument token 
+     *  divided by the value of this token. 
      *  It  should be overridden in derived classes to provide type specific
      *  actions for divide. 
-     *  @param dividend The token whose value we divide by the value of 
+     *  @param dividend The Token whose value we divide by the value of 
      *   this Token.
      *  @exception IllegalActionException Thrown if this method is not
      *   supported by the derived class.
-     *  @return A token containing the result.
+     *  @return A new Token containing the result.
      */
     public Token divideR(Token dividend) throws  IllegalActionException {
         String str = "DivideR method not supported on ";
@@ -151,39 +148,15 @@ public abstract class Token implements Cloneable {
     /** Test for equality of the values of this Token and the argument Token.
      *  It should be overridden in derived classes to provide type specific
      *  actions for equality testing. 
-     *  @param tok The token with which to test equality.
-     *  @exception IllegalActionException Thrown if this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken which contains the result of the test.
+     *  @param token The token with which to test equality.
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
+     *  @return A  new BooleanToken which contains the result of the test.
      */
-    public BooleanToken equality(Token tok) throws IllegalActionException {
+    public BooleanToken equals(Token token) throws IllegalActionException {
         String str = "Equality method not supported on ";
         str = str + this.getClass().getName() + "objects";
         throw new IllegalActionException(str);
-    }
-
-    /** Initialize the value of the token from the given string.
-     *  In this base class, we just throw an exception.
-     *  @param init The String to set the current value from.
-     *  @exception IllegalActionException Initialization of this token
-     *   from a string is not supported.
-     */
-    public void fromString(String init)
-            throws IllegalActionException {
-        // FIXME: Should throw a new exception: FormatException
-        Class myclass = getClass();
-        throw new IllegalActionException("Tokens of class "
-                + myclass.getName() + " cannot be initialized from a string.");
-    }
-
-    /** Return the Publisher object associated with this Token.
-     *  @return The publisher associated with this Token.
-     */
-    public TokenPublisher getPublisher() {
-        if (_publisher == null) {
-            _publisher = new TokenPublisher(this);
-        }
-        return _publisher;
     }
 
     /** This method should be overridden where appropriate in subclasses.
@@ -193,81 +166,71 @@ public abstract class Token implements Cloneable {
         return false;
     }
 
-    /** Find the result of the value of this Token modulo the value of the
-     *  argument Token. Return a new Token with the result.
+    /** Return a new Token whose value is the value of this token 
+     *  modulo the value of the argument token.
      *  It should be overridden in derived classes to provide type specific
      *  actions for modulo.
-     *  @param a The token whose value we do modulo with.
-     *  @exception IllegalActionException Thrown if this method is not
+     *  @param token The token whose value we do modulo with.
+     *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
-     *  @return A token containing the result.
+     *  @return A new Token containing the result.
      */
-    public Token modulo(Token a) throws  IllegalActionException {
+    public Token modulo(Token token) throws  IllegalActionException {
         String str = "Modulo method not supported on ";
         str = str + this.getClass().getName() + "objects";
         throw new IllegalActionException(str);
     }
 
-    /** Find the result of the value of the argument Token modulo the
-     *  value of this Token. Return a new Token with the result.
+    /** Return a new Token whose value is the value of the argument token 
+     *  modulo the value of this token.
      *  It should be overridden in derived classes to provide type specific
      *  actions for modulo.
-     *  @param a The token whose value we do modulo with.
-     *  @exception IllegalActionException Thrown if this method is not
+     *  @param token The token whose value we modulo on.
+     *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
-     *  @return A token containing the result.
+     *  @return A new Token containing the result.
      */
-    public Token moduloR(Token a) throws  IllegalActionException {
+    public Token moduloR(Token token) throws IllegalActionException {
         String str = "ModuloR method not supported on ";
         str = str + this.getClass().getName() + "objects";
         throw new IllegalActionException(str);
     }
 
-    /** Multiply the value of this Token with the value of the argument Token.
-     *  It should be overridden in derived classes to provide type specific
-     *  actions for multiply. 
-     *  @param tok The token whose value we multiply the value of this
+    /** Return a new Token whose value is the value of this Token 
+     *  multiplied with the value of the argument Token.
+     *  @param rightFactor The token whose value we multiply the value of this
      *   Token with.
-     *  @exception IllegalActionException Thrown if this method is not
+     *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
-     *  @return A token containing the result.
+     *  @return A new Token containing the result.
      */
-    public Token multiply(Token tok) throws  IllegalActionException {
+    public Token multiply(Token rightFactor) throws  IllegalActionException {
         String str = "Multiply method not supported on ";
         str = str + this.getClass().getName() + "objects";
         throw new IllegalActionException(str);
     }
 
-    /** Multiply the value of the argument Token with the value of this Token.
+    /** Return a new Token whose value is the value of the argument Token 
+     *  multiplied with the value of this Token.
      *  It  should be overridden in derived classes to provide type specific
      *  actions for multiply.
-     *  @param tok The token whose value we multiply the value of this
+     *  @param leftFactor The token whose value we multiply the value of this
      *   Token with.
-     *  @exception IllegalActionException Thrown if this method is not
+     *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
-     *  @return A token containing the result.
+     *  @return A new Token containing the result.
      */
-    public Token multiplyR(Token tok) throws  IllegalActionException {
+    public Token multiplyR(Token leftFactor) throws  IllegalActionException {
         String str = "MultiplyR method not supported on ";
         str = str + this.getClass().getName() + "objects";
         throw new IllegalActionException(str);
     }
 
-    /** Notifies any objects that have registered an interest in
-     *  the value of this Token. 
-     */
-    public void notifySubscribers() {
-        if (_publisher != null) {
-            _publisher.setChanged();
-            _publisher.notifyObservers(this);
-        }
-    }
-
-    /** Returns the multiplicative identity. It should be overridden
-     *  in subclasses.
-     *  @exception IllegalActionException Thrown if this method is not
-     *  supported by the derived class.
-     *  @return A Token containing the multiplicative identity.
+    /** Returns a new Token representing the multiplicative identity. 
+     *  It should be overridden in subclasses.
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
+     *  @return A new Token containing the multiplicative identity.
      */
     public Token one() throws IllegalActionException {
         String str = "Multiplicative identity not supported on ";
@@ -275,19 +238,9 @@ public abstract class Token implements Cloneable {
         throw new IllegalActionException(str);
     }
 
-
-    /** Attach a new TokenPublisher to this token. This method is
-     *  only intended for use when placing a new Token in a Parameter.
-     *  This method should be called by a parameter and be synchronized.
-     *  @param publ The new TokenPublisher associated with this Token.
-     */
-    public void setPublisher(TokenPublisher publ) {
-        _publisher = publ;
-        if (_publisher != null) _publisher.setToken(this);
-    }
-
     /** Return the value of the Token as a String.
-     *  @exception IllegalActionException thrown in this base class.
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
      *  @return The value of the token as a String.
      */
     public String stringValue() throws IllegalActionException {
@@ -296,29 +249,31 @@ public abstract class Token implements Cloneable {
                 + myclass.getName() + " cannot be returned as a String");
     }
 
-    /** Subtract the value of the argument Token from the current Token. It
-     *  should be overridden in derived classes to provide type specific
+    /** Return a new Token whose value is the value of the argument Token 
+     *  subtracted from the value of this Token.
+     *  It should be overridden in derived classes to provide type specific
      *  actions for subtract. 
-     *  @param tok The token whose value we subtract from this Token.
-     *  @exception IllegalActionException Thrown if this method is not
+     *  @param rightArg The token whose value we subtract from this Token.
+     *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
-     *  @return A token containing the result.
+     *  @return A new Token containing the result.
      */
-    public Token subtract(Token tok) throws  IllegalActionException {
+    public Token subtract(Token rightArg) throws  IllegalActionException {
         String str = "Subtract method not supported on ";
         str = str + this.getClass().getName() + "objects";
         throw new IllegalActionException(str);
     }
 
-    /** Subtract the value of the current Token from the argument Token. It
-     *  should be overridden in derived classes to provide type specific
+    /** Return a new Token whose value is the value of this Token 
+     *  subtracted from the value of the argument Token.
+     *  It should be overridden in derived classes to provide type specific
      *  actions for subtract. 
-     *  @param tok The token to subtract the value of this Token from.
-     *  @exception IllegalActionException Thrown if this method is not
+     *  @param leftArg The token to subtract the value of this Token from.
+     *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
-     *  @return A token containing the result.
+     *  @return A new Token containing the result.
      */
-    public Token subtractR(Token tok) throws  IllegalActionException {
+    public Token subtractR(Token leftArg) throws  IllegalActionException {
         String str = "Subtract method not supported on ";
         str = str + this.getClass().getName() + "objects";
         throw new IllegalActionException(str);
@@ -332,23 +287,17 @@ public abstract class Token implements Cloneable {
         return getClass().getName();
     }
 
-    /** Returns the additive identity. It should be overridden
-     *  in subclasses.
-     *  @exception IllegalActionException Thrown if this method is not
+    /** Returns a new token representing the additive identity. 
+     *  It should be overridden in subclasses.
+     *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
-     *  @return A Token containing the additive identity.
+     *  @return A new Token containing the additive identity.
      */
     public Token zero() throws IllegalActionException {
         String str = "Additive identity not supported on ";
         str = str + this.getClass().getName() + "objects";
         throw new IllegalActionException(str);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // the associated TokenPublisher
-    private TokenPublisher _publisher;
 }
 
 
