@@ -761,10 +761,13 @@ public class PtolemyUtilities {
     // Soot class representing the ptolemy.actor.TypedCompositeActor class.
     public static SootClass compositeActorClass;
 
+    // Soot class representing the ptolemy.kernel.CompositeEntity class.
+    public static SootClass compositeEntityClass;
+
     public static SootField doubleTypeField;
     public static SootField doubleMatrixTypeField;
 
-     // Soot class representing the ptolemy.kernel.Entity class.
+    // Soot class representing the ptolemy.kernel.Entity class.
     public static SootClass entityClass;
 
     // Soot class representing the ptolemy.actor.Executable interface.
@@ -780,6 +783,10 @@ public class PtolemyUtilities {
     // SootMethod representing
     // ptolemy.actor.Actor.getDirector
     public static SootMethod getDirectorMethod;
+
+    // SootMethod representing
+    // ptolemy.kernel.CompositeEntity.getEntity
+    public static SootMethod getEntityMethod;
 
     // SootMethod representing
     // ptolemy.kernel.util.Settable.getExpression();
@@ -853,6 +860,10 @@ public class PtolemyUtilities {
     public static SootClass typeLatticeClass;
  
     public static SootField unknownTypeField;
+
+    // ptolemy.kernel.util.Settable.validate()
+    public static SootMethod validateMethod;
+
     public static SootClass variableClass;
 
     public static SootMethod variableConstructorWithoutToken;
@@ -897,6 +908,8 @@ public class PtolemyUtilities {
             settableClass.getMethodByName("setExpression");
         getExpressionMethod = 
             settableClass.getMethod("java.lang.String getExpression()");
+        validateMethod = 
+            settableClass.getMethod("void validate()");
 
         variableClass = 
             Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");
@@ -912,6 +925,11 @@ public class PtolemyUtilities {
             Scene.v().loadClassAndSupport("ptolemy.kernel.Entity");
         getPortMethod = 
             entityClass.getMethod("ptolemy.kernel.Port getPort(java.lang.String)");
+
+        compositeEntityClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.CompositeEntity");
+        getEntityMethod = 
+            compositeEntityClass.getMethod("ptolemy.kernel.ComponentEntity getEntity(java.lang.String)");
 
         actorClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedAtomicActor");
