@@ -21,7 +21,7 @@
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-    s                                    PT_COPYRIGHT_VERSION_2
+                                        PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (liuxj@eecs.berkeley.edu)
