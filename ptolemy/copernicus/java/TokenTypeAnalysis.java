@@ -373,8 +373,8 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                 TypeTag tag = (TypeTag)field.getTag("_CGType");
                 Object newType;
                 if(tag == null) {
-                    System.out.println("No Tag... Existing type = " + in.get(rightOp));
-                    System.out.println("No Tag... field type = " + field.getType());
+                   //  System.out.println("No Tag... Existing type = " + in.get(rightOp));
+//                     System.out.println("No Tag... field type = " + field.getType());
                     
                     if(in.get(rightOp) == null) {
                         RefType fieldType = PtolemyUtilities.getBaseTokenType(field.getType());

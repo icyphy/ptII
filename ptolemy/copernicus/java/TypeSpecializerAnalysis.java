@@ -157,7 +157,8 @@ public class TypeSpecializerAnalysis {
         _solver = new InequalitySolver(TypeLattice.lattice());
         _objectToInequalityTerm = new HashMap();
 
-        for(Iterator classes = list.iterator(); classes.hasNext();) {
+        for(Iterator classes = list.iterator(); 
+            classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             _collectConstraints(theClass, _debug);
         }
@@ -285,7 +286,7 @@ public class TypeSpecializerAnalysis {
 
     private void _collectConstraints(SootClass entityClass, boolean debug) {
         if (debug) System.out.println("collecting constraints for " + entityClass);
-        System.out.println("collecting constraints for " + entityClass);
+        // System.out.println("collecting constraints for " + entityClass);
         // Loop through all the fields.
         for (Iterator fields = entityClass.getFields().iterator();
              fields.hasNext();) {
@@ -395,7 +396,7 @@ public class TypeSpecializerAnalysis {
                 }
             }
         }
-        System.out.println("done collecting constraints for " + entityClass);
+        // System.out.println("done collecting constraints for " + entityClass);
     }
   
     // Given an object (which must be either a local, or a field) of
