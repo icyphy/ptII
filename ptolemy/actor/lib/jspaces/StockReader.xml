@@ -1,0 +1,45 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="StockReader" class="ptolemy.actor.TypedCompositeActor">
+	<doc> Read a stock quote and plot it </doc>
+    <property name="stockName" value="&quot;YHOO&quot;"
+        class="ptolemy.data.expr.Parameter">	
+    </property>
+    <property name="minimumSerialNumber" value="0"
+        class="ptolemy.data.expr.Parameter">	
+    </property>
+    <director class="ptolemy.domains.sdf.kernel.SDFDirector">
+    <property name="iterations" value="100">
+        <doc>Number of iterations in an execution.</doc>
+    </property>
+    </director>
+
+    <entity name="subscriber" class="ptolemy.actor.lib.jspaces.Subscriber">
+      <property name="jspaceName" value="&quot;JavaSpaces&quot;"></property>
+      <property name="entryName" value="stockName"></property>
+      <property name="minSerialNumber" value="minimumSerialNumber"></property>
+      <property name="blocking" value="true"></property>
+      <port name="output"></port>
+    </entity>
+
+    <entity name="display" class="ptolemy.actor.gui.SequencePlotter">
+      <port name="input"></port>
+      <!-- Configure provided in both a referenced file and local data -->
+      <configure source="plotConfigure.xml"><![CDATA[
+        <?xml version="1.0" standalone="no"?>
+        <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+             "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+        <plot>
+          <size width="450" height="300"/>
+          <title>Stock Quote Plot</title>
+        </plot>
+      ]]></configure>
+    </entity>
+    <!-- Make the connections -->
+    <relation name="r1" class="ptolemy.actor.TypedIORelation"></relation>
+    <link port="subscriber.output" relation="r1"/>
+    <link port="display.input" relation="r1"/>
+
+</model>
+

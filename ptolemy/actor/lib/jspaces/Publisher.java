@@ -138,6 +138,9 @@ public class Publisher extends Sink {
     }
 
     /** Find the JavaSpaces according to the jspaceName parameter.
+     *  Write the minimum and maximum index token.
+     *  At the beginning, the minimum index is larger than maximum by 1,
+     *  and the maximum index is the current serial number.
      */
     public void preinitialize() throws IllegalActionException {
 	super.preinitialize();
@@ -145,32 +148,75 @@ public class Publisher extends Sink {
 	_space = SpaceFinder.getSpace(name);
 	_currentSerialNumber =
 		((LongToken)startingSerialNumber.getToken()).longValue();
-    }
-
-    /** Read at most one input token from each channel of the input
-     *  and write an entry into the space for each token read.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void fire() throws IllegalActionException {
-	try {
-	    String name = ((StringToken)entryName.getToken()).toString();
-	    long time = ((LongToken)leaseTime.getToken()).longValue();
-            for (int i = 0; i < input.getWidth(); i++) {
-                if (input.hasToken(i)) {
-                    Token token = input.get(i);
-		    TokenEntry entry = new TokenEntry(name,
-                            new Long(_currentSerialNumber), token);
-		    _currentSerialNumber++;
-		    _space.write(entry, null, time);
-                }
-            }
-	} catch (RemoteException re) {
+        String entryname = ((StringToken)entryName.getToken()).toString();
+        try {
+            IndexEntry minimum = new IndexEntry(
+                    entryname, "minimum", new Long(_currentSerialNumber));
+            _space.write(minimum, null, Lease.FOREVER);
+            IndexEntry maximum = new IndexEntry(
+                    entryname, "maximum", new Long(_currentSerialNumber-1));
+            _space.write(maximum, null, Lease.FOREVER);
+        } catch (RemoteException re) {
 	    throw new IllegalActionException(this, "Cannot write into " +
 		"JavaSpace. " + re.getMessage());
 	} catch (TransactionException te) {
 	    throw new IllegalActionException(this, "Cannot write into " +
 		"JavaSpace. " + te.getMessage());
 	}
+        System.out.println("Finish intialization.");
+    }
+
+
+    /** Read at most one input token from each channel of the input
+     *  and write an entry into the space for each token read.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void fire() throws IllegalActionException {
+        try {
+             System.out.println("Wait for one second.");
+            Thread.sleep(1000l);
+        } catch (Exception e) {
+            throw new IllegalActionException(this,
+                    "Interruptted" + e.getMessage());
+        }
+        
+	try {
+	    String name = ((StringToken)entryName.getToken()).toString();
+	    long time = ((LongToken)leaseTime.getToken()).longValue();
+            IndexEntry maxtemp= new IndexEntry(
+                    name, "maximum", null);
+            // FIXME: This may introduce deadlock if maximum is lost 
+            // in the space.
+            IndexEntry maximum =
+                (IndexEntry)_space.take(maxtemp, null, Long.MAX_VALUE);
+                
+            long serialnumber = maximum.getPosition();
+            System.out.println("Publisher get Max: " + serialnumber);
+            for (int i = 0; i < input.getWidth(); i++) {
+                if (input.hasToken(i)) {
+                    Token token = input.get(i);
+                    TokenEntry entry = new TokenEntry(name,
+                            new Long(++serialnumber), token);
+                    _space.write(entry, null, Lease.FOREVER);
+                    System.out.println("Publisher writes " + token);
+                    maximum.increment();
+                }
+            }
+            _space.write(maximum, null, Lease.FOREVER);
+            _currentSerialNumber = serialnumber;
+	} catch (RemoteException re) {
+	    throw new IllegalActionException(this, "Cannot write into " +
+		"JavaSpace. " + re.getMessage());
+	} catch (TransactionException te) {
+	    throw new IllegalActionException(this, "Cannot write into " +
+		"JavaSpace. " + te.getMessage());
+	} catch (InterruptedException ie) {
+            throw new IllegalActionException(this, "Cannot write into " +
+		"JavaSpace. " + ie.getMessage());
+        } catch (net.jini.core.entry.UnusableEntryException ue) {
+            throw new IllegalActionException(this, "Unusable Entry " +
+                    ue.getMessage());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -178,5 +224,8 @@ public class Publisher extends Sink {
 
     private JavaSpace _space;
     private long _currentSerialNumber;
+
+ 
+        
 }
 

@@ -42,39 +42,44 @@ import net.jini.space.JavaSpace;
 //////////////////////////////////////////////////////////////////////////
 //// TestReader
 /**
-A JavaSpace client that reads stock price from the space and print out
-on the screen.
+Clean all IndexEntry and TokenEntry in the java space.
 
-@author Yuhong Xiong
+@author Jie Liu
 @version $Id$
 */
 
-public class TestReader {
+public class SpaceCleaner {
     public static void main(String[] args) {
         try {
-            TokenEntry yhoo = new TokenEntry();
-            yhoo.name = "YHOO";
+            TokenEntry allToken = new TokenEntry();
+            
             JavaSpace space = SpaceFinder.getSpace();
             
-            IndexEntry minimum = new IndexEntry(
-                    "YHOO", "minimum", null);
-            IndexEntry maximum = new IndexEntry(
-                    "YHOO", "maximum", null);
+            IndexEntry allIndex = new IndexEntry();
+
 	    while(true) {
-                Thread.sleep(1000l);
-                IndexEntry min = 
-                    (IndexEntry)space.read(minimum, null, Long.MAX_VALUE);
-                IndexEntry max = 
-                    (IndexEntry)space.read(maximum, null, Long.MAX_VALUE);
-                if (min.getPosition() <= max.getPosition()) {
-                    TokenEntry result =
-                        (TokenEntry)space.read(yhoo, null, Long.MAX_VALUE);
-                    DoubleToken tok = (DoubleToken)result.token;
-                    System.out.println(" MIN: " + min.getPosition() + 
-                            "YHOO " + tok.doubleValue() + 
-                            " MAX: " + max.getPosition());
+                IndexEntry index = 
+                    (IndexEntry)space.takeIfExists(
+                            allIndex, null, Long.MAX_VALUE);
+                if(index == null) {
+                    break;
+                } else {
+                    System.out.println("Taken from JavaSpaces IndexEntry: " +
+                            index.name + " " + index.type +" "+ 
+                            index.getPosition());
                 }
-	    }
+            }
+             while(true) {
+                TokenEntry token = 
+                    (TokenEntry)space.takeIfExists(
+                            allToken, null, Long.MAX_VALUE);
+                if(token == null) {
+                    break;
+                } else {
+                    System.out.println("Taken from JavaSpaces TokenEntry: " +
+                            token.name + " " + token.serialNumber);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
