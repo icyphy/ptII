@@ -184,11 +184,11 @@ public class TokenToNativeTransformer extends SceneTransformer {
         }
     }
 
-    public void updateTokenTypes(List list, int depth,
+    public void updateTokenTypes(List classList, int depth,
             Set unsafeLocalSet, boolean debug) {
         System.out.println("updating token types for all classes");
 
-        for (Iterator classes = Scene.v().getApplicationClasses().iterator();
+        for (Iterator classes = classList.iterator();
              classes.hasNext();) {
             SootClass entityClass = (SootClass)classes.next();
 
@@ -272,7 +272,9 @@ public class TokenToNativeTransformer extends SceneTransformer {
         }
 
         TypeSpecializerAnalysis typeAnalysis =
-            new TypeSpecializerAnalysis(list, unsafeLocalSet);
+            new TypeSpecializerAnalysis(classList, unsafeLocalSet);
+//         TokenTypeAnalysis typeAnalysis =
+//             new TokenTypeAnalysis(classList, unsafeLocalSet);
 
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
              classes.hasNext();) {

@@ -90,8 +90,9 @@ checks, along with some other program constructs.
 public class TypeSpecializerAnalysis {
 
     /** Specialize all token types that appear in the given class.
-     *  Return a map from locals and fields in the class to their new specific
-     *  Ptolemy type.  Exclude locals in the given set from the typing algorithm.
+     *  Return a map from locals and fields in the class to their new
+     *  specific Ptolemy type.  Exclude locals in the given set from
+     *  the typing algorithm.
      */
     public TypeSpecializerAnalysis(SootClass theClass, Set unsafeLocals) {
         System.out.println("Starting type specialization");
