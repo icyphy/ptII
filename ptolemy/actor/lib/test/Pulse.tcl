@@ -54,7 +54,7 @@ test Pulse-1.1 {test constructor and clone with default values} {
     set indexesVal [[$newIndexes getToken] toString]
 
     list $valuesVal $indexesVal
-} {{array[1, 0]} {[0, 1]}} {array is not supported by expression language yet.}
+} {{[1, 0]} {[0, 1]}} {array is not supported by expression language yet.}
 
 ######################################################################
 #### Check type of values parameter
@@ -108,7 +108,7 @@ test Pulse-2.4 {test with two-dimensional output values} {
     $valuesParam setToken [java::new ptolemy.data.IntMatrixToken $values]
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{array[1, 2]} {array[0, 0]} {array[3, 4]} {array[5, 6]} {array[0, 0]}} {array is not supported by expression language yet.}
+} {{[1, 2]} {[0, 0]} {[3, 4]} {[5, 6]} {[0, 0]}} {array is not supported by expression language yet.}
 
 test Pulse-2.5 {test string output} {
     set val0 [java::new ptolemy.data.StringToken AB]

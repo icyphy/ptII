@@ -45,14 +45,14 @@ test Clock-1.0 {test constructor and initial value} {
     set e0 [deModel 4.0]
     set clockmaster [java::new ptolemy.actor.lib.Clock $e0 clock]
     [$clockmaster getAttribute values] toString
-} {ptolemy.data.expr.Parameter {.top.clock.values} array[1, 0]} {array is not supported by expression language yet.}
+} {ptolemy.data.expr.Parameter {.top.clock.values} [1, 0]} {array is not supported by expression language yet.}
 
 test Clock-1.1 {test clone and initial value} {
     set clock [java::cast ptolemy.actor.lib.Clock [$clockmaster clone]]
     $clockmaster setContainer [java::null]
     $clock setContainer $e0
     [$clock getAttribute values] toString
-} {ptolemy.data.expr.Parameter {.top.clock.values} array[1, 0]} {array is not supported by expression language yet.}
+} {ptolemy.data.expr.Parameter {.top.clock.values} [1, 0]} {array is not supported by expression language yet.}
 
 ######################################################################
 #### Test Clock in a DE model

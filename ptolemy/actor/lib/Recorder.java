@@ -108,7 +108,6 @@ public class Recorder extends Sink {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         Recorder newobj = (Recorder)super.clone(ws);
-        newobj.input.setTypeEquals(BaseType.GENERAL);
         newobj.capacity = (Parameter)newobj.getAttribute("capacity");
         return newobj;
     }
