@@ -30,12 +30,15 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		
+ME =		ptolemy/actor/lib/jspaces/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JINI_JAR)
+
+JINI_JAR_PATH = $(ROOT)/vendors/sun/jini/lib
+JINI_JAR =	$(JINI_JAR_PATH)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_JAR_PATH)/jini-ext.jar$(CLASSPATHSEPARATOR)$(JINI_JAR_PATH)/mahalo.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -45,12 +48,13 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS =
+JSRCS =	\
+	TestReader.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	StockQuote.tcl
-	
+
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.  If you add a test, be sure to add

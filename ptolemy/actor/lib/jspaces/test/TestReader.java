@@ -28,7 +28,7 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.lib.jspaces.lib;
+package ptolemy.actor.lib.jspaces.test;
 
 import ptolemy.data.DoubleToken;
 import ptolemy.actor.lib.jspaces.TokenEntry;
