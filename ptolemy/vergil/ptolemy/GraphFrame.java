@@ -290,22 +290,9 @@ public abstract class GraphFrame extends PtolemyTop
 	getContentPane().add(_toolbar, BorderLayout.NORTH);
 
 	_cutAction = new CutAction();
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _cutAction);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _cutAction);
-
 	_copyAction = new CopyAction();
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _copyAction);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _copyAction);
-	
 	_pasteAction = new PasteAction();
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _pasteAction);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _pasteAction);
-
 	_layoutAction = new LayoutAction();
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _layoutAction);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _layoutAction);
-	
-	_initializeActions();
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -460,24 +447,27 @@ public abstract class GraphFrame extends PtolemyTop
     /** Create the menus that are used by this frame.
      */
     protected void _addMenus() {
+	super._addMenus();
         // Enable the "New" item in the File menu.
         _fileMenuItems[1].setEnabled(true);
 
        	_editMenu = new JMenu("Edit");
         _editMenu.setMnemonic(KeyEvent.VK_E);
 	_menubar.add(_editMenu);
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _cutAction);
+	diva.gui.GUIUtilities.addMenuItem(_editMenu, _cutAction);
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _copyAction);
+	diva.gui.GUIUtilities.addMenuItem(_editMenu, _copyAction);
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _pasteAction);
+	diva.gui.GUIUtilities.addMenuItem(_editMenu, _pasteAction);
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _layoutAction);
+	diva.gui.GUIUtilities.addMenuItem(_editMenu, _layoutAction);
     }
 
     /** Create a new graph pane.  Subclasses will override this to change
      *  The pane that is created.
      */
     protected abstract GraphPane _createGraphPane();
-
-    /** Initialize the actions for this graph frame.  Subclasses will
-     *  Generally subclasses will override this to set their own actions.
-     */
-
-    protected abstract void _initializeActions();
 
     /** Open a new Ptolemy II model.
      */

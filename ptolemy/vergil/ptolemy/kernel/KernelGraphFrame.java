@@ -176,7 +176,19 @@ public class KernelGraphFrame extends GraphFrame {
        	_executeMenu = new JMenu("Execute");
         _executeMenu.setMnemonic(KeyEvent.VK_X);
 	_menubar.add(_executeMenu);
-    }
+	diva.gui.GUIUtilities.addMenuItem(_editMenu, _newPortAction);
+       	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newPortAction);
+
+	diva.gui.GUIUtilities.addMenuItem(_editMenu, _newRelationAction);
+	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newRelationAction);
+
+        _toolbar.add(_directorComboBox);
+
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _executeSystemAction);
+	diva.gui.GUIUtilities.addMenuItem(_executeMenu, _executeSystemAction);
+	diva.gui.GUIUtilities.addToolBarButton(_toolbar, 
+					       _executeSystemAction);
+	    }
     /** Create a new graph pane.
      */
     protected GraphPane _createGraphPane() {
@@ -186,20 +198,8 @@ public class KernelGraphFrame extends GraphFrame {
 	PtolemyGraphModel graphModel = new PtolemyGraphModel(_model);
 	
 	GraphPane pane = new GraphPane(_controller, graphModel);
-	return pane;
-    }
-
-    /** Initialize the actions for this graph frame.  
-     */
-    protected void _initializeActions() {
 	_newPortAction = _controller.getNewPortAction();
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _newPortAction);
-       	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newPortAction);
-
 	_newRelationAction = _controller.getNewRelationAction();
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _newRelationAction);
-	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newRelationAction);
-
 	// FIXME make a service.
 	_directorModel = new DefaultComboBoxModel();
 	try {
@@ -316,14 +316,7 @@ public class KernelGraphFrame extends GraphFrame {
                 }
             }
         });
-        _toolbar.add(_directorComboBox);
-
 	_executeSystemAction = new ExecuteSystemAction();
-	diva.gui.GUIUtilities.addHotKey(_jgraph, _executeSystemAction);
-	diva.gui.GUIUtilities.addMenuItem(_executeMenu, _executeSystemAction);
-	diva.gui.GUIUtilities.addToolBarButton(_toolbar, 
-					       _executeSystemAction);
-	
 	_editIconAction = new EditIconAction();
 	_lookInsideAction = new LookInsideAction();
 	_getDocumentationAction = new GetDocumentationAction();
@@ -332,6 +325,7 @@ public class KernelGraphFrame extends GraphFrame {
   	_controller.getPortController().setMenuFactory(new PortContextMenuFactory(_controller));
   	_controller.getRelationController().setMenuFactory(new RelationContextMenuFactory(_controller));
   	_controller.getLinkController().setMenuFactory(new RelationContextMenuFactory(_controller));
+	return pane;
     }
 
     ///////////////////////////////////////////////////////////////////
