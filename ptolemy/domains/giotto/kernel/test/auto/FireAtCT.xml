@@ -2,14 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FireAtCT" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 891]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -24,6 +25,8 @@
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
         <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
@@ -86,8 +89,6 @@
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
-            </property>
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="80.0, 40.0">
@@ -117,7 +118,7 @@
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">frequency 2</text></svg></configure>
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">frequency 1</text></svg></configure>
             </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
@@ -137,7 +138,7 @@
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">frequency 4</text></svg></configure>
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">frequency 1</text></svg></configure>
             </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
@@ -208,7 +209,7 @@
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="200.0, 260.0">
             </property>
-            <property name="frequency" class="ptolemy.data.expr.Parameter" value="4">
+            <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -231,13 +232,13 @@
             </port>
         </entity>
         <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3,4,5,6,7,8,9,10}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4,6,8,10}">
             </property>
             <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="355.0, 115.0">
             </property>
-            <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
+            <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -312,7 +313,7 @@
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875,1.0, 1.125, 1.25, 1.375, 1.5, 1.625, 1.75, 1.875}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,0.2,0.3,0.4}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -324,7 +325,7 @@
         </port>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false,false,true,false,true,false,true,false,true}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
