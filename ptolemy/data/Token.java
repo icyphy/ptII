@@ -346,7 +346,7 @@ public class Token implements Serializable {
      *  @param operation A string naming the unsupported token
      *  @param firstToken The first token in the message.
      *  @param secondToken The first token in the message.
-     *  @returns A string error message
+     *  @return A string error message.
      */
     protected String _notSupportedMessage(String operation,
             Token firstToken, Token secondToken) {
