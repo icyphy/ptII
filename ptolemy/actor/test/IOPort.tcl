@@ -327,16 +327,16 @@ test IOPort-9.1 {Check connectivity via send} {
 test IOPort-9.1.1 {Check hasRoom and hasToken methods} {
     # NOTE: Use previous setup.
     set res1 [$p1 hasRoom 0]
-    set res2 [$p1 hasToken 0]
-    set res3 [$p2 hasRoom 0]
+    catch {$p1 hasToken 0} res2
+    catch {$p2 hasRoom 0} res3
     set res4 [$p2 hasToken 0]
     $p1 send 0 $token
     set res5 [$p1 hasRoom 0]
-    set res6 [$p1 hasToken 0]
-    set res7 [$p2 hasRoom 0]
+    catch {$p1 hasToken 0} res6
+    catch {$p2 hasRoom 0} res7
     set res8 [$p2 hasToken 0]
     list $res1 $res2 $res3 $res4 $res5 $res6 $res7 $res8
-} {1 0 0 0 0 0 0 1}
+} {1 {ptolemy.kernel.util.IllegalActionException: ..E1.P1: hasToken: Tokens can only be retrieved from an input port.} {ptolemy.kernel.util.IllegalActionException: ..E2.P2: hasRoom: Tokens can only be sent from an output port.} 0 0 {ptolemy.kernel.util.IllegalActionException: ..E1.P1: hasToken: Tokens can only be retrieved from an input port.} {ptolemy.kernel.util.IllegalActionException: ..E2.P2: hasRoom: Tokens can only be sent from an output port.} 1}
 
 test IOPort-9.2 {Check unlink and send to dangling relation} {
     set e0 [java::new ptolemy.actor.CompositeActor]
@@ -358,7 +358,7 @@ test IOPort-9.2 {Check unlink and send to dangling relation} {
     $p1 send 0 $token
     catch {$p2 get 0} msg
     list [$p2 getWidth] $msg
-} {0 {ptolemy.actor.NoTokenException: ..E2.P2: get: channel index is out of range.}}
+} {0 {ptolemy.kernel.util.IllegalActionException: ..E2.P2: get: channel index is out of range.}}
 
 test IOPort-9.3 {Check unlink and get from unlinked port} {
     set e0 [java::new ptolemy.actor.CompositeActor]
@@ -388,7 +388,7 @@ test IOPort-9.3 {Check unlink and get from unlinked port} {
     catch {$p1 send 0 $token} msg1
     catch {$p2 get 0} msg2
     list [$p2 getWidth] $msg1 $msg2
-} {1 {ptolemy.actor.NoRoomException: ..E1.P1: send: channel index is out of range.} {ptolemy.actor.NoTokenException: ..E2.P2: Attempt to get data from an empty mailbox.}}
+} {1 {ptolemy.kernel.util.IllegalActionException: ..E1.P1: send: channel index is out of range.} {ptolemy.actor.NoTokenException: ..E2.P2: Attempt to get data from an empty mailbox.}}
 
 test IOPort-9.4 {Check loopback send} {
     set e0 [java::new ptolemy.actor.CompositeActor]

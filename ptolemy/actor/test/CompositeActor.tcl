@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997- The Regents of the University of California.
+# @Copyright (c) 1997-1998 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -265,16 +265,16 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     $p6 send 0 [$p5 get 0]
 
     set res5 [$p5 hasToken 0]
-    set res6 [$p6 hasToken 0]
+    catch {$p6 hasToken 0} res6
     # Note that the token should now be in an inside receiver of p3, which
     # is not reported by hasToken.
-    set res7 [$p3 hasToken 0]
+    catch {$p3 hasToken 0} res7
 
     $e2 postfire
     set res8 [$p4 hasToken 0]
     set res9 [[$p4 get 0] toString]
     
     list $res1 $res2 $res3 $res4 $res5 $res6 $res7 $res8 $res9
-} {1 0 0 1 0 0 0 1 ptolemy.data.StringToken(foo)}
+} {1 0 0 1 0 {ptolemy.kernel.util.IllegalActionException: .E0.E2.E4.P6: hasToken: Tokens can only be retrieved from an input port.} {ptolemy.kernel.util.IllegalActionException: .E0.E2.P3: hasToken: Tokens can only be retrieved from an input port.} 1 ptolemy.data.StringToken(foo)}
 
 #FIXME: test _removeEntity (using setContainer null).
