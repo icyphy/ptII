@@ -1237,6 +1237,10 @@ public class DEDirector extends Director {
             throws IllegalActionException {
 
         if (_eventQueue == null) return;
+
+        // Adjust time according time resolution
+        time = Utilities.round(time, getTimeResolution());
+
         int microstep = 0;
         if (time == getCurrentTime()) {
             microstep = _microstep + 1;
@@ -1274,6 +1278,10 @@ public class DEDirector extends Director {
             double time) throws IllegalActionException {
 
         if (_eventQueue == null) return;
+
+        // Adjust time according time resolution
+        time = Utilities.round(time, getTimeResolution());
+
         int microstep = 0;
 
         if (time == getCurrentTime()) {
