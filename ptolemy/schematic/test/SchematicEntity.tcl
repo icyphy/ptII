@@ -60,15 +60,9 @@ test SchematicEntity-2.1 {Constructor tests} {
     $entitytype setName testentitytype
     set e2 [java::new ptolemy.schematic.SchematicEntity $attributes $entitytype]
     list [$e0 toString] [$e1 toString] [$e2 toString]
-} {{<entity name="">
-<entitytype name=""></entitytype>
-</entity>
-} {<entity name1="value1" name2="value2" name="">
-<entitytype name=""></entitytype>
-</entity>
-} {<entity name1="value1" name2="value2" name="">
-<entitytype name="testentitytype"></entitytype>
-</entity>
+} {{<entity name="" icon="default"></entity>
+} {<entity name1="value1" name2="value2" name="" icon="default"></entity>
+} {<entity name1="value1" name2="value2" name="" icon="default"></entity>
 }}
 
 ######################################################################
@@ -82,15 +76,10 @@ test SchematicEntity-3.1 {addChildElement tests} {
     set e1 [java::new ptolemy.schematic.SchematicEntity $attributes]
     $e0 addChildElement $e1
     list [$e0 toString] [$e1 toString]
-} {{<entity name="">
-<entitytype name=""></entitytype>
-<entity name1="value1" name2="value2" name="">
-<entitytype name=""></entitytype>
+} {{<entity name="" icon="default">
+<entity name1="value1" name2="value2" name="" icon="default"></entity>
 </entity>
-</entity>
-} {<entity name1="value1" name2="value2" name="">
-<entitytype name=""></entitytype>
-</entity>
+} {<entity name1="value1" name2="value2" name="" icon="default"></entity>
 }}
 
 
@@ -101,12 +90,8 @@ test SchematicEntity-3.2 {removeChildElement tests} {
     # NOTE: Uses the setup above
     $e0 removeChildElement $e1
     list [$e0 toString] [$e1 toString]
-} {{<entity name="">
-<entitytype name=""></entitytype>
-</entity>
-} {<entity name1="value1" name2="value2" name="">
-<entitytype name=""></entitytype>
-</entity>
+} {{<entity name="" icon="default"></entity>
+} {<entity name1="value1" name2="value2" name="" icon="default"></entity>
 }}
 
 ######################################################################
@@ -128,10 +113,8 @@ test SchematicEntity-4.1 {childElements tests} {
     set c1left [$e0children hasMoreElements]
     set e0child2 [$e0children nextElement] 
     set c2left [$e0children hasMoreElements]
-    set e0child3 [$e0children nextElement]     
-    set c3left [$e0children hasMoreElements]
-    list $c1left $c2left $c3left
-} {1 1 0}
+    list $c1left $c2left
+} {1 0}
 
 
 ######################################################################
@@ -160,9 +143,7 @@ test SchematicEntity-5.1 {setAttribute tests} {
     $e0 setAttribute name1 value1
     $e0 setAttribute name2 value2
     $e0 toString
-} {<entity name1="value1" name2="value2" name="">
-<entitytype name=""></entitytype>
-</entity>
+} {<entity name1="value1" name2="value2" name="" icon="default"></entity>
 }
 
 
@@ -173,9 +154,7 @@ test SchematicEntity-6.2 {removeAttribute tests} {
     # NOTE: Uses the setup above
     $e0 removeAttribute name1
     $e0 toString
-} {<entity name2="value2" name="">
-<entitytype name=""></entitytype>
-</entity>
+} {<entity name2="value2" name="" icon="default"></entity>
 }
 
 ######################################################################
@@ -190,9 +169,10 @@ test SchematicEntity-7.1 {attributes tests} {
     set e0attrib1 [$e0attributes nextElement] 
     set e0attrib2 [$e0attributes nextElement] 
     set e0attrib3 [$e0attributes nextElement]     
-    list $e0attrib1 $e0attrib2 $e0attrib3\
+    set e0attrib4 [$e0attributes nextElement]     
+    list $e0attrib1 $e0attrib2 $e0attrib3 $e0attrib4\
 [$e0attributes hasMoreElements]
-} {name1 name2 name 0}
+} {name1 name2 name icon 0}
 
 ######################################################################
 ####
@@ -210,9 +190,7 @@ test SchematicEntity-8.1 {setPCData tests} {
     set e0 [java::new ptolemy.schematic.SchematicEntity ]
     $e0 setPCData "hello this is a test\n"
     $e0 toString
-} {<entity name="">
-<entitytype name=""></entitytype>
-hello this is a test
+} {<entity name="" icon="default">hello this is a test
 </entity>
 }
 
@@ -224,9 +202,7 @@ test SchematicEntity-8.2 {setPCData tests} {
     $e0 setPCData "hello this is a test"
     $e0 appendPCData " of appending\n"
     $e0 toString
-} {<entity name="">
-<entitytype name=""></entitytype>
-hello this is a test of appending
+} {<entity name="" icon="default">hello this is a test of appending
 </entity>
 }
 
@@ -239,9 +215,7 @@ test SchematicEntity-8.3 {setPCData tests} {
     $e0 appendPCData " of appending\n"
     $e0 setPCData "and resetting PCData\n"    
     $e0 toString
-} {<entity name="">
-<entitytype name=""></entitytype>
-and resetting PCData
+} {<entity name="" icon="default">and resetting PCData
 </entity>
 }
 
@@ -252,9 +226,7 @@ test SchematicEntity-9.1 {set/getName tests} {
     set e0 [java::new ptolemy.schematic.SchematicEntity]
     $e0 setName "SchematicEntity Name"
     list [$e0 toString] [$e0 getName]
-} {{<entity name="SchematicEntity Name">
-<entitytype name=""></entitytype>
-</entity>
+} {{<entity name="SchematicEntity Name" icon="default"></entity>
 } {SchematicEntity Name}}
   
 ######################################################################
@@ -266,8 +238,7 @@ test SchematicEntity-10.1 {Parameter tests} {
     $e0 addParameter $p0
     set p1 [$e0 getParameter testparameter]
     list [$e0 toString] [$e0 containsParameter testparameter] [$p1 toString]
-} {{<entity name="">
-<entitytype name=""></entitytype>
+} {{<entity name="" icon="default">
 <parameter value="testvalue" name="testparameter" type="testtype"></parameter>
 </entity>
 } 1 {<parameter value="testvalue" name="testparameter" type="testtype"></parameter>
@@ -295,38 +266,8 @@ test SchematicEntity-10.3 {remove Parameter tests} {
     set enumlib [$e0 parameters]
     list [$e0 toString] [$e0 containsParameter testparameter]\
 [$enumlib hasMoreElements]
-} {{<entity name="">
-<entitytype name=""></entitytype>
-</entity>
+} {{<entity name="" icon="default"></entity>
 } 0 0}
-
-######################################################################
-####
-#
-test SchematicEntity-11.1 {setEntityType tests} {
-    set e0 [java::new ptolemy.schematic.SchematicEntity]
-    set et0 [java::new ptolemy.schematic.EntityType]
-    $et0 setName testentitytype
-    $e0 setEntityType $et0
-    list [$e0 toString] [$et0 toString]
-} {{<entity name="">
-<entitytype name="testentitytype"></entitytype>
-</entity>
-} {<entitytype name="testentitytype"></entitytype>
-}}
-
-######################################################################
-####
-#
-test SchematicEntity-11.2 {getEntityType tests} {
-    # uses setup above
-    set et1 [$e0 getEntityType]
-    list [$e0 toString] [$et1 toString]
-} {{<entity name="">
-<entitytype name="testentitytype"></entitytype>
-</entity>
-} {<entitytype name="testentitytype"></entitytype>
-}}
 
 ######################################################################
 ####
@@ -337,8 +278,7 @@ test SchematicEntity-12.1 {addPort tests} {
     $g0 setName testport
     $e0 addPort $g0
     $e0 toString
-} {<entity name="">
-<entitytype name=""></entitytype>
+} {<entity name="" icon="default">
 <port multiport="false" name="testport" input="false" type="undeclared" output="false"></port>
 </entity>
 }
@@ -358,8 +298,7 @@ test SchematicEntity-12.3 {getPort tests} {
     # Uses setup from above
     set g1 [$e0 getPort testport]
     list [$e0 toString] [$g1 toString]
-} {{<entity name="">
-<entitytype name=""></entitytype>
+} {{<entity name="" icon="default">
 <port multiport="false" name="testport" input="false" type="undeclared" output="false"></port>
 </entity>
 } {<port multiport="false" name="testport" input="false" type="undeclared" output="false"></port>
@@ -386,11 +325,8 @@ test SchematicEntity-12.5 {removePort tests} {
     $e0 removePort testport
     set genum [$e0 ports]
     list $s [$e0 toString] [$genum hasMoreElements]
-} {{<entity name="">
-<entitytype name=""></entitytype>
+} {{<entity name="" icon="default">
 <port multiport="false" name="testport" input="false" type="undeclared" output="false"></port>
 </entity>
-} {<entity name="">
-<entitytype name=""></entitytype>
-</entity>
+} {<entity name="" icon="default"></entity>
 } 0}
