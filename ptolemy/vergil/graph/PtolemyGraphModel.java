@@ -377,9 +377,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	} else if(node instanceof Port) {
 	    return getParent((Port)node);
 	} else {
-	    throw new InternalErrorException(
-                    "Ptolemy Graph Model does not recognize the " +
-		    "given graph objects. node = " + node);
+            // FIXME: Is this right?
+            return null;
 	}       
     }
 

@@ -36,8 +36,10 @@ import ptolemy.actor.gui.*;
 import ptolemy.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.kernel.event.ChangeRequest;
 import ptolemy.moml.*;
 import ptolemy.vergil.VergilApplication;
+import ptolemy.vergil.ExceptionHandler;
 
 import diva.gui.*;
 import diva.gui.toolbox.*;
@@ -149,48 +151,65 @@ public class EditorGraphController extends ViewerGraphController {
     ///////////////////////////////////////////////////////////////
     //// LinkCreator
 
-    /** An interactor that interactively drags edges from one terminal
-     * to another.
+    /** This class is an interactor that interactively drags edges from
+     *  one terminal to another, creating a link to connect them.
      */
     protected class LinkCreator extends AbstractInteractor {
-        public void mousePressed(LayerEvent e) {
-            Figure source = e.getFigureSource();
-	    NamedObj sourceObject = (NamedObj) source.getUserObject();
-	
-	    FigureLayer layer = (FigureLayer) e.getLayerSource();
 
-	    // Create a new edge
-	    CompositeEntity container = 
-		(CompositeEntity)getGraphModel().getRoot();
+        /** Create a new edge when the mouse is pressed. */
+        public void mousePressed(LayerEvent event) {
+	    // Find the container
+	    final CompositeEntity container = 
+		    (CompositeEntity)getGraphModel().getRoot();
+            Figure source = event.getFigureSource();
+            NamedObj sourceObject = (NamedObj) source.getUserObject();
+            FigureLayer layer = (FigureLayer) event.getLayerSource();
+            final String name = container.uniqueName("link");
 
-	    Link link;
-	    try {
-                link = new Link(container, container.uniqueName("link"));
+            // Queue a change request to create the new edge.
+            ChangeRequest request = new ChangeRequest(this, "new connection") {
+                protected void _execute() throws Exception {
+                    Link link = new Link(container, name);
+                }
+            };
+            container.requestChange(request);
+
+            // The following is necessary because diva has something
+            // truly funky that prevents the following code from working
+            // if it is put inside the _execute() method above.
+            // FIXME: This creates a risk of lockup of the user
+            // interface if the change request is not executed
+            // for any reason.
+            try {
+                request.waitForCompletion();
+                Link link = (Link)container.getAttribute(name);
+
+                // Add it to the editor
+                getLinkController().addEdge(link,
+                        sourceObject,
+                        ConnectorEvent.TAIL_END,
+                        event.getLayerX(),
+                        event.getLayerY());
+
+                // NOTE: The following sequence of code, for some
+                // inexplicable reason, does not work if its put in
+                // the _execute() method above.  In theory, it should
+                // not be possible... it's behavior should be identical.
+                // There must be something very funky going on in diva.
+            
+                // Add it to the selection so it gets a manipulator, and
+                // make events go to the grab-handle under the mouse
+                Figure ef = getFigure(link);
+                getSelectionModel().addSelection(ef);
+                ConnectorManipulator cm =
+                       (ConnectorManipulator) ef.getParent();
+                GrabHandle gh = cm.getHeadHandle();
+                layer.grabPointer(event, gh);
+            } catch (Exception ex) {
+                ExceptionHandler.show("Drag connection failed:", ex);
             }
-            catch (Exception ex) {
-		VergilApplication.getInstance().showError(
-		    "Create relation failed:", ex);
-		return;
-	    }
-	    // Add it to the editor
-	    getLinkController().addEdge(link,
-                    sourceObject,
-                    ConnectorEvent.TAIL_END,
-                    e.getLayerX(),
-                    e.getLayerY());
-
-	    // Add it to the selection so it gets a manipulator, and
-	    // make events go to the grab-handle under the mouse
-	    Figure ef = getFigure(link);
-	    getSelectionModel().addSelection(ef);
-	    ConnectorManipulator cm =
-		(ConnectorManipulator) ef.getParent();
-	    GrabHandle gh = cm.getHeadHandle();
-	    layer.grabPointer(e, gh);
 	}
     }
-
-
 
     /** An interactor that creates a new Vertex that is connected to a vertex
      *  in a relation
@@ -232,8 +251,8 @@ public class EditorGraphController extends ViewerGraphController {
 		layer.grabPointer(e, nf);
 	    }
 	}
-    
     }
+
     */
     /** The interactor for creating new relations
      */
