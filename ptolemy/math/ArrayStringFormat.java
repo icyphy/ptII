@@ -156,36 +156,22 @@ public interface ArrayStringFormat {
         protected final String _vectorEnd;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
     /** Implements ArrayStringFormat to produce strings in the format used
      *  to initialize arrays in Java. More specifically, the format
      *  "{x[0], x[1], x[2], ... , x[n-1]}",
      *  where x[i] is the ith element of the array.
      */
-    public static class JavaArrayStringFormat extends ArrayStringFormatBase {
-        public JavaArrayStringFormat() {
-            super(", ", "{", "}", "{", ", ", "}");
-        }
-    }
+    public static final ArrayStringFormat javaASFormat =
+        new ArrayStringFormatBase(", ", "{", "}", "{", ", ", "}");
 
     /** Implements ArrayStringFormat to produce strings in the format used
      *  in the Ptolemy II expression language and Matlab. More specifically,
      *  the format
      *  "[x[0] x[1] x[2] ...  x[n-1]]",
      */
-    public static class ExprArrayStringFormat extends ArrayStringFormatBase {
-        public ExprArrayStringFormat() {
-            super(" ", "[", "]", "[", "; ", "]");
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** A static instance of JavaArrayStringFormat. */
-    public static final ArrayStringFormat javaASFormat =
-        new JavaArrayStringFormat();
-
-    /** A static instance of ExprArrayStringFormat. */
     public static final ArrayStringFormat exprASFormat =
-        new ExprArrayStringFormat();
+        new ArrayStringFormatBase(" ", "[", "]", "[", "; ", "]");
 }
