@@ -103,6 +103,8 @@ public class LinearStateSpace extends TypedCompositeActor {
         input.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
+        stateOutput = new TypedIOPort(this, "stateOutput", false, true);
+        stateOutput.setMultiport(true);
         _opaque = true;
         double[][] one = {{1.0}};
         double[][] zero = {{0.0}};
@@ -150,6 +152,11 @@ public class LinearStateSpace extends TypedCompositeActor {
     /** Multi-output port.
      */
     public TypedIOPort output;
+
+    /** state outputs ports.
+     */
+    public TypedIOPort stateOutput;
+    
 
     /** The A matrix in the state-space representation. It must be a
      *  square matrix.
@@ -295,6 +302,7 @@ public class LinearStateSpace extends TypedCompositeActor {
                 // One adder per integrator.
                 stateAdders[i] = new AddSubtract(this, "stateAdder_"+i);
                 connect(stateAdders[i].output, integrators[i].input);
+                stateOutput.link(states[i]);
             }
             // State feedback
             Scale[][] feedback = new Scale[n][n];
