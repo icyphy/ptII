@@ -65,8 +65,8 @@ public class PlotLiveDemo extends PlotLive {
      * Return a string describing this applet.
      */
     public String getAppletInfo() {
-        return "PlotLiveDemo 1.0: Demo of PlotLive. " +
-	    "By: Edward A. Lee, eal@eecs.berkeley.edu " +
+        return "PlotLiveDemo 1.0: Demo of PlotLive.\n" +
+	    "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
 	    "($Id$)";
     }
 

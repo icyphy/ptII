@@ -224,11 +224,10 @@ public class Plot extends PlotBox {
      * Return a string describing this applet.
      */
     public String getAppletInfo() {
-        return "Plot 1.0: A flexible data plotter. " +
-	    "By: Edward A. Lee, eal@eecs.berkeley.edu and " +
-	    "Christopher Hylands, cxh@eecs.berkeley.edu" +
+        return "Plot 1.0: A flexible data plotter.\n" +
+	    "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
+	    "Christopher Hylands, cxh@eecs.berkeley.edu\n" +
 	    "($Id$)";
-
     }
 
     /**
