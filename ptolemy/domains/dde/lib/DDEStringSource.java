@@ -95,10 +95,6 @@ public abstract class DDEStringSource extends DDESourceActor {
 
 	    if( nextOutputReady ) {
 		// _output.send( 0, strToken );
-		/*
-		*/
-		System.out.println("DDEStringSource repeated current time = "
-			+ getCurrentTime() );
 		_output.send( 0, strToken, getCurrentTime() );
 		nextOutputReady = false;
 	    }
