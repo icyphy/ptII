@@ -33,15 +33,15 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// ImageToken
 /**
-   An abstract class that all tokens which encapsulate images should extend.
-   Each class that extends this class is required to implement the method
-   asAWTImage(), so that it may be used with the standard image processing
-   library.
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 2.1
- */
+An abstract class that all tokens which encapsulate images should extend.
+Each class that extends this class is required to implement the method
+asAWTImage(), so that it may be used with the standard image processing
+library.
 
+@author James Yeh
+@version $Id$
+@since Ptolemy II 2.1
+*/
 public abstract class ImageToken extends Token {
 
     /** Construct an empty token.
