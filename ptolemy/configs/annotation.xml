@@ -35,8 +35,15 @@
   </property>
   <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory"/>
 </property>
-<property name="parameter with port" class="ptolemy.actor.parameters.PortParameter">
+<property name="portParameter" class="ptolemy.actor.parameters.PortParameter">
   <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
+  <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+	<polyline points="-14,-15, -2,-5, -14,5" style="stroke:green"/>
+      </svg>
+    </configure>
+  </property>
   <property name="_icon" class="ptolemy.vergil.icon.ValueIcon"/>
   <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
     <configure>
