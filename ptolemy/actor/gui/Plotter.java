@@ -155,6 +155,9 @@ public class Plotter extends TypedAtomicActor
         if (plot == null) {
             place(_container);
         }
+        if (_frame != null) {
+	    _frame.setVisible(true);
+        }
         int width = plot.getNumDataSets();
         int offset = ((IntToken)startingDataset.getToken()).intValue();
         for (int i = width - 1; i >= 0; i--) {
@@ -180,8 +183,8 @@ public class Plotter extends TypedAtomicActor
         if (_container == null) {
             // place the plot in its own frame.
             plot = new Plot();
-            PlotFrame frame = new PlotFrame(getFullName(), plot);
-	    frame.setVisible(true);
+            _frame = new PlotFrame(getFullName(), plot);
+	    _frame.setVisible(true);
         } else {
             if (_container instanceof Plot) {
                 plot = (Plot)_container;
@@ -212,4 +215,10 @@ public class Plotter extends TypedAtomicActor
 
     /** @serial Container into which this plot should be placed */
     protected Container _container;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    // Frame into which plot is placed, if any.
+    private PlotFrame _frame;
 }
