@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// HammingDecoder
 /**
 Decode a (<i>n</i>, <i>k</i>) Hamming code, where <i>n</i> is specified by
-parameter <i>codeBlockSize</i> nad <i>k</i> is specified by parameter
+parameter <i>codedRate</i> and <i>k</i> is specified by parameter
 <i>uncodedRate</i>.
 <p>
 The Hamming code can correct one-bit error.
@@ -83,13 +83,13 @@ public class HammingDecoder extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        uncodeBlockSize = new Parameter(this, "uncodeBlockSize");
-        uncodeBlockSize.setTypeEquals(BaseType.INT);
-        uncodeBlockSize.setExpression("4");
+        uncodedRate = new Parameter(this, "uncodedRate");
+        uncodedRate.setTypeEquals(BaseType.INT);
+        uncodedRate.setExpression("4");
 
-        codeBlockSize = new Parameter(this, "codeBlockSize");
-        codeBlockSize.setTypeEquals(BaseType.INT);
-        codeBlockSize.setExpression("7");
+        codedRate = new Parameter(this, "codedRate");
+        codedRate.setTypeEquals(BaseType.INT);
+        codedRate.setExpression("7");
 
         // Declare data types, consumption rate and production rate.
         input.setTypeEquals(BaseType.BOOLEAN);
@@ -106,13 +106,13 @@ public class HammingDecoder extends Transformer {
     /** Integer defining the uncode block size. It should be a positive
      *  integer. Its default value is the integer 4.
      */
-    public Parameter uncodeBlockSize;
+    public Parameter uncodedRate;
 
     /** Integer defining the Hamming code block size.
      *  This parameter should be a non-negative integer.
      *  Its default value is the integer 7.
      */
-    public Parameter codeBlockSize;
+    public Parameter codedRate;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -127,20 +127,20 @@ public class HammingDecoder extends Transformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == codeBlockSize) {
-            _codeSizeValue = ((IntToken)codeBlockSize.getToken()).intValue();
+        if (attribute == codedRate) {
+            _codeSizeValue = ((IntToken)codedRate.getToken()).intValue();
             if (_codeSizeValue <= 0 ) {
                 throw new IllegalActionException(this,
-                        "codeBlockSize must be positive.");
+                        "codedRate must be positive.");
             }
             // set the input consumption rate.
             _inputRate.setToken(new IntToken(_codeSizeValue));
-        } else if (attribute == uncodeBlockSize) {
+        } else if (attribute == uncodedRate) {
             _uncodeSizeValue =
-                ((IntToken)uncodeBlockSize.getToken()).intValue();
+                ((IntToken)uncodedRate.getToken()).intValue();
             if (_uncodeSizeValue < 1 ) {
                 throw new IllegalActionException(this,
-                        "uncodeBlockSize must be non-negative.");
+                        "uncodedRate must be non-negative.");
             }
             // Set a flag indicating the private variables
             // _uncodeSizeValue and/or _codeSizeValue is invalid,
@@ -155,7 +155,7 @@ public class HammingDecoder extends Transformer {
     }
 
     /** If the attributes has changed, check the validity of
-     *  uncodedRate and codeBlockSize. Generate the parity matrix.
+     *  uncodedRate and codedRate. Generate the parity matrix.
      *  Read "uncodedRate" number of tokens from the input port
      *  and compute the syndrome. If the syndrome is non-zero, correct
      *  one-bit error and send the decoded result to the output.
@@ -165,12 +165,12 @@ public class HammingDecoder extends Transformer {
         if (_parameterInvalid) {
             if (_uncodeSizeValue >= _codeSizeValue) {
                 throw new IllegalActionException(this,
-                        "uncodeBlockSize must be greater than codeBlockSize.");
+                        "codedRate must be greater than uncodedRate.");
             }
             _order = _codeSizeValue - _uncodeSizeValue;
             if (_codeSizeValue != (1 << _order) - 1) {
                 throw new IllegalActionException(this,
-                        "Invalid codeBlockSize or _uncodeBlockSize.");
+                        "Invalid pair of uncodedRate and codedRate.");
             }
 
             _parityMatrix = new int[_uncodeSizeValue][_order];
@@ -206,7 +206,6 @@ public class HammingDecoder extends Transformer {
         Token[] inputToken = (Token[])input.get(0, _codeSizeValue);
         BooleanToken[] input = new BooleanToken[_codeSizeValue];
 
-        // Convert the first "_uncodeSizeValue" tokens to binaries.
         for (int i = 0; i < _codeSizeValue; i++) {
             input[i] = ((BooleanToken)inputToken[i]);
         }

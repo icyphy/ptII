@@ -1,4 +1,4 @@
-/* Given an input bit sequence, scramble it in a pseudo random way.
+/* Scramble an input bit sequence in a pseudo random way.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.

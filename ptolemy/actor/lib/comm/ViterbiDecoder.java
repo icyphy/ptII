@@ -66,7 +66,7 @@ If it the parameter <i>softDecoding</i> is set to be false, the input
 port will accept boolean tokens and compute the Hamming distance.
 If the parameter <i>softDecoding</i> is set to be true, the input port
 will accept double tokens and compute the Euclidean distance.
-The parameter <i>contellation</i> should be a double array of length 2.
+The parameter <i>constellation</i> should be a double array of length 2.
 The first element specifies the amplitude of "true" input. The second
 element specifies the amplitude of "false" input.  At this time,
 this actor can only handle binary antipodal constellations, but
@@ -136,9 +136,9 @@ public class ViterbiDecoder extends Transformer {
         softDecoding.setExpression("false");
         softDecoding.setTypeEquals(BaseType.BOOLEAN);
 
-        contellation = new Parameter(this, "contellation");
-        contellation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        contellation.setExpression("{1.0, 0.0}");
+        constellation = new Parameter(this, "constellation");
+        constellation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        constellation.setExpression("{1.0, 0.0}");
 
         // Declare data types, consumption rate and production rate.
         _type = new ptolemy.actor.TypeAttribute(input, "inputType");
@@ -187,7 +187,7 @@ public class ViterbiDecoder extends Transformer {
      *  element defines the amplitude of "true" input. The second element
      *  defines the amplitude of "false" input.
      */
-    public Parameter contellation;
+    public Parameter constellation;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -269,7 +269,7 @@ public class ViterbiDecoder extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (_mode) {
-            ArrayToken ampToken = ((ArrayToken)contellation.getToken());
+            ArrayToken ampToken = ((ArrayToken)constellation.getToken());
             if (ampToken.length() != 2) {
                 throw new IllegalActionException(this,
                         "Invalid amplitudes for soft decoding!");
@@ -418,7 +418,7 @@ public class ViterbiDecoder extends Transformer {
 
         }
 
-        // Send all-zero tokens for the first "D" firings.
+        // Send all-false tokens for the first "D" firings.
         // If the waiting time has reached "D", the decoder starts to send
         // the decoded bits to the output port.
         if (_flag < _depth) {
@@ -470,7 +470,7 @@ public class ViterbiDecoder extends Transformer {
      *  @exception IllegalActionException If the base class throws it
      */
     public boolean postfire() throws IllegalActionException {
-        // Copy datum in buffers to their temp version.
+        // Copy datum in buffers to their temp versions.
         for (int i = 0; i < _rowNum; i ++) {
             _tempDistance[i] = _distance[i];
             for (int j = 0; j < _flag; j ++) {

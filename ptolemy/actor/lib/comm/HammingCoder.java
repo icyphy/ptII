@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
 Encode the information symbols into Hamming code.
 Let <i>k</i> denotes parameter <i>uncodedRate</i> and <i>n</i> denotes
-parameter <i>codeBlockSize</i>. During each firing, the actor consumes
+parameter <i>codedRate</i>. During each firing, the actor consumes
 <i>k</i> bits and encode them into a block of code with length <i>n</i>.
 The rate of the code is <i>k/n</i>.
 <p>
@@ -96,13 +96,13 @@ public class HammingCoder extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        uncodeBlockSize = new Parameter(this, "uncodeBlockSize");
-        uncodeBlockSize.setTypeEquals(BaseType.INT);
-        uncodeBlockSize.setExpression("4");
+        uncodedRate = new Parameter(this, "uncodedRate");
+        uncodedRate.setTypeEquals(BaseType.INT);
+        uncodedRate.setExpression("4");
 
-        codeBlockSize = new Parameter(this, "codeBlockSize");
-        codeBlockSize.setTypeEquals(BaseType.INT);
-        codeBlockSize.setExpression("7");
+        codedRate = new Parameter(this, "codedRate");
+        codedRate.setTypeEquals(BaseType.INT);
+        codedRate.setExpression("7");
 
         // Declare data types, consumption rate and production rate.
         input.setTypeEquals(BaseType.BOOLEAN);
@@ -119,13 +119,13 @@ public class HammingCoder extends Transformer {
     /** Integer defining the uncode block size. It should be a positive
      *  integer. Its default value is the integer 4.
      */
-    public Parameter uncodeBlockSize;
+    public Parameter uncodedRate;
 
     /** Integer defining the Hamming code block size.
      *  This parameter should be a non-negative integer.
      *  Its default value is the integer 7.
      */
-    public Parameter codeBlockSize;
+    public Parameter codedRate;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -134,26 +134,25 @@ public class HammingCoder extends Transformer {
     /** If the attribute being changed is <i>uncodedRate</i> or
      *  <i>uncodedRate</i>, then verify that it is a positive integer.
      *  Set the tokenConsumptionRate and tokenProductionRate.
-     *  @exception IllegalActionException If <i>initialState</i> is negative
-     *  or <i>uncodedRate</i> is non-positive or any element of
-     *  <i>polynomialArray</i> is non-positive.
+     *  @exception IllegalActionException If <i>codedRate</i>
+     *  or <i>uncodedRate</i> is not positive.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == codeBlockSize) {
-            _codeSizeValue = ((IntToken)codeBlockSize.getToken()).intValue();
+        if (attribute == codedRate) {
+            _codeSizeValue = ((IntToken)codedRate.getToken()).intValue();
             if (_codeSizeValue <= 0 ) {
                 throw new IllegalActionException(this,
-                        "codeBlockSize must be positive.");
+                        "codedRate must be positive.");
             }
             // set the output production rate.
             _outputRate.setToken(new IntToken(_codeSizeValue));
-        } else if (attribute == uncodeBlockSize) {
+        } else if (attribute == uncodedRate) {
             _uncodeSizeValue =
-                ((IntToken)uncodeBlockSize.getToken()).intValue();
+                ((IntToken)uncodedRate.getToken()).intValue();
             if (_uncodeSizeValue < 1 ) {
                 throw new IllegalActionException(this,
-                        "uncodeBlockSize must be non-negative.");
+                        "uncodedRate must be non-negative.");
             }
             // Set a flag indicating the private variables
             // _uncodeSizeValue and/or _codeSizeValue is invalid,
@@ -168,7 +167,7 @@ public class HammingCoder extends Transformer {
     }
 
     /** If the attributes has changed, check the validity of
-     *  uncodedRate and codeBlockSize. Generate the parity matrix.
+     *  uncodedRate and codedRate. Generate the parity matrix.
      *  Read "uncodedRate" number of tokens from the input port
      *  and compute the parities. Send the parities in sequence to the
      *  output port.
@@ -178,12 +177,12 @@ public class HammingCoder extends Transformer {
         if (_parameterInvalid) {
             if (_uncodeSizeValue >= _codeSizeValue) {
                 throw new IllegalActionException(this,
-                        "uncodeBlockSize must be greater than codeBlockSize.");
+                        "codedRate must be greater than uncodedRate.");
             }
             _order = _codeSizeValue - _uncodeSizeValue;
             if (_codeSizeValue != (1 << _order) - 1) {
                 throw new IllegalActionException(this,
-                        "Invalid codeBlockSize or _uncodeBlockSize.");
+                        "Invalid pair of uncodedRate and codedRate.");
             }
             // Generate P.
             _parityMatrix = new int[_uncodeSizeValue][_order];
@@ -208,7 +207,6 @@ public class HammingCoder extends Transformer {
         Token[] inputToken = (Token[])input.get(0, _uncodeSizeValue);
         BooleanToken[] result = new BooleanToken[_codeSizeValue];
 
-        // Convert the first "_uncodeSizeValue" tokens to binaries.
         for (int i = 0; i < _uncodeSizeValue; i++) {
             result[i] = (BooleanToken)inputToken[i];
         }
