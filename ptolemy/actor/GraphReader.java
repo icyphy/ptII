@@ -21,6 +21,8 @@
  ENHANCEMENTS, OR MODIFICATIONS.
 
 
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 // In theory, this class could be in ptolemy.graph, but that would
@@ -107,7 +109,8 @@ public class GraphReader {
             Iterator outPorts = source.outputPortList().iterator();
             while (outPorts.hasNext()) {
                 IOPort outPort = (IOPort)(outPorts.next());
-                Iterator inPorts = outPort.deepConnectedInPortList().iterator();
+                Iterator inPorts =
+                    outPort.deepConnectedInPortList().iterator();
                 while (inPorts.hasNext()) {
                     IOPort inPort = (IOPort)(inPorts.next());
                     Actor sink = (Actor)(inPort.getContainer());
