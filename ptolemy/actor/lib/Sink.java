@@ -81,16 +81,9 @@ public class Sink extends TypedAtomicActor {
      *  @throws CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-	try {
-	    Sink newobj = (Sink)super.clone(ws);
-	    newobj.input = (TypedIOPort)newobj.getPort("input");
-	    return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        Sink newobj = (Sink)super.clone(ws);
+        newobj.input = (TypedIOPort)newobj.getPort("input");
+        return newobj;
     }
 }
