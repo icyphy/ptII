@@ -36,9 +36,10 @@ import ptolemy.actor.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
-import ptolemy.data.expr.*;
+import ptolemy.data.expr.Parameter;
+import ptolemy.graph.*;
 
-
+import java.lang.reflect.*;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import collections.LinkedList;
@@ -245,15 +246,14 @@ public final class SDFIOPort extends TypedIOPort {
 
     /** Send an array of tokens to all receivers connected to the
      *  specified channel.  Operation is similar to IOPort.send(),
-     *  except that it sends
-     *  a sequence of tokens in an array.   The token in the
-     *  first position in the array is interpreted as the oldest token
-     *  in the sequence, and
+     *  except that it sends a sequence of tokens in an array.   
+     *  The token in the first position in the array is interpreted 
+     *  as the oldest token in the sequence, and
      *  the token in the last position of the
-     *  array in interpreted as the newest token in the sequence.
+     *  array is interpreted as the newest token in the sequence.
      *  This method is provided for efficiency only, and is
      *  semantically equivalent to calling IOPort.put() consecutively for
-     *  each element in the array.
+     *  each element in the array.  
      *
      *  @param channelindex The index of the channel, from 0 to width-1
      *  @param tokens The tokens to send
@@ -266,6 +266,8 @@ public final class SDFIOPort extends TypedIOPort {
         Receiver[][] farRec;
         if(tokens == null) throw new IllegalActionException(
                 "SDFIOPort: sendArray: array must be not null");
+	if(tokens.length == 0) return;
+	ptolemy.data.Token firstToken = firstToken = tokens[0];
         try {
             workspace().getReadAccess();
             if (!isOutput()) {
@@ -277,6 +279,29 @@ public final class SDFIOPort extends TypedIOPort {
                 throw new IllegalActionException(this,
                         "send: channel index is out of range.");
             }
+	    
+	    // check the types for all of the tokens in the array.
+	    Class _resolvedType = getType();
+	    int compare = TypeLattice.compare(firstToken.getClass(),
+					      _resolvedType);
+	    if (compare == CPO.HIGHER ||
+                    compare == CPO.INCOMPARABLE) {
+		throw new IllegalArgumentException(
+		    "Run-time type checking for token 0 " +
+		    "failed. token: " + firstToken.getClass().getName() +
+		    ", port: " + getFullName() + ", port type: " +
+		    getType().getName());
+	    }
+	    
+	    for(int i = 1; i < tokens.length; i++) {
+		if(tokens[i].getClass() != firstToken.getClass()) 
+		    throw new IllegalArgumentException(
+			"Run-time type checking for token " + i +
+			"failed. token: " + tokens[i].getClass().getName() +
+                        ", port: " + getFullName() + ", port type: " +
+                        getType().getName());
+	    }
+
             // Note that the getRemoteReceivers() method doesn't throw
             // any non-runtime exception.
             farRec = getRemoteReceivers();
@@ -284,13 +309,33 @@ public final class SDFIOPort extends TypedIOPort {
         } finally {
             workspace().doneReading();
         }
-        for (int j = 0; j < farRec[channelindex].length; j++) {
-            if(farRec[channelindex][j] instanceof SDFReceiver)
-                ((SDFReceiver) farRec[channelindex][j]).putArray(tokens);
-            else
-                for (int i = 0; i < tokens.length; i++) {
-                    farRec[channelindex][j].put(tokens[i]);
-                }
+
+	try {
+	    for (int j = 0; j < farRec[channelindex].length; j++) {
+		TypedIOPort port =
+		    (TypedIOPort)farRec[channelindex][j].getContainer();
+		
+		Class farType = port.getType();
+		if((farRec[channelindex][j] instanceof SDFReceiver)&&
+		   (farType.isInstance(firstToken))) {
+		    ((SDFReceiver) farRec[channelindex][j]).putArray(tokens);
+		} else {
+		    Object[] arg = new Object[1];
+		    Method convert = _getConvertMethod(farType);
+		    for (int i = 0; i < tokens.length; i++) {
+			arg[0] = tokens[i];
+			ptolemy.data.Token newToken = 
+			    (ptolemy.data.Token)convert.invoke(null, arg);
+			farRec[channelindex][j].put(newToken);
+		    }
+		}
+	    }
+        } catch (IllegalAccessException iae) {
+	    throw new InternalErrorException("TypedIOPort.send: " +
+                    "IllegalAccessException: " + iae.getMessage());
+	} catch (InvocationTargetException ite) {
+            throw new InternalErrorException("TypedIOPort.send: " +
+                    "InvocationTargetException: " + ite.getMessage());
         }
     }
 
@@ -388,6 +433,25 @@ public final class SDFIOPort extends TypedIOPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** 
+     * Return the convert() Method for the resolved type of this port.
+     */
+    private Method _getConvertMethod(Class dataType) {
+	Method _convertMethod = null;
+	try {
+	    if (_convertMethod == null) {
+	    	Class[] formal = new Class[1];
+	    	formal[0] = Token.class;
+	    	_convertMethod = dataType.getMethod("convert", formal);
+	    }
+	    return _convertMethod;
+
+	} catch (NoSuchMethodException e) {
+            throw new InternalErrorException("_getConvertMethod: "
+                    + "NoSuchMethodException: " + e.getMessage());
+        }
+    }
 
     /** 
      * Initialize local data members.
