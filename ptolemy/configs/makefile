@@ -55,23 +55,34 @@ JSRCS =
 #  so we include it in this jar
 OTHER_FILES_TO_BE_JARED = \
 	annotation.xml \
-	automataLibrary.xml \
+	automataActorLibrary.xml \
+	basicActorLibrary.xml \
+	basicDirectors.xml \
+	basicLibrary.xml \
+	basicTableauFactories.xml \
+	defaultFullConfiguration.xml \
 	experimentalDirectors.xml \
+	extendedEffigyFactories.xml \
+	extendedTableauFactories.xml \
+	fsmEffigyFactories.xml \
 	fsmLibrary.xml \
-	fsmTableaux.xml \
+	fsmTableauFactory.xml \
+	graphEffigyFactory.xml \
+	graphTableauFactory.xml \
+	iaEffigyFactory.xml \
+	iaTableauFactory.xml \
 	intro.htm \
 	introDSP.htm \
+	introHybrid.htm \
 	introPtiny.htm \
+	ptIIplanet.gif \
 	runConfiguration.xml \
 	runPanelConfiguration.xml \
 	runWelcomeWindow.xml \
-	ptIIplanet.gif \
-	ptinyActors.xml \
-	ptinyDirectors.xml \
-	ptinyEffigies.xml \
 	utilitiesLibrary.xml \
 	vergilConfiguration.xml \
 	vergilConfigurationDSP.xml \
+	vergilConfigurationHybrid.xml \
 	vergilConfigurationPtiny.xml \
 	vergilWelcomeWindow.xml
 
