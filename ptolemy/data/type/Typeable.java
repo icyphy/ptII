@@ -95,7 +95,7 @@ public interface Typeable
     /** Set a type constraint that the type of this object equal the type
      *  corresponding to the specified Class.
      *  @param c A Class.
-     *  @exception IllegalactionException If the type of this object already
+     *  @exception IllegalActionException If the type of this object already
      *   violates this constraint; or the specified Class does not correspond
      *   to a BaseType.
      *  @deprecated
