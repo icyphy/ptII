@@ -60,7 +60,7 @@ $Id$
 
 // Note: To make it easier to reference the above paper, this class
 // uses the same names for methods and variables as in the paper, which
-// may voilate the naming convention in some cases.
+// may violate the naming convention in some cases.
 
 public class InequalitySolver {
 

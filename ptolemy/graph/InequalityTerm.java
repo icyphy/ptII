@@ -38,7 +38,7 @@ or functions.
 
 @author Yuhong Xiong
 $Id$
-@see Cpo
+@see CPO
 */
 
 public interface InequalityTerm {
