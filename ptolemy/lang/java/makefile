@@ -163,8 +163,12 @@ skeleton:
 		CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.lang.java.Skeleton $(PTII)/$$x/*.java; \
 	done
 
-
-
+# Remove .skel files.
+# Perhaps this should be called 'remove_skeletons_from_the_closet'?
+clean_skeleton:
+	for x in $(SKELETON_DIRS); do \
+		rm -f $(ROOT)/$$x/*.skel; \
+	done
 
 depend:
 	@echo "no dependencies in this directory"
@@ -201,7 +205,7 @@ JAVASRC_STUBS=$(PTII)/vendors/sun/src
 analysis:
 	@echo "Perform static semantic analysis"
 	@echo " (You can ignore ambiguous reference warnings)"
-	CLASSPATH=$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS) \
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS)" \
 	$(JAVA) ptolemy.lang.java.Main ./nodetypes/IntLitNode.java
 
 codegen: generate_codegen compile_codegen run_codegen 
@@ -209,13 +213,14 @@ generate_codegen:
 	@if [ ! -d $(JAVASRC_STUBS) ]; then \
 		echo "Warning $(JAVASRC_STUBS) does not exist"; \
 	fi
-	CLASSPATH=$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS) \
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS)" \
 	$(JAVA) -verbose:class  ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 	-class  ptolemy.domains.sdf.demo.orthocom.OrthogonalComSystem \
-	-iterations 500 \
+	-iterations 50 \
 	-outdir $(ROOT) -outpkg cg.orthocom
+
 compile_codegen:
-	(cd $(ROOT)/cg/orthocom; $(JAVAC) -classpath ../.. CG_Main.java)
+	(cd $(ROOT)/cg/orthocom; $(JAVAC) $(JFLAGS) -classpath ../.. CG_Main.java)
 run_codegen: 	
 	(cd $(ROOT)/cg/orthocom; \
 		$(JAVA) -classpath ../.. cg.orthocom.CG_Main)
