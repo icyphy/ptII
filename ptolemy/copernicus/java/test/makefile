@@ -68,8 +68,7 @@ JSRCS = TestUnboxingMain.java \
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	JavaTypeLattice.tcl \
-	QuickSmoke.tcl \
-
+	QuickSmoke.tcl
 
 # Long tests, that take so damn long they are not even done in the
 # nightly build.
