@@ -78,6 +78,27 @@ public class Render extends PlotBox {
 
         _imageData.add(newStripe);
 
+        // These variables are set to make the fill mechanism work.
+        _xTop = _imageData.size() * getXIncrement();
+        _xBottom = getXOffset();
+        _yTop = ((int[])_imageData.getFirst()).length *
+            getYIncrement();
+        _yBottom = getYOffset();
+
+        // Set the x and y ranges according to the data.  The
+        // x-range start value is getXOffset().  Similarly for the
+        // y-range start value.  To calculate the high end of the
+        // x-range take the number of stripes in the data
+        // structure and multiply it by the horizontal increment.
+        // For the high value of the y-range take the number of
+        // data elements per stripe and multiply it by the
+        // vertical increment.
+        setXRange(getXOffset(),
+                _imageData.size() * getXIncrement());
+        setYRange(getYOffset(),
+                ((int[])_imageData.getFirst()).length *
+                getYIncrement());
+
         //         // Get the graphics context.
         //
         //         Graphics graphics = getGraphics();
@@ -94,7 +115,7 @@ public class Render extends PlotBox {
 	_imageData = new LinkedList();
     }
 
-    /** Get the current colormap.
+   /** Get the current colormap.
      */
     public synchronized int[][] getColormap() {
         return _colormap;
@@ -139,6 +160,10 @@ public class Render extends PlotBox {
                     setTitle("Sample image");
 		    setYLabel("hertz");
 		    setXLabel("time");
+		    setXIncrement(0.05);
+		    setXOffset(0.0);
+		    setYIncrement(40.0);
+		    setYOffset(0.0);
 
                     // Create the stripes in data form (arrays).
                     int[] stripe1 = new int[100];
@@ -165,32 +190,6 @@ public class Render extends PlotBox {
                         addStripe(stripe1);
                         addStripe(stripe2);
                     }
-
-		    setXIncrement(0.05);
-		    setXOffset(0.0);
-		    setYIncrement(40.0);
-		    setYOffset(0.0);
-
-		    // These variables are set to make the fill mechanism work.
-		    _xTop = _imageData.size() * getXIncrement();
-		    _xBottom = getXOffset();
-		    _yTop = ((int[])_imageData.getFirst()).length *
-			getYIncrement();
-		    _yBottom = getYOffset();
-
-		    // Set the x and y ranges according to the data.  The
-		    // x-range start value is getXOffset().  Similarly for the
-		    // y-range start value.  To calculate the high end of the
-		    // x-range take the number of stripes in the data
-		    // structure and multiply it by the horizontal increment.
-		    // For the high value of the y-range take the number of
-		    // data elements per stripe and multiply it by the
-		    // vertical increment.
-                    setXRange(getXOffset(),
-                            _imageData.size() * getXIncrement());
-                    setYRange(getYOffset(),
-                            ((int[])_imageData.getFirst()).length *
-                            getYIncrement());
                 }
             }
         };
