@@ -168,9 +168,11 @@ public class Vertex extends Attribute implements Locatable {
 	    output.write("<pathTo=\"" + _linked.getName() + "\"/>\n");
 	}
  	output.write(_getIndentPrefix(depth));
-	output.write("<location x=\"" + 
-		     _location[0] + "\" y=\"" + 
-		     _location[1] + "\"/>\n");
+	if(_location != null) {
+	    output.write("<location x=\"" + 
+			 _location[0] + "\" y=\"" + 
+			 _location[1] + "\"/>\n");
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
