@@ -142,7 +142,8 @@ public class FSMTransitionController extends EdgeController {
 	    if(transition != null) {
 		c.setToolTipText(transition.getName());
                 StringBuffer buffer = new StringBuffer();
-                if(transition.guardExpression != null) {
+                if(transition.guardExpression != null &&
+                   transition.guardExpression.getExpression() != null) {
                     buffer.append(transition.guardExpression.getExpression());
                 }
                 // FIXME what about the trigger and actions?
