@@ -443,10 +443,10 @@ public class TypedIOPort extends IOPort implements Typeable {
 
             try {
                 _declaredType = (Type)type.clone();
-            } catch (CloneNotSupportedException cnse) {
+            } catch (CloneNotSupportedException cloneNotSupported) {
                 throw new InternalErrorException(
                     "TypedIOPort.setTypeEquals: Cannot clone type" +
-                    cnse.getMessage());
+                    cloneNotSupported.getMessage());
             }
 
             if (!_resolvedType.isEqualTo(_declaredType)) {
