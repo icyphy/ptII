@@ -53,6 +53,7 @@ JSRCS = ArrayStringFormat.java \
 	Precision.java \
 	ExtendedMath.java \
 	Fraction.java \
+	Interpolation.java \
         SampleGenerator.java \
 	SignalProcessing.java \
         DoubleArrayMath.java \
