@@ -1,0 +1,464 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="topLevel" class="ptolemy.actor.TypedCompositeActor">
+    <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="executionTime">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="66.0, 31.0">
+        </property>
+    </property>
+    <property name="executionTime" class="ptolemy.data.expr.Parameter" value="500.0">
+    </property>
+    <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="448.0, 119.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model illustrates a famous paradox
+in probability called the inspection
+paradox. Passengers arrive randomly at a
+bus stop, according to a Poisson process.
+Busses also arrive, and waiting time of
+the passengers is recorded. Two
+situations are compared: Busses arrive at
+regular intervals, and busses arrive
+according to a Poisson process. The
+expected waiting time is double for the
+second case as the first, even though the
+average arrival rate of busses is the
+same.</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+    <entity name="poissonBus" class="ptolemy.actor.lib.Poisson">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="[2]">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="52.999999999999986, 231.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="passenger" class="ptolemy.actor.lib.Poisson">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="meanTime" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="[1]">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="52.999999999999986, 358.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="waitingTime" class="ptolemy.domains.de.lib.WaitingTime">
+        <property name="_location" class="ptolemy.moml.Location" value="214.0, 185.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="waiter" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="waitee" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="plot" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="242.00001525878906, 64.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Arrival Times and Waiting Times</title>
+<xLabel>time</xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="500.0"/>
+<yRange min="0.0" max="6.001424301333927"/>
+<noGrid/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+                        </configure>    </entity>
+    <entity name="histplot" class="ptolemy.actor.lib.gui.HistogramPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="binWidth" class="ptolemy.data.expr.Parameter" value="0.2">
+        </property>
+        <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="442.00001525878906, 271.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Waiting Time Histogram</title>
+<xLabel>waiting times</xLabel>
+<yLabel>passengers</yLabel>
+<xRange min="0.1" max="6.0"/>
+<yRange min="0.0" max="104.0"/>
+<noGrid/>
+<barGraph width="0.5" offset="0.15"/>
+<bin width="0.2" offset="0.1"/>
+</plot>?>
+                        </configure>    </entity>
+    <entity name="Clock1" class="ptolemy.actor.lib.Clock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0]">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="[3.0]">
+        </property>
+        <doc>Create a generalized square wave</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="52.999999999999986, 113.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="WaitingTime3" class="ptolemy.domains.de.lib.WaitingTime">
+        <property name="_location" class="ptolemy.moml.Location" value="235.0, 403.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="waiter" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="waitee" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Delay2" class="ptolemy.domains.de.lib.Delay">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="executionTime">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="211.0, 295.0">
+        </property>
+        <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="typed composite actor12" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.moml.Location" value="398.0, 350.5">
+        </property>
+        <property name="caption" class="ptolemy.data.expr.Parameter" value="&quot;Average waiting time (Poisson busses): &quot;">
+        </property>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.moml.Location" value="102.21065998077393, 142.9994239807129">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.moml.Location" value="102.21065998077393, 256.9994239807129">
+            </property>
+        </port>
+        <port name="report" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.moml.Location" value="494.99876944720745, 183.9994239807129">
+            </property>
+        </port>
+        <entity name="Average0" class="ptolemy.actor.lib.Average">
+            <property name="_location" class="ptolemy.moml.Location" value="173.0, 144.0">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="reset" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="Sampler2" class="ptolemy.domains.de.lib.Sampler">
+            <property name="_location" class="ptolemy.moml.Location" value="295.0, 170.0">
+            </property>
+            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="output"/>
+                <property name="multiport"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="AddSubtract5" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.moml.Location" value="410.0, 179.0">
+            </property>
+            <port name="plus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="minus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <entity name="Const7" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="caption">
+            </property>
+            <doc>Create a constant sequence</doc>
+            <property name="_location" class="ptolemy.moml.Location" value="268.0, 277.0">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="206.0, 225.0">
+            </vertex>
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="data" relation="relation1"/>
+        <link port="trigger" relation="relation9"/>
+        <link port="report" relation="relation15"/>
+        <link port="Average0.input" relation="relation1"/>
+        <link port="Average0.output" relation="relation3"/>
+        <link port="Sampler2.input" relation="relation3"/>
+        <link port="Sampler2.output" relation="relation13"/>
+        <link port="Sampler2.trigger" relation="relation9"/>
+        <link port="AddSubtract5.plus" relation="relation12"/>
+        <link port="AddSubtract5.plus" relation="relation13"/>
+        <link port="AddSubtract5.output" relation="relation15"/>
+        <link port="Const7.output" relation="relation12"/>
+        <link port="Const7.trigger" relation="relation9"/>
+    </entity>
+    <entity name="16:typed composite actor12" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.moml.Location" value="406.00001525878906, 409.5">
+        </property>
+        <property name="caption" class="ptolemy.data.expr.Parameter" value="&quot;Average waiting time (Regular busses): &quot;">
+        </property>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.moml.Location" value="102.21065998077393, 142.9994239807129">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.moml.Location" value="102.21065998077393, 256.9994239807129">
+            </property>
+        </port>
+        <port name="report" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.moml.Location" value="494.99876944720745, 183.9994239807129">
+            </property>
+        </port>
+        <entity name="Average0" class="ptolemy.actor.lib.Average">
+            <property name="_location" class="ptolemy.moml.Location" value="173.0, 144.0">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="reset" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="Sampler2" class="ptolemy.domains.de.lib.Sampler">
+            <property name="_location" class="ptolemy.moml.Location" value="295.0, 170.0">
+            </property>
+            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
+                <property name="output"/>
+                <property name="multiport"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="AddSubtract5" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.moml.Location" value="410.0, 179.0">
+            </property>
+            <port name="plus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="minus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <entity name="Const7" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="caption">
+            </property>
+            <doc>Create a constant sequence</doc>
+            <property name="_location" class="ptolemy.moml.Location" value="268.0, 277.0">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
+        <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="206.0, 225.0">
+            </vertex>
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="data" relation="relation1"/>
+        <link port="trigger" relation="relation9"/>
+        <link port="report" relation="relation15"/>
+        <link port="Average0.input" relation="relation1"/>
+        <link port="Average0.output" relation="relation3"/>
+        <link port="Sampler2.input" relation="relation3"/>
+        <link port="Sampler2.output" relation="relation13"/>
+        <link port="Sampler2.trigger" relation="relation9"/>
+        <link port="AddSubtract5.plus" relation="relation12"/>
+        <link port="AddSubtract5.plus" relation="relation13"/>
+        <link port="AddSubtract5.output" relation="relation15"/>
+        <link port="Const7.output" relation="relation12"/>
+        <link port="Const7.trigger" relation="relation9"/>
+    </entity>
+    <entity name="Display17" class="ptolemy.actor.lib.gui.Display">
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="34">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="476.0000305175781, 369.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="_R1" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="119.0, 363.0">
+        </vertex>
+    </relation>
+    <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="309.0, 189.99999237060547">
+        </vertex>
+    </relation>
+    <relation name="relation0" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="133.0, 238.0">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="148.0, 118.0">
+        </vertex>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="289.0, 409.0">
+        </vertex>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="274.0, 300.0">
+        </vertex>
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="poissonBus.output" relation="relation0"/>
+    <link port="passenger.output" relation="_R1"/>
+    <link port="waitingTime.output" relation="_R2"/>
+    <link port="waitingTime.waiter" relation="_R1"/>
+    <link port="waitingTime.waitee" relation="relation0"/>
+    <link port="plot.input" relation="_R1"/>
+    <link port="plot.input" relation="_R2"/>
+    <link port="plot.input" relation="relation0"/>
+    <link port="plot.input" relation="relation2"/>
+    <link port="histplot.input" relation="_R2"/>
+    <link port="histplot.input" relation="relation10"/>
+    <link port="Clock1.output" relation="relation2"/>
+    <link port="WaitingTime3.output" relation="relation10"/>
+    <link port="WaitingTime3.waiter" relation="_R1"/>
+    <link port="WaitingTime3.waitee" relation="relation2"/>
+    <link port="Delay2.input" relation="relation2"/>
+    <link port="Delay2.output" relation="relation15"/>
+    <link port="typed composite actor12.data" relation="_R2"/>
+    <link port="typed composite actor12.trigger" relation="relation15"/>
+    <link port="typed composite actor12.report" relation="relation27"/>
+    <link port="16:typed composite actor12.data" relation="relation10"/>
+    <link port="16:typed composite actor12.trigger" relation="relation15"/>
+    <link port="16:typed composite actor12.report" relation="relation26"/>
+    <link port="Display17.input" relation="relation26"/>
+    <link port="Display17.input" relation="relation27"/>
+</entity>

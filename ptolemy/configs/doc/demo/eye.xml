@@ -3,18 +3,20 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="eye" class="ptolemy.actor.TypedCompositeActor">
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="200.0, 40.0">
+        <property name="_location" class="ptolemy.moml.Location" value="364.0, 88.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows a simple, physical-level model of a communication
-system. This system uses 2-level PAM (pulse amplitude modulation). It
-has a square-root raised cosine pulse shaper, where a top-level
-parameter (editable from the run control panel) specifies the excess
-bandwith, which is typically between 0.0 and 1.0. The model has a
-matched filter, with is realized by the rightmost instance of the
-RaisedCosine actor. The output display is known as an "eye diagram."</text>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows a simple, physical-level model of a
+communication system. This system uses 2-level PAM (pulse
+amplitude modulation). It has a square-root raised cosine
+pulse shaper, where a top-level parameter (editable from the
+run control panel) specifies the excess bandwith, which is
+typically between 0.0 and 1.0. The model has a matched
+filter, with is realized by the rightmost instance of the
+RaisedCosine actor. The output display is known as an "eye
+diagram."</text>
            </svg>
            </configure>
         </property>
@@ -31,6 +33,32 @@ RaisedCosine actor. The output display is known as an "eye diagram."</text>
     </property>
     <property name="noise_standard_deviation" class="ptolemy.data.expr.Parameter" value="0.1">
     </property>
+    <property name="0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="76.0, 88.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">The green block
+is a director. It
+controls execution.</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+    <property name="0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="186.0, 358.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">To get documentation for
+an actor, right click and select
+"Get Documentation".</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
     <entity name="DiscreteRandomSource1" class="ptolemy.actor.lib.DiscreteRandomSource">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -38,7 +66,7 @@ RaisedCosine actor. The output display is known as an "eye diagram."</text>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="[-1, 1]">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="93.0, 113.0">
+        <property name="_location" class="ptolemy.moml.Location" value="88.0, 206.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -65,7 +93,7 @@ RaisedCosine actor. The output display is known as an "eye diagram."</text>
         </property>
         <property name="symbolInterval" class="ptolemy.data.expr.Parameter" value="16">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="173.0, 134.0">
+        <property name="_location" class="ptolemy.moml.Location" value="168.0, 227.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -87,7 +115,7 @@ RaisedCosine actor. The output display is known as an "eye diagram."</text>
         </port>
     </entity>
     <entity name="AddSubtract4" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="296.0, 169.0">
+        <property name="_location" class="ptolemy.moml.Location" value="291.0, 262.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -109,7 +137,7 @@ RaisedCosine actor. The output display is known as an "eye diagram."</text>
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="noise_standard_deviation">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="166.0, 208.0">
+        <property name="_location" class="ptolemy.moml.Location" value="161.0, 300.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -136,7 +164,7 @@ RaisedCosine actor. The output display is known as an "eye diagram."</text>
         </property>
         <property name="symbolInterval" class="ptolemy.data.expr.Parameter" value="16">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="399.0, 181.0">
+        <property name="_location" class="ptolemy.moml.Location" value="394.0, 273.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -170,14 +198,13 @@ RaisedCosine actor. The output display is known as an "eye diagram."</text>
         </property>
         <property name="persistence" class="ptolemy.data.expr.Parameter" value="512">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="507.0, 191.0">
+        <property name="_location" class="ptolemy.moml.Location" value="502.0, 284.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Eye Diagram</title>
@@ -189,8 +216,7 @@ RaisedCosine actor. The output display is known as an "eye diagram."</text>
 <wrap/>
 <default marks="pixels"/>
 </plot>?>
-        </configure>
-    </entity>
+                        </configure>    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
