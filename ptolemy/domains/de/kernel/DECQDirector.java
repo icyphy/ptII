@@ -1,4 +1,4 @@
-/* The DE Director that uses Calendar Queeu for scheduling
+/* The DE Director that uses the Calendar Queue class for scheduling.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -84,8 +84,9 @@ public class DECQDirector extends Director {
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-   /** Override the default initialize() method, to invoke the computeDepth()
-    *  method.
+   /** Override the default initialize() method. This method peforms some
+    *  additional DE domain initializations and checks before calling the
+    *  parent intialize method.
     *
     *  @exception CloneNotSupportedException If the initialize() method of the
     *   container or one of the deeply contained actors throws it.

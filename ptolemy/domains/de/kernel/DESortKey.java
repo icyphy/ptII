@@ -32,9 +32,9 @@ package ptolemy.domains.de.kernel;
 //// DESortKey
 /**
 An event in Discrete Event domain is modeled as an instance of Token and
-an instance of DESortKey. A sort key consists of an instance of double and
-an instance of integer. The sort keys are used by the global event queue to
-sort incoming events according to their time stamp
+an instance of DESortKey. A sort key is a wrapper for an instance of 
+double and an instance of integer. The sort keys are used by the global 
+event queue to sort incoming events according to their time stamps.
 
 @author Lukito Muliadi
 @version $Id$
@@ -74,11 +74,13 @@ public class DESortKey {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
+    
     // FIXME: change double to Number ?
+    // _timeStamp 
     private double _timeStamp;
+    // _fineLevel
     private int _fineLevel;
 
 }
+
 

@@ -40,7 +40,9 @@ import java.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// DEIOPort
 /**
-FIXME: description
+Extension of the IOPort class to be used in Discrete Event domain. It
+overloads two methods, broadcast() and send(). The overloaded versions have
+another input parameter for the time stamp.
 
 @authors Lukito Muliadi
 @version $Id$

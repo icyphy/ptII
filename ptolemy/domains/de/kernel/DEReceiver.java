@@ -79,8 +79,12 @@ public class DEReceiver extends Mailbox {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** FIXME: description
+    /** Put a token and its time stamp into the receiver. Actor that produce
+     *  delayed outputs should use this method.
      *
+     * @param token The token being put.
+     * @param timeStamp The time stamp of the token.
+     * 
      */
     public void put(Token token, double timeStamp) 
             throws IllegalActionException {
@@ -102,20 +106,26 @@ public class DEReceiver extends Mailbox {
                 new DESortKey(timeStamp, _fineLevel));
     }
 
-    /** FIXME: description
+    /** Put a token into the receiver with its time stamp equal to the current
+     *  time obtained from the director. Actor that produce zero-delay outputs
+     *  and polymorphic actors should use this method.
      *  
+     * @param token The token being put.
      */
     public void put(Token token) throws IllegalActionException{
         put(token, _deDirector.currentTime());
     }
 
-    /** Only director should invoke this method.
+    /** Invoke the put method from the parent class, which will manually
+     *  put a token into the receiver. Only a director should use this 
+     *  method.
      */
     public void superPut(Token token) throws IllegalActionException{
         super.put(token);
     }
 
-    /**
+    /** Set the fine level of this receiver, obtained from the topological
+     *  sort.
      */
     public void setFineLevel(int fineLevel) {
         _fineLevel = fineLevel;
