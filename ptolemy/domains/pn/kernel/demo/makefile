@@ -51,9 +51,10 @@ JARFILE = 	$(JPACKAGE).jar
 CLASSPATH = ../../../../..
 
 JSRCS = \
-	PNExampleApplet.java
 
+# PNExampleApplet.java does not compile right now.
 EXTRA_SRCS =	$(JSRCS) \
+	PNExampleApplet.java \
 	PNExample.html \
 	PNPrimeExample.tcl
 
