@@ -58,9 +58,9 @@ import ptolemy.kernel.util.Workspace;
 //// CTMultiSolverDirector
 /**
 A CTDirector that uses multiple ODE solvers. The reason for switching
-solvers is that when abrupt changes in signals or actor functionalities
-occur (also called breakpoints), the state of the system
-have to be recalculated.
+solvers is that when abrupt changes in signals or actor functions
+(also called breakpoints) occur, the state of the system
+has to be recalculated.
 At these points, a special ODE solver, called the "breakpointODESolver"
 is used. The simulation is executed as if the breakpoint is a new
 starting point. Typically, breakpointODESolvers do not advance time.
@@ -73,6 +73,12 @@ This director can only be a top-level director. For a CT domain inside
 an opaque composite actor, use CTMixedSignalDirector (if the outer
 domain is discrete) or CTEmbeddedDirector (if the outer domain is
 a CT domain or a HS domain.)
+<P>
+This director recognizes actors that implement the CTStepSizeControlActor
+interface. To adjust step sizes, it polls such actors.  If all are
+content with the current step size, then it attempts to raise the
+step size.  If any is not content, then it reduces the step size.
+If there are no such actors, then it leaves the step size where it is.
 <P>
 This director has two more parameters than the CTDirector base
 class.<BR>
@@ -653,11 +659,15 @@ public class CTMultiSolverDirector extends CTDirector {
      *  for the next step. The predicted step size
      *  is the minimum of all predictions from step size control actors,
      *  and it never exceeds 10 times this step size.
+     *  If there are no step-size control actors at all, then return
+     *  the current step size.  This results in leaving the step size
+     *  at its initial value.
      *  @exception IllegalActionException If the scheduler throws it.
      */
     protected double _predictNextStepSize() throws IllegalActionException {
         if (!isBreakpointIteration()) {
             double predictedStep = 10.0*getCurrentStepSize();
+            boolean foundOne = false;
             CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
             Iterator actors = schedule.get(
                     CTSchedule.STATE_STEP_SIZE_CONTROL_ACTORS).actorIterator();
@@ -666,6 +676,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     (CTStepSizeControlActor) actors.next();
                 predictedStep = Math.min(predictedStep,
                         actor.predictedStepSize());
+                foundOne = true;
             }
             actors = schedule.get(
                     CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS).actorIterator();
@@ -674,8 +685,13 @@ public class CTMultiSolverDirector extends CTDirector {
                     (CTStepSizeControlActor) actors.next();
                 predictedStep = Math.min(predictedStep,
                         actor.predictedStepSize());
+                foundOne = true;
             }
-            return predictedStep;
+            if (foundOne) {
+                return predictedStep;
+            } else {
+                return getCurrentStepSize();
+            }
         } else {
             // The first iteration after a breakpoint iteration.
             // Use the initial step size.
