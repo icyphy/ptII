@@ -56,6 +56,8 @@ JSRCS = \
 	FixedStepSolver.java \
 	ForwardEulerSolver.java \
 	ImplicitMethodSolver.java \
+	ImpulseBESolver.java \
+	TrapezoidalRuleSolver.java \
 	VariableStepSolver.java
 
 

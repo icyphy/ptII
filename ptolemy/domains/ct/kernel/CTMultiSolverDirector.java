@@ -338,7 +338,7 @@ public class CTMultiSolverDirector extends CTDirector {
     private void _initParameters() {
         try {
             _defaultsolverclass=
-                "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver";
+                "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver";
             _paramDefaultODESolver = new CTParameter(
                 this, "DefaultODESolver", new StringToken(_defaultsolverclass));
             _breakpointsolverclass=
