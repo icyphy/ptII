@@ -108,6 +108,167 @@ public class Attribute extends NamedObj {
         return newObject;
     }
 
+    /** Move this object down by one in the list of attributes of
+     *  its container. If this object is already last, do nothing.
+     *  This method gets write access on workspace
+     *  and increments the version.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
+     */
+    public int moveDown() throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (container == null) {
+            throw new IllegalActionException(this, "Has no container.");
+        }
+        try {
+            _workspace.getWriteAccess();
+            int result = container._attributes.moveDown(this);
+            
+            // Propagate.
+            Iterator derivedObjects = getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
+                NamedObj derived = (NamedObj)derivedObjects.next();
+                container = derived.getContainer();
+                container._attributes.moveDown(derived);
+            }
+            
+            return result;
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
+    /** Move this object to the first position in the list
+     *  of attributes of the container. If this object is already first,
+     *  do nothing. This method gets write access on workspace
+     *  and increments the version.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
+     */
+    public int moveToFirst() throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (container == null) {
+            throw new IllegalActionException(this, "Has no container.");
+        }
+        try {
+            _workspace.getWriteAccess();
+            int result = container._attributes.moveToFirst(this);
+            
+            // Propagate.
+            Iterator derivedObjects = getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
+                NamedObj derived = (NamedObj)derivedObjects.next();
+                container = derived.getContainer();
+                container._attributes.moveToFirst(derived);
+            }
+            
+            return result;
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
+    /** Move this object to the specified position in the list
+     *  of attributes of the container. If this object is already at
+     *  the specified position, do  nothing. This method gets write
+     *  access on workspace and increments the version.
+     *  @param index The position to move this object to.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container or if the index is out of bounds.
+     */
+    public int moveToIndex(int index) throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (container == null) {
+            throw new IllegalActionException(this, "Has no container.");
+        }
+        try {
+            _workspace.getWriteAccess();
+            int result = container._attributes.moveToIndex(this, index);
+            
+            // Propagate.
+            Iterator derivedObjects = getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
+                NamedObj derived = (NamedObj)derivedObjects.next();
+                container = derived.getContainer();
+                container._attributes.moveToIndex(derived, index);
+            }
+            
+            return result;
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
+    /** Move this object to the last position in the list
+     *  of attributes of the container.  If this object is already last,
+     *  do nothing. This method gets write access on workspace
+     *  and increments the version.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
+     */
+    public int moveToLast() throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (container == null) {
+            throw new IllegalActionException(this, "Has no container.");
+        }
+        try {
+            _workspace.getWriteAccess();
+            int result = container._attributes.moveToLast(this);
+            
+            // Propagate.
+            Iterator derivedObjects = getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
+                NamedObj derived = (NamedObj)derivedObjects.next();
+                container = derived.getContainer();
+                container._attributes.moveToLast(derived);
+            }
+            
+            return result;
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
+    /** Move this object up by one in the list of
+     *  attributes of the container. If this object is already first, do
+     *  nothing. This method gets write access on workspace
+     *  and increments the version.
+     *  @return The index of the specified object prior to moving it,
+     *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
+     */
+    public int moveUp() throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (container == null) {
+            throw new IllegalActionException(this, "Has no container.");
+        }
+        try {
+            _workspace.getWriteAccess();
+            int result = container._attributes.moveUp(this);
+            
+            // Propagate.
+            Iterator derivedObjects = getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
+                NamedObj derived = (NamedObj)derivedObjects.next();
+                container = derived.getContainer();
+                container._attributes.moveUp(derived);
+            }
+            
+            return result;
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
     /** Get the NamedObj that this Attribute is attached to.
      *  @return The container, an instance of NamedObj.
      */

@@ -333,175 +333,160 @@ public class Port extends NamedObj {
     }
 
     /** Move this object down by one in the list of attributes of
-     *  its container. If this object has no container or is already
-     *  at last, do nothing.
+     *  its container. If this object is already last, do nothing.
      *  Increment the version of the workspace.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
      */
-    public int moveDown() {
+    public int moveDown() throws IllegalActionException {
         Entity container = (Entity)getContainer();
-        if (container != null) {
-            try {
-                _workspace.getWriteAccess();
-                int result = container._portList.moveDown(this);
-                
-                // Propagate.
-                Iterator derivedObjects = getDerivedList().iterator();
-                while (derivedObjects.hasNext()) {
-                    NamedObj derived = (NamedObj)derivedObjects.next();
-                    container = (Entity)derived.getContainer();
-                    container._portList.moveDown(derived);
-                }
-                
-                return result;
-            } catch (IllegalActionException e) {
-                // Thrown only if the object is not on the list,
-                // but we have already verified that it is, in theory.
-                throw new InternalErrorException(e);
-            } finally {
-                _workspace.doneWriting();
-            }
+        if (container == null) {
+            throw new IllegalActionException(this, "Has no container.");
         }
-        return -1;
+        try {
+            _workspace.getWriteAccess();
+            int result = container._portList.moveDown(this);
+            
+            // Propagate.
+            Iterator derivedObjects = getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
+                NamedObj derived = (NamedObj)derivedObjects.next();
+                container = (Entity)derived.getContainer();
+                container._portList.moveDown(derived);
+            }
+            
+            return result;
+        } finally {
+            _workspace.doneWriting();
+        }
     }
     
     /** Move this object to the first position in the list
-     *  of attributes of the container. If there is no container or
-     *  this object is already first, do nothing.
-     *  Increment the version of the workspace.
+     *  of attributes of the container. If  this object is already first,
+     *  do nothing. Increment the version of the workspace.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
      */
-    public int moveToFirst() {
+    public int moveToFirst() throws IllegalActionException {
         Entity container = (Entity)getContainer();
-        if (container != null) {
-            try {
-                _workspace.getWriteAccess();
-                int result = container._portList.moveToFirst(this);
-                
-                // Propagate.
-                Iterator derivedObjects = getDerivedList().iterator();
-                while (derivedObjects.hasNext()) {
-                    NamedObj derived = (NamedObj)derivedObjects.next();
-                    container = (Entity)derived.getContainer();
-                    container._portList.moveToFirst(derived);
-                }
-                
-                return result;
-            } catch (IllegalActionException e) {
-                // Thrown only if the object is not on the list,
-                // but we have already verified that it is, in theory.
-                throw new InternalErrorException(e);
-            } finally {
-                _workspace.doneWriting();
-            }
+        if (container == null) {
+            throw new IllegalActionException(this, "Has no container.");
         }
-        return -1;
+        try {
+            _workspace.getWriteAccess();
+            int result = container._portList.moveToFirst(this);
+            
+            // Propagate.
+            Iterator derivedObjects = getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
+                NamedObj derived = (NamedObj)derivedObjects.next();
+                container = (Entity)derived.getContainer();
+                container._portList.moveToFirst(derived);
+            }
+            
+            return result;
+        } finally {
+            _workspace.doneWriting();
+        }
     }
 
     /** Move this object to the specified position in the list
-     *  of attributes of the container. If there is no container or
-     *  this object is already at the specified position, do
-     *  nothing. Increment the version of the workspace.
+     *  of attributes of the container. If this object is already at the
+     *  specified position, do nothing. Increment the version of the
+     *  workspace.
      *  @param index The position to move this object to.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.
-     *  @throws IndexOutOfBoundsException If the index is out of bounds.
+     *  @exception IllegalActionException If this object has
+     *   no container or if the index is out of bounds.
      */
-    public int moveToIndex(int index) throws IndexOutOfBoundsException {
+    public int moveToIndex(int index) throws IllegalActionException {
         Entity container = (Entity)getContainer();
-        if (container != null) {
-            try {
-                _workspace.getWriteAccess();
-                int result = container._portList.moveToIndex(this, index);
-                
-                // Propagate.
-                Iterator derivedObjects = getDerivedList().iterator();
-                while (derivedObjects.hasNext()) {
-                    NamedObj derived = (NamedObj)derivedObjects.next();
-                    container = (Entity)derived.getContainer();
-                    container._portList.moveToIndex(derived, index);
-                }
-                
-                return result;
-            } catch (IllegalActionException e) {
-                // Thrown only if the object is not on the list,
-                // but we have already verified that it is, in theory.
-                throw new InternalErrorException(e);
-            } finally {
-                _workspace.doneWriting();
-            }
+        if (container == null) {
+            throw new IllegalActionException(this, "Has no container.");
         }
-        return -1;
+        try {
+            _workspace.getWriteAccess();
+            int result = container._portList.moveToIndex(this, index);
+            
+            // Propagate.
+            Iterator derivedObjects = getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
+                NamedObj derived = (NamedObj)derivedObjects.next();
+                container = (Entity)derived.getContainer();
+                container._portList.moveToIndex(derived, index);
+            }
+            
+            return result;
+        } finally {
+            _workspace.doneWriting();
+        }
     }
 
     /** Move this object to the last position in the list
-     *  of attributes of the container.  If there is no container or
-     *  this object is already last, do nothing.
-     *  Increment the version of the workspace.
+     *  of attributes of the container.  If this object is already last,
+     *  do nothing. Increment the version of the workspace.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
      */
-    public int moveToLast() {
+    public int moveToLast() throws IllegalActionException {
         Entity container = (Entity)getContainer();
-        if (container != null) {
-            try {
-                _workspace.getWriteAccess();
-                int result = container._portList.moveToLast(this);
-                
-                // Propagate.
-                Iterator derivedObjects = getDerivedList().iterator();
-                while (derivedObjects.hasNext()) {
-                    NamedObj derived = (NamedObj)derivedObjects.next();
-                    container = (Entity)derived.getContainer();
-                    container._portList.moveToLast(derived);
-                }
-                
-                return result;
-            } catch (IllegalActionException e) {
-                // Thrown only if the object is not on the list,
-                // but we have already verified that it is, in theory.
-                throw new InternalErrorException(e);
-            } finally {
-                _workspace.doneWriting();
-            }
+        if (container == null) {
+            throw new IllegalActionException(this, "Has no container.");
         }
-        return -1;
+        try {
+            _workspace.getWriteAccess();
+            int result = container._portList.moveToLast(this);
+            
+            // Propagate.
+            Iterator derivedObjects = getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
+                NamedObj derived = (NamedObj)derivedObjects.next();
+                container = (Entity)derived.getContainer();
+                container._portList.moveToLast(derived);
+            }
+            
+            return result;
+        } finally {
+            _workspace.doneWriting();
+        }
     }
 
     /** Move this object up by one in the list of
-     *  attributes of the container. If there is no container or
-     *  this object is already first, do
+     *  attributes of the container. If  this object is already first, do
      *  nothing. Increment the version of the workspace.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
      */
-    public int moveUp() {
+    public int moveUp() throws IllegalActionException {
         Entity container = (Entity)getContainer();
-        if (container != null) {
-            try {
-                _workspace.getWriteAccess();
-                int result = container._portList.moveUp(this);
-                
-                // Propagate.
-                Iterator derivedObjects = getDerivedList().iterator();
-                while (derivedObjects.hasNext()) {
-                    NamedObj derived = (NamedObj)derivedObjects.next();
-                    container = (Entity)derived.getContainer();
-                    container._portList.moveUp(derived);
-                }
-                
-                return result;
-            } catch (IllegalActionException e) {
-                // Thrown only if the object is not on the list,
-                // but we have already verified that it is, in theory.
-                throw new InternalErrorException(e);
-            } finally {
-                _workspace.doneWriting();
-            }
+        if (container == null) {
+            throw new IllegalActionException(this, "Has no container.");
         }
-        return -1;
+        try {
+            _workspace.getWriteAccess();
+            int result = container._portList.moveUp(this);
+            
+            // Propagate.
+            Iterator derivedObjects = getDerivedList().iterator();
+            while (derivedObjects.hasNext()) {
+                NamedObj derived = (NamedObj)derivedObjects.next();
+                container = (Entity)derived.getContainer();
+                container._portList.moveUp(derived);
+            }
+            
+            return result;
+        } finally {
+            _workspace.doneWriting();
+        }
     }
 
     /** Return the number of links to relations.

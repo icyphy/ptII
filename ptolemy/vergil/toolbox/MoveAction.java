@@ -38,6 +38,7 @@ import ptolemy.kernel.undo.UndoAction;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 
@@ -133,44 +134,51 @@ public class MoveAction extends FigureAction {
             final NamedObj context) {
         final int[] priorIndexes = new int[targets.size()];
         boolean movedOne = false;
-        if (type == TO_FIRST || type == UP) {
-            // Traverse the list in reverse order.
-            ListIterator targetIterator = targets.listIterator(targets.size());
-            for (int i = targets.size() - 1; i >= 0; i--) {
-                NamedObj target = (NamedObj)targetIterator.previous();
-                if (type == DOWN) {
-                    priorIndexes[i] = target.moveDown();
-                } else if (type == TO_FIRST) {
-                    priorIndexes[i] = target.moveToFirst();
-                } else if (type == TO_LAST) {
-                    priorIndexes[i] = target.moveToLast();
-                } else {
-                    priorIndexes[i] = target.moveUp();
-                }
-                if (priorIndexes[i] >= 0) {
-                    movedOne = true;
-                }
-            }
-        } else {
-            // Traverse the list in forward order.
-            Iterator targetIterator = targets.iterator();
-            for (int i = 0; i < targets.size(); i++) {
-                NamedObj target;
-                target = (NamedObj)targetIterator.next();
-                if (type == DOWN) {
-                    priorIndexes[i] = target.moveDown();
-                } else if (type == TO_FIRST) {
-                    priorIndexes[i] = target.moveToFirst();
-                } else if (type == TO_LAST) {
-                    priorIndexes[i] = target.moveToLast();
-                } else {
-                    priorIndexes[i] = target.moveUp();
-                }
-                if (priorIndexes[i] >= 0) {
-                    movedOne = true;
-                }
-            }
-        }
+        try {
+			if (type == TO_FIRST || type == UP) {
+			    // Traverse the list in reverse order.
+			    ListIterator targetIterator = targets.listIterator(targets.size());
+			    for (int i = targets.size() - 1; i >= 0; i--) {
+			        NamedObj target = (NamedObj)targetIterator.previous();
+			        if (type == DOWN) {
+			            priorIndexes[i] = target.moveDown();
+			        } else if (type == TO_FIRST) {
+			            priorIndexes[i] = target.moveToFirst();
+			        } else if (type == TO_LAST) {
+			            priorIndexes[i] = target.moveToLast();
+			        } else {
+			            priorIndexes[i] = target.moveUp();
+			        }
+			        if (priorIndexes[i] >= 0) {
+			            movedOne = true;
+			        }
+			    }
+			} else {
+			    // Traverse the list in forward order.
+			    Iterator targetIterator = targets.iterator();
+			    for (int i = 0; i < targets.size(); i++) {
+			        NamedObj target;
+			        target = (NamedObj)targetIterator.next();
+			        if (type == DOWN) {
+			            priorIndexes[i] = target.moveDown();
+			        } else if (type == TO_FIRST) {
+			            priorIndexes[i] = target.moveToFirst();
+			        } else if (type == TO_LAST) {
+			            priorIndexes[i] = target.moveToLast();
+			        } else {
+			            priorIndexes[i] = target.moveUp();
+			        }
+			        if (priorIndexes[i] >= 0) {
+			            movedOne = true;
+			        }
+			    }
+			}
+		} catch (IllegalActionException e) {
+			// This should only be thrown if the target
+            // has no container, which in theory is not
+            // possible.
+			throw new InternalErrorException(e);
+		}
         
         if (!movedOne) {
             // Do not generate any undo action if no move happened.
@@ -179,23 +187,30 @@ public class MoveAction extends FigureAction {
 
         UndoAction undoAction = new UndoAction() {
             public void execute() {
-                // Undo has to reverse the order of the do.
-                if (type == TO_FIRST || type == UP) {
-                    // Traverse the list in forward order.
-                    Iterator targetIterator = targets.iterator();
-                    for (int i = 0; i < targets.size(); i++) {
-                        NamedObj target = (NamedObj)targetIterator.next();
-                        target.moveToIndex(priorIndexes[i]);
-                    }
-                } else {
-                    // Traverse the list in reverse order.
-                    ListIterator targetIterator
-                            = targets.listIterator(targets.size());
-                    for (int i = targets.size() - 1; i >= 0; i--) {
-                        NamedObj target = (NamedObj)targetIterator.previous();
-                        target.moveToIndex(priorIndexes[i]);
-                    }
-                }
+                try {
+					// Undo has to reverse the order of the do.
+					if (type == TO_FIRST || type == UP) {
+					    // Traverse the list in forward order.
+					    Iterator targetIterator = targets.iterator();
+					    for (int i = 0; i < targets.size(); i++) {
+					        NamedObj target = (NamedObj)targetIterator.next();
+					        target.moveToIndex(priorIndexes[i]);
+					    }
+					} else {
+					    // Traverse the list in reverse order.
+					    ListIterator targetIterator
+					            = targets.listIterator(targets.size());
+					    for (int i = targets.size() - 1; i >= 0; i--) {
+					        NamedObj target = (NamedObj)targetIterator.previous();
+					        target.moveToIndex(priorIndexes[i]);
+					    }
+					}
+				} catch (IllegalActionException e) {
+                    // This should only be thrown if the target
+                    // has no container, which in theory is not
+                    // possible.
+                    throw new InternalErrorException(e);
+				}
                 // Create redo action.
                 UndoAction redoAction = new UndoAction() {
                     public void execute() {

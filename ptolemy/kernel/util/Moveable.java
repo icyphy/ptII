@@ -1,4 +1,4 @@
-/* Interface for objects that can can be moved in a list of similar objects.
+/* Interface for objects that can can be moved in a list of objects.
 
 Copyright (c) 1997-2004 The Regents of the University of California.
 All rights reserved.
@@ -32,13 +32,13 @@ package ptolemy.kernel.util;
 //// Moveable
 /**
    This is an interface for objects that can be moved in a list of
-   similar objects.
+   objects in a container.
 
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Red (eal)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 
 public interface Moveable {
@@ -46,50 +46,55 @@ public interface Moveable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Move this object down by one in the list of similar
-     *  objects in its container. If the object has no
-     *  container, or if it is already last on the list,
-     *  then it is not moved.
+    /** Move this object down by one in the list of
+     *  objects in its container. If the object is already last
+     *  on the list, then it is not moved.
      *  @return The index of this object prior to moving it,
      *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
      */
-    public int moveDown();
+    public int moveDown() throws IllegalActionException;
 
     /** Move this object to the first position in the list of
-     *  similar objects in its container.  If the object has no
-     *  container, or if it is already first on the list,
-     *  then it is not moved.
+     *  objects in its container.  If the object is already
+     *  first on the list, then it is not moved.
      *  @return The index of this object prior to moving it,
      *   or -1 if it is not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
      */
-    public int moveToFirst();
+    public int moveToFirst() throws IllegalActionException;
 
     /** Move this object to the specified position in the list of
-     *  similar objects in its container, where 0 is the first position.
-     *  If the object has no container, or if it is already at the specified
+     *  objects in its container, where 0 is the first position.
+     *  If the object is already at the specified
      *  position, then it is not moved.
      *  @param index The position to which to move the object.
      *  @return The index of this object prior to moving it,
      *   or -1 if it is not moved.
-     *  @exception IndexOutOfBoundsException If the index is out of bounds.
+     *  @exception IllegalActionException If this object has
+     *   no container or if the index is out of range.
      */
-    public int moveToIndex(int index) throws IndexOutOfBoundsException;
+    public int moveToIndex(int index) throws IllegalActionException;
 
     /** Move this object to the last position in the list of
-     *  similar objects in its container.  If the object has no
-     *  container, or if it is already last on the list,
-     *  then it is not moved.
+     *  objects in its container.  If the object is already
+     *  last on the list, then it is not moved.
      *  @return The index of this object prior to moving it,
      *   or -1 if it was not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
      */
-    public int moveToLast();
+    public int moveToLast() throws IllegalActionException;
 
-    /** Move this object up by one in the list of similar
-     *  objects in its container.  If the object has no
-     *  container, or if it is already first on the list,
-     *  then it is not moved.
+    /** Move this object up by one in the list of 
+     *  objects in its container.  If the object is already first
+     *  on the list, then it is not moved.
      *  @return The index of this object prior to moving it,
      *   or -1 if it was not moved.
+     *  @exception IllegalActionException If this object has
+     *   no container.
      */
-    public int moveUp();
+    public int moveUp() throws IllegalActionException;
 }

@@ -46,7 +46,7 @@ import java.util.List;
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Red (cxh)
+   @Pt.AcceptedRating Green (hyzheng)
 */
 
 public abstract class AbstractSettableAttribute
@@ -93,9 +93,10 @@ public abstract class AbstractSettableAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Return the default value of this Settable,
-     *  if there is one.  If this is a derived object, then the default
+    
+    /** Return the default value of this Settable, or null if no default
+     *  has been set.  If this object is derived (in the actor-oriented
+     *  class mechanism, see the Instantiable interface), then the default
      *  is the value of the object from which this is derived (the
      *  "prototype").  If this is not a derived object, then the default
      *  is the first value set using setExpression(), or null if
@@ -103,9 +104,12 @@ public abstract class AbstractSettableAttribute
      *  @return The default value of this attribute, or null
      *   if there is none.
      *  @see #setExpression(String)
+     *  @see Instantiable
      */
     public String getDefaultExpression() {
         try {
+            // Get the list of objects from which this is derived,
+            // the first of which will be the immediate prototype.
             List prototypeList = getPrototypeList();
             if (prototypeList.size() > 0) {
                 return ((Settable)prototypeList.get(0)).getExpression();
@@ -117,12 +121,12 @@ public abstract class AbstractSettableAttribute
         return _default;
     }
 
-    /** Set the value of the attribute by giving some expression.
+    /** Set the value of this attribute to the specified expression.
      *  This base class implementation merely records the first
      *  value to serve as the default value if needed.
      *  Subclasses are required to override this to also record
      *  the value and to call super.setExpression().
-     *  @param expression The value of the attribute.
+     *  @param expression The value of this attribute.
      *  @exception IllegalActionException If the expression is invalid
      *   (not thrown in this base class).
      *  @see #getDefaultExpression()

@@ -121,9 +121,7 @@ import ptolemy.util.StringUtilities;
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Yellow (neuendor)
-
-   FIXME: Need to review move*() methods to get to green again.
+   @Pt.AcceptedRating Green (hyzheng)
 
    @see Attribute
    @see Workspace
@@ -1267,182 +1265,92 @@ public class NamedObj implements
             _debug(message);
         }
     }
-
-    /** Move this object down by one in the list of attributes of
-     *  its container. If this object has no container or is already
-     *  at last, do nothing.
-     *  This method gets write access on workspace
-     *  and increments the version.
-     *  @return The index of the specified object prior to moving it,
+    
+    /** Move this object down by one in the list of objects in
+     *  its container. If this object is already
+     *  last, do nothing.  In this base class, this method throws
+     *  an IllegalActionException because this base class does not
+     *  have a setContainer() method, and hence cannot be contained.
+     *  Any derived object that implements setContainer() should
+     *  also implement this method.
+     *  @return Does not return. In derived classes, it should
+     *   return the index of the specified object prior to moving it,
      *   or -1 if it is not moved.
      */
-    public int moveDown() {
-        NamedObj container = getContainer();
-        if (container != null) {
-            try {
-                _workspace.getWriteAccess();
-                int result = container._attributes.moveDown(this);
-
-                // Propagate.
-                Iterator derivedObjects = getDerivedList().iterator();
-                while (derivedObjects.hasNext()) {
-                    NamedObj derived = (NamedObj)derivedObjects.next();
-                    container = derived.getContainer();
-                    container._attributes.moveDown(derived);
-                }
-
-                return result;
-            } catch (IllegalActionException e) {
-                // Thrown only if the object is not on the list,
-                // but we have already verified that it is, in theory.
-                throw new InternalErrorException(e);
-            } finally {
-                _workspace.doneWriting();
-            }
-        }
-        return -1;
+    public int moveDown() throws IllegalActionException {
+        // NOTE: This method could be made abstract, but NamedObj
+        // is not abstract to allow for more complete testing.
+        throw new IllegalActionException(this, "Has no container.");
     }
 
     /** Move this object to the first position in the list
-     *  of attributes of the container. If there is no container or
-     *  this object is already first, do nothing.
-     *  This method gets write access on workspace
-     *  and increments the version.
-     *  @return The index of the specified object prior to moving it,
+     *  of attributes of the container. If this object is already
+     *  first, do nothing.  In this base class, this method throws
+     *  an IllegalActionException because this base class does not
+     *  have a setContainer() method, and hence cannot be contained.
+     *  Any derived object that implements setContainer() should
+     *  also implement this method.
+     *  @return Does not return. In derived classes, it should
+     *   return the index of the specified object prior to moving it,
      *   or -1 if it is not moved.
      */
-    public int moveToFirst() {
-        NamedObj container = getContainer();
-        if (container != null) {
-            try {
-                _workspace.getWriteAccess();
-                int result = container._attributes.moveToFirst(this);
-
-                // Propagate.
-                Iterator derivedObjects = getDerivedList().iterator();
-                while (derivedObjects.hasNext()) {
-                    NamedObj derived = (NamedObj)derivedObjects.next();
-                    container = derived.getContainer();
-                    container._attributes.moveToFirst(derived);
-                }
-
-                return result;
-            } catch (IllegalActionException e) {
-                // Thrown only if the object is not on the list,
-                // but we have already verified that it is, in theory.
-                throw new InternalErrorException(e);
-            } finally {
-                _workspace.doneWriting();
-            }
-        }
-        return -1;
+    public int moveToFirst() throws IllegalActionException {
+        // NOTE: This method could be made abstract, but NamedObj
+        // is not abstract to allow for more complete testing.
+        throw new IllegalActionException(this, "Has no container.");
     }
 
     /** Move this object to the specified position in the list
-     *  of attributes of the container. If there is no container or
-     *  this object is already at the specified position, do
-     *  nothing. This method gets write access on workspace
-     *  and increments the version.
+     *  of attributes of the container. If this object is already at the
+     *  specified position, do  nothing.  In this base class, this method throws
+     *  an IllegalActionException because this base class does not
+     *  have a setContainer() method, and hence cannot be contained.
+     *  Any derived object that implements setContainer() should
+     *  also implement this method.
      *  @param index The position to move this object to.
-     *  @return The index of the specified object prior to moving it,
+     *  @return Does not return. In derived classes, it should
+     *   return the index of the specified object prior to moving it,
      *   or -1 if it is not moved.
      *  @exception IndexOutOfBoundsException If the index is out of bounds.
      */
-    public int moveToIndex(int index) throws IndexOutOfBoundsException {
-        NamedObj container = getContainer();
-        if (container != null) {
-            try {
-                _workspace.getWriteAccess();
-                int result = container._attributes.moveToIndex(this, index);
-
-                // Propagate.
-                Iterator derivedObjects = getDerivedList().iterator();
-                while (derivedObjects.hasNext()) {
-                    NamedObj derived = (NamedObj)derivedObjects.next();
-                    container = derived.getContainer();
-                    container._attributes.moveToIndex(derived, index);
-                }
-
-                return result;
-            } catch (IllegalActionException e) {
-                // Thrown only if the object is not on the list,
-                // but we have already verified that it is, in theory.
-                throw new InternalErrorException(e);
-            } finally {
-                _workspace.doneWriting();
-            }
-        }
-        return -1;
+    public int moveToIndex(int index) throws IllegalActionException {
+        // NOTE: This method could be made abstract, but NamedObj
+        // is not abstract to allow for more complete testing.
+        throw new IllegalActionException(this, "Has no container.");
     }
 
     /** Move this object to the last position in the list
-     *  of attributes of the container.  If there is no container or
-     *  this object is already last, do nothing.
-     *  This method gets write access on workspace
-     *  and increments the version.
-     *  @return The index of the specified object prior to moving it,
+     *  of attributes of the container.  If this object is already last,
+     *  do nothing. In this base class, this method throws
+     *  an IllegalActionException because this base class does not
+     *  have a setContainer() method, and hence cannot be contained.
+     *  Any derived object that implements setContainer() should
+     *  also implement this method.
+     *  @return Does not return. In derived classes, it should
+     *   return the index of the specified object prior to moving it,
      *   or -1 if it is not moved.
      */
-    public int moveToLast() {
-        NamedObj container = getContainer();
-        if (container != null) {
-            try {
-                _workspace.getWriteAccess();
-                int result = container._attributes.moveToLast(this);
-
-                // Propagate.
-                Iterator derivedObjects = getDerivedList().iterator();
-                while (derivedObjects.hasNext()) {
-                    NamedObj derived = (NamedObj)derivedObjects.next();
-                    container = derived.getContainer();
-                    container._attributes.moveToLast(derived);
-                }
-
-                return result;
-            } catch (IllegalActionException e) {
-                // Thrown only if the object is not on the list,
-                // but we have already verified that it is, in theory.
-                throw new InternalErrorException(e);
-            } finally {
-                _workspace.doneWriting();
-            }
-        }
-        return -1;
+    public int moveToLast() throws IllegalActionException {
+        // NOTE: This method could be made abstract, but NamedObj
+        // is not abstract to allow for more complete testing.
+        throw new IllegalActionException(this, "Has no container.");
     }
 
     /** Move this object up by one in the list of
-     *  attributes of the container. If there is no container or
-     *  this object is already first, do
-     *  nothing. This method gets write access on workspace
-     *  and increments the version.
-     *  @return The index of the specified object prior to moving it,
+     *  attributes of the container. If this object is already first, do
+     *  nothing. In this base class, this method throws
+     *  an IllegalActionException because this base class does not
+     *  have a setContainer() method, and hence cannot be contained.
+     *  Any derived object that implements setContainer() should
+     *  also implement this method.
+     *  @return Does not return. In derived classes, it should
+     *   return the index of the specified object prior to moving it,
      *   or -1 if it is not moved.
      */
-    public int moveUp() {
-        NamedObj container = getContainer();
-        if (container != null) {
-            try {
-                _workspace.getWriteAccess();
-                int result = container._attributes.moveUp(this);
-
-                // Propagate.
-                Iterator derivedObjects = getDerivedList().iterator();
-                while (derivedObjects.hasNext()) {
-                    NamedObj derived = (NamedObj)derivedObjects.next();
-                    container = derived.getContainer();
-                    container._attributes.moveUp(derived);
-                }
-
-                return result;
-            } catch (IllegalActionException e) {
-                // Thrown only if the object is not on the list,
-                // but we have already verified that it is, in theory.
-                throw new InternalErrorException(e);
-            } finally {
-                _workspace.doneWriting();
-            }
-        }
-        return -1;
+    public int moveUp() throws IllegalActionException {
+        // NOTE: This method could be made abstract, but NamedObj
+        // is not abstract to allow for more complete testing.
+        throw new IllegalActionException(this, "Has no container.");
     }
 
     /** Propagate the existence of this object.
@@ -2784,10 +2692,16 @@ public class NamedObj implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         friendly variables                 ////
 
+    // The following is friendly to support the move* methods of
+    // Attribute.
+    
     /** The Attributes attached to this object. */
-    private NamedList _attributes;
+    NamedList _attributes;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** The class name for MoML exports. */
     private String _className;
