@@ -259,7 +259,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
     public void removeDependencies() {
         removeDependency(_channelPort, _channelPort);
     }
-    
+
     /** Register a property transformer for transmissions from the specified
      *  port.  If null is given for the port, then the property transformer
      *  will be used for all transmissions through this channel.
@@ -289,7 +289,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
             _propertyTransformers.add(transformer);
         }
     }
-    
+
     /** Return a list of input ports that can potentially send data
      *  to this channel.  This includes input ports contained by
      *  the container of this channel that
@@ -379,7 +379,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
             workspace().doneReading();
         }
     }
-    
+
     /** Transform the properties to take into account channel losses,
      *  noise, etc., for transmission between the specified source
      *  and the specified destination.  In this base class, the
@@ -429,7 +429,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
                         result, source, destination);
             }
         }
-        
+
         if (_debugging) {
             if (result != null) {
                 _debug(" * transmit properties: \""
@@ -439,7 +439,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
                 _debug(" * no transmit properties.\"");
             }
         }
-        
+
         return result;
     }
 
@@ -763,13 +763,13 @@ public class AtomicWirelessChannel extends TypedAtomicActor
 
     /** The property transformers that have been registered without
      *  specifying a port.
-     */  
+     */
     private Set _propertyTransformers;
 
     /** The property transformers that have been registered to
      *  operate on transmissions from a particular port,
      *  indexed by port.
-     */  
+     */
     private HashMap _propertyTransformersByPort;
 
     private HashMap _receiversInRangeCache;

@@ -81,7 +81,7 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
      *   whose <i>insideChannel</i> parameter cannot be evaluated.
      */
     public List listeningOutputPorts() throws IllegalActionException;
-    
+
     /** Register a property transformer for transmissions from the specified
      *  port.  If null is given for the port, then the property transformer
      *  will be used for all transmissions through this channel. Note that
@@ -141,7 +141,7 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
     public void transmit(Token token, WirelessIOPort port,
             RecordToken properties)
             throws IllegalActionException;
-            
+
     /** Unregister a property transformer for transmissions from the specified
      *  port (or null for a generic property transformer). If the transformer
      *  has not been registered, then do nothing.
