@@ -39,7 +39,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
-//// Delay
+//// TimedDelay
 /**
 This actor delays the input by a specified amount of time.
 The time delay is required to be non-negative and has default value 1.0.
@@ -67,10 +67,14 @@ microstep, after all events at the current time with the current
 microstep. Thus, it is sometimes useful to think of this zero-valued
 delay as an infinitesimal delay.
 
+@see ptolemy.domains.de.lib.VariableDelay
+@see ptolemy.domains.de.lib.Server
+@see ptolemy.domains.sdf.lib.SampleDelay
+
 @author Edward A. Lee, Lukito Muliadi
 @version $Id$
 */
-public class Delay extends DETransformer {
+public class TimedDelay extends DETransformer {
 
     /** Construct an actor with the specified container and name.
      *  @param container The composite actor to contain this one.
@@ -80,7 +84,7 @@ public class Delay extends DETransformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Delay(CompositeEntity container, String name)
+    public TimedDelay(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
@@ -126,7 +130,7 @@ public class Delay extends DETransformer {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        Delay newObject = (Delay)super.clone(workspace);
+        TimedDelay newObject = (TimedDelay)super.clone(workspace);
         try {
             newObject.input.delayTo(newObject.output);
         } catch (IllegalActionException ex) {

@@ -53,11 +53,11 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	Delay.tcl \
 	Iterations.tcl \
 	Sampler.tcl \
 	Server.tcl \
 	SimpleDelay.tcl \
+	TimedDelay.tcl \
 	WaitingTime.tcl
 
 # Graphical Java tests that use Tcl.
