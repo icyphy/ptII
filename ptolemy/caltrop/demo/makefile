@@ -1,8 +1,7 @@
-# Makefile for caltrop classes
-#
-# @Authors: Christopher Hylands (makefile only)
+# Makefile for PtolemyII Caltrop demos
 #
 # @Version: $Id$
+# @Author: Christopher Hylands (makefile only)
 #
 # @Copyright (c) 2003 The Regents of the University of California.
 # All rights reserved.
@@ -29,61 +28,48 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/caltrop
+ME =		ptolemy/caltrop/demo
 
-DIRS = 		actors ddi util demo
+# Keep these alphabetical please.
+DIRS = 		FunctionClosures FunctionDefinition \
+		Primes SDFDDI
 
-# Root of the Ptolemy II directory
-ROOT =		../..
-
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/ptCal.jar
+# Root of Ptolemy II directory
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Handle assertions with -source 1.4
-JFLAGS =	$(JDEBUG) $(JOPTIMIZE) -source 1.4
-
 # Used to build jar files
-PTPACKAGE = 	caltrop
+PTPACKAGE = 	demo
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		actors/actors.jar \
-		ddi/ddi.jar \
-		util/util.jar
+	FunctionClosures/FunctionClosures.jar \
+	FunctionDefinition/FunctionDefinition.jar \
+	Primes/Primes.jar \
+	SDFDDI/SDFDDI.jar
+
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS = \
-	CalIOException.java \
-	PtolemyPlatform.java
-
-OTHER_FILES_TO_BE_JARED = \
-	cup-copyright.htm \
-	saxon-copyright.htm
-
-EXTRA_SRCS =	$(JSRCS)
-
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	actors ddi util
+MISC_FILES = 	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	doc \
-	$(PTCLASSALLJAR)
-
-JCLASS = $(JSRCS:%.java=%.class)
+	doc
 
 all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
 install: jclass jars
 
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

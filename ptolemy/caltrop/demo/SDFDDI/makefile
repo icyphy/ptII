@@ -1,4 +1,4 @@
-# Makefile for caltrop classes
+# Makefile for Ptolemy II Caltrop SDFDDI demonstration
 #
 # @Authors: Christopher Hylands (makefile only)
 #
@@ -29,61 +29,55 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/caltrop
+ME =		ptolemy/caltrop/demo/SDFDDI
 
-DIRS = 		actors ddi util demo
+# Root of the Java directory
+ROOT =		../../../..
 
-# Root of the Ptolemy II directory
-ROOT =		../..
-
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/ptCal.jar
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Handle assertions with -source 1.4
-JFLAGS =	$(JDEBUG) $(JOPTIMIZE) -source 1.4
-
 # Used to build jar files
-PTPACKAGE = 	caltrop
-PTCLASSJAR =
+PTPACKAGE = 	SDFDDI
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		actors/actors.jar \
-		ddi/ddi.jar \
-		util/util.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-JSRCS = \
-	CalIOException.java \
-	PtolemyPlatform.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	cup-copyright.htm \
-	saxon-copyright.htm
+	SDFDDI.xml \
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	actors ddi util
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	doc \
-	$(PTCLASSALLJAR)
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
-install: jclass jars
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
+	@echo "To run all the demos, run 'make demo'"
 
+install: all jars
+
+# Run the demo in all its different formats
+demo: demo_ptolemy demo_vergil
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" SDFDDI.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" SDFDDI.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
