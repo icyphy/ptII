@@ -1,4 +1,4 @@
-# Makefile for PtolemyII Communicating Sequential Proocesses Domain
+# Makefile for PtolemyII Communicating Sequential Processes Domain
 #
 # @Version: $Id$
 # @Author: Christopher Hylands, Neil Smyth
