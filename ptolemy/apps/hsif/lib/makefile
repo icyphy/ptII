@@ -56,27 +56,8 @@ PTCLASSALLJARS =
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	Action.java \
-	AlgEquation.java \
-	BooleanParameter.java \
-	BooleanVariable.java \
-	Channel.java \
-	Constraint.java \
-	DNHA.java \
-	DiscreteState.java \
-	FlowEquation.java \
-	Guard.java \
-	HybridAutomaton.java \
-	IntegerParameter.java \
-	IntegerVariable.java \
-	Invariant.java \
-	Parameter.java \
-	RealParameter.java \
-	RealVariable.java \
-	SendAction.java \
-	Transition.java \
-	UpdateAction.java \
-	Variable.java
+	ChannelInterface.java \
+	TransitionInterface.java
 
 OTHER_FILES_TO_BE_JARED = 
 
