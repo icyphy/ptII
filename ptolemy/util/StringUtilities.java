@@ -470,8 +470,18 @@ public class StringUtilities {
         File file = new File(name);
         if (file.isAbsolute()) {
             if (!file.canRead()) {
-                throw new IOException(
-                        "Cannot read file '" + name + "'");
+                // FIXME: This is a hack.
+                // Expanding the configuration with Ptolemy II installed
+                // in a directory with spaces in the name fails on 
+                // JAIImageReader because PtolemyII.jpg is passed in
+                // to this method as C:\Program%20Files\Ptolemy\...
+                file = new File(StringUtilities.substitute(name, "%20", " "));
+                if (!file.canRead()) {
+                    throw new IOException(
+                            "Cannot read file '" + name + "' or '"
+                            + StringUtilities.substitute(name, "%20", " ")
+                            + "'");
+                }
             }
             return file.toURL();
         } else {
