@@ -49,9 +49,10 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
     line argument and runs it.
 
     This is similar to MoMLSimpleApplication, but forces the number of
-    iterations to be 1000...  This makes for good comparison with
+    iterations to be 100000.  This makes for good comparison with
     generated code since it reduces the relative affect of initialization
     differences between Ptolemy II and the generated code.
+
 
     @author Christopher Hylands
     @version $Id$
@@ -60,7 +61,12 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
     @Pt.AcceptedRating Red (eal)
 */
 public class TestApplication implements ChangeListener {
+
     /** Parse the xml file and run it.
+     *  If a parameter named "copernicus_iterations" is present, then
+     *  the value of that parameter is used to set the iterations parameter.
+     *  If there is no "copernicus_iterations" parameter, then then
+     *  the number of iterations is set to 100000.
      */
     public TestApplication(String xmlFilename) throws Exception{
         MoMLParser parser = new MoMLParser();
@@ -111,9 +117,11 @@ public class TestApplication implements ChangeListener {
             toplevel = (CompositeActor) parser.parse(null, url);
         }
 
+        // FIXME: nearly duplicate code in kernel/KernelMain.java
         SDFDirector director = (SDFDirector)toplevel.getDirector();
         if(director != null) {
-            Parameter iterations = (Parameter) director.getAttribute("iterations");
+            Parameter iterations =
+                (Parameter) director.getAttribute("iterations");
             Parameter copernicus_iterations = 
                 (Parameter) director.getAttribute("copernicus_iterations");
             // Set to be a large number of iterations, unless
@@ -123,6 +131,8 @@ public class TestApplication implements ChangeListener {
             } else {
                 iterations.setToken(new IntToken(100000));
             }
+            System.out.println("TestApplication: Setting Iterations to "
+                    + iterations.getToken());
         }
 
         Manager manager = new Manager(toplevel.workspace(),
