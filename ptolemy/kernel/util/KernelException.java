@@ -243,7 +243,8 @@ public class KernelException extends Exception {
 
             // Do we print the cause?
             + ((cause == null) ?
-                    "" : ("Because:\n" + cause.getMessage()));
+                    "" : ("Because:\n" + (cause.getMessage() != null ?
+                            cause.getMessage() : cause.toString())));
     }
 
     /** Get the cause of this exception.
