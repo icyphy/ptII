@@ -335,3 +335,12 @@ test FixPoint-7.1 {absolute} {
 	    [[$c61 abs] toBitString ]
 
 } {101.100100101101 100.001110101110 111.1001001011001010010101111010}
+
+test FixPoint-7.2 {truncate} {
+    set p6 [java::new ptolemy.math.Precision "(6/3)" ]
+    set c65 [java::call ptolemy.math.Quantizer \
+	    {truncate double ptolemy.math.Precision} -2.4 $p6 ]
+    set c66 [java::call ptolemy.math.Quantizer \
+	    {truncate double ptolemy.math.Precision} 2.4 $p6 ]
+    list [$c65 toBitString] [$c65 doubleValue] [$c66 toBitString] [$c66 doubleValue] 
+} {-11.101 -2.375 10.011 2.375}
