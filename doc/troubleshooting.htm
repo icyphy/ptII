@@ -87,7 +87,7 @@ to the <CODE>Start</CODE> menu -&gt; <CODE>Program</CODE> -&gt;
  <CODE>Java Plugin Control Panel</CODE>
 and selecting <CODE>Show Java Console</CODE>.  Then restart the browser.
  <p>Note that the JDK1.2 Plugin console is different than
-the native Java Browser console
+the Netscape or IE Java console.
 
 <H3><a name="CLASSPATH">CLASSPATH variable</a></H3>
 Java supports an environment variable called CLASSPATH that tells the Java
@@ -163,19 +163,21 @@ If you have problems with applets, follow the checklist below
 <li> Reload the frame.  Under Netscape Communicator, right click on
 the frame, and then select <CODE>Reload Frame</CODE>.
 
-
 <li> Reload all the frames by hitting the <CODE>Reload</CODE> button.
 This is likely to bring you back to the Ptolemy II toplevel page.
-Under Netscape Communicator, holding the Shift key down and hitting
+ <br>Under Netscape Communicator, holding the Shift key down and hitting
 the <CODE>Reload</CODE> button will reload any Java
 <CODE>.class</CODE> or <CODE>.jar</CODE> files
+ <br>Under Internet Explorer, press Ctrl+F5 or Ctrl+the Refres button
 
 <li> Restart your browser.
 
  <li>Verify that the Plugin Control Panel menu choice is present
- <br>Under Start->Programs, you should have 'Java Plugin Control Panel' 
+ <br>Under  <CODE>Start</CODE> -&gt; <CODE>Programs</CODE> -&gt; 
+you should hava a <CODE>Java Plugin Control Panel</CODE> menu choice
 listed in the upper section near the Accessories section.
-  <br>If the 'Java Plugin Control Panel' menu choice is not present, then
+  <br>If the <CODE>Java Plugin Control Panel</CODE>
+ menu choice is not present, then
 you may need to install or reinstall the Java plugin.
 
  <li> Look for an error message in the Java console.
@@ -209,9 +211,14 @@ See the <a href="#CLASSPATH">CLASSPATH variable</a> instructions above.
 
 <li> If you are running under Microsoft Windows or NT, try rebooting.
 
+<li> Use the Plugin Control Panel to turning off the Just In Time
+(JIT) compiler in the plugin and restart the browser.
+Under NT, the Plugin Control Panel can
+be found at <CODE>Start</CODE> -&gt; <CODE>Programs</CODE> -&gt;
+<CODE>Java Plugin Control Panel</CODE>
+
 <li> Try running the applets from a different machine or as a different
 user.
-
 
 <li> Uninstall and reinstall browser and the JDK
 
@@ -254,11 +261,14 @@ with the following information:
 
 <menu>
 
+<li> <a href="coding/applets.htm">Ptolemy II Applet Information for Developers</a>
 <li> <a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plugin</a> -
 <a href="http://java.sun.com/products/plugin/1.2/docs/index.docs.html" target="_top">Plugin Documentation</a>
 <li> <A HREF="http://sunsite.unc.edu/javafaq/javafaq.html" target="_top">Java FAQ</A>
+<li> <a href="http://java.sun.com/sfaq" target="_top">Java Security FAQ</a>
 <li> <a href="http://java.sun.com/docs/books/tutorial/applet/index.html" target="_top">JavaSoft Applet Tutorial</a>
-
+<li> <a href="http://www.microsoft.com/windows/ie" target="_top">Microsoft Internet Explorer</a>
+<li> <a href="http://help.netscape.com/products/client/communicator" target="_top>Netscape Communicator</a>
 </menu>
 
 <h3>JDK1.1 Applet information</h3>
