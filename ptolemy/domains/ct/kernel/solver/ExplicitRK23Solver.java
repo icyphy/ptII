@@ -107,7 +107,7 @@ public class ExplicitRK23Solver extends ODESolver {
 
     /** Fire dynamic actors. Advance the model time. The amount of increment
      *  is decided by the number of the round counter.
-     *  @throws IllegalActionException If thrown in the super class or the
+     *  @exception IllegalActionException If thrown in the super class or the
      *  model time can not be set.
      */
     public void fireDynamicActors() throws IllegalActionException {
@@ -127,7 +127,7 @@ public class ExplicitRK23Solver extends ODESolver {
      *  If the current round is the third round, set converged flag to
      *  true indicating a fixed-point states have been reached. Reset
      *  the round count if the current round is the last one.
-     *  @throws IllegalActionException If thrown in the super class.
+     *  @exception IllegalActionException If thrown in the super class.
      */
     public void fireStateTransitionActors() throws IllegalActionException {
         super.fireStateTransitionActors();

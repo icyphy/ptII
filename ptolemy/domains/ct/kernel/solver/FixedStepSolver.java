@@ -72,7 +72,7 @@ public abstract class FixedStepSolver extends ODESolver {
 
     /** Fire dynamic actors. Advance the model time to the current model time
      *  plus the current step size.
-     *  @throws IllegalActionException If thrown in the super class or
+     *  @exception IllegalActionException If thrown in the super class or
      *  the model time can not be set.
      */
     public void fireDynamicActors() throws IllegalActionException {

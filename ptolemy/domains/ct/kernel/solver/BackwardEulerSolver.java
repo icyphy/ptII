@@ -97,7 +97,7 @@ public class BackwardEulerSolver extends FixedStepSolver {
 
     /** Fire state transition actors. Increment the round count. If the states
      *  converged, reset the round count.
-     *  @throws IllegalActionException If thrown in the super class.
+     *  @exception IllegalActionException If thrown in the super class.
      */
     public void fireStateTransitionActors() throws IllegalActionException {
         super.fireStateTransitionActors();

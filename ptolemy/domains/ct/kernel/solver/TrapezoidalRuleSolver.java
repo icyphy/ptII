@@ -110,7 +110,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
 
     /** Fire dynamic actors. Advance the model time to the current model time
      *  plus the current step size.
-     *  @throws IllegalActionException If thrown in the super class or the
+     *  @exception IllegalActionException If thrown in the super class or the
      *  model time can not be set.
      */
     public void fireDynamicActors() throws IllegalActionException {
@@ -143,7 +143,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
 
     /** Fire state transition actors. Increment the round count. If the states
      *  have converged, reset the round count.
-     *  @throws IllegalActionException If thrown in the super class.
+     *  @exception IllegalActionException If thrown in the super class.
      */
     public void fireStateTransitionActors() throws IllegalActionException {
         super.fireStateTransitionActors();
