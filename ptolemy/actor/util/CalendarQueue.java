@@ -156,7 +156,7 @@ public class CalendarQueue {
      * @return True is succeed, false otherwise.
      * @exception IllegalArgumentException The key may not be null.
      */
-    public boolean put(Object key, Object value) {
+    public synchronized boolean put(Object key, Object value) {
         if (key == null)
             throw new IllegalArgumentException(
                     "CalendarQueue.put() can't accept null key"
@@ -211,6 +211,11 @@ public class CalendarQueue {
         if (_qSize > _topThreshold) {
             _resize(_nBuckets*_thresholdFactor);
         }
+
+        // Notify other thread waitings on the CalendarQueue object, that
+        // the content has changed.
+        notifyAll();
+
         return true;
     }
 
@@ -224,7 +229,7 @@ public class CalendarQueue {
      * @return The value associated with the smallest key.
      * @exception IllegalAccessException If invoked when the queue is empty.
      */
-    public Object take() throws IllegalAccessException {
+    public synchronized Object take() throws IllegalAccessException {
         // first check if the queue is empty, if it is, return null
         if (_qSize == 0) {
             _takenKey = null;
@@ -340,29 +345,6 @@ public class CalendarQueue {
         // Resume search at that minimum bucket
         return (take());
     }
-    /** Return the key of the last object dequeued using take() method.
-     *  If the queue <i>was</i> empty when the last take() method was invoked,
-     *  then throw an exception (Note that the last take() method would have
-     *  also thrown an exception). If take() has never been called, then throw
-     *  an exception as well.
-     *  NOTE: a typical application would call take() followed
-     *  by getPreviousKey() to get the value and it's corresponding
-     *  key, respectively.
-     *
-     * @return The sort key associated with the last entry dequeued by the
-     *  take() method.
-     * @exception IllegalAccessException If invoked when the queue is empty.
-     */
-    public Object getPreviousKey() throws IllegalAccessException {
-        // First check if _takenKey == null which means either the last take()
-        // threw an exception or take() has never been called. If it is then
-        // thrown an exception.
-        if (_takenKey == null) {
-            throw new IllegalAccessException("No take() or valid take()" +
-                    " precedes this operation");
-        }
-        return _takenKey;
-    }
 
     /** Return the key associated with the object that's at the head of the
      *  queue (i.e. the one that would be obtained on the next take).
@@ -469,6 +451,30 @@ public class CalendarQueue {
 
     }
 
+    /** Return the key of the last object dequeued using take() method.
+     *  If the queue <i>was</i> empty when the last take() method was invoked,
+     *  then throw an exception (Note that the last take() method would have
+     *  also thrown an exception). If take() has never been called, then throw
+     *  an exception as well.
+     *  NOTE: a typical application would call take() followed
+     *  by getPreviousKey() to get the value and it's corresponding
+     *  key, respectively.
+     *
+     * @return The sort key associated with the last entry dequeued by the
+     *  take() method.
+     * @exception IllegalAccessException If invoked when the queue is empty.
+     */
+    public Object getPreviousKey() throws IllegalAccessException {
+        // First check if _takenKey == null which means either the last take()
+        // threw an exception or take() has never been called. If it is then
+        // thrown an exception.
+        if (_takenKey == null) {
+            throw new IllegalAccessException("No take() or valid take()" +
+                    " precedes this operation");
+        }
+        return _takenKey;
+    }
+
     /** Remove a specific entry (specified by the key and the
      *  value). This method returns true if the entry
      *  is found and successfully removed, and returns false
@@ -486,7 +492,7 @@ public class CalendarQueue {
      * @param value the object that you want to remove
      * @return true is succeed, false otherwise
      */
-    public boolean remove(Object key, Object value) {
+    public synchronized boolean remove(Object key, Object value) {
         // if the queue is empty then return false
         if (_qSize == 0) {
             return false;
