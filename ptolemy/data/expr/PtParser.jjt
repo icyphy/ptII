@@ -290,6 +290,8 @@ public class PtParser {
             _alreadyInitialized = true;
             registerFunctionClass("java.lang.Math");
             registerFunctionClass("java.lang.Double");
+            registerFunctionClass("java.lang.Integer");
+            registerFunctionClass("java.lang.Long");
             registerFunctionClass("java.lang.String");
             registerFunctionClass("ptolemy.data.expr.UtilityFunctions");
             registerFunctionClass("ptolemy.data.expr.FixPointFunctions");
