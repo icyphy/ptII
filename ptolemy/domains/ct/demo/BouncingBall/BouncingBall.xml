@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BouncingBall" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 350]">
     </property>
@@ -103,6 +103,28 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 310.0">
         </property>
     </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:red">This example requires Java3D. If you do not have
+it installed, you can get it from:
+http://java.sun.com/products/java-media/3D/</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 250.0">
+        </property>
+    </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -131,8 +153,8 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
 <title>Position</title>
 <xLabel>time (sec)</xLabel>
 <yLabel>height meters</yLabel>
-<xRange min="0.0" max="25.048516470995473"/>
-<yRange min="9.027550412032514E-8" max="10.0"/>
+<xRange min="0.0" max="5.931000000000001"/>
+<yRange min="9.767841445975874E-6" max="10.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -636,9 +658,9 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
             </property>
-            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="2.3067353975121E-5">
+            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="8.9613969736306E-5">
             </property>
-            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.9138455690204">
+            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="11.4550678007206">
             </property>
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
