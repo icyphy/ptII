@@ -23,8 +23,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@AcceptedRating Yellow (celaine@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.rtos.kernel;
@@ -34,9 +34,9 @@ import ptolemy.actor.Actor;
 //////////////////////////////////////////////////////////////////////////
 //// RTOSActor
 /**
-An interface that add a method getExecutionTime() to the Actor interface.
-This allows actors estimate its execution time on a per iteration basis,
-and may be an input-dependent manner.
+An interface that adds a method getExecutionTime() to the Actor interface.
+This allows actors to estimate its execution time on a per iteration basis,
+and maybe in an input-dependent manner.
 @author Jie Liu
 @version $Id$
 

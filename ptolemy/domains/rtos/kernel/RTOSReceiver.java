@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@AcceptedRating Yellow (celaine@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.rtos.kernel;
@@ -52,22 +52,30 @@ import java.util.LinkedList;
 //// RTOSReceiver
 /**
 The receiver for the RTOS domain. This receiver contains a FIFO queue.
-Upon receiving a token, it attaches the priority of the token and
-queue the event with the director.
-The priority of a received token is determined in the following order:
-<UL>
-<li> If the container of the receiver has a parameter named <i>priority</i>
-then the priority equals to the value of the parameter.
-<li> If the container of the receiver does not have a <i>priority</i>
-parameter, but the actor, which contains the container of this receiver,
-has a <i>priority</i> parameter, then the priority equals to the value
-of the <i>priority<i> of the actor.
-<li> If neither the container nor the container of the container of this
-receiver has the <i>priority</i> parameter, then the priority of the
-token is the default priority, which is 5.
+Upon receiving a token, it creates a RTOSEvent. The properties of the 
+RTOS events are:
+<ul>
+<li> The destination receiver is this receiver. 
+<li> The destination actor is the container's container of this receiver.
+<li> The token is the received token.
+<li> The priority is the value of the parameter with name <i>priority</i>
+of the container of this receiver. If the container does not has a 
+parameter with that name, then look at the actor. If none of them
+has the parameter, then use the default priority value, which is 
+java.Thread.NORMAL_PRIORITY.
+<li> The flag <i>hasStarted</i> is false.
+<li> The processing time is obtained from the container or the container's
+container of this receiver, similar to the way obtaining the priority
+value. If none of them has the parameter, then use the default value 0.
+<ul>
+The event is then queued with the director, so it is not immediately
+available by the get() method. Later, the director may make the 
+token available again by calling the _triggerEvent() method.
+See the RTOSDirector class for the event dispatching mechanism.
 
 @author Edward A. Lee, Jie Liu
 @version $Id$
+@see ptolemy.domains.rtos.kernel.RTOSDirector
 */
 public class RTOSReceiver extends AbstractReceiver {
 
@@ -88,13 +96,11 @@ public class RTOSReceiver extends AbstractReceiver {
      *  exception. This method is synchronized since the actor may not
      *  execute in the same thread as the director.
      *  @return A token.
-     *  @exception NoTokenException If there are no more tokens. This is
-     *   a runtime exception, so it need not be declared explicitly.
      */
     public synchronized Token get() throws NoTokenException {
         if(_tokens.isEmpty()) {
             throw new NoTokenException(getContainer(),
-                    "No more tokens in the DE receiver.");
+                    "No more tokens in the RTOS receiver.");
         }
         return (Token)_tokens.removeFirst();
     }
@@ -157,16 +163,16 @@ public class RTOSReceiver extends AbstractReceiver {
         return true;
     }
 
-    /** Return true if the receiver has room for putting the given number of
-     *  tokens into it (via the put() method).
-     *  Returning true in this method should also guarantee that calling
-     *  the put() method will not result in an exception.
+    /** Return true, indicating that there is always room for any number
+     *  of tokens.
+     *  @return True.
      */
-    public boolean hasRoom(int tokens) {
+    public final boolean hasRoom(int tokens) {
 	return true;
     }
 
-    /** Return true if there are tokens available to the get() method.
+    /** Return true if there is at least one token available to the 
+     *  get() method.
      *  @return True if there are more tokens.
      */
     public final boolean hasToken() {
@@ -174,7 +180,7 @@ public class RTOSReceiver extends AbstractReceiver {
     }
     
     /** Return true if there are <i>numberOfTokens</i>
-     *  tokens tokens available to the get() method.
+     *  tokens available to the get() method.
      *  @return True if there are <i>numberOfTokens</i> tokens available.
      */
     public final boolean hasToken(int numberOfTokens) {
@@ -194,7 +200,6 @@ public class RTOSReceiver extends AbstractReceiver {
      *  This method is synchronized since the actor may not
      *  execute in the same thread as the director.
      *  @param token The token to be put.
-     *  @exception NullPointerException If there is no director.
      */
     public synchronized void put(Token token) {
         try {

@@ -1,4 +1,4 @@
-/* A director that implements priority-driven multitasking model of
+/* A director that implements a priority-driven multitasking model of
 computation.
 
  Copyright (c) 2001 The Regents of the University of California.
@@ -25,21 +25,25 @@ computation.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@AcceptedRating Yellow (celaine@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.rtos.kernel;
 
-import ptolemy.actor.*;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
 import ptolemy.actor.util.CalendarQueue;
-import ptolemy.data.*;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.de.kernel.*;
-import ptolemy.gui.MessageHandler;
-import ptolemy.gui.CancelException;
-import ptolemy.kernel.*;
+import ptolemy.domains.de.kernel.DECQEventQueue;
+import ptolemy.domains.de.kernel.DEEvent;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 import java.util.Iterator;
@@ -55,53 +59,71 @@ A director that implements a priority-driven multitasking
 model of computation. This model of computation is usually seen in
 real-time operating systems.
 <P>
-The priority-driven multitasking model has an event-driven style of
-execution. Each actor in this domain is treated as a task.
-A task can have a priority and an execution time, specified
-by adding a <i>priority</i> and <i>executionTime</i> parameters
-to the actor (or it input ports, if the actor wants to distinguish
-its execution triggered by events from different ports).
+Each actor in this domain is called a task. A task is elligible to 
+execute if there is an event that triggers it. Source actors may trigger
+themselves by calling fireAt(time, actor) on this director. This call
+is treated as an interrupt that happens at that particular time.
+A task can have a priority and an execution time, specified by (adding)
+<i>priority</i> and <i>executionTime</i> parameters. The <i>priority</i>
+parameter takes an integer value, and the <i>executionTime</i>
+parameter takes a double value. These parameters may also be sepcified
+on a per input port basis, if the actor reacts differently
+to input events at different ports. If these parameters are not
+specified, then the default priority value is the java.Thread.NORM
+on the JVM, and the default execution time is 0.
 <P>
-There is assumed to have one resource, say CPU, that 
-the execution of all actors shares. At one particular time, only
-one of the actors can get the resource and execute. If the execution
+This domain assumes there is a single resource, say CPU, shared by  
+the execution of all actors. At one particular time, only
+one of the tasks can get the resource and execute. If the execution
 is preemptable (by setting the <i>preemptive</i> parameter of
 this director to true), then the execution of one task 
-may be preempted by another task with a higher priority.
+may be preempted by another elligible task with a higher priority.
+Otherwise, the higher priority task has to wait until the current
+task finishes its execution.
 <P>
-This director distinguishes RTOS events, which are events
-that triggers the execution of tasks, and interrupt events, 
-which are outside inputs (e.g. interrupts) that happens at a 
-particular real time. The director uses an event dispatcher to
-dispatch scheduling events and executes their destination actors
-subject to the priorities of the event. The priority of the event
-is inherited from its destination port, which further may inherit
+The priority-driven execution is achieved by using an event 
+dispatcher, which sorts and dispatches events that trigger
+the execution of tasks. The events being dispatched are called 
+RTOS events (implemented by the RTOSEvent class). 
+An RTOS event has a priority and a remaining processing time,
+among other properties. The priority of the event
+is inherited from its destination port, which may further inherit
 its priority from the actor that contains the port. Whenever an 
 event is produced by an actor, it is queued with the event dispatcher.
-At any time, the event with the highest priority is dispatched, 
+At any time, the event with the highest priority is dequeued, 
 and delivered into its destination receiver. The director then starts
 the execution of the destination actor (by calling its prefire()
-method). At the mean while, the execution can always be interrupted
-by outside inputs, which may produce scheduling events with 
-higher priority than the current event being processed. In that case,
-if the execution is preemptable, then the execution of the current 
-task is stalled, and the task that process the higher priority event
-will be executed. An actor is always granted with the CPU for the
-amount of time specified by its <i>executionTime</i> parameter.
+method). After that, the director tracks how much time remained
+for the task to finish processing the event. 
 <P>
-The outside inputs can come from either the outside domain, or
-scheduled by an actor by calling the fireAt() method on this director.
-Those fireAt() events are queued chronologically, and processes
-when the current time of the model is equal to the time stamp of
-the event.
+The events, called interrupt events, produced by calling fireAt()
+on this director are treated differently. These events carry
+a time stamp, and are queued with another queue which sorts these
+events in their chronological order. When the modeling time reaches
+an interrupt event time, (regardless whether there is a task 
+executing), the interrupt event is processed. And the curresponding
+(source) actor is fired, which may in turn produce some RTOS events.
+If one of these RTOS events has a higher priority than the event
+being processed by the current task, and the execution is preemptive,
+then the current tasks is stalled, and the task triggered by the
+highest priority event is started. Note that, a task is always
+granted the resource that is specified by the <i>executionTime</i>,
+no matter whether it has been preempted.
+When that amount of time is ellapsed, the fire() method of the actor
+will be called, and the actor is expected to produce its output, if
+there is any.
+<P>
+The RTOS domain can be nested with other (timed) domains. In that
+case, the inputs from the outside domain are treated as interrupts
+that heppens at the (outside) current time.
 <p>
-This director supports executions that synchronizes to real time.
+This director supports executions that synchronize to real time.
 To enable such an execution, set the <i>synchronizeToRealTime</i>
 parameter to true.
 
-
-@author Edward A. Lee, Jie Liu
+@author  Jie Liu, Edward A. Lee
 @version $Id$
+@see ptolemy.domains.de.kernel.DEEvent
 */
 
 public class RTOSDirector extends Director {
@@ -135,8 +157,8 @@ public class RTOSDirector extends Director {
      *  @param name Name of this director.
      *  @exception IllegalActionException If the
      *   director is not compatible with the specified container.
-     *  @exception NameDuplicationException If the container not a
-     *   CompositeActor and the name collides with an entity in the container.
+     *  @exception NameDuplicationException If
+     *   the name collides with a property in the container.
      */
     public RTOSDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -148,7 +170,7 @@ public class RTOSDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** Indicating whether the execution of the actors are preemptable.
+    /** Indicating whether the execution of the actors is preemptable.
      *  The default value is false, of type boolean.
      */
     public Parameter preemptive;
@@ -162,7 +184,8 @@ public class RTOSDirector extends Director {
      */
     public Parameter defaultTaskExecutionTime;
 
-    /** The stop time of the model.  This parameter is of type double.
+    /** The stop time of the model, only effective when this director
+     *  is at the top level.  This parameter is of type double.
      *  The value defaults to Double.MAX_VALUE.
      */
     public Parameter stopTime;
@@ -180,7 +203,7 @@ public class RTOSDirector extends Director {
     
     /** Update the director parameters when the attributes are changed.
      *  If the change is <i>stopTime</i>, or <i>defaultTaskExecutionTime</i>,
-     *  then check whether it is less than zero. If it is, throw an 
+     *  then check whether its value is less than zero. If so, throw an 
      *  exception.
      *  
      *  @param attribute The changed parameter.
@@ -212,12 +235,13 @@ public class RTOSDirector extends Director {
         }
     }
 
-    /** Compare the current time to the time stamp of the first
+    /** Execute the model for one iteration. It first 
+     *  compare the current time to the time stamp of the first
      *  event in the interrupt event queue. If they are equal, then
      *  dequeue the events at the current time from the interrupt event
      *  queue, and fire the destination actors.
      *  If the current time is less than the time stamp of the
-     *  first event in the pure event queue, then look at the RTOS
+     *  first event in the interrupt event queue, then look at the RTOS
      *  event queue. Pick
      *  the task with the highest priority and start/continue its execution.
      *  If the task has <i>executionTime</i> being zero, then finish
@@ -271,8 +295,16 @@ public class RTOSDirector extends Director {
                         + ((NamedObj)event.actor()).getName() 
                         + " and processing");
                 event.receiver()._triggerEvent(event.token());
+                // FIXME: What shall we do if there are events to
+                // the same actor with the same priority.
+                // Check if there are any events with equal priority
+                // for this actor. If so, make them available to the 
+                // actor at the same time.
+                
                 Actor actor = event.actor();
                 if(actor == getContainer() || !actor.prefire()) {
+                    // If the actor is the container of this director,
+                    // then the event is at the output boundary.
                     // Remove the event and look at the next event.
                     _eventQueue.take();
                     event = null;
@@ -354,13 +386,14 @@ public class RTOSDirector extends Director {
         }
     }
     
-    /** Insert an event into the interrupt event queue.
+    /** Request an interrupt at the specified time. This inserts
+     *  an event into the interrupt event queue.
      *  The corresponding actor will be executed when the current
      *  time of this director reaches the specified time.
      *  @param actor The scheduled actor to fire.
      *  @param time The scheduled time to fire.
-     *  @exception IllegalActionException If the firing of the actor
-     *  throws it.
+     *  @exception IllegalActionException If requested time is in
+     *  the past.
      */
     public void fireAt(Actor actor, double time)
             throws IllegalActionException {
@@ -372,6 +405,10 @@ public class RTOSDirector extends Director {
                    + " at time "
                    + time);
         }
+        if (time < getCurrentTime()) {
+            throw new IllegalActionException(this, ((NamedObj)actor).getName()
+                    + " request an interrupt in the past.");
+        }
         if (time <= ((DoubleToken)stopTime.getToken()).doubleValue()) {
             // create an interrupt event.
             DEEvent interruptEvent = new DEEvent(actor, time, 0, 0);
@@ -379,11 +416,13 @@ public class RTOSDirector extends Director {
         }
     }
 
-    /** Return the system time at which the model begins executing.
+    /** Return the system time at which the model began executing.
      *  That is, the system time (in milliseconds) when the initialize()
      *  method of the director is called.
      *  The time is in the form of milliseconds counting
      *  from 1/1/1970 (UTC).
+     *  If this method is called before initialize() method
+     *  is called, then the return value may be meaningless.
      *  @return The real start time of the model.
      */
     public long getRealStartTimeMillis() {
@@ -426,12 +465,13 @@ public class RTOSDirector extends Director {
 
     
     /** Advance time to the next event time (or the outside time
-     *  if this director is embedded in another domain), if there
-     *  are any tasks that finish at the current time, then execute
-     *  the corresponding actors. 
+     *  if this director is embedded in another domain); if there
+     *  are any tasks that finish at the current time, then 
+     *  finish the execution of the current task by calling the
+     *  fire() method of that actors. 
      *  
      *  If <i>synchronizeToRealTime</i> is true, then wait until the
-     *  real time has caught up to the new current time. 
+     *  real time has caught up the current time. 
      *  @return True
      *  @exception IllegalActionException If the execution method 
      *  of one of the actors throws it.
@@ -500,7 +540,7 @@ public class RTOSDirector extends Director {
     }
 
     /** In addition to the preinitialization implemented in the super
-     *  class, create the interrupt event queue.
+     *  class, create the interrupt event queue and the RTOS event queue.
      *  @exception IllegalActionException If thrown by the super class.
      */
     public void preinitialize() throws IllegalActionException {
@@ -522,7 +562,7 @@ public class RTOSDirector extends Director {
     }
 
     /** If the current time is greater than the stop time, or
-     *  both interrupt event queue and RTOS event queues are empty
+     *  both interrupt event queue and RTOS event queue are empty
      *  then return false. Otherwise, return true.
      *  @return Whether the execution should continue.
      */
@@ -541,17 +581,19 @@ public class RTOSDirector extends Director {
 
     }
     
-    /** Override the default implementation. Time is allowed to go backward.
-     *  @param newTime Do nothing.
-     */
+    /** Set the current time of this director. This method override the
+     *  default implementation, since time is allowed to go backward.
+     *  @param newTime The current time to set.
+     *
     public void setCurrentTime(double newTime) throws IllegalActionException {
         _currentTime = newTime;
     }
+    */
 
     ////////////////////////////////////////////////////////////////////////
     ////                    protected methods                           ////
         
-    /** Disable the specified actor.  All events destined to this actor
+    /** Disable the specified actor.  All events destinated for this actor
      *  will be ignored. If the argument is null, then do nothing.
      *  @param actor The actor to disable.
      */
@@ -568,10 +610,7 @@ public class RTOSDirector extends Director {
 
     /** Put an event into the event queue with the specified destination
      *  receiver, token, and priority.
-     *  @param receiver The destination receiver.
-     *  @param token The token destined for that receiver.
-     *  @param time The time stamp of the event.
-     *  @exception IllegalActionException If the delay is negative.
+     *  @param event The event to be enqueued.
      */
     protected void _enqueueEvent(RTOSEvent event) {
         if (_eventQueue == null) return;

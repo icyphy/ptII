@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@AcceptedRating Yellow (celaine@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.rtos.kernel;
@@ -73,8 +73,7 @@ public class RTOSEventComparator implements CQComparator {
      *  the zero reference, divided by the priority of the bin width.
      *  @param event The event.
      *  @return The index of the virtual bin containing the event.
-     *  @exception ClassCastException If the argument is not
-     *   an instance of RTOSEvent.
+     * 
      */
     public final long getVirtualBinNumber(Object event) {
         return (long)((RTOSEvent) event).priority();
@@ -90,6 +89,7 @@ public class RTOSEventComparator implements CQComparator {
     }
 
     /** Do nothing.
+     *  @param zeroReference The zero reference of the comparator.
      */
     public void setZeroReference(Object zeroReference) {
     }
