@@ -72,6 +72,7 @@ OPTIONAL_FILES = \
 	'EntityTreeModel$$TreeUpdateListener.class' \
 	'PTree$$1.class' \
 	'PTree$$DesignTreeDragGestureListener.class' \
+	'PTree$$PTreeDragGestureListener.class' \
 	'TreeEditor$$1.class' \
 	'TreeTableau$$Factory.class' \
 	'TreeTableau$$TreeFrame.class'
