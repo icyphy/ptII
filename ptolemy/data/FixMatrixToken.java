@@ -57,7 +57,7 @@ public class FixMatrixToken extends MatrixToken {
     public FixMatrixToken() {
 	_rowCount = 1;
 	_columnCount = 1;
-        _precision = new Precision(32,32);
+        _precision = new Precision(32, 32);
 	_value = new FixPoint[1][1];
 	_value[0][0] = Quantizer.round( 0.0, _precision );
     }
@@ -215,7 +215,7 @@ public class FixMatrixToken extends MatrixToken {
 	}
 
 	// try Fix
-	compare = TypeLattice.compare(new FixToken(0.0,32,32), token);
+	compare = TypeLattice.compare(new FixToken(0.0, 32, 32), token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
 	    FixPoint[][] result = new FixPoint[1][1];
 	    FixToken tem = (FixToken)FixToken.convert(token);
