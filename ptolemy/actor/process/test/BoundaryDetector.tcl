@@ -105,9 +105,10 @@ test BoundaryDetector-2.1 {Check is...Boundary() for single layer boundary} {
     set rcvr [java::cast ptolemy.actor.Mailbox [$rcvrs get {0 0}]]
     set detector [java::new ptolemy.actor.process.BoundaryDetector $rcvr]
     set vala [$detector isInsideBoundary]
-    set valb [$detector isConnectedToBoundary]
-    set valc [$detector isOutsideBoundary]
-    if { $vala == 0  && $valb == 1 && $valc == 0 } {
+    set valb [$detector isConnectedToBoundaryInside]
+    set valc [$detector isConnectedToBoundaryOutside]
+    set vald [$detector isOutsideBoundary]
+    if { $vala == 0  && $valb == 1 && $valc == 0 && $vald == 0 } {
         set val1 1
     } else {
         set val1 0
@@ -118,9 +119,10 @@ test BoundaryDetector-2.1 {Check is...Boundary() for single layer boundary} {
     set rcvr [java::cast ptolemy.actor.Mailbox [$rcvrs get {0 0}]]
     set detector [java::new ptolemy.actor.process.BoundaryDetector $rcvr]
     set vala [$detector isInsideBoundary]
-    set valb [$detector isConnectedToBoundary]
-    set valc [$detector isOutsideBoundary]
-    if { $vala == 0  && $valb == 0 && $valc == 0 } {
+    set valb [$detector isConnectedToBoundaryInside]
+    set valc [$detector isConnectedToBoundaryOutside]
+    set vald [$detector isOutsideBoundary]
+    if { $vala == 0  && $valb == 0 && $valc == 0 && $vald == 0 } {
         set val2 1
     } else {
         set val2 0
@@ -131,9 +133,10 @@ test BoundaryDetector-2.1 {Check is...Boundary() for single layer boundary} {
     set rcvr [java::cast ptolemy.actor.Mailbox [$rcvrs get {0 0}]]
     set detector [java::new ptolemy.actor.process.BoundaryDetector $rcvr]
     set vala [$detector isInsideBoundary]
-    set valb [$detector isConnectedToBoundary]
-    set valc [$detector isOutsideBoundary]
-    if { $vala == 0  && $valb == 1 && $valc == 0 } {
+    set valb [$detector isConnectedToBoundaryInside]
+    set valc [$detector isConnectedToBoundaryOutside]
+    set vald [$detector isOutsideBoundary]
+    if { $vala == 0  && $valb == 0 && $valc == 1 && $vald == 0 } {
         set val3 1
     } else {
         set val3 0
@@ -144,9 +147,10 @@ test BoundaryDetector-2.1 {Check is...Boundary() for single layer boundary} {
     set rcvr [java::cast ptolemy.actor.Mailbox [$rcvrs get {0 0}]]
     set detector [java::new ptolemy.actor.process.BoundaryDetector $rcvr]
     set vala [$detector isInsideBoundary]
-    set valb [$detector isConnectedToBoundary]
-    set valc [$detector isOutsideBoundary]
-    if { $vala == 1  && $valb == 0 && $valc == 0 } {
+    set valb [$detector isConnectedToBoundaryInside]
+    set valc [$detector isConnectedToBoundaryOutside]
+    set vald [$detector isOutsideBoundary]
+    if { $vala == 1  && $valb == 0 && $valc == 0 && $vald == 0 } {
         set val4 1
     } else {
         set val4 0
@@ -157,9 +161,10 @@ test BoundaryDetector-2.1 {Check is...Boundary() for single layer boundary} {
     set rcvr [java::cast ptolemy.actor.Mailbox [$rcvrs get {0 0}]]
     set detector [java::new ptolemy.actor.process.BoundaryDetector $rcvr]
     set vala [$detector isInsideBoundary]
-    set valb [$detector isConnectedToBoundary]
-    set valc [$detector isOutsideBoundary]
-    if { $vala == 0  && $valb == 0 && $valc == 1 } {
+    set valb [$detector isConnectedToBoundaryInside]
+    set valc [$detector isConnectedToBoundaryOutside]
+    set vald [$detector isOutsideBoundary]
+    if { $vala == 0  && $valb == 0 && $valc == 0 && $vald == 1 } {
         set val5 1
     } else {
         set val5 0
@@ -239,9 +244,10 @@ test BoundaryDetector-2.2 {Check is...Boundary() for multilayered boundaries} {
     set rcvr [java::cast ptolemy.actor.Mailbox [$rcvrs get {0 0}]]
     set detector [java::new ptolemy.actor.process.BoundaryDetector $rcvr]
     set vala [$detector isInsideBoundary]
-    set valb [$detector isConnectedToBoundary]
-    set valc [$detector isOutsideBoundary]
-    if { $vala == 1  && $valb == 0 && $valc == 0 } {
+    set valb [$detector isConnectedToBoundaryInside]
+    set valc [$detector isConnectedToBoundaryOutside]
+    set vald [$detector isOutsideBoundary]
+    if { $vala == 1  && $valb == 0 && $valc == 0 && $vald == 0 } {
         set val1 1
     } else {
         set val1 0
@@ -252,9 +258,10 @@ test BoundaryDetector-2.2 {Check is...Boundary() for multilayered boundaries} {
     set rcvr [java::cast ptolemy.actor.Mailbox [$rcvrs get {0 0}]]
     set detector [java::new ptolemy.actor.process.BoundaryDetector $rcvr]
     set vala [$detector isInsideBoundary]
-    set valb [$detector isConnectedToBoundary]
-    set valc [$detector isOutsideBoundary]
-    if { $vala == 0  && $valb == 1 && $valc == 1 } {
+    set valb [$detector isConnectedToBoundaryInside]
+    set valc [$detector isConnectedToBoundaryOutside]
+    set vald [$detector isOutsideBoundary]
+    if { $vala == 0  && $valb == 1 && $valc == 0 && $vald == 1 } {
         set val2 1
     } else {
         set val2 0
@@ -265,9 +272,10 @@ test BoundaryDetector-2.2 {Check is...Boundary() for multilayered boundaries} {
     set rcvr [java::cast ptolemy.actor.Mailbox [$rcvrs get {0 0}]]
     set detector [java::new ptolemy.actor.process.BoundaryDetector $rcvr]
     set vala [$detector isInsideBoundary]
-    set valb [$detector isConnectedToBoundary]
-    set valc [$detector isOutsideBoundary]
-    if { $vala == 1  && $valb == 0 && $valc == 0 } {
+    set valb [$detector isConnectedToBoundaryInside]
+    set valc [$detector isConnectedToBoundaryOutside]
+    set vald [$detector isOutsideBoundary]
+    if { $vala == 1  && $valb == 0 && $valc == 0 && $vald == 0 } {
         set val3 1
     } else {
         set val3 0
@@ -278,9 +286,10 @@ test BoundaryDetector-2.2 {Check is...Boundary() for multilayered boundaries} {
     set rcvr [java::cast ptolemy.actor.Mailbox [$rcvrs get {0 0}]]
     set detector [java::new ptolemy.actor.process.BoundaryDetector $rcvr]
     set vala [$detector isInsideBoundary]
-    set valb [$detector isConnectedToBoundary]
-    set valc [$detector isOutsideBoundary]
-    if { $vala == 0  && $valb == 0 && $valc == 1 } {
+    set valb [$detector isConnectedToBoundaryInside]
+    set valc [$detector isConnectedToBoundaryOutside]
+    set vald [$detector isOutsideBoundary]
+    if { $vala == 0  && $valb == 0 && $valc == 0 && $vald == 1 } {
         set val4 1
     } else {
         set val4 0
@@ -291,9 +300,10 @@ test BoundaryDetector-2.2 {Check is...Boundary() for multilayered boundaries} {
     set rcvr [java::cast ptolemy.actor.Mailbox [$rcvrs get {0 0}]]
     set detector [java::new ptolemy.actor.process.BoundaryDetector $rcvr]
     set vala [$detector isInsideBoundary]
-    set valb [$detector isConnectedToBoundary]
-    set valc [$detector isOutsideBoundary]
-    if { $vala == 0  && $valb == 1 && $valc == 0 } {
+    set valb [$detector isConnectedToBoundaryInside]
+    set valc [$detector isConnectedToBoundaryOutside]
+    set vald [$detector isOutsideBoundary]
+    if { $vala == 0  && $valb == 0 && $valc == 1 && $vald == 0 } {
         set val5 1
     } else {
         set val5 0
