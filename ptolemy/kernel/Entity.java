@@ -41,7 +41,7 @@ Entities and Relations are linked together via Ports.
 @see Port
 @see Relation
 */
-public abstract class Entity extends NamedObj { 
+public class Entity extends NamedObj { 
     /** 
      */	
     public Entity() {
