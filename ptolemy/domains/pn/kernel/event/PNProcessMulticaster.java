@@ -30,6 +30,7 @@
 
 package ptolemy.domains.pn.kernel.event;
 
+import ptolemy.kernel.event.ChangeRequest; // For Javadoc
 import java.util.Enumeration;
 import collections.LinkedList;
 
@@ -43,7 +44,7 @@ methods.
 
 @author John Reekie, Mudit Goel
 @version $Id$
-@see ptolemy.kernel.event.TopologyChangeRequest
+@see ptolemy.kernel.event.ChangeRequest
 */
 public class PNProcessMulticaster implements PNProcessListener {
 
