@@ -1,0 +1,100 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<TITLE>Discrete Event Simulation Demo</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FAF0E6">
+
+<CENTER>
+<H1>
+Demo of DE simulation applet</H1></CENTER>
+
+<H3>
+DE Simulation:</H3>
+The following applet uses Ptolemy II DE domain architecture to simulate
+the behaviour of an interruptible processor. Without interrupts, each demand
+takes a fixed minimum service time to serve. With interrupts, the service
+time is increased by the number of interrupt events during the service period
+multiplied by a fixed interrupt service time.
+<p>
+The plot shows the sampled processor output. The input to the processor is
+a sequence of DoubleToken starting at 0.0 at time 0.0 and incremented by 1.0
+every unit time. The output are sampled to model a latched output. If there
+is no loss of events, then the plot is a straight line. Otherwise, there will
+be flag regions. 
+<p>
+Different parameters for the processor model can be chosen. MST (Minimum
+Service Time) indicate the amount of time needed to process an event, if there
+is no interrupt. IST (Interrupt Service Time) is the amount of time needed
+to process an interrupt. Note that the interrupts preempts the inputs. Lambda
+represents the inter-arrival time of the Poisson process modeling the
+interrupt arrival. Lastly, stop time is just the time when simulation stops.
+<P>
+<BR>&nbsp;
+<BR>&nbsp;
+<CENTER>
+<P><APPLET name="SigmaDeltaApplet"
+   bgcolor=#FAF0E6
+   archive="ptolemy/domains/de/demo/clockapplet.jar"
+   code=ptolemy.domains.de.demo.SigmaDeltaApplet.class
+   codebase=../../../..
+   width=600 height=400>
+<param name="background" value="#faf0e6">
+<BR><I>If you were able to run applets, you would have a waveform demo
+here.</I>
+<BR></APPLET></CENTER>
+
+<P>This applet is implemented by
+<TT><A HREF="SigmaDeltaApplet.java">SigmaDeltaApplet.java</A></TT>.
+<P>The simulation consists of a <A HREF="../lib/DEClock.java">Clock</A>
+Actor, a
+<A HREF="../lib/Ramp.java">Ramp</A> Actor,
+<A HREF="../lib/DEProcessor.java">DEProcessor</A> Actor,
+<A HREF="../lib/InterruptibleServer.java">InterruptibleServer</A> Actor,
+<A HREF="../lib/DESampler.java">DESampler</A> Actor,
+and a <A HREF="../lib/DEPoisson.java">DEPoisson</A>
+Actor connected to a <A HREF="../lib/DEPlot.java">Plot</A> Actor.
+<BR>
+<MAP Name="ActorsMap">
+<AREA Shape="rect" Coords="33,315,82,364"
+	Href="../lib/DEClock.java">
+<AREA Shape="rect" Coords="119,314,169,363"
+	Href="../lib/Ramp.java">
+<AREA Shape="rect" Coords="207,330,257,349"
+	Href="../lib/FIFOQueue.java">
+<AREA Shape="rect" Coords="257,253,306,301"
+	Href="../lib/DEPlot.java">
+<AREA Shape="rect" Coords="308,327,343,351"
+	Href="../lib/DEServer.java">
+<AREA Shape="rect" Coords="369,315,418,363"
+	Href="../lib/DEPassGate.java">
+<AREA Shape="rect" Coords="437,229,450,248"
+	Href="../lib/DEDelay.java">
+
+
+<AREA Shape="rect" Coords="468,329,519,349"
+	Href="../lib/FIFOQueue.java">
+<AREA Shape="rect" Coords="507,253,557,301"
+	Href="../lib/TestLevel.java">
+<AREA Shape="rect" Coords="579,263,611,292"
+	Href="../lib/Not.java">
+
+<AREA Shape="rect" Coords="570,327,606,352"
+	Href="../lib/DEServer.java">
+<AREA Shape="rect" Coords="507,176,557,227"
+	Href="../lib/DEPlot.java">
+<AREA Shape="rect" Coords="619,164,669,214"
+	Href="../lib/DEPlot.java">
+<AREA Shape="rect" Coords="657,327,707,377"
+	Href="../lib/DEPlot.java">
+</MAP>
+<CENTER>
+<IMG SRC="img/Interrupt.gif"
+Alt="Imagemap" Usemap="#ActorsMap" Ismap>
+</CENTER>
+<BR>
+<HR>Copyright &copy; 1998 The Regents of the University of California.
+All rights reserved.
+<BR>Last updated: $Date$, comments to:&nbsp;<author>ptII@eecs.berkeley.edu</author>
+</BODY>
+</HTML>

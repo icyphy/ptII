@@ -78,7 +78,7 @@ public class QueueApplet extends Applet {
         _finishButton = new Button("Finish");
         _terminateButton = new Button("Terminate");
 
-        // The applet has two panels, stacked vertically
+        // The applet has four panels, shown in a 2x2 grid
         setLayout(new BorderLayout());
         Panel appletPanel = new Panel();
         appletPanel.setLayout(new GridLayout(2,2));

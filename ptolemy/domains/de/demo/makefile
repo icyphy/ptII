@@ -57,7 +57,8 @@ JSRCS = \
 	HistogramApplet.java \
 	InterruptApplet.java \
 	QueueApp.java \
-	QueueApplet.java
+	QueueApplet.java \
+	SigmaDeltaApplet.java
 
 # Non-graphical Java demos written in Tcl
 # Since there are no demos, we use a dummy file so that the script that builds
