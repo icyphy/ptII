@@ -53,6 +53,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	compileCommandTemplate.txt \
+	default.css \
 	makefile.in \
 	model.htm.in \
 	modelVergil.htm.in \
