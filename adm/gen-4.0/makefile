@@ -345,7 +345,6 @@ hyvisual_src_jar: ptII$(VERSION).src.jar
 		lib/jython.jar \
 		lib/mapss.jar \
 		lib/ptCal.jar \
-		lib/saxon7.jar \
 		lib/sootclasses.jar \
 		lib/synthesis.jar \
 		ptolemy/actor/gui/python \
