@@ -242,7 +242,7 @@ public class Plot extends PlotBox {
                 throw new RuntimeException("Can't plot non-positive X values "+
                         "when the logarithmic X axis value is specified: " +
                         x);
-                return;
+                //return;
             }
             x = Math.log(x)*_LOG10SCALE;
         }
@@ -251,7 +251,7 @@ public class Plot extends PlotBox {
                 throw new RuntimeException("Can't plot non-positive Y values "+
                         "when the logarithmic Y axis value is specified: " +
                         y);
-                return;
+                //return;
             }
             y = Math.log(y)*_LOG10SCALE;
         }
@@ -288,7 +288,7 @@ public class Plot extends PlotBox {
                 throw new RuntimeException("Can't plot non-positive X values "+
                         "when the logarithmic X axis value is specified: " +
                         x);
-                return;
+                //return;
             }
             x = Math.log(x)*_LOG10SCALE;
         }
@@ -297,7 +297,7 @@ public class Plot extends PlotBox {
                 throw new RuntimeException("Can't plot non-positive Y values "+
                         "when the logarithmic Y axis value is specified: " +
                         y);
-                return;
+                //return;
             }
             y = Math.log(y)*_LOG10SCALE;
             yLowEB = Math.log(yLowEB)*_LOG10SCALE;
@@ -402,10 +402,10 @@ public class Plot extends PlotBox {
     public synchronized void fillPlot() {
         if (_xyInvalid) {
             // Recalculate the boundaries based on currently visible data
-            _xBottom = Double.MAX_VALUE;
-            _xTop = - Double.MIN_VALUE;
-            _yBottom = Double.MAX_VALUE;
-            _yTop = - Double.MIN_VALUE;
+            _xBottom = PtMath.MAX_VALUE;
+            _xTop = - PtMath.MIN_VALUE;
+            _yBottom = PtMath.MAX_VALUE;
+            _yTop = - PtMath.MIN_VALUE;
             for (int dataset = 0; dataset < _points.size(); dataset++) {
                 Vector points = (Vector)_points.elementAt(dataset);
                 for (int index = 0; index < points.size(); index++) {
@@ -514,11 +514,11 @@ public class Plot extends PlotBox {
         setXRange(0, 100);
         setXLabel("time");
         setYLabel("value");
-        addYTick("-PI", -Math.PI);
-        addYTick("-PI/2", -Math.PI/2);
+        addYTick("-PI", -PtMath.PI);
+        addYTick("-PI/2", -PtMath.PI/2);
         addYTick("0", 0);
-        addYTick("PI/2", Math.PI/2);
-        addYTick("PI", Math.PI);
+        addYTick("PI/2", PtMath.PI/2);
+        addYTick("PI", PtMath.PI);
         setMarksStyle("none");
         setImpulses(true);
 
@@ -534,25 +534,25 @@ public class Plot extends PlotBox {
             // System.out.println("x value: " + xvalue);
 
             addPoint(0, xvalue,
-                    5 * Math.cos(Math.PI * i/20), !first);
+                    5 * Math.cos(PtMath.PI * i/20), !first);
             addPoint(1, xvalue,
-                    4.5 * Math.cos(Math.PI * i/25), !first);
+                    4.5 * Math.cos(PtMath.PI * i/25), !first);
             addPoint(2, xvalue,
-                    4 * Math.cos(Math.PI * i/30), !first);
+                    4 * Math.cos(PtMath.PI * i/30), !first);
             addPoint(3, xvalue,
-                    3.5* Math.cos(Math.PI * i/35), !first);
+                    3.5* Math.cos(PtMath.PI * i/35), !first);
             addPoint(4, xvalue,
-                    3 * Math.cos(Math.PI * i/40), !first);
+                    3 * Math.cos(PtMath.PI * i/40), !first);
             addPoint(5, xvalue,
-                    2.5 * Math.cos(Math.PI * i/45), !first);
+                    2.5 * Math.cos(PtMath.PI * i/45), !first);
             addPoint(6, xvalue,
-                    2 * Math.cos(Math.PI * i/50), !first);
+                    2 * Math.cos(PtMath.PI * i/50), !first);
             addPoint(7, xvalue,
-                    1.5 * Math.cos(Math.PI * i/55), !first);
+                    1.5 * Math.cos(PtMath.PI * i/55), !first);
             addPoint(8, xvalue,
-                    1 * Math.cos(Math.PI * i/60), !first);
+                    1 * Math.cos(PtMath.PI * i/60), !first);
             addPoint(9, xvalue,
-                    0.5 * Math.cos(Math.PI * i/65), !first);
+                    0.5 * Math.cos(PtMath.PI * i/65), !first);
             first = false;
         }
         repaint();
@@ -1022,12 +1022,14 @@ public class Plot extends PlotBox {
                     break;
                 case 1:
                     // points -- use 3-pixel ovals.
-                    graphics.fillOval(xposi-1, yposi-1, 3, 3);
+                    //graphics.fillOval(xposi-1, yposi-1, 3, 3);
+                    graphics.fillRect(xposi-6, yposi-6, 6, 6);
                     break;
                 case 2:
                     // dots
-                    graphics.fillOval(xposi-_radius, yposi-_radius,
-                            _diameter, _diameter);
+                    //graphics.fillOval(xposi-_radius, yposi-_radius,
+                    //        _diameter, _diameter);
+                    graphics.fillRect(xposi-6, yposi-6, 6, 6);
                     break;
                 case 3:
                     // marks
@@ -1037,8 +1039,9 @@ public class Plot extends PlotBox {
                     switch (mark) {
                     case 0:
                         // filled circle
-                        graphics.fillOval(xposi-_radius, yposi-_radius,
-                                _diameter, _diameter);
+                        //graphics.fillOval(xposi-_radius, yposi-_radius,
+                        //        _diameter, _diameter);
+                        graphics.fillRect(xposi-6, yposi-6, 6, 6);
                         break;
                     case 1:
                         // cross
@@ -1060,7 +1063,8 @@ public class Plot extends PlotBox {
                         xpoints[1] = xposi+_radius; ypoints[1] = yposi+_radius;
                         xpoints[2] = xposi-_radius; ypoints[2] = yposi+_radius;
                         xpoints[3] = xposi; ypoints[3] = yposi-_radius;
-                        graphics.fillPolygon(xpoints, ypoints, 4);
+                        //graphics.fillPolygon(xpoints, ypoints, 4);
+                        graphics.fillRect(xposi-6, yposi-6, 6, 6);
                         break;
                     case 4:
                         // diamond
@@ -1071,11 +1075,16 @@ public class Plot extends PlotBox {
                         xpoints[2] = xposi; ypoints[2] = yposi+_radius;
                         xpoints[3] = xposi-_radius; ypoints[3] = yposi;
                         xpoints[4] = xposi; ypoints[4] = yposi-_radius;
-                        graphics.drawPolygon(xpoints, ypoints, 5);
+                        //graphics.drawPolygon(xpoints, ypoints, 5);
+                        graphics.drawRect(xposi-_radius, yposi-_radius,
+                                _diameter, _diameter);
+
                         break;
                     case 5:
                         // circle
-                        graphics.drawOval(xposi-_radius, yposi-_radius,
+                        //graphics.drawOval(xposi-_radius, yposi-_radius,
+                        //        _diameter, _diameter);
+                        graphics.drawRect(xposi-_radius, yposi-_radius,
                                 _diameter, _diameter);
                         break;
                     case 6:
@@ -1098,7 +1107,10 @@ public class Plot extends PlotBox {
                         xpoints[1] = xposi+_radius; ypoints[1] = yposi+_radius;
                         xpoints[2] = xposi-_radius; ypoints[2] = yposi+_radius;
                         xpoints[3] = xposi; ypoints[3] = yposi-_radius;
-                        graphics.drawPolygon(xpoints, ypoints, 4);
+                        //graphics.drawPolygon(xpoints, ypoints, 4);
+                        graphics.drawRect(xposi-_radius, yposi-_radius,
+                                _diameter, _diameter);
+
                         break;
                     case 9:
                         // filled diamond
@@ -1109,7 +1121,9 @@ public class Plot extends PlotBox {
                         xpoints[2] = xposi; ypoints[2] = yposi+_radius;
                         xpoints[3] = xposi-_radius; ypoints[3] = yposi;
                         xpoints[4] = xposi; ypoints[4] = yposi-_radius;
-                        graphics.fillPolygon(xpoints, ypoints, 5);
+                        //graphics.fillPolygon(xpoints, ypoints, 5);
+                        graphics.fillRect(xposi-_radius, yposi-_radius,
+                                _diameter, _diameter);
                         break;
                     }
                     break;

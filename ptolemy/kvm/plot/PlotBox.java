@@ -271,10 +271,10 @@ public class PlotBox extends Panel {
      *  @param axes If true, clear the axes parameters.
      */
     public synchronized void clear(boolean axes) {
-        _xBottom = Double.MAX_VALUE;
-        _xTop = - Double.MAX_VALUE;
-        _yBottom = Double.MAX_VALUE;
-        _yTop = - Double.MAX_VALUE;
+        _xBottom = PtMath.MAX_VALUE;
+        _xTop = - PtMath.MAX_VALUE;
+        _yBottom = PtMath.MAX_VALUE;
+        _yTop = - PtMath.MAX_VALUE;
         if (axes) {
             // Protected members first.
             _yMax = 0;
@@ -658,27 +658,6 @@ public class PlotBox extends Panel {
                 in.close();
             } catch (IOException me) {}
         }
-    }
-
-    /** Print the plot to a printer, represented by the specified graphics
-     *  object.
-     *  @param graphics The context into which the page is drawn.
-     *  @param format The size and orientation of the page being drawn.
-     *  @param index The zero based index of the page to be drawn.
-     *  @returns PAGE_EXISTS if the page is rendered successfully, or
-     *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
-     *  @exception PrinterException If the print job is terminated.
-     */
-    public synchronized int print(Graphics graphics, PageFormat format,
-            int index) throws PrinterException {
-        // We only print on one page.
-        if (index >= 1) {
-            return Printable.NO_SUCH_PAGE;
-        }
-        graphics.translate((int)format.getImageableX(),
-                (int)format.getImageableY());
-        _drawPlot(graphics, true);
-        return Printable.PAGE_EXISTS;
     }
 
     /** Read commands and/or plot data from an input stream in the old
@@ -1868,16 +1847,16 @@ public class PlotBox extends Panel {
     protected double _xlowgiven, _xhighgiven, _ylowgiven, _yhighgiven;
 
     /** @serial The minimum X value registered so for, for auto ranging. */
-    protected double _xBottom = Double.MAX_VALUE;
+    protected double _xBottom = PtMath.MAX_VALUE;
 
     /** @serial The maximum X value registered so for, for auto ranging. */
-    protected double _xTop = - Double.MAX_VALUE;
+    protected double _xTop = - PtMath.MAX_VALUE;
 
     /** @serial The minimum Y value registered so for, for auto ranging. */
-    protected double _yBottom = Double.MAX_VALUE;
+    protected double _yBottom = PtMath.MAX_VALUE;
 
     /** @serial The maximum Y value registered so for, for auto ranging. */
-    protected double _yTop = - Double.MAX_VALUE;
+    protected double _yTop = - PtMath.MAX_VALUE;
 
     /** @serial Whether to draw the axes using a logarithmic scale. */
     protected boolean _xlog = false, _ylog = false;
@@ -2175,7 +2154,7 @@ public class PlotBox extends Panel {
         for (int i = 0; i < ngrid; i++) {
             double gridval = i * 1.0/ngrid * 10;
             double logval = _LOG10SCALE*Math.log(gridval);
-            if (logval == Double.NEGATIVE_INFINITY)
+            if (logval == PtMath.NEGATIVE_INFINITY)
                 logval = 0.0;
 
             // If oldgrid is not null, then do not draw lines that
