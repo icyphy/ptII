@@ -281,7 +281,7 @@ public class CalendarQueue {
                     return linkFound.value();
                 }
                 else {
-                    // Prepare to check next bucket or 
+                    // Prepare to check next bucket or
                     // else go to a direct search.
                     ++i; ++j;
                     if (i == _nBuckets) i = 0;
@@ -413,7 +413,7 @@ public class CalendarQueue {
                     return linkFound.key();
                 }
                 else {
-                    // Prepare to check next bucket or 
+                    // Prepare to check next bucket or
                     // else go to a direct search.
                     ++i; ++j;
                     if (i == _nBuckets) i = 0;
