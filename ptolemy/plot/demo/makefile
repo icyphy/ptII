@@ -43,8 +43,15 @@ CLASSPATH =	.
 JSRCS =
 
 EXTRA_SRCS = $(JSRCS) \
-	BarGraph.html Live.html Marks.html Sinusoids.html index.html \
-	data.plt bargraph.plt
+	BarGraph.html \
+	Binary.html \
+	Butterfly.html \
+	Live.html \
+	Marks.html \
+	Sinusoids.html \
+	data.plt \
+	bargraph.plt
+	index.html \
 
 MISC_FILES = data #doc test 
 
