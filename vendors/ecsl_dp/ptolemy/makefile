@@ -107,7 +107,7 @@ cruiseControlECSL.xml: cruiseControl.xml
 	../XML2ECSL/bin/Xml2Ecsl_d $< cruiseControlECSL.xml
 
 cruiseControl.xml: cruiseControl.mdl
-	../MDL2XML/bin/MDL2XML $<
+	../MDL2XML/bin/MDL2XMLd $<
 
 
 demo: all cruiseControlECSL.moml
