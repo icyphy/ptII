@@ -330,8 +330,8 @@ public final class MathWizard {
                 roots[1] = new Complex(-Math.pow(-c/a, 0.5));
                 conjugate = false;
             } else {
-                roots[0] = new Complex(0,Math.pow(c/a, 0.5));
-                roots[1] = new Complex(0,-Math.pow(c/a, 0.5));
+                roots[0] = new Complex(0, Math.pow(c/a, 0.5));
+                roots[1] = new Complex(0, -Math.pow(c/a, 0.5));
                 conjugate = true;
             }            
         } else if (absOfA < TINY & absOfB > TINY & absOfC < TINY) {
