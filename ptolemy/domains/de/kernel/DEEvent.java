@@ -198,7 +198,9 @@ public final class DEEvent implements Comparable {
     public final boolean isSimultaneousWith(DEEvent event) {
         return ( _timeStamp == event._timeStamp) &&
             ( _microstep == event._microstep) &&
-            ( _receiverDepth == event._receiverDepth);
+            // simultaneous token events or pure events
+            ( _receiverDepth == event._receiverDepth ||
+                _receiver == null || event.receiver() == null);
     }
 
     /** Return the microstep.
