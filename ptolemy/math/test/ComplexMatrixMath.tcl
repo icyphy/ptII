@@ -58,12 +58,14 @@ set c6 [java::new ptolemy.math.Complex -1.0 0.0]
 # Complex array of length 0
 set ca0 [java::new {ptolemy.math.Complex[]} 0]
 
-# Complex array
+# Complex array of length 2
+set m2 [java::new {ptolemy.math.Complex[]} 2 [list $c1 $c2]]
+
+# Complex matrices
 set m3 [java::new {ptolemy.math.Complex[][]} 3 [list [list $c1 $c2 $c3] \
                                        [list $c4 $c5 $c3] \
                                        [list $c2 $c1 $c5]]]
 
-# Complex matrices
 set m22 [java::new {ptolemy.math.Complex[][]} 2 [list [list $c3 $c1] \
                                        [list $c5 $c4]]]
 
@@ -300,3 +302,13 @@ test ComplexMatrixMath-5.1.4 {imagParts} {
     regsub -all {,} $s {} stmp
     epsilonDiff $stmp {{{-6.0 2.0 -4.0} {0.4 8.0 -4.0}}}
 } {}
+
+####################################################################
+test ComplexMatrixMath-5.1.5 {diag} {
+    set mr [java::call ptolemy.math.ComplexMatrixMath \
+	    diag $m2]
+    set s [java::call ptolemy.math.ComplexMatrixMath toString $mr]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{1.0 + 2.0i 0.0 + 0.0i} {0.0 + 0.0i 3.0 - 4.0i}}}
+} {}
+
