@@ -101,7 +101,7 @@ public class JVMTableau extends Tableau {
             JPanel component = new JPanel();
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 
-	    
+
 	    // Display total memory and free memory.
             final JTextArea memoryArea = new JTextArea("", 1, 100);
 	    updateMemoryStatistics(memoryArea);
@@ -120,20 +120,20 @@ public class JVMTableau extends Tableau {
 	    component.add(GCButton);
 
 	    // Display system properties
-	    String lineSeparator = System.getProperty("line.separator"); 
+	    String lineSeparator = System.getProperty("line.separator");
 	    StringBuffer propertyBuffer = new StringBuffer();
 
 	    Properties properties = System.getProperties();
 	    Enumeration propertyNames = properties.propertyNames();
 	    while (propertyNames.hasMoreElements()) {
 		String propertyName = (String)propertyNames.nextElement();
-		propertyBuffer.append(propertyName + " = " 
+		propertyBuffer.append(propertyName + " = "
 				      + properties.getProperty(propertyName)
 				      + lineSeparator);
 	    }
             final JTextArea messageArea =
 		new JTextArea(propertyBuffer.toString(),20,100);
-						  
+
             messageArea.setEditable(false);
 	    JScrollPane scrollPane = new JScrollPane(messageArea);
             component.add(scrollPane);
@@ -194,7 +194,7 @@ public class JVMTableau extends Tableau {
 	    }
 	}
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

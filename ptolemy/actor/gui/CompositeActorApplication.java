@@ -304,11 +304,11 @@ public class CompositeActorApplication {
                 _expectingClass = false;
 
                 MoMLParser parser = new MoMLParser();
-                String string = "<entity name=\"toplevel\" class=\"" + 
+                String string = "<entity name=\"toplevel\" class=\"" +
                     arg + "\"/>";
                 CompositeActor model
                     = (CompositeActor)parser.parse(string);
-               
+
                 _models.add(model);
 
                 // Create a manager.

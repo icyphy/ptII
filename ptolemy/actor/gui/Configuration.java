@@ -182,7 +182,7 @@ public class Configuration extends CompositeEntity {
                 if (sharp > 0) {
                     in = new URL(spec.substring(0, sharp));
                 }
-            }                    
+            }
 
             effigy = factory.createEffigy(directory, base, in);
 
