@@ -69,6 +69,7 @@ JSRCS = \
 	ScalarToken.java \
 	StringToken.java \
 	Token.java \
+	Typeable.java \
 	TypeConstant.java \
 	TypeLattice.java
 
