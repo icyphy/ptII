@@ -212,6 +212,11 @@ public class CommitActionsAttribute
                     try {
                         //Token token = variable.getToken();
                         destination.setToken(token);
+                        // Force all dependents to re-evaluate.
+                        // This makes the parameters in the actors of
+                        // the refinement take on new values immediately
+                        // after the action is committed.
+                        destination.validate();
                         if (_debugging) {
                             _debug(getFullName() + " variable: "
                                     + destination.getName() + ", value: "
