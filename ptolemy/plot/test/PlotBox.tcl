@@ -181,19 +181,13 @@ test PlotBox-14.1 {write} {
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "xxx">
 <plot>
-<!-- Ptolemy plot, version 3.0, PlotML format. -->
+<!-- Ptolemy plot, version 3.1, PlotML format. -->
 <title>Software Downloads</title>
 <xLabel>Year</xLabel>
 <yLabel>Downloads</yLabel>
 <xRange min="0.0010" max="10.0"/>
 <yRange min="1.0" max="1000.0"/>
 <xTicks>
-  <tick label="zero" position="0.0"/>
-  <tick label="one" position="1.0"/>
-  <tick label="two" position="2.0"/>
-  <tick label="three" position="3.0"/>
-  <tick label="four" position="4.0"/>
-  <tick label="five" position="5.0"/>
   <tick label="1993" position="0.0"/>
   <tick label="1994" position="1.0"/>
   <tick label="1995" position="2.0"/>
