@@ -215,6 +215,7 @@ public class StockServer extends TypedCompositeActor {
 		throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
 	    input = new SDFIOPort(this, "input", true, false);
+	    input.setMultiport(true);
 	}
 
 	/** Read out all tokens in the input port and discard.
