@@ -1984,9 +1984,9 @@ public class Plot extends PlotBox {
         if (_xyInvalid) {
             // Recalculate the boundaries based on currently visible data
             _xBottom = Double.MAX_VALUE;
-            _xTop = - Double.MIN_VALUE;
+            _xTop = - Double.MAX_VALUE;
             _yBottom = Double.MAX_VALUE;
-            _yTop = - Double.MIN_VALUE;
+            _yTop = - Double.MAX_VALUE;
             for (int dataset = 0; dataset < _points.size(); dataset++) {
                 Vector points = (Vector)_points.elementAt(dataset);
                 for (int index = 0; index < points.size(); index++) {
