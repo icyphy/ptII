@@ -67,7 +67,7 @@ public class Vertex extends Location {
     public Vertex(Relation container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	setMoMLElementName("vertex");
+	getMoMLInfo().elementName = "vertex";
     }
 
     ///////////////////////////////////////////////////////////////////

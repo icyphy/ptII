@@ -294,7 +294,7 @@ public class KernelGraphFrame extends GraphFrame {
 
             // If the entity defers its MoML definition to another,
             // then open that other.
-	    NamedObj deferredTo = entity.getDeferMoMLDefinitionTo();
+	    NamedObj deferredTo = entity.getMoMLInfo().deferTo;
 	    if(deferredTo != null) {
 		entity = (CompositeEntity)deferredTo;
 	    }

@@ -268,7 +268,7 @@ public class FSMGraphFrame extends GraphFrame {
 	    NamedObj object = getTarget();
 	    if(!(object instanceof CompositeEntity)) return;
 	    CompositeEntity entity = (CompositeEntity)object;
-	    NamedObj deferredTo = entity.getDeferMoMLDefinitionTo();
+	    NamedObj deferredTo = entity.getMoMLInfo().deferTo;
 	    if(deferredTo != null) {
 		entity = (CompositeEntity)deferredTo;
 	    }

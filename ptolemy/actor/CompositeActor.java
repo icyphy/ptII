@@ -854,9 +854,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // A listener for reporting failed change requests.
-    private ChangeListener _changeListener;
-
     // The director for this composite actor.
     private Director _director;
 

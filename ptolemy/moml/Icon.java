@@ -63,18 +63,7 @@ public class Icon extends Location {
     public Icon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	setMoMLElementName("rendition");
+	getMoMLInfo().elementName = "rendition";
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 

@@ -155,16 +155,16 @@ public class Parameter extends Variable implements UserSettable {
 
         output.write(_getIndentPrefix(depth)
                + "<"
-               + getMoMLElementName()
+               + getMoMLInfo().elementName
                + " name=\""
                + name
                + "\" class=\""
-               + getClass().getName()
+               + getMoMLInfo().className
                + "\""
                + valueTerm
                + ">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</"
-                + getMoMLElementName() + ">\n");
+                + getMoMLInfo().elementName + ">\n");
     }
 }

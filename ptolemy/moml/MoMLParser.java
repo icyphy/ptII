@@ -35,7 +35,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Configurable;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Documentation;
-import ptolemy.actor.gui.Placeable;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
@@ -139,7 +138,7 @@ cannot be read for some reason.
 This parser supports the way Ptolemy II handles hierarchical models,
 where components are instances cloned from reference models called
 "classes." A model (a composite entity) is a "class" in Ptolemy II if
-its getMoMLElementName() method returns the string "class".  If a
+the className field of its MoMLInfo object is the string "class".  If a
 component is cloned from a class, then when that component exports
 MoML, it references the class from which it was cloned
 and exports only its attributes.  However, if further changes are
@@ -651,7 +650,7 @@ public class MoMLParser extends HandlerBase {
                     // composite name.
                     _toplevel = newEntity.toplevel();
                 }
-                newEntity.setMoMLElementName("class");
+                newEntity.getMoMLInfo().elementName = "class";
 
                 _current = newEntity;
                 _namespace = DEFAULT_NAMESPACE;
@@ -669,11 +668,6 @@ public class MoMLParser extends HandlerBase {
                 _checkForNull(entityName,
                         "No name for element \"deleteEntity\"");
                 NamedObj deletedEntity = _deleteEntity(entityName);
-                if (deletedEntity instanceof Placeable) {
-                    // FIXME: remove and revalidate graphical container.
-                    // This seems to require an extension to the Placeable
-                    // interface.
-                }
                 // NOTE: This could occur at a top level, although it's
                 // not clear what it means to delete a top-level entity.
                 if (_current != null) {
@@ -906,7 +900,7 @@ public class MoMLParser extends HandlerBase {
                             = Class.forName(className, true, _classLoader);
                     newModel = _createInstance(newClass, arguments);
                     newModel.setName(modelName);
-                    newModel.setMoMLElementName("model");
+                    newModel.getMoMLInfo().elementName = "model";
                 } else {
                     // Look for previously existing model.
                     newModel = _searchForEntity(modelName);
@@ -1458,11 +1452,11 @@ public class MoMLParser extends HandlerBase {
                     }
                     
                     // Set the classname and source of the import.
-                    reference.setMoMLClass(className);
+                    reference.getMoMLInfo().className = className;
 
                     // NOTE: This might be a relative file reference, which
                     // won't be of much use if a MoML file is moved.
-                    reference.setMoMLSource(source);
+                    reference.getMoMLInfo().source = source;
 
                     // Record the import to avoid repeated reading
                     if (_imports == null) {
@@ -1516,7 +1510,7 @@ public class MoMLParser extends HandlerBase {
         } else {
             // Extending a previously defined entity.  Check to see that
             // it was defined to be a class.
-            if (!reference.getMoMLElementName().equals("class")) {
+            if (!reference.getMoMLInfo().elementName.equals("class")) {
                 throw new XmlException("Attempt to extend an entity that "
                 + "is not a class: " + reference.getFullName(),
                 _currentExternalEntity(),
@@ -1540,7 +1534,7 @@ public class MoMLParser extends HandlerBase {
             // do that is that NamedObj uses the full name of the object
             // that we cloned as the classname.  But this may not provide
             // enough information to instantiate the class.
-            newEntity.setMoMLClass(className);
+            newEntity.getMoMLInfo().className = className;
 
             // Set the container of the clone.
             newEntity.setContainer(container);
@@ -1548,7 +1542,7 @@ public class MoMLParser extends HandlerBase {
             // The master may have an entity name "class" (or "model"?), and
             // that name will be cloned, so we need to change this.
             // It may get changed back if we are inside a "class" element.
-            newEntity.setMoMLElementName("entity");
+            newEntity.getMoMLInfo().elementName = "entity";
 
             // If the container is cloned from something, then
             // add to it a MoML description of the entity, so that
@@ -1777,7 +1771,7 @@ public class MoMLParser extends HandlerBase {
     // to record the change so that it will be exported in any exported MoML.
     private void _recordDeletion(
             String type, NamedObj container, String deleted) {
-        if (container.getDeferMoMLDefinitionTo() != null && !_propagating) {
+        if (container.getMoMLInfo().deferTo != null && !_propagating) {
             try {
                 MoMLAttribute attr = new MoMLAttribute(container,
                        container.uniqueName("_extension"));
@@ -1798,7 +1792,7 @@ public class MoMLParser extends HandlerBase {
             String port,
             String relation,
             String insertAtSpec) {
-        if (container.getDeferMoMLDefinitionTo() != null && !_propagating) {
+        if (container.getMoMLInfo().deferTo != null && !_propagating) {
             try {
                 MoMLAttribute attr = new MoMLAttribute(container,
                        container.uniqueName("_extension"));
@@ -1828,7 +1822,7 @@ public class MoMLParser extends HandlerBase {
     // result of a propagating change from a master, then we need
     // to record the change so that it will be exported in any exported MoML.
     private void _recordNewObject(NamedObj container, NamedObj newObj) {
-        if (container.getDeferMoMLDefinitionTo() != null && !_propagating) {
+        if (container.getMoMLInfo().deferTo != null && !_propagating) {
             try {
                 MoMLAttribute attr = new MoMLAttribute(container,
                        container.uniqueName("_extension"));
@@ -1849,7 +1843,7 @@ public class MoMLParser extends HandlerBase {
             String relation,
             String indexSpec,
             String insideIndexSpec) {
-        if (container.getDeferMoMLDefinitionTo() != null && !_propagating) {
+        if (container.getMoMLInfo().deferTo != null && !_propagating) {
             try {
                 MoMLAttribute attr = new MoMLAttribute(container,
                        container.uniqueName("_extension"));
@@ -1923,9 +1917,9 @@ public class MoMLParser extends HandlerBase {
             candidate = _searchForEntity(name);
             if (candidate != null) {
                 // Check that it's a class.
-                if (candidate.getMoMLElementName().equals("class")) {
+                if (candidate.getMoMLInfo().elementName.equals("class")) {
                     // Check that its source matches.
-                    String candidateSource = candidate.getMoMLSource();
+                    String candidateSource = candidate.getMoMLInfo().source;
                     if (source == null && candidateSource == null) {
                         return candidate;
                     } else if (source != null
@@ -1941,8 +1935,10 @@ public class MoMLParser extends HandlerBase {
                 Object possibleCandidate = entries.next();
                 if (possibleCandidate instanceof ComponentEntity) {
                     candidate = (ComponentEntity)possibleCandidate;
-                    if (candidate.getMoMLClass().equals(name)) {
-                        String candidateSource = candidate.getMoMLSource();
+                    String candidateClassName
+                            = candidate.getMoMLInfo().className;
+                    if (candidateClassName.equals(name)) {
+                        String candidateSource = candidate.getMoMLInfo().source;
                         if (source == null && candidateSource == null) {
                             return candidate;
                         } else if (source != null

@@ -156,7 +156,7 @@ public class MoMLChangeRequest extends ChangeRequest {
         if (object == null) {
             return null;
         } else {
-            List deferList = object.deferredMoMLDefinitionFrom();
+            List deferList = object.getMoMLInfo().deferredFrom;
             if(deferList != null && deferList.size() > 0) {
                 return object;
             } else {
@@ -210,7 +210,7 @@ public class MoMLChangeRequest extends ChangeRequest {
         if (context == null) {
             context = _parser.getToplevel();
         }
-        List othersList = context.deferredMoMLDefinitionFrom();
+        List othersList = context.getMoMLInfo().deferredFrom;
         if (othersList != null) {
 
             Iterator others = othersList.iterator();

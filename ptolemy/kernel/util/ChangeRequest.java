@@ -213,7 +213,9 @@ public abstract class ChangeRequest {
      *  @see NamedObj
      */
     public void setListeners(List listeners) {
-        _listeners = new LinkedList(listeners);
+        if (listeners != null) {
+            _listeners = new LinkedList(listeners);
+        }
     }
 
     /** Wait for execution (or failure) of this change request.

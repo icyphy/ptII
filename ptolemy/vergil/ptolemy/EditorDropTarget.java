@@ -172,7 +172,7 @@ public class EditorDropTarget extends DropTarget {
                 // imported by the parent will be imported now by
                 // the object into which this is dropped.
                 moml.append("<group>");
-                if (dropObj.getDeferMoMLDefinitionTo() != null) {
+                if (dropObj.getMoMLInfo().deferTo != null) {
                     CompositeEntity sourceContainer =
                            (CompositeEntity)dropObj.getContainer();
                     if (sourceContainer != null) {

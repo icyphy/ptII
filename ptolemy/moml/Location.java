@@ -121,17 +121,17 @@ public class Location extends Attribute implements Locatable, Settable {
 
         output.write(_getIndentPrefix(depth)
                + "<"
-               + getMoMLElementName()
+               + getMoMLInfo().elementName
                + " name=\""
                + name
                + "\" class=\""
-               + getClass().getName()
+               + getMoMLInfo().className
                + "\""
                + valueTerm
                + ">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</"
-                + getMoMLElementName() + ">\n");
+                + getMoMLInfo().elementName + ">\n");
     }
 
     /** Get the value of the attribute that has been set by setExpression(),

@@ -391,7 +391,9 @@ test NamedObj-11.1 {Test exportMoML} {
 
 test NamedObj-11.2 {Test deferMoMLDefinitionTo} {
     # The following causes clones of $a to defer their MoML definition to $a.
-    $a setMoMLElementName "class"
+    java::field [$a getMoMLInfo] elementName "class"
+    # Old version
+    # $a setMoMLElementName "class"
     set b [java::cast ptolemy.kernel.util.NamedObj [$a clone]]
     set a3 [java::new ptolemy.kernel.util.Attribute $a1 "A3"]
     $b exportMoML
@@ -407,7 +409,11 @@ test NamedObj-11.2 {Test deferMoMLDefinitionTo} {
 }
 
 test NamedObj-11.3 {Test referTo of a class} {
-    $b setMoMLElementName class
+    # NOTE: The following isn't necessary because the class elementName
+    # is cloned.
+    # java::field [$b getMoMLInfo] elementName class
+    # Old version
+    # $b setMoMLElementName class
     $b exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
@@ -421,7 +427,7 @@ test NamedObj-11.3 {Test referTo of a class} {
 }
 
 test NamedObj-11.4 {Test deferredMoMLDefinitionFrom} {
-    listToFullNames [$a deferredMoMLDefinitionFrom]
+    listToFullNames [java::field [$a getMoMLInfo] deferredFrom]
 } {.A}
 
 # NOTE: This test no longer makes sense, since such removal is
