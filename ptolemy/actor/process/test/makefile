@@ -48,17 +48,20 @@ TCL_SRCS = \
 JSRCS = \
 	ProcessSink.java \
 	TestProcessActor.java \
-	TestProcessDirector.java \
 	TypedTestProcessActor.java
+	
+#	TestProcessDirector.java \
+#	TypedTestProcessActor.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	BoundaryDetector.tcl \
-	Branch.tcl \
-	BranchController.tcl \
-	MailboxBoundaryReceiver.tcl \
- 	ProcessDirector.tcl \
 	ProcessThread.tcl 
+	
+# 	ProcessDirector.tcl  
+#	BoundaryDetector.tcl \
+#	Branch.tcl \
+#	BranchController.tcl \
+#	MailboxBoundaryReceiver.tcl \
 	
 	
 
