@@ -568,7 +568,7 @@ public class SDFScheduler extends Scheduler {
 	    for (int destinationIndex = 0;
                  destinationIndex < receivers[channel].length;
                  destinationIndex++) {
-		if (receivers[channel][destinationIndex] == receiver) {
+                if (receivers[channel][destinationIndex] == receiver) {
                     if (_debugging) {
                         _debug("-- returning channel number:" + channel);
                     }
@@ -595,7 +595,8 @@ public class SDFScheduler extends Scheduler {
             }
 	}
 
-	throw new InternalErrorException("Receiver not found in the port " +
+	throw new InternalErrorException("Receiver for port " +
+                receiver.getContainer() + " not found in the port " +
                 port.getFullName());
     }
 
@@ -1634,11 +1635,8 @@ public class SDFScheduler extends Scheduler {
                     // true is when a connection is made to the
                     // inside of an opaque port.
                     if (actorList.contains(connectedActor)) {
-                        int destinationChannel =
-                            _getChannel(connectedPort,
-                                    receivers[sourceChannel]
-                                    [destinationIndex]
-                                        );
+                        int destinationChannel = _getChannel(connectedPort,
+                                receivers[sourceChannel][destinationIndex]);
                         int[] tokens = (int[]) waitingTokens.get(connectedPort);
                         tokens[destinationChannel] = count;
                         
