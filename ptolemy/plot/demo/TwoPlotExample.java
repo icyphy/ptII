@@ -71,6 +71,7 @@ public class TwoPlotExample extends JFrame {
         setSize(800, 300);
 
         // Create the left plot by calling methods.
+	leftPlot.setSize(350,300);
         leftPlot.setButtons(true);
         leftPlot.setTitle("Left Plot");
         leftPlot.setYRange(-4, 4);
@@ -113,6 +114,7 @@ public class TwoPlotExample extends JFrame {
 
         // Create the right plot by reading in a file.
         rightPlot.setButtons(true);
+	leftPlot.setSize(350,300);
         File file = new File(".", "data.plt");
         try {
             rightPlot.clear(true);
