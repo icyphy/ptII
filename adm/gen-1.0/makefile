@@ -454,7 +454,7 @@ remote1distjsall:
 	jsreport -HTML -PROGRESS -RECURSIVE \
 		-OUTDIR=$(JSOUTDIR) 
 	# Add links and colorize the coverage.html page
-	sh $(PTIIADM)/bin/coveragerating $(PTIIDIST) \
+	sh $(PTIIADM)/bin/coveragerating $(PTII) \
 		$(JSOUTDIR)/coverage.html
 	-chmod -R a+r $(JSOUTDIR)
 
