@@ -184,7 +184,7 @@ public class GiottoCodeGenerator extends Attribute {
 
     /** Topology analysis and initialization.
      *
-     * @ return True if in giotto domain, False if in other domains.
+     * @return True if in giotto domain, False if in other domains.
      */
     protected boolean _initialize(TypedCompositeActor model)
             throws IllegalActionException {
