@@ -95,7 +95,7 @@ be advanced to the current time. This happens if one of the
 delayed actors delayed with a delta delay of zero. Otherwise the 
 simulation time is increased as well as being advanced. Time can be 
 turned on or off by calling setUntimed(). By default the simulation 
-uses time.
+uses time. 
 <p>
 The simulation may be paused by calling setPauseRequested() which 
 will cause each process to pause the next time it tries to communicate.
@@ -111,10 +111,6 @@ mutations...
 <p>
 more compositionality discussion...
 <p>
-FIXME: want to be able to turn time on/off for a simulation. Just 
-ignore delay() calls, i.e have them return immediately.
-<p>
-
 @author Neil Smyth
 @version $Id$
 @see ptolemy.actor.Director;
@@ -173,7 +169,7 @@ public class CSPDirector extends ProcessDirector {
 	newobj._actorsDelayed = 0;
         newobj._delayedActorList = new LinkedList();
         newobj._mutationsPending = false;
-        newobj._simulationTimed = true;
+        newobj._simulationUntimed = false;
         newobj._currentTime = 0.0;
         return newobj;
     }
@@ -266,7 +262,7 @@ public class CSPDirector extends ProcessDirector {
      *   uses time.
      */
     public synchronized void setUntimed(boolean value) {
-        _simulationTimed = !value;
+        _simulationUntimed = value;
     }
 
     /** End the simulation. A flag is set in all the receivers, and 
@@ -284,7 +280,7 @@ public class CSPDirector extends ProcessDirector {
      *  <p>
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
-     *  @exception IllegalActionExcepion if a method accessing the topology
+     *  @exception IllegalActionException if a method accessing the topology
      *   throws it.
      */
     public synchronized void wrapup() throws IllegalActionException {
@@ -319,7 +315,7 @@ public class CSPDirector extends ProcessDirector {
      *  @param actor The actor being delayed.
      */
     protected synchronized void _actorDelayed(double delta, CSPActor actor) {
-        if (!_simulationTimed) {
+        if (_simulationUntimed) {
             actor._continue();
             return;
         }
@@ -509,7 +505,7 @@ public class CSPDirector extends ProcessDirector {
     private boolean _mutationsPending = false;// FIXME!
 
     // Flag indicating if the simulation is timed.
-    private boolean _simulationTimed = true;
+    private boolean _simulationUntimed = false;
 
     // The current time of this simulation.
     private double _currentTime = 0;

@@ -132,6 +132,8 @@ public abstract class ConditionalBranch {
 
     /** Called by subclasses to wait. It takes care of registering 
      *  branches as blocked which is needed for deadlock detection.
+     *  @exception InterruptedException If this method is interrupted 
+     *   while waiting.
      */
     protected void _checkAndWait() throws InterruptedException {
         getParent()._branchBlocked();
