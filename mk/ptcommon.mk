@@ -419,8 +419,10 @@ jsrestore:
 	fi
 
 # Compile the instrumented Java classes and include JavaScope.zip
+# We run make fast first, then make all so as to avoid problems
+# if files in actor/lib do not compile.	
 jsbuild:
-	$(MAKE) AUXCLASSPATH="$(CLASSPATHSEPARATOR)$(JSCLASSPATH)" JFLAGS="$(JFLAGS)" fast
+	$(MAKE) -k AUXCLASSPATH="$(CLASSPATHSEPARATOR)$(JSCLASSPATH)" JFLAGS="$(JFLAGS)" fast all:
 
 # Run the test_jsimple rule with the proper classpath
 jstest_jsimple:
