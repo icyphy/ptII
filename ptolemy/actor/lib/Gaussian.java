@@ -100,22 +100,39 @@ public class Gaussian extends RandomSource {
         super.fire();
         output.send(0, new DoubleToken(_current));
     }
+    
+    /** Generate the first random number.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public void initialize() throws IllegalActionException {
+    	_generateRandomNumber();
+        super.initialize();
+    }
 
     /** Calculate the next random number.
      *  @exception IllegalActionException If the base class throws it.
      *  @return True if it is ok to continue.
      */
-    public boolean prefire() throws IllegalActionException {
+    public boolean postfire() throws IllegalActionException {
+        _generateRandomNumber();
+        return super.postfire();
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Generate a new random number. */
+    private void _generateRandomNumber() throws IllegalActionException {
         double meanValue = ((DoubleToken) (mean.getToken())).doubleValue();
         double standardDeviationValue = ((DoubleToken) (standardDeviation
-                                                 .getToken())).doubleValue();
+        		.getToken())).doubleValue();
         double rawNum = _random.nextGaussian();
-        _current = (rawNum * standardDeviationValue) + meanValue;
-        return super.prefire();
+        _current = (rawNum * standardDeviationValue) + meanValue;   
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The random number for the current iteration.
+    
+    /** The random number for the current iteration. */
     private double _current;
 }
