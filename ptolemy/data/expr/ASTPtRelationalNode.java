@@ -63,10 +63,10 @@ public class ASTPtRelationalNode extends ASTPtRootNode {
         _tokenList.insertLast(x);  
         try {
             if (x.image.compareTo("==") == 0) {
-                result = result.equality(childTokens[1]);
+                result = result.equals(childTokens[1]);
                 return result;
             } else  if (x.image.compareTo("!=") == 0) {
-                result = result.equality(childTokens[1]);
+                result = result.equals(childTokens[1]);
                 ((ptolemy.data.BooleanToken)result).negate();
                 return result;
             } else  {
