@@ -529,7 +529,9 @@ public class PlotFrame extends JFrame {
                 FileOutputStream fout = new FileOutputStream(file);
                 plot.export(fout);
             } catch (IOException ex) {
-                Message msg = new Message("Error exporting plot: " + ex);
+                JOptionPane.showMessageDialog(this,
+                "Error exporting plot: " + ex,
+                "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
