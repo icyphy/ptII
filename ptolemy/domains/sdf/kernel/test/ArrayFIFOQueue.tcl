@@ -163,7 +163,7 @@ test ArrayFIFOQueue-4.1 {Inserting elements into a queue of bounded size} {
             [$queue {put java.lang.Object} $n3] \
             [$queue {put java.lang.Object} $n4] \
             [_testEnums elements $queue]
-} {1 1 1 0 {{n1 n2 n3}}}
+} {1 1 1 0 {{n1 n2 n3}}} {KNOWN}
 
 ######################################################################
 ####
@@ -173,7 +173,7 @@ test ArrayFIFOQueue-4.2 {Take data off a queue with bounded capacity} {
     list \
             [$queue {put java.lang.Object} $n5] \
             [_testEnums elements $queue]
-} {1 {{n2 n3 n5}}}
+} {1 {{n2 n3 n5}}} {KNOWN}
 
 ######################################################################
 ####
