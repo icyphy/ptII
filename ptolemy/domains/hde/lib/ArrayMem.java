@@ -137,9 +137,10 @@ public class ArrayMem extends TypedAtomicActor {
       * defaults to 1; 
      */
     public Parameter length;
+
     ///////////////////////////////////////////////////////////////////
     ////                         variable                       //////
-    public int alength;
+    public int aLength;
 
      
 
@@ -150,8 +151,8 @@ public class ArrayMem extends TypedAtomicActor {
      */
         
     public void initialize() throws IllegalActionException{
-	 alength =((IntToken)length.getToken()).intValue();
-         _mem = new Token[alength];
+	 aLength =((IntToken)length.getToken()).intValue();
+         _mem = new Token[aLength];
     }  
   /** If read has a token, copy the ith elment of the memory to dataOut.
      *  If write has a token, copy the dataIn input to the ith element of memory.
@@ -168,7 +169,7 @@ public class ArrayMem extends TypedAtomicActor {
           if (_init.isEqualTo(yes).booleanValue()){
 	    if (initData.hasToken(0)){
               ArrayToken token = (ArrayToken)initData.get(0);
-               for (int i = 0; i < alength; i++) {
+               for (int i = 0; i < aLength; i++) {
                _mem[i]=(token.getElement(i));
                }
              }
@@ -177,10 +178,10 @@ public class ArrayMem extends TypedAtomicActor {
       /** Read the Index*/	  
       if (index.hasToken(0)) {
           _index = ((IntToken)index.get(0)).intValue();
-            if ((_index < 0) || (_index >= alength)) {
+            if ((_index < 0) || (_index >= aLength)) {
 		throw new IllegalActionException(this,
 		"index " + _index + " is out of range for the memory "
-		+ "array, which has length " + alength);
+		+ "array, which has length " + aLength);
 	     }
        } 
       /** Write to the array*/
