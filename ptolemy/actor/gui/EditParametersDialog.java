@@ -52,29 +52,28 @@ import javax.swing.SwingUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// EditParametersDialog
 /**
-This class is a modal dialog box for editing the parameters of a target
-object, which is an instance of NamedObj. All attributes that implement
-the Settable interface and have visibility FULL are included in the
-dialog. An instance of this class contains an instance of
-Configurer, which examines the target for attributes of type
-EditorPaneFactory.  Those attributes, if they are present, define
-the panels that are used to edit the parameters of the target.
-If they are not present, then a default panel is created.
-<p>
-If the panels returned by EditorPaneFactory implement the
+This class is a modal dialog box for editing the parameters of a
+target object, which is an instance of NamedObj. All attributes that
+implement the Settable interface and have visibility FULL, or
+NOT_EDITABLE are included in the dialog. An instance of this class
+contains an instance of Configurer, which examines the target for
+attributes of type EditorPaneFactory.  Those attributes, if they are
+present, define the panels that are used to edit the parameters of the
+target.  If they are not present, then a default panel is created.
+
+<p> If the panels returned by EditorPaneFactory implement the
 CloseListener interface, then they are notified when this dialog
 is closed, and are informed of which button (if any) was used to
 close the dialog.
-<p>
-The dialog is modal, so that (in lieu of a proper undo mechanism)
-the Cancel button can properly undo any
-modifications that are made.  This means that the statement that creates
-the dialog will not return until the user dismisses the dialog.
-The method buttonPressed()
-can then be called to find out whether the user clicked the Commit button
-or the Cancel button (or any other button specified in the constructor).
-Then you can access the component to determine what values were set
-by the user.
+
+<p> The dialog is modal, so that (in lieu of a proper undo mechanism)
+the Cancel button can properly undo any modifications that are made.
+This means that the statement that creates the dialog will not return
+until the user dismisses the dialog.  The method buttonPressed() can
+then be called to find out whether the user clicked the Commit button
+or the Cancel button (or any other button specified in the
+constructor).  Then you can access the component to determine what
+values were set by the user.
 
 @author Edward A. Lee
 @version $Id$
@@ -96,7 +95,6 @@ public class EditParametersDialog extends ComponentDialog
                 new Configurer(target),
                 _moreButtons);
         // Once we get to here, the dialog has already been dismissed.
-
         _owner = owner;
         _target = target;
         if (buttonPressed().equals("Add")) {
@@ -114,7 +112,7 @@ public class EditParametersDialog extends ComponentDialog
             int count = 0;
             while (parameters.hasNext()) {
                 Settable parameter = (Settable)parameters.next();
-                if (parameter.getVisibility() == Settable.FULL) {
+                if (Configurer.isVisible(parameter)) {
                     count++;
                 }
             }
@@ -124,7 +122,7 @@ public class EditParametersDialog extends ComponentDialog
             int index = 0;
             while (parameters.hasNext()) {
                 Settable parameter = (Settable)parameters.next();
-                if (parameter.getVisibility() == Settable.FULL) {
+                if (Configurer.isVisible(parameter)) {
                     attributeNames[index++] = ((Attribute)parameter).getName();
                 }
             }

@@ -102,7 +102,7 @@ public class Configurer extends JPanel implements CloseListener {
         Iterator parameters = object.attributeList(Settable.class).iterator();
         while (parameters.hasNext()) {
             Settable parameter = (Settable)parameters.next();
-            if (parameter.getVisibility() == Settable.FULL) {
+            if (isVisible()) {
                 String oldExpression = parameter.getExpression();
                 buffer.append("<property name=\"");
                 buffer.append(((NamedObj)parameter).getName(parent));
@@ -148,6 +148,19 @@ public class Configurer extends JPanel implements CloseListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+
+    /** Return true if the given settable is visible in this
+     *  configurer panel.
+     */
+    public static boolean isVisible(Settable settable) {
+        if(settable.getVisibility() == Settable.FULL ||
+                settable.getVisibility() == Settable.NOT_EDITABLE) {
+            return true;
+        } else {
+            return false;
+        }
+     }
 
     /** Request restoration of the user settable attribute values to what they
      *  were when this object was created.  The actual restoration

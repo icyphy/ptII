@@ -169,7 +169,7 @@ public class PtolemyQuery extends Query
             // a style attribute here, because we don't necessarily
             // have write access to the workspace.
             String name = attribute.getName();
-            try{
+            try {
                 if (attribute instanceof IntRangeParameter) {
                     int current = ((IntRangeParameter)attribute)
                            .getCurrentValue();

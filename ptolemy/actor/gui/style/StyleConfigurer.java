@@ -93,7 +93,7 @@ public class StyleConfigurer extends Query implements QueryListener {
 	    // Note that fixing this will probably move the accept method
 	    // into some sort of factory object (instead of cloning
 	    // existing styles).
-	    parameterStyles = new ParameterEditorStyle[6];
+	    parameterStyles = new ParameterEditorStyle[7];
 	    parameterStyles[0] = new LineStyle();
 	    parameterStyles[0].setName("Line");
 	    parameterStyles[1] = new CheckBoxStyle();
@@ -106,6 +106,8 @@ public class StyleConfigurer extends Query implements QueryListener {
 	    parameterStyles[4].setName("Text");
 	    parameterStyles[5] = new FileChooserStyle();
 	    parameterStyles[5].setName("FileChooser");
+	    parameterStyles[6] = new NotEditableLineStyle();
+	    parameterStyles[6].setName("Fixed");
 	} catch (NameDuplicationException ex) {
 	    throw new InternalErrorException(ex.getMessage());
 	}
@@ -128,26 +130,35 @@ public class StyleConfigurer extends Query implements QueryListener {
 	    }
 
 	    List styleList = new ArrayList();
-	    // The index of the default;
-	    int defaultIndex = 0;
-	    int count = 0;
-	    // Reduce the list of parameters
-	    for (int i = 0; i < parameterStyles.length; i++) {
-                if (foundOne &&
-                        parameterStyles[i].getClass()
-                        == foundStyle.getClass()) {
-                    defaultIndex = count;
-                    if (foundStyle.acceptable(param)) {
+            // The index of the default;
+            int defaultIndex = 0;
+            
+            if (param.getVisibility() == Settable.NOT_EDITABLE) {
+                // If the parameter is set to NOT_EDITABLE visibility,
+                // then only a fixed style is possible.
+                styleList.add("Fixed");
+                defaultIndex = 0;
+            } else {
+                int count = 0;
+                // Reduce the list of parameters
+                for (int i = 0; i < parameterStyles.length; i++) {
+                    if (foundOne &&
+                            parameterStyles[i].getClass()
+                            == foundStyle.getClass()) {
+                        defaultIndex = count;
+                        if (foundStyle.acceptable(param)) {
+                            styleList.add(parameterStyles[i].getName());
+                            count++;
+                        }
+                    } else if (parameterStyles[i].acceptable(param)) {
                         styleList.add(parameterStyles[i].getName());
                         count++;
                     }
-                } else if (parameterStyles[i].acceptable(param)) {
-		    styleList.add(parameterStyles[i].getName());
-		    count++;
-		}
-	    }
-	    String styleArray[] =
-		(String[])styleList.toArray(new String[count]);
+                }
+            }
+            
+            String styleArray[] =
+		(String[])styleList.toArray(new String[styleList.size()]);
 
 	    addChoice(param.getName(), param.getName(),
                     styleArray, styleArray[defaultIndex]);

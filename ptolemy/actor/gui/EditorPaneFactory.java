@@ -110,7 +110,7 @@ public class EditorPaneFactory extends Attribute {
         boolean foundOne = false;
         while (parameters.hasNext()) {
             Settable parameter = (Settable)parameters.next();
-            if (parameter.getVisibility() == Settable.FULL) {
+            if (Configurer.isVisible(parameter)) {
                 foundOne = true;
                 query.addStyledEntry(parameter);
             }

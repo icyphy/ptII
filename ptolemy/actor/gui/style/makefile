@@ -56,6 +56,7 @@ JSRCS = \
 	EditableChoiceStyle.java \
 	FileChooserStyle.java \
 	LineStyle.java \
+	NotEditableLineStyle.java \
 	ParameterEditorStyle.java \
 	StyleConfigurer.java \
 	TextStyle.java
