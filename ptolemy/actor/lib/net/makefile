@@ -36,7 +36,8 @@ DIRS =		demo
 # Root of the Java directory
 ROOT =          ../../../..
 
-CLASSPATH =     $(ROOT)
+# Used for Wormhole/CopyPasteTarget
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =        $(ROOT)/mk/ptII.mk
@@ -49,7 +50,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = DatagramSender.java \
-        DatagramReceiver.java
+        DatagramReceiver.java \
+	Wormhole.java
 
 EXTRA_SRCS =    $(JSRCS)
 

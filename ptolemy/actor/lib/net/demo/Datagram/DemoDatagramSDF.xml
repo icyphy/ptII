@@ -32,11 +32,13 @@ been sent by DatagramSender.</text></svg></configure>
       </svg>
     </configure>
         </property>
+
         <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
         </property>
+
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="387.5, 161.0">
+        <property name="_location" class="ptolemy.moml.Location" value="255.0, 110.0">
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -56,13 +58,17 @@ been sent by DatagramSender.</text></svg></configure>
     <entity name="DatagramReceiver" class="ptolemy.actor.lib.net.DatagramReceiver">
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4096">
         </property>
-        <property name="overwrite" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="bufferLength" class="ptolemy.data.expr.Parameter" value="440">
         </property>
-        <property name="decodeWithPtolemyParser" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="overwrite" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="blockAwaitingDatagram" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="defaultOutput" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="encoding" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
+        </property>
+        <property name="decodeWithPtolemyParser" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="264.0, 278.5">
         </property>
