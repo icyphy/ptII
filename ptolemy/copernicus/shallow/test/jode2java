@@ -106,4 +106,5 @@ awk '{  if ($0 ~ /; */) {
             }
      }' |
 sed -e 's@ final @ /*final*/ @g' \
-    -e 's@new RuntimeException;@new RuntimeException(); // fixed by jode2java@'
+    -e 's@new RuntimeException;@new RuntimeException(); // fixed by jode2java@' |
+sed -e 's@ String tmp[0-9]* =[	 ]*\(settable_[0-9]*_.setExpression\)@\1@'
