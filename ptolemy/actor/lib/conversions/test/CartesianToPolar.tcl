@@ -1,4 +1,4 @@
-# Test RectangularToPolar.
+# Test CartesianToPolar.
 #
 # @Author: Michael Leung
 #
@@ -38,16 +38,16 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 ######################################################################
-#### Test RectangularToPolar in an SDF model
+#### Test CartesianToPolar in an SDF model
 #
 
-test RectangularToPolar-1.1 {test 1} {
+test CartesianToPolar-1.1 {test 1} {
     set e0 [sdfModel 1]
     set const1 [java::new ptolemy.actor.lib.Const $e0 const1]
     set const2 [java::new ptolemy.actor.lib.Const $e0 const2]
     set rec1 [java::new ptolemy.actor.lib.Recorder $e0 rec1]
     set rec2 [java::new ptolemy.actor.lib.Recorder $e0 rec2]
-    set conver [java::new ptolemy.actor.lib.conversions.RectangularToPolar \
+    set conver [java::new ptolemy.actor.lib.conversions.CartesianToPolar \
                     $e0 conver]
 
     set value1 [getParameter $const1 value]
@@ -75,18 +75,18 @@ test RectangularToPolar-1.1 {test 1} {
 } {1}
 
 ######################################################################
-#### Test RectangularToPolar in an SDF model
+#### Test CartesianToPolar in an SDF model
 #
 
-test RectangularToPolar-1.2 {test 2: testing both PolarToRec and RecToPolar} {
+test CartesianToPolar-1.2 {test 2: testing both PolarToCart and CartToPolar} {
     set e0 [sdfModel 1]
     set const1 [java::new ptolemy.actor.lib.Const $e0 const1]
     set const2 [java::new ptolemy.actor.lib.Const $e0 const2]
     set rec1 [java::new ptolemy.actor.lib.Recorder $e0 rec1]
     set rec2 [java::new ptolemy.actor.lib.Recorder $e0 rec2]
-    set conver1 [java::new ptolemy.actor.lib.conversions.RectangularToPolar \
+    set conver1 [java::new ptolemy.actor.lib.conversions.CartesianToPolar \
                     $e0 conver1]
-    set conver2 [java::new ptolemy.actor.lib.conversions.PolarToRectangular \
+    set conver2 [java::new ptolemy.actor.lib.conversions.PolarToCartesian \
                     $e0 conver2]
 
 
@@ -119,3 +119,4 @@ test RectangularToPolar-1.2 {test 2: testing both PolarToRec and RecToPolar} {
          [enumToTokenValues [$rec2 getRecord 0]]]
     ptclose $result {3.000 4.0}
 } {1}
+

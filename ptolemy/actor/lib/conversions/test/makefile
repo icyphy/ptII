@@ -51,10 +51,10 @@ JSRCS =
 JSIMPLE_TESTS = \
 	FixToDouble.tcl\
 	DoubleToFix.tcl\
-	ComplexToReal.tcl\
-	PolarToRectangular.tcl\
-	RealToComplex.tcl\
-	RectangularToPolar.tcl
+	ComplexToCartesian.tcl\
+	PolarToCartesian.tcl\
+	CartesianToComplex.tcl\
+	CartesianToPolar.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

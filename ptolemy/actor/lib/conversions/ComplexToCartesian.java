@@ -1,4 +1,4 @@
-/* Converts a complex token into two real tokens.
+/* An actor that converts a complex token to cartesian components.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -40,16 +40,16 @@ import ptolemy.kernel.util.*;
 import ptolemy.math.Complex;
 
 ///////////////////////////////////////////////////////////////
-/// ComplexToReal
+/// ComplexToCartesian
 /**
-This actor reads a complex token and outputs the real and the imaginary
-part to two different output ports.
+Read a complex token and output double tokens that represent the real and 
+imaginary parts to two different output ports.
 
-@author Michael Leung, Edward A. Lee
+@author Michael Leung, Edward A. Lee, Paul Whitaker
 @version $Id$
 */
 
-public class ComplexToReal extends TypedAtomicActor {
+public class ComplexToCartesian extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -59,7 +59,7 @@ public class ComplexToReal extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ComplexToReal(CompositeEntity container, String name)
+    public ComplexToCartesian(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
@@ -77,20 +77,21 @@ public class ComplexToReal extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The input port. This has type ComplexToken. */
+    /** The port for the input, which has type ComplexToken. */
     public TypedIOPort input;
 
-    /** The real part of the output. This has type DoubleToken. */
+    /** The output port for real component, which has type DoubleToken. */
     public TypedIOPort real;
 
-    /** The imaginary part of the output. This has type DoubleToken. */
+    /** The output port for the imaginary component, which has type 
+        DoubleToken. */
     public TypedIOPort imag;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume a complex token from input port and
-     *  output two new double tokens (the real and imaginary parts
+    /** Consume a complex token from the input port and output a new double 
+     *  token on each of the two output ports (the real and imaginary parts
      *  of the input complex token).
      *
      *  @exception IllegalActionException If there is no director.
@@ -104,3 +105,10 @@ public class ComplexToReal extends TypedAtomicActor {
         imag.send(0, new DoubleToken (complexNumber.imag));
     }
 }
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-/* Actor that converts a FixToken into another FixToken with possibly
+/* An actor that converts a FixToken into another FixToken with possibly
    different precision.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
@@ -25,7 +25,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
+@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
 @AcceptedRating Red (kienhuis@eecs.berkeley.edu) */
 
 package ptolemy.actor.lib.conversions;
@@ -107,13 +107,17 @@ public class FixToFix extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The precision of the output fixed-point number. */
+    /** The precision of the output fixed-point number, represented by an
+        integer matrix. */
     public Parameter precision;
 
-    /** The quantization strategy used. */
+    /** The quantization strategy used, encoded as an integer, where 0 
+        represents round and 1 represents truncate. */
     public StringAttribute quantization;
 
-    /** The overflow strategy used to convert a double into a fix point. */
+    /** The overflow strategy used to convert a double into a fix point,
+        encoded as an integer, where 0 represents saturate and 1 represents
+        overflow to zero. */
     public StringAttribute overflow;
 
     ///////////////////////////////////////////////////////////////////

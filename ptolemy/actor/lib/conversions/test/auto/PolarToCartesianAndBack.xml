@@ -44,7 +44,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="RectangularToPolar2" class="ptolemy.actor.lib.conversions.RectangularToPolar">
+    <entity name="CartesianToPolar2" class="ptolemy.actor.lib.conversions.CartesianToPolar">
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -58,7 +58,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="PolarToRectangular4" class="ptolemy.actor.lib.conversions.PolarToRectangular">
+    <entity name="PolarToCartesian4" class="ptolemy.actor.lib.conversions.PolarToCartesian">
         <port name="magnitude" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -110,14 +110,14 @@
     </relation>
     <link port="Ramp0.output" relation="relation5"/>
     <link port="Ramp1.output" relation="relation6"/>
-    <link port="RectangularToPolar2.x" relation="relation8"/>
-    <link port="RectangularToPolar2.y" relation="relation10"/>
-    <link port="RectangularToPolar2.magnitude" relation="relation14"/>
-    <link port="RectangularToPolar2.angle" relation="relation12"/>
-    <link port="PolarToRectangular4.magnitude" relation="relation5"/>
-    <link port="PolarToRectangular4.angle" relation="relation6"/>
-    <link port="PolarToRectangular4.x" relation="relation8"/>
-    <link port="PolarToRectangular4.y" relation="relation10"/>
+    <link port="CartesianToPolar2.x" relation="relation8"/>
+    <link port="CartesianToPolar2.y" relation="relation10"/>
+    <link port="CartesianToPolar2.magnitude" relation="relation14"/>
+    <link port="CartesianToPolar2.angle" relation="relation12"/>
+    <link port="PolarToCartesian4.magnitude" relation="relation5"/>
+    <link port="PolarToCartesian4.angle" relation="relation6"/>
+    <link port="PolarToCartesian4.x" relation="relation8"/>
+    <link port="PolarToCartesian4.y" relation="relation10"/>
     <link port="Test11.input" relation="relation12"/>
     <link port="Test13.input" relation="relation14"/>
 </entity>

@@ -1,4 +1,4 @@
-/* Convert from polar form to rectangular form.
+/* An actor that converts cartesian components to a single complex token.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -35,26 +35,25 @@ import ptolemy.actor.lib.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.sdf.kernel.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-
+import ptolemy.math.Complex;
 
 ///////////////////////////////////////////////////////////////
-/// PolarToRectangular
+/// CartesianToComplex
 /**
+Convert a cartesian pair (represented as two double tokens) to a single 
+complex token. At each firing of the actor, it will consume at exactly one 
+token from each of the two input ports and produce a complex token on the 
+output port. The x input becomes the real output and the y input becomes the 
+imaginary output. If either input port is empty, nothing is produced.
 
-This actor reads two double tokens (magnitude and angle)
-and outputs two new double tokens (x and y).
-The output is a rectangular form representation of the vector
-given at the inputs in polar form. The angle input is
-assumed to be in radians. If either input is NaN or infinity,
-then the output is NaN or infinity.
-
-@author Michael Leung and Edward A. Lee
+@author Michael Leung, Jie Liu, Edward A. Lee, Paul Whitaker
 @version $Id$
 */
 
-public class PolarToRectangular extends TypedAtomicActor {
+public class CartesianToComplex extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -64,62 +63,52 @@ public class PolarToRectangular extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public PolarToRectangular(CompositeEntity container, String name)
+    public CartesianToComplex(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        magnitude = new TypedIOPort(this, "magnitude", true, false);
-        magnitude.setTypeEquals(BaseType.DOUBLE);
+        real = new TypedIOPort(this, "real", true, false);
+        real.setTypeEquals(BaseType.DOUBLE);
 
-        angle = new TypedIOPort(this, "angle", true, false);
-        angle.setTypeEquals(BaseType.DOUBLE);
+        imag = new TypedIOPort(this, "imag", true, false);
+        imag.setTypeEquals(BaseType.DOUBLE);
 
-        x = new TypedIOPort(this, "x", false, true);
-        x.setTypeEquals(BaseType.DOUBLE);
-
-        y = new TypedIOPort(this, "y", false, true);
-        y.setTypeEquals(BaseType.DOUBLE);
-
+        output = new TypedIOPort(this, "output", false, true);
+        output.setTypeEquals(BaseType.COMPLEX);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The magnitude part. This has type DoubleToken. */
-    public TypedIOPort magnitude;
+    /** The input port for the x component of the cartesian pair, which 
+        has type DoubleToken.
+     */
+    public TypedIOPort real;
 
-    /** The angle part. This has type DoubleToken. Angle in radian */
-    public TypedIOPort angle;
+    /** The input port for the y component of the cartesian pair, which 
+        has type DoubleToken.
+     */
+    public TypedIOPort imag;
 
-    /** The xValue part . This has type DoubleToken. */
-    public TypedIOPort x;
-
-    /** The yValue part. This has type DoubleToken. */
-    public TypedIOPort y;
+    /** The port for the output, which has type ComplexToken.
+     */
+    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume two double token (magnitude and angle) from each
-     *  input port and output two new double token (xValue and yValue).
-     *  The output is a rectangular form representation of the vector given
-     *  at the inputs in polar form. The angle is in radians.
-     *  If either input has no token, then do nothing.
+    /** Consume exactly one token from each input port and convert the
+     *  pair to a complex token. If either input port is empty, do nothing.
      *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if (magnitude.hasToken(0) && angle.hasToken(0)) {
-            double magnitudeValue
-                = ((DoubleToken)(magnitude.get(0))).doubleValue();
-            double angleValue
-                = ((DoubleToken) (angle.get(0))).doubleValue();
-
-            double xValue = magnitudeValue * Math.cos(angleValue);
-            double yValue = magnitudeValue * Math.sin(angleValue);
-
-            x.broadcast(new DoubleToken (xValue));
-            y.broadcast(new DoubleToken (yValue));
+        if (real.hasToken(0) && imag.hasToken(0)) {
+            double realValue = ((DoubleToken)real.get(0)).doubleValue();
+            double imagValue = ((DoubleToken)imag.get(0)).doubleValue();
+            ComplexToken token
+                = new ComplexToken (new Complex(realValue, imagValue));
+            output.send(0, token);
         }
     }
 }

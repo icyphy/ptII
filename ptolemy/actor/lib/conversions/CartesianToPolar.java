@@ -1,4 +1,4 @@
-/* Convert two real tokens into a single complex token.
+/* An actor that converts cartesian components to polar components.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -35,24 +35,26 @@ import ptolemy.actor.lib.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.sdf.kernel.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.math.Complex;
+
 
 ///////////////////////////////////////////////////////////////
-/// RealToComplex
-/**
-This actor converts a pair of real tokens to a single complex token.
-At each firing of the actor, it will consume at exactly one token
-from each input port and convert them in to
-a complex token. If either port is empty, nothing is produced.
+/// CartesianToPolar
 
-@author Michael Leung, Jie Liu, Edward A. Lee
+/**
+Convert a cartesian pair, which is represented by two double tokens (x and y),
+to a polar form, which is also represented by two double tokens (magnitude 
+and angle).  The angle is in radians.
+<p>
+The implementation uses java.lang.Math.atan2(double, double).
+@see java.lang.Math#atan2(double, double)
+
+@author Michael Leung, Edward A. Lee, Paul Whitaker
 @version $Id$
 */
 
-public class RealToComplex extends TypedAtomicActor {
+public class CartesianToPolar extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -62,50 +64,64 @@ public class RealToComplex extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public RealToComplex(CompositeEntity container, String name)
+    public CartesianToPolar(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        real = new TypedIOPort(this, "real", true, false);
-        real.setTypeEquals(BaseType.DOUBLE);
+        x = new TypedIOPort(this, "x", true, false);
+        x.setTypeEquals(BaseType.DOUBLE);
 
-        imag = new TypedIOPort(this, "imag", true, false);
-        imag.setTypeEquals(BaseType.DOUBLE);
+        y = new TypedIOPort(this, "y", true, false);
+        y.setTypeEquals(BaseType.DOUBLE);
 
-        output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(BaseType.COMPLEX);
+        magnitude = new TypedIOPort(this, "magnitude", false, true);
+        magnitude.setTypeEquals(BaseType.DOUBLE);
+
+        angle = new TypedIOPort(this, "angle", false, true);
+        angle.setTypeEquals(BaseType.DOUBLE);
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The real part input. This has type DoubleToken.
-     */
-    public TypedIOPort real;
+    /** The x component of the input pair, which has type DoubleToken. */
+    public TypedIOPort x;
 
-    /** The imaginary part input. This has type DoubleToken.
-     */
-    public TypedIOPort imag;
+    /** The y component of the input pair, which has type DoubleToken. */
+    public TypedIOPort y;
 
-    /** The output port. This has type ComplexToken.
-     */
-    public TypedIOPort output;
+    /** The magnitude component of the output pair, which has type 
+        DoubleToken. */
+    public TypedIOPort magnitude;
+
+    /** The angle component of the output pair, which has type DoubleToken. */
+    public TypedIOPort angle;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume exactly one token from each input port and convert them to
-     *  a complex token. If either input port is empty, do nothing.
+    /** Consume one double token from each of the two input ports (x and y),
+     *  and output one new double token on each of the two output ports 
+     *  (magnitude and angle). The output is a polar form representation of 
+     *  the cartesian pair given at the inputs. The angle is in radians.
+     *  If either input has no token, then do nothing.
      *
      *  @exception IllegalActionException If there is no director.
      */
+
     public void fire() throws IllegalActionException {
-        if (real.hasToken(0) && imag.hasToken(0)) {
-            double realValue = ((DoubleToken)real.get(0)).doubleValue();
-            double imagValue = ((DoubleToken)imag.get(0)).doubleValue();
-            ComplexToken token
-                = new ComplexToken (new Complex(realValue, imagValue));
-            output.broadcast(token);
+        if (x.hasToken(0) && y.hasToken(0)) {
+            double xValue = ((DoubleToken) (x.get(0))).doubleValue();
+            double yValue = ((DoubleToken) (y.get(0))).doubleValue();
+
+            double magnitudeValue
+                = Math.sqrt (xValue * xValue + yValue * yValue);
+            double angleValue
+                = Math.atan2(yValue, xValue);
+
+            magnitude.send(0, new DoubleToken (magnitudeValue));
+            angle.send(0, new DoubleToken (angleValue));
         }
     }
 }

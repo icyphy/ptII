@@ -1,4 +1,4 @@
-# Test ComplexToReal.
+# Test ComplexToCartesian.
 #
 # @Author: Michael Leung
 #
@@ -38,15 +38,15 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 ######################################################################
-#### Test ComplexToReal in an SDF model
+#### Test ComplexToCartesian in an SDF model
 #
 
-test ComplexToReal-1.1 {test 1} {
+test ComplexToCartesian-1.1 {test 1} {
     set e0 [sdfModel 1]
     set const [java::new ptolemy.actor.lib.Const $e0 const]
     set rec1 [java::new ptolemy.actor.lib.Recorder $e0 rec1]
     set rec2 [java::new ptolemy.actor.lib.Recorder $e0 rec2]
-    set conver [java::new ptolemy.actor.lib.conversions.ComplexToReal \
+    set conver [java::new ptolemy.actor.lib.conversions.ComplexToCartesian \
                     $e0 conver]
 
     set value [getParameter $const value]
@@ -71,16 +71,16 @@ test ComplexToReal-1.1 {test 1} {
 
 
 ######################################################################
-#### Test ComplexToReal in an SDF model
+#### Test ComplexToCartesian in an SDF model
 #
 
-test ComplexToReal-1.2 {test 2: testing both PolarToRec and RecToPolar} {
+test ComplexToCartesian-1.2 {test 2: testing both PolarToRec and RecToPolar} {
     set e0 [sdfModel 1]
     set const [java::new ptolemy.actor.lib.Const $e0 const]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    set conver1 [java::new ptolemy.actor.lib.conversions.ComplexToReal \
+    set conver1 [java::new ptolemy.actor.lib.conversions.ComplexToCartesian \
                     $e0 conver1]
-    set conver2 [java::new ptolemy.actor.lib.conversions.RealToComplex \
+    set conver2 [java::new ptolemy.actor.lib.conversions.CartesianToComplex \
                     $e0 conver2]
 
 
@@ -101,3 +101,9 @@ test ComplexToReal-1.2 {test 2: testing both PolarToRec and RecToPolar} {
     enumToTokenValues [$rec getRecord 0]
 
 } {{3.0 + 4.0i}}
+
+
+
+
+
+

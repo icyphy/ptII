@@ -1,4 +1,4 @@
-/* Convert from polar form to a complex token.
+/* An actor that converts polar components to a complex token.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -44,14 +44,13 @@ import ptolemy.math.Complex;
 /// PolarToComplex
 /**
 
-This actor reads two double tokens (magnitude and angle)
-and outputs two new double tokens (x and y).
-The output is a complex token representation of the vector
-given at the inputs in polar form. The angle input is
+This actor reads two double tokens (magnitude and angle) and outputs 
+a single complex token. The output is a complex token representation of 
+the components given at the inputs in polar form. The angle input is
 assumed to be in radians. If either input is NaN or infinity,
 then the output is NaN or infinity.
 
-@author Michael Leung and Edward A. Lee
+@author Michael Leung, Edward A. Lee, Paul Whitaker
 @version $Id$
 */
 
@@ -82,23 +81,25 @@ public class PolarToComplex extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The magnitude part. This has type DoubleToken. */
+    /** The input port for the magnitude component, which has type 
+        DoubleToken. */
     public TypedIOPort magnitude;
 
-    /** The angle part. This has type DoubleToken. Angle in radian */
+    /** The input port for the angle component (in radians), which has 
+        type DoubleToken. */
     public TypedIOPort angle;
 
-    /** The complex output. This has type ComplexToken. */
+    /** The port for the output, which has type ComplexToken. */
     public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume two double token (magnitude and angle) from each
-     *  input port and output a new complex token.
-     *  The output is a complex representation of the vector given
-     *  at the inputs in polar form. The input angle is assumed to be
-     *  in radians. If either input has no token, then do nothing.
+    /** Consume a double token from each input port (magnitude and angle)
+     *  and output a new complex token on the output port. The output is 
+     *  a complex representation of the components given at the inputs in 
+     *  polar form. The input angle is assumed to be in radians. If either 
+     *  input has no token, then do nothing.
      *
      *  @exception IllegalActionException If there is no director.
      */
@@ -112,7 +113,7 @@ public class PolarToComplex extends TypedAtomicActor {
             double xValue = magnitudeValue * Math.cos(angleValue);
             double yValue = magnitudeValue * Math.sin(angleValue);
 
-            output.broadcast(new ComplexToken (new Complex(xValue, yValue)));
+            output.send(0, new ComplexToken (new Complex(xValue, yValue)));
         }
     }
 }

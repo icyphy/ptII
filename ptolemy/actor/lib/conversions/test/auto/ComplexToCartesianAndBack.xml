@@ -26,7 +26,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="ComplexToReal1" class="ptolemy.actor.lib.conversions.ComplexToReal">
+    <entity name="ComplexToCartesian1" class="ptolemy.actor.lib.conversions.ComplexToCartesian">
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -37,7 +37,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="RealToComplex2" class="ptolemy.actor.lib.conversions.RealToComplex">
+    <entity name="CartesianToComplex2" class="ptolemy.actor.lib.conversions.CartesianToComplex">
         <port name="real" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -69,11 +69,11 @@
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp0.output" relation="relation5"/>
-    <link port="ComplexToReal1.input" relation="relation5"/>
-    <link port="ComplexToReal1.real" relation="relation7"/>
-    <link port="ComplexToReal1.imag" relation="relation9"/>
-    <link port="RealToComplex2.real" relation="relation7"/>
-    <link port="RealToComplex2.imag" relation="relation9"/>
-    <link port="RealToComplex2.output" relation="relation11"/>
+    <link port="ComplexToCartesian1.input" relation="relation5"/>
+    <link port="ComplexToCartesian1.real" relation="relation7"/>
+    <link port="ComplexToCartesian1.imag" relation="relation9"/>
+    <link port="CartesianToComplex2.real" relation="relation7"/>
+    <link port="CartesianToComplex2.imag" relation="relation9"/>
+    <link port="CartesianToComplex2.output" relation="relation11"/>
     <link port="Test3.input" relation="relation11"/>
 </entity>

@@ -1,4 +1,4 @@
-/* An actor that converts a complex token to polar components.
+/* An actor that converts polar components to cartesian components.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -37,24 +37,23 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.math.Complex;
 
 
 ///////////////////////////////////////////////////////////////
-/// ComplexToPolar
-
+/// PolarToCartesian
 /**
-Convert a complex token to polar components, which are represented by two 
-double tokens (magnitude and angle).  The output angle is in radians.
-<p>
-The implementation uses java.lang.Math.atan2(double, double).
-@see java.lang.Math#atan2(double, double)
 
-@author Michael Leung, Edward A. Lee, and Paul Whitaker
+This actor reads two double tokens (magnitude and angle) and outputs 
+two new double tokens (x and y). The outputs are a cartesian representation 
+of the pair given at the inputs in polar form. The angle input is assumed 
+to be in radians. If either input is NaN or infinity, then the outputs are 
+NaN or infinity.
+
+@author Michael Leung, Edward A. Lee, Paul Whitaker
 @version $Id$
 */
 
-public class ComplexToPolar extends TypedAtomicActor {
+public class PolarToCartesian extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -64,78 +63,64 @@ public class ComplexToPolar extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ComplexToPolar(CompositeEntity container, String name)
+    public PolarToCartesian(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        input = new TypedIOPort(this, "input", true, false);
-        input.setTypeEquals(BaseType.COMPLEX);
-
-        magnitude = new TypedIOPort(this, "magnitude", false, true);
+        magnitude = new TypedIOPort(this, "magnitude", true, false);
         magnitude.setTypeEquals(BaseType.DOUBLE);
 
-        angle = new TypedIOPort(this, "angle", false, true);
+        angle = new TypedIOPort(this, "angle", true, false);
         angle.setTypeEquals(BaseType.DOUBLE);
+
+        x = new TypedIOPort(this, "x", false, true);
+        x.setTypeEquals(BaseType.DOUBLE);
+
+        y = new TypedIOPort(this, "y", false, true);
+        y.setTypeEquals(BaseType.DOUBLE);
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The port for the input, which has type ComplexToken. */
-    public TypedIOPort input;
-
-    /** The output port for the magnitude component, which has type 
+    /** The input port for the magnitude component, which has type 
         DoubleToken. */
     public TypedIOPort magnitude;
 
-    /** The output port for the angle component, which has type DoubleToken. */
+    /** The input port for the angle component (in radians), which has type 
+        DoubleToken. */
     public TypedIOPort angle;
+
+    /** The output port for the x component, which has type DoubleToken. */
+    public TypedIOPort x;
+
+    /** The output port for the y component, which has type DoubleToken. */
+    public TypedIOPort y;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume one complex token on the input port and output a new double 
-     *  token on each of the two output ports (magnitude and angle). The 
-     *  outputs are a polar form representation of the complex input. The 
-     *  output angle is in radians. If there is no input token, then do 
-     *  nothing.
+    /** Consume a double token from each of the two input ports (magnitude 
+     *  and angle) and output a double token on each of the two output ports 
+     *  (x and y). The output is a cartesian representation of the components 
+     *  given at the inputs in polar form. The angle is in radians.
+     *  If either input has no token, then do nothing.
      *
      *  @exception IllegalActionException If there is no director.
      */
-
     public void fire() throws IllegalActionException {
-        if (input.hasToken(0)) {
-            Complex inputValue = ((ComplexToken)(input.get(0))).complexValue();
+        if (magnitude.hasToken(0) && angle.hasToken(0)) {
+            double magnitudeValue
+                = ((DoubleToken)(magnitude.get(0))).doubleValue();
+            double angleValue
+                = ((DoubleToken) (angle.get(0))).doubleValue();
 
-            double magnitudeValue = Math.sqrt(
-                    inputValue.real * inputValue.real
-                    + inputValue.imag * inputValue.imag);
+            double xValue = magnitudeValue * Math.cos(angleValue);
+            double yValue = magnitudeValue * Math.sin(angleValue);
 
-            double angleValue = Math.atan2(
-                    inputValue.imag, inputValue.real);
-
-            magnitude.send(0, new DoubleToken (magnitudeValue));
-            angle.send(0, new DoubleToken (angleValue));
+            x.send(0, new DoubleToken (xValue));
+            y.send(0, new DoubleToken (yValue));
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

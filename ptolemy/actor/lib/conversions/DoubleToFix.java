@@ -1,4 +1,4 @@
-/* Actor that converts a DoubleToken into a FixToken.
+/* An actor that converts a DoubleToken into a FixToken.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
+@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
 @AcceptedRating Red (kienhuis@eecs.berkeley.edu) */
 
 package ptolemy.actor.lib.conversions;
@@ -52,7 +52,7 @@ of the <i>quantization</i> parameter. If <i>quantization</i> is
 FixToken of the specified precision
 that is nearest to the input value.  If <i>quantization</i> is
 "truncate", then the output will be the FixToken of the specified precision
-that is nearest but to the input value, but no greater than the input
+that is nearest to the input value, but no greater than the input
 value in magnitude.
 <p>
 The precision of the output is given by the <i>precision</i> parameter,
@@ -100,10 +100,12 @@ public class DoubleToFix extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The precision of the output fixed-point number. */
+    /** The precision of the output fixed-point number, which is represented
+        by an integer matrix. */
     public Parameter precision;
 
-    /** The quantization strategy used. */
+    /** The quantization strategy used, encoded as an integer, where 0 
+        represents round, and 1 represents truncate. */
     public StringAttribute quantization;
 
     ///////////////////////////////////////////////////////////////////
@@ -138,8 +140,9 @@ public class DoubleToFix extends Transformer {
         }
     }
 
-    /** Read at most one token from the input and convert it to a fixed-point
-     *  value with the precision given by the <i>precision</i> parameter.
+    /** Read at most one token from the input and output the converted 
+     *  fixed-point value with the precision and quantization given by the 
+     *  corresponding parameters on the output port.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -168,3 +171,4 @@ public class DoubleToFix extends Transformer {
     // The quantization strategy, encoded as an int.
     private int _quantization = 0;
 }
+

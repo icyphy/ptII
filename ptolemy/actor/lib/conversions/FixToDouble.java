@@ -1,4 +1,4 @@
-/* Convert a FixToken into a DoubleToken.
+/* An actor that converts a FixToken into a DoubleToken.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
+@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
 @AcceptedRating Red (kienhuis@eecs.berkeley.edu) */
 
 package ptolemy.actor.lib.conversions;
@@ -76,9 +76,9 @@ public class FixToDouble extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read at most one token from each input the convert it to double
-     *  precision. If there is no input available, then no output
-     *  is produced.
+    /** Read one FixToken from the input and output the converted 
+     *  DoubleToken to the output port. If there is no input available, 
+     *  then no output is produced.
      * @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {

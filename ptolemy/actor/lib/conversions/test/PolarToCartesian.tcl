@@ -1,4 +1,4 @@
-# Test PolarToRectangular.
+# Test PolarToCartesian.
 #
 # @Author: Michael Leung
 #
@@ -38,16 +38,16 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 ######################################################################
-#### Test PolarToRectangular in an SDF model
+#### Test PolarToCartesian in an SDF model
 #
 
-test PolarToRectangular-1.1 {test 1} {
+test PolarToCartesian-1.1 {test 1} {
     set e0 [sdfModel 1]
     set const1 [java::new ptolemy.actor.lib.Const $e0 const1]
     set const2 [java::new ptolemy.actor.lib.Const $e0 const2]
     set rec1 [java::new ptolemy.actor.lib.Recorder $e0 rec1]
     set rec2 [java::new ptolemy.actor.lib.Recorder $e0 rec2]
-    set conver [java::new ptolemy.actor.lib.conversions.PolarToRectangular \
+    set conver [java::new ptolemy.actor.lib.conversions.PolarToCartesian \
                     $e0 conver]
 
     set value1 [getParameter $const1 value]

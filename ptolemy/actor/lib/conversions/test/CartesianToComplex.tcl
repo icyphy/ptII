@@ -1,4 +1,4 @@
-# Test RealToComplex.
+# Test CartesianToComplex.
 #
 # @Author: Michael Leung
 #
@@ -38,14 +38,14 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 ######################################################################
-#### Test RealToComplex in an SDF model
+#### Test CartesianToComplex in an SDF model
 #
-test RealToComplex-1.1 {test 1} {
+test CartesianToComplex-1.1 {test 1} {
     set e0 [sdfModel 1]
     set const1 [java::new ptolemy.actor.lib.Const $e0 const1]
     set const2 [java::new ptolemy.actor.lib.Const $e0 const2]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    set conver [java::new ptolemy.actor.lib.conversions.RealToComplex \
+    set conver [java::new ptolemy.actor.lib.conversions.CartesianToComplex \
                     $e0 conver]
 
     set value1 [getParameter $const1 value]

@@ -19,8 +19,8 @@
           class="ptolemy.actor.lib.conversions.ComplexToPolar">
   </entity>
 
-  <entity name="ComplexToReal"
-          class="ptolemy.actor.lib.conversions.ComplexToReal">
+  <entity name="ComplexToCartesian"
+          class="ptolemy.actor.lib.conversions.ComplexToCartesian">
   </entity>
 
   <entity name="DoubleToFix"
@@ -67,16 +67,16 @@
           class="ptolemy.actor.lib.conversions.PolarToComplex">
   </entity>
 
-  <entity name="PolarToRectangular"
-          class="ptolemy.actor.lib.conversions.PolarToRectangular">
+  <entity name="PolarToCartesian"
+          class="ptolemy.actor.lib.conversions.PolarToCartesian">
   </entity>
 
-  <entity name="RealToComplex"
-          class="ptolemy.actor.lib.conversions.RealToComplex">
+  <entity name="CartesianToComplex"
+          class="ptolemy.actor.lib.conversions.CartesianToComplex">
   </entity>
 
-  <entity name="RectangularToPolar"
-          class="ptolemy.actor.lib.conversions.RectangularToPolar">
+  <entity name="CartesianToPolar"
+          class="ptolemy.actor.lib.conversions.CartesianToPolar">
   </entity>
 
   <entity name="Round" class="ptolemy.actor.lib.conversions.Round">
@@ -102,3 +102,5 @@
     ?>
   </configure>
 </entity>
+
+
