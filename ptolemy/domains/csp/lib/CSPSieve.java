@@ -43,8 +43,8 @@ Used in the Sieve of Eratosthenes demo. This actor represents a
 sieve process which filters out all multiples of a particular number.
 The first time the filter encounters a number it cannot filter it 
 creates a new process to filter out all multiples of that number and 
-appends it to the string of filters already created. This is a illustration
-of changing the topology.
+appends it to the string of filters already created. This actor is a good 
+illustration of how to perform changes to the topology.
 <p>
 @author Neil Smyth
 @version @$Id$
@@ -52,8 +52,10 @@ of changing the topology.
 public class CSPSieve extends CSPActor {
 
     /** Calls the super class constructor and creates the neccessary ports.
-     *  @exception NameDuplicationException is thrown if more than one port
-     *  with the same name is added to the star
+     *  @exception NameDuplicationException If more than one port
+     *   with the same name is added to this actor, or if the entity 
+     *   containing this actor already contains an actor with the name 
+     *   of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      */

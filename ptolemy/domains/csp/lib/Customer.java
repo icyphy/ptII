@@ -45,10 +45,13 @@ import java.util.Random;
 //////////////////////////////////////////////////////////////////////////
 //// Customer
 /**
-Customer arriving in M/M/1 demo. Customers arrive in a Poisson
+Customers arriving in M/M/1 demo. Customers arrive in a Poisson
 fashion, i.e the inter-arrival times are exponentially distributed.
 It is parameterized by the Parameter "arrivalRate". The default rate
 of arrival is 1.
+<p>
+It continues executing until 10 customers have arrived or a 
+TerminateProcessException is thrown.
 <p>
 @author Neil Smyth
 @version $Id$
@@ -127,8 +130,9 @@ public class Customer extends CSPActor {
      *  random time, representing the customer inter-arrival times, 
      *  described by an exponential distribution. It then sends a 
      *  message on its output channel to signal the fact that a 
-     *  customer has arrived. It then repeats.
-     *  executing until a TerminateProcessException is thrown.
+     *  customer has arrived, and then repeats. It continues
+     *  executing until 10 customers have arrived or a 
+     *  TerminateProcessException is thrown.
      *  @exception IllegalActionException If an error occurs during 
      *   executing the process.
      */
@@ -136,7 +140,7 @@ public class Customer extends CSPActor {
         Random rand = new Random();
         int count = 0;
         double interval = 0;
-        while (count < 100 ) {
+        while (count < 10 ) {
             //double rate = ((DoubleToken)_rate.getToken()).doubleValue();
             double rate = 1.0;
             // exponential distribution parameterized by rate.
