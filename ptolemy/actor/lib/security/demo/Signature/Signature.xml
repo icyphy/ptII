@@ -104,6 +104,8 @@ which then causes an exception to be thrown.</text></svg></configure>
         </property>
     </entity>
     <entity name="PrivateKeyReader" class="ptolemy.actor.lib.security.PrivateKeyReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/security/demo/Signature/ptKeystore">
+        </property>
         <doc>Read a key public or private key from a key store&#10;	   and output it.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 210.0">
         </property>
@@ -130,6 +132,8 @@ which then causes an exception to be thrown.</text></svg></configure>
         </port>
     </entity>
     <entity name="PublicKeyReader" class="ptolemy.actor.lib.security.PublicKeyReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/security/demo/Signature/ptKeystore">
+        </property>
         <doc>Read a key public or private key from a key store&#10;	   and output it.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 250.0">
         </property>
@@ -151,7 +155,7 @@ which then causes an exception to be thrown.</text></svg></configure>
         <property name="signatureAlgorithm" class="ptolemy.data.expr.StringParameter" value="SHA1WITHDSA">
         </property>
         <doc>Receives a key from an AsymmetricDecryption actor and&#10;          uses it to encrypt a data input based on a given asymmetric&#10;          algorithm.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 210.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 210.0]">
         </property>
     </entity>
     <entity name="Man in the middle" class="ptolemy.actor.TypedCompositeActor">
