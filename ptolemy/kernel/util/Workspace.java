@@ -99,8 +99,16 @@ public class Workspace implements Nameable, Serializable {
      */
     public String description(int verbose){
         switch (verbose) {
+        case pt.kernel.Nameable.PRETTYPRINT:
         case pt.kernel.Nameable.VERBOSE:
         case pt.kernel.Nameable.NAMES:
+            String results = "{ " + toString() + " { ";
+            CollectionEnumeration enum = elements();
+            while (enum.hasMoreElements()) {
+                NamedObj namedObj = (NamedObj) enum.nextElement();
+                results = results.concat(" " + namedObj.description(verbose));
+            }
+            return results+ " } ";
         case pt.kernel.Nameable.QUIET:
         default:
             return "{" + toString() + "}";
