@@ -298,7 +298,7 @@ public class AudioSink extends SDFAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 	//System.out.println("AudioSink: initialize(): invoked");
-	if (((StringToken)sink.getToken()).toString() == "file") {
+	if (((StringToken)sink.getToken()).toString().equals("file")) {
 	    // Write audio data to a file.
 	    //System.out.println("AudioSink: initialize(): playback to file");
 	    String pathNameString =
@@ -315,7 +315,9 @@ public class AudioSink extends SDFAtomicActor {
                     channelsInt,
                     bufferSizeInt,
                     _consumptionRate);
-	} else if (((StringToken)sink.getToken()).toString() == "speaker") {
+	    //} else if (((StringToken)sink.getToken()).toString() == "speaker") {
+	} else if (((StringToken)sink.getToken()).toString().equals("speaker")) {
+	
 	    // Send audio data to the speaker.
 	    //System.out.println("AudioSink: initialize(): playback to speaker");
             int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
@@ -331,17 +333,13 @@ public class AudioSink extends SDFAtomicActor {
                     _consumptionRate);
             //System.out.println("AudioSink: initialize(): SoundPlayback created");
 
-	} else if (((StringToken)sink.getToken()).toString() == "both") {
-	    // Write audio data to a file.
-	    // *AND*
-	    // Send audio data to the speaker.
-
 	} else {
 	    throw new IllegalActionException("Parameter " +
                     sink.getFullName() +
                     " is not set to a valid string." +
-                    " Valid choices are \"speaker\", " +
-                    "\"file\", and \"both\"");
+                    " Valid choices are \"speaker\" or " +
+                    "\"file\". The invalid parameter was:" +
+		    ((StringToken)sink.getToken()).toString() + ".");
 	}
 
 	try {
