@@ -50,15 +50,7 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	Delay.tcl \
-	SDF2Delay.tcl \
-	SDFConsumer.tcl \
-	SDFDelay.tcl \
-	SDFJoin.tcl \
-	SDFPrint.tcl \
-	SDFRamp.tcl \
-	SDFSplit.tcl \
-	testlistener.tcl
+	Delay.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

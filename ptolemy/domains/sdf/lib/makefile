@@ -57,8 +57,6 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	Commutator.java \
-	Distributor.java \
 	Delay.java \
 	FIR.java \
 	LineCoder.java \

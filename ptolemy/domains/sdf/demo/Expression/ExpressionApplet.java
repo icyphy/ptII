@@ -39,10 +39,11 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
+import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
-import ptolemy.actor.util.*;
 import ptolemy.domains.sdf.gui.SDFApplet;
 import ptolemy.domains.sdf.demo.*;
 import ptolemy.domains.sdf.kernel.*;
@@ -77,9 +78,10 @@ public class ExpressionApplet extends SDFApplet {
             add(controlpanel);
 
             _query = new Query();
-            _query.addQueryListener(new ParameterListener());
             controlpanel.add("West", _query);
-            _query.line("expr", "Expression", "cos(slow) + cos(fast)", 30);
+            _query.setTextWidth(30);
+            _query.addLine("expr", "Expression", "cos(slow) + cos(fast)");
+            _query.addQueryListener(new ParameterListener());
 
             // Create a "Go" button.
             Panel runcontrols = new Panel();

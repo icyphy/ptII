@@ -47,14 +47,13 @@ import javax.swing.*;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
-import ptolemy.actor.util.*;
+import ptolemy.gui.Query;
 import ptolemy.domains.sdf.gui.SDFApplet;
 import ptolemy.plot.*;
 
@@ -204,11 +203,11 @@ public class Type extends SDFApplet {
 	controlPanel.add("South", runControlPanel);
 	controlPanel.add("Center", _query);
 
-	_query.line("ramp1init", "Ramp1 Initial Value", "0");
-	_query.line("ramp1step", "Ramp1 Step Size", "1");
-	_query.line("ramp2init", "Ramp2 Init Value", "0");
-	_query.line("ramp2step", "Ramp2 Step Size", "1");
-	_query.line("expr", "Expression", "input1 + input2");
+	_query.addLine("ramp1init", "Ramp1 Initial Value", "0");
+	_query.addLine("ramp1step", "Ramp1 Step Size", "1");
+	_query.addLine("ramp2init", "Ramp2 Init Value", "0");
+	_query.addLine("ramp2step", "Ramp2 Step Size", "1");
+	_query.addLine("expr", "Expression", "input1 + input2");
 
 	Panel displayPanel = new Panel();
 	displayPanel.add(new Label("Display using"));

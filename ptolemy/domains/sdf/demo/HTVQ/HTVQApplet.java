@@ -43,7 +43,6 @@ import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
-import ptolemy.actor.util.*;
 import ptolemy.domains.sdf.gui.SDFApplet;
 import ptolemy.domains.sdf.demo.*;
 import ptolemy.domains.sdf.kernel.*;
@@ -177,30 +176,4 @@ public class HTVQApplet extends SDFApplet {
     protected void _go() throws IllegalActionException {
         super._go();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** Listener executes the system when any parameter is changed.
-     */
-    class ParameterListener implements QueryListener {
-        public void changed(String name) {
-            try {
-                _go();
-            } catch (Exception ex) {
-                report(ex);
-            }
-        }
-    }
 }
-
-
-
-
-
-
-
