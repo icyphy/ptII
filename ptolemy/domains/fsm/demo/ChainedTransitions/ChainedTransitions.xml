@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ChainedTransitions" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
     <property name="Continuous Time (CT) Solver" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -92,6 +94,8 @@ transitions are executed.</text></svg></configure>
         </port>
         <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
+            </property>
+            <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
@@ -236,8 +240,6 @@ when it is enabled.</text></svg></configure>
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="" class="ptolemy.domains.fsm.kernel.RelationList">
-                </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
@@ -259,8 +261,6 @@ when it is enabled.</text></svg></configure>
                 <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
@@ -284,8 +284,6 @@ when it is enabled.</text></svg></configure>
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="" class="ptolemy.domains.fsm.kernel.RelationList">
-                </property>
             </relation>
             <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="out &gt; 6.0">
@@ -308,8 +306,6 @@ when it is enabled.</text></svg></configure>
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="" class="ptolemy.domains.fsm.kernel.RelationList">
-                </property>
             </relation>
             <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="out &gt; 1.0">
@@ -331,8 +327,6 @@ when it is enabled.</text></svg></configure>
                 <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="" class="ptolemy.domains.fsm.kernel.RelationList">
                 </property>
             </relation>
             <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
