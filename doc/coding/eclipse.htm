@@ -122,8 +122,15 @@ a login for cvs access
 	uses version 1 of the SSH protocol which is implemented
 	by a version of ssh that is built in to Eclipse.
 	 <b>SSH V1 is not as likely to be supported as SSH V2.</b>
+	 <br>Note further that if you select <CODE>extssh</CODE>,
+	then to run cvs from within
+	Cygwin bash on the same directory tree as the Eclipse tree
+	you will need to use the <CODE>-d</CODE> option
+	 <br><CODE>cvs -d :ext:gigasource.eecs.berkeley.edu/home/cvs_chess</CODE>
+	 <br>The <CODE>-d</CODE> option is necessary because the Cygwin bash
+	<CODE>cvs</CODE> binary does not understand the <CODE>extssh</CODE>
+	protocol
 	</ul>
-
 
 
 <li> Click Finish.
@@ -136,11 +143,13 @@ to 3. Under Eclipse 2.1, compression level 9 might not work, see
 <a href="#cvsCompression">Problems with CVS compression</a> for details.
 
 <li> In the CVS Repositories View window, click on the repository and then on
-HEAD until you see the ptII Head.
-<li> Right click on the ptII Head Select the "Check Out As...." option
+HEAD until you see the <CODE>ptII</CODE> Head.
+<li> Right click on the <CODE>ptII</CODE> Head,
+then Select the "Check Out As...." option
 
 <li> Go through the various menus to create a Java Project named
-ptII. Don't use the "Default Location". Instead specify the location
+ptII. 
+ <br>Don't use the "Default Location". Instead specify the location
 where you want ptII to go (e.g. <CODE>c:\ptII</CODE>).
 
 <li> Click OK, wait for the checkout to finish.
