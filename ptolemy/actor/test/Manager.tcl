@@ -299,11 +299,11 @@ test Manager-10.1 {Test execution listener with one arg} {
     # Strip out the time in ms, which will vary between runs  
     regsub {[0-9]* ms.*$} $stdoutResults "xxx ms" stdoutResultsWithoutTime
 
-    # Strip out a bunch of the tcl.lang stack frames
-    regsub -all {	at tcl.lang.*$\n} $stdoutResultsWithoutTime "." \
-	    stdoutResultsWithoutTclStackTrace	   
+    # Strip out the stack frames
+    regsub -all {	at .*$\n} $stdoutResultsWithoutTime "" \
+	    stdoutResultsWithoutStackTrace	   
     #puts "------- result: [enumToTokenValues [$rec getRecord 0]]"
-    list $stdoutResultsWithoutTclStackTrace
+    list $stdoutResultsWithoutStackTrace
 } {{preinitializing
 resolving types
 initializing
@@ -316,8 +316,7 @@ xxx ms
 Execution error.
 This exception is testing the execution listener
 ptolemy.actor.NoRoomException: This exception is testing the execution listener
-	at java.lang.reflect.Constructor.newInstance(Native Method)
-.........................................................}}
+}}
 
 ######################################################################
 ####
