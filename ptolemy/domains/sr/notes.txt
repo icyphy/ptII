@@ -5,15 +5,17 @@ run ptolemy classic SR
 add, update, and correct comments
 FIXMEs
 
+write about Wendesday lunch demo/review - update review page
+
 are tests running?
 
 add SRDirector and sr.lib to vergil library
 
-move clone functionality
+move clone functionality from TAA to NamedObj and Entity
 remove period parameter - inherit time from outside director
 SR in SR (to make the inner actor strict, use an inner director)
 FSM composite actor in SR
-global resets, UI activity, reflex game
+global resets, UI activity, reflex game, examples by sedwards
 
 find second reader
 

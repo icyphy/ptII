@@ -160,8 +160,6 @@ public class SRDirector extends StaticSchedulingDirector {
     /** Clone the director into the specified workspace. This calls the
      *  base class and then sets the iterations member.  The new
      *  actor will have the same parameter values as the old.
-     *  FIXME: Are the parameters cloned automatically?
-     *  FIXME: Are the type constraints cloned automatically?
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If one of the attributes
@@ -171,9 +169,7 @@ public class SRDirector extends StaticSchedulingDirector {
             throws CloneNotSupportedException {
         SRDirector newObject = (SRDirector)(super.clone(workspace));
         newObject.iterations = (Parameter)newObject.getAttribute("iterations");
-        //newObject.iterations.setTypeEquals(BaseType.INT);
         newObject.period = (Parameter)newObject.getAttribute("period");
-        //newObject.period.setTypeEquals(BaseType.DOUBLE);
         return newObject;
     }
 
@@ -312,9 +308,6 @@ public class SRDirector extends StaticSchedulingDirector {
         // Call the parent preinitialize method to create the receivers.
         super.preinitialize();
     }
-
-    //FIXMESOON: transferInputs
-    //FIXMESOON: transferOutputs
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
