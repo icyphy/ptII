@@ -917,7 +917,7 @@ $(INSTALLSHIELD_PTINY):
 	@echo "#"
 	@echo "# Building $@"
 	 mkdir -p $@ $@/lib $@/ptolemy/vergil
-	 mkdir -p $@/doc/img $@doc/design
+	 mkdir -p $@/doc/img $@/doc/design
 	 -mv $(INSTALLSHIELD_APP)/copyright.txt $@
 	 -mv $(INSTALLSHIELD_APP)/doc/*Vergil.htm \
 		$(INSTALLSHIELD_APP)/doc/acks.htm \
@@ -929,9 +929,9 @@ $(INSTALLSHIELD_PTINY):
 		$@/doc/img
 	 # FIXME: ideally, we should include a pdf viewer or the html version
 	 -mv $(INSTALLSHIELD_APP)/doc/design/usingVergil.pdf \
-		$@/doc/design
+		$@/doc/design/
 	 -mv $(INSTALLSHIELD_APP)/doc/design/usingVergil \
-		$@/doc/design
+		$@/doc/design/
 	 -mv $(INSTALLSHIELD_APP)/lib/diva.jar $@/lib
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/ptolemy.jar \
 		$(INSTALLSHIELD_APP)/ptolemy/configs/ \
@@ -954,14 +954,20 @@ $(INSTALLSHIELD_PTINY):
 	 -mkdir -p $@/doc/codeDoc
 	 -cp -r $(PTIIHOME)/doc/codeDocPtiny/* \
 		 $@/doc/codeDoc
-	 # Set up for a few demos
+	 # Set up for a few javasound
 	 -mkdir -p $@/ptolemy/actor/lib/javasound/demo
-	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/javasound/demo/KarplusStrong \
+	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/javasound/javasound.xml \
 	     $(INSTALLSHIELD_APP)/ptolemy/actor/lib/javasound/javasound.jar \
-		$@/ptolemy/actor/lib/javasound/demo
+		$@/ptolemy/actor/lib/javasound/
+	 -mkdir -p $@/ptolemy/media/javasound
+	 -mv $(INSTALLSHIELD_APP)/ptolemy/media/javasound/javasound.jar \
+		$@/ptolemy/media/javasound/
+	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/javasound/demo/KarplusStrong \
+		$@/ptolemy/actor/lib/javasound/demo/
+	 # Set up for other demos
 	 -mkdir -p $@/ptolemy/moml/demo
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/moml/demo/Networked \
-		$@/ptolemy/moml/demo
+		$@/ptolemy/moml/demo/
 	 -mkdir -p $@/ptolemy/data/type/demo
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/data/type/demo/Router \
 		$@/ptolemy/data/type/demo
@@ -1001,7 +1007,7 @@ $(INSTALLSHIELD_DESIGNDOC):
 	@echo "#"
 	@echo "# Building $@"
 	 mkdir -p $@/doc/design
-	 mv $(INSTALLSHIELD_APP)/doc/design/design.pdf $@/doc/design
+	 mv $(INSTALLSHIELD_APP)/doc/design/design.pdf $@/doc/design/
 
 $(INSTALLSHIELD_CODEDOC):
 	@echo "#"
@@ -1012,7 +1018,7 @@ $(INSTALLSHIELD_CODEDOC):
 $(INSTALLSHIELD_DOC):
 	@echo "#"
 	@echo "# Building $@"
-	 mkdir -p $@/doc
+	 mkdir -p $@
 	 mv $(INSTALLSHIELD_APP)/doc $@/doc
 
 $(INSTALLSHIELD_EXPERIMENTAL):
@@ -1032,7 +1038,7 @@ ISPMP_LIB=/users/ptII/vendors/installshield/ispmp40/lib/
 
 ISPMP_DEBUG_CLASSPATH=/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/classes/src: 
 
-ISPMP_CLASSPATH=/vol/maury/maury1/ptII/vendors/installshield/ispmp40:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/help.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/icebrowserbean.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/icebrowserlitebean.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/ide.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/jhall.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/parser.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/product.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/swing.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/wizard.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/xt.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/win32ppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/solarisppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/webppk.jar
+ISPMP_CLASSPATH=/vol/maury/maury1/ptII/vendors/installshield/ispmp40:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/help.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/icebrowserbean.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/icebrowserlitebean.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/ide.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/jhall.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/parser.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/product.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/swing.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/wizard.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/xt.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/win32ppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/solarisppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/webppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/linuxppk.jar
 
 ptiny.xml: ptII.xml ptiny.xsl
 	java -classpath $(ISPMP_CLASSPATH) \
