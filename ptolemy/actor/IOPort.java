@@ -30,6 +30,8 @@ Review vectorized methods.
 Review broadcast/get/send/hasRoom/hasToken.
 Review setInput/setOutput/setMultiport.
 Review isKnown/sendAbsent.
+createReceivers creates inside receivers based solely on insideWidth, and 
+   outsideReceivers based solely on outside width.  
 */
 
 package ptolemy.actor;
@@ -327,7 +329,10 @@ public class IOPort extends ComponentPort {
      *  for each relation connected to the port from the inside. Note that
      *  only composite entities will have relations connecting to ports
      *  from the inside.
-     *  If the port has zero width, then do nothing.
+     *  <p>
+     *  Note that it is perfectly allowable for a zero width output port to
+     *  have insideReceivers.  This can be used to allow a model to be
+     *  embedded in a container that does not connect the port to anything.
      *  <p>
      *  This method is <i>not</i> write-synchronized on the workspace, so the
      *  caller should be.
@@ -345,8 +350,6 @@ public class IOPort extends ComponentPort {
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
         }
-        int portWidth = getWidth();
-        if (portWidth <= 0) return;
 
         // Create the hashtable of lists of receivers in this port, keyed by
         // relation.  This replaces any previous table.
