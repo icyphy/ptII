@@ -66,16 +66,20 @@ JSRCS = \
 	IllegalActionException.java \
  	IntParam.java \
 	InvalidStateException.java \
+	IOPort.java \
 	Nameable.java \
 	NamedList.java \
 	NamedObj.java \
 	NameDuplicationException.java \
 	NoSuchItemException.java \
+	ObjectToken.java \
 	ObservableParameter.java \
  	Param.java \
  	Parameter.java \
 	Port.java \
 	Relation.java \
+	StringToken.java \
+	Token.java
 
 # Not building until we work out parameters
 
