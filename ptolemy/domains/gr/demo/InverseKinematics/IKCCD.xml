@@ -638,7 +638,7 @@ inverse kinematics algorithm.</text>
                         <property name="multiport"/>
                     </port>
                 </entity>
-                <entity name="RectangularToPolar1" class="ptolemy.actor.lib.conversions.RectangularToPolar">
+                <entity name="CartesianToPolar1" class="ptolemy.actor.lib.conversions.CartesianToPolar">
                     <property name="_location" class="ptolemy.moml.Location" value="287.0, 59.0">
                     </property>
                     <port name="x" class="ptolemy.actor.TypedIOPort">
@@ -654,7 +654,7 @@ inverse kinematics algorithm.</text>
                         <property name="output"/>
                     </port>
                 </entity>
-                <entity name="RectangularToPolar2" class="ptolemy.actor.lib.conversions.RectangularToPolar">
+                <entity name="CartesianToPolar2" class="ptolemy.actor.lib.conversions.CartesianToPolar">
                     <property name="_location" class="ptolemy.moml.Location" value="288.0, 229.0">
                     </property>
                     <port name="x" class="ptolemy.actor.TypedIOPort">
@@ -822,12 +822,12 @@ inverse kinematics algorithm.</text>
                 <link port="Minimum11.minimumValue" relation="relation21"/>
                 <link port="Const12.output" relation="relation17"/>
                 <link port="Const13.output" relation="relation15"/>
-                <link port="RectangularToPolar1.x" relation="relation7"/>
-                <link port="RectangularToPolar1.y" relation="relation8"/>
-                <link port="RectangularToPolar1.magnitude" relation="relation27"/>
-                <link port="RectangularToPolar2.x" relation="relation9"/>
-                <link port="RectangularToPolar2.y" relation="relation10"/>
-                <link port="RectangularToPolar2.magnitude" relation="relation25"/>
+                <link port="CartesianToPolar1.x" relation="relation7"/>
+                <link port="CartesianToPolar1.y" relation="relation8"/>
+                <link port="CartesianToPolar1.magnitude" relation="relation27"/>
+                <link port="CartesianToPolar2.x" relation="relation9"/>
+                <link port="CartesianToPolar2.y" relation="relation10"/>
+                <link port="CartesianToPolar2.magnitude" relation="relation25"/>
                 <link port="AxBy-AyBx.output" relation="relation3"/>
                 <link port="AxBy-AyBx.Ax" relation="relation9"/>
                 <link port="AxBy-AyBx.Ay" relation="relation10"/>
@@ -2356,7 +2356,7 @@ inverse kinematics algorithm.</text>
                         <property name="multiport"/>
                     </port>
                 </entity>
-                <entity name="RectangularToPolar1" class="ptolemy.actor.lib.conversions.RectangularToPolar">
+                <entity name="CartesianToPolar1" class="ptolemy.actor.lib.conversions.CartesianToPolar">
                     <property name="_location" class="ptolemy.moml.Location" value="287.0, 59.0">
                     </property>
                     <port name="x" class="ptolemy.actor.TypedIOPort">
@@ -2372,7 +2372,7 @@ inverse kinematics algorithm.</text>
                         <property name="output"/>
                     </port>
                 </entity>
-                <entity name="RectangularToPolar2" class="ptolemy.actor.lib.conversions.RectangularToPolar">
+                <entity name="CartesianToPolar2" class="ptolemy.actor.lib.conversions.CartesianToPolar">
                     <property name="_location" class="ptolemy.moml.Location" value="288.0, 229.0">
                     </property>
                     <port name="x" class="ptolemy.actor.TypedIOPort">
@@ -2540,12 +2540,12 @@ inverse kinematics algorithm.</text>
                 <link port="Minimum11.minimumValue" relation="relation21"/>
                 <link port="Const12.output" relation="relation17"/>
                 <link port="Const13.output" relation="relation15"/>
-                <link port="RectangularToPolar1.x" relation="relation7"/>
-                <link port="RectangularToPolar1.y" relation="relation8"/>
-                <link port="RectangularToPolar1.magnitude" relation="relation27"/>
-                <link port="RectangularToPolar2.x" relation="relation9"/>
-                <link port="RectangularToPolar2.y" relation="relation10"/>
-                <link port="RectangularToPolar2.magnitude" relation="relation25"/>
+                <link port="CartesianToPolar1.x" relation="relation7"/>
+                <link port="CartesianToPolar1.y" relation="relation8"/>
+                <link port="CartesianToPolar1.magnitude" relation="relation27"/>
+                <link port="CartesianToPolar2.x" relation="relation9"/>
+                <link port="CartesianToPolar2.y" relation="relation10"/>
+                <link port="CartesianToPolar2.magnitude" relation="relation25"/>
                 <link port="AxBy-AyBx.output" relation="relation3"/>
                 <link port="AxBy-AyBx.Ax" relation="relation9"/>
                 <link port="AxBy-AyBx.Ay" relation="relation10"/>
@@ -3736,7 +3736,7 @@ inverse kinematics algorithm.</text>
                         <property name="multiport"/>
                     </port>
                 </entity>
-                <entity name="RectangularToPolar1" class="ptolemy.actor.lib.conversions.RectangularToPolar">
+                <entity name="CartesianToPolar1" class="ptolemy.actor.lib.conversions.CartesianToPolar">
                     <property name="_location" class="ptolemy.moml.Location" value="287.0, 59.0">
                     </property>
                     <port name="x" class="ptolemy.actor.TypedIOPort">
@@ -3752,7 +3752,7 @@ inverse kinematics algorithm.</text>
                         <property name="output"/>
                     </port>
                 </entity>
-                <entity name="RectangularToPolar2" class="ptolemy.actor.lib.conversions.RectangularToPolar">
+                <entity name="CartesianToPolar2" class="ptolemy.actor.lib.conversions.CartesianToPolar">
                     <property name="_location" class="ptolemy.moml.Location" value="288.0, 229.0">
                     </property>
                     <port name="x" class="ptolemy.actor.TypedIOPort">
@@ -3920,12 +3920,12 @@ inverse kinematics algorithm.</text>
                 <link port="Minimum11.minimumValue" relation="relation21"/>
                 <link port="Const12.output" relation="relation17"/>
                 <link port="Const13.output" relation="relation15"/>
-                <link port="RectangularToPolar1.x" relation="relation7"/>
-                <link port="RectangularToPolar1.y" relation="relation8"/>
-                <link port="RectangularToPolar1.magnitude" relation="relation27"/>
-                <link port="RectangularToPolar2.x" relation="relation9"/>
-                <link port="RectangularToPolar2.y" relation="relation10"/>
-                <link port="RectangularToPolar2.magnitude" relation="relation25"/>
+                <link port="CartesianToPolar1.x" relation="relation7"/>
+                <link port="CartesianToPolar1.y" relation="relation8"/>
+                <link port="CartesianToPolar1.magnitude" relation="relation27"/>
+                <link port="CartesianToPolar2.x" relation="relation9"/>
+                <link port="CartesianToPolar2.y" relation="relation10"/>
+                <link port="CartesianToPolar2.magnitude" relation="relation25"/>
                 <link port="AxBy-AyBx.output" relation="relation3"/>
                 <link port="AxBy-AyBx.Ax" relation="relation9"/>
                 <link port="AxBy-AyBx.Ay" relation="relation10"/>
@@ -4655,11 +4655,7 @@ inverse kinematics algorithm.</text>
                     </property>
                     <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                     </property>
-                    <property name="act3" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in - 1">
-                        </property>
-                        <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="out">
-                        </property>
+                    <property name="act3" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = in - 1">
                     </property>
                 </relation>
                 <link port="checkZero.incomingPort" relation="t3"/>
