@@ -1050,9 +1050,12 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                     FCoutDriversImplString += "inline void"
                         + " "
                         + portInitialValueFunction
-                        + "(" + portTypeID + " *p" + portID + ") {" + _endLine
-                        + _tabChar + "*p" + portID + " = " + portInitialValue + ";" + _endLine
-                        + "}" + _endLine + _endLine;
+                        + "(" + portTypeID + " *p" + portID + ") {" + _endLine;
+		    // TODO: Take care of array datatype initialization. Ignoring it for the moment
+		    if (!portTypeID.endsWith("array")) {
+			FCoutDriversImplString += _tabChar + "*p" + portID + " = " + portInitialValue + ";" + _endLine;
+		    }
+                    FCoutDriversImplString += "}" + _endLine + _endLine;
 
                     FHfuncVarDeclString += "inline void"
                     + " "
