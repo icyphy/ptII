@@ -78,3 +78,12 @@ demo:
 pool: 
 	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.apps.hsif.HSIFToPtolemyII pool.xml > bar.xml
 
+platoon: 
+	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.apps.hsif.HSIFToPtolemyII platoon.xml > bar.xml
+
+tm: 
+	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.apps.hsif.HSIFToPtolemyII tm.xml > bar.xml
+
+sw: 
+	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.apps.hsif.HSIFToPtolemyII SwimmingPool-HSIF.xml > bar.xml
+
