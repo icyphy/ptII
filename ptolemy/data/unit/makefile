@@ -124,7 +124,7 @@ install: jclass $(PTCLASSJAR)
 
 UParser.java: UParser.jj
 	@echo "This command runs JavaCC, which can be downloaded from"
-	@echo "http://www.experimentalstuff.com/Technologies/JavaCC/"
+	@echo "http://javacc.dev.java.net/"
 	@echo "See \$$PTII/doc/install.htm for details."
 	@echo "You only need install JavaCC if you modify UParser.jj"
 	@echo "UParser.java is derived from UParser.jj"
