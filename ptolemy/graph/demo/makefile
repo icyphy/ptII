@@ -62,7 +62,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: sources jclass $(JZIP)
 install: sources jclass $(JZIP)
-docs: javadocs
+
 
 tests:: $(EXTRA_SRCS)
 

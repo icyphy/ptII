@@ -73,7 +73,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 
 install: jclass 
-docs: javadocs
+
 
 tests:: $(EXTRA_SRCS) test_prime_java
 

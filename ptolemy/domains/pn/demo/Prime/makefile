@@ -77,7 +77,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass Prime.jar
 
 install: jclass Prime.jar 
-docs: javadocs
+
 
 
 # 'make clean' removes everything in KRUFT

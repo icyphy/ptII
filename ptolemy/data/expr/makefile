@@ -117,7 +117,7 @@ JCLASS =  \
 
 all:  $(OPTIONAL_JSRCS) $(JCLASS)
 install: PtParser $(PTCLASSJAR)
-docs: javadocs
+
 
 depend:
 	@echo "no dependencies in this directory"

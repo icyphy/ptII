@@ -67,7 +67,7 @@ all: $(JCLASS)
 
 install: all
 
-docs: javadocs
+
 
 depend:
 	@echo "no dependencies in this directory"

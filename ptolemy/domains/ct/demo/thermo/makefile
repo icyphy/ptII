@@ -70,7 +70,7 @@ PTAUXJAR = Thermostat.jar
 demo: Thermostat.jar
 	CLASSPATH=$(CLASSPATH) appletviewer Thermostat.html
 
-docs: javadocs
+
 
 # 'make clean' removes everything in KRUFT
 KRUFT = Thermostat.jar

@@ -83,7 +83,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass $(PTCLASSJAR) 	$(PTCLASSALLJAR)
-docs: javadocs
+
 
 depend:
 	@echo "no dependencies in this directory"

@@ -71,7 +71,7 @@ all: jclass pndemo.jar
 
 install: jclass pndemo.jar 
 demo: subdemo
-docs: javadocs
+
 
 
 # 'make clean' removes everything in KRUFT

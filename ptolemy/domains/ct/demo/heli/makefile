@@ -77,7 +77,7 @@ PTAUXJAR = Helicopter.jar
 demo: Helicopter.jar
 	CLASSPATH=$(CLASSPATH) appletviewer Helicopter.html
 
-docs: javadocs
+
 
 # 'make clean' removes everything in KRUFT
 KRUFT = Helicopter.jar

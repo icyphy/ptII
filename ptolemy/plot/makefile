@@ -224,7 +224,7 @@ $(PTAUXJAR): $(JSRCS) $(JCLASS)
 		'$(ME)/PlotLive$$StopButtonListener.class' \
             )
 
-docs: javadocs
+
 
 depend:
 	@echo "no dependencies in this directory"

@@ -79,7 +79,7 @@ LIB = dummylib
 
 all: jclass
 install: jclass $(JARFILE)
-docs: javadocs
+
 
 depend:
 	@echo "no dependencies in this directory"

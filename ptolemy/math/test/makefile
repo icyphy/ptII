@@ -103,7 +103,7 @@ test_jdas: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) DoubleArrayMath.tcl
 test_jsp: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) SignalProcessing.tcl
 	  $(JTCLSH) SignalProcessing.tcl
 
-docs: javadocs
+
 
 depend:
 	@echo "no dependencies in this directory"

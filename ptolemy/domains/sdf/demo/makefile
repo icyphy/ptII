@@ -50,7 +50,7 @@ PTCLASSALLJARS =
 
 all: jclass
 install: jclass jars
-docs: javadocs
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

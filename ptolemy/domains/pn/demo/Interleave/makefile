@@ -73,7 +73,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass Interleave.jar
 
 install: jclass Interleave.jar 
-docs: javadocs
+
 
 
 # 'make clean' removes everything in KRUFT

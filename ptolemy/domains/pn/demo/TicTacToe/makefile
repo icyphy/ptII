@@ -73,7 +73,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass TTTdemo.jar
 
 install: jclass TTTdemo.jar 
-docs: javadocs
+
 
 
 # 'make clean' removes everything in KRUFT

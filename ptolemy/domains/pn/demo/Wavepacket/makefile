@@ -70,7 +70,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass Wavepacket.jar
 
 install: jclass Wavepacket.jar 
-docs: javadocs
+
 
 
 # 'make clean' removes everything in KRUFT

@@ -80,7 +80,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars
-docs: javadocs
+
 
 depend:
 	@echo "no dependencies in this directory"

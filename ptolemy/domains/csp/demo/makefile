@@ -86,7 +86,7 @@ busGraphic:
 	CLASSPATH=$(CLASSPATH) $(PTJAVA_DIR)/bin/java ptolemy.domains.csp.demo.BusContentionGraphic
 
 
-docs: javadocs
+
 
 # 'make clean' removes everything in KRUFT
 KRUFT = diningapplet.jar

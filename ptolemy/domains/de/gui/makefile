@@ -61,7 +61,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 # to run 'make demos' to run the tests.
 all: jclass
 install: jclass $(PTCLASSJAR)
-docs: javadocs
+
 
 depend:
 	@echo "no dependencies in this directory"
