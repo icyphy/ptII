@@ -121,7 +121,7 @@ public class ClassChanges implements MoMLFilter {
 	    new StringBuffer(getClass().getName() 
                     + ": change any class names that have been "
                     + "renamed\n"
-                    + "Below are original class names followed by"
+                    + "Below are original class names followed by "
                     + "the new class names.\n");
 	Iterator classNames = _classChanges.keySet().iterator();
 	while (classNames.hasNext()) {
