@@ -94,7 +94,7 @@ OPTIONAL_FILES = \
 	'ArrayStringFormat$$JavaArrayStringFormat.class' \
 	'FixPoint$$1.class' \
 	'FixPoint$$Error.class' \
-	'FixPoint$$Fixvalue.class' \
+	'FixPoint$$FixValue.class' \
 	'SignalProcessing$$GaussianSampleGenerator.class' \
 	'SignalProcessing$$PolynomialSampleGenerator.class' \
 	'SignalProcessing$$RaisedCosineSampleGenerator.class' \
