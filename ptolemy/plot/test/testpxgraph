@@ -33,7 +33,7 @@ $pxgraph -test -0 "first data set" -1 "second data set" $tmpfile $tmpfile2
 $pxgraph -test -0 "first data set" $tmpfile $tmpfile2
 $pxgraph -test -1 "second data set" $tmpfile $tmpfile2
 $pxgraph -test -2 "second data set" $tmpfile $tmpfile2
-$pxgraph -test -0 "zero" -binary bin.plt
+$pxgraph -test -0 "zero" -binary demo/data/bin.plt
 
 $pxgraph -test -bar -0 "first data set" -1 "second data set" $tmpfile $tmpfile2
 
@@ -41,8 +41,8 @@ $pxgraph -test -bar -0 "first data set" -1 "second data set" $tmpfile $tmpfile2
 $pxgraph -test $tmpfile
 $pxgraph -test -bar $tmpfile
 $pxgraph -test -bb $tmpfile
-$pxgraph -test -binary bin.plt
-$pxgraph -test -bar -binary bin.plt
+$pxgraph -test -binary demo/data/bin.plt
+$pxgraph -test -bar -binary demo/data/bin.plt
 $pxgraph -test -db $tmpfile
 $pxgraph -help $tmpfile
 $pxgraph -test -lnx $tmpfile
@@ -53,7 +53,7 @@ $pxgraph -test -nl $tmpfile
 $pxgraph -test -p $tmpfile
 $pxgraph -test -p -nl $tmpfile
 $pxgraph -test -P $tmpfile
-$pxgraph -test -P -nl -binary bin.plt
+$pxgraph -test -P -nl -binary demo/data/bin.plt
 $pxgraph -test -P -nl $tmpfile
 $pxgraph -test -rv $tmpfile
 $pxgraph -test -tk $tmpfile
@@ -85,5 +85,5 @@ $pxgraph -test ./demo/bargraph.plt
 $pxgraph -test http://ptolemy.eecs.berkeley.edu/java/plot/demo/data.plt
 
 # Sample run from Ptolemy
-$pxgraph -test -t "Integer delays" -P -0 new -1 old =600x170+0+360 -binary bin.plt
+$pxgraph -test -t "Integrator Demo" -P -x n =800x400+0+0 -1 control -0 final demo/data/integrator1.plt demo/data/integrator2.plt
 
