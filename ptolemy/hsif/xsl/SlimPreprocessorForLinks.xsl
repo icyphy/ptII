@@ -75,8 +75,7 @@ This file strips away the redundant links.
         <xsl:variable name="port" select="@port"/>
         <xsl:variable name="relation" select="@relation"/>
         <xsl:choose>
-            <xsl:when test="not(preceding-sibling::link[@port=$port] and 
-                                preceding-sibling::link[@relation=$relation])">
+            <xsl:when test="not(preceding-sibling::link[@port=$port and @relation=$relation])">
                 <xsl:copy>
                     <xsl:for-each select="@*">
                         <xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
