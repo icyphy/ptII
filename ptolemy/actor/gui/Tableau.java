@@ -167,6 +167,16 @@ public class Tableau extends ComponentEntity {
         }
     }
 
+    /** Return true if the tableau is editable. This base class returns
+     *  whatever value has been set by setEditable(), or <i>true</i> if
+     *  none has been specified.
+     *  @see #setEditable(boolean)
+     *  @return True if the tableau is editable.
+     */
+    public boolean isEditable() {
+        return _editable;
+    }
+
     /** Return true if this tableau is a master, which means that
      *  if that if its window is closed, then all other windows associated
      *  with the model are also closed.
@@ -216,6 +226,20 @@ public class Tableau extends ComponentEntity {
                     "The container can only be set to an " +
                     "instance of Effigy");
 	}
+    }
+
+    /** Make the tableau editable or uneditable.  Notice that this does
+     *  not change whether the effigy is modifiable, so other tableaux
+     *  on the same effigy may still modify the associated file.
+     *  Derived class will usually need to override this method to
+     *  set whether their associated interfaces are editable or not.
+     *  They should call this superclass method so that isEditable()
+     *  returns the value specified here.
+     *  @see #isEditable()
+     *  @param flag False to make the tableau uneditable.
+     */
+    public void setEditable(boolean flag) {
+        _editable = flag;
     }
 
     /** Set the top-level window associated with this tableau.
@@ -323,6 +347,9 @@ public class Tableau extends ComponentEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                  ////
+
+    /** Flag indicating whether the tableau is editable. */
+    private boolean _editable;
 
     /** The frame that the tableau is shown in.
      */

@@ -132,6 +132,17 @@ public class TextEffigy extends Effigy {
                 line = reader.readLine();
             }
             reader.close();
+            // Check the URL to see whether it is a file,
+            // and if so, whether it is writable.
+            if (in.getProtocol().equals("file")) {
+                String filename = in.getFile();
+                File file = new File(filename);
+                if (!file.canWrite()) {
+                    effigy.setModifiable(false);
+                }
+            } else {
+                effigy.setModifiable(false);
+            }
         }
         effigy.url.setURL(in);
         return effigy;

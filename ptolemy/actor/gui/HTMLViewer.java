@@ -101,8 +101,6 @@ public class HTMLViewer extends TableauFrame
             report("");
         } else if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
             URL newUrl = event.getURL();
-// FIXME:
-System.out.println("***** hyperlink to: " + newUrl);
 
             if (event instanceof HTMLFrameHyperlinkEvent) {
                 // For some bizarre reason, when a link is within a frame,

@@ -82,9 +82,10 @@ public class TextEditorTableau extends Tableau {
      *  @param flag False to make the tableau uneditable.
      */
     public void setEditable(boolean flag) {
+        super.setEditable(flag);
         TextEditor editor = (TextEditor)getFrame();
         if (editor.text != null) {
-            editor.text.setEditable(false);
+            editor.text.setEditable(flag);
         }
     }
 
@@ -122,8 +123,15 @@ public class TextEditorTableau extends Tableau {
          *  a new instance of TextEditorTableau in the specified
          *  effigy, and name it "textTableau" and return that tableau.
          *  If the specified effigy is not an instance of TextEffigy,
-         *  then do not create a tableau and return null.  It is the
-         *  responsibility of callers of this method to check the
+         *  but contains an instance of TextEffigy, then open a tableau
+         *  for that effigy.  If it is a PtolemyEffigy, then create a
+         *  text effigy with the MoML representation of the model.
+         *  Finally, if is not a TextEffigy or a PtolemyEffigy,
+         *  and it does not contain a TextEffigy, then attempt to
+         *  open its URL and display its date by creating a text effigy,
+         *  which will then be contained by the specified effigy. If all
+         *  of this fails, then do not create a tableau and return null.
+         *  It is the responsibility of callers of this method to check the
          *  return value and call show().
          *
 	 *  @param effigy The effigy.
@@ -142,6 +150,7 @@ public class TextEditorTableau extends Tableau {
                     tableau = new TextEditorTableau(
                             (TextEffigy)effigy, "textTableau");
                 }
+                tableau.setEditable(effigy.isModifiable());
                 return tableau;
 	    } else {
                 // The effigy is not an instance of TextEffigy.
@@ -172,6 +181,9 @@ public class TextEditorTableau extends Tableau {
                     }
                     TextEditorTableau textTableau =
                         (TextEditorTableau)createTableau(textEffigy);
+                    // FIXME: Eventually, it would be nice that this be
+                    // editable if the PtolemyEffigy is modifiable.
+                    // But this requires having an "apply" button.
                     textTableau.setEditable(false);
                     if (url != null) {
                         textEffigy.identifier.setExpression(

@@ -42,6 +42,7 @@ import ptolemy.kernel.util.Workspace;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -105,6 +106,7 @@ public class Configuration extends CompositeEntity {
             }
             // The first tableau is a master.
             tableau.setMaster(true);
+            tableau.setEditable(effigy.isModifiable());
             tableau.show();
         }
     }
@@ -144,6 +146,17 @@ public class Configuration extends CompositeEntity {
                 return;
             }
             effigy.identifier.setExpression(identifier);
+            // Check the URL to see whether it is a file,
+            // and if so, whether it is writable.
+            if (in.getProtocol().equals("file")) {
+                String filename = in.getFile();
+                File file = new File(filename);
+                if (!file.canWrite()) {
+                    effigy.setModifiable(false);
+                }
+            } else {
+                effigy.setModifiable(false);
+            }
             // If this fails, we do not want the effigy in the directory.
             try {
                 createPrimaryTableau(effigy);
