@@ -69,7 +69,7 @@ director or executive director).
 <p>
 A director implements the action methods (preinitialize(),
 initialize(), prefire(), fire(),
-postfire(), and wrapup()).  In this base class, default implementations
+postfire(), iterate(), and wrapup()).  In this base class, default implementations
 are provided that may or may not be useful in specific domains.   In general,
 these methods will perform domain-dependent actions, and then call the
 respective methods in all contained actors.
@@ -303,6 +303,39 @@ public class Director extends NamedObj implements Executable {
     public void invalidateSchedule() {
     }
 
+    /** Invoke a specified number of iterations on this director. Since
+     *  the definition of what constitutes an iteration is domain dependent,
+     *  derived classes will probably want to override this method. In 
+     *  this base class, invoke the specified number of iterations on all 
+     *  of the deeply contained actors of the container of this director. 
+     *  The actors are iterated in the order they were created. This 
+     *  method returns false if any of the iterated actors returns false. 
+     *  Otherwise, this method returns true.
+     *  <p>
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     *  
+     *  @param count The number of iterations to perform.
+     *  @return False if any of the iterated actors returns false. 
+     *   Otherwise, return true.
+     *  @exception IllegalActionException If an actor throws it while
+     *   iterating.
+     */
+    public boolean iterate(int count) throws IllegalActionException {
+	boolean returnVal = false;
+	CompositeActor container = ((CompositeActor)getContainer());
+	if (container!= null) {
+            Iterator actors = container.deepEntityList().iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor)actors.next();
+		// Note: Use "&" instead of "&&" to force all actors
+		// to be iterated.
+                returnVal = returnVal & actor.iterate(count);
+            }
+        }
+	return returnVal;
+    }
+
     /** Return true if this director, or any of its contained directors
      *  requires write access on the workspace during execution.
      *  If this director requires write access during execution
@@ -385,7 +418,7 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** Return true if the director is ready to fire. This method is
-     *  called but the container of this director to determine if the
+     *  called by the container of this director to determine if the
      *  director is ready to execute, and
      *  should <i>not</i>, in general, just take the logical AND of calling
      *  prefire on all the contained actors.
