@@ -115,7 +115,7 @@ public class StringToken extends ObjectToken {
     /** Return the value of the token.
      * @returns A reference to a String.
      */	
-    public Object getValue() {
+    public String getValue() {
         return _value;
     }
 
@@ -124,7 +124,7 @@ public class StringToken extends ObjectToken {
      *  rather than null.
      *  @exceptions IllegalActionException Argument is not a String.
      */	
-    public void setValue(Object value) 
+    public void setValue(String value) 
             throws IllegalActionException {
         if (value != null) {
             if (!(value instanceof String)) {
@@ -144,4 +144,8 @@ public class StringToken extends ObjectToken {
     public String toString() {
         return (String)_value;
     }
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                        private variables                         ////
+    private String _value;
 }
