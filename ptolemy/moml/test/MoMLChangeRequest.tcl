@@ -553,6 +553,7 @@ test MoMLChangeRequest-4.1 {Call two arg constructor (Originator, request)} {
 ####
 #
 test MoMLChangeRequest-5.1 {getDeferredToParent} {
+    # FIXME: This is not a real test for getDeferredToParent.
     # Create a base model.
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [java::cast ptolemy.actor.CompositeActor \
@@ -572,4 +573,4 @@ test MoMLChangeRequest-5.1 {getDeferredToParent} {
 	    ptolemy.moml.MoMLChangeRequest getDeferredToParent $toplevel] \
 	    == [java::null]}] 
     list $r1 $r2
-} {1 1} {FIXME: This is not a real test for getDeferredToParent}
+} {1 1}
