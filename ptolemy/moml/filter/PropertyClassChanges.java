@@ -125,8 +125,10 @@ public class PropertyClassChanges implements MoMLFilter {
                 //_currentlyProcessingActorWithPropertyClassChanges = false;
 
                 String temporaryNewClass = _newClass;
+		if (!attributeValue.equals(_newClass)) {
+		    MoMLParser.setModified(true);
+		}
                 _newClass = null;
-                MoMLParser.setModified(true);
                 return temporaryNewClass;
             } else if (  _currentlyProcessingActorWithPropertyClassChanges
                     && container != null
