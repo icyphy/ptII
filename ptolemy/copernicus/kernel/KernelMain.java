@@ -91,7 +91,7 @@ public class KernelMain {
      *  the model and creates actor instances.  In this class, 
      *  this method does not do much, it is only a sample.
      *
-     *  @params args The first element of the array is the MoML class
+     *  @param args The first element of the array is the MoML class
      *  name or file name, subsequent optional arguments are Soot
      *  command line options.
      *  <br>The most common option is <code>-d ../../..</code>, which
@@ -100,6 +100,7 @@ public class KernelMain {
      *  <code> -p <i>phase-name</i> <i>key1[</i>:<i>value1]</i>,<i>key2[</i>:<i>value2]</i>,<i>...</i>,<i>keyn[</i>:<i>valuen]</i></code>
      *  which will set the run time option <i>key</i> to <i>value</i> for
      *  <i>phase-name</i> (default for <i>value</i> is true)
+     *  An example is:<br>
      *  <code>-p wjtp.at deep,targetPackage:ptolemy.copernicus.jhdl.cg</code>
      *  <br>For a complete list of Soot Options, pass in "-h", or run
      *  <code>$PTII/bin/soot -h<code>, or see
@@ -127,7 +128,7 @@ public class KernelMain {
      *  after calling _initialize() and setting
      *  up the transformations.
      *
-     *  @params args Soot command line arguments to be passed
+     *  @param args Soot command line arguments to be passed
      *  to soot.Main.main().  this method changes the first element of the
      *  args array to "java.lang.Object"and then call soot.Main.main(args).
      */	
@@ -155,7 +156,7 @@ public class KernelMain {
      *  and then passed to MoMLParser.parse().
      *  <li>If the parse fails, then the name is tried as a
      *  relative MoML file name and passed to MoMLParser.parseFile().
-     *  <ol>
+     *  </ol>
      *  @exception IllegalActionException if the model cannot be parsed.
      */
     protected void _initialize()
