@@ -149,6 +149,12 @@ test SDFDirector-5.3 {Test action methods} {
     $e1 connect [java::field $a2 output2] [java::field $a4 input] R3
     set iter [$d3 getAttribute iterations]
     _testSetToken $iter [java::new {ptolemy.data.IntToken int} 6]
+
+#set debugger [java::new ptolemy.kernel.util.StreamListener]
+#$d3 addDebugListener $debugger
+#set scheduler [$d3 getScheduler]
+#$scheduler addDebugListener $debugger
+
     $manager run
     list [$a3 getHistory] [$a4 getHistory]
 } {{ptolemy.data.IntToken(0)

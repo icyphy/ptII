@@ -32,10 +32,7 @@
 package ptolemy.domains.sdf.kernel;
 
 import ptolemy.kernel.util.*;
-
-import collections.LinkedList;
-import collections.CollectionEnumeration;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayFIFOQueue
@@ -61,17 +58,17 @@ public final class ArrayFIFOQueue implements Cloneable {
     /** Construct an empty queue with no container, and an infinite capacity.
      */
     public ArrayFIFOQueue() {
-        _queuearray = new Object[STARTING_ARRAYSIZE];
-        _queuemaxcapacity = INFINITE_CAPACITY;
-        _historylist = new LinkedList();
+        _queueArray = new Object[STARTING_ARRAYSIZE];
+        _queueMaxCapacity = INFINITE_CAPACITY;
+        _historyList = new LinkedList();
     }
 
     /** Construct an empty queue with no container and the given capacity.
      */
     public ArrayFIFOQueue(int size) {
-        _queuearray = new Object[size];
-        _queuemaxcapacity = size;
-        _historylist = new LinkedList();
+        _queueArray = new Object[size];
+        _queueMaxCapacity = size;
+        _historyList = new LinkedList();
     }
 
     /** Construct an empty queue with the specified container. The
@@ -101,13 +98,13 @@ public final class ArrayFIFOQueue implements Cloneable {
     public ArrayFIFOQueue(ArrayFIFOQueue model) {
         this();
         synchronized(model) {
-            _queuesize = model._queuesize;
-            _queuearray = new Object[model._queuearray.length];
-            _queuefront = model._queuefront;
-            _queueback = model._queueback;
-            System.arraycopy(model._queuearray, 0, _queuearray, 0,
-                    _queuearray.length);
-            _historylist.appendElements(model.historyElements());
+            _queueSize = model._queueSize;
+            _queueArray = new Object[model._queueArray.length];
+            _queueFront = model._queueFront;
+            _queueBack = model._queueBack;
+            System.arraycopy(model._queueArray, 0, _queueArray, 0,
+                    _queueArray.length);
+            _historyList.addAll(model._historyList);
         }
     }
 
@@ -126,19 +123,27 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @return An enumeration of objects.
      *  @see collections.LinkedList#elements()
      */
-    public CollectionEnumeration elements() {
+    public Enumeration elements() {
+        return Collections.enumeration(elementList());
+    }
+
+    /** Return a list containing all the elements in the queue, beginning
+     *  with the oldest.
+     *  @return A list of objects
+     */
+    public List elementList() {
         LinkedList l = new LinkedList();
         int i;
-        if((_queuefront < _queueback)||isFull()) {
-            for(i = _queueback; (i < _queuearray.length); i++)
-                l.insertLast(_queuearray[i]);
-            for(i = 0; (i < _queuefront); i++)
-                l.insertLast(_queuearray[i]);
+        if((_queueFront < _queueBack)||isFull()) {
+            for(i = _queueBack; (i < _queueArray.length); i++)
+                l.addLast(_queueArray[i]);
+            for(i = 0; (i < _queueFront); i++)
+                l.addLast(_queueArray[i]);
         }
         else
-            for(i = _queueback; (i < _queuefront); i++)
-                l.insertLast(_queuearray[i]);
-        return l.elements();
+            for(i = _queueBack; (i < _queueFront); i++)
+                l.addLast(_queueArray[i]);
+        return l;
     }
 
     /** Return an object in the queue or history. The object is not
@@ -170,15 +175,15 @@ public final class ArrayFIFOQueue implements Cloneable {
                 throw new NoSuchElementException("No object at offset "
                         + offset + " in the FIFOQueue" + str);
             }
-            int loc = _queueback + offset;
-            if(loc >= _queuearray.length)
-                loc = loc % _queuearray.length;
-            obj = _queuearray[loc];
+            int loc = _queueBack + offset;
+            if(loc >= _queueArray.length)
+                loc = loc % _queueArray.length;
+            obj = _queueArray[loc];
         } else {
             try {
-                obj = _historylist.at(historySize()+offset);
+                obj = _historyList.get(historySize()+offset);
 
-            } catch (NoSuchElementException ex) {
+            } catch (Exception ex) {
                 String str = ".";
                 if (_container != null) {
                     str = " contained by " + _container.getFullName();
@@ -191,11 +196,11 @@ public final class ArrayFIFOQueue implements Cloneable {
     }
 
     /** Return the queue capacity
-     *  This will INFINITE_CAPACITY if the capacity is infinite.
+     *  This will be INFINITE_CAPACITY if the capacity is infinite.
      *  @return The capacity of the queue.
      */
     public int getCapacity() {
-        return _queuemaxcapacity;
+        return _queueMaxCapacity;
     }
 
     /** Return the container of the queue, or null if there is none.
@@ -211,7 +216,7 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @return The capacity of the history queue.
      */
     public int getHistoryCapacity() {
-        return _historycapacity;
+        return _historyCapacity;
     }
 
     /** Enumerate the objects in the history, which are the N most recent
@@ -223,22 +228,22 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @return An enumeration of objects in the history.
      *  @see collections.LinkedList#elements()
      */
-    public CollectionEnumeration historyElements() {
-        return _historylist.elements();
+    public Enumeration historyElements() {
+        return Collections.enumeration(_historyList);
     }
 
     /** Return the number of objects in the history.
      *  @return The current number of objects in the history.
      */
     public int historySize() {
-        return _historylist.size();
+        return _historyList.size();
     }
 
     /** Return true if the number of objects in the queue is zero
      *  @return A boolean indicating whether the queue is empty.
      */
     public boolean isEmpty() {
-        return (_queuesize == 0);
+        return (_queueSize == 0);
     }
 
     /** Return true if the number of objects in the queue equals the
@@ -246,7 +251,7 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @return A boolean indicating whether the queue is full.
      */
     public boolean isFull() {
-        return (_queuesize >= _queuearray.length);
+        return (_queueSize >= _queueArray.length);
     }
 
     /** Put an object in the queue and return true if this will not
@@ -256,15 +261,15 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @return A boolean indicating success.
      */
     public boolean put(Object element) {
-        if (_queuearray.length - _queuesize >= 1) {
-            _queuearray[_queuefront++] = element;
-            if(_queuefront >= _queuearray.length)
-                _queuefront = _queuefront % _queuearray.length;
-            _queuesize++;
+        if (_queueArray.length - _queueSize >= 1) {
+            _queueArray[_queueFront++] = element;
+            if(_queueFront >= _queueArray.length)
+                _queueFront = _queueFront % _queueArray.length;
+            _queueSize++;
             return true;
         } else {
-	    if(_queuemaxcapacity == INFINITE_CAPACITY) {
-                _resizeArray(_queuearray.length * 2);
+	    if(_queueMaxCapacity == INFINITE_CAPACITY) {
+                _resizeArray(_queueArray.length * 2);
 		return put(element);
 	    } else
 		return false;
@@ -278,31 +283,31 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @return A boolean indicating success.
      */
     public boolean putArray(Object element[]) {
-        if (_queuearray.length - _queuesize >= element.length) {
+        if (_queueArray.length - _queueSize >= element.length) {
             int i;
-            if(element.length <= (_queuearray.length - _queuefront)) {
-                System.arraycopy(element, 0, _queuearray, _queuefront,
+            if(element.length <= (_queueArray.length - _queueFront)) {
+                System.arraycopy(element, 0, _queueArray, _queueFront,
                         element.length);
-                _queuefront += element.length;
-                if(_queuefront >= _queuearray.length)
-                    _queuefront = _queuefront % _queuearray.length;
-                _queuesize += element.length;
+                _queueFront += element.length;
+                if(_queueFront >= _queueArray.length)
+                    _queueFront = _queueFront % _queueArray.length;
+                _queueSize += element.length;
             } else {
-                System.arraycopy(element, 0, _queuearray, _queuefront,
-                        _queuearray.length - _queuefront);
-                System.arraycopy(element, _queuearray.length - _queuefront,
-                        _queuearray, 0,
-                        element.length - (_queuearray.length - _queuefront));
-                _queuefront += element.length;
-                if(_queuefront >= _queuearray.length)
-                    _queuefront = _queuefront % _queuearray.length;
-                _queuesize += element.length;
+                System.arraycopy(element, 0, _queueArray, _queueFront,
+                        _queueArray.length - _queueFront);
+                System.arraycopy(element, _queueArray.length - _queueFront,
+                        _queueArray, 0,
+                        element.length - (_queueArray.length - _queueFront));
+                _queueFront += element.length;
+                if(_queueFront >= _queueArray.length)
+                    _queueFront = _queueFront % _queueArray.length;
+                _queueSize += element.length;
             }
             return true;
         } else {
-	    if(_queuemaxcapacity == INFINITE_CAPACITY) {
+	    if(_queueMaxCapacity == INFINITE_CAPACITY) {
 		try {
-		    _resizeArray(_queuearray.length * 2);
+		    _resizeArray(_queueArray.length * 2);
 		}
 		catch (Exception e) {
 		    e.printStackTrace();
@@ -325,7 +330,7 @@ public final class ArrayFIFOQueue implements Cloneable {
     public void setCapacity(int capacity)
             throws IllegalActionException {
         if (capacity == INFINITE_CAPACITY) {
-            _queuemaxcapacity = INFINITE_CAPACITY;
+            _queueMaxCapacity = INFINITE_CAPACITY;
             return;
         }
 	if (capacity < -1) {
@@ -337,7 +342,7 @@ public final class ArrayFIFOQueue implements Cloneable {
             throw new IllegalActionException(_container, "Queue contains " +
                     "more elements than the proposed capacity.");
         }
-        _queuemaxcapacity = capacity;
+        _queueMaxCapacity = capacity;
  	_resizeArray(capacity);
     }
 
@@ -363,23 +368,23 @@ public final class ArrayFIFOQueue implements Cloneable {
     public void setHistoryCapacity(int capacity)
             throws IllegalActionException {
         if (capacity > 0) {
-            while (_historylist.size() > capacity) {
-                _historylist.take();
+            while (_historyList.size() > capacity) {
+                _historyList.removeFirst();;
             }
         } else if (capacity == 0) {
-            _historylist.clear();
+            _historyList.clear();
         } else if (capacity != INFINITE_CAPACITY) {
             throw new IllegalActionException(_container,
                     "Cannot set history capacity to " + capacity);
         }
-        _historycapacity = capacity;
+        _historyCapacity = capacity;
     }
 
     /** Return the number of objects in the queue.
      *  @return The number of objects in the queue.
      */
     public int size() {
-        return _queuesize;
+        return _queueSize;
     }
 
     /** Remove the oldest object from the queue and return it.
@@ -395,12 +400,12 @@ public final class ArrayFIFOQueue implements Cloneable {
         Object obj = null;
         try {
             if(isEmpty()) throw new NoSuchElementException("Empty Queue");
-            obj = _queuearray[_queueback];
-            _queuearray[_queueback] = null;
-            _queueback++;
-            if(_queueback >= _queuearray.length)
-                _queueback = _queueback % _queuearray.length;
-            _queuesize--;
+            obj = _queueArray[_queueBack];
+            _queueArray[_queueBack] = null;
+            _queueBack++;
+            if(_queueBack >= _queueArray.length)
+                _queueBack = _queueBack % _queueArray.length;
+            _queueSize--;
         } catch (NoSuchElementException ex) {
             String str = "";
             if (_container != null) {
@@ -409,11 +414,11 @@ public final class ArrayFIFOQueue implements Cloneable {
             throw new NoSuchElementException("The FIFOQueue" + str
                     + " is empty!");
         }
-        if (_historycapacity != 0) {
-            if (_historycapacity == _historylist.size()) {
-                _historylist.take();
+        if (_historyCapacity != 0) {
+            if (_historyCapacity == _historyList.size()) {
+                _historyList.removeFirst();;
             }
-            _historylist.insertLast(obj);
+            _historyList.addLast(obj);
         }
         return obj;
     }
@@ -438,25 +443,25 @@ public final class ArrayFIFOQueue implements Cloneable {
                     + " does not contain enough elements!");
         }
 
-        if(count <= (_queuearray.length - _queueback)) {
-            System.arraycopy(_queuearray, _queueback, obj, 0,
+        if(count <= (_queueArray.length - _queueBack)) {
+            System.arraycopy(_queueArray, _queueBack, obj, 0,
                     count);
         } else {
-            System.arraycopy(_queuearray, _queueback, obj, 0,
-                    _queuearray.length - _queueback);
-            System.arraycopy(_queuearray, 0,
-                    obj, _queuearray.length - _queueback,
-                    count - (_queuearray.length - _queueback));
+            System.arraycopy(_queueArray, _queueBack, obj, 0,
+                    _queueArray.length - _queueBack);
+            System.arraycopy(_queueArray, 0,
+                    obj, _queueArray.length - _queueBack,
+                    count - (_queueArray.length - _queueBack));
         }
-        _queueback += count;
-        if(_queueback >= _queuearray.length)
-            _queueback = _queueback % _queuearray.length;
-        _queuesize -= count;
-        if (_historycapacity != 0) {
-            if (_historycapacity == _historylist.size()) {
-                _historylist.take();
+        _queueBack += count;
+        if(_queueBack >= _queueArray.length)
+            _queueBack = _queueBack % _queueArray.length;
+        _queueSize -= count;
+        if (_historyCapacity != 0) {
+            if (_historyCapacity == _historyList.size()) {
+                _historyList.removeFirst();;
             }
-            _historylist.insertLast(obj);
+            _historyList.addLast(obj);
         }
     }
 
@@ -507,27 +512,27 @@ public final class ArrayFIFOQueue implements Cloneable {
                     "more elements than the proposed array size.");
         }
 
-	if((_queuemaxcapacity != INFINITE_CAPACITY)&&
-                (newsize > _queuemaxcapacity)) {
+	if((_queueMaxCapacity != INFINITE_CAPACITY)&&
+                (newsize > _queueMaxCapacity)) {
 	    throw new InternalErrorException("The proposed" +
                     " array size exceeds the maximum declared queue size.");
 	}
 
 	Object newarray[] = new Object[newsize];
-        if((_queuefront < _queueback) || isFull()) {
-            System.arraycopy(_queuearray, _queueback,
-                    newarray, 0, _queuearray.length - _queueback);
-            System.arraycopy(_queuearray, 0,
-                    newarray, _queuearray.length - _queueback,
-                    _queuefront);
-            _queuefront = _queuearray.length - _queueback + _queuefront;
+        if((_queueFront < _queueBack) || isFull()) {
+            System.arraycopy(_queueArray, _queueBack,
+                    newarray, 0, _queueArray.length - _queueBack);
+            System.arraycopy(_queueArray, 0,
+                    newarray, _queueArray.length - _queueBack,
+                    _queueFront);
+            _queueFront = _queueArray.length - _queueBack + _queueFront;
         } else {
-            System.arraycopy(_queuearray, _queueback,
-                    newarray, 0, _queuefront - _queueback);
-            _queuefront = _queuefront - _queueback;
+            System.arraycopy(_queueArray, _queueBack,
+                    newarray, 0, _queueFront - _queueBack);
+            _queueFront = _queueFront - _queueBack;
         }
-        _queuearray = newarray;
-        _queueback = 0;
+        _queueArray = newarray;
+        _queueBack = 0;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -536,28 +541,25 @@ public final class ArrayFIFOQueue implements Cloneable {
     // The container, if there is one.
     private Nameable _container = null;
 
-    // The capacity of the queue.
-    //    private int _queuecapacity = 0;
-
     // The maximum capacity of the queue
-    private int _queuemaxcapacity = INFINITE_CAPACITY;
+    private int _queueMaxCapacity = INFINITE_CAPACITY;
 
     // The list of objects currently in the queue.
-    private Object _queuearray[];
+    private Object _queueArray[];
 
-    // The location of the next place to insert in _queuearray
-    private int _queuefront = 0;
+    // The location of the next place to insert in _queueArray
+    private int _queueFront = 0;
 
-    // The location of the next place to remove from _queuearray
-    private int _queueback = 0;
+    // The location of the next place to remove from _queueArray
+    private int _queueBack = 0;
 
     // The number of elements in the queue.
-    private int _queuesize = 0;
+    private int _queueSize = 0;
 
     // The capacity of the history queue, defaulting to zero.
-    private int _historycapacity = DEFAULT_HISTORY_CAPACITY;
+    private int _historyCapacity = DEFAULT_HISTORY_CAPACITY;
 
     // The list of objects recently removed from the queue.
-    private LinkedList _historylist = null;
+    private LinkedList _historyList = null;
 
 }

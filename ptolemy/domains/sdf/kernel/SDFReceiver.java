@@ -38,7 +38,6 @@ import ptolemy.actor.util.*;
 import ptolemy.actor.util.FIFOQueue; // for javadoc
 import ptolemy.actor.*;
 
-import collections.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Enumeration;
 

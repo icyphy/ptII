@@ -38,7 +38,6 @@ import ptolemy.actor.*;
 import ptolemy.actor.Mailbox;   // for javadoc
 
 import java.util.Enumeration;
-import collections.HashedMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFAtomicActor

@@ -38,8 +38,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 
-import collections.CircularList;
-import java.util.Enumeration;
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFDirector
