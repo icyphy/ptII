@@ -55,11 +55,11 @@ TerminateProcessException is thrown.
 
 public class CSPBuffer extends CSPActor {
 
-    /** Construct a CSPActor in the default workspace with an empty string
+    /** Construct a CSPBuffer in the default workspace with an empty string
      *  as its name. The actor is parameterized by its depth, which must 
      *  be an integer. The default depth of the buffer is one.
      *  The actor is created with a single input port and a single ouput 
-     *  port, both of width one. the input port is called "input", and 
+     *  port, both of width one. The input port is called "input", and 
      *  similarly, the output port is called "output".
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
@@ -71,13 +71,13 @@ public class CSPBuffer extends CSPActor {
         _input = new IOPort(this, "input", true, false);
     }
 
-    /** Construct a CSPActor in the specified container with the specified
+    /** Construct a CSPBuffer in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown. The actor is parameterized by 
      *  its depth, which must be an integer. The default depth of the buffer 
      *  is one. The actor is created with a single input 
-     *  port and a single output port, both of width one. the input port 
+     *  port and a single output port, both of width one.Tthe input port 
      *  is called "input", and similarly, the output port is called "output".
      *  <p>
      *  @param container The CompositeActor that contains this actor.
@@ -92,13 +92,13 @@ public class CSPBuffer extends CSPActor {
          this(cont, name, 1);
     }
 
-    /** Construct a CSPActor in the specified container with the specified
+    /** Construct a CSPBuffer in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown. The actor is parameterized by 
      *  its depth, which must be an integer. The buffer depth is assigned to 
      *  the value passed in. The actor is created with a 
-     *  single input port and a single output port, both of width one. the 
+     *  single input port and a single output port, both of width one. The 
      *  input port is called "input", and similarly, the output port is 
      *  called "output".
      *  <p>
