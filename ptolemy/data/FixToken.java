@@ -225,7 +225,7 @@ public class FixToken extends ScalarToken {
         return new FixToken( 1.0, _value.getPrecision() );
     }
 
-    /** Return a new token whose value is constrianed to comply
+    /** Return a new token whose value is constrained to comply
      *  with a quantization specification
      *  @param quant The quantization specification.
      *  @return A new FixToken containing the result.
@@ -440,7 +440,7 @@ public class FixToken extends ScalarToken {
         return new FixToken(result);
     }
 
-    /** Return a new token whose value is constrianed to comply
+    /** Return a new token whose value is constrained to comply
      *  with a quantization specification
      *  @param quant The quantization specification.
      *  @return A new FixToken containing the result.
