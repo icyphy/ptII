@@ -821,7 +821,31 @@ proc createAndExecute {file} {
 	    || "$file" == "compat/vqtest1.xml" \
 	    || "$file" == "compat/DifferentialSystem.xml" \
 	    || "$file" == "compat/MaximumEntropySpectrum.xml" \
-	    || "$file" == "compat/ArrayAppend.xml" } {
+	    || "$file" == "compat/TransferFunction.xml" \
+	    || "$file" == "compat/ArrayAppend.xml" \ 
+	    || "$file" == "compat2/ImageReaderImageDisplay.xml" \ 
+	    || "$file" == "compat2/ImageReaderImageRotateImageToString.xml" \
+	    || "$file" == "compat2/ImageReaderImageToString.xml" \
+	    || "$file" == "compat2/testAudioReader.xml" \
+	    || "$file" == "compat2/testAudioPlayer.xml" \
+	    || "$file" == "compat2/testAudioCapture_AudioPlayer.xml" \
+	    || "$file" == "compat2/testAudioCapture.xml" \
+	    || "$file" == "compat2/automataLibrary.xml" \
+	    || "$file" == "compat2/DifferentialSystem.xml.xml" \
+	    || "$file" == "compat2/FireAtCT.xml" \
+	    || "$file" == "compat2/FireAtCT2.xml" \
+	    || "$file" == "compat2/FireAtDE.xml" \
+	    || "$file" == "compat2/MaximumEntropySpectrum.xml" \
+	    || "$file" == "compat2/MethodCallTest.xml" \
+	    || "$file" == "compat2/MultimodeTest.xml" \
+	    || "$file" == "compat2/TransferFunction.xml" \
+	    || "$file" == "compat2/Samplers.xml" \
+	    || "$file" == "compat2/SampleDelay.xml" \
+	    || "$file" == "compat2/Sampler.xml" \
+	    || "$file" == "compat2/SamplerWithDefault.xml" \
+	    || "$file" == "compat2/multirate.xml" \
+	    || "$file" == "compat2/VariableFIR2.xml" \
+	} {
 	puts "$file: Skipping Known Failure"
 	incr KNOWN_FAILED
 	return
@@ -888,7 +912,7 @@ proc createAndExecute {file} {
 
 
 #foreach file [list compat/ComplexToCartesianAndBack.xml compat/testAudioReaderAudioPlayer.xml compat/test1.xml compat/FIR1.xml] {
-foreach file [lsort [glob compat/*.xml]] {
+foreach file [lsort [glob compat/*.xml compat2/*.xml]] {
     puts "------------------ testing $file"
     test "Auto" "Automatic test in file $file" {
         set application [createAndExecute $file]
