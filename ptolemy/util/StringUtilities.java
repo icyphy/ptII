@@ -37,6 +37,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -153,31 +155,6 @@ public class StringUtilities {
             result.append("    ");
         }
         return result.toString();
-    }
-
-    /** Return the preferences directory, creating it if necessary.
-     *  @return A string naming the preferences directory.  The last
-     *  character of the string will have the file.separator character
-     *  appended.
-     *  @exception IOException If the directory could not be created.
-     *  @see #PREFERENCES_DIRECTORY
-     */
-    public static String preferencesDirectory() throws IOException {
-        String preferencesDirectoryName =
-            StringUtilities.getProperty("user.home")
-            + StringUtilities.getProperty("file.separator")
-            + StringUtilities.PREFERENCES_DIRECTORY
-            + StringUtilities.getProperty("file.separator");
-        File preferencesDirectory = new File(preferencesDirectoryName);
-        if (!preferencesDirectory.isDirectory()) {
-            if (preferencesDirectory.mkdirs() == false) {
-                throw new IOException("Could not create user preferences "
-                        + "directory '"
-                        + preferencesDirectoryName + "'");
-
-            }
-        }
-        return preferencesDirectoryName;
     }
 
     /** Get the specified property from the environment. An empty string
@@ -320,6 +297,42 @@ public class StringUtilities {
 
         return property;
     }
+    
+    /** Return a string representing the name of the file expected to
+     *  contain the source code for the specified object.  This method
+     *  simply replaces "." with "/" and appends ".java" to the class
+     *  name.
+     *  @param object The object.
+     *  @return The expected source file name.
+     */
+    public static String objectToSourceFileName(Object object) {
+        return object.getClass().getName().replace('.', '/') + ".java";
+    }
+
+    /** Return the preferences directory, creating it if necessary.
+     *  @return A string naming the preferences directory.  The last
+     *  character of the string will have the file.separator character
+     *  appended.
+     *  @exception IOException If the directory could not be created.
+     *  @see #PREFERENCES_DIRECTORY
+     */
+    public static String preferencesDirectory() throws IOException {
+        String preferencesDirectoryName =
+            StringUtilities.getProperty("user.home")
+            + StringUtilities.getProperty("file.separator")
+            + StringUtilities.PREFERENCES_DIRECTORY
+            + StringUtilities.getProperty("file.separator");
+        File preferencesDirectory = new File(preferencesDirectoryName);
+        if (!preferencesDirectory.isDirectory()) {
+            if (preferencesDirectory.mkdirs() == false) {
+                throw new IOException("Could not create user preferences "
+                        + "directory '"
+                        + preferencesDirectoryName + "'");
+
+            }
+        }
+        return preferencesDirectoryName;
+    }
 
     /** Sanitize a String so that it can be used as a Java identifier.
      *  Section 3.8 of the Java language spec says:
@@ -405,6 +418,77 @@ public class StringUtilities {
         return results.toString();
     }
 
+    /** Given a file or URL name, return as a URL.  If the file name
+     *  is relative, then it is interpreted as being relative to the
+     *  specified base directory. If the name begins with "$CLASSPATH",
+     *  then search for the file relative to the classpath.
+     *  If no file is found, then throw an exception.
+     *  @param name The name of a file or URL.
+     *  @param baseDirectory The base directory for relative file names,
+     *   or null to specify none.
+     *  @param classLoader The class loader to use to locate system
+     *   resources, or null to use the system class loader.
+     *  @return A URL, or null if no file name or URL has been specified.
+     *  @exception IllegalActionException If the file cannot be read, or
+     *   if the file cannot be represented as a URL (e.g. System.in), or
+     *   the name specification cannot be parsed.
+     */
+    public static URL stringToURL(
+            String name, URI baseDirectory, ClassLoader classLoader)
+            throws IOException, MalformedURLException {
+
+        if (name == null || name.trim().equals("")) {
+            return null;
+        }
+        // If the name begins with "$CLASSPATH", then attempt to
+        // open the file relative to the classpath.
+        // NOTE: Use the dummy variable constant set up in the constructor.
+        if (name.startsWith(_CLASSPATH_VALUE)) {
+            // Try relative to classpath.
+            // The +1 is to skip over the delimitter after $CLASSPATH.
+            String trimmedName = name.substring(_CLASSPATH_VALUE.length() + 1);
+            if (classLoader == null) {
+                classLoader = ClassLoader.getSystemClassLoader();
+            }
+            URL result = classLoader.getResource(trimmedName);
+            if (result == null) {
+                throw new IOException(
+                        "Cannot find file in classpath: " + name);
+            }
+            return result;
+        }
+
+        File file = new File(name);
+        if (file.isAbsolute()) {
+            if (!file.canRead()) {
+                throw new IOException(
+                        "Cannot read file '" + name + "'");
+            }
+            return file.toURL();
+        } else {
+            // Try relative to the base directory.
+            if (baseDirectory != null) {
+                // Try to resolve the URI.
+                URI newURI = baseDirectory.resolve(name);
+                try {
+                    return newURI.toURL();
+                } catch (IllegalArgumentException ex2) {
+                    throw new IOException(
+                            "Problem with URI format in '" + name + "'. "
+                            + "This can happen if the '" + name
+                            + "' is not absolute"
+                            + " and is not present relative to the directory"
+                            + " in which the specified model was read"
+                            + " (which was '" + baseDirectory + "')");
+                }
+            }
+
+            // As a last resort, try an absolute URL, without
+            // a specified protocol first, then with.
+            return new URL(name);
+        }
+    }
+    
     /** Replace all occurrences of <i>pattern</i> in the specified
      *  string with <i>replacement</i>.  Note that the pattern is NOT
      *  a regular expression, and that relative to the
@@ -616,6 +700,7 @@ public class StringUtilities {
         }
         return result;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -639,5 +724,15 @@ public class StringUtilities {
      */
     public static String PREFERENCES_DIRECTORY = ".ptolemyII";
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                  ////
 
+    /** Tag value used by this class and registered as a parser
+     *  constant for the identifier "CLASSPATH" to indicate searching
+     *  in the classpath.  This is a hack, but it deals with the fact
+     *  that Java is not symmetric in how it deals with getting files
+     *  from the classpath (using getResource) and getting files from
+     *  the file system.
+     */
+    private static String _CLASSPATH_VALUE = "xxxxxxCLASSPATHxxxxxx";
 }
