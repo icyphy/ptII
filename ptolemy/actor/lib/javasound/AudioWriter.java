@@ -53,7 +53,7 @@ import ptolemy.media.javasound.*;
 /**
 This actor reads audio samples from the input port and writes
 the samples to the specified sound file. Any existing file
-with the same name will be silently ovewriten. The input port
+with the same name will be silently overwritten. The input port
 is of type DoubleToken. Each DoubleToken read from the input
 port represents one sample of the audio data and should be in
 the range [-1, 1]. Any samples that are outside of this range
@@ -202,8 +202,6 @@ public class AudioWriter extends Sink {
             throws IllegalActionException {
 	if(_debugging) _debug("AudioWriter: attributeChanged() invoked on: " +
                 attribute.getName());
-	//System.out.println("AudioWriter: attributeChanged() invoked on: " +
-	//	      attribute.getName());
 	if (attribute == channels) {
 	    _channels =
                 ((IntToken)channels.getToken()).intValue();
@@ -240,7 +238,6 @@ public class AudioWriter extends Sink {
     public void initialize() throws IllegalActionException {
         super.initialize();
 	if(_debugging) _debug("AudioWriter: initialize(): invoked");
-	//System.out.println("AudioWriter: initialize(): invoked");
 	// Initialize/Reinitialize audio resources.
 	_initializeWriter();
 	_safeToInitialize = true;
@@ -295,11 +292,6 @@ public class AudioWriter extends Sink {
 	    _curElement++;
 	    if (_curElement == _putSampleSize) {
 		try {
-		    //System.out.println("iterate: ");
-		    //for (int n = 0; n < _audioPutArray[0].length; n++) {
-		    //	System.out.println(_audioPutArray[0][n]);
-		    //}
-		    //System.out.println("iterate: ***************");
 		    // write out samples to speaker and/or file.
 		    _soundWriter.putSamples(_audioPutArray);
 		} catch (Exception ex) {
@@ -383,7 +375,6 @@ public class AudioWriter extends Sink {
     private synchronized void _initializeWriter()
             throws IllegalActionException {
 	if(_debugging) _debug("AudioWriter: _initializeWriter() invoked.");
-	//System.out.println("AudioWriter: _initializeWriter() invoked.");
 	// Close any open sound files. Free
 	// up audio system resources.
 	if (_soundWriter != null) {
