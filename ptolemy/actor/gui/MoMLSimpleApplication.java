@@ -36,6 +36,7 @@ import ptolemy.actor.Manager;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.FilterOutGraphicalClasses;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.StreamErrorHandler;
 
@@ -79,6 +80,9 @@ public class MoMLSimpleApplication implements ChangeListener {
      */
     public MoMLSimpleApplication(String xmlFilename) throws Exception {
         MoMLParser parser = new MoMLParser();
+
+	// Filter out any graphical classes
+	parser.addMoMLFilter(new FilterOutGraphicalClasses());
 
         parser.setErrorHandler(new StreamErrorHandler());
 
