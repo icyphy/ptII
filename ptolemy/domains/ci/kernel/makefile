@@ -50,7 +50,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = ActiveActorManager.java \
 	CIDirector.java \
-	CIReceiver.java
+	CIReceiver.java \
+	CIActor.java
 
 EXTRA_SRCS =	$(JSRCS)
 
