@@ -45,7 +45,7 @@ public interface ValueListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to the specified Settable has changing.
+    /** React to the fact that the specified Settable has changed.
      *  @param settable The object that has changed value.
      */
     public void valueChanged(Settable settable);
