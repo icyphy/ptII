@@ -37,6 +37,7 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
+import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.domains.ct.kernel.CTTransparentDirector;
@@ -54,6 +55,8 @@ import ptolemy.moml.MoMLChangeRequest;
 
 import java.util.Iterator;
 import java.util.List;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModalModel
@@ -142,7 +145,48 @@ public class ModalModel extends TypedCompositeActor
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** A director className string, configured using a ChoiceStyle
+     * attribute. */
+    public StringAttribute directorClass;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to a change of the _director or other property. */
+    public void attributeChanged(Attribute attribute)
+	throws IllegalActionException {
+        if (attribute.getName().equals("directorClass")) {
+            FSMDirector director = (FSMDirector)getDirector();
+            Class newDirectorClass = null;
+            try {
+                if (director != null)
+                    director.setContainer(null); // delete old director
+                newDirectorClass =
+                    Class.forName
+                    (((StringAttribute)attribute).getExpression());
+                Constructor newDirectorConstructor =
+                    newDirectorClass.getConstructor
+                    (new Class[]{CompositeEntity.class, String.class});
+                director = (FSMDirector)newDirectorConstructor.newInstance
+                    (new Object[]{this, "_Director"});
+            } catch (NameDuplicationException ex) {
+                throw new IllegalActionException(ex.toString());
+            } catch (ClassNotFoundException ex) {
+                throw new IllegalActionException(ex.toString());
+            } catch (NoSuchMethodException ex) {
+                throw new IllegalActionException(ex.toString());
+            } catch (InstantiationException ex) {
+                throw new IllegalActionException(ex.toString());
+            } catch (IllegalAccessException ex) {
+                throw new IllegalActionException(ex.toString());
+            } catch (InvocationTargetException ex) {
+                throw new IllegalActionException(ex.toString());
+            }
+            director.controllerName.setExpression("_Controller");
+        }
+    }
 
     /** Override the base class to ensure that the _controller private
      *  variable is reset to the controller of the cloned object.
@@ -186,10 +230,8 @@ public class ModalModel extends TypedCompositeActor
      */
     public FSMDirector newDirector()
             throws IllegalActionException, NameDuplicationException {
-        // NOTE: To support continuous-time models, we use this:
+        // Default director supports continuous-time models:
         return new HSDirector(this, "_Director");
-        // NOTE: To not support continuous-time models, use this:
-        // return new FSMDirector(this, "_Director");
     }
 
     /** Create a new port with the specified name in this entity, the
@@ -284,6 +326,17 @@ public class ModalModel extends TypedCompositeActor
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+    
+    /** Class names of directors compatible with this
+     * ModalModel. Derived classes should override this if they desire
+     * additional or different directors. */
+    protected String[] modalDirectorClassNames = {
+        "ptolemy.domains.fsm.kernel.HSDirector",
+        "ptolemy.domains.fsm.kernel.FSMDirector"
+    };
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     // Initialize the model.
@@ -300,6 +353,25 @@ public class ModalModel extends TypedCompositeActor
         // NOTE This director will be described in the exported MoML
         // file, so when that is encountered, it will match this director.
         FSMDirector director = newDirector();
+        String directorClassName = director.getClass().getName();
+        // drop the "L" to get the className
+        directorClassName = directorClassName.substring(1);
+        // Create and configure a "director" choice attribute of a
+        // ModalModel:
+        directorClass = new StringAttribute(this, "directorClass");
+        directorClass.setExpression(modalDirectorClassNames[0]);
+        {
+            ChoiceStyle style = new ChoiceStyle(directorClass, "style");
+            StringAttribute a;
+            for (int i = 0; i < modalDirectorClassNames.length; i++) {
+                a = new StringAttribute(style, "style"+i);
+                a.setExpression(modalDirectorClassNames[i]);
+            }
+        }
+
+        // NOTE: It would be much nicer if the director created the
+        // controller it likes (or has it configured) and returned it
+        // (zk 2002/09/11)
 
         // NOTE This controller will be described in the exported MoML
         // file, so when that is encountered, it will match this.
