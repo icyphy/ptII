@@ -48,7 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	BackgroundProcess.xml
+	FFT.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
