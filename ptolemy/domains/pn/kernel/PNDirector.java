@@ -83,7 +83,7 @@ This director is capable of handling mutations of graphs. These mutations can
 be non-deterministic. In PN, since the execution of a model is not centralized,
 it is impossible to define a useful fixed point in the execution of all the 
 active processes where mutations can occur. Due to this, PN permits mutations
-to happen as soon as they occur. Thus as soon as a process queues mutations
+to happen as soon as they are requested. Thus as soon as a process queues mutations
 in PN, the director is notified and the director pauses the simulation. Then 
 it performs all the mutations requested, and notifies the topology listeners.
 After this the execution is resumed.
@@ -91,9 +91,9 @@ After this the execution is resumed.
 In case of PN, a process can be paused only when it tries to communicate with
 other processes. A pause in PN is defined as a state when all processes are 
 blocked on a read, a write, delayed or are explicitly paused in the get() or
-put() method of the receiver. Thus if a process does not communicate with 
-other processes in the model, then the simulation can never pause in that 
-model.
+put() method of the receiver. Thus if there is a process that does not 
+communicate with other processes in the model, then the simulation can 
+never pause in that model.
 <p>
 
 
@@ -106,7 +106,7 @@ public class PNDirector extends ptolemy.actor.process.ProcessDirector {
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace. A 
      *  priority queue is created to keep a track of delayed actors. The 
-     *  default capacity of the queues in all the receivers set to 1.
+     *  default capacity of the queues in all the receivers is set to 1.
      */
     public PNDirector() {
         super();
@@ -126,8 +126,8 @@ public class PNDirector extends ptolemy.actor.process.ProcessDirector {
      *  string. The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace. A 
      *  priority queue is created to keep a track of delayed actors. The 
-     *  default capacity of the queues in all the receivers set to 1.
-     *  @param name Name of this object.
+     *  default capacity of the queues in all the receivers is set to 1.
+     *  @param name Name of this director.
      */
     public PNDirector(String name) {
         super(name);
@@ -148,7 +148,7 @@ public class PNDirector extends ptolemy.actor.process.ProcessDirector {
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace. A 
      *  priority queue is created to keep a track of delayed actors. The 
-     *  default capacity of the queues in all the receivers set to 1.
+     *  default capacity of the queues in all the receivers is set to 1.
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
      */
@@ -173,7 +173,7 @@ public class PNDirector extends ptolemy.actor.process.ProcessDirector {
      *  when requested. It suspends the thread corresponding to the 
      *  director until it is notified of either a request for mutation 
      *  or an occurrence of a deadlock. On notification, it calls the 
-     *  appropriate methods and returns. In case it is responding to a
+     *  appropriate method and returns. In case it is responding to 
      *  detection of a deadlock and the deadlock detected is a real 
      *  deadlock, it sets a flag forcing the postfire() method to return
      *  false whenever it is called next. 
@@ -311,8 +311,7 @@ public class PNDirector extends ptolemy.actor.process.ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
-    /** Return true if a deadlock(All real, artificial and delayed 
-     *  deadlocks) is detected.
+    /** Return true if a deadlock (real, artificial or timed) is detected.
      *  @return true if a deadlock is detected.
      */
     protected synchronized boolean _checkForDeadlock() {
@@ -326,7 +325,7 @@ public class PNDirector extends ptolemy.actor.process.ProcessDirector {
     }
 
     /** Return true if the execution has paused. 
-     *  @return true if a deadlock is detected.
+     *  @return true if the execution has paused.
      */
     protected synchronized boolean _checkForPause() {
 	//System.out.println("aac ="+_activeActorsCount+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" *PAUSED*"+"pausedcoint = "+_actorsPaused);
@@ -342,7 +341,7 @@ public class PNDirector extends ptolemy.actor.process.ProcessDirector {
      *  If a deadlock occurs or if the execution is paused as a consequence, 
      *  the director is notified of the same.
      */
-    synchronized void _delayBlock() {
+    synchronized protected void _delayBlock() {
 	_delayBlockCount++;
 	//System.out.println("Readblocked with count "+_readBlockCount);
 	if (_checkForDeadlock() || _checkForPause()) {
@@ -351,7 +350,7 @@ public class PNDirector extends ptolemy.actor.process.ProcessDirector {
 	return;
     }
 
-    /** Decreases the number of processes blocked on a delay.
+    /** Decrease the count of processes blocked on a delay.
      */
     synchronized protected void _delayUnblock() {
 	_delayBlockCount--;
@@ -476,7 +475,7 @@ public class PNDirector extends ptolemy.actor.process.ProcessDirector {
      *  consequence of an additional process being blocked. If either of the
      *  two is detected, it notifies the director of the same.
      */
-    synchronized void _readBlock() {
+    synchronized protected void _readBlock() {
 	_readBlockCount++;
 	//System.out.println("Readblocked with count "+_readBlockCount);
 	if (_checkForDeadlock() || _checkForPause()) {
@@ -488,7 +487,7 @@ public class PNDirector extends ptolemy.actor.process.ProcessDirector {
 
     /** Decrease the count of processes blocked on a read.
      */
-    synchronized  void _readUnblock() {
+    synchronized protected void _readUnblock() {
 	_readBlockCount--;
 	return;
     }
@@ -500,7 +499,7 @@ public class PNDirector extends ptolemy.actor.process.ProcessDirector {
      *  @param queue Receiver whose size equals capacity resulting in the
      *  writing process being blocked.
      */
-    synchronized void _writeBlock(PNQueueReceiver queue) {
+    synchronized protected void _writeBlock(PNQueueReceiver queue) {
 	_writeBlockCount++;
 	_writeblockedQs.insertFirst(queue);
 	//System.out.println("WriteBlockedQ "+_writeBlockCount );
@@ -514,7 +513,7 @@ public class PNDirector extends ptolemy.actor.process.ProcessDirector {
     /** Decrease the count of processes blocked on a write to a receiver.
      *  @param queue is the receiver on which the process was blocked.
      */
-    synchronized void _writeUnblock(PNQueueReceiver queue) {
+    synchronized protected void _writeUnblock(PNQueueReceiver queue) {
 	_writeBlockCount--;
 	_writeblockedQs.removeOneOf(queue);
 	return;
