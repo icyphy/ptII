@@ -929,6 +929,43 @@ public class NamedObj implements
         return null;
     }
 
+    /** Get the minimum level above this object in the hierarchy where a
+     *  parent-child relationship defines the existence of this object.
+     *  A value Integer.MAX_VALUE is used to indicate that this object is
+     *  not a derived object. A value of 1 indicates that the container
+     *  of the object is a child, and that the this object is derived
+     *  from a like object in the parent of the container. Etc.
+     *  If an object is derived, then normally has no persistent
+     *  representation when it is exported to MoML (unless it
+     *  is overridden), and normally it cannot have its name or
+     *  container changed.  An exception, however, is that the object
+     *  may appear in the MoML if the exported MoML does not include
+     *  the level of the hierarchy above this with the parent-child
+     *  relationship.
+     *  @return The level above this object in the containment
+     *   hierarchy where a parent-child relationship defines this object.
+     *  @see Instantiable
+     *  @see #setDerivedLevel(int)
+     */
+    public int getDerivedLevel() {
+        return _derivedLevel;
+    }
+
+    /** Return a list of objects derived from this one.
+     *  This is the list of objects that are "inherited" by their
+     *  containers from a container of this object.
+     *  All objects in the returned list are of the same
+     *  class as this object.
+     *  @return A list of derived objects of the same class as this object.
+     */
+    public List getDerivedList() {
+        try {
+            return _getDerivedList(null, false, false, this, 0, null, null);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(ex);
+        }
+    }
+
     /** Get the MoML element name. This defaults to "entity"
      *  but can be set to something else by subclasses.
      *  @return The MoML element name for this object.
@@ -983,21 +1020,6 @@ public class NamedObj implements
             return _fullNameCache;
         } finally {
             _workspace.doneReading();
-        }
-    }
-
-    /** Return a list of objects derived from this one.
-     *  This is the list of objects that are "inherited" by their
-     *  containers from a container of this object.
-     *  All objects in the returned list are of the same
-     *  class as this object.
-     *  @return A list of derived objects of the same class as this object.
-     */
-    public List getDerivedList() {
-        try {
-            return _getDerivedList(null, false, false, this, 0, null, null);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(ex);
         }
     }
 
@@ -1149,28 +1171,6 @@ public class NamedObj implements
             return container.isDeferringChangeRequests();
         }
         return _deferChangeRequests;
-    }
-
-    /** Get the minimum level above this object in the hierarchy where a
-     *  parent-child relationship defines the existence of this object.
-     *  A value Integer.MAX_VALUE is used to indicate that this object is
-     *  not a derived object. A value of 1 indicates that the container
-     *  of the object is a child, and that the this object is derived
-     *  from a like object in the parent of the container. Etc.
-     *  If an object is derived, then normally has no persistent
-     *  representation when it is exported to MoML (unless it
-     *  is overridden), and normally it cannot have its name or
-     *  container changed.  An exception, however, is that the object
-     *  may appear in the MoML if the exported MoML does not include
-     *  the level of the hierarchy above this with the parent-child
-     *  relationship.
-     *  @return The level above this object in the containment
-     *   hierarchy where a parent-child relationship defines this object.
-     *  @see Instantiable
-     *  @see #setDerivedLevel(int)
-     */
-    public int getDerivedLevel() {
-        return _derivedLevel;
     }
 
     /** Return true if this object is persistent.
