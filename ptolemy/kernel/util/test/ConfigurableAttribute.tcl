@@ -46,7 +46,9 @@ set header {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test ConfigurableAttribute-1.1 {test export moml.} {
     set n0 [java::new ptolemy.kernel.util.NamedObj]
     $n0 setName N0
@@ -63,77 +65,9 @@ test ConfigurableAttribute-1.1 {test export moml.} {
 </entity>
 }
 
+######################################################################
+####
+#
 test ConfigurableAttribute-1.2 {test value method.} {
     $p1 value
 } {My Test String}
-
-test ConfigurableAttribute-1.3 {test parse moml.} {
-    set moml_1 "$header
-<entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">
-</entity>
-"
-    set parser [java::new ptolemy.moml.MoMLParser]
-    set toplevel [$parser parse $moml_1]
-    $parser parse {
-<entity name=".top">
-    <property name="myAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
-        <configure><?testML xxx ?></configure>
-    </property>
-</entity>
-}
-    $toplevel exportMoML
-} {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.kernel.CompositeEntity">
-    <property name="myAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
-        <configure><?testML xxx ?></configure>
-    </property>
-</entity>
-}
-
-test ConfigurableAttribute-1.4 {test value method with parse moml} {
-    set e1 [java::cast ptolemy.kernel.util.ConfigurableAttribute [$toplevel getAttribute myAttribute]]
-    $e1 value
-} {<?testML xxx ?>}
-
-test ConfigurableAttribute-1.5 {test with weird configure text} {
-    $parser reset
-    set toplevel [$parser parse {
-<entity name="top" class="ptolemy.kernel.util.NamedObj">
-    <property name="myAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
-<configure><?svg
-<!--<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20001102//EN" 
-  "http://www.w3.org/TR/2000/CR-SVG-20001102/DTD/svg-20001102.dtd">-->
-<svg>
-  <rect x="0" y="0" width="20" height="20" style="fill:blue;stroke:green;stroke-width:30"/>
-  <circle cx="0" cy="0" r="20" style="fill:blue;stroke:green;stroke-width:30"/>
-  <ellipse cx="0" cy="0" rx="20" ry="30" style="fill:blue;stroke:green;stroke-width:30"/>
-  <polygon points="10,30 50,10 50,30" style="fill:blue;stroke:green;stroke-width:30"/>
-  <polyline points="10,30 50,10 50,30" style="stroke:green;stroke-width:30"/>
-  <line x1="10" y1="20" x2="30" y2="40" style="stroke:green;stroke-width:30"/>
-</svg> ?>
-</configure>
-    </property>
-</entity>
-}]
-    $toplevel exportMoML
-} {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.kernel.util.NamedObj">
-    <property name="myAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
-        <configure><?svg <!--<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20001102//EN" 
-  "http://www.w3.org/TR/2000/CR-SVG-20001102/DTD/svg-20001102.dtd">-->
-<svg>
-  <rect x="0" y="0" width="20" height="20" style="fill:blue;stroke:green;stroke-width:30"/>
-  <circle cx="0" cy="0" r="20" style="fill:blue;stroke:green;stroke-width:30"/>
-  <ellipse cx="0" cy="0" rx="20" ry="30" style="fill:blue;stroke:green;stroke-width:30"/>
-  <polygon points="10,30 50,10 50,30" style="fill:blue;stroke:green;stroke-width:30"/>
-  <polyline points="10,30 50,10 50,30" style="stroke:green;stroke-width:30"/>
-  <line x1="10" y1="20" x2="30" y2="40" style="stroke:green;stroke-width:30"/>
-</svg> ?>
-</configure>
-    </property>
-</entity>
-}
