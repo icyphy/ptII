@@ -191,8 +191,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             TypeNameNode currentClass, JavaDecl currentPackage,
             int categories) {
 
-        System.out.println("StaticResolution.resolveAName(): " +
-				 nameString(name));
+        //System.out.println("StaticResolution.resolveAName(): " +
+	//			 nameString(name));
         ApplicationUtility.trace("StaticResolution.resolveAName(): " +
 				 nameString(name));
 
@@ -606,7 +606,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 					    JavaDecl currentPackage,
 					    int categories) {
 
-	System.out.println("StaticResolution._findPossibles():" +  name.getIdent());
+	//System.out.println("StaticResolution._findPossibles():" +  name.getIdent());
         EnvironIter possibles = new EnvironIter();
 
         if (name.getQualifier() == AbsentTreeNode.instance) {
@@ -615,7 +615,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		     CG_FORMAL | CG_USERTYPE)) != 0) {
                 possibles = env.lookupFirst(name.getIdent(), categories);
             } else {
-                System.out.println("StaticResolution._findPossibles(): looking up package " + name.getIdent());
+                //System.out.println("StaticResolution._findPossibles(): looking up package " + name.getIdent());
                 possibles = ((Environ) SYSTEM_PACKAGE.getEnviron())
                     .lookupFirst(name.getIdent(), categories);
             }
