@@ -350,7 +350,7 @@ public class PortConfigurerDialog extends PtolemyDialog
         for (int i = 0; i < _portTableModel.getRowCount(); i++) {
             if (portNameInTable[i].equals("")) {
                 JOptionPane.showMessageDialog(this,
-                        "All Ports need to have a name");
+                        "All Ports need to have a name.");
                 return;
             }
         }
@@ -1143,133 +1143,176 @@ public class PortConfigurerDialog extends PtolemyDialog
         private String _message = null;
     }
 
-    /** Editor for a table cell that takes a string.
-     */
-    class StringCellEditor extends AbstractCellEditor implements TableCellEditor,
-                                                                 ActionListener {
-        /** Construct a String cell editor. */
-        public StringCellEditor() {
-            button = new JButton();
-            button.setActionCommand("edit");
-            button.addActionListener(this);
+    /**
+       A validating JTextField table cell editor for use with JTable.
+       To determine if a selection is valid, this class uses the 
+       CellValidator class.
+ 
+       <p>Based on IntegerEditor from
+       http://java.sun.com/docs/books/tutorial/uiswing/components/example-1dot4/IntegerEditor.java
+
+       @author Christopher Brooks, Sun Microsystems
+       @version $Id$
+       @since Ptolemy II 5.1
+       @Pt.ProposedRating Red (eal)
+       @Pt.AcceptedRating Red (eal)
+    */
+    public class ValidatingJTextFieldCellEditor extends DefaultCellEditor {
+
+        /** Construct a validating JTextField JTable Cell editor.
+          */   
+        public ValidatingJTextFieldCellEditor() {
+            super(new JTextField());
+        }
+
+        /** Construct a validating JTextField JTable Cell editor.
+         *  @param jTextField The JTextField that provides choices.
+         */   
+        public ValidatingJTextFieldCellEditor(final JTextField jTextField) {
+            super(jTextField);
+            
+            _jTextField = (JTextField)getComponent();
+
+            // React when the user presses Enter while the editor is
+            // active.  (Tab is handled as specified by
+            // JFormattedTextField's focusLostBehavior property.)
+            jTextField.getInputMap().put(KeyStroke.getKeyStroke(
+                                               KeyEvent.VK_ENTER, 0),
+                    "check");
+            jTextField.getActionMap().put("check", new AbstractAction() {
+                    public void actionPerformed(ActionEvent e) {
+                        boolean valid = true;
+                        if (_validator != null) {
+                            valid = _validator.isValid(
+                                    (String)(jTextField.getText()));
+                        }
+                        if (!valid) {
+                            userSaysRevert(
+                                    (String)(jTextField.getText()));
+                        } else {
+                            jTextField.postActionEvent(); //stop editing
+                        }
+                    }
+                });
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+        /**
+         */
+        public Component getTableCellEditorComponent(JTable table,
+                Object value, boolean isSelected,
+                int row, int column) {
+            JTextField jTextField =
+                (JTextField)super.getTableCellEditorComponent(
+                        table, value, isSelected, row, column);
+            _oldValue = jTextField.getText();
+            jTextField.setText((String)value);
+            return jTextField;
         }
 
         /** Get the cell editor value.
-         *  
+         *  @returns The string value of the selected item in the combobox.
          */
         public Object getCellEditorValue() {
-            return currentLabel;
+            // FIXME: do we need to get jTextField like this each time?
+            JTextField jTextField = (JTextField)getComponent();
+            Object o = jTextField.getText();
+            return o.toString();
         }
 
-        public Component getTableCellEditorComponent(JTable table,
-                Object value, boolean isSelected, int row, int col) {
-            _jTable = table;
-            currentLabel = (String) value;
-            button.setText(currentLabel);
-            return button;
-        }
-
+        /** Set the validator.
+         *  @param validator The validator.
+         */
         public void setValidator(CellValidator validator) {
             _validator = validator;
         }
 
-        /** Invoked when an action occurs.
-         *  If the command is "edit", then this method creates a 
-         *  dialog box that contains the component returned
-         *  by _setMessage().  
-         *  If the command is "OK", then this method creates
-         *  validates the string returned by _getMessage()
-         *  @param e The event.
+        /** Check the selection and determine whether we should stop editing.
+         *  If the selection is invalid, ask the user if they want to revert.
+         *  If the selection is valid, then call stopCellEditing in the super
+         *  class
+         *  @return False if the selection is invalid.  Otherwise,
+         *  return whatever super.stopCellEditing() returns.
          */
-        public void actionPerformed(ActionEvent e) {
-            String command = e.getActionCommand();
-
-            if (command.equals("edit")) {
-                Component source = (Component) e.getSource();
-                pane = new JOptionPane();
-
-                JButton[] options = new JButton[2];
-                options[0] = new JButton("OK");
-                options[0].addActionListener(this);
-                options[1] = new JButton("Cancel");
-                options[1].addActionListener(this);
-                Object[] msg = { null, _setMessage()};
-                pane.setMessage(msg);
-                pane.setMessageType(JOptionPane.QUESTION_MESSAGE);
-
-                pane.setOptions(options);
-
-                Point p = source.getLocation();
-                SwingUtilities.convertPointToScreen(p, _jTable);
-                dialog = pane.createDialog(source, null);
-                dialog.addWindowListener(new WindowAdapter() {
-                        public void windowClosing(WindowEvent e) {
-                            fireEditingCanceled();
-                            dialog.dispose();
-                        }
-                    });
-                dialog.setLocation(p);
-                dialog.show();
-            } else if (command.equals("OK")) {
-                String newValue = _getMessage();
-                boolean valid = true;
-
-                if (_validator != null) {
-                    valid = _validator.isValid(newValue);
-                }
-
-                if (valid) {
-                    currentLabel = newValue;
-                    fireEditingStopped();
-                    dialog.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(dialog,
-                            _validator.getMessage(), "alert",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-
-                return;
-            } else if (command.equals("Cancel")) {
-                fireEditingCanceled();
-                dialog.dispose();
+        public boolean stopCellEditing() {
+            // FIXME: do we need to get jTextField like this each time?
+            JTextField jTextField = (JTextField)getComponent();
+            if (jTextField.getText() == null) {
+                // FIXME: why does the selected item get set to null sometimes?
+                jTextField.setText("");
             }
+            boolean valid = true;
+            if (_validator != null) {
+                valid = _validator.isValid(
+                        (String)(jTextField.getText()));
+            }
+            if (!valid) {
+                if (_userWantsToEdit) {
+                    // User already selected edit, don't ask twice.
+                    _userWantsToEdit = false;
+                    return false;
+                } else {
+                    if (!userSaysRevert((String)(jTextField.getText()))) {
+                        _userWantsToEdit = true;
+                        return false; //don't let the editor go away
+                    } 
+                }
+            }
+            return super.stopCellEditing();
         }
 
-        /** Return the message from the widget.
-         *  In this base class, the message is the text value of
-         *  the JTextField.
-         *  @return the message
-         */ 
-        protected String _getMessage() {
-            return valueText.getText();
-        }
+        ///////////////////////////////////////////////////////////////////
+        ////                         protected methods                 ////
 
-        /** Get the current label.
-         *  @return The label.
+        /** Return true if the user wants to revert to the original value.
+         *  A dialog box pops up that tells the user that their selection
+         *  is invalid.
+         *  @param selectedItem The selected item.
+         *  @return True if the user elects to revert to the last good
+         *  value.  Otherwise, returns false, indicating that the user
+         *  wants to continue editing.
          */
-        protected String _getText() {
-            return currentLabel;
+        protected boolean userSaysRevert(String selectedItem) {
+            Toolkit.getDefaultToolkit().beep();
+            _jTextField.selectAll();
+            Object[] options = {"Edit",
+                                "Revert"};
+            int answer = JOptionPane.showOptionDialog(
+                    SwingUtilities.getWindowAncestor(_jTextField),
+                    "The value \"" + selectedItem + "\" is not valid:\n"
+                    + _validator.getMessage()
+                    + "\nYou can either continue editing "
+                    + "or revert to the last valid value \"" + _oldValue + "\".",
+                    "Invalid Text Entered",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.ERROR_MESSAGE,
+                    null,
+                    options,
+                    options[1]);
+	    
+            if (answer == 1) { //Revert!
+                _jTextField.setText((String)_oldValue);
+                return true;
+            }
+            return false;
         }
 
-        /** Set the message.
-         *  @return an Object suitable as an element in the
-         *  Object array that is passed JOptionPane.setMessage(Object[])
-         */ 
-        protected Object _setMessage() {
-            valueText = new JTextField(currentLabel);
-            valueText.setOpaque(true);
-            valueText.setBackground(Color.white);
-            valueText.setEnabled(true);
-            return valueText;
-        }
+        ///////////////////////////////////////////////////////////////////
+        ////                         private variables                 ////
 
-        String currentLabel;
-        JButton button;
-        JDialog dialog = null;
-        JTable _jTable;
-        JOptionPane pane = null;
-        CellValidator _validator;
-        JTextField valueText = null;
+        /** The JTextField. */
+        private JTextField _jTextField;
+
+        /** Old value of the JTextField. */
+        private Object _oldValue;
+
+        /** True if the user wants to edit after having an invalid selection.*/
+        private boolean _userWantsToEdit;
+
+        /** Class that validates the cell. */
+        private CellValidator _validator;
     }
 
     /**
@@ -1286,8 +1329,7 @@ public class PortConfigurerDialog extends PtolemyDialog
        @Pt.ProposedRating Red (eal)
        @Pt.AcceptedRating Red (eal)
     */
-    public class ValidatingComboBoxCellEditor extends 
-                                                           DefaultCellEditor {
+    public class ValidatingComboBoxCellEditor extends DefaultCellEditor {
 
         /** Construct a validating combo box JTable Cell editor.
          *  @param comboBox The combo box that provides choices.
@@ -1309,7 +1351,7 @@ public class PortConfigurerDialog extends PtolemyDialog
                             valid = _validator.isValid(
                                     (String)(comboBox.getSelectedItem()));
                         }
-                        if (valid) {
+                        if (!valid) {
                             userSaysRevert(
                                     (String)(comboBox.getSelectedItem()));
                         }
@@ -1857,14 +1899,17 @@ public class PortConfigurerDialog extends PtolemyDialog
         _portTable.setDefaultRenderer(Boolean.class,
                 new PortBooleanCellRenderer());
         _portTable.setDefaultRenderer(String.class, new StringCellRenderer());
-        _portTable.setDefaultEditor(String.class, new StringCellEditor());
+        _portTable.setDefaultEditor(String.class,
+                new ValidatingJTextFieldCellEditor());
         _enableApplyButton(false);
 
         if (_columnNames.contains(ColumnNames.COL_NAME)) {
             int col = _columnNames.indexOf(ColumnNames.COL_NAME);
-            TableColumn _portNameColumn = ((TableColumn) (_portTable.getColumnModel()
-                                                   .getColumn(col)));
-            final StringCellEditor portNameEditor = new StringCellEditor();
+            TableColumn _portNameColumn = ((TableColumn)
+                    (_portTable.getColumnModel()
+                            .getColumn(col)));
+            final ValidatingJTextFieldCellEditor portNameEditor =
+                new ValidatingJTextFieldCellEditor(new JTextField());
             _portNameColumn.setCellEditor(portNameEditor);
             portNameEditor.setValidator(new CellValidator() {
                     /////////////////////////////////////////
@@ -1875,6 +1920,11 @@ public class PortConfigurerDialog extends PtolemyDialog
                         if (index >= 0) {
                             setMessage(cellValue + " contains a period in col "
                                     + (index + 1));
+                            return false;
+                        }
+                        if (cellValue.equals("")) {
+                            setMessage("Ports cannot have the empty string "
+                                    + "as a name.");
                             return false;
                         }
 
