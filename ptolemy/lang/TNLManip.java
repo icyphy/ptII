@@ -148,6 +148,14 @@ public class TNLManip {
         }
     }
 
+    /** Return a string representation of the list.
+     *  @param list The list of nodes to print.
+     *  @return A string representation.
+     */
+    public static final String toString(List list) {
+	return TNLManip.toString(list, "");
+    }
+
     /** Return a string representation of the list. The string representation
      *  is prefixed by the argument string.
      *  @param list The list of nodes to print.

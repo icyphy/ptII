@@ -191,6 +191,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             TypeNameNode currentClass, JavaDecl currentPackage,
             int categories) {
 
+        System.out.println("StaticResolution.resolveAName(): " +
+				 nameString(name));
         ApplicationUtility.trace("StaticResolution.resolveAName(): " +
 				 nameString(name));
 
@@ -508,6 +510,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         System.out.println("StaticResolution<static>: env: " + env.toString());
 	JAVA_LANG_PACKAGE = _importPackage(env, javaLangName);
 
+
         System.out.println("StaticResolution<static>: --- require class on Object ---" + (System.currentTimeMillis() - startTime));
 
         OBJECT_DECL = _requireClass(env, "Object");
@@ -603,6 +606,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 					    JavaDecl currentPackage,
 					    int categories) {
 
+	System.out.println("StaticResolution._findPossibles():" +  name.getIdent());
         EnvironIter possibles = new EnvironIter();
 
         if (name.getQualifier() == AbsentTreeNode.instance) {
