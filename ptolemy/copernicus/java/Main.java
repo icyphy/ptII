@@ -355,15 +355,15 @@ public class Main extends KernelMain {
  
      //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
 //                                               TypeSpecializer.v(_toplevel)));
-    //     Scene.v().getPack("wjtp").add(
-//                 new Transform("wjtp.ttn",
-//                         TokenToNativeTransformer.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ttn",
+                        TokenToNativeTransformer.v(_toplevel)));
 
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.finalSnapshot",
                         JimpleWriter.v()));
 
-        //      _addStandardOptimizations(Scene.v().getPack("wjtp"));
+        //        _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.watchDogCancel",

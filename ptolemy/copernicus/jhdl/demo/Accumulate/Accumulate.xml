@@ -2,6 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Accumulate" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
@@ -16,8 +17,8 @@
         <property name="_location" class="ptolemy.moml.Location" value="110.0, 69.5">
         </property>
     </property>
-    <entity name="Accum" class="ptolemy.copernicus.jhdl.demo.Accumulate.Accum">
-        <property name="_location" class="ptolemy.moml.Location" value="264.0, 208.5">
+    <entity name="Accumulate" class="ptolemy.copernicus.jhdl.demo.Accumulate.Accum">
+        <property name="_location" class="ptolemy.moml.Location" value="225.0, 135.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -42,7 +43,7 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="90.0, 210.0">
+        <property name="_location" class="ptolemy.moml.Location" value="100.0, 125.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -56,7 +57,7 @@
         <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         </property>
         <doc>Write out tokens to a file or stdout</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="416.5, 209.5">
+        <property name="_location" class="ptolemy.moml.Location" value="320.0, 135.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -67,8 +68,8 @@
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Accum.input" relation="relation"/>
-    <link port="Accum.output" relation="relation2"/>
+    <link port="Accumulate.input" relation="relation"/>
+    <link port="Accumulate.output" relation="relation2"/>
     <link port="Const.output" relation="relation"/>
     <link port="FileWriter.input" relation="relation2"/>
 </entity>

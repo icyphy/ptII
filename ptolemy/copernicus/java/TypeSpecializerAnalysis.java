@@ -131,6 +131,12 @@ public class TypeSpecializerAnalysis {
                 System.out.println("Inequality: "
                         + inequalities.next().toString());
             }
+            System.err.println("Unsatisfied Inequalities:");
+            inequalities = _solver.unsatisfiedInequalities();
+            while (inequalities.hasNext()) {
+                System.err.println("Inequality: "
+                        + inequalities.next().toString());
+            }
           
             //       throw new RuntimeException("NO Type solution found!");
         }
