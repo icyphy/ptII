@@ -169,16 +169,39 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
 
     puts "adjusted modelPath: $modelPath"
     puts "modelName: $modelName"
-    set command compile${codeGenType}Demo
 
+    # If this is deep code gen, then check that the model is a flat sdf model
+    if { ${codeGenType} == "Deep" } {
+	set compositeActor [java::cast ptolemy.actor.CompositeActor $toplevel]
+	set director [$compositeActor getDirector]
+	if ![java::instanceof \
+		$director ptolemy.domains.sdf.kernel.SDFDirector] {
+	    return "$modelPath:  Deep codegen only works on SDF.\n\
+		    The director is not a SDFDirector, it is a $director"
+	}
+    
+	set deepEntityList [$compositeActor deepEntityList]
+	for {set i 0} {$i < [$deepEntityList size]} {incr i} {
+	    set containedActor [$deepEntityList get $i]
+	    if [java::instanceof $containedActor \
+		    ptolemy.actor.TypedCompositeActor] {
+		return "$modelPath:  Deep codegen only works on flat models"
+	    }
+
+	}
+	puts "We can run Deep codegen on $modelName"
+    }
+
+    return
+    set command compile${codeGenType}Demo
     puts "Now running 'make ... $command', this could take 60 seconds or so"
 
     set results ""
     # make -C is a GNU make extension that changes to a directory
 #    set results ""
     set command compile${codeGenType}Demo
-    exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command
-
+    set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command]
+    puts $results
 #    if [catch {set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command]]} errMsg] {
 #	puts $results
 #	puts $errMsg
