@@ -61,7 +61,7 @@ set plotIn [$inEnum nextElement]
 
 set r1 [$sys connect $clockOut $plotIn R1]
 
-$dir setStopTime 10.0
+$dir setStopTime 20.0
 $exec run
 
 #set const [java::new ptolemy.domains.ct.lib.CTConst $sys Const]
