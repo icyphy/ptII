@@ -184,14 +184,15 @@ BASECLASSFILES = \
 		$(ME)/PlotDataException.class \
 		$(ME)/PlotPoint.class \
 		'$(ME)/Plot$$Format.class' \
-		'$(ME)/Plot/PlotFormatter$$1.class' \
-		'$(ME)/Plot/PlotFormatter$$2.class' \
-		'$(ME)/Plot/PlotFormatter.class' \
+		'$(ME)/PlotFormatter$$1.class' \
+		'$(ME)/PlotFormatter$$2.class' \
+		'$(ME)/PlotFormatter.class' \
 		'$(ME)/PlotBox$$CommandListener.class' \
 		'$(ME)/PlotBox$$DragListener.class' \
 		'$(ME)/PlotBox$$ZoomListener.class' \
 		$(ME)/img/fill.gif \
 		$(ME)/img/format.gif \
+		$(ME)/img/print.gif \
 		$(ME)/img/reset.gif
 
 # Class files used in simple applets
