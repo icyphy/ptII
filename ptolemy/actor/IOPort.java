@@ -2291,10 +2291,17 @@ public class IOPort extends ComponentPort {
      *  director of the container, if there is one.
      *  It is write-synchronized on the workspace, and increments
      *  the version of the workspace.
-     *
      *  @param isInput True to make the port an input.
+     *  @exception IllegalActionException If changing the port status is
+     *   not permitted (for example, the port status is fixed by a class
+     *   definition).
      */
-    public void setInput(boolean isInput) {
+    public void setInput(boolean isInput) throws IllegalActionException {
+        if (isClassElement() && isInput != _isInput) {
+            throw new IllegalActionException(this,
+                    "Cannot change whether this port is an input." +
+                    " That property is fixed by the class definition.");
+        }
         // No need for the try ... finally construct here because no
         // exception can occur.  Note that although the action here is
         // atomic, we still need to obtain write access to be sure that
@@ -2317,10 +2324,17 @@ public class IOPort extends ComponentPort {
      *  This method invalidates the schedule and resolved types of the
      *  director of the container, if there is one.
      *  It is write-synchronized on the workspace.
-     *
      *  @param isMultiport True to make the port a multiport.
+     *  @exception IllegalActionException If changing the port status is
+     *   not permitted (for example, the port status is fixed by a class
+     *   definition).
      */
-    public void setMultiport(boolean isMultiport) {
+    public void setMultiport(boolean isMultiport) throws IllegalActionException {
+        if (isClassElement() && isMultiport != _isMultiport) {
+            throw new IllegalActionException(this,
+                    "Cannot change whether this port is a multiport." +
+                    " That property is fixed by the class definition.");
+        }
         // No need for the try ... finally construct here because no
         // exception can occur.  Note that although the action here is
         // atomic, we still need to obtain write access to be sure that
@@ -2341,10 +2355,17 @@ public class IOPort extends ComponentPort {
      *  director of the container, if there is one.
      *  It is write-synchronized on the workspace, and increments
      *  the version of the workspace.
-     *
      *  @param isOutput True to make the port an output.
+     *  @exception IllegalActionException If changing the port status is
+     *   not permitted (for example, the port status is fixed by a class
+     *   definition).
      */
-    public void setOutput(boolean isOutput) {
+    public void setOutput(boolean isOutput) throws IllegalActionException {
+        if (isClassElement() && isOutput != _isOutput) {
+            throw new IllegalActionException(this,
+                    "Cannot change whether this port is an output." +
+                    " That property is fixed by the class definition.");
+        }
         // No need for the try ... finally construct here because no
         // exception can occur.  Note that although the action here is
         // atomic, we still need to obtain write access to be sure that

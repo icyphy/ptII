@@ -978,8 +978,11 @@ public class IterateOverArray extends TypedCompositeActor {
 
         /** Override the base class to also set the associated port,
          *  if there is one.
+         *  @exception IllegalActionException If changing the port status is
+         *   not permitted (for example, the port status is fixed by a class
+         *   definition).
          */
-        public void setInput(boolean isInput) {
+        public void setInput(boolean isInput) throws IllegalActionException {
             super.setInput(isInput);
             if (_associatedPort instanceof IOPort) {
                 ((IOPort)_associatedPort).setInput(isInput);
@@ -988,8 +991,11 @@ public class IterateOverArray extends TypedCompositeActor {
 
         /** Override the base class to also set the associated port,
          *  if there is one.
+         *  @exception IllegalActionException If changing the port status is
+         *   not permitted (for example, the port status is fixed by a class
+         *   definition).
          */
-        public void setMultiport(boolean isMultiport) {
+        public void setMultiport(boolean isMultiport) throws IllegalActionException {
             super.setMultiport(isMultiport);
             if (_associatedPort instanceof IOPort) {
                 ((IOPort)_associatedPort).setMultiport(isMultiport);
@@ -1009,8 +1015,11 @@ public class IterateOverArray extends TypedCompositeActor {
 
         /** Override the base class to also set the associated port,
          *  if there is one.
+         *  @exception IllegalActionException If changing the port status is
+         *   not permitted (for example, the port status is fixed by a class
+         *   definition).
          */
-        public void setOutput(boolean isOutput) {
+        public void setOutput(boolean isOutput) throws IllegalActionException {
             super.setOutput(isOutput);
             if (_associatedPort instanceof IOPort) {
                 ((IOPort)_associatedPort).setOutput(isOutput);
