@@ -862,116 +862,6 @@ public class ComplexMatrixMath {
         return returnValue;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    /** Given a set of row vectors rowArrays[0] ... rowArrays[n-1], compute :
-     * <ol>
-     *  <li>A new set of row vectors out[0] ... out[n-1] which are the
-     *  orthogonalized versions of each input row vector. If a row
-     *  vector rowArray[i] is a linear combination of the last 0 .. i
-     *  - 1 row vectors, set array[i] to an array of 0's (array[i]
-     *  being the 0 vector is a special case of this). Put the result
-     *  in returnValue[0].<br>
-     *
-     * <li> An n x n matrix containing the dot products of the input
-     *     row vectors and the output row vectors,
-     *     dotProductMatrix[j][i] = <rowArray[i], outArray[j]>.  Put
-     *     the result in returnValue[1].<br>
-     *
-     * <li> An array containing 1 / (norm(outArray[i])<sup>2</sup>),
-     *     with n entries.  Put the result in returnValue[2].<br>
-     *
-     * <li> A count of the number of rows that were found to be linear
-     *     combinations of previous rows. Replace those rows with rows
-     *     of zeros. The count is equal to the nullity of the
-     *     transpose of the input matrix. Wrap the count with an
-     *     Integer, and put it in returnValue[3].
-     * </ol>
-     *  Orthogonalization is done with the Gram-Schmidt process.
-     * <p>
-     * @param rowArrays A set of row vectors.
-     * @return An orthogonal set of vectors.
-     * </p>
-     */
-    protected static final Object[] _orthogonalizeRows(
-            final Complex[][] rowArrays) {
-        int rows = rowArrays.length;
-        int columns =  rowArrays[0].length;
-        int nullity = 0;
-
-        Complex[][] orthogonalMatrix = new Complex[rows][];
-
-        Complex[] oneOverNormSquaredArray = new Complex[rows];
-
-        // A matrix containing the dot products of the input row
-        // vectors and output row vectors, dotProductMatrix[j][i] =
-        // <rowArray[i], outArray[j]>
-        Complex[][] dotProductMatrix = new Complex[rows][rows];
-
-        for (int i = 0; i < rows; i++) {
-            // Get a reference to the row vector.
-            Complex[] refArray = rowArrays[i];
-
-            // Initialize row vector.
-            Complex[] rowArray = refArray;
-
-            // Subtract projections onto all previous vectors.
-            for (int j = 0; j < i; j++) {
-
-                // Save the dot product for future use for QR decomposition.
-                Complex dotProduct =
-                    ComplexArrayMath.dotProduct(refArray, orthogonalMatrix[j]);
-
-                dotProductMatrix[j][i] = dotProduct;
-
-                rowArray = ComplexArrayMath.subtract(rowArray,
-                        ComplexArrayMath.scale(orthogonalMatrix[j],
-                                dotProduct.multiply(oneOverNormSquaredArray[j])));
-            }
-
-            // Compute the dot product between the input and output vector
-            // for the diagonal entry of dotProductMatrix.
-            dotProductMatrix[i][i] =
-                ComplexArrayMath.dotProduct(refArray, rowArray);
-
-            // Check the norm to find zero rows, and save the 1 /
-            // norm^2 for later computation.
-            double normSqrd = ComplexArrayMath.l2normSquared(rowArray);
-	    
-	    Complex normSquared = new Complex (normSqrd, 0.0);
-
-	    Complex Zero_Complex = new Complex(0.0,0.0);
-            if (normSquared == Zero_Complex) {
-                if (i == 0) {
-                    // The input row was the zero vector, we now have
-                    // a reference to it.  Set the row to a new zero
-                    // vector to ensure the output memory is entirely
-                    // disjoint from the input memory.
-                    orthogonalMatrix[i] = new Complex[columns];
-                } else {
-                    // Reuse the memory allocated by the last
-                    // subtract() call -- the row is all zeros.
-                    orthogonalMatrix[i] = rowArray;
-                }
-
-                // set the normalizing factor to 0.0 to avoid division by 0,
-                // it works because the projection onto the zero vector yields
-                // zero
-                oneOverNormSquaredArray[i] = Zero_Complex;
-
-                nullity++;
-            } else {
-                orthogonalMatrix[i] = rowArray;
-		Complex One_Complex = new Complex (1.0,0.0);
-                oneOverNormSquaredArray[i] = One_Complex.divide(normSquared);
-            }
-        }
-        return new Object[] { orthogonalMatrix, dotProductMatrix,
-                              oneOverNormSquaredArray,
-                              new Integer(nullity) };
-    }
-
-
     /** Return a new matrix that is formed by orthogonalizing the
      *  columns of the input matrix (the column vectors are
      *  orthogonal). If not all columns are linearly independent, the
@@ -983,10 +873,24 @@ public class ComplexMatrixMath {
      *  columns of the input matrix.
      *  </p>
      */
-    public static final Complex[][] orthogonalizeColumns(
-            final Complex[][] matrix) {
+    public static final Complex[][] orthogonalizeColumns(Complex[][] matrix) {
         Object[] orthoInfo = _orthogonalizeRows(transpose(matrix));
         return transpose((Complex[][]) orthoInfo[0]);
+    }
+
+    /** Return a new matrix that is formed by orthogonalizing the rows of the
+     *  input matrix (the row vectors are orthogonal). If not all rows are
+     *  linearly independent, the output matrix will contain a row of zeros
+     *  for all redundant input rows.
+     *  <p>
+     *  @param matrix A matrix of complex numbers.
+     *  @return A new matrix formed by orthogonalizing the
+     *  rows of the input matrix.
+     *  </p>
+     */
+    public static final Complex[][] orthogonalizeRows(Complex[][] matrix) {
+        Object[] orthoInfo = _orthogonalizeRows(matrix);
+        return (Complex[][]) orthoInfo[0];
     }
 
     /** Return a new matrix that is formed by orthonormalizing the
@@ -1000,24 +904,8 @@ public class ComplexMatrixMath {
      *  columns of the input matrix.
      *  </p>
      */
-    public static final Complex[][] orthonormalizeColumns(
-            final Complex[][] matrix) {
+    public static final Complex[][] orthonormalizeColumns(Complex[][] matrix) {
         return transpose(orthogonalizeRows(transpose(matrix)));
-    }
-
-    /** Return a new matrix that is formed by orthogonalizing the rows of the
-     *  input matrix (the row vectors are orthogonal). If not all rows are
-     *  linearly independent, the output matrix will contain a row of zeros
-     *  for all redundant input rows.
-     *  <p>
-     *  @param matrix A matrix of complex numbers.
-     *  @return A new matrix formed by orthogonalizing the
-     *  rows of the input matrix.
-     *  </p>
-     */
-    public static final Complex[][] orthogonalizeRows(final Complex[][] matrix) {
-        Object[] orthoInfo = _orthogonalizeRows(matrix);
-        return (Complex[][]) orthoInfo[0];
     }
 
     /** Return a new matrix that is formed by orthonormalizing the
@@ -1047,10 +935,6 @@ public class ComplexMatrixMath {
 
         return orthogonalMatrix;
     }
-
-
-    /////////////////////////////////////////////////////////////////////////////////////
-
 
     /** Return a new matrix that is constructed from the argument by
      *  subtracting the second matrix from the first one.
@@ -1351,7 +1235,6 @@ public class ComplexMatrixMath {
         return within(matrix1, matrix2, doubleError);
     }
 
-
     /** Return a new complex matrix whose entries are all zero.
      *  The size of the matrix is specified by the input arguments.
      *  <p>
@@ -1363,6 +1246,9 @@ public class ComplexMatrixMath {
     public static final Complex[][] zero(int rows, int columns) {
         return _zeroMatrix(new Complex[rows][columns], rows, columns);
     }
+
+    /////////////////////////////////////////////////////////////////////////
+    ////                      protected methods                          ////
 
     /** Return the number of columns of a matrix.
      *  <p>
@@ -1424,6 +1310,120 @@ public class ComplexMatrixMath {
      */
     protected static final String _dimensionString(final Complex[][] matrix) {
         return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
+    }
+
+    /** Given a set of row vectors rowArrays[0] ... rowArrays[n-1], compute:
+     *  <ol>
+     *  <li> A new set of row vectors out[0] ... out[n-1] which are the
+     *       orthogonalized versions of each input row vector. If a row
+     *       vector rowArray[i] is a linear combination of the last 0 .. i
+     *       - 1 row vectors, set array[i] to an array of 0's (array[i]
+     *       being the 0 vector is a special case of this). Put the result
+     *       in returnValue[0].<br>
+     *
+     *  <li> An n x n matrix containing the dot products of the input
+     *       row vectors and the output row vectors,
+     *       dotProductMatrix[j][i] = <rowArray[i], outArray[j]>.  Put
+     *       the result in returnValue[1].<br>
+     *
+     *  <li> An array containing 1 / (norm(outArray[i])<sup>2</sup>),
+     *       with n entries.  Put the result in returnValue[2].<br>
+     *
+     *  <li> A count of the number of rows that were found to be linear
+     *       combinations of previous rows. Replace those rows with rows
+     *       of zeros. The count is equal to the nullity of the
+     *       transpose of the input matrix. Wrap the count with an
+     *       Integer, and put it in returnValue[3].
+     *  </ol>
+     *  Orthogonalization is done with the Gram-Schmidt process.
+     *  <p>
+     *  @param rowArrays A set of row vectors.
+     *  @return An array of four objects, where the first is the
+     *   orthogonal matrix, the second is a matrix containing the dot
+     *   products of the input rows with the output rows, the third is
+     *   an array of the reciprocals of the norms squared of the orthogonal
+     *   rows, and the fourth is an Integer containing the number of
+     *   linearly independent rows in the argument matrix.
+     *  </p>
+     */
+    protected static final Object[] _orthogonalizeRows(Complex[][] rowArrays) {
+        int rows = rowArrays.length;
+        int columns =  rowArrays[0].length;
+        int nullity = 0;
+
+        Complex[][] orthogonalMatrix = new Complex[rows][];
+
+        Complex[] oneOverNormSquaredArray = new Complex[rows];
+
+        // A matrix containing the dot products of the input row
+        // vectors and output row vectors, dotProductMatrix[j][i] =
+        // <rowArray[i], outArray[j]>
+        Complex[][] dotProductMatrix = new Complex[rows][rows];
+
+        for (int i = 0; i < rows; i++) {
+            // Get a reference to the row vector.
+            Complex[] refArray = rowArrays[i];
+
+            // Initialize row vector.
+            Complex[] rowArray = refArray;
+
+            // Subtract projections onto all previous vectors.
+            for (int j = 0; j < i; j++) {
+
+                // Save the dot product for future use for QR decomposition.
+                Complex dotProduct =
+                    ComplexArrayMath.dotProduct(refArray, orthogonalMatrix[j]);
+
+                dotProductMatrix[j][i] = dotProduct;
+
+                rowArray = ComplexArrayMath.subtract(rowArray,
+                        ComplexArrayMath.scale(orthogonalMatrix[j],
+                        dotProduct.multiply(oneOverNormSquaredArray[j])));
+            }
+
+            // Compute the dot product between the input and output vector
+            // for the diagonal entry of dotProductMatrix.
+            dotProductMatrix[i][i] =
+                ComplexArrayMath.dotProduct(refArray, rowArray);
+
+            // Check the norm to find zero rows, and save the 1 /
+            // norm^2 for later computation.
+            double normSqrd = ComplexArrayMath.l2normSquared(rowArray);
+	    
+	    Complex normSquared = new Complex (normSqrd, 0.0);
+
+	    Complex Zero_Complex = new Complex(0.0,0.0);
+            if (normSquared == Zero_Complex) {
+                if (i == 0) {
+                    // The input row was the zero vector, we now have
+                    // a reference to it.  Set the row to a new zero
+                    // vector to ensure the output memory is entirely
+                    // disjoint from the input memory.
+                    orthogonalMatrix[i] = new Complex[columns];
+                } else {
+                    // Reuse the memory allocated by the last
+                    // subtract() call -- the row is all zeros.
+                    orthogonalMatrix[i] = rowArray;
+                }
+
+                // Set the normalizing factor to 0.0 to avoid division by 0,
+                // it works because the projection onto the zero vector yields
+                // zero.
+                oneOverNormSquaredArray[i] = Zero_Complex;
+
+                nullity++;
+            } else {
+                orthogonalMatrix[i] = rowArray;
+		Complex One_Complex = new Complex (1.0,0.0);
+                oneOverNormSquaredArray[i] = One_Complex.divide(normSquared);
+            }
+        }
+        return new Object[] {
+            orthogonalMatrix,
+            dotProductMatrix,
+            oneOverNormSquaredArray,
+            new Integer(nullity)
+        };
     }
 
     /** Return the number of rows of a matrix. 
