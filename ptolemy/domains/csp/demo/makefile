@@ -48,10 +48,10 @@ TCL_SRCS =
 
 JSRCS = \
 	BasicDemo.java \
-	BothSidesCond.java \
+	PauseTest.java \
 	ThreeActor.java \
-	OneCond.java \
-	FourBranchCond.java
+	TimeTest.java \
+
 
 
 # Non-graphical Java demos written in Tcl
