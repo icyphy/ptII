@@ -107,6 +107,7 @@ awk '
       sawTestGeneratedError == 1 {
 			    sawTestGeneratedError--
 			    sawTestGeneratedErrorAndWatchDogTimer = 0
+			    completedSawTestGeneratedError = 1
 			    tmp = errorLine2 "\n" $0
 			    errorLine2 = tmp
 			    # Skip any lines that contain
@@ -150,11 +151,18 @@ awk '
 				}    
 			    }
 			    modelName2 = modelName2 f[nf]
+			    sawCommandFailed=0 
 			    sawTestGeneratedErrorAndWatchDogTimer = 0
+			    completedSawTestGeneratedError = 0
 	              }		    
     $0  ~/Command failed/ {
-                           sawTestGeneratedError=2
-    			   errorLine2=""
+			   # vq test1.xml will come up twice unless
+			   # we avoid Command Failed after Test Generated Err.
+			   if(completedSawTestGeneratedError == 0) {
+				sawCommandFailed=1 
+				sawTestGeneratedError=2
+				errorLine2=""
+			   }
                       }
     $0  ~/Exception occurred:/ {
                            sawTestGeneratedError=2
