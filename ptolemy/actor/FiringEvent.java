@@ -144,7 +144,7 @@ public class FiringEvent implements DebugEvent {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The acter that was activated.
+    // The actor that was activated.
     private Actor _actor;
     // The director that activated the actor.
     private Director _director;
