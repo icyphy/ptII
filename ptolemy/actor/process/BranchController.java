@@ -36,7 +36,6 @@ import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 import ptolemy.data.Token;
 import ptolemy.kernel.*;
-import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 
 // Java imports

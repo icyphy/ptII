@@ -33,7 +33,6 @@ package ptolemy.domains.pbo.kernel;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.event.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;

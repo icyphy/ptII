@@ -33,7 +33,6 @@ import java.util.List;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.domains.sdf.kernel.SDFDirector;

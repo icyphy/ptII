@@ -34,7 +34,6 @@ package ptolemy.actor;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.event.*;
 import ptolemy.data.*;
 
 import java.util.Iterator;
@@ -165,8 +164,6 @@ public class Director extends NamedObj implements Executable {
      *  of the associated actors throws it.
      */
     public void fire() throws IllegalActionException {
-        // Somewhere in here, constrained mutations should
-        // probably be allowed to occur.
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
             Iterator actors = container.deepEntityList().iterator();

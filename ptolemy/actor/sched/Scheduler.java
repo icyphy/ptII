@@ -32,7 +32,6 @@ package ptolemy.actor.sched;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
 
 import java.util.ArrayList;

@@ -34,7 +34,6 @@ package ptolemy.domains.csp.kernel;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 import ptolemy.data.Token;

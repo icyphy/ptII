@@ -33,7 +33,6 @@ package ptolemy.domains.csp.lib;
 
 import ptolemy.domains.csp.kernel.*;
 import ptolemy.kernel.*;
-import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;

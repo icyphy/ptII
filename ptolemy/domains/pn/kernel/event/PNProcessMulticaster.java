@@ -30,7 +30,8 @@
 
 package ptolemy.domains.pn.kernel.event;
 
-import ptolemy.kernel.event.ChangeRequest; // For Javadoc
+import ptolemy.kernel.util.ChangeRequest; // For Javadoc
+
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.Iterator;

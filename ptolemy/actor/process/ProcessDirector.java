@@ -33,7 +33,6 @@ package ptolemy.actor.process;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
 

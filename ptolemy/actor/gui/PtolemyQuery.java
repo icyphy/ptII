@@ -38,7 +38,6 @@ import ptolemy.gui.*;
 import ptolemy.actor.gui.style.*;
 import ptolemy.data.*;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 
 import java.awt.Container;
@@ -53,9 +52,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JTextArea;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyQuery
@@ -65,7 +61,7 @@ the values of Ptolemy II parameters.  One or more entries are
 associated with a parameter so that if the entry is changed, the
 parameter value is updated, and if the parameter value changes,
 the entry is updated. To change a parameter, this class queues
-a change request with a particular composite actor called the <i>change
+a change request with a particular object called the <i>change
 handler</i>.  The change handler is specified as a constructor
 argument.
 <p>
@@ -92,7 +88,7 @@ public class PtolemyQuery extends Query
      *  the parameters.  The handler is also used to report errors.
      *  @param handler The change handler.
      */
-    public PtolemyQuery(CompositeEntity handler) {
+    public PtolemyQuery(NamedObj handler) {
 	super();
 	addQueryListener(this);
 	_handler = handler;
@@ -344,11 +340,21 @@ public class PtolemyQuery extends Query
         }
     }
 
-    /** Unsubscribe as a listener to all objects that we have subscribed to.
+    /** Notify all listeners of any updated values, and then
+     *  unsubscribe as a listener to all objects that we have subscribed to.
      *  @param window The window that closed.
      *  @param button The name of the button that was used to close the window.
      */
     public void windowClosed(Window window, String button) {
+        // NOTE: It seems that we need to force notification of
+        // all changes before doing the restore!  Otherwise, some
+        // random time later, a line in the query might lose the focus,
+        // causing it to override a restore.  However, this has the
+        // unfortunate side effect of causing an erroneous entry to
+        // trigger a dialog even if the cancel button is pressed!
+        // No good workaround here.
+        // notifyListeners();
+
         _handler.removeChangeListener(PtolemyQuery.this);
 
         Iterator parameters = _parameters.values().iterator();
@@ -365,7 +371,7 @@ public class PtolemyQuery extends Query
     private ComponentDialog _dialog;
 
     // The handler that was specified in the constructors.
-    private CompositeEntity _handler;
+    private NamedObj _handler;
 
     // Indicator that this is an open dialog reporting an erroneous entry.
     private boolean _isOpenErrorWindow = false;

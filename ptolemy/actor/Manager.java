@@ -33,8 +33,6 @@ package ptolemy.actor;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.event.ChangeRequest;
-import ptolemy.kernel.event.ChangeListener;
 import ptolemy.data.type.TypeLattice;
 
 import java.util.Enumeration;
@@ -191,6 +189,18 @@ public class Manager extends NamedObj implements Runnable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Add a change listener.  Each listener
+     *  will be notified of the execution (or failure) of each 
+     *  change request that is executed via the requestChange() method.
+     *  If the listener is already in the list, do not add it again.
+     *  @param listener The listener to add.
+     */
+    public void addChangeListener(ChangeListener listener) {
+        if (!_changeListeners.contains(listener)) {
+            _changeListeners.add(listener);
+        }
+    }
 
     /** Add a listener to be notified when the model execution changes state.
      *  @param listener The listener.
@@ -407,7 +417,6 @@ public class Manager extends NamedObj implements Runnable {
         boolean result = true;
         try {
             _workspace.getReadAccess();
-            if(_debugging) _debug("Process change requests.");
             _processChangeRequests();
 
             // Initialize actors that have been added.
@@ -442,9 +451,9 @@ public class Manager extends NamedObj implements Runnable {
                     }
                     _actorsToInitialize.clear();
                 }
-                if(_debugging) _debug("Fire container.");
+                if(_debugging) _debug("Fire model.");
                 _container.fire();
-                if(_debugging) _debug("Postfire container.");
+                if(_debugging) _debug("Postfire model.");
                 result = _container.postfire();
             }
             if(_debugging) {
@@ -467,7 +476,7 @@ public class Manager extends NamedObj implements Runnable {
      *  @param ex The exception.
      */
     public void notifyListenersOfException(Exception ex) {
-	String errorMessage = new String("Exception Caught:" + ex.getClass());
+	String errorMessage = new String("Exception occurred:" + ex.getClass());
 	errorMessage += "(" + ex.getMessage() + ")";
         _debug(errorMessage);
         if (_executionListeners == null) {
@@ -512,16 +521,22 @@ public class Manager extends NamedObj implements Runnable {
         _executionListeners.remove(listener);
     }
 
+    /** Remove a change listener. If the specified listener is not
+     *  on the list of listeners, do nothing.
+     *  @param listener The listener to remove.
+     */
+    public void removeChangeListener(ChangeListener listener) {
+        _changeListeners.remove(listener);
+    }
+
     /** Queue a change request, or if the model is idle, execute it
      *  immediately.  If the request is queued, then it will be executed
      *  at the next opportunity, between top-level iterations of the model.
-     *  <p>
-     *  NOTE: This method should be not be called directly.
-     *  Instead, call the requestChange() method of the composite actor
-     *  associated with this manager.  This will ensure proper error reporting.
+     *  Notify any change listeners when the change is executed.
      *  @param change The requested change.
      */
     public void requestChange(ChangeRequest change) {
+        change.setListeners(_changeListeners);
 	// If the model is idle (i.e., initialize() has not yet been
 	// invoked), then process the change request right now.
 	if (_state == IDLE) {
@@ -563,7 +578,6 @@ public class Manager extends NamedObj implements Runnable {
 	try {
 	    _workspace.getWriteAccess();
             _setState(RESOLVING_TYPES);
-            if (_debugging) _debug("Resolving types.");
 
 	    List conflicts = new LinkedList();
             List typeConflicts =
@@ -787,7 +801,7 @@ public class Manager extends NamedObj implements Runnable {
      */
     protected void _notifyListenersOfStateChange() {
         if (_debugging) {
-            _debug(_state.getDescription());
+            _debug("State is: " + _state.getDescription());
         }
         if (_executionListeners != null) {
             String msg = _state.getDescription();
@@ -845,6 +859,10 @@ public class Manager extends NamedObj implements Runnable {
             while (enum.hasNext()) {
                 ChangeRequest request = (ChangeRequest)enum.next();
                 request.execute();
+                if (_debugging) {
+                    _debug("Manager executed change request with description: "
+                    + request.getDescription());
+                }
             }
         }
     }

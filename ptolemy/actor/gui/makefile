@@ -63,7 +63,8 @@ JSRCS = \
 	Placeable.java \
 	PtolemyApplet.java \
 	PtolemyApplication.java \
-	PtolemyQuery.java
+	PtolemyQuery.java \
+	TopDebugListener.java
 
 EXTRA_SRCS =	$(JSRCS)
 

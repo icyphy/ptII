@@ -138,7 +138,7 @@ import java.util.Iterator;
  *  real time.
  *  <p>
  *  This director tolerates changes to the model during execution.
- *  The change should be queued with the director or manager using
+ *  The change should be queued with a component in the hierarchy using
  *  requestChange().  While invoking those changes, the method
  *  invalidateSchedule() is expected to be called, notifying the director
  *  that the topology it used to calculate the priorities of the actors

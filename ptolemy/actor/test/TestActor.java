@@ -31,7 +31,6 @@ package ptolemy.actor.test;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////

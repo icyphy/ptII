@@ -29,10 +29,18 @@
 
 package ptolemy.actor.gui;
 
+import ptolemy.data.expr.Parameter;
 import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.Query;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLUtilities;
 
 import java.awt.Frame;
+import java.util.Iterator;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditParametersDialog
@@ -59,7 +67,8 @@ by the user.
 @author Edward A. Lee
 @version $Id$
 */
-public class EditParametersDialog extends ComponentDialog {
+public class EditParametersDialog extends ComponentDialog
+         implements ChangeListener {
 
     /** Construct a dialog with the specified owner and target.
      *  An "OK" and a "Cancel" button are added to the dialog.
@@ -72,7 +81,90 @@ public class EditParametersDialog extends ComponentDialog {
         super(owner,
              "Edit parameters for " + target.getName(),
              new Configurer(target),
-             null);
+             _moreButtons);
+        // Once we get to here, the dialog has already been dismissed.
+        _owner = owner;
+        _target = target;
+        if (buttonPressed().equals("Add")) {
+            _openAddDialog(null, "", "", "ptolemy.data.expr.Parameter");
+            _target.removeChangeListener(this);
+        } else if (buttonPressed().equals("Remove")) {
+            // Create a new dialog to remove a parameter, then open a new
+            // EditParametersDialog.
+            // First, create a string array with the names of all the
+            // parameters.
+            List attList = _target.attributeList(Parameter.class);
+            String[] attNames = new String[attList.size()];
+            Iterator params = attList.iterator();
+            int index = 0;
+            while (params.hasNext()) {
+                Parameter param = (Parameter)params.next();
+                attNames[index++] = param.getName();
+            }
+            Query query = new Query();
+            query.addChoice("delete", "Parameter to delete",
+                    attNames, null, false);
+
+            ComponentDialog dialog = new ComponentDialog(
+                    _owner,
+                    "Delete a parameter for " + _target.getFullName(),
+                    query,
+                    null);
+            // If the OK button was pressed, then queue a mutation
+            // to delete the parameter.
+            String delName = query.stringValue("delete");
+
+            if (dialog.buttonPressed().equals("OK") && !delName.equals("")) {
+                String moml = "<deleteProperty name=\""
+                        + delName
+                        + "\"/>";
+                _target.addChangeListener(this);
+                _target.requestChange(
+                         new MoMLChangeRequest(this, _target, moml));
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Notify the listener that a change has been successfully executed.
+     *  @param change The change that has been executed.
+     */
+    public void changeExecuted(ChangeRequest change) {
+        // Ignore if this is not the originator.
+        if (change.getOriginator() != this) return;
+
+        // Open a new dialog.
+        EditParametersDialog dialog = new EditParametersDialog(_owner, _target);
+
+        _target.removeChangeListener(this);
+    }
+
+    /** Notify the listener that a change has resulted in an exception.
+     *  @param change The change that was attempted.
+     *  @param exception The exception that resulted.
+     */
+    public void changeFailed(ChangeRequest change, Exception exception) {
+        // Ignore if this is not the originator.
+        if (change.getOriginator() != this) return;
+
+        _target.removeChangeListener(this);
+
+        String newName = _query.stringValue("name");
+        ComponentDialog dialog = _openAddDialog(exception.getMessage()
+                + "\n\nPlease enter a new default value:",
+                newName,
+                _query.stringValue("default"),
+                _query.stringValue("class"));
+        _target.removeChangeListener(this);
+        if (!dialog.buttonPressed().equals("OK")) {
+            // Remove the parameter, since it seems to be erroneous
+            // and the user hit cancel or close.
+            String moml = "<deleteProperty name=\"" + newName + "\"/>";
+            _target.requestChange(
+                    new MoMLChangeRequest(this, _target, moml));
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -83,9 +175,74 @@ public class EditParametersDialog extends ComponentDialog {
      */
     protected void _handleClosing() {
         super._handleClosing();
-        if (!(buttonPressed().equals("OK"))) {
+        if (!buttonPressed().equals("OK")
+                && !buttonPressed().equals("Add")
+                && !buttonPressed().equals("Remove")) {
             // Restore original parameter values.
             ((Configurer)contents).restore();
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Open a dialog to add a new parameter.
+     *  @param message A message to place at the top, or null if none.
+     *  @param name The default name.
+     *  @param defValue The default value.
+     *  @param className The default class name.
+     *  @return The dialog that is created.
+     */
+    private ComponentDialog _openAddDialog(
+            String message, String name, String defValue, String className) {
+        // Create a new dialog to add a parameter, then open a new
+        // EditParametersDialog.
+        _query = new Query();
+        if (message != null) _query.setMessage(message);
+        _query.addLine("name", "Name", name);
+        _query.addLine("default", "Default value", defValue);
+        _query.addLine("class", "Class", className);
+        ComponentDialog dialog = new ComponentDialog(
+                _owner,
+                "Add a new parameter to " + _target.getFullName(),
+                _query,
+                null);
+        // If the OK button was pressed, then queue a mutation
+        // to create the parameter.
+        // A blank property name is interepreted as a cancel.
+        String newName = _query.stringValue("name");
+
+        // Need to escape quotes in default value.
+        String newDefValue = MoMLUtilities.escapeAttribute(
+                _query.stringValue("default"));
+
+        if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
+            String moml = "<property name=\""
+                    + newName
+                    + "\" value=\""
+                    + newDefValue.toString()
+                    + "\" class=\""
+                    + _query.stringValue("class")
+                    + "\"/>";
+            _target.addChangeListener(this);
+            _target.requestChange(
+                    new MoMLChangeRequest(this, _target, moml));
+        }
+        return dialog;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Button labels.
+    private static String[] _moreButtons = {"OK", "Add", "Remove", "Cancel"};
+
+    // The owner window.
+    private Frame _owner;
+
+    // The query window for adding parameters.
+    private Query _query;
+
+    // The target object whose parameters are being edited.
+    private NamedObj _target;
 }
