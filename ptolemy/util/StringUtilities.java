@@ -516,7 +516,7 @@ public class StringUtilities {
         // NOTE: Use the dummy variable constant set up in the constructor.
         if (name.startsWith(_CLASSPATH_VALUE)) {
             // Try relative to classpath.
-            // The +1 is to skip over the delimitter after $CLASSPATH.
+            // The +1 is to skip over the delimiter after $CLASSPATH.
             String trimmedName = name.substring(_CLASSPATH_VALUE.length() + 1);
             if (classLoader == null) {
                 try {
