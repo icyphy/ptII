@@ -37,9 +37,26 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-######################################################################
-####
-#
-test CGC-1.1 {} {
-    list 1
-} {1}
+foreach file [glob auto/*.xml] {
+    set relativeFilename \
+	    [java::call ptolemy.util.StringUtilities substituteFilePrefix \
+	    $PTII $file {$PTII}]
+
+    puts "------------------ CGC testing $relativeFilename"
+    test "Auto" "Automatic CGC test in file $relativeFilename" {
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+        set application [createAndExecute $file]
+	set args [java::new {String[]} 1 \
+			  [list $file]]
+
+	java::call ptolemy.codegen.kernel.CodeGenerator main $args
+        list {}
+    } {{}}
+    test "Auto-rerun CGC" "Automatic test rerun in file $file" {
+	$application rerun
+	list {}
+    } {{}}
+}
+
