@@ -113,7 +113,7 @@ test DDEIOPort-3.1 {Broadcast tokens to two different actors.} {
     $inPort2 setTypeEquals $tokClass
     $inPort3 setTypeEquals $tokClass
 
-    $dir initialize
+    $dir preinitialize
 
     set rcvrs2 [$inPort2 getReceivers]
     set rcvr2 [java::cast ptolemy.domains.dde.kernel.TimedQueueReceiver [$rcvrs2 get {0 0}]]

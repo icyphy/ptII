@@ -254,7 +254,7 @@ test DDEReceiver-3.1 {Check is...Boundary() for single layer boundary} {
     $toplevel connect $wormout $rcvrPort
     
     # Create Receivers
-    $toplevel initialize
+    $toplevel preinitialize
     
     set iopFlowin [java::cast ptolemy.actor.TypedIOPort $flowinPort]
     set rcvrs [$iopFlowin getReceivers]
@@ -350,7 +350,7 @@ test DDEReceiver-3.2 {Check is...Boundary() for multilayered boundaries} {
     $toplevel connect $outerwormout $rcvrPort
     
     # Create Receivers
-    $toplevel initialize
+    $toplevel preinitialize
     
     set iopInnerWormOut [java::cast ptolemy.actor.TypedIOPort $innerwormout]
     set rcvrs [$iopInnerWormOut getInsideReceivers]
