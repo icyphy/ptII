@@ -349,7 +349,7 @@ test IOPort-9.1 {Check connectivity via send} {
     $p1 send 0 $token
     set received [$p2 get 0]
     $received toString
-} {foo}
+} {"foo"}
 
 test IOPort-9.1.1 {Check hasRoom and hasToken methods} {
     # NOTE: Use previous setup.
@@ -448,7 +448,7 @@ test IOPort-9.4 {Check loopback send} {
     $p1 send 0 $token
     set received [$p2 get 0]
     $received toString
-} {foo}
+} {"foo"}
 
 ######################################################################
 ####

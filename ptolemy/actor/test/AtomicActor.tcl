@@ -173,7 +173,7 @@ test AtomicActor-8.1 {Test newReceiver} {
     $r put $token
     set received [$r get]
     $received toString
-} {foo}
+} {"foo"}
 
 ######################################################################
 ####

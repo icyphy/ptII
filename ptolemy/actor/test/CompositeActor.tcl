@@ -224,7 +224,7 @@ test CompositeActor-8.1 {Test newReceiver} {
     $r put $token
     set received [$r get]
     $received toString
-} {foo}
+} {"foo"}
 
 ######################################################################
 ####
@@ -308,6 +308,6 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     list $res1 $res2 $res3 $res4 $res5 $res6 $res7 $res8 $res9
 } {1 0 1 0 0 {ptolemy.kernel.util.IllegalActionException: .E0.E2.IDEN.output:
 hasToken: channel index is out of range.} {ptolemy.kernel.util.IllegalActionException: .E0.E2.P3:
-hasToken: channel index is out of range.} 1 foo}
+hasToken: channel index is out of range.} 1 {"foo"}}
 
 #FIXME: test _removeEntity (using setContainer null).
