@@ -1,4 +1,4 @@
-/* A Ptolemy application.
+/* An application that contains models and frames for interacting with them.
 
  Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
@@ -25,117 +25,126 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (vogel@eecs.berkeley.edu)
+@AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
 
 // Java imports
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.System;
-import java.lang.reflect.Constructor;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 // Ptolemy imports
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
-import ptolemy.data.expr.Variable;
-import ptolemy.kernel.util.Attribute;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLParser;
+
+// XML Imports
+import com.microstar.xml.XmlException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyApplication
 /**
-This application creates one or more Ptolemy II models given a classname
-on the command line, and then executes those models, each in its own
-thread.  Each specified class should be derived from CompositeActor.
-Each will be created in its own workspace.
-<p>
-The command-line arguments can also set parameter values for any
-parameter in the models, with the name given relative to the top-level
-entity.  For example, to specify the iteration count in an SDF model,
-you can invoke this on the command line as follows:
-<pre>
-    ptolemy -director.iterations 2 model.xml
-</pre>
-This assumes that the model given in file "model.xml" has a director
-named "director" with a parameter named "iterations".
-If more than one model is given on the command line, then the
-parameter values will be set for all models that have such
-a parameter. 
+An application that contains models and frames for interacting
+with them. Any number of models can be simultaneously running under
+the same application.  Each one is assigned an instance of ModelFrame,
+a class with which this class works very closely.
 
-@author Edward A. Lee and Brian K. Vogel
+@author Edward A. Lee
 @version $Id$
 */
-public class PtolemyApplication implements ExecutionListener {
+public class PtolemyApplication extends MoMLApplication {
 
-    /** Parse the command-line arguments, creating models as specified.
-     *  Then execute each model that contains a manager.
+    /** Parse the specified command-line arguments, creating models
+     *  and frames to interact with them.
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
     public PtolemyApplication(String args[]) throws Exception {
-        if (args != null) {
-            _parseArgs(args);
-            Iterator models = _models.iterator();
-            while(models.hasNext()) {
-                CompositeActor model = (CompositeActor)models.next();
-                startRun(model);
-            }
+        // Invoke the base class constructor with null arguments to prevent
+        // the base class from running any specified models.
+        super(null);
+        _parseArgs(args);
+        _commandTemplate = "ptolemy [ options ] [file ...]";
+
+        // The Java look & feel is pretty lame, so we use the native
+        // look and feel of the platform we are running on.
+        try {
+            UIManager.setLookAndFeel(
+                UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            // Ignore exceptions, which only result in the wrong look and feel.
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a model to the application.  If the model has no manager,
-     *  then create one.  Then register this object as an execution listener.
+    /** Add a model to the application and create a frame for interacting
+     *  with it.  If the model has no manager, then create one.
+     *  If a frame already exists for the model, then return the existing one.
+     *  The caller is responsible for calling setVisible(true)
+     *  on the returned frame to make the frame appear on the screen.
+     *  Note that this method does not automatically include the placeable
+     *  objects of the model in the interactive frame.  If the caller
+     *  wishes to include placeable objects, then the caller must take
+     *  care of calling place() for each.
      *  @param model The model to add.
+     *  @return The frame that was created.
      */
-    public void add(CompositeActor model) {
-        _models.add(model);
+    public ModelFrame createFrame(final CompositeActor model) {
+        add(model);
+        // The add() method registers this as an execution listener.
+        // Reverse this, since we assume the frame will handle reporting.
         Manager manager = model.getManager();
-        if (manager == null) {
-            try {
-                model.setManager(new Manager(model.workspace(), "manager"));
-            } catch (IllegalActionException ex) {
-                // Ignore... can't attach a manager.
-            }
-            manager = model.getManager();
-        }
         if (manager != null) {
-            manager.addExecutionListener(this);
+            manager.removeExecutionListener(this);
         }
-    }
-
-    /** Report that an execution error has occurred.  This method
-     *  is called by the specified manager.
-     *  @param manager The manager calling this method.
-     *  @param ex The exeception being reported.
-     */
-    public void executionError(Manager manager, Exception ex) {
-        report(ex);
-    }
-
-    /** Report that execution of the model has finished by printing a
-     *  message to stdout. If the number of executing models drops to
-     *  zero, then notify threads that might be waiting for this event.
-     *  This is method is called by the specified manager.
-     *  @param manager The manager calling this method.
-     */
-    public synchronized void executionFinished(Manager manager) {
-        report("Execution finished.");
-        _runningCount--;
-        if (_runningCount == 0) {
-            notifyAll();
+        // Unless there is already a frame for this model, make one.
+        ModelFrame frame = (ModelFrame)_frames.get(model);
+        if (frame == null) {
+            frame = new ModelFrame(model, this);
+            frame.setBackground(BACKGROUND_COLOR);
+            _frames.put(model, frame);
+            // Set up a listener for window closing events.
+            frame.addWindowListener(new WindowAdapter() {
+                // This is invoked if the window is closed
+                // via the window manager.
+                public void windowClosing(WindowEvent e) {
+                    remove(model);
+                }
+                // This is invoked if the window is closed via dispose()
+                // (which is via the close menu command).
+                public void windowClosed(WindowEvent e) {
+                    remove(model);
+                }
+            });
         }
+        return frame;
     }
 
     /** Create a new application with the specified command-line arguments.
+     *  If the command-line arguments include the names of MoML files or
+     *  URLs for MoML files, then one window is opened for each model.
      *  @param args The command-line arguments.
      */
     public static void main(String args[]) {
@@ -156,269 +165,66 @@ public class PtolemyApplication implements ExecutionListener {
         }
     }
 
-    /** Report that a manager state has changed.
-     *  This is method is called by the specified manager.
-     *  @param manager The manager calling this method.
-     */
-    public void managerStateChanged(Manager manager) {
-        Manager.State newstate = manager.getState();
-        if (newstate != _previousState) {
-            report(manager.getState().getDescription());
-            _previousState = newstate;
-        }
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
-    /** Return an unmodifiable list of the models in this application.
-     *  @return A list of CompositeActor objects.
+    /** Read the specified stream, which is expected to be a MoML file.
+     *  This overrides the base class to provide a container into which
+     *  to put placeable objects, and to create a top-level frame
+     *  for interacting with the model.  The top-level frame includes
+     *  the placeable objects.
+     *  @param base The base for relative file references, or null if
+     *   there are no relative file references.
+     *  @param in The input stream.
+     *  @exception IOException If the stream cannot be read.
      */
-    public List models() {
-        return Collections.unmodifiableList(_models);
-    }
+    protected void _read(URL base, InputStream in) throws IOException {
+        JPanel displayPanel = new JPanel();
+        displayPanel.setLayout(new BoxLayout(displayPanel, BoxLayout.Y_AXIS));
+        displayPanel.setBackground(BACKGROUND_COLOR);
+        MoMLParser parser = new MoMLParser(new Workspace(), displayPanel);
+        try {
+            NamedObj toplevel = parser.parse(base, in);
+            if (toplevel instanceof TypedCompositeActor) {
+                CompositeActor castTopLevel = (CompositeActor)toplevel;
+                ModelFrame frame = createFrame(castTopLevel);
+                frame.modelPane().setDisplayPane(displayPanel);
 
-    /** Remove a model from this application.  If the model has a manager,
-     *  then deregister as an execution listener.  If there are no more
-     *  models, then exit the application.  If the model is not associated
-     *  with this application, then do nothing.
-     *  @param model The model to remove.
-     */
-    public void remove(CompositeActor model) {
-        _models.remove(model);
-        Manager manager = model.getManager();
-        if (manager != null) {
-            manager.removeExecutionListener(this);
-        }
-        if (_models.size() == 0) {
-            System.exit(0);
-        }
-    }
+                // Calculate the size.
+                Dimension frameSize = frame.getPreferredSize();
+                // Swing classes produce a preferred size that is too small...
+                frameSize.height += 30;
+                frameSize.width += 30;
+                frame.setSize(frameSize);
 
-    /** Report an exception.  This prints a message to the standard error
-     *  stream, followed by the stack trace.
-     *  @param ex The exception to report.
-     */
-    public void report(Exception ex) {
-	report("", ex);
-    }
+                // Center on screen.
+                Dimension screenSize
+                        = Toolkit.getDefaultToolkit().getScreenSize();
+                int x = (screenSize.width - frameSize.width) / 2;
+                int y = (screenSize.height - frameSize.height) / 2;
+                frame.setLocation(x, y);
 
-    /** Report a message to the user.
-     *  This prints a message to the standard output stream.
-     *  @param message The message to report.
-     */
-    public void report(String message) {
-	System.out.println(message);
-    }
-
-    /** Report an exception with an additional message.
-     *  This prints a message to standard error, followed by the
-     *  stack trace.
-     *  @param message The message.
-     *  @param ex The exception to report.
-     */
-    public void report(String message, Exception ex) {
-        String msg = "Exception thrown.\n" + message + "\n"
-                + ex.toString();
-        System.err.println(msg);
-        ex.printStackTrace();
-    }
-
-    /** If the specified model has a manager and is not already running,
-     *  then execute the model in a new thread.  Otherwise, do nothing.
-     *  @param model The model to execute.
-     */
-    public synchronized void startRun(CompositeActor model) {
-        // This method is synchronized so that it can atomically modify
-        // the count of executing processes.
-        Manager manager = model.getManager();
-        if (manager != null) {
-            try {
-                manager.startRun();
-                _runningCount++;
-            } catch (IllegalActionException ex) {
-                // Model is already running.  Ignore.
+                frame.setVisible(true);
             }
-        } else {
-            report("Model " + model.getFullName() + " is not executable.");
-        }
-    }
-
-    /** If the specified model has a manager and is executing, then
-     *  stop execution by calling the finish() method of the manager.
-     *  If there is no manager, do nothing.
-     *  @param model The model to stop.
-     */
-    public void stopRun(CompositeActor model) {
-        Manager manager = model.getManager();
-        if(manager != null) {
-            manager.finish();
-        }
-    }
-
-    /** Wait for all executing runs to finish, then return.
-     */
-    public synchronized void waitForFinish() {
-        while (_runningCount > 0) {
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                break;
-            }
-        }
-    }
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
-
-    /** Parse a command-line argument.
-     *  @return True if the argument is understood, false otherwise.
-     *  @throws Exception If something goes wrong.
-     */
-    protected boolean _parseArg(String arg) throws Exception {
-        if (arg.equals("-class")) {
-            _expectingClass = true;
-        } else if (arg.equals("-help")) {
-            System.out.println(_usage());
-        } else if (arg.equals("-test")) {
-            _test = true;
-        } else if (arg.equals("-version")) {
-            System.out.println("Version 1.0, Build $Id$");
-        } else if (arg.equals("")) {
-            // Ignore blank argument.
-        } else {
-            if (_expectingClass) {
-                _expectingClass = false;
-
-                Class newClass = Class.forName(arg);
-
-                // Instantiate the specified class in a new workspace.
-                Workspace workspace = new Workspace();
-
-                // Get the constructor that takes a Workspace argument.
-                Class[] argTypes = new Class[1];
-                argTypes[0] = workspace.getClass();
-                Constructor constructor = newClass.getConstructor(argTypes);
-
-                Object args[] = new Object[1];
-                args[0] = workspace;
-                CompositeActor newModel
-                       = (CompositeActor)constructor.newInstance(args);
-
-                add(newModel);
+        } catch (Exception ex) {
+            if (ex instanceof XmlException) {
+                XmlException xmlEx = (XmlException)ex;
+                // FIXME: The file reported below is wrong... Why?
+                report("MoML exception on line " + xmlEx.getLine()
+                + ", column " + xmlEx.getColumn() + ", in entity:\n"
+                + xmlEx.getSystemId(), ex);
             } else {
-                // Argument not recognized.
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /** Parse the command-line arguments.
-     *  @exception Exception If an argument is not understood or triggers
-     *   an error.
-     */
-    protected void _parseArgs(String args[]) throws Exception {
-        for (int i = 0; i < args.length; i++) {
-            String arg = args[i];
-            if (_parseArg(arg) == false) {
-                if (arg.startsWith("-") && i < args.length - 1) {
-                    // Save in case this is a parameter name and value.
-                    _parameterNames.add(arg.substring(1));
-                    _parameterValues.add(args[i + 1]);
-                    i++;
-                } else {
-                    // Unrecognized option.
-                    throw new IllegalActionException("Unrecognized option: "
-                           + arg);
-                }
-            }
-        }
-        if (_expectingClass) {
-            throw new IllegalActionException("Missing classname.");
-        }
-        // Check saved options to see whether any is a parameter.
-        Iterator names = _parameterNames.iterator();
-        Iterator values = _parameterValues.iterator();
-        while (names.hasNext() && values.hasNext()) {
-            String name = (String)names.next();
-            String value = (String)values.next();
-
-            boolean match = false;
-            Iterator models = _models.iterator();
-            while(models.hasNext()) {
-                CompositeActor model = (CompositeActor)models.next();
-                Attribute attribute = model.getAttribute(name);
-                if (attribute instanceof Variable) {
-                    match = true;
-                    ((Variable)attribute).setExpression(value);
-                }
-            }
-            if (!match) {
-                // Unrecognized option.
-                throw new IllegalActionException("Unrecognized option: "
-                + "-" + name);
+                report("Failed to read file:\n", ex);
             }
         }
     }
 
-    /** Return a string summarizing the command-line arguments.
-     *  @return A usage string.
-     */
-    protected String _usage() {
-        String result = "Usage: " + _commandTemplate + "\n\n"
-            + "Options that take values:\n";
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-        int i;
-        for(i = 0; i < _commandOptions.length; i++) {
-            result += " " + _commandOptions[i][0] +
-                " " + _commandOptions[i][1] + "\n";
-        }
-        result += "\nBoolean flags:\n";
-        for(i = 0; i < _commandFlags.length; i++) {
-            result += " " + _commandFlags[i];
-        }
-        return result;
-    }
+    // Default background color is a light grey.
+    private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                    ////
-
-    /** The command-line options that are either present or not. */
-    protected String _commandFlags[] = {
-        "-help",
-        "-test",
-        "-version",
-    };
-
-    /** The command-line options that take arguments. */
-    protected String _commandOptions[][] = {
-        {"-class",  "<classname>"},
-        {"-<parameter name>", "<parameter value>"},
-    };
-
-    /** The form of the command line. */
-    protected String _commandTemplate = "ptolemy [ options ]";
-
-    /** The list of models controlled by this application. */
-    protected List _models = new LinkedList();
-
-    /** If true, then auto exit after a few seconds. */
-    protected static boolean _test = false;
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
-
-    // Flag indicating that the previous argument was -class.
-    private boolean _expectingClass = false;
-
-    // List of parameter names seen on the command line.
-    private List _parameterNames = new LinkedList();
-
-    // List of parameter values seen on the command line.
-    private List _parameterValues = new LinkedList();
-
-    // The previous state of the manager, to avoid reporting it if it hasn't
-    // changed.
-    private Manager.State _previousState;
-
-    // The count of currently executing runs.
-    private int _runningCount = 0;
+    // A table of frames associated with models.
+    private Map _frames = new HashMap();
 }

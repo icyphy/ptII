@@ -51,8 +51,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	CompositeActorApplication.java \
 	Configurer.java \
-	GUIApplication.java \
 	ExecEvent.java \
 	ExecEventListener.java \
 	HistogramPlotter.java \

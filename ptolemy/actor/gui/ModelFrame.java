@@ -95,7 +95,7 @@ public class ModelFrame extends JFrame implements ExecutionListener {
      *  @param model The model to put in this frame, or null if none.
      *  @param application The controlling application.
      */
-    public ModelFrame(CompositeActor model, GUIApplication application) {
+    public ModelFrame(CompositeActor model, PtolemyApplication application) {
         super();
         _model = model;
         _application = application;
@@ -445,7 +445,7 @@ public class ModelFrame extends JFrame implements ExecutionListener {
 
     // The controlling application. This class delegates opening new models
     // to that application.
-    private GUIApplication _application;
+    private PtolemyApplication _application;
 
     // The model that this window controls, if any.
     private CompositeActor _model;

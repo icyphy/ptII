@@ -44,13 +44,14 @@ import javax.swing.event.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParameterEditor
-/** A class for configuring the parameter of NamedObjs.  This class is a
- *  PtolemyQuery that creates a typein entry for every Parameter in the 
- *  NamedObj.  This mechanism is similar to the way Ptolemy Classic worked,
- *  and is not, in general the best thing to do for all objects!     
- *  @author Steve Neuendorffer 
- *  @version $Id$
- */
+/**
+A class for configuring the parameters of named objects.  This class is a
+PtolemyQuery that creates an entry box for every parameter in the 
+object.
+
+@author Steve Neuendorffer 
+@version $Id$
+*/
 public class ParameterEditor extends PtolemyQuery implements Configurer {
     /** Create a new configurer that will configure the given NamedObject.
      *  @exception IllegalActionException If a subclass of this configurer

@@ -59,7 +59,7 @@ define a model derived from CompositeActor.
 @author Edward A. Lee
 @version $Id$
 */
-public class MoMLApplication extends PtolemyApplication {
+public class MoMLApplication extends CompositeActorApplication {
 
     /** Parse the command-line arguments, creating models as specified.
      *  Then execute each model.
