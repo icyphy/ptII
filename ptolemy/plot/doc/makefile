@@ -46,7 +46,6 @@ EXTRA_SRCS = \
 	index.htm \
 	install.htm \
 	main.htm \
-	plot.pdf \
 	ptplotfaq.htm \
 	thirdparty.htm \
 	toc.css \
@@ -59,7 +58,8 @@ MISC_FILES =	download img
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	plot.pdf
 
 # Sub directories to run make in.
 DIRS =
