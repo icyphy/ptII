@@ -399,6 +399,7 @@ remote1distjavadocs:
 # Tests in actor/lib/auto use vergil and moml
 # de/test should be run after sdf
 # dt/kernel should be run after sdf
+# fsm/kernel should be run after moml
 # We include the following directories so that they will appear in the
 # code coverage stats even though they are graphical: gui actor/gui
 #
@@ -430,7 +431,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dde/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/de/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/de/lib \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/lib \
@@ -454,6 +454,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/media \
 	$(REMOTE1PTIIDIST)/ptolemy/media/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/hdf/kernel \
 	$(REMOTE1PTIIDIST)/com/JLex \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
