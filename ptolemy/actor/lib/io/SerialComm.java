@@ -45,7 +45,7 @@ import java.net.*;
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// TxDatagram
+//// SerialComm
 /**
 Sends and receive bytes via the serial port.  Which serial port and 
 baud rate to use are set by parameters.  If the specified serial port 
