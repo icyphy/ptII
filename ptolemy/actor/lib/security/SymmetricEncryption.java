@@ -37,6 +37,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 
 import java.io.ByteArrayOutputStream;
 
@@ -99,6 +100,11 @@ public class SymmetricEncryption extends CipherActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
+        algorithm.setVisibility(Settable.NOT_EDITABLE);
+        algorithm.setPersistent(false);
+        // Hide the algorithm parameter.
+        algorithm.setVisibility(Settable.EXPERT);
+
         key = new TypedIOPort(this, "key", true, false);
         key.setTypeEquals(KeyToken.KEY);
     }
@@ -134,10 +140,21 @@ public class SymmetricEncryption extends CipherActor {
                 // FIXME: do we really want to initialize the key each time?
                 java.security.Key key =
                     (java.security.Key)keyToken.getValue();
+                if (!_algorithm.equals(key.getAlgorithm())) { 
+                    // We have the name of the algorithm from the Key,
+                    // so we reinitialize the cipher
+                    _algorithm = key.getAlgorithm();
+                    algorithm.setExpression(_algorithm);
+                    _updateCipherNeeded = true;
+                    _updateCipher();
+                }
                 _cipher.init(Cipher.ENCRYPT_MODE, key);
             } catch (Exception ex) {
                 throw new IllegalActionException (this, ex,
-                        "Failed to initialize Cipher");
+                        "Failed to initialize Cipher with "
+                        + "algorithm: '"+ _algorithm
+                        + "', padding: '" + _padding
+                        + "', provider: '" + _provider + "'");
             }
         }
         super.fire();

@@ -38,6 +38,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 
 import java.io.ByteArrayOutputStream;
 
@@ -94,6 +95,11 @@ public class SymmetricDecryption extends CipherActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
+        algorithm.setVisibility(Settable.NOT_EDITABLE);
+        algorithm.setPersistent(false);
+        // Hide the algorithm parameter.
+        algorithm.setVisibility(Settable.EXPERT);
+
         key = new TypedIOPort(this, "key", true, false);
         key.setTypeEquals(KeyToken.KEY);
     }
@@ -110,11 +116,11 @@ public class SymmetricDecryption extends CipherActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read in data from the <i>input</i> port, decrypt the data
-     *  based on the <i>algorithm</i>, <i>provider</i>, <i>mode</i>
-     *  and <i>padding</i> parameters using the <i>key</i>.  The
-     *  decrypted data sent to the <i>output</i> port.  All parameters
-     *  should be the same as the corresponding encryption actor.
+    /** Read the <i>input</i> and <i>key</i>, and send the decrypted data    
+     *  to the <i>output</i> port.
+     *  The algorithm is obtained from the <i>key</i>, and if it
+     *  is different than the current value of the <i>algorithm<i>
+     *  parameter, we reinitialize _cipher.
      *
      *  @exception IllegalActionException If retrieving parameters fails,
      *  the algorithm does not exist or if the provider does not exist.
@@ -124,6 +130,14 @@ public class SymmetricDecryption extends CipherActor {
             if (key.hasToken(0)) {
                 KeyToken keyToken = (KeyToken)key.get(0);
                 _key = (java.security.Key)keyToken.getValue();
+                if (!_algorithm.equals(_key.getAlgorithm())) { 
+                    // We have the name of the algorithm from the Key,
+                    // so we reinitialize the cipher
+                    _algorithm = _key.getAlgorithm();
+                    algorithm.setExpression(_algorithm);
+                    _updateCipherNeeded = true;
+                    _updateCipher();
+                }
             }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "fire() failed");

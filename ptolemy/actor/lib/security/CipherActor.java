@@ -279,7 +279,7 @@ abstract public class CipherActor extends CryptographyActor {
      * javax.crypt.Cipher.getInstance() with an argument that is
      * created from the values of the _algorithm, _mode and _padding.
      */
-    private void _updateCipher() throws IllegalActionException {
+    protected void _updateCipher() throws IllegalActionException {
         // Usually, this method is called from initialize().
         // This method may end up being called in fire() if
         // the user changed attributes while the model is running.
@@ -322,5 +322,5 @@ abstract public class CipherActor extends CryptographyActor {
 
     // Set to true if one of the parameters changed and we need to
     // call _updateCipher().
-    private boolean _updateCipherNeeded = true;
+    protected boolean _updateCipherNeeded = true;
 }

@@ -99,7 +99,7 @@ public class KeyReader extends KeyStoreActor {
         // trigger.setTypeEquals(BaseType.GENERAL);
         trigger.setMultiport(true);
 
-       signatureAlgorithm = new StringParameter(this, "signatureAlgorithm");
+        signatureAlgorithm = new StringParameter(this, "signatureAlgorithm");
         signatureAlgorithm.setExpression(
                 "Unknown, will be set after first run");
         signatureAlgorithm.setVisibility(Settable.NOT_EDITABLE);
