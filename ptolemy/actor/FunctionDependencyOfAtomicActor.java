@@ -44,21 +44,22 @@ dependence relation of an atomic actor. It contains a ports graph
 including the container ports only.
 <p>
 For most atomic actors, usually, all the input ports and output ports are
-dependent. E.g, the AddSubtract actor. (For definition of <i>dependent</i>, see
-FunctionDependency.) Thus, the input and out ports in the ports graph are 
+dependent. E.g, the AddSubtract actor. (For definition of <i>dependent</i>, 
+see FunctionDependency.) Thus, the input and out ports in the ports graph are 
 fully connected. for some atomic actors, such as TimedDelay actor, its input 
 and output ports are not dependent, we use the 
 <i>removeDependence(input, output)</i> method to declare that there is no
 dependency between the input and output port, thus they are not connected.
 See the {@link ptolemy.domains.de.lib.TimedDelay} for usage pattern.
 <p>
-Note, for Multiplexer, Demultiplexer actors, the boolean control input and output
-are dependent.
+Note, for Multiplexer, Demultiplexer actors, the boolean control input and 
+output are dependent.
 
 @see FunctionDependency
 @see ptolemy.domains.de.lib.TimedDelay
 @author Haiyang Zheng
-@version $Id$
+@version $Id: FunctionDependencyOfAtomicActor.java,v 1.2 2004/02/21 
+07:57:24 hyzheng Exp $
 @since Ptolemy II 3.1
 */
 public class FunctionDependencyOfAtomicActor extends FunctionDependency {
@@ -83,11 +84,12 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
         // FunctionDependence here? 
         // Since this method is called from the _constructDirectedGraph 
         // method, where the validity is checked, we may not need this check.
-        // validate();
+        // _validate();
         Iterator inputPorts = _directedGraph.nodes(inputPort).iterator();
         while (inputPorts.hasNext()) {
             Node input = (Node) inputPorts.next();
-            Iterator outputPorts = _directedGraph.nodes(outputPort).iterator();
+            Iterator outputPorts = 
+                _directedGraph.nodes(outputPort).iterator();
             while (outputPorts.hasNext()) {
                 Node output = (Node) outputPorts.next();
                 Object[] incidentEdgeArray = 
@@ -140,8 +142,8 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
         
         // if the atomic actor declares some dependencies do not
         // exist, remove them from the graph. 
-        // Note: the following method calls the removeDependence(input, output)
-        // method defined above.
+        // Note: the following method calls the 
+        // removeDependence(input, output) method defined above.
         ((AtomicActor)_container).removeDependencies(); 
     }
 }

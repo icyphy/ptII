@@ -150,8 +150,8 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
                         for (int j = 0; j < receivers[i].length; j++) {
                             IOPort ioPort = 
                                 receivers[i][j].getContainer();
-                            if (embeddedActors.contains(ioPort.getContainer()) ||
-                                outputPorts.contains(ioPort)) {
+                            if (embeddedActors.contains(ioPort.getContainer())
+                                || outputPorts.contains(ioPort)) {
                                 _directedGraph.addEdge(
                                     outPort, ioPort);
                             }

@@ -43,20 +43,20 @@ import java.util.Set;
 //// FunctionDependency
 /** A FunctionDependency is an abstract class that describes the function 
 dependence relation between the inputs and outputs of an actor. 
-<p> It contains a ports-graph including the ports of both
-the container and the contained actors (if any). The detailed
-implementation of how to contruct the graph is undefined but left to sub classes.
+<p> It contains a ports-graph including the ports of both the container 
+and the contained actors (if any). The detailed implementation of how to 
+contruct the graph is undefined but left to sub classes.
 <p>
-A pair of ports, input and output, are declared dependent if the current value 
-of output depends on the current value of the input. Otherwise, it is independent.
-So, for TimedDelay, the input and output are independent, while for AddSubtract,
-the output port is dependent on both the plus and minus inputs. Another instance 
-of independent input and output pair may happen in a composite actor, where the
-input and output are not related. 
+A pair of ports, input and output, are declared dependent if the current 
+value of output depends on the current value of the input. Otherwise, it is 
+independent. So, for TimedDelay, the input and output are independent, while 
+for AddSubtract, the output port is dependent on both the plus and minus 
+inputs. Another instance of independent input and output pair may happen 
+in a composite actor, where the input and output are not related. 
 <p>
-To check if the ports graph has cycles, use the <i>getCycleNodes</i> method. The 
-method returns an array of IOPorts in cycles. If there is no cycle, the returned
-array is empty.
+To check if the ports graph has cycles, use the <i>getCycleNodes</i> method. 
+The method returns an array of IOPorts in cycles. If there is no cycle, the 
+returned array is empty.
 
 @see FunctionDependencyOfAtomicActor
 @see FunctionDependencyOfCompositeActor
@@ -80,10 +80,11 @@ public abstract class FunctionDependency {
     /** If there is a cycle loop in the ports graph of this FunctionDependency
      *  object, return the nodes (ports) in the cycle loop. If there are 
      *  multiple cycles, all the nodes will be returned. If there is no 
-     *  cycle, an empty array is returned. The type of the returned nodes is IOPort. 
+     *  cycle, an empty array is returned. The type of the returned nodes is 
+     *  IOPort. 
      *  <p>
-     *  The validity of the FunctionDependency object is checked at the beginning
-     *  of this method.
+     *  The validity of the FunctionDependency object is checked at the 
+     *  beginning of this method.
      *  @return An array contains the IOPorts in the cycles.
      *  @see #validate()
      */
@@ -96,11 +97,11 @@ public abstract class FunctionDependency {
      *  information. The ports graph includes only the container ports but not 
      *  those of contained actors. This information is usually used by 
      *  the director of the container, which contains the container of this 
-     *  FunctionDependency object. For atomic actors, there is no difference between
-     *  this method and the <i>getDetailedPortsGraph</i> method.
+     *  FunctionDependency object. For atomic actors, there is no difference 
+     *  between this method and the <i>getDetailedPortsGraph</i> method.
      *  <p>
-     *  The validity of the FunctionDependency object is checked at the beginning
-     *  of this method.
+     *  The validity of the FunctionDependency object is checked at the 
+     *  beginning of this method.
      *  @return a detailed ports graph reflecting the function dependency
      *  information that includes the internal ports.
      *  @see #getDetailedPortsGraph
@@ -135,7 +136,8 @@ public abstract class FunctionDependency {
             outputs = _container.outputPortList().listIterator();
             while (outputs.hasNext()) {
                 IOPort outputPort = (IOPort) outputs.next();
-                if (reachableOutputs.contains(_directedGraph.node(outputPort))) {
+                if (reachableOutputs.
+                    contains(_directedGraph.node(outputPort))) {
                     _abstractPortsGraph.addEdge(inputPort, outputPort);
 //                    _abstractPortsGraph.addEdge(inputPort, outputPort, 
 //                        new Integer(1));
@@ -147,12 +149,13 @@ public abstract class FunctionDependency {
     }
 
     /** Return a detailed ports graph reflecting the function dependency
-     *  information. The ports graph includes both the container ports and those 
-     *  of contained actors (if any). This information is usually used by the 
-     *  local director of the container of this FunctionDependency object. 
+     *  information. The ports graph includes both the container ports and 
+     *  those of contained actors (if any). This information is usually used 
+     *  by the local director of the container of this FunctionDependency 
+     *  object. 
      *  <p>
-     *  The validity of the FunctionDependency object is checked at the beginning
-     *  of this method.
+     *  The validity of the FunctionDependency object is checked at the 
+     *  beginning of this method.
      *  @return a detailed ports graph reflecting the input output dependency
      *  information that includes the internal ports.
      *  @see #getAbstractPortsGraph
