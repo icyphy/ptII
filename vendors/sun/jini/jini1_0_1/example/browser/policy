@@ -1,0 +1,35 @@
+/* A minimal security policy file for the browser. */
+grant {
+    // needed by the GUI
+
+    permission java.awt.AWTPermission "showWindowWithoutWarningBanner";
+    permission java.awt.AWTPermission "accessEventQueue";
+
+    // needed by both the GUI and LookupDiscovery
+
+    permission java.lang.RuntimePermission "modifyThreadGroup";
+    permission java.lang.RuntimePermission "modifyThread";
+
+    // needed by LookupDiscovery
+
+    permission java.util.PropertyPermission "net.jini.discovery.*", "read";
+    // multicast request address
+    permission java.net.SocketPermission "224.0.1.85", "connect,accept";
+    // multicast announcement address
+    permission java.net.SocketPermission "224.0.1.84", "connect,accept";
+
+    // needed by both LookupDiscovery and the GUI
+
+    permission net.jini.discovery.DiscoveryPermission "*";
+    // unicast discovery, http: downloading, RMI
+    permission java.net.SocketPermission "*:1024-", "connect,accept";
+    // http: codebases
+    permission java.net.SocketPermission "*:80", "connect";
+    // delete this one if you don't need to accept file: codebases
+    permission java.io.FilePermission "<<ALL FILES>>", "read";
+
+    // needed to allow the lookup proxy to perform debug duties
+    // (ex. display stack trace when unmarshal failures occur)
+
+    permission java.util.PropertyPermission "com.sun.jini.reggie.*", "read";
+};
