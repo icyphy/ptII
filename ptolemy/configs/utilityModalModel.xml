@@ -4,8 +4,10 @@
 
 <!-- Modal model. -->
 <entity name="modal model"
-        class="ptolemy.vergil.fsm.modal.ModalModel">
-  <entity name="_Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
+        class="ptolemy.domains.fsm.modal.ModalModel">
+  <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+  </property>
+  <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
     <!-- Annotate with instructions. -->
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
       <property name="_hideName"
@@ -22,6 +24,20 @@ to another. Then delete this annotation.</text>
                 class="ptolemy.vergil.basic.NodeControllerFactory"/>
       <property name="_editorFactory"
                 class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
+    </property>
+    <property name="_library" class="ptolemy.moml.LibraryAttribute">
+      <configure>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity">
+          <input source="ptolemy/configs/basicUtilities.xml"></input>
+          <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+            <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+            </property>
+            <property name="_controllerFactory"
+                      class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+            </property>
+          </entity>
+        </entity>
+      </configure>
     </property>
   </entity>
 </entity>

@@ -700,7 +700,7 @@ And Control Network Data Transfer</text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="1:cluster1_FSM" class="ptolemy.vergil.fsm.modal.ModalModel">
+    <entity name="1:cluster1_FSM" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -709,7 +709,7 @@ And Control Network Data Transfer</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, -55.0">
         </property>
@@ -717,28 +717,28 @@ And Control Network Data Transfer</text></svg></configure>
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
-        <port name="rts" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="rts" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
         </port>
-        <port name="dav" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="dav" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
             </property>
         </port>
-        <port name="rack" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="rack" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
             </property>
         </port>
-        <port name="read" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="read" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
             </property>
         </port>
-        <port name="rd_dn" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="rd_dn" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
         </port>
-        <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="idle">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -767,29 +767,29 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
             </property>
-            <port name="rts" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rts" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="dav" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="dav" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 200.0">
                 </property>
             </port>
-            <port name="rack" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rack" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 150.0">
                 </property>
             </port>
-            <port name="read" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="read" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 120.0">
                 </property>
             </port>
-            <port name="rd_dn" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rd_dn" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 100.0">
                 </property>
@@ -903,7 +903,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <link port="done.incomingPort" relation="relation3"/>
             <link port="done.outgoingPort" relation="relation2"/>
         </entity>
-        <entity name="file_rd" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="file_rd" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
@@ -926,33 +926,33 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 160.0">
                 </property>
             </property>
-            <port name="rts" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rts" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="dav" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="dav" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="rack" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rack" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="read" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="read" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="rd_dn" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rd_dn" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
         </entity>
-        <entity name="file_rd2" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="file_rd2" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
@@ -975,33 +975,33 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 125.0">
                 </property>
             </property>
-            <port name="rts" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rts" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="dav" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="dav" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="rack" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rack" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="read" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="read" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="rd_dn" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rd_dn" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
         </entity>
-        <entity name="idle" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="idle" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
@@ -1024,33 +1024,33 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 150.0">
                 </property>
             </property>
-            <port name="rts" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rts" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="dav" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="dav" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 35.0">
                 </property>
             </port>
-            <port name="rack" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rack" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 70.0">
                 </property>
             </port>
-            <port name="read" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="read" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 45.0">
                 </property>
             </port>
-            <port name="rd_dn" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rd_dn" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 115.0">
                 </property>
             </port>
         </entity>
-        <entity name="done" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="done" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
@@ -1073,27 +1073,27 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 180.0">
                 </property>
             </property>
-            <port name="rts" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rts" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="dav" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="dav" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="rack" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rack" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="read" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="read" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="rd_dn" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rd_dn" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
@@ -1140,7 +1140,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         <link port="done.read" relation="readRelation"/>
         <link port="done.rd_dn" relation="rd_dnRelation"/>
     </entity>
-    <entity name="cluster2_FSM" class="ptolemy.vergil.fsm.modal.ModalModel">
+    <entity name="cluster2_FSM" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -1149,7 +1149,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, -60.0">
         </property>
@@ -1157,19 +1157,19 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
-        <port name="davi" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="davi" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
         </port>
-        <port name="rack" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="rack" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="calc" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="calc" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="done" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="done" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
         </port>
-        <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="idle">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -1198,24 +1198,24 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
-            <port name="davi" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="davi" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="rack" class="ptolemy.vergil.fsm.modal.RefinementPort">
-                <property name="input"/>
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location">
-                </property>
-            </port>
-            <port name="calc" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rack" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="done" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="calc" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location">
+                </property>
+            </port>
+            <port name="done" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
@@ -1293,7 +1293,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <link port="nbr_calc.incomingPort" relation="relation"/>
             <link port="nbr_calc.outgoingPort" relation="relation2"/>
         </entity>
-        <entity name="idle" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="idle" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
@@ -1316,24 +1316,24 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 120.0">
                 </property>
             </property>
-            <port name="davi" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="davi" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="rack" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rack" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="calc" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="calc" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
             </port>
-            <port name="done" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="done" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
             </port>
         </entity>
-        <entity name="nbr_calc" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="nbr_calc" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
@@ -1356,20 +1356,20 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 170.0">
                 </property>
             </property>
-            <port name="davi" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="davi" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="rack" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="rack" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="calc" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="calc" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
             </port>
-            <port name="done" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="done" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
             </port>
         </entity>

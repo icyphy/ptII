@@ -48,7 +48,7 @@ A and B cannot send messages to each other at the same time.
         <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 265.0">
         </property>
     </property>
-    <entity name="A" class="ptolemy.vergil.fsm.modal.ModalModel">
+    <entity name="A" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -59,7 +59,7 @@ A and B cannot send messages to each other at the same time.
                 </property>
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_Director" class="ptolemy.domains.hdf.kernel.HDFFSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
@@ -67,14 +67,14 @@ A and B cannot send messages to each other at the same time.
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 135.0">
         </property>
-        <port name="sendMSG" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="sendMSG" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
         </port>
-        <port name="send" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="send" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
@@ -83,14 +83,14 @@ A and B cannot send messages to each other at the same time.
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
-        <port name="receive" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="receive" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="send">
             </property>
             <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
@@ -99,18 +99,18 @@ A and B cannot send messages to each other at the same time.
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
             </property>
-            <port name="sendMSG" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="sendMSG" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 20.0">
                 </property>
             </port>
-            <port name="send" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="send" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 60.0">
                 </property>
             </port>
-            <port name="receive" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="receive" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 105.0">
                 </property>
@@ -188,7 +188,7 @@ A and B cannot send messages to each other at the same time.
             <link port="receive.incomingPort" relation="relation"/>
             <link port="receive.outgoingPort" relation="relation2"/>
         </entity>
-        <entity name="state" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
@@ -203,17 +203,17 @@ A and B cannot send messages to each other at the same time.
                 <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 55.0">
                 </property>
             </property>
-            <port name="sendMSG" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="sendMSG" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 215.0">
                 </property>
             </port>
-            <port name="send" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="send" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 215.0">
                 </property>
             </port>
-            <port name="receive" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="receive" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 130.0">
                 </property>
@@ -251,7 +251,7 @@ A and B cannot send messages to each other at the same time.
             <link port="Expression.output" relation="relation2"/>
             <link port="Expression.input" relation="relation"/>
         </entity>
-        <entity name="state2" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="state2" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
@@ -266,17 +266,17 @@ A and B cannot send messages to each other at the same time.
                 <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 50.0">
                 </property>
             </property>
-            <port name="sendMSG" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="sendMSG" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 195.0">
                 </property>
             </port>
-            <port name="send" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="send" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 235.0">
                 </property>
             </port>
-            <port name="receive" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="receive" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 155.0">
                 </property>
@@ -323,7 +323,7 @@ A and B cannot send messages to each other at the same time.
         <link port="state2.send" relation="sendRelation"/>
         <link port="state2.receive" relation="receiveRelation"/>
     </entity>
-    <entity name="B" class="ptolemy.vergil.fsm.modal.ModalModel">
+    <entity name="B" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -334,7 +334,7 @@ A and B cannot send messages to each other at the same time.
                 </property>
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_Director" class="ptolemy.domains.hdf.kernel.HDFFSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
@@ -342,14 +342,14 @@ A and B cannot send messages to each other at the same time.
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 135.0">
         </property>
-        <port name="sendMsg" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="sendMsg" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
         </port>
-        <port name="receive" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="receive" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
@@ -358,14 +358,14 @@ A and B cannot send messages to each other at the same time.
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
-        <port name="send" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="send" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="receive">
             </property>
             <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
@@ -391,17 +391,17 @@ to another. Then delete this annotation.</text>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
             </property>
-            <port name="sendMsg" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="sendMsg" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
             </port>
-            <port name="receive" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="receive" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 175.0">
                 </property>
             </port>
-            <port name="send" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="send" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 175.0">
@@ -480,7 +480,7 @@ to another. Then delete this annotation.</text>
             <link port="send.incomingPort" relation="relation"/>
             <link port="send.outgoingPort" relation="relation2"/>
         </entity>
-        <entity name="receive" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="receive" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
@@ -495,17 +495,17 @@ to another. Then delete this annotation.</text>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 35.0">
                 </property>
             </property>
-            <port name="sendMsg" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="sendMsg" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 115.0">
                 </property>
             </port>
-            <port name="receive" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="receive" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 170.0">
                 </property>
             </port>
-            <port name="send" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="send" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 170.0">
                 </property>
@@ -533,7 +533,7 @@ to another. Then delete this annotation.</text>
             <link port="receive" relation="relation2"/>
             <link port="Display.input" relation="relation2"/>
         </entity>
-        <entity name="send2" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="send2" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
@@ -548,17 +548,17 @@ to another. Then delete this annotation.</text>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 40.0">
                 </property>
             </property>
-            <port name="sendMsg" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="sendMsg" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 210.0">
                 </property>
             </port>
-            <port name="receive" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="receive" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 125.0">
                 </property>
             </port>
-            <port name="send" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="send" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 210.0">
                 </property>

@@ -31,21 +31,21 @@
   <!-- An entity giving alternative state refinements for modal models. -->
   <entity name="_stateRefinements" class="ptolemy.kernel.CompositeEntity">
     <entity name="Continuous Time Refinement"
-            class="ptolemy.vergil.fsm.modal.Refinement">
+            class="ptolemy.domains.fsm.modal.Refinement">
       <property name="Refinement Solver"
                 class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0"/>
       </property>
     </entity>
     <entity name="State Machine Refinement"
-            class="ptolemy.vergil.fsm.modal.ModalController">
+            class="ptolemy.domains.fsm.modal.ModalController">
     </entity>               
   </entity>
 
   <!-- An entity giving alternative transition refinements for modal models. -->
   <entity name="_transitionRefinements" class="ptolemy.kernel.CompositeEntity">
     <entity name="Default Refinement"
-            class="ptolemy.vergil.fsm.modal.Refinement">
+            class="ptolemy.domains.fsm.modal.Refinement">
       <property name="Refinement Director (SDF)"
                 class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0"/>
@@ -91,7 +91,7 @@
     </entity>
     <entity name="Modal Model"
             class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
-      <entity name="blank" class="ptolemy.vergil.fsm.modal.ModalModel">
+      <entity name="blank" class="ptolemy.domains.fsm.modal.ModalModel">
         <entity name="_Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
           <input source="ptolemy/configs/fsmLibrary.xml"/>
           <property name="annotation" class="ptolemy.kernel.util.Attribute">

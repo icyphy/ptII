@@ -124,7 +124,7 @@ see the modal behavior.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 280.0">
         </property>
     </property>
-    <entity name="Thermostat" class="ptolemy.vergil.fsm.modal.ModalModel">
+    <entity name="Thermostat" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -133,7 +133,7 @@ see the modal behavior.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
@@ -141,21 +141,21 @@ see the modal behavior.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 165.0">
         </property>
-        <port name="output" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="output" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
         </port>
-        <port name="event" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="event" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
             </property>
             <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
@@ -215,13 +215,13 @@ and "cooling" states have the same refinement.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 315.0">
                 </property>
             </property>
-            <port name="output" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 240.75">
                 </property>
             </port>
-            <port name="event" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="event" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="502.5, 331.75">
@@ -342,7 +342,7 @@ and "cooling" states have the same refinement.</text></svg></configure>
             <link port="heating.outgoingPort" relation="relation4"/>
             <link port="init.outgoingPort" relation="relation"/>
         </entity>
-        <entity name="heating" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="heating" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
@@ -415,12 +415,12 @@ event that triggers a transition out of this mode.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 245.0">
                 </property>
             </property>
-            <port name="output" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 49.0">
                 </property>
             </port>
-            <port name="event" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="event" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="555.0, 225.0">
                 </property>

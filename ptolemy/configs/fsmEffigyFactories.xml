@@ -6,19 +6,45 @@
     <entity name="blank" class="ptolemy.domains.fsm.kernel.FSMActor"/>
   </entity>
   <entity name="Modal Model" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-    <entity name="blank" class="ptolemy.vergil.fsm.modal.ModalModel">
-      <entity name="_Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
-        <property name="annotation" class="ptolemy.kernel.util.Attribute">
-          <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
-          <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states. Each refinement needs a director.
-Create transitions by holding the control key and dragging from one
- state to another. Then delete this annotation.</text></svg></configure></property>
-          <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 5.0"/>
-          <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory"/>
-          <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
-        </property>
-      </entity>
-    </entity>
+
+<entity name="blank"
+        class="ptolemy.domains.fsm.modal.ModalModel">
+  <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+  </property>
+  <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+    <!-- Annotate with instructions. -->
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+      <property name="_hideName"
+                class="ptolemy.kernel.util.SingletonAttribute"/>
+      <property name="_iconDescription"
+                class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
+create refinements for the states.  Create transitions
+by holding the control key and dragging from one state
+to another. Then delete this annotation.</text>
+</svg></configure></property>
+      <property name="_location"
+                class="ptolemy.kernel.util.Location" value="120.0, 5.0"/>
+      <property name="_controllerFactory"
+                class="ptolemy.vergil.basic.NodeControllerFactory"/>
+      <property name="_editorFactory"
+                class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
+    </property>
+    <property name="_library" class="ptolemy.moml.LibraryAttribute">
+      <configure>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity">
+          <input source="ptolemy/configs/basicUtilities.xml"></input>
+          <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+            <property name="_centerName" class="ptolemy.kernel.util.Attribute">
+            </property>
+            <property name="_controllerFactory"
+                      class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+            </property>
+          </entity>
+        </entity>
+      </configure>
+    </property>
+  </entity>
+</entity>
+
   </entity>
 </group>

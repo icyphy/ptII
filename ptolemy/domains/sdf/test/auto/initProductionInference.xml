@@ -39,17 +39,17 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 65.0">
             </property>
         </property>
-        <port name="input" class="ptolemy.vergil.fsm.modal.RefinementPort">
+        <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 310.0">
             </property>
         </port>
-        <port name="output" class="ptolemy.vergil.fsm.modal.RefinementPort">
+        <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 275.0">
             </property>
         </port>
-        <port name="power" class="ptolemy.vergil.fsm.modal.RefinementPort">
+        <port name="power" class="ptolemy.domains.fsm.modal.RefinementPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 125.0">
             </property>

@@ -80,7 +80,7 @@
             </property>
         </port>
     </entity>
-    <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
+    <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -89,7 +89,7 @@
                 </property>
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.domains.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
@@ -97,14 +97,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 160.0">
         </property>
-        <port name="port" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="port" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
         </port>
-        <port name="port2" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="port2" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
             </property>
@@ -113,7 +113,7 @@
                 </property>
             </property>
         </port>
-        <port name="port3" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="port3" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
             </property>
@@ -122,7 +122,7 @@
                 </property>
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -144,17 +144,17 @@ create refinements for the states. Then delete this annotation.</text>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
             </property>
-            <port name="port" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="port" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 200.0">
                 </property>
             </port>
-            <port name="port2" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="port2" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 200.0">
                 </property>
             </port>
-            <port name="port3" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="port3" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="580.0, 200.0">
@@ -199,7 +199,7 @@ create refinements for the states. Then delete this annotation.</text>
             <link port="state.incomingPort" relation="relation"/>
             <link port="state.outgoingPort" relation="relation"/>
         </entity>
-        <entity name="state" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
@@ -246,17 +246,17 @@ create refinements for the states. Then delete this annotation.</text>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="288.71875, 324.9375">
                 </property>
             </property>
-            <port name="port" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="port" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 240.0">
                 </property>
             </port>
-            <port name="port2" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="port2" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 165.0">
                 </property>
             </port>
-            <port name="port3" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="port3" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 240.0">
                 </property>

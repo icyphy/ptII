@@ -122,7 +122,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
+    <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -133,7 +133,7 @@
                 </property>
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 165.0">
         </property>
@@ -145,32 +145,32 @@
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
-        <port name="input1" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="input1" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
-        <port name="input2" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="input2" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </port>
-        <port name="input3" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="input3" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </port>
-        <port name="output1" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="output1" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </port>
-        <port name="output2" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="output2" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state">
             </property>
             <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
@@ -196,7 +196,7 @@ to another. Then delete this annotation.</text>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
             </property>
-            <port name="input1" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="input1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
@@ -205,7 +205,7 @@ to another. Then delete this annotation.</text>
                     </property>
                 </property>
             </port>
-            <port name="input2" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="input2" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
@@ -214,7 +214,7 @@ to another. Then delete this annotation.</text>
                     </property>
                 </property>
             </port>
-            <port name="input3" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="input3" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
                 </property>
@@ -223,7 +223,7 @@ to another. Then delete this annotation.</text>
                     </property>
                 </property>
             </port>
-            <port name="output1" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="output1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
@@ -233,7 +233,7 @@ to another. Then delete this annotation.</text>
                     </property>
                 </property>
             </port>
-            <port name="output2" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="output2" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location">
@@ -316,7 +316,7 @@ to another. Then delete this annotation.</text>
             <link port="state2.incomingPort" relation="relation"/>
             <link port="state2.outgoingPort" relation="relation2"/>
         </entity>
-        <entity name="state" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
@@ -329,7 +329,7 @@ to another. Then delete this annotation.</text>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="223.0, 83.0">
                 </property>
             </property>
-            <port name="input1" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="input1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 195.0">
                 </property>
@@ -338,7 +338,7 @@ to another. Then delete this annotation.</text>
                     </property>
                 </property>
             </port>
-            <port name="input2" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="input2" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 95.0">
                 </property>
@@ -347,7 +347,7 @@ to another. Then delete this annotation.</text>
                     </property>
                 </property>
             </port>
-            <port name="input3" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="input3" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 290.0">
                 </property>
@@ -356,7 +356,7 @@ to another. Then delete this annotation.</text>
                     </property>
                 </property>
             </port>
-            <port name="output1" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="output1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 150.0">
                 </property>
@@ -369,7 +369,7 @@ to another. Then delete this annotation.</text>
                     </property>
                 </property>
             </port>
-            <port name="output2" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="output2" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 255.0">
                 </property>
@@ -489,7 +489,7 @@ to another. Then delete this annotation.</text>
             <link port="Discard.input" relation="relation"/>
             <link port="Discard.input" relation="relation4"/>
         </entity>
-        <entity name="state2" class="ptolemy.vergil.fsm.modal.Refinement">
+        <entity name="state2" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
                 <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
                 </property>
@@ -506,7 +506,7 @@ to another. Then delete this annotation.</text>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
-            <port name="input1" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="input1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 120.0">
                 </property>
@@ -515,7 +515,7 @@ to another. Then delete this annotation.</text>
                     </property>
                 </property>
             </port>
-            <port name="input2" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="input2" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 190.0">
                 </property>
@@ -524,7 +524,7 @@ to another. Then delete this annotation.</text>
                     </property>
                 </property>
             </port>
-            <port name="input3" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="input3" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 405.0">
                 </property>
@@ -533,7 +533,7 @@ to another. Then delete this annotation.</text>
                     </property>
                 </property>
             </port>
-            <port name="output1" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="output1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 160.0">
                 </property>
@@ -546,7 +546,7 @@ to another. Then delete this annotation.</text>
                     </property>
                 </property>
             </port>
-            <port name="output2" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="output2" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 345.0">
                 </property>

@@ -126,7 +126,7 @@ and the iterations perarameter for the repeat actors must be >= n+1. </text></sv
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
-        <entity name="Fibonacci FSM" class="ptolemy.vergil.fsm.modal.ModalModel">
+        <entity name="Fibonacci FSM" class="ptolemy.domains.fsm.modal.ModalModel">
             <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
                 <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                     <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -135,7 +135,7 @@ and the iterations perarameter for the repeat actors must be >= n+1. </text></sv
                     </property>
                 </property>
             </property>
-            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
             </property>
             <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
                 <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
@@ -143,23 +143,23 @@ and the iterations perarameter for the repeat actors must be >= n+1. </text></sv
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 135.0">
             </property>
-            <port name="n" class="ptolemy.vergil.fsm.modal.ModalPort">
+            <port name="n" class="ptolemy.domains.fsm.modal.ModalPort">
                 <property name="input"/>
             </port>
-            <port name="start" class="ptolemy.vergil.fsm.modal.ModalPort">
+            <port name="start" class="ptolemy.domains.fsm.modal.ModalPort">
                 <property name="input"/>
             </port>
-            <port name="fibn" class="ptolemy.vergil.fsm.modal.ModalPort">
+            <port name="fibn" class="ptolemy.domains.fsm.modal.ModalPort">
                 <property name="output"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 </property>
             </port>
-            <port name="done" class="ptolemy.vergil.fsm.modal.ModalPort">
+            <port name="done" class="ptolemy.domains.fsm.modal.ModalPort">
                 <property name="output"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 </property>
             </port>
-            <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
+            <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
                 <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="idle">
                 </property>
                 <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -252,17 +252,17 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 325.0">
                     </property>
                 </property>
-                <port name="n" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <port name="n" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location">
                     </property>
                 </port>
-                <port name="start" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <port name="start" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location">
                     </property>
                 </port>
-                <port name="fibn" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <port name="fibn" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location">
@@ -270,7 +270,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                     </property>
                 </port>
-                <port name="done" class="ptolemy.vergil.fsm.modal.RefinementPort">
+                <port name="done" class="ptolemy.domains.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
                     <property name="_location" class="ptolemy.kernel.util.Location">
@@ -509,7 +509,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="n=8 then n=10" class="ptolemy.vergil.fsm.modal.ModalModel">
+    <entity name="n=8 then n=10" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -518,7 +518,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
@@ -526,27 +526,27 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 25.0">
         </property>
-        <port name="begin" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="begin" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
             </property>
         </port>
-        <port name="done" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="done" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
             </property>
         </port>
-        <port name="start" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="start" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
             </property>
         </port>
-        <port name="n" class="ptolemy.vergil.fsm.modal.ModalPort">
+        <port name="n" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="idle">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -575,21 +575,21 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
-            <port name="begin" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="begin" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 45.0">
                 </property>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 </property>
             </port>
-            <port name="done" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="done" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 100.0">
                 </property>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 </property>
             </port>
-            <port name="start" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="start" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 165.0">
@@ -597,7 +597,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
                 </property>
             </port>
-            <port name="n" class="ptolemy.vergil.fsm.modal.RefinementPort">
+            <port name="n" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 75.0">
