@@ -222,6 +222,13 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
         return _name;
     }
 
+    /** Get the parameter with the given name, or null if no such parameter
+     * exists.
+     */
+    public SchematicParameter getParameter(String name) {
+        return (SchematicParameter)_parameters.get(name);
+    }
+
     /**
      * Return an enumeration over the parameters in this object.
      *

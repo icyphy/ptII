@@ -58,6 +58,11 @@ public class SchematicRelation extends PTMLObject
      */
     public SchematicRelation () {
         this("relation");
+	try {
+	    setName(_createUniqueName());
+	} catch (NameDuplicationException ex) {
+	    throw new InternalErrorException("Unique name was not unique!");
+	}
     }
 
     /**
