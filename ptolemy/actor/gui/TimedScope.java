@@ -137,4 +137,16 @@ public class TimedScope extends TimedPlotter {
         plot.setXPersistence(persValue);
         plot.repaint();
     }
+
+    /** Call the base class postfire() method, then yield so that the
+     *  event thread gets a chance.
+     *  @exception IllegalActionException If there is no director,
+     *   or if the base class throws it.
+     *  @return True if it is OK to continue.
+     */
+    public boolean postfire() throws IllegalActionException {
+        boolean result = super.postfire();
+        Thread.yield();
+        return result;
+    }
 }
