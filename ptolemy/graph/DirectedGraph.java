@@ -323,7 +323,10 @@ public class DirectedGraph extends Graph {
      *  More specifically, test whether there exists an edge (n1, n2)
      *  such that
      *
-     *  <p> <code> (n1.weight() == weight1) && (n2.weight() == weight2) </code>.
+     *  <p><code> 
+     *      (n1.getWeight() == weight1) && (n2.getWeight() == weight2) 
+     *  </code>.
+     *
      *  @param weight1 The first (source) node weight.
      *  @param weight2 The second (sink) node weight.
      *  @return True if the graph includes an edge from the first node weight to
