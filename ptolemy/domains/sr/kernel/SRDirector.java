@@ -385,6 +385,52 @@ public class SRDirector extends StaticSchedulingDirector {
         _currentNumberOfKnownReceivers++;
     }
 
+    /** Transfer data from the specified input port of the
+     *  container to the ports it is connected to on the inside.
+     *  If there is no data on the specified input port, then
+     *  set the ports on the inside to absent by calling sendClearInside().
+     *  This method delegates the data transfer
+     *  operation to the same method on IOPort,
+     *  so that the subclass of IOPort, TypedIOPort, can override this method
+     *  to perform run-time type conversion.
+     *
+     *  @exception IllegalActionException If the port is not an opaque
+     *   input port.
+     *  @param port The port to transfer tokens from.
+     *  @return True if at least one data token is transferred.
+     *  @see IOPort#transferInputs
+     */
+    public boolean transferInputs(IOPort port) throws IllegalActionException {
+        for (int i = 0; i < port.getWidth(); i++) {
+            if (port.isKnown(i) && !port.hasToken(i)) {
+                port.sendClearInside(i);
+            }
+        }
+        return super.transferInputs(port);
+    }
+
+    /** Transfer data from the specified output port of the
+     *  container to the ports it is connected to on the outside.
+     *  If there is no data on the specified output port, then
+     *  set the ports on the outside to absent by calling sendClear().
+     *  This method delegates the data transfer
+     *  operation to the same method on IOPort.
+     *
+     *  @exception IllegalActionException If the port is not an opaque
+     *   output port.
+     *  @param port The port to transfer tokens from.
+     *  @return True if at least one data token is transferred.
+     *  @see IOPort#transferOutputs
+     */
+    public boolean transferOutputs(IOPort port) throws IllegalActionException {
+        for (int i = 0; i < port.getWidthInside(); i++) {
+            if (port.isKnownInside(i) && !port.hasTokenInside(i)) {
+                port.sendClear(i);
+            }
+        }
+        return super.transferOutputs(port);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

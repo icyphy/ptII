@@ -30,7 +30,7 @@
 
 package ptolemy.domains.sr.kernel;
 
-import ptolemy.actor.Mailbox;
+import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
@@ -65,9 +65,12 @@ known values:     absent     value (present)
 <p>
 The status is automatically set to known when the put() method or clear()
 method is called.  Once a receiver becomes known, its value (or lack of a
-value if it is absent) cannot change until the next iteration of the
-director.  The hasRoom() method always returns true, but attempting to change
-the status of a receiver from present to absent or from absent to present will
+value if it is absent) cannot change until the next call to reset().
+The SRDirector calls reset() between iterations.
+The hasRoom() method returns true if the state of the receiver is
+unknown or if it is known but not absent, since only in these circumstances
+can it accept a token. Attempting to change the status of a receiver
+from present to absent or from absent to present will
 result in an exception.  An exception will also be thrown if a receiver has
 present status and it receives a token that is not the same as the one it
 already contains (as determined by the isEqualTo() method of the token).
@@ -85,7 +88,7 @@ for an actor to reset a receiver to have unknown status.
 @since Ptolemy II 2.0
 @see ptolemy.domains.sr.kernel.SRDirector
 */
-public class SRReceiver extends Mailbox {
+public class SRReceiver extends AbstractReceiver {
 
     /** Construct an SRReceiver with unknown state and the given director.
      */
@@ -107,61 +110,89 @@ public class SRReceiver extends Mailbox {
      */
     public void clear() throws IllegalActionException {
         if (isKnown() && hasToken()) {
-            throw new IllegalActionException(getContainer(),
-            "Cannot transition from a present state to an absent state.");
+            throw new IllegalActionException(
+            "SRReceiver: Cannot transition from a present state "
+            + "to an absent state.");
         }
+        _token = null;
         _known = true;
-        super.clear();
     }
 
     /** Get the contained Token without modifying or removing it.  If there
      *  is none, throw an exception.
      *  @return The token contained in the receiver.
+     *  @exception NoTokenException If this mailbox is empty.
      */
-    public Token get() {
-        if (isKnown()) {
-            return super.get();
-        } else {
-            throw new UnknownTokenException(getContainer(),
-                    "get() called on SRReceiver with unknown state.");
+    public Token get() throws NoTokenException {
+        if (_token == null) {
+            throw new NoTokenException(
+                    "SRReceiver: Attempt to get data from an empty receiver.");
         }
+        if (!isKnown()) {
+            throw new UnknownTokenException(
+                "SRReceiver: get() called on SRReceiver with unknown state.");
+        }
+        return _token;
     }
 
-    /** Return true, since a token can always be accepted.
-     *  @return True.
+    /** Return true if the state of the receiver is unknown or if it is
+     *  known and not empty.  This is equivalent to the expression
+     *  <pre>
+     *    !isKnown() || hasToken()
+     *  </pre>
+     *  @return True if the receiver can accept a token.
      */
     public boolean hasRoom() {
-        return true;
+        return !isKnown() || hasToken();
+    }
+
+    /** Return what hasRoom() returns if the argument is 1,
+     *  and otherwise return false.
+     *  @see #hasRoom()
+     *  @param numberOfTokens The number of tokens to put into the mailbox.
+     *  @exception IllegalArgumentException If the argument is not positive.
+     *   This is a runtime exception, so it does not need to be declared
+     *   explicitly.
+     */
+    public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
+        if (numberOfTokens < 1) {
+            throw new IllegalArgumentException(
+                    "hasRoom() requires a positive argument.");
+        }
+        if (numberOfTokens == 1) return hasRoom();
+        return false;
     }
 
     /** Return true if the receiver contains a token, or false otherwise.
      *  If the receiver has unknown status, this method will throw an
      *  exception.
      *  @return True if this receiver contains a token.
+     *  @exception UnknownTokenException If the state is unknown.
      */
     public boolean hasToken() {
         if (isKnown()) {
-            return super.hasToken();
+            return (_token != null);
         } else {
             throw new UnknownTokenException(getContainer(),
                     "hasToken() called on SRReceiver with unknown state.");
         }
     }
 
-    /** Return true if the argument is 1 and this mailbox is not empty,
+    /** Return what hasToken() returns if the argument is 1,
      *  and otherwise return false.
      *  If the receiver has unknown status, this method will throw
      *  an UnknownTokenException, which is a RuntimeException so it
      *  need not be declared explicitly.
      *  If the argument is 0 or a negative number, then this method will
      *  throw an IllegalArgumentException, which is a RuntimeException.
-     *
      *  @param numberOfTokens The number of tokens to get from the receiver.
-     *  @return True if the argument is 1 and this mailbox is not empty.
-     *  Return false if the argument is 2 or more.
+     *  @return True if the argument is 1 and the receiver has a token.
      *  @exception IllegalArgumentException If the argument is not positive.
      *   This is a runtime exception, so it does not need to be declared
      *   explicitly.
+     *  @exception UnknownTokenException If the state is unknown.
+     *  @exception IllegalArgumentException If the state is unknown.
+     *  @see #hasToken()
      *  @since Ptolemy II 2.1  
      */
     public boolean hasToken(int numberOfTokens)
@@ -171,7 +202,15 @@ public class SRReceiver extends Mailbox {
                     "hasToken(" + numberOfTokens
                     + ") called on SRReceiver with unknown state.");
         }
-        return super.hasToken(numberOfTokens);
+        if (numberOfTokens < 1) {
+            throw new IllegalArgumentException(
+                    "SRReceiver: hasToken() requires a positive argument.");
+        }
+        if (numberOfTokens == 1) {
+            return hasToken();
+        } else {
+            return false;
+        }
     }
 
     /** Return true if this receiver has known state, that is, the token in
@@ -187,11 +226,14 @@ public class SRReceiver extends Mailbox {
      *  specified token.  If the receiver already contains an equal token,
      *  do nothing.
      *  @param token The token to be put into this receiver.
+     *  @exception IllegalArgumentException If the argument is null.
+     *  @exception IllegalOutputException If the state is known and absent,
+     *   or a token is present and does not have the same value.
      */
     public void put(Token token) {
         if (token == null) {
-            throw new InternalErrorException("SRReceiver.put(null) is " +
-                    "invalid.");
+            throw new IllegalArgumentException(
+                    "SRReceiver.put(null) is invalid.");
         }
         if (!isKnown()) {
             _putToken(token);
@@ -199,7 +241,7 @@ public class SRReceiver extends Mailbox {
             if (!hasToken()) {
                 throw new IllegalOutputException(getContainer(),
                         "SRReceiver cannot transition from an absent state " +
-                        "to a present state.");
+                        "to a present state.  Call reset().");
             } else {
                 try {
                     if ( (token.getType().equals( _token.getType())) &&
@@ -221,35 +263,31 @@ public class SRReceiver extends Mailbox {
     }
 
     /** Reset the receiver by removing any contained token and setting
-     *  the state of this receiver to be unknown.  Should be called
-     *  only by the director.  Note that this method has no access specifier,
-     *  so it defaults to package protection.  Thus, the director can invoke
-     *  this method, but actors in other packages cannot.
+     *  the state of this receiver to be unknown.  This is called
+     *  by the director between iterations.
      */
     public void reset() {
-        // Cannot call clear() of this class, because it will trigger
-        // an exception.
-        try {
-            super.clear();
-        } catch (IllegalActionException ex) {
-            // Should not occur.
-            throw new InternalErrorException(ex);
-        }
+        _token = null;
         _known = false;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The token held. */
+    protected Token _token = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Discard any contained token, and replace it with the specified
-     *  token or null for no token.
+     *  token.
      *  @param token The token to be put into this receiver.
      */
     private void _putToken(Token token) {
-        reset();
-        super.put(token);
-        _director.receiverChanged(this);
+        _token = token;
         _known = true;
+        _director.receiverChanged(this);
     }
 
     ///////////////////////////////////////////////////////////////////

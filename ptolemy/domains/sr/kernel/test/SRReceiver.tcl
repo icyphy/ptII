@@ -129,7 +129,7 @@ test SRReceiver-2.1.1 {Check put and get and hasToken} {
     set result4 [$receiver hasToken]
     set result4_1 [$receiver hasToken 1]
 
-    list $result1 $result1_1 $result2 $result2_1 \
+    list $result2 $result2_1 \
 	    $result3 $result3_1 $result4 $result4_1 \
 	    [$receivedToken toString] [$receivedToken2 toString]
 } {1 1 1 1 1 1 {"foo"} {"foo"}}
@@ -186,8 +186,7 @@ test SRReceiver-2.4 {check hasToken with a non-positive} {
     set result5 [$receiver hasToken 2]
 
     list $result1 $result1_1 $result2 $result3 $result4 $result5
-} {1 1 {java.lang.IllegalArgumentException: hasToken() requires a positive argument.} {java.lang.IllegalArgumentException: hasToken() requires a positive argument.} 1 0}
-
+} {1 1 {java.lang.IllegalArgumentException: SRReceiver: hasToken() requires a positive argument.} {java.lang.IllegalArgumentException: SRReceiver: hasToken() requires a positive argument.} 1 0}
 
 ######################################################################
 ####
@@ -198,7 +197,7 @@ test SRReceiver-3.1 {Try to put a null} {
     set receiver [java::new ptolemy.domains.sr.kernel.SRReceiver $director]
     catch {$receiver {put ptolemy.data.Token} [java::null]} result1
     list $result1
-} {{ptolemy.kernel.util.InternalErrorException: SRReceiver.put(null) is invalid.}}
+} {{java.lang.IllegalArgumentException: SRReceiver.put(null) is invalid.}}
 
 ######################################################################
 ####
@@ -212,7 +211,7 @@ test SRReceiver-4.1 {put after clear} {
     catch {$receiver {put ptolemy.data.Token} $token} result1
 
     list $result1
-} {{ptolemy.domains.sr.kernel.IllegalOutputException: SRReceiver cannot transition from an absent state to a present state.}}
+} {{ptolemy.domains.sr.kernel.IllegalOutputException: SRReceiver cannot transition from an absent state to a present state.  Call reset().}}
 
 test SRReceiver-4.2 {clear after put} {
 
@@ -222,7 +221,7 @@ test SRReceiver-4.2 {clear after put} {
     $receiver {put ptolemy.data.Token} $token
     catch {$receiver clear} result1
     list $result1
-} {{ptolemy.kernel.util.IllegalActionException: Cannot transition from a present state to an absent state.}}
+} {{ptolemy.kernel.util.IllegalActionException: SRReceiver: Cannot transition from a present state to an absent state.}}
 
 test SRReceiver-4.2.1 {clear, then get} {
     set director [java::new ptolemy.domains.sr.kernel.SRDirector]
@@ -230,7 +229,7 @@ test SRReceiver-4.2.1 {clear, then get} {
     $receiver reset
     catch {$receiver get} result1
     list $result1
-} {{ptolemy.domains.sr.kernel.UnknownTokenException: get() called on SRReceiver with unknown state.}}
+} {{ptolemy.actor.NoTokenException: SRReceiver: Attempt to get data from an empty receiver.}}
 
 ######################################################################
 ####
