@@ -69,7 +69,6 @@ import java.awt.event.KeyEvent;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrowKeySensor
-
 /**
 When this actor is preinitialized, it pops up a new JFrame window on 
 the desktop, usually in the upper left hand corner of the screen.
@@ -91,10 +90,23 @@ the director to call fire() on the actor.   The actor then broadcasts
 tokens from one or both outputs depending on which keystroke(s) have 
 occured since the actor was last fired.  <p>
 
+NOTE: This actor only works in the DE domain due to its reliance on
+this director's fireAtCurrentTime() method.
+
 @author Winthrop Williams
-@version $Id$ */
+@version $Id$ 
+@since Ptolemy II 2.0
+*/
 public class ArrowKeySensor extends TypedAtomicActor {
 
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public ArrowKeySensor(CompositeEntity container, String name)
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -118,17 +130,27 @@ public class ArrowKeySensor extends TypedAtomicActor {
         downArrow.setOutput(true);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** Output port, which has type IntToken. */
     public TypedIOPort upArrow;
+
+    /** Output port, which has type IntToken. */
     public TypedIOPort leftArrow;
+
+    /** Output port, which has type IntToken. */
     public TypedIOPort rightArrow;
+
+    /** Output port, which has type IntToken. */
     public TypedIOPort downArrow;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
 
-    /** Fire this actor.
-     *  Blah, blah, blah.
+    /** Broadcast the integer value 1 for each key pressed and 0 for
+     *  each released.
      */
     public void fire() throws IllegalActionException {
         if (_debugging) _debug("fire has been called");
@@ -182,12 +204,14 @@ public class ArrowKeySensor extends TypedAtomicActor {
 	if (_debugging) _debug("fire has completed");
     }
 
+    /** Create the JFrame window capable of detecting the key-presses. */
     public void preinitialize() {
         if (_debugging) _debug("frame will be constructed");
         _myframe = new MyFrame();
         if (_debugging) _debug("frame was constructed");
     }
 
+    /** Dispose of the JFrame, causing the window to vanish. */
     public void wrapup() {
 	_myframe.dispose();
     }
@@ -195,7 +219,15 @@ public class ArrowKeySensor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
 
+    /** The JFrame */
     private MyFrame _myframe;
+
+    /** The flags indicating which keys have been pressed or released
+     *  since the last firing of the actor.  <i>Pressed</i> and
+     *  <i>Released</i> are are not allowed to both be true for the
+     *  same key (Though both may be false).  The most recent action  
+     *  (press or release) takes precidence.  
+     */
     private boolean _upKeyPressed = false;
     private boolean _leftKeyPressed = false;
     private boolean _rightKeyPressed = false;
@@ -210,11 +242,10 @@ public class ArrowKeySensor extends TypedAtomicActor {
 
     private class MyFrame extends JFrame {
 
-        /** Construct a frame associated with the specified Ptolemy II
-         *  model.  After constructing this, it is necessary to call
-         *  setVisible(true) to make the frame appear.  This is
-         *  typically done by calling show() on the controlling
-         *  tableau.
+        /** Construct a frame.  After constructing this, it is
+         *  necessary to call setVisible(true) to make the frame
+         *  appear.  This is done by calling show() at the end of this
+         *  constructor.
          *  @see Tableau#show()
          *  @param entity The model to put in this frame.
          *  @param tableau The tableau responsible for this frame.  */
@@ -362,7 +393,11 @@ public class ArrowKeySensor extends TypedAtomicActor {
             if (_debugging) _debug("frame constructor completes");
         }
 
-	public void tryCallingFireAtCurrentTime() {
+	/** This is simply the try-catch clause for the call to the 
+         *  director.  It has been pulled out to make the code terser
+         *  and more readable.
+         */
+	private void tryCallingFireAtCurrentTime() {
 	    try {
 		getDirector().fireAtCurrentTime(ArrowKeySensor.this);
 	    } catch (IllegalActionException ex) {
@@ -371,6 +406,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 		throw new RuntimeException("-fireAt* catch-");
 	    }
 	}
+
     }
 }
 
