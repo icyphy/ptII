@@ -66,8 +66,8 @@ are queried at the same rate, and all the actors run in the same thread.
 
 @author Yuhong Xiong
 @version $Id$
-@see ptolemy.actor.lib.jspaces.StockQuote
-@see ptolemy.actor.lib.jspaces.Publisher
+@see ptolemy.actor.lib.jspaces.demo.Stock.StockQuote
+@see ptolemy.actor.lib.jspaces.demo.Stock.StockServer
 */
 public class StockServer extends TypedCompositeActor {
 
