@@ -34,7 +34,7 @@ ME =		ptolemy/domains/gr/lib
 # Rule for index.xml uses this
 TITLE = 	"3D actors"
 
-DIRS =		nrl
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../../..
