@@ -78,6 +78,7 @@ test Manager-8.1 {Test type checking} {
     $p1 link $r1
     $p2 link $r1
 
+    $director initialize
     $manager resolveTypes
     set rt1 [[$p1 getResolvedType] getName]
     set rt2 [[$p2 getResolvedType] getName]
@@ -183,6 +184,7 @@ test Manager-8.6 {Test type resolution} {
     $p23 link $r24
     $p4 link $r24
 
+    $director initialize
     $manager resolveTypes
     set rt1 [[$p1 getResolvedType] getName]
     set rt21 [[$p21 getResolvedType] getName]
