@@ -183,18 +183,21 @@ if [ $retval = 0 ]; then
 
     	    for jarFile in $classPathJarFiles
 	    do
-	        echo $jarFile
 		# Exclude certain jar files:
-		echo $jarFile | egrep 'rt.jar$|jasminclasses.jar$|sootclasses.jar$'
+		echo $jarFile | egrep 'rt.jar$|jasminclasses.jar$|sootclasses.jar$' 
 		retval=$?
-	        if [ $retval = 1 ]; then
+	        if [ $retval != 1 ]; then
+		    echo "Skipping this jar file: $jarFile"
+	        else
 		    # jarFile was not one of the excluded jar files . . .
+		    echo "Looking in classpath at $jarFile"
+
 		    PTJAR_TMPDIR2=ptjar_tmpdir2
 		    rm -rf $PTJAR_TMPDIR2
 		    mkdir $PTJAR_TMPDIR2
 		    cat $jarFile | (cd $PTJAR_TMPDIR2; "$JAR" -x)
 
-		    echo "Copying files from $jarFile"
+		    echo "Possibly copying files from $jarFile"
 		
 		    for file in $ptolemyFiles
 		    do
