@@ -580,7 +580,7 @@ public class CalendarQueue {
         if (nSamples > 25) {
             nSamples = 25;
         }
-        // Record lastprio, lastbucket, buckettop
+        // Record lastPrio, lastBucket, bucketTop
         Object savedLastPrio = _minKey;
         int savedLastBucket = _minBucket;
         long savedLastVirtualBucket = _minVirtualBucket;
@@ -617,7 +617,7 @@ public class CalendarQueue {
         // Done sampling data and putting them back in
         // therefore, we can reenable resize
         _resizeEnabled = true;
-        // Restore lastprio, lastbucket, and buckettop
+        // Restore lastPrio, lastBucket, and bucketTop
         _minKey = savedLastPrio;
         _minBucket = savedLastBucket;
         _minVirtualBucket = savedLastVirtualBucket;
