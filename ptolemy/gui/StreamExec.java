@@ -70,7 +70,7 @@ public class StreamExec {
 
     /** Cancel any running commands. */
     public void cancel() {
-        _worker.interrupt();
+        //_worker.interrupt();
         _process.destroy();
     }
 
@@ -116,23 +116,9 @@ public class StreamExec {
 
     /** Start running the commands. */
     public void start() {
-        /* Invoking start() on the SwingWorker causes a new Thread
-         * to be created that will call construct(), and then
-         * finished().  Note that finished() is called even if
-         * the _worker is interrupted because we catch the
-         * InterruptedException in _executeCommands().
-         */
-        _worker = new SwingWorker() {
-                public Object construct() {
-                    return _executeCommands();
-                }
-                public void finished() {
-                    updateStatusBar(get().toString());
-                    stdout(get().toString());
-
-                }
-            };
-        _worker.start();
+        String returnValue = _executeCommands();
+        updateStatusBar(returnValue);
+        stdout(returnValue);
     }
 
 
@@ -184,7 +170,7 @@ public class StreamExec {
 
     // Execute the commands in the list.  Update the output with
     // the command being run and the output.
-    private Object _executeCommands() {
+    private String _executeCommands() {
         try {
             Runtime runtime = Runtime.getRuntime();
 	    try {
@@ -321,6 +307,6 @@ public class StreamExec {
     private Process _process;
 
     // SwingWorker that actually does the work.
-    private SwingWorker _worker;
+    //private SwingWorker _worker;
 }
 
