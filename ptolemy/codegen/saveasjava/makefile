@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	GeneratorTableau.java \
 	MoMLToJava.java \
 	SaveAsJava.java 
 
