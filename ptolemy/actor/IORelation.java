@@ -324,7 +324,7 @@ public class IORelation extends ComponentRelation {
      *  If the relation is already contained by the container, do nothing.
      *  <p>
      *  The container must be an
-     *  instance of CompositeActor or an exception is thrown.
+     *  instance of CompositeActor or null, otherwise an exception is thrown.
      *  Derived classes may further constrain the class of the container
      *  to a subclass of CompositeActor.
      *  <p>
@@ -332,14 +332,14 @@ public class IORelation extends ComponentRelation {
      *
      *  @param container The proposed container.
      *  @exception IllegalActionException If the container is not a
-     *   CompositeActor, or this entity and the container are not in
+     *   CompositeActor or null, or this entity and the container are not in
      *   the same workspace.
      *  @exception NameDuplicationException If the name collides with a name
      *   already on the contents list of the container.
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof CompositeActor)) {
+        if (!(container instanceof CompositeActor) && (container != null)) {
             throw new IllegalActionException (this, container,
                     "IORelation can only be contained by CompositeActor.");
         }

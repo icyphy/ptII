@@ -957,18 +957,20 @@ public class IOPort extends ComponentPort {
 
     /** Override the base class to ensure that the proposed container
      *  implements the Actor interface (the base class ensures that the
-     *  container is an instance of ComponentEntity).
+     *  container is an instance of ComponentEntity) or null. A null
+     *  argument will remove the port from the container.
      *
      *  @param container The proposed container.
      *  @exception IllegalActionException If the proposed container is not a
      *   ComponentEntity, doesn't implement Actor, or has no name,
-     *   or the port and container are not in the same workspace.
+     *   or the port and container are not in the same workspace. Or
+     *   it's not null
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      */
     public void setContainer(Entity container)
             throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof Actor)) {
+        if (!(container instanceof Actor) && (container != null)) {
             throw new IllegalActionException(container, this,
                     "IOPort can only be contained by objects implementing " +
                     "the Actor interface.");
