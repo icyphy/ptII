@@ -45,14 +45,14 @@ functionality in AtomicActor and CompositeActor.
 */
 public interface Actor extends Executable {
 
-    ////////////////////////////////////////////////////////////////////////
-////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-/** Return the local director, if there is one, otherwise the executive
- *  director, if there is one, otherwise null.
- *  @return The director.
- */
-public Director getDirector();
+    /** Return the local director, if there is one, otherwise the executive
+     *  director, if there is one, otherwise null.
+     *  @return The director.
+     */
+    public Director getDirector();
 
     /** Return the executive director, if there is one, otherwise return null.
      *  @return The executive director.
