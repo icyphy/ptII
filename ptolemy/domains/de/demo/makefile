@@ -45,9 +45,7 @@ CLASSPATH = ../../../..
 
 TCL_SRCS =
 
-
 JSRCS = \
-	Ramp.java
 
 # Non-graphical Java demos written in Tcl
 # Since there are no demos, we use a dummy file so that the script that builds
@@ -65,7 +63,6 @@ JGRAPHICAL_TESTS = \
 	Exponential.tcl \
 	SecOrder.tcl \
 	Ramp.tcl 
-	
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS) 
 
