@@ -320,6 +320,8 @@ update: $(DERIVED_FILES)
 	rm -f docConfig.jar
 	$(MAKE) docConfig.jar
 
+update_files: $(DERIVED_FILES)
+
 update_clean: 
 	rm -f $(DERIVED_FILES)
 
