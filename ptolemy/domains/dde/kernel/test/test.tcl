@@ -83,18 +83,12 @@ test DDEDirector-4.1 {Composite actor containing a closed feedback cycle} {
     $offsets setExpression {[5.0, 15.0]}
     set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
     $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
-    # set clock [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend" 3]
-    # set tok1 [java::new ptolemy.data.Token]
-    # $clock setToken $tok1 5.0 0 
-    # $clock setToken $tok1 15.0 1
-    # $clock setToken $tok1 25.0 2
     
     # Instantiate the other atomic actors
     set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
     set join [java::new ptolemy.domains.dde.kernel.test.FlowThrough $wormhole "join"]
     set fork [java::new ptolemy.domains.dde.kernel.test.TwoPut $wormhole "fork"]
-    set fBack [java::new ptolemy.domains.dde.kernel.FBDelay $wormhole "fBack"]
-    set sink [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $wormhole "sink" 1]
+    set fBack [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack"]
 
     # Set the feedback delay parameter
     $fBack setDelay 4.0
@@ -108,28 +102,30 @@ test DDEDirector-4.1 {Composite actor containing a closed feedback cycle} {
     set joinOut [$join getPort "output"]
     set forkIn [$fork getPort "input"]
     set forkOut1 [$fork getPort "output1"]
-    set forkOut2 [$fork getPort "output2"]
+    # set forkOut2 [$fork getPort "output2"]
     set fBackIn [$fBack getPort "input"]
     set fBackOut [$fBack getPort "output"]
-    set sinkIn [$sink getPort "input"]
     set clockOut [java::cast ptolemy.actor.TypedIOPort [$clock getPort "output"]]
     $clockOut setMultiport true
     
     # Add ports to the wormhole
-    set wormin [java::new ptolemy.actor.TypedIOPort $wormhole "wormin" true false]
-    set wormout [java::new ptolemy.actor.TypedIOPort $wormhole "wormout" false true]
+    set worminA [java::new ptolemy.actor.TypedIOPort $wormhole "worminA" true false]
+    set worminB [java::new ptolemy.actor.TypedIOPort $wormhole "worminB" true false]
+    set wormoutA [java::new ptolemy.actor.TypedIOPort $wormhole "wormoutA" false true]
+    set wormoutB [java::new ptolemy.actor.TypedIOPort $wormhole "wormoutB" false true]
 
     # Connect ports inside of the wormhole
-    $wormhole connect $wormin $joinIn
+    $wormhole connect $worminA $joinIn
+    $wormhole connect $worminB $joinIn
     $wormhole connect $joinOut $forkIn
-    $wormhole connect $fBackOut $joinIn
-    $wormhole connect $fBackIn $forkOut1
-    $wormhole connect $forkOut2 $sinkIn 
-    $wormhole connect $forkOut1 $wormout
-    
+    $wormhole connect $forkOut1 $wormoutA
+    $wormhole connect $forkOut1 $wormoutB
+
     # Connect ports outside of the wormhole
-    $toplevel connect $clockOut $wormin
-    $toplevel connect $wormout $rcvrIn
+    $toplevel connect $clockOut $worminA
+    $toplevel connect $wormoutA $rcvrIn
+    $toplevel connect $fBackOut $worminB
+    $toplevel connect $fBackIn $wormoutB
 
     $mgr run
 

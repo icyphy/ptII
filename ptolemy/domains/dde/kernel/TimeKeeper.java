@@ -324,21 +324,13 @@ public class TimeKeeper {
      * @return double The output time of this time keeper.
      */
     public synchronized double getOutputTime() {
-        /*
-        double time = _currentTime;
-        if( _outputTime > _currentTime ) {
-            time = _outputTime;
-        }
-        _outputTime = _currentTime;
-        return time;
-        */
 	Thread thread = Thread.currentThread();
         
         if( !((ComponentEntity)_actor).isAtomic() ) {
 	    if( thread instanceof DDEThread ) {
 		Actor actor = ((DDEThread)thread).getActor();
 		String name = ((Nameable)actor).getName();
-                // SFIXMEystem.out.println("Call to CompositeActor's TimeKeeper.getOutputTime() at time "+_outputTime + " by " + name);
+                System.out.println("Call to CompositeActor's TimeKeeper.getOutputTime() at time "+_outputTime + " by " + name);
 	    }
             return _outputTime;
         }
@@ -347,7 +339,7 @@ public class TimeKeeper {
         if( _outputTime < _currentTime ) {
             _outputTime = _currentTime;
         }
-        // SFIXMEystem.out.println("Call to AtomicActor's TimeKeeper.getOutputTime() at time "+_outputTime);
+        System.out.println("Call to AtomicActor's TimeKeeper.getOutputTime() at time "+_outputTime);
         return _outputTime;
     }
 
@@ -420,7 +412,7 @@ public class TimeKeeper {
         String name = ((Nameable)rcvr.getContainer()).getName();
         if( name.equals("wormout") ) {
             double time = getOutputTime(); 
-            // SFIXMEystem.out.println(name+": sending out null tokens at "+time);
+            System.out.println(name+": sending out null tokens at "+time);
         }
             
             if( _actor.getExecutiveDirector() instanceof DDEDirector ){
@@ -483,63 +475,6 @@ public class TimeKeeper {
             }
             return;
         }
-        
-        
-        
-        
-        
-        /*
-        if( ((ComponentEntity) _actor).isAtomic() ) {
-	    Enumeration ports = _actor.outputPorts(); 
-            double time = getCurrentTime(); 
-            while( ports.hasMoreElements() ) {
-            	IOPort port = (IOPort)ports.nextElement(); 
-                Receiver rcvrs[][] = 
-                        (Receiver[][])port.getRemoteReceivers();
-            	for (int i = 0; i < rcvrs.length; i++) {
-                    for (int j = 0; j < rcvrs[i].length; j++) {
-                        if( time >
-			        ((DDEReceiver)rcvrs[i][j]).getLastTime() ) {
-                            ((DDEReceiver)rcvrs[i][j]).put(
-                                    new NullToken(), time );
-                        }
-		    }
-		}
-            }
-            // FIXME
-        } else if( _actor.getDirector() instanceof DDEDirector ){
-            if( rcvr == null ) {
-                return;
-            }
-            
-            IOPort port = (IOPort)rcvr.getContainer();
-            if( !port.isInput() || !port.isOpaque() ) {
-                // FIXME: Should we throw an exception here?
-                return;
-            }
-            
-            double time = getOutputTime(); 
-            // double time = getCurrentTime(); 
-            
-            Receiver[][] rcvrs = null;
-            try {
-                rcvrs = port.deepGetReceivers();
-            } catch( IllegalActionException ex ) {
-                return;
-            }
-            for (int i = 0; i < port.getWidth(); i++) {
-                if (rcvrs != null && rcvrs[i] != null) {
-            	    for (int j = 0; j < rcvrs[i].length; j++ ) {
-                        if( time >
-			        ((DDEReceiver)rcvrs[i][j]).getLastTime() ) {
-                            ((DDEReceiver)rcvrs[i][j]).put(
-                                    new NullToken(), time );
-                        }
-                    }
-                }
-            }
-        }
-        */
     }
 
     /** Set the current time of this TimeKeeper. If the specified
@@ -637,8 +572,8 @@ public class TimeKeeper {
                     + "current time.");
 	}
 	*/
-/*
         String calleeName = ((Nameable)_actor).getName();
+/*
         // if( calleeName.equals("wormhole") ) {
 	    Thread thread = Thread.currentThread();
 	    if( thread instanceof DDEThread ) {
@@ -655,7 +590,10 @@ public class TimeKeeper {
             }
 	// }
 */
-	_outputTime = outputTime;
+	if( outputTime != TimedQueueReceiver.IGNORE ) {
+            _outputTime = outputTime;
+	}
+	// _outputTime = outputTime;
     }
 
     /** Return true if a search for receivers with a receiver
@@ -741,12 +679,12 @@ public class TimeKeeper {
      * @deprecated
     synchronized void printRcvrList() {
 	String name = ((NamedObj)_actor).getName();
-        SFIXMEystem.out.println("\n###Print "+name+"'s RcvrList.");
-        SFIXMEystem.out.println("   Number of Receivers in RcvrList = "
+        System.out.println("\n###Print "+name+"'s RcvrList.");
+        System.out.println("   Number of Receivers in RcvrList = "
                 + _rcvrTimeList.size() );
         if( _rcvrTimeList.size() == 0 ) {
-            SFIXMEystem.out.println("\tList is empty");
-            SFIXMEystem.out.println("###End of printRcvrList()\n");
+            System.out.println("\tList is empty");
+            System.out.println("###End of printRcvrList()\n");
 	    return;
         }
         for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
@@ -763,9 +701,9 @@ public class TimeKeeper {
 	    } else {
 		msg += "contains no token";
 	    }
-	    SFIXMEystem.out.println(msg);
+	    System.out.println(msg);
         }
-        SFIXMEystem.out.println("###End of printRcvrList()\n");
+        System.out.println("###End of printRcvrList()\n");
     }
      */
 

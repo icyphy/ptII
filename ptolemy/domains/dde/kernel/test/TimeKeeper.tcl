@@ -247,6 +247,38 @@ test TimeKeeper-4.1 {getNextTime()} {
 ######################################################################
 ####
 #
+test TimeKeeper-4.2 {getNextTime() - With 1 arg DDEReceiver constructor} {
+    
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
+    set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
+    set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
+
+    set tok [java::new ptolemy.data.Token]
+
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.DDEReceiver $iop]
+    $rcvr1 put $tok 15.0
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.DDEReceiver $iop]
+    $rcvr2 put $tok 5.0
+    set rcvr3 [java::new ptolemy.domains.dde.kernel.DDEReceiver $iop]
+    $rcvr3 put $tok 6.0
+
+    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
+
+    $keeper updateRcvrList $rcvr1
+    $keeper updateRcvrList $rcvr2
+    $keeper updateRcvrList $rcvr3
+    set newrcvr [java::cast ptolemy.domains.dde.kernel.DDEReceiver [$keeper getFirstRcvr]]
+
+    list [$keeper getNextTime] [expr {$rcvr2 == $newrcvr} ]
+
+} {5.0 1}
+
+
+######################################################################
+####
+#
 test TimeKeeper-5.1 {Call Methods On Uninitialized TimeKeeper} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
