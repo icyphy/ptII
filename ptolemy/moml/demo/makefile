@@ -47,10 +47,10 @@ JSRCS =
 
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) \
-	example.xml \
-	modulation.mom \
-	sinewave.mom
+	example.xml
 
+#	modulation.mom
+#	sinewave.mom
 #	MoMLApplet.htm
 
 # Sources that may or may not be present, but if they are present, we don't
