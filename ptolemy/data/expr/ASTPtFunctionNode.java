@@ -4,7 +4,7 @@ package pt.data.parser;
 import java.lang.reflect.*;
 
 public class ASTPtFunctionNode extends ASTPtSimpleNode {
-    String funcName;
+    protected String funcName;
 
     protected pt.data.Token _resolveType() throws Exception {
         // assuming only double types as function arguments

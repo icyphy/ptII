@@ -6,7 +6,7 @@ import java.util.*;
 import collections.LinkedList;
 
 public class ASTPtSumNode extends ASTPtSimpleNode {
-    LinkedList _tokenList = new LinkedList();
+    protected LinkedList _tokenList = new LinkedList();
 
     protected void _resolveValue() throws Exception {
         int num =  jjtGetNumChildren();

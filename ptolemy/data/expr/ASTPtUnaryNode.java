@@ -3,7 +3,7 @@
 package pt.data.parser;
 
 public class ASTPtUnaryNode extends ASTPtSimpleNode {
-    boolean isMinus = false;
+    protected boolean isMinus = false;
    
      protected void _resolveValue() throws Exception {
          if (jjtGetNumChildren() != 1) {

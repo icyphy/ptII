@@ -5,7 +5,7 @@ package pt.data.parser;
 import collections.LinkedList;
 
 public class ASTPtProductNode extends ASTPtSimpleNode {
-    LinkedList _tokenList = new LinkedList();
+    protected LinkedList _tokenList = new LinkedList();
 
     protected void _resolveValue() throws Exception {
         int num =  jjtGetNumChildren();
