@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="_Controller" class="ptolemy.actor.TypedCompositeActor">
+<entity name="StickyMasses2" class="ptolemy.actor.TypedCompositeActor">
     <property name="Continuous Time (CT) Director" class="ptolemy.domains.ct.kernel.CTMultiSolverDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -74,8 +74,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Displacement of Masses</title>
@@ -85,8 +84,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
 <yRange min="-0.13549033016777562" max="2.9999997395833335"/>
 <noGrid/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="Sticky Mass model" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
@@ -98,9 +96,13 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
         </property>
         <port name="V1" class="ptolemy.vergil.ptolemy.fsm.modal.ModalPort">
             <property name="output"/>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <port name="V2" class="ptolemy.vergil.ptolemy.fsm.modal.ModalPort">
             <property name="output"/>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <port name="P1" class="ptolemy.vergil.ptolemy.fsm.modal.ModalPort">
             <property name="output"/>
@@ -110,12 +112,18 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
         </port>
         <port name="touched" class="ptolemy.vergil.ptolemy.fsm.modal.ModalPort">
             <property name="output"/>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <port name="Stickiness" class="ptolemy.vergil.ptolemy.fsm.modal.ModalPort">
             <property name="output"/>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <port name="Force" class="ptolemy.vergil.ptolemy.fsm.modal.ModalPort">
             <property name="output"/>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
         <entity name="_Controller" class="ptolemy.vergil.ptolemy.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
