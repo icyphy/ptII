@@ -242,7 +242,7 @@ test InvalidStateException-11.1 {Create a InvalidStateException with a \
     $ll addFirst $n2
     $ll addFirst $n1
     set pe [java::new {ptolemy.kernel.util.InvalidStateException \
-	    java.util.List java.lang.String} \
+	    java.util.Collection java.lang.String} \
 	    $ll [java::null]]
     list [$pe getMessage]
 } {{.NamedObj 1, .NamedObj 2, .NamedObj 3}}
