@@ -46,7 +46,7 @@
 # 14) Check for @throws
 # 15) Make sure that Parameters names do not start with capital letters
 # 16) Warn about catching CloneNotSupported
-
+# 17) Warn about import ... *;
 for file in $@
 do
 
@@ -271,6 +271,13 @@ do
 	results=`egrep 'catch .*CloneNotSupported' $file`
 	if [ "x$results" != "x" ]; then
 	    echo "$file: catches CloneNotSupported, which is likely a mistake"
+	    echo "$results"
+	fi
+
+	# 17) Warn about import ..*;
+	results=`egrep '^import .*\*;' $file`
+	if [ "x$results" != "x" ]; then
+	    echo "$file: import ...*; should import each class individually"
 	    echo "$results"
 	fi
 
