@@ -46,7 +46,8 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-	TestProcessActor.java
+	TestProcessActor.java \
+	TypedTestProcessActor.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
