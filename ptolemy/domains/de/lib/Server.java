@@ -155,7 +155,8 @@ public class Server extends DETransformer {
             _currentInput = input.get(0);
             double delay =
                 ((DoubleToken)serviceTime.getToken()).doubleValue();
-            _nextTimeFree = getCurrentTime() + delay;
+            _nextTimeFree = ((DEDirector)getDirector()).getCurrentTime() 
+                + delay;
         } else {
             _currentInput = null;
         }
@@ -173,13 +174,14 @@ public class Server extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        if (getCurrentTime() >= _nextTimeFree) {
+        DEDirector dir = (DEDirector)getDirector();
+        if (dir.getCurrentTime() >= _nextTimeFree) {
             return true;
         } else {
             // Schedule a firing if there is a pending
             // token so it can be served.
             if (input.hasToken(0)) {
-                fireAt(_nextTimeFree);
+                dir.fireAt(this, _nextTimeFree);
             }
             return false;
         }
