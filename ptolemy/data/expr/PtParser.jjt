@@ -280,6 +280,13 @@ public class PtParser {
         }
     }
 
+    /*  The Variable creating the parser. 
+     *  Each time another variable is referenced in the input expression, 
+     *  this Variable is registered as a listener of that Variable. 
+     *  If null, then no dependency is registered.
+     */
+    protected Variable _owner;
+
     /** Initialize the static variables containing the constants 
      *  recognized by the Parser and the classes searched by the parser 
      *  upon encountering a function call.
@@ -336,13 +343,6 @@ public class PtParser {
      *  numbers i and j.
      */
     private static Hashtable _constantsRecognized;
-
-    /*  The Variable creating the parser. 
-     *  Each time another variable is referenced in the input expression, 
-     *  this Variable is registered as a listener of that Variable. 
-     *  If null, then no dependency is registered.
-     */
-    private Variable _owner;
 
     /*  Stores the variables to which the input expression can reference
      */
@@ -647,6 +647,7 @@ String tidied, x;
                 Double imag = new Double(x.substring(0, len-1 ));
                 Complex value = new Complex(0, imag.doubleValue());
                 jjtThis._ptToken = new ComplexToken(value);
+		jjtThis._isConstant = true;
             } catch (NumberFormatException ee) {
                 throw new ParseException(
                         "Unable to convert token " + token.image + 
@@ -661,8 +662,7 @@ String tidied, x;
             {
                 x = token.image.toLowerCase();
                 len = x.length();
-                if ( x.endsWith("f") ) {                   
-                } else if ( x.endsWith("d") || x.endsWith("f") ) {   
+                if ( x.endsWith("d") || x.endsWith("f") ) {   
                     // all floating point numbers are double
                     Double value = new Double(x.substring(0, len-1 ));
                     jjtThis._ptToken = new DoubleToken(value.doubleValue());
@@ -670,6 +670,7 @@ String tidied, x;
                    Double value = new Double(x);
                    jjtThis._ptToken = new DoubleToken(value.doubleValue()); 
                 }
+	        jjtThis._isConstant = true;
             } catch (NumberFormatException ee) {
                 throw new ParseException(
                         "Unable to convert token " + token.image +
@@ -692,6 +693,7 @@ String tidied, x;
                    Integer value = new Integer(x);
                    jjtThis._ptToken = new IntToken(value.intValue()); 
                 }
+		jjtThis._isConstant = true;
             } catch (NumberFormatException ee) {
                 throw new ParseException(
                         "Unable to convert token " + token.image + 
@@ -708,6 +710,7 @@ String tidied, x;
         len = token.image.length();
         tidied = token.image.substring(1, (len -1));
         jjtThis._ptToken = new StringToken(tidied);
+	jjtThis._isConstant = true;
       }
    ) #PtLeafNode
 
@@ -720,6 +723,7 @@ String tidied, x;
           } else if (token.image.equalsIgnoreCase("FALSE")) {
               jjtThis._ptToken = new BooleanToken(false);   
           }
+	  jjtThis._isConstant = true;
       }
    ) #PtLeafNode   
 
@@ -751,6 +755,7 @@ String tidied, x;
             // constant is registered with the parser.
 	    Object tmp = _constantsRecognized.get(token.image);
             jjtThis._ptToken = (ptolemy.data.Token)tmp;
+	    jjtThis._isConstant = true;
         } else {
             if (true) {
 		throw new ParseException("The ID " + token.image + 
@@ -791,6 +796,7 @@ void function() #PtFunctionNode :
      	  // constant is registered with the parser.
       	  Object tmp = _constantsRecognized.get(x.image);
        	  jjtThis._ptToken = (ptolemy.data.Token)tmp;
+	  jjtThis._isConstant = true;
 	  isArrayRef = true;
         }
       }
@@ -810,12 +816,14 @@ void function() #PtFunctionNode :
     }
 }
 
-void matrixConstruct() #void :
+void matrixConstruct() #PtMatrixConstructNode :
 { 
   int i;
   int nRows = 0; }
 {
-  ( "[" { ++jjtThis._nColumns; ++nRows; } funcIf()  /* first term */
+  "[" { ++jjtThis._nColumns; ++nRows; } funcIf()  /* first term */
+  (
+   (  
     ( "," { ++jjtThis._nColumns; } funcIf() )*  /* first row */
     ( ";" { ++nRows; i = 0; } funcIf() { ++i; } 
     ( "," funcIf() { ++i; } )*  /* one more row */
@@ -827,5 +835,13 @@ void matrixConstruct() #void :
                   + "terms as the first row.");
         }
       }
-     )* { jjtThis._nRows = nRows; } "]" ) #PtMatrixConstructNode
+    )* "]" { jjtThis._form = 1; jjtThis._nRows = nRows; }
+   )
+   | 
+   (
+    ":" funcIf() ":" funcIf() 
+    ( ";" { ++nRows; } funcIf() ":" funcIf() ":" funcIf() )* 
+    "]" { jjtThis._form = 2; jjtThis._nRows = nRows; }
+   )
+  )
 }

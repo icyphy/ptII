@@ -35,6 +35,7 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
+import java.util.Vector;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
@@ -81,6 +82,9 @@ public class ASTPtRootNode implements Node {
      */
     public ptolemy.data.Token evaluateParseTree()
             throws IllegalArgumentException {
+        if (_isConstant && _ptToken != null) {
+            return _ptToken;
+        }
         int numChildren = jjtGetNumChildren();
         if (numChildren == 0) {
             // leaf node, should not be here
@@ -128,6 +132,17 @@ public class ASTPtRootNode implements Node {
     }
 
     public void jjtClose() {
+        if (_children != null) {
+            _children.trimToSize();
+            _isConstant = true;
+            for (int i = 0; i < _children.size(); ++i) {
+                ASTPtRootNode ch = (ASTPtRootNode)jjtGetChild(i);
+                if (!ch._isConstant) {
+                    _isConstant = false;
+                    break;
+                }
+            }
+        }
     }
 
     public void jjtSetParent(Node n) { _parent = n; }
@@ -135,21 +150,22 @@ public class ASTPtRootNode implements Node {
 
     public void jjtAddChild(Node n, int i) {
         if (_children == null) {
-            _children = new Node[i + 1];
-        } else if (i >= _children.length) {
-            Node c[] = new Node[i + 1];
-            System.arraycopy(_children, 0, c, 0, _children.length);
-            _children = c;
+            _children = new Vector();
         }
-        _children[i] = n;
+        if (i >= _children.size()) {
+            while (_children.size() <= i) {
+                _children.add(null);
+            }
+        }
+        _children.setElementAt(n, i);
     }
 
     public Node jjtGetChild(int i) {
-        return _children[i];
+        return (Node)_children.elementAt(i);
     }
 
     public int jjtGetNumChildren() {
-        return (_children == null) ? 0 : _children.length;
+        return (_children == null) ? 0 : _children.size();
     }
 
     /* You can override these two methods in subclasses of RootNode to
@@ -173,8 +189,8 @@ public class ASTPtRootNode implements Node {
             System.out.println( toString(prefix) + "  _ptToken is null");
         }
         if (_children != null) {
-            for (int i = 0; i < _children.length; ++i) {
-                ASTPtRootNode n = (ASTPtRootNode)_children[i];
+            for (int i = 0; i < _children.size(); ++i) {
+                ASTPtRootNode n = (ASTPtRootNode)_children.elementAt(i);
                 if (n != null) {
                     n.displayParseTree(prefix + " ");
                 }
@@ -216,7 +232,7 @@ public class ASTPtRootNode implements Node {
     ////                         protected variables               ////
 
     protected Node _parent;
-    protected Node[] _children;
+    protected Vector _children;
     protected int _id;
     protected PtParser _parser;
 
@@ -235,5 +251,9 @@ public class ASTPtRootNode implements Node {
 
     /** Stores the ptolemy.data.Tokens of each of the children nodes */
     protected ptolemy.data.Token[] childTokens;
+
+    /** Flags whether the parse tree under this root evaluates to a constant.
+     */
+    protected boolean _isConstant = false;
 
 }

@@ -280,6 +280,13 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants/*@egen*/ 
         }
     }
 
+    /*  The Variable creating the parser. 
+     *  Each time another variable is referenced in the input expression, 
+     *  this Variable is registered as a listener of that Variable. 
+     *  If null, then no dependency is registered.
+     */
+    protected Variable _owner;
+
     /** Initialize the static variables containing the constants 
      *  recognized by the Parser and the classes searched by the parser 
      *  upon encountering a function call.
@@ -336,13 +343,6 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants/*@egen*/ 
      *  numbers i and j.
      */
     private static Hashtable _constantsRecognized;
-
-    /*  The Variable creating the parser. 
-     *  Each time another variable is referenced in the input expression, 
-     *  this Variable is registered as a listener of that Variable. 
-     *  If null, then no dependency is registered.
-     */
-    private Variable _owner;
 
     /*  Stores the variables to which the input expression can reference
      */
@@ -1083,6 +1083,7 @@ String tidied, x;
                 Double imag = new Double(x.substring(0, len-1 ));
                 Complex value = new Complex(0, imag.doubleValue());
                 jjtn001._ptToken = new ComplexToken(value);
+		jjtn001._isConstant = true;
             } catch (NumberFormatException ee) {
                 throw new ParseException(
                         "Unable to convert token " + token.image + 
@@ -1115,8 +1116,7 @@ String tidied, x;
             {
                 x = token.image.toLowerCase();
                 len = x.length();
-                if ( x.endsWith("f") ) {                   
-                } else if ( x.endsWith("d") || x.endsWith("f") ) {   
+                if ( x.endsWith("d") || x.endsWith("f") ) {   
                     // all floating point numbers are double
                     Double value = new Double(x.substring(0, len-1 ));
                     jjtn002._ptToken = new DoubleToken(value.doubleValue());
@@ -1124,6 +1124,7 @@ String tidied, x;
                    Double value = new Double(x);
                    jjtn002._ptToken = new DoubleToken(value.doubleValue()); 
                 }
+	        jjtn002._isConstant = true;
             } catch (NumberFormatException ee) {
                 throw new ParseException(
                         "Unable to convert token " + token.image +
@@ -1164,6 +1165,7 @@ String tidied, x;
                    Integer value = new Integer(x);
                    jjtn003._ptToken = new IntToken(value.intValue()); 
                 }
+		jjtn003._isConstant = true;
             } catch (NumberFormatException ee) {
                 throw new ParseException(
                         "Unable to convert token " + token.image + 
@@ -1198,6 +1200,7 @@ String tidied, x;
         len = token.image.length();
         tidied = token.image.substring(1, (len -1));
         jjtn004._ptToken = new StringToken(tidied);
+	jjtn004._isConstant = true;
       }
    )/*@bgen(jjtree)*/
    } finally {
@@ -1228,6 +1231,7 @@ String tidied, x;
           } else if (token.image.equalsIgnoreCase("FALSE")) {
               jjtn005._ptToken = new BooleanToken(false);   
           }
+	  jjtn005._isConstant = true;
       }
    )/*@bgen(jjtree)*/
    } finally {
@@ -1277,6 +1281,7 @@ String tidied, x;
             // constant is registered with the parser.
 	    Object tmp = _constantsRecognized.get(token.image);
             jjtn006._ptToken = (ptolemy.data.Token)tmp;
+	    jjtn006._isConstant = true;
         } else {
             if (true) {
 		throw new ParseException("The ID " + token.image + 
@@ -1341,6 +1346,7 @@ void function()                 :
      	  // constant is registered with the parser.
       	  Object tmp = _constantsRecognized.get(x.image);
        	  jjtn001._ptToken = (ptolemy.data.Token)tmp;
+	  jjtn001._isConstant = true;
 	  isArrayRef = true;
         }
       }
@@ -1391,48 +1397,67 @@ void function()                 :
 /*@egen*/
 }
 
-void matrixConstruct()       :
-{ 
+void matrixConstruct()                        :
+{/*@bgen(jjtree) PtMatrixConstructNode */
+  ASTPtMatrixConstructNode jjtn000 = new ASTPtMatrixConstructNode(this, JJTPTMATRIXCONSTRUCTNODE);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/ 
   int i;
   int nRows = 0; }
 {/*@bgen(jjtree) PtMatrixConstructNode */
-  {
-    ASTPtMatrixConstructNode jjtn001 = new ASTPtMatrixConstructNode(this, JJTPTMATRIXCONSTRUCTNODE);
-    boolean jjtc001 = true;
-    jjtree.openNodeScope(jjtn001);
-  }
   try {
 /*@egen*/
-  ( "[" { ++jjtn001._nColumns; ++nRows; } funcIf()  /* first term */
-    ( "," { ++jjtn001._nColumns; } funcIf() )*  /* first row */
+  "[" { ++jjtn000._nColumns; ++nRows; } funcIf()  /* first term */
+  (
+   (  
+    ( "," { ++jjtn000._nColumns; } funcIf() )*  /* first row */
     ( ";" { ++nRows; i = 0; } funcIf() { ++i; } 
     ( "," funcIf() { ++i; } )*  /* one more row */
       { /* Assert that the following rows have the same number of terms as the
          first row. */
-        if ( i != jjtn001._nColumns ) {
+        if ( i != jjtn000._nColumns ) {
           throw new ParseException("PtParser: error parsing matrix construction, "
                   + "the " + nRows + "th row does not have the same number of "
                   + "terms as the first row.");
         }
       }
-     )* { jjtn001._nRows = nRows; } "]" )/*@bgen(jjtree)*/
-  } catch (Throwable jjte001) {
-    if (jjtc001) {
-      jjtree.clearNodeScope(jjtn001);
-      jjtc001 = false;
+    )* "]"/*@bgen(jjtree)*/
+           {
+             jjtree.closeNodeScope(jjtn000, true);
+             jjtc000 = false;
+           }
+/*@egen*/ { jjtn000._form = 1; jjtn000._nRows = nRows; }
+   )
+   | 
+   (
+    ":" funcIf() ":" funcIf() 
+    ( ";" { ++nRows; } funcIf() ":" funcIf() ":" funcIf() )* 
+    "]"/*@bgen(jjtree)*/
+        {
+          jjtree.closeNodeScope(jjtn000, true);
+          jjtc000 = false;
+        }
+/*@egen*/ { jjtn000._form = 2; jjtn000._nRows = nRows; }
+   )
+  )/*@bgen(jjtree)*/
+  } catch (Throwable jjte000) {
+    if (jjtc000) {
+      jjtree.clearNodeScope(jjtn000);
+      jjtc000 = false;
     } else {
       jjtree.popNode();
     }
-    if (jjte001 instanceof ParseException) {
-      throw (ParseException)jjte001;
+    if (jjte000 instanceof ParseException) {
+      throw (ParseException)jjte000;
     }
-    if (jjte001 instanceof RuntimeException) {
-      throw (RuntimeException)jjte001;
+    if (jjte000 instanceof RuntimeException) {
+      throw (RuntimeException)jjte000;
     }
-    throw (Error)jjte001;
+    throw (Error)jjte000;
   } finally {
-    if (jjtc001) {
-      jjtree.closeNodeScope(jjtn001, true);
+    if (jjtc000) {
+      jjtree.closeNodeScope(jjtn000, true);
     }
   }
 /*@egen*/

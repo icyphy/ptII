@@ -81,6 +81,14 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     protected String _funcName;
     protected boolean _isArrayRef;
 
+    public void jjtClose() {
+        super.jjtClose();
+        if (!_isArrayRef) {
+            // We cannot assume anything about a function call.
+            _isConstant = false;
+        }
+    }
+
     protected ptolemy.data.Token _resolveNode()
             throws IllegalArgumentException {
         int args = jjtGetNumChildren();

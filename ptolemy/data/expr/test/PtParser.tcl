@@ -509,7 +509,7 @@ test PtParser-12.1 {Test basic matrix construction.} {
     list $col $row $value1 $value2
 } {3 3 1 9}
 # Test matrix construction, when term types are heterogeneous.
-test PtParser-12.2 {Test matrix multiplication & construction.} {
+test PtParser-12.2 {Test matrix construction.} {
     set p1 [java::new ptolemy.data.expr.PtParser]
     set root1 [ $p1 {generateParseTree String} "\[1.0;2;3j\]" ]
     set res1 [java::cast ptolemy.data.ComplexMatrixToken [ $root1 evaluateParseTree ]]
@@ -520,6 +520,69 @@ test PtParser-12.2 {Test matrix multiplication & construction.} {
 
     list $col $row $value1 $value2
 } {1 3 {1.0 + 0.0i} {0.0 + 3.0i}}
+# Test matrix construction, using regularly spaced vector as row.
+test PtParser-12.3 {Test matrix construction.} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root1 [ $p1 {generateParseTree String} "\[1:1:10\]" ]
+    set res1 [java::cast ptolemy.data.IntMatrixToken [ $root1 evaluateParseTree ]]
+    set col [ $res1 getColumnCount ]
+    set row [ $res1 getRowCount ]
+    set v1 [ $res1 getElementAt 0 0 ]
+    set v2 [ $res1 getElementAt 0 9 ]
+
+    list $col $row $v1 $v2
+} {10 1 1 10}
+# Test matrix construction, using regularly spaced vector as row.
+test PtParser-12.4 {Test matrix construction.} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root1 [ $p1 {generateParseTree String} "\[1 : -1 : 1\]" ]
+    set res1 [java::cast ptolemy.data.IntMatrixToken [ $root1 evaluateParseTree ]]
+    set col [ $res1 getColumnCount ]
+    set row [ $res1 getRowCount ]
+
+    list $col $row
+} {1 1}
+# Test matrix construction, using regularly spaced vector as row.
+test PtParser-12.5 {Test matrix construction.} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root1 [ $p1 {generateParseTree String} "\[1 : -1 : 2\]" ]
+    set res1 [java::cast ptolemy.data.IntMatrixToken [ $root1 evaluateParseTree ]]
+    set col [ $res1 getColumnCount ]
+    set row [ $res1 getRowCount ]
+
+    list $col $row
+} {0 1}
+# Test matrix construction, using regularly spaced vector as row.
+test PtParser-12.6 {Test matrix construction.} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root1 [ $p1 {generateParseTree String} "\[1L : -1 : 0;0:1:1\]" ]
+    set res1 [java::cast ptolemy.data.LongMatrixToken [ $root1 evaluateParseTree ]]
+    set col [ $res1 getColumnCount ]
+    set row [ $res1 getRowCount ]
+    set v1 [$res1 getElementAt 1 1]
+
+    list $col $row $v1
+} {2 2 1}
+# Test matrix construction, using regularly spaced vector as row.
+test PtParser-12.7 {Test matrix construction.} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root1 [ $p1 {generateParseTree String} "\[1.0 : 1 : 3;0:1:2\]" ]
+    set res1 [java::cast ptolemy.data.DoubleMatrixToken [ $root1 evaluateParseTree ]]
+    set col [ $res1 getColumnCount ]
+    set row [ $res1 getRowCount ]
+    set v1 [$res1 getElementAt 1 1]
+
+    list $col $row $v1
+} {3 2 1.0}
+# Test matrix construction, using regularly spaced vector as row.
+test PtParser-12.8 {Test matrix construction.} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root1 [ $p1 generateParseTree "\[1.0 : j : 3;0:1:2\]" ]
+    catch {$root1 evaluateParseTree} msg
+
+    list $msg
+} {{java.lang.IllegalArgumentException: Error evaluating expression.
+The LUB of the types of the terms of a regularly-spaced-vector matrix construction is not supported: class ptolemy.data.ComplexToken}}
 ######################################################################
 ####
 # Test array reference.
@@ -541,3 +604,33 @@ test PtParser-13.0 {Test array reference.} {
     set res2 [ [ $root2 evaluateParseTree ] toString ]
     list $res1 $res2
 } {{ptolemy.data.ComplexToken(1.0 + 6.0i)} {ptolemy.data.ComplexToken(2.0 + 6.0i)}}
+######################################################################
+####
+# Test that constant expressions are evaluated only once.
+test PtParser-14.0 {Test constant expressions.} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set ra [ $p generateParseTree "1+2*3" ]
+    set ta [ $ra evaluateParseTree ]
+    set tb [ $ra evaluateParseTree ]
+    set va [ $ta equals $tb ]
+    set vb [ [ $ta isEqualTo $tb ] stringValue ]
+
+    set nl [java::new ptolemy.kernel.util.NamedList]
+    set vara [java::new ptolemy.data.expr.Variable]
+    $vara setName "vara"
+    $vara setExpression "1"
+    $nl prepend $vara
+    set rb [ $p generateParseTree "vara-1" $nl]
+    set ta [ $rb evaluateParseTree ]
+    set tb [ $rb evaluateParseTree ]
+    set vc [ $ta equals $tb ]
+    set vd [ [ $ta isEqualTo $tb ] stringValue ]
+
+    set rc [ $p generateParseTree "eval(\"1+1\")" ]
+    set ta [ $rc evaluateParseTree ]
+    set tb [ $rc evaluateParseTree ]
+    set ve [ $ta equals $tb ]
+    set vf [ [ $ta isEqualTo $tb ] stringValue ]
+
+    list $va $vb $vc $vd $ve $vf
+} {1 true 0 true 0 true}

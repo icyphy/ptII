@@ -62,6 +62,14 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
      */
     protected String _methodName;
 
+    public void jjtClose() {
+        if (_children != null) {
+            _children.trimToSize();
+        }
+        // We cannot assume anything about a method call.
+        _isConstant = false;
+    }
+
     /** Resolves the Token to be stored in the node. When this
      *  method is called by resolveTree, the tokens in each of the children
      *  have been resolved. This method is concerned with evaluating
