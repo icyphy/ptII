@@ -784,6 +784,8 @@ else
         AC_MSG_RESULT(ok)
 	# We found colt
 	PTCOLT_DIR=colt
+	# PTCOLT_PACKAGES is used in ptII/doc/makefile
+	PTCOLT_PACKAGES=ptolemy.actor.lib.colt
     else  
         AC_MSG_WARN([Failed to find $COLT_DIR/colt.jar
     Colt is the 'Open Source Libraries for High Performance

@@ -289,6 +289,10 @@ PTCM_DIR =	@PTCM_DIR@
 # Set to colt and used in $PTII/ptolemy/actor/lib/makefile if colt was found.
 PTCOLT_DIR =    @PTCOLT_DIR@
 
+# Ptolemy II packages that use COLT
+# PTCOLT_PACKAGES is used in ptII/doc/makefile
+PTCOLT_PACKAGES =   @PTCOLT_PACKAGES@
+
 # Set to comm and used in
 # $PTII/ptolemy/actor/lib/makefile if the Java Communications API was found
 #
