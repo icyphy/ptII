@@ -128,7 +128,7 @@ public class Entity extends NamedObj {
 	 if( foundPort ) {
 	     return storedEntities.elements();
 	 } 
-	 throw new GraphException(
+	 throw new GraphException(this,
 		 "Invalid Port Named Passed to EnumEntities()");
     }
 
@@ -177,7 +177,7 @@ public class Entity extends NamedObj {
 	 if( foundPort ) {
 	     return storedRelations.elements();
 	 }
-	 throw new GraphException(
+	 throw new GraphException(this, 
 		 "Invalid Port Named Passed to EnumRelations()");
     }
 
