@@ -54,8 +54,8 @@ public abstract class ScalarToken extends Token {
      */
     public Complex complexValue()
 	    throws IllegalActionException {
-	throw new IllegalActionException("ScalarToken.complexValue: This base "
-    		+ "class does not contain a value.");
+	throw new IllegalActionException("Cannot convert the value in " +
+    		getClass().getName() + " to a Complex losslessly.");
     }
 
     /** Return the value of this token as a double.
@@ -65,8 +65,8 @@ public abstract class ScalarToken extends Token {
      */
     public double doubleValue()
 	    throws IllegalActionException {
-	throw new IllegalActionException("ScalarToken.doubleValue: This base "
-		+ "class does not contain a value.");
+	throw new IllegalActionException("Cannot convert the value in " +
+    		getClass().getName() + " to a double losslessly.");
     }
 
     // Return the value of this token as a Fix.
@@ -77,8 +77,8 @@ public abstract class ScalarToken extends Token {
     // FIXME: restore this method after the Fix class is available.
     //    public Fix fixValue()
     //        throws IllegalActionException {
-    //	throw new IllegalActionException("ScalarToken.fixValue: This base "
-    //		+ "class does not contain a value.");
+    //	throw new IllegalActionException("Cannot convert the value in " +
+    //		getClass().getName() + " to a Fix losslessly.");
     // }
 
     /** Return the value of this token as an int.
@@ -88,8 +88,8 @@ public abstract class ScalarToken extends Token {
      */
     public int intValue()
 	    throws IllegalActionException {
-	throw new IllegalActionException("ScalarToken.intValue: This base "
-		+ "class does not contain a value.");
+	throw new IllegalActionException("Cannot convert the value in " +
+    		getClass().getName() + " to an int losslessly.");
     }
 
     /** Return the value of this token as a long integer.
@@ -99,8 +99,8 @@ public abstract class ScalarToken extends Token {
      */
     public long longValue()
 	    throws IllegalActionException {
-	throw new IllegalActionException("ScalarToken.longValue: This base "
-		+ "class does not contain a value.");
+	throw new IllegalActionException("Cannot convert the value in " +
+    		getClass().getName() + " to a long losslessly.");
     }
 }
 
