@@ -170,7 +170,7 @@ for an example model.
 <p>For more information about keystores, see
 <a href="http://java.sun.com/docs/books/tutorial/security1.2/summary/tools.html" target="_top">Security Tools Summary</a>
 and
-<br><a href="http://java.sun.com/j2se/1.4.2/docs/tooldocs/windows/keytool.html" target="_top">Keytool</a.
+<br><a href="http://java.sun.com/j2se/1.4.2/docs/tooldocs/windows/keytool.html" target="_top">Keytool</a>.
 
 @author  Christopher Hylands Brooks
 @version $Id$
@@ -362,7 +362,7 @@ public class KeyStoreActor extends TypedAtomicActor {
     ////                         protected methods                 ////
 
     /** If necessary, initialize the _keyStore by calling
-     *  KeyStore.getInstance()
+     *  KeyStore.getInstance().
      *  @exception IllegalActionException If KeyStore.getInstance()
      *  throws an exception.
      */

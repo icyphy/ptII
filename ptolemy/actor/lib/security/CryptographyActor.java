@@ -170,7 +170,7 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      *  selected, not all algorithms use <i>keySize</i>.
      *  In addition, only certain keySizes may work with certain
      *  algorithms, see the documentation for the algorithm you are using.
-     *  <p>DSA is the most common algorithm that uses </i>keySize</i>, the Sun
+     *  <p>DSA is the most common algorithm that uses <i>keySize</i>, the Sun
      *  documentation says:
      *  "The length, in bits, of the modulus p. This must range from
      *  512 to 1024, and must be a multiple of 64. The default keysize
