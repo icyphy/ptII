@@ -32,8 +32,10 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.Receiver;
 import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.domains.de.kernel.DEEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
@@ -306,6 +308,30 @@ public class HDEDirector extends DEDirector {
                     // Actor requests that it not be fired again.
                     _disableActor(actorToFire);
                     //break;
+                }
+            }
+            // Check whether the next time stamp is equal to current time.
+            // If yes, continue processing the events.
+            // If no, go to postfire and finish the current iteration.
+            // Note that one iteration only advance time once. In other words,
+            // only the events have the same time stamp will be processed in 
+            // the same iteration.
+            synchronized(_eventQueue) {
+                if (!_eventQueue.isEmpty()) {
+                    DEEvent next = _eventQueue.get();
+                    // If the next event is in the future,
+                    // proceed to postfire().
+                    if (next.timeStamp() > getCurrentTime()) {
+                        break;
+                    } else if (next.timeStamp() < getCurrentTime()) {
+                        throw new InternalErrorException(
+                                "fire(): the time stamp of the next event "
+                                + next.timeStamp() + " is smaller than the "
+                                + "current time " + getCurrentTime() + " !");
+                    }
+                } else {
+                    // The queue is empty, proceed to postfire().
+                    break;
                 }
             }
         }
