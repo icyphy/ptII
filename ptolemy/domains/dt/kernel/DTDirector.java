@@ -153,7 +153,8 @@ public class DTDirector extends SDFDirector {
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
      */
-    public DTDirector() {
+    public DTDirector()
+            throws IllegalActionException, NameDuplicationException {
     	super();
         _init();
     }
@@ -164,7 +165,8 @@ public class DTDirector extends SDFDirector {
      *
      *  @param workspace The workspace of this object.
      */
-    public DTDirector(Workspace workspace) {
+    public DTDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -236,7 +238,6 @@ public class DTDirector extends SDFDirector {
         // and during fire(), so time may not be properly updated
         // before this stage of the execution.
         _checkValidTimeIntervals();
-        _postfirereturns = true;
 
         if (!_isFiringAllowed) {
             return;
@@ -530,8 +531,7 @@ public class DTDirector extends SDFDirector {
           return true;
         }
 
-        boolean returnValue = super.postfire() && _postfirereturns;
-        return returnValue;
+        return super.postfire();
         // When an actor's postfire_ returns false, whole model should stop.
     }
 
