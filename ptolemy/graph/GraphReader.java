@@ -36,16 +36,16 @@ import ptolemy.kernel.Port;
 
 ///////////////////////////////////////////////////////////////////////
 //// GraphReader
-/** This class provides methods for converting Ptolemy II models 
+/** This class provides methods for converting Ptolemy II models
  * into generic graph representations. Portions of
  * this code are based on examples from [1].
  * <p>
- * References<br> 
- * [1] J. Davis et al., <em>Heterogeneous 
- * concurrent modeling and design in Java</em>, Technical report, 
+ * References<br>
+ * [1] J. Davis et al., <em>Heterogeneous
+ * concurrent modeling and design in Java</em>, Technical report,
  * Electronics Research Laboratory, University of California at Berkeley, March 2001.
 
-@author Shuvra S. Bhattacharyya 
+@author Shuvra S. Bhattacharyya
 @version $Id$
  */
 
@@ -57,13 +57,13 @@ public class GraphReader {
         _actorMap = new HashMap();
     }
 
-    /** Convert the model represented by a CompositeActor into a directed, 
-     *  weighted graph. Each node of the weighted graph will have as its 
+    /** Convert the model represented by a CompositeActor into a directed,
+     *  weighted graph. Each node of the weighted graph will have as its
      *  weight the Ptolemy II AtomicActor that the node represents,
      *  and each edge will have as its weight the input port associated
      *  with the connection that the edge represents. These conventions
-     *  for assigning node and edge weights can be changed in 
-     *  specialized graph reader classes by overriding the 
+     *  for assigning node and edge weights can be changed in
+     *  specialized graph reader classes by overriding the
      *  {@link #_computeNodeWeight(AtomicActor)} and
      *  {@link #_computeEdgeWeight(IOPort sourcePort, IOPort sinkPort)}
      *  methods.
@@ -71,7 +71,7 @@ public class GraphReader {
      *  @return the directed, weighted graph.
      *  @exception RuntimeException if the deep entity list of the
      *  composite actor contains an entry that is not an AtomicActor.
-     */ 
+     */
     public Graph convert(CompositeActor compositeActor) {
 
         // Instantiate an empty graph.
@@ -86,7 +86,7 @@ public class GraphReader {
                         + nextEntity.getClass().getName()
                         + " (value = " + nextEntity + ")");
             else {
-                Object nodeWeight = _computeNodeWeight((AtomicActor)nextEntity); 
+                Object nodeWeight = _computeNodeWeight((AtomicActor)nextEntity);
                 Node newNode = graph.addNodeWeight(nodeWeight);
                 _actorMap.put(nextEntity, newNode);
             }
@@ -107,18 +107,18 @@ public class GraphReader {
                     Actor sink = (Actor)(inPort.getContainer());
                     if (graph.containsNode((Node)(_actorMap.get(sink)))) {
                         if (_debug) System.out.println("Adding edge from "
-                                + source + " to " + sink); 
-                        graph.addEdge((Node)(_actorMap.get(source)), 
-                                (Node)(_actorMap.get(sink)), 
+                                + source + " to " + sink);
+                        graph.addEdge((Node)(_actorMap.get(source)),
+                                (Node)(_actorMap.get(sink)),
                                 _computeEdgeWeight(outPort, inPort));
                     }
                 }
-            } 
+            }
         }
 
         if (_debug) {
             System.out.println("A dump of the graph before global "
-                    + "transformation:\n" + graph.toString() + "\n"); 
+                    + "transformation:\n" + graph.toString() + "\n");
         }
 
         // Perform global graph transformations.
@@ -126,7 +126,7 @@ public class GraphReader {
 
         if (_debug) {
             System.out.println("A dump of the graph after global "
-                    + "transformation:\n" + graph.toString() + "\n"); 
+                    + "transformation:\n" + graph.toString() + "\n");
         }
 
         // Return the filled-in Graph.
@@ -137,13 +137,13 @@ public class GraphReader {
     ////                       protected methods                   ////
 
     /** Determine the weight to be assigned to the weighted graph edge that
-     *  represents a given connection in a Ptolemy II model. 
+     *  represents a given connection in a Ptolemy II model.
      *  This method returns the input port as the edge weight.
      *  This method should be overridden by derived
      *  classes that have different edge weighting conventions.
-     *  @param sourcePort the output port of the connection associated with 
+     *  @param sourcePort the output port of the connection associated with
      *  the edge.
-     *  @param sinkPort the input port of the connection associated with the 
+     *  @param sinkPort the input port of the connection associated with the
      *  edge
      *  @return the weight of the edge.
      */
@@ -165,7 +165,7 @@ public class GraphReader {
     /** Instantiate and initialize a graph just prior to filling it
      *  in from a given Ptolemy II model. This is a pre-processing
      *  step to the conversion process that can be specialized
-     *  based on the type of graph that is being read (e.g., 
+     *  based on the type of graph that is being read (e.g.,
      *  the method can be overridden to allocate a specialized Graph
      *  object). In this
      *  base class, we simply instantiate an empty Graph and return it.
