@@ -53,6 +53,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeConstant;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -65,12 +66,14 @@ import ptolemy.kernel.util.Workspace;
 //// Expression
 /**
    On each firing, evaluate an expression that may include references
-   to the inputs, current time, and a count of the firing.  The ports are
-   referenced by the identifiers that have the same name as the port.
-   To use this class, instantiate it, then add ports (instances of TypedIOPort).
-   In vergil, you can add ports by right clicking on the icon and selecting
-   "Configure Ports".  In MoML you can add ports by just including ports
-   of class TypedIOPort, set to be inputs, as in the following example:
+   to the inputs, current time, and a count of the firing.  The ports
+   are referenced by the identifiers that have the same name as the
+   port.  To use this class, instantiate it, then add ports (instances
+   of TypedIOPort).  In vergil, you can add ports by right clicking on
+   the icon and selecting "Configure Ports".  In MoML you can add
+   ports by just including ports of class TypedIOPort, set to be
+   inputs, as in the following example:
+
    <p>
    <pre>
    &lt;entity name="exp" class="ptolemy.actor.lib.Expression"&gt;
@@ -80,17 +83,17 @@ import ptolemy.kernel.util.Workspace;
    &lt;/entity&gt;
    </pre>
 
-   <p> The type is polymorphic, with the only constraint that the
-   types of the inputs must all be less than (in the type order) the
-   type of the output.  What this means (loosely) is that the types of
-   the input tokens can be converted losslessly into tokens with the
-   type of the output.  If this is not the case, then the types of the
-   output ports must be set manually.
+   <p> This actor is type-polymorphic.  The types of the inputs can be
+   arbitrary and the types of the outputs are inferred from the
+   expression based on the types inferred for the inputs.
 
    <p> The <i>expression</i> parameter specifies an expression that
    can refer to the inputs by name.  By default, the expression is
    empty, and attempting to execute the actor without setting it
-   triggers an exception.
+   triggers an exception.  This actor can be used instead of many of
+   the arithmetic actors, such as AddSubtract, MultiplyDivide, and
+   TrigFunction.  However, those actors will be usually be more
+   efficient, and sometimes more convenient to use.
 
    <p> The expression language understood by this actor is the same as
    <a href="../../../../expressions.htm">that used to set any
@@ -99,27 +102,11 @@ import ptolemy.kernel.util.Workspace;
    the current time by the identifier name "time", and to the current
    iteration count by the identifier named "iteration."
 
-   <p> This actor can be used instead of many of the arithmetic actors,
-   such as AddSubtract, MultiplyDivide, and TrigFunction.  However,
-   those actors will be usually be more efficient, and sometimes more
-   convenient to use.
-
    <p> This actor requires its all of its inputs to be present.  If
    inputs are not all present, then an exception will be thrown.
 
    <p> NOTE: There are a number of limitations in the current
-   implementation.  First, the type constraints on the ports are the
-   default, that input ports must have a type that can be losslessly
-   converted to the type of the output.  The type constraints have
-   nothing to do with the expression.  This is a severe limitation,
-   but removing it depends on certain extensions to the Ptolemy II
-   type system which are in progress.  Second, multiports are not
-   supported. Also, if name duplications occur, for example if a
-   parameter and a port have the same name, then the results are
-   unpredictable.  They will depend on the order in which things are
-   defined, which may not be the same in the constructor as in the
-   clone method.  This class attempts to detect name duplications and
-   throw an exception.
+   implementation.  Primarily, multiports are not supported.
 
    @author Xiaojun Liu, Edward A. Lee, Steve Neuendorffer
    @version $Id$
@@ -341,6 +328,35 @@ public class Expression extends TypedAtomicActor {
             Variable result = getScopedVariable(null, Expression.this, name);
             if (result != null) {
                 return (Type)result.getTypeTerm().getValue();
+            }
+            return null;
+        }
+
+        /** Look up and return the type term for the specified name
+         *  in the scope. Return null if the name is not defined in this
+         *  scope, or is a constant type.
+         *  @return The InequalityTerm associated with the given name in
+         *  the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
+                throws IllegalActionException {
+            if (name.equals("time")) {
+                return new TypeConstant(BaseType.DOUBLE);
+            } else if (name.equals("iteration")) {
+                return new TypeConstant(BaseType.INT);
+            }
+
+            // Check the port names.
+            TypedIOPort port = (TypedIOPort)getPort(name);
+            if (port != null) {
+                return port.getTypeTerm();
+            }
+
+            Variable result = getScopedVariable(null, Expression.this, name);
+            if (result != null) {
+                return result.getTypeTerm();
             }
             return null;
         }

@@ -659,6 +659,36 @@ public class PSDFScheduler extends BaseSDFScheduler {
             }
         }
 
+        /** Look up and return the type term for the specified name
+         *  in the scope. Return null if the name is not defined in this
+         *  scope, or is a constant type.
+         *  @return The InequalityTerm associated with the given name in
+         *  the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
+                throws IllegalActionException {
+            PSDFDirector director = (PSDFDirector)getContainer();
+            CompositeActor reference = (CompositeActor)director.getContainer();
+            Variable result;
+            if(name.indexOf("::") != -1) {
+                String insideName = name.replaceAll("::", ".");
+                result = (Variable)reference.getAttribute(insideName);
+            } else {
+                result = getScopedVariable(
+                        null,
+                        reference,
+                        name);
+            }
+
+            if (result != null) {
+                return result.getTypeTerm();
+            } else {
+                return null;
+            }
+        }
+
         /** Return the list of identifiers within the scope.
          *  @return The list of variable names within the scope.
          */
