@@ -83,7 +83,7 @@ public class Quantizer {
         // a value of which we drop the fraction part. The integer remaining
         // will be represented by the BigInteger.
         int number = precision.getFractionBitLength();
-        double resolution = Math.pow(2,-(number+1));
+        double resolution = Math.pow(2, -(number+1));
 
         BigDecimal multiplier;
         if ( x >= 0 ) {
@@ -146,8 +146,8 @@ public class Quantizer {
 //         double resolution = 0;
 //         int number = precision.getFractionBitLength();
 //         double tmp;
-//         resolution = Math.pow(2,-(number+1));
-//         tmp = 1/(Math.pow(2,number) + 1.0 / Math.pow(2,number));
+//         resolution = Math.pow(2, -(number+1));
+//         tmp = 1/(Math.pow(2, number) + 1.0 / Math.pow(2, number));
 //         if ( x >= 0 ) {
 //             resolution = 0;
 //         } else {
@@ -161,12 +161,14 @@ public class Quantizer {
 //             multiplier = new BigDecimal( x - resolution );
 //         }
 //         BigDecimal kl =
-//             _twoRaisedTo[precision.getFractionBitLength()].multiply( multiplier );
+//             _twoRaisedTo[
+//                   precision.getFractionBitLength()].multiply( multiplier );
 
         int number = precision.getFractionBitLength();
-        // double resolution = Math.pow(2,-(number+1)) - Math.pow(2,-(number+2));
+        // double resolution = Math.pow(2, -(number+1)) - 
+        //       Math.pow(2, -(number+2));
         double resolution = 0;
-        int i=0;
+        int i = 0;
 
         BigDecimal multiplier;
         if ( x >= 0 ) {
@@ -174,16 +176,16 @@ public class Quantizer {
             // When  positive number, add a small
             // number bringing the number closer
             // to the x=y line.
-            for(i=5;i<10;i++) {
-             resolution += Math.pow(2,-(number+i));
+            for(i = 5; i < 10; i++) {
+             resolution += Math.pow(2, -(number+i));
             }
             multiplier = new BigDecimal( x + resolution );
         } else {
 
             // When negative, subtract a small number
             // to bring the number close to x=y line
-            for(i=1;i<10;i++) {
-                resolution += Math.pow(2,-(number+i));
+            for(i = 1; i < 10; i++) {
+                resolution += Math.pow(2, -(number+i));
             }
             multiplier = new BigDecimal( x - resolution );
         }
