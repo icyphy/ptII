@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="" class="ptolemy.actor.TypedCompositeActor">
+<entity name="" class="ptolemy.actor.TypedCompositeActor">
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -120,4 +120,4 @@
     <link port="Maximum5.channelNumber" relation="relation15"/>
     <link port="Test12.input" relation="relation15"/>
     <link port="Test16.input" relation="relation18"/>
-</model>
+</entity>

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="legiotto" class="ptolemy.actor.TypedCompositeActor">
+<entity name="legiotto" class="ptolemy.actor.TypedCompositeActor">
     <property name="director" class="ptolemy.domains.giotto.kernel.GiottoDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -95,4 +95,4 @@
     <link port="arbiter.bump" relation="r3"/>
     <link port="arbiter.bump" relation="r4"/>
     <link port="arbiter.leader" relation="r1"/>
-</model>
+</entity>

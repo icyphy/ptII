@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="IK example" class="ptolemy.actor.TypedCompositeActor">
+<entity name="IK example" class="ptolemy.actor.TypedCompositeActor">
     <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -9374,4 +9374,4 @@
     <link port="ComputeCCD.out_shoulder" relation="relation7"/>
     <link port="ComputeCCD.out_elbow" relation="relation5"/>
     <link port="ComputeCCD.out_wrist" relation="relation1"/>
-</model>
+</entity>

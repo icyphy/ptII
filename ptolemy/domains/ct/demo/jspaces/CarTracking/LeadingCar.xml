@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="leadingcar" class="ptolemy.actor.TypedCompositeActor">
+<entity name="leadingcar" class="ptolemy.actor.TypedCompositeActor">
     <doc>CT model for the leading car, with discrete output.</doc>
     <property name="SamplingPeriod" value="1.0" 
         class="ptolemy.data.expr.Parameter"></property>
@@ -119,7 +119,7 @@
     	<!-- Configure provided in both a referenced file and local data -->
     	<configure source="plotConfigure.xml"><![CDATA[
       	<?xml version="1.0" standalone="no"?>
-      	<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+      	<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
            "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
       	<plot>
         <size width="450" height="300"/>
@@ -170,4 +170,4 @@
     <link port="ctdisp.input" relation="r3"/>
     <link port="ctdisp.input" relation="r66"/>
     <link port="ctdisp.input" relation="r8"/>
-</model>
+</entity>

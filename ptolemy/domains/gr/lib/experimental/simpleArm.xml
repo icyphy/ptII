@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="simpleArm" class="ptolemy.actor.TypedCompositeActor">
+<entity name="simpleArm" class="ptolemy.actor.TypedCompositeActor">
     <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -4445,4 +4445,4 @@
     <link port="robot arm.lowerAngle" relation="relation4"/>
     <link port="robot arm.upperAngle" relation="relation6"/>
     <link port="robot arm.wristAngle" relation="relation8"/>
-</model>
+</entity>

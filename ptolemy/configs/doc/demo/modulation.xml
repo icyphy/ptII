@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="blank" class="ptolemy.actor.TypedCompositeActor">
+<entity name="blank" class="ptolemy.actor.TypedCompositeActor">
     <property name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="500">
         </property>
@@ -128,4 +128,4 @@
     <link port="SequencePlotter12.input" relation="relation12"/>
     <link port="Sinewave1.output" relation="relation5"/>
     <link port="Sinewave6.output" relation="relation9"/>
-</model>
+</entity>

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="topLevel" class="ptolemy.actor.TypedCompositeActor">
+<entity name="topLevel" class="ptolemy.actor.TypedCompositeActor">
 
 <doc>
 This demo shows the transfer function of a type polymorphic FIR
@@ -132,7 +132,7 @@ shows the effects of the use of finite precision.
     <!-- Configure provided in both a referenced file and local data -->
     <configure source="plotConfigure.xml"><![CDATA[
       <?xml version="1.0" standalone="no"?>
-      <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+      <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
            "http://ptolemy.eecs.berkeley.edu/xml/dtd/plotml.dtd">
       <plot>
         <size width="450" height="300"/>
@@ -181,4 +181,4 @@ shows the effects of the use of finite precision.
   <link port="fixfft.output" relation="r7"/>
   <link port="plot.input" relation="r7"/>
 
-</model>
+</entity>

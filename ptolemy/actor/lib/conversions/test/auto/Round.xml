@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="" class="ptolemy.actor.TypedCompositeActor">
+<entity name="" class="ptolemy.actor.TypedCompositeActor">
     <property name="DT6" class="ptolemy.domains.dt.kernel.DTDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -185,4 +185,4 @@
     <link port="Test1.input" relation="relation10"/>
     <link port="Test4.input" relation="relation11"/>
     <link port="Test9.input" relation="relation17"/>
-</model>
+</entity>

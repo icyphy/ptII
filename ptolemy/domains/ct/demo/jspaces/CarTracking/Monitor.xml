@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="Monitor" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Monitor" class="ptolemy.actor.TypedCompositeActor">
     <doc>Discrete Event Monitor of the two cars.</doc>
     <property class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" value="false">
@@ -45,7 +45,7 @@
     	<!-- Configure provided in both a referenced file and local data -->
     	<configure source="DEplotConfigure.xml"><![CDATA[
       	<?xml version="1.0" standalone="no"?>
-      	<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+      	<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
            "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
       	<plot>
         <size width="450" height="300"/>
@@ -68,4 +68,4 @@
     <relation name="r3" class="ptolemy.actor.TypedIORelation"></relation>
 	<link port="alarm.tooFar" relation="r3"/>
   	<link port="farPublisher.input" relation="r3"/>
-</model>
+</entity>

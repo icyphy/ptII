@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/moml.dtd">
-<model name="test" class="ptolemy.actor.TypedCompositeActor">
+<entity name="test" class="ptolemy.actor.TypedCompositeActor">
     <doc>This test has no placeable elements, but writes to standard out.</doc>
     <property name="step" value="1" class="ptolemy.data.expr.Parameter"/>
     <property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -14,4 +14,4 @@
     <relation name="r1" class="ptolemy.actor.TypedIORelation"></relation>
     <link port="ramp.output" relation="r1"/>
     <link port="rec.input" relation="r1"/>
-</model>
+</entity>

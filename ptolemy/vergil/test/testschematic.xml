@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="hello world" class="ptolemy.actor.TypedCompositeActor">
+<entity name="hello world" class="ptolemy.actor.TypedCompositeActor">
     <property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="25">
         </property>
@@ -48,4 +48,4 @@
     </relation>
     <link port="Ramp1.output" relation="R1"/>
     <link port="Plotter1.input" relation="R1"/>
-</model>
+</entity>

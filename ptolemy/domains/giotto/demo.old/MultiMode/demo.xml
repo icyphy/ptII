@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="demo" class="ptolemy.actor.TypedCompositeActor">
+<entity name="demo" class="ptolemy.actor.TypedCompositeActor">
   <doc>This model demonstrates the hierarchical composition of the
 FSM and Giotto domains.</doc>
   <property class="ptolemy.domains.giotto.kernel.GiottoDirector">
@@ -80,7 +80,7 @@ FSM and Giotto domains.</doc>
     <!-- Configure provided in both a referenced file and local data -->
     <configure source="plotConfigure.xml"><![CDATA[
       <?xml version="1.0" standalone="no"?>
-      <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+      <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
            "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
       <plot>
         <size width="600" height="400"/>
@@ -105,7 +105,7 @@ FSM and Giotto domains.</doc>
   <link port="dualMode.output2" relation="r4"/>
   <link port="display.input" relation="r4"/>
 
-</model>
+</entity>
 
 
 
