@@ -117,7 +117,7 @@ public class FSMTransition extends ComponentRelation {
         }
     }
 
-    private void _createVarLists() {
+    protected void _createVarLists() {
         try {
             _trigger = new VariableList(this, "Trigger");
             _trigger.setRespondToChange(false);
