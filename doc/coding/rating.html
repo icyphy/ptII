@@ -143,6 +143,17 @@ confidence that there are no major bugs in the implementation.  The
 implementation may not yet by complete and there may be performance
 work needed but it's usable by "early-access" developers.
 
+ <p> Before submitting a package for code review to Green, please check
+the following items:
+	<menu>
+	<li> <CODE>make javadocs</CODE> does not produce
+	any warnings
+
+	<li> <a href="../../util/testsuite/chkjava"><CODE>util/testsuite/chkjava *.java</CODE></a> does not produce any warnings.  
+
+	<li> Review the output of <CODE>spell *.java</CODE>
+	</menu>
+
  <P> <dt><b>Blue</b>
 
 <dd> The package has passed final review, and will remain
@@ -155,6 +166,14 @@ we have what we consider to be a complete test suite, we have
 stress-tested the package by using the API in other code, and we have
 conducted a final review of all relevant materials (source,
 documentation, demos, etc).
+
+ <p> Before submitting a package for final review to Blue, please check
+the following items:
+	<menu>
+	<li> Recheck the items necessary for code review to Green.
+	<li> Check the test suite code coverage.  In general,
+	every method should be called by the test suite.
+	</menu>
 
 </dl>
 
