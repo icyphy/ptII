@@ -255,8 +255,15 @@ public class Manager extends NamedObj implements Runnable {
             }
 
             completedSuccessfully = true;
-   //	} catch (Exception e) {
+
+   //   } catch (Exception e) {
    //       throw new InternalErrorException(this, e, "Manager");
+
+   //   } catch (Exception e) {
+   //       System.err.println("Error caught by manager.");
+   //       e.printStackTrace();
+   //       throw new RuntimeException("Manager: " + e.getMessage());
+	    
         } finally {
 	    try {
 		wrapup();
