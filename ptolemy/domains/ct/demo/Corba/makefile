@@ -56,7 +56,7 @@ EXTRA_SRCS =	$(JSRCS) \
 	CorbaActor.idl \
 	NonlinearClient \
 	NonlinearClient.htm \
-	NonlinearClientApplication \
+	NonlinearClient.xml \
 	README
 
 # Sources that may or may not be present, but if they are present, we don't
