@@ -100,7 +100,7 @@ public class BasicGraphController extends SimpleGraphController {
         // Create and set up the selection dragger
         _selectionDragger = new SelectionDragger(pane);
         _selectionDragger.addSelectionModel(getSelectionModel());
-        
+
         // Create a listener that creates new nodes
         _nodeCreator = new NodeCreator();
         _nodeCreator.setMouseFilter(_controlFilter);

@@ -615,7 +615,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
                 wh, wh);
         return pick(region);
     }
-   
+
     /** Process a layer event. The behaviour of this method depends on
      * the action type. If it is MOUSE_PRESSED, then it recurses
      * down the figure tree searching for the top-most figure under

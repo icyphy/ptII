@@ -119,7 +119,7 @@ public class BasicNodeController implements NodeController {
         CanvasUtilities.translateTo(nf, x, y);
     }
 
-    /** 
+    /**
      * Remove the figure for the given node.
      */
     public void clearNode(Object node) {
