@@ -21,6 +21,7 @@ CVS
 */tags
 adm
 alljsimpletests.tcl
+ant
 brass
 collections
 com/microstar/xml/driver
@@ -50,6 +51,7 @@ ptolemy/actor/lib/net/test_auto
 ptolemy/actor/lib/test/auto/FileWriter1Output.txt
 ptolemy/apps
 ptolemy/automata
+ptolemy/build.xml
 ptolemy/codegen
 ptolemy/filter/*
 ptolemy/filter
