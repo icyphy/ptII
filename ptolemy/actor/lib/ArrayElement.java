@@ -77,8 +77,8 @@ public class ArrayElement extends Transformer {
 	// set type constraints.
 	input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 	ArrayType inputType = (ArrayType)input.getType();
-	InequalityTerm elemTerm = inputType.getElementTypeTerm();
-	output.setTypeAtLeast(elemTerm);
+	InequalityTerm elementTerm = inputType.getElementTypeTerm();
+	output.setTypeAtLeast(elementTerm);
 
         // Set parameters.
         index = new Parameter(this, "index");
@@ -110,8 +110,8 @@ public class ArrayElement extends Transformer {
 
         // set the type constraints
         ArrayType inputType = (ArrayType)newObject.input.getType();
-        InequalityTerm elemTerm = inputType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elemTerm);
+        InequalityTerm elementTerm = inputType.getElementTypeTerm();
+        newObject.output.setTypeAtLeast(elementTerm);
 
         return newObject;
     }
