@@ -4,17 +4,19 @@
 # Usage: addtrailingnl file [file2 . . .]
 tmpfile=/tmp/addtrailingnl.$$ 
 
+nlfile=/tmp/addtrailingnl_nlfile.$$
+echo "foo" | awk '{printf("\n")}' > $nlfile
+
 files=$@
 for file in $files
 do
-    echo $file
-	results=`tail -1 $file | od -bv | tail -2 |head -1 | grep '012$'`
-	if [ "x$results" = "x" ]; then
-	    echo "$file: does not have a trailing newline"
-	    #cvs annotate $file | tail -1
-	    awk '    {print $0}	
-		 END {printf("\n")}' $file > $tmpfile
-            cp $tmpfile $file
-	fi
+    #echo "$0: $file"
+    results=`tail -1 $file | od -bv | tail -2 |head -1 | grep '012$'`
+    if [ "x$results" = "x" ]; then
+	#echo "$file: does not have a trailing newline, adding one now."
+	#cvs annotate $file | tail -1
+	cat  $file $nlfile > $tmpfile
+        cp $tmpfile $file
+    fi
 done
-rm -f $tmpfile
+rm -f $tmpfile $nlfile
