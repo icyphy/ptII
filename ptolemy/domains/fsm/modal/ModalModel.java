@@ -155,39 +155,50 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a change of the _director or other property. */
+    /** React to a change of the director or other property. */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == directorClass) {
-            final String newDirectorClassName = directorClass.stringValue();
-            final Director director = getDirector();
             
-            // FIXME: We should change the director only if the current
+            // We should change the director only if the current
             // director is not of the right class.
-            
-            // NOTE: Creating a new director has to be done in a
-            // change request.
-            ChangeRequest request = new ChangeRequest(this, "Create a new director") {
-            	protected void _execute() throws Exception {
-                    Class newDirectorClass =
-                        Class.forName(newDirectorClassName);
-                    Constructor newDirectorConstructor =
-                        newDirectorClass.getConstructor
-                        (new Class[]{CompositeEntity.class, String.class});
-                    FSMDirector newDirector = (FSMDirector)newDirectorConstructor.newInstance
-                            (new Object[]{ModalModel.this, uniqueName("_Director")});
-                    // The director should not be persistent.
-                    newDirector.setPersistent(false);
-                    newDirector.controllerName.setExpression(
-                            "_Controller");
-                    if (director != null 
-                            && director.getContainer() == ModalModel.this) {
-                        // Delete the old director.
-                        director.setContainer(null);
-                    }
+            Director director = getDirector();
+            String className = directorClass.stringValue();
+            if (director == null
+                    || !director.getClass().getName().equals(className)) {
+                // Check the class name to get immediate feedback
+                // to the user.
+                try {
+                    Class.forName(className);
+                } catch (ClassNotFoundException e) {
+                    throw new IllegalActionException(this, null, e,
+                            "Invalid directorClass.");
                 }
-            };
-            requestChange(request);
+                
+                // NOTE: Creating a new director has to be done in a
+                // change request.
+                ChangeRequest request = new ChangeRequest(this, "Create a new director") {
+                    protected void _execute() throws Exception {
+                        Director director = getDirector();
+                        Class newDirectorClass =
+                            Class.forName(directorClass.stringValue());
+                        Constructor newDirectorConstructor =
+                            newDirectorClass.getConstructor
+                            (new Class[]{CompositeEntity.class, String.class});
+                        FSMDirector newDirector = (FSMDirector)newDirectorConstructor.newInstance
+                                (new Object[]{ModalModel.this, uniqueName("_Director")});
+                        // The director should not be persistent.
+                        newDirector.setPersistent(false);
+                        newDirector.controllerName.setExpression("_Controller");
+                        if (director != null 
+                                && director.getContainer() == ModalModel.this) {
+                            // Delete the old director.
+                            director.setContainer(null);
+                        }
+                    }
+                };
+                requestChange(request);                
+            }
         }
     }
 
@@ -225,6 +236,17 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
             throws CloneNotSupportedException {
         ModalModel newModel = (ModalModel)super.clone(workspace);
         newModel._controller = (FSMActor)newModel.getEntity("_Controller");
+        
+        try {
+			// Validate the directorClass parameter so that the director
+			// gets created in the clone.
+			newModel.directorClass.validate();
+            newModel.executeChangeRequests();
+		} catch (IllegalActionException e) {
+			throw new CloneNotSupportedException(
+                    "Failed to validate the director of the clone of "
+                    + getFullName());
+		}
         return newModel;
     }
 
@@ -327,16 +349,6 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         }
     }
 
-    /** Reset internal non-persistent variables and invoke the
-     *  preinitialize() method of the CompositeActor.
-     *
-     *  @exception IllegalActionException If the preinitialize()
-     *  method of the CompositeActor throws a IllegalActionException.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -405,12 +417,4 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                 " r=\"5\" style=\"fill:white\"/>\n" +
                 "</svg>\n");
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // A flag indicating the director has been changed to HDFFSMDirector
-    // by the user. This prevents setting the HDFFSMActor flag before
-    // the FSMActor is created.
-    private boolean _directorChanged = false;
 }
