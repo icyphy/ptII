@@ -128,8 +128,8 @@ public class CharonCodeGenerator extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Generate Giotto code for the _container model.
-     *  @return The Giotto code.
+    /** Generate Charon code for the _container model.
+     *  @return The Charon code.
      */
     public String generateCode() throws IllegalActionException {
 	try {
@@ -142,6 +142,7 @@ public class CharonCodeGenerator extends Attribute {
 
 	    String containerName = _container.getName();
 
+	    // the top level agent is a composite agent too.
 	    generatedCode += _compositeAgentCode(_container)
 			   + _modeCode;
 
@@ -202,7 +203,7 @@ public class CharonCodeGenerator extends Attribute {
      *  @param input TypedIOPort
      *  @return A list of IOPort objects.
      */
-    private LinkedList shallowSourcePortList(TypedIOPort input) {
+    private LinkedList _shallowSourcePortList(TypedIOPort input) {
         try {
             _workspace.getReadAccess();
             Actor container = (Actor)input.getContainer();
@@ -237,11 +238,11 @@ public class CharonCodeGenerator extends Attribute {
     private String _compositeAgentCode(CompositeActor actor) throws IllegalActionException {
 
 	if (FSMDirector.class.isInstance(actor.getDirector())) {
-	    // mode code generation goes here.
 	    return _agentCode(actor);
 	}
 
 	LinkedList subAgents = _agents(actor);
+
 	if (subAgents.size() == 0) return _agentCode(actor);
 
 	String compositeCodeString = "";
@@ -250,6 +251,45 @@ public class CharonCodeGenerator extends Attribute {
 
 	ListIterator subAgentsIterator = subAgents.listIterator();
 
+	// the output ports of composite agent
+	// In fact, there is always at most one output
+	List outputPorts = actor.outputPortList();
+	ListIterator outputPortsIterator = actor.outputPortList().listIterator();
+
+
+	if (outputPorts.size() > 1)
+	  throw new IllegalActionException(" The agent has more than one output!");
+
+	// get the source subAgent name
+	String outputAgentName = "";
+	String outputPortName = "";
+	String sourceForOutputName = "";
+
+	while (outputPortsIterator.hasNext()) {
+	  TypedIOPort output = (TypedIOPort) outputPortsIterator.next();
+	  outputPortName = output.getName();
+	  ListIterator sourcePorts = output.insidePortList().listIterator();
+
+
+	  TypedIOPort sourcePort = new TypedIOPort();
+
+	  while (sourcePorts.hasNext()) {
+	    TypedIOPort port = (TypedIOPort) sourcePorts.next();
+	    if (port.isOutput()) {
+	      if (sourcePort == null) {
+		throw new IllegalActionException(" The output has more than one source!");
+	      } else {
+		sourcePort = port;
+		sourceForOutputName = sourcePort.getName();
+		Nameable sourceContainer = sourcePort.getContainer();
+		outputAgentName = sourceContainer.getName();
+	      }
+	    }
+	  }
+
+
+	}
+
 	while (subAgentsIterator.hasNext()) {
 
 	    String subAgentConnectionInputs = "";
@@ -257,12 +297,18 @@ public class CharonCodeGenerator extends Attribute {
 
 	    CompositeActor subAgent = (CompositeActor)subAgentsIterator.next();
 
+	    if (outputAgentName.equals(subAgent.getName())) {
+	      // the inside output actually is input to outside environment
+	      subAgentConnectionOutputs += sourceForOutputName;
+	      subAgentConnectionInputs += outputPortName;
+	    }
+
 	    subAgentCode += "  agent "
 			  + subAgent.getName().toLowerCase() + " = "
 			  + subAgent.getName()
 			  + " ( ";
 
-	    if (actor.depthInHierarchy() == 0) {
+      	    if (actor.depthInHierarchy() == 0) {
 		subAgentCode += _agentParameterTokens((NamedObj)subAgent);
 	    } else {
 		subAgentCode += _agentParameters((NamedObj)subAgent, false);
@@ -275,7 +321,7 @@ public class CharonCodeGenerator extends Attribute {
 
 	    while (subAgentInputs.hasNext()) {
 		TypedIOPort input = (TypedIOPort) subAgentInputs.next();
-		LinkedList sourceList = shallowSourcePortList(input);
+		LinkedList sourceList = _shallowSourcePortList(input);
 		ListIterator sources = sourceList.listIterator();
 		boolean privateVariable = true;
 		while (sources.hasNext()) {
@@ -464,8 +510,6 @@ public class CharonCodeGenerator extends Attribute {
 	String invariantString = "";
 
 	LinkedList parameterList = (LinkedList)actor.attributeList(Parameter.class);
-	int parameterNumber = parameterList.size();
-	ListIterator parameters = parameterList.listIterator();
 
 	Parameter invariantPara = (Parameter) actor.getAttribute("_invariant");
 	if (invariantPara  != null) {
@@ -473,10 +517,13 @@ public class CharonCodeGenerator extends Attribute {
 			    + ((StringToken)invariantPara.getToken()).stringValue()
 			    + " } ";
 	    //get rid of _invariant parameter
-	    //parameterNumber --;
+	    parameterList.remove(invariantPara);;
 	    //FIXME: it seems that after getAttribute,
 	    //the attribute does not exist?
 	}
+
+	int parameterNumber = parameterList.size();
+	ListIterator parameters = parameterList.listIterator();
 
 	_inPorts = actor.inputPortList().iterator();
 	while (_inPorts.hasNext()) {
@@ -507,7 +554,7 @@ public class CharonCodeGenerator extends Attribute {
 		continue;
 	    }
 
-	    if (parameters.nextIndex() >= (parameterNumber - outportNumber)) {
+	    if (parameters.nextIndex() > (parameterNumber - outportNumber)) {
 		parameterForOutport = true;
       	    }
 
