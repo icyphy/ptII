@@ -244,7 +244,6 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 solver.addInequalities(constraints);
 
                 // Find the least solution (most specific types)
-                boolean resolved = solver.solveLeast();
 
                 // If some inequalities are not satisfied, or type variables
                 // are resolved to unacceptable types, such as

@@ -902,7 +902,6 @@ public class Manager extends NamedObj implements Runnable {
      */
     public static String timeAndMemory(long startTime,
             long totalMemory, long freeMemory) {
-        Runtime runtime = Runtime.getRuntime();
         return System.currentTimeMillis() - startTime
             + " ms. Memory: "
             + totalMemory + "K Free: " + freeMemory + "K ("
