@@ -94,23 +94,22 @@ work under JDK 1.4.0
 <h2>Major Features that are new in Ptolemy 2.0 </h2>
 <menu>
 
-<li> <a href="../ptolemy/domains/ct/demo/Switch/Switch.htm">Modal Models</a>
+<li> <a href="../../domains/de/demo/ModalModel/ModalModel.htm">Modal Models</a>
  (Xiaojun Liu, Edward A. Lee)
-<!-- Text from ptweb/projects/mobies/reports/01/3 -->
-A modal model is an FSM (finite state machine) combined
-hierarchically with other models. In our visual syntax, the system
-builder directly interacts with this hierarchical view. If you look
-inside the modal model, you will see a visual rendition of the FSM. If
-you create a state in this FSM, then you can create a refinement, and
-also you can look inside the state using the context menu on the state.
+<br>A model model is one whose behavior depends on its "mode"
+of operation. A modal model in Ptolemy II is an FSM (finite state machine)
+combined hierarchically with other models. A state in the FSM represents
+a mode of operation, and can have a refinement that gives the behavior
+in that model.
 The refinement can be another FSM or some other model using some other
-Ptolemy domain. For example, by using the CT domain (continuous time),
-one can easily build hybrid systems.
-
+Ptolemy domain. This example combines DE, FSM, and SDF to model a
+system where regularly sampled signals are purturbed by irregular
+events in time.
+</li>
 
 <li> <a href="codegen.htm">Code Generation</a>
 (Primary Author: Stephen Neuendorffer, Contributor: Christopher Hylands)
-This release includes a limited prototype of our code generation facility
+ <br>This release includes a limited prototype of our code generation facility
 that will generate .class files for non-hierarchical SDF models
 
  <br>Note that the code generator will not work in an applet, but will
@@ -261,7 +260,14 @@ unsigned bytes.
  <li> <a href="../ptolemy/data/unit/demo/Units/Units.htm">Units</a>
  A demonstration of the Units facility
  </menu>
-
+<li> <a href="../ptolemy/domains/de/doc/body.htm" target="body">DE</a>:
+	 Discrete Event
+<menu>
+<li> <a href="../../domains/de/demo/ModalModel/ModalModel.htm">Modal Model</a>
+This example combines DE, FSM, and SDF to model a
+system where regularly sampled signals are purturbed by irregular
+events in time.
+</menu>
 
 
 <li> <a href="../ptolemy/domains/fsm/doc/body.htm" target="body">FSM</a>:
