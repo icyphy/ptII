@@ -98,6 +98,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             Token t = get();
         }
     }
+
+    //FIXME: Add Clone()
     
     /** Remove and return the oldest token from the FIFO queue contained 
      *  in the receiver. Terminate the calling process by throwing a 
@@ -118,7 +120,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public Token get() {
 	Workspace workspace = getContainer().workspace();
-	BasePNDirector director = ((BasePNDirector)((Actor)(getContainer().getContainer())).getDirector());
+	BasePNDirector director = ((BasePNDirector)
+                ((Actor)(getContainer().getContainer())).getDirector());
         Token result = null;
         synchronized (this) {
             while (!_terminate && !super.hasToken()) {
@@ -155,12 +158,20 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         }
     }
 
+    /** Return the actor blocked on a read from this receiver, if any. Return
+     *  null if there is no actor blocked on a read from this receiver.
+     *  @return the blocked actor if any, else null.
+     */
     public Actor getReadBlockedActor() {
         if (_readblockedactor == null) {
         }
         return _readblockedactor;
     }
 
+    /** Return the actor blocked on a write to this receiver, if any. Return
+     *  null if there is no actor blocked on a write to this receiver.
+     *  @return the blocked actor if any, else null.
+     */
     public Actor getWriteBlockedActor() {
         if (_writeblockedactor == null) {
         }
@@ -217,12 +228,13 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public void put(Token token) {
 	Workspace workspace = getContainer().workspace();
-	BasePNDirector director = (BasePNDirector)((Actor)(getContainer().getContainer())).getDirector();
+	BasePNDirector director = (BasePNDirector)
+            ((Actor)(getContainer().getContainer())).getDirector();
         synchronized(this) {
             if (!super.hasRoom()) {
                 _writepending = true;
 
-                //FIXME: Only for listeners!!
+                //Note: Required only to inform the listeners
                 _writeblockedactor = 
                     ((ProcessThread)Thread.currentThread()).getActor();
 
