@@ -207,6 +207,8 @@ public class TimedQueueReceiver {
 			       "\t_lastTime:" + _lastTime);
 	    IOPort port = (IOPort)getContainer(); 
 	    NamedObj actor = (NamedObj)port.getContainer(); 
+	    // Note: Maintain the following IllegalArgumentException
+	    // message as it is used by DDEIOPort.send().
 	    throw new IllegalArgumentException(actor.getName() + 
 		    " - Attempt to set current time in the past.");
 	}
