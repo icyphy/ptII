@@ -749,19 +749,11 @@ public class Type extends SDFApplet implements ChangeListener {
     	}
     }
 
-    public class TypeGraphController extends GraphController {
+    public class TypeGraphController extends BasicGraphController {
 	
 	/** The selection interactor for drag-selecting nodes
 	 */
 	private SelectionDragger _selectionDragger;
-	
-	/** The node controller
-	 */
-	private NodeController _nodeController;
-
-	/** The edge controller
-	 */
-	private EdgeController _edgeController;
 	
 	/**
 	 * Create a new basic controller with default 
@@ -769,24 +761,10 @@ public class Type extends SDFApplet implements ChangeListener {
 	 */
 	public TypeGraphController () {
 	    // The interactors attached to nodes and edges
-	    _nodeController = new NodeController(this);
-	    _edgeController = new EdgeController(this);
-	}
-	
-	public void clearEdge(Edge edge) {
-	    _edgeController.clearEdge(edge);
-	}
-	
-	public void clearNode(Node node) {
-	    _nodeController.clearNode(node);
-	}
-	
-	public Figure drawEdge(Edge edge) {
-	    return _edgeController.drawEdge(edge);
-	}
-	
-	public Figure drawNode(Node node) {
-	    return _nodeController.drawNode(node);
+	    setNodeController(new NodeController(this));
+	    setEdgeController(new EdgeController(this));
+            getNodeController().setNodeRenderer(new TypeRenderer());
+            getEdgeController().setEdgeRenderer(new LineRenderer());
 	}
 	
 	/**
@@ -802,12 +780,10 @@ public class Type extends SDFApplet implements ChangeListener {
 	    // Create and set up the selection dragger
 	    _selectionDragger = new SelectionDragger(pane);
 	    _selectionDragger.addSelectionInteractor(
-		(SelectionInteractor)_edgeController.getEdgeInteractor());
+		(SelectionInteractor)getEdgeController().getEdgeInteractor());
 	    _selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)_nodeController.getNodeInteractor());
-	    _nodeController.setNodeRenderer(new TypeRenderer());
-	    _edgeController.setEdgeRenderer(new LineRenderer());
-	} 
+                (SelectionInteractor)getNodeController().getNodeInteractor());
+        }
     }
 
     // TypeRenderer draws the nodes to represent types in a type lattice

@@ -384,35 +384,18 @@ public class BusContentionApplet extends CSPApplet {
 
     ///////////////////////////////////////////////////////////////////
     //// BusContentionGraphController
-    public class BusContentionGraphController extends GraphController {
+    public class BusContentionGraphController extends BasicGraphController {
 	private SelectionDragger _selectionDragger;
-	private NodeController _nodeController;
-	private EdgeController _edgeController;
-	
 	/**
 	 * Create a new basic controller with default 
 	 * node and edge interactors.
 	 */
 	public BusContentionGraphController () {
 	    // The interactors attached to nodes and edges
-	    _nodeController = new NodeController(this);
-	    _edgeController = new EdgeController(this);
-	}
-	
-	public void clearEdge(Edge edge) {
-	    _edgeController.clearEdge(edge);
-	}
-	
-	public void clearNode(Node node) {
-	    _nodeController.clearNode(node);
-	}
-	
-	public Figure drawEdge(Edge edge) {
-	    return _edgeController.drawEdge(edge);
-	}
-	
-	public Figure drawNode(Node node) {
-	    return _nodeController.drawNode(node);
+	    setNodeController(new NodeController(this));
+	    setEdgeController(new EdgeController(this));
+	    getNodeController().setNodeRenderer(new ThreadRenderer());
+	    getEdgeController().setEdgeRenderer(new LocalEdgeRenderer());
 	}
 	
 	/**
@@ -428,12 +411,9 @@ public class BusContentionApplet extends CSPApplet {
 	    // Create and set up the selection dragger
 	    _selectionDragger = new SelectionDragger(pane);
 	    _selectionDragger.addSelectionInteractor(
-		(SelectionInteractor)_edgeController.getEdgeInteractor());
+		(SelectionInteractor)getEdgeController().getEdgeInteractor());
 	    _selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)_nodeController.getNodeInteractor());
-
-	    _nodeController.setNodeRenderer(new ThreadRenderer());
-	    _edgeController.setEdgeRenderer(new LocalEdgeRenderer());
+                (SelectionInteractor)getNodeController().getNodeInteractor());
 	} 
     }
 
