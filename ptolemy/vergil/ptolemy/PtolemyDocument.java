@@ -184,7 +184,17 @@ public class PtolemyDocument extends AbstractDocument
 		} 
 	    }
 	}
-	c.setContents(transferable, this);
+
+	// This should be a PtolemyTransferable.  The below code works around
+	// a bug in the JDK that should be fixed as of jdk1.3.1.  The bug
+	// is that cut and paste through the system clipboard to native
+	// applications doesn't work unless you use string selection.  It
+	// is probably possible to avoid this bug entirely by not using 
+	// PtolemyTransferable at all.
+	try {
+	    c.setContents(new StringSelection(transferable._getMoML()), this);
+	} catch (Exception ex) {	    
+	}
     }
  
     /** Remove the currently selected objects from this document, if any,
@@ -290,6 +300,7 @@ public class PtolemyDocument extends AbstractDocument
     public void paste (Clipboard c) {
 	System.out.println("paste");
 	Transferable transferable = c.getContents(this);
+	System.out.println("transferable = " + transferable);
 	JGraph jgraph = getView();
 	GraphPane graphPane = jgraph.getGraphPane();
 	GraphController controller =
