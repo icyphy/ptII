@@ -80,8 +80,10 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
      *  IntTypeNode.instance and dimension 2.
      */
     public TypeNode encapsulatedDataType(Type type) {
-        System.err.println("PtolemyTypeIdentifier.encapsulatedDataType(): "
-                + type);
+        if (_debug) {
+            System.out.println("PtolemyTypeIdentifier.encapsulatedDataType(): "
+                    + type);
+        }
         return encapsulatedDataType(kindOfTokenType(type));
     }
 
