@@ -250,7 +250,7 @@ public class Plot extends PlotBox {
      * the command line arguments passed in.
      */ 
     public int parseArgs(String args[]) throws CmdLineArgException {
-        int i = 0, j, argsread;
+        int i = 0, j, argsread = 0;
 
 
         // If we see both -nl and -bar, assume we do an impulse plot.
@@ -453,7 +453,6 @@ public class Plot extends PlotBox {
             } else {
                 if (arg.startsWith("=")) {
                     // Process =WxH+X+Y
-                    int endofheight;
                     _width = (int)Integer.valueOf(arg.substring(1,
                             arg.indexOf('x'))).intValue();
                     if (arg.indexOf('+') != -1) {
@@ -505,6 +504,83 @@ public class Plot extends PlotBox {
             _dataurls.addElement(args[i]);
         }
         return argsread;
+    }
+
+    /* Split pxgraphargs up into an array and call _parseArgs
+     */       
+    public int parsePxgraphargs(String pxgraphargs) throws CmdLineArgException  {
+        // We convert the String to a Stream and then use a StreamTokenizer
+        // to parse the arguments into a Vector and then copy
+        // the vector into an array of Strings.  We use a Vector
+        // so that we can handle an arbitrary number of arguments
+        if (_debug > 3) {
+            System.out.println("Plot: parsePxgraphargs "+pxgraphargs);
+        }
+
+        Vector argvector = new Vector();
+        boolean prependdash = false; // true if we need to add a -
+        
+        StringBufferInputStream inp = new StringBufferInputStream(pxgraphargs);
+        // StringBufferInput is deprecated, but StringReader is not in 1.0.2
+
+        //StringReader inp = new StringReader(pxgraphargs);
+
+        try {
+            StreamTokenizer stoken = new StreamTokenizer(inp); // Deprecated.
+
+            // We don't want to parse numbers specially, so we reset
+            // the syntax and then add back what we want.
+            stoken.resetSyntax();
+            stoken.whitespaceChars(0, ' ');
+            stoken.wordChars('(','~');
+            stoken.quoteChar('"');
+            stoken.quoteChar('\'');
+            int c;
+
+        out:
+            while (true) {
+                c = stoken.nextToken();
+                //System.out.print(c + " "+stoken.ttype+" "+stoken.sval+" "); 
+                switch (stoken.ttype) {        // same as value of 'c'
+                case StreamTokenizer.TT_EOF:
+                    break out;
+                case StreamTokenizer.TT_WORD:
+                    //System.out.println("Word: " + stoken.sval);
+                    if (prependdash) {
+                        prependdash = false;
+                        argvector.addElement(new String("-"+stoken.sval));
+                    } else {
+                        argvector.addElement(new String(stoken.sval));
+                    }
+
+                    break;
+                case '-':
+                    prependdash = true;
+                    break;
+                case '"':
+                case '\'':
+                    //System.out.println("String: " + stoken.sval);
+                    argvector.addElement(new String(stoken.sval));
+                    break;
+                default:
+                    throw new IOException("Failed to parse: '"+ (char)c +
+                            "' in `" + pxgraphargs + "'");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        // Create a array 
+        String args[] = new String[argvector.size()];
+        for(int i = 0; i<argvector.size(); i++) {
+            args[i] = (String)argvector.elementAt(i);
+            if (_debug > 2) System.out.print("<"+args[i]+ "> ");
+        }
+        if (_debug > 2) System.out.println(" ");
+
+        return parseArgs(args);
     }
 
     /** 
@@ -958,7 +1034,7 @@ public class Plot extends PlotBox {
                 }
                 break;
             default:
-                // none
+                break;
             }
         }
     }
@@ -1352,83 +1428,6 @@ public class Plot extends PlotBox {
         }
 
         pts.removeElementAt(index);
-    }
-
-    /* Split pxgraphargs up into an array and call _parseArgs
-     */       
-    public int parsePxgraphargs(String pxgraphargs) throws CmdLineArgException  {
-        // We convert the String to a Stream and then use a StreamTokenizer
-        // to parse the arguments into a Vector and then copy
-        // the vector into an array of Strings.  We use a Vector
-        // so that we can handle an arbitrary number of arguments
-        if (_debug > 3) {
-            System.out.println("Plot: parsePxgraphargs "+pxgraphargs);
-        }
-
-        Vector argvector = new Vector();
-        boolean prependdash = false; // true if we need to add a -
-        
-        StringBufferInputStream inp = new StringBufferInputStream(pxgraphargs);
-        // StringBufferInput is deprecated, but StringReader is not in 1.0.2
-
-        //StringReader inp = new StringReader(pxgraphargs);
-
-        try {
-            StreamTokenizer stoken = new StreamTokenizer(inp); // Deprecated.
-
-            // We don't want to parse numbers specially, so we reset
-            // the syntax and then add back what we want.
-            stoken.resetSyntax();
-            stoken.whitespaceChars(0, ' ');
-            stoken.wordChars('(','~');
-            stoken.quoteChar('"');
-            stoken.quoteChar('\'');
-            int c;
-
-        out:
-            while (true) {
-                c = stoken.nextToken();
-                //System.out.print(c + " "+stoken.ttype+" "+stoken.sval+" "); 
-                switch (stoken.ttype) {        // same as value of 'c'
-                case StreamTokenizer.TT_EOF:
-                    break out;
-                case StreamTokenizer.TT_WORD:
-                    //System.out.println("Word: " + stoken.sval);
-                    if (prependdash) {
-                        prependdash = false;
-                        argvector.addElement(new String("-"+stoken.sval));
-                    } else {
-                        argvector.addElement(new String(stoken.sval));
-                    }
-
-                    break;
-                case '-':
-                    prependdash = true;
-                    break;
-                case '"':
-                case '\'':
-                    //System.out.println("String: " + stoken.sval);
-                    argvector.addElement(new String(stoken.sval));
-                    break;
-                default:
-                    throw new IOException("Failed to parse: '"+ (char)c +
-                            "' in `" + pxgraphargs + "'");
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        // Create a array 
-        String args[] = new String[argvector.size()];
-        for(int i = 0; i<argvector.size(); i++) {
-            args[i] = (String)argvector.elementAt(i);
-            if (_debug > 2) System.out.print("<"+args[i]+ "> ");
-        }
-        if (_debug > 2) System.out.println(" ");
-
-        return parseArgs(args);
     }
 
     //////////////////////////////////////////////////////////////////////////
