@@ -57,6 +57,7 @@ JSIMPLE_TESTS = \
 	StreamErrorHandler.tcl \
 	MoMLWriter.tcl \
 	MoMLWriterTiming.tcl \
+	URLAttribute.tcl \
 	Vertex.tcl
 
 # Graphical Java tests that use Tcl.
