@@ -121,10 +121,16 @@ public class InlinePortTransformer extends SceneTransformer {
         System.out.println("InlinePortTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        boolean debug = Options.getBoolean(options, "debug");
+        _options = options;
+        _phaseName = phaseName;
+        _debug = Options.getBoolean(options, "debug");
+
+        _inlinePortCalls(ModelTransformer.getModelClass(), _model);
+    }
+
+    private void _inlinePortCalls(SootClass modelClass, CompositeActor model) {
 
         // First create the circular buffers for communication.
-        SootClass modelClass = ModelTransformer.getModelClass();
         SootMethod clinitMethod;
         Body clinitBody;
         if (modelClass.declaresMethodByName("<clinit>")) {
@@ -142,7 +148,7 @@ public class InlinePortTransformer extends SceneTransformer {
 
         // If we're doing deep (SDF) codegen, then create a
         // queue for every type of every channel of every relation.
-        for (Iterator relations = _model.relationList().iterator();
+        for (Iterator relations = model.relationList().iterator();
              relations.hasNext();) {
             TypedIORelation relation = (TypedIORelation)relations.next();
 
@@ -187,7 +193,8 @@ public class InlinePortTransformer extends SceneTransformer {
                             arrayType,
                             Modifier.PUBLIC | Modifier.STATIC);
                     modelClass.addField(field);
-                    if (debug) System.out.println("creating field = " + field);
+                    if (_debug) System.out.println("creating field = " + field + 
+                            " of size " + bufferSize);
 
                     // Tag the field with the type.
                     field.addTag(new TypeTag(type));
@@ -214,15 +221,15 @@ public class InlinePortTransformer extends SceneTransformer {
         Type portType = RefType.v(PtolemyUtilities.portClass);
 
         // FIXME toplevel ports?
-        // Loop over all the actor instance classes.
-        for (Iterator entities = _model.deepEntityList().iterator();
+        // Loop over all the model instance classes.
+        for (Iterator entities = model.deepEntityList().iterator();
              entities.hasNext();) {
-            Entity entity = (Entity)entities.next();
+            ComponentEntity entity = (ComponentEntity)entities.next();
             String className =
-                ActorTransformer.getInstanceClassName(entity, options);
+                ActorTransformer.getInstanceClassName(entity, _options);
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
 
-            _createBufferReferences(entity, entityClass,
+            _createBufferReferences(model, modelClass, entity, entityClass,
                     portToTypeNameToBufferField, portToIndexArrayField);
 
             // Loop through all the methods and inline calls on ports.
@@ -237,17 +244,23 @@ public class InlinePortTransformer extends SceneTransformer {
 
                 boolean moreToDo = true;
                 while (moreToDo) {
-                    moreToDo = _inlineMethodCalls(entityClass, method, body,
+                    moreToDo = _inlineMethodCalls(
+                            modelClass, entityClass, method, body,
                             portToTypeNameToBufferField,
-                            portToIndexArrayField, debug);
+                            portToIndexArrayField, _debug);
                     LocalNameStandardizer.v().transform(body,
-                            phaseName + ".lns", "");
+                            _phaseName + ".lns", "");
                 }
+            }
+
+            // Recurse
+            if(entity instanceof CompositeActor) {
+                _inlinePortCalls(entityClass, (CompositeActor)entity);
             }
         }
     }
 
-    private boolean _inlineMethodCalls(
+    private boolean _inlineMethodCalls(SootClass modelClass,
             SootClass theClass, SootMethod method,
             JimpleBody body, Map portToTypeNameToBufferField,
             Map portToIndexArrayField, boolean debug) {
@@ -420,12 +433,6 @@ public class InlinePortTransformer extends SceneTransformer {
                                 } else {
                                     box.setValue(IntConstant.v(0));
                                 }
-                            } else if (r.getMethod().getName().equals("hasToken")) {
-                                // return true.
-                                box.setValue(IntConstant.v(1));
-                            } else if (r.getMethod().getName().equals("hasRoom")) {
-                                // return true.
-                                box.setValue(IntConstant.v(1));
                             } else if (r.getMethod().getName().equals("getWidth")) {
                                 // Reflect and invoke the same method on our port
                                 Object object = SootUtilities.reflectAndInvokeMethod(
@@ -436,12 +443,18 @@ public class InlinePortTransformer extends SceneTransformer {
 
                                 // replace the method invocation.
                                 box.setValue(constant);
+                            } else if (r.getMethod().getName().equals("hasToken")) {
+                                // return true.
+                                box.setValue(IntConstant.v(1));
+                            } else if (r.getMethod().getName().equals("hasRoom")) {
+                                // return true.
+                                box.setValue(IntConstant.v(1));
                             } else if (r.getMethod().getName().equals("get")) {
                                 // Could be get that takes a channel and returns a token,
                                 // or get that takes a channel and a count and returns
                                 // an array of tokens.
                                 // In either case, replace the get with circular array ref.
-                                _inlineGet(body, stmt, box, r, port,
+                                _inlineGet(modelClass, body, stmt, box, r, port,
                                         portToIndexArrayField, portToTypeNameToBufferField);
 
                             } else if (r.getMethod().getName().equals("send")) {
@@ -449,7 +462,7 @@ public class InlinePortTransformer extends SceneTransformer {
                                 // or send that takes a channel and an array of tokens.
                                 // In either case, replace the send with circular array ref.
 
-                                _inlineSend(body, stmt, r, port,
+                                _inlineSend(modelClass, body, stmt, r, port,
                                         portToIndexArrayField, portToTypeNameToBufferField);
 
                             } else if (r.getMethod().getName().equals("broadcast")) {
@@ -463,7 +476,7 @@ public class InlinePortTransformer extends SceneTransformer {
                                     // array of tokens.  In either case,
                                     // replace the broadcast with circular
                                     // array ref.
-                                    _inlineBroadcast(body, stmt, r, port,
+                                    _inlineBroadcast(modelClass, body, stmt, r, port,
                                             portToIndexArrayField,
                                             portToTypeNameToBufferField);
                                 }
@@ -572,7 +585,7 @@ public class InlinePortTransformer extends SceneTransformer {
     // Create references in the given class to the appropriate SDF
     // communication buffers for each port in the given entity.
     // This includes both the communication buffers and index arrays.
-    private void _createBufferReferences(
+    private void _createBufferReferences(CompositeEntity model, SootClass modelClass,
             Entity entity, SootClass entityClass,
             Map portToTypeNameToBufferField, Map portToIndexArrayField) {
         // Loop over all the ports of the actor.
@@ -637,7 +650,7 @@ public class InlinePortTransformer extends SceneTransformer {
                     ptolemy.data.type.Type type =
                         (ptolemy.data.type.Type)port.getType();
 
-                    _createPortBufferReference(entityClass,
+                    _createPortBufferReference(modelClass, entityClass,
                             port, type, typeNameToBufferField);
                 } else if (port.isOutput()) {
                     Set typeSet = _getConnectedTypeList(port);
@@ -646,7 +659,7 @@ public class InlinePortTransformer extends SceneTransformer {
                         ptolemy.data.type.Type type =
                             (ptolemy.data.type.Type)types.next();
 
-                        _createPortBufferReference(entityClass,
+                        _createPortBufferReference(modelClass, entityClass,
                                 port, type, typeNameToBufferField);
                     }
                 }
@@ -656,7 +669,8 @@ public class InlinePortTransformer extends SceneTransformer {
 
     // Create a reference in the given class for the given port and
     // the given type.
-    private void _createPortBufferReference(SootClass entityClass,
+    private void _createPortBufferReference(
+            SootClass modelClass, SootClass entityClass,
             TypedIOPort port, ptolemy.data.type.Type type,
             Map typeNameToBufferField) {
         //  System.out.println("creating  buffer reference for " + port + " type = " + type);
@@ -721,7 +735,7 @@ public class InlinePortTransformer extends SceneTransformer {
                     //  } else {
                     // Get the buffer associated with the channel.
                     SootField arrayField =
-                        ModelTransformer.getModelClass().getFieldByName(
+                        modelClass.getFieldByName(
                                 getBufferFieldName(relation,
                                         i, type));
                     // Load the buffer array.
@@ -810,12 +824,15 @@ public class InlinePortTransformer extends SceneTransformer {
         return list;
     }
 
-    /** Insert code into the given body before the given unit that will retrieve
-     *  the communication buffer associated with the given channel of the given
-     *  port.  The given local variable will refer to the buffer.  A value
-     *  containing the size of the given buffer will be returned.
+    /** Insert code into the given body before the given unit that
+     *  will retrieve the communication buffer associated with the
+     *  given channel of the given port, created in the given model
+     *  class.  The given local variable will refer to the buffer.  A
+     *  value containing the size of the given buffer will be
+     *  returned.
      */
-    private Value _getBufferAndSize(JimpleBody body,
+    private Value _getBufferAndSize(
+            SootClass modelClass, JimpleBody body,
             Unit unit, TypedIOPort port,
             ptolemy.data.type.Type type,
             Value channelValue, Local bufferLocal,
@@ -840,7 +857,7 @@ public class InlinePortTransformer extends SceneTransformer {
                     if (channel == argChannel) {
                         found = true;
                         SootField arrayField =
-                            ModelTransformer.getModelClass().getFieldByName(
+                            modelClass.getFieldByName(
                                     getBufferFieldName(relation,
                                             channel, type));
 
@@ -946,7 +963,8 @@ public class InlinePortTransformer extends SceneTransformer {
      *  at the given unit in the
      *  given body with a circular array reference.
      */
-    private void _inlineBroadcast(JimpleBody body, Stmt stmt,
+    private void _inlineBroadcast(SootClass modelClass,
+            JimpleBody body, Stmt stmt,
             InvokeExpr expr, TypedIOPort port,
             Map portToIndexArrayField, Map portToTypeNameToBufferField) {
 
@@ -1015,7 +1033,7 @@ public class InlinePortTransformer extends SceneTransformer {
                         stmt);
 
                 SootField arrayField =
-                    ModelTransformer.getModelClass().getFieldByName(
+                    modelClass.getFieldByName(
                             getBufferFieldName(relation,
                                     i, port.getType()));
 
@@ -1157,7 +1175,7 @@ public class InlinePortTransformer extends SceneTransformer {
      *  at the given unit in the
      *  given body with a circular array reference.
      */
-    private void _inlineGet(JimpleBody body, Stmt stmt,
+    private void _inlineGet(SootClass modelClass, JimpleBody body, Stmt stmt,
             ValueBox box, InvokeExpr expr, TypedIOPort port,
             Map portToIndexArrayField, Map portToTypeNameToBufferField) {
         Local bufferLocal =
@@ -1182,7 +1200,7 @@ public class InlinePortTransformer extends SceneTransformer {
 
         Value channelValue = expr.getArg(0);
 
-        Value bufferSizeValue = _getBufferAndSize(body,
+        Value bufferSizeValue = _getBufferAndSize(modelClass, body,
                 stmt, port, port.getType(), channelValue, bufferLocal,
                 portToTypeNameToBufferField);
 
@@ -1331,7 +1349,7 @@ public class InlinePortTransformer extends SceneTransformer {
     /** Replace the send command at the given unit in the
      *  given body with a circular array reference.
      */
-    private void _inlineSend(JimpleBody body, Stmt stmt,
+    private void _inlineSend(SootClass modelClass, JimpleBody body, Stmt stmt,
             InvokeExpr expr, TypedIOPort port,
             Map portToIndexArrayField, Map portToTypeNameToBufferField) {
 
@@ -1363,7 +1381,7 @@ public class InlinePortTransformer extends SceneTransformer {
                     stmt, type);
             // }
 
-            Value bufferSizeValue = _getBufferAndSize(body,
+            Value bufferSizeValue = _getBufferAndSize(modelClass, body,
                     stmt, port, type, channelValue, bufferLocal,
                     portToTypeNameToBufferField);
 
@@ -1524,6 +1542,9 @@ public class InlinePortTransformer extends SceneTransformer {
     }
 
     private CompositeActor _model;
+    private boolean _debug;
+    private Map _options;
+    private String _phaseName;
 }
 
 

@@ -1,31 +1,31 @@
 /* Transform Actors using Soot
 
- Copyright (c) 2001-2002 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2001-2002 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
-*/
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
+   @ProposedRating Red (cxh@eecs.berkeley.edu)
+   @AcceptedRating Red (cxh@eecs.berkeley.edu)
+ */
 
 package ptolemy.copernicus.java;
 
@@ -73,12 +73,12 @@ import java.util.Map;
 //////////////////////////////////////////////////////////////////////////
 //// Main
 /**
-Read in a MoML model and generate Java classes for that model.
+   Read in a MoML model and generate Java classes for that model.
 
-@author Stephen Neuendorffer, Christopher Hylands
-@version $Id$
-@since Ptolemy II 2.0
-*/
+   @author Stephen Neuendorffer, Christopher Hylands
+   @version $Id$
+   @since Ptolemy II 2.0
+ */
 public class Main extends KernelMain {
 
     /** Read in a MoML model.
@@ -104,7 +104,7 @@ public class Main extends KernelMain {
         // For example, to time out after 5 minutes, or 300000 ms:
 	// -p wjtp.watchDog time:30000
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
-                WatchDogTimer.v()));
+                                              WatchDogTimer.v()));
 
         // Sanitize names of objects in the model.
         // We change the names to all be valid java identifiers
@@ -112,14 +112,9 @@ public class Main extends KernelMain {
         //      Scene.v().getPack("wjtp").add(new Transform("wjtp.ns",
         //         NameSanitizer.v(_toplevel)));
 
-        // Create instance classes for actors.
-	// This transformer takes no input as far as soot is concerned
-	// (i.e. no application classes) and creates application
-	// classes from the model.
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.at", ActorTransformer.v(_toplevel)));
-
-        // Create a class for the composite actor of the model
+        // Create a class for the composite actor of the model, and
+        // additional classes for all actors (both composite and
+        // atomic) used by the model.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.mt", ModelTransformer.v(_toplevel)));
 
@@ -138,6 +133,8 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", ClassWriter.v()));
 
+
+        
         // In each actor and composite actor, ensure that there
         // is a field for every attribute, and replace calls
         // to getAttribute with references to those fields.
@@ -150,12 +147,12 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffpt",
                         FieldsForPortsTransformer.v(_toplevel)));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot2", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot2", ClassWriter.v()));
-
+        
         // Set about removing reference to attributes and parameters.
         // Anywhere where a method is called on an attribute or
         // parameter, replace the method call with the return value
@@ -168,7 +165,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.iat",
                         InlineParameterTransformer.v(_toplevel)));
-
+        
         // Anywhere we have a method call on a token that can be
         // statically evaluated (usually, these will have been
         // created by inlining parameters), inline those calls.
@@ -178,16 +175,16 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.itt",
                         InlineTokenTransformer.v(_toplevel)));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot3", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot3", ClassWriter.v()));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ls",
                         new TransformerAdapter(LocalSplitter.v())));
-
+        
         // While we still have references to ports, use the
         // resolved types of the ports and run a typing
         // algorithm to specialize the types of domain
@@ -204,16 +201,16 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.cp",
                         new TransformerAdapter(CopyPropagator.v())));
-
+        
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
-
-
+        
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot4", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot4", ClassWriter.v()));
         
-         // Set about removing references to ports.
+        // Set about removing references to ports.
         // Anywhere where a method is called on a port, replace the
         // method call with an inlined version of the method.
         // Currently this only deals with SDF, and turns
@@ -222,7 +219,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ipt",
                         InlinePortTransformer.v(_toplevel)));
-
+        
         // This appears again because Inlining the parameters
         // also inlines calls to connectionsChanged, which by default
         // calls getDirector...  This transformer removes
@@ -237,7 +234,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.itt",
                         InlineTokenTransformer.v(_toplevel)));
-
+        
         //Scene.v().getPack("wjtp").add(new Transform("wjtp.ta",
         //        new TransformerAdapter(TypeAssigner.v())));
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.ibg",
@@ -245,11 +242,12 @@ public class Main extends KernelMain {
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.si",
         //        StaticInliner.v()));
 
-         Scene.v().getPack("wjtp").add(
-                 new Transform("wjtp.snapshot5", JimpleWriter.v()));
-         Scene.v().getPack("wjtp").add(
-                 new Transform("wjtp.snapshot5", ClassWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot5", JimpleWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot5", ClassWriter.v()));
 
+          
         // Unroll loops with constant loop bounds.
         //Scene.v().getPack("jtp").add(new Transform("jtp.clu",
         //        ConstantLoopUnroller.v()));
@@ -310,9 +308,9 @@ public class Main extends KernelMain {
         // Remove unnecessary assignments using alias analysis.
         // This catches assignments to fields which other assignments miss.
         //  Scene.v().getPack("wjtp").add(
-//                 new Transform("wjtp.aae",
-//                         new TransformerAdapter(
-//                                 AliasAssignmentEliminator.v())));
+        //                 new Transform("wjtp.aae",
+        //                         new TransformerAdapter(
+        //                                 AliasAssignmentEliminator.v())));
          
 
         // Remove other useless getFoo() methods.
@@ -353,13 +351,17 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot6", ClassWriter.v()));
  
-     //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
-//                                               TypeSpecializer.v(_toplevel)));
+        //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
+        //                                               TypeSpecializer.v(_toplevel)));
     
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ttn",
                         TokenToNativeTransformer.v(_toplevel)));
         
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ee",
+                        ExceptionEliminator.v(_toplevel)));
+         
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
         
         Scene.v().getPack("wjtp").add(
@@ -390,13 +392,14 @@ public class Main extends KernelMain {
     /** Read in a MoML model, generate java files.
      */
     public static void main(String[] args) {
+        String modelName = args[0];
         try {
             long startTime = System.currentTimeMillis();
 
             Main main = new Main(args);
 
             // Parse the model.
-	    CompositeActor toplevel = main.readInModel(args[0]);
+	    CompositeActor toplevel = main.readInModel(modelName);
 
             // Create instance classes for the actors.
             main.initialize(toplevel);
@@ -407,14 +410,14 @@ public class Main extends KernelMain {
             main.generateCode(args);
 
             // Print out memory usage info
-            System.out.println(args[0] + " "
+            System.out.println(modelName + " "
                     + ptolemy.actor.Manager.timeAndMemory(startTime));
             // We need to call exit here if we are running codegen on
             // a model that uses Swing.  Useful models that use the
             // plotter fall in this category.
             System.exit(0);
         } catch (Exception ex) {
-	    System.err.println("Code generation of '" + args[0]
+	    System.err.println("Code generation of '" + modelName
                     + "' failed:");
             ex.printStackTrace(System.err);
             System.err.flush();
@@ -427,24 +430,24 @@ public class Main extends KernelMain {
      */
     private void _addStandardOptimizations(Pack pack) {
         pack.add(new Transform("jop.cse",
-                new TransformerAdapter(CommonSubexpressionEliminator.v())));
+                         new TransformerAdapter(CommonSubexpressionEliminator.v())));
         pack.add(new Transform("jop.cp",
-                new TransformerAdapter(CopyPropagator.v())));
+                         new TransformerAdapter(CopyPropagator.v())));
         pack.add(new Transform("jop.cpf",
-                new TransformerAdapter(ConstantPropagatorAndFolder.v())));
+                         new TransformerAdapter(ConstantPropagatorAndFolder.v())));
         pack.add(new Transform("jop.cbf",
-                new TransformerAdapter(ConditionalBranchFolder.v())));
+                         new TransformerAdapter(ConditionalBranchFolder.v())));
         pack.add(new Transform("jop.dae",
-                new TransformerAdapter(ImprovedDeadAssignmentEliminator.v())));
+                         new TransformerAdapter(ImprovedDeadAssignmentEliminator.v())));
         pack.add(new Transform("jop.uce1",
-                new TransformerAdapter(UnreachableCodeEliminator.v())));
+                         new TransformerAdapter(UnreachableCodeEliminator.v())));
         pack.add(new Transform("jop.ubf1",
-                new TransformerAdapter(UnconditionalBranchFolder.v())));
+                         new TransformerAdapter(UnconditionalBranchFolder.v())));
         pack.add(new Transform("jop.uce2",
-                new TransformerAdapter(UnreachableCodeEliminator.v())));
+                         new TransformerAdapter(UnreachableCodeEliminator.v())));
         pack.add(new Transform("jop.ubf2",
-                new TransformerAdapter(UnconditionalBranchFolder.v())));
+                         new TransformerAdapter(UnconditionalBranchFolder.v())));
         pack.add(new Transform("jop.ule",
-                new TransformerAdapter(UnusedLocalEliminator.v())));
+                         new TransformerAdapter(UnusedLocalEliminator.v())));
     }
 }

@@ -107,6 +107,8 @@ public class InlineParameterTransformer extends SceneTransformer {
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("InlineParameterTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
+        _phaseName = phaseName;
+        _options = options;
 
         Map attributeToValueFieldMap = new HashMap();
 
@@ -118,61 +120,51 @@ public class InlineParameterTransformer extends SceneTransformer {
                 ModelTransformer.getModelClass(), _model, _model,
                 attributeToValueFieldMap, debug);
 
-        // Loop over all the actor instance classes.
-        for (Iterator entities = _model.deepEntityList().iterator();
-             entities.hasNext();) {
-            Entity entity = (Entity)entities.next();
-            String className =
-                ActorTransformer.getInstanceClassName(entity, options);
-            SootClass entityClass =
-                Scene.v().loadClassAndSupport(className);
+        _replaceGetTokenCalls(ModelTransformer.getModelClass(), 
+                _model, attributeToValueFieldMap, debug);
+    }
 
-            _createTokenAndExpressionFields(
-                    entityClass, entity, entity,
-                    attributeToValueFieldMap, debug);
-            for (Iterator ports = entity.portList().iterator();
-                 ports.hasNext();) {
-                Port port = (Port)ports.next();
-                _createTokenAndExpressionFields(
-                        entityClass, entity, port,
-                        attributeToValueFieldMap, debug);
+    private void _replaceGetTokenCalls(SootClass actorClass, 
+            ComponentEntity actor, Map attributeToValueFieldMap, boolean debug) {
+        // inline calls to parameter.getToken and getExpression
+        for (Iterator methods = actorClass.getMethods().iterator();
+             methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+
+            // What about static methods?  They don't have a this
+            // local
+            if (method.isStatic()) {
+                continue;
             }
-        }
-
-        for (Iterator entities = _model.deepEntityList().iterator();
-             entities.hasNext();) {
-            Entity entity = (Entity)entities.next();
-            String className =
-                ActorTransformer.getInstanceClassName(entity, options);
-            SootClass theClass =
-                Scene.v().loadClassAndSupport(className);
-
-            // inline calls to parameter.getToken and getExpression
-            for (Iterator methods = theClass.getMethods().iterator();
-                 methods.hasNext();) {
-                SootMethod method = (SootMethod)methods.next();
-
-                // What about static methods?  They don't have a this
-                // local
-                if (method.isStatic()) {
-                    continue;
-                }
-                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-
-                if (debug) System.out.println("method = " + method);
-
-                boolean moreToDo = true;
-                while (moreToDo) {
-                    moreToDo = _inlineMethodCalls(theClass, method, body,
-                            attributeToValueFieldMap, debug);
-                    LocalNameStandardizer.v().transform(body,
-                            phaseName + ".lns");
-                }
+            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+            
+            if (debug) System.out.println("method = " + method);
+            
+            boolean moreToDo = true;
+            while (moreToDo) {
+                moreToDo = _inlineMethodCalls(actorClass, method, body,
+                        attributeToValueFieldMap, debug);
+                LocalNameStandardizer.v().transform(body,
+                        _phaseName + ".lns");
+            }
+        }        
+        if(actor instanceof CompositeActor) {
+            CompositeActor model = (CompositeActor)actor;
+            for (Iterator entities = model.deepEntityList().iterator();
+                 entities.hasNext();) {
+                ComponentEntity entity = (ComponentEntity)entities.next();
+                String className =
+                    ActorTransformer.getInstanceClassName(entity, _options);
+                SootClass theClass =
+                    Scene.v().loadClassAndSupport(className);
+                _replaceGetTokenCalls(theClass, entity,
+                        attributeToValueFieldMap, debug);
+                
             }
         }
     }
 
-    private static boolean _inlineMethodCalls(SootClass theClass,
+    private boolean _inlineMethodCalls(SootClass theClass,
             SootMethod method,
             JimpleBody body, Map attributeToValueFieldMap, boolean debug) {
         boolean doneSomething = false;
@@ -592,7 +584,7 @@ public class InlineParameterTransformer extends SceneTransformer {
     // and if only a settable, then the field will have type String.
     // In addition, add a tag to the field that contains the value of
     // the token or expression that that field contains.
-    private static void _createTokenAndExpressionFields(SootClass theClass,
+    private void _createTokenAndExpressionFields(SootClass theClass,
             NamedObj context, NamedObj container,
             Map attributeToValueFieldMap, boolean debug) {
         /*   SootClass tokenClass =
@@ -653,6 +645,34 @@ public class InlineParameterTransformer extends SceneTransformer {
             _createTokenAndExpressionFields(theClass, context, attribute,
                     attributeToValueFieldMap, debug);
         }
+
+        if(container instanceof ComponentEntity) {
+            ComponentEntity entity = (ComponentEntity)container;
+            for (Iterator ports = entity.portList().iterator();
+                 ports.hasNext();) {
+                Port port = (Port)ports.next();
+                _createTokenAndExpressionFields(
+                        theClass, context, port,
+                        attributeToValueFieldMap, debug);
+            }
+        }
+
+        if(container instanceof CompositeEntity) {
+            CompositeEntity model = (CompositeEntity)container;
+            // Loop over all the actor instance classes.
+            for (Iterator entities = model.deepEntityList().iterator();
+                 entities.hasNext();) {
+                ComponentEntity entity = (ComponentEntity)entities.next();
+                String className =
+                    ActorTransformer.getInstanceClassName(entity, _options);
+                SootClass entityClass =
+                    Scene.v().loadClassAndSupport(className);
+                
+                _createTokenAndExpressionFields(
+                        entityClass, entity, entity,
+                        attributeToValueFieldMap, debug);
+            }
+        }
     }
 
     public SootField _findAttributeField(SootClass entityClass, String name) {
@@ -660,6 +680,8 @@ public class InlineParameterTransformer extends SceneTransformer {
     }
 
     private CompositeActor _model;
+    private Map _options;
+    private String _phaseName;
 }
 
 

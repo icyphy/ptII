@@ -96,48 +96,50 @@ public class Main extends KernelMain {
         //      Scene.v().getPack("wjtp").add(new Transform("wjtp.ns",
         //         NameSanitizer.v(_toplevel)));
 
-        // Create instance classes for actors.
-	// This transformer takes no input as far as soot is concerned
-	// (i.e. no application classes) and creates application
-	// classes from the model.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.at",
-						    ActorTransformer.v(_toplevel)));
-
-        // Create a class for the composite actor of the model
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.mt",
-						    ModelTransformer.v(_toplevel)));
+        // Create a class for the composite actor of the model, and for
+        // all actors referenced by the model.
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.mt",
+                        ModelTransformer.v(_toplevel)));
 
         // Add a command line interface (i.e. Main)
-	Scene.v().getPack("wjtp").add(new Transform("wjtp.clt",
-  						    CommandLineTransformer.v(_toplevel)));
+	Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.clt",
+                        CommandLineTransformer.v(_toplevel)));
 
         // Inline the director into the composite actor.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.idt",
-						    InlineDirectorTransformer.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.idt",
+                        InlineDirectorTransformer.v(_toplevel)));
 
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot1",
-						    ClassWriter.v()));
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot1",
-						    JimpleWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot1",
+                        JimpleWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot1",
+                        ClassWriter.v()));
 
         // In each actor and composite actor, ensure that there
         // is a field for every attribute, and replace calls
         // to getAttribute with references to those fields.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.ffat",
-						    FieldsForAttributesTransformer.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ffat",
+                        FieldsForAttributesTransformer.v(_toplevel)));
         // In each actor and composite actor, ensure that there
         // is a field for every port, and replace calls
         // to getPort with references to those fields.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.ffpt",
-						    FieldsForPortsTransformer.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ffpt",
+                        FieldsForPortsTransformer.v(_toplevel)));
 
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot2",
 						    ClassWriter.v()));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot2",
 						    JimpleWriter.v()));
 
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.ls",
-						    new TransformerAdapter(LocalSplitter.v())));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ls",
+                        new TransformerAdapter(LocalSplitter.v())));
 
         // While we still have references to ports, use the
         // resolved types of the ports and run a typing
@@ -146,18 +148,23 @@ public class Main extends KernelMain {
         // uninstantiable types should remain.
         //  Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
         //        TypeSpecializer.v(_toplevel)));
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.tie",
-						    new TransformerAdapter(TokenInstanceofEliminator.v())));
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.ta",
-						    new TransformerAdapter(TypeAssigner.v())));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.tie",
+                        new TransformerAdapter(TokenInstanceofEliminator.v())));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ta",
+                        new TransformerAdapter(TypeAssigner.v())));
 
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.cp",
-						    new TransformerAdapter(CopyPropagator.v())));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.cp",
+                        new TransformerAdapter(CopyPropagator.v())));
 
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot3",
-						    ClassWriter.v()));
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot3",
-						    JimpleWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot3",
+                        ClassWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot3",
+                        JimpleWriter.v()));
 
         // Set about removing reference to attributes and parameters.
         // Anywhere where a method is called on an attribute or
@@ -168,13 +175,16 @@ public class Main extends KernelMain {
         // not true, i.e. the expression actor.  Those will be
         // specially handled before this point, or we should detect
         // assignments to attributes and handle them differently.)
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.iat",
-						    InlineParameterTransformer.v(_toplevel)));
-
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot4",
-						    JimpleWriter.v()));
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.snapshot4",
-						    ClassWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.iat",
+                        InlineParameterTransformer.v(_toplevel)));
+        
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot4",
+                        JimpleWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.snapshot4",
+                        ClassWriter.v()));
 
         // Anywhere we have a method call on a token that can be
         // statically evaluated (usually, these will have been
@@ -182,11 +192,13 @@ public class Main extends KernelMain {
         // We do this before port transformation, since it
         // often allows us to statically determine the channels
         // of port reads and writes.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.itt",
-						    InlineTokenTransformer.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.itt",
+                        InlineTokenTransformer.v(_toplevel)));
 
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.circuit",
-						    ptolemy.copernicus.jhdl.CircuitTransformer.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.circuit",
+                        ptolemy.copernicus.jhdl.CircuitTransformer.v(_toplevel)));
 
     }
 

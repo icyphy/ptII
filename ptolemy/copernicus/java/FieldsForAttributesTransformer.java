@@ -104,100 +104,89 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         System.out.println("FieldsForAttributesTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        Map attributeToFieldMap = new HashMap();
-        Map classToObjectMap = new HashMap();
+        _options = options;
+        _attributeToFieldMap = new HashMap();
+        _classToObjectMap = new HashMap();
 
-        // This won't actually create any fields, but will pick up
-        // the fields that already exist.
-        //   _getAttributeFields(ModelTransformer.getModelClass(), _model,
-        //        _model, attributeToFieldMap);
-        classToObjectMap.put(ModelTransformer.getModelClass(), _model);
+        _indexExistingFields(ModelTransformer.getModelClass(),
+                _model);
 
-        // Loop over all the actor instance classes and get the
-        // attribute fields.
-        for (Iterator i = _model.deepEntityList().iterator();
-             i.hasNext();) {
-            Entity entity = (Entity)i.next();
-            String className =
-                ActorTransformer.getInstanceClassName(entity, options);
-            SootClass entityClass =
-                Scene.v().loadClassAndSupport(className);
-            _getAttributeFields(entityClass, entity, entity,
-                    attributeToFieldMap);
-            // And get the attributes of ports too...
-            for (Iterator ports = entity.portList().iterator();
-                 ports.hasNext();) {
-                Port port = (Port)ports.next();
-                _getAttributeFields(entityClass, entity, port,
-                        attributeToFieldMap);
-            }
-            classToObjectMap.put(entityClass, entity);
-        }
+        _replaceAttributeCalls(ModelTransformer.getModelClass(),
+                _model);
 
-        // Loop over all the entity classes and replace getAttribute calls.
-        for (Iterator i = _model.deepEntityList().iterator();
-             i.hasNext();) {
-            Entity entity = (Entity)i.next();
-            String className =
-                ActorTransformer.getInstanceClassName(entity, options);
-            SootClass theClass =
-                Scene.v().loadClassAndSupport(className);
+    }
 
-            // Replace calls to getAttribute with field references.
-            for (Iterator methods = theClass.getMethods().iterator();
-                 methods.hasNext();) {
-                SootMethod method = (SootMethod)methods.next();
+    private void _replaceAttributeCalls(SootClass actorClass, 
+            ComponentEntity actor) {
+        
+        // Replace calls to getAttribute with field references.
+        for (Iterator methods = actorClass.getMethods().iterator();
+             methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
 
-                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-
-                CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
-                // this will help us figure out where locals are defined.
-                SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
-
-                for (Iterator units = body.getUnits().snapshotIterator();
-                     units.hasNext();) {
-                    Stmt unit = (Stmt)units.next();
-                    if (!unit.containsInvokeExpr()) {
-                        continue;
-                    }
-                    ValueBox box = (ValueBox)unit.getInvokeExprBox();
-                    Value value = box.getValue();
-                    if (value instanceof InstanceInvokeExpr) {
-                        InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                        if (r.getMethod().getSubSignature().equals(
+            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+            
+            CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
+            // this will help us figure out where locals are defined.
+            SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
+            
+            for (Iterator units = body.getUnits().snapshotIterator();
+                 units.hasNext();) {
+                Stmt unit = (Stmt)units.next();
+                if (!unit.containsInvokeExpr()) {
+                    continue;
+                }
+                ValueBox box = (ValueBox)unit.getInvokeExprBox();
+                Value value = box.getValue();
+                if (value instanceof InstanceInvokeExpr) {
+                    InstanceInvokeExpr r = (InstanceInvokeExpr)value;
+                    if (r.getMethod().getSubSignature().equals(
                                 PtolemyUtilities
                                 .getDirectorMethod.getSubSignature())) {
-                                // Replace calls to getDirector with
-                                // null.  FIXME: we should be able to
-                                // do better than this?
-                            box.setValue(NullConstant.v());
-                        } else if (r.getMethod().equals(
-                                PtolemyUtilities.getAttributeMethod)) {
-                                // inline calls to getAttribute(arg)
-                                // when arg is a string that can be
-                                // statically evaluated.
-                            Value nameValue = r.getArg(0);
-                            if (Evaluator.isValueConstantValued(nameValue)) {
-                                StringConstant nameConstant =
-                                    (StringConstant)
-                                    Evaluator.getConstantValueOf(nameValue);
-                                String name = nameConstant.value;
-                                // perform type analysis to determine what the
-                                // type of the base is.
-
-                                Local baseLocal = (Local)r.getBase();
-                                Value newFieldRef = _createAttributeField(
-                                        baseLocal, name, unit, localDefs,
-                                        classToObjectMap, attributeToFieldMap);
+                        // Replace calls to getDirector with
+                        // null.  FIXME: we should be able to
+                        // do better than this?
+                        box.setValue(NullConstant.v());
+                    } else if (r.getMethod().equals(
+                                       PtolemyUtilities.getAttributeMethod)) {
+                        // inline calls to getAttribute(arg)
+                        // when arg is a string that can be
+                        // statically evaluated.
+                        Value nameValue = r.getArg(0);
+                        if (Evaluator.isValueConstantValued(nameValue)) {
+                            StringConstant nameConstant =
+                                (StringConstant)
+                                Evaluator.getConstantValueOf(nameValue);
+                            String name = nameConstant.value;
+                            // perform type analysis to determine what the
+                            // type of the base is.
+                            
+                            Local baseLocal = (Local)r.getBase();
+                            Value newFieldRef = _createAttributeField(
+                                    baseLocal, name, unit, localDefs);
                                 box.setValue(newFieldRef);
-                            } else {
-                                String string = "Attribute cannot be " +
-                                    "statically determined";
-                                throw new RuntimeException(string);
-                            }
+                        } else {
+                            String string = "Attribute cannot be " +
+                                "statically determined";
+                            throw new RuntimeException(string);
                         }
                     }
                 }
+            }
+        }   
+
+        if(actor instanceof CompositeEntity) {
+            CompositeEntity model = (CompositeEntity)actor;
+            // Loop over all the entity classes and replace getAttribute calls.
+            for (Iterator i = model.deepEntityList().iterator();
+                 i.hasNext();) {
+                ComponentEntity entity = (ComponentEntity)i.next();
+                String className =
+                    ActorTransformer.getInstanceClassName(entity, _options);
+                SootClass entityClass =
+                    Scene.v().loadClassAndSupport(className);
+                _replaceAttributeCalls(entityClass, entity);
+           
             }
         }
     }
@@ -205,12 +194,12 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
     // Given a local variable that refers to a namedObj, and the name
     // of an attribute in that object, return a new field ref that
     // refers to that attribute.
-    private static FieldRef _createAttributeField(Local baseLocal,
-            String name, Unit unit, LocalDefs localDefs,
-            Map classToObjectMap, Map attributeToFieldMap) {
+    private FieldRef _createAttributeField(Local baseLocal,
+            String name, Unit unit, LocalDefs localDefs) {
+          
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
-        NamedObj object = (NamedObj)classToObjectMap.get(type.getSootClass());
+        NamedObj object = (NamedObj)_classToObjectMap.get(type.getSootClass());
         System.out.println("name = " + name);
         System.out.println("object = " + object);
         if (object != null) {
@@ -218,7 +207,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             // classes we are generating.
             Attribute attribute = object.getAttribute(name);
             SootField attributeField = (SootField)
-                attributeToFieldMap.get(attribute);
+                _attributeToFieldMap.get(attribute);
             if (attributeField != null) {
                 return Jimple.v().newInstanceFieldRef(
                         baseLocal, attributeField);
@@ -235,7 +224,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             System.out.println("baseField = " + baseField);
             return _createAttributeField((Local)fieldRef.getBase(),
                     baseField.getName() + "." + name, definition,
-                    localDefs, classToObjectMap, attributeToFieldMap);
+                    localDefs);
             //baseField.getDeclaringClass().getFieldByName(
             //    baseField.getName() + "_" + name);
         }
@@ -276,7 +265,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
     // attributes of the given object that are expected
     // to exist in the given class
     private void _getAttributeFields(SootClass theClass, NamedObj container,
-            NamedObj object, Map attributeToFieldMap) {
+            NamedObj object) {
 
         for (Iterator attributes =
                  object.attributeList().iterator();
@@ -298,17 +287,51 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             SootField field = theClass.getFieldByName(fieldName);
             // Make the field final and private.
             field.setModifiers((field.getModifiers() & Modifier.STATIC) |
-                    Modifier.FINAL | Modifier.PRIVATE);
+                    Modifier.FINAL | Modifier.PUBLIC); // FIXME | Modifier.PRIVATE);
 
             field.addTag(new ValueTag(attribute));
-            attributeToFieldMap.put(attribute, field);
+            _attributeToFieldMap.put(attribute, field);
             // call recursively
             _getAttributeFields(theClass, container,
-                    attribute, attributeToFieldMap);
+                    attribute);
+        }
+    }
+
+    private void _indexExistingFields(SootClass actorClass, 
+            ComponentEntity actor) {
+        // This won't actually create any fields, but will pick up
+        // the fields that already exist.
+        _getAttributeFields(actorClass, actor,
+                actor);
+        // And get the attributes of ports too...
+        for (Iterator ports = actor.portList().iterator();
+             ports.hasNext();) {
+            Port port = (Port)ports.next();
+            _getAttributeFields(actorClass, actor, port);
+        }
+        _classToObjectMap.put(actorClass, actor);
+
+        // Loop over all the actor instance classes and get
+        // fields for ports.
+        if(actor instanceof CompositeEntity) {
+            // Then recurse
+            CompositeEntity model = (CompositeEntity)actor;
+            for (Iterator i = model.deepEntityList().iterator();
+                 i.hasNext();) {
+                ComponentEntity entity = (ComponentEntity)i.next();
+                String className =
+                    ActorTransformer.getInstanceClassName(entity, _options);
+                SootClass entityClass = 
+                    Scene.v().loadClassAndSupport(className);
+                _indexExistingFields(entityClass, entity);
+            }
         }
     }
 
     private CompositeActor _model;
+    private Map _options;
+    private Map _attributeToFieldMap;
+    private Map _classToObjectMap;
 }
 
 

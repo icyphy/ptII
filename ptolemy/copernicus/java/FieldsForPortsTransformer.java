@@ -102,86 +102,84 @@ public class FieldsForPortsTransformer extends SceneTransformer {
         System.out.println("FieldsForPortsTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        Map portToFieldMap = new HashMap();
-        Map classToObjectMap = new HashMap();
+        _options = options;
+        _portToFieldMap = new HashMap();
+        _classToObjectMap = new HashMap();
 
-        // This won't actually create any fields, but will pick up
-        // the fields that already exist.
-        _getPortFields(ModelTransformer.getModelClass(), _model,
-                _model, portToFieldMap);
-        classToObjectMap.put(ModelTransformer.getModelClass(), _model);
+        _indexExistingFields(ModelTransformer.getModelClass(),
+                _model);
+        
+        _replacePortCalls(ModelTransformer.getModelClass(),
+                _model);
 
-        // Loop over all the actor instance classes and get
-        // fields for ports.
-        for (Iterator i = _model.deepEntityList().iterator();
-             i.hasNext();) {
-            Entity entity = (Entity)i.next();
-            String className =
-                ActorTransformer.getInstanceClassName(entity, options);
-            SootClass entityClass = Scene.v().loadClassAndSupport(className);
-            _getPortFields(entityClass, entity, entity,
-                    portToFieldMap);
-            classToObjectMap.put(entityClass, entity);
-        }
+    }
 
-        // Loop over all the classes and replace getPort calls.
-        for (Iterator i = _model.deepEntityList().iterator();
-             i.hasNext();) {
-            Entity entity = (Entity)i.next();
-            String className =
-                ActorTransformer.getInstanceClassName(entity, options);
-            SootClass theClass = Scene.v().loadClassAndSupport(className);
+    private void _replacePortCalls(SootClass actorClass, 
+            ComponentEntity actor) {
+        
+        // Loop through all the methods in the class.
+        for (Iterator methods = actorClass.getMethods().iterator();
+             methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+            
+            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                
+            CompleteUnitGraph unitGraph =
+                new CompleteUnitGraph(body);
+            // This will help us figure out where locals are defined.
+            SimpleLocalDefs localDefs =
+                new SimpleLocalDefs(unitGraph);
 
-            // Loop through all the methods in the class.
-            for (Iterator methods = theClass.getMethods().iterator();
-                 methods.hasNext();) {
-                SootMethod method = (SootMethod)methods.next();
+            for (Iterator units = body.getUnits().snapshotIterator();
+                 units.hasNext();) {
+                Stmt unit = (Stmt)units.next();
+                if (!unit.containsInvokeExpr()) {
+                    continue;
+                }
+                ValueBox box = (ValueBox)unit.getInvokeExprBox();
+                Value value = box.getValue();
+                if (value instanceof InstanceInvokeExpr) {
+                    InstanceInvokeExpr r = (InstanceInvokeExpr)value;
+                    // FIXME: string matching is probably not good enough.
+                    if (r.getMethod().getName().equals("getPort")) {
+                        // Inline calls to getPort(arg) when
+                        // arg is a string that can be
+                        // statically evaluated.
+                        Value nameValue = r.getArg(0);
+                        if (Evaluator.isValueConstantValued(nameValue)) {
+                            StringConstant nameConstant =
+                                (StringConstant)
+                                Evaluator.getConstantValueOf(nameValue);
+                            String name = nameConstant.value;
+                            // perform type analysis to determine what the
+                            // type of the base is.
 
-                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-
-                CompleteUnitGraph unitGraph =
-                    new CompleteUnitGraph(body);
-                // This will help us figure out where locals are defined.
-                SimpleLocalDefs localDefs =
-                    new SimpleLocalDefs(unitGraph);
-
-                for (Iterator units = body.getUnits().snapshotIterator();
-                     units.hasNext();) {
-                    Stmt unit = (Stmt)units.next();
-                    if (!unit.containsInvokeExpr()) {
-                        continue;
-                    }
-                    ValueBox box = (ValueBox)unit.getInvokeExprBox();
-                    Value value = box.getValue();
-                    if (value instanceof InstanceInvokeExpr) {
-                        InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                        // FIXME: string matching is probably not good enough.
-                        if (r.getMethod().getName().equals("getPort")) {
-                                // Inline calls to getPort(arg) when
-                                // arg is a string that can be
-                                // statically evaluated.
-                            Value nameValue = r.getArg(0);
-                            if (Evaluator.isValueConstantValued(nameValue)) {
-                                StringConstant nameConstant =
-                                    (StringConstant)
-                                    Evaluator.getConstantValueOf(nameValue);
-                                String name = nameConstant.value;
-                                // perform type analysis to determine what the
-                                // type of the base is.
-
-                                Local baseLocal = (Local)r.getBase();
-                                Value newFieldRef = _createPortField(
-                                        baseLocal, name, unit, localDefs,
-                                        classToObjectMap, portToFieldMap);
-                                box.setValue(newFieldRef);
-                            } else {
-                                String string = "Port cannot be " +
-                                    "statically determined";
-                                throw new RuntimeException(string);
-                            }
+                            Local baseLocal = (Local)r.getBase();
+                            Value newFieldRef = _createPortField(
+                                    baseLocal, name, unit, localDefs);
+                                        
+                            box.setValue(newFieldRef);
+                        } else {
+                            String string = "Port cannot be " +
+                                "statically determined";
+                            throw new RuntimeException(string);
                         }
                     }
                 }
+            }
+        }
+        if(actor instanceof CompositeEntity) {
+            CompositeEntity model = (CompositeEntity)actor;
+            // Loop over all the entity classes and replace getPort calls.
+            for (Iterator i = model.deepEntityList().iterator();
+                 i.hasNext();) {
+                ComponentEntity entity = (ComponentEntity)i.next();
+                String className =
+                    ActorTransformer.getInstanceClassName(entity, _options);
+                SootClass entityClass =
+                    Scene.v().loadClassAndSupport(className);
+                _replacePortCalls(entityClass, entity);
+                
             }
         }
     }
@@ -189,18 +187,18 @@ public class FieldsForPortsTransformer extends SceneTransformer {
     // Given a local variable that refers to an entity, and the name
     // of an port in that object, return a new field ref that
     // refers to that port.  If no reference is found, then return null.
-    private static Value _createPortField(Local baseLocal,
-            String name, Unit unit, LocalDefs localDefs,
-            Map classToObjectMap, Map portToFieldMap) {
+    private Value _createPortField(Local baseLocal,
+            String name, Unit unit, LocalDefs localDefs) {
+        
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
-        Entity entity = (Entity)classToObjectMap.get(type.getSootClass());
+        Entity entity = (Entity)_classToObjectMap.get(type.getSootClass());
         if (entity != null) {
             // Then we are dealing with a getPort call on one of the
             // classes we are generating.
             Port port = entity.getPort(name);
             SootField portField = (SootField)
-                portToFieldMap.get(port);
+                _portToFieldMap.get(port);
             if (portField != null) {
                 return Jimple.v().newInstanceFieldRef(
                         baseLocal, portField);
@@ -259,7 +257,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
     // ports of the given object that are expected
     // to exist in the given class
     private void _getPortFields(SootClass theClass, Entity container,
-            Entity object, Map portToFieldMap) {
+            Entity object) {
 
         for (Iterator ports = object.portList().iterator();
              ports.hasNext();) {
@@ -278,17 +276,45 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                 field = theClass.getFieldByName(fieldName);
                 // Make the field final and private.
                 field.setModifiers((field.getModifiers() & Modifier.STATIC) |
-                        Modifier.FINAL | Modifier.PRIVATE);
+                        Modifier.FINAL | Modifier.PUBLIC);// | Modifier.PRIVATE);
             }
             field.addTag(new ValueTag(port));
-            portToFieldMap.put(port, field);
+            _portToFieldMap.put(port, field);
             // FIXME: call recursively
             // _getAttributeFields(theClass, container,
             //        attribute, attributeToFieldMap);
         }
     }
 
+    private void _indexExistingFields(SootClass actorClass, 
+            ComponentEntity actor) {
+        // This won't actually create any fields, but will pick up
+        // the fields that already exist.
+        _getPortFields(actorClass, actor,
+                actor);
+        _classToObjectMap.put(actorClass, actor);
+
+        // Loop over all the actor instance classes and get
+        // fields for ports.
+        if(actor instanceof CompositeEntity) {
+            // Then recurse
+            CompositeEntity model = (CompositeEntity)actor;
+            for (Iterator i = model.deepEntityList().iterator();
+                 i.hasNext();) {
+                ComponentEntity entity = (ComponentEntity)i.next();
+                String className =
+                    ActorTransformer.getInstanceClassName(entity, _options);
+                SootClass entityClass = 
+                    Scene.v().loadClassAndSupport(className);
+                _indexExistingFields(entityClass, entity);
+            }
+        }
+    }
+
     private CompositeActor _model;
+    private Map _options;
+    private Map _portToFieldMap;
+    private Map _classToObjectMap;
 }
 
 

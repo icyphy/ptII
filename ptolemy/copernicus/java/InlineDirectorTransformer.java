@@ -158,10 +158,40 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 }
             }
         }
-
-        Type actorType = RefType.v(PtolemyUtilities.actorClass);
-
+        
         SootClass modelClass = ModelTransformer.getModelClass();
+        _inlineDirectorsIn(_model, modelClass, phaseName, options);
+    }
+
+    private void _inlineDirectorsIn(CompositeActor model, SootClass modelClass,
+            String phaseName, Map options) {
+
+        for (Iterator i = model.deepEntityList().iterator();
+             i.hasNext();) {
+            Entity entity = (Entity)i.next();
+            if(entity instanceof CompositeActor) {
+                String className = 
+                    ActorTransformer.getInstanceClassName(entity, options);
+                SootClass compositeClass = Scene.v().getSootClass(className);
+                _inlineDirectorsIn((CompositeActor)entity, compositeClass,
+                        phaseName, options);
+            }
+        }
+
+        if(model.getDirector() instanceof SDFDirector) {
+            _inlineSDFDirector(model, modelClass, phaseName, options);
+        } else {
+            throw new RuntimeException("Inlining a director can not "
+                    + "be performed on a director of class " 
+                    + _model.getDirector().getClass().getName());
+        }
+    }
+
+
+    private void _inlineSDFDirector(CompositeActor model, SootClass modelClass,
+            String phaseName, Map options) {
+        System.out.println("Inlining director for " + model.getFullName());
+        Type actorType = RefType.v(PtolemyUtilities.actorClass);
 
         SootField postfireReturnsField = new SootField("_postfireReturns", 
                 BooleanType.v(), Modifier.PRIVATE);
@@ -191,11 +221,11 @@ public class InlineDirectorTransformer extends SceneTransformer {
                               Jimple.v().newInstanceFieldRef(thisLocal, postfireReturnsField),
                               postfireReturnsLocal));
 
-            for (Iterator entities = _model.deepEntityList().iterator();
+            for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(
-                        entity, _model);
+                        entity, model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 String className =
                     ActorTransformer.getInstanceClassName(entity, options);
@@ -230,11 +260,11 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
             Local actorLocal = Jimple.v().newLocal("actor", actorType);
             body.getLocals().add(actorLocal);
-            for (Iterator entities = _model.deepEntityList().iterator();
+            for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(
-                        entity, _model);
+                        entity, model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 String className =
                     ActorTransformer.getInstanceClassName(entity, options);
@@ -270,6 +300,10 @@ public class InlineDirectorTransformer extends SceneTransformer {
             Local postfireReturnsLocal = Jimple.v().newLocal("postfireReturns", BooleanType.v());
             body.getLocals().add(postfireReturnsLocal);
 
+
+            // FIXME: Transfer Inputs!
+            
+
             Local localPostfireReturnsLocal = Jimple.v().newLocal("localPostfireReturns", BooleanType.v());
             body.getLocals().add(localPostfireReturnsLocal);
 
@@ -277,8 +311,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
                               Jimple.v().newInstanceFieldRef(thisLocal, 
                                       postfireReturnsField)));
          
-           // Execute the schedule
-            SDFDirector director = (SDFDirector)_model.getDirector();
+            // Execute the schedule
+            SDFDirector director = (SDFDirector)model.getDirector();
             Iterator schedule = null;
             try {
                 schedule =
@@ -290,7 +324,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             while (schedule.hasNext()) {
                 Entity entity = (Entity)schedule.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(
-                        entity, _model);
+                        entity, model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 String className =
                     ActorTransformer.getInstanceClassName(entity, options);
@@ -320,6 +354,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
                                   Jimple.v().newAndExpr(postfireReturnsLocal,
                                           localPostfireReturnsLocal)));
             }
+
+            // FIXME: Transfer Outputs!
 
             units.add(Jimple.v().newAssignStmt(
                               Jimple.v().newInstanceFieldRef(thisLocal, 
@@ -368,11 +404,11 @@ public class InlineDirectorTransformer extends SceneTransformer {
 
             Local actorLocal = Jimple.v().newLocal("actor", actorType);
             body.getLocals().add(actorLocal);
-            for (Iterator entities = _model.deepEntityList().iterator();
+            for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(
-                        entity, _model);
+                        entity, model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 String className =
                     ActorTransformer.getInstanceClassName(entity, options);

@@ -185,6 +185,12 @@ public class ModelTransformer extends SceneTransformer {
         // Save the class so we can easily get it later.
         _modelClass = modelClass;
 
+        populateModelClass(modelClass, _model, phaseName, options);
+    }
+
+    public static void populateModelClass(
+            EntitySootClass modelClass, CompositeActor model,
+            String phaseName, Map options) {
         // Initialize the model.
         SootMethod initMethod = modelClass.getInitMethod();
         JimpleBody body = Jimple.v().newBody(initMethod);
@@ -197,7 +203,7 @@ public class ModelTransformer extends SceneTransformer {
 	_portLocalMap = new HashMap();
 
         // Now instantiate all the stuff inside the model.
-        _composite(body, thisLocal, _model, thisLocal, _model,
+        _composite(body, thisLocal, model, thisLocal, model,
                 modelClass, new HashSet(), options);
 
         units.add(Jimple.v().newReturnVoidStmt());
@@ -218,16 +224,19 @@ public class ModelTransformer extends SceneTransformer {
     ////                         private methods                   ////
 
     // Write the given composite.
-    private void _composite(JimpleBody body, Local containerLocal,
-            CompositeEntity container, Local thisLocal,
-            CompositeEntity composite, EntitySootClass modelClass,
+    public static void _composite(JimpleBody body, Local containerLocal,
+            CompositeActor container, Local thisLocal,
+            CompositeActor composite, EntitySootClass modelClass,
             HashSet createdSet, Map options) {
+        //  System.out.println("composite = " + composite.getFullName());
+        ActorTransformer.createActorsIn(composite, createdSet,
+                "modelTransformer", options);
 
         // create fields for attributes.
         createFieldsForAttributes(body, container, containerLocal,
                 composite, thisLocal, modelClass, createdSet);
         _ports(body, containerLocal, container,
-                thisLocal, composite, modelClass);
+                thisLocal, composite, modelClass, createdSet);
         _entities(body, containerLocal, container,
                 thisLocal, composite, modelClass, createdSet, options);
 
@@ -376,21 +385,21 @@ public class ModelTransformer extends SceneTransformer {
                 // doesn't also create a field for it, that we will
                 // fail later when we try to replace getAttribute
                 // calls with references to fields.
-                if (theClass.declaresFieldByName(fieldName)) {
+                // if (theClass.declaresFieldByName(fieldName)) {
                     local = attributeLocal;
                     body.getUnits().add(Jimple.v().newAssignStmt(
                             attributeLocal,
                             Jimple.v().newVirtualInvokeExpr(contextLocal,
                                     PtolemyUtilities.getAttributeMethod,
                                     StringConstant.v(attributeName))));
-                } else {
-                    System.out.println("Warning: " + theClass + " does " +
-                            "not declare a field " + fieldName);
-                    // FIXME: Try to analyze the constructor to set
-                    // the field.  This is nontrivial.
-                    // For the moment, we skip this case.
-                    continue;
-                }
+              //   } else {
+//                     System.out.println("Warning: " + theClass + " does " +
+//                             "not declare a field " + fieldName);
+//                     // FIXME: Try to analyze the constructor to set
+//                     // the field.  This is nontrivial.
+//                     // For the moment, we skip this case.
+//                     continue;
+//                 }
             } else {
                 //   System.out.println("creating " + attributeName);
                 // If the class does not create the attribute,
@@ -403,15 +412,10 @@ public class ModelTransformer extends SceneTransformer {
                 updateCreatedSet(namedObj.getFullName() + "."
                         + attribute.getName(),
                         classAttribute, classAttribute, createdSet);
-            }
 
-            // Create a new field for the attribute, and initialize
-            // it to the the attribute above.
-            SootUtilities.createAndSetFieldFromLocal(body, local,
-                    theClass, attributeType, fieldName);
-
-            if (attribute instanceof Variable) {
-                // If the attribute is a parameter, then set its
+                // Initialize the newly created variable.
+                if (attribute instanceof Variable) {
+                    // If the attribute is a parameter, then set its
                 // token to the correct value.
 		// cast to Variable.
                 Stmt assignStmt = Jimple.v().newAssignStmt(
@@ -474,7 +478,15 @@ public class ModelTransformer extends SceneTransformer {
                         Jimple.v().newInterfaceInvokeExpr(
                                 settableLocal,
                                 PtolemyUtilities.validateMethod)));
-	    }
+            }
+            }
+
+            // Create a new field for the attribute, and initialize
+            // it to the the attribute above.
+            SootUtilities.createAndSetFieldFromLocal(body, local,
+                    theClass, attributeType, fieldName);
+
+
             // FIXME: configurable??
             // recurse so that we get all parameters deeply.
             createFieldsForAttributes(body, context, contextLocal,
@@ -482,76 +494,140 @@ public class ModelTransformer extends SceneTransformer {
 	}
     }
 
+    private static void _atomic(JimpleBody body, Local containerLocal,
+            CompositeActor container, Local entityLocal,
+            Entity entity, EntitySootClass entityClass, HashSet createdSet) {
+        Entity classEntity;
+        try {
+            classEntity = (Entity)
+                ModelTransformer._findDeferredInstance(entity).clone();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException(ex.getMessage());
+        }
+        
+        // Create fields for attributes.
+        ModelTransformer.createFieldsForAttributes(
+                body, entity, entityLocal,
+                entity, entityLocal, entityClass, createdSet);
+        
+        // Initialize the parameters of the class entity.
+        for (Iterator attributes =
+                 entity.attributeList(Settable.class).iterator();
+             attributes.hasNext();) {
+            Settable settable = (Settable)attributes.next();
+            Settable classSettable = (Settable)classEntity.getAttribute(
+                    settable.getName());
+            if (classSettable != null) {
+                try {
+                    if (settable instanceof Variable) {
+                        
+                        ((Variable)classSettable).setToken(
+                                ((Variable)settable).getToken());
+                    } else {
+                        classSettable
+                            .setExpression(settable.getExpression());
+                        classSettable.validate();
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+
     // Create and set entities.
-    private void _entities(JimpleBody body, Local containerLocal,
-            CompositeEntity container, Local thisLocal,
-            CompositeEntity composite, EntitySootClass modelClass,
+    private static void _entities(JimpleBody body, 
+            Local containerLocal, CompositeActor container, 
+            Local thisLocal, CompositeActor composite,
+            EntitySootClass modelClass,
             HashSet createdSet, Map options) {
-        CompositeEntity classObject = (CompositeEntity)
+        CompositeActor classObject = (CompositeActor)
             _findDeferredInstance(composite);
         // A local that we will use to get existing entities
         Local entityLocal = Jimple.v().newLocal("entity",
-                RefType.v(PtolemyUtilities.entityClass));
+                PtolemyUtilities.componentEntityType);
         body.getLocals().add(entityLocal);
 
 	for (Iterator entities = composite.deepEntityList().iterator();
              entities.hasNext();) {
 	    Entity entity = (Entity)entities.next();
-	    System.out.println("ModelTransformer: entity: " + entity);
-            Local local;
+            //	    System.out.println("ModelTransformer: entity: " + entity);
+
             // If we are doing deep codegen, then use the actor
             // classes we created earlier.
             String className =
                 ActorTransformer.getInstanceClassName(entity, options);
-            // Create a new local variable.  The name of the local is
-            // determined automatically.  The name of the NamedObj is
-            // the same as in the model.  (Note that this might not be
-            // a valid Java identifier.)
-            local = PtolemyUtilities.createNamedObjAndLocal(body, className,
-                    thisLocal, entity.getName());
+            String entityName =
+                entity.getName(container);
+            String entityFieldName =
+                getFieldNameForEntity(entity, container);
+            Local local;
 
-            Entity classEntity = (Entity)_findDeferredInstance(entity);
-
-            if (!(entity instanceof CompositeEntity) ||
-                    className.equals(entity.getMoMLInfo().className)) {
-                // If the entity is NOT a moml class....
-                // Then record the things inside the master as things
-                // that automagically get created when we construct the
-                // object.  Otherwise, we'll go through and create
-                // them manually later.
-                updateCreatedSet(
-                        composite.getFullName() + "." + entity.getName(),
-                        classEntity, classEntity, createdSet);
-            }
-
-
-	    _entityLocalMap.put(entity, local);
-
-            if (entity instanceof CompositeEntity) {
-                _composite(body, containerLocal, container, local,
-                        (CompositeEntity)entity, modelClass, createdSet,
-                        options);
-            } else {
-                _ports(body, thisLocal, composite, local, entity, modelClass);
-
-                // If we are doing deep codegen, then we
-                // include a field for each actor.
-                // The name of the field is the sanitized version
-                // of the entity's name.
-                String entityFieldName =
-                    getFieldNameForEntity(entity, container);
+            if (createdSet.contains(entity.getFullName())) {
+                //     System.out.println("already created!");
+                local = Jimple.v().newLocal("entity",
+                        PtolemyUtilities.componentEntityType);
+                body.getLocals().add(local);
+                body.getUnits().add(
+                        Jimple.v().newAssignStmt(entityLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        thisLocal,
+                                        PtolemyUtilities.getEntityMethod,
+                                        StringConstant.v(
+                                                entity.getName(composite)))));
+                // and then cast 
+                body.getUnits().add(
+                        Jimple.v().newAssignStmt(local,
+                                Jimple.v().newCastExpr(entityLocal,
+                                        PtolemyUtilities.componentEntityType)));
                 SootUtilities.createAndSetFieldFromLocal(
                         body, local, modelClass,
                         RefType.v(className), entityFieldName);
+                
+                _ports(body, thisLocal, composite,
+                        local, entity, modelClass, createdSet);
+            } else {  
+                //  System.out.println("Creating new!");
+                
+                // Create a new local variable.  The name of the local is
+                // determined automatically.  The name of the NamedObj is
+                // the same as in the model.  (Note that this might not be
+                // a valid Java identifier.)
+                local = PtolemyUtilities.createNamedObjAndLocal(
+                        body, className,
+                        thisLocal, entity.getName());
+                           
+                updateCreatedSet(
+                        composite.getFullName() + "." + entity.getName(),
+                        entity, entity, createdSet);
+            //    if (entity instanceof CompositeActor) {
+//                     _composite(body, containerLocal, container, 
+//                             local, (CompositeActor)entity,
+//                             modelClass, createdSet, options);
+//                 } else {
+                    // Create fields for attributes.
+                    //         ModelTransformer.createFieldsForAttributes(
+                    //                        body, entity, entityLocal,
+                    //           entity, entityLocal, entityClass, createdSet);
 
+                SootUtilities.createAndSetFieldFromLocal(
+                        body, local, modelClass,
+                        RefType.v(className), entityFieldName);
+                
+                _ports(body, containerLocal, container,
+                        local, entity, modelClass, createdSet);
+                //   }
             }
-	}
+            
+            _entityLocalMap.put(entity, local);
+        }
     }
 
     // Create and set external ports.
-    private void _ports(JimpleBody body, Local containerLocal,
-            CompositeEntity container, Local entityLocal,
-            Entity entity, EntitySootClass modelClass) {
+    public static void _ports(JimpleBody body, Local containerLocal,
+            Entity container, Local entityLocal,
+            Entity entity, EntitySootClass modelClass, HashSet createdSet) {
         Entity classObject = (Entity)_findDeferredInstance(entity);
 
         // This local is used to store the return from the getPort
@@ -563,93 +639,111 @@ public class ModelTransformer extends SceneTransformer {
 	for (Iterator ports = entity.portList().iterator();
              ports.hasNext();) {
 	    Port port = (Port)ports.next();
-	    String className = port.getClass().getName();
+	    //System.out.println("ModelTransformer: port: " + port);
+	  
+            String className = port.getClass().getName();
+            String portName = port.getName(container);
             String fieldName = getFieldNameForPort(port, container);
-	    Local portLocal;
-
-            portLocal = Jimple.v().newLocal("port",
-                    PtolemyUtilities.portType);
+	    Local portLocal = Jimple.v().newLocal("port",
+                        PtolemyUtilities.portType);
             body.getLocals().add(portLocal);
-
-            // We do not need to create ports here, because the actor
-            // transformer will do that.
-            //          if (classObject.getPort(port.getName()) != null) {
-            // If the class for the object already creates the
-            // attribute, then get a reference to the existing attribute.
-
-            // First assign to temp
-            body.getUnits().add(Jimple.v().newAssignStmt(tempPortLocal,
-                    Jimple.v().newVirtualInvokeExpr(entityLocal,
-                            PtolemyUtilities.getPortMethod,
-                            StringConstant.v(port.getName()))));
-            // and then cast to portLocal
-            body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
-                    Jimple.v().newCastExpr(tempPortLocal,
-                            PtolemyUtilities.portType)));
-                                /* } else {
-                                   // If the class does not create the attribute,
-                                   // then create a new attribute with the right name.
-                                   Local local = PtolemyUtilities.createNamedObjAndLocal(
-                                   body, className,
-                                   entityLocal, port.getName());
-                                   if (port instanceof TypedIOPort) {
-                                   TypedIOPort ioport = (TypedIOPort)port;
-                                   if (ioport.isInput()) {
-                                   body.getUnits().add(Jimple.v().newInvokeStmt(
-                                   Jimple.v().newVirtualInvokeExpr(local,
-                                   PtolemyUtilities.setInputMethod,
-                                   IntConstant.v(1))));
-                                   }
-                                   if (ioport.isOutput()) {
-                                   body.getUnits().add(Jimple.v().newInvokeStmt(
-                                   Jimple.v().newVirtualInvokeExpr(local,
-                                   PtolemyUtilities.setOutputMethod,
-                                   IntConstant.v(1))));
-                                   }
-                                   if (ioport.isMultiport()) {
-                                   body.getUnits().add(Jimple.v().newInvokeStmt(
-                                   Jimple.v().newVirtualInvokeExpr(local,
-                                   PtolemyUtilities.setMultiportMethod,
-                                   IntConstant.v(1))));
-                                   }
-                                   }
-                                   // and then cast to portLocal
-                                   body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
-                                   Jimple.v().newCastExpr(local,
-                                   PtolemyUtilities.portType)));
-
-                                   }*/
-
-
-            //   // Set the type of the port if we need to.
-            //              if (Options.getBoolean(options, "deep") &&
-            //                      (port instanceof TypedIOPort)) {
-            //                  TypedIOPort typedPort = (TypedIOPort)port;
-
-            //                          // Build a type expression.
-            //                  Local typeLocal =
-            //                      _buildConstantTypeLocal(body, typedPort.getType());
-            //                  Local ioportLocal =
-            //                      Jimple.v().newLocal("typed_" + port.getName(),
-            //                              ioportType);
-            //                  body.getLocals().add(ioportLocal);
-            //                  body.getUnits().add(Jimple.v().newAssignStmt(ioportLocal,
-            //                          Jimple.v().newCastExpr(portLocal,
-            //                                  ioportType)));
-            //                  body.getUnits().add(Jimple.v().newInvokeStmt(
-            //                          Jimple.v().newVirtualInvokeExpr(ioportLocal,
-            //                                  portSetTypeMethod, typeLocal)));
-            //              }
+            
+            if (createdSet.contains(port.getFullName())) {
+                //    System.out.println("already created!");
+                // If the class for the object already creates the
+                // port, then get a reference to the existing port.
+                // First assign to temp
+                body.getUnits().add(
+                        Jimple.v().newAssignStmt(tempPortLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        entityLocal,
+                                        PtolemyUtilities.getPortMethod,
+                                        StringConstant.v(
+                                                port.getName()))));
+                // and then cast to portLocal
+                body.getUnits().add(
+                            Jimple.v().newAssignStmt(portLocal,
+                                    Jimple.v().newCastExpr(tempPortLocal,
+                                            PtolemyUtilities.portType)));
+               //  } else {
+//                     System.out.println("Warning: " + modelClass + " does " +
+//                             "not declare a field " + fieldName);
+//                     // FIXME: Try to analyze the constructor to set
+//                     // the field.  This is nontrivial.
+//                     // For the moment, we skip this case.
+//                     continue;
+//                 }
+            } else {
+                //    System.out.println("Creating new!");
+                // If the class does not create the port
+                // then create a new port with the right name.
+                Local local = PtolemyUtilities.createNamedObjAndLocal(
+                        body, className,
+                        entityLocal, port.getName());
+                updateCreatedSet(entity.getFullName() + "."
+                        + port.getName(),
+                        port, port, createdSet);
+                if (port instanceof TypedIOPort) {
+                    TypedIOPort ioport = (TypedIOPort)port;
+                    if (ioport.isInput()) {
+                        body.getUnits().add(
+                                Jimple.v().newInvokeStmt(
+                                        Jimple.v().newVirtualInvokeExpr(local,
+                                                PtolemyUtilities.setInputMethod,
+                                                IntConstant.v(1))));
+                    }
+                    if (ioport.isOutput()) {
+                        body.getUnits().add(
+                                Jimple.v().newInvokeStmt(
+                                        Jimple.v().newVirtualInvokeExpr(local,
+                                                PtolemyUtilities.setOutputMethod,
+                                                IntConstant.v(1))));
+                    }
+                    if (ioport.isMultiport()) {
+                        body.getUnits().add(
+                                Jimple.v().newInvokeStmt(
+                                        Jimple.v().newVirtualInvokeExpr(local,
+                                                PtolemyUtilities.setMultiportMethod,
+                                                IntConstant.v(1))));
+                    }
+                    // Set the port's type.
+                    Local ioportLocal =
+                        Jimple.v().newLocal("typed_" + port.getName(),
+                                PtolemyUtilities.ioportType);
+                    body.getLocals().add(ioportLocal);
+                    Stmt castStmt = Jimple.v().newAssignStmt(ioportLocal,
+                            Jimple.v().newCastExpr(local,
+                                    PtolemyUtilities.ioportType));
+                    body.getUnits().add(castStmt);
+                    Local typeLocal =
+                        PtolemyUtilities.buildConstantTypeLocal(
+                                body, castStmt, ioport.getType());
+                    body.getUnits().add(
+                            Jimple.v().newInvokeStmt(
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            ioportLocal,
+                                            PtolemyUtilities.portSetTypeMethod,
+                                            typeLocal)));
+                }
+                // and then cast to portLocal
+                body.getUnits().add(
+                        Jimple.v().newAssignStmt(portLocal,
+                                Jimple.v().newCastExpr(local,
+                                        PtolemyUtilities.portType)));
+                
+            }
 
             _portLocalMap.put(port, portLocal);
-	    SootUtilities.createAndSetFieldFromLocal(body,
-                    portLocal, modelClass, PtolemyUtilities.portType,
-                    fieldName);
-	}
+            if (!modelClass.declaresFieldByName(fieldName)) {
+                SootUtilities.createAndSetFieldFromLocal(body,
+                        portLocal, modelClass, PtolemyUtilities.portType,
+                        fieldName);
+            }
+        }
     }
 
     // Create and set links.
-    private void _links(JimpleBody body, CompositeEntity composite) {
+    private static void _links(JimpleBody body, CompositeActor composite) {
 	// To get the ordering right,
 	// we read the links from the ports, not from the relations.
 	// First, produce the inside links on contained ports.
@@ -682,8 +776,8 @@ public class ModelTransformer extends SceneTransformer {
 
     // Produce the links on ports contained by contained entities.
     // Note that we have to carefully handle transparent hierarchy.
-    private void _linksOnPortsContainedByContainedEntities(
-            JimpleBody body, CompositeEntity composite) {
+    private static void _linksOnPortsContainedByContainedEntities(
+            JimpleBody body, CompositeActor composite) {
 
         for (Iterator entities = composite.deepEntityList().iterator();
              entities.hasNext();) {
@@ -745,8 +839,8 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     // Create and set relations.
-    private void _relations(JimpleBody body, Local thisLocal,
-            CompositeEntity composite, EntitySootClass modelClass) {
+    private static void _relations(JimpleBody body, Local thisLocal,
+            CompositeActor composite, EntitySootClass modelClass) {
 	_relationLocalMap = new HashMap();
 	for (Iterator relations = composite.relationList().iterator();
              relations.hasNext();) {
@@ -879,7 +973,7 @@ public class ModelTransformer extends SceneTransformer {
                     // (container,name) constructor, and
                     // now we're stuck with it.
                     String source = "<entity name=\"parsedClone\""
-                        + "class=\"ptolemy.kernel.CompositeEntity\">\n"
+                        + " class=\"ptolemy.kernel.CompositeEntity\">\n"
                         + "<" + objectType + " name=\""
                         + object.getName() + "\" class=\""
                         + deferredClass + "\"/>\n"
@@ -910,10 +1004,10 @@ public class ModelTransformer extends SceneTransformer {
                     //  System.out.println("class without workspace = " +
                     //   deferredClass);
                 }
-            }
-            catch (Exception ex) {
-                System.err.println("Exception occured during parsing:\n");
+            } catch (Exception ex) {
+                System.out.println("Exception occured during parsing:\n" + ex);
                 ex.printStackTrace();
+                System.out.println("done parsing:\n");
                 deferredObject = null;
             }
         }
@@ -930,11 +1024,11 @@ public class ModelTransformer extends SceneTransformer {
             set.add(prefix);
         } else {
             String name = prefix + "." + object.getName(context);
-            // System.out.println("creating " + name);
+            //  System.out.println("creating " + name);
             set.add(name);
         }
-        if (object instanceof CompositeEntity) {
-            CompositeEntity composite = (CompositeEntity) object;
+        if (object instanceof CompositeActor) {
+            CompositeActor composite = (CompositeActor) object;
             for (Iterator entities = composite.deepEntityList().iterator();
                  entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
@@ -965,13 +1059,13 @@ public class ModelTransformer extends SceneTransformer {
     ////                         private variables                 ////
 
     // Map from Ports to Locals.
-    public Map _portLocalMap;
+    public static Map _portLocalMap;
 
     // Map from Entitys to Locals.
-    public Map _entityLocalMap;
+    public static Map _entityLocalMap;
 
     // Map from Relations to Locals.
-    public Map _relationLocalMap;
+    public static Map _relationLocalMap;
 
     // The model we are generating code for.
     public CompositeActor _model;

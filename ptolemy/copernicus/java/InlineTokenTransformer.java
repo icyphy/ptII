@@ -101,159 +101,171 @@ public class InlineTokenTransformer extends SceneTransformer {
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        boolean debug = Options.getBoolean(options, "debug");
+        _debug = Options.getBoolean(options, "debug");
+        _options = options;
         System.out.println("InlineTokenTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        // Loop over all the actor instance classes.
-        for (Iterator i = _model.deepEntityList().iterator();
-             i.hasNext();) {
-            Entity entity = (Entity)i.next();
-            String className =
-                ActorTransformer.getInstanceClassName(entity, options);
-            SootClass entityClass =
-                Scene.v().loadClassAndSupport(className);
 
-            if (debug) System.out.println("class = " + entityClass);
+        _inlineTokenCalls(ModelTransformer.getModelClass(), _model);
+    }
 
-            // Inline calls to token methods that can be statically
-            // evaluated.
-            for (Iterator methods = entityClass.getMethods().iterator();
-                 methods.hasNext();) {
-                SootMethod method = (SootMethod)methods.next();
+    private void _inlineTokenCalls(SootClass actorClass, ComponentEntity actor) {
+        if (_debug) System.out.println("class = " + actorClass);
 
-                // What about static methods?
-                if (method.isStatic()) {
-                    continue;
-                }
-                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-
-                // Add a this local...  note that we might not have one.
-                Local thisLocal;
-                try {
-                    thisLocal = body.getThisLocal();
-                } catch (Exception ex) {
-                    //FIXME: what if no thisLocal?
-                    continue;
-                }
-
-                if (debug) System.out.println("method = " + method);
-
-                int count = 0;
-                boolean doneSomething = true;
-                while (doneSomething) {
-                    doneSomething = false;
-                    // System.out.println("Inlining tokens iteration " + count++);
-
-                    CompleteUnitGraph unitGraph =
-                        new CompleteUnitGraph(body);
-                    // This will help us figure out where locals are defined.
-                    SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
-
-                    // Analyze and tokens that are constructed in this
-                    // method...  these will likely not have fields
-                    // for them.
-                    TokenConstructorAnalysis tokenAnalysis =
-                        new TokenConstructorAnalysis(body, localDefs);
-
-                    for (Iterator units = body.getUnits().snapshotIterator();
-                         units.hasNext();) {
-                        Unit unit = (Unit)units.next();
-                        Iterator boxes = unit.getUseBoxes().iterator();
-                        while (boxes.hasNext()) {
-                            ValueBox box = (ValueBox)boxes.next();
-                            Value value = box.getValue();
-                            if (value instanceof InstanceInvokeExpr) {
-                                InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                                if (debug) System.out.println("invoking = " + r.getMethod());
-
-                                // Skip initializers.
-                                if (r.getMethod().getName().equals("<init>")) {
-                                    continue;
-                                }
-
-                                if (r.getBase().getType() instanceof RefType) {
-                                    RefType type = (RefType)r.getBase().getType();
-
-                                //System.out.println("baseType = " + type);
-                                // Statically evaluate constant arguments.
-                                    Value argValues[] = new Value[r.getArgCount()];
-                                    int argCount = 0;
-                                    for (Iterator args = r.getArgs().iterator();
-                                         args.hasNext();) {
-                                        Value arg = (Value)args.next();
-                                        //      System.out.println("arg = " + arg);
-                                        if (Evaluator.isValueConstantValued(arg)) {
-                                            argValues[argCount++] = Evaluator.getConstantValueOf(arg);
-                                            //       System.out.println("argument = " + argValues[argCount-1]);
-                                        } else {
-                                            break;
-                                        }
-                                    }
-
-                                    if (SootUtilities.derivesFrom(type.getSootClass(),
-                                            PtolemyUtilities.tokenClass)) {
-
-                                        // if we are invoking a method on a token class, then
-                                        // attempt to get the constant value of the token.
-                                        Token token = getTokenValue(entity, (Local)r.getBase(), unit, localDefs,
-                                                tokenAnalysis);
-                                        if (debug) System.out.println("reference to Token with value = " + token);
-
-                                        // If we have a token and all the args are constant valued,
-                                        // and the method returns a Constant, or a token, then
-                                        if (token != null && argCount == r.getArgCount()) {
-                                            if (debug) {
-                                                System.out.println("statically invoking " + r);
-                                                for (int j = 0; j < r.getArgCount(); j++) {
-                                                    System.out.println("argument " + j + " = " + argValues[j]);
-                                                }
-                                            }
-                                            // reflect and invoke the same method on our token
-                                            Object object =
-                                                SootUtilities.reflectAndInvokeMethod(token, r.getMethod(), argValues);
-                                            if (debug) System.out.println("method result  = " + object);
-
-                                            Type returnType = r.getMethod().getReturnType();
-                                            if (returnType instanceof ArrayType) {
-                                            } else if (returnType instanceof RefType) {
-                                                SootClass returnClass = ((RefType)returnType).getSootClass();
-                                                if (SootUtilities.derivesFrom(returnClass,
-                                                        PtolemyUtilities.tokenClass)) {
-                                                    if (debug) System.out.println("handling as token type");
-                                                    Local local = PtolemyUtilities.buildConstantTokenLocal(body,
-                                                            unit, (Token)object, "token");
-                                                    box.setValue(local);
-                                                    doneSomething = true;
-                                                } else if (returnClass.getName().equals("java.lang.String")) {
-                                                    if (debug) System.out.println("handling as string type");
-                                                    Constant constant = StringConstant.v((String)object);
-                                                    box.setValue(constant);
-                                                    doneSomething = true;
-                                                }
-                                            } else if (returnType instanceof BaseType &&
-                                                    !(returnType instanceof VoidType)) {
-                                                if (debug) System.out.println("handling as base type");
-                                                // Must be a primitive type...
-                                                Constant constant =
-                                                    SootUtilities.convertArgumentToConstantValue(object);
-                                                box.setValue(constant);
-                                                doneSomething = true;
-                                            } else {
-                                                throw new RuntimeException("unknown return type = " + returnType);
-                                            }
-                                            // Reanalyze the locals... since this may have changed.
-                                            unitGraph = new CompleteUnitGraph(body);
-                                            localDefs = new SimpleLocalDefs(unitGraph);
-                                        }
-                                    }
-                                }
-                            }
+        // Inline calls to token methods that can be statically
+        // evaluated.
+        for (Iterator methods = actorClass.getMethods().iterator();
+             methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+            
+            // What about static methods?
+            if (method.isStatic()) {
+                continue;
+            }
+            JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+            
+            // Add a this local...  note that we might not have one.
+            Local thisLocal;
+            try {
+                thisLocal = body.getThisLocal();
+            } catch (Exception ex) {
+                //FIXME: what if no thisLocal?
+                continue;
+            }
+            
+            if (_debug) System.out.println("method = " + method);
+            
+            int count = 0;
+            boolean doneSomething = true;
+            while (doneSomething) {
+                doneSomething = false;
+                // System.out.println("Inlining tokens iteration " + count++);
+                
+                CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
+                // This will help us figure out where locals are defined.
+                _localDefs = new SimpleLocalDefs(unitGraph);
+                
+                // Analyze and tokens that are constructed in this
+                // method...  these will likely not have fields
+                // for them.
+                _tokenAnalysis = new TokenConstructorAnalysis(body, _localDefs);
+                
+                for (Iterator units = body.getUnits().snapshotIterator();
+                     units.hasNext();) {
+                    Unit unit = (Unit)units.next();
+                    Iterator boxes = unit.getUseBoxes().iterator();
+                    while (boxes.hasNext()) {
+                        ValueBox box = (ValueBox)boxes.next();
+                        Value value = box.getValue();
+                        if (value instanceof InstanceInvokeExpr) {
+                            InstanceInvokeExpr r = (InstanceInvokeExpr)value;
+                           if (_debug) System.out.println("invoking = " + r.getMethod());
+                            
+                            // Skip initializers.
+                            if (r.getMethod().getName().equals("<init>")) {
+                                continue;
+                            } 
+                            doneSomething |= _replaceTokenInvocation(actor, body, unit, box, r);
                         }
                     }
                 }
             }
         }
+        if(actor instanceof CompositeActor) {
+            CompositeActor model = (CompositeActor)actor;
+            for (Iterator entities = model.deepEntityList().iterator();
+                 entities.hasNext();) {
+                ComponentEntity entity = (ComponentEntity)entities.next();
+                String className =
+                    ActorTransformer.getInstanceClassName(entity, _options);
+                SootClass theClass =
+                    Scene.v().loadClassAndSupport(className);
+                _inlineTokenCalls(theClass, entity);
+                
+            }
+        }
+    }        
+    private boolean _replaceTokenInvocation(ComponentEntity actor, 
+            JimpleBody body, Unit unit, ValueBox box, InstanceInvokeExpr r) {
+        boolean doneSomething = false;
+        if (r.getBase().getType() instanceof RefType) {
+            RefType type = (RefType)r.getBase().getType();
+                                
+            //System.out.println("baseType = " + type);
+            // Statically evaluate constant arguments.
+            Value argValues[] = new Value[r.getArgCount()];
+            int argCount = 0;
+            for (Iterator args = r.getArgs().iterator();
+                 args.hasNext();) {
+                Value arg = (Value)args.next();
+                //      System.out.println("arg = " + arg);
+                if (Evaluator.isValueConstantValued(arg)) {
+                    argValues[argCount++] = Evaluator.getConstantValueOf(arg);
+                    //       System.out.println("argument = " + argValues[argCount-1]);
+                } else {
+                    break;
+                }
+            }
+                                
+            if (SootUtilities.derivesFrom(type.getSootClass(),
+                        PtolemyUtilities.tokenClass)) {
+                                    
+                // if we are invoking a method on a token class, then
+                // attempt to get the constant value of the token.
+                Token token = getTokenValue(actor, (Local)r.getBase(), unit, _localDefs,
+                        _tokenAnalysis);
+                if (_debug) System.out.println("reference to Token with value = " + token);
+
+                // If we have a token and all the args are constant valued,
+                // and the method returns a Constant, or a token, then
+                if (token != null && argCount == r.getArgCount()) {
+                    if (_debug) {
+                        System.out.println("statically invoking " + r);
+                        for (int j = 0; j < r.getArgCount(); j++) {
+                            System.out.println("argument " + j + " = " + argValues[j]);
+                        }
+                    }
+                    // reflect and invoke the same method on our token
+                    Object object =
+                        SootUtilities.reflectAndInvokeMethod(token, r.getMethod(), argValues);
+                    if (_debug) System.out.println("method result  = " + object);
+                                        
+                    Type returnType = r.getMethod().getReturnType();
+                    if (returnType instanceof ArrayType) {
+                    } else if (returnType instanceof RefType) {
+                        SootClass returnClass = ((RefType)returnType).getSootClass();
+                        if (SootUtilities.derivesFrom(returnClass,
+                                    PtolemyUtilities.tokenClass)) {
+                            if (_debug) System.out.println("handling as token type");
+                            Local local = PtolemyUtilities.buildConstantTokenLocal(body,
+                                    unit, (Token)object, "token");
+                            box.setValue(local);
+                            doneSomething = true;
+                        } else if (returnClass.getName().equals("java.lang.String")) {
+                            if (_debug) System.out.println("handling as string type");
+                            Constant constant = StringConstant.v((String)object);
+                            box.setValue(constant);
+                            doneSomething = true;
+                        }
+                    } else if (returnType instanceof BaseType &&
+                            !(returnType instanceof VoidType)) {
+                        if (_debug) System.out.println("handling as base type");
+                        // Must be a primitive type...
+                        Constant constant =
+                            SootUtilities.convertArgumentToConstantValue(object);
+                        box.setValue(constant);
+                        doneSomething = true;
+                    } else {
+                        throw new RuntimeException("unknown return type = " + returnType);
+                    }
+                    // Reanalyze the locals... since this may have changed.
+                    CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
+                    _localDefs = new SimpleLocalDefs(unitGraph);
+                }
+            }
+        }
+        return doneSomething;
     }
 
     /** Attempt to determine the constant value of the given local,
@@ -305,6 +317,10 @@ public class InlineTokenTransformer extends SceneTransformer {
     }
 
     private CompositeActor _model;
+    private boolean _debug;
+    private Map _options;
+    private LocalDefs _localDefs;
+    private TokenConstructorAnalysis _tokenAnalysis;
 }
 
 
