@@ -87,7 +87,7 @@ the receiver will not be able to here the signal from the sender.</text></svg></
         </property>
     </property>
     <entity name="Receiver" class="ptolemy.domains.wireless.kernel.WirelessComposite">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 245.0">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -349,7 +349,7 @@ the receiver will not be able to here the signal from the sender.</text></svg></
             </property>
         </entity>
         <entity name="TransformPropert" class="ptolemy.domains.wireless.lib.TransformProperty">
-            <property name="modelFileOrURL" class="ptolemy.data.expr.FileParameter" value="file:/C:/ptII/ptolemy/domains/wireless/demo/AntennaPattern/phasedArrayAntenna.xml">
+            <property name="modelFileOrURL" class="ptolemy.data.expr.FileParameter" value="file:/C:/ptII/ptolemy/domains/wireless/demo/AntennaPattern/phasedArrayAntennaIteration.xml">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 170.0">
             </property>

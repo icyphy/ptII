@@ -92,7 +92,7 @@ pattern of the sender. </text></svg></configure>
         </property>
     </entity>
     <entity name="Receiver" class="ptolemy.domains.wireless.kernel.WirelessComposite">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 245.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 245.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -248,8 +248,8 @@ pattern of the sender. </text></svg></configure>
 <title>XYPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-0.0039693523455927885" max="0.024552755355627027"/>
-<yRange min="0.0" max="0.02455275535562701"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 </plot>?>
             </configure>
         </entity>
@@ -354,7 +354,7 @@ pattern of the sender. </text></svg></configure>
             </property>
         </entity>
         <entity name="TransformPropert" class="ptolemy.domains.wireless.lib.TransformProperty">
-            <property name="modelFileOrURL" class="ptolemy.data.expr.FileParameter" value="phasedArrayAntenna.xml">
+            <property name="modelFileOrURL" class="ptolemy.data.expr.FileParameter" value="phasedArrayAntennaIteration.xml">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 170.0">
             </property>
