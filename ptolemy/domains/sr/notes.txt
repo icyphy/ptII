@@ -9,11 +9,7 @@ are tests running?
 
 Delay should be NonStrictDelay
 
-add SRDirector and sr.lib to the library
-
 create an SRScheduler
-determine whether actors are ready to fire
-determine whether actors are done firing
 
 -------------------------------------------------------------------------------
 

@@ -276,7 +276,6 @@ public class SRDirector extends Director {
 
     /** Enable all actors and invoke the preinitialize() methods of
      *  all actors deeply contained by the container.
-     *  FIXME: is this the proper place to start a new receiver list?
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void preinitialize() throws IllegalActionException {
@@ -287,8 +286,8 @@ public class SRDirector extends Director {
         super.preinitialize();
     }
 
-    //FIXMESOON transferInputs
-    //FIXMESOON transferOutputs
+    //FIXMESOON: transferInputs
+    //FIXMESOON: transferOutputs
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
