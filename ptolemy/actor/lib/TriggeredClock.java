@@ -143,7 +143,7 @@ public class TriggeredClock extends TimedSource {
 	output.setTypeAtLeast(elementTerm);
         
         //set up trigger port
-         trigger.setMultiport(false);
+        trigger.setMultiport(false);
 
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
@@ -192,7 +192,7 @@ public class TriggeredClock extends TimedSource {
             double previous = 0.0;
             for (int i = 0; i < offsetsValue.length(); i++) {
                 _offsets[i] = ((DoubleToken)offsetsValue.getElement(i))
-                        .doubleValue();
+                    .doubleValue();
                 // Check nondecreasing property.
                 if (_offsets[i] < previous) {
                     throw new IllegalActionException(this,
@@ -242,41 +242,41 @@ public class TriggeredClock extends TimedSource {
 	//super.fire();
         // Get the current time and period.
         
-             double periodValue = ((DoubleToken)period.getToken()).doubleValue();
-             double currentTime = getDirector().getCurrentTime();
-	     System.out.println("current time"+currentTime);
+        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+        double currentTime = getDirector().getCurrentTime();
+        System.out.println("current time"+currentTime);
                  
-	   if(!_trigger){
-                  if(trigger.hasToken(0)){
-                   System.out.println("trigger has token"); 
-                  _trigger  = ((BooleanToken)trigger.get(0)).booleanValue();
-                   System.out.println("_trigger"+_trigger);            
-                       if (_trigger){
-	                  _tentativeCycleStartTime = currentTime;
-                          _tentativePhase = 0;
-                          _tentativeCurrentValue =_getValue(_phase); 
-	                  System.out.println("trigger true");
-                          _trigger = true;
-                                     }   
-                                         }
-                           }else
-                     // In case time has gone backwards since the last call to fire()
-                     // (something that can occur within an iteration), reinitialize
-                     // these from the last known good state.
-                         {   System.out.println("current time"+ currentTime);
-                           _tentativeCycleStartTime = _cycleStartTime;
-                           _tentativePhase = _phase;
-                          _tentativeCurrentValue =_currentValue;     
-	                 }     
+        if(!_trigger){
+            if(trigger.hasToken(0)){
+                System.out.println("trigger has token"); 
+                _trigger  = ((BooleanToken)trigger.get(0)).booleanValue();
+                System.out.println("_trigger"+_trigger);            
+                if (_trigger){
+                    _tentativeCycleStartTime = currentTime;
+                    _tentativePhase = 0;
+                    _tentativeCurrentValue =_getValue(_phase); 
+                    System.out.println("trigger true");
+                    _trigger = true;
+                }   
+            }
+        }else
+            // In case time has gone backwards since the last call to fire()
+            // (something that can occur within an iteration), reinitialize
+            // these from the last known good state.
+            {   System.out.println("current time"+ currentTime);
+            _tentativeCycleStartTime = _cycleStartTime;
+            _tentativePhase = _phase;
+            _tentativeCurrentValue =_currentValue;     
+            }     
                        
         // In case current time has reached or crossed a boundary between
         // periods, update it.  Note that normally it will not
         // have advanced by more than one period
         // (unless, perhaps, the entire domain has been dormant
         // for some time, as might happen for example in a hybrid system).
-	       while (_tentativeCycleStartTime + periodValue <= currentTime) {
-	       _tentativeCycleStartTime += periodValue;
-	              }
+        while (_tentativeCycleStartTime + periodValue <= currentTime) {
+            _tentativeCycleStartTime += periodValue;
+        }
         // Use Double.NEGATIVE_INFINITY to indicate that no refire
         // event should be scheduled because we aren't at a phase boundary.
         _tentativeNextFiringTime = Double.NEGATIVE_INFINITY;
@@ -289,29 +289,29 @@ public class TriggeredClock extends TimedSource {
         
        
    
-            // Phase boundary.  Change the current value.
-            _tentativeCurrentValue = _getValue(_tentativePhase);
-            // Increment to the next phase.
-            _tentativePhase++;
-            if (_tentativePhase >= _offsets.length) {
-                _tentativePhase = 0;
-                // Schedule the first firing in the next period.
-                _tentativeCycleStartTime += periodValue;
-            }
-            if(_offsets[_tentativePhase] >= periodValue) {
-                throw new IllegalActionException(this,
-                        "Offset number " + _tentativePhase + " with value "
-                        + _offsets[_tentativePhase] + " must be less than the "
-                        + "period, which is " + periodValue);
-            }
-            // NOTE: In the RTOS domain, this may not occur if we have
-            // missed a deadline.  As a consequence, the clock will stop.
-            // Schedule the next firing in this period.
-            _tentativeNextFiringTime
-                = _tentativeCycleStartTime + _offsets[_tentativePhase];
-           System.out.println("tentcycstarttime"+_tentativeCycleStartTime);
-             System.out.println("next phase"+_tentativePhase);
-	    System.out.println("next firing time"+_tentativeNextFiringTime);
+        // Phase boundary.  Change the current value.
+        _tentativeCurrentValue = _getValue(_tentativePhase);
+        // Increment to the next phase.
+        _tentativePhase++;
+        if (_tentativePhase >= _offsets.length) {
+            _tentativePhase = 0;
+            // Schedule the first firing in the next period.
+            _tentativeCycleStartTime += periodValue;
+        }
+        if(_offsets[_tentativePhase] >= periodValue) {
+            throw new IllegalActionException(this,
+                    "Offset number " + _tentativePhase + " with value "
+                    + _offsets[_tentativePhase] + " must be less than the "
+                    + "period, which is " + periodValue);
+        }
+        // NOTE: In the RTOS domain, this may not occur if we have
+        // missed a deadline.  As a consequence, the clock will stop.
+        // Schedule the next firing in this period.
+        _tentativeNextFiringTime
+            = _tentativeCycleStartTime + _offsets[_tentativePhase];
+        System.out.println("tentcycstarttime"+_tentativeCycleStartTime);
+        System.out.println("next phase"+_tentativePhase);
+        System.out.println("next firing time"+_tentativeNextFiringTime);
         output.send(0, _tentativeCurrentValue);
 	System.out.println( _tentativeCurrentValue);
     }
@@ -319,9 +319,9 @@ public class TriggeredClock extends TimedSource {
     /** Initialize trigger
      */
     public void initialize() throws IllegalActionException {
-          _trigger = false;
-          _cycCount = 0;
-          super.initialize(); 
+        _trigger = false;
+        _cycCount = 0;
+        super.initialize(); 
     }
    
  
@@ -339,13 +339,13 @@ public class TriggeredClock extends TimedSource {
         // that no future firing should be scheduled.
         // Now, we leave it up to the director, unless the value
         // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
-            _cycCount++;
-            int noc  = ((IntToken)numberOfCycles.getToken()).intValue(); 
-	    if (_cycCount <= noc){
-               if (_tentativeNextFiringTime != Double.NEGATIVE_INFINITY) {
-            getDirector().fireAt(this, _tentativeNextFiringTime);
-                 }
-	      }
+        _cycCount++;
+        int noc  = ((IntToken)numberOfCycles.getToken()).intValue(); 
+        if (_cycCount <= noc){
+            if (_tentativeNextFiringTime != Double.NEGATIVE_INFINITY) {
+                getDirector().fireAt(this, _tentativeNextFiringTime);
+            }
+        }
         return super.postfire();
     }
 
