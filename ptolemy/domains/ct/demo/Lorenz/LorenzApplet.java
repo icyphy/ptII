@@ -82,6 +82,7 @@ public class LorenzApplet extends CTApplet {
         _query.addLine("sigma", "Sigma", "10.0");
         _query.addLine("lambda", "Lambda", "25.0");
         _query.addLine("b", "b", "2.0");
+        _query.setBackground(_getBackground());
 
         Panel runcontrols = new Panel();
         controlpanel.add("East",runcontrols);
