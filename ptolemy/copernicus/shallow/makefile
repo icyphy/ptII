@@ -98,7 +98,7 @@ compileShallowDemo: $(JCLASS)
 	@echo "generate shallow code for '$(SOURCECLASS)'"
 	$(JAVA) $(JVM_SIZE) \
 	 -classpath "$(CLASSPATH)" \
-  	 -Dptolemy.ptII.dir=$(ROOT) \
+	-Dptolemy.ptII.dir=$(ROOT) \
 	ptolemy.copernicus.shallow.Main "$(SOURCECLASS)" -d "$(ROOT)"  \
 		-p wjtp.watchDog time:$(WATCH_DOG_TIMEOUT) \
 		-p wjtp.mt targetPackage:$(TARGETPACKAGE) \
