@@ -63,6 +63,9 @@ public class Skeleton {
             String filename = args[f];
 
             try {
+                if (_debug)
+                    System.out.println("Calling JavaParseManip.parse(" +
+                            filename + _debug + ")");
                 ast = JavaParserManip.parse(filename, _debug);
             } catch (Exception e) {
                 System.err.println("error opening or parsing input file " + 
@@ -71,15 +74,23 @@ public class Skeleton {
             }
 
             if (_eliminateImports) {
+                if (_debug)
+                    System.out.println("Eliminating Imports by calling " +
+                            "StaticResolution()");
                 ast = StaticResolution.load(ast, 0);
             }
 
             ast.accept(new SkeletonVisitor(), null);
 
             if (_eliminateImports) {
+                if (_debug)
+                    System.out.println("Eliminating Imports by calling " +
+                        "FindExtraImportsVisitor");
                 ast.accept(new FindExtraImportsVisitor(true), null);
             }
 
+            if (_debug)
+                System.out.println("Generating Output Code");
             String outCode = (String) ast.accept(new JavaCodeGenerator(),
                     null);
 
@@ -88,6 +99,8 @@ public class Skeleton {
 
             try {
                 FileOutputStream outFile = new FileOutputStream(outFileName);
+                if (_debug)
+                    System.out.println("Writing Output Code");
                 outFile.write(outCode.getBytes());
                 outFile.close();
             } catch (IOException e) {
@@ -134,4 +147,5 @@ public class Skeleton {
      *  in the skeleton output file. This takes a much longer time.
      */
     protected static boolean _eliminateImports = false;
+
 }
