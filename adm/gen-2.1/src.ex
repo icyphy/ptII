@@ -100,6 +100,7 @@ ptolemy/media/DoubleArrayAudioQueue.java
 ptolemy/media/SoundCapture.java
 ptolemy/media/SoundCapture.class
 ptolemy/moml/test/compat
+ptolemy/moml/test/compatDemo
 ptolemy/plot/adm
 ptolemy/plot/Render
 ptolemy/plot/RenderApplication.*
