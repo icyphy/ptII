@@ -234,6 +234,7 @@ public class HDFFSMDirector extends FSMDirector {
         _readInputs();
         Transition transition;
         State state = controller.currentState();
+        _previousIntransientState =state;
         Actor[] actors = controller.currentState().getRefinement();
         _fireRefinement = false;
 
@@ -253,9 +254,12 @@ public class HDFFSMDirector extends FSMDirector {
             state = chooseStateTransition(state);
             actors = state.getRefinement();
             while (actors == null) {
+                //System.out.println("found transient states");
                 super.postfire();
                 state = chooseStateTransition(state);
+                //System.out.println("next state: " + state.getName());
                 transition = _getLastChosenTransition();
+                //System.out.println("enabled transition: " + transition.getName());
                 if (transition == null)
                     throw new IllegalActionException(this,
                         "Reached a transient state" +
@@ -490,9 +494,12 @@ public class HDFFSMDirector extends FSMDirector {
      */
     public boolean postfire() throws IllegalActionException {
         FSMActor controller = getController();
-        State currentState = controller.currentState();
+        //State currentState = controller.currentState();
+        State currentState = _previousIntransientState;
+        //System.out.println("Postfire: current state: " + currentState.getName());
         CompositeActor container = (CompositeActor)getContainer();
         TypedActor[] currentRefinement = currentState.getRefinement();
+        
         if (currentRefinement == null) {
             throw new IllegalActionException(this,
                     "Can't postfire because current refinement is null.");
@@ -515,6 +522,7 @@ public class HDFFSMDirector extends FSMDirector {
             container.requestChange(request);
         }
         if (_embeddedInSDF) {
+            //System.out.println("Postfire(): current state " + )
             makeStateTransition();
         }
 
@@ -754,10 +762,12 @@ public class HDFFSMDirector extends FSMDirector {
      */
     public State transientStateTransition()
                 throws IllegalActionException {
+        //System.out.println("execute transientStateTransition.");
         FSMActor controller = getController();
         State currentState = controller.currentState();
         TypedActor[] currentRefinements = currentState.getRefinement();
         while (currentRefinements == null) {
+            //System.out.println("found transient state.");
             chooseStateTransition(currentState);
             super.postfire();
             currentState = controller.currentState();
@@ -771,6 +781,7 @@ public class HDFFSMDirector extends FSMDirector {
                 currentRefinements = currentState.getRefinement();
             }
         }
+        //System.out.println("return state: " + currentState.getName());
         return currentState;            
     }
 
@@ -1106,4 +1117,6 @@ public class HDFFSMDirector extends FSMDirector {
     // The next intransient state found after making transition
     // from transient states.
     private State _nextIntransientState;
+    
+    private State _previousIntransientState;
 }
