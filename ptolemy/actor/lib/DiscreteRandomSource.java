@@ -86,7 +86,7 @@ public class DiscreteRandomSource extends RandomSource {
     ////                     ports and parameters                  ////
 
     /** The probability mass function.
-     *  This parameter contains a DoubleMatrixToken, with default value 
+     *  This parameter contains a DoubleMatrixToken, with default value
      *  [0.5 0.5].
      */
     public Parameter pmf;
@@ -96,7 +96,7 @@ public class DiscreteRandomSource extends RandomSource {
      *  [0 1] (an IntMatrixToken).
      */
     public Parameter values;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -106,7 +106,7 @@ public class DiscreteRandomSource extends RandomSource {
      *  @exception IllegalActionException If the requirements are
      *   violated.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == pmf) {
             DoubleMatrixToken pmfMatrixToken
@@ -132,11 +132,11 @@ public class DiscreteRandomSource extends RandomSource {
      *  which will cause type resolution to be redone at the next
      *  opportunity. It is assumed that type changes in the parameter
      *  are implemented by the director's change request mechanism,
-     *  so they are implement when it is safe to redo type 
-     *  resolution. 
+     *  so they are implement when it is safe to redo type
+     *  resolution.
      *  If there is no director, do not notify anyone of the change.
      */
-    public void attributeTypeChanged(Attribute attribute) 
+    public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
        if (attribute == values) {
            // set the output type to be the type of the
@@ -164,7 +164,7 @@ public class DiscreteRandomSource extends RandomSource {
 	    throws CloneNotSupportedException {
         DiscreteRandomSource newobj = (DiscreteRandomSource) super.clone(ws);
         newobj.pmf = (Parameter) newobj.getAttribute("pmf");
-        newobj.values = (Parameter) newobj.getAttribute("values");        
+        newobj.values = (Parameter) newobj.getAttribute("values");
         return newobj;
     }
 
@@ -211,4 +211,3 @@ public class DiscreteRandomSource extends RandomSource {
 
     /** Random value calculated in prefire(). */
     private Token _current;
-}

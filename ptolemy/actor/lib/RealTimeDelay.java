@@ -83,7 +83,7 @@ public class RealTimeDelay extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the type constraints.
      *  @param ws The workspace for the new object.
@@ -97,7 +97,7 @@ public class RealTimeDelay extends Transformer {
         newobj.delay = (Parameter)newobj.getAttribute("delay");
         return newobj;
     }
-    
+
     /** Output the inputs direcly.
      *  @exception IllegalActionException If there is no director.
      */

@@ -49,11 +49,11 @@ are exactly those in the java.lang.Math class.  They are:
 greater than 1, then the result is NaN.
 <li> <b>asin</b>: The arc sine of an angle, in the range of
 -pi/2 through pi/2. If the argument is NaN or its absolute
-value is greater than 1, then the result is NaN. 
+value is greater than 1, then the result is NaN.
 If the argument is positive zero, then the result is positive zero;
 if the argument is negative zero, then the result is negative zero.
 <li> <b>atan</b>: The arc tangent of an angle, in the range of
--pi/2 through pi/2. If the argument is NaN, then the result is NaN. 
+-pi/2 through pi/2. If the argument is NaN, then the result is NaN.
 If the argument is positive zero, then the result is positive zero;
 if the argument is negative zero, then the result is negative zero.
 <li> <b>cos</b>: The trigonometric cosine of an angle.
@@ -190,7 +190,7 @@ public class TrigFunction extends Transformer {
      *  of this method therefore applies the function to <i>count</i>
      *  successive input tokens.
      *  <p>
-     *  This method should be called instead of the usual prefire(), 
+     *  This method should be called instead of the usual prefire(),
      *  fire(), postfire() methods when this actor is used in a
      *  domain that supports vectorized actors.  This leads to more
      *  efficient execution.

@@ -98,7 +98,7 @@ public class MaxIndex extends Transformer {
             }
         }
         if (foundFirst) {
-            output.send(0, new IntToken(maxIndex));       
+            output.send(0, new IntToken(maxIndex));
         }
     }
 }

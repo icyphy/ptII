@@ -49,12 +49,12 @@ import ptolemy.actor.*;
 
 /**
 This actor reads tokens from an URL, and output them. Each entry
-in the file corresponds to one iteration. If there are multiple 
+in the file corresponds to one iteration. If there are multiple
 fires in the iteration, the same token will be repeated.
-This actor has a multiport, where each port corresponds to 
+This actor has a multiport, where each port corresponds to
 one column in the data file.
 <P>
-The file format at the URL is assumed as the following. 
+The file format at the URL is assumed as the following.
 A newline character separates the rows, and a tab or a space charactor
 separates the columns.
 <P>
@@ -86,10 +86,10 @@ public class Reader extends Source {
         output.setTypeEquals(BaseType.DOUBLE);
         sourceURL = new Parameter(this, "sourceURL", new StringToken(""));
         sourceURL.setTypeEquals(BaseType.STRING);
-        
+
         refresh = new Parameter(this, "refresh", new BooleanToken(false));
         refresh.setTypeEquals(BaseType.BOOLEAN);
-        
+
         if (_stdIn == null) {
             _stdIn = new BufferedReader(new InputStreamReader(System.in));
         }
@@ -208,7 +208,7 @@ public class Reader extends Source {
         }
     }
 
-    /** initalize the data array. 
+    /** initalize the data array.
      */
     public void initialize() throws IllegalActionException {
         _dataSize = output.getWidth();
