@@ -272,7 +272,7 @@ public class AudioSource extends Source {
 	if(_debugging) _debug("AudioSource: attributeChanged() invoked on: " +
                 attribute.getName());
 	//System.out.println("AudioSource: attributeChanged() invoked on: " +
-	//		      attribute.getName());
+	//	      attribute.getName());
 	if (attribute == channels) {
 	    _channels =
                 ((IntToken)channels.getToken()).intValue();
@@ -365,7 +365,7 @@ public class AudioSource extends Source {
 		} catch (Exception ex) {
 		    throw new IllegalActionException(
                             "Cannot capture audio: " +
-                            ex.getMessage());
+                            ex);
 		}
 		_getSamplesArrayPointer = 0;
 		// Check that the read was successful
@@ -453,9 +453,10 @@ public class AudioSource extends Source {
 	    } catch (IOException ex) {
 		throw new IllegalActionException(
                         "Cannot capture audio:\n" +
-                        ex.getMessage());
+                        ex);
 	    }
 	}
+	_safeToInitialize = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -481,7 +482,7 @@ public class AudioSource extends Source {
 	    } catch (IOException ex) {
 		throw new IllegalActionException(
                         "Cannot capture audio:\n" +
-                        ex.getMessage());
+                        ex);
 	    }
 	}
 	// Now initialize audio capture.
@@ -507,7 +508,7 @@ public class AudioSource extends Source {
 	    } catch (IOException ex) {
 		throw new IllegalActionException(
                         "Cannot capture audio:\n" +
-                        ex.getMessage());
+                        ex);
 	    }
         } else {
 	    // Load audio from a URL.

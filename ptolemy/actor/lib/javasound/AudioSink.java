@@ -250,7 +250,7 @@ public class AudioSink extends Sink {
 	if(_debugging) _debug("AudioSink: attributeChanged() invoked on: " +
                 attribute.getName());
 	//System.out.println("AudioSink: attributeChanged() invoked on: " +
-	//	      attribute.getName());
+	//      attribute.getName());
 	if (attribute == channels) {
 	    _channels =
                 ((IntToken)channels.getToken()).intValue();
@@ -341,6 +341,7 @@ public class AudioSink extends Sink {
      */
     public int iterate(int count) throws IllegalActionException {
 	if(_debugging) _debug("iterate(count) with count = " + count);
+	//System.out.println("iterate(count) invoked with count = " + count);
 	for (int j = 0; j < _channels; j++) {
 	    if (input.hasToken(j, count)) {
 		// NOTE: inArray[j].length may be > count, in which case
@@ -370,18 +371,18 @@ public class AudioSink extends Sink {
 		    //for (int n = 0; n < _audioPutArray[0].length; n++) {
 		    //	System.out.println(_audioPutArray[0][n]);
 		    //}
-		    //System.out.println("iterate: ***************");
 		    // write out samples to speaker and/or file.
 		    _soundPlayback.putSamples(_audioPutArray);
 		} catch (Exception ex) {
 		    throw new IllegalActionException(
                             "Cannot playback audio:\n" +
-                            ex.getMessage());
+                            ex);
 		}
 		// Reset pointer to beginning of array.
 		_curElement = 0;
 	    }
 	}
+	//System.out.println("iterate(): returning now.");
 	return COMPLETED;
     }
 
@@ -433,9 +434,10 @@ public class AudioSink extends Sink {
             } catch (IOException ex) {
                 throw new IllegalActionException(
                         "Cannot free audio resources:\n" +
-                        ex.getMessage());
+                        ex);
             }
 	}
+	_safeToInitialize = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -457,13 +459,15 @@ public class AudioSink extends Sink {
 	//System.out.println("AudioSink: _initializePlayback() invoked.");
 	// Stop playback. Close any open sound files. Free
 	// up audio system resources.
+	// FIXME: just becuase _soundPlayback is not null does not mean
+	// that playback is active. This check may be unessesary.
 	if (_soundPlayback != null) {
             try {
-                _soundPlayback.stopPlayback();
+	    _soundPlayback.stopPlayback();
             } catch (IOException ex) {
                 throw new IllegalActionException(
                         "Cannot playback audio:\n" +
-                        ex.getMessage());
+                        ex);
             }
 	}
 	// Initialize audio playback.
@@ -471,7 +475,7 @@ public class AudioSink extends Sink {
 	    ((StringToken)pathName.getToken()).stringValue();
 	if (pathNameString.equals("")) {
 	    // Use live playback mode.
-	    if(_debugging) _debug("AudioSink: initialize(): playback to speaker");
+	    if(_debugging) _debug("AudioSink: _initializePlayback(): playback to speaker");
             int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
             int sampleSizeInBitsInt =
                 ((IntToken)sampleSizeInBits.getToken()).intValue();
@@ -486,7 +490,7 @@ public class AudioSink extends Sink {
                     putSamplesSize);
 	} else {
 	    // Write audio data to a file.
-	    if(_debugging) _debug("AudioSink: initialize(): playback to file");
+	    if(_debugging) _debug("AudioSink: _initializePlayback(): playback to file");
 	    int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
 	    int sampleSizeInBitsInt =
                 ((IntToken)sampleSizeInBits.getToken()).intValue();
@@ -509,7 +513,7 @@ public class AudioSink extends Sink {
 	} catch (IOException ex) {
 	    throw new IllegalActionException(
 		    "Cannot playback audio:\n" +
-		    ex.getMessage());
+		    ex);
 	}
     }
 
