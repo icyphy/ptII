@@ -29,6 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+
+# NOTE: Please do not put tests that use other domains in this directory
+# or in the auto subdirectory.  The DE domain is among the first domains
+# built during the nightly builds.  If you are writing multi-domain tests,
+# they should go in de/test, which is run later in the nightly builds
+
 # Location of this directory, relative to the Ptolemy II directory
 ME =		ptolemy/domains/de/kernel/test
 
@@ -63,8 +69,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl \
-	auto
+MISC_FILES =	alljtests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -83,10 +88,8 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl #test_auto
 	$(JTCLSH) alljtests.tcl
-
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
