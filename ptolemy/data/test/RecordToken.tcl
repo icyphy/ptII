@@ -233,3 +233,60 @@ test RecordToken-6.1 {Test one} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Multiplicative identity not supported on ptolemy.data.StringToken.}}
 
+######################################################################
+####
+# 
+test RecordToken-6.2 {Test one} {
+    set l [java::new {String[]} {2} {{value1} {value2}}]
+
+    set v1 [java::new {ptolemy.data.IntToken int} 5]
+    set v2 [java::new {ptolemy.data.DoubleToken double} 3.5]
+    set v [java::new {ptolemy.data.Token[]} 2 [list $v1 $v2]]
+
+    set r [java::new {ptolemy.data.RecordToken} $l $v]
+
+    [$r one] toString
+} {{value2=1.0, value1=1}}
+
+######################################################################
+####
+# 
+test RecordToken-7.0 {Test zero} {
+    # record is empty
+    set l [java::new {String[]} {0} {}]
+    set v [java::new {ptolemy.data.Token[]} {0} {}]
+    set r [java::new {ptolemy.data.RecordToken} $l $v]
+
+    [$r zero] toString
+} {{}}
+
+######################################################################
+####
+# 
+test RecordToken-7.1 {Test zero} {
+    set l [java::new {String[]} {2} {{name} {value}}]
+
+    set nt [java::new {ptolemy.data.StringToken String} foo]
+    set vt [java::new {ptolemy.data.IntToken int} 5]
+    set v [java::new {ptolemy.data.Token[]} 2 [list $nt $vt]]
+
+    set r [java::new {ptolemy.data.RecordToken} $l $v]
+
+    [$r zero] toString
+} {{name="", value=0}}
+
+######################################################################
+####
+# 
+test RecordToken-7.2 {Test zero} {
+    set l [java::new {String[]} {2} {{value1} {value2}}]
+
+    set v1 [java::new {ptolemy.data.IntToken int} 5]
+    set v2 [java::new {ptolemy.data.DoubleToken double} 3.5]
+    set v [java::new {ptolemy.data.Token[]} 2 [list $v1 $v2]]
+
+    set r [java::new {ptolemy.data.RecordToken} $l $v]
+
+    [$r zero] toString
+} {{value2=0.0, value1=0}}
+
