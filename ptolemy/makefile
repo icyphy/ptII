@@ -58,6 +58,7 @@ PTCLASSJAR =
 
 # Include these jars in PTAUXALLJAR
 # plotmlapplet pulls in the com/microstar/xml classes
+# render.jar is needed by actor.lib.gui.MatrixVisualizer
 PTAUXALLJARS = \
 		actor/actor.jar \
 		configs/configs.jar \
@@ -68,7 +69,8 @@ PTAUXALLJARS = \
 		math/math.jar \
 		media/media.jar \
 		moml/moml.jar \
-		plot/plotmlapplet.jar
+		plot/plotmlapplet.jar \
+		plot/render.jar
 
 # All the .class files necessary to run a Ptolemy II domain applet
 PTAUXALLJAR =	ptsupport.jar
