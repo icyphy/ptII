@@ -81,9 +81,9 @@ The following functions in java.lang.Math are implemented elsewhere:
 <ul>
 <li> <b>abs</b>: AbsoluteValue actor.
 <li> <b>atan2</b>: RectangularToPolar actor.
-<li> <b>ceil</b>: MathFunction actor.
+<li> <b>ceil</b>: Round actor
 <li> <b>exp</b>: MathFunction actor.
-<li> <b>floor</b>: MathFunction actor.
+<li> <b>floor</b>: Round actor
 <li> <b>remainder</b>: MathFunction actor.
 <li> <b>log</b>: MathFunction actor.
 <li> <b>max</b>: Maximum actor.
