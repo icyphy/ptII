@@ -441,8 +441,7 @@ public class StickyMassesApplet extends CTApplet {
             tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             topdir.ODESolver.setToken(tok);
-            System.out.println(_toplevel.exportMoML());
-        }catch (KernelException ex) {
+        } catch (KernelException ex) {
             report("Setup failed:", ex);
         }
     }
@@ -462,7 +461,6 @@ public class StickyMassesApplet extends CTApplet {
             _ctIncP1.initialState.setToken(new DoubleToken(0.0));
             _ctIncV2.initialState.setToken(new DoubleToken(0.0));
             _ctIncP2.initialState.setToken(new DoubleToken(3.0));
-            System.out.println("a new run");
 
             super._go();
         } catch (Exception ex) {
