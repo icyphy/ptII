@@ -137,7 +137,6 @@ JSRCS = \
 	SequentialClock.java \
 	Sink.java \
 	Sleep.java \
-        Sobel.java\
 	Source.java \
 	Switch.java \
 	Synchronizer.java \
