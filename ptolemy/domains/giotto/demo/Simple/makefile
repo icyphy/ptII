@@ -48,7 +48,6 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	composite.xml \
 	Simple.xml \
 
 EXTRA_SRCS = \
