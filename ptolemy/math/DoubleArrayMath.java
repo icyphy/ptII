@@ -62,6 +62,18 @@ public class DoubleArrayMath {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return a new array that is the formed by adding z to each element
+     *  of the input array.
+     */
+    public static final double[] add(final double[] array, final double z) {
+        int length = array.length;
+        double[] retval = new double[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = array[i] + z;
+        }
+        return retval;
+    }
+
     /** Return a new array that is the element-by-element sum of the two
      *  input arrays.
      *  If the lengths of both arrays are 0, return a new array of length 0.
@@ -203,6 +215,8 @@ public class DoubleArrayMath {
         }
         return result;
     }
+
+
 
     /** Return a new array that is the element-by-element multiplication of
      *  the two input arrays.

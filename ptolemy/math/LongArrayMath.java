@@ -62,6 +62,18 @@ public class LongArrayMath {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return a new array that is the formed by adding z to each element
+     *  of the input array.
+     */
+    public static final long[] add(final long[] array, final long z) {
+        int length = array.length;
+        long[] retval = new long[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = array[i] + z;
+        }
+        return retval;
+    }
+
     /** Return a new array that is the element-by-element sum of the two
      *  input arrays.
      *  If the lengths of both arrays are 0, return a new array of length 0.
@@ -201,6 +213,35 @@ public class LongArrayMath {
         }
         return result;
     }
+
+    /** Return a new array that is the formed by the modulo of each element
+     *  of the input array and z (array[i] % z).
+     */
+    public static final long[] modulo(final long[] array, final long z) {
+        int length = array.length;
+        long[] retval = new long[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = array[i] % z;
+        }
+        return retval;
+    }
+
+    /** Return a new array that is the element-by-element modulo of the two
+     *  input arrays (array1[i] % array2[i].
+     *  If the lengths of both arrays are 0, return a new array of length 0.
+     *  If the two arrays do not have the same length, throw an
+     *  IllegalArgumentException.
+     */
+    public static final long[] modulo(final long[] array1,
+     final long[] array2) {
+        int length = _commonLength(array1, array2, "LongArrayMath.modulo");
+        long[] retval = new long[length];
+        for (int i = 0; i < length; i++) {
+            retval[i] = array1[i] % array2[i];
+        }
+        return retval;
+    }
+
 
     /** Return a new array that is the element-by-element multiplication of
      *  the two input arrays.
