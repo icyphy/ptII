@@ -309,7 +309,7 @@ different line style on color machines).
 to produce scatter plots. When used with -bar, it can be used to
 produce standard bar graphs.
 
-<dt><code>-o</code> <code><i>output filename<i></code>
+<dt><code>-o</code> <code><i>output filename</i></code>
 <dd>The name of the file to place the print output in.  Currently
 defaults to <code>/tmp/t.ps<code>.  See also the
 <code>-print</code> option.
