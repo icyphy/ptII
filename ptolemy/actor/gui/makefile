@@ -54,9 +54,11 @@ JSRCS = \
 	CheckBoxStyle.java \
 	CompositeActorApplication.java \
 	Configurer.java \
+	Display.java \
 	EditorPaneFactory.java \
 	ExecEvent.java \
 	ExecEventListener.java \
+	FileWriter.java \
 	HistogramPlotter.java \
 	MatrixViewer.java \
 	ModelFrame.java \
@@ -66,7 +68,6 @@ JSRCS = \
 	ParameterEditorStyle.java \
 	Placeable.java \
 	Plotter.java \
-	Print.java \
 	PtolemyApplet.java \
 	PtolemyApplication.java \
 	PtolemyQuery.java \
