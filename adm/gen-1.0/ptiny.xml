@@ -244,6 +244,25 @@ Berkeley, CA 94706</property>
                     <property name="folderOwner"/>
                     <property name="folderGroup"/>
                 </action>
+                <action class="com.installshield.product.actions.DesktopIcon" id="bean6">
+                    <displayName>Vergil Documentation</displayName>
+                    <active>true</active>
+                    <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32DesktopIconExtra">
+                        <property name="iconFile"/>
+                        <property name="platformSpecificTarget"/>
+                        <property name="iconFileType">1</property>
+                        <property name="folderContext">$AllUsersPrograms$</property>
+                    </extendedProperty>
+                    <property name="folder">Ptolemy/$P(productBean1.displayName)</property>
+                    <property name="name">Vergil Documentation</property>
+                    <property name="target">doc/design/usingVergil.pdf</property>
+                    <property name="args"/>
+                    <property name="workingDirectory"/>
+                    <property name="itemOwner"/>
+                    <property name="itemGroup"/>
+                    <property name="folderOwner"/>
+                    <property name="folderGroup"/>
+                </action>
             </component>
         </feature>
     </product>
@@ -502,7 +521,40 @@ Berkeley, CA 94706</property>
                 <arrayItem type="com.installshield.wizard.platform.win32.Win32LauncherDistribution">
                     <property name="enabled">True</property>
                     <property name="fileName">ptIIsetup.exe</property>
-                    <property array="True" length="0" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile"/>
+                    <property array="True" length="8" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\ibm_win32_117.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\ibm_win32_118.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_118.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\ibm_win32_122.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_122.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\ibm_win32_130.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_13.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\ms_win32_jview4.jvm</property>
+                        </arrayItem>
+                    </property>
                     <property name="bundledJVMSource">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_13.jvm</property>
                     <property array="True" length="0" name="embeddedJARs" type="string"/>
                     <property array="True" length="0" name="additionalClassPaths" type="string"/>
