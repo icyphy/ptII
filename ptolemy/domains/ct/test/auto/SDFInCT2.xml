@@ -40,12 +40,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test fails because the SDF model&#10;inside the DE model does not get fired.&#10;&#10;However, the test actors do not complain &#10;about this. So, an exception is thrown &#10;intentionaly as a reminder.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 255.0]">
-        </property>
-    </property>
     <entity name="ContinuousSinewave" class="ptolemy.domains.ct.lib.ContinuousSinewave">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 130.0]">
         </property>
@@ -69,7 +63,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0320473275, 0.4679528916}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0320582253, 0.4679686033}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -133,11 +127,23 @@
             <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
                 <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="2">
                 </property>
+                <property name="ArrayToSequenceIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 165.0]">
                 </property>
             </entity>
             <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
                 <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="2">
+                </property>
+                <property name="SequenceToArrayIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 165.0]">
                 </property>
@@ -182,27 +188,6 @@
         <link port="SDF Model.port" relation="relation"/>
         <link port="SDF Model.port2" relation="relation2"/>
     </entity>
-    <entity name="ThrowException" class="ptolemy.actor.lib.ThrowException">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 210.0]">
-        </property>
-    </entity>
-    <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in &gt; 0">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 210.0]">
-        </property>
-        <port name="in" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
-            </property>
-        </port>
-    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[165.0, 130.0]">
         </vertex>
@@ -215,8 +200,6 @@
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <link port="ContinuousSinewave.output" relation="relation2"/>
     <link port="LevelCrossingDetector.output" relation="relation3"/>
     <link port="LevelCrossingDetector.trigger" relation="relation2"/>
@@ -226,7 +209,4 @@
     <link port="CurrentTime.trigger" relation="relation3"/>
     <link port="DE Model.port" relation="relation3"/>
     <link port="DE Model.port2" relation="relation4"/>
-    <link port="ThrowException.input" relation="relation5"/>
-    <link port="Expression.output" relation="relation5"/>
-    <link port="Expression.in" relation="relation2"/>
 </entity>
