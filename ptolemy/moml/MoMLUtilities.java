@@ -60,6 +60,7 @@ public class MoMLUtilities {
         string = substitute(string, "&", "&amp;");
         string = substitute(string, "\"", "&quot;");
         string = substitute(string, "<", "&lt;");
+        string = substitute(string, ">", "&gt;");
         return string;
     }
 
