@@ -117,7 +117,8 @@ public class ChoiceStyle extends ParameterEditorStyle {
      *   has a value that cannot be edited using this style.
      */
     public void addEntry(PtolemyQuery query) throws IllegalActionException {
-        String name = getContainer().getName();
+        Settable container = (Settable)getContainer();
+        String name = container.getName();
         List paramList = attributeList(Settable.class);
         Settable choices[]
             = (Settable [])paramList.toArray(
@@ -126,9 +127,14 @@ public class ChoiceStyle extends ParameterEditorStyle {
         for (int i = 0; i < choices.length; i++) {
             values[i] = choices[i].getExpression();
         }
-        Settable container = (Settable)getContainer();
         String defaultChoice = container.getExpression();
-        query.addChoice(name, name, values, defaultChoice, _isEditable);
+        query.addChoice(
+                name, 
+                name, 
+                values, 
+                defaultChoice, 
+                _isEditable, 
+                PtolemyQuery.preferredBackgroundColor(container));
         query.attachParameter(container, name);
     }
 

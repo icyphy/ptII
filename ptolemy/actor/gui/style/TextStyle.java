@@ -99,7 +99,11 @@ public class TextStyle extends ParameterEditorStyle {
         String name = container.getName();
         String defaultValue = "";
         defaultValue = container.getExpression();
-        query.addTextArea(name, name, defaultValue);
+        query.addTextArea(
+                name, 
+                name, 
+                defaultValue,
+                PtolemyQuery.preferredBackgroundColor(container));
         query.attachParameter(container, name);
     }
 }
