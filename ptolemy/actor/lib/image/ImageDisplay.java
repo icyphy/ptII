@@ -89,7 +89,7 @@ public class ImageDisplay extends Sink implements Placeable {
 
         super(container, name);
 
-	input.setTypeEquals(BaseType.OBJECT);
+        input.setTypeEquals(BaseType.OBJECT);
 
         _oldxsize = 0;
         _oldysize = 0;
@@ -115,9 +115,9 @@ public class ImageDisplay extends Sink implements Placeable {
             _frame = new _PictureFrame("ImageDisplay");
             _container = _frame.getContentPane();
         }
-	if (_frame != null) {
-	    _frame.setVisible(true);
-	}
+        if (_frame != null) {
+            _frame.setVisible(true);
+        }
     }
 
     /**
@@ -133,63 +133,63 @@ public class ImageDisplay extends Sink implements Placeable {
      * @exception IllegalActionException If a contained method throws it.
      */
     public void fire() throws IllegalActionException {
-	ObjectToken objectToken = (ObjectToken) input.get(0);
-	Image image = (Image) objectToken.getValue();
+        ObjectToken objectToken = (ObjectToken) input.get(0);
+        Image image = (Image) objectToken.getValue();
 
-	if (image == null) {
-	    System.err.println("Warning: ImageDisplay Image was null!");
-	} else {
-	    int xsize = image.getWidth(null);
-	    int ysize = image.getHeight(null);
-	    if ((_oldxsize != xsize) || (_oldysize != ysize)) {
-		_oldxsize = xsize;
-		_oldysize = ysize;
+        if (image == null) {
+            System.err.println("Warning: ImageDisplay Image was null!");
+        } else {
+            int xsize = image.getWidth(null);
+            int ysize = image.getHeight(null);
+            if ((_oldxsize != xsize) || (_oldysize != ysize)) {
+                _oldxsize = xsize;
+                _oldysize = ysize;
 
-		if (_picture != null)
-		    _container.remove(_picture);
-		
-		_picture = new Picture(xsize, ysize);
-		_picture.setImage(image);
-		_picture.setBackground(null);
-		_container.add("Center", _picture);
-		_container.validate();
-		_container.invalidate();
-		_container.repaint();
-		_container.doLayout();
-		Container c = _container.getParent();
-		while (c.getParent() != null) {
-		    c.invalidate();
-		    c.validate();
-		    c = c.getParent();
-	    
-		}
-		if (_frame != null) {
-		    _frame.pack();
-		}
-	    }
+                if (_picture != null)
+                    _container.remove(_picture);
+                
+                _picture = new Picture(xsize, ysize);
+                _picture.setImage(image);
+                _picture.setBackground(null);
+                _container.add("Center", _picture);
+                _container.validate();
+                _container.invalidate();
+                _container.repaint();
+                _container.doLayout();
+                Container c = _container.getParent();
+                while (c.getParent() != null) {
+                    c.invalidate();
+                    c.validate();
+                    c = c.getParent();
+            
+                }
+                if (_frame != null) {
+                    _frame.pack();
+                }
+            }
 
-	    // display it.
-	    _picture.displayImage();
-	    _picture.repaint();
+            // display it.
+            _picture.displayImage();
+            _picture.repaint();
 
-	    Runnable painter = new Runnable() {
-		    public void run() {
-			_container.paint(_container.getGraphics());
-		    }
-		};
-	    // Make sure the image gets updated.
-	    SwingUtilities.invokeLater(painter);
-	    Thread.yield();
-	}
+            Runnable painter = new Runnable() {
+                    public void run() {
+                        _container.paint(_container.getGraphics());
+                    }
+                };
+            // Make sure the image gets updated.
+            SwingUtilities.invokeLater(painter);
+            Thread.yield();
+        }
     }
 
     /** Set the background */
     public Color getBackground() {
-	return _container.getBackground();
+        return _container.getBackground();
     }
     /** Set the background */
     public void setBackground(Color background) {
-	_container.setBackground(background);
+        _container.setBackground(background);
     }
 
     /** Set the container that this actor should display data in.  If place
@@ -197,13 +197,13 @@ public class ImageDisplay extends Sink implements Placeable {
      */
     public void place(Container container) {
         _container = container;
-	Container c = _container.getParent();
-	while (c.getParent() != null) {
-	    c = c.getParent();
-	}
-	if (c instanceof JFrame) {
-	    _frame = (JFrame)c;
-	}
+        Container c = _container.getParent();
+        while (c.getParent() != null) {
+            c = c.getParent();
+        }
+        if (c instanceof JFrame) {
+            _frame = (JFrame)c;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -217,7 +217,7 @@ public class ImageDisplay extends Sink implements Placeable {
             super(title);
             this.getContentPane().setLayout(new BorderLayout(15, 15));
             this.show();
-	    this.pack();
+            this.pack();
             this.validate();
         }
     }

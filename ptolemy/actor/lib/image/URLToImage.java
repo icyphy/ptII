@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -90,19 +90,19 @@ public class URLToImage extends Transformer {
     ////                         public methods                    ////
 
     /** Read on StringToken from the input, and output an ObjectToken
-     *  that contains a java.awt.Image object to the output port.	
+     *  that contains a java.awt.Image object to the output port.        
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {
-	StringToken urlToken = (StringToken)input.get(0);
-	try {
-	    URL url = new URL(urlToken.stringValue());
-	    Image image = new ImageIcon(url).getImage();
-	    output.send(0, new ObjectToken(image));
-	} catch (MalformedURLException ex) {
-	    throw new IllegalActionException("'" + urlToken.stringValue()
-					     + "' is malformed: " + ex);
-	}
+        StringToken urlToken = (StringToken)input.get(0);
+        try {
+            URL url = new URL(urlToken.stringValue());
+            Image image = new ImageIcon(url).getImage();
+            output.send(0, new ObjectToken(image));
+        } catch (MalformedURLException ex) {
+            throw new IllegalActionException("'" + urlToken.stringValue()
+                                             + "' is malformed: " + ex);
+        }
 
     }
 

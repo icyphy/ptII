@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -118,9 +118,9 @@ public class ImageReader extends Source {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == sourceURL) {
-	    // Would it be worth checking to see if the URL exists and
-	    // is readable?
-	    StringToken URLToken = (StringToken)sourceURL.getToken();
+            // Would it be worth checking to see if the URL exists and
+            // is readable?
+            StringToken URLToken = (StringToken)sourceURL.getToken();
         }
         super.attributeChanged(attribute);
     }
@@ -143,12 +143,12 @@ public class ImageReader extends Source {
      *  @exception IllegalActionException If an IO error occurs.
      */
     public boolean prefire() throws IllegalActionException {
-	StringToken URLToken = (StringToken)sourceURL.getToken();
-	if (URLToken == null) {
-	    throw new IllegalActionException("sourceURL was null");
-	}
-	_image = new ImageIcon(URLToken.stringValue()).getImage();
-	return super.prefire();
+        StringToken URLToken = (StringToken)sourceURL.getToken();
+        if (URLToken == null) {
+            throw new IllegalActionException("sourceURL was null");
+        }
+        _image = new ImageIcon(URLToken.stringValue()).getImage();
+        return super.prefire();
     }
 
     /** Output the data read in the prefire.
@@ -156,7 +156,7 @@ public class ImageReader extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-	output.broadcast(new ObjectToken(_image));
+        output.broadcast(new ObjectToken(_image));
     }
 
     /** Open the file at the URL, and set the width of the output.

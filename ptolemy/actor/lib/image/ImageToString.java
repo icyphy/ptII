@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -64,8 +64,8 @@ public class ImageToString extends Transformer {
     public ImageToString(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	input.setTypeEquals(BaseType.OBJECT);
-	output.setTypeEquals(BaseType.STRING);
+        input.setTypeEquals(BaseType.OBJECT);
+        output.setTypeEquals(BaseType.STRING);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -81,14 +81,14 @@ public class ImageToString extends Transformer {
         int width = input.getWidth();
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
-		ObjectToken objectToken = (ObjectToken) input.get(i);
-		Image image = (Image) objectToken.getValue();
-		String description = new String("Image: "
-						+ image.getWidth(null)
-						+ " x "
-						+ image.getHeight(null));
-		Token out = new StringToken(description);
-		output.broadcast(out);
+                ObjectToken objectToken = (ObjectToken) input.get(i);
+                Image image = (Image) objectToken.getValue();
+                String description = new String("Image: "
+                                                + image.getWidth(null)
+                                                + " x "
+                                                + image.getHeight(null));
+                Token out = new StringToken(description);
+                output.broadcast(out);
             }
         }
     }

@@ -23,8 +23,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
@@ -73,11 +73,11 @@ public class ImageRotate extends Transformer {
     public ImageRotate(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	input.setTypeEquals(BaseType.OBJECT);
-	output.setTypeEquals(BaseType.OBJECT);
+        input.setTypeEquals(BaseType.OBJECT);
+        output.setTypeEquals(BaseType.OBJECT);
         rotationInDegrees = new Parameter(this, "rotationInDegrees",
                 new IntToken(90));
-	rotationInDegrees.setTypeEquals(BaseType.INT);
+        rotationInDegrees.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -98,14 +98,14 @@ public class ImageRotate extends Transformer {
      */
     public void fire() throws IllegalActionException {
         int width = input.getWidth();
-	int rotation =
-	    ((IntToken)(rotationInDegrees.getToken())).intValue();
+        int rotation =
+            ((IntToken)(rotationInDegrees.getToken())).intValue();
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
-		ObjectToken objectToken = (ObjectToken) input.get(i);
-		Image image = (Image) objectToken.getValue();
-		Image rotatedImage = Transform.rotate(image, rotation);
-		output.broadcast(new ObjectToken(rotatedImage));
+                ObjectToken objectToken = (ObjectToken) input.get(i);
+                Image image = (Image) objectToken.getValue();
+                Image rotatedImage = Transform.rotate(image, rotation);
+                output.broadcast(new ObjectToken(rotatedImage));
             }
         }
     }
