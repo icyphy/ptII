@@ -52,8 +52,6 @@ JSRCS = \
 	Icon.java \
 	IconLibrary.java \
 	PTMLObjectFactory.java  
-#	Domain.java \
-#	DomainLibrary.java \
 
 EXTRA_SRCS =	$(JSRCS)
 
