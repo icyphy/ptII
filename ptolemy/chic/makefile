@@ -1,9 +1,9 @@
 # Makefile for the classes needed to use CHIC from inside Ptolemy II
 #
-# @Version: makefile,v 1.3 2003/07/26 16:57:33 rowland Exp
+# @Version: $Id$
 # @Author: Christopher Hylands (makefile only)
 #
-# @Copyright (c) 2002-2003 The Regents of the University of California.
+# @Copyright (c) 2003 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
