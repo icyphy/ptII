@@ -100,7 +100,7 @@ ITERATIONSPARAMETER =	,iterations:$(ITERATIONS)
 
 compileDemo: $(JCLASS)
 	@echo "generate interpreted code for $(MODELPATH)"
-	$(JAVA) \
+	"$(JAVA)" \
 		-classpath "$(ROOT)" \
 		ptolemy.copernicus.kernel.Copernicus \
 		-verbose \
@@ -108,11 +108,11 @@ compileDemo: $(JCLASS)
 		-compile	 true \
 		-iterations      '"$(ITERATIONS)"' \
 		-iterationsParameter '"$(ITERATIONSPARAMETER)"' \
-		-java            `echo '"$(JAVA)"' | sed 's@/cygdrive/\([a-z]\)@\1:@'` \
+		-java            "`echo '"$(JAVA)"' | sed 's@/cygdrive/\([a-z]\)@\1:@'`" \
 		-jvmSize         '"$(JVMSIZE)"' \
 		-modelPath       '"$(MODELPATH)"' \
 		-run		 false \
-		-ptIIUserDirectory  `echo '"$(PTII)"' | sed 's@\\\@/@g'` \
+		-ptIIUserDirectory  "`echo '"$(PTII)"' | sed 's@\\\@/@g'`" \
 		-targetPackage   '"$(TARGETPACKAGE)"' \
 		-targetPath      '"$(TARGETPATH)"' \
 		-watchDogTimeout '"$(WATCHDOGTIMEOUT)"' \
@@ -123,7 +123,7 @@ compileDemo: $(JCLASS)
 
 runDemo:
 	@echo "Run the interpreted model"
-	$(JAVA) \
+	"$(JAVA)" \
 		-Xfuture -classpath "$(CLASSPATH)" \
 		ptolemy.actor.gui.MoMLSimpleStatisticalApplication \
 		$(MODELPATH)

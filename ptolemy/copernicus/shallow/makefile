@@ -108,7 +108,7 @@ WATCHDOGTIMEOUT = 	100000
 # change this rule, be sure to run make tests
 compileDemo: $(JCLASS)
 	@echo "generate shallow code for '$(MODELPATH)'"
-	$(JAVA) \
+	"$(JAVA)" \
 		-classpath "$(ROOT)" \
 		ptolemy.copernicus.kernel.Copernicus \
 		-verbose \
@@ -116,11 +116,11 @@ compileDemo: $(JCLASS)
 		-compile	 true \
 		-iterations      '"$(ITERATIONS)"' \
 		-iterationsParameter '"$(ITERATIONSPARAMETER)"' \
-		-java            `echo '"$(JAVA)"' | sed 's@/cygdrive/\([a-z]\)@\1:@'` \
+		-java            "`echo '"$(JAVA)"' | sed 's@/cygdrive/\([a-z]\)@\1:@'`" \
 		-jvmSize         '"$(JVMSIZE)"' \
 		-modelPath       '"$(MODELPATH)"' \
 		-run		 false \
-		-ptIIUserDirectory  `echo '"$(PTII)"' | sed 's@\\\@/@g'` \
+		-ptIIUserDirectory  "`echo '"$(PTII)"' | sed 's@\\\@/@g'`" \
 		-targetPackage   '"$(TARGETPACKAGE)"' \
 		-targetPath      '"$(TARGETPATH)"' \
 		-watchDogTimeout '"$(WATCHDOGTIMEOUT)"' \
@@ -130,8 +130,8 @@ compileDemo: $(JCLASS)
 #	javap -verbose -l -s -classpath $(ROOT) $(SHALLOWTARGETCLASS)
 
 # Partial Java command to run the code generation output.
-RUN_COMMAND =	$(JAVA) -Xfuture -classpath "$(ROOT)" \
-		-Dptolemy.ptII.dir=$(PTII) \
+RUN_COMMAND =	"$(JAVA)" -Xfuture -classpath "$(ROOT)" \
+		"-Dptolemy.ptII.dir=$(PTII)" \
 		ptolemy.actor.gui.CompositeActorApplication
 
 # Run the OrthoComm demo
