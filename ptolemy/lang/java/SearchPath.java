@@ -46,10 +46,28 @@ import ptolemy.lang.StringManip;
 /** A vector containing paths to search for when resolving an import or
 package.
 
+<p>There are three ways that classes are read in.
+<ol>
+<li> The class is a System classes (such as java.lang.Object), 
+and it is read in using reflection
+<li> The class is a Ptolemy core class (such as ptolemy.kernel.util.NamedObj)
+and it is read in using reflection.
+<li> The class is read in as a filel and parsed.
+</ol>
+
+This class also defines sets of classes and packages to help find
+System classes and packages as well as Ptolemy Core classes and
+packages.
+
+
 <p>
 Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,
 and Army Research Office.
+
+FIXME: This should probably not extend Vector, instead it should
+extend ArrayList, which is not synchronized.
+http://www.javasoft.com/docs/books/tutorial/collections/implementations/general.html
 
 @author Jeff Tsay, Christopher Hylands
 @version $Id$
@@ -223,10 +241,13 @@ public class SearchPath extends Vector {
     }
     /** Return a Set that contains an entry for each class in the
      * system jar file. 
-     * Note that classes will have entries like java/lang/Object, they
+     * Note that classes will have entries like java.lang.Object, they
      * will not have extension like .class or .java
      */
     public static Set systemClasses() {
+        // We use classnames because they are . separated,
+        // whereas filenames are separated by a platform dependent char.
+
         // Create a HashSet with a size of 10427.
         // The number of .class files in rt.jar is 5213.
         // Determine that the number of .class files in rt.jar with:
