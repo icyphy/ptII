@@ -124,6 +124,15 @@ public class InterfaceAutomaton extends FSMActor {
      */
     public InterfaceAutomaton compose(InterfaceAutomaton automaton)
                 throws IllegalActionException {
+
+	// this.check();
+	// automaton.check();
+
+	// check composability and computes the input, output, and internal
+	// transitions
+
+
+
         // First computes the product automaton, then prunes the illegal
         // states.
         InterfaceAutomaton product = _computeProduct(automaton);
@@ -249,7 +258,8 @@ public class InterfaceAutomaton extends FSMActor {
                 while (transitions.hasNext()) {
                     InterfaceAutomatonTransition transition =
                             (InterfaceAutomatonTransition)transitions.next();
-                    // check composability
+//                    // check composability
+		    // process non-shared transitions
                     int transitionType = transition.getTransitionType();
                     if (transitionType ==
                             InterfaceAutomatonTransition.INPUT_TRANSITION) {
