@@ -99,7 +99,17 @@ event generator.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 350.0">
         </property>
     </property>
-    <property name="criticalValue" class="ptolemy.data.expr.Parameter" value="2.14">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="criticalValue" class="ptolemy.data.expr.Parameter" value="0.112">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
       <svg>
@@ -109,12 +119,8 @@ event generator.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 100.0]">
         </property>
-    </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
-    </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
@@ -213,7 +219,7 @@ event generator.</text></svg></configure>
             </property>
             <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 190.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 190.0}">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
