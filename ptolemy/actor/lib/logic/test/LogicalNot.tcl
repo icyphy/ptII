@@ -43,7 +43,8 @@ if {[string compare test [info procs test]] == 1} then {
 test LogicalNot-1.1 {test constructor and clone} {
     set e0 [sdfModel 1]
     set logic [java::new ptolemy.actor.lib.logic.LogicalNot $e0 logic]
-    set newObject [java::cast ptolemy.actor.lib.logic.LogicalNot [$logic clone]]
+    set newObject [java::cast ptolemy.actor.lib.logic.LogicalNot \
+		       [$logic clone [$e0 workspace]]]
     # Success here is just not throwing an exception.
     list {}
 } {{}}

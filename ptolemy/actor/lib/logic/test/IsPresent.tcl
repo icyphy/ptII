@@ -45,7 +45,7 @@ test IsPresent-1.1 {test constructor and clone} {
     set isPresentBase \
 	    [java::new ptolemy.actor.lib.logic.IsPresent $e0 isPresent]
     set isPresent [java::cast ptolemy.actor.lib.logic.IsPresent \
-	    [$isPresentBase clone]]
+		       [$isPresentBase clone [$e0 workspace]]]
     $isPresentBase setContainer [java::null]
     $isPresent setContainer $e0
     # Success here is just not throwing an exception.

@@ -45,7 +45,7 @@ test LogicFunction-1.1 {test constructor and clone} {
     set e0 [sdfModel 1]
     set logicbase [java::new ptolemy.actor.lib.logic.LogicFunction $e0 logic]
     set logic [java::cast ptolemy.actor.lib.logic.LogicFunction \
-	    [$logicbase clone]]
+		   [$logicbase clone [$e0 workspace]]]
     $logicbase setContainer [java::null]
     $logic setContainer $e0
     set function [java::cast ptolemy.kernel.util.StringAttribute \
