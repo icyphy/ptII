@@ -39,18 +39,18 @@ import ptolemy.graph.Node;
 //// FunctionDependencyOfAtomicActor
 /**
    An instance of FunctionDependencyOfAtomicActor describes the function
-   dependence relation of an atomic actor. It contains a ports graph
+   dependence relation of an atomic actor. It contains a port graph
    including the container ports only.
 
    <p> For most atomic actors, usually, all the input ports and
-   output ports are dependent. E.g, the AddSubtract actor. (For
+   output ports are dependent. E.g, the Scale actor. (For
    definition of <i>dependent</i>, see FunctionDependency.) Thus, the
    input and out ports in the ports graph are fully connected. for
-   some atomic actors, such as TimedDelay actor, its input and output
-   ports are not dependent, we use the <i>removeDependence(input,
-   output)</i> method to declare that there is no dependency between
-   the input and output port, thus they are not connected.  See the
-   {@link ptolemy.domains.de.lib.TimedDelay} for usage pattern.
+   some atomic actors, such as the TimedDelay actor, its input and output
+   ports are not dependent. We use the removeDependence() method to 
+   declare that there is no dependency between
+   the input and output port. See the
+   {@link ptolemy.domains.de.lib.TimedDelay} actor for usage pattern.
 
    <p> Note, for Multiplexer, Demultiplexer actors, the boolean
    control input and output are dependent.
@@ -76,6 +76,28 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return an abstract port graph reflecting the function dependency
+     *  information. The port graph includes only the container ports. 
+     *  This information is used to contruct the function dependency of 
+     *  the upper level container. 
+     *  <p>For atomic actors, there is no difference
+     *  between this method and the getDetailedPortsGraph() method.
+     *  <p>
+     *  The validity of the FunctionDependency object is checked at the
+     *  beginning of this method.
+     *  @return an abstract port graph reflecting the function dependency
+     *  information that excludes the internal ports.
+     *  @see #getDetailedPortsGraph
+     */
+    public DirectedGraph getAbstractPortsGraph() {
+        validate();
+        // If the container is an atomic actor,
+        // there is no difference between the getAbstractPortsGraph
+        // and getDetailedPortsGraph methods.
+        _abstractPortsGraph = _directedGraph;
+        return _abstractPortsGraph; 
+    }
+    
     /** Remove the dependence between the input and output ports.
      *
      *  @param inputPort An input port.
@@ -84,8 +106,9 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
     public void removeDependency(IOPort inputPort, IOPort outputPort) {
         // FIXME: do we need to check the validity of the
         // FunctionDependence here?
-        // Since this method is called from the _constructDirectedGraph
-        // method, where the validity is checked, we may not need this check.
+        // Since this method is called from the _constructDirectedGraph()
+        // method (see the next method), 
+        // where the validity is checked, we may not need the check.
         // _validate();
         Iterator inputPorts = _directedGraph.nodes(inputPort).iterator();
         while (inputPorts.hasNext()) {

@@ -39,7 +39,7 @@ import ptolemy.kernel.util.InternalErrorException;
 //// FunctionDependenceOfCompositeActor
 /** An instance of FunctionDependencyOfCompositeActor describes the function
     dependency information of a composite actor. The construction of the ports
-    graph is in a bottom-up way by composing the FunctionDependencies of the
+    graph is in a bottom-up way by composing the function dependencies of the
     contained actors, which may be either atomic or composite.
 
     @see FunctionDependency
@@ -87,19 +87,19 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         }
 
         // FIXME: for special domains, like Giotto, the inputs
-        // and outputs are always independent.
-        //if (_container.getDirector()
-        //    instanceof ptolemy.domains.giotto.kernel.GiottoDirector) {
-        //        return;
-        //}
+        // and outputs are always independent if they are not directly
+        // connected. How to implement this?
 
-        // Here we may add constraints on which actors to be used to
-        // construct graph. For example, in a modal model, we only
-        // consider the function dependency of the refinement of
-        // current state.
+        // Here we add constraints on which actors to be used to
+        // construct graph. For example, in a composite actor, all
+        // the contained atomic and composite actors are included
+        // to construct the function dependency. While in a modal model, 
+        // only the refinement of the current state is considered.
+        // FIXME: the case that a state has multiple refinements has to be
+        // considered.  
         List embeddedActors = _getEntities();
 
-        // merge the contained actors' graph into current one
+        // merge the contained actors' graphs into current one
         Iterator embeddedActorsIterator = embeddedActors.iterator();
         while (embeddedActorsIterator.hasNext()) {
             Actor embeddedActor = (Actor)embeddedActorsIterator.next();

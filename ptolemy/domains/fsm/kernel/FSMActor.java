@@ -341,12 +341,6 @@ public class FSMActor extends CompositeEntity
             try {
                 TypedActor[] refinements = _currentState.getRefinement();
                 if (refinements == null || refinements.length < 1) {
-                    //FIXME: what to do if no refinement?
-                    //As long as there is a finite number of transition enabled
-                    //at the same time (iteration), the output and input are
-                    //not dependent. Otherwise, it is a Zeno behavior, which
-                    //is beyond the problem-solving ability of FunctionDependency
-                    //analysis.
                     _functionDependency =
                         new FunctionDependencyOfFSMActor(this);
                 } else {
