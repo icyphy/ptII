@@ -46,7 +46,6 @@ International System of Units, the base unit meter has the category length.
 @since Ptolemy II 2.0
 @see ptolemy.data.unit.BaseUnit
 */
-
 public class UnitCategory extends Attribute {
 
     /** Construct a unit category property with the given name contained by
@@ -58,7 +57,8 @@ public class UnitCategory extends Attribute {
      *  Increment the version of the workspace.
      *
      *  <p>This constructor adds the created object to the system wide
-     *  UnitSystem by calling {@link UnitUtilities#registerUnitCategory()}
+     *  UnitSystem by calling
+     *  {@link UnitUtilities#registerUnitCategory(String)}
      *
      *  @param container The container.
      *  @param name The name of this attribute.
