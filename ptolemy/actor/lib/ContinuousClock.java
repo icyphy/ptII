@@ -41,6 +41,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
@@ -51,7 +52,7 @@ import ptolemy.kernel.util.*;
 This actor produces a periodic signal, a generalized square wave
 that sequences through <i>N</i> output values with arbitrary duty cycles
 and period.  It has various uses.  It can be used to generate a square wave.
-It can also generate more intricate waveforms that cycle through a set of values. 
+It can also generate more intricate waveforms that cycle through a set of values.
 The set of values may be finite by specifying a finite <i>numberOfCycles</i>.
 Once the specified number of cycles has been completed, then this actor
 will output zeros with the same type as the values in the <i>values</i>
@@ -280,7 +281,13 @@ public class ContinuousClock extends TimedSource {
             // FIXME: why using while but not if?
             //while (currentTime >= _tentativeCycleStartTime + _offsets[_tentativePhase]) {
 
-            if (currentTime >=
+	    // Note that in CTDirector, the time resolution causes troubles.
+	    // For example, if currentTime is slightly smaller than the expected
+	    // break point, it should be treated as a break point as what the director
+	    // does in processBreakPoints method. 
+	    // FIXME: do we need a general method to deal with time resolution
+	    // for every actor/director?
+            if (currentTime + ((CTDirector)getDirector()).getTimeResolution() >=
                 _tentativeCycleStartTime + _offsets[_tentativePhase]) {
                 if (_tPlus) {
                     if (_debugging)_debug("phase is: tPlus");
