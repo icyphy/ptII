@@ -1,6 +1,6 @@
 /* A request to link a port to a relation.
 
- Copyright (c) 1998 The Regents of the University of California.
+ Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -59,7 +59,8 @@ public class Link extends ChangeRequest {
     public Link(Nameable originator, ComponentPort port,
             ComponentRelation relation) {
         super(originator, "Link port "
-                + port.getFullName() + " to relation " + relation.getFullName());
+                + port.getFullName() + " to relation "
+                + relation.getFullName());
         _port = port;
         _relation = relation;
     }
