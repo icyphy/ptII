@@ -52,13 +52,36 @@ so we can't use MoMLApplication for non-graphical simulations.
 <p>We implement the ChangeListener interface so that this
 class will get exceptions thrown by failed change requests.
 
+For example to use this class, try:
+<pre>
+java -classpath $PTII ptolemy.actor.gui.MoMLSimpleApplication ../../../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
+</pre>
+
+
 @author Christopher Hylands
 @version $Id$
 */
 public class MoMLSimpleApplication implements ChangeListener {
+
+    /** A Nullary constructor is necessary so that we can extends this
+     *  base class with a subclass
+     *  @exception Exception Always thrown.
+     */   
+    public MoMLSimpleApplication() throws Exception{
+        // We need a nullary constructor so we can extend
+        // this class with a base class
+        throw new Exception("MoMLSimpleApplication() not supported, "
+                + "call MoMLSimplApplication(xmlFileName) instead");
+    }
+
     /** Parse the xml file and run it.
+     *  @args xmlFileName A string that refers to an MoML file that
+     *  contains a Ptolemy II model.  The string should be
+     *  a relative pathname.
+     *  @exception Exception Thrown if there was a problem parsing
+     *  or running the model.
      */
-    public MoMLSimpleApplication(String xmlFilename) throws Exception{
+    public MoMLSimpleApplication(String xmlFilename) throws Exception {
         MoMLParser parser = new MoMLParser();
 
         parser.setErrorHandler(new StreamErrorHandler());
