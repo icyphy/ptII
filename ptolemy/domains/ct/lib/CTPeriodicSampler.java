@@ -59,8 +59,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Red (liuj)
    @Pt.AcceptedRating Red (cxh)
 */
-public class CTPeriodicSampler extends Transformer
-    implements CTEventGenerator {
+public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
 
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception

@@ -243,28 +243,21 @@ public class CTMultiSolverDirector extends CTDirector {
      *  The iteration is complete when all actors agree that the step
      *  is accurate.
      *  <P>
-     *  // FIXME: continuous actors only?
-     *  All the actors are prefired before an iteration begins. If
-     *  any one of them returns false, then the iteration is
+     *  All the continuous actors are prefired before an iteration begins. 
+     *  If any one of them returns false, then the iteration is
      *  cancelled, and the function returns.
      *
      *  @exception IllegalActionException If thrown by the ODE solver.
      */
     public void fire() throws IllegalActionException {
-        // FIXME: depending on the execution phase, perform discrete
-        // or continuous phase of execution.
-        // For each phase execution, define a fixed point.
-        if (_debugging && _verbose) _debug(getName(), " fire: <<< ");
+        // NOTE: depending on the execution phase, perform discrete
+        // or continuous phase of execution. For each phase execution, 
+        // find a fixed point.
+        if (_debugging && _verbose) {
+            _debug(getName(), " fire: <<< ");
+        }
 
-        // NO. We do not need it.    
-        // FIXME: do we need to do this?
-        // Presummably, whenever _postfireReturns is true,
-        // the execution stops after the postfire method of the director
-        // is called. 
-        // Also, the prefire method resets it to true already.
-        // Reset this, since we may be at a new time.
-        _postfireReturns = true;
-
+        // FIXME: why not setting the iteration begin time in the prefire method?
         // set the start time of the current iteration
         _setIterationBeginTime(getModelTime());
         
@@ -273,7 +266,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
         // If the current time is the stop time, the fire method 
         // should return because no further execution is necessary.
-        if (getModelTime().equals(getModelStopTime()) || !_postfireReturns) {
+        if (getModelTime().equals(getModelStopTime())) {
             return;
         }
         
@@ -309,8 +302,8 @@ public class CTMultiSolverDirector extends CTDirector {
                         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
                         throw new IllegalActionException((Nameable)actor,
                                 "Actor is not ready to fire. In the CT domain, "
-                                + "all event generators should be ready to fire "
-                                + "at all times.\n"
+                                + "all event generators should be ready to fire"
+                                + " at all times.\n"
                                 + "Does the actor only operate on sequence "
                                 + "of tokens?");
                     }
@@ -604,7 +597,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @param newTime The new current simulation time.
      */
     public final void setModelTime(Time newTime) {
-        // NOTE: this feature is only necessary for the CTMixedSignalDirector
+        // NOTE: this feature is necessary for the CTMixedSignalDirector
         // and CTEmbeddedDirector to roll back.
         if (_debugging) {
             _debug("----- Setting current time to " + newTime);

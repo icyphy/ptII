@@ -50,19 +50,23 @@ import ptolemy.kernel.util.Workspace;
 //// EventSource
 /**
    This actor outputs a set of events at a discrete set of time points.
-   This is an event generator for the CT domain.
-   @author Jie Liu
+   This is an event generator for the CT domain. It can be used to generate
+   impulses in CT models.
+   <p> 
+   This actor only generates predictable events and that is why it does not
+   implement the CTStepSizeControlActor interface. This actor requests a
+   refiring at its initialize method, then only fires at discrete phase of
+   execution and produces events. During its postfire method, it requests
+   further firings to produce more events if necessary.
+    
+   @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (liuj)
+   @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (liuj)
 */
 
-// FIXME: This is nearly a reimplementation of the SequentialClock.
-// We may need a common facility for the shared code.
-
-public class EventSource extends TypedAtomicActor
-    implements CTEventGenerator {
+public class EventSource extends TypedAtomicActor implements CTEventGenerator {
 
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -81,8 +85,7 @@ public class EventSource extends TypedAtomicActor
         super(container, name);
         // Create port and parameters.
         output = new TypedIOPort(this, "output", false, true);
-        new Parameter(output, "signalType",
-                new StringToken("DISCRETE"));
+        new Parameter(output, "signalType", new StringToken("DISCRETE"));
 
         period = new Parameter(this, "period");
         period.setExpression("2.0");
@@ -219,15 +222,11 @@ public class EventSource extends TypedAtomicActor
     public synchronized void initialize() throws IllegalActionException {
         super.initialize();
 
-        //_firstFiring = true;
-        _cycleStartTime = getDirector().getModelTime();
+         _cycleStartTime = getDirector().getModelTime();
         _phase = 0;
-
         _nextOutputTime = _cycleStartTime.add(_offsets[0]);
         // Schedule the first firing.
-        // The null argument prevents the triple firing that the
-        // director would otherwise do.
-        getDirector().fireAt(null, _nextOutputTime);
+        getDirector().fireAt(this, _nextOutputTime);
     }
 
     /** Update the state of the actor and schedule the next firing,

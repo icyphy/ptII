@@ -271,7 +271,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *       or thrown by a directed actor.
      */
     public boolean prefire() throws IllegalActionException {
-        if (_debugging) _debug(getName(), " prefire: ");
+        if (_debugging) {
+            _debug(getName(), " prefire: ");
+        }
         if (!_isTopLevel()) {
             // synchronize time.
             CompositeActor container = (CompositeActor) getContainer();
