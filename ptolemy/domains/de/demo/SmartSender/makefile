@@ -47,8 +47,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = SmartSender.java
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS) \
-	SmartSender.xml
+	$(JSRCS)
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
