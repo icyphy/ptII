@@ -34,7 +34,8 @@ ME =		ptolemy/domains/sdf/guidemo
 # Root of the Java directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)/diva/diva.jar$(CLASSPATHSEPARATOR)$(ROOT)
+#CLASSPATH =	c:/java$(CLASSPATHSEPARATOR)$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -61,7 +62,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: $(JCLASS) ../lib/*.class ../kernel/*.class
+all: $(JCLASS)
 	@echo "To run all the demos, run 'make demo'"
 
 install: all

@@ -27,17 +27,32 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.sdf.demo;
+package ptolemy.domains.sdf.guidemo;
 
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Hashtable;
 
+import diva.graph.*;
+import diva.graph.model.*;
+import diva.graph.layout.*;
+import diva.canvas.*;
+import diva.canvas.connector.*;
+import diva.canvas.toolbox.*;
+import diva.util.gui.TutorialWindow;
+import diva.surfaces.trace.*;
+
+import javax.swing.*;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
+
 // import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
-import ptolemy.data.expr.*;
+//import ptolemy.data.expr.*;
+import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.util.*;
@@ -59,6 +74,29 @@ public class TypeApplet extends SDFApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** The JGraph where we display stuff
+     */
+    JGraph jgraph = new JGraph();
+
+    /** The pane displaying the trace
+     */
+    private TracePane tracePane;
+
+    /** The canvas displaying the trace
+     */
+    private JCanvas traceCanvas;
+
+    /** The type listener
+     */
+    private MyTypeListener typeListener;
+
+    // The start time for the trace
+    private long _startTime = 0;
+
+        // The current element of each state;
+        private TraceModel.Element _currentElement[];
+
+
     /** Initialize the applet.
      */
     public void init() {
@@ -76,11 +114,16 @@ public class TypeApplet extends SDFApplet {
 
 	    _buildType2String();
 
-	    setLayout(new GridLayout(2, 1));
-
+	    setLayout(new GridLayout(3, 1));
+            //setLayout(new BorderLayout());
             _ioPanel.setLayout(new GridLayout(1, 2));
             add(_ioPanel);
 	    add(_schemPanel);
+
+            //add(BorderLayout.NORTH,_ioPanel);
+            //_ioPanel.setSize(new Dimension(800,200));
+	    //add(BorderLayout.CENTER,_schemPanel);
+            //_schemPanel.setSize(new Dimension(800,250));
 
             Panel controlPanel = new Panel();
 	    controlPanel.setLayout(new BorderLayout());
@@ -89,9 +132,179 @@ public class TypeApplet extends SDFApplet {
 
 	    _buildModel();
 
+            JPanel visPanel = new JPanel();
+            visPanel.setLayout(new BorderLayout());
+            add(visPanel);
+            visPanel.add(jgraph, BorderLayout.WEST);
+            jgraph.setPreferredSize(new Dimension(300, 300));
+            jgraph.setSize(new Dimension(300, 300));
+
+            // Construct the Ptolemy type lattice model
+            final GraphModel graphModel = constructLattice();
+
+            // Display the type lattice 
+            SwingUtilities.invokeAndWait(new Runnable (){
+                public void run () {
+                    displayGraph(jgraph, graphModel);
+                }
+            });
+
+            // Construct a new trace model
+            TraceModel traceModel = new TraceModel();
+
+            // Display the trace
+            traceCanvas = displayTrace(traceModel);
+            traceCanvas.setPreferredSize(new Dimension(500,300));
+            visPanel.add(traceCanvas, BorderLayout.EAST);
+ 
+            _addListeners();
+
         } catch (Exception ex) {
             report("Setup failed:", ex);
         }
+    }
+
+    /**  Construct the graph representing the Ptolemy type lattice
+     */
+    public GraphModel constructLattice () {
+        GraphModel model = new GraphModel();
+
+        // nodes, with user object set to the actor
+        Node n1 = model.createNode(Void.TYPE);
+        Node n2 = model.createNode(IntToken.class);
+        Node n3 = model.createNode(DoubleToken.class);
+        Node n4 = model.createNode(ComplexToken.class);
+        Node n5 = model.createNode(StringToken.class);
+        Node n6 = model.createNode(Token.class);
+        Node n7 = model.createNode(BooleanToken.class);
+        Node n8 = model.createNode(ObjectToken.class);
+
+        model.addNode(n1);
+        model.addNode(n2);
+        model.addNode(n3);
+        model.addNode(n4);
+        model.addNode(n5);
+        model.addNode(n6);
+        model.addNode(n7);
+        model.addNode(n8);
+
+        /** 
+        nodeMap.put(a1,n1);
+        nodeMap.put(a2,n2);
+        nodeMap.put(a3,n3);
+        nodeMap.put(a4,n4);
+        nodeMap.put(a5,n5);
+        nodeMap.put(a6,n6);
+        nodeMap.put(a7,n7);
+        nodeMap.put(a8,n8);
+        */
+        
+        // Edges
+        model.createEdge(n2,n1);
+        model.createEdge(n3,n2);
+        model.createEdge(n4,n3);
+        model.createEdge(n5,n4);
+        model.createEdge(n6,n5);
+
+        model.createEdge(n7,n1);
+        model.createEdge(n6,n7);
+        
+        model.createEdge(n8,n1);
+        model.createEdge(n6,n8);
+
+        return model;
+    }
+
+
+    /**
+     * Construct the graph widget with
+     * the default constructor (giving it an empty graph),
+     * and then set the model once the window is showing.
+     */
+    public void displayGraph(JGraph g, GraphModel model) {
+	// add(g);
+	///g.setPreferredSize(new Dimension(300, 400));
+
+        // Make sure we have the right renderers and then
+        // display the graph
+        final GraphPane gp = (GraphPane) g.getCanvasPane();
+        final GraphView gv = gp.getGraphView();
+        gv.setNodeRenderer(new TypeRenderer());
+        gv.setEdgeRenderer(new LineRenderer());
+        g.setGraphModel(model);
+	
+        // Do the layout
+	final GraphModel m = model;
+	try {
+	    SwingUtilities.invokeLater(new Runnable() {
+		public void run () {
+		    LevelLayout staticLayout = new LevelLayout();
+		    staticLayout.setOrientation(LevelLayout.VERTICAL);
+		    staticLayout.layout(gv, m.getGraph());
+		    gp.repaint();
+		}
+	    });
+	} catch (Exception e) {
+	    System.out.println(e);
+	}
+    }
+ 
+    /**
+     * Initialize the trace model.
+     */
+    public void initTraceModel(TraceModel model) {
+        model.addTrace(_ramp1.output, new TraceModel.Trace());
+        model.addTrace(_ramp2.output, new TraceModel.Trace());
+        model.addTrace(_expr.getPort("input1"), new TraceModel.Trace());
+        model.addTrace(_expr.getPort("input2"), new TraceModel.Trace());
+        model.addTrace(_expr.output, new TraceModel.Trace());
+        model.addTrace(_plotter.input, new TraceModel.Trace());
+        model.addTrace(_printer.input, new TraceModel.Trace());
+    }
+
+     /**
+     * Initialize the trace view.
+     */
+    public void initTraceView() {
+        TraceModel model = tracePane.getTraceModel();
+        _currentElement = new TraceModel.Element[model.size()];
+            
+        for (int i = 0; i < model.size(); i++ ) {
+            TraceModel.Trace trace = model.getTrace(i);
+                
+            final TraceModel.Element element = new TraceModel.Element(
+                    0, 1, 7);
+            element.closure = TraceModel.Element.OPEN_END;
+            trace.add(element);
+            _currentElement[i] = element;
+                
+            try {
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    public void run () {
+                        tracePane.getTraceView().drawTraceElement(element);
+                    }
+                });
+            }
+            catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    }
+        
+    /**
+     * Construct the trace display in a JCanvas and return the JCanvas
+     */
+    public JCanvas displayTrace(TraceModel traceModel) {
+        tracePane = new TracePane();
+        JCanvas traceWidget = new JCanvas(tracePane);
+        
+        // Configure the view
+        TraceView traceView = tracePane.getTraceView();
+        traceView.setTimeScale(0.01);
+        traceView.setLayout(10,10,500,30,5);
+        traceView.setTraceModel(traceModel);
+
+        return traceWidget;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -126,6 +339,15 @@ public class TypeApplet extends SDFApplet {
 
 	    _expr.expression.setToken(
 			new StringToken(_exprQuery.stringValue("expr")));
+            
+            // Reinitialize the trace display
+            tracePane.getTraceView().clear();
+            tracePane.getTraceModel().clear();
+            initTraceModel(tracePane.getTraceModel());
+            initTraceView();
+
+            // Now set system "start" time
+            _startTime = System.currentTimeMillis();
 
             super._go();
         } catch (Exception ex) {
@@ -202,47 +424,26 @@ public class TypeApplet extends SDFApplet {
         _toplevel.connect(_ramp1.output, input1);
         _toplevel.connect(_ramp2.output, input2);
         _toplevel.connect(_expr.output, _plotter.input);
+    }
+
+    private void _addListeners()
+	    throws NameDuplicationException, IllegalActionException {
 
 	_plotterBox.addItemListener(new DisplayListener());
 	_printerBox.addItemListener(new DisplayListener());
 
-	// set up listeners
-	class MyTypeListener implements TypeListener {
+	typeListener = new MyTypeListener();
+	_ramp1.output.addTypeListener(typeListener);
+	_ramp2.output.addTypeListener(typeListener);
+	((TypedIOPort)_expr.getPort("input1")).addTypeListener(typeListener);
+	((TypedIOPort)_expr.getPort("input2")).addTypeListener(typeListener);
+	_expr.output.addTypeListener(typeListener);
+	_plotter.input.addTypeListener(typeListener);
+	_printer.input.addTypeListener(typeListener);
 
-	    public void typeChanged(TypeEvent event) {
-		Class newtype = event.getNewType();
-		String typeString = newtype == null ? "NaT" :
-				(String)_type2String.get(newtype);
+        // Add code to extend the trace
 
-		TypedIOPort port = event.getPort();
-		if (port == _ramp1.output) {
-		    _ramp1Type = typeString;
-		} else if (port == _ramp2.output) {
-		    _ramp2Type = typeString;
-		} else if (port == _expr.getPort("input1")) {
-		    _exprIn1Type = typeString;
-		} else if (port == _expr.getPort("input2")) {
-		    _exprIn2Type = typeString;
-		} else if (port == _expr.output) {
-		    _exprOutType = typeString;
-		} else if (port == _plotter.input) {
-		    _plotterType = typeString;
-		} else if (port == _printer.input) {
-		    _printerType = typeString;
-		}
-
-		_schemPanel.repaint();
-	    }
-	}
-
-	TypeListener listener = new MyTypeListener();
-	_ramp1.output.addTypeListener(listener);
-	_ramp2.output.addTypeListener(listener);
-	((TypedIOPort)_expr.getPort("input1")).addTypeListener(listener);
-	((TypedIOPort)_expr.getPort("input2")).addTypeListener(listener);
-	_expr.output.addTypeListener(listener);
-	_plotter.input.addTypeListener(listener);
-	_printer.input.addTypeListener(listener);
+        ///FIXME
     }
 
     private void _buildType2String() {
@@ -510,6 +711,187 @@ public class TypeApplet extends SDFApplet {
 	public void itemStateChanged(ItemEvent e) {
 	    _setDisplay();
 	}
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// TypeRenderer
+
+    /**
+     * TypeRenderer draws the nodes to represent types in a type lattice
+     */
+    public class TypeRenderer implements NodeRenderer {
+
+        /** The size
+         */
+        private double _size = 25;
+
+        /**
+         * Return the rendered visual representation of this node.
+         */
+        public Figure render (Node n) {
+            Object typeObj = n.getSemanticObject();
+
+            // Create a colored circle
+            BasicFigure figure = new BasicEllipse(0, 0, _size, _size);
+
+            // Get the color and label
+            Color color = Color.black;
+            String label = "UNKNOWN";
+            if (typeObj == Void.TYPE) {
+                color = Color.black;
+                label = "NaT";
+            } else if (typeObj == IntToken.class) {
+                color = Color.blue;
+                label = "Int";
+            } else if (typeObj == DoubleToken.class) {
+                color = Color.cyan;
+                label = "Double";
+            } else if (typeObj == ComplexToken.class) {
+                color = Color.green;
+                label = "Complex";
+            } else if (typeObj == StringToken.class) {
+                color = Color.magenta;
+                label = "String";
+            } else if (typeObj == Token.class) {
+                color = Color.red;
+                label = "General";
+            } else if (typeObj == BooleanToken.class) {
+                color = Color.pink;
+                label = "Boolean";
+            } else if (typeObj == ObjectToken.class) {
+                color = Color.yellow;
+                label = "Object";
+            }
+
+            // Set the color and label
+            figure.setFillPaint(color);
+            LabelWrapper w = new LabelWrapper(figure, label);
+            w.setAnchor(SwingConstants.EAST);
+            w.getLabel().setAnchor(SwingConstants.WEST);
+            return w;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// LineRenderer
+
+    /**
+     * LineRenderer draws edges as simple lines
+     */
+    public class LineRenderer implements EdgeRenderer {
+        /**
+         * Render a visual representation of the given edge.
+         */
+        public Connector render(Edge edge, Site tailSite, Site headSite) {
+            StraightConnector c = new StraightConnector(tailSite, headSite);
+            c.setUserObject(edge);
+            return c;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// MyTypeListener
+
+    /** The local listener class
+     */
+    public class MyTypeListener implements TypeListener {
+
+        public void typeChanged(TypeEvent event) {
+            Class newtype = event.getNewType();
+            String typeString = newtype == null ? "NaT" :
+                (String)_type2String.get(newtype);
+            
+            TypedIOPort port = event.getPort();
+            int id = 0;
+            if (port == _ramp1.output) {
+                _ramp1Type = typeString;
+                id = 1;
+            } else if (port == _ramp2.output) {
+                _ramp2Type = typeString;
+                id = 2;
+            } else if (port == _expr.getPort("input1")) {
+                _exprIn1Type = typeString;
+                id = 3;
+            } else if (port == _expr.getPort("input2")) {
+                _exprIn2Type = typeString;
+                id = 4;
+            } else if (port == _expr.output) {
+                _exprOutType = typeString;
+                id = 5;
+            } else if (port == _plotter.input) {
+                _plotterType = typeString;
+                id = 6;
+            } else if (port == _printer.input) {
+                _printerType = typeString;
+                id = 7;
+            }
+            
+            _schemPanel.repaint();
+
+              // Figure out which color to draw
+              Class typeObj = newtype;
+              int color = 7;
+              String label = "UNKNOWN";
+              if (typeObj == null || typeObj == Void.TYPE) {
+                  color = 7;
+              } else if (typeObj == IntToken.class) {
+                  color = 4;
+              } else if (typeObj == DoubleToken.class) {
+                  color = 8;
+              } else if (typeObj == ComplexToken.class) {
+                  color = 3;
+              } else if (typeObj == StringToken.class) {
+                  color = 5;
+              } else if (typeObj == Token.class) {
+                  color = 0;
+              } else if (typeObj == BooleanToken.class) {
+                  color = 9;
+              } else if (typeObj == ObjectToken.class) {
+                  color = 2;
+              }
+
+              // Get the trace and element figure
+              TraceModel model = tracePane.getTraceView().getTraceModel();
+              TraceModel.Trace trace = model.getTrace(id);
+
+              // Create the new element
+              double currentTime = (double) (System.currentTimeMillis() - _startTime);
+              final TraceModel.Element element = new TraceModel.Element(
+                      currentTime, currentTime+1, color);
+              element.closure = TraceModel.Element.OPEN_END;
+              trace.add(element);
+            
+              // Close the current element
+              final TraceModel.Element current = _currentElement[id];
+              current.closure = 0;
+
+              // Update all elements
+              final int msize = model.size();
+              final TraceModel.Element temp[] = new TraceModel.Element[msize];
+              for (int i = 0; i < msize; i++) {
+                  _currentElement[i].stopTime = currentTime;
+                  temp[i] = _currentElement[i];
+              }
+
+              try {
+                  SwingUtilities.invokeAndWait(new Runnable() {
+                      public void run () {
+                          TraceView v = tracePane.getTraceView();
+                          for (int i = 0; i < msize; i++) {
+                              v.updateTraceElement(temp[i]);
+                          }
+                          v.drawTraceElement(element);
+                      }
+                  });
+              }
+              catch (Exception e) {
+                  System.out.println(e);
+              }
+
+              // Update
+              _currentElement[id] = element;
+            
+        }
     }
 }
 

@@ -28,7 +28,7 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.sdf.demo;
+package ptolemy.domains.sdf.guidemo;
 
 import java.awt.*;
 import java.awt.event.*;
