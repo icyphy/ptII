@@ -29,8 +29,8 @@
 //// Token
 /**
 Abstract base class for data capsules.
-This class declares that tokens are cloneable and promotes the
-protected clone() method of the Object base class to public.
+This class declares that tokens are cloneable and promotes 
+the protected clone() method of the Object base class to public.
 It contains a TokenPublisher object which is used to update any
 objects that refer to this token when the value of the Token changes.
 In addition, it defines interfaces to initialize the token from
