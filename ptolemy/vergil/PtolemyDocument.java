@@ -58,17 +58,11 @@ import java.net.URL;
  * A class representing graph-structured documents.
  * This class saves and loads Ptolemy models from MoML.
  *
- * @author John Reekie, Steve Neuendorffer
+ * @author Steve Neuendorffer, John Reekie
  * @version $Id$
  */
 public class PtolemyDocument extends AbstractDocument
     implements VergilDocument {
-    //DEBUG
-    static int _globalCount = 0;
-    int _localID = _globalCount++;
-    // What the hell... public String getTitle() { return "Graph" + _localID; }
-    CompositeEntity _graph;
-
     /** Construct a graph document that is owned by the given
      *  application
      */
@@ -83,14 +77,14 @@ public class PtolemyDocument extends AbstractDocument
         // Do nothing
     }
 
-    public CompositeEntity getGraph() {
-	return _graph;
+    public CompositeEntity getModel() {
+	return _model;
     }
 
     /** Return a visual notation that can create a view on this document.
      */
     public VisualNotation getVisualNotation() {
-	List notationList = _graph.attributeList(VisualNotation.class);
+	List notationList = _model.attributeList(VisualNotation.class);
 	Iterator notations = notationList.iterator();
 	VisualNotation notation = null;
         if(notations.hasNext()) {
@@ -118,7 +112,7 @@ public class PtolemyDocument extends AbstractDocument
 	CompositeEntity toplevel =
 	    (CompositeEntity) parser.parse(schematicURL,
                     new FileInputStream(getFile()));
-	setGraph(toplevel);
+	setModel(toplevel);
     }
 
     /** Save the document to the current file.
@@ -141,7 +135,7 @@ public class PtolemyDocument extends AbstractDocument
     public void saveAs(File file) throws Exception {
         String filename = file.getName();
         FileWriter writer = new FileWriter(file);
-        _graph.exportMoML(writer);
+        _model.exportMoML(writer);
         writer.flush();
     }
 
@@ -155,8 +149,8 @@ public class PtolemyDocument extends AbstractDocument
                 "PtolemyDocument " + getTitle() + ": save to URL not supported");
     }
 
-    public void setGraph(CompositeEntity toplevel) {
-	_graph = toplevel;
+    public void setModel(CompositeEntity toplevel) {
+	_model = toplevel;
     }
 
     /** Print information about the graph document
@@ -167,7 +161,7 @@ public class PtolemyDocument extends AbstractDocument
             + "title = " + getTitle()
             + ", file = " + getFile()
             + ", url = " + getURL()
-            + "]\n" + _graph.exportMoML();
+            + "]\n" + _model.exportMoML();
     }
 
     /**
@@ -181,7 +175,7 @@ public class PtolemyDocument extends AbstractDocument
             //
             TypedCompositeActor toplevel = new TypedCompositeActor();
 
-            d.setGraph(toplevel);
+            d.setModel(toplevel);
             return d;
         }
 
@@ -200,4 +194,5 @@ public class PtolemyDocument extends AbstractDocument
             return d;
         }
     }
+    CompositeEntity _model;
 }

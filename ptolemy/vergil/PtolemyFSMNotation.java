@@ -101,7 +101,7 @@ public class PtolemyFSMNotation extends Attribute implements VisualNotation {
 
 	GraphPane pane = new GraphPane(controller, impl);
 	CompositeEntity entity =
-	    (CompositeEntity) ((PtolemyDocument)d).getGraph();
+	    (CompositeEntity) ((PtolemyDocument)d).getModel();
 	Graph graph = impl.createGraph(entity);
 	controller.setGraph(graph);
 	return pane;

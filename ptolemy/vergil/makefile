@@ -51,11 +51,13 @@ JSRCS = \
 	MoMLViewerApplet.java \
 	JModelViewer.java \
 	PtolemyDocument.java \
-	PtolemyNotation.java \
 	PtolemyFSMNotation.java \
+	PtolemyNotation.java \
+	PtolemyPackage.java \
 	VergilApplication.java \
 	VergilDocument.java \
-	VisualNotation.java
+	Package.java \
+	VisualNotation.java 
 
 EXTRA_SRCS =	$(JSRCS)
 

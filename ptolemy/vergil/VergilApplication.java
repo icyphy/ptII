@@ -40,6 +40,7 @@ import ptolemy.gui.*;
 import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
+
 import diva.canvas.interactor.SelectionModel;
 import diva.canvas.Figure;
 import diva.graph.*;
@@ -66,6 +67,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.event.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// VergilApplication
@@ -129,6 +131,7 @@ public class VergilApplication extends MDIApplication {
         frame.setIconImage(iconImage);
 
         setCurrentDocument(null);
+        addDocumentListener(new Focuser());
 
         // Swing is stupid and adds components with the cross-platform UI and
         // not the system UI.
@@ -139,9 +142,21 @@ public class VergilApplication extends MDIApplication {
 	// bogus, but it is not easy to fire the action manually.
 	Action action = getAction(DefaultActions.NEW);
 	// FIXME this is really a horrible horrible hack.
-	javax.swing.Timer timer = new javax.swing.Timer(100, action);
+	javax.swing.Timer timer = new javax.swing.Timer(200, action);
 	timer.setRepeats(false);
 	timer.start();
+
+	new PtolemyPackage(this);
+    }
+
+    /**
+     * Add a menu to the menu bar of this application.
+     */
+    public void addMenu(JMenu menu) {
+	JFrame frame = getApplicationFrame();
+	if(frame == null) return;
+	JMenuBar menuBar = frame.getJMenuBar();
+	menuBar.add(menu);
     }
 
     /** Given a document, create a new view which displays that
@@ -167,29 +182,7 @@ public class VergilApplication extends MDIApplication {
                 KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
         jgraph.setRequestFocusEnabled(true);
-        jgraph.addMouseListener(new MouseFocusMover());
-        return jgraph;
-
-	/*
-        //FIXME
-	GraphPane pane = new GraphPane(new EditorGraphController(),
-                new VergilGraphImpl());
-	JGraph jgraph = new JGraph(pane);
-	new EditorDropTarget(jgraph);
-        GraphController controller =
-	    jgraph.getGraphPane().getGraphController();
-
-	CompositeEntity entity =
-	    (CompositeEntity) ((VergilDocument)d).getGraph();
-	GraphImpl impl = controller.getGraphImpl();
-	Graph graph = impl.createGraph(entity);
-
-        // FIXME layout parts of graph that don't have a location.
-
-        // Set and draw the new graph
-        controller.setGraph(graph);
-
-	*/
+	return jgraph;
     }
 
     /** Delete any selected nodes and all attached edges in the current graph.
@@ -230,35 +223,16 @@ public class VergilApplication extends MDIApplication {
 	}
     }
 
-    /** Grab the keyboard focus when the component that this listener is
-     *  attached to is clicked on.
-     */
-    public class MouseFocusMover extends MouseAdapter {
-        public void mouseClicked(
-                MouseEvent mouseEvent) {
-	    Component component =
-                mouseEvent.getComponent();
-
-            if (!component.hasFocus()) {
-                component.requestFocus();
-            }
-        }
-    }
-
-    /** Redisplay a document after it appears on the screen. This method
-     * should be overridden by applications that need to perform some
-     * form of update when the component appears on the screen.
-     * This class executes a graph layout algorithm on the document
-     */
-    public void redisplay(Document d, JComponent c) {
-        JGraph jgraph = (JGraph) c;
-        //       redoLayout(jgraph, (String) _layoutComboBox.getSelectedItem());
-    }
-
     /** Return the entity library associated with this Vergil
      */
     public CompositeEntity getEntityLibrary() {
 	return _entityLibrary;
+    }
+
+    /** Return the resources for this application.
+     */
+    public RelativeBundle getGUIResources() {
+        return _guiResources;
     }
 
     /** Return the icon library associated with this Vergil
@@ -329,10 +303,6 @@ public class VergilApplication extends MDIApplication {
         }
     }
 
-    public RelativeBundle getGUIResources() {
-        return _guiResources;
-    }
-
     /** Initialize the given menubar. Currently, all strings are
      * hard-wired, but maybe we should be getting them out of the
      * application resources.
@@ -374,112 +344,6 @@ public class VergilApplication extends MDIApplication {
         action = DefaultActions.exitAction(this);
         addAction(action);
         addMenuItem(menuFile, action, 'X', "Exit from the graph editor");
-
-        // Create the Devel menu
-        JMenu menuDevel = new JMenu("Devel");
-        menuDevel.setMnemonic('D');
-        mb.add(menuDevel);
-
-        action = new AbstractAction ("Print document info") {
-            public void actionPerformed(ActionEvent e) {
-                Document d = getCurrentDocument();
-                if (d == null) {
-                    System.out.println("Graph document is null");
-                } else {
-                    System.out.println(d.toString());
-                }
-            }
-        };
-        addAction(action);
-        addMenuItem(menuDevel, action, 'P', "Print current document info");
-
-        action = new AbstractAction("Execute System") {
-            public void actionPerformed(ActionEvent e) {
-                PtolemyDocument d = (PtolemyDocument)getCurrentDocument();
-                if (d == null) {
-                    return;
-                }
-                try {
-		    CompositeActor toplevel =
-                        (CompositeActor) d.getGraph();
-
-                    // FIXME there is alot of code in here that is similar
-                    // to code in MoMLApplet and MoMLApplication.  I think
-                    // this should all be in ModelPane.
-                    // FIXME set the Director.  This is a hack, but it's the
-                    // Simplest hack.
-                    if(toplevel.getDirector() == null) {
-                        ptolemy.domains.sdf.kernel.SDFDirector director =
-                            new ptolemy.domains.sdf.kernel.SDFDirector(
-                                    toplevel.workspace());
-                        //		    _entityLibrary.getEntity(
-                        //	(String)_directorComboBox.getSelectedItem());
-                        toplevel.setDirector(director);
-                        director.iterations.setExpression("25");
-                    }
-
-                    // Create a manager.
-                    Manager manager = toplevel.getManager();
-                    if(manager == null) {
-                        manager =
-                            new Manager(toplevel.workspace(), "Manager");
-                        toplevel.setManager(manager);
-                        // manager.addDebugListener(new StreamListener());
-			manager.addExecutionListener(new VergilExecutionListener());
-                    }
-
-                    if(_executionFrame != null) {
-			_executionFrame.getContentPane().removeAll();
-                    } else {
-                        _executionFrame = new JFrame();
-                    }
-
-                    ModelPane modelPane = new ModelPane(toplevel);
-                    _executionFrame.getContentPane().add(modelPane,
-                            BorderLayout.NORTH);
-                    // Create a panel to place placeable objects.
-                    JPanel displayPanel = new JPanel();
-                    displayPanel.setLayout(new BoxLayout(displayPanel,
-                            BoxLayout.Y_AXIS));
-                    modelPane.setDisplayPane(displayPanel);
-
-                    // Put placeable objects in a reasonable place
-                    for(Iterator i = toplevel.deepEntityList().iterator();
-                        i.hasNext();) {
-                        Object o = i.next();
-                        if(o instanceof Placeable) {
-                            ((Placeable) o).place(
-                                    displayPanel);
-                        }
-                    }
-
-                    if(_executionFrame != null) {
-                        _executionFrame.setVisible(true);
-                    }
-
-                    //                    manager.startRun();
-
-		    final JFrame packframe = _executionFrame;
-		    Action packer = new AbstractAction() {
-			public void actionPerformed(ActionEvent event) {
-			    packframe.getContentPane().doLayout();
-			    packframe.repaint();
-			    packframe.pack();
-			}
-		    };
-		    javax.swing.Timer timer =
-                        new javax.swing.Timer(200, packer);
-		    timer.setRepeats(false);
-		    timer.start();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    throw new GraphException(ex.getMessage());
-                }
-
-            }
-        };
-        addAction(action);
-        addMenuItem(menuDevel, action, 'E', "Execute System");
     }
 
     /** Initialize the given toolbar. Image icons will be obtained
@@ -501,42 +365,6 @@ public class VergilApplication extends MDIApplication {
         action = getAction(DefaultActions.SAVE);
         addToolBarButton(tb, action, null, resources.getImageIcon("SaveImage"));
         //tb.addSeparator();
-
-	String dflt = "";
-        // Layout combobox
-        _layoutComboBox = new JComboBox();
-        dflt = "Random layout";
-        _layoutComboBox.addItem(dflt);
-        _layoutComboBox.addItem("Levelized layout");
-        _layoutComboBox.setSelectedItem(dflt);
-        _layoutComboBox.setMaximumSize(_layoutComboBox.getMinimumSize());
-        _layoutComboBox.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    VergilDocument d = (VergilDocument) getCurrentDocument();
-                    JGraph jg = (JGraph) getView(d);
-                    redoLayout(jg, (String) e.getItem());
-                }
-            }
-        });
-        tb.add(_layoutComboBox);
-
-        //tb.addSeparator();
-
-	//FIXME find these names somehow.
-	_directorComboBox = new JComboBox();
-	dflt = "sdf.director";
-        _directorComboBox.addItem(dflt);
-        _directorComboBox.setSelectedItem(dflt);
-        _directorComboBox.setMaximumSize(_directorComboBox.getMinimumSize());
-        _directorComboBox.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    // FIXME do something.
-                }
-            }
-        });
-        tb.add(_directorComboBox);
     }
 
     /** Create and run a new graph application
@@ -573,6 +401,16 @@ public class VergilApplication extends MDIApplication {
         }
     }
 
+   /** Redisplay a document after it appears on the screen. This method
+     * should be overridden by applications that need to perform some
+     * form of update when the component appears on the screen.
+     * This class executes a graph layout algorithm on the document
+     */
+    public void redisplay(Document d, JComponent c) {
+        JGraph jgraph = (JGraph) c;
+        //       redoLayout(jgraph, (String) _layoutComboBox.getSelectedItem());
+    }
+
     /** Redo the layout of the given JGraph.
      */
     public void redoLayout(JGraph jgraph, String type) {
@@ -597,6 +435,16 @@ public class VergilApplication extends MDIApplication {
         jgraph.repaint();
     }
 
+    /**
+     * Remove the menu to the menu bar of this application.
+     */
+    public void removeMenu(JMenu menu) {
+	JFrame frame = getApplicationFrame();
+	if(frame == null) return;
+	JMenuBar menuBar = frame.getJMenuBar();
+	menuBar.remove(menu);
+    }
+
     /** Set the given document to be the current document, and raise
      * the internal window that corresponds to that component.
      * In this class, there are some things that we want to enable and
@@ -618,30 +466,27 @@ public class VergilApplication extends MDIApplication {
 
     }
 
-    public class VergilExecutionListener implements ExecutionListener {
-	public VergilExecutionListener() {
+    /**
+     * Grab the keyboard focus when the component that this listener is
+     *  attached to is clicked on.
+     */
+    public class Focuser implements ListDataListener {
+	public void contentsChanged(ListDataEvent e) {
+	    VergilDocument document = (VergilDocument)getCurrentDocument();
+	    if(document == null) return;
+	    JComponent component = getView(document);
+	    if(component == null) return;
+	    if (!component.hasFocus()) {
+                component.requestFocus();
+            }
+	}        
+
+	public void intervalAdded(ListDataEvent e) {
 	}
 
-	public void executionError(Manager manager, Exception exception) {
-	    showError(manager.getName(), exception);
-	}
-
-	public void executionFinished(Manager manager) {
-
-	}
-
-	public void managerStateChanged(Manager manager) {
-	    DesktopFrame frame = (DesktopFrame) getApplicationFrame();
-	    JStatusBar statusBar = frame.getStatusBar();
-	    statusBar.setMessage(manager.getState().getDescription());
+	public void intervalRemoved(ListDataEvent e) {
 	}
     }
-
-    /** The frame in which any placeable objects create their output.
-     *  This will be null until a model with something placeable is
-     *  executed.
-     */
-    private JFrame _executionFrame = null;
 
     /** The director selection combobox
      */

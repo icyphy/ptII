@@ -1,4 +1,4 @@
-/* A generic visual notation for all Ptolemy models.
+/* A modular package for vergil.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -29,39 +29,12 @@
 */
 
 package ptolemy.vergil;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import diva.gui.*;
-import diva.graph.*;
-import diva.graph.model.*;
-import ptolemy.vergil.graph.*;
-
 
 /**
- * A visual notation creates views for a ptolemy document in Vergil. 
+ * A modular package that can be plugged into Vergil.x
  *
  * @author Steve Neuendorffer
- * @version $Id$
+ * @version $Id%
  */
-public class PtolemyNotation extends Attribute implements VisualNotation {
-    /** Construct a graph document that is owned by the given
-     *  application
-     */
-    public GraphPane createView(Document d) {
-	if(!(d instanceof PtolemyDocument)) {
-	    throw new InternalErrorException("Ptolemy Notation is only " + 
-		"compatible with Ptolemy documents.");
-	}
-
-	// These two things control the view of a ptolemy model.
-	GraphController controller = new EditorGraphController();
-	GraphImpl impl = new VergilGraphImpl();
-
-	GraphPane pane = new GraphPane(controller, impl);
-	CompositeEntity entity =
-	    (CompositeEntity) ((PtolemyDocument)d).getModel();
-	Graph graph = impl.createGraph(entity);
-	controller.setGraph(graph);
-	return pane;
-    }
+public interface Package {
 }
