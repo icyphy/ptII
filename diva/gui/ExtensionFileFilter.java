@@ -101,7 +101,7 @@ public class ExtensionFileFilter extends FileFilter {
      * Creates a file filter from the given string array.
      * Example: new ExtensionFileFilter(String {"gif", "jpg"});
      *
-     * Note that the "." before the extension is not needed adn
+     * Note that the "." before the extension is not needed and
      * will be ignored.
      *
      * @see #addExtension(String)
