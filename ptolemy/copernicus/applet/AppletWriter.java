@@ -189,23 +189,22 @@ public class AppletWriter extends SceneTransformer {
         }
 
         try {
-            if (!_codeBase.equals(".")) {
-                _modelJarFiles = "ptolemy/ptsupport.jar," + _domainJar;
-            } else {
-                // If the code base is the current directory, then we
-                // copy the jar files over and set the value of _domainJar
-                // to the names of the jar files separated by commas.
-                StringBuffer jarFilesResults = new StringBuffer();
-                Iterator jarFiles = _copyJarFiles(director).iterator();
-                while (jarFiles.hasNext()) {
-                    String jarFile = (String)jarFiles.next();
-                    if (jarFilesResults.length() > 0) {
-                        jarFilesResults.append(",");
-                    }
-                    jarFilesResults.append(jarFile);
-                }
-                _modelJarFiles = jarFilesResults.toString();
-            }
+	    // If the code base is the current directory, then we
+	    // copy the jar files over and set the value of _domainJar
+	    // to the names of the jar files separated by commas.
+	    // We always want to generate the list of jar files so
+	    // that if for example we use fsm, then we are sure to
+	    // include diva.jar
+	    StringBuffer jarFilesResults = new StringBuffer();
+	    Iterator jarFiles = _findJarFiles(director).iterator();
+	    while (jarFiles.hasNext()) {
+		String jarFile = (String)jarFiles.next();
+		if (jarFilesResults.length() > 0) {
+		    jarFilesResults.append(",");
+		}
+		jarFilesResults.append(jarFile);
+	    }
+	    _modelJarFiles = jarFilesResults.toString();
         } catch (IOException ex) {
             // This exception tends to get eaten by soot, so we print as well.
             System.err.println("Problem writing makefile or html files:" + ex);
@@ -317,7 +316,7 @@ public class AppletWriter extends SceneTransformer {
 
     // Copy jar files into _outputDirectory
     // Return the jar files that have been copied
-    private Set _copyJarFiles(Director director)
+    private Set _findJarFiles(Director director)
             throws IOException {
 
         // In the perfect world, we would run tree shaking here, or
@@ -352,13 +351,18 @@ public class AppletWriter extends SceneTransformer {
         // FIXME: we don't handle the case where there are no
         // individual jar files because the user did not run 'make install'.
 
-        HashSet jarFilesThatHaveBeenCopied = new HashSet();
+        HashSet jarFilesThatHaveBeenRequired = new HashSet();
 
         // Add jar files that are contained in ptsupport.jar.
         // FIXME: we could open ptsupport.jar here and get the complete
         // list of directories.  Instead, we get the primary offenders.
-        jarFilesThatHaveBeenCopied.add("ptolemy/actor/actor.jar");
-        jarFilesThatHaveBeenCopied.add("ptolemy/actor/lib/lib.jar");
+        jarFilesThatHaveBeenRequired.add("ptolemy/actor/actor.jar");
+        jarFilesThatHaveBeenRequired.add("ptolemy/actor/lib/lib.jar");
+
+	// Set to true if we need to fix up jar files because 
+	// jar files are not present probably because
+	// 'make install' was not run.
+	boolean fixJarFiles = false;
 
         Iterator classNames = classMap.keySet().iterator();
         while (classNames.hasNext()) {
@@ -366,22 +370,26 @@ public class AppletWriter extends SceneTransformer {
 
             File potentialSourceJarFile =
                 new File(_ptIIDirectory, (String)classMap.get(className));
-            if (jarFilesThatHaveBeenCopied
+            if (jarFilesThatHaveBeenRequired
                     .contains((String)classMap.get(className))) {
-                // If we have already copied the jar file, then skip it
+                // If we have already possibly copied the jar file, then skip
                 continue;
             }
 
             if (potentialSourceJarFile.exists()) {
-                jarFilesThatHaveBeenCopied
+                jarFilesThatHaveBeenRequired
                     .add((String)classMap.get(className));
-                // Ptolemy II development trees will have jar files
-                // if 'make install' was run.
-                _copyFile(_ptIIDirectory + File.separator
-                        + (String)classMap.get(className),
-                        _outputDirectory,
-                        (String)classMap.get(className));
+		if (_codeBase.equals(".")) {
+		    // If the codeBase is equal to the current directory,
+		    // we copy the jar file.
 
+		    // Ptolemy II development trees will have jar files
+		    // if 'make install' was run.
+		    _copyFile(_ptIIDirectory + File.separator
+			      + (String)classMap.get(className),
+			      _outputDirectory,
+			      (String)classMap.get(className));
+		}
             } else {
                 // Under Web Start, the resource that contains a class
                 // will have a mangled name, so we copy the jar file.
@@ -405,11 +413,18 @@ public class AppletWriter extends SceneTransformer {
                 String canonicalPtIIDirectory =
                     UtilityFunctions.findFile(_ptIIDirectory);
                 if (canonicalClassResource.equals(canonicalPtIIDirectory)) {
-                    throw new IOException("Looking up '" + className
+		    if (_codeBase.equals(".")) {
+			// We only need print an error message if
+			// we are actually trying to copy the file
+			throw new IOException("Looking up '" + className
                             + "' returned the $PTII directory '"
                             + _ptIIDirectory + "' instead of a jar file. "
                             + " Perhaps you need to run 'make install'"
                             + "to create the jar files?");
+		    } else {
+			fixJarFiles = true;
+			continue;
+		    }
                 }
 
                 System.out.println("AppletWriter: "
@@ -418,14 +433,30 @@ public class AppletWriter extends SceneTransformer {
                         + "\n\tclassName:        " + className
                         + "\n\tclassMap.get():   "
                         + (String)classMap.get(className));
-                jarFilesThatHaveBeenCopied
+                jarFilesThatHaveBeenRequired
                     .add((String)classMap.get(className));
-                _copyFile(classResource, _outputDirectory,
-                        (String)classMap.get(className));
+		if (_codeBase.equals(".")) {
+		    // If the codeBase is equal to the current directory,
+		    // we copy the jar file.
+		    _copyFile(classResource, _outputDirectory,
+			      (String)classMap.get(className));
+		} 
             }
         }
 
-        return jarFilesThatHaveBeenCopied;
+	
+        jarFilesThatHaveBeenRequired.remove("ptolemy/actor/actor.jar");
+        jarFilesThatHaveBeenRequired.remove("ptolemy/actor/lib/lib.jar");
+
+	if (fixJarFiles) {
+	    // If the code generator was run but codeBase != . and
+	    // make install was not run, then we will not have figured
+	    // out very many jar files.  So, we fix up the list
+	    // 
+	    jarFilesThatHaveBeenRequired.add("ptolemy/ptsupport.jar");
+	    jarFilesThatHaveBeenRequired.add(_domainJar);
+	}
+        return jarFilesThatHaveBeenRequired;
     }
 
     // Copy sourceFile to the destinationFile in destinationDirectory.
