@@ -27,6 +27,9 @@
 @ProposedRating Red (vogel@eecs.berkeley.edu)
 @AcceptedRating 
 */
+package ptolemy.domains.sdf.test.pitchshift;
+
+import ptolemy.domains.sdf.test.pitchshift.*;
 import java.io.*;
 import javax.media.sound.sampled.*;
 

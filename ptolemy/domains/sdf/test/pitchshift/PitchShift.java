@@ -28,7 +28,8 @@
 @AcceptedRating 
 */
 
-
+package ptolemy.domains.sdf.test.pitchshift;
+import ptolemy.domains.sdf.test.pitchshift.*;
 //////////////////////////////////////////////////////////////////////////
 //// PitchShift
 /**

@@ -1,7 +1,9 @@
 /*
  * 1.1+Swing version.
  */
+package ptolemy.domains.sdf.test.pitchshift;
 
+import ptolemy.domains.sdf.test.pitchshift.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
