@@ -1,7 +1,4 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="LevelCrossingDetectorDetectsGlitches" class="ptolemy.actor.TypedCompositeActor">
+<?xml version="1.0" encoding="UTF-8"?><entity name="LevelCrossingDetectorDetectsGlitches" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
@@ -25,23 +22,23 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&#34;">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&#34;">
                 </property>
-                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&#34;">
                 </property>
-                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
+                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&#34;">
                 </property>
             </property>
         </property>
-        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.DerivativeResolver&#34;">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.DerivativeResolver&#34;">
                 </property>
-                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&#34;">
                 </property>
-                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
+                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&#34;">
                 </property>
             </property>
         </property>
@@ -143,7 +140,7 @@ by the output actions of the transient states.)
                 </property>
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.domains.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
@@ -153,14 +150,14 @@ by the output actions of the transient states.)
         </property>
         <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;CONTINUOUS&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
         </port>
         <port name="output" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;CONTINUOUS&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
@@ -172,8 +169,7 @@ by the output actions of the transient states.)
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
-            <property name="_library" class="ptolemy.moml.LibraryAttribute">
-            </property>
+            <property name="_library" class="ptolemy.moml.LibraryAttribute"><configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"/><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"/></entity></entity></configure></property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -402,23 +398,23 @@ with their output actions.</text></svg></configure>
                 </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+                <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&#34;">
                     <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                        <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+                        <property name="choice0" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&#34;">
                         </property>
-                        <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
+                        <property name="choice1" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&#34;">
                         </property>
-                        <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
+                        <property name="choice2" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&#34;">
                         </property>
                     </property>
                 </property>
-                <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+                <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.DerivativeResolver&#34;">
                     <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                        <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+                        <property name="choice0" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.DerivativeResolver&#34;">
                         </property>
-                        <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
+                        <property name="choice1" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&#34;">
                         </property>
-                        <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
+                        <property name="choice2" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&#34;">
                         </property>
                     </property>
                 </property>
@@ -464,23 +460,23 @@ with their output actions.</text></svg></configure>
                 </property>
                 <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+                <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&#34;">
                     <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                        <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+                        <property name="choice0" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&#34;">
                         </property>
-                        <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
+                        <property name="choice1" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&#34;">
                         </property>
-                        <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
+                        <property name="choice2" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&#34;">
                         </property>
                     </property>
                 </property>
-                <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+                <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.DerivativeResolver&#34;">
                     <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                        <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+                        <property name="choice0" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.DerivativeResolver&#34;">
                         </property>
-                        <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
+                        <property name="choice1" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&#34;">
                         </property>
-                        <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
+                        <property name="choice2" class="ptolemy.data.expr.Parameter" value="&#34;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&#34;">
                         </property>
                     </property>
                 </property>
@@ -507,7 +503,7 @@ with their output actions.</text></svg></configure>
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;CONTINUOUS&#34;">
                         <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                         </property>
                     </property>
@@ -515,7 +511,7 @@ with their output actions.</text></svg></configure>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
-                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;CONTINUOUS&#34;">
                         <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                         </property>
                     </property>
@@ -553,7 +549,7 @@ with their output actions.</text></svg></configure>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;CONTINUOUS&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
@@ -561,7 +557,7 @@ with their output actions.</text></svg></configure>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;CONTINUOUS&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
@@ -580,27 +576,27 @@ with their output actions.</text></svg></configure>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;CONTINUOUS&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;DISCRETE&#34;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;DISCRETE&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;CONTINUOUS&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
@@ -619,27 +615,27 @@ with their output actions.</text></svg></configure>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;CONTINUOUS&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;DISCRETE&#34;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;DISCRETE&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;CONTINUOUS&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
@@ -658,27 +654,27 @@ with their output actions.</text></svg></configure>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;CONTINUOUS&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;DISCRETE&#34;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;DISCRETE&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;CONTINUOUS&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
@@ -691,18 +687,18 @@ with their output actions.</text></svg></configure>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;CONTINUOUS&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;CONTINUOUS&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
@@ -719,7 +715,7 @@ with their output actions.</text></svg></configure>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;DISCRETE&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
@@ -736,7 +732,7 @@ with their output actions.</text></svg></configure>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;DISCRETE&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
@@ -753,7 +749,7 @@ with their output actions.</text></svg></configure>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;DISCRETE&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
@@ -770,7 +766,7 @@ with their output actions.</text></svg></configure>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;DISCRETE&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
@@ -784,9 +780,9 @@ with their output actions.</text></svg></configure>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;CONTINUOUS&#34;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;CONTINUOUS&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
@@ -794,9 +790,9 @@ with their output actions.</text></svg></configure>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&#34;DISCRETE&#34;">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&#34;DISCRETE&#34;">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
