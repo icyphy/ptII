@@ -495,7 +495,7 @@ public class SoundCapture {
 	    }
 	    // For real-time capture:
 	    if (_targetLine != null) {
-		
+
 		if (_targetLine.isOpen() == true) {
 		    _targetLine.stop();
 		    _targetLine.close();
@@ -605,7 +605,7 @@ public class SoundCapture {
 
 
     /* Perform necessary initialization to capture from a sound
-     * file. The sound file is specified as a URL. 
+     * file. The sound file is specified as a URL.
      */
     private void _startCaptureFromFile() throws IOException {
 	//System.out.println("SoundCapture: _startCaptureFromFile() invoked");
@@ -663,7 +663,7 @@ public class SoundCapture {
 	// debug:
 	//int maxBytes2 = _properFormatAudioInputStream.available();
 	//System.out.println("SoundCapture: _startCaptureFromFile(): maxBytes2 = " + maxBytes2);
-	
+
 	_frameSizeInBytes = format.getFrameSize();
 
 	// FIXME: is this correct?

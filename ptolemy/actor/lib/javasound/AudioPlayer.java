@@ -51,15 +51,15 @@ import ptolemy.media.javasound.*;
 /////////////////////////////////////////////////////////
 //// AudioPlayer
 /**
-This actor reads audio samples and plays them. Specifically, 
-the input stream that this actor reads is interpreted as 
-consisting of audio samples. This actor writes this stream 
-of audio samples to the audio output port of the computer, 
-which typically consists of the computer speaker of the 
-headphones output. The audio samples that are supplied to 
-this actor should be doubles in the range [-1.0, 1.0]. Thus, 
-the input port of this actor is of type DoubleToken. Any input 
-tokens that are outside of the valid range will be hard-clipped 
+This actor reads audio samples and plays them. Specifically,
+the input stream that this actor reads is interpreted as
+consisting of audio samples. This actor writes this stream
+of audio samples to the audio output port of the computer,
+which typically consists of the computer speaker of the
+headphones output. The audio samples that are supplied to
+this actor should be doubles in the range [-1.0, 1.0]. Thus,
+the input port of this actor is of type DoubleToken. Any input
+tokens that are outside of the valid range will be hard-clipped
 to fall within the range [-1.0, 1.0] before they are written
  to the audio output port of the computer.
 <p>
@@ -71,19 +71,19 @@ discontinuities (heard as clicks) in the output.
 <p>
 The following parameters
 should be set accordingly. In all cases, an exception is thrown if
-an illegal parameter value is used. Note that these parameters may 
-not be changed while audio capture is active. A future version 
+an illegal parameter value is used. Note that these parameters may
+not be changed while audio capture is active. A future version
 of this actor may support parameter changes while audio capture
 is active.
 <p>
 <ul>
 <li><i>sampleRate</i> should be set to desired sample rate, in Hz.
-The default value is 8000. Allowable values are 8000, 11025, 
+The default value is 8000. Allowable values are 8000, 11025,
 22050, 44100, and 48000 Hz.
 <li><i>bitsPerSample</i> should be set to desired bit
 resolution. The default value is 16. Allowable values are 8 and 16.
 <li><i>channels</i> should be set to desired number of audio
-channels. Allowable values are 1 (for mono) and 2 (for stereo). 
+channels. Allowable values are 1 (for mono) and 2 (for stereo).
 The default value is 1.
 </ul>
 <p>
@@ -109,7 +109,7 @@ public class AudioPlayer extends Sink {
 	if(_debugging) _debug("AudioPlayer: Constructor invoked");
         input.setTypeEquals(BaseType.DOUBLE);
 
-	
+
         sampleRate = new Parameter(this, "sampleRate", new IntToken(8000));
         sampleRate.setTypeEquals(BaseType.INT);
 
@@ -120,14 +120,14 @@ public class AudioPlayer extends Sink {
                 new IntToken(1));
 	channels.setTypeEquals(BaseType.INT);
 	attributeChanged(channels);
-	
+
 	// Hard code the the fraction of of the buffer to put data
 	// at a time = 1/putFactor.
 	_curElement = 0;
 	// The size of the array in samples per channel to give
 	// to LiveSound.putSamples().
 	if (_debugInfo) {
-	    System.out.println("AudioPlayer: constructor: _putSampleSize = " 
+	    System.out.println("AudioPlayer: constructor: _putSampleSize = "
 			       + _putSampleSize);
 	}
 	// The size of the array (in samples per channel) to pass

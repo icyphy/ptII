@@ -40,49 +40,49 @@ import javax.sound.sampled.*;
 /////////////////////////////////////////////////////////////////
 //// SoundReader
 /**
-This class is a buffer that supports the reading of audio samples 
-from a sound file that is specified as a URL. Specifically, this 
-buffer supports the reading of double-valued audio samples. The 
-maximum valid range of sample values is from -1.0 to 1.0. Any 
-values outside of this range will be hard-clipped to fall within 
+This class is a buffer that supports the reading of audio samples
+from a sound file that is specified as a URL. Specifically, this
+buffer supports the reading of double-valued audio samples. The
+maximum valid range of sample values is from -1.0 to 1.0. Any
+values outside of this range will be hard-clipped to fall within
 this range.
 <p>
 <b>Supported file types</b>
 <p>
-Valid sound file formats are WAVE (.wav), AIFF (.aif, .aiff), 
-AU (.au). Valid sample rates are 8000, 11025, 22050, 44100, and 
-48000 Hz. Both 8 bit and 16 bit audio are supported. Mono and 
+Valid sound file formats are WAVE (.wav), AIFF (.aif, .aiff),
+AU (.au). Valid sample rates are 8000, 11025, 22050, 44100, and
+48000 Hz. Both 8 bit and 16 bit audio are supported. Mono and
 stereo files are supported.
 <p>
 <b>Usage</b>
 <p>
-The path to the sound file, specified as a URL, is given as a 
-constructor parameter. The constructor also takes an array 
-length parameter, which is explained below. The constructor will 
+The path to the sound file, specified as a URL, is given as a
+constructor parameter. The constructor also takes an array
+length parameter, which is explained below. The constructor will
 attempt to open the specified file.
 <p>
-After invoking the constructor, the getSamples() method should 
-be repeatedly invoked to read samples from the specified sound 
-file. The getSamples() method takes a multidimenstional array 
-as a parameter. The first index represents the channel number 
-(0 for first channel, 1 for  second channel, etc.). The second 
-index represents the sample index within a channel. For each 
-channel i, the size of the array, getSamplesArray[i].length, must 
+After invoking the constructor, the getSamples() method should
+be repeatedly invoked to read samples from the specified sound
+file. The getSamples() method takes a multidimenstional array
+as a parameter. The first index represents the channel number
+(0 for first channel, 1 for  second channel, etc.). The second
+index represents the sample index within a channel. For each
+channel i, the size of the array, getSamplesArray[i].length, must
 be equal to the constructor parameter getSamplesArraySize.
- Otherwise an exception will occur. When the end of the sound 
+ Otherwise an exception will occur. When the end of the sound
 file is reached, this method will return null.
 <p>
-The getChannels(), getSampleRate(), and getBitsPerSample() 
-methods may be invoked at any time to obtain information about 
+The getChannels(), getSampleRate(), and getBitsPerSample()
+methods may be invoked at any time to obtain information about
 the format of the sound file.
 <p>
-When no more samples are desired, the closeFile() method should 
-be invoked to close the sound file. An exception will occur if 
+When no more samples are desired, the closeFile() method should
+be invoked to close the sound file. An exception will occur if
 getSamples() is invoked at any point after closeFile() is invoked.
 <p>
 <b>Security Issues</b>
 <p>
-Applications have no restrictions on the  capturing or playback 
+Applications have no restrictions on the  capturing or playback
 of audio. Applets, however, may by default only capture
 audio from a file specified as a URL on the same machine as the
 one the applet was loaded from. Applet code is not allowed to
@@ -95,22 +95,22 @@ Note: Requires Java 2 v1.3.0 or later.
 @version $Id$
 @see ptolemy.media.javasound.SoundWriter
 */
-// FIXME: Consider adding a reset() method to reset to the 
+// FIXME: Consider adding a reset() method to reset to the
 // begining of the sound file.
 public class SoundReader {
 
-    /** Construct a sound reader object that reads audio samples 
-     *  from a sound file specified as a URL and open the file at 
-     *  the specified URL. For example, to capture samples from the 
-     *  URL http://localhost/soundfile.wav, sourceURL should be set 
-     *  to the string "http://localhost/soundfile.wav" Note that the 
-     *  "http://" is required. The supported sound file formats are 
+    /** Construct a sound reader object that reads audio samples
+     *  from a sound file specified as a URL and open the file at
+     *  the specified URL. For example, to capture samples from the
+     *  URL http://localhost/soundfile.wav, sourceURL should be set
+     *  to the string "http://localhost/soundfile.wav" Note that the
+     *  "http://" is required. The supported sound file formats are
      *  WAVE (.wav), AIFF (.aif, .aiff), and AU (.au).
-     *  Note that it is still possible to capture audio from a file on 
-     *  the local file system. For example, to capture from a sound 
+     *  Note that it is still possible to capture audio from a file on
+     *  the local file system. For example, to capture from a sound
      *  file located at "C:\someDir\someFile.wave", <i>sourceURL</i>
-     *  should be set to "file:c:\someDir\someFile.wave". Relative 
-     *  file paths are not supported, so the complete path must always 
+     *  should be set to "file:c:\someDir\someFile.wave". Relative
+     *  file paths are not supported, so the complete path must always
      *  be specified, using the prefix "file:" It is safe
      *  to call getSamples() immediately after this constructor returns.
      *
@@ -126,7 +126,7 @@ public class SoundReader {
             int getSamplesArraySize) throws IOException  {
 	if (_debug) {
 	    System.out.println("SoundReader: constructor : invoked");
-	    System.out.println("SoundReader: constructor : sourceURL = " + 
+	    System.out.println("SoundReader: constructor : sourceURL = " +
 			       sourceURL);
 	    System.out.println("SoundReader: constructor : " +
 			       " getSamplesArraySize = " +
@@ -136,7 +136,7 @@ public class SoundReader {
 	this._productionRate = getSamplesArraySize;
 	// Open the specified sound file.
 	_openFileFromURL();
-	_isAudioCaptureActive = true; 
+	_isAudioCaptureActive = true;
     }
 
     ///////////////////////////////////////////////////////////////
@@ -146,7 +146,7 @@ public class SoundReader {
      *  be called while the file is open (i.e., before closeFile()
      *  is called). Otherwise an exception will occur.
      *
-     *  @return The number of audio channels. 
+     *  @return The number of audio channels.
      *
      *  @exception IllegalStateException If this method is called
      *   before openFile() is called or after closeFile()
@@ -162,10 +162,10 @@ public class SoundReader {
 	}
     }
 
-    /** Return the sampling rate in Hz. An exception will occur if 
+    /** Return the sampling rate in Hz. An exception will occur if
      *  this method is invoked after closeFile() is called.
      *
-     *  @return The sample rate in Hz. 
+     *  @return The sample rate in Hz.
      *
      *  @exception IllegalStateException If this method is called
      *   after closeFile()
@@ -188,20 +188,20 @@ public class SoundReader {
      *  sample). This method performs a blocking read, so it is not
      *  possible to invoke this method too frequently.
      *  <p>
-     *  The array size is set by the <i>getSamplesSize</i> 
-     *  parameter in the constructor. 
+     *  The array size is set by the <i>getSamplesSize</i>
+     *  parameter in the constructor.
      *  @return Two dimensional array of captured audio samples.
      *   Return null if end of the audio file is reached.
-     *   The first index represents the channel number (0 for 
-     *   first channel, 1 for second channel, etc.). The second 
-     *   index represents the sample index within a channel. For 
+     *   The first index represents the channel number (0 for
+     *   first channel, 1 for second channel, etc.). The second
+     *   index represents the sample index within a channel. For
      *   example, <i>returned array</i>[n][m] contains the (m+1)th sample
      *   of the (n+1)th channel. For each channel, n, the length of
      *   <i>returned array</i>[n] is equal to <i>getSamplesSize</i>.
      *
      *  @exception IOException If there is a problem reading the audio
      *   samples from the input file.
-     *  @exception IllegalStateException If closeFile() has already 
+     *  @exception IllegalStateException If closeFile() has already
      *   been called.
      */
     public double[][] getSamples() throws IOException,
@@ -214,7 +214,7 @@ public class SoundReader {
 	    if (_debug) {
 		System.out.println("SoundReader: getSamples(): " +
 		     "bytes available = " +
-		     _properFormatAudioInputStream.available());	   
+		     _properFormatAudioInputStream.available());
 	    }
 		// Capture audio from file.
 		numBytesRead =
@@ -262,8 +262,8 @@ public class SoundReader {
 	}
     }
 
-    /** Close the file at the specified URL. This method should 
-     *  be called when no more calls to getSamples(). are required. 
+    /** Close the file at the specified URL. This method should
+     *  be called when no more calls to getSamples(). are required.
      *
      *  @exception IOException If there is a problem closing the
      *  file.
@@ -282,11 +282,11 @@ public class SoundReader {
 	_isAudioCaptureActive = false;
     }
 
-    /** Return the number of bits per audio sample. An exception 
-     *  will occur if this method is called after closeFile() is 
+    /** Return the number of bits per audio sample. An exception
+     *  will occur if this method is called after closeFile() is
      *  invoked.
      *
-     * @return The sample size in bits. 
+     * @return The sample size in bits.
      *
      * @exception IllegalStateException If this method is called
      *  after closeFile()
@@ -399,7 +399,7 @@ public class SoundReader {
 	if (bytesPerSample == 2) {
 	    // 1 / 32768
 	    maxSampleReciprocal = 3.0517578125e-5;
-	} else if (bytesPerSample == 1) {	   
+	} else if (bytesPerSample == 1) {
 	    // 1 / 128
 	    maxSampleReciprocal = 7.8125e-3;
 	} else if (bytesPerSample == 3) {

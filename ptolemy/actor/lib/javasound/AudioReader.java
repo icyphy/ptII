@@ -51,16 +51,16 @@ import ptolemy.media.javasound.*;
 /////////////////////////////////////////////////////////////////
 //// AudioReader
 /**
-This actor sequentially outputs the samples from an sound file, specified as a 
-URL. Although the sound file must be specified as a URL, it is 
-still possible to specify files on the local filesystem. The audio 
-samples are converted to DoubleTokens that may range from [-1.0, 1.0]. 
+This actor sequentially outputs the samples from an sound file, specified as a
+URL. Although the sound file must be specified as a URL, it is
+still possible to specify files on the local filesystem. The audio
+samples are converted to DoubleTokens that may range from [-1.0, 1.0].
 Thus, the output type of this actor is DoubleToken.
 <p>
 <b>Usage</b>
 <p>
-The <i>sourceURL</i> parameter should be set to the name of the file, 
-specified as a fully qualified URL. The default value is 
+The <i>sourceURL</i> parameter should be set to the name of the file,
+specified as a fully qualified URL. The default value is
 http://ptolemy.eecs.berkeley.edu/~vogel/sounds/test.wav.
 The sound file is not periodically repeated by this actor, so
 postfire() will return false when the end of the sound
@@ -107,15 +107,15 @@ public class AudioReader extends Source {
     /** The URL of the file to read from. This parameter contains
      *  a StringToken. The default value of this parameter is the URL
      *  http://ptolemy.eecs.berkeley.edu/~vogel/sounds/test.wav.
-     *  Supported file formats are  WAV, AU, and AIFF. The sound 
+     *  Supported file formats are  WAV, AU, and AIFF. The sound
      *  file format is determined from the file extension.
      *  It is possible to load a file from the local
      *  file system by using the prefix "file:" instead of "http://".
      *  Relative file paths are not allowed, so the complete path
-     *  must be specified. As an example, to reference the file 
-     *  test.wav, located at c:\tmp\test.wav, <i>sourceURL</i> 
+     *  must be specified. As an example, to reference the file
+     *  test.wav, located at c:\tmp\test.wav, <i>sourceURL</i>
      *  should be set to file:c:\tmp\test.wav.
-     *  
+     *
      *  <p>
      *  An exception will be occur if the path references a
      *  non-existent or unsupported sound file.
@@ -125,7 +125,7 @@ public class AudioReader extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    
+
     /** Handle change requests for all parameters. An exception is
      *  thrown if the requested change is not allowed.
      *  @exception IllegalActionException If the change is not
@@ -172,10 +172,10 @@ public class AudioReader extends Source {
     }
 
     /** Invoke <i>count</i> iterations of this actor. This method
-     *  causes one audio sample per channel per iteration to be 
+     *  causes one audio sample per channel per iteration to be
      *  read from the specified file. Each sample is converted to
      *  a double token, with a maximum range of -1.0 to 1.0.
-     *  One double token per channel is written to the output port 
+     *  One double token per channel is written to the output port
      *  in an iteration.
      *  <p>
      *  This method should be called instead of the prefire(),
@@ -256,7 +256,7 @@ public class AudioReader extends Source {
 	}
     }
 
-    /** This method causes one audio sample per channel to be 
+    /** This method causes one audio sample per channel to be
      *  read from the specified file. Each sample is converted to
      *  a double token, with a maximum range of -1.0 to 1.0.
      *  One double token per channel is written to the output port.
@@ -280,10 +280,10 @@ public class AudioReader extends Source {
 	return false;
     }
 
-    /** Free up any system resources involved in the audio 
+    /** Free up any system resources involved in the audio
      *  reading process and close any open sound files.
      *
-     *  @exception IllegalActionException If there is a 
+     *  @exception IllegalActionException If there is a
      *   problem closing the file.
      */
     public void wrapup() throws IllegalActionException {
@@ -313,7 +313,7 @@ public class AudioReader extends Source {
      *  @exception IllegalActionException If there is a problem initializing
      *   the audio reader.
      */
-    private synchronized void _initializeReader() 
+    private synchronized void _initializeReader()
 	throws IOException, IllegalActionException {
 	//System.out.println("AudioReader: _initializeReader() invoked.");
 	if (_soundReader != null) {

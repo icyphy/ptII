@@ -38,47 +38,47 @@ import javax.sound.sampled.*;
 /////////////////////////////////////////////////////////////
 //// SoundWriter
 /**
-This class is a buffer that supports the writing of audio samples 
-to a sound file. Specifically, this buffer supports the writing of 
-double-valued audio samples. The maximum valid range of sample 
-values is from -1.0 to 1.0. Any values outside of this range will 
+This class is a buffer that supports the writing of audio samples
+to a sound file. Specifically, this buffer supports the writing of
+double-valued audio samples. The maximum valid range of sample
+values is from -1.0 to 1.0. Any values outside of this range will
 be hard-clipped to fall within this range.
 <p>
 <b>Supported file types</b>
 <p>
-Valid sound file formats are WAVE (.wav), AIFF (.aif, .aiff), 
-AU (.au). Valid sample rates are 8000, 11025, 22050, 44100, and 
-48000 Hz. Both 8 bit and 16 bit audio are supported. Mono and 
+Valid sound file formats are WAVE (.wav), AIFF (.aif, .aiff),
+AU (.au). Valid sample rates are 8000, 11025, 22050, 44100, and
+48000 Hz. Both 8 bit and 16 bit audio are supported. Mono and
 stereo files are supported.
 <p>
 <b>Usage</b>
 <p>
-The path to the sound file to write is given as a constructor 
-parameter, along with parameters that specifiy the desired 
-audio format. The constructor also takes an array length 
-parameter, which is explained below. 
+The path to the sound file to write is given as a constructor
+parameter, along with parameters that specifiy the desired
+audio format. The constructor also takes an array length
+parameter, which is explained below.
 <p>
-After invoking the constructor, the putSamples() method should 
-be repeatedly invoked to write samples to the specified sound 
-file. This method is blocking, so it will not return until the 
+After invoking the constructor, the putSamples() method should
+be repeatedly invoked to write samples to the specified sound
+file. This method is blocking, so it will not return until the
 samples have been written. The putSamples() method takes a
- multidimensional array as a parameter. The first index 
+ multidimensional array as a parameter. The first index
 represents the channel number (0 for first channel, 1 for  second
-channel, etc.). The second index represents the sample index within 
-a channel. For each channel i, the size of the array, 
-putSamplesArray[i].length, must be equal to the constructor 
-parameter putSamplesArraySize. Otherwise an exception will 
-occur. Thus, each call to putSamples() writes putSamplesArraySize 
-on each channel. It should be noted that the putSamples() method 
-does not write samples directly to a sound file, but instead 
-writes samples to an internal array. The internal array of 
+channel, etc.). The second index represents the sample index within
+a channel. For each channel i, the size of the array,
+putSamplesArray[i].length, must be equal to the constructor
+parameter putSamplesArraySize. Otherwise an exception will
+occur. Thus, each call to putSamples() writes putSamplesArraySize
+on each channel. It should be noted that the putSamples() method
+does not write samples directly to a sound file, but instead
+writes samples to an internal array. The internal array of
 samples is written to the sound file by the closeFile() method.
 <p>
-The closeFile() method should be invoked when no more samples 
-need to be written. This method will write the internal array 
-of samples to the output file and close the file. It is not 
-possible to write any more samples after closeFile() has been 
-called. An exception will occur if putSamples() is invoked 
+The closeFile() method should be invoked when no more samples
+need to be written. This method will write the internal array
+of samples to the output file and close the file. It is not
+possible to write any more samples after closeFile() has been
+called. An exception will occur if putSamples() is invoked
 at any point after closeFile() is invoked.
 <p>
 <b>Security issues</b>
@@ -96,11 +96,11 @@ Note: Requires Java 2 v1.3.0 or later.
 */
 public class SoundWriter {
 
-    /** Construct a sound writer object with the specified name. 
-     *  Valid sound file formats are WAVE (.wav), AIFF (.aif, 
-     *  .aiff), AU (.au). The file format is automatically 
+    /** Construct a sound writer object with the specified name.
+     *  Valid sound file formats are WAVE (.wav), AIFF (.aif,
+     *  .aiff), AU (.au). The file format is automatically
      *  determined from the file extension.
-     * 
+     *
      *  @param fileName The file name to create. If the file already
      *  exists, overwrite it. Valid sound file formats are WAVE (.wav),
      *  AIFF (.aif, .aiff), AU (.au). The file format to write is
@@ -146,7 +146,7 @@ public class SoundWriter {
 
     /** Append the audio data contained in <i>putSamplesArray</i>
      *  to an internal array. The audio samples in this array will
-     *  be written to the sound file specified in the constructor 
+     *  be written to the sound file specified in the constructor
      *  when the closeFile() method is invoked.
      *  <p>
      *  The samples should be in the range (-1,1). Samples that are
@@ -167,13 +167,13 @@ public class SoundWriter {
      *  @exception IllegalStateException If closeFile() has already
      *   been called.
      */
-    public void putSamples(double[][] putSamplesArray) throws 
+    public void putSamples(double[][] putSamplesArray) throws
             IllegalStateException {
 	//System.out.println("SoundWriter: putSamples(): invoked");
 	if (_isAudioWriterActive == true) {
-	    
+
 	    //System.out.println("SoundWriter: putSamples(): file");
-	    
+
 	    // Convert array of double valued samples into
 	    // the proper byte array format.
 	    _data = _doubleArrayToByteArray(putSamplesArray,
@@ -183,7 +183,7 @@ public class SoundWriter {
 	    for (int i = 0; i < _data.length; i++) {
 		_toFileBuffer.add(new Byte(_data[i]));
 	    }
-	    
+
 	} else {
 	    throw new IllegalStateException("SoundWriter: " +
                     "putSamples() was called while audio playback was" +
@@ -193,11 +193,11 @@ public class SoundWriter {
     }
 
 
-    /** Open a the file specified in the constructor for writing, 
-     *  write the accumulated audio samples (obtained via 
-     *  putSamples()) to the file specified in the constructor, 
+    /** Open a the file specified in the constructor for writing,
+     *  write the accumulated audio samples (obtained via
+     *  putSamples()) to the file specified in the constructor,
      *  and close the file. This method should be called when
-     *  no more calls to putSamples() are required. An exception 
+     *  no more calls to putSamples() are required. An exception
      *  will occur if putSamples() is called after this method is invoked.
      *
      *  @exception IOException If there is a problem closing the
@@ -206,13 +206,13 @@ public class SoundWriter {
      *   unsupported format.
      */
     public void closeFile() throws IOException {
-	// IMPLEMENTATION NOTE: It is probably better to open the 
-	// file for writing in the constructor. putSamples() should 
+	// IMPLEMENTATION NOTE: It is probably better to open the
+	// file for writing in the constructor. putSamples() should
 	// probably write samples to the file on each invocation.
-	// closeFile() should only close the file. This would result in 
-	// more efficient operation and reduced memory usage. There 
-	// does not appear to be an easy way to do this in javasound, 
-	// however. This is because in javasound, there is an 
+	// closeFile() should only close the file. This would result in
+	// more efficient operation and reduced memory usage. There
+	// does not appear to be an easy way to do this in javasound,
+	// however. This is because in javasound, there is an
 	// AudioInputStream but no AudioOutputStream class.
 	if (_debug) {
 	    System.out.println("SoundWriter: stopPlayback(): invoked");
@@ -228,7 +228,7 @@ public class SoundWriter {
     ////                         private methods                   ////
 
     /** Perform initialization that must be done before putSamples()
-     *  can be invoked. 
+     *  can be invoked.
      */
     private void _initializeAudio() {
 	//System.out.println("SoundWriter: _startPlaybackToFile() invoked");
@@ -252,11 +252,11 @@ public class SoundWriter {
 	_bytesPerSample = _bitsPerSample/8;
     }
 
-    /** Open a the file specified in the constructor for writing, 
-     *  write the accumulated audio samples (obtained via 
-     *  putSamples()) to the file specified in the constructor, 
+    /** Open a the file specified in the constructor for writing,
+     *  write the accumulated audio samples (obtained via
+     *  putSamples()) to the file specified in the constructor,
      *  and close the file. This method should be called when
-     *  no more calls to putSamples() are required. 
+     *  no more calls to putSamples() are required.
      */
     private void _stopPlaybackToFile() throws IOException {
 	//System.out.println("SoundWriter: _stopPlaybackToFile() invoked.");

@@ -52,39 +52,39 @@ import ptolemy.media.javasound.*;
 //// AudioWriter
 /**
 This actor reads audio samples from the input port and writes
-the samples to the specified sound file. Any existing file 
-with the same name will be silently ovewriten. The input port 
-is of type DoubleToken. Each DoubleToken read from the input 
-port represents one sample of the audio data and should be in 
-the range [-1, 1]. Any samples that are outside of this range 
-will be hard clipped to fall within this range before they are 
-written to the sound file. Single channel (mono) and two 
+the samples to the specified sound file. Any existing file
+with the same name will be silently ovewriten. The input port
+is of type DoubleToken. Each DoubleToken read from the input
+port represents one sample of the audio data and should be in
+the range [-1, 1]. Any samples that are outside of this range
+will be hard clipped to fall within this range before they are
+written to the sound file. Single channel (mono) and two
 channel (stereo) formats are supported. For single channel
 audio, tokens are read from channel 0 of the input port. For stereo
 , tokens are read from channel 0 (left) and channel 1
 (right) of the input port.
 <p>
-The following parameters should be set to specify the format 
+The following parameters should be set to specify the format
 of the file to write.
 <p>
 <ul>
-<li><i>pathName</i> should be set to the name of the output 
-file. Relative filenames are supported. The default value is 
+<li><i>pathName</i> should be set to the name of the output
+file. Relative filenames are supported. The default value is
 "outfile.wav".
 <li><i>channels</i> should be set to desired number of audio
-channels. Allowable values are 1 (for mono) and 2 (for stereo). 
+channels. Allowable values are 1 (for mono) and 2 (for stereo).
 The default value is 1.
-<li><i>sampleRate</i> should be set to desired sample rate, 
-in Hz. The DoubleTokens read in by this actor will be 
-interpreted as having this sample rate. Allowable values are 
+<li><i>sampleRate</i> should be set to desired sample rate,
+in Hz. The DoubleTokens read in by this actor will be
+interpreted as having this sample rate. Allowable values are
 8000, 11025, 22050, 44100, and 48000. The default value is 8000.
 <li><i>bitsPerSample</i> should be set to desired bit
 resolution. Allowable values are 8 and 16. The default value is 16.
 </ul>
 <p>
-There are security issues involved with accessing files and 
-audio resources in applets. By default, applets are not 
-allowed to write files. The .java.policy file may be modified 
+There are security issues involved with accessing files and
+audio resources in applets. By default, applets are not
+allowed to write files. The .java.policy file may be modified
 to grant applets more privileges.
 <p>
 Note: Requires Java 2 v1.3.0 or later.
@@ -128,22 +128,22 @@ public class AudioWriter extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The name of the file to write to. Any existing file with the 
-     *  same name will be silently overwritten. Relative filenames are 
-     *  supported. For example, to write samples to a file with the 
-     *  name "test.au" in the directory "c:\tmp", this parameter 
-     *  should be set to the value c:\tmp\test.au. To write samples 
-     *  to a file with name name "test.au" in the current directory, 
-     *  this parameter should be set to the value test.au. The default 
-     *  value of this parameter is test.wav, which creates a file called 
+    /** The name of the file to write to. Any existing file with the
+     *  same name will be silently overwritten. Relative filenames are
+     *  supported. For example, to write samples to a file with the
+     *  name "test.au" in the directory "c:\tmp", this parameter
+     *  should be set to the value c:\tmp\test.au. To write samples
+     *  to a file with name name "test.au" in the current directory,
+     *  this parameter should be set to the value test.au. The default
+     *  value of this parameter is test.wav, which creates a file called
      *  test.wav in the current directory and writes samples to this file.
      *  <p>
      *  The audio format to use is determined by the file extension.
      *  E.g., "outfile.wav" will create a WAV format file.
      *  The supported file formats are AU, WAV, and , AIFF.
      *  <p>
-     *  If this parameter is changed during execution, all data 
-     *  written so far will be saved, and the sound file will be 
+     *  If this parameter is changed during execution, all data
+     *  written so far will be saved, and the sound file will be
      *  closed. Subsequent audio samples will then be written to the
      *  newly specified file.
      *  <p>
@@ -156,8 +156,8 @@ public class AudioWriter extends Sink {
      *  include : 8000, 11025, 22050, 44100, and 48000.
      *  The default value of the sample rate is 8000 Hz.
      *  <p>
-     *  If this parameter is changed during execution, all data 
-     *  written so far will be saved, and the sound file will be 
+     *  If this parameter is changed during execution, all data
+     *  written so far will be saved, and the sound file will be
      *  closed. Subsequent audio samples will then be written to the
      *  newly specified file.
      *  <p>
@@ -168,8 +168,8 @@ public class AudioWriter extends Sink {
     /** The desired number of bits per sample.
      *  The default value is 16. Supported values are 8 and 16.
      *  <p>
-     *  If this parameter is changed during execution, all data 
-     *  written so far will be saved, and the sound file will be 
+     *  If this parameter is changed during execution, all data
+     *  written so far will be saved, and the sound file will be
      *  closed. Subsequent audio samples will then be written to the
      *  newly specified file.
      *  <p>
@@ -181,8 +181,8 @@ public class AudioWriter extends Sink {
     /** The number of audio channels to use. Supported values are
      *  1 (single channel) and 2 (stereo). The default value is 1.
      *  <p>
-     *  If this parameter is changed during execution, all data 
-     *  written so far will be saved, and the sound file will be 
+     *  If this parameter is changed during execution, all data
+     *  written so far will be saved, and the sound file will be
      *  closed. Subsequent audio samples will then be written to the
      *  newly specified file.
      *  <p>
@@ -232,7 +232,7 @@ public class AudioWriter extends Sink {
 	}
     }
 
-    /** Open a new audio file for writing. Any existing file 
+    /** Open a new audio file for writing. Any existing file
      *  with the same name will be overwritten.
      *  @exception IllegalActionException If the file cannot be opened,
      *   or if the parent class throws it.
@@ -250,8 +250,8 @@ public class AudioWriter extends Sink {
      *  at least <i>count</i> tokens on channel 0 (and also on
      *  channel 1 if stereo mode is used), then read <i>count</i>
      *  tokens from the corresponding channels and write the token
-     *  values to the specified sound file. Otherwise, do nothing, 
-     *  and return a value of NOT_READY. Note that at most one token 
+     *  values to the specified sound file. Otherwise, do nothing,
+     *  and return a value of NOT_READY. Note that at most one token
      *  is read from each channel in an iteration.
      *  <p>
      *  This method should be called instead of the prefire(),
@@ -317,7 +317,7 @@ public class AudioWriter extends Sink {
     /** If there is at least 1 token on channel 0 (and also on
      *  channel 1 if stereo mode is used), then read 1 token
      *  from the corresponding channels and write the token
-     *  values to the specified sound file. Otherwise, do nothing, 
+     *  values to the specified sound file. Otherwise, do nothing,
      *  and return a value of NOT_READY.
      *  @exception IllegalActionException If there is a problem
      *   writing the audio sample(s) to the specified file.
@@ -355,7 +355,7 @@ public class AudioWriter extends Sink {
     public void wrapup() throws IllegalActionException {
 	super.wrapup();
 	if(_debugging) _debug("AudioWriter: wrapup(): invoked");
-	// Close any open sound files. 
+	// Close any open sound files.
 	if (_soundWriter != null) {
             try {
                 _soundWriter.closeFile();
@@ -371,13 +371,13 @@ public class AudioWriter extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Initialize/Reinitialize audio resources. First close any 
-     *  open sound files. Then reread all parameters, create a 
+    /** Initialize/Reinitialize audio resources. First close any
+     *  open sound files. Then reread all parameters, create a
      *  new SoundWriter object.
      *  <p>
      *  This method is synchronized since it is not safe to call
      *  SoundWriter methods while this method is executing.
-     *  @exception IllegalActionException If there is a problem 
+     *  @exception IllegalActionException If there is a problem
      *   initializing the SoundWriter object.
      */
     private synchronized void _initializeWriter()
@@ -395,7 +395,7 @@ public class AudioWriter extends Sink {
                         ex.getMessage());
             }
 	}
-	
+
 	_putSampleSize = 64;
 	for (int i = 0; i < _channels; i++) {
 	    _audioPutArray[i] = new double[_putSampleSize];
@@ -408,13 +408,13 @@ public class AudioWriter extends Sink {
 	    ((IntToken)bitsPerSample.getToken()).intValue();
 	int channelsInt = ((IntToken)channels.getToken()).intValue();
 	int putSamplesSize = _putSampleSize;
-	
+
 	_soundWriter = new SoundWriter(pathNameString,
                     sampleRateInt,
                     bitsPerSampleInt,
                     channelsInt,
                     putSamplesSize);
-	_curElement = 0;	
+	_curElement = 0;
     }
 
     ///////////////////////////////////////////////////////////////////

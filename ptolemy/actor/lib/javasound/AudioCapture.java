@@ -51,38 +51,38 @@ import ptolemy.media.javasound.*;
 /////////////////////////////////////////////////////////////////
 //// AudioCapture
 /**
-This actor sequentially outputs audio samples that are captured 
-from the audio input port of the computer. The audio input port 
-typically corresponds to either the microphone input, line-in, 
-or cd audio from the cdrom or dvd drive. It is not possible to 
-select the desired input port under Java. This must be done from 
+This actor sequentially outputs audio samples that are captured
+from the audio input port of the computer. The audio input port
+typically corresponds to either the microphone input, line-in,
+or cd audio from the cdrom or dvd drive. It is not possible to
+select the desired input port under Java. This must be done from
 the operating system. This actor should be fired often enough to
 prevent overflow of the internal audio capture buffer.
 Overflow should be avoided, since it will result in loss of
-data. Each captured audio sample is converted to a double that 
-may range from -1.0 to 1.0. Thus, the output type of this actor 
+data. Each captured audio sample is converted to a double that
+may range from -1.0 to 1.0. Thus, the output type of this actor
 is DoubleToken.
 <p>
 The following parameters
 should be set accordingly. In all cases, an exception is thrown if
-an illegal parameter value is used. Note that these parameters may 
-not be changed while audio playback is active. A future version 
-of this actor may support parameter changes while audio playback 
+an illegal parameter value is used. Note that these parameters may
+not be changed while audio playback is active. A future version
+of this actor may support parameter changes while audio playback
 is active.
 <ul>
 <li><i>sampleRate</i> should be set to desired sample rate, in Hz.
-The default value is 8000. Allowable values are 8000, 11025, 
+The default value is 8000. Allowable values are 8000, 11025,
 22050, 44100, and 48000 Hz.
 <li><i>bitsPerSample</i> should be set to desired bit
 resolution. The default value is 16. Allowable values are 8 and 16.
 <li><i>channels</i> should be set to desired number of audio
-channels. The default value is 1 (for mono audio). Allowable 
-values are 1 and 2. 
+channels. The default value is 1 (for mono audio). Allowable
+values are 1 and 2.
 <p>
 There are security issues involved with accessing files and audio
 resources in applets. Applets are not
-allowed to capture audio from the audio input port (e.g., the 
-microphone) by default since this could present a security risk. 
+allowed to capture audio from the audio input port (e.g., the
+microphone) by default since this could present a security risk.
 Therefore, the actor will not run in an applet by default. The
 .java.policy file may be modified to grant applets more
 privileges.
@@ -110,7 +110,7 @@ public class AudioCapture extends Source {
         super(container, name);
         output.setTypeEquals(BaseType.DOUBLE);
 	output.setMultiport(true);
-	
+
 	sampleRate = new Parameter(this, "sampleRate", new IntToken(8000));
 	sampleRate.setTypeEquals(BaseType.INT);
 	bitsPerSample = new Parameter(this, "bitsPerSample",
@@ -197,7 +197,7 @@ public class AudioCapture extends Source {
 	}
     }
 
-    /** Check parameters and begin the sound capture process. 
+    /** Check parameters and begin the sound capture process.
      *  @exception IllegalActionException If the parameters
      *             are out of range.
      */
@@ -231,7 +231,7 @@ public class AudioCapture extends Source {
      *  <i>count</i> changes often.
      *  @param count The number of iterations to perform.
      *  @return COMPLETED if the actor was successfully iterated the
-     *   specified number of times. 
+     *   specified number of times.
      *  @exception IllegalActionException If there is a problem capturing
      *   audio.
      */
@@ -379,7 +379,7 @@ public class AudioCapture extends Source {
 	    }
 	}
 	// Now initialize audio capture.
-	
+
 	// Use live capture mode.
 	int sampleRateInt =
 	    ((IntToken)sampleRate.getToken()).intValue();
@@ -387,7 +387,7 @@ public class AudioCapture extends Source {
 	    ((IntToken)bitsPerSample.getToken()).intValue();
 	int channelsInt =
 	    ((IntToken)channels.getToken()).intValue();
-	
+
 	if (LiveSound.getSampleRate() != sampleRateInt) {
 	    LiveSound.setSampleRate(sampleRateInt);
 	}
@@ -409,7 +409,7 @@ public class AudioCapture extends Source {
 	if (LiveSound.getTransferSize() != 128) {
 	LiveSound.setTransferSize(128);
 	}
-	    
+
 	try {
 	    // Start capturing audio.
 	    LiveSound.startCapture(this);
