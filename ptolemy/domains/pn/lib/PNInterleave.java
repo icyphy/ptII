@@ -92,6 +92,8 @@ public class PNInterleave extends PNStar{
             System.out.println("Terminating "+ this.getName());
             return;
         }
+        System.out.println("Terminating "+ this.getName());
+        return;
     }
 
     //////////////////////////////////////////////////////////////////////////
