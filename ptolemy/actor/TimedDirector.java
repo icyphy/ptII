@@ -1,4 +1,4 @@
-/* Interface for directors that operate on time-based signals.
+/* Interface for directors that can directs timed actors.
 
 Copyright (c) 1998-2005 The Regents of the University of California.
 All rights reserved.
@@ -34,10 +34,9 @@ import ptolemy.actor.util.Time;
 //// TimedDirector
 
 /**
-   This is an interface for directors that operate on time-based signals.
-   That is, logically, all signals observed or produced are tokens placed
-   in time. Actors that implement the TimedActor marker interface are allowed
-   to be executed by directors that implement this interface.
+   This is an interface for directors that direct the executions of timed 
+   actors. Actors that implement the TimedActor marker interface are allowed
+   to be executed by directors that implement this interface. 
 
    @see TimedActor
    @author Haiyang Zheng
