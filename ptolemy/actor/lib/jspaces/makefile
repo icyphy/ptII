@@ -39,7 +39,7 @@ DIRS = 		util
 ROOT =		../../../..
 
 JINI_JAR_PATH = $(ROOT)/vendors/sun/jini/lib
-JINI_JAR =	$(JINI_JAR_PATH)/jini-ext.jar$(CLASSPATHSEPARATOR)$(JINI_JAR_PATH)/mahalo.jar
+JINI_JAR =	$(JINI_JAR_PATH)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_JAR_PATH)/jini-ext.jar$(CLASSPATHSEPARATOR)$(JINI_JAR_PATH)/mahalo.jar
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JINI_JAR)
 
@@ -59,11 +59,12 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	IndexEntry.java \
 	Publisher.java \
 	StockQuote.java \
 	StockServer.java \
 	Subscriber.java \
-	TokenEntry.java
+	TokenEntry.java 
 
 EXTRA_SRCS =	$(JSRCS)
 

@@ -159,7 +159,7 @@ public class Publisher extends Sink {
                 if (input.hasToken(i)) {
                     Token token = input.get(i);
 		    TokenEntry entry = new TokenEntry(name,
-						_currentSerialNumber, token);
+                            new Long(_currentSerialNumber), token);
 		    _currentSerialNumber++;
 		    _space.write(entry, null, time);
                 }

@@ -1,4 +1,4 @@
-/* A JavaSpaces Entry that contains a Token.
+/* A JavaSpaces Entry that contains the index of TokenEntries.
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (yuhong@eecs.berkeley.edu)
+@ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
@@ -35,76 +35,74 @@ import ptolemy.data.Token;
 import net.jini.core.entry.Entry;
 
 //////////////////////////////////////////////////////////////////////////
-//// TokenEntry
+//// IndexEntry
 /**
-TokenEntry is a JavaSpaces Entry that contains a Token. In addition,
-aach TokenEntry has a name and a serial number.
+IndexEntry is a JavaSpaces Entry that contains a index for TokenEntries.
+An IndexEntry has a name, a type, and a position number.
+The name is the name of corresponding token entries. The type can be 
+"minimum" or "maximum", showing the index type that this entry represents.
+The position number is a positive long.
 
-@author Yuhong Xiong, Jie Liu
+
+@author Jie Liu, Yuhong Xiong
 @version $Id$
 
 */
-public class TokenEntry implements Entry {
+public class IndexEntry implements Entry {
 
-    /** Construct a TokenEntry. All the entry fields will be null.
+    /** Construct an IndexEntry. All the entry fields will be null.
      *  This no-arg constructor is required by JavaSpaces for
      *  deserialization.
      */
-    public TokenEntry() {
+    public IndexEntry() {
     }
 
-    /** Construct a TokenEntry with the specified name, serialNumber,
+    /** Construct an IndexEntry with the specified name, serialNumber,
      *  and token.
      *  @param name A String name.
      *  @param serialNumber The starting serial number of this entry.
      *  @param token A Token.
      */
-    public TokenEntry(String name, Long serialnumber, Token token) {
+    public IndexEntry(String name, String type, Long position) {
 	this.name = name;
-	this.serialNumber = serialnumber;
-	this.token = token;
+	this.type = type;
+	this.position = position;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                        public variables                   ////
 
-    /** The name of this TokenEntry.
+    /** The name of this TokenEntries.
      */
     public String name = null;
 
-    /** The Integer object that contains the serial number of this
-     *  TokenEntry. JavaSpaces requires entry fields to be objects.
+    /** The type, either "minimum" or "maximum"
      */
-    public Long serialNumber = null;
+    public String type = null;
 
     /** The token contained in this TokenEntry.
      */
-    public Token token = null;
+    public Long position = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the serial number of this entry. If the serialNumberObj
-     *  is null, return 0.
-     *  @return An int.
+    /** Return the position of this index. If the position
+     *  is null, return 0. 
+     *  @return The postion.
      */
-    public long getSerialNumber() {
-	if (serialNumber == null) {
+    public long getPosition() {
+	if (position == null) {
 	    return 0;
 	}
-	return serialNumber.longValue();
+	return position.longValue();
     }
 
-    /** Increase the serial number by 1. If the serialNumberObj is
+    /** Increase the index position by 1. If the position is
      *  null, change it to contain 1.
      */
-    public void increaseSerialNumber() {
-	if (serialNumber == null) {
-	    serialNumber = new Long(1);
-	} else {
-	    long val = serialNumber.longValue();
-	    serialNumber = new Long(val+1);
-	}
+    public void increment() {
+	    position = new Long(getPosition()+1);
     }
 }
 
