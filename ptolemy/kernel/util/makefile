@@ -70,6 +70,7 @@ JSRCS = \
 	NoSuchItemException.java \
 	PtolemyThread.java \
 	RecorderListener.java \
+	Settable.java \
 	StreamChangeListener.java \
 	StreamListener.java \
 	Workspace.java
