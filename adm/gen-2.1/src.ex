@@ -23,6 +23,7 @@ adm
 alljsimpletests.tcl
 brass
 collections
+com/microstar/xml/driver
 config/*.class
 config.cache
 config.log
