@@ -173,6 +173,8 @@ public abstract class ActorController extends AttributeController {
 
             // FIXME: does this work outside of SDF?  Should
             // we check to see if the director is an SDF director?
+            // We should use reflection to check this so that 
+            // this class does not require SDFDirector.
             // See $PTII/doc/coding/debugging.htm
 
             _breakpointDialogFactory = new BreakpointDialogFactory(
