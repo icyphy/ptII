@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="modulation" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SpectrumWebVersion" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
     <property name="Synchronous Dataflow Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -11,7 +11,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="398.0, 30.0">
+        <property name="_location" class="ptolemy.moml.Location" value="385.0, 45.0">
         </property>
     </property>
     <property name="carrierFrequency" class="ptolemy.data.expr.Parameter" value="2000">
@@ -21,7 +21,7 @@
     <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
     </property>
     <property name="0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="322.0, 180.0">
+        <property name="_location" class="ptolemy.moml.Location" value="160.0, 165.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -31,10 +31,12 @@ Right click and select "Edit Parameters" to see the expression.</text>
            </svg>
            </configure>
         </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[630, 232]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[630, 350]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[94, 152]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[89, 154]">
     </property>
     <entity name="Noise Source" class="ptolemy.actor.lib.Gaussian">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
