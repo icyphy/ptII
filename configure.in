@@ -60,9 +60,15 @@ if test  ! -d "$PTII"; then
 fi 
 
 if test  ! -w "$PTII"; then
-    echo "\$PTII is set to '$PTII', but it is not writable by you"
-    exit 3	
+    echo "Warning: \$PTII is set to '$PTII', but it is not writable by you."
+    echo "This may or may not be a problem.  If you are running under"
+    echo "Windows, then you might be able to ignore this problem and" 
+    echo "proceed with the build.  If you continue to have problems,"
+    echo "try upgrading to cygwin1.1.0 or later"
+
+	
 fi 
+
 PTII_DEFAULT=$PTII
 # The default value of prefix
 AC_PREFIX_DEFAULT($PTII)
@@ -211,6 +217,25 @@ case "`uname -s`" in
 esac
 AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
 
+case "`uname -s`" in
+    CYGWIN_NT-*)
+	AC_MSG_CHECKING([for the proper the cmd command])
+	AC_PATH_PROG(CMD_PATH, cmd)
+	if test -x "$CMD_PATH"; then 
+		AC_MSG_RESULT([$CMD_PATH])
+	else
+		AC_MSG_WARN([Failed to find the 'cmd' command, which
+is used by the $PTII/bin/ptolemy script.  Usually cmd is found
+at c:\\winnt\\system32\\cmd.exe.  You may need to modify your
+PATH to explicitly include c:\\winnt\\system32 by going
+to Start->Settings->Control Panels->System->Environment and changing
+%SystemRoot%\\system32 to c:\\winnt\\system32])
+
+	fi
+	;;
+
+    *) ;;
+esac
 #####################################################################
 #####################################################################
 #       Below here we look for various packages.
@@ -233,6 +258,7 @@ COMMAPI_USER_DIR="$PTII/ptolemy/apps/lego"
 COMMAPI_PRESENT=no
 # PTLEGO_DIR is set to lego
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
+# 
 PTLEGO_DIR=
 if test ! -d "$COMMAPI_USER_DIR"; then
     AC_MSG_RESULT([$COMMAPI_USER_DIR is not present, so we need not
