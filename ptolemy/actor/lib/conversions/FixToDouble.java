@@ -94,7 +94,7 @@ public class FixToDouble extends Transformer {
     public Parameter precision;
 
 
-    /** Select the mode when rouding the FixPoint to the given Precision.
+    /** Select the mode when rounding the FixPoint to the given Precision.
      */
     public Parameter quantizer;
 
