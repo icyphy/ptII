@@ -138,6 +138,10 @@ public class Firing extends ScheduleElement {
     public void setActor(Actor actor) {
 	_incrementVersion();
 	_actor  = actor;
+        if (_firing != null) {
+            _firing.removeAll();
+            _firing.add(this);
+        }
 	//_actorInvocationsValid = false;
     }
 
