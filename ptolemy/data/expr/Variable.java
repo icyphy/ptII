@@ -783,18 +783,28 @@ public class Variable extends Attribute implements Typeable {
      *  @see ptolemy.graph.Inequality
      */
     public Enumeration typeConstraints() {
-	if (getContainedToken() == null) {
+	/*if (getContainedToken() == null) {*/
+        if (_token == null && _currentExpression == null) {
             return _constraints.elements();
-	} else {
-	    LinkedList result = new LinkedList();
-	    result.appendElements(_constraints.elements());
+	} 
 
+	LinkedList result = new LinkedList();
+	result.appendElements(_constraints.elements());
+
+        if (_token != null) {
+            /* add a constraint derived from the current token */
 	    TypeConstant tokenType =
                     new TypeConstant(getContainedToken().getClass());
 	    Inequality ineq = new Inequality(tokenType, this.getTypeTerm());
 	    result.insertLast(ineq);
-	    return result.elements();
 	}
+
+	if (_currentExpression != null) {
+            /* add the constraints derived from the current expression */
+            /* FIXME: to be done */
+        }
+
+	return result.elements();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -968,7 +978,7 @@ public class Variable extends Attribute implements Typeable {
     ////                         protected variables               ////
 
     /** Stores the variables whose expression references this variable. */
-    protected LinkedList _valueDependents = null; 
+    /*protected LinkedList _valueDependents = null; */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1170,6 +1180,9 @@ public class Variable extends Attribute implements Typeable {
 
     // Stores the variables whose scope contains this variable.
     private LinkedList _scopeDependents = null;
+
+    /** Stores the variables whose expression references this variable. */
+    private LinkedList _valueDependents = null;
 
     // The variables this variable may reference in its expression.
     // The list is cached.
