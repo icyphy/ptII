@@ -49,7 +49,7 @@ import ptolemy.kernel.util.StringAttribute;
    and sent to the output. Likewise with a false input and the 
    <i>falseInput</i> port. It alternates between these two kinds of 
    iterations until stopped. The <i>control</i> port must receive 
-   boolean Tokens. The <i>trueInput</i> and <i>falseInput</i> port 
+   Boolean Tokens. The <i>trueInput</i> and <i>falseInput</i> port 
    may receive Tokens of any type. Because tokens are immutable, the 
    same Token is sent to the output, rather than a copy.
    <p>
