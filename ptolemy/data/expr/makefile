@@ -128,6 +128,11 @@ PtParser.java: PtParser.jj
 PtParser.jj: $(EXTRA_SRCS)
 	CLASSPATH="$(CLASSPATH)" $(JJTREE) PtParser.jjt
 
+# This rule is useful for cvs committing the derived files
+# For example:
+# cvs commit -m "Updated PtParser." `make echo_OPTIONAL_JSRCS`
+echo_OPTIONAL_JSRCS:
+	@echo $(OPTIONAL_JSRCS)
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
