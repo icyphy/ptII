@@ -147,6 +147,8 @@ public class ProcessThread extends PtolemyThread {
                 _manager.notifyListenersOfException(e);
             }
             _director._decreaseActiveCount();
+            String name = ((Nameable)_actor).getName();
+            System.out.println(name+": has decreased active count");
         }
     }
 
