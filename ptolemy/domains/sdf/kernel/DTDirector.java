@@ -124,8 +124,6 @@ public class DTDirector extends SDFDirector {
      *  caller should be.
      *
      *  @return True if the iteration can proceed.
-     *  @exception CloneNotSupportedException If the prefire() method of the
-     *   container or one of the deeply contained actors throws it.
      *  @exception IllegalActionException If the prefire() method of the
      *   container or one of the deeply contained actors throws it, or a
      *   pending mutation throws it.
