@@ -46,6 +46,13 @@ reference can be null.
 @see classname
 @see full-classname */
 public class NamedObj {
+    /** Constructor with no arguments - Set the name to empty string
+     * @return Reference to created named object
+     */	
+    public NamedObj() {
+        this("");
+    }
+
     /** Constructor with 1 argument - Set the name
      * @param name newName
      * @return Reference to created named object
@@ -63,6 +70,15 @@ public class NamedObj {
      */	
     public String getName() {
         return name;
+    }
+
+   /** Set the name of the object if not previously set
+     * @return false if previously set and left unchanged, else true
+     */	
+    public boolean setName(String newName) {
+        if (!name.equals("")) { return false; }
+        name = newName;
+        return true;
     }
 
     /** Specify the specific instance's place in the
