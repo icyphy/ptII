@@ -490,11 +490,11 @@ public class Histogram extends PlotBox {
         super._write(output);
 
         output.println(
-            "<barGraph width=\"" + _barwidth
-            + "\" offset=\"" + _baroffset + "\"/>");
+                "<barGraph width=\"" + _barwidth
+                + "\" offset=\"" + _baroffset + "\"/>");
 
         output.println("<bin width=\"" + _binWidth
-        + " offset=\"" + _binOffset + "\">");
+                + " offset=\"" + _binOffset + "\">");
 
         for (int dataset = 0; dataset < _points.size(); dataset++) {
             // Write the dataset directive
