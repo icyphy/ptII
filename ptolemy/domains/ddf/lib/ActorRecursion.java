@@ -28,6 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ddf.lib;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -48,7 +50,10 @@ import ptolemy.domains.ddf.kernel.DDFDirector;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**   
@@ -135,9 +140,9 @@ public class ActorRecursion extends TypedCompositeActor {
             getDirector().setContainer(null);
         } catch (NameDuplicationException ex) {
             //should not happen.
-            throw new IllegalActionException(this, "name duplication.");
+            throw new InternalErrorException(this, ex, null);
         }                   
-    }
+    } 
     
     /** Find the composite actor to be cloned, which is the first 
      *  containing actor up in hierarchy with name referred to by 
@@ -166,6 +171,29 @@ public class ActorRecursion extends TypedCompositeActor {
         return false;
     }
     
+    /** Override the base class to describe contained ports and 
+     *  attributes, but not inside entities, links and relations 
+     *  created during execution.
+     *  @param output The output to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @exception IOException If an I/O error occurs.
+     */
+    protected void _exportMoMLContents(Writer output, int depth)
+            throws IOException {
+
+        Iterator attributes = attributeList().iterator();
+        while (attributes.hasNext()) {
+            Attribute attribute = (Attribute)attributes.next();
+            attribute.exportMoML(output, depth);
+        }
+
+        Iterator ports = portList().iterator();
+        while (ports.hasNext()) {
+            Port port = (Port)ports.next();
+            port.exportMoML(output, depth);
+        }
+    }
+        
     /** Override the base class to do nothing. This will prevent it 
      *  from calling requestInitialization(Actor) to the cloned 
      *  composite actor. The preinitialization and initialization
@@ -420,7 +448,7 @@ public class ActorRecursion extends TypedCompositeActor {
                             new Parameter(outputPort, "tokenProductionRate");
                 } catch (NameDuplicationException ex) {
                     //should not happen.
-                    throw new IllegalActionException(this, "name duplication.");
+                    throw new InternalErrorException(this, ex, null);
                 }
             }            
             tokenProductionRate.setToken(new ArrayToken(productionRateToken));                    
