@@ -103,7 +103,7 @@ proc _doExecuteTest {className} {
 test TokenUnboxing-1.1 {} {
     _doSpecializedTypesTest Unboxing1
 } {}
-
+ 
 test TokenUnboxing-1.2 {} {
     _doUnboxingTest Unboxing1
 } {}
@@ -151,7 +151,7 @@ test TokenUnboxing-1d.3 {} {
 
 test TokenUnboxing-2.1 {} {
     _doSpecializedTypesTest Unboxing2
-} {}
+} {{{VariableTerm: value = general, depth = 1, associated object = $r9}} {{VariableTerm: value = general, depth = 1, associated object = <Unboxing2: ptolemy.data.Token token>}}}
 
 test TokenUnboxing-2.2 {} {
     _doUnboxingTest Unboxing2
@@ -159,36 +159,115 @@ test TokenUnboxing-2.2 {} {
 
 test TokenUnboxing-2.3 {} {
     _doExecuteTest Unboxing2
-} {token = {{1}}}
+} {token = 1}
 
 test TokenUnboxing-3.1 {} {
     _doSpecializedTypesTest Unboxing3
 } {}
 
-# test TokenUnboxing-3.2 {} {
-#     _doUnboxingTest Unboxing3
-# } {}
+test TokenUnboxing-3.2 {} {
+    _doUnboxingTest Unboxing3
+} {}
+
+test TokenUnboxing-3.3 {} {
+    _doExecuteTest Unboxing3
+} {token = 3.0}
 
 test TokenUnboxing-4.1 {} {
     _doSpecializedTypesTest Unboxing4
-} {\{ArrayElementType(\{int\}),\ int) {{VariableTerm: value = general, depth = 1, associated object = $r14}} {{VariableTerm: value = general, depth = 1, associated object = $r5}} {{VariableTerm: value = general, depth = 1, associated object = <Unboxing4: ptolemy.data.Token token>}} {{VariableTerm: value = general, depth = 1, associated object = r1}} {{VariableTerm: value = general, depth = 1, associated object = specialinvoke $r5.<ptolemy.data.ArrayToken: void <init>(ptolemy.data.Token[])>($r6)}} {{VariableTerm: value = int, depth = 1, associated object = $r2}} {{VariableTerm: value = int, depth = 1, associated object = $r3}} {{VariableTerm: value = int, depth = 1, associated object = $r6}} {{VariableTerm: value = int, depth = 1, associated object = <Unboxing4: ptolemy.data.Token[] tokens>}} {{VariableTerm: value = int, depth = 1, associated object = newarray (ptolemy.data.Token)[1]}}}
+} {\{ArrayElementType(\{int\}),\ int) {{VariableTerm: value = general, depth = -2147483648, associated object = $r15}} {{VariableTerm: value = general, depth = -2147483648, associated object = <Unboxing4: ptolemy.data.Token token>}} {{VariableTerm: value = int, depth = 1, associated object = $r3}} {{VariableTerm: value = int, depth = 1, associated object = $r4}} {{VariableTerm: value = int, depth = 1, associated object = $r6}} {{VariableTerm: value = int, depth = 1, associated object = <Unboxing4: ptolemy.data.Token[] tokens>}} {{VariableTerm: value = int, depth = 1, associated object = newarray (ptolemy.data.Token)[1]}} {{VariableTerm: value = {int}, depth = 2, associated object = $r11}} {{VariableTerm: value = {int}, depth = 2, associated object = $r5}} {{VariableTerm: value = {int}, depth = 2, associated object = $r7}} {{VariableTerm: value = {int}, depth = 2, associated object = <Unboxing4: ptolemy.data.ArrayToken arraytoken>}} {{VariableTerm: value = {int}, depth = 2, associated object = specialinvoke $r5.<ptolemy.data.ArrayToken: void <init>(ptolemy.data.Token[])>($r6)}}}
 
 test TokenUnboxing-4.2 {} {
     _doUnboxingTest Unboxing4
 } {}
 
+test TokenUnboxing-4.3 {} {
+    _doExecuteTest Unboxing4
+} {token = 1}
+
 test TokenUnboxing-5.1 {} {
     _doSpecializedTypesTest Unboxing5
 } {\{ArrayElementType(\{int\}),\ int) {{VariableTerm: value = int, depth = 1, associated object = $r2}} {{VariableTerm: value = int, depth = 1, associated object = $r3}} {{VariableTerm: value = int, depth = 1, associated object = $r6}} {{VariableTerm: value = int, depth = 1, associated object = <Unboxing5: ptolemy.data.Token[] tokens>}} {{VariableTerm: value = int, depth = 1, associated object = newarray (ptolemy.data.Token)[1]}} {{VariableTerm: value = {int}, depth = 2, associated object = $r5}} {{VariableTerm: value = {int}, depth = 2, associated object = r1}} {{VariableTerm: value = {int}, depth = 2, associated object = specialinvoke $r5.<ptolemy.data.ArrayToken: void <init>(ptolemy.data.Token[])>($r6)}}}
+
+test TokenUnboxing-5.2 {} {
+    _doUnboxingTest Unboxing5
+} {}
+
+test TokenUnboxing-5.3 {} {
+    _doExecuteTest Unboxing5
+} {token = {1}}
 
 test TokenUnboxing-6.1 {} {
     _doSpecializedTypesTest Unboxing6
 } {{{VariableTerm: value = int, depth = 1, associated object = $r11}} {{VariableTerm: value = int, depth = 1, associated object = $r1}} {{VariableTerm: value = int, depth = 1, associated object = $r2}} {{VariableTerm: value = int, depth = 1, associated object = $r4}} {{VariableTerm: value = int, depth = 1, associated object = $r5}} {{VariableTerm: value = int, depth = 1, associated object = $r6}} {{VariableTerm: value = int, depth = 1, associated object = <Unboxing6: ptolemy.data.Token castToken>}} {{VariableTerm: value = int, depth = 1, associated object = <Unboxing6: ptolemy.data.Token token>}} {{VariableTerm: value = int, depth = 1, associated object = <Unboxing6: ptolemy.data.Token[] tokens>}} {{VariableTerm: value = int, depth = 1, associated object = newarray (ptolemy.data.Token)[1]}}}
 
+test TokenUnboxing-6.2 {} {
+    _doUnboxingTest Unboxing6
+} {}
+
+test TokenUnboxing-6.3 {} {
+    _doExecuteTest Unboxing6
+} {token = 1}
+
 test TokenUnboxing-7.1 {} {
     _doSpecializedTypesTest Unboxing7
 } {{{VariableTerm: value = int, depth = 1, associated object = $r13}} {{VariableTerm: value = int, depth = 1, associated object = $r1}} {{VariableTerm: value = int, depth = 1, associated object = $r2}} {{VariableTerm: value = int, depth = 1, associated object = $r4}} {{VariableTerm: value = int, depth = 1, associated object = $r5}} {{VariableTerm: value = int, depth = 1, associated object = $r6}} {{VariableTerm: value = int, depth = 1, associated object = $r7}} {{VariableTerm: value = int, depth = 1, associated object = <Unboxing7: ptolemy.data.Token castToken>}} {{VariableTerm: value = int, depth = 1, associated object = <Unboxing7: ptolemy.data.Token token>}} {{VariableTerm: value = int, depth = 1, associated object = <Unboxing7: ptolemy.data.Token[] tokens>}} {{VariableTerm: value = int, depth = 1, associated object = newarray (ptolemy.data.Token)[1]}}}
 
+test TokenUnboxing-7.2 {} {
+    _doUnboxingTest Unboxing7
+} {}
+
+test TokenUnboxing-7.3 {} {
+    _doExecuteTest Unboxing7
+} {token = 1}
+
 test TokenUnboxing-8.1 {} {
     _doSpecializedTypesTest Unboxing8
 } {{{VariableTerm: value = int, depth = 1, associated object = $r10}} {{VariableTerm: value = int, depth = 1, associated object = $r1}} {{VariableTerm: value = int, depth = 1, associated object = $r2}} {{VariableTerm: value = int, depth = 1, associated object = $r3}} {{VariableTerm: value = int, depth = 1, associated object = $r5}} {{VariableTerm: value = int, depth = 1, associated object = $r6}} {{VariableTerm: value = int, depth = 1, associated object = <Unboxing8: ptolemy.data.Token token>}} {{VariableTerm: value = int, depth = 1, associated object = <Unboxing8: ptolemy.data.Token[] tokens2>}} {{VariableTerm: value = int, depth = 1, associated object = <Unboxing8: ptolemy.data.Token[] tokens>}} {{VariableTerm: value = int, depth = 1, associated object = newarray (ptolemy.data.Token)[1]}}}
+
+test TokenUnboxing-8.2 {} {
+    _doUnboxingTest Unboxing8
+} {}
+
+test TokenUnboxing-8.3 {} {
+    _doExecuteTest Unboxing8
+} {token = 1}
+
+
+test TokenUnboxing-9.1 {} {
+    _doSpecializedTypesTest Unboxing9
+} {}
+
+test TokenUnboxing-9.2 {} {
+    _doUnboxingTest Unboxing9
+} {}
+
+test TokenUnboxing-9.3 {} {
+    _doExecuteTest Unboxing9
+} {token = 0.0}
+
+
+test TokenUnboxing-10.1 {} {
+    _doSpecializedTypesTest Unboxing10
+} {}
+
+test TokenUnboxing-10.2 {} {
+    _doUnboxingTest Unboxing10
+} {}
+
+test TokenUnboxing-10.3 {} {
+    _doExecuteTest Unboxing10
+} {token = 0.0}
+
+
+test TokenUnboxing-11.1 {} {
+    _doSpecializedTypesTest Unboxing11
+} {}
+
+test TokenUnboxing-11.2 {} {
+    _doUnboxingTest Unboxing11
+} {}
+
+test TokenUnboxing-11.3 {} {
+    _doExecuteTest Unboxing11
+} {token = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}}

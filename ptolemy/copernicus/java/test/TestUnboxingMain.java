@@ -62,7 +62,7 @@ public class TestUnboxingMain extends KernelMain {
         addTransform(pack, "wjtp.watchDog", 
                 WatchDogTimer.v(), "time:" + _watchDogTimeout);
         addTransform(pack, "wjtp.ttn",
-                TokenToNativeTransformer.v(model));
+                TokenToNativeTransformer.v(model));// "debug:true level:1");
 
         addStandardOptimizations(pack, 8);
         

@@ -1,6 +1,7 @@
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
 
 public class Unboxing3
 {
@@ -8,12 +9,9 @@ public class Unboxing3
     static DoubleToken doubleToken = new DoubleToken(2.0);
     static Token token;
     
-    public void foo() {
+    public static void main(String[] strings) throws IllegalActionException {
         boolean flag = true;
-	if (flag)
-	    token = intToken;
-	else
-	    token = doubleToken;
+        token = intToken.add(doubleToken);
 	System.out.println("token = " + token.toString());
     }
 }
