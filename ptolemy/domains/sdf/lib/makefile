@@ -67,16 +67,7 @@ JSRCS = \
 	RaisedCosine.java \
 	Repeat.java \
 	SequenceToArray.java \
-        SequenceToDoubleMatrix.java \
-	SDFTransformer.java \
-	SDFSine.java \
-	SDFSource.java \
-	SDFRamp.java \
-	SDFConst.java \
-	SineFM.java \
-	SDFMultiply.java \
-	SDFAdd.java \
-	SDFDelay.java
+        SequenceToDoubleMatrix.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	sdfentities.xml
