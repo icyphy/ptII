@@ -69,7 +69,10 @@ MISC_FILES =	alljtests.tcl
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'ChangeRequestTest$$1.class'
+	'ChangeRequestTest$$1.class' \
+	'ChangeRequestTest$$2.class' \
+	'TestDE$$1.class' \
+	'TestDE$$2.class'
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
