@@ -44,7 +44,7 @@ import ptolemy.actor.Actor;
    @Pt.ProposedRating Green (liuj)
    @Pt.AcceptedRating Green (yuhong)
 */
-public interface CTEventGenerator extends Actor{
+public interface CTEventGenerator extends Actor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

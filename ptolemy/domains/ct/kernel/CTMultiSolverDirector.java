@@ -1394,7 +1394,7 @@ public class CTMultiSolverDirector extends CTDirector {
                         "is in the past.");
                 }
                 if (_debugging) _debug(
-                    "     >>> Remove " + now + " from the break-point list.");
+                    "\n      >>> Remove " + now + " from the break-point list.");
             } 
         }
         return currentTimeIsABreakpoint;

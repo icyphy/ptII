@@ -114,7 +114,7 @@ public final class CTExecutionPhase {
         = new CTExecutionPhase("PREFIRINGDYNAMICACTORS_PHASE");
 
     /** This final static memeber indicates the director is producing
-     *  outputs. 
+     *  outputs via firing purely continuous actors.
      */
     public final static CTExecutionPhase PRODUCINGOUTPUTS_PHASE 
         = new CTExecutionPhase("PRODUCINGOUTPUTS_PHASE");
@@ -126,7 +126,7 @@ public final class CTExecutionPhase {
         = new CTExecutionPhase("SOLVINGSTATES_PHASE");
 
     /** This final static memeber indicates the director is not in any 
-     *  of the above phases.
+     *  of the well-defined phases.
      */
     public final static CTExecutionPhase UNKNOWN_PHASE 
         = new CTExecutionPhase("UNKNOWN_PHASE");

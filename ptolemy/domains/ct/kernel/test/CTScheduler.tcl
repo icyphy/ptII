@@ -372,7 +372,6 @@ test CTScheduler-2.6 {event generators and event interpreters} {
 	.CA.A3
 	.CA.SSC
 	.CA.A5
-	.CA.EG
     }
 }
 }}
@@ -460,8 +459,6 @@ test CTScheduler-2.7 {contained in a composite actor} {
 	.CA.A6S
 	.CA.SSC
 	.CA.A5
-	.CA.EG
-	.CA.ED
     }
 }
 }}
@@ -531,8 +528,6 @@ test CTScheduler-2.8 {get the schedule again} {
 	.CA.A6S
 	.CA.SSC
 	.CA.A5
-	.CA.EG
-	.CA.ED
     }
 }
 }}

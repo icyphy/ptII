@@ -75,15 +75,15 @@ public interface CTTransparentDirector extends CTGeneralDirector {
     public boolean hasCurrentEvent();
 
     /** Implementations of this method should return
-     *  true if the all output actors declare the current integration step
-     *  is accurate.
+     *  true if the all output actors declare the 
+     *  current integration step is accurate.
      *  @return True if the current step is accurate.
      */
     public boolean isOutputAccurate();
     
     /** Implementations of this method should return
-     *  true if all stateful actors declare the current integration step
-     *  is accurate.
+     *  true if all stateful actors declare the 
+     *  current integration step is accurate.
      *  @return True if the current step is accurate.
      */
     public boolean isStateAccurate();
