@@ -132,7 +132,10 @@ where <em>arg1,arg2,...</em>is a list of arguments appearing in
 <em>"expression"</em>. Note that this form of invoking matlab
 is limited to returning only the first return value of a matlab
 function. If you need multiple return values, use the matlab
-{@link ptolemy.matlab.Expression} actor.
+{@link ptolemy.matlab.Expression} actor. If a "packageDirectories"
+Parameter is in the scope of this expression, it's value is
+added to the matlab path while the expression is being executed
+(like {@link ptolemy.matlab.Expression}).
 <p>
 @author Neil Smyth and Edward A. Lee, University of California;
 @author Zoltan Kemenczy, Research in Motion Limited
@@ -249,53 +252,62 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 NamedList scope = _parser.getScope();
                 Engine matlabEngine = new Engine();
                 ptolemy.data.Token result = null;
-                matlabEngine.open();
+                long[] engine = matlabEngine.open();
                 try {
-                    String addPathCommand = null;         // Assume none
-                    ptolemy.data.Token previousPath = null;
-                    Variable packageDirectories =
-                        (Variable)scope.get("packageDirectories");
-                    if (packageDirectories != null) {
-                        StringTokenizer dirs = new
-                            StringTokenizer((String)
-                                    ((StringToken)packageDirectories
-                                            .getToken()).stringValue(),",");
-                        StringBuffer cellFormat = new StringBuffer(512);
-                        cellFormat.append("{");
-                        if (dirs.hasMoreTokens()) {
-                            cellFormat.append("'" + UtilityFunctions
-                                    .findFile(dirs.nextToken()) + "'");
-                        }
-                        while (dirs.hasMoreTokens()) {
-                            cellFormat.append(",'" + UtilityFunctions
-                                    .findFile(dirs.nextToken()) + "'");
-                        }
-                        cellFormat.append("}");
+                    synchronized (Engine.semaphore) {
+                        String addPathCommand = null;         // Assume none
+                        ptolemy.data.Token previousPath = null;
+                        Variable packageDirectories =
+                            (Variable)scope.get("packageDirectories");
+                        if (packageDirectories != null) {
+                            StringTokenizer dirs = new
+                                StringTokenizer
+                                ((String)((StringToken)packageDirectories
+                                          .getToken()).stringValue(),",");
+                            StringBuffer cellFormat = new StringBuffer(512);
+                            cellFormat.append("{");
+                            if (dirs.hasMoreTokens()) {
+                                cellFormat.append
+                                    ("'" + UtilityFunctions
+                                     .findFile(dirs.nextToken()) + "'");
+                            }
+                            while (dirs.hasMoreTokens()) {
+                                cellFormat.append
+                                    (",'" + UtilityFunctions
+                                     .findFile(dirs.nextToken()) + "'");
+                            }
+                            cellFormat.append("}");
 
-                        if (cellFormat.length() > 2) {
-                            addPathCommand = "addedPath_=" + cellFormat.toString()
-                                + ";addpath(addedPath_{:});";
-                            matlabEngine.evalString("previousPath_=path");
-                            previousPath = matlabEngine.get("previousPath_");
+                            if (cellFormat.length() > 2) {
+                                addPathCommand = "addedPath_=" +
+                                    cellFormat.toString()
+                                    + ";addpath(addedPath_{:});";
+                                matlabEngine.evalString
+                                    (engine, "previousPath_=path");
+                                previousPath = matlabEngine.get
+                                    (engine, "previousPath_");
+                            }
                         }
+                        matlabEngine.evalString
+                            (engine, "clear variables;clear globals");
+
+                        if (addPathCommand != null)
+                            matlabEngine.evalString(engine, addPathCommand);
+
+                        // Set scope variables
+                        Iterator variables = scope.elementList().iterator();
+                        while (variables.hasNext()) {
+                            Variable var = (Variable)variables.next();
+                            if (var != packageDirectories)
+                                matlabEngine.put
+                                    (engine, var.getName(), var.getToken());
+                        }
+                        matlabEngine.evalString(engine, "result__="+exp);
+                        result = matlabEngine.get(engine, "result__");
                     }
-                    matlabEngine.evalString("clear variables;clear globals");
-
-                    if (addPathCommand != null)
-                        matlabEngine.evalString(addPathCommand);
-
-                    // Set scope variables
-                    Iterator variables = scope.elementList().iterator();
-                    while (variables.hasNext()) {
-                        Variable var = (Variable)variables.next();
-                        if (var != packageDirectories)
-                            matlabEngine.put(var.getName(), var.getToken());
-                    }
-                    matlabEngine.evalString("result__="+exp);
-                    result = matlabEngine.get("result__");
                 }
                 finally {
-                    matlabEngine.close();
+                    matlabEngine.close(engine);
                 }
                 return result;
             } else {
@@ -328,7 +340,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             }
             // Now have the arguments converted, look through all the
             // classes registered with the parser for the appropriate
-            // function.
+            // function. 
             result = CachedMethod.findAndRunMethod
                 (_funcName, argTypes, argValues, CachedMethod.FUNCTION);
         }
@@ -339,8 +351,8 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             if (retval == null) {
                 throw new IllegalActionException
                     ("FunctionNode: result of function " + _funcName +
-                            " is "+result.getClass()+" and is not supported by"+
-                            " FunctionNode. See the java class documentation."
+                     " is "+result.getClass()+" and is not supported by"+
+                     " FunctionNode. See the java class documentation."
                      );
             }
             if (debug) System.out.println("result:  "+retval);
@@ -366,7 +378,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     // Convert a token to its underlying java type and return its value
     // (Object) and type (Class).
     protected static Object[] convertTokenToJavaType
-    (ptolemy.data.Token token) {
+        (ptolemy.data.Token token) {
         Object[] retval = new Object[2];
         if (token instanceof DoubleToken) {
             // Note: Java makes a distinction between the class objects
@@ -415,64 +427,64 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             // was a Token.getValue() that would return the
             // token element value in a polymorphic way...
             if (((ArrayToken)token).getElement(0)
-                    instanceof FixToken) {
+                instanceof FixToken) {
                 FixPoint[] array = new FixPoint
                     [((ArrayToken)token).length()];
                 for (int j = 0; j < array.length; j++) {
                     array[j] = ((FixToken)((ArrayToken)token)
-                            .getElement(j)).fixValue();
+                                .getElement(j)).fixValue();
                 }
                 retval[0] = array;
             } else if (((ArrayToken)token).getElement(0)
-                    instanceof IntToken) {
+                       instanceof IntToken) {
                 int[] array = new int[((ArrayToken)token).length()];
                 for (int j = 0; j < array.length; j++) {
                     array[j] = ((IntToken)((ArrayToken)token)
-                            .getElement(j)).intValue();
+                                .getElement(j)).intValue();
                 }
                 retval[0] = array;
             } else if (((ArrayToken)token).getElement(0)
-                    instanceof LongToken) {
+                       instanceof LongToken) {
                 long[] array = new long[((ArrayToken)token).length()];
                 for (int j = 0; j < array.length; j++) {
                     array[j] = ((LongToken)((ArrayToken)token)
-                            .getElement(j)).longValue();
+                                .getElement(j)).longValue();
                 }
                 retval[0] = array;
             } else if (((ArrayToken)token).getElement(0)
-                    instanceof DoubleToken) {
+                       instanceof DoubleToken) {
                 double[] array = new double
                     [((ArrayToken)token).length()];
                 for (int j = 0; j < array.length; j++) {
                     array[j] = ((DoubleToken)((ArrayToken)token)
-                            .getElement(j)).doubleValue();
+                                .getElement(j)).doubleValue();
                 }
                 retval[0] = array;
             } else if (((ArrayToken)token).getElement(0)
-                    instanceof ComplexToken) {
+                       instanceof ComplexToken) {
                 Complex[] array = new Complex
                     [((ArrayToken)token).length()];
                 for (int j = 0; j < array.length; j++) {
                     array[j] = ((ComplexToken)((ArrayToken)token)
-                            .getElement(j)).complexValue();
+                                .getElement(j)).complexValue();
                 }
                 retval[0] = array;
             } else if (((ArrayToken)token).getElement(0)
-                    instanceof StringToken) {
+                       instanceof StringToken) {
                 String[] array = new String
                     [((ArrayToken)token).length()];
                 for (int j = 0; j < array.length; j++) {
                     array[j] = ((StringToken)((ArrayToken)token)
-                            .getElement(j)).stringValue();
+                                .getElement(j)).stringValue();
                 }
                 retval[0] = array;
             } else if (((ArrayToken)token).getElement(0)
-                    instanceof BooleanToken) {
+                       instanceof BooleanToken) {
                 boolean[] array = new boolean
                     [((ArrayToken)token).length()];
                 for (int j = 0; j < array.length; j++) {
                     array[j] = ((BooleanToken)((ArrayToken)token)
-                            .getElement(j)).booleanValue();
+                                .getElement(j)).booleanValue();
                 }
                 retval[0] = array;
             }
@@ -486,7 +498,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 
     // Convert a java object to its corresponding Token.
     protected static ptolemy.data.Token convertJavaTypeToToken(Object object)
-            throws ptolemy.kernel.util.IllegalActionException {
+        throws ptolemy.kernel.util.IllegalActionException {
         ptolemy.data.Token retval = null;
         if (object instanceof ptolemy.data.Token) {
             retval = (ptolemy.data.Token)object;
