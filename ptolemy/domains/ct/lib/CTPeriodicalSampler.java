@@ -159,7 +159,10 @@ public class CTPeriodicalSampler extends CTActor
     public boolean hasMissedEvent() {
         CTDirector dir = (CTDirector)getDirector();
         double tnow = dir.getCurrentTime();
-        if(tnow > _nextSamplingTime) {
+        if(Math.abs(tnow - _nextSamplingTime)<dir.getTimeAccuracy()) {
+            return false;
+        }
+        if (tnow>_nextSamplingTime){
             _eventMissed = true;
             _refineStep = _nextSamplingTime - (tnow-dir.getCurrentTime());
             return true;
