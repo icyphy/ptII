@@ -103,12 +103,7 @@ public class PtolemyQuery extends Query
 	addQueryListener(this);
 	_parameters = new HashMap();
 	_director = director;
-	_ignoreChanged = 0;
-
-	_varToListOfEntries = new HashMap();
-	_ignoreEntryChange = new HashMap();
-	_ignoreVarChangePart1 = new HashMap();
-	
+        _varToListOfEntries = new HashMap();
     }
 
     /** 
@@ -184,26 +179,6 @@ public class PtolemyQuery extends Query
 		entryNameList.add(entryName);
 	    }
 	}
-	if (_ignoreEntryChange.containsKey(entryName) == false) {
-	    // Add the current entry to the map and don't ignore
-	    // change requests for this entry.
-	    _ignoreEntryChange.put(entryName, new Boolean(false));
-	}
-	if (_ignoreVarChangePart1.containsKey(var) == false) {
-	    Map ignoreVarChangePart2 = new HashMap();
-	    // Add the current entry to the map and don't ignore
-	    // change requests for this entry.
-	    ignoreVarChangePart2.put(entryName, new Boolean(false));
-	    _ignoreVarChangePart1.put(var, ignoreVarChangePart2);
-	} else {
-	    Map ignoreVarChangePart2 = (Map)_ignoreVarChangePart1.get(var);
-	    // Check if entryName is in the Map.
-	    if (ignoreVarChangePart2.containsKey(entryName) == false) {
-		// Add the current entry to the map and don't ignore
-		// change requests for this entry.
-		ignoreVarChangePart2.put(entryName, new Boolean(false));;
-	    }
-	}
     }
 
     /** Set the variable to the value of the Query entry that
@@ -225,15 +200,19 @@ public class PtolemyQuery extends Query
 	// Check if the entry that changed is in the mapping.
 	if (_parameters.containsKey(name)) {
 	    Variable var = (Variable)(_parameters.get(name));
-	    // Check if we should ignore 
-	    Boolean flag = (Boolean)_ignoreEntryChange.get(name);
-	    if (flag.booleanValue()) {
-		// Don't ignore next time this method is called.
-		_ignoreEntryChange.put(name, new Boolean(false));
-		return;
-	    }
-	    // Don't ignore.
-	    
+
+            // Check to see if we should ignore this parameter set.
+            String expr;
+            try {
+                expr = var.getToken().toString();
+            } catch(Exception ex) {
+                expr = var.getExpression();
+            }
+            if(expr.equals(stringValue(name))) {
+                return;
+            } 
+
+	    // Don't ignore.	    
 	    Director director = _director;
 	    if (_director != null) {
 		// Director not specified in constructor,
@@ -253,31 +232,26 @@ public class PtolemyQuery extends Query
 		    container = container.getContainer();
 		}
 	    }
-	    if(director != null && director.getContainer() != null &&
-	       ((CompositeActor)director.getContainer()).getManager() != null) {
-		try {
-		    director.requestChange(new SetParameter((Parameter)var, 
-			(Parameter)var, stringValue(name)));
-		} catch (ChangeFailedException e) {
-		    // FIXME: This method should probably throw an
-		    // exception, but then a lot of code (including
-		    // the base class), would need to be changed.
-		    System.err.println("Change failed: " + e);
-		}
-	    } else {
-		// So just set the variable here, since there is no
-		// director to queue a mutation request with.
-		var.setExpression(stringValue(name));
-                try {
-                    // Trigger evaluation of the variable.
-                    var.getToken();
-                } catch (Exception e) {
-		    // FIXME: This method should probably throw an
-		    // exception, but then a lot of code (including
-		    // the base class), would need to be changed.
-		    System.err.println("Change failed: " + e);
+            try {
+                ChangeRequest request = new SetParameter((Parameter)var, 
+                        (Parameter)var, stringValue(name));
+                if(director != null && director.getContainer() != null &&
+                        ((CompositeActor)director.getContainer()).getManager() != null) {
+                    // FIXME the change may happen at sometime in the future.
+                    // we should listen and revert if the change fails.
+                    director.requestChange(request);
+                } else {
+                    request.execute();
                 }
-	    } 
+            } catch (ChangeFailedException e) {
+                // FIXME: This method should probably throw an
+                // exception, but then a lot of code (including
+                // the base class), would need to be changed.
+                System.err.println("parameter change failed, reverting" + 
+                        " to previous expression.");
+                String finalExpression = var.stringRepresentation();
+                set(name, finalExpression);
+            }
 	}
     }
 
@@ -289,49 +263,48 @@ public class PtolemyQuery extends Query
      *  @param variable The variable that has changed.
      */
     public void valueChanged(Variable variable) {
-	//System.out.println("PtolemyQuery: valueChanged: invoked");
-	    // Check that variable is attached to at least one entry.
-	    if (_parameters.containsValue(variable)) {
-		
-		//System.out.println("PtolemyQuery: valueChanged(): " +
-		//	       "getFullName of var" +
-		//	       variable.getFullName() + ".");
-		//System.out.println("PtolemyQuery: valueChanged(): " +
-		//	       "stringRepresentation " + 
-		//	       variable.stringRepresentation());
-		    
-		    // Get the list of entry names that variable is
-		    // attached to.
-		    List entryNameList = (List)_varToListOfEntries.get(variable);
-		    // For each entry name, call set() to update its
-		    // value with the value of variable.
-		    Iterator entryNames = entryNameList.iterator();
-	    
-		    while (entryNames.hasNext()) {
-			// Check if entryName is in the list. If not, add it.
-			String name = (String)entryNames.next();
-			Map ignoreVarChangePart2 = 
-			    (Map)_ignoreVarChangePart1.get(variable);
-			
-			if (((Boolean)ignoreVarChangePart2.get(name)).booleanValue() == false) {
-			    // Set the entry name's value to the variable's
-			    // value.
-			    set(name, variable.stringRepresentation());
-			    
-			    // Ignore the next call to changed() since it
-			    // will just be the return call caused by
-			    // this method setting the entry.
-			    _ignoreEntryChange.put(name, new Boolean(true));
-			} else {
-			    ignoreVarChangePart2.put(name, new Boolean(false));
-			}
-		    }
-	    } else {
-		// FIXME: throw exception?
-		System.out.println("PtolemyQuery: valueChanged(): " +
-				   "No entry attached to variable " +
-				   variable.getFullName());
-	    }
+	System.out.println("PtolemyQuery: valueChanged: invoked");
+        // Check that variable is attached to at least one entry.
+        if (_parameters.containsValue(variable)) {
+            
+            //System.out.println("PtolemyQuery: valueChanged(): " +
+            //	       "getFullName of var" +
+            //	       variable.getFullName() + ".");
+            System.out.println("PtolemyQuery: valueChanged(): " +
+            	       "stringRepresentation " + 
+                    variable.stringRepresentation());
+            
+            // Get the list of entry names that variable is
+            // attached to.
+            List entryNameList = (List)_varToListOfEntries.get(variable);
+            // For each entry name, call set() to update its
+            // value with the value of variable.
+            Iterator entryNames = entryNameList.iterator();
+            
+            while (entryNames.hasNext()) {
+                // Check if entryName is in the list. If not, add it.
+                String name = (String)entryNames.next();
+                
+                System.out.println("setting " + name);
+                // Set the entry name's value to the variable's
+                // value.
+                // FIXME
+                /*String finalExpression;
+                try {
+                    finalExpression = variable.getToken().toString();
+                } catch(Exception ex) {
+                    finalExpression = variable.getExpression();
+                }
+                set(name, finalExpression);
+                */
+                set(name, variable.stringRepresentation());
+            }
+        } else {
+            // FIXME: throw exception?
+            System.out.println("PtolemyQuery: valueChanged(): " +
+                    "No entry attached to variable " +
+                    variable.getFullName());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -342,22 +315,7 @@ public class PtolemyQuery extends Query
     // Maps a variable name to a list of entry names that the
     // variable is attached to.
     private Map _varToListOfEntries;
-    // Maps an entry name to a boolean. If true, then do not
-    // take any action when an entry change occurs, to avoid
-    // infinite loop condition.
-    private Map _ignoreEntryChange;
-    // _ignoreVarChangePart1 and ignoreVarChangePart2 are used together
-    // as a multidimensional hashmap, indexed by variable and and entry
-    // name, and mapping to a boolean. If the value of the boolean is
-    // true, then ignore a variable changed -> change entry request
-    // for the entry.
-    // _ignoreVarChangePart1: map variable -> an instance of 
-    // ignoreVarChangePart2
-    private Map _ignoreVarChangePart1;
-    
 
-    // Number of calls to calls changed() to ignore.
-    private int _ignoreChanged;
     private Director _director;
     private boolean _constructorDirector;
 }

@@ -83,6 +83,8 @@ public class EditorPaneFactory extends Attribute {
      *  @return A new widget for configuring the container.
      */
     public Component createEditorPane() {
+        // FIXME PtolemyQuery will attach listeners to parameters.  How do
+        // they get removed?
         PtolemyQuery query = new PtolemyQuery();
         query.setTextWidth(25);
         NamedObj container = (NamedObj)getContainer();
