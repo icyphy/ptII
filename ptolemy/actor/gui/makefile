@@ -155,6 +155,7 @@ OPTIONAL_FILES = \
 	'RunTableau$$Factory.class' \
 	'RunTableau$$RunFrame$$DebugMenuListener.class' \
 	'RunTableau$$RunFrame.class' \
+	'RunTableau$$TopFactory.class' \
 	'Tableau$$1.class' \
 	'TableauFrame$$1.class' \
 	'TableauFrame$$ViewMenuListener.class' \
