@@ -92,7 +92,8 @@ import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 
-import ptolemy.backtrack.ast.rule.AssignmentHandler;
+import ptolemy.backtrack.ast.transform.AssignmentHandler;
+import ptolemy.backtrack.ast.transform.ClassHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeAnalyzer
@@ -153,7 +154,15 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param node
      */
     public void endVisit(AnonymousClassDeclaration node) {
-        _state.getVariableStack().pop();
+        if (_handlers.hasClassHandler()) {
+            List handlerList = _handlers.getClassHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                ClassHandler handler = (ClassHandler)handlersIter.next();
+                handler.handle(node, _state);
+            }
+        }
+        _closeScope();
         _state.leaveClass();
     }
 
@@ -226,7 +235,7 @@ public class TypeAnalyzer extends ASTVisitor {
         Type.setType(node, Type.BOOLEAN);
     }
 
-    /** Propagate the type of the cast class to this node.
+   /** Propagate the type of the cast class to this node.
     *
     *  @param node The node to be visited.
     */
@@ -234,7 +243,7 @@ public class TypeAnalyzer extends ASTVisitor {
        Type.propagateType(node, node.getType());
    }
 
-   /** Visit a literal node and set its type to be the same type as the
+    /** Visit a literal node and set its type to be the same type as the
      *  literal.
      *
      *  @param node The node to be visited.
@@ -291,6 +300,15 @@ public class TypeAnalyzer extends ASTVisitor {
        _closeScope();
    }
 
+   /** Visit a field declaration and set its type to be the same as the
+    *  declared type.
+    *
+    *  @param node The node to be visited.
+    */
+   public void endVisit(FieldDeclaration node) {
+       Type.propagateType(node, node.getType());
+   }
+   
    /** End the visit of a for statement and close the scope opened by
     *  the previous visit function.
     *
@@ -699,6 +717,15 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param node The node to be visited.
      */
     public void endVisit(TypeDeclaration node) {
+        if (_handlers.hasClassHandler()) {
+            List handlerList = _handlers.getClassHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                ClassHandler handler = (ClassHandler)handlersIter.next();
+                handler.handle(node, _state);
+            }
+        }
+        _closeScope();
         _state.leaveClass();
     }
 
@@ -811,7 +838,7 @@ public class TypeAnalyzer extends ASTVisitor {
         }
 
         // A class declaration starts a new scope.
-        _state.getVariableStack().push(new Hashtable());
+        _openScope();
         _recordFields();
 
         // Sort body declarations.
@@ -908,7 +935,7 @@ public class TypeAnalyzer extends ASTVisitor {
         }
 
         // A class declaration starts a new scope.
-        _state.getVariableStack().push(new Hashtable());
+        _openScope();
         _recordFields();
 
         // Sort body declarations.
