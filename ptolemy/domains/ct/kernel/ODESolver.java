@@ -124,6 +124,23 @@ public abstract class ODESolver extends NamedObj {
         return _container;
     }
 
+    /** Return the number of history information needed by this solver.
+     *  Some solvers need history information from each integrator.
+     *  The derived class should implement this method to return the
+     *  number of history information needed so that the integrator can
+     *  prepare for that in advance.
+     *  @return The number of history information needed.
+     */
+    public abstract int getHistoryCapacityRequirement();
+
+    /** Return the number of auxiliary variables that an integrator should
+     *  provide when solving the ODE. Auxiliary variables are variables
+     *  in integrators to store integrator-dependent intermediate results
+     *  when solving an ODE.
+     *  @return The number of auxiliary variables.
+     */
+    public abstract int getIntegratorAuxVariableCount();
+
     /** Return the round counter record.
      *
      *  @return The round of firing the state transition schedule.
@@ -139,23 +156,6 @@ public abstract class ODESolver extends NamedObj {
     public void incrementRound() {
         _round ++ ;
     }
-
-    /** Return the number of auxiliary variables that an integrator should
-     *  provide when solving the ODE. Auxiliary variables are variables
-     *  in integrators to store integrator-dependent intermediate results
-     *  when solving an ODE.
-     *  @return The number of auxiliary variables.
-     */
-    public abstract int getIntegratorAuxVariableCount();
-
-    /** Return the number of history information needed by this solver.
-     *  Some solvers need history information from each integrator.
-     *  The derived class should implement this method to return the
-     *  number of history information needed so that the integrator can
-     *  prepare for that in advance.
-     *  @return The number of history information needed.
-     */
-    public abstract int getHistoryCapacityRequirement();
 
     /** The fire() method of integrators is delegated to this method.
      *
