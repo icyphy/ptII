@@ -36,6 +36,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -154,20 +155,20 @@ public class Transition extends ComponentRelation {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         guardExpression = new StringAttribute(this, "guardExpression");
-        preemptive = new Parameter(this, "preemptive");
-        preemptive.setTypeEquals(BaseType.BOOLEAN);
-        preemptive.setToken(BooleanToken.FALSE);
+	outputActions = new OutputActionsAttribute(this, "outputActions");
+        setActions = new CommitActionsAttribute(this, "setActions");
         reset = new Parameter(this, "reset");
         reset.setTypeEquals(BaseType.BOOLEAN);
         reset.setToken(BooleanToken.FALSE);
+        preemptive = new Parameter(this, "preemptive");
+        preemptive.setTypeEquals(BaseType.BOOLEAN);
+        preemptive.setToken(BooleanToken.FALSE);
         triggerExpression = new StringAttribute(this, "triggerExpression");
+	triggerExpression.setVisibility(Settable.NONE);
         _guard = new Variable(this, "_guard");
         _guard.setTypeEquals(BaseType.BOOLEAN);
         _trigger = new Variable(this, "_trigger");
         _trigger.setTypeEquals(BaseType.BOOLEAN);
-
-        setActions = new CommitActionsAttribute(this, "setActions");
-	outputActions = new OutputActionsAttribute(this, "outputActions");
     }
 
     ///////////////////////////////////////////////////////////////////
