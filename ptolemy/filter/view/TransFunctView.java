@@ -27,6 +27,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.filter.view;
 
+import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -44,7 +45,7 @@ import ptolemy.filter.controller.Manager;
   @author William Wu (wbwu@eecs.berkeley.edu) 
   @version
  */
-public class TransFunctView extends FilterView implements ActionListener {
+public class TransFunctView extends FilterView implements ActionListener, ItemListener {
 
     /**
      * Constructor.  The scrobble panel is created.  If the operation
@@ -63,9 +64,25 @@ public class TransFunctView extends FilterView implements ActionListener {
           _savebutton = new Button("   Save Transfer Function   ");
           _savebutton.addActionListener(this);
           _savebutton.setActionCommand("save");
+
+          _precision = new Choice();
+          _precision.addItem("0");
+          _precision.addItem("1");
+          _precision.addItem("2");
+          _precision.addItem("3");
+          _precision.addItem("4");
+          _precision.addItem("5");
+          _precision.addItem("6");
+          _precision.addItem("7");
+          _precision.select("5");
+          _precision.addItemListener(this);
+
           Panel buttonpanel = new Panel();
           buttonpanel.setLayout(new FlowLayout(5,5,5));
           buttonpanel.add(_savebutton); 
+          buttonpanel.add(new Label("Number of Precision"));
+          buttonpanel.add(_precision); 
+
           _canvasPane = new TransPane();
           ScrollPane scrollPane = new ScrollPane();
           scrollPane.setSize(450, 150);
@@ -81,6 +98,8 @@ public class TransFunctView extends FilterView implements ActionListener {
               _frame.setSize(500,250);
               _frame.setLocation(300,210);
               _frame.setVisible(true);
+              _saveFileDialog = new FileDialog(_frame, "Save Transfer Function",
+                                               FileDialog.SAVE);
           }
 
           // get initial transfer function value
@@ -92,8 +111,26 @@ public class TransFunctView extends FilterView implements ActionListener {
 
     public void actionPerformed(ActionEvent evt){
         if (evt.getActionCommand().equals("save")){
+
+            if (_opMode != Manager.FRAMEMODE) return;
+
+            if (_curDir!=null) _saveFileDialog.setDirectory(_curDir);
+            if (_curFile!=null) _saveFileDialog.setFile(_curFile);
+            _saveFileDialog.setVisible(true); 
+            _curDir = _saveFileDialog.getDirectory();
+            _curFile = _saveFileDialog.getFile();
+            if ((_curFile == null) || (_curFile.equals(""))) return;
+            _saveTransFunct();      
+
             System.out.println("saving filter transfer function");
         } 
+    }
+
+
+    public void itemStateChanged(ItemEvent evt){
+        String precision = _precision.getSelectedItem();
+        _prec = Integer.valueOf(precision).intValue();
+        _setViewTransferFunction();
     }
 
     /**
@@ -117,7 +154,6 @@ public class TransFunctView extends FilterView implements ActionListener {
      ////                     private methods                              ////
 
      private void _setViewTransferFunction(){
-         int prec = 5;
          FilterObj jf = (FilterObj) _observed;
          Complex [] complexnum;
          Complex [] complexden;
@@ -139,15 +175,15 @@ public class TransFunctView extends FilterView implements ActionListener {
              complexgain = jf.getComplexGain();
              _complexNumerator = new Complex[complexnum.length];
              _complexDenominator = new Complex[complexden.length];
-             _complexGain = new Complex(_chop(complexgain.real, prec),
-                                        _chop(complexgain.imag, prec));
+             _complexGain = new Complex(_chop(complexgain.real, _prec),
+                                        _chop(complexgain.imag, _prec));
              for (int i=0;i<complexnum.length;i++){
-                  _complexNumerator[i]=new Complex(_chop(complexnum[i].real, prec),
-                                       _chop(complexnum[i].imag, prec));
+                  _complexNumerator[i]=new Complex(_chop(complexnum[i].real, _prec),
+                                       _chop(complexnum[i].imag, _prec));
              }
              for (int i=0;i<complexden.length;i++){
-                  _complexDenominator[i]=new Complex(_chop(complexden[i].real, prec),
-                                       _chop(complexden[i].imag, prec));
+                  _complexDenominator[i]=new Complex(_chop(complexden[i].real, _prec),
+                                       _chop(complexden[i].imag, _prec));
              }
              size = Math.max(complexnum.length, complexden.length)*140+70; 
          } else {
@@ -156,13 +192,13 @@ public class TransFunctView extends FilterView implements ActionListener {
              realgain = jf.getRealGain();
              _realNumerator = new double[realnum.length];
              _realDenominator = new double[realden.length];
-             _realGain = _chop(realgain, prec);
+             _realGain = _chop(realgain, _prec);
 
              for (int i=0;i<realnum.length;i++){
-                  _realNumerator[i]=_chop(realnum[i], prec);
+                  _realNumerator[i]=_chop(realnum[i], _prec);
              }
              for (int i=0;i<realden.length;i++){
-                  _realDenominator[i]=_chop(realden[i], prec);
+                  _realDenominator[i]=_chop(realden[i], _prec);
              }
              size = Math.max(realnum.length, realden.length)*120+50; 
              
@@ -182,9 +218,39 @@ public class TransFunctView extends FilterView implements ActionListener {
          } else {
              strValueChop = strValue;
          }
-         
          return (Double.valueOf(strValueChop)).doubleValue(); 
      }
+
+     private void _saveTransFunct(){
+
+         File saveFile = new File(_curDir, _curFile);
+         PrintWriter ptstream;
+
+         if (saveFile.exists()) {
+             System.out.println("Warning: File "+_curFile+
+                                " exists, overwriting it now!");
+                 
+         }
+ 
+         try {
+             ptstream = new PrintWriter(new FileOutputStream(saveFile), true);
+         } catch (IOException e) {
+             return;
+         }
+   
+         if (_realNumerator != null){ 
+             ptstream.println(_realGain);
+             for (int i=0;i<_realNumerator.length;i++){
+                  ptstream.print(_realNumerator[i]+" ");
+             } 
+             ptstream.println(" ");
+             for (int i=0;i<_realDenominator.length;i++){
+                  ptstream.print(_realDenominator[i]+" ");
+             } 
+             ptstream.println(" ");
+         }
+         ptstream.close();   
+      }
  
      ///////////////////////////////////////////////////////////////////
      ////                        private variables                  ////
@@ -197,6 +263,11 @@ public class TransFunctView extends FilterView implements ActionListener {
      private Complex _complexGain;
      private TransPane _canvasPane; 
      private Button _savebutton;
+     private FileDialog _saveFileDialog;
+     private String _curDir;
+     private String _curFile;
+     private Choice _precision;  
+     private int _prec = 5;
 
      ///////////////////////////////////////////////////////////////////
      ////                        inner class                        ////
@@ -260,5 +331,5 @@ public class TransFunctView extends FilterView implements ActionListener {
 
           // Font _transferFont = new Font("Serif", Font.ITALIC, 12);
      }
- 
 }
+
