@@ -37,9 +37,17 @@ This is an interface for attributes that can have their values
 externally set.  An attribute class that implements this interface has to
 be able to have a value set by a string, via the setExpression()
 method.  A string representation is returned by the getExpression()
-method.  These values are called "expressions" for historical
-reasons, although this interface, and all uses of it, regard the
-values merely as strings.
+method.  An expression may be an ordinary string with no further
+interpretation, or it may be a string that needs to be evaluated.
+In the latter case, an implementation of this attribute may not
+evaluate the string when the setExpression() method is called.
+It may instead only evaluate the string when the validate() method
+is called.  Often this will not be called until the value of the
+expression is actually needed (this is known as "lazy evaluation").
+Such an implementation will defer notification of listeners and the
+container until the string is evaluated. In a typical use of this
+interface, therefore, it is necessary to be sure that validate()
+is called sometime after setExpression() is called.
 <p>
 In addition, an attribute class that implements this interface
 needs to maintain a list of listeners that are informed whenever
@@ -105,6 +113,9 @@ public interface Settable extends Nameable {
     public void removeValueListener(ValueListener listener);
 
     /** Set the value of the attribute by giving some expression.
+     *  In some implementations, the listeners and the container will
+     *  be notified immediately.  However, some implementations may
+     *  defer notification until validate() is called.
      *  @param expression The value of the attribute.
      *  @exception IllegalActionException If the expression is invalid.
      */
@@ -122,8 +133,9 @@ public interface Settable extends Nameable {
 
     /** Check the validity of the expression set in setExpression().
      *  Implementations of this method should notify the container
-     *  by calling attributeChanged().  It should also notify any
-     *  registered value listeners.
+     *  by calling attributeChanged(), unless the container has already
+     *  been notified in setExpression().  They should also notify any
+     *  registered value listeners if they have not already been notified.
      *  @exception IllegalActionException If the expression is not valid, or
      *   its value is not acceptable to the container or the listeners.
      */
