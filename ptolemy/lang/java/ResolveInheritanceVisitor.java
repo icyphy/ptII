@@ -1,4 +1,4 @@
-/* Fills in class and interface environments with inherited members.
+/* Fills in class and interface scopes with inherited members.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -41,7 +41,7 @@ import ptolemy.lang.java.nodetypes.*;
 //////////////////////////////////////////////////////////////////////////
 //// ResolveInheritanceVisitor
 /** Adds inherited class and interface members to the respective
-environments  This is part 2 of pass 1, part 1 of pass 1 happens in ResolveClassVisitor.
+scopes  This is part 2 of pass 1, part 1 of pass 1 happens in ResolveClassVisitor.
 <p>
 Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,
@@ -199,7 +199,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
         Iterator declItr = from.getScope().allProperDecls();
 
-        Scope toScope = to.getEnviron();
+        Scope toScope = to.getScope();
 
         while (declItr.hasNext()) {
             JavaDecl member = (JavaDecl) declItr.next();
@@ -215,7 +215,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
 
     // Return true if there is at least one abstract method in the class
-    // environment.
+    // scope.
     private static boolean _hasAbstractMethod(UserTypeDeclNode node) {
         Scope classEnv = JavaDecl.getDecl((NamedNode) node).getScope();
 
@@ -242,10 +242,10 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
             FieldDecl current = (FieldDecl)
                 env.lookupProper(memberName, CG_FIELD);
 
-            // Only definitions in the destination environment override fields
+            // Only definitions in the destination scope override fields
             // If multiple definitions are inherited, a compile-time error
             // must be reported for any use (this is achieved by letting the
-            // environment contain multiple copies of the field, which will
+            // scope contain multiple copies of the field, which will
             // produce an ambiguous reference error in the name lookup)
             // But: multiple inheritances of the *same* field only count once
             return ((current != null) &&

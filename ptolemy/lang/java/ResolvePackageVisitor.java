@@ -1,6 +1,6 @@
 /*
 A JavaVisitor that adds the names of the types defined in the CompileUnitNode
-to the file environment, creates the environments for all nodes,
+to the file scope, creates the environments for all nodes,
 then resolves names of the imports with a ResolveImportsVisitor.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
@@ -45,7 +45,7 @@ import ptolemy.lang.java.nodetypes.*;
 //// ResolvePackageVisitor
 
 /** A JavaVisitor that adds the names of the types defined in the
-CompileUnitNode to the file environment, creates the environments for
+CompileUnitNode to the file scope, creates the environments for
 all nodes, then resolves names of the imports with a
 ResolveImportsVisitor.
 
@@ -74,8 +74,8 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         _pkgEnv  = (Scope) environ.parent();
 
         LinkedList childArgs = new LinkedList();
-        childArgs.addLast(environ);            // enclosing environment =
-        // file environment
+        childArgs.addLast(environ);            // enclosing scope =
+        // file scope
         childArgs.addLast(Boolean.FALSE);      // inner class = false
         childArgs.addLast(NullValue.instance); // no enclosing decl
 
@@ -97,7 +97,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
     }
 
     public Object visitBlockNode(BlockNode node, LinkedList args) {
-        // make a new environment for inner class declarations
+        // make a new scope for inner class declarations
 
         Scope env = _makeScope(node, args);
 
@@ -120,7 +120,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         node.setProperty(DECL_KEY, decl);
 
         LinkedList listArgs = new LinkedList();
-        listArgs.addLast(env);                  // last environment
+        listArgs.addLast(env);                  // last scope
         listArgs.addLast(Boolean.TRUE);         // inner class = true
         listArgs.addLast(NullValue.instance);   // no enclosing decl
         TNLManip.traverseList(this, listArgs, node.getMembers());
@@ -211,7 +211,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 					 " in same package");
             }
 
-            // add to the package environment if it's an top-level class
+            // add to the package scope if it's an top-level class
             if (!isInner) {
                 _pkgEnv.add(cl);
             }
@@ -229,7 +229,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         node.getName().setProperty(DECL_KEY, ocl);
 
         LinkedList memberArgs = new LinkedList();
-        memberArgs.addLast(env);                  // environment for this class
+        memberArgs.addLast(env);                  // scope for this class
         memberArgs.addLast(Boolean.TRUE);         // inner class = true
         memberArgs.addLast(ocl);                  // last class decl
         TNLManip.traverseList(this, memberArgs, node.getMembers());
@@ -248,7 +248,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
     protected void _visitList(List nodeList, Scope env) {
         LinkedList listArgs = new LinkedList();
-        listArgs.addLast(env);                  // last environment
+        listArgs.addLast(env);                  // last scope
         listArgs.addLast(Boolean.TRUE);         // inner class = true
         listArgs.addLast(NullValue.instance);   // no enclosing decl
         TNLManip.traverseList(this, listArgs, nodeList);
@@ -257,6 +257,6 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
     /** The package this compile unit is in. */
     protected PackageDecl _pkgDecl = null;
 
-    /** The package environment. */
+    /** The package scope. */
     protected Scope _pkgEnv = null;
 }

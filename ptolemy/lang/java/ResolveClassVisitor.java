@@ -1,6 +1,6 @@
 /*
 Create declarations for fields, constructors, and methods, and add them to
-their enclosing class's environment.
+their enclosing class's scope.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -47,12 +47,12 @@ import ptolemy.lang.java.nodetypes.*;
 //// ResolveClassVisitor
 /**
 Create declarations for fields, constructors, and methods, and add them to
-their enclosing class's environment.
+their enclosing class's scope.
 
 This is part 1 of pass 1:
 
 Adding proper class and interface members to the respective
-environments.  All source files known to the compiler must undergo
+scopes.  All source files known to the compiler must undergo
 this step before the next step.
 
 Part 2 of pass 1 happens in ResolveInheritanceVisitor.
@@ -174,10 +174,10 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         me.setInterfaces(declInterfaceList);
 
-        // add this declaration to outer class's environment, if applicable
+        // add this declaration to outer class's scope, if applicable
         _addUserTypeToEnclosingClassScope(args.get(1), me);
 
-        // have members add themselves to this class's environment
+        // have members add themselves to this class's scope
         LinkedList childArgs = new LinkedList();
         childArgs.addLast(me);
         childArgs.addLast(me.getScope());
@@ -207,7 +207,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         // Leftover from Titanium. Why??
         // dtype()->resolveClass(package, cclass, fileEnv);
 
-        Scope encScope = (Environ) args.get(1);
+        Scope encScope = (Scope) args.get(1);
 
         Decl d = encScope.lookupProper(nameString, CG_FIELD);
 
@@ -277,10 +277,10 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         me.setInterfaces(declInterfaceList);
 
-        // add this declaration to outer class's environment, if applicable
+        // add this declaration to outer class's scope, if applicable
         _addUserTypeToEnclosingClassScope(args.get(1), me);
 
-        // have members add themselves to this class's environment
+        // have members add themselves to this class's scope
         LinkedList childArgs = new LinkedList();
         childArgs.addLast(me);
         childArgs.addLast(me.getScope());
@@ -479,9 +479,9 @@ public class ResolveClassVisitor extends ResolveVisitorBase
             me.setInterfaces(TNLManip.addFirst(implIFace));
         }
 
-        Scope myScope = me.getEnviron();
+        Scope myScope = me.getScope();
 
-        // have members add themselves to this class's environment
+        // have members add themselves to this class's scope
         LinkedList childArgs = new LinkedList();
         childArgs.addLast(me);
         childArgs.addLast(myScope);
@@ -510,8 +510,8 @@ public class ResolveClassVisitor extends ResolveVisitorBase
     protected void _addUserTypeToEnclosingClassScope(Object encClassScopeObject,
             Decl decl) {
         if (encClassScopeObject != NullValue.instance) {
-            // this is an inner class, add to outer class's environment
-            Scope encClassScope = (Environ) encClassEnvironObject;
+            // this is an inner class, add to outer class's scope
+            Scope encClassScope = (Scope) encClassEnvironObject;
             encClassScope.add(decl);
         }
     }

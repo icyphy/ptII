@@ -49,7 +49,7 @@ public class ResolveImportsVisitor extends JavaVisitor
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         _compileUnit = node;
-        _fileEnv = (Scope) node.getDefinedProperty(ENVIRON_KEY); // file environment
+        _fileEnv = (Scope) node.getDefinedProperty(ENVIRON_KEY); // file scope
         _importEnv = _fileEnv.parent().parent();
 
         // initialize importedPackages property
@@ -158,10 +158,10 @@ public class ResolveImportsVisitor extends JavaVisitor
     /** The CompileUnitNode that is the root of the tree. */
     protected CompileUnitNode _compileUnit = null;
 
-    /** The file environment. */
+    /** The file scope. */
     protected Scope _fileEnv = null;
 
-    /** The import environment. */
+    /** The import scope. */
     protected Scope _importEnv = null;
 
     /** The Collection of imported packages for this compile unit. */

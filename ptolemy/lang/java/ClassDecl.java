@@ -66,7 +66,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         _container = container;
     }
 
-    /** Invalidate the class so that its environment and source are re-read
+    /** Invalidate the class so that its scope and source are re-read
      *  next time they are needed.
      */
     public void invalidate() {
@@ -82,10 +82,10 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
     public final Scope getScope() {
         if (!wasVisitedBy(ResolveClassVisitor.visitorClass())) {
-            //System.out.println("getScope() for " + _name + ": building environment");
+            //System.out.println("getScope() for " + _name + ": building scope");
             _buildScope();
         }
-        //System.out.println("getScope() for " + _name + ": environment already in place");
+        //System.out.println("getScope() for " + _name + ": scope already in place");
         return _environ;
     }
 
@@ -190,14 +190,14 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         //				 "for class " + fullName());
         loadSource();
 
-        // builds environments for all recently loaded classes, including
+        // builds scopes for all recently loaded classes, including
 	// this one
         StaticResolution.buildScopements();
 
-        // If class didn't load, give it a dummy environment, etc
+        // If class didn't load, give it a dummy scope, etc
         if (_environ == null) {
             System.err.println("Warning: class " + _name + " did not load, " +
-                    "using dummy environment.");
+                    "using dummy scope.");
 
             _environ =
 		new Scope(StaticResolution.SYSTEM_PACKAGE.getScope());

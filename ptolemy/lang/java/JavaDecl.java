@@ -90,7 +90,7 @@ import ptolemy.lang.java.nodetypes.*;
  *  </p>
  *  <p>
  *   ATTRIBUTE environ
- *     Classes, interfaces, and packages define environments:  mappings of
+ *     Classes, interfaces, and packages define scopes:  mappings of
  *     names (of members, classes, interfaces, and subpackages) to
  *     JavaDecls of these entities.
  *  </p>
@@ -160,8 +160,8 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
     /** Return true iff this declaration defines a type. */
     public boolean hasDefType() { return false; }
 
-    /** Return the environment associated with this declaration.
-     *  Classes, interfaces, and packages define environments:  mappings of
+    /** Return the scope associated with this declaration.
+     *  Classes, interfaces, and packages define scopes:  mappings of
      *  names (of members, classes, interfaces, and subpackages) to
      *  JavaDecls of these entities.
      */
@@ -169,13 +169,13 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
         throw new RuntimeException(getClass().getName() + " has no environ.");
     }
 
-    /** Get an environment of types associated with this declaration. This
+    /** Get an scope of types associated with this declaration. This
      *  method is used instead of getScope() when looking up types contained
-     *  in the environment. getScope() for ClassDecl needs to run pass 1 to
-     *  get all the fields and methods into the environment. This method avoids
+     *  in the scope. getScope() for ClassDecl needs to run pass 1 to
+     *  get all the fields and methods into the scope. This method avoids
      *  running pass 1 while still in pass 0.
      *
-     *  This method is necessary to allow for inner classes, since the environment
+     *  This method is necessary to allow for inner classes, since the scope
      *  a class is necessary to lookup its inner classes.
      *
      *  The default method just calls getScope().
@@ -184,12 +184,12 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
         return getScope();
     }
 
-    /** Set the environment associated with this declaration. */
+    /** Set the scope associated with this declaration. */
     public void setScope(Scope environ) {
         throw new RuntimeException(getClass().getName() + " has no environ.");
     }
 
-    /** Return true iff this declaration has an environment associated with it. */
+    /** Return true iff this declaration has an scope associated with it. */
     public boolean hasScope() { return false; }
 
     /** Return the modifiers of this declaration.

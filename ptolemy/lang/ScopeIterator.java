@@ -212,7 +212,7 @@ public class ScopeIterator implements Iterator {
                 return false;
             }
 
-            // move on to the next scope, discarding last environment
+            // move on to the next scope, discarding last scope
 
             _declIter = _nextScope.allProperDecls();
             _nextScope = _nextScope.parent();

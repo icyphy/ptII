@@ -459,7 +459,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
             }
         }
 
-        /** The last environment. */
+        /** The last scope. */
         public Scope environ = null;
 
         /** The type of the current class. */
