@@ -39,6 +39,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 import java.util.Enumeration;
 import collections.LinkedList;
+import collections.Comparator;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEDirector
@@ -122,10 +123,20 @@ public class DDEDirector extends ProcessDirector {
 	notifyAll();
     }
 
-    /** Increment the count of actors blocked on a write.
+    /** 
      */
-    synchronized void addWriteBlock() {
+    public synchronized void registerWriteBlock(DDEReceiver rcvr) {
         _writeBlocks++;
+        _writeBlockedQs.insertFirst(rcvr);
+    }
+    
+    /** Increment the count of actors blocked on a write.
+     *  FIXME
+     */
+    synchronized void addWriteBlock(DDEReceiver rcvr) {
+        System.out.println("Added write block.");
+        _writeBlocks++;
+        _writeBlockedQs.insertFirst(rcvr);
 	notifyAll();
     }
 
@@ -194,6 +205,23 @@ public class DDEDirector extends ProcessDirector {
         return false;
     }
 
+    /** Initialize this director and the actors it contains and set
+     *  variables to their initial values. Create a DDEThread for 
+     *  each actor that this director controls but do not start
+     *  the thread. 
+     * @exception IllegalActionException If there is an error
+     *  during the creation of the threads or initialization of
+     *  the actors.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _completionTime = -5.0;
+        _readBlocks = 0;
+        _writeBlocks = 0;
+        _pendingMutations = false;
+        _writeBlockedQs = new LinkedList();
+    }
+    
     /** Return a new receiver of a type compatible with this director.
      *  If the completion time of this director has been explicitly set
      *  to a particular value then set the completion time of the receiver
@@ -229,11 +257,14 @@ public class DDEDirector extends ProcessDirector {
     }
 
     /** Decrement the count of actors blocked on a write.
+     *  FIXME
      */
-    public synchronized void removeWriteBlock() {
+    public synchronized void removeWriteBlock(DDEReceiver rcvr) {
+        System.out.println("Removed write block.");
         if( _writeBlocks > 0 ) {
             _writeBlocks--;
         }
+        _writeBlockedQs.removeOneOf(rcvr);
     }
 
     /** Set the completion time of all actors governed by this
@@ -308,8 +339,25 @@ public class DDEDirector extends ProcessDirector {
     /** Increment the port capacity's according to Tom Parks' 
      *  algorithm.
      *  FIXME
+     * @exceptions IllegalActionException If there is an error
+     *  while attempting to set the capacity of a DDE receiver.
      */
-    protected void incrementLowestCapacityPort() {
+    protected void incrementLowestCapacityPort() 
+            throws IllegalActionException {
+        _writeBlockedQs.sort(new RcvrCapacityComparator() );
+        DDEReceiver smallestQueue;
+        smallestQueue = (DDEReceiver)_writeBlockedQs.first();
+        
+        if( smallestQueue.getCapacity() <= 0 ) {
+            smallestQueue.setCapacity(1);
+        } else {
+            int cap = smallestQueue.getCapacity(); 
+            smallestQueue.setCapacity( cap * 2 );
+        }
+        removeWriteBlock( smallestQueue );
+        synchronized( smallestQueue ) {
+            smallestQueue.notifyAll();
+        }
     }
     
     /** Mutate the model that this director controls.
@@ -336,6 +384,38 @@ public class DDEDirector extends ProcessDirector {
     private int _readBlocks = 0;
     private int _writeBlocks = 0;
     private boolean _pendingMutations = false;
+    private LinkedList _writeBlockedQs;
+    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class			   ////
+    
+    private class RcvrCapacityComparator implements Comparator {
+            
+       /**
+        * @exception ClassCastException If fst and scd are
+        *  not instances of DDEReceiver.
+        */
+       public int compare( Object fst, Object scd ) {
+           DDEReceiver first = null;
+           DDEReceiver second = null;
+           
+           if( fst instanceof DDEReceiver ) {
+               first = (DDEReceiver)fst;
+           }
+           if( scd instanceof DDEReceiver ) {
+               second = (DDEReceiver)scd;
+           }
+           
+           if( first.getCapacity() > second.getCapacity() ) {
+               return 1;
+           } else if( first.getCapacity() < second.getCapacity() ) {
+               return -1;
+           } else {
+               return 0;
+           }
+       }
+    }
 
 }
 
