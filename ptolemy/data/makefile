@@ -48,7 +48,7 @@ ME =		java/pt/data
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-DIRS = 		test # parser doc
+DIRS = 		test parser # doc
 
 CLASSPATH = ../..
 
@@ -72,6 +72,7 @@ JSRCS = \
 	MatrixToken.java \
 	NullToken.java \
 	ObjectToken.java \
+	Param.java \
 	ScalarToken.java \
 	StringToken.java \
 	Token.java \
