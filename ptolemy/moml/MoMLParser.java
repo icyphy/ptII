@@ -5539,7 +5539,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     // undoable. Primarily for incremental parsing.
     private boolean _undoEnabled = false;
 
-    // The workspace for this model.
     // List of unrecognized elements.
     private List _unrecognized;
 
