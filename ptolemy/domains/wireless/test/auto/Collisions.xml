@@ -159,7 +159,7 @@
             </property>
         </entity>
         <entity name="CollisionDetector2" class="ptolemy.domains.wireless.lib.CollisionDetector">
-            <property name="SNRThresholdInDB(db)" class="ptolemy.data.expr.Parameter" value="20">
+            <property name="SNRThresholdInDB" class="ptolemy.data.expr.Parameter" value="20">
             </property>
             <property name="powerThreshold" class="ptolemy.data.expr.Parameter" value="1.0E-6">
             </property>

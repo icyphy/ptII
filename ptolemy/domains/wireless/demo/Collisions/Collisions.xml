@@ -406,7 +406,7 @@ displays.</text></svg></configure>
             </property>
         </entity>
         <entity name="CollisionDetector" class="ptolemy.domains.wireless.lib.CollisionDetector">
-            <property name="SNRThresholdInDB(db)" class="ptolemy.data.expr.Parameter" value="SNRThresholdInDB">
+            <property name="SNRThresholdInDB" class="ptolemy.data.expr.Parameter" value="SNRThresholdInDB">
             </property>
             <property name="powerThreshold" class="ptolemy.data.expr.Parameter" value="powerThreshold">
             </property>
