@@ -22,9 +22,8 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure></
          </property>
        </entity>
     </entity>
-            <input source="ptolemy/data/unit/BasicUnits.xml"/>
+            <input source="ptolemy/data/unit/unitSystems.xml"/>
           </group>
         ?>
       </configure>
     </class>
-
