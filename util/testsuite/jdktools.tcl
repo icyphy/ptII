@@ -44,8 +44,13 @@ proc jdkProperties {} {
 # Print JDK version info
 proc jdkVersion {} {
     global tcl_version tcl_patchLevel env
-    puts "env(CLASSPATH):   $env(CLASSPATH)\
-             \njava.class.path property:\
+    if [info exists env(CLASSPATH)] {
+	puts "env(CLASSPATH):   $env(CLASSPATH)"
+    } else {
+	puts "env(CLASSPATH) is not set"
+    }
+
+    puts "java.class.path property:\
             [java::call System getProperty "java.class.path"]\n"
     puts -nonewline "jdk version: [java::call System getProperty \
 	    "java.version"]"
