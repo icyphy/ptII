@@ -100,7 +100,7 @@ public abstract class RandomSource extends Source {
             throws CloneNotSupportedException {
         RandomSource newObject = (RandomSource)(super.clone(workspace));
 
-        // Get an independant random number generator.
+        // Get an independent random number generator.
         newObject._random = new Random();
         return newObject;
     }

@@ -224,7 +224,7 @@ public class Scale extends Transformer {
         }
 
         /** Return the type variable in this inequality term. If the type
-         *  of the input port is not declarad, return an one element array
+         *  of the input port is not declared, return an one element array
          *  containing the inequality term representing the type of the port;
          *  otherwise, return an empty array.
          *  @return An array of InequalityTerm.
