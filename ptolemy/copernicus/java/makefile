@@ -48,6 +48,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	AtomicActorCreator.java \
 	CodeGenerationScope.java \
 	CommandLineTemplate.java \
 	CommandLineTransformer.java \
@@ -55,6 +56,7 @@ JSRCS = \
 	ConstVariableModelAnalysis.java \
 	DeadObjectEliminator.java \
 	ExceptionEliminator.java \
+	ExpressionCreator.java \
 	FieldsForAttributesTransformer.java \
 	FieldsForEntitiesTransformer.java \
 	FieldsForPortsTransformer.java \
