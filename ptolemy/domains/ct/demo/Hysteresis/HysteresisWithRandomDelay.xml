@@ -148,6 +148,14 @@ soon as a guard becomes true, the transition is always taken.</text></svg></conf
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 375.0]">
         </property>
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the ModalModel to&#10;see how this is implemented.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 340.0]">
+        </property>
+    </property>
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
@@ -206,6 +214,14 @@ second refinement called "wait" that triggers an event after a specified time.</
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{345.5, 240.5}">
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+                </property>
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside either wait state&#10;to see the state refinements.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 280.0]">
+                </property>
             </property>
             <port name="in" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -444,7 +460,7 @@ second refinement called "wait" that triggers an event after a specified time.</
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 15.0]">
                 </property>
             </property>
-            <property name="time" class="ptolemy.data.expr.Parameter" value="0.8754728235875">
+            <property name="time" class="ptolemy.data.expr.Parameter" value="0.5197959213247">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
