@@ -74,7 +74,7 @@ public class Scheduler extends NamedObj implements MutationListener{
      * @return The scheduler
      */
     public Scheduler() {
-        super(_staticname);
+        super(_DEFAULT_SCHEDULER_NAME);
     }
 
     /** Construct a scheduler in the given workspace with the name
@@ -326,5 +326,5 @@ public class Scheduler extends NamedObj implements MutationListener{
     private StaticSchedulingDirector _container = null;
     private boolean _valid = false;
     private LinkedList _cachedschedule = null;
-    private static final String _staticname = "Basic Scheduler";
+    private static final String _DEFAULT_SCHEDULER_NAME = "Basic Scheduler";
 }
