@@ -53,7 +53,7 @@ public class CSPMultiSink extends CSPActor {
         super();
     }
 
-    public CSPMultiSink  (TypedCompositeActor cont, String name)
+    public CSPMultiSink(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
         input = new TypedIOPort(this, "input", true, false);
@@ -71,7 +71,7 @@ public class CSPMultiSink extends CSPActor {
             _branchCount = new int[size];
             int i = 0;
             boolean[] guards = new boolean[size];
-            for (i=0; i<size; i++) {
+            for (i = 0; i < size; i++) {
                 _branchCount[i] = 0;
                 guards[i] = true;
             }
@@ -88,7 +88,7 @@ public class CSPMultiSink extends CSPActor {
 
                 _branchCount[successfulBranch]++;
                 boolean flag = false;
-                for (i=0; i<size; i++) {
+                for (i = 0; i < size; i++) {
                     if (successfulBranch == i) {
                         Token t = branches[successfulBranch].getToken();
                         System.out.println(getName() + ": received Token: " +
@@ -117,8 +117,9 @@ public class CSPMultiSink extends CSPActor {
     }
 
     public void wrapup() {
-        System.out.println(Thread.currentThread().getName() + ":Invoking wrapup of CSPMultiSink...\n");
-        for (int i=0; i<input.getWidth(); i++) {
+        System.out.println(Thread.currentThread().getName() +
+                ":Invoking wrapup of CSPMultiSink...\n");
+        for (int i = 0; i < input.getWidth(); i++) {
             System.out.println("MultiSink: Branch " + i +
                     " successfully  rendezvoused " + _branchCount[i] +
                     " times.");
