@@ -51,9 +51,7 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -67,18 +65,16 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.DropListener;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.UndoAction;
+import ptolemy.kernel.util.UndoStackAttribute;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// IterateOverArray
@@ -130,8 +126,7 @@ firings of the inside actor.
 @version $Id$
 @since Ptolemy II 3.1
 */
-public class IterateOverArray extends TypedCompositeActor
-        implements DropListener {
+public class IterateOverArray extends TypedCompositeActor {
 
     /** Create an actor with a name and a container.
      *  The container argument must not be null, or a
@@ -159,7 +154,7 @@ public class IterateOverArray extends TypedCompositeActor
         new IterateDirector(this, uniqueName("IterateDirector"));
 
         _iterationCount =
-             new Variable(this, "iterationCount", new IntToken(0));
+              new Variable(this, "iterationCount", new IntToken(0));
         _iterationCount.setTypeEquals(BaseType.INT);
 
         _attachText("_iconDescription", "<svg>\n" +
@@ -174,28 +169,56 @@ public class IterateOverArray extends TypedCompositeActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to the dropping of an object onto this object by
-     *  removing any previously contained entity and adjusting
-     *  the ports and parameters to match the new contained
-     *  entity, if necessary. This is called when a user interface
-     *  drops an object into an object implementing this interface.
+    /** Override the base class to return a specialized port and to
+     *  create a port on the inside entity, if there is one.
+     *  @param name The name of the port to create.
+     *  @param return A new instance of IteratePort, an inner class.
      */
-    public void dropped() {
+    public Port newPort(String name) throws NameDuplicationException {
+        try {
+            return new IteratePort(this, name);
+        } catch (IllegalActionException ex) {
+            // This exception should not occur, so we throw a runtime
+            // exception.
+            throw new InternalErrorException(this, ex, null);
+        }
+    }
+    
+    /** Override the base class to ensure that the ports of this
+     *  actor all have array types.
+     *  @return A list of instances of Inequality.
+     *  @exception IllegalActionException If the typeConstraintList
+     *  of one of the deeply contained objects throws it.
+     *  @see ptolemy.graph.Inequality
+     */
+    public List typeConstraintList() throws IllegalActionException {
+        Iterator ports = portList().iterator();
+        while(ports.hasNext()) {
+            TypedIOPort port = (TypedIOPort)ports.next();
+            ArrayType arrayType = new ArrayType(BaseType.UNKNOWN);
+            ((TypedIOPort)port).setTypeEquals(arrayType);
+        }
+        return super.typeConstraintList();
+    }
 
-        // NOTE: It would be nice if we could react to the added entity
-        // in _addEntity(), but it has not been fully constructed, and
-        // in particular, it has no ports at that time.  Thus, we
-        // use the HACK to queue a request here instead. I tried creating a
-        // ChangeRequest in _addEntity(), but this didn't
-        // work either because the ChangeRequest would be executed
-        // immediately if possible.
-        // I also tried listening as a ChangeListener, but this didn't
-        // work because this would result in notification when an icon
-        // was created in this object, which happened when first reading
-        // a MoML file containing this actor.  This would result in
-        // collisions on the ports created here.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
+    /** Override the base class to queue a change request to mirror
+     *  the ports of the added entity.
+     *  @param entity Entity to contain.
+     *  @exception IllegalActionException If the entity has no name, or the
+     *   action would result in a recursive containment structure, or the
+     *   argument does not implement the TypedActor interface.
+     *  @exception NameDuplicationException If the name collides with a name
+     *   already on the actor contents list.
+     */
+    protected void _addEntity(ComponentEntity entity)
+            throws IllegalActionException, NameDuplicationException {
+        super._addEntity(entity);
+        
         // This needs to be a MoMLChangeRequest so that undo works.
+        // Alternatively, we could explicitly create the undo request.
         // Use the container as a context so that redraw occurs after
         // the change request is executed.
         NamedObj tmpContext = MoMLChangeRequest
@@ -211,7 +234,7 @@ public class IterateOverArray extends TypedCompositeActor
             protected void _execute() throws Exception {
                 // NOTE: We defer the construction of the MoML change request
                 // to here because only at this point can we be sure that the
-                // drop change request has completed.
+                // change request that triggered this has completed.
 
                 synchronized(this) {
 
@@ -223,7 +246,7 @@ public class IterateOverArray extends TypedCompositeActor
                     // Entity most recently added.
                     ComponentEntity entity = null;
 
-                    // Delete any previously contained entity.
+                    // Delete any previously contained entities.
                     Iterator priors = entityList().iterator();
                     LinkedList deletedEntities = new LinkedList();
                     while (priors.hasNext()) {
@@ -245,130 +268,6 @@ public class IterateOverArray extends TypedCompositeActor
                         return;
                     }
 
-                    // Add commands to delete parameters that are associated
-                    // with a deleted entity.
-                    Iterator attributes =
-                        attributeList(Parameter.class).iterator();
-                    while (attributes.hasNext()) {
-                        Attribute attribute = (Attribute)attributes.next();
-                        if (attribute == _iterationCount) continue;
-                        // Only delete attributes whose names don't match
-                        // an attribute of the new entity, but do match an
-                        // attribute of a deleted entity.
-                        // This preserves values of attributes with the same
-                        // name.
-                        if (entity.getAttribute(attribute.getName()) == null) {
-                            Iterator deleted = deletedEntities.iterator();
-                            while(deleted.hasNext()) {
-                                ComponentEntity deletedEntity
-                                        = (ComponentEntity)deleted.next();
-                                if (deletedEntity.getAttribute(
-                                        attribute.getName()) != null) {
-                                    command.append("<deleteProperty name=\"");
-                                    command.append(attribute.getName());
-                                    command.append("\"/>\n");
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    // Add commands to add parameters as needed.
-                    // We do only parameters, not all Settables because only
-                    // parameters can propagate the values down the hierarchy.
-                    attributes =
-                        entity.attributeList(Parameter.class).iterator();
-                    while (attributes.hasNext()) {
-                        Parameter attribute = (Parameter)attributes.next();
-                        // Add the attribute if there isn't one already.
-                        if (attribute.getVisibility() == Settable.FULL
-                                && getAttribute(attribute.getName()) == null) {
-                            // The class we want to generate, unfortunately,
-                            // depends on the mode, not just the exported
-                            // MoML for this parameter.
-                            command.append("<property name=\"");
-                            command.append(attribute.getName());
-                            command.append("\" class=\"");
-                            if (attribute instanceof PortParameter) {
-                                command.append("ptolemy.actor.hoc."
-                                        + "IterateOverArray$"
-                                        + "IteratePortParameter");
-                            } else {
-                                command.append("ptolemy.data.expr.Parameter");
-                            }
-                            command.append("\" value=\"");
-                            // NOTE: In theory, this shouldn't be necessary...
-                            if (attribute.isStringMode()) {
-                                command.append(StringUtilities.escapeForXML(
-                                        ((StringToken)attribute.getToken())
-                                        .stringValue()));
-                            } else {
-                                command.append(StringUtilities.escapeForXML(
-                                        attribute.getExpression()));
-                            }
-                            command.append("\">");
-
-                            // Replicate contained attributes, which may be
-                            // styles.
-                            Iterator containedAttributes
-                                    = attribute.attributeList().iterator();
-                            boolean foundStringMode = false;
-                            while (containedAttributes.hasNext()) {
-                                Attribute containedAttribute
-                                        = (Attribute)containedAttributes.next();
-                                command.append(containedAttribute.exportMoML());
-                                if (containedAttribute.getName()
-                                        .equals("_stringMode")) {
-                                    foundStringMode = true;
-                                }
-                            }
-                            if (!foundStringMode && attribute.isStringMode()) {
-                                command.append(
-                                        "<property name=\"_stringMode\" "
-                                        + "class=\"ptolemy.kernel.util."
-                                        + "Attribute\"/>");
-                            }
-
-                            // If the original Parameter has hardwired
-                            // choices, then we should create a choice
-                            // attribute here.
-
-                            String[] choices = attribute.getChoices();
-                            if (choices != null && choices.length > 0) {
-                                command.append("<property name=\"");
-                                command.append(attribute.uniqueName("style"));
-                                command.append("\" class=\"ptolemy.actor.gui."
-                                        + "style.EditableChoiceStyle\">");
-                                for (int i = 0; i < choices.length; i++) {
-                                    command.append("<property name=\"");
-                                    command.append(choices[i]);
-                                    command.append("\" class=\"ptolemy.kernel."
-                                            + "util.StringAttribute\""
-                                            + "value=\"");
-                                    command.append(choices[i]);
-                                    command.append("\"/>");
-                                }
-                                command.append("</property>\n");
-                            }
-                            command.append("</property>\n");
-
-                            // Set the attribute on the inside to reflect
-                            // the one on the outside.  This is a little
-                            // tricky because the syntax is different if
-                            // it's a StringParameter.
-                            command.append("<entity name=\"");
-                            command.append(entity.getName());
-                            command.append("\"><property name=\"");
-                            command.append(attribute.getName());
-                            if (attribute.isStringMode()) {
-                                command.append("\" value=\"$");
-                            } else {
-                                command.append("\" value=\"");
-                            }
-                            command.append(attribute.getName());
-                            command.append("\"/></entity>\n");
-                        }
-                    }
                     // Remove all inside relations. This will have the
                     // side effect of removing connections on the inside.
                     Iterator relations = relationList().iterator();
@@ -382,17 +281,41 @@ public class IterateOverArray extends TypedCompositeActor
                     Iterator ports = portList().iterator();
                     while (ports.hasNext()) {
                         Port port = (Port)ports.next();
-                        // Only delete ports whose names don't match.
-                        // This preserves connections to ports with the same
-                        // name.
+                        // Only delete ports whose names don't match the
+                        // current entity. This preserves connections to
+                        // ports with the same name.
+                        
+                        // FIXME: Have to also only delete ports that
+                        // match ports of deleted entities.  Otherwise
+                        // this will delete any ports that are persistent
+                        // in the moml file because the entity has not
+                        // been fully constructed and hence has no ports.
+                        // However, then if I add ports to an empty
+                        // instance (no inside entity), then these ports
+                        // don't go away if I drop in an entity.  Maybe
+                        // this is OK?
+                        
+                        // NOTE: When reading a MoML file (vs. processing
+                        // a change request), the ports of the entity have
+                        // not been created because the entity has not been
+                        // fully constructed when this _addEntity() method
+                        // is called.  Thus, it is important to only delete
+                        // ports that match something in a deleted entity.
                         if (entity.getPort(port.getName()) == null) {
-                            // FIXME: Should explicitly delete relations linked
-                            // to these ports, or undo won't work properly.
-                            // This is a bit of a pain, since we have to pop
-                            // out of this context to do it.
-                            command.append("<deletePort name=\"");
-                            command.append(port.getName());
-                            command.append("\"/>\n");
+                            Iterator deleted = deletedEntities.iterator();
+                            while (deleted.hasNext()) {
+                                ComponentEntity deletedEntity = (ComponentEntity)deleted.next();
+                                if (deletedEntity.getPort(port.getName()) != null) {
+                                    // FIXME: Must explicitly delete relations linked
+                                    // to these ports, or undo won't work properly.
+                                    // This is a bit of a pain, since we have to pop
+                                    // out of this context to do it.
+                                    command.append("<deletePort name=\"");
+                                    command.append(port.getName());
+                                    command.append("\"/>\n");
+                                    break;
+                                }
+                            }
                         }
                     }
 
@@ -437,29 +360,22 @@ public class IterateOverArray extends TypedCompositeActor
                         // Presumably, there are no inside relations now, so
                         // we can use any suitable names.
 
-                        // NOTE: This is only needed if the port
-                        // already exists.  If the port gets created
-                        // by newPort(), then newPort() will take care
-                        // of setting of the connections.
+                        String relationName = "insideRelation" + count++;
+                        command.append("<relation name=\"");
+                        command.append(relationName);
+                        command.append("\"/>\n");
 
-                        if (getPort(name) != null) {
-                            String relationName = "insideRelation" + count++;
-                            command.append("<relation name=\"");
-                            command.append(relationName);
-                            command.append("\"/>\n");
+                        command.append("<link port=\"");
+                        command.append(name);
+                        command.append("\" relation=\"");
+                        command.append(relationName);
+                        command.append("\"/>\n");
 
-                            command.append("<link port=\"");
-                            command.append(name);
-                            command.append("\" relation=\"");
-                            command.append(relationName);
-                            command.append("\"/>\n");
-
-                            command.append("<link port=\""
-                                    + insidePort.getName(IterateOverArray.this)
-                                    + "\" relation=\""
-                                    + relationName
-                                    + "\"/>\n");
-                        }
+                        command.append("<link port=\""
+                                + insidePort.getName(IterateOverArray.this)
+                                + "\" relation=\""
+                                + relationName
+                                + "\"/>\n");
                     }
 
                     command.append("</entity>\n</group>\n");
@@ -473,7 +389,13 @@ public class IterateOverArray extends TypedCompositeActor
                     // MoML command that is issued.
                     // System.out.println(command.toString());
 
-                    super._execute();
+                    try {
+                        // Disable reactions to added ports.
+                        _inAddEntity = true;
+                        super._execute();
+                    } finally {
+                        _inAddEntity = false;
+                    }
                 }
             }
         };
@@ -483,57 +405,90 @@ public class IterateOverArray extends TypedCompositeActor
         requestChange(request);
     }
 
-    /** Override the base class to return a specialized port and to
-     *  create a port on the inside entity, if there is one.
-     *  @param name The name of the port to create.
-     *  @return A new instance of IteratePort, an inner class.
+    /** Add a port to this actor. This overrides the base class to
+     *  mirror the new port in the contained actor, if there is one.
+     *  @param port The TypedIOPort to add to this actor.
+     *  @exception IllegalActionException If the port class is not
+     *   acceptable to this actor, or the port has no name.
+     *  @exception NameDuplicationException If the port name collides with a
+     *   name already in the actor.
      */
-    public Port newPort(String name) throws NameDuplicationException {
-        try {
-            workspace().getWriteAccess();
-            IteratePort port = new IteratePort(this, name);
+    protected void _addPort(final Port port)
+            throws IllegalActionException, NameDuplicationException {
+        super._addPort(port);
+        if (!_inAddEntity) {
             // Create and connect a matching inside port on contained entities.
-            Iterator entities = entityList().iterator();
-            while (entities.hasNext()) {
-                Entity insideEntity = (Entity)entities.next();
-                Port insidePort = insideEntity.getPort(name);
-                if (insidePort == null) {
-                    insidePort = insideEntity.newPort(name);
-                }
-                port.associatePort(insidePort);
-                Relation relation = newRelation(uniqueName("relation"));
-                insidePort.link(relation);
-                port.link(relation);
-            }
-            return port;
-        } catch (IllegalActionException ex) {
-            // This exception should not occur, so we throw a runtime
-            // exception.
-            throw new InternalErrorException(this, ex, null);
-        } finally {
-            workspace().doneWriting();
-        }
-    }
-    
-    /** Override the base class to ensure that the ports of this
-     *  actor all have array types.
-     *  @return A list of instances of Inequality.
-     *  @exception IllegalActionException If the typeConstraintList
-     *  of one of the deeply contained objects throws it.
-     *  @see ptolemy.graph.Inequality
-     */
-    public List typeConstraintList() throws IllegalActionException {
-        Iterator ports = portList().iterator();
-        while(ports.hasNext()) {
-            TypedIOPort port = (TypedIOPort)ports.next();
-            ArrayType arrayType = new ArrayType(BaseType.UNKNOWN);
-            ((TypedIOPort)port).setTypeEquals(arrayType);
-        }
-        return super.typeConstraintList();
-    }
+            ChangeRequest request = new ChangeRequest(
+                    this,
+                    "Add a port on the inside") {
+                protected void _execute() throws Exception {
+                    // NOTE: We defer the construction of the MoML change request
+                    // to here because only at this point can we be sure that the
+                    // change request that triggered this has completed.
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+                    synchronized(this) {
+                        // Create and connect a matching inside port on contained entities.
+                        String portName = port.getName();
+                        Iterator entities = entityList().iterator();
+                        if (entities.hasNext()) {
+                            Entity insideEntity = (Entity)entities.next();
+                            Port insidePort = insideEntity.getPort(portName);
+                            boolean createdInsidePort = false;
+                            if (insidePort == null) {
+                                insidePort = insideEntity.newPort(portName);
+                                createdInsidePort = true;
+                                // FIXME: Caution: If this executed immediately, the port
+                                // is not fully constructed.  It could be executed
+                                // immediately if this _addPort() method is called
+                                // directly by the MoMLParser and not from within
+                                // a change request.  I think this works currently
+                                // only because when initially reading the model,
+                                // when the ports of this actor created, there is
+                                // not yet any contained actor, so this code is not
+                                // executed.
+                                if (port instanceof IOPort
+                                        && insidePort instanceof IOPort) {
+                                    IOPort castInsidePort = (IOPort)insidePort;
+                                    IOPort castPort = (IOPort)port;
+                                    castInsidePort.setInput(castPort.isInput());
+                                    castInsidePort.setOutput(castPort.isOutput());
+                                    castInsidePort.setMultiport(castPort.isMultiport());
+                                }
+                            }
+                            // FIXME: Caution: Same issue as previous FIXME.
+                            if (port instanceof IteratePort) {
+                                ((IteratePort)port).associatePort(insidePort);
+                            }
+                            final ComponentRelation relation
+                                    = newRelation(uniqueName("relation"));
+                            insidePort.link(relation);
+                            port.link(relation);
+                            
+                            // Create the undo action.
+                            final Port finalInsidePort = insidePort;
+                            final boolean finalCreatedInsidePort = createdInsidePort;
+                            UndoAction action = new UndoAction() {
+                                public void execute() throws Exception {
+                                    relation.setContainer(null);
+                                    if (finalCreatedInsidePort) {
+                                        finalInsidePort.setContainer(null);
+                                    }
+                                    // FIXME: Need to create a redo entry!
+                                }
+                            };
+                            // Register the action.
+                            UndoStackAttribute stack
+                                    = UndoStackAttribute.getUndoInfo(
+                                    IterateOverArray.this);
+                            stack.push(action);
+                            stack.mergeTopTwo();
+                        }
+                    }
+                }
+            };
+            requestChange(request);
+        }
+    }
 
     /** Check types from a source port to a group of destination ports,
      *  assuming the source port is connected to all the ports in the
@@ -744,6 +699,9 @@ public class IterateOverArray extends TypedCompositeActor
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // Flag indicating that we are executing _addEntity().
+    private boolean _inAddEntity = false;
+    
     // Variable that reflects the current iteration count on the
     // inside.
     private Variable _iterationCount;
