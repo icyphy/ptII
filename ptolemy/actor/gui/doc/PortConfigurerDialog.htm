@@ -1,0 +1,125 @@
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<!-- $Id$ -->
+<title>Configuring Ports</title>
+</head>
+<body>
+<h1>Configuring Ports</h1>
+<p>
+The Configure Ports dialog supports adding, removing, and changing key
+properties of ports of an entity.
+It displays the ports of an actor in tabular form with each row representing a port
+and each column a particular property of a port.
+An example is shown below:
+</p>
+<p>
+<center>
+<img src="portConfigurerDialog1.gif" alt="image of a port dialog">
+</center>
+</p>
+<p>
+Editing a cell does not immedialtely cause the corresponding port property to be changed.
+Pressing the <b>Apply</b> button will cause any modifications of the table to be applied to
+the port properties.
+Pressing the <b>Commit</b> button causes the dialog to be dismissed after any table modifications
+are applied.
+Pressing the <b>Cancel</b> button causes any pending table modifications to be discarded and
+the dialog to be dismissed.
+</p>
+<h1>Editing Port Properties</h1>
+For the most part, editing the port properties is straight forward.
+Just click in the
+field to be edited and an obvious interaction will ensue.
+Some properties may not be editable because they are part of a class definition and, are,
+therfore immutable.
+These fields will have a red background (e.g. 
+<img src="portConfigurerDialog2.gif" alt="image of a immutable property">
+) and will ignore any attempts at editing.
+<br><br>
+<b>Name</b> - Names must not contain a period, must be non-blank, and must be unique.
+<br><br>
+<b>Input, Output, Multiport</b> - Checkboxes that determine if a port is input, output, or both.
+<br><br>
+<b>Type</b> - The type can be given by any expression that can be evaluated
+(this expression is called a "prototype").
+For example, you can specify the type to be double by giving
+the string "0.0" (or any other number with a decimal point).
+However, this does not look very good as
+a designator for a type.  The Ptolemy II expression language
+defines the constant "double" to equal "0.0".  Thus, the preferred
+way to specify that a port has type double is to give its type
+as "double".
+<br>
+The primitive types you might specify are:
+<ul>
+<li> boolean,
+<li> complex,
+<li> double,
+<li> fixedpoint,
+<li> general,
+<li> int,
+<li> long,
+<li> matrix,
+<li> object,
+<li> scalar,
+<li> string, and
+<li> unknown.
+</ul>
+The constant "unknown" has a rather special behavior, in that
+it sets the type of the port to be unknown, allowing type resolution
+to infer it.  The constant "matrix" designates a matrix
+without specifying an element type, in contrast to, for example,
+"[double]", which specifies a double matrix (see below).
+Similarly, the constant "scalar" designates a scalar of any type
+(double, int, long, etc.).
+The constant "general" designates any type.
+<p>
+Since the type is given by a "prototype",
+any data type that can be given in an expression
+can be specified as a type. For structured types, follow the
+same syntax as in expressions. For example:
+<pre>
+    {double} - double array
+    [int]    - int matrix
+    {field1 = string, field2 = int} - record with two fields
+</pre>
+<br>
+<b>Direction</b> - The Cardinal Direction determines which side of the icon the
+port is located on.
+Clicking in this field brings up a menu that provides the means to select a specific side, i.e.
+<b>NORTH, EAST, SOUTH, WEST</b>.
+<b>DEFAULT</b> can also be selected.
+Below are the defaults:
+<ul>
+<li>Input ports are usually on the West side.
+<li>Output ports are usually on the East side.
+<li>Ports that are both an input and an output are located on the South side.
+</ul>
+<br>
+<b>Show Name</b> - Checking this box will cause the name of the port to be displayed.
+Unchecking it will remove the name from the display.
+<br><br>
+<b>Hide</b> - Checking this box will cause the port to be displayed.
+Unchecking it will cause remove the port from the display.
+<br><br>
+<b>Units</b> - The units specification for the port.
+
+
+<h2>Adding a port</h2>
+<p>
+To add a port, click on the Add button.
+This will add a new row with either default, or unspecified fields.
+Edit the fields as required for the new port.
+</p>
+<h2>Removing ports</h2>
+<p>
+Select the row that contains the port to be removed.
+At present, the only way to select a port is to edit one of the fields in the port.
+After editing a field the name of the port will be displayed in the  Remove button.
+Pressing the Remove button will remove the port from the table. 
+</p>
+
+
+</body>
+</html>

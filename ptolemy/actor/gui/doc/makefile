@@ -51,7 +51,10 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	portDialog.gif \
-	portDialog.htm
+	portDialog.htm \
+	portConfigurerDialog.htm \
+	portConfigurerDialog1.gif \
+	portConfigurerDialog2.gif
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
