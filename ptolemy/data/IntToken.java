@@ -106,7 +106,7 @@ public class IntToken extends ScalarToken {
     }
 
     /** Add the value of the argument Token to the current Token.
-     *  @param The token whose value we add to this Token
+     *  @param The token whose value we add to this Token.
      *  @return A token of the appropriate type.
      */
     // FIXME: add handling of Complex and Fix tokens.
@@ -157,7 +157,7 @@ public class IntToken extends ScalarToken {
     }
  
     /** Multiply the value of the argument Token to the current Token.
-     *  @param The token whose value we multiply to this Token
+     *  @param The token whose value we multiply to this Token.
      *  @return A token of the appropriate type.
      */
     // FIXME: add handling of Complex and Fix tokens.
@@ -205,7 +205,7 @@ public class IntToken extends ScalarToken {
     }
  
     /** Find the result of the value of this Token modulo the value of the
-     *  argument Token. Set the value of this token to the result.
+     *  argument Token.
      *  @param The token whose value we do modulo with.
      *  @return A token of the appropriate type.
      */
