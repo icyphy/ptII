@@ -313,13 +313,16 @@ compatDemo4:
 		cp `cat /tmp/oldxmls` $@; \
 	fi
 
-
+cleanDemos:
+	@echo "Removing the following HDE demos:"
+	@grep HDEDirector compat*/*.xml | awk '{split($$1, f, ":"); print f[1]}'
+	-rm -f `grep HDEDirector compat*/*.xml | awk '{split($$1, f, ":"); print f[1]}'`
 
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass compat compatDemo compat2 compatDemo2 compat3 compatDemo3 compat4 compatDemo4 $(KERNEL_TESTDEFS) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass compat compatDemo compat2 compatDemo2 compat3 compatDemo3 compat4 compatDemo4 cleanDemos $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl 
 
 # Run vergil on each of the demos in compatDemo
