@@ -32,9 +32,9 @@
 ME =		ptolemy/domains/ct/demo/StickyBall
 
 # Root of the Java directory
-ROOT =		../../../../../
+ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)/lib/fsm.jar$(CLASSPATHSEPARATOR)$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
