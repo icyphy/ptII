@@ -304,9 +304,6 @@ public class DEReceiver extends AbstractReceiver {
     // A flag indicating that setDelay() has been called.
     private boolean _useDelay = false;
 
-    // The topological depth associated with this receiver.
-    //private int _depth = 0;
-
     // The director where this DEReceiver should register the
     // events being put in it.
     // NOTE: This should be accessed only via getDirector().

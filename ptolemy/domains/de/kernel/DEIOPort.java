@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
 */
 public class DEIOPort extends TypedIOPort {
 
-    // FIXME: this class will be removed..
+    // FIXME: this class will be removed or deprecated.
 
     /** Construct a DEIOPort with no container and no name that is
      *  neither an input nor an output.

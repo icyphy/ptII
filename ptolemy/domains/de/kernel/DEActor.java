@@ -52,7 +52,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 public abstract class DEActor extends TypedAtomicActor
     implements SequenceActor, TimedActor {
 
-    // FIXME: this class may be abandoned since DEIOPort will be abandoned.
     /** Construct an actor with the specified container and name.
      *  This is protected because there is no reason to create an instance
      *  of this class, but derived classes will want to invoke the
