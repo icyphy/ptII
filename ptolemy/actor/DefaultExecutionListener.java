@@ -34,12 +34,15 @@ import java.util.Enumeration;
 //// DefaultExecutionListener
 /**
 A default implementation of the ExecutionListener interface.
+This implementation prints information about each event to the standard
+output.
+
 @author Steve Neuendorffer, Lukito Muliadi
 @version $Id$
 */
 public class DefaultExecutionListener implements ExecutionListener {
 
-    /** Constructor
+    /** Constructor.
      */
     public DefaultExecutionListener() {
     }
@@ -47,7 +50,7 @@ public class DefaultExecutionListener implements ExecutionListener {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Called to report an execution failure
+    /** Called to report an execution failure.
      */
     public void executionError(ExecutionEvent event) {
         System.out.println("DefaultExecutionListener.executionError()");
@@ -72,25 +75,25 @@ public class DefaultExecutionListener implements ExecutionListener {
         System.out.println("DefaultExecutionListener.executionFinished()");
     }
 
-    /** Called to report that a toplevel iteration has begun
+    /** Called to report that a toplevel iteration has begun.
      */
     public void executionIterationStarted(ExecutionEvent event) {
         // This is printed every iteration.. way too much for now..
     }
 
-    /** Called to report a successful pause of execution
+    /** Called to report a successful pause of execution.
      */
     public void executionPaused(ExecutionEvent event) {
         System.out.println("DefaultExecutionListener.executionPaused()");
     }
 
-    /** Called to report a successfull resumption of execution
+    /** Called to report a successfull resumption of execution.
      */
     public void executionResumed(ExecutionEvent event) {
         System.out.println("DefaultExecutionListener.executionResumed()");
     }
 
-    /** Called to report a successful start of execution
+    /** Called to report a successful start of execution.
      */
     public void executionStarted(ExecutionEvent event) {
         System.out.println("DefaultExecutionListener.executionStarted()");
