@@ -78,8 +78,8 @@ model of the dynamics in that mode.
 <title>Displacement of Masses</title>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-4.9E-324"/>
-<yRange min="1.7976931348623157E308" max="-4.9E-324"/>
+<xRange min="0.02" max="50.0"/>
+<yRange min="-0.12880887078839096" max="2.99980004"/>
 <noGrid/>
 </plot>?>
         </configure>
@@ -172,7 +172,7 @@ model of the dynamics in that mode.
                 <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
             </entity>
-	    <relation name="Tr1" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="Tr1" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="touched_S">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -338,7 +338,7 @@ model of the dynamics in that mode.
                 </property>
             </port>
             <entity name="V1" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0272884">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="312.0, 143.0">
                 </property>
@@ -350,7 +350,7 @@ model of the dynamics in that mode.
                 </port>
             </entity>
             <entity name="P1" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.7423391">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="447.0, 143.0">
                 </property>
@@ -374,7 +374,7 @@ model of the dynamics in that mode.
                 </port>
             </entity>
             <entity name="V2" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0272884">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="323.0, 266.0">
                 </property>
@@ -386,7 +386,7 @@ model of the dynamics in that mode.
                 </port>
             </entity>
             <entity name="P2" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="3.0">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.7423391">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="447.0, 266.0">
                 </property>
