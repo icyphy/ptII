@@ -56,6 +56,7 @@ JSIMPLE_TESTS = \
         DoubleArrayStat.tcl \
 	ExtendedMath.tcl \
 	Fraction.tcl \
+	MatrixMath.tcl \
 	SignalProcessing.tcl
 
 # Graphical Java tests that use Tcl.
