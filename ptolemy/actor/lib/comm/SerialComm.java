@@ -232,7 +232,7 @@ public class SerialComm extends TypedAtomicActor
     /** Transfers data between the Ptolemy model and the built in
      *  buffers associated with the serial port.  Actual serial
      *  input and output occur right before or right after fire().
-     *  For example, serial output occurs in responce to the .flush()
+     *  For example, serial output occurs in response to the .flush()
      *  call below.  This data written to the serial port out to the 
      *  serial hardware.  The .flush() method does not wait for the 
      *  hardware to complete the transmission, as this might take 
