@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.domains.pn.stars;
+package pt.domains.pn.actors;
 import pt.domains.pn.kernel.*;
 import pt.kernel.*;
 import pt.actors.*;
