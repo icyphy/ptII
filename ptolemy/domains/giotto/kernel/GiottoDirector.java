@@ -721,9 +721,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		}
 	    }
 
-	    // generate driver functions for toplevel output ports.
+	    // Generate driver functions for toplevel output ports.
 	    // FIXME: the giotto director should do some checking to
-	    //avoid several outputs of actors connect to the same output port?
+	    // avoid several outputs of actors connect to the same output port?
 	    outPorts = container.outputPortList().iterator();
 	    String outputName ="";
 	    String sanitizedPortName= "";
@@ -1071,11 +1071,11 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	}
     }
 
-    /** Return the next time at which the calling actor will be fired.
+    /** Return the next time that this director expects activity.
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
-	return _nextIterationTime;
+	return getCurrentTime() + _minTimeStep;
     }
 
     /** Iterate the actors in the next minor cycle of the schedule.
@@ -1105,19 +1105,14 @@ public class GiottoDirector extends StaticSchedulingDirector {
         Schedule unitSchedule = (Schedule)_schedule.get(_unitIndex++);
         if (_unitIndex >= _schedule.size()) {
             _unitIndex = 0;
+            // Iteration is complete when the unit index wraps around.
+            _iterationCount++;
         }
 
 	Iterator scheduleIterator = unitSchedule.iterator();
         while (scheduleIterator.hasNext()) {
             Actor actor = ((Firing) scheduleIterator.next()).getActor();
-            double currentTime = getCurrentTime();
             int actorFrequency = GiottoScheduler.getFrequency(actor);
-
-            // FIXME: This isn't right...
-            // The next iteration time should simply be the current time
-            // plus the _minTimeStep.
-            _nextIterationTime = currentTime + (_periodValue / actorFrequency);
-
             if (_debugging) {
                 _debug("Iterating " + ((NamedObj)actor).getFullName());
             }
@@ -1127,7 +1122,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	}
 
 	// Update time.
-	double currentTime = getCurrentTime();
+        // FIXME: This isn't the right thing to do if we are inside another
+        // actor.
+        double currentTime = getCurrentTime();
 	setCurrentTime(currentTime + _minTimeStep);
 
 	if (_synchronizeToRealTime) {
@@ -1259,9 +1256,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
     public boolean postfire() throws IllegalActionException {
 	int numberOfIterations =
 	        ((IntToken) (iterations.getToken())).intValue();
-	_iterationCount++;
         if (_debugging) {
-            _debug("===== Director completing iteration number: "
+            _debug("===== Director completing unit of iteration: "
                     + _iterationCount);
         }
 	if((numberOfIterations > 0)
@@ -1286,31 +1282,23 @@ public class GiottoDirector extends StaticSchedulingDirector {
     public boolean transferInputs(IOPort port) throws IllegalActionException {
 	if (!port.isInput() || !port.isOpaque()) {
 	    throw new IllegalActionException(this, port,
-					     "transferInputs: port argument is not an opaque" +
-					     "input port.");
+                   "transferInputs: port argument is not an opaque"
+                   + "input port.");
 	}
 	boolean transfer = false;
 	Receiver[][] insideReceivers = port.deepGetReceivers();
 	for (int i = 0; i < port.getWidth(); i++) {
 	    if (port.hasToken(i)) {
-		try {
-		    Token t = port.get(i);
-		    if (insideReceivers != null &&
-			insideReceivers[i] != null) {
-			if(_debugging) _debug(getName(),
-					      "transferring input from " + port.getName());
-			for (int j = 0; j < insideReceivers[i].length; j++) {
-			    insideReceivers[i][j].put(t);
-			    ((GiottoReceiver)insideReceivers[i][j]).update();
-			}
-			transfer = true;
-		    }
-		} catch (NoTokenException ex) {
-		    // this shouldn't happen.
-		    throw new InternalErrorException(
-						     "Director.transferInputs: Internal error: " +
-						     ex.getMessage());
-		}
+                Token t = port.get(i);
+                if (insideReceivers != null && insideReceivers[i] != null) {
+                    if(_debugging) _debug(getName(),
+                            "transferring input from " + port.getName());
+                    for (int j = 0; j < insideReceivers[i].length; j++) {
+                        insideReceivers[i][j].put(t);
+                        ((GiottoReceiver)insideReceivers[i][j]).update();
+                    }
+                    transfer = true;
+                }
 	    }
 	}
 	return transfer;
@@ -1365,32 +1353,28 @@ public class GiottoDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The time of the next iteration in milliseconds.
-    private double _nextIterationTime = 0.0;
+    // The count of iterations executed.
+    private int _iterationCount = 0;
+
+    // Minimum time step size (a Giotto "unit").
+    private double _minTimeStep = 0.0;
+
+    // Period of the director.
+    private double _periodValue = 0.0;
+
+    // The real time at which the initialize() method was invoked.
+    private long _realStartTime = 0;
+
+    // List of all receivers this director has created.
+    private LinkedList _receivers = new LinkedList();
+
+    // Schedule to be executed.
+    private Schedule _schedule;
 
     // Specify whether the director should wait for elapsed real time to
     // catch up with model time.
     private boolean _synchronizeToRealTime = false;
 
-    // The real time at which the initialize() method was invoked.
-    private long _realStartTime = 0;
-
-    // The count of iterations executed.
-    private int _iterationCount = 0;
-
-    // List of all receivers this director has created.
-    private LinkedList _receivers = new LinkedList();
-
-    // Schedule to be excuted.
-    private Schedule _schedule = new Schedule();
-
     // Counter for minimum time steps.
     private int _unitIndex = 0;
-
-    // minimized step size for input/output ports to be uptated
-    private double _minTimeStep = 0.0;
-
-    // period of director
-    private double _periodValue = 0.0;
-
 }
