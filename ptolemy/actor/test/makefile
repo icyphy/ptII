@@ -45,8 +45,7 @@ TCL_SRCS = \
 
 JSRCS = \
 	IdentityActor.java \
-	TestActor.java \
-	TestProcessActor.java
+	TestActor.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
@@ -56,9 +55,6 @@ JSIMPLE_TESTS = \
 	Manager.tcl \
 	IOPort.tcl \
 	IORelation.tcl \
-	ProcessDirector.tcl \
-	ProcessThread.tcl \
-	StaticSchedulingDirector.tcl \
 	TypedIOPort.tcl
 
 # Graphical Java tests that use Tcl.
@@ -110,6 +106,3 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
