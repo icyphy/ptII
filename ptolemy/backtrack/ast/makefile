@@ -69,7 +69,7 @@ JSRCS = \
 	UnknownASTException.java
 
 OTHER_FILES_TO_BE_JARED = \
-	jrefactory-copyright.htm
+	eclipse-copyright.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
