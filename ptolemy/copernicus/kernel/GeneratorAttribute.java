@@ -369,6 +369,23 @@ public class GeneratorAttribute extends SingletonAttribute
             }
         }
 
+	// $CLASSPATH may have double quotes in it.  Sadly, installing
+	// the Quicktime Java tool sets CLASSPATH to something like
+        // .:"C:\Program Files\Java\j2re1.4.2_06\lib\ext\QTJava.zip"
+        String classPath = getParameter("classPath");
+        // Remove any double quotes.  I'm not sure if this is the
+        // right thing to do, but converting " to \" results in
+        // havoc when we try to run view an applet.
+        String newClassPath = StringUtilities.substitute(classPath,
+                "\"", "");
+        if (!classPath.equals(newClassPath)) {
+            System.out.println("GeneratorAttribute: classPath had "
+                    + "double quotes in it, which we removed.");
+        }
+
+        setParameter("classPath", newClassPath);
+
+
         _updateNecessaryClassPath();
     }
 
