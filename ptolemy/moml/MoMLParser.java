@@ -48,6 +48,7 @@ import java.util.LinkedList;
 import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Stack;
+import java.util.StringTokenizer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.InstantiationException;
@@ -480,7 +481,7 @@ public class MoMLParser extends HandlerBase {
                 if (source != null) {
                     URL xmlFile = new URL(_base, source);
                     InputStream stream = xmlFile.openStream();
-                    ((Configurable)_current).configure(xmlFile, stream);
+                    ((Configurable)_current).configure(_base, stream);
                 }
                 _currentCharData = new StringBuffer();
 
@@ -532,7 +533,7 @@ public class MoMLParser extends HandlerBase {
                 String baseSpec = (String)_attributes.get("base");
                 URL base = _base;
                 if (baseSpec != null) {
-                    base = new URL(_base, baseSpec);
+                    base = new URL(base, baseSpec);
                 }
 
                 // Read external model definition.
@@ -551,9 +552,21 @@ public class MoMLParser extends HandlerBase {
                                 = System.getProperty("java.class.path");
                         String separator
                                 = System.getProperty("path.separator");
-                        // FIXME: Needs to be done.
-                        System.out.println("Classpath: " + classpath);
+                        StringTokenizer paths = new StringTokenizer(classpath,
+                                separator);
+                        while (paths.hasMoreTokens()) {
+                            String path = paths.nextToken();
+                            base = new URL(base, path);
+                            xmlFile = new URL(base, source);
+                            try {
+                                input = xmlFile.openStream();
+                            } catch (IOException e) {
+                            }
+                        }
                     } catch (SecurityException exception) {
+                        // FIXME: Is there any way, suspecting now that we are
+                        // in an applet, that we can get the code base
+                        // and try to read the file relative to that?
                         // Rethrow the original exception.
                         throw ex;
                     }
