@@ -177,6 +177,10 @@ public class ClassChanges implements MoMLFilter {
         // SDFIOPort is obsolete as of 3.2-devel
         _classChanges.put("ptolemy.domains.sdf.kernel.SDFIOPort",
                 "ptolemy.actor.TypedIOPort");
+
+        // Moved MultiInstanceComposite
+        _classChanges.put("ptolemy.actor.hoc.MultiInstanceComposite"
+                "ptolemy.actor.lib.hoc.MultiInstanceComposite");
     }
     
     // Set of class names that are obsolete and should be simply
