@@ -110,7 +110,7 @@ $(PTMATLAB_LIB): ptmatlab.cc Engine.class
 		-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE) \
 		-fno-exceptions $(PTJNI_SHAREDLIBRARY_CFLAG) \
 		-c -o ptmatlab.o '$<'
-	$(PTCC) -shared -o $@ ptmatlab.o -L$(MATLAB_LIBDIR) $(PTJNI_SHAREDLIBRARY_CFLAG) -lc -leng -lmx
+	$(PTCC) -shared -o $@ ptmatlab.o -L$(MATLAB_LIBDIR) $(PTJNI_SHAREDLIBRARY_LDFLAG) -lc -leng -lmx
 
 
 # Jar file for Web Start that contains the dll
