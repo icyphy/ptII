@@ -85,12 +85,11 @@ public interface InequalityTerm {
      */
     public boolean isSettable();
 
-    /** Check whether the current type of this term is acceptable,
-     *  and return true if it is.  Normally, a type is acceptable
-     *  if it represents an instantiable object.
-     *  @return True if the current type is acceptable.
+    /** Check whether the current value of this term is acceptable,
+     *  and return true if it is.
+     *  @return True if the current value is acceptable.
      */
-    public boolean isTypeAcceptable();
+    public boolean isValueAcceptable();
 
     /** Set the value of this term to the specified CPO element.
      *  Only terms consisting of a single variable can have their

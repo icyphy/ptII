@@ -91,12 +91,12 @@ public class TestConstant implements InequalityTerm {
 	return false;
     }
 
-    /** Check whether the current type of this term is acceptable,
-     *  and return true if it is.  In this class, a type is always
+    /** Check whether the current value of this term is acceptable,
+     *  and return true if it is.  In this class, a value is always
      *  acceptable.
      *  @return True.
      */
-    public boolean isTypeAcceptable() {
+    public boolean isValueAcceptable() {
         return true;
     }
 

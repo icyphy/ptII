@@ -115,7 +115,6 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         _modified = true;
     }
 
-
     /** Add a directed edge to connect two nodes. That is, make the first
      *  argument lower than the second.  Multiple connections
      *  between two nodes are allowed, and are considered different
@@ -145,7 +144,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *   <code>null</code> if the bottom does not exist.
      */
     public Object bottom() {
-        _check();
+        _validate();
         return _bottom;
     }
 
@@ -158,7 +157,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *   specified Objects is not an element of this CPO.
      */
     public int compare(Object e1, Object e2) {
-        _check();
+        _validate();
 
         int i1 = _getNodeId(e1);
         int i2 = _getNodeId(e2);
@@ -174,7 +173,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *   an element in this CPO.
      */
     public Object[] downSet(Object e) {
-        _checkDual();
+        _validateDual();
         return _upSetShared(e);
     }
 
@@ -187,7 +186,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *   specified Objects is not an element of this CPO.
      */
     public Object greatestLowerBound(Object e1, Object e2) {
-        _checkDual();
+        _validateDual();
         return _lubShared(e1, e2);
     }
 
@@ -203,7 +202,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *   in the specified array is not an element of this CPO.
      */
     public Object greatestLowerBound(Object[] subset) {
-        _checkDual();
+        _validateDual();
         return _lubShared(subset);
     }
 
@@ -215,7 +214,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *   specified array is not an element of this CPO.
      */
     public Object greatestElement(Object[] subset) {
-        _checkDual();
+        _validateDual();
         return _leastElementShared(subset);
     }
 
@@ -230,7 +229,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *   <code>false</code> otherwise.
      */
     public boolean isLattice() {
-	_check();
+	_validate();
 
 	if (bottom() == null || top() == null) {
 	    return false;
@@ -255,7 +254,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *   specified array is not an element of this CPO.
      */
     public Object leastElement(Object[] subset) {
-        _check();
+        _validate();
         return _leastElementShared(subset);
     }
 
@@ -268,7 +267,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *   specified Objects is not an element of this CPO.
      */
     public Object leastUpperBound(Object e1, Object e2) {
-        _check();
+        _validate();
         return _lubShared(e1, e2);
     }
 
@@ -284,7 +283,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *   in the specified array is not an element of this CPO.
      */
     public Object leastUpperBound(Object[] subset) {
-        _check();
+        _validate();
         return _lubShared(subset);
     }
 
@@ -293,7 +292,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *   <code>null</code> if the top does not exist.
      */
     public Object top() {
-        _check();
+        _validate();
         return _top;
     }
 
@@ -306,7 +305,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  @return The objects in there sorted order.
      */
     public Object[] topologicalSort(Object[] objs) {
-        _check();
+        _validate();
         int N = objs.length;
         int[] ids = new int[N];
         for (int i = 0; i < N; i++) {
@@ -369,7 +368,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
             }
             if(finished && active) {
                 throw new InvalidStateException(
-                        "DirectedAcyclicGraph.topologicalSort: Graph is cyclic.");
+                    "DirectedAcyclicGraph.topologicalSort: Graph is cyclic.");
             }
         }
         return result;
@@ -383,7 +382,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *   an element of this CPO.
      */
     public Object[] upSet(Object e) {
-        _check();
+        _validate();
         return _upSetShared(e);
     }
 
@@ -409,7 +408,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 
     // compute transitive closure.  Throws InvalidStateException if detects
     // cycles.  Find bottom and top elements.
-    private void _check() {
+    private void _validate() {
         if ( !_modified) {
             _closure = _transitiveClosure;
             return;
@@ -417,8 +416,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 
         _computeTransitiveClosure();
         if ( !isAcyclic()) {
-            throw new InvalidStateException("DirectedAcyclicGraph._check: " +
-                    "Graph is cyclic.");
+            throw new InvalidStateException("DirectedAcyclicGraph._validate: "
+			+ "Graph is cyclic.");
         }
 
         // find bottom
@@ -456,8 +455,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 
     // compute the transposition of transitive closure and point _closure
     // to the transposition
-    private void _checkDual() {
-        _check();
+    private void _validateDual() {
+        _validate();
 
         if (_tranClosureTranspose == null) {
             int size = _transitiveClosure.length;
@@ -721,7 +720,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     // _closure = _transitiveClosure for lub, upSet, leastElement;
     // _closure = _tranClosureTranspose for the dual operations: glb,
     //   downSet, greatestElement.
-    // all the private methods, exception _check() and _checkDual(),
+    // all the private methods, exception _validate() and _validateDual(),
     // use _closure instead of _transitiveClosure or _tranClosureTranspose.
     private boolean[][] _closure = null;
     private boolean[][] _tranClosureTranspose = null;
