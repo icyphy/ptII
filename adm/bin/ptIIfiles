@@ -2,5 +2,5 @@
 # -[Sun Feb  7 02:36:37 1999 by cxh]-
 # Return all the source files (with exceptions) in the ptII tree
 
-find . -type f -print | grep -v SCCS | grep -v shilman | grep -v devel | grep -v adm  | grep -v codeDoc | grep -v filter | grep -v com/microstar | grep -v diva | grep -v CVS | grep -v collections
+find . -type f -print | grep -v SCCS | grep -v shilman | grep -v devel | grep -v adm  | grep -v codeDoc | grep -v filter | grep -v com/microstar | grep -v diva | grep -v CVS | grep -v collections | grep -v /cg/
 
