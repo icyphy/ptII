@@ -37,9 +37,44 @@ import collections.LinkedList;
 //// SchematicRelation 
 /**
 
+A SchematicRelation represents a relation in a Ptolemy II schematic.
+It contains links, which specify the topology of the schematic.
+
+
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class SchematicRelation {
+public class SchematicRelation extends SchematicElement {
+
+    /** 
+     * Create a new SchematicRelation object.
+     */
+    public SchematicRelation () {
+        ;
+    }
+
+    /**
+     * Add a new link to this relation. The name of the link
+     * is the concatenation of the entity name and the port
+     * name, separated by a period.
+     */
+    public void addLink (String name) {
+        ;
+    }
+
+   /**
+     * Test if this relation contains the given link.
+     */
+    public boolean containsLink (String name) {
+        return false;
+    }
+
+   /**
+     * Return an enumeration over the links in this relation.
+     */
+    public Enumeration links () {
+        return null;
+    }
+
 }
 

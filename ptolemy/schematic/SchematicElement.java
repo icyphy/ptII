@@ -49,7 +49,7 @@ public abstract class SchematicElement extends XMLElement {
      * Add a new parameter to this element. The name
      * of the parameter must be unique in this element.
      */
-    public void addParameter (SchematicParameter parameter) {
+    public void addParameter (String name, String value, Class type) {
         ;
     }
 
@@ -62,11 +62,20 @@ public abstract class SchematicElement extends XMLElement {
     }
 
    /**
-     * Return the schematic parameter that has the given name.
+     * Return the value of schematic parameter with the given name.
      * Throw an exception if there is no parameter with the
      * given name in this element.
      */
-    public SchematicParameter getParameter (String name) {
+    public String getParameter (String name) {
+        return null;
+    }
+
+   /**
+     * Return the type of the schematic parameter with the given name.
+     * Throw an exception if there is no parameter with the
+     * given name in this element.
+     */
+    public Class getParameterType (String name) {
         return null;
     }
 

@@ -49,7 +49,7 @@ and run a simulation, or to display and edit the visual schematic
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class Schematic {
+public class Schematic extends SchematicElement {
 
     /** 
      * Create a new Schematic object.
@@ -67,14 +67,6 @@ public class Schematic {
     }
 
     /**
-     * Add a new parameter to this schematic. The name
-     * of the parameter must be unique in this schematic.
-     */
-    public void addParameter (SchematicParameter parameter) {
-        ;
-    }
-
-    /**
      * Add a new relation to this schematic. The name
      * of the relation must be unique in this schematic.
      */
@@ -83,26 +75,10 @@ public class Schematic {
     }
 
     /**
-     * Return an enumeration over the names of the attributes
-     * in this schematic.
-     */
-    public Enumeration attributes () {
-        return null;
-    }
-
-    /**
      * Test if there is an entity with the given name in the
      * schematic.
      */
     public boolean containsEntity (String name) {
-        return false;
-    }
-
-   /**
-     * Test if there is an parameter with the given name in the
-     * schematic.
-     */
-    public boolean containsParameter (String name) {
         return false;
     }
 
@@ -131,45 +107,12 @@ public class Schematic {
         return null;
     }
 
-    /**
-     * Return the value of the attribute with the given name.
-     * Throw an exception if there is no attribute with the
-     * given name in this schematic.
-     */
-    public String getAttribute (String name) {
-        return null;
-    }
-
-    /**
-     * Test if this schematic has the attribute wuth the given name.
-     */
-    public boolean hasAttribute (String name) {
-        return false;
-    }
-
-   /**
-     * Return the schematic parameter that has the given name.
-     * Throw an exception if there is no parameter with the
-     * given name in this schematic.
-     */
-    public SchematicParameter getParameter (String name) {
-        return null;
-    }
-
      /**
      * Return the schematic relation that has the given name.
      * Throw an exception if there is no relation with the
      * given name in this schematic.
      */
     public SchematicRelation getRelation (String name) {
-        return null;
-    }
-
-   /**
-     * Return an enumeration over the top-level parameters in this
-     * schematic.
-     */
-    public Enumeration parameters () {
         return null;
     }
 
@@ -190,30 +133,12 @@ public class Schematic {
         ;
     }
 
-   /**
-     * Remove the schematic parameter with the given name.
-     * Throw an exception if the parameter does not exist
-     * in this schematic.
-     */
-    public void removeParameter(String name) {
-        ;
-    }
-
     /**
      * Remove the schematic relation with the given name.
      * Throw an exception if the relation does not exist
      * in this schematic.
      */
     public void removeRelation(String name) {
-        ;
-    }
-
-    /**
-     * Set the attribute with the given name to the given value.
-     * Throw an exception if there is no attribute with the
-     * given name in this schematic.
-     */
-    public void setAttribute (String name, String value) {
         ;
     }
 }

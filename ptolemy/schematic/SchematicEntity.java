@@ -40,6 +40,23 @@ import collections.LinkedList;
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class SchematicEntity {
+public class SchematicEntity extends SchematicElement { 
+
+    /** 
+     * Create a new SchematicRelation object.
+     */
+    public SchematicRelation () {
+        ;
+    }
+
+    /**
+     * Get the object that describes this entity. This object
+     * can be used to instantiate an actor given certain
+     * other information (such as the domain) or to look up
+     * icons in an icon library.
+     */
+    public EntityType getEntityType () {
+        ;
+    }
 }
 
