@@ -71,7 +71,7 @@ simulation. This parameter is effective only if the director
 is at the top level. Default value is 0.0.
 <LI> <code>stopTime</code>: The stop time of the simulation.
 This parameter is effective only if the director
-is at the top level. Default value is 1.0.
+is at the top level. Default value is Double.MAX_VALUE.
 <LI> <code>initStepSize</code>: The suggested integration step size
 by the user. This will be the step size for fixed step
 size ODE solvers if there is no breakpoint. However, it is just
@@ -209,7 +209,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public Parameter startTime;
 
-    /** Stop time of the simulation. The default value is 1.0, of
+    /** Stop time of the simulation. The default value is Double.MAX_VALUE, of
      *  type DoubleToken.
      */
     public Parameter stopTime;
