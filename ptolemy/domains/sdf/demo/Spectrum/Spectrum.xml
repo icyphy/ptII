@@ -229,7 +229,7 @@ Try changing the parameters in the run window.</text>
 <xLabel>frequency</xLabel>
 <yLabel>dB</yLabel>
 <xRange min="-4000.0" max="3968.75"/>
-<yRange min="-21.208318390214906" max="36.538209132222235"/>
+<yRange min="-50.0" max="10"/>
 <noGrid/>
 </plot>?>
         </configure>
