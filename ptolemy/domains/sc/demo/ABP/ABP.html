@@ -1,0 +1,122 @@
+<HTML>
+<HEAD>
+   <TITLE>Protocol Modeling with Hierarchical FSM's and Discrete Event Model</TITLE>
+<!---$Id$------>
+</HEAD>
+<BODY BGCOLOR="#FAF0E6" LINK="#0000FF" VLINK="#800080">
+
+<CENTER>
+<H1>
+PtolemyII *charts Domain Demo</H1></CENTER>
+
+<CENTER>
+<H1>
+Protocol Modeling with Hierarchical FSM's and Discrete Event Model</H1></CENTER>
+
+<HR>
+<H1>
+Introduction</H1>
+The discrete event (DE) model of computation is very popular in modeling
+distributed or parallel hardware and software and their communication infrastructure
+[1]. An important special case is the modeling of communication protocols.
+A hardware or software implementation of any practical communication protocol
+will go through a large number of states during its execution, so its behavior
+can be very well captured using hierarchical FSM's. The example presented
+here demonstrates the use of discrete event model and hierarchical FSM's
+to model the alternating bit protocol (ABP). See [2] for a detailed discussion
+of the protocol.
+<H1>
+The Model</H1>
+
+<H3>
+Top level</H3>
+The alternating bit protocol is used for reliable transmission of data
+between a sender and a receiver over an unreliable channel. The top level
+configuration of the model is shown below. This top level block diagram
+executes under the DE semantics.
+<CENTER>
+<P><IMG SRC="img/ABPModel.gif" ></CENTER>
+
+<BR>&nbsp;
+<H3>
+The components</H3>
+<B>Message source. </B>This is a DE atomic actor with a parameter <I>MaxDelay</I>.
+After the simulation starts, it will wait for a random delay uniformly
+distributed between <I>0</I> and <I>MaxDelay</I>, and then send a <I>request</I>
+to the sender. When it receives a <I>next</I> from the sender, it will
+again wait for a random delay uniformly distributed between <I>0</I> and
+<I>MaxDelay</I>, and then send a new <I>msgIn</I> with sequence number
+increased by <I>1</I> to the sender. In this demo, <I>MaxDelay</I> is set
+to <I>0.5</I>.
+<P><B>Timer. </B>The timer has an input <I>setTimer</I> of type DoubleToken.
+The value of the input token gives the delay before the next timer expire.
+The timer is reset every time it gets an input token.
+<P><B>Channel. </B>The channel models an unreliable connection in a packet
+switching network. It queues the input packets, drops and delays the packets
+randomly. A channel has three parameters: <I>DropRate</I>, <I>MinDelay</I>
+and <I>MaxDelay</I>. <I>DropRate</I> is the probability that an input packet
+gets dropped. Packet delay in the channel is uniformly distributed between
+<I>MinDelay</I> and <I>MaxDelay</I>. In this demo, the forward channel
+is configured as
+<CENTER>
+<P><I>DropRate = 0.3; MaxDelay = 5.0; MinDelay = 0.5</I>.</CENTER>
+The backward channel is configured as
+<CENTER><I>DropRate = 0.2; MaxDelay = 2.0; MinDelay = 0.2</I>.</CENTER>
+
+<P><B>Plot. </B>The plot shows the result of data transmission. In the
+plot, the red data gives the sequence number of the messages coming out
+from the receiver. The blue data gives the sequence number of the messages
+going to the sender. The third data is the "alternating bit" that the protocol
+uses to number the packets going through the channel.
+<P><B>Sender. </B>The sender implements the sending part of ABP and is
+a hierarchical FSM as shown below.
+<CENTER>
+<P><IMG SRC="img/Sender.gif" ></CENTER>
+
+<P><B>Receiver. </B>The receiver is a flat FSM as shown below.
+<CENTER>
+<P><IMG SRC="img/Receiver.gif" ></CENTER>
+
+<H1>
+Run the Demo</H1>
+<TT>cd ~ptII/ptolemy/domains/sc/demo/ABP</TT>
+<BR><TT>setenv CLASSPATH ~ptII</TT>
+<BR><TT>java ptolemy.domains.sc.demo.ABP.ABP</TT>
+<H1>
+Sample Result</H1>
+A sample result of running the demo is shown below.
+<CENTER>
+<P><IMG SRC="img/Sample.gif" ></CENTER>
+
+<H1>
+Discussion</H1>
+The purpose of this demo is to show:
+<UL>
+<LI>
+Hierarchical FSM's can efficiently capture complex sequential control behavior.</LI>
+
+<LI>
+Embedding FSM's within other models of computation is a clean and flexible
+way to model the cuncurrent execution of FSM's.</LI>
+</UL>
+
+<H1>
+References</H1>
+
+<OL>
+<LI>
+A. Girault, B. Lee, and E. A. Lee, ``<A HREF="http://ptolemy.eecs.berkeley.edu/papers/98/starcharts">Hierarchical
+Finite State Machines with Multiple Concurrency Models</A>,'' April 13,
+1998.</LI>
+
+<LI>
+J. Walrand, and P. Varaiya, ``High-Performance Communication Networks,''
+pages 69-72, Morgan Kaufmann Publishers, Inc., 1996.</LI>
+</OL>
+
+<HR>Copyright &copy; 1998 The Regents of the University of California.
+All rights reserved.
+<BR>Last updated: $Date$.
+<BR>Send comments and suggestions to: <A HREF="mailto:ptII@eecs.berkeley.edu">ptII@eecs.berkeley.edu</A>
+</BODY>
+</HTML>
