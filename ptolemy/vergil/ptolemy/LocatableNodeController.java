@@ -90,11 +90,7 @@ public class LocatableNodeController extends NodeController {
      * at the given location.
      */
     public void addNode(Object node, double x, double y) {
-        super.addNode(node, x, y);
-        double location[] = new double[2];
-        location[0] = x;
-        location[1] = y;
-        setLocation(node, location);
+        throw new UnsupportedOperationException("Cannot add node.");
     }
 
     /** Draw the node at its location.
@@ -131,7 +127,8 @@ public class LocatableNodeController extends NodeController {
     /** Set the desired location of this node.  Throw an exception if the
      *  node can not be given a desired location.
      */
-    public void setLocation(Object n, double[] location) {
+    public void setLocation(Object n, double[] location) 
+            throws IllegalActionException {
 	if(n instanceof Locatable) {
             ((Locatable)n).setLocation(location);
         } else throw new RuntimeException("The node " + n +

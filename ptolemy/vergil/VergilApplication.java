@@ -82,7 +82,7 @@ public class VergilApplication extends MoMLApplication {
             MessageHandler.error("Command failed", ex);
             System.exit(0);
         }
-
+        
         // If the -test arg was set, then exit after 2 seconds.
         if (_test) {
             try {

@@ -44,6 +44,9 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.gui.MessageHandler;
+
 //////////////////////////////////////////////////////////////////////////
 //// LocatableNodeDragInteractor
 /**
@@ -72,23 +75,27 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         //dragging are locatable nodes.  If nodes can be dragged that
         //aren't locatable nodes, then they shouldn't be able to be
         //selected at the same time as a locatable node.
-        Iterator targets = targets();
-        while (targets.hasNext()) {
-            Figure figure = (Figure) targets.next();
-            Object node = figure.getUserObject();
-	    if(_controller.getController().getGraphModel().isNode(node)) {
-		if(_controller.hasLocation(node)) {
-		    double[] location = _controller.getLocation(node);
-		    location[0] += x;
-		    location[1] += y;
-		    _controller.setLocation(node, location);
-		} else {
-		    double[] location = new double[2];
-		    location[0] = figure.getBounds().getCenterX();
-		    location[1] = figure.getBounds().getCenterY();
-		    _controller.setLocation(node, location);
-		}
-	    }
+        try {
+            Iterator targets = targets();
+            while (targets.hasNext()) {
+                Figure figure = (Figure) targets.next();
+                Object node = figure.getUserObject();
+                if(_controller.getController().getGraphModel().isNode(node)) {
+                    if(_controller.hasLocation(node)) {
+                        double[] location = _controller.getLocation(node);
+                        location[0] += x;
+                        location[1] += y;
+                        _controller.setLocation(node, location);
+                    } else {
+                        double[] location = new double[2];
+                        location[0] = figure.getBounds().getCenterX();
+                        location[1] = figure.getBounds().getCenterY();
+                        _controller.setLocation(node, location);
+                    }
+                }
+            }
+        } catch (IllegalActionException ex) {
+            MessageHandler.error("could not set location", ex);
         }
     }
 

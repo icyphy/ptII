@@ -18,10 +18,9 @@
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+        <property name="_location" class="ptolemy.moml.Location">
             <location value="50.0, 50.0"/>
-            <configure>generic.source</configure>
-        </rendition>
+	</property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -36,10 +35,9 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+        <property name="_location" class="ptolemy.moml.Location">
             <location value="156.0, 51.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
+	</property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
         </port>
     </entity>

@@ -39,6 +39,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
@@ -947,7 +948,11 @@ public abstract class GraphFrame extends PtolemyFrame
 		    location[0] += dx;
 		    location[1] += dy;
 		}
-		((Locatable)node).setLocation(location);
+                try {
+                    ((Locatable)node).setLocation(location);
+                } catch (IllegalActionException ex) {
+                    throw new InternalErrorException(ex.getMessage());
+                }
  	    }
 	}
     }
