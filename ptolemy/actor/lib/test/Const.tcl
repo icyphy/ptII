@@ -203,7 +203,7 @@ test Const-3.0 {check out ReadFile} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {"foo"}
+} {{"foo"}}
 
 test Const-3.1 {check out ReadFile with a multiline file} {
     # Create a file Const.txt that contains the three lines
@@ -224,7 +224,9 @@ test Const-3.1 {check out ReadFile with a multiline file} {
             [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
+    # This is sort of lame, the \n chars get converted to spaces in
+    # PtParser.generateParseTree()
     enumToTokenValues [$rec getRecord 0]
-} {}
+} {{" bar "}}
 
 # FIXME: Need a mechanism to test a change in parameter during a run.
