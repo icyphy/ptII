@@ -62,7 +62,7 @@ send ArrayTokens of corresponding type.
 @version $Id$
 */
 
-public class SequenceToArray extends SDFAtomicActor {
+public class SequenceToArray extends SDFTransformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -75,9 +75,6 @@ public class SequenceToArray extends SDFAtomicActor {
     public SequenceToArray(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-
-        input = new SDFIOPort(this, "input", true, false);
-        output = new SDFIOPort(this, "output", false, true);
 
 	// set the tokenConsumptionRate to default 1.
 	input.setTokenConsumptionRate(1);
@@ -93,12 +90,6 @@ public class SequenceToArray extends SDFAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The input port. */
-    public SDFIOPort input;
-
-    /** The output port. */
-    public SDFIOPort output;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -113,8 +104,6 @@ public class SequenceToArray extends SDFAtomicActor {
 	    throws CloneNotSupportedException {
         try {
             SequenceToArray newobj = (SequenceToArray)(super.clone(ws));
-            newobj.input = (SDFIOPort)newobj.getPort("input");
-            newobj.output = (SDFIOPort)newobj.getPort("output");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...

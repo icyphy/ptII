@@ -57,13 +57,16 @@ JSRCS = \
 	ArrayToSequence.java \
 	BitsToInt.java \
 	Delay.java \
+        DotProduct.java \
 	FIR.java \
 	FIRDouble.java \
 	FFT.java \
 	IntToBits.java\
 	LineCoder.java \
+        Multiplexor.java \
 	RaisedCosine.java \
 	SequenceToArray.java \
+        SequenceToDoubleMatrix.java \
 	SDFTransformer.java \
 	SDFSine.java \
 	SDFSource.java \
