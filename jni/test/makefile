@@ -91,23 +91,23 @@ tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 
 test_java: jclass
 
+all: 
+	$(MAKE) SHAREDBASE=meaningOfLife shared
+	$(MAKE) SHAREDBASE=testDeux shared
+	$(MAKE) SHAREDBASE=testTrois shared
+
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 AUXCLASSPATH = $(CLASSPATHSEPARATOR).
 
 
-#JTCLSHFLAGS="-Djava.library.path=`pwd`:`pwd`jni/jnimeaningOfLifeImeaningOfLife:`pwd`jni/jnitestDeuxItestDeux:`pwd`jni/jnitestDeuxItestDeux2:`pwd`jni/jnitestTroisIfnTest:`pwd`jni/jnitestTroisIfnTest10:`pwd`jni/jnitestTroisIfnTest2:`pwd`jni/jnitestTroisIfnTest3:`pwd`jni/jnitestTroisIfnTest4:`pwd`jni/jnitestTroisIfnTest5:`pwd`jni/jnitestTroisIfnTest6:`pwd`jni/jnitestTroisIfnTest7:`pwd`jni/jnitestTroisIfnTest8:`pwd`jni/jnitestTroisIfnTest9:$(PATH)" 
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	PATH="`pwd`:`pwd`/jni/meaningOfLife:`pwd`/jni/testDeux:`pwd`/jni/testTrois:`pwd`jni/jnimeaningOfLifeImeaningOfLife:$(PATH)"; export PATH; \
 	LD_LIBRARY_PATH="`pwd`:`pwd`/jni/meaningOfLife:`pwd`/jni/testDeux:`pwd`/jni/testTrois:`pwd`jni/jnimeaningOfLifeImeaningOfLife:/usr/local/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
 	$(JTCLSH) alljtests.tcl
-
-#PATH=/cygdrive/c/cxh/ptII/jni/test/jni/jnimeaningOfLifeImeaningOfLife:c:/cxh/ptII/jni/test/jni/jnimeaningOfLifeImeaningOfLife:${PATH}
-# export PATH
-#CLASSPATH="../..;c:\cxh\ptII/lib/diva.jar;.;c:\cxh\ptII/lib/ptjacl.jar" "/cygdrive/c/j2sdk1.4.1_01/bin/java"  "-Dptolemy.ptII.dir=c:\cxh\ptII"  tcl.lang.Shell alljtests.tcl
 
 # PTCC is set in $PTII/mk/ptII.mk
 # See also ptolemy/matlab/makefile
