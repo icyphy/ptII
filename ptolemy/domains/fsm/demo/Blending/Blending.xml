@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="BlendingController" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Blending" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
@@ -14,6 +14,50 @@
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="85.0, 40.0">
+        </property>
+    </property>
+    <property name="_generator" class="ptolemy.copernicus.gui.GeneratorTableauAttribute">
+        <property name="codeGenerator" class="ptolemy.kernel.util.StringAttribute" value="applet">
+            <doc name="tooltip">Type of code generator to run.</doc>
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="sootDeep" class="ptolemy.kernel.util.StringAttribute" value="deep">
+                </property>
+                <property name="sootApplet" class="ptolemy.kernel.util.StringAttribute" value="applet">
+                </property>
+                <property name="sootC" class="ptolemy.kernel.util.StringAttribute" value="c">
+                </property>
+                <property name="sootJHDL" class="ptolemy.kernel.util.StringAttribute" value="jhdl">
+                </property>
+                <property name="sootShallow" class="ptolemy.kernel.util.StringAttribute" value="shallow">
+                </property>
+            </property>
+        </property>
+        <property name="show" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+            <doc name="tooltip">Show generated code.</doc>
+        </property>
+        <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+            <doc name="tooltip">Compile generated code.</doc>
+        </property>
+        <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+            <doc name="tooltip">Execute generated code.</doc>
+        </property>
+        <property name="directory" class="ptolemy.kernel.util.StringAttribute" value="c:\users\cxh\ptII\ptolemy\domains\fsm\demo">
+            <doc name="tooltip">Directory into which to put generated code.</doc>
+        </property>
+        <property name="compileOptions" class="ptolemy.kernel.util.StringAttribute" value="-classpath &quot;c:\users\cxh\ptII;.&quot;">
+            <doc name="tooltip">Options to pass to the compiler.</doc>
+        </property>
+        <property name="runOptions" class="ptolemy.kernel.util.StringAttribute" value="-classpath &quot;c:\users\cxh\ptII;.&quot;">
+            <doc name="tooltip">Options to use when executing the code.</doc>
+        </property>
+        <property name="packageName" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.demo">
+            <doc name="tooltip">Package name for the generated classes.</doc>
         </property>
     </property>
     <entity name="BlendingController" class="ptolemy.actor.TypedCompositeActor">
@@ -764,8 +808,7 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Control - SequencePlotter</title>
@@ -775,8 +818,7 @@
 <yRange min="-1.0" max="1.0"/>
 <default connected="no" marks="various" stems="yes"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="Input - SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -794,8 +836,7 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Input - SequencePlotter</title>
@@ -805,8 +846,7 @@
 <yRange min="-7.984213827426177" max="7.984213827426176"/>
 <default connected="no" marks="various" stems="yes"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
         </property>
