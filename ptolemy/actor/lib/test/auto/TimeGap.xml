@@ -41,19 +41,8 @@
         </port>
     </entity>
     <entity name="VariableDelay17" class="ptolemy.domains.de.lib.VariableDelay">
-        <property name="defaultDelay" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 177.0">
         </property>
-        <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-            <property name="output"/>
-        </port>
-        <port name="delay" class="ptolemy.domains.de.kernel.DEIOPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="SingleEvent0" class="ptolemy.domains.de.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
