@@ -38,15 +38,30 @@ import collections.LinkedList;
 //// PNQueueReceiver
 /**
 
-A receiver with a FIFO queue that performs blocking reads and blocking writes to provide the basic functionality of a FIFO channel in the process networks model of computation.
-Tokens are appended to the queue with the put() method which blocks on a write if the queue is full. 
-Tokens are removed from the queue with the get() method which blocks on a read if the queue is empty.
-In case a process blocks on a read or a write, the receiver informs the director about the same.
-It similarly unblocks a blocked process on availability of a token (read-blocked) or room (write-blocked) in the queue and informs the director of the same.
+A receiver with a FIFO queue that blocks the calling process on a read if the 
+FIFO queue is empty and on a write if the queue is full. Blocking read provides
+the basic functionality of a FIFO channel in the process networks model of 
+computation. Blocking write supports the implementation suggested by Parks for
+bounded memory execution of process networks.
 <p>
-This is also responsible for pausing or terminating a process that tries to read from or write to the receiver. In case of termination, it throws a TerminateProcessException when a process tries to read from or write to the receiver. 
-This terminates the process. 
-In case of pausing, it suspends the process when it tries to read from or write to the receiver and resumes it only after a request to resume the process has been received.
+Tokens are appended to the queue with the put() method, which blocks on a write
+if the queue is full. Tokens are removed from the queue with the get() method, 
+which blocks on a read if the queue is empty.
+In case a process blocks on a read or a write, the receiver informs the 
+director about the same.
+The receiver also unblocks processes blocked on a read or a write. In case
+a process is blocked on a read (read-blocked), it is unblocked on availability
+of a token.  If a process is blocked on a write (write-blocked), it
+is unblocked on the availability of room in the queue and informs the director
+of the same.
+<p>
+This class is also responsible for pausing or terminating a process that tries
+to read from or write to the receiver. In case of termination, the receiver 
+throws a TerminateProcessException when a process tries to read from or write 
+to the receiver. This terminates the process. 
+In case of pausing, the receiver suspends the process when it tries to read 
+from or write to the receiver and resumes it only after a request to resume the
+process has been received.
 <p>
 
 @author Mudit Goel
@@ -54,7 +69,7 @@ In case of pausing, it suspends the process when it tries to read from or write 
 @see QueueReceiver
 @see ptolemy.actor.QueueReceiver
 */
-public class PNQueueReceiver extends QueueReceiver implements ptolemy.actor.process.ProcessReceiver {
+public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     /** Construct an empty receiver with no container
      */
     public PNQueueReceiver() {
@@ -72,27 +87,30 @@ public class PNQueueReceiver extends QueueReceiver implements ptolemy.actor.proc
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
-     * Clearing the tokens in the receivers.
-     * This method should be implemented in the base Receiver class...
-     * William Wu
+    /** Clear the tokens in the queue contained in this receiver. This is used
+     *  to reinitialize the receiver.
      */
     public void clear() {
         while (super.hasToken()){
             Token t = get();
         }
     }
-
+    
     /** Remove and return the oldest token from the FIFO queue contained 
-     *  in the receiver. If there 
-     *  are no tokens in the queue, then the method blocks on it and 
-     *  informs the director of it. Otherwise or after resuming, it takes
-     *  the token and checks if any process is blocked on a write to this 
-     *  receiver. If a process is indeed blocked, then it unblocks the 
-     *  process, and informs the director. It then checks if a pause is
-     *  requested, in which case it pauses. Otherwise it returns.
-     *  In case the simulation is to be terminated, it throws a 
-     *  TerminateProcessException.
+     *  in the receiver. Terminate the calling process by throwing a 
+     *  TerminateProcessException if requested. 
+     *  Otherwise, if the FIFO queue is empty, then suspend the calling 
+     *  process and inform the director of the same.
+     *  If a new token becomes available to the FIFO queue, then resume the 
+     *  suspended process. 
+     *  If the queue was not empty, or on availability of a new token (calling
+     *  process was suspended), take the oldest token from the FIFO queue.
+     *  Check if any process is blocked on a write to this 
+     *  receiver. If a process is indeed blocked, then unblock the 
+     *  process, and inform the director of the same. Then check if a pause is
+     *  requested, in which case suspend the calling process until the 
+     *  execution is resumed.
+     *  Otherwise return.
      *  @return The oldest Token read from the queue
      */
     public Token get() {
@@ -114,7 +132,7 @@ public class PNQueueReceiver extends QueueReceiver implements ptolemy.actor.proc
 
             //System.out.println("Halfway thru receiver.get()");
             if (_terminate) {
-                throw new ptolemy.actor.process.TerminateProcessException("");
+                throw new TerminateProcessException("");
             } else {
                 result = super.get();
                 //Check if pending write to the Queue;
@@ -135,25 +153,23 @@ public class PNQueueReceiver extends QueueReceiver implements ptolemy.actor.proc
         }
     }
     
-    /** Return true as ideally a channel in the Kahn process networks
+    /** Return true since a channel in the Kahn process networks
      *  model of computation is of infinite capacity and always has room.
-     *  Also in our implementation, polling is not permitted as we implement
-     *  blocking writes.
      *  @return true
      */
     public boolean hasRoom() {
 	return true;
     }
 
-    /** Return true as the Kahn process networks model of computation does
-     *  not allow polling for data.
-     * @return true
+    /** Return true since a call to the get() method of the receiver will 
+     *  always return a token if the call to get() ever returns.
+     *  @return true
      */
     public boolean hasToken() {
 	return true;
     }
 
-    /** Return a true or false to indicate if there is a read pending
+    /** Return a true or false to indicate whether there is a read pending
      *  on this receiver or not, respectively.
      *  @return a boolean indicating whether a read is pending on this 
      *  receiver or not. 
@@ -162,7 +178,7 @@ public class PNQueueReceiver extends QueueReceiver implements ptolemy.actor.proc
 	return _readpending;
     }
 
-    /** Return a true or false to indicate if there is a write pending
+    /** Return a true or false to indicate whether there is a write pending
      *  on this receiver.
      *  @return A boolean indicating whether a write is pending on this 
      *  receiver or not. 
@@ -172,16 +188,18 @@ public class PNQueueReceiver extends QueueReceiver implements ptolemy.actor.proc
     }
 
     /** Put a token on the queue contained in this receiver.  
-     *  If the queue is full, then the method
-     *  blocks on it and informs the director of it. Otherwise or after 
-     *  resuming, it puts a token and checks whether any process is blocked 
+     *  If the queue is full, then suspend the calling process (blocking 
+     *  write) and inform the director of the same. Resume the process on 
+     *  detecting room in the queue. 
+     *  If a termination is requested, then terminate the calling process by 
+     *  throwing a TerminateProcessException.
+     *  On detecting a room in the queue, put a token in the queue. 
+     *  Check whether any process is blocked 
      *  on a read from this receiver. If a process is indeed blocked, then 
-     *  it unblocks the process, and informs the director. It then checks 
-     *  whether a pause is requested, in which case it pauses. Otherwise it 
-     *  returns.
-     *  In case the simulation is to be terminated, it throws a 
-     *  TerminateProcessException.
-     *  @param token The token to be put to the receiver. 
+     *  unblock the process, and inform the director of the same. 
+     *  If a pause is requested, then suspend the calling process until a 
+     *  resumption is requested. 
+     *  @param token The token to be put in the receiver. 
      */
     public void put(Token token) {
 	Workspace workspace = getContainer().workspace();
@@ -221,10 +239,11 @@ public class PNQueueReceiver extends QueueReceiver implements ptolemy.actor.proc
         }
     }
 
-    /** Pause or resume the thread that tries to read from or write to 
-     *  this receiver. 
+    /** Pause any process that tries to read from or write to this receiver
+     *  if the argument is true. If the argument is false, then resume any
+     *  process paused while reading from or writing to this receiver.
      *  @param pause true if requesting a pause and false if requesting a 
-     *  resumption of the paused thread, if any.
+     *  resumption of the paused thread.
      */
     public synchronized void setPause(boolean pause) {
 	if (pause) {
@@ -235,7 +254,8 @@ public class PNQueueReceiver extends QueueReceiver implements ptolemy.actor.proc
 	}
     }
 
-    /** Set the flag indicating a pending read from the receiver.
+    /** Set a flag indicating that there is a process blocked while trying
+     *  to read from this receiver.
      *  @param readpending true if the calling process is blocking on a 
      *  read, false otherwise.
      */
@@ -243,7 +263,8 @@ public class PNQueueReceiver extends QueueReceiver implements ptolemy.actor.proc
 	_readpending = readpending;
     }
 
-    /** Set the flag indicating a pending write from the receiver. 
+    /** Set a flag indicating that there is a process blocked (write-blocked)
+     *  while trying to write to the receiver. 
      *  @param writepending true if the calling process is blocking on 
      *  a write, false otherwise.
      */
