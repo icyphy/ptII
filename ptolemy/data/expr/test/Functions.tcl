@@ -68,6 +68,41 @@ proc evaluatePtClose {expression results} {
 }
 
 ####################################################################
+# 
+# #     #
+# ##    #   ####    #####  ######
+# # #   #  #    #     #    #
+# #  #  #  #    #     #    #####
+# #   # #  #    #     #    #
+# #    ##  #    #     #    #
+# #     #   ####      #    ######
+# 
+# 
+# This file is organized by tables in the design doc.
+# The functions are grouped, not alphabetized like most of the
+# other test files.
+# 
+# If you add a test, you need to find the proper section
+# and add it there
+####################################################################
+
+
+####################################################################
+####################################################################
+# Misc - undocumented functions
+####################################################################
+
+test Functions-IEEEremainder {test IEEEremainder.  IEEEremainder is dnot documented, but we test it here for completness} {
+    list [evaluate {IEEEremainder(-1.2, 1.0)}] \
+        [evaluate {IEEEremainder(1.0, 1.0)}]
+} {-0.2 0.0}
+
+####################################################################
+####################################################################
+# Trig functions
+####################################################################
+
+####################################################################
 # acos
 
 test Function-acos {Test acos} {
@@ -77,6 +112,13 @@ test Function-acos {Test acos} {
          [evaluate {acos(1ub)}] \
          [evaluatePtClose {acos(1.0+0.0i)} {0.0 + 0.0i}] \
      } {1 0.0 0.0 0.0 1}
+
+test Functions-acos-2 {test acos} {
+    list [evaluate {acos(identityDouble(2))}] \
+        [evaluate {acos(-1.0)}] \
+        [evaluate {acos({-1.0, 0.5})}] \
+        [evaluate {isNaN(acos(2.0))}]
+} {{[0.0, 1.5707963267949; 1.5707963267949, 0.0]} 3.1415926535898 {{3.1415926535898, 1.0471975511966}} true}
 
 ####################################################################
 # asin
@@ -89,6 +131,13 @@ test Function-asin {Test asin} {
          [evaluatePtClose {asin(1.0+0.0i)} {1.5707963267949 + 0.0i}] \
      } {1 0.0 0.0 0.0 1}
 
+test Functions-asin {test asin-2} {
+    list [evaluate {asin(identityDouble(2))}] \
+        [evaluate {asin(-1.0)}] \
+        [evaluate {asin({-1.0, 0.5})}] \
+        [evaluate {isNaN(asin(2.0))}]
+} {{[1.5707963267949, 0.0; 0.0, 1.5707963267949]} -1.5707963267949 {{-1.5707963267949, 0.5235987755983}} true}
+
 ####################################################################
 # atan
 
@@ -100,6 +149,13 @@ test Function-atan {Test atan} {
          [evaluatePtClose {atan(0.0+0.0i)} {0.0 + 0.0i}]
      } {1 1 0.0 1 1}
 
+test Functions-atan-2 {test atan} {
+    list [evaluate {atan(identityDouble(2))}] \
+        [evaluate {atan(-1.0)}] \
+        [evaluate {atan({-1.0, 0.5})}] \
+        [evaluate {atan(-1.0/0.0)}]
+} {{[0.7853981633974, 0.0; 0.0, 0.7853981633974]} -0.7853981633974 {{-0.7853981633974, 0.4636476090008}} -1.5707963267949}
+
 ####################################################################
 # atan2
 
@@ -109,6 +165,13 @@ test Function-atan2 {Test atan2} {
          [evaluate {atan2(0ub, 1ub)}] \
          [evaluatePtClose {atan2(Infinity, 1.0)} 1.5707963267949] \
      } {1 1 0.0 1}
+
+test Functions-atan2-2 {test atan2} {
+    list [evaluate {atan2(identityDouble(2), -identityDouble(2))}] \
+        [evaluate {atan2(-1.0, 1.0)}] \
+        [evaluate {atan2({-1.0, 0.5}, {-1.0, 0.5})}] \
+        [evaluate {atan2(1.0/0.0, 1.0)}]
+} {{[2.3561944901923, 0.0; 0.0, 2.3561944901923]} -0.7853981633974 {{-2.3561944901923, 0.7853981633974}} 1.5707963267949}
 
 ####################################################################
 # acosh
@@ -155,6 +218,13 @@ test Function-cos-2 {Test cos} {
          [evaluate {cos([1+i, 1-i])}]
 } {{0.8337300251311491 - 0.9888977057628653i} {{0.8337300251311491 - 0.9888977057628653i, 0.8337300251311491 + 0.9888977057628653i}} {[0.8337300251311491 - 0.9888977057628653i, 0.8337300251311491 + 0.9888977057628653i]}}
 
+test Functions-cos-3 {test cos} {
+    list [evaluate {cos(identityDouble(2))}] \
+        [evaluate {cos(0.0)}] \
+        [evaluate {cos({-1.0, 0.5})}] \
+        [evaluate {cos(2*PI)}]
+} {{[0.5403023058681, 1.0; 1.0, 0.5403023058681]} 1.0 {{0.5403023058681, 0.8775825618904}} 1.0}
+
 ####################################################################
 # cosh
 
@@ -186,6 +256,12 @@ test Function-sin-2 {Test sin} {
          [evaluate {sin({1+i, 1-i})}] \
          [evaluate {sin([1+i, 1-i])}]
 } {{1.2984575814159776 + 0.6349639147847362i} {{1.2984575814159776 + 0.6349639147847362i, 1.2984575814159776 - 0.6349639147847362i}} {[1.2984575814159776 + 0.6349639147847362i, 1.2984575814159776 - 0.6349639147847362i]}}
+
+test Functions-sin-3 {test sinVector} {
+    list [evaluate {sin(10.0*[0.0:PI/100:1.0]).toArray()}]
+} {{{0.0, 0.3090169943749, 0.5877852522925, 0.8090169943749, 0.9510565162952, 1.0, 0.9510565162952, 0.8090169943749, 0.5877852522925, 0.3090169943749, 5.665538897648E-16, -0.3090169943749, -0.5877852522925, -0.8090169943749, -0.9510565162952, -1.0, -0.9510565162952, -0.8090169943749, -0.5877852522925, -0.3090169943749, 6.4324905987065E-16, 0.3090169943749, 0.5877852522925, 0.8090169943749, 0.9510565162952, 1.0, 0.9510565162952, 0.8090169943749, 0.5877852522925, 0.3090169943749, -4.9616764784565E-15, -0.309016994375}}}
+
+
 
 ####################################################################
 # sinh
@@ -295,6 +371,12 @@ test Function-ceil {Test ceil} {
          [evaluate {ceil([1.1, 2.1])}] \
      } {-1.0 -1.0 1.0 {{2.0, 3.0}} {[2.0, 3.0]}}
 
+test Functions-ceil-2 {test ceil} {
+    list [evaluate {ceil(identityDouble(2) + 0.5)}] \
+        [evaluate {ceil(-1.5)}] \
+        [evaluate {ceil({-1.0, 0.5})}] \
+        [evaluate {ceil(1.5)}]
+} {{[2.0, 1.0; 1.0, 2.0]} -1.0 {{-1.0, 1.0}} 2.0}
 ####################################################################
 # compare
 
@@ -330,6 +412,18 @@ test Function-exp {Test exp} {
          [evaluatePtClose {exp(0.0+0.0i)} {1.0 + 0.0i}] \
      } {1 1 1 1 1}
 
+test Functions-exp-2 {test exp} {
+    list [evaluate {exp(identityDouble(2))}] \
+        [evaluate {exp(-1.0)}] \
+        [evaluate {exp({-1.0, 0.5})}] \
+        [evaluate {exp(0.0)}] \
+        [evaluate {exp(-1.0/0.0)}] \
+        [evaluate {exp(i*PI/2)}] \
+        [evaluate {exp(i*pi*identityComplex(2))}] \
+        [evaluate {exp({-i*PI/2, i*PI/2})}]
+} {{[2.718281828459, 1.0; 1.0, 2.718281828459]} 0.3678794411714 {{0.3678794411714, 1.6487212707001}} 1.0 0.0 {6.123233995736766E-17 + 1.0i} {[-1.0 + 1.2246467991473532E-16i, 1.0 + 0.0i; 1.0 + 0.0i, -1.0 + 1.2246467991473532E-16i]} {{6.123233995736766E-17 - 1.0i, 6.123233995736766E-17 + 1.0i}}}
+
+
 ####################################################################
 # floor
 
@@ -340,6 +434,13 @@ test Function-floor {Test floor} {
          [evaluate {floor({1.1, 2.1})}] \
          [evaluate {floor([1.1, 2.1])}] \
      } {-2.0 -1.0 1.0 {{1.0, 2.0}} {[1.0, 2.0]}}
+
+test Functions-floor-2 {test floor} {
+    list [evaluate {floor(identityDouble(2) + 0.5)}] \
+        [evaluate {floor(-1.5)}] \
+        [evaluate {floor({-1.0, 0.5})}] \
+        [evaluate {floor(1.5)}]
+} {{[1.0, 0.0; 0.0, 1.0]} -2.0 {{-1.0, 0.0}} 1.0}
 
 ####################################################################
 # imag
@@ -390,6 +491,19 @@ test Function-log {Test log} {
          [evaluatePtClose {log(1.0+0.0i)} {0.0 + 0.0i}] \
      } {1 -Infinity 0.0 0.0 1}
 
+test Functions-log-2 {test log} {
+    list [evaluate {log(identityDouble(2) + 1.0)}] \
+        [evaluate {isNaN(log(-1.0))}] \
+        [evaluate {log({e, 1.0})}] \
+        [evaluate {isInfinite(log(0.0)) && log(0.0) < 0.0}] \
+        [evaluate {isInfinite(log(1.0/0.0))}] \
+        [evaluate {log(i)}] \
+        [evaluate {log(i*[e + 0.0*i, 1.0 + 0.0*i; 1.0 + 0.0*i, e + 0.0*i])}] \
+        [evaluate {log({-i*e, i*e})}] \
+        [evaluate {log(1.0)}]
+} {{[0.6931471805599, 0.0; 0.0, 0.6931471805599]} true {{1.0, 0.0}} true true {0.0 + 1.5707963267948966i} {[1.0 + 1.5707963267948966i, 0.0 + 1.5707963267948966i; 0.0 + 1.5707963267948966i, 1.0 + 1.5707963267948966i]} {{1.0 - 1.5707963267948966i, 1.0 + 1.5707963267948966i}} 0.0}
+
+
 ####################################################################
 # log10
 
@@ -400,6 +514,16 @@ test Function-log10 {Test log10} {
          [evaluate {log10(1ub)}] \
      } {1 -Infinity 0.0 0.0}
 
+test Functions-log10-2 {test log10} {
+    list [evaluate {log10(identityDouble(2) + 10.0)}] \
+        [evaluate {isNaN(log10(-1.0))}] \
+        [evaluate {log10({10.0, 1.0})}] \
+        [evaluate {isInfinite(log10(0.0)) && log10(0.0) < 0.0}] \
+        [evaluate {isInfinite(log10(1.0/0.0))}] \
+        [evaluate {log10(1.0)}]
+} {{[1.0413926851582, 1.0; 1.0, 1.0413926851582]} true {{1.0, 0.0}} true true 0.0}
+
+
 ####################################################################
 # log2
 
@@ -409,6 +533,15 @@ test Function-log2 {Test log2} {
          [evaluate {log2(1)}] \
          [evaluate {log2(1ub)}] \
      } {1 -Infinity 0.0 0.0}
+
+test Functions-log2-2 {test log2} {
+    list [evaluate {log2(identityDouble(2) + 2.0)}] \
+        [evaluate {isNaN(log2(-1.0))}] \
+        [evaluate {log2({2.0, 1.0})}] \
+        [evaluate {isInfinite(log2(0.0)) && log2(0.0) < 0.0}] \
+        [evaluate {isInfinite(log2(1.0/0.0))}] \
+        [evaluate {log2(1.0)}]
+} {{[1.5849625007212, 1.0; 1.0, 1.5849625007212]} true {{1.0, 0.0}} true true 0.0}
 
 ####################################################################
 # max
@@ -425,6 +558,19 @@ test Function-max {Test max} {
          [evaluate {max({1ub, 2ub})}] \
      } {2.0 0.0 1 2ub 1L 2.0 2 2L 2ub}
 
+test Functions-max-2 {test max} {
+    list [evaluate {max(identityDouble(2), -identityDouble(2))}] \
+        [evaluate {max(-1.0, 1.0)}] \
+        [evaluate {max({-1.0, 0.5}, {1.0, -0.5})}] \
+        [evaluate {isInfinite(max(1.0/0.0, 1.0))}] \
+        [evaluate {max(identityInt(2), -identityInt(2))}] \
+        [evaluate {max({-1, 2}, {1, -2})}] \
+        [evaluate {max(-1, 1)}] \
+        [evaluate {max(identityLong(2), -identityLong(2))}] \
+        [evaluate {max({-1L, 2L}, {1L, -2L})}] \
+        [evaluate {max(-1L, 1L)}]
+} {{[1.0, 0.0; 0.0, 1.0]} 1.0 {{1.0, 0.5}} true {[1, 0; 0, 1]} {{1, 2}} 1 {[1L, 0L; 0L, 1L]} {{1L, 2L}} 1L}
+
 
 ####################################################################
 # min
@@ -440,6 +586,20 @@ test Function-min {Test min} {
          [evaluate {min({1L, 2L})}] \
          [evaluate {min({1ub, 2ub})}] \
      } {1.0 -1.0 -1 1ub -1L 1.0 1 1L 1ub}
+
+test Functions-min-2 {test min} {
+    list [evaluate {min(identityDouble(2), -identityDouble(2))}] \
+        [evaluate {min(-1.0, 1.0)}] \
+        [evaluate {min({-1.0, 0.5}, {1.0, -0.5})}] \
+        [evaluate {isInfinite(min(-1.0/0.0, 1.0))}] \
+        [evaluate {min(identityInt(2), -identityInt(2))}] \
+        [evaluate {min({-1, 2}, {1, -2})}] \
+        [evaluate {min(-1, 1)}] \
+        [evaluate {min(identityLong(2), -identityLong(2))}] \
+        [evaluate {min({-1L, 2L}, {1L, -2L})}] \
+        [evaluate {min(-1L, 1L)}]
+} {{[-1.0, 0.0; 0.0, -1.0]} -1.0 {{-1.0, -0.5}} true {[-1, 0; 0, -1]} {{-1, -2}} -1 {[-1L, 0L; 0L, -1L]} {{-1L, -2L}} -1L}
+
 
 ####################################################################
 # within
@@ -543,6 +703,17 @@ test Function-pow2 {Test pow on complex} {
          [evaluatePtClose {pow(e+0.0i, 2*pi*i)} {1.0 + 0.0i}] \
      } {1 1 1}
 
+test Functions-pow-3 {test pow} {
+    list [evaluate {pow(2.0*identityDouble(2), -identityDouble(2))}] \
+        [evaluate {pow(-1.0, 2.0)}] \
+        [evaluate {pow({-1.0, 0.5}, {-1.0, 0.5})}] \
+        [evaluate {pow(e, pi* i)}] \
+        [evaluate {pow(i, 2.0)}] \
+        [evaluate {pow(i, 2.0+ 0.0i)}] \
+        [evaluate {pow({-1.0, 0.5}, {-1.0+0.0*i, 0.5+0.0i})}]
+} {{[0.5, 1.0; 1.0, 0.5]} 1.0 {{-1.0, 0.7071067811865}} {-1.0 + 1.2246467991473532E-16i} {-1.0 + 1.2246467991473532E-16i} {-1.0 + 1.2246467991473532E-16i} {{-1.0 - 1.2246467991473532E-16i, 0.7071067811865475 + 0.0i}}}
+
+
 ####################################################################
 # random
 
@@ -584,6 +755,24 @@ test Function-round {Test round} {
          [string compare [evaluate {round(-Infinity)}] [evaluate {MinLong}]] \
      } {1L -1L 0L 0 0}
 
+test Functions-round-2 {test round} {
+    list [evaluate {rint(1.1)}] \
+        [evaluate {rint(1.5)}] \
+        [evaluate {rint(-1.5)}] \
+        [evaluate {rint({-2.5, 2.5})}] \
+        [evaluate {rint([1.5, -1.5])}] \
+        [evaluate {round({-2.5, 2.5})}] \
+        [evaluate {round([1.5, -1.5])}] \
+        [evaluate {round(1.1)}] \
+        [evaluate {round(-1.5)}] \
+        [evaluate {round(1.5)}] \
+        [evaluate {roundToInt(-1.5)}] \
+        [evaluate {roundToInt({-2.5, 2.5})}] \
+        [evaluate {roundToInt([1.5, -1.5])}] \
+        [evaluate {roundToInt(1.1)}] \
+        [evaluate {roundToInt(1.5)}]
+} {1.0 2.0 -2.0 {{-2.0, 2.0}} {[2.0, -2.0]} {{-2L, 3L}} {[2L, -1L]} 1L -1L 2L -1 {{-2, 3}} {[2, -1]} 1 2}
+
 ####################################################################
 # roundToInt
 
@@ -604,6 +793,13 @@ test Function-sgn {Test sgn} {
          [evaluate {sgn(0.0)}] \
      } {1 -1 1}
 
+test Functions-sgn-2 {test sgn} {
+    list [evaluate {sgn(-identityDouble(2))}] \
+        [evaluate {sgn(0.0)}] \
+        [evaluate {sgn({-1.0, 0.5})}] \
+        [evaluate {sgn(1.0)}]
+} {{[-1, 1; 1, -1]} 1 {{-1, 1}} 1}
+
 ####################################################################
 # sqrt
 
@@ -614,6 +810,18 @@ test Function-sqrt {Test sqrt} {
          [evaluate {sqrt(4.0 + 0.0i)}] \
      } {2.0 NaN 0.0 {2.0 + 0.0i}}
 
+test Functions-sqrt-2 {test sqrt} {
+    list [evaluate {sqrt(2.0*identityDouble(2))}] \
+        [evaluate {sqrt(0.0)}] \
+        [evaluate {sqrt({1.0, 2.0})}] \
+        [evaluate {sqrt(1.0)}] \
+        [evaluate {isNaN(sqrt(-1.0))}] \
+        [evaluate {sqrt(2.0)}] \
+        [evaluate {sqrt(i)}] \
+        [evaluate {sqrt({i, -1.0+0.0i})}]
+} {{[1.4142135623731, 0.0; 0.0, 1.4142135623731]} 0.0 {{1.0, 1.4142135623731}} 1.0 true 1.4142135623731 {0.7071067811865476 + 0.7071067811865475i} {{0.7071067811865476 + 0.7071067811865475i, 6.123233995736766E-17 + 1.0i}}}
+
+
 ####################################################################
 # toDegrees
 
@@ -622,6 +830,13 @@ test Function-toDegrees {Test toDegrees} {
          [evaluatePtClose {toDegrees(-pi)} -180] \
      } {0.0 1}
 
+test Functions-toDegrees-2 {test toDegrees} {
+    list [evaluate {toDegrees(PI*identityDouble(2))}] \
+        [evaluate {toDegrees(0.0)}] \
+        [evaluate {toDegrees({-PI/2, PI/2})}] \
+        [evaluate {toDegrees(2*PI)}]
+} {{[180.0, 0.0; 0.0, 180.0]} 0.0 {{-90.0, 90.0}} 360.0}
+
 ####################################################################
 # toRadians
 
@@ -629,6 +844,14 @@ test Function-toRadians {Test toRadians} {
     list [evaluate {toRadians(0.0)}] \
          [evaluatePtClose {toRadians(-180)} [evaluate {-pi}]] \
      } {0.0 1}
+
+test Functions-toRadians-2 {test toRadians} {
+    list [evaluate {toRadians(180.0*identityDouble(2))}] \
+        [evaluate {toRadians(0.0)}] \
+        [evaluate {toRadians({-90.0, 90.0})}] \
+        [evaluate {toRadians(360.0)}]
+} {{[3.1415926535898, 0.0; 0.0, 3.1415926535898]} 0.0 {{-1.5707963267949, 1.5707963267949}} 6.2831853071796}
+
 
 ####################################################################
 ####################################################################
