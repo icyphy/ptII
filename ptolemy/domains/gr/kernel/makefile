@@ -48,11 +48,16 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	GRActor.java \
+	GRActor2D.java \
+	GRActor3D.java \
 	GRDirector.java \
 	GRReceiver.java \
 	GRScheduler.java \
-	GRActor.java \
-	SceneGraphToken.java
+	GRUtilities2D.java \
+	SceneGraphToken.java \
+	Scene2DToken.java \
+	ViewScreenInterface.java
 
 EXTRA_SRCS =	$(JSRCS)
 

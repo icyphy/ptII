@@ -301,19 +301,22 @@ public class GRDirector extends StaticSchedulingDirector {
         super.initialize();
         _buildActorTable();
         _iteration = 0;
+     
+        
         // Get the ViewScreen:
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
-        List viewScreens = container.entityList(ViewScreen.class);
+        List viewScreens = container.entityList(ViewScreenInterface.class);
         if (viewScreens.size() != 1) {
             throw new IllegalActionException(this,
                     "GR model does not contain exactly one view screen.");
         }
-        ViewScreen viewScreen = (ViewScreen) viewScreens.get(0);
+        ViewScreenInterface viewScreen = 
+            (ViewScreenInterface) viewScreens.get(0);
         // Set the view screen for all the actors.
         for (Iterator actors = container.entityList(GRActor.class).iterator();
-            actors.hasNext();) {
+             actors.hasNext();) {
             GRActor actor = (GRActor) actors.next();
-            actor._setViewScreen(viewScreen);
+            actor._setViewScreen((GRActor)viewScreen);
         }
     }
 

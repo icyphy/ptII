@@ -49,9 +49,9 @@ ViewScreen display actor.
 @version $Id$
 @since Ptolemy II 1.0
 */
-abstract public class GRActor extends TypedAtomicActor {
+abstract public class GRActor3D extends GRActor {
 
-    /** Create a new GRActor in the specified container with the specified
+    /** Create a new GRActor3D in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -63,76 +63,62 @@ abstract public class GRActor extends TypedAtomicActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public GRActor(CompositeEntity container, String name)
+    public GRActor3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _allowAttributeChanges = false;
-        _isSceneGraphInitialized = false;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Initialize the scene graph if it is not yet initialized.
-     *
-     *  @exception IllegalActionException If an error occurs
-     *    during the scene graph initialization.
-     */
-    public void fire() throws IllegalActionException {
-        if (!_isSceneGraphInitialized) {
-            _makeSceneGraphConnection();
-            _isSceneGraphInitialized = true;
-        }
-    }
-
-    /** Check whether the current director is a GRDirector. If not,
-     *  throw an illegal action exception.
-     *
-     *  @exception IllegalActionException If the current director
-     *    is not a GRDirector.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _isSceneGraphInitialized = false;
-        /*if (!(getDirector() instanceof GRDirector)) {
-          throw new IllegalActionException(this,
-          "GR Actors can only be used under a GR Director");
-          }*/
-    }
-
-    /** Reset this actor back to uninitialized state to prepare for
-     *  the next execution.
-     *
-     *  @exception IllegalActionException If the base class throws it.
-     */
-    public void wrapup() throws IllegalActionException {
-        super.wrapup();
-        _isSceneGraphInitialized = false;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Setup the scene graph connections of this actor. Derived GR Actors
-     *  should override this method.
+    /** Add the node argument as a child to the encapsulated Java3D node
+     *  in this actor. Derived GR Actors should override this method
      *
      *  @exception IllegalActionException Always thrown for this base class.
      */
-    abstract protected void _makeSceneGraphConnection()
-            throws IllegalActionException;
+    protected void _addChild(Node node) throws IllegalActionException {
+        throw new IllegalActionException(this,
+                "GR domain actor cannot have children");
+    }
+
+    /** Return the Java3D node associated with this actor. Derived
+     *  GR Actors should override this method.
+     *
+     *  @return The Java3D node associated with this actor
+     */
+    abstract protected Node _getNodeObject();
 
     /** Set the view screen that this actor is connected to.
+     *  @exception RuntimeException If the given actor is not a
+     *  ViewScreen2D.
      */
-    abstract protected void _setViewScreen(GRActor actor)
-            throws IllegalActionException;
+    protected void _setViewScreen(GRActor actor) {
+        if(actor instanceof ViewScreen) {
+            _viewScreen = (ViewScreen)actor;
+        } else {
+            throw new RuntimeException("Actor " + getClass().getName() + 
+                    " can only be used with a ViewScreen");
+        }
+    }
+
+    /** Start the Java3D renderer. This method will be overridden by some
+     *  derived GR Actors.
+     */
+    protected void _startRenderer() {
+    }
+
+    /** Stop the Java3D renderer. This method will be overridden by some
+     *  derived GR Actors.
+     */
+    protected void _stopRenderer() {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // Boolean variable to determine whether the scene graph is initialized
-    protected boolean _isSceneGraphInitialized;
-
-    // Boolean variable to determine whether attribute changes are allowed
-    // For speed reasons, attribute changes may be disallowed in some models
-    protected boolean _allowAttributeChanges;
+    // The actor displaying the scene, if there is one
+    protected ViewScreen _viewScreen;
 }

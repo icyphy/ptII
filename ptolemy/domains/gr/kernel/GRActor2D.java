@@ -22,8 +22,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (chf@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@ProposedRating Red (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.gr.kernel;
@@ -32,24 +32,25 @@ import ptolemy.actor.AtomicActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.domains.gr.lib.ViewScreen;
-import javax.media.j3d.Node;
+import ptolemy.domains.gr.lib.ViewScreen2D;
+
 
 //////////////////////////////////////////////////////////////////////////
-//// GRActor
+//// GRActor2D
 /**
-A base class for all GR actors. This is an abstract class that is never
-used as a standalone actor in a Ptolemy model. Subclasses of this actor
-include Geometry actors, Transform actors, Interaction actors, and the
-ViewScreen display actor.
+A base class for all two-dimensional GR actors. These actors use Diva
+to render two-dimensional scenes in the GR domain. This is an abstract
+class that is never used as a standalone actor in a Ptolemy model.
+Subclasses of this actor include Geometry actors, Transform actors,
+Interaction actors, and the ViewScreen2D display actor.
 
 @see ptolemy.domains.gr.lib
 
-@author C. Fong
+@author Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
 */
-abstract public class GRActor extends TypedAtomicActor {
+abstract public class GRActor2D extends GRActor {
 
     /** Create a new GRActor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -63,76 +64,33 @@ abstract public class GRActor extends TypedAtomicActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public GRActor(CompositeEntity container, String name)
+    public GRActor2D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _allowAttributeChanges = false;
-        _isSceneGraphInitialized = false;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Initialize the scene graph if it is not yet initialized.
-     *
-     *  @exception IllegalActionException If an error occurs
-     *    during the scene graph initialization.
-     */
-    public void fire() throws IllegalActionException {
-        if (!_isSceneGraphInitialized) {
-            _makeSceneGraphConnection();
-            _isSceneGraphInitialized = true;
-        }
-    }
-
-    /** Check whether the current director is a GRDirector. If not,
-     *  throw an illegal action exception.
-     *
-     *  @exception IllegalActionException If the current director
-     *    is not a GRDirector.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _isSceneGraphInitialized = false;
-        /*if (!(getDirector() instanceof GRDirector)) {
-          throw new IllegalActionException(this,
-          "GR Actors can only be used under a GR Director");
-          }*/
-    }
-
-    /** Reset this actor back to uninitialized state to prepare for
-     *  the next execution.
-     *
-     *  @exception IllegalActionException If the base class throws it.
-     */
-    public void wrapup() throws IllegalActionException {
-        super.wrapup();
-        _isSceneGraphInitialized = false;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Setup the scene graph connections of this actor. Derived GR Actors
-     *  should override this method.
-     *
-     *  @exception IllegalActionException Always thrown for this base class.
-     */
-    abstract protected void _makeSceneGraphConnection()
-            throws IllegalActionException;
-
     /** Set the view screen that this actor is connected to.
+     *  @exception RuntimeException If the given actor is not a
+     *  ViewScreen2D.
      */
-    abstract protected void _setViewScreen(GRActor actor)
-            throws IllegalActionException;
+    protected void _setViewScreen(GRActor actor) {
+        if(actor instanceof ViewScreen2D) {
+            _viewScreen = (ViewScreen2D)actor;
+        } else {
+            throw new RuntimeException("Actor " + getClass().getName() + 
+                    " can only be used with a ViewScreen2D");
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // Boolean variable to determine whether the scene graph is initialized
-    protected boolean _isSceneGraphInitialized;
-
-    // Boolean variable to determine whether attribute changes are allowed
-    // For speed reasons, attribute changes may be disallowed in some models
-    protected boolean _allowAttributeChanges;
+    // The actor displaying the scene, if there is one
+    protected ViewScreen2D _viewScreen;
 }
