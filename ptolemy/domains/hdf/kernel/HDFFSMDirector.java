@@ -30,7 +30,10 @@
 
 package ptolemy.domains.hdf.kernel;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -41,18 +44,18 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.util.ConstVariableModelAnalysis;
-import ptolemy.actor.util.DependencyDeclaration;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.actor.util.ConstVariableModelAnalysis;
+import ptolemy.actor.util.DependencyDeclaration;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
+import ptolemy.domains.ddf.kernel.DDFDirector;
 import ptolemy.domains.fsm.kernel.Action;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
-import ptolemy.domains.ddf.kernel.DDFDirector;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
