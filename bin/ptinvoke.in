@@ -216,6 +216,7 @@ case `basename "$0"` in
 	echo "   MODEL         = $MODEL"  
 	echo "   TARGETPACKAGE = $TARGETPACKAGE"
 	echo "   TARGETPATH    = $TARGETPATH"
+	echo "   Output will appear in "$PTII/$TARGETPATH"
 
 	JVM_SIZE=-Xmx256m
 
