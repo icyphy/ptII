@@ -306,10 +306,10 @@ public class FileUtilities {
             String name, URI base, ClassLoader classLoader)
             throws IOException {
         if (name.trim().equals("System.in")) {
-            if (_stdIn == null) {
-                _stdIn = new BufferedReader(new InputStreamReader(System.in));
+            if (STD_IN == null) {
+                STD_IN = new BufferedReader(new InputStreamReader(System.in));
             }
-            return _stdIn;
+            return STD_IN;
         }
         // Not standard input. Try URL mechanism.
         URL url = nameToURL(name, base, classLoader);
@@ -341,10 +341,10 @@ public class FileUtilities {
     public static Writer openForWriting(String name, URI base, boolean append)
             throws IOException {
         if (name.trim().equals("System.out")) {
-            if (_stdOut == null) {
-                _stdOut = new PrintWriter(System.out);
+            if (STD_OUT == null) {
+                STD_OUT = new PrintWriter(System.out);
             }
-            return _stdOut;
+            return STD_OUT;
         }
         if (name == null || name.trim().equals("")) {
             return null;
@@ -352,6 +352,19 @@ public class FileUtilities {
         File file = nameToFile(name, base);
         return new FileWriter(file, append);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public members                   ////
+
+    /** Standard in as a reader, which will be non-null
+     *  only after a call to openForReading("System.in").
+     */
+    public static BufferedReader STD_IN = null;
+
+    /** Standard out as a writer, which will be non-null
+     *  only after a call to openForWriting("System.out").
+     */
+    public static PrintWriter STD_OUT = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
@@ -364,13 +377,6 @@ public class FileUtilities {
      *  the file system.
      */
     private static String _CLASSPATH_VALUE = "xxxxxxCLASSPATHxxxxxx";
-
-    /** Standard in as a reader. */
-    private static BufferedReader _stdIn = null;
-
-    /** Standard out as a writer. */
-    private static PrintWriter _stdOut = null;
-
 }
 
 
