@@ -144,7 +144,7 @@ public class CTRateLimiter extends Transformer {
                 double valueDifference = ((DoubleToken)_newToken.subtract(
                                                   _lastToken)).doubleValue();
                 double timeDifference = 
-                    currentTime.subtract(_lastTime).getTimeValue();
+                    currentTime.subtract(_lastTime).getDoubleValue();
                 double rate = valueDifference / timeDifference;
                 double risingRate = ((DoubleToken)risingSlewRate.getToken())
                     .doubleValue();
@@ -167,7 +167,7 @@ public class CTRateLimiter extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _lastTime = new Time(this);
+        _lastTime = new Time(getDirector());
         _lastToken = null;
     }
 

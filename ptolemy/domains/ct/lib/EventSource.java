@@ -256,9 +256,7 @@ public class EventSource extends TypedAtomicActor
             }
             if (hasCurrentEvent()) {
                 _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
-                // The null argument prevents the triple firing that the
-                // director would otherwise do.
-                director.fireAt(null, _nextOutputTime);
+                director.fireAt(this, _nextOutputTime);
             }
         }
         return true;
