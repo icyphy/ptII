@@ -121,16 +121,16 @@ public class AddSubtract extends TypedAtomicActor {
     /** Input for tokens to be subtracted.  This is a multiport, and its
      *  type is inferred from the connections.
      */
-    public TypedIOPort minus = null;
+    public TypedIOPort minus;
 
     /** Output port.  The type is inferred from the connections.
      */
-    public TypedIOPort output = null;
+    public TypedIOPort output;
 
     /** Input for tokens to be added.  This is a multiport, and its
      *  type is inferred from the connections.
      */
-    public TypedIOPort plus = null;
+    public TypedIOPort plus;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
