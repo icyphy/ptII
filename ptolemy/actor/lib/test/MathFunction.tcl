@@ -118,7 +118,7 @@ test MathFunction-2.5 {test with sqrt} {
 ######################################################################
 #### Test MathFunction with remainder
 #
-test MathFunction-2.6 {test with remainder} {
+test MathFunction-3.1 {test with remainder} {
     # Uses setup from MathFunction 1-1, 2-2 and 2-3
     $function setExpression "remainder"
     set const [java::new ptolemy.actor.lib.Const $e0 const]
@@ -133,5 +133,46 @@ test MathFunction-2.6 {test with remainder} {
     [$e0 getManager] execute
     epsilonDiff [enumToTokenValues [$rec getRecord 0]] \
 	    {1.0 2.0 0.0 1.0 2.0} \
+            0.001
+} {}
+
+
+######################################################################
+#### Test MathFunction with remainder on clone
+#
+test MathFunction-3.2 {test with remainder on clone} {
+    # Uses setup from MathFunction 1.1, 2.2 and 2.3
+    set e1 [java::new ptolemy.actor.TypedCompositeActor]
+    set e1 [sdfModel 10]
+
+    # 3.1 set the function to remainder.  The clone method
+    # should preserve this and should also have a second port
+    set mathFunctionClone [java::cast ptolemy.actor.lib.MathFunction [$mathFunction clone]]
+    $mathFunctionClone setContainer $e1
+
+    set rampClone [java::cast ptolemy.actor.lib.Ramp [$ramp clone]]
+    $rampClone setContainer $e1
+
+    set recClone [java::cast ptolemy.actor.lib.Recorder [$rec clone]]
+    $recClone setContainer $e1
+    $e1 connect \
+       [java::field [java::cast ptolemy.actor.lib.Source $rampClone] output] \
+       [java::field $mathFunctionClone firstOperand]
+
+    $e1 connect \
+       [java::field $mathFunctionClone output] \
+       [java::field [java::cast ptolemy.actor.lib.Sink $recClone] input]
+
+    set constClone [java::cast ptolemy.actor.lib.Const [$const clone]]
+    $constClone setContainer $e1
+
+    $e1 connect \
+       [java::field [java::cast ptolemy.actor.lib.Source $constClone] output] \
+       [java::field $mathFunctionClone secondOperand]
+
+
+    [$e1 getManager] execute
+    epsilonDiff [enumToTokenValues [$recClone getRecord 0]] \
+	    {1.0 2.0 0.0 1.0 2.0 0.0 1.0 2.0 0.0 1.0} \
             0.001
 } {}
