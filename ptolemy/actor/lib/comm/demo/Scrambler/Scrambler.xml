@@ -9,14 +9,14 @@
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="-1">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 50.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -2, 964, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -2, 964, 511}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[749, 400]">
     </property>
@@ -172,9 +172,21 @@ that are true (vs. false).</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 75.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 511}}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 30.0">
+            </property>
         </property>
         <port name="data" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -182,12 +194,24 @@ that are true (vs. false).</text></svg></configure>
             </property>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
+            <property name="_tokenConsumptionRate" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="rate" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 245.0">
             </property>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_tokenProductionRate" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
+            <property name="_tokenInitProduction" class="ptolemy.data.expr.NotEditableParameter" value="0">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
             </property>
         </port>
         <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
@@ -258,7 +282,7 @@ that are true (vs. false).</text></svg></configure>
             </port>
         </entity>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="2">
+            <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
                 <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
                 </property>
             </property>
@@ -266,12 +290,28 @@ that are true (vs. false).</text></svg></configure>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="110.0, 205.0">
             </vertex>
+            <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </relation>
         <link port="data" relation="relation4"/>
         <link port="rate" relation="relation6"/>
@@ -286,7 +326,7 @@ that are true (vs. false).</text></svg></configure>
         <link port="MultiplyDivide.output" relation="relation6"/>
     </entity>
     <entity name="Rate of Trues" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.4908503767492">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.5609756097561">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -333,7 +373,7 @@ that are true (vs. false).</text></svg></configure>
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="0">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
