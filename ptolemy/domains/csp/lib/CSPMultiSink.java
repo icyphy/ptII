@@ -71,6 +71,8 @@ public class CSPMultiSink extends CSPActor {
      *  container or a NameDuplicationException is thrown. The
      *  container argument must not be null, or a NullPointerException
      *  will be thrown.
+     *  @param container The container of this actor.
+     *  @param name The name of this actor.
      *  @exception IllegalActionException If the port cannot be
      *   contained by this actor.
      *  @exception NameDuplicationException If the port name coincides

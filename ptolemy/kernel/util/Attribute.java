@@ -289,6 +289,7 @@ public class Attribute extends NamedObj {
 
     /** Get the NamedObj that this Attribute is attached to.
      *  @return The container, an instance of NamedObj.
+     *  @see #setContainer(NamedObj)
      */
     public NamedObj getContainer() {
         return _container;
@@ -318,6 +319,7 @@ public class Attribute extends NamedObj {
      *   the proposed container would result in recursive containment.
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this attribute.
+     *  @see #getContainer()
      */
     public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {

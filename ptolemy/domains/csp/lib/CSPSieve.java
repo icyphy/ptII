@@ -56,7 +56,13 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class CSPSieve extends CSPActor {
-    /** Calls the super class constructor and creates the necessary ports.
+
+    /** Construct a DDESink with the specified container and name.
+     *  This method calls the super class constructor and creates
+     *  the necessary ports. 
+     *  @param container The container of this actor.
+     *  @param name The name of this actor.
+     *  @param prime The prime this sieve is filtering out.   
      *  @exception NameDuplicationException If more than one port
      *   with the same name is added to this actor, or if the entity
      *   containing this actor already contains an actor with the name
@@ -78,11 +84,11 @@ public class CSPSieve extends CSPActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port
+    /** The input port.
      */
     public TypedIOPort input;
 
-    /** The output port
+    /** The output port.
      */
     public TypedIOPort output;
 
@@ -134,7 +140,7 @@ public class CSPSieve extends CSPActor {
     /*  Create and return a new TopologyChangeRequest object that
      *  adds a new sieve.
      *  @param value The prime the new filter should sieve.
-     *  JFIXME
+     *  FIXME
      private TopologyChangeRequest _makeChangeRequest(final int value) {
      TopologyChangeRequest request = new TopologyChangeRequest(this) {
      public void constructEventQueue() {
@@ -167,6 +173,7 @@ public class CSPSieve extends CSPActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The prime this sieve is filtering out.
+
+    /** The prime this sieve is filtering out. */
     private int _prime;
 }

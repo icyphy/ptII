@@ -90,6 +90,7 @@ public abstract class ChangeRequest {
      *  other listeners that have been previously registered with this
      *  object.
      *  @param listener The listener to add.
+     *  @see #removeChangeListener(ChangeListener)
      */
     public void addChangeListener(ChangeListener listener) {
         if (_localListeners == null) {
@@ -203,6 +204,7 @@ public abstract class ChangeRequest {
 
     /** Get the description that was specified in the constructor.
      *  @return The description of the change.
+     *  @see #setDescription(String)
      */
     public String getDescription() {
         return _description;
@@ -266,6 +268,8 @@ public abstract class ChangeRequest {
     /** Remove the given change listener from this request.
      *  The listener will no longer be
      *  notified when the change is executed, or the change fails.
+     *  @param listener The listener to be removed.
+     *  @see #addChangeListener(ChangeListener)
      */
     public void removeChangeListener(ChangeListener listener) {
         if (_localListeners != null) {
@@ -276,6 +280,7 @@ public abstract class ChangeRequest {
     /** Set the description.
      *  @param description The description.
      *  @since Ptolemy II 3.1
+     *  @see #getDescription()
      */
     public void setDescription(String description) {
         _description = description;
