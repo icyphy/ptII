@@ -43,13 +43,29 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 
-JSRC = \
+# Tcl sources that are part of the testing infrastructure
+TCL_SRCS = \
+	testDefs.tcl
 
-EXTRA_SRCS =	$(JSRCS)
+JSRCS = \
+	ReflectTest.java
+
+# Non-graphical Java tests written in Tcl
+JSIMPLE_TESTS = \
+	ASTReflect.tcl
+
+# Graphical Java tests that use Tcl.
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
+JGRAPHICAL_TESTS = \
+	dummy.tcl
+
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	alljtests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
@@ -58,11 +74,14 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
-install: jclass $(PTCLASSJAR)
+# Don't include all or install rules here, we want the user
+# to run 'make tests' to run the tests.
 
-depend:
-	@echo "no dependencies in this directory"
+tests:: $(EXTRA_SRCS) jclass test_jsimple
+
+# These tests do not require a graphics terminal, but do use Jacl and Java
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+	$(JTCLSH) alljtests.tcl
 
 PrintTree:
 	CLASSPATH=$(CLASSPATH) $(JAVA) \
@@ -97,6 +116,9 @@ compile_codegen:
 run_codegen: 	
 	(cd $(ROOT)/cg/orthocom; \
 		$(JAVA) -classpath ../.. cg.orthocom.CG_Main)
+
+depend:
+	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
