@@ -108,7 +108,7 @@ public class ModelCompiler extends Attribute {
     /** Generate Giotto code for the given model.
      *  @return The Giotto code.
      */
-    public void compileTypedCompositeActor(
+    public TypedCompositeActor compileTypedCompositeActor(
         TypedCompositeActor compositeActor) throws IllegalActionException {
 
         ///////////////////////////////////////////////////////////
@@ -141,8 +141,8 @@ public class ModelCompiler extends Attribute {
         // Get the container of this composite actor.
         // NOTE: The container may be null if this composite actor
         // is at the top level.
-        CompositeEntity container 
-            = (CompositeEntity)compositeActor.getContainer();
+        TypedCompositeActor container 
+            = (TypedCompositeActor)compositeActor.getContainer();
         
         // Get the function dependency of the composite actor
         FunctionDependencyOfCompositeActor functionDependency
@@ -158,7 +158,7 @@ public class ModelCompiler extends Attribute {
         
         // If the number of subgraphs is 1, there is nothing to do.
         if (listOfSubgraphs.size() == 1) {
-            return;
+            return compositeActor;
         }
         
         try {
@@ -200,7 +200,7 @@ public class ModelCompiler extends Attribute {
                 //This one does not work.
                 compositeActor.setContainer(null);
                 System.out.println(newLayer.exportMoML());
-                return;
+                return newLayer;
             }
             
             ///////////////////////////////////////////////////////////
@@ -234,6 +234,7 @@ public class ModelCompiler extends Attribute {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } 
+        return container;
     }
 
     /** Generate Giotto code for the given model.
@@ -253,10 +254,11 @@ public class ModelCompiler extends Attribute {
                 = (TypedCompositeActor)oldModel.clone(workspace);
             
             // Compile the cloned model.
-            compileTypedCompositeActor(modelClone);
+            TypedCompositeActor finalModel
+                = compileTypedCompositeActor(modelClone);
             
             // return the compiled model.
-            return (TypedCompositeActor)modelClone.toplevel();
+            return (TypedCompositeActor)finalModel.toplevel();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         } catch (KernelException ex) {
