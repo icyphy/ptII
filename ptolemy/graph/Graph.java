@@ -639,13 +639,12 @@ public class Graph implements Cloneable {
         return result;
     }
 
-    /** Returns the hash code for this graph. The hash code value is
-     *  the sum of the node and edge hash code values.
+    /** Returns the hash code for this graph. 
      *
      *  @return The hash code for this graph.
      */
     public int hashCode() {
-        int code = 0;
+        int code = getClass().getName().hashCode();
         Iterator nodes = nodes().iterator();
         while (nodes.hasNext()) {
             code += nodes.next().hashCode();
