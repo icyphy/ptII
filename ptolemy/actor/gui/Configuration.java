@@ -323,8 +323,8 @@ public class Configuration extends CompositeEntity {
 		// If the value identifier field of the effigy we just
 		// created is "Unnamed", then set it to the value of
 		// the identifier parameter.
-		// 
-		// HSIFEffigyFactory sets effiigy.identifier because it 
+		//
+		// HSIFEffigyFactory sets effiigy.identifier because it
 		// converts the file we specified from HSIF to MoML and then
 		// opens up a file other than the one we specified.
 		effigy.identifier.setExpression(identifier);
