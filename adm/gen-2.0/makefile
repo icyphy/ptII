@@ -852,11 +852,11 @@ remotealldone:
 OTHERMAKE = /usr/ccs/bin/make
 
 # Remote location of Ptolemy II tree for testing
-REMOTE4HOME = /vol/tycho/tycho2/ptII
+REMOTE4HOME = /vol/cooley/cooley2/ptII
 REMOTE4PTIIDIST = $(REMOTE4HOME)/ptII$(VERSION)
 
 # Host to run on
-REMOTE4HOST = tycho
+REMOTE4HOST = cooley
 
 # Log file to save the results in
 REMOTE4LOG = $(GENLOGDIR)/remote4.out
@@ -870,6 +870,7 @@ remote4: $(PTII_FULL) $(GENLOGDIR)
 	ssh $(REMOTE4HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
 		remote4nuke remote4ptiidist remote4configure \
 		remote4distclean remote4build \
+		remote4distnonjsall \
 		 >& $(REMOTE4LOG)" &
 
 
@@ -912,11 +913,11 @@ remote4distjavadocs:
 
 remote4build:
 	@echo "#"
-	@echo "# Now running make in $(REMOTE4PTIIDIST)"
+	@echo "# Now running make fast all install in $(REMOTE4PTIIDIST)"
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) install)
+	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) fast all install)
 
 
 # Run tests outside of Javascope
