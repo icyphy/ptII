@@ -1,7 +1,7 @@
 /* Creates and sends a key to a SymmetricDecryption and encrypts incoming data
    based on a given symmetric algorithm.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

@@ -1,6 +1,6 @@
 /* Creates a signature for the given piece of data and creates the key to be sent to the signature verifier.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
