@@ -32,6 +32,8 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * @author Christopher Chang <cbc@eecs.berkeley.edu>
+ * @version $Id$
+ * @since Ptolemy II 3.1
  */
 
 public abstract class AbstractDDI implements DDI {

@@ -37,6 +37,8 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * @author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+ * @version $Id$
+ * @since Ptolemy II 3.1
  */
 class DFOutputChannel implements OutputChannel {
 

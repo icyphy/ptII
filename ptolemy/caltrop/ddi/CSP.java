@@ -61,6 +61,8 @@ import java.util.Map;
 
 /**
  * @author Christopher Chang <cbc@eecs.berkeley.edu>
+ * @version $Id$
+ * @since Ptolemy II 3.1
  */
 public class CSP extends AbstractDDI implements DDI {
 

@@ -66,6 +66,8 @@ import java.util.Map;
  * This plugin also adds attributes containing rate information to the ports of the actor.
  *
  * @author Christopher Chang <cbc@eecs.berkeley.edu>
+ * @version $Id$
+ * @since Ptolemy II 3.1
  */
 public class SDF extends AbstractDDI implements DDI {
 

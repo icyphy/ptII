@@ -35,6 +35,8 @@ import java.util.AbstractList;
 
 /**
  *  @author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+ *  @version $Id$
+ *  @since Ptolemy II 3.1
  */
 
 public class IntegerList extends AbstractList {

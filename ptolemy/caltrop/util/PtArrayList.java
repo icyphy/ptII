@@ -35,6 +35,8 @@ import java.util.List;
 
 /**
  *  @author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+ *  @version $Id$
+ *  @since Ptolemy II 3.1
  */
 
 public class PtArrayList extends AbstractList implements List {

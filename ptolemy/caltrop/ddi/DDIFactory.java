@@ -37,6 +37,8 @@ import ptolemy.caltrop.actors.CalInterpreter;
  * The <tt>DDIFactory</tt> is used to create domain dependent plugins.
  *
  * @author Christopher Chang <cbc@eecs.berkeley.edu>
+ * @version $Id$
+ * @since Ptolemy II 3.1
  */
 public interface DDIFactory {
     /**

@@ -37,6 +37,8 @@ import ptolemy.actor.Executable;
  * <p>
  * <b>Note: this interface is likely to grow larger as more domains are implemented.</b>
  * @author Christopher Chang <cbc@eecs.berkeley.edu>
+ * @version $Id$
+ * @since Ptolemy II 3.1
  */
 public interface DDI extends Executable {
     /**

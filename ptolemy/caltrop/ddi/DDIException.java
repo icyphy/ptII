@@ -33,6 +33,8 @@ package ptolemy.caltrop.ddi;
  * interpretation.
  *
  * @author Christopher Chang <cbc@eecs.berkeley.edu>
+ * @version $Id$
+ * @since Ptolemy II 3.1
  */
 public class DDIException extends RuntimeException {
 

@@ -41,6 +41,8 @@ import java.util.List;
  * interface. It allows them to be seamlessly used with Ptolemy II-generated function objects.
  *
  * @author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+ * @version $Id$
+ * @since Ptolemy II 3.1
  * @see caltrop.interpreter.Context
  * @see caltrop.interpreter.Function
  */

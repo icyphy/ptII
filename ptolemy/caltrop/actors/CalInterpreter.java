@@ -84,6 +84,8 @@ import java.util.Set;
  * <a href = "http://embedded.eecs.berkeley.edu/caltrop/docs/LanguageReport">Language Report</a>.
  *
  * @author Jörn W. Janneck <jwj@acm.org> Christopher Chang <cbc@eecs.berkeley.edu>
+ * @version $Id$
+ * @since Ptolemy II 3.1
  * @see ptolemy.caltrop.ddi.util.DataflowActorInterpreter
  * @see Context
  * @see PtolemyPlatform

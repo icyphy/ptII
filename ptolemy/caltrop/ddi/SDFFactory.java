@@ -37,6 +37,8 @@ import ptolemy.caltrop.actors.CalInterpreter;
  * A factory that creates {@link SDF SDF}s.
  *
  * @author Christopher Chang <cbc@eecs.berkeley.edu>
+ * @version $Id$
+ * @since Ptolemy II 3.1
  */
 public class SDFFactory implements DDIFactory {
     /**
