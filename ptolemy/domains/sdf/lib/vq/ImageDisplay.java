@@ -53,7 +53,7 @@ public class ImageDisplay extends SDFAtomicActor {
         super(container,name);
         IOPort inputport = (IOPort) newPort("image");
         inputport.setInput(true);
-        setTokenProductionRate(inputport, 1);
+        setTokenConsumptionRate(inputport, 1);
     }
 
     public void initialize() throws IllegalActionException {
@@ -70,34 +70,62 @@ public class ImageDisplay extends SDFAtomicActor {
         int frame[][] = message.intMatrix();
         int xsize = message.getColumnCount();
         int ysize = message.getRowCount();
-        
+        System.out.println("xsize = "+xsize);
+         System.out.println("ysize = "+ysize);
+       
         // conver the B/W image to a packed RGB image
         int RGBbuffer[] = new int[xsize*ysize];
         int i, j, index = 0;
-        for(j = 0; j < ysize; j++)
-            for(i = 0; i < xsize; i++, index++)
-                RGBbuffer[index] = 
-                    frame[j][i]>>16 + frame[j][i]>>8 + frame[j][i];        
+        for(j = 0; j < ysize; j++) {
+            for(i = 0; i < xsize; i++, index++) 
+                  RGBbuffer[index] = (255 << 24) |
+                    (frame[j][i] << 16) | (frame[j][i] << 8) | (frame[j][i]);
+             }  
+System.out.println("copied");   
         Image img = _frame._panel.createImage(
                 new MemoryImageSource(xsize, ysize, RGBbuffer, 0, xsize));
-        _frame._graphic.drawImage(img, 0, 0, null);
+        _frame._panel.BLTImage(img);
+        System.out.println("image drawn");
     }
 
     private class _InputFrame extends Frame {
         public _InputFrame(String title) {
             super(title);
             this.setLayout(new BorderLayout(15, 15));
-            this.setSize(100,100);
-            _panel = new Panel();
-            _graphic = _panel.getGraphics();
-            add("Center",_panel);
+            this.setSize(176,144);
+            _panel = new _VideoPanel(176, 144);
             this.setVisible(true);
+            add("Center",_panel);
+
 
         }
-
-        private Panel _panel;        
-        private Graphics _graphic;
+        private _VideoPanel _panel;        
+     
     }
-    _InputFrame _frame;
+
+    private class _VideoPanel extends Canvas {
+        public _VideoPanel(int width, int height) {
+            super(); 
+            _buffer = createImage(width, height);
+        }
+        
+        public void paint(Graphics graphics) {
+            graphics.drawImage(_buffer, 0, 0, null);
+        }
+
+    public void update(Graphics g) {
+        paint(g);
+    }
+
+        public void BLTImage(Image im) {
+            _buffer = im;
+            prepareImage(im,null);
+            Graphics g = getGraphics();
+            paint(g);
+        }
+        
+        private Image _buffer;
+    }
+    private _InputFrame _frame;
 
 }

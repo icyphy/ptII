@@ -49,15 +49,16 @@ public class ImageSequence extends SDFAtomicActor {
 
         super(container,name);
         IOPort outputport = (IOPort) newPort("image");
+
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 1);
 
         Parameter p = new Parameter(this, "File Name Template", 
-                new StringToken("missa***.qcf"));
-        new Parameter(this, "X Image Size", new IntToken("176"));
-        new Parameter(this, "Y Image Size", new IntToken("144"));
+                new StringToken("/users/neuendor/htvq/seq/missa/missa***.qcf"));
+        new Parameter(this, "XImageSize", new IntToken("176"));
+        new Parameter(this, "YImageSize", new IntToken("144"));
         new Parameter(this, "Start Frame", new IntToken("0"));
-        new Parameter(this, "End Frame", new IntToken("10"));
+        new Parameter(this, "End Frame", new IntToken("2"));
     }
 
     public void initialize() throws IllegalActionException {
@@ -69,44 +70,46 @@ public class ImageSequence extends SDFAtomicActor {
         int startframe = ((IntToken)p.getToken()).intValue();
         p = (Parameter) getAttribute("End Frame");
         int endframe = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("Start Frame");
+        p = (Parameter) getAttribute("XImageSize");
         xsize = ((IntToken)p.getToken()).intValue();
-        p = (Parameter) getAttribute("End Frame");
+        p = (Parameter) getAttribute("YImageSize");
         ysize = ((IntToken)p.getToken()).intValue();
  
         numframes = endframe-startframe+1;
         frames = new byte[numframes][ysize][xsize];
         try {
             for(framenumber = 0; 
-                framenumber <= numframes; 
+                framenumber < numframes; 
                 framenumber++) {
+                System.out.println("loading file "+framenumber);
                 byte arr[] = fileroot.getBytes();
                 int i = framenumber + startframe;
-                int loc = fileroot.lastIndexOf('*');
+                String tfilename = new String(fileroot);
+                int loc = tfilename.lastIndexOf('*');
                 while(loc >= 0) {
-                    arr[loc] = (byte)(i % 10);
+                    System.out.println("loc="+loc);
+                    System.out.println("name = "+fileroot);
+                    arr[loc] = (byte)('0' + i % 10);
                     i = i / 10;
-                    loc = fileroot.lastIndexOf('*');
+                    tfilename = new String(arr);
+                    loc = tfilename.lastIndexOf('*');
                 }
                 String filename = new String(arr);
                 
                 sourcefile = new File(filename);
                 if(!sourcefile.exists() || !sourcefile.isFile())
-                    throw new IllegalActionException("Codebook file " + 
+                    throw new IllegalActionException("Image file " + 
                             filename + " does not exist!");
                 if(!sourcefile.canRead()) 
-                    throw new IllegalActionException("Codebook file " +
+                    throw new IllegalActionException("Image file " +
                             filename + " is unreadable!");
                 source = new FileInputStream(sourcefile);
   
                 int j;
-                byte b[] = new byte[1];
-                for(j = 0; j < ysize; j++) 
-                    for(i = 0; i < xsize; i++) {
-                        if(source.read(b)!=1)
+                for(j = ysize - 1; j >= 0; j--) { 
+                        if(source.read(frames[framenumber][j],0,xsize)!=xsize)
                             throw new IllegalActionException("Error reading " +
-                                    "codebook file!");
-                        frames[framenumber][j][i] = b[0];
+                                    "Image file!");
                     }
             }
         }
@@ -126,13 +129,21 @@ public class ImageSequence extends SDFAtomicActor {
     }
 
     public void fire() throws IllegalActionException {
-        int frame[][] = new int[xsize][ysize];
+        int frame[][] = new int[ysize][xsize];
         int i, j;
+        System.out.println("Frame = "+framenumber);
+        System.out.println("xsize = "+xsize);
+        System.out.println("ysize = "+ysize);
         for(j = 0; j < ysize; j++)
-            for(i = 0; i < xsize; i++)
+            for(i = 0; i < xsize; i++) {
                 frame[j][i] = (int) frames[framenumber][j][i];
+            }
+        System.out.println("creating token");
         IntMatrixToken message = new IntMatrixToken(frame);
-        ((IOPort) getPort("output")).send(0, message);
+        ((IOPort) getPort("image")).send(0, message);
+
+        framenumber++; 
+        if(framenumber >= numframes) framenumber = 0;
     }
     String filetemplate;
     byte frames[][][];
