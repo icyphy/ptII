@@ -65,6 +65,7 @@ JGRAPHICAL_TESTS = \
 
 EXTRA_SRCS = \
 	jad2java \
+	jode2java \
 	IIRGUI.xml \
 	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
