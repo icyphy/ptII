@@ -177,8 +177,14 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // Generated applet from moml/demo/modulation.xml
         // fails to run if substitute Attribute for NodeControllerFactory
         // so we set it to null instead.
-        //_graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
-        //        "ptolemy.kernel.util.Attribute");
+        _graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
+                "ptolemy.kernel.util.Attribute");
+        _graphicalClasses.put("ptolemy.vergil.toolbox.VisibleParameterEditorFactory",
+                "ptolemy.kernel.util.Attribute");
+        _graphicalClasses.put("ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
+                "ptolemy.kernel.util.Attribute");
+        _graphicalClasses.put("ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory",
+                "ptolemy.kernel.util.Attribute");
 
         _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
                 null);
