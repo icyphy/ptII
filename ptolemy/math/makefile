@@ -57,6 +57,7 @@ JSRCS = \
 	ArrayMath.java \
 	Complex.java \
 	ExtendedMath.java \
+	Fraction.java \
 	SignalProcessing.java
 
 EXTRA_SRCS =	$(JSRCS)
