@@ -35,11 +35,12 @@ package ptolemy.data.expr;
 
 import ptolemy.data.*;
 import ptolemy.kernel.util.*;
+import ptolemy.math.Complex;
+
 import java.lang.reflect.*;
 import java.lang.Math;		/* Needed for javadoc */
 import java.util.Enumeration;
-import collections.LinkedList;
-import ptolemy.math.Complex;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtFunctionNode
