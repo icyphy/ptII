@@ -256,23 +256,6 @@ public class DTReceiver extends SDFReceiver implements Receiver {
         return super.get();
     }
 
-   
-    /** Remove the first tokens (the oldest ones) from the receiver and
-     *  fill the array with them. Increment the local time by the value
-     *  ' n * _deltaT ' where:
-     *    -  n is the length of the token array
-     *    -  _deltaT is  period / (rate * repeats)
-     *  @param t[]  Array to hold the first n oldest tokens.
-     */
-    public void getArray(Token t[]) {
-        super.getArray(t);
-
-        Actor actor = (Actor) super.getContainer().getContainer();
-        DTDirector director = (DTDirector) (actor.getDirector());
-        
-        _localTime = _localTime + t.length * _deltaT;
-    }
-    
     /** Return the port that feeds this Receiver
      *  @return The port that feeds this receiver.
      */
