@@ -435,7 +435,9 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	at [clock format [clock seconds]]"
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
 
-	if [catch {set results [eval exec $execCommand]} errMsg] {
+	# We invoke "exec -stderrok" here so as to avoid warnings from
+	# NonstrictTest about how many tokens the test produces
+	if [catch {set results [eval exec -stderrok $execCommand]} errMsg] {
 	    $watchDog cancel
 	    error $errMsg
 	} else {
