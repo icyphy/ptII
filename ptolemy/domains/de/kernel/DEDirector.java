@@ -27,6 +27,7 @@
 @ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (eal@eecs.berkeley.edu)
 Review transferOutputs().
+Review changes in fire() and _dequeueEvents().
 */
 
 package ptolemy.domains.de.kernel;
@@ -342,7 +343,10 @@ public class DEDirector extends Director {
             if (actorToFire == null) {
                 // There is nothing more to do.
                 if (_debugging) _debug("No more events on the event queue.");
-                _noMoreActorsToFire = true;
+                // FIXME: changed by liuxj, to be reviewed
+                if (_isTopLevel()) {
+                    _noMoreActorsToFire = true;
+                }
                 return;
             }
             // It is possible that the next event to be processed is on
@@ -950,6 +954,13 @@ public class DEDirector extends Director {
                 } else {
                     nextEvent = (DEEvent)_eventQueue.get();
                 }
+            } else if (!_isTopLevel() && _eventQueue.isEmpty()) {
+                // FIXME: changed by liuxj, to be reviewed
+                // Should the behavior depend on whether the container
+                // is a "source"?
+                // This essentially disables the stopWhenQueueIsEmpty
+                // parameter for DE directors not at the top level.
+                break;
             } else {
                 // In this case we want to do a blocking read of the queue,
                 // unless we have already found an actor to fire.
@@ -1452,6 +1463,30 @@ public class DEDirector extends Director {
         }
     }
 
+    // Copied from ptolemy.ct.kernel.CTMixedSignalDirector
+    /**Return true if this is a top-level director. This is a syntactic sugar.
+     * @return True if this director is at the top-level.
+     */
+    private boolean _isTopLevel() {
+        long version = workspace().getVersion();
+        if (version == _mutationVersion) {
+            return _isTop;
+        }
+        try {
+            workspace().getReadAccess();
+            CompositeActor container = (CompositeActor)getContainer();
+            if (container.getExecutiveDirector() == null) {
+                _isTop = true;
+            } else {
+                _isTop = false;
+            }
+            _mutationVersion = version;
+        } finally {
+            workspace().doneReading();
+            return _isTop;
+        }
+    }
+
     // Request that the container of this director be refired in the future.
     // This method is used when the director is embedded inside an opaque
     // composite actor (i.e. a wormhole in Ptolemy Classic terminology).
@@ -1509,4 +1544,11 @@ public class DEDirector extends Director {
 
     // A Hashtable stores the mapping of each actor to its depth.
     private Hashtable _actorToDepth = null;
+
+    // The version of mutation. If this version is not the workspace
+    // version then every thing related to mutation need to be updated.
+    private long _mutationVersion = -1;
+
+    // Indicate if this is the top level director.
+    private boolean _isTop;
 }

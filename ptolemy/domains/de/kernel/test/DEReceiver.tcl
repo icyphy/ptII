@@ -47,7 +47,7 @@ if {[string compare test [info procs test]] == 1} then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
-set comparator [java::new ptolemy.actor.util.DoubleCQComparator]
+set comparator [java::new ptolemy.actor.util.test.DoubleCQComparator]
 
 ######################################################################
 ####
