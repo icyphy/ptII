@@ -231,7 +231,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
     protected boolean _setupOK = true;
 
     /** The top-level composite actor, created in the init() method. */
-    protected CompositeActor _toplevel;
+    protected TypedCompositeActor _toplevel;
 
     /** The workspace that the applet is built in. Each applet has
      *  it own workspace.
