@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (winthrop@eecs.berkeley.edu)
-@AcceptedRating Red (winthrop@eecs.berkeley.edu)
+@ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
+@AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
