@@ -44,8 +44,8 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.domains.sdf.kernel.SDFAtomicActor;
 import ptolemy.domains.sdf.kernel.SDFIOPort;
 
-import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// SequenceToArray
@@ -138,16 +138,16 @@ public class SequenceToArray extends SDFAtomicActor {
 
     /** Return the type constraint that the type of the elements of the
      *  output array is no less than the type of the input port.
-     *  @return An Enumeration of Inequality.
+     *  @return A list of inequalities.
      */
-    public Enumeration typeConstraints () {
+    public List typeConstraintList() {
 	ArrayType outArrType = (ArrayType)output.getType();
 	InequalityTerm elemTerm = outArrType.getElementTypeTerm();
 	Inequality ineq = new Inequality(input.getTypeTerm(), elemTerm);
 
-	LinkedList result = new LinkedList();
-	result.insertLast(ineq);
-	return result.elements();
+	List result = new LinkedList();
+	result.add(ineq);
+	return result;
     }
 
     ///////////////////////////////////////////////////////////////////
