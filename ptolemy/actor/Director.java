@@ -273,7 +273,8 @@ public class Director extends NamedObj implements Executable {
      *  of simulation
      */
     public void wrapup() {
-        Enumeration allactors = ((CompositeActor)getContainer()).deepGetEntities();
+        Enumeration allactors =
+            ((CompositeActor)getContainer()).deepGetEntities();
         while (allactors.hasMoreElements()) {
             Actor actor = (Actor)allactors.nextElement();
             actor.wrapup();
