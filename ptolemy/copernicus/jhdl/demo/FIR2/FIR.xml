@@ -2,7 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FIR" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
@@ -37,7 +38,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="1:FIR" class="ptolemy.copernicus.jhdl.demo.FIR2.FIR">
+    <entity name="FIR" class="ptolemy.copernicus.jhdl.demo.FIR2.FIR">
         <property name="_location" class="ptolemy.moml.Location" value="190.0, 120.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
@@ -73,7 +74,7 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Const.output" relation="relation"/>
-    <link port="1:FIR.input" relation="relation"/>
-    <link port="1:FIR.output" relation="relation2"/>
+    <link port="FIR.input" relation="relation"/>
+    <link port="FIR.output" relation="relation2"/>
     <link port="Writer.input" relation="relation2"/>
 </entity>

@@ -108,8 +108,8 @@ public class Main extends KernelMain {
 						    ModelTransformer.v(_toplevel)));
 
         // Add a command line interface (i.e. Main)
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.clt",
-						    CommandLineTransformer.v(_toplevel)));
+	Scene.v().getPack("wjtp").add(new Transform("wjtp.clt",
+  						    CommandLineTransformer.v(_toplevel)));
 
         // Inline the director into the composite actor.
         Scene.v().getPack("wjtp").add(new Transform("wjtp.idt",
@@ -208,6 +208,7 @@ public class Main extends KernelMain {
 	// Add Transforms to the Scene.
 	main.addTransforms();
 
+	// Generate Code
 	main.generateCode(args);
     }
 }

@@ -123,9 +123,10 @@ public class MergedControlFlowGraph extends DirectedGraph {
 		addEdge(nb,sb);
 	    }
 	}
-	if (!isAcyclic())
+	if (!isAcyclic()) {
+	    System.err.println(PtDirectedGraphToDotty.convert(this,"this"));
 	    throw new IllegalActionException("Feedback currently not supported");
-			
+	}
     }
 
     protected void _controlFlowAnalysis() throws IllegalActionException {
