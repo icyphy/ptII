@@ -13,36 +13,10 @@
 
       <entity name="DatagramReader"
               class="ptolemy.actor.lib.net.DatagramReader">
-          <property name="encoding">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-              <property name="for_Ptolemy_parser" 
-                     value="for_Ptolemy_parser"
-                     class="ptolemy.kernel.util.StringAttribute"/>
-              <property name="raw_integers_little_endian" 
-                     value="raw_integers_little_endian"
-                     class="ptolemy.kernel.util.StringAttribute"/>
-              <property name="raw_low_bytes_of_integers" 
-                     value="raw_low_bytes_of_integers"
-                     class="ptolemy.kernel.util.StringAttribute"/>
-            </property>
-         </property>
       </entity>
 
       <entity name="DatagramWriter"
               class="ptolemy.actor.lib.net.DatagramWriter">
-          <property name="encoding">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-              <property name="for_Ptolemy_parser" 
-                     value="for_Ptolemy_parser"
-                     class="ptolemy.kernel.util.StringAttribute"/>
-              <property name="raw_integers_little_endian" 
-                     value="raw_integers_little_endian"
-                     class="ptolemy.kernel.util.StringAttribute"/>
-              <property name="raw_low_bytes_of_integers" 
-                     value="raw_low_bytes_of_integers"
-                     class="ptolemy.kernel.util.StringAttribute"/>
-            </property>
-         </property>
       </entity>
 
       <entity name="ExpressionReader" class="ptolemy.actor.lib.io.ExpressionReader">
