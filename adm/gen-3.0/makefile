@@ -239,7 +239,7 @@ update_ptii_ftp:
 	@echo "Copying ptII files to website"
 	#gzip installshield/ptII$(WINDOWS_VERSION)setup.jar
 	#	installshield/ptII$(WINDOWS_VERSION)setup.jar.gz \
-	#	installshield/applet/ptII$(WINDOWS_VERSION)setup.exe \
+	#	installshield/applet/ptII$(WINDOWS_VERSION)setup.exe
 	cp -p $(PTII_FULL) $(PTII_SRC) \
 		$(PTII_FTP) 
 untar:
@@ -520,8 +520,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/c \
-	$(REMOTE1PTIIDIST)/ptolemy/copernicus/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/jhdl \
+	$(REMOTE1PTIIDIST)/ptolemy/copernicus/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/tree \
