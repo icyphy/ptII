@@ -71,8 +71,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	CorbaActorClient.java \
-	RemoteCompositeActor.java
+	CorbaActorClient.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	CorbaActor.idl \
