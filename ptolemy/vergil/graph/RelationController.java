@@ -93,6 +93,7 @@ public class RelationController extends LocatableNodeController {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
 	    addMenuItemFactory(new EditParameterStylesFactory());
+	    addMenuItemFactory(new MenuActionFactory(VergilApplication.getInstance().getAction("Get Documentation")));
 	}
     }
 

@@ -173,6 +173,7 @@ public class EntityPortController extends NodeController {
 	    addMenuItemFactory(new EditParametersFactory());
 	    addMenuItemFactory(new EditParameterStylesFactory());
 	    addMenuItemFactory(new PortDescriptionFactory());
+	    addMenuItemFactory(new MenuActionFactory(VergilApplication.getInstance().getAction("Get Documentation")));
 	}
 
 	public class PortDescriptionFactory extends MenuItemFactory {
