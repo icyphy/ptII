@@ -332,81 +332,82 @@ public class InequalitySolver {
 	    }
 	}
 
-	// FIXME: This outer loop is a hack for making structured type work
-	// should consider changing the algorithm to loop through all
-	// inequalities and not using _NS
+	// The outer loop is for handling the situation that some
+	// InequalityTerms do not report all the variables they depend on
+	// from the getVariables() call. This can happen, for example, in
+	// type resolution application involving structured types, where
+	// the type term for an element of a structured type does not have
+	// a reference to the term of its enclosing type.
 	boolean allSatisfied = false;
 	while ( !allSatisfied) {
 
-	// solve the inequalities
-        while (_NS.size() > 0) {
+	    // solve the inequalities
+            while (_NS.size() > 0) {
 
-            int index = ((Integer)(_NS.removeFirst())).intValue();
+                int index = ((Integer)(_NS.removeFirst())).intValue();
 
-            Info info = (Info)(_Ilist.get(index));
-            info._inserted = false;
-            Object value = null;
-	    InequalityTerm updateTerm = null;
-	    if (least) {
-		updateTerm = info._ineq.getGreaterTerm();
-	        value = _cpo.leastUpperBound(
-                        info._ineq.getLesserTerm().getValue(),
-                        updateTerm.getValue());
-	    } else {
-		updateTerm = info._ineq.getLesserTerm();
-	        value = _cpo.greatestLowerBound(updateTerm.getValue(),
-                        info._ineq.getGreaterTerm().getValue());
-	    }
+                Info info = (Info)(_Ilist.get(index));
+                info._inserted = false;
+                Object value = null;
+	        InequalityTerm updateTerm = null;
+	        if (least) {
+		    updateTerm = info._ineq.getGreaterTerm();
+	            value = _cpo.leastUpperBound(
+                        	info._ineq.getLesserTerm().getValue(),
+                        	updateTerm.getValue());
+	        } else {
+		    updateTerm = info._ineq.getLesserTerm();
+	            value = _cpo.greatestLowerBound(updateTerm.getValue(),
+                            info._ineq.getGreaterTerm().getValue());
+	        }
 
-            if (value == null) {
-                throw new InvalidStateException("The CPO over which " +
+                if (value == null) {
+                    throw new InvalidStateException("The CPO over which " +
                         "the inequalities are defined is not a lattice.");
-            }
+                }
 
-	    try {
-		updateTerm.setValue(value);
-	    } catch (IllegalActionException ex) {
-		throw new InvalidStateException("InequalitySolver.solve: " +
+	        try {
+		    updateTerm.setValue(value);
+	        } catch (IllegalActionException ex) {
+		    throw new InvalidStateException("InequalitySolver.solve: " +
 			"Can't update variable. " +
 			ex.getMessage());
-	    }
+	        }
 
-            // insert or drop the inequalities affected
-            ArrayList affected = (ArrayList)_Clist.get(updateTerm);
-            for (int i = 0; i < affected.size(); i++) {
-                Integer index1Wrap = (Integer)(affected.get(i));
-                int index1 = index1Wrap.intValue();
-		Info affectedInfo = (Info)_Ilist.get(index1);
-                if (index1 != index && affectedInfo._inCvar) {
-                    if (affectedInfo._ineq.isSatisfied(_cpo)) {    // drop
-                        if (affectedInfo._inserted) {
-                            _NS.remove(index1Wrap);
-                        }
-                    } else {                        // insert
-                        if ( !affectedInfo._inserted) {
-                            _NS.addFirst(index1Wrap);
+                // insert or drop the inequalities affected
+                ArrayList affected = (ArrayList)_Clist.get(updateTerm);
+                for (int i = 0; i < affected.size(); i++) {
+                    Integer index1Wrap = (Integer)(affected.get(i));
+                    int index1 = index1Wrap.intValue();
+		    Info affectedInfo = (Info)_Ilist.get(index1);
+                    if (index1 != index && affectedInfo._inCvar) {
+                        if (affectedInfo._ineq.isSatisfied(_cpo)) {    // drop
+                            if (affectedInfo._inserted) {
+                                _NS.remove(index1Wrap);
+                            }
+                        } else {                        // insert
+                            if ( !affectedInfo._inserted) {
+                                _NS.addFirst(index1Wrap);
+                            }
                         }
                     }
                 }
             }
-        }
 
-	// FIXME: This part is a hack for making structured type work.
-	allSatisfied = true;
-	for (int i = 0; i < _Ilist.size(); i++) {
-	    Info info = (Info)_Ilist.get(i);
-	    if (info._inCvar) {
-	    	if (info._ineq.isSatisfied(_cpo)) {
-		    info._inserted = false;
-		} else { 	// insert to _NS
-                    _NS.addLast(new Integer(i));
-		    info._inserted = true;
-		    allSatisfied = false;
-		}
+	    allSatisfied = true;
+	    for (int i = 0; i < _Ilist.size(); i++) {
+	        Info info = (Info)_Ilist.get(i);
+	        if (info._inCvar) {
+	    	    if (info._ineq.isSatisfied(_cpo)) {
+		        info._inserted = false;
+		    } else { 	// insert to _NS
+                        _NS.addLast(new Integer(i));
+		        info._inserted = true;
+		        allSatisfied = false;
+		    }
+	        }
 	    }
 	}
-	}
-
 
         // Check the inequalities not involved in the above iteration.
 	// These inequalities are the ones in the "Ccnst" set in the
