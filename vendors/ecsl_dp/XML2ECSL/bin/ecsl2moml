@@ -141,13 +141,38 @@ awk ' {
        }
        indent = substr($0, 0, index($0,"<") - 1)  
        print indent "<relation name=\"" id "\" class=\"ptolemy.actor.TypedIORelation\"/>"
+
+       if ($0 ~ /dstLine_end_/) {
+           # Get the value of the dstLine_end_ field
+           dstLine_end_=""
+           nf = split($0, f, "\"")   
+           for (i = 1; i <= nf; i++) {
+               if ( f[i] ~ /dstLine_end_=$/) {
+                   dstLine_end_ = f[i+1]
+                   break;
+               }
+           }
+          #print indent "<link port=\"" dstLine_end_ "\" relation=\"" id "\"/>" 
+
+           # Get the value of the srcLine_end_ field
+           srcLine_end_=""
+           nf = split($0, f, "\"")   
+           for (i = 1; i <= nf; i++) {
+               if ( f[i] ~ /srcLine_end_=$/) {
+                   srcLine_end_ = f[i+1]
+                   break;
+               }
+           }
+          #print indent "<link port=\"" srcLine_end_ "\" relation=\"" id "\"/>" 
+       }
+
     } else {
         print $0
     }
 }' < $tmpfile1 > $tmpfile2
 
 
-# Convert <Line to <relation
+# Convert <Primitive to <entity
 awk 'BEGIN {
     map["Abs"] = "ptolemy.actor.lib.AbsoluteValue"
     map["Clock"] = "ptolemy.actor.lib.Clock"
