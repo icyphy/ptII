@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II RTOS FFT demo
+# Makefile for Ptolemy II RTOS domain demo: Controllers
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/rtos/demo/FFT
+ME =		ptolemy/domains/rtos/demo/Controllers
 
 # Root of the Java directory
 ROOT =		../../../../../
@@ -41,14 +41,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	FFT
+PTPACKAGE = 	Controllers
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	BackgroundProcess.xml
+	Controllers.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -60,8 +60,7 @@ MISC_FILES =
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	$(PTCLASSJAR)
+	doc 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -76,10 +75,10 @@ demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" BackgroundProcess.xml
+	"$(PTII)/bin/ptolemy" Controllers.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" BackgroundProcess.xml
+	"$(PTII)/bin/vergil" Controllers.xml
 
 depend:
 	@echo "no dependencies in this directory"
