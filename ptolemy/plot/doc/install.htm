@@ -90,37 +90,85 @@ PTJAVA_DIR=/usr/java1.1
 </pre>
 
 <h2>Installing Ptplot as an applet</h2>
-The best way to use Ptplot as an applet is to copy the
-plotapplet.jar file to the same directory as your applet, and
-then to use the <CODE>archive</CODE> applet directive.
+Ptplot includes several jar files, which are collections of 
+Java <CODE>.class</CODE> files
+<dl>
+
+<dt> <CODE>plotapplet.jar</CODE>
+<dd>  .class files necessary for simple JDK1.1 
+browser applets - no pxgraph, no plotml.
+
+<dt> <CODE>pxgraphapplet.jar</CODE>
+<dd> .class files necessary for simple JDK1.1 
+browser applets with pxgraph classes, no plotml.
+Applets that use the <CODE>pxgraphargs</CODE> applet parameter
+should use this jar file.
+
+<dt> <CODE>plotmlapplet.jar</CODE>
+<dd> .class files necessary for PlotML applets -
+includes com/microstar/xml and the plotml code, but does not include pxgraph,
+or PlotFrame.
+
+<dt> <CODE>plot.jar</CODE>
+
+<dd> The standard Ptolemy II jar file that includes the
+ptolemy/plot/*.class files and the class files in plotml and compat.
+Does not include com/microstar/xml or ptolemy/gui.
+<CODE>plot.jar</CODE> is used by the Ptolemy II build system.
+
+<dt> <CODE>plotapplication.jar</CODE>
+
+<dd> .class files necessary for standalone applications - includes
+com/microstar/xml, ptolemy/gui and the plotml code, but does not
+include pxgraph.  If <CODE>plotapplication.jar</CODE> is
+present, then it is used by the standalone scripts (<CODE>ptplot</CODE> etc.)
+
+</dl>
+
+The best way to use Ptplot as an applet is to copy the appropriate
+<CODE>*applet.jar</CODE> file into the same directory as your applet,
+and then to use the <CODE>archive</CODE> applet directive.
 For examples of applet html code, see the demonstrations.
 
 
 <h2>Installing Ptplot as an application</h2>
-Ptplot can be run as two standalone applications:
+
+Under Unix and Windows with the Cygwin toolkit,
+ ptplot can be run as three standalone applications:
 <menu>
 <li> <CODE>ptplot</CODE> - A modern plot application that
-with a menubar and such
-
+with a menubar and such.
+<li> <CODE>histogram</CODE> - A histogram plot application
 <li> <CODE>pxgraph</CODE> - A plot application that 
 is mostly backward compatible with the older X11 <CODE>pxgraph</CODE>
 program
 </menu>
 
+When configure is run, it substitutes variables inside <CODE>ptplot.in</CODE>
+and produced <CODE>ptplot</CODE>.  The <CODE>ptplot</CODE> script
+is shared between the standalone applications, <CODE>ptplot</CODE>
+determines what name it was called with, and selects the appropriate
+class accordingly.
 
-The ptplot script uses the PlotApplication class.  If the ptplot
-script is copied and renamed 'pxgraph':
+ <p>If the <CODE>ptplot</CODE> script is run,
+then <CODE>ptolemy.plot.PlotApplication</CODE> is run
+
+ <p>If the <CODE>ptplot</CODE> script is copied to <CODE>histogram</CODE>,
+then <CODE>ptolemy.plot.plotml.HistogramMLApplication</CODE> is run
+
+ <p>If the <CODE>ptplot</CODE> script is copied to <CODE>pxgraph</CODE>,
+then <CODE>ptolemy.plot.compat.PxgraphApplication</CODE> is run
+
+ <p>Under Unix, you can use a hard link to create the histogram and 
+pxgraph script:
 <pre>
-cp ptplot pxgraph
-</pre>
-
-then the Pxgraph class is used.
-
- <p>Under Unix, you can use a hard link to create the pxgraph script:
-<pre>
+ln ptplot histogram
 ln ptplot pxgraph
 </pre>
 
+ <p>Under Windows, three .bat scripts are provided:
+<CODE>ptplot.bat</CODE>, <CODE>histogram.bat</CODE> and 
+<CODE>pxgraph.bat</CODE>
 
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>
