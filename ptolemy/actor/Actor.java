@@ -73,14 +73,6 @@ public interface Actor extends Executable {
      */
     public List inputPortList();
 
-    /** Return an enumeration of the input ports of this actor.
-     *  Note that implementations should return ports directly
-     *  contained by this actor, whether they are transparent or not.
-     *  @deprecated Use inputPortList() instead.
-     *  @return An enumeration of input IOPort objects.
-     */
-    public Enumeration inputPorts();
-
     /** Return a new receiver of a type compatible with the executive director.
      *  This is the receiver that should be used by ports of this actor.
      *  @exception IllegalActionException If there is no director.
@@ -94,12 +86,4 @@ public interface Actor extends Executable {
      *  @return A list of output IOPort objects.
      */
     public List outputPortList();
-
-    /** Return an enumeration of the output ports of this actor.
-     *  Note that implementations should return ports directly
-     *  contained by this actor, whether they are transparent or not.
-     *  @deprecated Use outputPortList() instead.
-     *  @return An enumeration of output IOPort objects.
-     */
-    public Enumeration outputPorts();
 }
