@@ -67,6 +67,9 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass $(PTCLASSJAR)
 
+test_jsimple: $(EXTRA_SRCS) #jclass $(KERNEL_TESTDEFS) alljtests.tcl
+	@echo "Nothing to be done in $(ME) for test_jsimple"
+
 testapplet:
 	CLASSPATH=$(CLASSPATH) appletviewer testapplet.htm
 
