@@ -56,7 +56,7 @@ public class PrimesTextField extends Spotlet {
 
     public void keyDown(int key) {
         if(textField.hasFocus()) {
-                textField.handleKeyDown(key);
+            textField.handleKeyDown(key);
         }
     }
 
