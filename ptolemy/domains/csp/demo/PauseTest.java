@@ -87,7 +87,7 @@ public class PauseTest {
             IORelation rel2 = (IORelation)univ.connect(out2, in2, "R2");
             //System.out.println(univ.description(1023));
             System.out.println(univ.getFullName() + " starting!");
-            univ.getManager().go();
+            univ.getManager().startRun();
         } catch (Exception e) {
             System.out.println(e.getMessage() + ": " + e.getClass().getName());
             throw new InvalidStateException(e.getMessage());

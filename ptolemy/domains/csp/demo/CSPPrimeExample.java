@@ -69,7 +69,7 @@ public class CSPPrimeExample {
         
         //System.out.println(univ.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
 
-        manager.blockingGo();
+        manager.run();
         System.out.println(univ.getName() + "Finished\n");
         return;
     }
