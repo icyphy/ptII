@@ -460,7 +460,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
 
         int n = solver.getIntegratorAuxVariableCount();
 
-        if ((_auxVariables == null) || (_auxVariables.length < n)) {
+        if ((_auxVariables == null) || (_auxVariables.length != n)) {
             _auxVariables = new double[n];
         }
 
