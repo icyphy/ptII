@@ -233,7 +233,7 @@ public class SCDirector extends Director {
         }
 
 /* REMOVE! */
-System.out.println("Initializing SCDirector " + this.getFullName());
+//System.out.println("Initializing SCDirector " + this.getFullName());
 
     }
 
@@ -268,11 +268,11 @@ System.out.println("Initializing SCDirector " + this.getFullName());
         Actor refine = _controller.currentRefinement();
         if (refine != null) {
             refine.postfire();
-            Enumeration outports = refine.outputPorts();
+            /*Enumeration outports = refine.outputPorts();
             while(outports.hasMoreElements()) {
                 IOPort p = (IOPort)outports.nextElement();
                 transferOutputs(p);
-            }
+            }*/
         }
         return _controller.postfire();
     }
@@ -295,7 +295,7 @@ System.out.println("Initializing SCDirector " + this.getFullName());
         Actor refine = _controller.currentRefinement();
 
 // REMOVE 
-System.out.println("SCDirector: get controller's current refinement.");
+//System.out.println("SCDirector: get controller's current refinement.");
 
         boolean result = true;
         if (refine != null) {
@@ -440,7 +440,7 @@ System.out.println("Transfer output from " + port.getFullName() + " " +
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private SCController _controller = null;
+    protected SCController _controller = null;
 
 }
 
