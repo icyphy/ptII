@@ -135,7 +135,7 @@ test InterfaceAutomaton-4.1 {test setting initial state} {
     $p setExpression s2
     catch {$ia getInitialState} msg
     list $re0 $re1 $msg
-} {1 1 {ptolemy.kernel.util.IllegalActionException: ..ia:
+} {1 1 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.ia:
 Cannot find initial state with name "s2".}}
 
 ######################################################################
@@ -177,7 +177,7 @@ test InterfaceAutomaton-6.1 {test newRelation} {
         ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition]
     catch {$ia newRelation r0} msg
     list $re0 [$r0 getFullName] $msg
-} {1 ..r0 {ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "r0" into container named ".", which already contains an object with that name.}}
+} {1 ..r0 {ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "r0" into container named "<Unnamed Object>", which already contains an object with that name.}}
 
 ######################################################################
 ####

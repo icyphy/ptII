@@ -131,7 +131,7 @@ test FSMActor-4.1 {test setting initial state} {
     $p setExpression s2
     catch {$fsm getInitialState} msg
     list $re0 $re1 $msg
-} {1 1 {ptolemy.kernel.util.IllegalActionException: ..fsm:
+} {1 1 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.fsm:
 Cannot find initial state with name "s2".}}
 
 ######################################################################
@@ -280,7 +280,7 @@ test FSMActor-7.1 {test exception when multiple transitions enabled} {
     catch {$dir fire} msg
     $dir terminate
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: ..fsm.s0:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.fsm.s0:
 Multiple enabled transitions: t0 and t1.}}
 
 ######################################################################
@@ -292,7 +292,7 @@ test FSMActor-8.1 {test newRelation} {
     set re0 [java::instanceof $r0 ptolemy.domains.fsm.kernel.Transition]
     catch {$fsm newRelation r0} msg
     list $re0 [$r0 getFullName] $msg
-} {1 ..r0 {ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "r0" into container named ".", which already contains an object with that name.}}
+} {1 ..r0 {ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "r0" into container named "<Unnamed Object>", which already contains an object with that name.}}
 
 ######################################################################
 ####

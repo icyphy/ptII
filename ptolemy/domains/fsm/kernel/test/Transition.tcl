@@ -60,7 +60,7 @@ test Transition-1.2 {container of a transition must be an FSMActor or null} {
     set re [$t0 getFullName]
     catch {$t0 setContainer $e0} msg
     list $re $msg
-} {.t0 {ptolemy.kernel.util.IllegalActionException: .e0 and .t0:
+} {.t0 {ptolemy.kernel.util.IllegalActionException: Object names: .e0 and .t0:
 Transition can only be contained by instances of FSMActor.}}
 
 ######################################################################
@@ -74,7 +74,7 @@ test Transition-2.1 {transition can only link to incoming or outgoing port} {
     set p0 [java::new ptolemy.kernel.ComponentPort $s0 p0]
     catch {$p0 link $t0} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: ..fsm.t0 and ..fsm.s0:
+} {{ptolemy.kernel.util.IllegalActionException: Object names: .<Unnamed Object>.fsm.t0 and .<Unnamed Object>.fsm.s0:
 Transition can only be linked to incoming or outgoing port of State.}}
 
 test Transition-2.2 {transition can link to at most one incoming port} {
@@ -82,7 +82,7 @@ test Transition-2.2 {transition can link to at most one incoming port} {
     $inport link $t0
     catch {$inport link $t0} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: ..fsm.t0:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.fsm.t0:
 Transition can only have one source and one destination.}}
 
 test Transition-2.3 {transition can link to at most one outgoing port} {
@@ -91,7 +91,7 @@ test Transition-2.3 {transition can link to at most one outgoing port} {
     $inport unlink $t0
     catch {$outport link $t0} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: ..fsm.t0:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.fsm.t0:
 Transition can only have one source and one destination.}}
 
 test Transition-2.4 {test tracking source and destination state} {
@@ -171,7 +171,7 @@ test Transition-3.4 {guard must be true whenever trigger is true} {
     $t0 setTriggerExpression "p0 > -5"
     catch {$t0 isTriggered} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: ..fsm.t0:
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.fsm.t0:
 The trigger: p0 > -5 is true but the guard: p0 > 0 is false.}}
 
 ######################################################################

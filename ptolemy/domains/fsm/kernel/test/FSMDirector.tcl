@@ -73,8 +73,8 @@ test FSMDirector-2.1 {test setting controller} {
     $v0 setExpression foo
     catch {$dir getController} msg1
     list $re0 $msg0 $msg1
-} {1 {ptolemy.kernel.util.IllegalActionException: ..dir:
-No controller found with name fsm} {ptolemy.kernel.util.IllegalActionException: ..dir:
+} {1 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.dir:
+No controller found with name fsm} {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.dir:
 No controller found with name foo}}
 
 ######################################################################
