@@ -8,7 +8,8 @@
 <BODY>
 
 <H1>Vector Quantization Demo</H1>
-
+<font color="#cc0000">This demo downloads 28 images, so it may
+take a few moments to get started.</font>
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
 <center>
@@ -24,21 +25,15 @@ applet is displayed on a XGA screen-->
 <PARAM NAME=ARCHIVE VALUE="
 	ptolemy/ptsupport.jar,
 	ptolemy/domains/sdf/sdf.jar"
-<PARAM NAME=NAME VALUE="HTVQ">
+<PARAM NAME="name" VALUE="HTVQ">
 <PARAM NAME="type" VALUE="application/x-java-applet;version=1.2">
 <PARAM NAME="background" VALUE="#faf0e6">
-<param name="iterations" value="100">
+<PARAM NAME="iterations" value="100">
 <COMMENT>
 <EMBED type="application/x-java-applet;version=1.2"
  code=ptolemy.domains.sdf.demo.HTVQ.HTVQApplet
  codebase=../../../../..
  archive="
-	ptolemy/ptsupport.jar,
-	ptolemy/domains/sdf/sdf.jar"
-
- java_CODE=ptolemy.domains.sdf.demo.HTVQ.HTVQApplet.class
- java_CODEBASE=../../../../..
- java_ARCHIVE="
 	ptolemy/ptsupport.jar,
 	ptolemy/domains/sdf/sdf.jar"
  name="HTVQ"
