@@ -58,7 +58,7 @@ public interface Receiver {
     public Token get() throws NoSuchItemException;
 
     /** Return the container. */
-    public IOPort getContainer();
+    public Nameable getContainer();
 
     /** Put a token into this receiver.
      *  @exception IllegalActionException If the token cannot be put.
