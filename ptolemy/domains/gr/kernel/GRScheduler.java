@@ -156,9 +156,14 @@ public class GRScheduler extends Scheduler {
             Iterator outports = actor.outputPortList().iterator();
             while(outports.hasNext()) {
                 IOPort outPort = (IOPort) outports.next();
+                int referenceDepth = outPort.depthInHierarchy();
                 Iterator inPorts = outPort.deepConnectedInPortList().iterator();
                 while(inPorts.hasNext()) {
                     IOPort inPort = (IOPort)inPorts.next();
+                    if (inPort.depthInHierarchy() < referenceDepth) {
+                        // Skip this port... it's higher in the hierarchy.
+                        continue;
+                    }
                     Actor post = (Actor)inPort.getContainer();
                     if(!successors.contains(post)) {
                         successors.addLast(post);

@@ -1223,8 +1223,13 @@ public class DEDirector extends Director {
                     // find the input ports connected to outPort
                     Iterator inPortIterator =
                         outPort.deepConnectedInPortList().iterator();
+                    int referenceDepth = outPort.depthInHierarchy();
                     while (inPortIterator.hasNext()) {
                         IOPort port = (IOPort)inPortIterator.next();
+                        if (port.depthInHierarchy() < referenceDepth) {
+                            // Skip this port... it's higher in the hierarchy.
+                            continue;
+                        }
                         Actor destination = (Actor)(port.getContainer());
                         if(destination.equals(actor)) {
                             throw new IllegalActionException(this,
