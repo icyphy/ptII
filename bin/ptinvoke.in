@@ -83,7 +83,7 @@ PTJACL_JAR="@PTJACL_JAR@"
 PTJACL_JFLAG=@PTJACL_JFLAG@
 
 # Jar file for JHDL
-JHDL_JAR=@JHDL_JAR@
+JHDL_JAR="@JHDL_JAR@"
 
 #### Serial port stuff
 # Directory that contains the Java Serial Comm API, see
