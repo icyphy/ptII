@@ -1,6 +1,6 @@
 /* A parser for MoML (model markup language)
 
- Copyright (c) 1998-1999 The Regents of the University of California.
+ Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -495,6 +495,14 @@ public class MoMLParser extends HandlerBase {
                                 separator);
                         while (paths.hasMoreTokens() && input == null) {
                             String path = paths.nextToken();
+
+                            // FIXME: If the class path contains a jar
+                            // file, we should probably look inside the
+                            // jar file.  In any case, we should not append
+                            // a trailing /
+                            if (path.endsWith(".jar")) {		
+                                continue;
+                            }
 
                             // Check to see if the path ends with a "/"     
                             if (!path.endsWith("/")) {		
