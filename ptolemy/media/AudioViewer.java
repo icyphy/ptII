@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -59,7 +59,7 @@ public class Sound extends PtolemyPlot {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Display basic information about the application.
      */
     protected void _about() {
@@ -245,7 +245,7 @@ public class Sound extends PtolemyPlot {
      */
 //     protected String _usage() {
 //         // FIXME: need a simpler profile...
-// 
+//
 //         // We use a table here to keep things neat.
 //         // If we have:
 //         //  {"-bd",  "<color>", "Border",  "White", "(Unsupported)"},
@@ -276,7 +276,7 @@ public class Sound extends PtolemyPlot {
 //             {"-zg",  "<color>", "ZeroColor",  "Black", "(Unsupported)"},
 //             {"-zw",  "<width>", "ZeroWidth",  "0", "(Unsupported)"},
 //         };
-// 
+//
 //         String commandFlags[][] = {
 //             {"-bar", "BarGraph",  ""},
 //             {"-bb", "BoundBox",  "(Ignored)"},
@@ -300,7 +300,7 @@ public class Sound extends PtolemyPlot {
 //         };
 //         String result = "Usage: plot [ options ] [=WxH+X+Y] [file ...]\n\n"
 //                 + " options that take values as second args:\n";
-// 
+//
 //         int i;
 //         for(i=0; i < commandOptions.length; i++) {
 //             result += " " + commandOptions[i][0] +
@@ -337,7 +337,7 @@ public class Sound extends PtolemyPlot {
             }
         }
     }
-    
+
     // FIXME: This filter doesn't work.  Why?
     private class SoundFilenameFilter implements FilenameFilter {
         public boolean accept(File dir, String name) {
