@@ -803,15 +803,19 @@ public class Quantizer {
 
     /** Return the fixed point number that is nearest to the specified
      *  value, but has magnitude no greater that the specified value,
-     *  and has the given precision, possibly introducing
-     *  quantization or overflow errors.
-     *  An overflow error occurs if the specified number does not fit
-     *  within the range possible with the specified precision. In that
-     *  case, the returned value is either the maximum or minimum value
-     *  possible with the given precision, depending on the sign of the
-     *  specified number. In this case, a flag is set in the returned
-     *  value to indicate that an overflow error occurred.
+     *  and has the given precision, possibly introducing quantization
+     *  or overflow errors.  An overflow error occurs if the specified
+     *  number does not fit within the range possible with the
+     *  specified precision. In that case, the returned value is
+     *  either the maximum or minimum value possible with the given
+     *  precision, depending on the sign of the specified number. In
+     *  this case, a flag is set in the returned value to indicate
+     *  that an overflow error occurred.  
      *
+     *  <p> Note: This method does NOT perform truncation per most
+     *  fixed-point DSP implementations, which simply drop the
+     *  fractional bits.  Most models of fixed-point algorithms will
+     *  use the roundDown methods in this class instead.
      *  @param value The value to represent.
      *  @param precision The precision of the representation.
      *  @return A fixed-point representation of the value.
@@ -832,6 +836,10 @@ public class Quantizer {
      *  specified number. In this case, a flag is set in the returned
      *  value to indicate that an overflow error occurred.
      *
+     *  <p> Note: This method does NOT perform truncation per most
+     *  fixed-point DSP implementations, which simply drop the
+     *  fractional bits.  Most models of fixed-point algorithms will
+     *  use the roundDown methods in this class instead.
      *  @param value The value to represent.
      *  @param precision The precision of the representation.
      *  @return A fixed-point representation of the value.
@@ -856,6 +864,10 @@ public class Quantizer {
      *  In either case, a flag is set in the returned
      *  value to indicate that an overflow error occurred.
      *
+     *  <p> Note: This method does NOT perform truncation per most
+     *  fixed-point DSP implementations, which simply drop the
+     *  fractional bits.  Most models of fixed-point algorithms will
+     *  use the roundDown methods in this class instead.
      *  @param value The value to represent.
      *  @param newPrecision The precision of the representation.
      *  @param mode The overflow mode.
