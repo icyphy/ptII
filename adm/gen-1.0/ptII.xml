@@ -351,6 +351,15 @@ Berkeley, CA 94706</property>
             <replaceOption>0</replaceOption>
             <removeOption>0</removeOption>
             <installFailureOption>1</installFailureOption>
+            <condition id="platform" type="com.installshield.product.conditions.PlatformProductBeanCondition">
+                <property name="evaluate">1</property>
+                <property name="platform" type="com.installshield.util.Platform">
+                    <property name="version">.</property>
+                    <property name="displayName"/>
+                    <property name="name">.</property>
+                    <property name="arch">.</property>
+                </property>
+            </condition>
             <component id="bean36">
                 <key>
                     <uid>3842f0ea333338e75c52ac656bb441e6</uid>
@@ -366,6 +375,14 @@ Berkeley, CA 94706</property>
                 <removeOption>0</removeOption>
                 <installFailureOption>3</installFailureOption>
                 <onFailSummaryMessage/>
+                <required>
+                    <key>
+                        <uid>04abadde0ff8f128c0c17d21ccf2f7f3</uid>
+                        <version/>
+                    </key>
+                    <resolution>2</resolution>
+                    <displayName>ref_583200</displayName>
+                </required>
                 <action class="com.installshield.product.actions.Files" id="bean37">
                     <displayName>Files</displayName>
                     <active>true</active>
@@ -394,7 +411,7 @@ Berkeley, CA 94706</property>
                     <property name="name">HTML Demos and Docs</property>
                     <property name="target">doc/index.htm</property>
                     <property name="args"/>
-                    <property name="workingDirectory"/>
+                    <property name="workingDirectory">doc</property>
                     <property name="itemOwner"/>
                     <property name="itemGroup"/>
                     <property name="folderOwner"/>
@@ -543,6 +560,14 @@ Berkeley, CA 94706</property>
                 <removeOption>0</removeOption>
                 <installFailureOption>3</installFailureOption>
                 <onFailSummaryMessage/>
+                <required>
+                    <key>
+                        <uid>04abadde0ff8f128c0c17d21ccf2f7f3</uid>
+                        <version/>
+                    </key>
+                    <resolution>2</resolution>
+                    <displayName>ref_628082</displayName>
+                </required>
                 <action class="com.installshield.product.actions.Files" id="bean87">
                     <displayName>Files</displayName>
                     <active>true</active>
@@ -837,7 +862,7 @@ Berkeley, CA 94706</property>
 <buildConfiguration>
     <property name="name">Default</property>
     <property name="outputDirectory">default</property>
-    <property name="archiveName">ptII1_0betasetup.jar</property>
+    <property name="archiveName">ptII1_0setup.jar</property>
     <property name="archiveType">1</property>
     <property array="True" length="3" name="support" type="com.installshield.isje.build.BuildConfigurationSupport">
         <arrayItem type="com.installshield.isje.wizard.PlatformSupport">
@@ -856,7 +881,7 @@ Berkeley, CA 94706</property>
             <property array="True" length="2" name="distributions" type="com.installshield.isje.build.Distribution">
                 <arrayItem type="com.installshield.wizard.platform.win32.Win32LauncherDistribution">
                     <property name="enabled">True</property>
-                    <property name="fileName">ptII1_0betasetup.exe</property>
+                    <property name="fileName">ptII1_0setup.exe</property>
                     <property array="True" length="3" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
                         <arrayItem type="com.installshield.util.jvm.JVMFile">
                             <property name="fullSearch">False</property>
