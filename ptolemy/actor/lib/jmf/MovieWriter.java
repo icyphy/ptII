@@ -41,6 +41,7 @@ import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
@@ -324,7 +325,7 @@ public class MovieWriter extends Sink
             processor.setContentDescriptor(new ContentDescriptor
                 (FileTypeDescriptor.MPEG));
         } else {
-            throw new InternalErrorException(this,
+            throw new InternalErrorException(
                     "type = " + _fileType + ", which is not one of "
                     + _QUICKTIME + "(QUICKTIME), "
                     + _AVI + "(AVI) or "

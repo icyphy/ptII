@@ -247,7 +247,8 @@ public class VideoCamera extends Source implements ControllerListener {
                     "Failed to create a processor for the media locator '"
                     + locator + "'. Note that you may need to run jmfinit, "
                     + "which is found in the JMF directory, for example "
-                    + "c:/Program Files/JMF2.1.1/bin); }
+                    + "c:/Program Files/JMF2.1.1/bin");
+        }
 
         // Make this a control listener.
         _processor.addControllerListener(this);
