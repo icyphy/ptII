@@ -35,19 +35,19 @@ import pt.kernel.NoSuchItemException;
 //////////////////////////////////////////////////////////////////////////
 //// Mailbox
 /** 
-The Receptionist with capacity one. Used in MailboxPort to hold incoming 
-token. Implement the Receptionist interface.
+The Receiver with capacity one. Used in MailboxPort to hold incoming 
+token. Implement the Receiver interface.
 
 @author Jie Liu
 @version $Id$
 */
-public class Mailbox implements Receptionist {
+public class Mailbox implements Receiver {
     /** Construct an empty Mailbox. The Mailbox must have a container, 
      * which is an IOPort. The container, once set, can't be changed.
      * FIXME: what if container = null?
      * @param container 
      */	
-    public Mailbox(AtomicIOPort container) {
+    public Mailbox(IOPort container) {
         _container = container;
         _isEmpty = true;
     }
@@ -63,7 +63,8 @@ public class Mailbox implements Receptionist {
      */	
     public Token get() throws NoSuchItemException {
         if(_isEmpty) {
-            throw new NoSuchItemException("");
+            throw new NoSuchItemException(getContainer(),
+            "Attempt to get data from an empty mailbox.");
         }
         _isEmpty = true;
         return _token;
@@ -104,7 +105,7 @@ public class Mailbox implements Receptionist {
     // have regular C++ comments.
 
     // container is not changable.
-    private final AtomicIOPort _container;
+    private final IOPort _container;
     // the token held.
     private Token _token;
     private boolean _isEmpty;
