@@ -47,6 +47,7 @@ PTPACKAGE = 	util
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	GeneralComparator.java \
 	FuzzyDoubleComparator.java \
 	TotallyOrderedSet.java
 
