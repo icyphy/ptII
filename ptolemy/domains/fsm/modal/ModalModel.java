@@ -227,12 +227,6 @@ public class ModalModel extends CTCompositeActor {
         return _ioDependency;
     }
 
-    /** We treat the modal model as an opaque actor.
-     */
-    public boolean isOpaque() {
-       return true;
-    }
-
     /** Create a new director for use in this composite.  This base
      *  class returns an instance of FSMDirector, but derived classes
      *  may return a subclass.  Note that this method is called in the
@@ -246,6 +240,8 @@ public class ModalModel extends CTCompositeActor {
      */
     public FSMDirector newDirector()
             throws IllegalActionException, NameDuplicationException {
+        // FIXME: we have to be careful on choosing FSMDirector or
+        // HSDirector.
         return new HSDirector(this, "_Director");
     }
     
