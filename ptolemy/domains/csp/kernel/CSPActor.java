@@ -338,7 +338,6 @@ public class CSPActor extends AtomicActor implements Runnable {
             while (inputports.hasMoreElements()) {
                 IOPort inport = (IOPort)inputports.nextElement();
                 inport.getReceivers();
-                System.out.println("Created receivers in: "+ inport.getName());
             }
         } catch (IllegalActionException ex) {
             System.out.println("Could not create all receivers in " + getName());
