@@ -379,6 +379,28 @@ public class FixToken extends ScalarToken {
         return new FixToken( 1.0, _value.getPrecision().toString() );
     }
 
+   /**  Scale the fix point value to the give precision. To fit the
+     *  new precision, a rounding error may occur. In that case the
+     *  value of the Fixpoint is determined, depending on the overflow
+     *  mode selected. The following quantization modes are supported
+     *  in case an overflow occurs.
+     *
+     *  <ul> 
+     *  <li> mode = 0, <b>Saturate</b>: The fix point value is set,
+     *  depending on its sign, equal to the Max or Min value possible
+     *  with the new given precision.
+     *  <li> mode = 1, <b>Zero Saturate</b>: The fix point value is
+     *  set equal to zero.
+     *  </ul>
+     *
+     *  @param newprecision The new precision of the Fixpoint.  
+     *  @param mode The mode of quantization.  
+     *  @return A new Fixpoint with the given precision.  
+     */
+    public FixToken scaleToPrecision(Precision newprecision, int mode ) {
+        return new FixToken( _value.scaleToPrecision(newprecision, mode) );
+    }
+
     /** Return a new Token whose value is the value of the argument token
      *  subtracted by the value of this token. The type of the
      *  specified token must be such that either it can be converted
