@@ -207,9 +207,15 @@ public class Translate3D extends GRTransform {
                                          _initialZTranslation));
         _transformNode.setTransform(transform);
 
+        /*
         _accumulatedX = 0.0;
         _accumulatedY = 0.0;
         _accumulatedZ = 0.0;
+        */
+        //Modified by Gang Zhou
+        _accumulatedX = _initialXTranslation;
+        _accumulatedY = _initialYTranslation;
+        _accumulatedZ = _initialZTranslation;
     }
 
     ///////////////////////////////////////////////////////////////////
