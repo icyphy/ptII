@@ -44,5 +44,10 @@ VPATH =		$(ROOT)/$(ME)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+
 # Include rules for directories that don't have subdirectories
 include $(ROOT)/mk/ptno-compile.mk
+
+# Don't include *.class in CRUD, since these files are checked in
+# and we don't have any sources, so make clean should not remove them
+CRUD= *~
