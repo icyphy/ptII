@@ -390,19 +390,30 @@ public class CompositeActor extends CompositeEntity implements Actor {
                         "Cannot initialize a non-opaque actor.");
             }
 
+            // Clear all of the contained actor's input ports.
+            for(Iterator actors = entityList(Actor.class).iterator();
+                actors.hasNext();) {
+                Entity actor = (Entity)actors.next();
+                Iterator ports = actor.portList().iterator();
+                while (ports.hasNext()) {
+                    IOPort port = (IOPort)ports.next();
+                    if(port.isInput()) {
+                        // Clear all receivers.
+                        Receiver[][] receivers = port.getReceivers();
+                        for(int i = 0; i < receivers.length; i++) {
+                            Receiver[] receivers2 = receivers[i];
+                            for(int j = 0; j < receivers2.length; j++) {
+                                receivers2[j].clear();
+                            }
+                        } 
+                    }
+                }
+            }
+
+            // Clear all of the output ports.
             Iterator ports = portList().iterator();
             while (ports.hasNext()) {
                 IOPort port = (IOPort)ports.next();
-                if(port.isInput()) {
-                    // Clear all receivers.
-                    Receiver[][] receivers = port.getReceivers();
-                    for(int i = 0; i < receivers.length; i++) {
-                        Receiver[] receivers2 = receivers[i];
-                        for(int j = 0; j < receivers2.length; j++) {
-                            receivers2[j].clear();
-                        }
-                    } 
-                }
                 if(port.isOutput()) {
                     // Clear all insideReceivers.
                     Receiver[][] receivers = port.getInsideReceivers();
@@ -414,7 +425,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
                     } 
                 }
             }
-
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
             getDirector().initialize();
