@@ -873,13 +873,16 @@ public class Variable extends Attribute implements Typeable {
                 token = getToken();
             } catch (IllegalActionException ex) {}
             if (token != null) {
-                if(token instanceof ptolemy.data.StringToken) {
-                    // Double quotes must be added to the value of a
-                    // string token.
-                    value = "\"" + token.toString() + "\"";
-                } else {
-                    value = token.toString();
-                }
+                // Don't need this test any more, since toString
+                // automatically add the quotation marks.
+                //if(token instanceof ptolemy.data.StringToken) {
+                // Double quotes must be added to the value of a
+                // string token.
+                //value = "\"" + token.toString() + "\"";
+                //} else {
+                //    value = token.toString();
+                //}
+                value = token.toString();
             }
         }
         if (value == null) {
