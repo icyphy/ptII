@@ -86,13 +86,13 @@ of the parse tree. Thus the process is
 <p>
 The parser can also be passed a symbol table of ptolemy.data.expr.Variables
 which the expression to be parsed can reference.
-<p>
-Anything between quotes(") or apostrophes(') is taken to be one string.
-Strings are not allowed to contain newlines or carriage returns. These
-characters, as well as other special characters, can be escaped using the
-standard Java syntax (\n, \t, \077, etc.).
-<p>
-The expressions recognized follow as close as possible the syntax of Java.
+
+<p>Anything between quotes(") or apostrophes(') is taken to be one string.  
+Strings are allowed to contain newlines or carriage returns.  In
+addition, these characters, as well as other special characters, can
+be escaped using the standard Java syntax (\n, \t, \077, etc.).
+
+<p>The expressions recognized follow as close as possible the syntax of Java.
 In particular the operator precedences implemented here follow exactly 
 those in Java. Any type conversions that are performed are lossless. If 
 the user wants lossy conversions, explicit casts will be necessary.
@@ -164,31 +164,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
     public ASTPtRootNode generateParseTree(String stringIn)
             throws IllegalActionException {
 
-        String str;
-        // Most of the time?, we do not have a newline so
-        // skip the \r \n checking?
-        if (stringIn.indexOf('\n') == -1) {
-            str = stringIn;
-        } else {
-            String strTmp = stringIn.replace('\n', ' ');
-            if (strTmp.indexOf('\r') == -1) {
-                str = strTmp;
-            } else {
-                // Remove all the \r characters
-                // readFile() needs this under Windows, see
-                // actor/lib/test/Const.tcl
-                int last = 0;
-                int found = 0;
-                StringBuffer buffer = new StringBuffer();
-                while ((found = strTmp.indexOf('\r', last)) != -1) {
-                    buffer.append( strTmp.substring(last, found));
-                    last = found + 1;
-                }
-                str = buffer.toString();
-            }
-        }
-
-        Reader reader = new StringReader(str);
+        Reader reader = new StringReader(stringIn);
         this.ReInit(reader);
         ASTPtRootNode rootNode;
         try {
@@ -216,31 +192,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
     public Map generateAssignmentMap(String stringIn)
             throws IllegalActionException {
 
-        String str;
-        // Most of the time?, we do not have a newline so
-        // skip the \r \n checking?
-        if (stringIn.indexOf('\n') == -1) {
-            str = stringIn;
-        } else {
-            String strTmp = stringIn.replace('\n', ' ');
-            if (strTmp.indexOf('\r') == -1) {
-                str = strTmp;
-            } else {
-                // Remove all the \r characters
-                // readFile() needs this under Windows, see
-                // actor/lib/test/Const.tcl
-                int last = 0;
-                int found = 0;
-                StringBuffer buffer = new StringBuffer();
-                while ((found = strTmp.indexOf('\r', last)) != -1) {
-                    buffer.append( strTmp.substring(last, found));
-                    last = found + 1;
-                }
-                str = buffer.toString();
-            }
-        }
-
-        Reader reader = new StringReader(str);
+        Reader reader = new StringReader(stringIn);
         this.ReInit(reader);
         Map map;
         try {
@@ -2065,6 +2017,20 @@ String tidied, x;
     return retval;
   }
 
+  final private boolean jj_3_3() {
+    if (jj_scan_token(53)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    return false;
+  }
+
+  final private boolean jj_3_6() {
+    if (jj_scan_token(ID)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    if (jj_scan_token(47)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    return false;
+  }
+
   final private boolean jj_3_2() {
     if (jj_scan_token(47)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
@@ -2089,20 +2055,6 @@ String tidied, x;
 
   final private boolean jj_3_1() {
     if (jj_scan_token(FUNCTION)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(47)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    return false;
-  }
-
-  final private boolean jj_3_3() {
-    if (jj_scan_token(53)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    return false;
-  }
-
-  final private boolean jj_3_6() {
-    if (jj_scan_token(ID)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     if (jj_scan_token(47)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
