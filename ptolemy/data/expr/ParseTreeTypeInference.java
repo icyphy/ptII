@@ -27,11 +27,13 @@
 */
 package ptolemy.data.expr;
 
+import ptolemy.graph.InequalityTerm;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeConstant;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.data.type.UnsizedMatrixType;
 import ptolemy.kernel.util.IllegalActionException;
@@ -262,6 +264,15 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                         return currentScope.getType(name);
                     } else {
                         return type;
+                    }
+                }
+                public InequalityTerm getTypeTerm(String name) 
+                        throws IllegalActionException {
+                    Type type = (Type)map.get(name);
+                    if (type == null && currentScope != null) {
+                        return currentScope.getTypeTerm(name);
+                    } else {
+                        return new TypeConstant(type);
                     }
                 }
                 public Set identifierSet() throws IllegalActionException {

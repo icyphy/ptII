@@ -89,6 +89,24 @@ public class ExplicitScope implements ParserScope {
         }
     }
 
+    /** Look up and return the type term for the specified name
+     *  in the scope. Return null if the name is not defined in this
+     *  scope, or is a constant type.
+     *  @return The InequalityTerm associated with the given name in
+     *  the scope.
+     *  @exception IllegalActionException If a value in the scope
+     *  exists with the given name, but cannot be evaluated.
+     */
+    public ptolemy.graph.InequalityTerm getTypeTerm(String name)
+            throws IllegalActionException {
+        Variable variable = (Variable)_list.get(name);
+        if (variable == null) {
+            return null;
+        } else {
+            return variable.getTypeTerm();
+        }
+    }
+
     /** Return the list of variables within the scope.
      *  @return The list of variables within the scope.
      */

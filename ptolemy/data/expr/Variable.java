@@ -1957,6 +1957,32 @@ public class Variable extends Attribute
             }
         }
 
+        /** Look up and return the type term for the specified name
+         *  in the scope. Return null if the name is not defined in this
+         *  scope, or is a constant type.
+         *  @return The InequalityTerm associated with the given name in
+         *  the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
+                throws IllegalActionException {
+            NamedObj reference = _reference;
+            if (_reference == null) {
+                reference = (NamedObj)Variable.this.getContainer();
+            }
+
+            Variable result = getScopedVariable(
+                    Variable.this,
+                    reference,
+                    name);
+            if (result != null) {
+                return result.getTypeTerm();
+            } else {
+                return null;
+            }
+        }
+
         /** Return the list of identifiers within the scope.
          *  @return The list of variable names within the scope.
          */

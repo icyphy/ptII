@@ -32,6 +32,7 @@ constants.
 
 package ptolemy.data.expr;
 
+import ptolemy.data.type.TypeConstant;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -76,6 +77,23 @@ public class NamedConstantsScope implements ParserScope {
             return null;
         } else {
             return value.getType();
+        }
+    }
+
+    /** Look up and return the type term for the specified name
+     *  in the scope. Return null if the name is not defined in this
+     *  scope, or is a constant type.
+     *  @return The InequalityTerm associated with the given name in
+     *  the scope.
+     *  @exception IllegalActionException If a value in the scope
+     *  exists with the given name, but cannot be evaluated.
+     */
+    public ptolemy.graph.InequalityTerm getTypeTerm(String name) {
+        ptolemy.data.Token value = (ptolemy.data.Token)_map.get(name);
+        if (value == null) {
+            return null;
+        } else {
+            return new TypeConstant(value.getType());
         }
     }
 

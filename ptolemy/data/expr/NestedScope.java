@@ -33,6 +33,7 @@ package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+import ptolemy.graph.InequalityTerm;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -91,6 +92,26 @@ public class NestedScope implements ParserScope {
         while (scopes.hasNext()) {
             ParserScope scope = (ParserScope)scopes.next();
             ptolemy.data.type.Type result = scope.getType(name);
+            if (result != null)
+                return result;
+        }
+        return null;
+    }
+
+    /** Look up and return the type term for the specified name
+     *  in the scope. Return null if the name is not defined in this
+     *  scope, or is a constant type.
+     *  @return The InequalityTerm associated with the given name in
+     *  the scope.
+     *  @exception IllegalActionException If a value in the scope
+     *  exists with the given name, but cannot be evaluated.
+     */
+    public ptolemy.graph.InequalityTerm getTypeTerm(String name)
+            throws IllegalActionException {
+        Iterator scopes = _scopeList.iterator();
+        while (scopes.hasNext()) {
+            ParserScope scope = (ParserScope)scopes.next();
+            InequalityTerm result = scope.getTypeTerm(name);
             if (result != null)
                 return result;
         }
