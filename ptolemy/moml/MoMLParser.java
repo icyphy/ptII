@@ -909,6 +909,7 @@ public class MoMLParser extends HandlerBase {
 
                 // Read external file in the current context, but with
                 // a new parser.
+
                 MoMLParser newParser =
 		    new MoMLParser(_workspace, _classLoader);
                 newParser.setContext(_current);
@@ -1505,6 +1506,9 @@ public class MoMLParser extends HandlerBase {
                                     _parser.getLineNumber(),
                                     _parser.getColumnNumber());
                             }
+                        } else {
+                            // No alternative. Rethrow exception.
+                            throw ex2;
                         }
                     }
                     if (candidateReference instanceof ComponentEntity) {
@@ -1800,6 +1804,18 @@ public class MoMLParser extends HandlerBase {
         InputStream input = null;
         try {
             xmlFile = new URL(base, source);
+
+            // Security concern here.  Warn if external source.
+            // The warning method will throw a CancelException if the
+            // user clicks "Cancel".
+            String protocol = xmlFile.getProtocol();
+            if (protocol != null
+                    && protocol.trim().toLowerCase().equals("http")) {
+                MessageHandler.warning("Security concern:\n"
+                        + "Reading MoML from the net at address:\n"
+                        + xmlFile.toExternalForm()
+                        + "\nOK to proceed?");
+            }
             input = xmlFile.openStream();
         } catch (IOException ioException) {
             errorMessage.append("1. Failed to open '" + source + "' with base '"
