@@ -1,8 +1,8 @@
 # Tests for the SchematicElement class
 #
-# @Author: Edward A. Lee
+# @Author: Steve Neuendorffer
 #
-# @Version: @(#)AtomicActor.tcl	1.6   10/20/98
+# @Version: $Id$
 #
 # @Copyright (c) 1997-1998 The Regents of the University of California.
 # All rights reserved.
