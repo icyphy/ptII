@@ -1,6 +1,6 @@
 /* An actor that retrieves the received properties of a connected port.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -136,7 +136,8 @@ public class GetProperties extends TypedAtomicActor {
             IOPort port = (IOPort)connectedPorts.next();
             if (port.isInput() && port instanceof WirelessIOPort) {
                 // Found the port.
-                Token propertiesValue = ((WirelessIOPort)port).getProperties(0);
+                Token propertiesValue =
+                    ((WirelessIOPort)port).getProperties(0);
 
                 // Do not send properties if the port has no destinations.
                 // This prevents run-time type errors from occurring.
@@ -183,12 +184,14 @@ public class GetProperties extends TypedAtomicActor {
                     }
                 } else {
                     throw new IllegalActionException(this,
-                            "The connected port does not refer to a valid channel.");
+                            "The connected port does not refer to a "
+                            + "valid channel.");
                 }
                 return;
             }
         }
         throw new IllegalActionException(this,
-                "Could not find a port to get the type of the properties from.");
+                "Could not find a port to get the type of the "
+                + "properties from.");
     }
 }
