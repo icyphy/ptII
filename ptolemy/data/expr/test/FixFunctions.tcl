@@ -1,10 +1,10 @@
 # Tests for the functionality of functions in UtilityFunctions class.
 #
-# @author: Neil Smyth
+# @author: Bart Kienhuis
 #
 # @Version $Id$
 #
-# @Copyright (c) 1997-2000 The Regents of the University of California.
+# @Copyright (c) 1997-1999 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -49,32 +49,37 @@ if {[string compare test [info procs test]] == 1} then {
 
 
 ######################################################################
-####
-# 
-test UtilityFunctions-1.0 {Check readFile method} {
+
+test FixFunctions-1.0 {Check Fix method for a single FixPoint} {
     set parser [java::new ptolemy.data.expr.PtParser]
     
-    set tree [$parser generateParseTree "readFile(\"message.txt\")"]
+    set tree [$parser generateParseTree "fix(5.34, 10, 2)"]
+    set res [$tree evaluateParseTree]
+    set value [$res toString]
+
+    list $value 
+} {fix(1.99609375,10,2)}
+
+test FixFunctions-1.1 {Check Fix method for a array of FixPoints} {
+    set parser [java::new ptolemy.data.expr.PtParser]
+    
+    set tree [$parser generateParseTree "fix(\[ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 \], 10,  2)"]
+    set res [$tree evaluateParseTree]
+
+    set value [$res toString]	
+    list $value
+
+} {{[fix(-0.0390625,10,2), fix(0.0,10,2), fix(0.1796875,10,2), fix(0.375,10,2), fix(0.375,10,2), fix(0.1796875,10,2), fix(0.0,10,2), fix(-0.0390625,10,2)]}}
+
+test FixFunctions-2.0 {Check quantize method, returning an array of FixPoints} {
+    set parser [java::new ptolemy.data.expr.PtParser]
+    
+    set tree [$parser generateParseTree "quantize(\[ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 \], 10,  2)" ]
 
     #$tree displayParseTree " "
     set res [$tree evaluateParseTree]
 
-    set value [$res toString]
-
+    set value [$res toString]	
     list $value
-} {Greetings...}
-######################################################################
-####
-# result is 50 as the string for the re-invoked parser is 3+43+4 !
-test UtilityFunctions-1.0 {Check recurive calls to the parser with eval method} {
-    set parser [java::new ptolemy.data.expr.PtParser]
-    
-    set tree [$parser generateParseTree "eval(\"3 + 4\" + \"3 + 4\")"]
 
-    set res [$tree evaluateParseTree]
-
-    set value [$res toString]
-
-    list $value
-} {50}
-
+} {{[-0.039, 0.0, 0.18, 0.375, 0.375, 0.18, 0.0, -0.039]}}
