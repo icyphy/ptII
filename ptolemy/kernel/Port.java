@@ -29,8 +29,8 @@ package pt.kernel;
 
 import java.util.Enumeration;
 import collections.LinkedList;
-import pt.exceptions.NullReferenceException;
-import pt.exceptions.NameDuplicationException;
+import pt.kernel.NullReferenceException;
+import pt.kernel.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Port
@@ -60,9 +60,9 @@ public class Port extends GenericPort {
 
     /** Connect this Port to a Relation.
      * @param relation The Relation to which this Port will be connected.
-     * @exception pt.exceptions.NullReferenceException Signals an attempt
+     * @exception pt.kernel.NullReferenceException Signals an attempt
      * to pass null object references as arguments.
-     * @exception pt.exceptions.NameDuplicationException Attempt to store
+     * @exception pt.kernel.NameDuplicationException Attempt to store
      * two instances of the same class with identical names in the same
      * container.
      */	
@@ -152,7 +152,7 @@ public class Port extends GenericPort {
 
     /** Prepare for a new connection by returning a port. 
      * @return Return the real port.
-     * @exception pt.exceptions.NullReferenceException Signals an attempt
+     * @exception pt.kernel.NullReferenceException Signals an attempt
      * to pass null object references as arguments.
      */	
     public Port prepareForConnection() throws NullReferenceException {
@@ -169,7 +169,7 @@ public class Port extends GenericPort {
 
     /** Set the MuliPort which contains this Port.
      * @param multiPort The MultiPort which will be the container of this Port.
-     * @exception pt.exceptions.NullReferenceException Signals an attempt
+     * @exception pt.kernel.NullReferenceException Signals an attempt
      * to pass null object references as arguments.
      */	
     public void setMultiPortContainer(MultiPort multiPort) 

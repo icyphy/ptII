@@ -31,8 +31,8 @@ package pt.kernel;
 import java.util.Hashtable;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
-import pt.exceptions.NullReferenceException; 
-import pt.exceptions.NameDuplicationException;
+import pt.kernel.NullReferenceException; 
+import pt.kernel.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Relation
@@ -64,10 +64,10 @@ public abstract class Relation extends GraphElement {
 
     /** Connect a Port to this Relation.
      * @param port The Port being connected to the Relation.
-     * @exception pt.exceptions.NameDuplicationException Attempt to store 
+     * @exception pt.kernel.NameDuplicationException Attempt to store 
      * two instances of the same class with identical names in the same 
      * container.
-     * @exception pt.exceptions.NullReferenceException Signals an attempt 
+     * @exception pt.kernel.NullReferenceException Signals an attempt 
      * to pass null object references as arguments.
      */	
     public void connectPort(Port port) throws NameDuplicationException,
