@@ -69,7 +69,7 @@ on a sphere of radius <i>distance</i>. The result of multiplying
 this by a transmit power is a power density (power per unit area).
 The receiver should multiply this power density by the area of the
 sensor it uses to capture the energy (such as antenna area) and 
-also an efficiency factor which represents how effictively it capture 
+also an efficiency factor which represents how effectively it capture 
 the energy.
 <p>
 The power field of the transmit properties can be supplied by

@@ -87,19 +87,16 @@ public class DialogTableau extends Tableau {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public parameters                 ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create a tableau for the specified dialog. First look to see if a dialog
-     *  already exists. If so, then just return that one.
-     * @param parent The Frame parent
-     * @param configuration The configuration
-     * @param effigy The Effigy containg the model that needs a dialog
-     * @param dialogClass The Dialog class to create.
-     * @param target The entity that needs the Dialog
-     * @return DialogTableau
+    /** Create a tableau for the specified dialog. First look to see
+     *  if a dialog already exists. If so, then just return that one.
+     *  @param parent The Frame parent
+     *  @param configuration The configuration
+     *  @param effigy The Effigy containing the model that needs a dialog.
+     *  @param dialogClass The Dialog class to create.
+     *  @param target The entity that needs the Dialog
+     *  @return DialogTableau
      */
     public static DialogTableau createDialog(
         Frame parent,

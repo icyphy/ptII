@@ -99,7 +99,7 @@ public class MobileModel extends TypedCompositeActor {
         //the inside model because the receiver it creates is an instance of
         //Mailbox, which can only hold one token. In this case, specify a proper
         //director using the <i>director<i> parameter.
-        new Director(this, "defultDirector");
+        new Director(this, "defaultDirector");
         director = new Parameter(this, "director",
                 new StringToken("ptolemy.actor.Director"));
         setClassName("ptolemy.actor.lib.hoc.MobileModel");
@@ -153,7 +153,7 @@ public class MobileModel extends TypedCompositeActor {
 
     /** The output port for the result after firing the inside model
      * upon the incoming data. Notice that the type is determined by
-     * the type of the <i>defultValue<i> parameter.
+     * the type of the <i>defaultValue<i> parameter.
      */
     public TypedIOPort output;
 

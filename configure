@@ -5844,7 +5844,7 @@ fi
 #--------------------------------------------------------------------
 # PTMATLAB_DIR is set to matlab and used in $PTII/ptolemy/makefile
 # if matlab and gcc are found; PTMATLAB_LIBDIR is then also set to
-# the platform-dependent directory containg Matlab's engine libraries
+# the platform-dependent directory containing Matlab's engine libraries
 PTMATLAB_DIR=
 PTMATLAB_LIBDIR=
 

@@ -55,7 +55,7 @@ import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 
 /**
 This is a wireless sensor node that senses evaders in the sensor
-feild. The sensors in the field communicate with each other to 
+field. The sensors in the field communicate with each other to 
 construct a spanning tree from the root node (where the evader is close
 to) to nodes that are one hop from the root node and so on. When a 
 sensor detects the evader, it sets itself as the root

@@ -254,7 +254,7 @@ public class RunCompositeActor extends TypedCompositeActor {
     /** Initialize this actor, which in this case, does nothing. 
      *  The initialization of the submodel is accomplished in fire().
      *  The subclass of this can set the <i>_isSubclassOfThis<i> to
-     *  be true to call the initailize method of the superclass of this.
+     *  be true to call the initialize method of the superclass of this.
      *  @exception IllegalActionException Not thrown, but declared
      *   so the subclasses can throw it.
      */

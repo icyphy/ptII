@@ -367,7 +367,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  the stop of an execution. Otherwise, it is the actor that 
      *  requests the firing.
      *  <p>
-     *  In CT domain, the signals may be piecewise consinuous,. They
+     *  In CT domain, the signals may be piecewise continuous. They
      *  may generate discontinuities at some time points. In order to
      *  generate the discontinuities, the actors request to be fired at
      *  some time as many times as necessary, and each time they produce

@@ -855,7 +855,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
     }
 
     /** Return the name of the class that is generated for the given
-     *  named object.  This name is guaraunteed to be unique among the
+     *  named object.  This name is guaranteed to be unique among the
      *  classes being generated.
      */
     public static String getInstanceClassName(NamedObj object, Map options) {

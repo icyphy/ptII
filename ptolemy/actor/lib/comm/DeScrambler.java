@@ -109,7 +109,7 @@ public class DeScrambler extends Transformer {
     ////                         public methods                    ////
 
     /** If the attribute being changed is <i>polynomial</i>, then
-     *  verify that is a positive interger and the lower-order bit is 1.
+     *  verify that is a positive integer and the lower-order bit is 1.
      *  @exception IllegalActionException If <i>polynomial</i> is
      *  non-positive or the lower-order bit is not 1.
      */

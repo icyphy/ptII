@@ -166,7 +166,7 @@ public class ConstVariableModelAnalysis {
 
     /** Return the change context of the given variable.  This an
      *  actor containing the variable, such that the variable is
-     *  guaraunteed not to change values during a firing of the actor.
+     *  guaranteed not to change values during a firing of the actor.
      */
     public Entity getChangeContext(Variable variable) {
         return (Entity)_variableToChangeContext.get(variable);

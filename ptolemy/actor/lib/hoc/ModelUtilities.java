@@ -74,7 +74,7 @@ public class ModelUtilities {
      * Attributes. In particular, only Attributes 
      * that have name matches the <i>resultLabels<i> are returned. 
      * The return result is a RecordToken which has the resultLabels as 
-     * its feild.
+     * its field.
      * @param url The Model url.
      * @param args A set of attributes of the specified model.
      * @param resultLabels Labels of the returned result.
@@ -115,7 +115,7 @@ public class ModelUtilities {
      * Attributes. In particular, only Attributes 
      * that have name matches the <i>resultLabels<i> are returned. 
      * The return result is a RecordToken which has the resultLabels as 
-     * its feild.
+     * its field.
      * @param model The Model.
      * @param args A set of attributes of the specified model.
      * @param resultLabels Labels of the returned result.
@@ -147,7 +147,7 @@ public class ModelUtilities {
 /** Iterate over the labelSet of the <i>args<i> argument and 
  *  check whether the specified model has Attribute with the
  *  same name of a label. If so, set the value of the attribute
- *  to be the value of that record feild.
+ *  to be the value of that record field.
  *  @exception IllegalActionException If reading the ports or
  *   setting the parameters causes it.
  */

@@ -169,7 +169,7 @@ address, The parameter <i>localSocketNumber</i> is used to specify the
 UDP port number for the multicast group. A multicast IP address 
 ranges from 224.0.0.0 to 239.255.255.255, inclusive. To send a packet to the
 group, the sender can be either a DatagramSocket or a MulticastSocket. The 
-only diffence is that MulticastSocket allows you to control the time-to-live
+only difference is that MulticastSocket allows you to control the time-to-live
 of the datagram. Don't use 224.0.0.1 ~ 224.255.255.255 when the live time of
 is specified larger than 1. 
 

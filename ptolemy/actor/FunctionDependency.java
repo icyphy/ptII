@@ -45,7 +45,7 @@ import java.util.Set;
 dependence relation between the inputs and outputs of an actor.
 <p> It contains a ports-graph including the ports of both the container
 and the contained actors (if any). The detailed implementation of how to
-contruct the graph is undefined but left to sub classes.
+construct the graph is undefined but left to sub classes.
 <p>
 A pair of ports, input and output, are declared dependent if the current
 value of output depends on the current value of the input. Otherwise, it is

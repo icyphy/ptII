@@ -140,7 +140,7 @@ Since the polynomial and the feedback shift register are both implemented
 using type "int", the order of the polynomial is limited by the size of
 the "int" data type.
 For simplicity and portability, the polynomial is not allowed to be
-intepreted as a negative integer, so the sign bit cannot be used.
+interpreted as a negative integer, so the sign bit cannot be used.
 Thus, if "int" is a 32-bit word, then the highest order polynomial allowed
 is 30 (recall that indexing for the order starts at zero, and we cannot
 use the sign bit).

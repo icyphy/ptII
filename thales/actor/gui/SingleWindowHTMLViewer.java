@@ -334,7 +334,7 @@ public class SingleWindowHTMLViewer
     }
 
     /**
-     * Removes the correspondig Tab according to the Component name
+     * Removes the corresponding Tab according to the Component name
      * @param tableauFullName
      */
     public void removeTab(String tableauFullName) {

@@ -42,7 +42,7 @@ UnitEquation.
 <p>
 The generic version of the method to visit a UnitEquation, UnitExpr, and
 UnitTerm are specified here. To do a specific kind of visit create a class
-that extnds EquationVisitor that overrides some one or more of these methods.
+that extends EquationVisitor that overrides some one or more of these methods.
 These methods are specified as throwing an IllegalActionException to make it
 possible for the overridden methods in a subclass to throw
 IllegalActionException.

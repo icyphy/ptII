@@ -76,7 +76,7 @@ public class StringToXML extends Transformer{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Output the XMLToken constucted from the input string.
+    /** Output the XMLToken constructed from the input string.
      *  @exception IllegalActionException if the superclass throws it..
      */
     public void fire() throws IllegalActionException {
