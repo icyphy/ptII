@@ -129,16 +129,23 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     /** Do nothing.  Derived classes override this method to define their
      *  their primary run-time action.
+     *
+     *  @exception CloneNotSupportedException Not thrown in this base class.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void fire() throws IllegalActionException {
+    public void fire()
+            throws CloneNotSupportedException, IllegalActionException {
     }
 
-   /** Do nothing.  Derived classes override this method to define their
-    *  initialization code, which gets executed exactly once prior to
-    *  any other action methods.
-    */
-    public void initialize() {
+    /** Do nothing.  Derived classes override this method to define their
+     *  initialization code, which gets executed exactly once prior to
+     *  any other action methods.
+     *
+     *  @exception CloneNotSupportedException Not thrown in this base class.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void initialize()
+            throws CloneNotSupportedException, IllegalActionException {
     }
 
     /** Return an enumeration of the input ports.
@@ -231,20 +238,30 @@ public class AtomicActor extends ComponentEntity implements Actor {
         }
     }
 
-    /** Do nothing.  Derived classes override this method to define
+    /** Return true.  Derived classes override this method to define
      *  operations to be performed at the end of every iteration of
      *  its execution, after at least one invocation of the fire()
      *  method.
+     *
+     *  @return True if execution can continue into the next iteration.
+     *  @exception CloneNotSupportedException Not thrown in this base class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void postfire() {
+    public boolean postfire()
+            throws CloneNotSupportedException, IllegalActionException {
+        return true;
     }
 
     /** Return true. Derived classes override this method to define
      *  operations to be performed at the beginning of every iteration
      *  of its execution, prior the invocation of the fire() method.
+     *
      *  @return True if the actor is ready for firing, false otherwise.
+     *  @exception CloneNotSupportedException Not thrown in this base class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    public boolean prefire() {
+    public boolean prefire()
+            throws CloneNotSupportedException, IllegalActionException {
         return true;
     }
 
@@ -273,8 +290,10 @@ public class AtomicActor extends ComponentEntity implements Actor {
     /** Do nothing.  Derived classes override this method to define
      *  operations to be performed excatly once at the end of a complete 
      *  execution of an application.
+     *
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void wrapup() {
+    public void wrapup() throws IllegalActionException {
     }
 
     ////////////////////////////////////////////////////////////////////////

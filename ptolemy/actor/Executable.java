@@ -23,6 +23,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package pt.actor;
@@ -33,10 +34,19 @@ import pt.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Executable
 /**
-This interface defines how an object can be invoked. This should be
-implemented by actors and directors.
+This interface defines the <i>action methods</i>, which determine
+how an object can be invoked. It should be implemented by actors
+and directors. In an execution of an application,
+the initialize() method should be
+invoked exactly once, followed by any number of iterations, followed
+by exactly one invocation of the wrapup() method. An <i>iteration</i>
+is defined to be one firing of the prefire() method, any number of
+firings of the fire() method, and one firing of the postfire() method.
+The prefire() method returns a boolean that indicates whether firing
+can occur.  The initialize(), fire() and postfire() methods may produce
+output data (which can result in a CloneNotSupported exception).
 
-@author Mudit Goel
+@author Mudit Goel, Edward A. Lee
 @version $Id$
 */
 public interface Executable {
@@ -44,27 +54,41 @@ public interface Executable {
     ///////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** This fires an actor and maybe invoked several times between
-     *  invocations of prefire() and postfire().
+    /** This fires an actor and may be invoked several times between
+     *  invocations of prefire() and postfire(). It may produce output
+     *  data.
      */
-    public void fire() throws IllegalActionException;
+    public void fire()
+            throws CloneNotSupportedException, IllegalActionException;
 
-    /** This method should be invoked exactly once during the lifetime of
-     *  an application. It maybe invoked again to restart an execution
+    /** This method should be invoked exactly once per execution
+     *  of an application, before any of these other methods are invoked.
+     *  It may produce output data.
      */
-    public void initialize() throws IllegalActionException;
+    public void initialize()
+            throws CloneNotSupportedException, IllegalActionException;
 
-    /** This should be invoked before the first fire()
-     *  @return the state of the actor. TRUE indicates that the fire() and
-     *   postfire() methods can be invoked while FALSE indicates the opposite.
+    /** This method should be invoked once per iteration, after the last
+     *  invocation of fire() in that iteration. It may produce output data.
+     *  It returns true if the execution can proceed into the next iteration.
+     *  @return True if the execution can continue.
      */
-    public boolean prefire() throws IllegalActionException;
+    public boolean postfire()
+           throws CloneNotSupportedException, IllegalActionException;
 
-    /** This should be invoked after the last fire()
+    /** This method should be invoked once per iteration, before the first
+     *  invocation of fire() in that iteration.  It returns true if the
+     *  iteration can proceed (the fire() method can be invoked). It
+     *  may move data into an inner subsystem.
+     *  @return True if the iteration can proceed.
      */
-    public void postfire() throws IllegalActionException;
+    public boolean prefire()
+            throws CloneNotSupportedException, IllegalActionException,
+            NameDuplicationException;
 
-    /** This should be called at the end of the execution
+    /** This method should be invoked exactly once per execution
+     *  of an application.  None of the other action methods should be
+     *  be invoked afer it.
      */
     public void wrapup() throws IllegalActionException;
 }

@@ -1,4 +1,4 @@
-/* Director governs the execution of a CompositeActor.
+/* A Director governs the execution of a CompositeActor.
 
  Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
@@ -23,6 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package pt.actor;
@@ -34,7 +36,6 @@ import pt.data.*;
 
 import collections.LinkedList;
 import java.util.Enumeration;
-//import java.util.*;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -47,8 +48,22 @@ director, use the setExecutiveDirector() method of CompositeActor. In both
 cases, the director will report the CompositeActor as its container
 when queried by calling getContainer().
 <p>
-A director implements the action methods (initialize, prefire, fire,
-postfire, and wrapup).  In this base class, default implementations
+A top-level composite actor normally has both an executive director and
+a local director.  The executive director has overall responsibility for
+executing the application, and might be, for example, a control panel.
+The local director controls the execution of the contained actors.
+<p>
+A local director is responsible for invoking the actors contained by the
+composite.  If there is no local director, then the executive director
+is given the responsibility.  The getDirector() method of CompositeActor,
+therefore, returns the local director, if there is one, and otherwise
+returns the executive director.  Thus, it returns whichever director
+is responsible for executing the contained actors, or null if there is none.
+Whatever it returns is called simply the <i>director</i> (vs. local
+director or executive director).
+<p>
+A director implements the action methods (initialize(), prefire(), fire(),
+postfire(), and wrapup()).  In this base class, default implementations
 are provided that may or may not be useful in specific domains.
 These default implementations behave differently depending on whether
 the director is serving the role of a local director or an executive
@@ -56,53 +71,89 @@ director.  If it is an executive director, then the action methods
 simply invoke the corresponding action methods of the local director.
 If it is a local director, then the action methods invoke the
 corresponding action methods of all the deeply contained actors.
+<p>
+A director also provides services for cleanly handling mutations of the
+topology.  Mutations include such changes as adding or removing an entity,
+port, or relation, and creating or destroying a link.  Usually,
+mutations cannot safely occur at arbitrary points in the execution of
+an application.  Applications can queue mutations with the director,
+and the director will then perform the mutations at the first opportunity,
+when it is safe.  In this base-class implementation, mutations are performed
+at the beginning of each iteration by the prefire() method.
+<p>
+A service is also provided whereby an object can be registered with the
+director as a mutation listener.  A mutation listener is informed of
+mutations that occur when they occur (in this base class, at the beginning
+of the iterate() method).
+<p>
+One particular mutation listener, called an ActorListener, is added
+to a director the first time a mutation is performed.  This listener
+ignores all mutations except those that add or remove an actor.
+For those mutations, it records the addition or deletion.
+After all the mutations have been completed in the prefire() method,
+any actors that are new to the composite have their initialize() methods
+invoked.
+<p>
+An initialize() method may queue further mutations with the director.
+Thus, the prefire() method repeatedly performs mutations and initializations
+until there are no more mutations to perform.
 
 @author Mudit Goel, Edward A. Lee
 @version $Id$
 */
 public class Director extends NamedObj implements Executable {
 
-    /** FIXME: Does this constructor belong?  Used for testing IOPort.
+    /** Construct a director in the default workspace with an empty string
+     *  as its name. The director is added to the list of objects in
+     *  the workspace. Increment the version number of the workspace.
      */
     public Director() {
         super();
     }
 
-    /** Constructor.  FIXME: This constructor now doesn't belong,
-     *  since we can't tell whether its a local or executive director.
+    /** Construct a director in the default workspace with the given name.
+     *  If the name argument is null, then the name is set to the empty
+     *  string. The director is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  @param name Name of this object.
      */
-    public Director(CompositeActor container, String name) {
+    public Director(String name) {
         super(name);
-        _container = container;
+    }
+
+    /** Construct a director in the given workspace with the given name.
+     *  If the workspace argument is null, use the default workspace.
+     *  The director is added to the list of objects in the workspace.
+     *  If the name argument is null, then the name is set to the
+     *  empty string. Increment the version number of the workspace.
+     *
+     *  @param workspace Object for synchronization and version tracking
+     *  @param name Name of this director.
+     */
+    public Director(Workspace workspace, String name) {
+        super(workspace, name);
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Adds a new Mutation Listener to the list of listeners to be informed
-     *  about any mutation that occurs in the graph for which this director
-     *  is responsible
-     * @param listener is the new MutationListener
+    /** Adds a new mutation listener to the list of listeners to be informed
+     *  about any mutation that occurs in the container.
+     *
+     *  @param listener The new MutationListener.
      */
     public void addMutationListener(MutationListener listener) {
-        synchronized(workspace()) {
-            if (_mutationListeners == null) {
-                _mutationListeners = new LinkedList();
-            }
-            _mutationListeners.insertLast(listener);
+        if (_mutationListeners == null) {
+            _mutationListeners = new LinkedList();
         }
-    }
-
-    /** Clears all the actors from the list of new actors
-     */
-    public void clearNewActors() {
-        _newactors = null;
+        _mutationListeners.insertLast(listener);
     }
 
     /** Clone the director into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
-     *  The result is a new director with no container.
+     *  The result is a new director with no container, no pending mutations,
+     *  and no mutation listeners.
      *
      *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
@@ -112,100 +163,112 @@ public class Director extends NamedObj implements Executable {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Director newobj = (Director)super.clone(ws);
         newobj._container = null;
-        newobj._complete = true;
-        newobj._schedulevalid = false;
-        newobj._newactors = null;
         newobj._pendingMutations = null;
         newobj._mutationListeners = null;
+        newobj._actorListener = null;
         return newobj;
     }
 
-    /** Indicates whether the execution is complete or not
-     * @return true indicates that execution is complete
-     */
-    public boolean complete() {
-        return _complete;
-    }
-
-    /** Remove the argument (all instances of it) from the new actors list.
-     *  If it is not on the new actors list, do nothing.
+    /** If this is the local director of the container, then invoke the fire
+     *  methods of all its deeply contained actors.  Otherwise, invoke the
+     *  fire() method of the container.  In general, this may be called more
+     *  than once in the same iteration, where an iteration is defined as one
+     *  invocation of prefire(), any number of invocations of fire(),
+     *  and one invocation of postfire().
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
      *
-     *  @param actor The actor to remove.
+     *  @exception CloneNotSupportedException If the fire() method of the
+     *   container or one of the deeply contained actors throws it.
+     *  @exception IllegalActionException If the fire() method of the
+     *   container or one of the deeply contained actors throws it.
      */
-    public void deregisterNewActor(Actor actor) {
-        synchronized(workspace()) {
-            if (_newactors != null) {
-                _newactors.removeOneOf(actor);
+    public void fire()
+            throws CloneNotSupportedException, IllegalActionException {
+        CompositeActor container = ((CompositeActor)getContainer());
+        if (container!= null) {
+            if (!_executivedirector) {
+                // This is the local director.
+                Enumeration allactors = container.deepGetEntities();
+                while (allactors.hasMoreElements()) {
+                    Actor actor = (Actor)allactors.nextElement();
+                    actor.fire();
+                }
+            } else {
+                // This is the executive director.
+                container.fire();
             }
         }
     }
 
-    /** This should invoke the fire methods of the actors according to a
-     *  schedule. This can be called more than once in the same iteration.
-     *  This method need not be synchronized on the workspace, if as usual
-     *  it is called by the CompositeActor. 
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void fire() throws IllegalActionException {
-        // If we are the executive director of a composite with a director,
-        // we could invoke it's fire method now.  Be careful that that
-        // doesn't turn around and call this fire() method (i.e., the
-        // actor must return true to isAtomic().
-    }
-
-    /** Return the top-level container, of the executable application
-     *  that this director is responsible for.
-     * @return the top-level CompositeActor
+    /** Return the container, which is the composite actor for which this
+     *  is the local or executive director.
+     *  @return The CompositeActor that this director is responsible for.
      */
     public Nameable getContainer() {
         return _container;
     }
 
-    /** Returns an enumeration of all the actors that have not begun execution
-     * @return the enumeration of all new actors
+    /** If this is the local director of its container, invoke the initialize()
+     *  methods of all its deeply contained actors.  If this is the executive
+     *  director of its container, then invoke the initialize() method of the
+     *  container.
+     *  <p>
+     *  This method should be invoked once per execution, before any
+     *  iteration. It may produce output data.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     *
+     *  @exception CloneNotSupportedException If the initialize() method of the
+     *   container or one of the deeply contained actors throws it.
+     *  @exception IllegalActionException If the initialize() method of the
+     *   container or one of the deeply contained actors throws it.
      */
-    public Enumeration getNewActors() {
-        synchronized(workspace()) {
-            if (_newactors == null) {
-                _newactors = new LinkedList();
+    public void initialize()
+            throws CloneNotSupportedException, IllegalActionException {
+        CompositeActor container = ((CompositeActor)getContainer());
+        if (container!= null) {
+            if (!_executivedirector) {
+                // This is the local director.
+                Enumeration allactors = container.deepGetEntities();
+                while (allactors.hasMoreElements()) {
+                    Actor actor = (Actor)allactors.nextElement();
+                    actor.initialize();
+                }
+            } else {
+                // This is the executive director.
+                container.initialize();
             }
-            return _newactors.elements();
         }
     }
 
-    /** Test if there are new actors waiting to be scheduled.
-     * @return true if there are new actors
+    /** Invoke one iteration.  In this base class, one iteration consists of 
+     *  exactly one invocation of prefire(), fire(), and postfire(), in that 
+     *  order. If prefire() return false, then fire() and postfire() are not
+     *  invoked. In derived classes, there may be more than one invocation of
+     *  fire(). This method is read-synchronized on the workspace.
+     *
+     *  @return True if postfire() returns true.
+     *  @exception CloneNotSupportedException If any of the called methods
+     *   throws it.
+     *  @exception IllegalActionException If any of the called methods
+     *   throws it.
+     *  @exception NameDuplicationException If the prefire() method throws
+     *   it (while performing mutations).
      */
-    public boolean hasNewActors() {
-        synchronized(workspace()) {
-            return (_newactors != null);
+    public boolean iterate()
+            throws CloneNotSupportedException, IllegalActionException,
+            NameDuplicationException {
+        try {
+            workspace().getReadAccess();
+            if (prefire()) {
+                fire();
+                return postfire();
+            }
+            return false;
+        } finally {
+            workspace().doneReading();
         }
-    }
-
-    /** This does the initialization for the entire simulation. This should
-     *  be called exactly once at the start of the entire execution
-     */
-    public void initialize() {
-    }
-
-    /** This sets a flag, indicating that on the next execution, the
-     *  static schedule schedule should be recomputed
-     */
-    public void invalidateSchedule() {
-        _schedulevalid = false;
-    }
-
-    /** This controls the execution.
-     * @return true if the execution is complete and should be terminated
-     * @exception IllegalActionException is thrown.
-     * @see #fire()
-     */
-    public boolean iterate() throws IllegalActionException {
-        if (prefire()) {
-            fire();
-            postfire();
-        }
-        return _complete;
     }
 
     /** Return a new receiver of a type compatible with this director.
@@ -216,120 +279,156 @@ public class Director extends NamedObj implements Executable {
         return new Mailbox();
     }
 
-    /** This should be called after the fire methods have been called. This
-     *  should invoke the postfire methods of actors according to a schedule
+    /** If this is the local director of its container, invoke the postfire()
+     *  methods of all its deeply contained actors, and return the logical AND
+     *  of what they return.  If this is the executive director of its
+     *  container then invoke the postfire() method of the container and return
+     *  what it returns.  Otherwise, return false.
+     *  <p>
+     *  This method should be invoked once per iteration, after the last
+     *  invocation of fire() in that iteration. It may produce output data.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     *
+     *  @return True if the execution can continue into the next iteration.
+     *  @exception CloneNotSupportedException If the postfire() method of the
+     *   container or one of the deeply contained actors throws it.
+     *  @exception IllegalActionException If the postfire() method of the
+     *   container or one of the deeply contained actors throws it.
      */
-    public void postfire() {
-    }
-
-    /** This determines if the schedule is valid. If the schedule is valid
-     *  then it returns, else it calls methods for scheduling and takes care
-     *  of changes due to mutation
-     * @return false if application is not ready for invocation of fire()
-     *  else returns true
-     */
-    public boolean prefire() {
-        return true;
-    }
-
-    /** This does all the mutations and informs the listeners of the mutations
-     *  @exception IllegalActionException if the port is not of the expected
-     *   class, or the port has no name.
-     *  @exception NameDuplicationException if the name collides with a name
-     *   already on the port list.
-     */
-    public final void processPendingMutations()
-            throws IllegalActionException, NameDuplicationException {
-        synchronized(workspace()) {
-            Mutation m;
-            if (!_pendingMutations.isEmpty()) {
-                Enumeration mutations = _pendingMutations.elements();
-                while (mutations.hasMoreElements()) {
-                    m = (Mutation)mutations.nextElement();
-                    // do the mutation
-                    m.perform();
-
-                    // inform all listeners
-                    // FIXME the listeners should probably be attached to
-                    // the graph, not the director
-                    if (_mutationListeners != null) {
-                        Enumeration listeners = _mutationListeners.elements();
-                        while (listeners.hasMoreElements()) {
-                            m.update((MutationListener)listeners.nextElement());
-                        }
-                    }
+    public boolean postfire()
+            throws CloneNotSupportedException, IllegalActionException {
+        CompositeActor container = ((CompositeActor)getContainer());
+        if (container!= null) {
+            if (!_executivedirector) {
+                // This is the local director.
+                Enumeration allactors = container.deepGetEntities();
+                boolean oktocontinue = true;
+                while (allactors.hasMoreElements()) {
+                    Actor actor = (Actor)allactors.nextElement();
+                    oktocontinue = actor.postfire() && oktocontinue;
                 }
-                // Clear the mutations
-                _pendingMutations = null;
+                return oktocontinue;
+            } else {
+                // This is the executive director.
+                return container.postfire();
             }
         }
+        return false;
     }
 
-    /** This adds a mutation object to the director queue. These mutations
-     *  are finally incorporated when the processPendingMutations() is called
-     * @param mutation The new Mutation objects that contains a list of
-     *  mutations that should be executed later
-     * @see #processPendingMutations()
+    /** Prepare for firing and return true if firing can proceed.
+     *  If there is no container, return false immediately.  Otherwise,
+     *  the first step is to perform any pending mutations, and to initialize
+     *  any actors that are added by those mutations.  This sequence is
+     *  repeated until no more mutations are performed.  This way, the
+     *  initialize() method in actors can perform mutations, and the
+     *  mutations will be fully executed before proceeding. Then,
+     *  if this is the local director of its container, invoke the prefire()
+     *  methods of all its deeply contained actors, and return the logical AND
+     *  of what they return.  If this is the executive director of its
+     *  container, then invoke the prefire() method of the container and
+     *  return what it returns.  Otherwise, return false.
+     *  <p>
+     *  This method should be invoked once per iteration, before any
+     *  invocation of fire() in that iteration. It may produce output data.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     *
+     *  @return True if the iteration can proceed.
+     *  @exception CloneNotSupportedException If the prefire() method of the
+     *   container or one of the deeply contained actors throws it.
+     *  @exception IllegalActionException If the prefire() method of the
+     *   container or one of the deeply contained actors throws it, or a
+     *   pending mutation throws it.
+     *  @exception NameDuplicationException If a pending mutation throws it.
+     */
+    public boolean prefire()
+            throws CloneNotSupportedException, IllegalActionException,
+            NameDuplicationException {
+        CompositeActor container = ((CompositeActor)getContainer());
+        if (container!= null) {
+            // Perform mutations and initializations until there are no
+            // more to perform.
+            while (_performMutations()) {
+                // Initialize any new actors
+                _actorListener.initializeNewActors();
+            }
+            if (!_executivedirector) {
+                // This is the local director.
+                // Invoke the prefire() method of deeply contained entities.
+                Enumeration allactors = container.deepGetEntities();
+                boolean allready = true;
+                while (allactors.hasMoreElements()) {
+                    Actor actor = (Actor)allactors.nextElement();
+                    allready = actor.prefire() && allready;
+                }
+                return allready;
+            } else {
+                // This is the executive director.
+                // Invoke the prefire() method of the container.
+                return container.prefire();
+            }
+        }
+        return false;
+    }
+
+    /** Add a mutation object to the mutation queue. These mutations
+     *  are executed when the _performMutations() method is called,
+     *  which in this base class is in the prefire() method.  This method
+     *  also arranges that all additions of new actors are recorded.
+     *  The prefire() method then invokes the initialize() method of all
+     *  new actors after the mutations have been completed.
+     *
+     *  @param mutation A object with a perform() and update() method that
+     *   performs a mutation and informs any listeners about it.
      */
     public void queueMutation(Mutation mutation) {
-        synchronized(workspace()) {
-            if (_pendingMutations == null) {
-                _pendingMutations = new LinkedList();
-            }
-            _pendingMutations.insertLast(mutation);
+        // The private member is created only if mutation is being used.
+        if (_pendingMutations == null) {
+            _pendingMutations = new LinkedList();
         }
+        _pendingMutations.insertLast(mutation);
     }
 
-    /** Add an actor to the list of new actors that have been created
-     *  after the last call to the iterate method, and have not begun
-     *  execution.  If the actor is already on the list, do nothing.
-     *  @param actor The actor to add.
-     */
-    public void registerNewActor(Actor actor) {
-        synchronized(workspace()) {
-            if (_newactors == null) {
-                _newactors = new LinkedList();
-            }
-            if (!_newactors.includes(actor)) {
-                _newactors.insertLast(actor);
-            }
-        }
-    }
-
-    /** This removes the Mutation listener that does not want to be informed
+    /** Remove a mutation listener that does not want to be informed
      *  of any future mutations by this director. This does not do anything
-     *  if the listener was not listed with this director
-     * @param listener is the MutationListener to be removed
+     *  if the listener is not listed with this director.
+     *
+     *  @param listener The MutationListener to be removed.
      */
     public void removeMutationListener(MutationListener listener) {
-        synchronized(workspace()) {
-            _mutationListeners.removeOneOf(listener);
+        _mutationListeners.removeOneOf(listener);
+    }
+
+    /** Invoke initialize(), then invoke iterate() until it returns false,
+     *  and then invoke wrapup().  This method acquires read permission
+     *  on the workspace several times, releasing it between iterations
+     *  and then re-acquiring it.
+     *
+     *  @exception CloneNotSupportedException If thrown by any of the
+     *   called methods.
+     *  @exception IllegalActionException If thrown by any of the
+     *   called methods.
+     *  @exception NameDuplicationException If the iterate() method throws
+     *   it (while performing mutations).
+     */
+    public void run()
+            throws CloneNotSupportedException, IllegalActionException,
+            NameDuplicationException {
+        try {
+            workspace().getReadAccess();
+            initialize();
+        } finally {
+            workspace().doneReading();
         }
-    }
-
-    /** This method is called to invoke an executable application. This
-     *  would normally be overriden in different domains
-     * @exception IllegalActionException is thrown by iterate()
-     */
-    public void run() throws IllegalActionException {
-        initialize();
         while (!iterate());
-        wrapup();
-        return;
-    }
-
-    /** Indicates if the current schedule is valid or not
-     * @return true indicates schedule is valid and need not be recomputed
-     */
-    public boolean scheduleValid() {
-        return _schedulevalid;
-    }
-
-    /** This sets a flag indicating whether the iteration is complete or not
-     * @param complete true indicates the end of execution
-     */
-    public void setComplete(boolean complete) {
-        _complete = complete;
+        try {
+            workspace().getReadAccess();
+            wrapup();
+        } finally {
+            workspace().doneReading();
+        }
     }
 
     /** Transfer data from an input port of the container to the
@@ -348,7 +447,7 @@ public class Director extends NamedObj implements Executable {
             throw new IllegalActionException(this, port,
             "transferInputs: port argument is not an opaque input port.");
         }
-        Receiver[][] insiderecs = port.getInsideReceivers();
+        Receiver[][] insiderecs = port.deepGetReceivers();
         for (int i=0; i < port.getWidth(); i++) {
             if (port.hasToken(i)) {
                 try {
@@ -389,38 +488,55 @@ public class Director extends NamedObj implements Executable {
             throw new IllegalActionException(this, port,
             "transferOutputs: port argument is not an opaque output port.");
         }
-        for (int i=0; i < port.getWidth(); i++) {
-            if (port.hasToken(i)) {
-                try {
-                    Token t = port.get(i);
-                    port.send(i,t);
-                } catch (NoSuchItemException ex) {
-                    throw new InternalErrorException(
-                    "Director.transferOutputs: Internal error: " +
-                    ex.getMessage());
+        Receiver[][] insiderecs = port.getInsideReceivers();
+        if (insiderecs != null) {
+            for (int i=0; i < insiderecs.length; i++) {
+                if (insiderecs[i] != null) {
+                    for (int j=0; j < insiderecs[i].length; j++) {
+                        if (insiderecs[i][j].hasToken()) {
+                            try {
+                                Token t = insiderecs[i][j].get();
+                                port.send(i,t);
+                            } catch (NoSuchItemException ex) {
+                                throw new InternalErrorException(
+                                    "Director.transferOutputs: " +
+                                    "Internal error: " +
+                                    ex.getMessage());
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 
-    /** Mark the current schedule to be valid.
-     *  @see #invalidateSchedule()
-     */
-    public void validateSchedule() {
-        _schedulevalid = true;
-    }
-
-    /** This invokes the corresponding methods of all the actors at the end
-     *  of simulation
+    /** If this is the local director of its container, invoke the wrapup()
+     *  methods of all its deeply contained actors.  If this is the executive
+     *  director of the container, then invoke the wrapup() method of the
+     *  container.
+     *  <p>
+     *  This method should be invoked once per execution.  None of the other
+     *  action methods should be invoked after it in the execution.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
      *
-     *  @exception IllegalActionException If one of the actors throws it.
+     *  @exception IllegalActionException If the wrapup() method of the
+     *   container or one of the deeply contained actors throws it.
      */
     public void wrapup() throws IllegalActionException {
-        Enumeration allactors =
-            ((CompositeActor)getContainer()).deepGetEntities();
-        while (allactors.hasMoreElements()) {
-            Actor actor = (Actor)allactors.nextElement();
-            actor.wrapup();
+        CompositeActor container = ((CompositeActor)getContainer());
+        if (container!= null) {
+            if (!_executivedirector) {
+                // This is the local director.
+                Enumeration allactors = container.deepGetEntities();
+                while (allactors.hasMoreElements()) {
+                    Actor actor = (Actor)allactors.nextElement();
+                    actor.wrapup();
+                }
+            } else {
+                // This is the executive director.
+                container.wrapup();
+            }
         }
     }
 
@@ -474,6 +590,9 @@ public class Director extends NamedObj implements Executable {
     protected void _makeDirectorOf (CompositeActor cast) {
         _container = cast;
         _executivedirector = false;
+        if (cast != null) {
+            workspace().remove(this);
+        }
     }
         
     /** Make this director the executive director of the specified composite
@@ -483,8 +602,49 @@ public class Director extends NamedObj implements Executable {
     protected void _makeExecDirectorOf (CompositeActor cast) {
         _container = cast;
         _executivedirector = true;
+        if (cast != null) {
+            workspace().remove(this);
+        }
     }
         
+    /** Perform all pending mutations and inform all registered listeners
+     *  of the mutations.  Return true if any mutations were performed,
+     *  and false otherwise.
+     *
+     *  @exception IllegalActionException If the mutation throws it.
+     *  @exception NameDuplicationException If the mutation throws it.
+     */
+    protected boolean _performMutations()
+            throws IllegalActionException, NameDuplicationException {
+
+        if (_pendingMutations == null) return false;
+
+        // The private member is created only if mutation is being used.
+        if (_actorListener == null) {
+            _actorListener = new ActorListener();
+            addMutationListener(_actorListener);
+        }
+        boolean result = false;
+        Enumeration mutations = _pendingMutations.elements();
+        while (mutations.hasMoreElements()) {
+            Mutation m = (Mutation)mutations.nextElement();
+
+            // perform the mutation
+            m.perform();
+
+            result = true;
+
+            // inform all listeners
+            Enumeration listeners = _mutationListeners.elements();
+            while (listeners.hasMoreElements()) {
+                m.update((MutationListener)listeners.nextElement());
+            }
+        }
+        // Clear the mutations
+        _pendingMutations.clear();
+        return true;
+    }
+
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
@@ -494,10 +654,8 @@ public class Director extends NamedObj implements Executable {
     // True if this is an executive director of the container.
     private boolean _executivedirector;
 
-    private boolean _complete = true;
-    private boolean _schedulevalid = false;
-    private LinkedList _newactors = null;
-
+    // Support for mutations.
     private LinkedList _pendingMutations = null;
     private LinkedList _mutationListeners = null;
+    private ActorListener _actorListener = null;
 }

@@ -124,11 +124,11 @@ test CompositeActor-5.1 {Test newPort} {
 #
 test CompositeActor-6.1 {Invoke all the action methods} {
      # NOTE: Uses the setup above
-     $e3 initialize
-     $e3 prefire
-     $e3 fire
-     $e3 postfire
-     $e3 wrapup
+     $e5 initialize
+     $e5 prefire
+     $e5 fire
+     $e5 postfire
+     $e5 wrapup
 } {}
 
 ######################################################################
@@ -253,14 +253,21 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     set res3 [$p2 hasToken 0]
     set res4 [$p5 hasToken 0]
 
+    # Emulate a firing of e2.
     # Manually transfer the token via the output p6, as actor e2 would do.
     $p6 send 0 [$p5 get 0]
 
     set res5 [$p5 hasToken 0]
     set res6 [$p6 hasToken 0]
+    # Note that the token should now be in an inside receiver of p3, which
+    # is not reported by hasToken.
     set res7 [$p3 hasToken 0]
 
-    list $res1 $res2 $res3 $res4 $res5 $res6 $res7
-} {1 0 0 1 0 0 1}
+    $e2 postfire
+    set res8 [$p4 hasToken 0]
+    set res9 [[$p4 get 0] toString]
+
+    list $res1 $res2 $res3 $res4 $res5 $res6 $res7 $res8 $res9
+} {1 0 0 1 0 0 0 1 pt.data.StringToken(foo)}
 
 #FIXME: test _removeEntity (using setContainer null).
