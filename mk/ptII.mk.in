@@ -180,9 +180,12 @@ JDOCCHECKFLAG = -doclet com.sun.tools.doclets.doccheck.DocCheck  \
 # caltrop uses the assert keyword, which is new in Java 1.4
 JDOCSOURCEFLAGS = -source 1.4
 
+# Doccheck is a doclet that checks for bugs, see
+# http://java.sun.com/developer/earlyAccess/doccheck/
+JDOCCHECKFLAGS = $(JDOCBREAKITERATOR) $(JDOCMEMORY) $(JDOCSOURCEFLAGS)
+
 # Flags to pass to javadoc.
-JDOCFLAGS = 	-author -version $(JDOCBREAKITERATOR) $(JDOCMEMORY) \
-			$(JDOCTAG) $(JDOCSOURCEFLAGS)
+JDOCFLAGS = 	-author -version $(DOCCHECKFLAGS) $(JDOCTAG)
 
 # The jar command, used to produce jar files, which are similar to tar files
 JAR =		$(PTJAVA_DIR)/bin/jar
