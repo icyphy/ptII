@@ -173,7 +173,9 @@ public class KernelGraphFrame extends GraphFrame {
 	_newPortAction = _controller.getNewPortAction();
 	_newRelationAction = _controller.getNewRelationAction();
 
-	_editIconAction = new EditIconAction();
+        // 'Edit Icon' pop up menu not shipped with PtII1.0.  
+        // See also ptolemy/vergil/ptolemy/GraphFrame.java
+	//_editIconAction = new EditIconAction();
 	_lookInsideAction = new LookInsideAction();
 	_getDocumentationAction = new GetDocumentationAction();
 	_controller.getAttributeController().setMenuFactory(
@@ -203,7 +205,7 @@ public class KernelGraphFrame extends GraphFrame {
 	    addMenuItemFactory(new EditParametersFactory());
 	    addMenuItemFactory(new EditParameterStylesFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
-	    addMenuItemFactory(new MenuActionFactory(_editIconAction));
+	    //addMenuItemFactory(new MenuActionFactory(_editIconAction));
 	}
     }
 
@@ -217,7 +219,7 @@ public class KernelGraphFrame extends GraphFrame {
 	    addMenuItemFactory(new EditParameterStylesFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	    addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
-	    addMenuItemFactory(new MenuActionFactory(_editIconAction));
+	    //addMenuItemFactory(new MenuActionFactory(_editIconAction));
 	}
     }
 
@@ -406,7 +408,7 @@ public class KernelGraphFrame extends GraphFrame {
 
     private EditorGraphController _controller;
     private Action _getDocumentationAction;
-    private Action _editIconAction;
+    //private Action _editIconAction;
     private Action _lookInsideAction;
     private Action _newPortAction;
     private Action _newRelationAction;
