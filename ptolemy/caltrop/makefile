@@ -65,7 +65,7 @@ OTHER_FILES_TO_BE_JARED = \
 	cup-copyright.htm \
 	saxon-copyright.htm
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -77,7 +77,32 @@ MISC_FILES =	actors ddi util test
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	$(PTCLASSALLJAR)
+	$(PTCLASSALLJAR) \
+	'PtolemyPlatform$$10.class' \
+	'PtolemyPlatform$$11.class' \
+	'PtolemyPlatform$$12.class' \
+	'PtolemyPlatform$$13.class' \
+	'PtolemyPlatform$$14.class' \
+	'PtolemyPlatform$$15.class' \
+	'PtolemyPlatform$$16.class' \
+	'PtolemyPlatform$$17.class' \
+	'PtolemyPlatform$$18.class' \
+	'PtolemyPlatform$$19.class' \
+	'PtolemyPlatform$$1.class' \
+	'PtolemyPlatform$$20.class' \
+	'PtolemyPlatform$$21.class' \
+	'PtolemyPlatform$$22.class' \
+	'PtolemyPlatform$$23.class' \
+	'PtolemyPlatform$$24.class' \
+	'PtolemyPlatform$$25.class' \
+	'PtolemyPlatform$$2.class' \
+	'PtolemyPlatform$$3.class' \
+	'PtolemyPlatform$$4.class' \
+	'PtolemyPlatform$$5.class' \
+	'PtolemyPlatform$$6.class' \
+	'PtolemyPlatform$$7.class' \
+	'PtolemyPlatform$$8.class' \
+	'PtolemyPlatform$$9.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
