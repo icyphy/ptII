@@ -89,6 +89,14 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
         return _connectSite;
     }
 
+    /** Get the figure that this terminal figure is wrapping.  Note
+     *  usage of this figure must be considered extremely carefully to
+     *  avoid breaking the decorator pattern.
+     */
+    public Figure getFigure () {
+        return _figure;
+    }
+
     /** Return the interactor of this figure. Return
      *  null if there isn't one.
      */
