@@ -1231,10 +1231,14 @@ else
 	           <classpathentry kind=\"lib\" path=\"$JMF_JARS_DIR/sound.jar\"/>"
 	       JMF_JARS="$JMF_JAR$CLASSPATHSEPARATOR$JMF_JARS_DIR/sound.jar"
 	    else 
-       	       AC_MSG_WARN([Could not find javax.media.CaptureDeviceInfo
-    class: $JMF_JAR
-    This means that Eclipse might not be able to find the JMF files.
-    This is only a problem if you are using Eclipse])
+       	       AC_MSG_WARN([Either we could not find 
+    javax.media.CaptureDeviceInfo or else it was already in the JRE:
+    $JMF_JAR
+    If the class cannot be found, then Eclipse might not be able to find
+    the JMF files.  
+    This is only a problem if you are using Eclipse.
+    If the class was in the JRE, then Eclipse should compile the JMF files
+    without problems])
             fi
 	else
 	    AC_MSG_WARN(['"$JAVAC" FindClass.java' failed.
