@@ -45,7 +45,7 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS = \
+JSRCS = TestToken.java
 
 
 # Non-graphical Java tests written in Tcl

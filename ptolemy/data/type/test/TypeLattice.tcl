@@ -56,3 +56,25 @@ test TypeLattice-1.0 {compare} {
     set lat [java::new ptolemy.data.type.TypeLattice]
     list [$lat compare $tokInt $tokDou] [$lat compare $tokDou $tokInt]
 } {-1 1}
+
+test TypeLattice-2.0 {compare test token} {
+    set testToken [java::new ptolemy.data.type.test.TestToken [java::new java.lang.Object]]
+    set doubleToken [java::new ptolemy.data.DoubleToken]
+    set lattice [java::new ptolemy.data.type.TypeLattice]
+    list [$lattice compare $testToken $doubleToken] [$lat compare $doubleToken $testToken]
+} {2 2}
+
+test TypeLattice-2.1 {compare test token} {
+    set testToken [java::new ptolemy.data.type.test.TestToken [java::new java.lang.Object]]
+    set testToken2 [java::new ptolemy.data.type.test.TestToken [java::new java.lang.Object]]
+    set lattice [java::new ptolemy.data.type.TypeLattice]
+    list [$lattice compare $testToken $testToken2] [$lattice compare $testToken2 $testToken]
+} {0 0}
+
+
+
+
+
+
+
+
