@@ -1,4 +1,4 @@
-/* One line description of file.
+/* One line description of the class.
 
  Copyright (c) 1999-2003 The Regents of the University of California.
  All rights reserved.
@@ -29,78 +29,88 @@
 
 package MyPackageName;
 
+// Imports go here, in alphabetical order, with no wildcards.
+
 //////////////////////////////////////////////////////////////////////////
 //// ClassName
 /**
-Description of the class
+Describe your class here, in complete sentences.
+What does it do?  What is its intended use?
+
 @author yourname
 @version $Id$
-@since Ptolemy II 0.2
-@see classname
-@see full-classname
+@see classname (refer to relevant classes, but not the base class)
 */
+
 public class ClassName {
-    /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
+    
+    /** Create an instance with ... (describe the properties of the
+     *  instance). Use the imperative case here.
+     *  @param parameterName Description of the parameter.
+     *  @exception ExceptionClass If ... (describe what
+     *   causes the exception to be thrown).
      */
-    public ClassName() {
+    public ClassName(ParameterClass parameterName) throws ExceptionClass {
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public fields                     ////
+    
+    /** Desription of the field. */
+    public int aField;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
+    /** Do something... (Use the imperative case here, such as:
+     *  "Return the most recently recorded event.", not
+     *  "Returns the most recently recorded event."
+     *  @param parameterName Description of the parameter.
+     *  @return Description of the returned value.
+     *  @exception ExceptionClass If ... (describe what
+     *   causes the exception to be thrown).
      */
-    public int APublicMethod() {
+    public int aPublicMethod(ParameterClass parameterName)
+            throws ExceptionClass {
         return 1;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
+    /** Describe your method, again using imperative case.
+     *  @see RelevantClass#methodName()
+     *  @param parameterName Description of the parameter.
+     *  @return Description of the returned value.
+     *  @exception ExceptionClass If ... (describe what
+     *   causes the exception to be thrown).
      */
-    protected int _AProtectedMethod() {
+    protected int _aProtectedMethod(ParameterClass parameterName)
+            throws ExceptionClass {
         return 1;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** Description */
+    /** Description of the variable. */
     protected int _aprotectedvariable;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Private methods should not have doc comments, they should
-    // have regular C++ comments.
+    // Private methods need not have JavaDoc comments, although it can
+    // be more convenient if they do, since they may at some point
+    // become protected methods.
     private int _APrivateMethod() {
         return 1;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
+    // Private variables need not have JavaDoc comments, although it can
+    // be more convenient if they do, since they may at some point
+    // become protected variables.
     private int __aprivatevariable;
 }
