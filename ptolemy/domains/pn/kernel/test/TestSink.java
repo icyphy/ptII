@@ -56,6 +56,13 @@ public class TestSink extends AtomicActor{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+
+    /** Clear the record, and reset the iteration count to zero.
+     */
+    public void clear() {
+        _list = new StringBuffer(1024);
+    }
+
     /** Writes successive integers to the output
      */
     public void fire() throws IllegalActionException {
