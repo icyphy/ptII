@@ -38,6 +38,7 @@ package ptolemy.gui;
    @see ShellTextArea
    @author Edward A. Lee
    @version $Id$
+   @since Ptolemy II 3.0 
 */
 public interface ShellInterpreter {
 

@@ -59,6 +59,7 @@ import ptolemy.util.MessageHandler;
 
    @author John Reekie, Christopher Hylands, Edward A. Lee
    @version $Id$
+   @since Ptolemy II 3.0 
 */
 public class ShellTextArea extends JPanel {
 
