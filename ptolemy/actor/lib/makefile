@@ -84,6 +84,7 @@ JSRCS = \
 	Quantizer.java \
 	Ramp.java \
 	RandomSource.java \
+	RealTimeDelay.java \
 	Recorder.java \
 	SequenceActor.java \
 	SequenceSource.java \

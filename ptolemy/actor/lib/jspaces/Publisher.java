@@ -204,14 +204,6 @@ public class Publisher extends Sink {
             throw new IllegalActionException(this, "Unusable Entry " +
                     ue.getMessage());
         }
-        try {
-             System.out.println("Wait for 30 seconds.");
-            Thread.sleep(30*1000l);
-        } catch (Exception e) {
-            throw new IllegalActionException(this,
-                    "Interruptted" + e.getMessage());
-        }
-
     }
 
     ///////////////////////////////////////////////////////////////////
