@@ -98,9 +98,9 @@ public class LibraryUsageReporter extends SceneTransformer {
         for(Iterator reachables = reachableList.iterator(); reachables.hasNext();) {
             SootMethod method = (SootMethod)reachables.next();
             String methodName = method.getSignature();
-            if(method.isStatic() || createableClasses.contains(method.getDeclaringClass())) {
+//             if(method.isStatic() || createableClasses.contains(method.getDeclaringClass())) {
                 list.add(methodName);
-            }
+                //           }
         }
         Collections.sort(list);
         for(Iterator names = list.iterator(); names.hasNext();) {
