@@ -47,8 +47,6 @@ A plotter for discrete-event signals.
 */
 public class DEPlot extends DEActor {
 
-    private static final boolean DEBUG = false;
-
     /** Construct a plot actor with a new plot window. The default Y-range is
      *  [-1, 1]. The default X-range is the start time to the stop time.
      *
@@ -120,12 +118,13 @@ public class DEPlot extends DEActor {
             int index = 0;
             _legends = new String[stokens.countTokens()];
             while(stokens.hasMoreTokens()) {
-                _legends[index++]= stokens.nextToken();
+                _legends[index++] = stokens.nextToken();
             }
         }
 
 	for (int i = 0; i < input.getWidth(); i++) {
-            if (_legends != null && i < _legends.length && _legends[i].length() != 0) {
+            if (_legends != null && i < _legends.length
+                    && _legends[i].length() != 0) {
                 _plot.addLegend(i, _legends[i]);
             } else {
                 _plot.addLegend(i, "Data " + i);
@@ -304,6 +303,8 @@ public class DEPlot extends DEActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    private static final boolean DEBUG = false;
 
     private String[] _legends;
     private Parameter _paramLegends;
