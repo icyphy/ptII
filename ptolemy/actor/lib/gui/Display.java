@@ -229,9 +229,6 @@ public class Display extends Sink implements Placeable {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        // FIXME
-        System.out.println("Display: " + hashCode());
-        System.out.println("textArea: " + textArea);
         if (textArea == null) {
             // No container has been specified for display.
             // Place the text area in its own frame.
