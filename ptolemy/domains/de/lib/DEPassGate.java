@@ -1,6 +1,6 @@
-/* An attemp for a polymorphic actor.
+/* An attempt at a polymorphic actor.
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -150,6 +150,15 @@ public class DEPassGate extends AtomicActor {
 
     }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // the ports.
+    public DEIOPort output;
+    public DEIOPort input;
+    public DEIOPort gate;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -161,11 +170,6 @@ public class DEPassGate extends AtomicActor {
 
     // the last token seen in the input port.
     private DoubleToken _lastToken = null;
-
-    // the ports.
-    public DEIOPort output;
-    public DEIOPort input;
-    public DEIOPort gate;
 }
 
 
