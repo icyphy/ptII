@@ -57,7 +57,16 @@ if {[info procs jdkRuntimeStatistics] == "" } then {
 # the times
 proc compareMoMLWriter {configuration {repeatCount 3}} {
     set parser [java::new ptolemy.moml.MoMLParser]
-    set loader [[$parser getClass] getClassLoader]
+    # The list of filters is static, so we reset it in case there
+    # filters were already added.
+    $parser setMoMLFilters [java::null]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    $parser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
+
+   set loader [[$parser getClass] getClassLoader]
     
     set URL [$loader getResource $configuration]
     puts "URL of configuration being expanded is\n [$URL toString]"
