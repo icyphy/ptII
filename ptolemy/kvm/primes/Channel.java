@@ -39,54 +39,54 @@ public class Channel implements InputChannel, OutputChannel
 
     /** Create a new channel with fixed capacity. */
     public Channel(int capacity)
-    {
-	data = new Object[capacity];
-	read = write = 0;
-	size = 0;
-    }
+        {
+            data = new Object[capacity];
+            read = write = 0;
+            size = 0;
+        }
 
     /** Get an object from the channel.  Wait if the channel is empty. */
     public synchronized Object get()
-    {
-	while(isEmpty())
-	{
-	    try { wait(); }
-	    catch(InterruptedException ignore) {}
-	}
-	if (isFull()) notify();
+        {
+            while(isEmpty())
+                {
+                    try { wait(); }
+                    catch(InterruptedException ignore) {}
+                }
+            if (isFull()) notify();
 
-	Object o = data[read++];
-	if (read >= data.length) read -= data.length;
-	size--;
-	return o;
-    }
+            Object o = data[read++];
+            if (read >= data.length) read -= data.length;
+            size--;
+            return o;
+        }
 
     /** Put an object in the channel.  Wait if the channel is full. */
     public void put(Object o)
-    {
-	synchronized(this)
-	{
-	    while (isFull())
-	    {
-		try { wait(); }
-		catch(InterruptedException ignore) {}
-	    }
-	    if (isEmpty()) notify();
+        {
+            synchronized(this)
+                {
+                    while (isFull())
+                        {
+                            try { wait(); }
+                            catch(InterruptedException ignore) {}
+                        }
+                    if (isEmpty()) notify();
 
-	    data[write++] = o;
-	    if (write >= data.length) write -= data.length;
-	    size++;
-	}
-	Thread.yield();		// Give the consumer a chance to run.
-    }
+                    data[write++] = o;
+                    if (write >= data.length) write -= data.length;
+                    size++;
+                }
+            Thread.yield();		// Give the consumer a chance to run.
+        }
 
     protected synchronized boolean isFull()
-    {
-	return (size >= data.length);
-    }
+        {
+            return (size >= data.length);
+        }
 
     protected synchronized boolean isEmpty()
-    {
-	return (size <= 0);
-    }
+        {
+            return (size <= 0);
+        }
 }

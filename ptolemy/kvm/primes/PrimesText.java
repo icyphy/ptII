@@ -41,31 +41,31 @@ public class PrimesText {
 
     /** Run the applet as an application. */
     public static void main(String args[])
-    {
-	Channel c1 = new Channel(1);
-	Channel c2 = new Channel(1);
+        {
+            Channel c1 = new Channel(1);
+            Channel c2 = new Channel(1);
 
-	//ThreadGroup subGroup = new ThreadGroup("sub-group");
-	new Thread(new Ramp(c1, 2)).start();
-	new Thread(new Sift(c1, c2)).start();
+            //ThreadGroup subGroup = new ThreadGroup("sub-group");
+            new Thread(new Ramp(c1, 2)).start();
+            new Thread(new Sift(c1, c2)).start();
 
-	int limit = 10;
+            int limit = 10;
 
-	for (int i = 0; i < limit; i++)	{
-	    System.out.println(c2.get().toString());
-	}
+            for (int i = 0; i < limit; i++)	{
+                System.out.println(c2.get().toString());
+            }
 
-	//subGroup.stop();
-	synchronized(c1) { c1.notifyAll(); }
-	synchronized(c2) { c2.notifyAll(); }
+            //subGroup.stop();
+            synchronized(c1) { c1.notifyAll(); }
+            synchronized(c2) { c2.notifyAll(); }
 
-	Thread.yield();
-	Thread.yield();
-	Thread.yield();
-	Thread.yield();
+            Thread.yield();
+            Thread.yield();
+            Thread.yield();
+            Thread.yield();
 
-	System.gc();
-	// System.runFinalization();
-	// subGroup.join();
-    }
+            System.gc();
+            // System.runFinalization();
+            // subGroup.join();
+        }
 }

@@ -36,23 +36,23 @@ public class Ramp implements Runnable
     protected int count, stride;
 
     public Ramp(OutputChannel output, int init, int stride)
-    {
-	this.output = output;
-	count = init;
-	this.stride = stride;
-    }
+        {
+            this.output = output;
+            count = init;
+            this.stride = stride;
+        }
 
     public Ramp(OutputChannel output, int init)
-    {
-	this(output, init, 1);
-    }
+        {
+            this(output, init, 1);
+        }
 
     public void run()
-    {
-	while(true)
-	{
-	    output.put(new Integer(count));
-	    count += stride; 
-	}
-    }
+        {
+            while(true)
+                {
+                    output.put(new Integer(count));
+                    count += stride; 
+                }
+        }
 }

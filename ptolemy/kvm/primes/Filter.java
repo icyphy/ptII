@@ -38,24 +38,24 @@ class Filter implements Runnable
     protected int prime;		/** A prime number. */
 
     public Filter(InputChannel input, OutputChannel output, int prime)
-    {
-	this.input = input;
-	this.output = output;
-	this.prime = prime;
-    }
+        {
+            this.input = input;
+            this.output = output;
+            this.prime = prime;
+        }
 
     public void run()
-    {
-	while(true)
-	{
-	    Integer x = (Integer)input.get();
-	    if (x.intValue() % prime != 0) output.put(x);
-	}
-    }
+        {
+            while(true)
+                {
+                    Integer x = (Integer)input.get();
+                    if (x.intValue() % prime != 0) output.put(x);
+                }
+        }
 
     protected void finalize()
-    {
-	synchronized(input) { input.notifyAll(); }
-	synchronized(output) { output.notifyAll(); }
-    }
+        {
+            synchronized(input) { input.notifyAll(); }
+            synchronized(output) { output.notifyAll(); }
+        }
 }

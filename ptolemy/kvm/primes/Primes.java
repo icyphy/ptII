@@ -41,9 +41,9 @@ Generate Prime Numbers on the Palm using a Spotlet
 */
 public class Primes extends Spotlet {
     public Primes() {
-                g = Graphics.getGraphics();
-                textBox = new ScrollTextBox("Primes, PalmOS-1",5,5,150,130);
-                paint();
+        g = Graphics.getGraphics();
+        textBox = new ScrollTextBox("Primes, PalmOS-1",5,5,150,130);
+        paint();
     }
 
     public static void main(String args[]) {
@@ -79,13 +79,13 @@ public class Primes extends Spotlet {
 
 	//subGroup.stop();
         /*
-	synchronized(c1) { c1.notifyAll(); }
-	synchronized(c2) { c2.notifyAll(); }
+          synchronized(c1) { c1.notifyAll(); }
+          synchronized(c2) { c2.notifyAll(); }
 
-	Thread.yield();
-	Thread.yield();
-	Thread.yield();
-	Thread.yield();
+          Thread.yield();
+          Thread.yield();
+          Thread.yield();
+          Thread.yield();
         */
 	//System.gc();
 	//System.runFinalization();

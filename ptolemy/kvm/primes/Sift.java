@@ -37,33 +37,33 @@ public class Sift implements Runnable
     protected OutputChannel output;
 
     public Sift(InputChannel input, OutputChannel output)
-    {
-	this.input = input;
-	this.output = output;
-    }
+        {
+            this.input = input;
+            this.output = output;
+        }
 
     public void run()
-    {
-	while(true)
-	{
-	    Integer prime = (Integer)input.get();
-	    output.put(prime);
+        {
+            while(true)
+                {
+                    Integer prime = (Integer)input.get();
+                    output.put(prime);
 
-	    /** Create a new instance of Filter to remove all
-	        multiples of the prime number just received.
-	    */
-	    Channel out = new Channel(1);
-            //	    Thread t = new Thread(new Filter(input, out, prime.intValue()),
-            //	       "filter-" + prime.intValue());
-            Thread t = new Thread(new Filter(input, out, prime.intValue()));
-	    input = out;
-	    t.start();
-	}
-    }
+                    /** Create a new instance of Filter to remove all
+                        multiples of the prime number just received.
+                    */
+                    Channel out = new Channel(1);
+                    //	    Thread t = new Thread(new Filter(input, out, prime.intValue()),
+                    //	       "filter-" + prime.intValue());
+                    Thread t = new Thread(new Filter(input, out, prime.intValue()));
+                    input = out;
+                    t.start();
+                }
+        }
 
     protected void finalize()
-    {
-	synchronized(input) { input.notifyAll(); }
-	synchronized(output) { output.notifyAll(); }
-    }
+        {
+            synchronized(input) { input.notifyAll(); }
+            synchronized(output) { output.notifyAll(); }
+        }
 }
