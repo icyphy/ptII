@@ -1,7 +1,7 @@
-# Makefile for Java Ptolemy Discrete Event Domain
+# Makefile for Ptolemy II Real Time Operating System Domain
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
+# @Author: Christopher Hylands (makefile only)
 #
 # @Copyright (c) 1998-2000 The Regents of the University of California.
 # All rights reserved.
