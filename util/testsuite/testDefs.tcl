@@ -613,9 +613,12 @@ proc diffText {texta textb} {
 set isRunningNightlyBuild \
    [java::call System getProperty ptolemy.ptII.isRunningNightlyBuild]
 
+
 if {"$isRunningNightlyBuild" == "true"} {
-   set timeOutSeconds 1200
-   puts "testDefs.tcl: nightly build, so setting time out to\
+   if ![info exists timeOutSeconds] {
+	   set timeOutSeconds 1200
+   }
+   puts "testDefs.tcl: setting time out to\
 	$timeOutSeconds seconds"
    java::new util.testsuite.WatchDog [expr {$timeOutSeconds * 1000}]
 }
