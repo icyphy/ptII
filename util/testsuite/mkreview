@@ -126,6 +126,7 @@ psnup -n 2 < javafiles.ps > javafiles2up.ps
 # Generate PDF
 distill *.ps
 
+date=`date +"%h %e, %Y "`
 
 ####################################
 echo "Generate a html file with the appropriate links"
@@ -140,11 +141,14 @@ Links are relative, not absolute.
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+ <!-- Be sure to fix the date to the date of the review itself -->
+<title>$date: Review of $files<title>
 <title>Title</title>
 </head>
 <body>
  <!-- Replace all the italic text, including the <I></I> directives -->
-<h1><I>Title</I></h1>
+ <!-- Be sure to fix the date to the date of the review itself
+<h1>$date: Review of $files</h1>
 
 <p>
 <ul>
@@ -169,12 +173,11 @@ do
      echo "  <li><code>$file</code></a>" >>$reviewfile
 done
 
+# We don't include the 1 up pdf files
 cat >>$reviewfile <<EOF
-  <li><a href="$reviewdate/javafiles.pdf" target="_top">PDF</a> -
-  <a href="$reviewdate/javafiles2up.pdf" target="_top">2 up PDF</a>
+  <li> <a href="$reviewdate/javafiles2up.pdf" target="_top">2 up PDF</a>
   </menu>
 <li> Javadoc:
-    <a href="$reviewdate/javadocs.pdf">PDF</a>
     <a href="$reviewdate/javadocs2up.pdf" target="_top">2 up PDF</a>
 <li> <i>UML Diagram</i>
 </menu>
