@@ -11,10 +11,10 @@ Currently, the ocp is checked in to the cvs repository on gigasource.
 To check out a copy, you must have a cvs account on gigasource, see
 http://www.gigascale.org/softdevel/faq/1/
 
-To check out the OCP_B0_2 release, run these commands:
+To check out the OCP_B1_0 release, run these commands:
 
 cd $PTII/vendors/ocp
-cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs co -r OCP_B0_2 ocp
+cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs co -r OCP_B1_0 ocp
 
 Nits about this code:
 1) The tar file creates multiple files and directories in the current
@@ -24,7 +24,7 @@ single subdirectory so that the current directory does not
 accidentally get files overwritten
 
 The top level directory name should include the version of the release
-(e.g. OCP_B0_2)
+(e.g. OCP_B1_0)
 
 2) The website uses numeric account names, which are a pain to lookup
 every time I need to access the website
@@ -39,6 +39,6 @@ feature:
 
 mkdir ocp
 cd ocp
-gtar -zxf /tmp/OCP_B0_2.tar.gz
+gtar -zxf /tmp/OCP_B1_0.tar.gz
 
-cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs import -m "Import of OCP_B0_2" ocp OCP OCP_B0_2
+cvs -t -d :ext:gigasource.eecs.berkeley.edu:/home/cvs import -m "Import of OCP_B1_0" ocp OCP OCP_B1_0
