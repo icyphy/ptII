@@ -45,6 +45,12 @@ It can be used to
 public interface MoMLFilter {
     /** Given the container, attribute name and attribute value,
      *  return a new attribute value.     
+     *  @param container  The container for this attribute, ignored
+     *  in this method.
+     *  @param attributeName The name of the attribute, ignored
+     *  in this method.
+     *  @param attributeValue The value of the attribute.
+     *  @return the filtered attributeValue.
      */
     public String filterAttributeValue(NamedObj container,
             String attributeName, String attributeValue);
