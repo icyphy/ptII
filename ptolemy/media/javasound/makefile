@@ -36,7 +36,7 @@ DIRS = 		test
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH = 	$(ROOT)
+CLASSPATH = 	$(ROOT)\$(CLASSPATHSEPARATOR)$(JAVASOUND_LIBDIR)/sound.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
