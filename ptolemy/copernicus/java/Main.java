@@ -127,11 +127,16 @@ public class Main extends KernelMain {
                new TransformerAdapter(TypeAssigner.v()));
        _addStandardOptimizations(pack, 1);
        
-       addTransform(pack, "wjtp.snapshot1jimple", JimpleWriter.v(),
-               "outDir:" + _outputDirectory + "/jimple1");
-       addTransform(pack, "wjtp.snapshot1", ClassWriter.v(),
-               "outDir:" + _outputDirectory + "/jimple1");
-       
+       if(_snapshots) {
+           addTransform(pack, "wjtp.snapshot1jimple", JimpleWriter.v(),
+                   "outDir:" + _outputDirectory + "/jimple1");
+           addTransform(pack, "wjtp.snapshot1", ClassWriter.v(),
+                   "outDir:" + _outputDirectory + "/jimple1");
+           addTransform(pack, "wjtp.lur1",
+                   LibraryUsageReporter.v(),
+                   "outFile:" + _outputDirectory + "/jimple1/jarClassList.txt");
+       }
+
        addTransform(pack, "wjtp.ib1", InvocationBinder.v());
        
        addTransform(pack, "wjtp.ls7",
@@ -226,11 +231,16 @@ public class Main extends KernelMain {
        
        //       _addStandardOptimizations(pack, 4);
        
-       addTransform(pack, "wjtp.snapshot2jimple", JimpleWriter.v(),
-               "outDir:" + _outputDirectory + "/jimple2");
-       addTransform(pack, "wjtp.snapshot2", ClassWriter.v(),
-               "outDir:" + _outputDirectory + "/jimple2");
-       
+       if(_snapshots) {
+           addTransform(pack, "wjtp.snapshot2jimple", JimpleWriter.v(),
+                   "outDir:" + _outputDirectory + "/jimple2");
+           addTransform(pack, "wjtp.snapshot2", ClassWriter.v(),
+                   "outDir:" + _outputDirectory + "/jimple2");
+           addTransform(pack, "wjtp.lur2",
+                   LibraryUsageReporter.v(),
+                   "outFile:" + _outputDirectory + "/jimple2/jarClassList.txt");
+       }
+
        // Set about removing references to ports.
        // Anywhere where a method is called on a port, replace the
        // method call with an inlined version of the method.
@@ -263,11 +273,16 @@ public class Main extends KernelMain {
        // pack.add(new Transform("wjtp.si",
        //        StaticInliner.v());
        
-       addTransform(pack, "wjtp.snapshot3jimple", JimpleWriter.v(),
-               "outDir:" + _outputDirectory + "/jimple3");
-       addTransform(pack, "wjtp.snapshot3", ClassWriter.v(),
-               "outDir:" + _outputDirectory + "/jimple3");
-       
+       if(_snapshots) {
+           addTransform(pack, "wjtp.snapshot3jimple", JimpleWriter.v(),
+                   "outDir:" + _outputDirectory + "/jimple3");
+           addTransform(pack, "wjtp.snapshot3", ClassWriter.v(),
+                   "outDir:" + _outputDirectory + "/jimple3");
+           addTransform(pack, "wjtp.lur3",
+                   LibraryUsageReporter.v(),
+                   "outFile:" + _outputDirectory + "/jimple3/jarClassList.txt");
+       }
+
         // Unroll loops with constant loop bounds.
         //Scene.v().getPack("jtp").add(new Transform("jtp.clu",
         //        ConstantLoopUnroller.v());
@@ -332,19 +347,24 @@ public class Main extends KernelMain {
        addTransform(pack, "wjtp.doe2",
                         new TransformerAdapter(
                                 DeadObjectEliminator.v()));
-       addTransform(pack, "wjtp.dae2",
-                        new TransformerAdapter(
+       addTransform(pack, "wjtp.dae2",           
+               new TransformerAdapter(
                                 DeadAssignmentEliminator.v()));
        addTransform(pack, "wjtp.doe3",
                         new TransformerAdapter(
                                 DeadObjectEliminator.v()));
-        _addStandardOptimizations(pack, 7);
-        
-        addTransform(pack, "wjtp.snapshot4jimple", JimpleWriter.v(),
-               "outDir:" + _outputDirectory + "/jimple4");
-       addTransform(pack, "wjtp.snapshot4", ClassWriter.v(),
-               "outDir:" + _outputDirectory + "/jimple4");
-            
+       _addStandardOptimizations(pack, 7);
+       
+       if(_snapshots) {
+           addTransform(pack, "wjtp.snapshot4jimple", JimpleWriter.v(),
+                   "outDir:" + _outputDirectory + "/jimple4");
+           addTransform(pack, "wjtp.snapshot4", ClassWriter.v(),
+                   "outDir:" + _outputDirectory + "/jimple4");
+           addTransform(pack, "wjtp.lur4",
+                   LibraryUsageReporter.v(),
+                   "outFile:" + _outputDirectory + "/jimple4/jarClassList.txt");
+       }
+
        addTransform(pack, "wjtp.ttn",
                         TokenToNativeTransformer.v(toplevel));
         
@@ -372,12 +392,13 @@ public class Main extends KernelMain {
                UnreachableMethodRemover.v());
        addTransform(pack, "wjtp.cp2",
                new TransformerAdapter(CopyPropagator.v()));
-       
+              
        // The library usage reporter also pulls in all depended
        // classes for analysis.       
        addTransform(pack, "wjtp.lur",
                LibraryUsageReporter.v(),
-               "outDir:" + _outputDirectory);
+               "outFile:" + _outputDirectory + "/jarClassList.txt " + 
+               "analyzeAllReachables:true");
        
        addTransform(pack, "wjtp.umr4", 
                UnreachableMethodRemover.v());
@@ -470,7 +491,9 @@ public class Main extends KernelMain {
     protected static String[] _parseArgs(String args[]) {
         // Ignore the first argument.
         for(int i = 1; i < args.length; i++) {
-            if(args[i].equals("-targetPackage")) {
+            if(args[i].equals("-snapshots")) {
+                _snapshots = true;
+            } if(args[i].equals("-targetPackage")) {
                 i++;
                 if(i < args.length) {
                     _targetPackage = args[i];
@@ -546,6 +569,7 @@ public class Main extends KernelMain {
                 new TransformerAdapter(standardList));
     }
    
+    private static boolean _snapshots = false;
     private static String _generatorAttributeFileName = "unsetParameter";
     private static String _watchDogTimer = "unsetParameter";
     private static String _targetPackage = "unsetParameter";

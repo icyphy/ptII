@@ -241,6 +241,7 @@ treeShakeSnapshots:
 	do \
 		echo "Treeshake $$snapshot"; \
 		"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX)_$${snapshot}.jar \
+			-c $(TARGETPATH)/$${snapshot}/jarClassList.txt \
 			-main $(TARGETPACKAGE).Main \
 			"$(JAVA)" -Xfuture -classpath \
 		"$(TARGETPATH)/$$snapshot$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
