@@ -88,7 +88,7 @@ public class Switch3D extends GRTransform {
      */
     public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
-        Switch newObject = (Switch) super.clone(workspace);
+        Switch3D newObject = (Switch3D) super.clone(workspace);
         newObject.select = (TypedIOPort) newObject.getPort("select");
         return newObject;
     }
