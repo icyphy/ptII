@@ -4,9 +4,9 @@
 <entity name="MaximumEntropySpectrum" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 300]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 154]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="72.0, 33.0">
+        <property name="_location" class="ptolemy.moml.Location" value="290.0, 40.0">
         </property>
     </property>
     <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
@@ -53,7 +53,7 @@
             </property>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="120.0, 122.0">
+        <property name="_location" class="ptolemy.moml.Location" value="115.0, 50.0">
         </property>
     </entity>
     <entity name="Sinewave2" class="ptolemy.actor.lib.Sinewave">
@@ -91,7 +91,7 @@
             </property>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="120.0, 181.0">
+        <property name="_location" class="ptolemy.moml.Location" value="115.0, 120.0">
         </property>
     </entity>
     <entity name="Sinewave3" class="ptolemy.actor.lib.Sinewave">
@@ -129,7 +129,7 @@
             </property>
         </property>
         <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="120.0, 242.0">
+        <property name="_location" class="ptolemy.moml.Location" value="115.0, 190.0">
         </property>
     </entity>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
@@ -140,7 +140,7 @@
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="120.0, 310.0">
+        <property name="_location" class="ptolemy.moml.Location" value="115.0, 260.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -151,7 +151,7 @@
         </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="275.0, 190.0">
+        <property name="_location" class="ptolemy.moml.Location" value="305.0, 130.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -224,8 +224,10 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
            </svg>
            </configure>
             </property>
+            <property name="_hideName" class="ptolemy.data.expr.Parameter">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="380.0, 190.0">
+        <property name="_location" class="ptolemy.moml.Location" value="390.0, 130.0">
         </property>
     </entity>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -239,7 +241,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="490.0, 210.0">
+        <property name="_location" class="ptolemy.moml.Location" value="500.0, 145.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -263,7 +265,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         <property name="denominator" class="ptolemy.data.expr.Parameter" value="{1.0, -0.9}">
         </property>
         <doc>IIR filter</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="245.0, 310.0">
+        <property name="_location" class="ptolemy.moml.Location" value="210.0, 260.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
