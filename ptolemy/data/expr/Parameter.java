@@ -334,6 +334,30 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
         _token.notifySubscribers();
     }
     
+    /** Set the types of Tokens that this parameter can contain.
+     *  It must be possible to losslessly convert the currently 
+     *  contained Token to the new type, or else an exception will 
+     *  be thrown. If so, the state of the parameter is unchanged.
+     *  @param newType The class object representing the new type 
+     *   of this parameter.
+     *  @exception IllegalArgumentExcpetion Thrown if the new type 
+     *   is too restrictive for the currently contained token.
+     */
+    public void setType(Class newType) throws IllegalArgumentException {
+        Class oldType = _paramType;
+        _paramType = newType;
+        try {
+            _checkType(_token.getClass());
+        } catch (IllegalArgumentException ex) {
+            _paramType = oldType;
+            String str = "Cannot set the type of Parameter " + getName();
+            str = str + " to type: " + newType.getName() + ", when the ";
+            str = str + "currently contained Token is of type: ";
+            str = str +  _token.getClass().getName();
+            throw new IllegalArgumentException(str);
+        }
+    }
+
 
     /** Get a string representation of the current parameter value.
      *  @return A String representing the class and the current token.
@@ -352,20 +376,31 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
      *  Token type is not allowed in this Parameter.
      */
     public void update(Observable o, Object t) throws IllegalArgumentException {
-        if ( _parseTreeRoot != null) {
-            pt.data.Token oldToken = _token;
-            _token = _parseTreeRoot.evaluateParseTree();
-            _checkType(_token);
-            TokenPublisher publisher = oldToken.getPublisher();
-            if ( publisher != null ) {
-                _token.setPublisher(publisher);
+        if (_dependencyLoop) {
+            String str = "Found dependency loop in ";
+            str = str + this.getFullName() + ": " + _currentValue;
+            throw new IllegalArgumentException(str);
+        }
+        _dependencyLoop = true;
+        try {
+            if ( _parseTreeRoot != null) {
+                pt.data.Token oldToken = _token;
+                _token = _parseTreeRoot.evaluateParseTree();
+                _checkType(_token.getClass());
+                TokenPublisher publisher = oldToken.getPublisher();
+                if ( publisher != null ) {
+                    _token.setPublisher(publisher);
+                }
+                _token.notifySubscribers();
+                // _parseTreeRoot.displayParseTree(" ");
+            } else if (_currentValue != null) { 
+                // this method must be being invoked following a clone
+                _parser = new PtParser(this);
+                _parseTreeRoot = _parser.generateParseTree(_currentValue);
             }
-            _token.notifySubscribers();
-            // _parseTreeRoot.displayParseTree(" ");
-        } else if (_currentValue != null) { 
-            // this method must be being invoked following a clone
-            _parser = new PtParser(this);
-            _parseTreeRoot = _parser.generateParseTree(_currentValue);
+        } catch (IllegalArgumentException ex) {
+            _dependencyLoop = false;
+            throw ex;
         }
     }
 
@@ -375,20 +410,34 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
     /** Checks to see if the new token type is compatible with the initial 
      *  Token type stored. If the new Token cannot be converted in a lossless 
      *  manner to the original type, an exception is thrown.
+     *  @param tryType The class of the token that is trying to be placed 
+     *   in the Parameter.
+     *  @exception IllegalArgumentException thrown if incompatible types
+     */
+    protected void _checkType(Class tryType) 
+            throws IllegalArgumentException {
+        int typeInfo = TypeCPO.compare(_paramType, tryType);
+        if (typeInfo == CPO.STRICT_LESS) return;
+        if (typeInfo == CPO.EQUAL) return;
+        // Incompatible type!
+        String str = "Cannot store a Token of type ";
+        str = str + tryType.getName() + " in a Parameter restricted";
+        str = str + " to tokens of type " + _paramType.getName() + "or lower";
+        throw new IllegalArgumentException(str);
+    }
+
+ /** Checks to see if the new token type is compatible with the initial 
+     *  Token type stored. If the new Token cannot be converted in a lossless 
+     *  manner to the original type, an exception is thrown.
      *  @param tok The token that is trying to be placed in the Parameter.
      *  @exception IllegalArgumentException thrown if incompatible types
      */
     protected void _checkType(pt.data.Token tok) 
             throws IllegalArgumentException {
         if (tok == null) return; 
-        int typeInfo = TypeCPO.compare(_paramType, tok.getClass());
-        if (typeInfo == CPO.STRICT_LESS) return;
-        if (typeInfo == CPO.EQUAL) return;
-        // Incompatible type!
-        String str = "Cannot store a Token of type ";
-        str = str + tok.getClass().getName() + " in a Parameter restricted";
-        str = str + " to tokens of type " + _paramType.getName() + "or lower";
-        throw new IllegalArgumentException(str);
+        else {
+            _checkType(tok.getClass());
+        }
     }
 
     /** Clear references that are not valid in a cloned object. The clone()
@@ -422,6 +471,7 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
     ////                         private variables                        ////
 
     private String _currentValue;
+    private boolean _dependencyLoop = false;
     private String _initialValue;
     private long _lastVersion = 0;
     private boolean _noTokenYet = true;
