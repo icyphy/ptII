@@ -103,17 +103,25 @@ public class TwoPort extends TypedAtomicActor {
 
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         Director dir = getDirector();
-
+        
         if (dir != null) {
-            _inrate1 = ((IntToken) inrate1.getToken()).intValue();
-            _inrate2 = ((IntToken) inrate2.getToken()).intValue();
-            _outrate1 = ((IntToken) outrate1.getToken()).intValue();
-            _outrate2 = ((IntToken) outrate2.getToken()).intValue();
-            input1.setTokenConsumptionRate(_inrate1);
-            input2.setTokenConsumptionRate(_inrate2);
-            output1.setTokenProductionRate(_outrate1);
-            output2.setTokenProductionRate(_outrate2);
-            dir.invalidateSchedule();
+            if (attribute == inrate1) {
+                _inrate1 = ((IntToken) inrate1.getToken()).intValue();
+                input1.setTokenConsumptionRate(_inrate1);
+                dir.invalidateSchedule();
+            } else if (attribute == inrate2) {
+                _inrate2 = ((IntToken) inrate2.getToken()).intValue();
+                input2.setTokenConsumptionRate(_inrate2);
+                dir.invalidateSchedule();
+            } else if (attribute == outrate1) {
+                _outrate1 = ((IntToken) outrate1.getToken()).intValue();
+                output1.setTokenProductionRate(_outrate1);
+                dir.invalidateSchedule();
+            } else if (attribute == outrate2) {
+                _outrate2 = ((IntToken) outrate2.getToken()).intValue();
+                output2.setTokenProductionRate(_outrate2);
+                dir.invalidateSchedule();
+            }
         }
     }
 
