@@ -166,6 +166,26 @@ public class FractionArrayMath {
         return sum;
     }
 
+    /** Returns true if the two input arrays have all elements
+     *  equal.
+     * 
+     * @param array1 The first input array.
+     * @param array2 The second input array.
+     * @return True if array1 == array2.
+     */
+    public static final boolean equals(final Fraction[] array1, final Fraction[] array2) {
+        boolean output = true;
+        if (array1.length != array2.length) {
+            output = false;
+        }
+        else {
+            for (int i = 0; i < array1.length; i++) {
+                output = output && array1[i].equals(array2[i]);
+            }
+        }
+        return output;
+    }
+    
     /** Return a new array that is the element-by-element multiplication of
      *  the two input arrays.
      *  If the lengths of both arrays are 0, return a new array of length 0.
