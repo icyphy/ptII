@@ -190,6 +190,14 @@ public class VergilApplication extends MDIApplication {
 	menuBar.add(menu);
     }
 
+    /**
+     * Add the service to the list of services that are published in
+     * this application.
+     */
+    public void addService(Service service) {
+	_serviceList.add(service);
+    }
+
     /** 
      * Given a Diva document, create a new view that displays that
      * document. If the document is an instance of VergilDocument
@@ -210,7 +218,7 @@ public class VergilApplication extends MDIApplication {
 
     /** 
      * Return the list of factories that create new documents.
-     * @return An unmodifiable list of DocumentFactories.
+     * @return An unmodifiable list of instances of DocumentFactory.
      */
     public List documentFactoryList () {
         return Collections.unmodifiableList(_documentFactoryList);
@@ -281,6 +289,39 @@ public class VergilApplication extends MDIApplication {
 	if(frame == null) return;
 	JMenuBar menuBar = frame.getJMenuBar();
 	menuBar.remove(menu);
+    }
+
+    /**
+     * Remove the service to the list of services that are published in
+     * this application.
+     */
+    public void removeService(Service service) {
+	_serviceList.remove(service);
+    }
+
+    /** 
+     * Return the list of services that are published in this application.
+     * @return An unmodifiable list of instances of Service.
+     */
+    public List serviceList () {
+        return Collections.unmodifiableList(_serviceList);
+    }
+
+    /** 
+     * Return the list of services that are published in this application that
+     * are instances of the specified class.
+     * @return An unmodifiable list of instances of the given Service.
+     */
+    public List serviceList (Class filter) {
+	List result = new LinkedList();
+	Iterator services = _serviceList.iterator();
+	while (services.hasNext()) {
+	    Service service = (Service) services.next();
+	    if (filter.isInstance(service)) {
+		result.add(service);
+	    }
+	}
+	return Collections.unmodifiableList(result);
     }
 
     /** 
@@ -431,7 +472,6 @@ public class VergilApplication extends MDIApplication {
         addAction(action);
 	addToolBarButton(toolBar, action, null, 
 			 resources.getImageIcon("NewImage"));
-
         action = getAction(DefaultActions.OPEN);
         addToolBarButton(toolBar, action, null, 
 			 resources.getImageIcon("OpenImage"));
@@ -457,6 +497,9 @@ public class VergilApplication extends MDIApplication {
 
     // The instance of this application.
     private static VergilApplication _instance = null;
+
+    // The list of factories that create graph documents.
+    private List _serviceList = new LinkedList();
 }
 
 
