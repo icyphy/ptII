@@ -248,7 +248,9 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.vergil.tree
 
 
-all: suball whatsnew.htm whatsnewVergil.htm codeDoc/tree.html
+all: suball whatsnew.htm whatsnewVergil.htm \
+	codeDoc/tree.html codeDocHybridSystems/tree.html
+
 install: all jars codeDoc.jar
 
 codeDoc.jar:
