@@ -45,8 +45,13 @@ in structured types.
 @version $Id$
 */
 
-public interface Type
-{
+public interface Type {
+    /** Return a deep clone of this type.
+     *  @return A Type.
+     *  @exception CloneNotSupportedException Not thrown.
+     */
+    public Object clone() throws CloneNotSupportedException;
+
     /** Convert the specified token into a token having the type
      *  represented by this object.
      *  @param t a token.
