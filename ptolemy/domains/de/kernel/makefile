@@ -49,7 +49,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	DEActor.java \
 	DECQEventQueue.java \
 	DEDirector.java \
 	DEEvent.java \
