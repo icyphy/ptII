@@ -1,7 +1,7 @@
 /* This class creates an x10 inteface device which can send and receive 
 10 commands to and from an x10 network.
  
-Copyright (c) 1998-2003 The Regents of the University of California.
+Copyright (c) 2003 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -45,10 +45,10 @@ import x10.CM17ASerialController;
 import x10.Controller;
 
 //////////////////////////////////////////////////////////////////////////
-//// x10Interface
+//// X10Interface
 /**
-This class abstracts x10-interface devices for x10 connunication via the
-serial port. Currently, this class supports the following x10 serial port
+This class abstracts X10-interface devices for X10 communication via the
+serial port. Currently, this class supports the following X10 serial port
 models for communication with a host computer:
 <ul>
 <li> "CM11A" serial module (wired)
@@ -61,7 +61,8 @@ For instructions concerning the physical setup of these devices, refer to
 their respective manuals.
 <p>
 This actor requires that the Java comm API be installed.
-The comm API comes from http://java.sun.com/products/javacomm/
+The comm API comes from <a href="http://java.sun.com/products/javacomm/" target="_top">http://java.sun.com/products/javacomm/</a>
+
 To install the comm API on a Windows machine:
 <ul>
 <li> place the win32com.dll in $JDK\jre\bin directory. 
@@ -83,17 +84,14 @@ Unzip the file tjx10p-11.zip (Version 1.1) and install it in
 $PTII/vendors/misc/x10. Then re-run configure in $PTII and rebuild to
 compile the actors in the x10 library.
 The configure script looks for the library in tjx10p-11/lib/x10.jar.
-Note that these actors also require javax.comm be installed to work properly.
-That can be obtained from <a href="http://java.sun.com/products/javacomm/">
-http://java.sun.com/products/javacomm/</a>. To install it, unzip the commapi
-directory into $PTII/vendors/sun and do the following (on a Windows machine):
-<ul>
-<li> Place the win32com.dll in jdk\jre\bin directory. 
-<li> Place the comm.jar in jdk\jre\lib\ext. 
-<li> Place the javax.comm.properties in jdk\jre\lib.
-</ul>
-where jdk is the location of your Java development kit.
-Then re-run configure in $PTII.
+
+<p>After installing the serial communication and X10 packages,
+rerun configure:
+<pre>
+cd $PTII
+./configure
+</pre>
+
 
 @author Colin Cochran and Edward A. Lee
 @version $Id$
