@@ -45,22 +45,21 @@ PTPACKAGE = 	QR
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ND_1.java \
-	ND_2.java \
-	ND_3.java \
-	ND_4.java \
-	ND_5.java \
+	QRCompileApplet.java \
 	StreamToMatrix.java \
 	SourceMatrix.java \
 	ArrayIndex.java \
-	QR.java
-
+	ND_6.java \
+	ND_14.java \
+	ND_36.java \
+	ND_66.java \
+	ND_86.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
-	QR.htm \
-	QRprocessnetwork.gif \
-	QRvr.wmf \
-	QR.xml
+	QRCompileApplet.htm \
+	QRvr.gif \
+	dg.gif \
+	qr.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -80,7 +79,10 @@ all: jclass $(PTCLASSJAR)
 install: all 
 
 demo: 
-	CLASSPATH=$(CLASSPATH) appletviewer QR.htm
+	CLASSPATH=$(CLASSPATH) appletviewer QRCompileApplet.htm
+
+show: QRcompile.class
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.pn.demo.QR.QRCompileApplet.htm
 
 docs: javadocs
 
