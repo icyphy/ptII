@@ -111,9 +111,9 @@ public class Remainder extends Transformer {
         if (input.hasToken(0)) {
             double in = ((DoubleToken)input.get(0)).doubleValue();
             double divisorValue = ((DoubleToken)
-                                    divisor.getToken()).doubleValue();
+                    divisor.getToken()).doubleValue();
             output.send(0, new DoubleToken(
-                            Math.IEEEremainder(in, divisorValue)));
+                    Math.IEEEremainder(in, divisorValue)));
         }
     }
 }

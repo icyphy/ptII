@@ -80,7 +80,7 @@ public class WallClockTime extends Source {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-       _startTime = System.currentTimeMillis();
+        _startTime = System.currentTimeMillis();
     }
 
     ///////////////////////////////////////////////////////////////////
