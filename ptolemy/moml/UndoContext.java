@@ -116,7 +116,7 @@ public class UndoContext {
      *
      *  @param newName the value to give to the value of the name attribute.
      *  @exception Exception if there is currently no undo MoML at
-     *  this level, or if there is no name attribute presnet.
+     *  this level, or if there is no name attribute present.
      */
     public void applyRename(String newName) throws Exception {
         if (_undoMoML.length() == 0) {
