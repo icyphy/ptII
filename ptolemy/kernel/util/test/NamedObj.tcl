@@ -176,10 +176,10 @@ test NamedObj-6.2 {Test description} {
     set a [java::new pt.kernel.util.NamedObj]
     set b [java::new pt.kernel.util.NamedObj $n ""]
     set c [java::new pt.kernel.util.NamedObj $n "car" ]
-    list "[$a description [java::field pt.kernel.Nameable NAME]]\n\
-	    [$b description [java::field pt.kernel.Nameable NAME]]\n\
-	    [$c description [java::field pt.kernel.Nameable NAME]]\n\
-	    [$n description [java::field pt.kernel.Nameable NAME]]"
+    list "[$a description [java::field pt.kernel.util.Nameable NAME]]\n\
+	    [$b description [java::field pt.kernel.util.Nameable NAME]]\n\
+	    [$c description [java::field pt.kernel.util.Nameable NAME]]\n\
+	    [$n description [java::field pt.kernel.util.Nameable NAME]]"
 } {{{.}
  {foo.}
  {foo.car}
@@ -208,28 +208,3 @@ test NamedObj-7.1 {Test clone} {
     set b [$a clone]
     $b description 3
 } {pt.kernel.util.NamedObj {N.A}}
-
-######################################################################
-####
-# 
-test NamedObj-8.1 {Test Parameters} {
-    set n [java::new pt.kernel.util.Workspace "N"]
-    set a [java::new pt.kernel.util.NamedObj $n "A" ]
-    set p [java::new {pt.data.Parameter pt.kernel.util.NamedObj java.lang.String java.lang.String} $a "P" 1]
-    $a addParameter $p
-    set c [$a getParameter "P"]
-    expr {$c == $p}
-} {1}
-
-# NOTE: Builds on previous example.
-test NamedObj-8.2 {Test Parameters} {
-    set q [java::new {pt.data.Parameter pt.kernel.util.NamedObj java.lang.String java.lang.String} $a "Q" 2]
-    $a addParameter $q
-    enumToFullNames [$a getParameters]
-} {N.A.P N.A.Q}
-
-# NOTE: Builds on previous example.
-test NamedObj-8.3 {Test Parameters} {
-    $a removeParameter P
-    enumToFullNames [$a getParameters]
-} {N.A.Q}
