@@ -323,8 +323,12 @@ public class LongToken extends ScalarToken {
      */
     protected BooleanToken _isCloseTo(
             ScalarToken rightArgument, double epsilon) {
-        // NOTE: This code is duplicated in ptolemy.math.LongMatrixMath.within(); if
-        // this implementation changes, also change the corresponding implementation there.
+
+        // NOTE: This code is duplicated in
+        // ptolemy.math.LongMatrixMath.within(); if this
+        // implementation changes, also change the corresponding
+        // implementation there.
+
         long right = ((LongToken)rightArgument).longValue();
         long left = longValue();
         long distance = Math.round(Math.floor(epsilon));

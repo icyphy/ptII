@@ -115,7 +115,8 @@ public class FunctionToken extends Token {
      *  as checking for equality.
      *  @param rightArgument The token to compare to this token.
      *  @param epsilon This argument is ignored in this method.
-     *  @return A true-valued token if the first argument is equal to this token.
+     *  @return A true-valued token if the first argument is equal to
+     *  this token.
      */
     public BooleanToken isCloseTo(
             Token rightArgument, double epsilon)
@@ -127,8 +128,8 @@ public class FunctionToken extends Token {
      *  Token.  Two function tokens are equal if they correspond to the
      *  same expression, under renaming of any bound variables.
      *  @param rightArgument The token to compare to this token.
-     *         @return A token containing true if the value element of the first
-     *   argument is equal to the value of this token.
+     *  @return A token containing true if the value element of the first
+     *  argument is equal to the value of this token.
      */
     public BooleanToken isEqualTo(Token rightArgument) {
         FunctionToken convertedArgument = (FunctionToken)rightArgument;

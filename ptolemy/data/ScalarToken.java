@@ -459,12 +459,6 @@ public abstract class ScalarToken extends Token
                 notSupportedConversionMessage(this, "double"));
     }
 
-    /** Return the type of this token.  Subclasses must implement this method
-     *  to return the correct type.
-     *  @return BaseType.SCALAR
-     */
-    public abstract Type getType();
-
     /** Return the value of this token as a FixPoint.
      *  In this base class, we just throw an exception.
      *  @return A FixPoint
@@ -473,6 +467,41 @@ public abstract class ScalarToken extends Token
     public FixPoint fixValue() throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedConversionMessage(this, "fixedpoint"));
+    }
+
+    /** Return the type of this token.  Subclasses must implement this method
+     *  to return the correct type.
+     *  @return BaseType.SCALAR
+     */
+    public abstract Type getType();
+
+    /** Return a scalar token that contains the value of this token in the
+     *  units of the argument token. The unit category of the argument token
+     *  must be the same as that of this token, otherwise, an exception will
+     *  be thrown. The returned token is unitless.
+     *  @param units A scalar token that represents a unit.
+     *  @return A scalar token that does not have a unit.
+     *  @exception IllegalActionException If the unit category of the
+     *  argument token is not the same as that of this one.
+     */
+    public ScalarToken inUnitsOf(ScalarToken units)
+            throws IllegalActionException {
+        if ( !_areUnitsEqual(units)) {
+            throw new IllegalActionException(
+                    notSupportedMessage("inUnitsOf", this, units) +
+                    " because the units are not the same.");
+        }
+        return (ScalarToken)this.divide(units);
+    }
+
+    /** Return the value of this token as an int.
+     *  In this base class, we just throw an exception.
+     *  @return The value of this token as an int.
+     *  @exception IllegalActionException Always thrown.
+     */
+    public int intValue() throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedConversionMessage(this, "int"));
     }
 
     /** Test whether the value of this Token is close to the argument
@@ -566,16 +595,6 @@ public abstract class ScalarToken extends Token
         }
     }
 
-    /** Return the value of this token as an int.
-     *  In this base class, we just throw an exception.
-     *  @return The value of this token as an int.
-     *  @exception IllegalActionException Always thrown.
-     */
-    public int intValue() throws IllegalActionException {
-        throw new IllegalActionException(
-                notSupportedConversionMessage(this, "int"));
-    }
-
     /** Check whether the value of this token is strictly greater than
      *  that of the argument token.  The argument and this token are
      *  converted to equivalent types, and then compared.  Generally,
@@ -618,25 +637,6 @@ public abstract class ScalarToken extends Token
                     notSupportedIncomparableMessage("isGreaterThan",
                             this, rightArgument));
         }
-    }
-
-    /** Return a scalar token that contains the value of this token in the
-     *  units of the argument token. The unit category of the argument token
-     *  must be the same as that of this token, otherwise, an exception will
-     *  be thrown. The returned token is unitless.
-     *  @param units A scalar token that represents a unit.
-     *  @return A scalar token that does not have a unit.
-     *  @exception IllegalActionException If the unit category of the
-     *  argument token is not the same as that of this one.
-     */
-    public ScalarToken inUnitsOf(ScalarToken units)
-            throws IllegalActionException {
-        if ( !_areUnitsEqual(units)) {
-            throw new IllegalActionException(
-                    notSupportedMessage("inUnitsOf", this, units) +
-                    " because the units are not the same.");
-        }
-        return (ScalarToken)this.divide(units);
     }
 
     /** Check whether the value of this token is strictly less than that of the

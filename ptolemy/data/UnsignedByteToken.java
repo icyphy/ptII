@@ -46,19 +46,19 @@ A token that contains a byte number in the range 0 through 255.  This
 UnsignedByteToken definition is in contrast to Java's definition of a
 byte as a number in the range -128 through 127.
 
-Overflow and underflow are handled by returning the result of all
+<p>Overflow and underflow are handled by returning the result of all
 operations modulo 256.  Thus, the result is always in the range 0
 through 255.  Likewise, constructors of this class generate tokens
 whose values are the argument modulo 256.  Note, for example, that
-UnsignedByteToken((byte)(-100)) generates a UnsignedByteToken representing the value
-156, which is -100 modulo 256.
+UnsignedByteToken((byte)(-100)) generates a UnsignedByteToken
+representing the value 156, which is -100 modulo 256.
 
-Note, also, that the byteValue() method returns a Java byte in the
+<p>Note, also, that the byteValue() method returns a Java byte in the
 range -128 through 127.  This is in contrast to the intValue(),
 longValue(), doubleValue(), and complexValue() methods which all
 return values in the range 0 through 255.  The value returned by
-byteValue() is the value represented by the UnsignedByteToken but with 256
-subtracted if this value is greater than 127.  In other words, the
+byteValue() is the value represented by the UnsignedByteToken but with
+256 subtracted if this value is greater than 127.  In other words, the
 result and the argument are equal modulo 256.
 
 @author Winthrop Williams, Steve Neuendorffer, Contributor: Christopher Hylands
@@ -119,6 +119,18 @@ public class UnsignedByteToken extends ScalarToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return the value in this token as a byte, modulo 256.  The
+     *  UnsignedByteToken being converted represents a value in the range 0
+     *  through 255.  However, the Java byte it is being converted to
+     *  represents a value in the range -128 through 127.  Thus, this
+     *  method has the effect subtracting 256 from the value if the
+     *  value is greater than 127.
+     *  @return The byte value contained in this token, modulo 256.
+     */
+    public byte byteValue() {
+        return _value;
+    }
 
     /** Return the value of this token as a Complex. The real part
      *  of the Complex is the value of this token, the imaginary part
@@ -201,18 +213,6 @@ public class UnsignedByteToken extends ScalarToken {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-        return _value;
-    }
-
-    /** Return the value in this token as a byte, modulo 256.  The
-     *  UnsignedByteToken being converted represents a value in the range 0
-     *  through 255.  However, the Java byte it is being converted to
-     *  represents a value in the range -128 through 127.  Thus, this
-     *  method has the effect subtracting 256 from the value if the
-     *  value is greater than 127.
-     *  @return The byte value contained in this token, modulo 256.
-     */
-    public byte byteValue() {
         return _value;
     }
 
@@ -404,7 +404,8 @@ public class UnsignedByteToken extends ScalarToken {
      *  or equal to the second argument.  It is assumed that the argument is
      *         an UnsignedByteToken.
      *  @param token The token to compare to this token.
-     *  @return A true-valued token if the first argument is close to this token.
+     *  @return A true-valued token if the first argument is close to
+     *  this token.
      */
     protected BooleanToken _isCloseTo(
             ScalarToken rightArgument, double epsilon) {

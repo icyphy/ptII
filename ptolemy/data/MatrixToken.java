@@ -1255,17 +1255,19 @@ public abstract class MatrixToken extends Token {
                 notSupportedMessage("divide", this, rightArgument));
     }
 
-    /** Test whether the value of this token is close to the first argument,
-     *  where "close" means that the distance between their elements is less than
-     *  or equal to the second argument. This base class delegates to the
-     *  token class corresponding to the matrix elements, using its
-     *  isCloseTo() method. If the two matrices do have the same dimension,
-     *  then this method returns false.
+    /** Test whether the value of this token is close to the first
+     *  argument, where "close" means that the distance between their
+     *  elements is less than or equal to the second argument. This
+     *  base class delegates to the token class corresponding to the
+     *  matrix elements, using its isCloseTo() method. If the two
+     *  matrices do have the same dimension, then this method returns
+     *  false.
+     *
      *  @param token The matrix token to compare to this token.
-     *         @param distance The specified distance.
+     *  @param distance The specified distance.
      *  @return True if every element of the specified matrix is within
-     *   the specified distance of the corresponding element of this matrix.
-     *         @exception IllegalActionException If a derived class throws it.
+     *  the specified distance of the corresponding element of this matrix.
+     *  @exception IllegalActionException If a derived class throws it.
      */
     protected BooleanToken _isCloseTo(
             MatrixToken token, double distance)

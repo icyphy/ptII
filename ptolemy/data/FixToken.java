@@ -226,6 +226,13 @@ public class FixToken extends ScalarToken {
         return new FixToken( 1.0, _value.getPrecision() );
     }
 
+    /** Print the content of this FixToken: This is used for debugging
+     *  only.
+     */
+    public void print() {
+        _value.printFix();
+    }
+
     /** Return a new token whose value is constrained to comply
      *  with a quantization specification
      *  @param quant The quantization specification.
@@ -261,13 +268,6 @@ public class FixToken extends ScalarToken {
      */
     public Token zero() {
         return new FixToken( 0.0, _value.getPrecision() );
-    }
-
-    /** Print the content of this FixToken: This is used for debugging
-     *  only.
-     */
-    public void print() {
-        _value.printFix();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -365,8 +365,10 @@ public class FixToken extends ScalarToken {
      *  @param quant The quantization specification.
      *  @return A new FixToken containing the result.
      */
-    protected ScalarToken _divide(ScalarToken rightArgument, Quantization quant) {
-        FixPoint result = _value.divide(((FixToken)rightArgument).fixValue(), quant);
+    protected ScalarToken _divide(ScalarToken rightArgument,
+            Quantization quant) {
+        FixPoint result =
+            _value.divide(((FixToken)rightArgument).fixValue(), quant);
         return new FixToken(result);
     }
 

@@ -261,26 +261,6 @@ public class Token implements Serializable {
                 notSupportedMessage("multiplyReverse", this, leftArgument));
     }
 
-    /** Return a string with an error message that states that the
-     *  given operation is not supported between two tokens.
-     *  @param operation A string naming the unsupported token
-     *  operation.
-     *  @param firstToken The first token in the message.
-     *  @param secondToken The second token in the message.
-     *  @return A string error message.
-     */
-    public static String notSupportedMessage(String operation,
-            Token firstToken, Token secondToken) {
-        // We use this method to factor out a very common message
-        return (operation + " operation not supported between "
-                + firstToken.getClass().getName()
-                + " '" + firstToken.toString()
-                + "' and "
-                + secondToken.getClass().getName()
-                + " '" + secondToken.toString() + "'");
-    }
-
-
     /** Return a string with an error message that states that
      *  the given token cannot be converted to the given token type.
      *  @param token The token being converted.
@@ -296,6 +276,24 @@ public class Token implements Serializable {
                 + " '" + token.toString()
                 + "' to the type "
                 + typeString + ".");
+    }
+
+    /** Return a string with an error message that states that
+     *  the given token cannot be converted to the given token type.
+     *  @param token The token being converted.
+     *  @param typeString A string representing the type that is being
+     *  converted to.
+     *  @return A string error message.
+     */
+    public static String notSupportedIncomparableConversionMessage(
+            Token token, String typeString) {
+        // We use this method to factor out a very common message
+        return ("Conversion is not supported from "
+                + token.getClass().getName()
+                + " '" + token.toString()
+                + "' to the type " + typeString
+                + " because the type of the token is higher "
+                + "or incomparable with the given type.");
     }
 
     /** Return a string with an error message that states that the
@@ -320,22 +318,23 @@ public class Token implements Serializable {
                 + "' because the types are incomparable.");
     }
 
-    /** Return a string with an error message that states that
-     *  the given token cannot be converted to the given token type.
-     *  @param token The token being converted.
-     *  @param typeString A string representing the type that is being
-     *  converted to.
+    /** Return a string with an error message that states that the
+     *  given operation is not supported between two tokens.
+     *  @param operation A string naming the unsupported token
+     *  operation.
+     *  @param firstToken The first token in the message.
+     *  @param secondToken The second token in the message.
      *  @return A string error message.
      */
-    public static String notSupportedIncomparableConversionMessage(
-            Token token, String typeString) {
+    public static String notSupportedMessage(String operation,
+            Token firstToken, Token secondToken) {
         // We use this method to factor out a very common message
-        return ("Conversion is not supported from "
-                + token.getClass().getName()
-                + " '" + token.toString()
-                + "' to the type " + typeString
-                + " because the type of the token is higher "
-                + "or incomparable with the given type.");
+        return (operation + " operation not supported between "
+                + firstToken.getClass().getName()
+                + " '" + firstToken.toString()
+                + "' and "
+                + secondToken.getClass().getName()
+                + " '" + secondToken.toString() + "'");
     }
 
     /** Returns a new Token representing the multiplicative identity.

@@ -337,8 +337,12 @@ public class IntToken extends ScalarToken {
      */
     protected BooleanToken _isCloseTo(
             ScalarToken rightArgument, double epsilon) {
-        // NOTE: This code is duplicated in ptolemy.math.IntegerMatrixMath.within(); if
-        // this implementation changes, also change the corresponding implementation there.
+
+        // NOTE: This code is duplicated in
+        // ptolemy.math.IntegerMatrixMath.within(); if this
+        // implementation changes, also change the corresponding
+        // implementation there.
+
         double right = ((IntToken)rightArgument).doubleValue();
         double left = doubleValue();
         if (right > left + epsilon || right < left - epsilon) {
