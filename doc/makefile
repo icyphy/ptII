@@ -271,17 +271,25 @@ whatsnewVergil.htm: whatsnew.htm
 	sed -e 's@\(demo/[^/]*/[^/]*\).htm@\1.xml@g' \
 	    -e 's@<a href="\([^"]*/domains/[^/]*/doc/\)body.htm" target="[^"]*">\([^<]*\)</a>@<a href="\1main.htm">\2</a>@' \
 		< whatsnew.htm > whatsnewVergil.htm
-	-diff whatsnew.htm whatsnewVergil.htm
 
-update: mainVergil.htm ptII$(PTVERSION).releaseVergil.htm \
-		troubleshootingVergil.htm \
-		whatsnew.htm whatsnewVergil.htm 
+# Files that are derived from other files, such as ptII$(PTVERSION).release.htm
+DERIVED_FILES = \
+	mainVergil.htm \
+	ptII$(PTVERSION).releaseVergil.htm \
+	troubleshootingVergil.htm \
+	whatsnew.htm \
+	whatsnewVergil.htm 
+
+update: $(DERIVED_FILES)
 	cvs commit -m "Master files changed" \
 		mainVergil.htm ptII$(PTVERSION).releaseVergil.htm \
 		troubleshootingVergil.htm \
 		whatsnew.htm whatsnewVergil.htm 
 	rm -f docConfig.jar
 	$(MAKE) docConfig.jar
+
+update_clean: 
+	rm -f $(DERIVED_FILES)
 
 docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
