@@ -34,8 +34,6 @@ import java.net.URL;
     @author Christopher Hylands Brooks
     @version $Id$
     @since Ptolemy II 3.1
-    @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
-    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
     @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
     @Pt.AcceptedRating Red
 */
