@@ -26,8 +26,9 @@ browser (and sending email to Sun's Java team to complain about the
 way the CLASSPATH environment variable works).
 You may also want to check the 
 <A HREF="http://sunsite.unc.edu/javafaq/javafaq.html">Java FAQ</A>.
+
 <H3><CODE>pxgraph</CODE> script fails with: Unable to initialize threads: cannot find class</H3>
-Below is an example 
+Below is an example:
 <PRE>
 ptplot> ./pxgraph
 Unable to initialize threads: cannot find class
@@ -51,6 +52,67 @@ something like:
 <PRE>
 sh -x pxgraph -help
 </PRE>
+
+<H3><CODE>pxgraph</CODE> script fails with: Can't find class ptplot.Pxgraph</H3>
+Here is an example
+<PRE>
+carson [3] pxgraph -help
+Can't find class ptplot.Pxgraph
+carson [4] 
+</PRE>
+
+The problem here is that the pxgraph script cannot find the ptplot
+installation.
+ <P>The solution here is to use <CODE>which</CODE> to find out which pxgraph
+script is running, and the run it with the <CODE>sh -x</CODE> flag:
+ <P>First we run <CODE>which</CODE>:
+<PRE>
+carson [9] which pxgraph
+/users/ptdesign/bin.sol2.5/pxgraph
+</PRE>
+The we use <CODE>sh -x</CODE>.  Note that the output you see might be
+different, depending on what version of the <CODE>pxgraph</CODE> script
+you are running.
+</PRE>
+carson [10] sh -x /users/ptdesign/bin.sol2.5/pxgraph -help
+PTDEFAULT=/users/ptdesign
+TYDEFAULT=/users/ptdesign/tycho
+JAVADEFAULT=/opt/jdk1.1.4
++ [ -z /users/cxh/ptbuild ] 
++ [ -z  ] 
++ [ /users/cxh/ptbuild -a -f /users/cxh/ptbuild/tycho/bin/ptarch ] 
+TYCHO=/users/cxh/ptbuild/tycho
++ export TYCHO 
+windows=no
++ uname 
++ [ SunOS = CYGWIN32/NT ] 
++ [ -z  ] 
++ [ -d /opt/jdk1.1.4 ] 
+JAVAHOME=/opt/jdk1.1.4
++ export JAVAHOME 
++ [ -z /opt/jdk1.1.4 ] 
++ [ ! -r /opt/jdk1.1.4/lib/classes.zip ] 
++ [ no = yes ] 
++ /opt/jdk1.1.4/bin/java -classpath /users/cxh/ptbuild/tycho/java:/opt/jdk1.1.4/lib/classes.zip ptplot.Pxgraph -help 
+Can't find class ptplot.Pxgraph
+carson [11] 
+</PRE>
+
+In the output below, the key line is the line towards that bottom that
+runs the <CODE>java</CODE> interpreter:
+<PRE>
++ /opt/jdk1.1.4/bin/java -classpath /users/cxh/ptbuild/tycho/java:/opt/jdk1.1.4/lib/classes.zip ptplot.Pxgraph -help 
+</PRE>
+In the pxgraph script, the first element in the <CODE>-classpath</CODE>
+argument should point lead to the <CODE>ptplot.zip</CODE> file.
+In this case, <CODE>/users/cxh/ptbuild/thcho/java/ptplot/ptplot.zip</CODE> 
+should exist, but it does not:
+<PRE>
+carson [12] ls -l /users/cxh/ptbuild/tycho/java/ptplot/ptplot.zip
+/users/cxh/ptbuild/tycho/java/ptplot/ptplot.zip not found
+</PRE>
+  
+
 <H3>I can't access the Plot class from a java interpreter</H3>
 If you try to run the Pxgraph class by passing the Pxgraph classname as a command line argument to the java interpreter, you might see:
 <PRE>
