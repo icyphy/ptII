@@ -399,6 +399,7 @@ public class ProcessDirector extends Director {
      * Returns true for termination.
      * This is not synchronized and should be synchronized in the
      * calling method.
+     *  @exception IllegalActionException If a derived class throws it.
      */
     protected boolean _handleDeadlock()
 	    throws IllegalActionException {
