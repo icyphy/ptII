@@ -4,7 +4,8 @@ FIR filter test for Java to C Translation.
 @author Shuvra S. Bhattacharyya 
 @version $Id$
 
-To run this test, perform the following steps:
+To run this test, run the batch file bin\runme.bat (from this directory), or
+carry out the following steps:
 
 -- javac FIR.java
 
