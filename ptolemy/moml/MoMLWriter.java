@@ -53,6 +53,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Collections;
+import java.util.List;
+import java.util.ArrayList;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -249,196 +251,18 @@ public class MoMLWriter extends Writer {
      */
     public void write(NamedObj object, int depth, String name)
             throws IOException {
-        try {
-            // This isn't technically necessary, but locking the workspace
-            // once globally means that the rest of this will operate much
-            // faster.
-            object.workspace().getReadAccess();
-            // System.out.println("Writing = " + object.getFullName());
-        synchronized(lock) {
-            // Alot of things aren't presistent and are just skipped.
-            if(object instanceof NotPersistent && !_isForcePersistence) 
-                return;
-            // Documentation uses a special tag with no class.
-            if(object instanceof Documentation && !_isLiteral) {
-                Documentation container = (Documentation)object;
-                write(_getIndentPrefix(depth));
-                // If the name is the default name, then omit it
-                if(name.equals("_doc")) {
-                    write("<doc>");
-                } else {
-                    write("<doc name=\"");
-                    write(name);
-                    write("\">");
-                }
-                write(container.getValue());
-                write("</doc>\n");
-                return;
-            }
-            // MoMLAttribute writes arbitrary moml.
-            // This is a hack, and hopefully we should be able to
-            // get rid of it eventually.
-            if(object instanceof MoMLAttribute && !_isLiteral) {
-                MoMLAttribute container = (MoMLAttribute)object;
-                container.writeMoMLDescription(this, depth);
-                return;
-            }
-            NamedObj.MoMLInfo info = object.getMoMLInfo();
-            // Write if nothing is being deferred to and there is no
-            // class name.
-            NamedObj deferredObject = _findDeferredInstance(object);
-
-            // Write the first line.
-            write(_getIndentPrefix(depth));
-            write("<");
-            write(info.elementName);
-            write(" name=\"");
-            write(name);
-
-            if(info.elementName.equals("class")) {
-                write("\" extends=\"");
-                write(info.superclass);
-            } else {
-                write("\" class=\"");
-                write(info.className);
-            }
-            if(info.source != null) {
-                write("\" source=\"");
-                write(info.source);
-            }
-            if(object instanceof Settable) {
-                Settable settable = (Settable)object;
-                String value = settable.getExpression();
-                if(value != null && !value.equals("")) {
-                    write("\" value=\"");
-                    write(StringUtilities.escapeForXML(value));
-                }
-            }
-            write("\">\n");
-
-            if(object instanceof Configurable) {
-                Configurable container = (Configurable)object;
-                String source = container.getSource();
-                String text = container.getText();
-                boolean hasSource = source != null && !source.equals("");
-                boolean hasText = text != null && !text.equals("");
-                if(source == null) source = "";
-                if(text == null) text = "";
-                
-                if(hasSource || _isVerbose) {
-                    write(_getIndentPrefix(depth + 1));
-                    write("<configure source=\"");
-                    write(source);
-                    write("\">");
-                } else if(hasText) {
-                    write(_getIndentPrefix(depth + 1));
-                    write("<configure>");
-                }
-                if(hasText) {
-                    write(text);
-                }
-                if(hasText || hasSource || _isVerbose) {
-                    write("</configure>\n");
-                }
-                
-                // Rather awkwardly we have to configure the
-                // container, to handle the entity library.
-                if(deferredObject != null &&
-                        !(object instanceof EntityLibrary)) {
-                    try {
-                        // first clone it, since we are going to have to 
-                        // run configure on this object.
-                        try {
-                            deferredObject = (NamedObj)deferredObject.clone();
-                        } catch (CloneNotSupportedException ex) {
-                        }
-                        Configurable deferredContainer =
-                            (Configurable)deferredObject;
-                        deferredContainer.configure(null, source, text);
-                    }
-                    catch (Exception ex) {
-                        System.out.println("Failed to configure because:");
-                        ex.printStackTrace();
-                    }
-                }
-            }
-            
-            if(!(object instanceof EntityLibrary)) {
-                writeContents(object, deferredObject, depth + 1);
-            }
-            write(_getIndentPrefix(depth) + "</"
-                    + info.elementName + ">\n");
-        }
-        } finally {
-            //            System.out.println("DONEING = " + object.getFullName());
-            object.workspace().doneReading();
-        }
+        _write(object, depth, name);
     }
-
+    
     /** Write the contents of the given object as moml on this writer.
      *  Return true if anything was written, or false if nothing was written.
      */
-    public boolean writeContents(NamedObj object, NamedObj deferredObject, int depth)
+    public void writeContents(NamedObj object,
+            NamedObj deferredObject, int depth)
             throws IOException {
-        synchronized(lock) {
-            boolean wroteAnything = false;
-            NamedObj.MoMLInfo info = object.getMoMLInfo();
-
-            _writeAttributeContents(object, deferredObject, depth);
-
-            if(object instanceof ptolemy.kernel.Entity) {
-                Entity container = (Entity)object;
-                Entity deferredContainer = (Entity)deferredObject;
-                wroteAnything |= _writePortContents(container, 
-                        deferredContainer, depth);
-            } 
-            if(object instanceof ptolemy.kernel.CompositeEntity) {
-                CompositeEntity container = (CompositeEntity)object;
-                CompositeEntity deferredContainer = 
-                    (CompositeEntity) deferredObject;
-                wroteAnything |= _writeEntityContents(container, 
-                        deferredContainer, depth);
-                wroteAnything |= _writeRelationContents(container, 
-                        deferredContainer, depth);
-                wroteAnything |= _writeLinkContents(container, 
-                        deferredContainer, depth);
-            }
-            if(object instanceof ptolemy.actor.IOPort) {
-                // Gee, it would be nice if these were regular attributes.
-                IOPort container = (IOPort)object;
-                if (container.isInput()) {
-                    write(_getIndentPrefix(depth));
-                    write("<property name=\"input\"/>\n");
-                    wroteAnything = true;
-                }
-                if (container.isOutput()) {
-                    write(_getIndentPrefix(depth));
-                    write("<property name=\"output\"/>\n");
-                    wroteAnything = true;
-                }
-                if (container.isMultiport()) {
-                    write(_getIndentPrefix(depth));
-                    write("<property name=\"multiport\"/>\n");
-                    wroteAnything = true;
-                } 
-            }             
-            if(object instanceof ptolemy.moml.Vertex) {
-                Vertex container = (Vertex)object;
-                Vertex linked = container.getLinkedVertex();
-                if(linked != null) {
-                    write(_getIndentPrefix(depth));
-                    write("<pathTo=\"");
-                    write(linked.getName());
-                    write("\"/>\n");
-                    wroteAnything = true;
-                }
-
-            }  
-
-            return wroteAnything;
-        }
+        _writeContents(object, deferredObject, depth);
     }
-
+                    
     /** Write the moml header information.  This is usually called
      *  exactly once prior to writing a model to an external file.
      */
@@ -473,122 +297,102 @@ public class MoMLWriter extends Writer {
                 } else {
                     deferredClass = info.className;
                 }
-                /*
-                // System.out.println("deferredClass =" + deferredClass);
-                  ParserAttribute attribute = (ParserAttribute)
-                    object.toplevel().getAttribute("_parser");
-                if(attribute != null) {
-                    MoMLParser parser = attribute.getParser();
-                    deferredObject =
-                        parser._searchForClass(deferredClass,
-                                info.source);
-                                }        
-                //        System.out.println("deferredClass = " + deferredClass);
-                deferredObject = 
-                    _searchForMoMLClass(object, deferredClass, info.source);
-                //System.out.println("deferredObject =" + deferredObject);
-               if(deferredObject != null) {
-                    System.out.println("object =" + object);
-                }          
-*/
-               if(deferredObject == null) {
-                    // No moml class..  must have been a java class.
-                    // FIXME: This sucks.  We should integrate with 
-                    // the classloader mechanism.
-                    String objectType;
-                    if(object instanceof Attribute) {
-                        objectType = "property";
-                    } else if(object instanceof Port) {
-                        objectType = "port";
-                    } else {
-                        objectType = "entity";
-                    }
-                    Class theClass = Class.forName(deferredClass, 
-                            true, getClass().getClassLoader());
-                    deferredObject = (NamedObj)instanceMap.get(theClass);
-                    
-                    if(deferredObject == null) {
-                        //     System.out.println("reflecting " + theClass);
-                        // OK..  try reflecting using a workspace constructor
-                        _reflectionArguments[0] = _reflectionWorkspace;
-                        Constructor[] constructors = 
-                            theClass.getConstructors();
-                        for (int i = 0; i < constructors.length; i++) {
-                            Constructor constructor = constructors[i];
-                            Class[] parameterTypes = 
-                                constructor.getParameterTypes();
-                            if (parameterTypes.length !=
-                                    _reflectionArguments.length)
-                                continue;
-                            boolean match = true;
-                            for (int j = 0; j < parameterTypes.length; j++) {
-                                if (!(parameterTypes[j].isInstance(
-                                        _reflectionArguments[j]))) {
-                                    match = false;
-                                    break;
-                                }
-                            }
-                            if (match) {
-                                deferredObject = (NamedObj)
-                                    constructor.newInstance(
-                                            _reflectionArguments);
+                
+                // No moml class..  must have been a java class.
+                // FIXME: This sucks.  We should integrate with 
+                // the classloader mechanism.
+                String objectType;
+                if(object instanceof Attribute) {
+                    objectType = "property";
+                } else if(object instanceof Port) {
+                    objectType = "port";
+                } else {
+                    objectType = "entity";
+                }
+                Class theClass = Class.forName(deferredClass, 
+                        true, getClass().getClassLoader());
+                deferredObject = (NamedObj)instanceMap.get(theClass);
+                
+                if(deferredObject == null) {
+                    // System.out.println("reflecting " + theClass);
+                    // OK..  try reflecting using a workspace constructor
+                    _reflectionArguments[0] = _reflectionWorkspace;
+                    Constructor[] constructors = 
+                        theClass.getConstructors();
+                    for (int i = 0; i < constructors.length; i++) {
+                        Constructor constructor = constructors[i];
+                        Class[] parameterTypes = 
+                            constructor.getParameterTypes();
+                        if (parameterTypes.length !=
+                                _reflectionArguments.length)
+                            continue;
+                        boolean match = true;
+                        for (int j = 0; j < parameterTypes.length; j++) {
+                            if (!(parameterTypes[j].isInstance(
+                                    _reflectionArguments[j]))) {
+                                match = false;
                                 break;
                             }
                         }
-                    }
-                    
-                    //String source = "<" + objectType + " name=\""
-                    //    + object.getName() + "\" class=\""
-                    //    + deferredClass + "\"/>";
-                    //deferredObject = parser.parse(source);
-                    //System.out.println("class with workspace = " + 
-                    //        deferredClass);
-                    if(deferredObject == null) {
-                        // Damn, no workspace constructor.  Let's
-                        // try a container, name constructor.
-                        // It really would be nice if all of 
-                        // our actors had workspace constructors,
-                        // but version 1.0 only specified the
-                        // (container,name) constructor, and 
-                        // now we're stuck with it. 
-                        String source = "<entity name=\"parsedClone\""
-                            + "class=\"ptolemy.kernel.CompositeEntity\">\n"
-                            + "<" + objectType + " name=\""
-                            + object.getName() + "\" class=\""
-                            + deferredClass + "\"/>\n" 
-                            + "</entity>";
-                        _reflectionParser.reset();
-                        CompositeEntity toplevel;
-                        try {
-                            toplevel = (CompositeEntity)
-                                _reflectionParser.parse(source);
-                        } catch (Exception ex) {
-                            throw new InternalErrorException("Attempt "
-                                    + "to create an instance of "
-                                    + deferredClass + " failed because "
-                                    + "it does not have a Workspace "
-                                    + "constructor.  Original error:\n"
-                                    + ex.getMessage());
+                        if (match) {
+                            deferredObject = (NamedObj)
+                                constructor.newInstance(
+                                        _reflectionArguments);
+                            break;
                         }
-                        if(object instanceof Attribute) {
-                            deferredObject = 
-                                toplevel.getAttribute(object.getName());
-                        } else if(object instanceof Port) {
-                            deferredObject = 
-                                toplevel.getPort(object.getName());
-                        } else {
-                            deferredObject = 
-                                toplevel.getEntity(object.getName()); 
-                        }
-                        //           System.out.println("class without workspace = " + 
-                        //        deferredClass);
                     }
-                    // Save the reference in the map, so we don't have to
-                    // do that crap again.
-                    if(deferredObject != null) {
-                        instanceMap.put(theClass, deferredObject);
+                }
+                
+                //String source = "<" + objectType + " name=\""
+                //    + object.getName() + "\" class=\""
+                //    + deferredClass + "\"/>";
+                //deferredObject = parser.parse(source);
+                //System.out.println("class with workspace = " + 
+                //        deferredClass);
+                if(deferredObject == null) {
+                    // Damn, no workspace constructor.  Let's
+                    // try a container, name constructor.
+                    // It really would be nice if all of 
+                    // our actors had workspace constructors,
+                    // but version 1.0 only specified the
+                    // (container,name) constructor, and 
+                    // now we're stuck with it. 
+                    String source = "<entity name=\"parsedClone\""
+                        + "class=\"ptolemy.kernel.CompositeEntity\">\n"
+                        + "<" + objectType + " name=\""
+                        + object.getName() + "\" class=\""
+                        + deferredClass + "\"/>\n" 
+                        + "</entity>";
+                    _reflectionParser.reset();
+                    CompositeEntity toplevel;
+                    try {
+                        toplevel = (CompositeEntity)
+                            _reflectionParser.parse(source);
+                    } catch (Exception ex) {
+                        throw new InternalErrorException("Attempt "
+                                + "to create an instance of "
+                                + deferredClass + " failed because "
+                                + "it does not have a Workspace "
+                                + "constructor.  Original error:\n"
+                                + ex.getMessage());
                     }
-                        
+                    if(object instanceof Attribute) {
+                        deferredObject = 
+                            toplevel.getAttribute(object.getName());
+                    } else if(object instanceof Port) {
+                        deferredObject = 
+                            toplevel.getPort(object.getName());
+                    } else {
+                        deferredObject = 
+                            toplevel.getEntity(object.getName()); 
+                    }
+                    //  System.out.println("class without workspace = " + 
+                    //   deferredClass);
+                }
+                // Save the reference in the map, so we don't have to
+                // do that crap again.
+                if(deferredObject != null) {
+                    instanceMap.put(theClass, deferredObject);
                 }
             }
             catch (Exception ex) {
@@ -646,57 +450,295 @@ public class MoMLWriter extends Writer {
         return null;
     }        
     
+    private boolean _write(NamedObj object, int depth, String name) 
+            throws IOException {
+        try {
+            // This isn't technically necessary, but locking the workspace
+            // once globally means that the rest of this will operate much
+            // faster.
+            object.workspace().getReadAccess();
+            // System.out.println("Writing = " + object.getFullName());
+        synchronized(lock) {
+            boolean wroteAnything = false;
+            // Alot of things aren't presistent and are just skipped.
+            if(object instanceof NotPersistent && !_isForcePersistence) 
+                return false;
+            // Documentation uses a special tag with no class.
+            if(object instanceof Documentation && !_isLiteral) {
+                Documentation container = (Documentation)object;
+                write(_getIndentPrefix(depth));
+                // If the name is the default name, then omit it
+                if(name.equals("_doc")) {
+                    write("<doc>");
+                } else {
+                    write("<doc name=\"");
+                    write(name);
+                    write("\">");
+                }
+                write(container.getValue());
+                write("</doc>\n");
+                return true;
+            }
+            // MoMLAttribute writes arbitrary moml.
+            // This is a hack, and hopefully we should be able to
+            // get rid of it eventually.
+            if(object instanceof MoMLAttribute && !_isLiteral) {
+                // MoMLAttribute container = (MoMLAttribute)object;
+                //container.writeMoMLDescription(this, depth);
+                return true;
+            }
+            NamedObj.MoMLInfo info = object.getMoMLInfo();
+            // Write if nothing is being deferred to and there is no
+            // class name.
+            NamedObj deferredObject = _findDeferredInstance(object);
 
-    private boolean _writeAttributeContents(NamedObj object, NamedObj deferredObject, int depth) throws IOException {
-        boolean wroteAnything = false;
-        // Describe parameterization.
-        Iterator attributes = object.attributeList().iterator();
-        while(attributes.hasNext()) {
-            Attribute attribute = (Attribute)attributes.next();
+            // Write the first line.
+            write(_getIndentPrefix(depth));
+            write("<");
+            write(info.elementName);
+            write(" name=\"");
+            write(name);
+
+            if(info.elementName.equals("class")) {
+                write("\" extends=\"");
+                write(info.superclass);
+            } else {
+                write("\" class=\"");
+                write(info.className);
+            }
+            if(info.source != null) {
+                write("\" source=\"");
+                write(info.source);
+            }
+            if(object instanceof Settable) {
+                Settable settable = (Settable)object;
+                String value = settable.getExpression();
+                if(value != null && !value.equals("")) {
+                    write("\" value=\"");
+                    write(StringUtilities.escapeForXML(value));
+                }
+                wroteAnything = true;
+            }
+            write("\">\n");
+
+            if(object instanceof Configurable) {
+                Configurable container = (Configurable)object;
+                String source = container.getSource();
+                String text = container.getText();
+                boolean hasSource = source != null && !source.equals("");
+                boolean hasText = text != null && !text.equals("");
+                if(source == null) source = "";
+                if(text == null) text = "";
+                
+                if(hasSource || _isVerbose) {
+                    write(_getIndentPrefix(depth + 1));
+                    write("<configure source=\"");
+                    write(source);
+                    write("\">");
+                } else if(hasText) {
+                    write(_getIndentPrefix(depth + 1));
+                    write("<configure>");
+                }
+                if(hasText) {
+                    write(text);
+                }
+                if(hasText || hasSource || _isVerbose) {
+                    write("</configure>\n");
+                }
+                
+                // Rather awkwardly we have to configure the
+                // container, to handle the entity library.
+                if(deferredObject != null &&
+                        !(object instanceof EntityLibrary)) {
+                    try {
+                        // first clone it, since we are going to have to 
+                        // run configure on this object.
+                        try {
+                            deferredObject = (NamedObj)deferredObject.clone();
+                        } catch (CloneNotSupportedException ex) {
+                        }
+                        Configurable deferredContainer =
+                            (Configurable)deferredObject;
+                        deferredContainer.configure(null, source, text);
+                    }
+                    catch (Exception ex) {
+                        System.out.println("Failed to configure because:");
+                        ex.printStackTrace();
+                    }
+                }
+            }
             
-            if(deferredObject == null) {
+            //   boolean wroteAnything;
+            if(!(object instanceof EntityLibrary)) {
+                wroteAnything |= 
+                    _writeContents(object, deferredObject, depth + 1);
+            } else {
+                wroteAnything = true;
+            }
+            write(_getIndentPrefix(depth) + "</"
+                    + info.elementName + ">\n");
+            return wroteAnything;
+        }
+        } finally {
+            // System.out.println("DONEING = " + object.getFullName());
+            object.workspace().doneReading();
+        }
+    }
+
+    private boolean _writeAttributeContents(NamedObj object, 
+            NamedObj deferredObject, int depth) throws IOException {
+        boolean wroteAnything = false;
+        if(deferredObject == null) {
+            // Describe parameterization.
+            Iterator attributes = object.attributeList().iterator();
+            while(attributes.hasNext()) {
+                Attribute attribute = (Attribute)attributes.next();
+                
                 // If we have nothing to refer to, then just write the
                 // attribute.
                 write(attribute, depth);
                 wroteAnything = true;
-            } else {
+            }
+        }  else {
+            List list = new ArrayList();
+            list.addAll(deferredObject.attributeList());
+            // Describe parameterization.
+            for(Iterator attributes = object.attributeList().iterator();
+                attributes.hasNext();) {
+                Attribute attribute = (Attribute)attributes.next();
                 // Otherwise, check inside the referred object to
                 // see if we need to write the attribute.
                 Attribute deferAttribute =
                     deferredObject.getAttribute(attribute.getName());
+                list.remove(deferAttribute);
                 wroteAnything |=
                     _writeForDeferred(attribute, deferAttribute, depth);
             }
+            
+            // Now delete all the elements of the deferredContainer that
+            // no longer exist.
+            for(Iterator attributes = list.iterator();
+                attributes.hasNext();) {
+                Attribute attribute = (Attribute)attributes.next();
+                write(_getIndentPrefix(depth));
+                write("<deleteProperty name=\"" + 
+                        attribute.getName() + "\"/>\n");
+            }
         }
         return wroteAnything;
+    }
+
+    /** Write the contents of the given object as moml on this writer.
+     *  Return true if anything was written, or false if nothing was written.
+     */
+    private boolean _writeContents(NamedObj object,
+            NamedObj deferredObject, int depth)
+            throws IOException {
+        synchronized(lock) {
+            boolean wroteAnything = false;
+            NamedObj.MoMLInfo info = object.getMoMLInfo();
+
+            wroteAnything = 
+                _writeAttributeContents(object, deferredObject, depth);
+
+            if(object instanceof ptolemy.kernel.Entity) {
+                Entity container = (Entity)object;
+                Entity deferredContainer = (Entity)deferredObject;
+                wroteAnything |= _writePortContents(container, 
+                        deferredContainer, depth);
+            } 
+            if(object instanceof ptolemy.kernel.CompositeEntity) {
+                CompositeEntity container = (CompositeEntity)object;
+                CompositeEntity deferredContainer = 
+                    (CompositeEntity) deferredObject;
+                wroteAnything |= _writeEntityContents(container, 
+                        deferredContainer, depth);
+                wroteAnything |= _writeRelationContents(container, 
+                        deferredContainer, depth);
+                wroteAnything |= _writeLinkContents(container, 
+                        deferredContainer, depth);
+            }
+            if(object instanceof ptolemy.actor.IOPort) {
+                // Gee, it would be nice if these were regular attributes.
+                IOPort container = (IOPort)object;
+                if (container.isInput()) {
+                    write(_getIndentPrefix(depth));
+                    write("<property name=\"input\"/>\n");
+                    wroteAnything = true;
+                }
+                if (container.isOutput()) {
+                    write(_getIndentPrefix(depth));
+                    write("<property name=\"output\"/>\n");
+                    wroteAnything = true;
+                }
+                if (container.isMultiport()) {
+                    write(_getIndentPrefix(depth));
+                    write("<property name=\"multiport\"/>\n");
+                    wroteAnything = true;
+                } 
+            }             
+            if(object instanceof ptolemy.moml.Vertex) {
+                Vertex container = (Vertex)object;
+                Vertex linked = container.getLinkedVertex();
+                if(linked != null) {
+                    write(_getIndentPrefix(depth));
+                    write("<pathTo=\"");
+                    write(linked.getName());
+                    write("\"/>\n");
+                    wroteAnything = true;
+                }
+
+            }  
+
+            return wroteAnything;
+        }
     }
 
     private boolean _writeEntityContents(CompositeEntity container, 
             CompositeEntity deferredContainer, int depth) 
             throws IOException {
         boolean wroteAnything = false;
-        Iterator entities = container.entityList().iterator();
-        while (entities.hasNext()) {
-            ComponentEntity entity = 
-                (ComponentEntity)entities.next();
-            if(deferredContainer == null) {
+        
+        if(deferredContainer == null) {
+            Iterator entities = container.entityList().iterator();
+            while (entities.hasNext()) {
+                ComponentEntity entity = 
+                    (ComponentEntity)entities.next();
                 // If we have nothing to refer to, 
                 // then just write the
                 // entity.
                 write(entity, depth);
                 wroteAnything = true;
-            } else {
+            }
+        } else {
+            List list = new ArrayList();
+            list.addAll(deferredContainer.entityList());
+            for(Iterator entities = container.entityList().iterator();
+                entities.hasNext();) {
+                ComponentEntity entity = 
+                    (ComponentEntity)entities.next();
                 // Otherwise, check inside the referred object to
                 // see if we need to write the entity.
                 String entityName = entity.getName(container);
                 //    System.out.println("entityName = " + entityName);
                 Entity deferredEntity =
                     deferredContainer.getEntity(entityName);
+                list.remove(deferredEntity);
                 // System.out.println("deferEntity= " + 
                 //        deferredEntity);
                 wroteAnything |=
                     _writeForDeferred(entity, deferredEntity, 
                             depth);
+            }
+
+            // Now delete all the elements of the deferredContainer that
+            // no longer exist.
+            for(Iterator entities = list.iterator();
+                entities.hasNext();) {
+                ComponentEntity entity = 
+                    (ComponentEntity)entities.next();
+                write(_getIndentPrefix(depth));
+                write("<deleteEntity name=\"" + entity.getName() + "\"/>\n");
             }
         }
         return wroteAnything;
@@ -713,17 +755,18 @@ public class MoMLWriter extends Writer {
         Iterator ports = container.portList().iterator();
         while (ports.hasNext()) {
             ComponentPort port = (ComponentPort)ports.next();
-            Iterator relations = port.insideRelationList().iterator();
-            Iterator deferredRelations = null;
+            List relationList = port.insideRelationList();
+            List deferredRelationList = null;
             if(deferredContainer != null) {
                 ComponentPort deferredPort = (ComponentPort)
                     deferredContainer.getPort(port.getName());
                 if(deferredPort != null) 
-                    deferredRelations = 
-                        deferredPort.insideRelationList().iterator();
+                    deferredRelationList = 
+                        deferredPort.insideRelationList();
             }
             wroteAnything |= _writeLinks(container, port,
-                    relations, deferredRelations, depth);
+                    relationList, deferredRelationList, 
+                    true, depth);
         }
 
         // Next, produce the links on ports contained by contained entities.
@@ -738,99 +781,305 @@ public class MoMLWriter extends Writer {
             ports = entity.portList().iterator();
             while (ports.hasNext()) {
                 ComponentPort port = (ComponentPort)ports.next();
-                Iterator relations = port.linkedRelationList().iterator();
-                Iterator deferredRelations = null;
+                List relationList = port.linkedRelationList();
+                List deferredRelationList = null;
                
                 if(deferredEntity != null) {
                     ComponentPort deferredPort = (ComponentPort)
                         deferredEntity.getPort(port.getName());
                     if(deferredPort != null) 
-                        deferredRelations = 
-                            deferredPort.linkedRelationList().iterator();
+                        deferredRelationList = 
+                            deferredPort.linkedRelationList();
                 }
                 wroteAnything |= _writeLinks(container, port,
-                        relations, deferredRelations, depth);
+                        relationList, deferredRelationList, 
+                        false, depth);
             }
         }
         return wroteAnything;
     }
         
     private boolean _writeLinks(CompositeEntity container, ComponentPort port, 
-            Iterator relations, Iterator deferredRelations, int depth) 
+            List relationList, List deferredRelationList, boolean isInside,
+            int depth) 
             throws IOException {
         boolean wroteAnything = false;
+
         // The following variables are used to determine whether to
         // specify the index of the link explicitly, or to leave
         // it implicit.
-        int index = -1;
         boolean useIndex = false;
-        while (relations.hasNext()) {
-            index++;
-            ComponentRelation relation
-                = (ComponentRelation)relations.next();
-            
-            if(deferredRelations != null && deferredRelations.hasNext()) {
-                 ComponentRelation deferredRelation
-                     = (ComponentRelation)deferredRelations.next();
-                 if(deferredRelation.getName().equals(relation.getName())) {
-                     useIndex = true;
-                     continue;
-                 }
-            }
-            if (relation == null) {
-                // Gap in the links.  The next link has to use an
-                // explicit index.
-                useIndex = true;
-                continue;
-            }
-            // Apply filter.
-            if (true) {
-                //filter == null
-                //    || (filter.contains(relation)
-                //    && (filter.contains(port)
-                //    ||  filter.contains(port.getContainer())))) {
+        if(deferredRelationList == null) {
+            int index = -1;
+            // Then just write the links.
+            for(Iterator relations = relationList.iterator();
+                relations.hasNext();) {
+                index++;
+                ComponentRelation relation
+                    = (ComponentRelation)relations.next();
                 
-                write(_getIndentPrefix(depth));
-                write("<link port=\"");
-                write(port.getName(container));
-                if (useIndex) {
-                    useIndex = false;
-                    write("\" insertAt=\"" + index);
+                if (relation == null) {
+                    // Gap in the links.  The next link has to use an
+                    // explicit index.
+                    useIndex = true;
+                    continue;
                 }
-                write("\" relation=\"");
-                write(relation.getName(container));
-                write("\"/>\n");
-                wroteAnything = true;
+                // Apply filter.
+                if (true) {
+                    //filter == null
+                    //    || (filter.contains(relation)
+                    //    && (filter.contains(port)
+                    //    ||  filter.contains(port.getContainer())))) {
+                    
+                    write(_getIndentPrefix(depth));
+                    write("<link port=\"");
+                    write(port.getName(container));
+                    write("\" relation=\"");
+                    write(relation.getName(container));
+                    
+                    if (useIndex) {
+                        useIndex = false;
+                        write("\" insertAt=\"" + index);
+                    }
+                    
+                    write("\"/>\n");
+                    wroteAnything = true;
+                }
+            }
+        } else {
+            int index = 0;
+            int deferredIndex = 0;
+            // Be more careful and compare with the
+            // deferredRelations.
+            while(index < relationList.size() ||
+                    deferredIndex < deferredRelationList.size()) {
+                ComponentRelation relation;
+                if(index < relationList.size()) {
+                    relation = (ComponentRelation)relationList.get(index);
+                } else {
+                    relation = null;
+                }
+                ComponentRelation deferredRelation;
+                if(index < deferredRelationList.size()) {
+                    deferredRelation = (ComponentRelation)
+                        deferredRelationList.get(deferredIndex);
+                } else {
+                    deferredRelation = null;
+                }
+                if(relation == null && deferredRelation == null) {
+                    // If neither channel is connected, then skip.
+                    index++;
+                    deferredIndex++;
+                    useIndex = true;
+                    continue;
+                } else if(relation == null) {
+                    // If only deferredRelation is connected, then unlink
+                    // and reinsert a null link.
+                    _writeUnlink(port, container, isInside,
+                            deferredIndex, depth);
+                    //FIXME
+                    index++;
+                    deferredIndex++;
+                    useIndex = true;
+                    continue;
+                } else if(deferredRelation == null) {
+                    // If only relation is connected, then link
+                    _writeLink(port, relation, container, 
+                            useIndex, index, depth);
+                    index++;
+                    deferredIndex++;
+                    useIndex = false;
+                    continue;
+                }
+                // If the channel is connected to the same relation, then 
+                // skip.
+                if(deferredRelation.getName().equals(relation.getName())) {
+                    index++;
+                    deferredIndex++;
+                    useIndex = true;
+                    continue;
+                }
+                // Otherwise both are connected, but not to the same thing,
+                // so first try to look for insertion(s).  Search forward
+                // through the actual links to see if we can find another
+                // relation with the same name as the deferredRelation.
+                boolean foundInsertion = false;
+                int insertionIndex;
+                for(insertionIndex = index;
+                    insertionIndex < relationList.size();
+                    insertionIndex++) {
+                    ComponentRelation insertRelation
+                        = (ComponentRelation)relationList.get(insertionIndex);
+                    if(insertRelation != null &&
+                            deferredRelation.getName().equals(
+                                    insertRelation.getName())) {
+                        foundInsertion = true;
+                        break;
+                    }
+                }
+                // Search for deletion(s) in the deferredLinks in the same
+                // fashion.
+                boolean foundDeletion = false;
+                int deletionIndex;
+                for(deletionIndex = deferredIndex;
+                    deletionIndex < relationList.size();
+                    deletionIndex++) {
+                    ComponentRelation deleteRelation
+                        = (ComponentRelation)relationList.get(deletionIndex);
+                    if(deleteRelation != null &&
+                            deleteRelation.getName().equals(
+                                    relation.getName())) {
+                        foundDeletion = true;
+                        break;
+                    }
+                }
+                if(!(foundDeletion || foundInsertion)) {
+                    // If neither was found, then likely the link was moved.
+                    // unlink the existing link and relink to the new relation.
+                    _writeUnlink(port, container, isInside,
+                            deferredIndex, depth);
+                    // Insert the added link.
+                    _writeLink(port, relation, container, 
+                            true, index, depth);
+                    deferredIndex++;
+                    index++;
+                    useIndex = true;
+                } else if(foundDeletion && foundInsertion) {
+                    // Then pick the one that will result in fewer operations,
+                    // favoring deletions over insertions.
+                    int deletions = deletionIndex - deferredIndex;
+                    int insertions = insertionIndex - index;
+                    if(insertions > deletions) {
+                        // Delete the deferred link
+                        _writeUnlink(port, container, isInside,
+                                deferredIndex, depth);
+                        deferredIndex++;
+                        useIndex = true;
+                    } else {
+                        // Insert the added link.
+                        _writeLink(port, relation, container, 
+                                useIndex, index, depth);
+                        index++;
+                        useIndex = false;
+                    }
+                } else if(foundDeletion) {
+                    // Delete the deferred link
+                    _writeUnlink(port, container, isInside,
+                            deferredIndex, depth);
+                    deferredIndex++;
+                    useIndex = true;
+                } else {
+                    // Insert the added link.
+                    _writeLink(port, relation, container, 
+                            useIndex, index, depth);
+                    index++;
+                    useIndex = false;
+                }
             }
         }
         return wroteAnything;
     }
+                
+    // Write information describing a link from the given port
+    // to the given relation in the given container.  If useIndex is
+    // true, then additionally specify the given index.
+    private boolean _writeLink(ComponentPort port, 
+            ComponentRelation relation, Entity container,
+            boolean useIndex, int index, int depth)
+            throws IOException {
+        boolean wroteAnything = false;
+        // Apply filter.
+        if (true) {
+            //filter == null
+            //    || (filter.contains(relation)
+            //    && (filter.contains(port)
+            //    ||  filter.contains(port.getContainer())))) {
+            
+            write(_getIndentPrefix(depth));
+            write("<link port=\"");
+            write(port.getName(container));
+            write("\" relation=\"");
+            write(relation.getName(container));
+            
+            if (useIndex) {
+                write("\" insertAt=\"" + index);
+            }
+            
+            write("\"/>\n");
+            wroteAnything = true;
+        }
+        return wroteAnything;
+    }
 
+    // Write unlink information describing an unlink from the given index
+    // of the the given port in the given container.  If inside is
+    // true, then the index is an inside index.
+    private boolean _writeUnlink(Port port, Entity container,
+            boolean isInside, int index, int depth)
+            throws IOException {
+        boolean wroteAnything = false;
+        // Apply filter.
+        if (true) {
+            //filter == null
+            //    || (filter.contains(relation)
+            //    && (filter.contains(port)
+            //    ||  filter.contains(port.getContainer())))) {
+            
+            write(_getIndentPrefix(depth));
+            write("<unlink port=\"");
+            write(port.getName(container));
+                      
+            if (isInside) {
+                write("\" insideIndex=\"" + index);
+            } else {
+                write("\" index=\"" + index);
+            }
+            
+            write("\"/>\n");
+            wroteAnything = true;
+        }
+        return wroteAnything;
+    }
 
     private boolean _writePortContents(Entity container,
             Entity deferredContainer, int depth) 
             throws IOException {
         boolean wroteAnything = false;
-        Iterator ports = container.portList().iterator();
-        while (ports.hasNext()) {
-            Port port = (Port)ports.next();
-            if(deferredContainer == null) {
+        if(deferredContainer == null) {
+            Iterator ports = container.portList().iterator();
+            while (ports.hasNext()) {
+                Port port = (Port)ports.next();
                 // If we have nothing to refer to, 
-                // then just write the
-                // entity.
+                // then just write the ports
                 write(port, depth);
                 wroteAnything = true;
-            } else {
+            }
+        } else {
+            List list = new ArrayList();
+            list.addAll(deferredContainer.portList());
+            for(Iterator ports = container.portList().iterator();
+                ports.hasNext();) {
+                Port port = (Port)ports.next();
                 // Otherwise, check inside the referred object to
                 // see if we need to write the attribute.
                 String portName = port.getName(container);
                 //   System.out.println("portName = " + portName);
                 Port deferPort = 
                     deferredContainer.getPort(port.getName(container));
+                list.remove(deferPort);
                 // System.out.println("deferPort = " + 
                 //        deferPort);
                 wroteAnything |=
                     _writeForDeferred(port, deferPort, depth);
+            }
+
+            // Now delete all the elements of the deferredContainer that
+            // no longer exist.
+            for(Iterator ports = list.iterator();
+                ports.hasNext();) {
+                Port port = (Port)ports.next();
+                write(_getIndentPrefix(depth));
+                write("<deletePort name=\"" + port.getName() + "\"/>\n");
             }
         }
         return wroteAnything;
@@ -840,26 +1089,41 @@ public class MoMLWriter extends Writer {
             CompositeEntity deferredContainer, int depth) 
             throws IOException {
         boolean wroteAnything = false;
-        Iterator relations = container.relationList().iterator();
-        while (relations.hasNext()) {
-            ComponentRelation relation
-                        = (ComponentRelation)relations.next();
-            if(deferredContainer == null) {
+        if(deferredContainer == null) {
+            Iterator relations = container.relationList().iterator();
+            while (relations.hasNext()) {
+                ComponentRelation relation
+                    = (ComponentRelation)relations.next();
                 // If we have nothing to refer to, 
                 // then just write the
                 // entity.
                 write(relation, depth);
                 wroteAnything = true;
-            } else {
+            } 
+        } else {
+            List list = new ArrayList();
+            list.addAll(deferredContainer.relationList());
+            for(Iterator relations = container.relationList().iterator();
+                relations.hasNext();) {
+                ComponentRelation relation
+                    = (ComponentRelation)relations.next();
                 // Otherwise, check inside the referred object to
                 // see if we need to write the relation.
                 String relationName = relation.getName(container);
                 ComponentRelation deferredRelation =
                     deferredContainer.getRelation(relationName);
+                list.remove(deferredRelation);
                 wroteAnything |=
                     _writeForDeferred(relation, deferredRelation, 
                             depth);
             }
+            for(Iterator relations = list.iterator();
+                relations.hasNext();) {
+                ComponentRelation relation
+                    = (ComponentRelation)relations.next();
+                write(_getIndentPrefix(depth));
+                write("<deleteRelation name=\"" + relation.getName() + "\"/>\n");
+            }           
         }
         return wroteAnything;
     }
@@ -878,27 +1142,31 @@ public class MoMLWriter extends Writer {
             NamedObj deferredObject, int depth) throws IOException {
         // If there is no deferred object, then write the object.
         if(deferredObject == null || _isVerbose) {
-            write(object, depth);
+            //System.out.println("Writing " + object.getFullName());
+            _write(object, depth, object.getName());
             return true;
         } else {
+            //System.out.println("Writing deferred " + object.getFullName());
             StringWriter deferStringWriter = new StringWriter();
             MoMLWriter deferWriter = new MoMLWriter(deferStringWriter);
-            deferWriter.setVerbose(true);
-            deferWriter.write(deferredObject, depth);
+            boolean check = 
+                deferWriter._write(deferredObject, depth, object.getName());
             String deferredString = deferStringWriter.toString();
 
             StringWriter stringWriter = new StringWriter();
             MoMLWriter writer = new MoMLWriter(stringWriter);
-            writer.setVerbose(true);
-            writer.write(object, depth);
+            check = check && writer._write(object, depth, object.getName());
             String string = stringWriter.toString();
 
+            if(!check) {
+                System.out.println("check helped!");
+            }
             // If the object is different, then write it.
-            if(!string.equals(deferredString)) {
+            if(check && !string.equals(deferredString)) {
                 //  System.out.println("string = " + string);
                 //  System.out.println("deferredString = " + deferredString);
-                write(object, depth);
-
+                // _write(object, depth, object.getName());
+                write(string);
                 return true;
             }
             return false;
