@@ -231,7 +231,7 @@ public class CSPDirector extends Director {
             throws CloneNotSupportedException, IllegalActionException {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
-            if (!_executivedirector) {
+            if (!isExecutiveDirector()) {
                 // This is the local director.
                 Enumeration allactors = container.deepGetEntities();
                 while (allactors.hasMoreElements()) {
