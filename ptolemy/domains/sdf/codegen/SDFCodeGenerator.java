@@ -60,6 +60,15 @@ import ptolemy.domains.sdf.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// SDFCodeGenerator
 /** A code generator for SDF.
+ *  Command line arguments are specified as with the CompositeActorApplication
+ *  class, except that the first argument can optionally be used to enable
+ *  shallow loading of abstract syntax trees: if the first argument is 
+ *  "-shallowLoading" then shallow loading will be enabled. Shallow loading
+ *  is an experimental feature that decreases the size and 
+ *  number of abstract syntax trees
+ *  that have to be loaded during code generation. For details on shallow
+ *  loading, see ptolemy.lang.java.ASTReflect. 
+ *
 @author Jeff Tsay, Christopher Hylands
 @version $Id$
  */
@@ -110,6 +119,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
             throw new RuntimeException("could not create output directory " +
                     _packageDirectoryName);
         }
+
+        // Initialize static resolution
+        StaticResolution.setup();
 
         try {
             // initialize the model to ensure type resolution and scheduling
@@ -264,7 +276,17 @@ public class SDFCodeGenerator extends CompositeActorApplication
         SDFCodeGenerator codeGen = new SDFCodeGenerator();
 
         try {
-            codeGen.processArgs(args);
+            String[] newArgs;
+            // See if shallow loading should be enabled.
+            if ((args.length > 0) && (args[0].equals("-shallowLoading"))) {
+                StaticResolution.enableShallowLoading();
+                // Remove the shallow loading argument before further argument
+                // processing.
+                newArgs = new String[args.length - 1];
+                System.arraycopy(args, 1, newArgs, 0, (args.length - 1));
+            }
+            else newArgs = args;
+            codeGen.processArgs(newArgs);
             codeGen.generateCode();
         } catch (Exception ex) {
             System.err.println(ex.toString());
