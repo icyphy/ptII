@@ -73,16 +73,11 @@ The above approach provides each receiver associated with a given TimeKeeper
 with a unique priority, such that the set of receiver priorities of the
 associated TimeKeeper is totally ordered.
 <P>
-RcvrTimeTriple objects are used to facilitate the ordering of receivers
-contained by an TimeKeeper according to rcvrTime, lastTime and priority. A
-RcvrTimeTriple is an object containing an ODFReceiver, the _rcvrTime of
-the receiver and the priority of the receiver. Each TimeKeeper contains a
-list consisting of one RcvrTimeTriple per receiver associated with the
-TimeKeeper. As tokens are placed in and taken out of the receivers of an 
-actor, the list of RcvrTimeTriples is updated. Based on the RcvrTimeTriple 
-list, the TimeKeeper can determine what the current time is. This 
-information can then be passed on to the actor for which the TimeKeeper 
-manages time.
+A TimeKeeper manages the ordering of receivers by keeping track of 
+its receivers and their corresponding receiver times and priorities.
+As tokens are placed in and taken out of the receivers of an actor, 
+the TimeKeeper's list is updated. This same information allows the 
+TimeKeeper to determine what the current time is.
 
 @author John S. Davis II
 @version $Id$
@@ -198,8 +193,10 @@ public class TimeKeeper {
      */
     public double getNextTime() {
         if( _rcvrTimeList.size() == 0 ) {
+	    // System.out.println("List size is 0 inside of getNextTime");
             return _currentTime;
         }
+	// System.out.println("List size is not 0 inside of getNextTime");
         RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
         return triple.getTime();
     }
@@ -251,16 +248,12 @@ public class TimeKeeper {
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
 		    ODFReceiver rcvr = (ODFReceiver)rcvrs[i][j];
-                    rcvr.setReceivingTimeKeeper(this);
+                    // rcvr.setReceivingTimeKeeper(this);
                     // rcvr.setReceivingTimeKeeper(_timeKeeper);
+		    // System.out.println("About to be updated inside initializeRcvrList()");
 		    updateRcvrList(rcvr, rcvr.getRcvrTime(), 
 			    rcvr.getPriority());
-		    /*
-                    RcvrTimeTriple triple = new RcvrTimeTriple(
-			    rcvr, rcvr.getRcvrTime(),
-			    rcvr.getPriority() );
-		    updateRcvrList(triple);
-		    */
+		    // System.out.println("List size is " + _rcvrTimeList.size());
 		}
 	    }
 	}
@@ -281,8 +274,7 @@ public class TimeKeeper {
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
 		    ODFReceiver rcvr = (ODFReceiver)rcvrs[i][j];
-                    rcvr.setSendingTimeKeeper(this);
-                    // rcvr.setSendingTimeKeeper(_timeKeeper);
+                    // rcvr.setSendingTimeKeeper(this);
 		}
 	    }
 	}
@@ -315,6 +307,22 @@ public class TimeKeeper {
             }
 	    */
         }
+    }
+
+    /** 
+     */
+    public synchronized void resortRcvrList() {
+	int listSize = _rcvrTimeList.size();
+	LinkedList oldRcvrTimeList = _rcvrTimeList;
+	_rcvrTimeList = new LinkedList();
+	RcvrTimeTriple triple;
+	TimedQueueReceiver rcvr;
+	for( int i = 0; i < listSize; i++ ) {
+	    triple = (RcvrTimeTriple)oldRcvrTimeList.at(i);
+	    rcvr = triple.getReceiver();
+	    updateRcvrList(rcvr, rcvr.getRcvrTime(), rcvr.getPriority() );
+	}
+	// System.out.println("NextTime is now " + getNextTime() );
     }
 
     /** Set the current time of this TimeKeeper. If the new specified
@@ -381,14 +389,10 @@ public class TimeKeeper {
 
 		    // Is the following necessary?? 
 		    //
+		    // System.out.println("About to be updated inside setRcvrPriorities()");
 		    updateRcvrList( (ODFReceiver)rcvrs[i][j], 
 			    _currentTime, currentPriority );
-		    /* 
-                    RcvrTimeTriple triple = new RcvrTimeTriple(
-                            (ODFReceiver)rcvrs[i][j],
-			    _currentTime, currentPriority );
-                    updateRcvrList( triple );
-		    */ 
+		    // System.out.println("List size is " + _rcvrTimeList.size());
 
                     currentPriority++;
                 }
@@ -399,7 +403,7 @@ public class TimeKeeper {
 
     /** Return the delay time associated with this time keeper.
      *  The delay time value is expected to be updated possibly
-     * @return double Return the delay time of this time keeper.
+     * @return double The delay time of this time keeper.
      *  once per every token consumption of a given actor.
      */
     public synchronized double getDelayTime() { 
@@ -421,7 +425,8 @@ public class TimeKeeper {
 	_delayTime = delay;
     }
 
-    /** Update the list of RcvrTimeTriples by positioning the
+    /** Update the list of TimedQueueReceivers. 
+     *  RcvrTimeTriples by positioning the
      *  specified triple. If the specified triple is already
      *  contained in the list, then the triple is removed and
      *  then added back to the list. The position of the triple
@@ -430,8 +435,6 @@ public class TimeKeeper {
      * @param time The time of the repositioned TimedQueueReceiver.
      * @param priority The priority of the repositioned TimedQueueReceiver.
      */
-    // * @param triple The RcvrTimeTriple to be positioned in the list.
-    // RFIXME: public synchronized void updateRcvrList(RcvrTimeTriple triple) {
     public synchronized void updateRcvrList(TimedQueueReceiver tqr,
 	    double time, int priority ) {
 	RcvrTimeTriple triple = 
