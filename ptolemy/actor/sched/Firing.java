@@ -98,7 +98,7 @@ public class Firing extends ScheduleElement {
     public Iterator actorIterator() {
         // As of 8/02, it seems like this method class is not really
         // used except by the test suite.
-        return new ActorIterator();
+        return new ActorIterator(getIterationCount());
     }
 
     /** Return the actor invocation sequence in the form
@@ -156,8 +156,9 @@ public class Firing extends ScheduleElement {
      */
     public String toString() {
         String result = "Fire Actor " + _actor;
-        if (getIterationCount() > 1)
-            result += " " + getIterationCount() + " times";
+        int iterationCount = getIterationCount();
+        if (iterationCount > 1)
+            result += " " + iterationCount + " times";
         return result;
     }
 
@@ -173,9 +174,10 @@ public class Firing extends ScheduleElement {
         // used except by the test suite.
         /** Construct a ScheduleIterator.
          */
-        public ActorIterator() {
+        public ActorIterator(int iterationCount) {
             _startingVersion = _getVersion();
             _currentElement = 0;
+            _iterationCount = 0;
         }
 
         /** Return true if the iteration has more elements.
@@ -190,7 +192,7 @@ public class Firing extends ScheduleElement {
                 throw new ConcurrentModificationException(
                         "Schedule structure changed while iterator is active.");
             } else {
-                return(_currentElement <= getIterationCount());
+                return(_currentElement <= _iterationCount);
             }
         }
 
@@ -204,9 +206,6 @@ public class Firing extends ScheduleElement {
         public Object next() throws NoSuchElementException {
             if (!hasNext()) {
                 throw new NoSuchElementException("No element to return.");
-            } else if (_startingVersion != _getVersion()) {
-                throw new ConcurrentModificationException(
-                        "Schedule structure changed while iterator is active.");
             } else {
                 _currentElement++;
                 return getActor();
@@ -223,6 +222,7 @@ public class Firing extends ScheduleElement {
 
         private long _startingVersion;
         private int _currentElement;
+        private int _iterationCount;
     }
 
     ///////////////////////////////////////////////////////////////////
