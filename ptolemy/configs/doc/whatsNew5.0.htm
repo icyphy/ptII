@@ -18,7 +18,54 @@ Quick Tour of What's New in Version 5.0
 <ul>
 
 <li> CT and DE work
-<li> Dynamic Dataflow
+<pre>
+ptolemy/actor/TimedActor.java
+ptolemy/actor/TimedDirector.java
+ptolemy/actor/util/Time.java
+ptolemy/domains/ct/kernel/CTExecutionPhase.java
+ptolemy/domains/ct/kernel/CTGeneralDirector.java
+ptolemy/domains/ct/kernel/util/GeneralComparator.java
+ptolemy/domains/de/kernel/DEEDirector.java
+ptolemy/domains/de/lib/NonInterruptibleTimer.java
+ptolemy/domains/de/lib/Register.java
+</pre>
+New CT and DE demos
+<ul>
+<li> <a href="../../domains/ct/demo/ContinuousClocks/ContinuousClocks.xml">Continuous Clocks</a>
+<li> <a href="../../domains/ct/demo/HierarchicalExecution/HierarchicalExecution.xml">Hierarchical Execution</a>
+<li> <a href="../../domains/ct/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.xml">Level Crossing Detector Detects Glitches</a>
+<li> <a href="../../domains/ct/demo/V2V/V2V.xml">Vehicle 2 Vehicle</a>
+</ul>
+New Discrete Event demos
+<ul>
+<li><a href="../../actor/lib/hoc/demo/AssemblyLine/AssemblyLine.xml">Assembly Line</a> 
+<li><a href="../../actor/lib/hoc/demo/HierarchicalModel/HierarchicalModel.xml">Hierarchical Model</a> 
+</ul>
+
+
+<li> Dynamic Dataflow (ddf)
+<ul>
+<li><a href="../../domains/ddf/demo/Eratosthenes/Eratosthenes.xml">Eratosthenes</a>
+<li><a href="../../domains/ddf/demo/Factorial/Factorial.xml">Factorial</a>
+<li><a href="../../domains/ddf/demo/HanoiTower/HanoiTower.xml">HanoiTower</a>
+<li><a href="../../domains/ddf/demo/IfThenElse/IfThenElse.xml">IfThenElse</a>
+<li><a href="../../domains/ddf/demo/Loop/Loop.xml">Loop</a>
+<li><a href="../../domains/ddf/demo/OrderedMerge/OrderedMerge.xml">OrderedMerge</a>
+<li><a href="../../domains/ddf/demo/RandomWalk/RandomWalk.xml">RandomWalk</a>
+<li><a href="../../domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml">RijndaelEncryption</a>
+</ul>
+
+<li> java 1.5.0
+<li>New Parameters
+<pre>
+ptolemy/actor/parameters/DoubleRangeParameter.java
+ptolemy/actor/parameters/FilePortParameter.java
+</pre>
+<li>Fractional math
+<pre>
+ptolemy/math/FractionArrayMath.java
+ptolemy/math/FractionMatrixMath.java
+</pre>
 <li> Colt is an
 "Open Source Libraries for High Performance
 Scientific and Technical Computing in Java" from
@@ -27,55 +74,73 @@ David Bauer and Kostas Oikonomou from AT&amp;T Research implemented
 a set of random number generators using Colt.
 
 <li> lib/comm actors
+<pre>
+ptolemy/actor/lib/comm/HuffmanBasic.java
+ptolemy/actor/lib/comm/HuffmanCoder.java
+ptolemy/actor/lib/comm/HuffmanDecoder.java
+ptolemy/actor/lib/comm/LempelZivCoder.java
+ptolemy/actor/lib/comm/LempelZivDecoder.java
+</pre>
 
-<li> DoubleRangeParameter
+<li> New Higher Order Components (hoc)
+<pre>
+ptolemy/actor/lib/hoc/ApplyFilterOverArray.java
+ptolemy/actor/lib/hoc/ApplyFunction.java
+ptolemy/actor/lib/hoc/ApplyFunctionOverSequence.java
+ptolemy/actor/lib/hoc/IterateOverArray.java
+</pre>
+Hoc demos
+<ul>
+<li><a href="../../actor/lib/hoc/demo/IterateOverArray/IterateOverArray.xml">IterateOverArray</a>
+</ul>
 
 <li> GR texture mapping?
 
+<li>Giotto demos?
+<pre>
+ptolemy/domains/giotto/demo/FireAtDE
+ptolemy/domains/giotto/demo/MultiMode
+</pre>
 <li> sr work
 <pre>
+ptolemy/domains/sr/lib/Current.java
+ptolemy/domains/sr/lib/Default.java
+ptolemy/domains/sr/lib/EnabledComposite.java
+ptolemy/domains/sr/lib/Pre.java
+ptolemy/domains/sr/lib/When.java
+</pre>
+New sr demo
+<ul>
+<li><a href="../../domains/sr/demo/GuardedCount/GuardedCount.xml">GuardedCount</a> 
+</ul>
+<li>pn work? Edward's changes, new pn demo
+<ul>
+<li><a href="../../domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">Nondeterministic Merge</a>
+</ul>
+
+<li> Wireless work?
+<br>Wireless demo
+<ul>
+<li> <a href="../../domains/wireless/demo/SmartParking/SmartParking.xml">SmartParking</a>
+</ul>
+
+<li> Other New java files
+<pre>
 ptolemy/actor/StateReceiver.java
-ptolemy/actor/TimedActor.java
-ptolemy/actor/TimedDirector.java
 ptolemy/actor/TypeOpaqueCompositeActor.java
 ptolemy/actor/gui/CompositeActorSimpleApplication.java
 ptolemy/actor/gui/PasswordAttribute.java
 ptolemy/actor/gui/QueryUtilities.java
 ptolemy/actor/lib/Sequence.java
 ptolemy/actor/lib/UnaryMathFunction.java
-ptolemy/actor/lib/comm/HuffmanBasic.java
-ptolemy/actor/lib/comm/HuffmanCoder.java
-ptolemy/actor/lib/comm/HuffmanDecoder.java
-ptolemy/actor/lib/comm/LempelZivCoder.java
-ptolemy/actor/lib/comm/LempelZivDecoder.java
-ptolemy/actor/lib/hoc/ApplyFilterOverArray.java
-ptolemy/actor/lib/hoc/ApplyFunction.java
-ptolemy/actor/lib/hoc/ApplyFunctionOverSequence.java
-ptolemy/actor/lib/hoc/IterateOverArray.java
-ptolemy/actor/parameters/DoubleRangeParameter.java
-ptolemy/actor/parameters/FilePortParameter.java
 ptolemy/actor/util/DFUtilities.java
-ptolemy/actor/util/Time.java
 ptolemy/caltrop/actors/AbstractCalInterpreter.java
-ptolemy/domains/ct/kernel/CTExecutionPhase.java
-ptolemy/domains/ct/kernel/CTGeneralDirector.java
-ptolemy/domains/ct/kernel/util/GeneralComparator.java
-ptolemy/domains/de/kernel/DEEDirector.java
-ptolemy/domains/de/lib/NonInterruptibleTimer.java
-ptolemy/domains/de/lib/Register.java
 ptolemy/domains/fsm/kernel/ExtendedFSMDirector.java
 ptolemy/domains/gr/lib/MovableViewScreen3D.java
 ptolemy/domains/gr/lib/ViewScreen3D.java
 ptolemy/domains/pn/kernel/ModelCompiler.java
 ptolemy/domains/pn/kernel/NondeterministicMerge.java
 ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.java
-ptolemy/domains/sr/lib/Current.java
-ptolemy/domains/sr/lib/Default.java
-ptolemy/domains/sr/lib/EnabledComposite.java
-ptolemy/domains/sr/lib/Pre.java
-ptolemy/domains/sr/lib/When.java
-ptolemy/gui/test/TopTest.java
-ptolemy/kernel/test/PortNameProblem.java
 ptolemy/kernel/util/Moveable.java
 ptolemy/math/FractionArrayMath.java
 ptolemy/math/FractionMatrixMath.java
@@ -85,7 +150,6 @@ ptolemy/vergil/kernel/attributes/AttributeExpressionAttribute.java
 ptolemy/vergil/kernel/attributes/AttributeValueAttribute.java
 ptolemy/vergil/kernel/attributes/IDAttribute.java
 ptolemy/vergil/toolbox/MoveAction.java
-
 </pre>
 
 </ul>
