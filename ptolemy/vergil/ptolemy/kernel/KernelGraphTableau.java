@@ -177,20 +177,18 @@ public class KernelGraphTableau extends Tableau {
 	 *  for the given proxy (perhaps because the proxy is not of the
 	 *  appropriate subclass) then return null.
 	 *  @param proxy The model proxy.
-	 *  @return A new RunView, if the proxy is a PtolemyEffigy, or null
-	 *  if the proxy is not a PtolemyEffigy, 
-	 *  or creating the tableau fails.
+	 *  @return A new KernelGraphTableau, if the proxy is a 
+	 *  PtolemyEffigy, or null otherwise.
+	 *  @exception Exception If an exception occurs when creating the
+	 *  tableau.
 	 */
-	public Tableau createTableau(Effigy proxy) {
-	    try {
-		KernelGraphTableau tableau = 
-		    new KernelGraphTableau((PtolemyEffigy)proxy,
-				     proxy.uniqueName("tableau"));
-		return tableau;
-	    } catch (Exception ex) {
-		ex.printStackTrace();
+	public Tableau createTableau(Effigy proxy) throws Exception {
+	    if(!(proxy instanceof PtolemyEffigy)) 
 		return null;
-	    }
+	    KernelGraphTableau tableau = 
+		new KernelGraphTableau((PtolemyEffigy)proxy,
+				       proxy.uniqueName("tableau"));
+	    return tableau;
 	}
     }
 }
