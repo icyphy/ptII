@@ -247,6 +247,33 @@ public class DEDirector extends Director {
         }
     }
 
+    /** Clone the director into the specified workspace. This calls the
+     *  base class and then copies the parameter of this director.  The new
+     *  actor will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            DEDirector newobj = (DEDirector)(super.clone(ws));
+            newobj.stopTime = 
+                (Parameter)newobj.getAttribute("stopTime");
+            newobj.stopWhenQueueIsEmpty = 
+                (Parameter)newobj.getAttribute("stopWhenQueueIsEmpty");
+            newobj.isCQAdaptive =
+                (Parameter)newobj.getAttribute("isCQAdaptive");
+            newobj.minBinCount = 
+                (Parameter)newobj.getAttribute("minBinCount");
+            newobj.binCountFactor = 
+                (Parameter)newobj.getAttribute("binCountFactor");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
+    }
+
     /** Disable the specified actor.  All events destined to this actor
      *  will be ignored.
      *  @param actor The actor to disable.
@@ -992,15 +1019,24 @@ public class DEDirector extends Director {
         try {
             stopTime = new Parameter(this, "stopTime",
                     new DoubleToken(Double.MAX_VALUE));
-            stopWhenQueueIsEmpty = new Parameter(this, "stopWhenQueueIsEmpty",
+	    stopTime.setTypeEquals(BaseType.DOUBLE);
+           
+	    stopWhenQueueIsEmpty = new Parameter(this, "stopWhenQueueIsEmpty",
                     new BooleanToken(true));
-            isCQAdaptive = new Parameter(this, "isCQAdaptive",
+            stopWhenQueueIsEmpty.setTypeEquals(BaseType.BOOLEAN);
+           
+	    isCQAdaptive = new Parameter(this, "isCQAdaptive",
                     new BooleanToken(true));
-            minBinCount = new Parameter(this, "minBinCount",
+            isCQAdaptive.setTypeEquals(BaseType.BOOLEAN);
+	   
+	    minBinCount = new Parameter(this, "minBinCount",
                     new IntToken(2));
-            binCountFactor = new Parameter(this, "binCountFactor",
+	    minBinCount.setTypeEquals(BaseType.INT);
+	    
+	    binCountFactor = new Parameter(this, "binCountFactor",
                     new IntToken(2));
-        } catch (KernelException e) {
+	    binCountFactor.setTypeEquals(BaseType.INT);
+	} catch (KernelException e) {
             throw new InternalErrorException(
                     "Cannot set stopTime parameter:\n" +
                     e.getMessage());
