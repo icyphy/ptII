@@ -45,6 +45,7 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.moml.filter.BackwardCompatibility;
 
 import java.io.File;
+import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// TestApplication
@@ -82,8 +83,23 @@ public class TestApplication implements ChangeListener {
         // because parseFile() works best on relative pathnames and
         // has problems finding resources like files specified in
         // parameters if the xml file was specified as an absolute path.
-        CompositeActor toplevel = (CompositeActor) parser.parse(null,
-                new File(xmlFilename).toURL());
+        CompositeActor toplevel = null;
+
+        try {
+            toplevel = (CompositeActor) parser.parse(null,
+                    new URL(xmlFilename));
+        } catch (Exception ex) {
+            File f = new File(xmlFilename);
+            URL url = f.toURL();
+            System.err.println("Warning: Parsing '" + xmlFilename
+                    + "' failed: ");
+            ex.printStackTrace();
+            System.err.println(" Trying '"
+                    + url
+                    + "'");
+
+            toplevel = (CompositeActor) parser.parse(null, url);
+        }
 
         SDFDirector director = (SDFDirector)toplevel.getDirector();
         Parameter iterations = (Parameter) director.getAttribute("iterations");
