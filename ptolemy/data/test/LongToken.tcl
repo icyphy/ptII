@@ -89,7 +89,7 @@ test LongToken-2.1 {Create a non-empty instance and query its value as a double}
     catch {$p doubleValue} errmsg
 
     list $errmsg
-} {{ptolemy.kernel.util.IllegalActionException: ScalarToken.doubleValue: This base class does not contain a value.}}
+} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.LongToken to a double losslessly.}}
 
 ######################################################################
 ####
@@ -99,7 +99,7 @@ test LongToken-2.2 {Create a non-empty instance and query its value as an int} {
     catch {$p intValue} errmsg
 
     list $errmsg
-} {{ptolemy.kernel.util.IllegalActionException: ScalarToken.intValue: This base class does not contain a value.}}
+} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.LongToken to an int losslessly.}}
 
 ######################################################################
 ####
@@ -112,11 +112,11 @@ test LongToken-2.3 {Create a non-empty instance and query its value as a string}
 ######################################################################
 ####
 # 
-#test LongToken-2.4 {Create a non-empty instance and query its value as a complex#} {
-#    set p [java::new {ptolemy.data.LongToken long} 12]
-#    $p complexValue
-#} {12}
-
+test LongToken-2.4 {Create a non-empty instance and query its value as a complex#} {
+    set p [java::new {ptolemy.data.LongToken long} 12]
+    catch {$p complexValue} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.LongToken to a Complex losslessly.}}
 
 ######################################################################
 ####

@@ -107,11 +107,11 @@ test IntToken-2.3 {Create a non-empty instance and query its value as a string} 
 
 ######################################################################
 ####
-# 
-#test IntToken-2.4 {Create a non-empty instance and query its value as a complex#} {
-#    set p [java::new {ptolemy.data.IntToken int} 12]
-#    $p complexValue
-#} {12}
+#
+test IntToken-2.4 {Create a non-empty instance and query its value as a complex#} {
+    set p [java::new {ptolemy.data.IntToken int} 12]
+    [$p complexValue] toString
+} {12.0 + 0.0i}
 
 ######################################################################
 ####

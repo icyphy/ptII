@@ -74,7 +74,16 @@ test DoubleToken-1.2 {Create a non-empty instance from an String} {
 ######################################################################
 ####
 # 
-test DoubleToken-2.0 {Create a non-empty instance and query its value as an double} {
+test DoubleToken-2.0 {Create a non-empty instance and query its value as a Complex} {
+    set p [java::new {ptolemy.data.DoubleToken double} 3.3]
+    set res [$p complexValue]
+    list [$res toString]
+} {{3.3 + 0.0i}}
+
+######################################################################
+####
+# 
+test DoubleToken-2.1 {Create a non-empty instance and query its value as a double} {
     set p [java::new {ptolemy.data.DoubleToken double} 3.3]
     set res1 [$p doubleValue]
     set res2 [$p getValue]
@@ -84,40 +93,30 @@ test DoubleToken-2.0 {Create a non-empty instance and query its value as an doub
 ######################################################################
 ####
 # 
-test DoubleToken-2.1 {Create a non-empty instance and query its value as an int} {
+test DoubleToken-2.2 {Create a non-empty instance and query its value as an int} {
     set p [java::new {ptolemy.data.DoubleToken double} 12]
     catch {$p intValue} errmsg
 
     list $errmsg
-} {{ptolemy.kernel.util.IllegalActionException: ScalarToken.intValue: This base class does not contain a value.}}
+} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.DoubleToken to an int losslessly.}}
 
 ######################################################################
 ####
 # 
-test DoubleToken-2.2 {Create a non-empty instance and query its value as a long} {
+test DoubleToken-2.3 {Create a non-empty instance and query its value as a long} {
     set p [java::new {ptolemy.data.DoubleToken double} 12]
    catch {$p longValue} errmsg
 
     list $errmsg
-} {{ptolemy.kernel.util.IllegalActionException: ScalarToken.longValue: This base class does not contain a value.}}
+} {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.DoubleToken to a long losslessly.}}
 
 ######################################################################
 ####
 # 
-test DoubleToken-2.3 {Create a non-empty instance and query its value as a string} {
+test DoubleToken-2.4 {Create a non-empty instance and query its value as a string} {
     set p [java::new {ptolemy.data.DoubleToken double} 12.2]
     $p stringValue
 } {12.2}
-
-######################################################################
-####
-# 
-#test DoubleToken-2.4 {Create a non-empty instance and query its value as a complex#} {
-#    set p [java::new {ptolemy.data.DoubleToken double} 12]
-#    catch {$p doubleValue} errmsg
-#
-#    list $errmsg
-#} {{ptolemy.kernel.util.IllegalActionException: ScalarToken.longValue: This base class does not contain a value.}}
 
 ######################################################################
 ####
