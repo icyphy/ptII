@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model SYSTEM "../../moml/moml.dtd">
+<!DOCTYPE model SYSTEM "../../../moml/moml.dtd">
 
 <class name="sdf" extends="ptolemy.actor.TypedCompositeActor">
 <doc>SDF actors</doc>
