@@ -72,9 +72,6 @@ requires the model name its input port as "input", output port as "output".
 */
 public class MobileModel extends TypedCompositeActor {
 
-    // FIXME: maybe should have this actor have a parameter to specify
-    // whether merge the change to the old inside model or not.
-
     /** Construct an actor in the specified workspace with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
@@ -90,8 +87,6 @@ public class MobileModel extends TypedCompositeActor {
         defaultValue = new Parameter(this, "defaultValue",
                 new IntToken(0));
         output = new TypedIOPort(this, "output", false, true);
-        // FIXME: constructors that call setTypeAtLeast should have
-        // a clone() method.
         output.setTypeAtLeast(defaultValue);
         new Director(this, "director");
         getMoMLInfo().className = "ptolemy.actor.MobileModel";
@@ -123,19 +118,46 @@ public class MobileModel extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    //public Parameter modelURL;
+    /** The input port for incoming data to the inside model.
+     */
+    public TypedIOPort input;
 
-    // FIXME: Need documentation
-    public TypedIOPort input, modelString, output;
+    /** The input port for model changing request of the inside model.
+     *  The type is string.
+     */
+    public TypedIOPort modelString;
 
-    // FIXME: Need documentation.  What is the type and initial value
+    /** The output port for the result after firing the inside model
+     * upon the incoming data. Notice that the type is determined by
+     * the type of the <i>defultValue<i> parameter.
+     */
+    public TypedIOPort output;
+
+    /** The default output token when there is no inside model
+     *  defined. The default value is 0, and the default type is
+     *  int. Notice that the type of the output port
+     *  is determined by the type of this parameter.
+     */
     public Parameter defaultValue;
-
-    // FIXME: why is is this public?
-    public MoMLParser parser;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the value public variable in the new
+     *  object to equal the cloned parameter in that new object.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        MobileModel newObject = (MobileModel)super.clone(workspace);
+        // Set the type constraint.
+        newObject.output.setTypeAtLeast(newObject.defaultValue);
+        return newObject;
+    }
 
     /** Save the model here if there is a new model to apply. and then call
      *  super.fire().
@@ -153,7 +175,7 @@ public class MobileModel extends TypedCompositeActor {
                 try {
                     str = (StringToken) modelString.get(0);
                     //URL url = new URL(str.stringValue());
-                    _model = (CompositeActor) parser.parse(str.stringValue());
+                    _model = (CompositeActor) _parser.parse(str.stringValue());
                     break;
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, ex,
@@ -177,9 +199,9 @@ public class MobileModel extends TypedCompositeActor {
         _model = null;
 
         try {
-            parser = new MoMLParser();
-            parser.setMoMLFilters(BackwardCompatibility.allFilters());
-            parser.addMoMLFilter(new RemoveGraphicalClasses());
+            _parser = new MoMLParser();
+            _parser.setMoMLFilters(BackwardCompatibility.allFilters());
+            _parser.addMoMLFilter(new RemoveGraphicalClasses());
 
             // When no model applied, output the default value.
             Const constActor = new Const(this, "Const");
@@ -287,7 +309,10 @@ public class MobileModel extends TypedCompositeActor {
         super.wrapup();
     }
 
-    /** Export moml description.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Export the moml description of this.
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
@@ -301,8 +326,6 @@ public class MobileModel extends TypedCompositeActor {
             Port port = (Port)ports.next();
             port.exportMoML(output, depth);
         }
-
-        // Next write the links.
         output.write(exportLinks(depth, null));
     }
 
@@ -320,16 +343,12 @@ public class MobileModel extends TypedCompositeActor {
             Entity entity = (Entity) entities.next();
             delete.append("<deleteEntity name=\"" + entity.getName()
                     + "\" class=\"" + entity.getClass().getName() + "\"/>");
-            // System.out.println("the name of the entity is: "
-            // + entity.getName());
         }
         Iterator relations = actor.relationList().iterator();
         while (relations.hasNext()) {
             IORelation relation = (IORelation) relations.next();
             delete.append("<deleteRelation name=\"" + relation.getName()
                     + "\" class=\"ptolemy.actor.TypedIORelation\"/>");
-            // System.out.println("the name of the relations is: "
-            // + relation.getName());
         }
         delete.append("</group>");
         return delete.toString();
@@ -337,7 +356,13 @@ public class MobileModel extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The model that dynamically defined and contained by this.
+    /** The inside model that contained by this actor.
+     *
+     */
     private CompositeActor _model;
 
+    /** The moml parser for parsing the moml string of the inside model.
+     *
+     */
+    private MoMLParser _parser;
 }

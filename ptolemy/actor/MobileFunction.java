@@ -1,4 +1,4 @@
-/* Modal models.
+/* An actor that apply dynamically defined functions to its input.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -36,13 +36,15 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.FunctionType;
 
 import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// MobileFunction
-// FIXME: This needs a one sentence summary.
 /**
 This actor extends the TypedAtomicActor. It applies a function to its inputs
 and outputs the results. But rather than has the function specified
@@ -50,6 +52,9 @@ statically, this actor allows dynamic change to the function, which means
 the computation of this actor can be changed during executing. Its second
 input accept a function token for the new function's definition. The
 function token can be given by actors in the local model or remote actors.
+
+Currently, it only accept functions that has one argument. The return type
+of the function needs to be less than the output type of this actor.
 
 @author Yang Zhao
 @version $Id$
@@ -68,6 +73,8 @@ public class MobileFunction extends TypedAtomicActor{
         super(workspace);
         input = new TypedIOPort(this, "input", true, false);
         function = new TypedIOPort(this, "function", true, false);
+        //function.setTypeAtMost(new FunctionType
+        //        (new Type[]{BaseType.UNKNOWN}, BaseType.GENERAL));
         output = new TypedIOPort(this, "output", false, true);
     }
 
@@ -86,14 +93,32 @@ public class MobileFunction extends TypedAtomicActor{
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         function = new TypedIOPort(this, "function", true, false);
+        //function.setTypeAtMost(new FunctionType
+        //        (new Type[]{BaseType.UNKNOWN}, BaseType.GENERAL));
         output = new TypedIOPort(this, "output", false, true);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+    /** The input port for incoming data.  The type of this port is
+     *  undeclared, meaning that it will resolve to any data type.
+     */
+    public TypedIOPort input;
 
-    // FIXME: documentation of these ports?
-    public TypedIOPort input, function, output;
+    /** The input port for function definition. The type of this port is
+     *  undeclared, but to have this actor work, the designer has to provide
+     *  a matched function token for it.
+     *  Note: The reason that we don't declare the type for it is because
+     *  currently there is not cast supported in the FunctionType class.
+     *  we'll fix this later.
+     */
+   public TypedIOPort function;
+
+    /** The output port.
+     *  Note: Due to the same reason above, the type of the output can't be
+     *  resolved currently. User has to spedify the type.
+     */
+    public TypedIOPort output;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -107,11 +132,6 @@ public class MobileFunction extends TypedAtomicActor{
      *   opaque.
      */
     public void fire() throws IllegalActionException  {
-
-       // FIXME: it now only considers one input port for data and the
-       // function only has one argument.  how to resolve typy and type
-       // signature?
-
         if (_debugging) {
             _debug("Invoking fire");
         }
@@ -122,6 +142,9 @@ public class MobileFunction extends TypedAtomicActor{
             if (_function == null) {
                 output.broadcast(input.get(0));
             } else {
+        // FIXME: it now only considers one input port for data and the
+        // function only has one argument.  how to resolve type and type
+        // signature?
                 Token in = input.get(0);
                 _argList.add(in);
                 Token t = _function.apply(_argList);
@@ -157,7 +180,13 @@ public class MobileFunction extends TypedAtomicActor{
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
+     /** The most recently updated function to this actor.
+     *
+     */
     private FunctionToken _function;
+
+    /** The arguments list for the applying function.
+     *
+     */
     private LinkedList _argList;
 }
