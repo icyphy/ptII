@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (chf@eecs.berkeley.edu)
-@AcceptedRating Red (chf@eecs.berkeley.edu)
+@ProposedRating Yellow (chf@eecs.berkeley.edu)
+@AcceptedRating Yellow (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.gr.kernel;
@@ -749,4 +749,8 @@ public class GRDirector extends StaticSchedulingDirector {
             _shouldTransferOutputs = false;
         }
     }
+    
+    // TO DO: 
+    // 1.) AttributeChanged on several actors
+    // 2.)
 }
