@@ -44,8 +44,7 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	TicTacToe
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =	#$(PTPACKAGE).jar
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	TicTacToe.java \
@@ -59,33 +58,18 @@ EXTRA_SRCS =	$(JSRCS)
 # should not complain about
 MISC_FILES =	$(DIRS) #test
 
-PTAUXJAR =	TTTdemo.jar
-
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR) \
-	TTTdemo.jar
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass TTTdemo.jar
+all: jclass $(PTPACKAGE).jar
 
-install: jclass TTTdemo.jar 
+install: all
 
-
-
-# 'make clean' removes everything in KRUFT
-KRUFT = pndemo.jar
-
-# Jar file consisting of classes used by an applet.  Basically,
-# everything but Message and Pxgraph.
-TTTdemo.jar: $(JSRCS) $(JCLASS)
-		(cd $(CLASSPATH); \
-                $(JAR) cf \
-                $(ME)/$@ \
-		$(ME)/*.class )
 depend:
 	@echo "no dependencies in this directory"
 
