@@ -30,10 +30,14 @@
 
 package ptolemy.domains.sdf.lib;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.ComplexToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -47,9 +51,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.LinkedList;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Autocorrelation
@@ -88,7 +89,7 @@ If the parameter <i>biased</i> is false (the default), then the estimate is
 <pre>
            N-1-k
         1   ---
-r(k) = ---  \    x(n)x(n+k)
+r(k) = ---  \    x<sup>*</sup>(n)x(n+k)
        N-k  /
             ---
             n = 0
@@ -107,9 +108,6 @@ will have length equal to twice the number of lags requested,
 which will be almost symmetric (insert the last
 sample into the first position to get the symmetric output that you
 would get with the <i>symmetricOutput</i> being true).
-<p>
-FIXME: At this time, this actor does not correctly handle
-complex inputs.
 
 @author Edward A. Lee and Yuhong Xiong
 @version $Id$
@@ -127,24 +125,25 @@ public class Autocorrelation extends SDFTransformer {
      *   actor with this name.
      */
     public Autocorrelation(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        numberOfInputs = new Parameter(this,
-                "numberOfInputs", new IntToken(256));
-        numberOfLags = new Parameter(this,
-                "numberOfLags", new IntToken(64));
-        biased = new Parameter(this,
-                "biased", new BooleanToken(false));
-        symmetricOutput = new Parameter(this,
-                "symmetricOutput", new BooleanToken(false));
+        numberOfInputs =
+            new Parameter(this, "numberOfInputs", new IntToken(256));
+        numberOfInputs.setTypeEquals(BaseType.INT);
+        numberOfLags = new Parameter(this, "numberOfLags", new IntToken(64));
+        numberOfLags.setTypeEquals(BaseType.INT);
+        biased = new Parameter(this, "biased", new BooleanToken(false));
+        biased.setTypeEquals(BaseType.BOOLEAN);
+        symmetricOutput =
+            new Parameter(this, "symmetricOutput", new BooleanToken(false));
+        symmetricOutput.setTypeEquals(BaseType.BOOLEAN);
 
         input.setTypeAtLeast(new FunctionTerm(input));
 
         // Set the output type to be an ArrayType.
         // This is refined further by the typeConstraintList method.
         output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        output.setMultiport(true);
 
         attributeChanged(numberOfInputs);
     }
@@ -187,29 +186,31 @@ public class Autocorrelation extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == numberOfInputs ||
-                attribute == numberOfLags ||
-                attribute == symmetricOutput) {
-            _numberOfInputs = ((IntToken)numberOfInputs.getToken()).intValue();
-            _numberOfLags = ((IntToken)numberOfLags.getToken()).intValue();
-            _symmetricOutput
-                = ((BooleanToken)symmetricOutput.getToken()).booleanValue();
+        throws IllegalActionException {
+        if (attribute == numberOfInputs
+            || attribute == numberOfLags
+            || attribute == symmetricOutput) {
+            _numberOfInputs = ((IntToken) numberOfInputs.getToken()).intValue();
+            _numberOfLags = ((IntToken) numberOfLags.getToken()).intValue();
+            _symmetricOutput =
+                ((BooleanToken) symmetricOutput.getToken()).booleanValue();
 
             if (_numberOfInputs <= 0) {
-                throw new IllegalActionException(this,
-                        "Invalid numberOfInputs: " + _numberOfInputs);
+                throw new IllegalActionException(
+                    this,
+                    "Invalid numberOfInputs: " + _numberOfInputs);
             }
 
             if (_numberOfLags <= 0) {
-                throw new IllegalActionException(this,
-                        "Invalid numberOfLags: " + _numberOfLags);
+                throw new IllegalActionException(
+                    this,
+                    "Invalid numberOfLags: " + _numberOfLags);
             }
 
             if (_symmetricOutput) {
-                _lengthOfOutput = 2*_numberOfLags + 1;
+                _lengthOfOutput = 2 * _numberOfLags + 1;
             } else {
-                _lengthOfOutput = 2*_numberOfLags;
+                _lengthOfOutput = 2 * _numberOfLags;
             }
             input.setTokenConsumptionRate(_numberOfInputs);
             if (_outputs == null || _lengthOfOutput != _outputs.length) {
@@ -233,8 +234,8 @@ public class Autocorrelation extends SDFTransformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        Autocorrelation newObject = (Autocorrelation)super.clone(workspace);
+        throws CloneNotSupportedException {
+        Autocorrelation newObject = (Autocorrelation) super.clone(workspace);
         newObject.input.setTypeAtLeast(new FunctionTerm(newObject.input));
         return newObject;
     }
@@ -247,26 +248,46 @@ public class Autocorrelation extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        boolean biasedValue = ((BooleanToken)biased.getToken()).booleanValue();
+        boolean biasedValue = ((BooleanToken) biased.getToken()).booleanValue();
         Token[] inputValues = input.get(0, _numberOfInputs);
-        int notSymmetric  = _symmetricOutput ? 0 : 1;
+        int notSymmetric = _symmetricOutput ? 0 : 1;
+        // NOTE: Is there a better way to determine whether the input is complex?
+        boolean complex = inputValues[0] instanceof ComplexToken;
         for (int i = _numberOfLags; i >= 0; i--) {
             Token sum = inputValues[0].zero();
             for (int j = 0; j < _numberOfInputs - i; j++) {
-                sum = sum.add(inputValues[j].multiply(inputValues[j + i]));
+                if (complex) {
+                    ComplexToken conjugate =
+                        new ComplexToken(
+                            ((ComplexToken) inputValues[j])
+                                .complexValue()
+                                .conjugate());
+                    sum = sum.add(conjugate.multiply(inputValues[j + i]));
+                } else {
+                    sum = sum.add(inputValues[j].multiply(inputValues[j + i]));
+                }
             }
             if (biasedValue) {
-                _outputs[i + _numberOfLags - notSymmetric ]
-                    = sum.divide(numberOfInputs.getToken());
+                _outputs[i + _numberOfLags - notSymmetric] =
+                    sum.divide(numberOfInputs.getToken());
             } else {
-                _outputs[i + _numberOfLags - notSymmetric ]
-                    = sum.divide(new IntToken(_numberOfInputs - i));
+                _outputs[i + _numberOfLags - notSymmetric] =
+                    sum.divide(new IntToken(_numberOfInputs - i));
             }
         }
         // Now fill in the first half, which by symmetry is just
-        // identical to what was just produced.
+        // identical to what was just produced, or its conjugate if
+        // the input is complex.
         for (int i = _numberOfLags - 1 - notSymmetric; i >= 0; i--) {
-            _outputs[i] = _outputs[2 * (_numberOfLags - notSymmetric) - i];
+            if (complex) {
+                ComplexToken candidate =
+                    (ComplexToken) _outputs[2 * (_numberOfLags - notSymmetric)
+                        - i];
+                _outputs[i] =
+                    new ComplexToken(candidate.complexValue().conjugate());
+            } else {
+                _outputs[i] = _outputs[2 * (_numberOfLags - notSymmetric) - i];
+            }
         }
         output.broadcast(new ArrayToken(_outputs));
     }
@@ -296,7 +317,7 @@ public class Autocorrelation extends SDFTransformer {
         if (result == null) {
             result = new LinkedList();
         }
-        ArrayType outArrType = (ArrayType)output.getType();
+        ArrayType outArrType = (ArrayType) output.getType();
         InequalityTerm elementTerm = outArrType.getElementTypeTerm();
         Inequality ineq = new Inequality(input.getTypeTerm(), elementTerm);
 
@@ -367,11 +388,11 @@ public class Autocorrelation extends SDFTransformer {
          *  @exception IllegalActionException If we call initialize on
          *  a function term.  Always thrown in this class.
          */
-        public void initialize(Object e)
-                throws IllegalActionException {
-            throw new IllegalActionException(Autocorrelation.this,
-                    "Autocorrelation$FunctionTerm." +
-                    "initialize: Cannot initialize a function term.");
+        public void initialize(Object e) throws IllegalActionException {
+            throw new IllegalActionException(
+                Autocorrelation.this,
+                "Autocorrelation$FunctionTerm."
+                    + "initialize: Cannot initialize a function term.");
         }
 
         /** Return false.
@@ -392,11 +413,11 @@ public class Autocorrelation extends SDFTransformer {
          *  @exception IllegalActionException If the type is not settable.
          *  Always thrown in this class.
          */
-        public void setValue(Object e)
-                throws IllegalActionException {
-            throw new IllegalActionException(Autocorrelation.this,
-                    "Autocorrelation$FunctionTerm.setValue: The type is not " +
-                    "settable.");
+        public void setValue(Object e) throws IllegalActionException {
+            throw new IllegalActionException(
+                Autocorrelation.this,
+                "Autocorrelation$FunctionTerm.setValue: The type is not "
+                    + "settable.");
         }
 
         /** Override the base class to give a description of this term.
