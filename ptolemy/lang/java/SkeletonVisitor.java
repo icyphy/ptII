@@ -92,7 +92,6 @@ public class SkeletonVisitor extends JavaVisitor {
                    // found default constructor, make it public
                    cDeclNode.setModifiers(Modifier.PUBLIC_MOD);
                 }
-
              }
           }
         }
@@ -124,19 +123,12 @@ public class SkeletonVisitor extends JavaVisitor {
         if (node.getBody() != AbsentTreeNode.instance) {
            node.setModifiers(modifiers | Modifier.NATIVE_MOD);
         }
-
         node.setBody(AbsentTreeNode.instance);
 
         return node;
     }
 
-    public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
-        int modifiers = node.getModifiers();
-        
-        if ((modifiers & Modifier.PRIVATE_MOD) != 0) {
-           return null;
-        }
-
+    public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {       
         node.setConstructorCall(new SuperConstructorCallNode(new LinkedList()));
         node.setBody(new BlockNode(new LinkedList()));
         return node;

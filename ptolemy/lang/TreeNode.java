@@ -38,11 +38,7 @@ import java.util.ListIterator;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
-public abstract class TreeNode extends PropertyMap implements Cloneable {
-
-    public Object clone() {
-        return super.clone();
-    }
+public abstract class TreeNode extends PropertyMap {
 
     /** Re-override equals() from Decl so that equality is defined as being the
      *  same object. This is necessary to ensure that a Decl named z for x.y.z
@@ -52,7 +48,7 @@ public abstract class TreeNode extends PropertyMap implements Cloneable {
         return (this == obj);   
     }
 
-  public String toString(String indent) {
+    public String toString(String indent) {
 
       StringBuffer sb = new StringBuffer();
 
@@ -125,11 +121,11 @@ public abstract class TreeNode extends PropertyMap implements Cloneable {
       sb.append('\n');
 
       return sb.toString();
-  }
+    }
 
-  public String toString() {
-      return toString("");
-  }
+    public String toString() {
+        return toString("");
+    }
 
     public Object accept(IVisitor v) {
         return accept(v, new LinkedList());
@@ -177,9 +173,9 @@ public abstract class TreeNode extends PropertyMap implements Cloneable {
     }
 
     public void traverseChildren(IVisitor v, LinkedList args) {
-      LinkedList retList = TNLManip.traverseList(v, this, args, _childList);
+        LinkedList retList = TNLManip.traverseList(v, this, args, _childList);
 
-      setProperty("childReturnValues", retList);
+        setProperty("childReturnValues", retList);
     }
 
     public Object getChild(int index) {
@@ -268,6 +264,13 @@ public abstract class TreeNode extends PropertyMap implements Cloneable {
   
       return sb.toString();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                          public variables                 ////
+    
+    /** A class ID number, which is unique for each sub-type. This should be
+     *  set by the static initializer of non-abstract subclasses. */    
+    public static int classID;
 
     ///////////////////////////////////////////////////////////////////
     ////                        protected variables                ////

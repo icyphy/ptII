@@ -211,7 +211,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor {
 
         if (expr instanceof ThisNode) {
            return new ThisFieldAccessNode((TypeNameNode) expr.getDefinedProperty("theClass"), 
-            node.getName());         
+                                          node.getName()).accept(this, args);                    
         } 
         
         return node;

@@ -104,7 +104,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
         me.setInterfaces(declInterfaceList);
 
         // add this declaration to outer class's environment, if applicable
-        _addToEnclosingClassEnviron(args.get(1), me);
+        _addUserTypeToEnclosingClassEnviron(args.get(1), me);
 
         Environ myEnviron = me.getEnviron();
 
@@ -134,13 +134,12 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
 
         if (d != null) {
            ApplicationUtility.error("redeclaration of " + d.getName());
-           return null;
         }
 
         d = new FieldDecl(nameString, node.getDtype(), modifiers,
             node, (ClassDecl) args.get(0));
 
-        _addToEnclosingClassEnviron(encEnviron, d);
+        encEnviron.add(d);
 
         node.getName().setProperty("decl", d);
 
@@ -180,7 +179,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
         me.setInterfaces(declInterfaceList);
 
         // add this declaration to outer class's environment, if applicable
-        _addToEnclosingClassEnviron(args.get(1), me);
+        _addUserTypeToEnclosingClassEnviron(args.get(1), me);
 
         Environ myEnviron = me.getEnviron();
 
@@ -342,7 +341,6 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
         TreeNode block = node.getBody();
 
         if (block != AbsentTreeNode.instance) {
-
            LinkedList childArgs = new LinkedList();
            childArgs.addLast(NullTypeNode.instance); // enclosing class decl
            childArgs.addLast(NullTypeNode.instance); // enclosing class environ
@@ -404,7 +402,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
         return null;
     }
 
-    protected void _addToEnclosingClassEnviron(Object encClassEnvironObject,
+    protected void _addUserTypeToEnclosingClassEnviron(Object encClassEnvironObject,
      Decl decl) {
         if (encClassEnvironObject != NullValue.instance) {
            // this is an inner class, add to outer class's environment

@@ -148,11 +148,7 @@ public abstract class ReplacementJavaVisitor extends JavaVisitor {
      *  values, using the same arguments, and return the node.
      */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
-        LinkedList retChildList =
-         TNLManip.traverseList(this, node, args, node.children());
-
-        node.setChildren(retChildList);
-
+        node.setChildren(TNLManip.traverseList(this, node, args, node.children()));
         return node;
     }   
 }

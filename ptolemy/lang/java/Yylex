@@ -42,90 +42,90 @@ CPlusPlusStyleComment=("//".*[\n\r])
 {C_StyleComment} { }
 {CPlusPlusStyleComment}	{ }
 
-"abstract"	    { ApplicationUtility.trace(yytext(), " "); return parser.ABSTRACT; }
-"boolean"	    { ApplicationUtility.trace(yytext(), " "); return parser.BOOLEAN; }
-"break"	      { ApplicationUtility.trace(yytext(), " "); return parser.BREAK; }
-"byte"	        { ApplicationUtility.trace(yytext(), " "); return parser.BYTE; }
-"case"	        { ApplicationUtility.trace(yytext(), " "); return parser.CASE; }
-"catch"	      { ApplicationUtility.trace(yytext(), " "); return parser.CATCH; }
-"char"	        { ApplicationUtility.trace(yytext(), " "); return parser.CHAR; }
-"class"	      { ApplicationUtility.trace(yytext(), " "); return parser.CLASS; }
-"continue"	    { ApplicationUtility.trace(yytext(), " "); return parser.CONTINUE; }
-"default"	    { ApplicationUtility.trace(yytext(), " "); return parser.DEFAULT; }
-"do"		        { ApplicationUtility.trace(yytext(), " "); return parser.DO; }
-"double"	      { ApplicationUtility.trace(yytext(), " "); return parser.DOUBLE; }
-"else"	        { ApplicationUtility.trace(yytext(), " "); return parser.ELSE; }
-"extends"	    { ApplicationUtility.trace(yytext(), " "); return parser.EXTENDS; }
-"final"	      { ApplicationUtility.trace(yytext(), " "); return parser.FINAL; }
-"finally"	    { ApplicationUtility.trace(yytext(), " "); return parser.FINALLY; }
-"float"	      { ApplicationUtility.trace(yytext(), " "); return parser.FLOAT; }
-"for"		      { ApplicationUtility.trace(yytext(), " "); return parser.FOR; }
-"if"		        { ApplicationUtility.trace(yytext(), " "); return parser.IF; }
-"implements"	  { ApplicationUtility.trace(yytext(), " "); return parser.IMPLEMENTS; }
-"import"	      { ApplicationUtility.trace(yytext(), " "); return parser.IMPORT; }
-"instanceof"	  { ApplicationUtility.trace(yytext(), " "); return parser.INSTANCEOF; }
-"int"		      { ApplicationUtility.trace(yytext(), " "); return parser.INT; }
-"interface"	  { ApplicationUtility.trace(yytext(), " "); return parser.INTERFACE; }
-"long"	        { ApplicationUtility.trace(yytext(), " "); return parser.LONG; }
-"native"	      { ApplicationUtility.trace(yytext(), " "); return parser.NATIVE; }
-"new"		      { ApplicationUtility.trace(yytext(), " "); return parser.NEW; }
-"null"	        { ApplicationUtility.trace(yytext(), " "); return parser._NULL; }
-"package"	    { ApplicationUtility.trace(yytext(), " "); return parser.PACKAGE; }
-"private"	    { ApplicationUtility.trace(yytext(), " "); return parser.PRIVATE; }
-"protected"	  { ApplicationUtility.trace(yytext(), " "); return parser.PROTECTED; }
-"public"	      { ApplicationUtility.trace(yytext(), " "); return parser.PUBLIC; }
-"return"	      { ApplicationUtility.trace(yytext(), " "); return parser.RETURN; }
-"short"	      { ApplicationUtility.trace(yytext(), " "); return parser.SHORT; }
-"static"	      { ApplicationUtility.trace(yytext(), " "); return parser.STATIC; }
-"super"	      { ApplicationUtility.trace(yytext(), " "); return parser.SUPER; }
-"switch"	      { ApplicationUtility.trace(yytext(), " "); return parser.SWITCH; }
-"synchronized"	{ ApplicationUtility.trace(yytext(), " "); return parser.SYNCHRONIZED; }
-"this"	        { ApplicationUtility.trace(yytext(), " "); return parser.THIS; }
-"throw"	      { ApplicationUtility.trace(yytext(), " "); return parser.THROW; }
-"throws"	      { ApplicationUtility.trace(yytext(), " "); return parser.THROWS; }
-"transient"	  { ApplicationUtility.trace(yytext(), " "); return parser.TRANSIENT; }
-"try"		      { ApplicationUtility.trace(yytext(), " "); return parser.TRY; }
-"void"	        { ApplicationUtility.trace(yytext(), " "); return parser.VOID; }
-"volatile"     { ApplicationUtility.trace(yytext(), " "); return parser.VOLATILE; }
-"while"        { ApplicationUtility.trace(yytext(), " "); return parser.WHILE; }
-"strictfp"     { ApplicationUtility.trace(yytext(), " "); return parser.STRICTFP; }
+"abstract"	    {  return parser.ABSTRACT; }
+"boolean"	    {  return parser.BOOLEAN; }
+"break"	      {  return parser.BREAK; }
+"byte"	        {  return parser.BYTE; }
+"case"	        {  return parser.CASE; }
+"catch"	      {  return parser.CATCH; }
+"char"	        {  return parser.CHAR; }
+"class"	      {  return parser.CLASS; }
+"continue"	    {  return parser.CONTINUE; }
+"default"	    {  return parser.DEFAULT; }
+"do"		        {  return parser.DO; }
+"double"	      {  return parser.DOUBLE; }
+"else"	        {  return parser.ELSE; }
+"extends"	    {  return parser.EXTENDS; }
+"final"	      {  return parser.FINAL; }
+"finally"	    {  return parser.FINALLY; }
+"float"	      {  return parser.FLOAT; }
+"for"		      {  return parser.FOR; }
+"if"		        {  return parser.IF; }
+"implements"	  {  return parser.IMPLEMENTS; }
+"import"	      {  return parser.IMPORT; }
+"instanceof"	  {  return parser.INSTANCEOF; }
+"int"		      {  return parser.INT; }
+"interface"	  {  return parser.INTERFACE; }
+"long"	        {  return parser.LONG; }
+"native"	      {  return parser.NATIVE; }
+"new"		      {  return parser.NEW; }
+"null"	        {  return parser._NULL; }
+"package"	    {  return parser.PACKAGE; }
+"private"	    {  return parser.PRIVATE; }
+"protected"	  {  return parser.PROTECTED; }
+"public"	      {  return parser.PUBLIC; }
+"return"	      {  return parser.RETURN; }
+"short"	      {  return parser.SHORT; }
+"static"	      {  return parser.STATIC; }
+"super"	      {  return parser.SUPER; }
+"switch"	      {  return parser.SWITCH; }
+"synchronized"	{  return parser.SYNCHRONIZED; }
+"this"	        {  return parser.THIS; }
+"throw"	      {  return parser.THROW; }
+"throws"	      {  return parser.THROWS; }
+"transient"	  {  return parser.TRANSIENT; }
+"try"		      {  return parser.TRY; }
+"void"	        {  return parser.VOID; }
+"volatile"     {  return parser.VOLATILE; }
+"while"        {  return parser.WHILE; }
+"strictfp"     {  return parser.STRICTFP; }
 
 "const"|"goto"	{ ApplicationUtility.error("reserved keyword " +
                   yytext() + " ignored"); }
 
-"true"	 { ApplicationUtility.trace(yytext(), " "); return parser.TRUE; }
-"false" { ApplicationUtility.trace(yytext(), " "); return parser.FALSE; }
+"true"	 {  return parser.TRUE; }
+"false" {  return parser.FALSE; }
 
 {Letter}{AlphaNum}* {
-     ApplicationUtility.trace(yytext(), " ");      
+           
      retval = new parserval(0);
      retval.sval = yytext();
 		  return parser.IDENTIFIER;
 		}
 
 [1-9]{DEC}*	{
-     ApplicationUtility.trace(yytext(), " "); 
+      
      retval = new parserval(0);
      retval.sval = yytext();
 		  return parser.INT_LITERAL;
 		}
 
 0{OCT}*	{
-     ApplicationUtility.trace(yytext(), " "); 
+      
      retval = new parserval(0);
      retval.sval = yytext();
 		  return parser.INT_LITERAL;
 		}
 
 0[xX]{HEX}+	{
-     ApplicationUtility.trace(yytext(), " "); 
+      
      retval = new parserval(0);
      retval.sval = yytext();
 		  return parser.INT_LITERAL;
 		}
 
 [1-9]{DEC}*[lL]	{
-     ApplicationUtility.trace(yytext(), " "); 
+      
      retval = new parserval(0);
      String s = yytext();
      retval.sval = s.substring(0, s.length() - 1);
@@ -133,7 +133,7 @@ CPlusPlusStyleComment=("//".*[\n\r])
 		}
 
 0{OCT}*[lL]	{
-     ApplicationUtility.trace(yytext(), " "); 
+      
      retval = new parserval(0);
      String s = yytext();
      retval.sval = s.substring(0, s.length() - 1);
@@ -141,7 +141,7 @@ CPlusPlusStyleComment=("//".*[\n\r])
 		}
 
 0[xX]{HEX}+[lL]	{
-     ApplicationUtility.trace(yytext(), " "); 
+      
      retval = new parserval(0);
      String s = yytext();
      retval.sval = s.substring(0, s.length() - 1);
@@ -150,7 +150,7 @@ CPlusPlusStyleComment=("//".*[\n\r])
 
 {DEC}+"."{DEC}*([eE][-+]?{DEC}+)?[dD]?|"."{DEC}+([eE][-+]?{DEC}+)?[dD]?|{DEC}+([eE][-+]?{DEC}+)[dD]?|{DEC}+[dD]
    {
-     ApplicationUtility.trace(yytext(), " "); 
+      
      retval = new parserval(0);
 		  retval.sval = yytext();
 		  return parser.DOUBLE_LITERAL;
@@ -158,14 +158,14 @@ CPlusPlusStyleComment=("//".*[\n\r])
 
 {DEC}+"."{DEC}*([eE][-+]?{DEC}+)?[fF]|"."{DEC}+([eE][-+]?{DEC}+)?[fF]|{DEC}+([eE][-+]?{DEC}+)[fF]|{DEC}+[fF]
    {
-     ApplicationUtility.trace(yytext(), " ");  
+       
      retval = new parserval(0);
 		  retval.sval = yytext();
 		  return parser.FLOAT_LITERAL;
 		}
 
 '({LiteralChar}|\")'	{
-     ApplicationUtility.trace(yytext(), " "); 
+      
      retval = new parserval(0);
      String s = yytext();
      retval.sval = s.substring(1, s.length() - 1);
@@ -173,17 +173,17 @@ CPlusPlusStyleComment=("//".*[\n\r])
 		}
 
 \"({LiteralChar}|"'")*\" {
-     ApplicationUtility.trace(yytext(), " "); 
+      
      retval = new parserval(0);
      String s = yytext();
      retval.sval = s.substring(1, s.length() - 1);
 		  return parser.STRING_LITERAL;
 		}
 
-["(){}];,."]	{ ApplicationUtility.trace(yytext(), " "); return yytext().charAt(0); }
+["(){}];,."]	{  return yytext().charAt(0); }
 
 "["([ \t\n]|{C_StyleComment}|{CPlusPlusStyleComment})*"]"?  {
-     ApplicationUtility.trace(yytext(), " "); 
+      
      String s = yytext();
 
 		  if (s.charAt(s.length() - 1) == ']') {
@@ -193,30 +193,30 @@ CPlusPlusStyleComment=("//".*[\n\r])
      }
 		}
 
-["-=><!~?:+*/&|^%"]   { ApplicationUtility.trace(yytext(), " "); return yytext().charAt(0); }
+["-=><!~?:+*/&|^%"]   {  return yytext().charAt(0); }
 
-"&&"		{ ApplicationUtility.trace(yytext(), " "); return parser.CAND; }
-"||"		{ ApplicationUtility.trace(yytext(), " "); return parser.COR; }
-"=="		{ ApplicationUtility.trace(yytext(), " "); return parser.EQ; }
-"!="		{ ApplicationUtility.trace(yytext(), " "); return parser.NE; }
-"<="		{ ApplicationUtility.trace(yytext(), " "); return parser.LE; }
-">="		{ ApplicationUtility.trace(yytext(), " "); return parser.GE; }
-"<<"		{ ApplicationUtility.trace(yytext(), " "); return parser.LSHIFTL; }
-">>"		{ ApplicationUtility.trace(yytext(), " "); return parser.ASHIFTR; }
-">>>"	{ ApplicationUtility.trace(yytext(), " "); return parser.LSHIFTR; }
-"+="		{ ApplicationUtility.trace(yytext(), " "); return parser.PLUS_ASG; }
-"-="		{ ApplicationUtility.trace(yytext(), " "); return parser.MINUS_ASG; }
-"*="		{ ApplicationUtility.trace(yytext(), " "); return parser.MULT_ASG; }
-"/="		{ ApplicationUtility.trace(yytext(), " "); return parser.DIV_ASG; }
-"%="		{ ApplicationUtility.trace(yytext(), " "); return parser.REM_ASG; }
-"<<="	{ ApplicationUtility.trace(yytext(), " "); return parser.LSHIFTL_ASG; }
-">>="	{ ApplicationUtility.trace(yytext(), " "); return parser.ASHIFTR_ASG; }
-">>>="	{ ApplicationUtility.trace(yytext(), " "); return parser.LSHIFTR_ASG; }
-"&="		{ ApplicationUtility.trace(yytext(), " "); return parser.AND_ASG; }
-"^="		{ ApplicationUtility.trace(yytext(), " "); return parser.XOR_ASG; }
-"|="		{ ApplicationUtility.trace(yytext(), " "); return parser.OR_ASG; }
-"++"		{ ApplicationUtility.trace(yytext(), " "); return parser.PLUSPLUS; }
-"--"		{ ApplicationUtility.trace(yytext(), " "); return parser.MINUSMINUS; }
+"&&"		{  return parser.CAND; }
+"||"		{  return parser.COR; }
+"=="		{  return parser.EQ; }
+"!="		{  return parser.NE; }
+"<="		{  return parser.LE; }
+">="		{  return parser.GE; }
+"<<"		{  return parser.LSHIFTL; }
+">>"		{  return parser.ASHIFTR; }
+">>>"	{  return parser.LSHIFTR; }
+"+="		{  return parser.PLUS_ASG; }
+"-="		{  return parser.MINUS_ASG; }
+"*="		{  return parser.MULT_ASG; }
+"/="		{  return parser.DIV_ASG; }
+"%="		{  return parser.REM_ASG; }
+"<<="	{  return parser.LSHIFTL_ASG; }
+">>="	{  return parser.ASHIFTR_ASG; }
+">>>="	{  return parser.LSHIFTR_ASG; }
+"&="		{  return parser.AND_ASG; }
+"^="		{  return parser.XOR_ASG; }
+"|="		{  return parser.OR_ASG; }
+"++"		{  return parser.PLUSPLUS; }
+"--"		{  return parser.MINUSMINUS; }
 
 .	{
       ApplicationUtility.error("Lexical error : Line " + (1 + yyline) +

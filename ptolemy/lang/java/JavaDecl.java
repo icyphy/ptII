@@ -108,7 +108,7 @@ public abstract class JavaDecl extends Decl {
    *  contained in classes and interfaces, which are themselves contained
    *  in packages, which are in turn contained in other packages.
    *  Outer-level packages have as their container the special JavaDecl
-   *  StaticResoltuion.SYSTEM_PACKAGE.
+   *  StaticResolution.SYSTEM_PACKAGE.
    */
   public JavaDecl getContainer() {
     throw new RuntimeException(getClass().getName() + " has no container.");
@@ -242,7 +242,7 @@ public abstract class JavaDecl extends Decl {
    *  Decl is not found. This method figures out the type of node, and
    *  passes to the appropriate more specific getDecl() method.
    */
-  public static final JavaDecl getDecl(TreeNode node) {
+  public static final JavaDecl getDecl(TreeNode node) {                 
     if (node instanceof NamedNode) {
        return getDecl((NamedNode) node);
     } 

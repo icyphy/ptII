@@ -72,19 +72,21 @@ public class Decl extends TrackedPropertyMap {
     category = category0;
   }
   
-  /** Re-override equals() from HashMap so that equality is defined as having the
-   *  same name and category. 
+  /** Override Object.equals() so that equality is defined as having the same name 
+   *  and category. If the object being compared against is not a Decl, throw a
+   *  RuntimeException.
    */
   public boolean equals(Object o) {
     if (o == this) {
        return true;
     }
 
-    if (o instanceof Decl) {
-      Decl d = (Decl) o;
-      return matches(d.getName(), d.category);           
+    if (!(o instanceof Decl)) {
+       throw new RuntimeException("cannot compare a Decl with a non-Decl");
     }
-    return false;    
+        
+    Decl d = (Decl) o;
+    return matches(d.getName(), d.category);                   
   }
   
   public final boolean matches(String name, int mask) {

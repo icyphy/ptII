@@ -18,7 +18,39 @@
 
 
 
-//#line 120 "jparser.y"
+//#line 152 "jparser.y"
+/*
+Java parser produced by BYACC/J, with input file jparser.y
+
+Copyright (c) 1998-2000 The Regents of the University of California.
+All rights reserved.
+
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
+
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Red (ctsay@eecs.berkeley.edu)
+@AcceptedRating Red (ctsay@eecs.berkeley.edu)
+*/
+
 package ptolemy.lang.java;
 
 import java.util.Iterator;
@@ -28,7 +60,7 @@ import java.io.FileInputStream;
 
 import ptolemy.lang.*;
 
-//#line 30 "parser.java"
+//#line 62 "parser.java"
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.io.FileReader;
@@ -373,7 +405,7 @@ null,null,null,null,null,null,null,null,null,"ABSTRACT","BOOLEAN","BREAK",
 "PLUSPLUS","MINUSMINUS",
 };
 final static String yyrule[] = read_string_table("yyrule.tbl", NRULES - 2);
-//#line 1424 "jparser.y"
+//#line 1488 "jparser.y"
 
 protected void init(String filename) throws IOException {
   _filename = filename;
@@ -454,7 +486,7 @@ protected static TypeNode makeArrayType(TypeNode elementType, int dims)
 
 protected String _filename = null;
 protected Yylex _lexer = null;
-//#line 2010 "parser.java"
+//#line 2042 "parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -608,123 +640,123 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 1:
-//#line 202 "jparser.y"
+//#line 266 "jparser.y"
 { _theAST = (CompileUnitNode) val_peek(0).obj; }
 break;
 case 2:
-//#line 208 "jparser.y"
+//#line 272 "jparser.y"
 { yyval.obj = new IntLitNode(val_peek(0).sval); }
 break;
 case 3:
-//#line 210 "jparser.y"
+//#line 274 "jparser.y"
 { yyval.obj = new LongLitNode(val_peek(0).sval); }
 break;
 case 4:
-//#line 212 "jparser.y"
+//#line 276 "jparser.y"
 { yyval.obj = new FloatLitNode(val_peek(0).sval); }
 break;
 case 5:
-//#line 214 "jparser.y"
+//#line 278 "jparser.y"
 { yyval.obj = new DoubleLitNode(val_peek(0).sval); }
 break;
 case 6:
-//#line 216 "jparser.y"
+//#line 280 "jparser.y"
 { yyval.obj = new BoolLitNode("true"); }
 break;
 case 7:
-//#line 218 "jparser.y"
+//#line 282 "jparser.y"
 { yyval.obj = new BoolLitNode("false"); }
 break;
 case 8:
-//#line 220 "jparser.y"
+//#line 284 "jparser.y"
 { yyval.obj = new CharLitNode(val_peek(0).sval); }
 break;
 case 9:
-//#line 222 "jparser.y"
+//#line 286 "jparser.y"
 { yyval.obj = new StringLitNode(val_peek(0).sval); }
 break;
 case 14:
-//#line 243 "jparser.y"
+//#line 307 "jparser.y"
 { yyval.obj = BoolTypeNode.instance; }
 break;
 case 15:
-//#line 245 "jparser.y"
+//#line 309 "jparser.y"
 { yyval.obj = CharTypeNode.instance; }
 break;
 case 16:
-//#line 247 "jparser.y"
+//#line 311 "jparser.y"
 { yyval.obj = ByteTypeNode.instance; }
 break;
 case 17:
-//#line 249 "jparser.y"
+//#line 313 "jparser.y"
 { yyval.obj = ShortTypeNode.instance; }
 break;
 case 18:
-//#line 251 "jparser.y"
+//#line 315 "jparser.y"
 { yyval.obj = IntTypeNode.instance; }
 break;
 case 19:
-//#line 253 "jparser.y"
+//#line 317 "jparser.y"
 { yyval.obj = FloatTypeNode.instance; }
 break;
 case 20:
-//#line 255 "jparser.y"
+//#line 319 "jparser.y"
 { yyval.obj = LongTypeNode.instance; }
 break;
 case 21:
-//#line 257 "jparser.y"
+//#line 321 "jparser.y"
 { yyval.obj = DoubleTypeNode.instance; }
 break;
 case 22:
-//#line 265 "jparser.y"
+//#line 329 "jparser.y"
 { yyval.obj = new TypeNameNode((NameNode) val_peek(0).obj); }
 break;
 case 23:
-//#line 270 "jparser.y"
+//#line 334 "jparser.y"
 { yyval.obj = new ArrayTypeNode((TypeNode) val_peek(1).obj); }
 break;
 case 24:
-//#line 279 "jparser.y"
+//#line 343 "jparser.y"
 { yyval.obj = new CompileUnitNode((TreeNode) val_peek(2).obj, (LinkedList) val_peek(1).obj, (LinkedList) val_peek(0).obj);  }
 break;
 case 25:
-//#line 284 "jparser.y"
+//#line 348 "jparser.y"
 { yyval.obj = val_peek(1).obj; }
 break;
 case 26:
-//#line 286 "jparser.y"
+//#line 350 "jparser.y"
 { yyval.obj = AbsentTreeNode.instance; }
 break;
 case 27:
-//#line 291 "jparser.y"
+//#line 355 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 28:
-//#line 293 "jparser.y"
+//#line 357 "jparser.y"
 { yyval.obj = cons(val_peek(1).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 29:
-//#line 299 "jparser.y"
+//#line 363 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 30:
-//#line 301 "jparser.y"
+//#line 365 "jparser.y"
 { yyval.obj = cons(val_peek(1).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 31:
-//#line 303 "jparser.y"
+//#line 367 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 36:
-//#line 321 "jparser.y"
+//#line 385 "jparser.y"
 { yyval.obj = new ImportNode((NameNode) val_peek(1).obj); }
 break;
 case 37:
-//#line 326 "jparser.y"
+//#line 390 "jparser.y"
 { yyval.obj = new ImportOnDemandNode((NameNode) val_peek(3).obj); }
 break;
 case 38:
-//#line 338 "jparser.y"
+//#line 402 "jparser.y"
 { 
       /* add a default constructor if none is found*/
       NameNode name = (NameNode) val_peek(3).obj;
@@ -744,7 +776,7 @@ case 38:
         
       if (!constructorFound) {
          body.add(new ConstructorDeclNode(Modifier.PUBLIC_MOD,         
-                  (NameNode) name.clone(), 
+                  new NameNode(name.getQualifier(), name.getIdent()),
                   new LinkedList(),                /* params*/
                   new LinkedList(),                /* throws */
                   new BlockNode(new LinkedList()), /* body*/
@@ -756,68 +788,68 @@ case 38:
     }
 break;
 case 39:
-//#line 379 "jparser.y"
+//#line 443 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 40:
-//#line 381 "jparser.y"
+//#line 445 "jparser.y"
 { 
 		  /* add the implicit subclass Object. Note this is wrong for Object itself.*/
 		  yyval.obj = new TypeNameNode(new NameNode(AbsentTreeNode.instance, "Object")); 
 		}
 break;
 case 41:
-//#line 392 "jparser.y"
+//#line 456 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 42:
-//#line 394 "jparser.y"
+//#line 458 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 43:
-//#line 403 "jparser.y"
+//#line 467 "jparser.y"
 {
      yyval.obj = val_peek(1).obj; /* in the original, an ABSENT tree is added*/
    }
 break;
 case 44:
-//#line 409 "jparser.y"
+//#line 473 "jparser.y"
 { }
 break;
 case 45:
-//#line 411 "jparser.y"
+//#line 475 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 47:
-//#line 417 "jparser.y"
+//#line 481 "jparser.y"
 { yyval.obj = appendLists((LinkedList) val_peek(1).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 49:
-//#line 426 "jparser.y"
+//#line 490 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 50:
-//#line 428 "jparser.y"
+//#line 492 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 51:
-//#line 430 "jparser.y"
+//#line 494 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 52:
-//#line 433 "jparser.y"
+//#line 497 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 53:
-//#line 439 "jparser.y"
+//#line 503 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 54:
-//#line 441 "jparser.y"
+//#line 505 "jparser.y"
 { yyval.obj = cons(val_peek(1).obj); }
 break;
 case 55:
-//#line 449 "jparser.y"
+//#line 513 "jparser.y"
 {
       Modifier.checkFieldModifiers(val_peek(3).ival);
 	     LinkedList result = new LinkedList();
@@ -837,19 +869,19 @@ case 55:
    }
 break;
 case 56:
-//#line 475 "jparser.y"
+//#line 539 "jparser.y"
 { }
 break;
 case 57:
-//#line 477 "jparser.y"
+//#line 541 "jparser.y"
 { yyval.ival = Modifier.NO_MOD; }
 break;
 case 58:
-//#line 481 "jparser.y"
+//#line 545 "jparser.y"
 { yyval.ival = val_peek(0).ival; }
 break;
 case 59:
-//#line 483 "jparser.y"
+//#line 547 "jparser.y"
 {
      yyval.ival = (val_peek(1).ival | val_peek(0).ival);
 		  if ((val_peek(1).ival & val_peek(0).ival) != 0) {
@@ -858,67 +890,67 @@ case 59:
    }
 break;
 case 60:
-//#line 494 "jparser.y"
+//#line 558 "jparser.y"
 { yyval.ival = Modifier.PUBLIC_MOD; }
 break;
 case 61:
-//#line 496 "jparser.y"
+//#line 560 "jparser.y"
 { yyval.ival = Modifier.PROTECTED_MOD;  }
 break;
 case 62:
-//#line 498 "jparser.y"
+//#line 562 "jparser.y"
 { yyval.ival = Modifier.PRIVATE_MOD;  }
 break;
 case 63:
-//#line 501 "jparser.y"
+//#line 565 "jparser.y"
 { yyval.ival = Modifier.STATIC_MOD;  }
 break;
 case 64:
-//#line 503 "jparser.y"
+//#line 567 "jparser.y"
 { yyval.ival = Modifier.FINAL_MOD;  }
 break;
 case 65:
-//#line 506 "jparser.y"
+//#line 570 "jparser.y"
 { yyval.ival = Modifier.ABSTRACT_MOD;  }
 break;
 case 66:
-//#line 508 "jparser.y"
+//#line 572 "jparser.y"
 { yyval.ival = Modifier.NATIVE_MOD;  }
 break;
 case 67:
-//#line 510 "jparser.y"
+//#line 574 "jparser.y"
 { yyval.ival = Modifier.SYNCHRONIZED_MOD;  }
 break;
 case 68:
-//#line 513 "jparser.y"
+//#line 577 "jparser.y"
 { yyval.ival = Modifier.TRANSIENT_MOD;  }
 break;
 case 69:
-//#line 515 "jparser.y"
+//#line 579 "jparser.y"
 { yyval.ival = Modifier.VOLATILE_MOD;  }
 break;
 case 70:
-//#line 517 "jparser.y"
+//#line 581 "jparser.y"
 { yyval.ival = Modifier.STRICTFP_MOD; }
 break;
 case 71:
-//#line 528 "jparser.y"
+//#line 592 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 72:
-//#line 530 "jparser.y"
+//#line 594 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj, (LinkedList) val_peek(2).obj); }
 break;
 case 73:
-//#line 535 "jparser.y"
+//#line 599 "jparser.y"
 { yyval.obj = new DeclaratorNode(val_peek(0).ival, (NameNode) val_peek(1).obj, AbsentTreeNode.instance); }
 break;
 case 74:
-//#line 537 "jparser.y"
+//#line 601 "jparser.y"
 { yyval.obj = new DeclaratorNode(val_peek(2).ival, (NameNode) val_peek(3).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 77:
-//#line 553 "jparser.y"
+//#line 617 "jparser.y"
 {
      Modifier.checkMethodModifiers(val_peek(8).ival);
 	    yyval.obj = new MethodDeclNode(val_peek(8).ival, (NameNode) val_peek(6).obj, (LinkedList) val_peek(4).obj,
@@ -927,7 +959,7 @@ case 77:
    }
 break;
 case 78:
-//#line 561 "jparser.y"
+//#line 625 "jparser.y"
 {
      Modifier.checkMethodModifiers(val_peek(8).ival);
 	    yyval.obj = new MethodDeclNode(val_peek(8).ival, (NameNode) val_peek(6).obj, (LinkedList) val_peek(4).obj,
@@ -936,27 +968,27 @@ case 78:
    }
 break;
 case 79:
-//#line 571 "jparser.y"
+//#line 635 "jparser.y"
 { yyval.obj = VoidTypeNode.instance; }
 break;
 case 80:
-//#line 579 "jparser.y"
+//#line 643 "jparser.y"
 { }
 break;
 case 81:
-//#line 581 "jparser.y"
+//#line 645 "jparser.y"
 { yyval.obj = new LinkedList();  }
 break;
 case 82:
-//#line 586 "jparser.y"
+//#line 650 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 83:
-//#line 588 "jparser.y"
+//#line 652 "jparser.y"
 { yyval.obj = cons(val_peek(2).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 84:
-//#line 593 "jparser.y"
+//#line 657 "jparser.y"
 {
      Modifier.checkParameterModifiers(val_peek(3).ival); 
      yyval.obj = new ParameterNode(val_peek(3).ival, makeArrayType((TypeNode) val_peek(2).obj, val_peek(0).ival),
@@ -964,31 +996,31 @@ case 84:
    }
 break;
 case 85:
-//#line 604 "jparser.y"
+//#line 668 "jparser.y"
 { }
 break;
 case 86:
-//#line 606 "jparser.y"
+//#line 670 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 87:
-//#line 611 "jparser.y"
+//#line 675 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 88:
-//#line 616 "jparser.y"
+//#line 680 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 89:
-//#line 618 "jparser.y"
+//#line 682 "jparser.y"
 { yyval.obj = cons(val_peek(2).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 91:
-//#line 627 "jparser.y"
+//#line 691 "jparser.y"
 { yyval.obj = AbsentTreeNode.instance; }
 break;
 case 92:
-//#line 636 "jparser.y"
+//#line 700 "jparser.y"
 {
       Modifier.checkConstructorModifiers(val_peek(9).ival);
 	     yyval.obj = new ConstructorDeclNode(val_peek(9).ival,
@@ -998,7 +1030,7 @@ case 92:
    }
 break;
 case 93:
-//#line 645 "jparser.y"
+//#line 709 "jparser.y"
 {
      Modifier.checkConstructorModifiers(val_peek(8).ival);
 	    yyval.obj = new ConstructorDeclNode(val_peek(8).ival,
@@ -1008,66 +1040,66 @@ case 93:
 	  }
 break;
 case 94:
-//#line 660 "jparser.y"
+//#line 724 "jparser.y"
 { yyval.obj = new ThisConstructorCallNode((LinkedList) val_peek(2).obj); }
 break;
 case 95:
-//#line 662 "jparser.y"
+//#line 726 "jparser.y"
 { yyval.obj = new SuperConstructorCallNode((LinkedList) val_peek(2).obj); }
 break;
 case 96:
-//#line 670 "jparser.y"
+//#line 734 "jparser.y"
 { yyval.obj = new StaticInitNode((BlockNode) val_peek(0).obj); }
 break;
 case 97:
-//#line 675 "jparser.y"
+//#line 739 "jparser.y"
 { yyval.obj = new InstanceInitNode((BlockNode) val_peek(0).obj); }
 break;
 case 98:
-//#line 683 "jparser.y"
+//#line 747 "jparser.y"
 {
      Modifier.checkInterfaceModifiers(val_peek(4).ival);
      yyval.obj = new InterfaceDeclNode(val_peek(4).ival, (NameNode) val_peek(2).obj, (LinkedList) val_peek(1).obj, (LinkedList) val_peek(0).obj);
    }
 break;
 case 99:
-//#line 698 "jparser.y"
+//#line 762 "jparser.y"
 { }
 break;
 case 100:
-//#line 700 "jparser.y"
+//#line 764 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 101:
-//#line 705 "jparser.y"
+//#line 769 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 102:
-//#line 712 "jparser.y"
+//#line 776 "jparser.y"
 { yyval.obj = val_peek(1).obj; }
 break;
 case 103:
-//#line 717 "jparser.y"
+//#line 781 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 104:
-//#line 719 "jparser.y"
+//#line 783 "jparser.y"
 { yyval.obj = appendLists((LinkedList) val_peek(1).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 106:
-//#line 725 "jparser.y"
+//#line 789 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 107:
-//#line 727 "jparser.y"
+//#line 791 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 108:
-//#line 729 "jparser.y"
+//#line 793 "jparser.y"
 { yyval.obj = cons(val_peek(1).obj); }
 break;
 case 109:
-//#line 734 "jparser.y"
+//#line 798 "jparser.y"
 {
      int modifiers = val_peek(3).ival;
      modifiers |= (Modifier.STATIC_MOD | Modifier.FINAL_MOD);
@@ -1089,7 +1121,7 @@ case 109:
 	  }
 break;
 case 110:
-//#line 758 "jparser.y"
+//#line 822 "jparser.y"
 {
      Modifier.checkMethodSignatureModifiers(val_peek(8).ival);
 	    yyval.obj = new MethodDeclNode(val_peek(8).ival | Modifier.ABSTRACT_MOD, (NameNode) val_peek(6).obj,
@@ -1099,7 +1131,7 @@ case 110:
    }
 break;
 case 111:
-//#line 767 "jparser.y"
+//#line 831 "jparser.y"
 {
      Modifier.checkMethodSignatureModifiers(val_peek(8).ival);
 	    yyval.obj = new MethodDeclNode(val_peek(8).ival | Modifier.ABSTRACT_MOD, (NameNode) val_peek(6).obj,
@@ -1109,59 +1141,59 @@ case 111:
    }
 break;
 case 112:
-//#line 782 "jparser.y"
+//#line 846 "jparser.y"
 { yyval.obj = new ArrayInitNode((LinkedList) val_peek(1).obj); }
 break;
 case 113:
-//#line 784 "jparser.y"
+//#line 848 "jparser.y"
 { yyval.obj = new ArrayInitNode((LinkedList) val_peek(2).obj); }
 break;
 case 114:
-//#line 786 "jparser.y"
+//#line 850 "jparser.y"
 { yyval.obj = new ArrayInitNode(new LinkedList()); }
 break;
 case 115:
-//#line 792 "jparser.y"
+//#line 856 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 116:
-//#line 794 "jparser.y"
+//#line 858 "jparser.y"
 { yyval.obj = append((LinkedList) val_peek(2).obj, val_peek(0).obj); }
 break;
 case 119:
-//#line 809 "jparser.y"
+//#line 873 "jparser.y"
 { yyval.obj = new BlockNode((LinkedList) val_peek(1).obj); }
 break;
 case 120:
-//#line 813 "jparser.y"
+//#line 877 "jparser.y"
 { }
 break;
 case 121:
-//#line 815 "jparser.y"
+//#line 879 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 122:
-//#line 820 "jparser.y"
+//#line 884 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 123:
-//#line 822 "jparser.y"
+//#line 886 "jparser.y"
 { yyval.obj = appendLists((LinkedList) val_peek(1).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 124:
-//#line 827 "jparser.y"
+//#line 891 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 125:
-//#line 829 "jparser.y"
+//#line 893 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 126:
-//#line 831 "jparser.y"
+//#line 895 "jparser.y"
 { yyval.obj = cons(new UserTypeDeclStmtNode((UserTypeDeclNode) val_peek(0).obj)); }
 break;
 case 127:
-//#line 839 "jparser.y"
+//#line 903 "jparser.y"
 {
      Modifier.checkLocalVariableModifiers(val_peek(3).ival);
 
@@ -1180,7 +1212,7 @@ case 127:
    }
 break;
 case 128:
-//#line 857 "jparser.y"
+//#line 921 "jparser.y"
 {
      LinkedList varDecls = (LinkedList) val_peek(1).obj;
      LinkedList result = new LinkedList();
@@ -1197,343 +1229,343 @@ case 128:
    }
 break;
 case 131:
-//#line 879 "jparser.y"
+//#line 943 "jparser.y"
 { yyval.obj = new ExprStmtNode((ExprNode) val_peek(1).obj); }
 break;
 case 137:
-//#line 891 "jparser.y"
+//#line 955 "jparser.y"
 { yyval.obj = new EmptyStmtNode(); }
 break;
 case 138:
-//#line 899 "jparser.y"
+//#line 963 "jparser.y"
 { yyval.obj = new LabeledStmtNode((NameNode) val_peek(2).obj, (StatementNode) val_peek(0).obj); }
 break;
 case 139:
-//#line 907 "jparser.y"
+//#line 971 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 140:
-//#line 909 "jparser.y"
+//#line 973 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 141:
-//#line 911 "jparser.y"
+//#line 975 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 142:
-//#line 913 "jparser.y"
+//#line 977 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 143:
-//#line 915 "jparser.y"
+//#line 979 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 144:
-//#line 917 "jparser.y"
+//#line 981 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 145:
-//#line 919 "jparser.y"
+//#line 983 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 146:
-//#line 927 "jparser.y"
+//#line 991 "jparser.y"
 { yyval.obj = new IfStmtNode((ExprNode) val_peek(2).obj, (StatementNode) val_peek(0).obj, AbsentTreeNode.instance); }
 break;
 case 147:
-//#line 929 "jparser.y"
+//#line 993 "jparser.y"
 { yyval.obj = new IfStmtNode((ExprNode) val_peek(4).obj, (StatementNode) val_peek(2).obj, (TreeNode) val_peek(0).obj); }
 break;
 case 148:
-//#line 931 "jparser.y"
+//#line 995 "jparser.y"
 { yyval.obj = new SwitchNode((ExprNode) val_peek(2).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 149:
-//#line 936 "jparser.y"
+//#line 1000 "jparser.y"
 { yyval.obj = val_peek(1).obj; }
 break;
 case 150:
-//#line 941 "jparser.y"
+//#line 1005 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 151:
-//#line 943 "jparser.y"
+//#line 1007 "jparser.y"
 {
      yyval.obj = cons(new SwitchBranchNode((LinkedList) val_peek(2).obj, (LinkedList) val_peek(1).obj),
                (LinkedList) val_peek(0).obj);
    }
 break;
 case 152:
-//#line 949 "jparser.y"
+//#line 1013 "jparser.y"
 { yyval.obj = cons(new SwitchBranchNode((LinkedList) val_peek(0).obj, new LinkedList())); }
 break;
 case 153:
-//#line 954 "jparser.y"
+//#line 1018 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 154:
-//#line 956 "jparser.y"
+//#line 1020 "jparser.y"
 { yyval.obj = cons(val_peek(1).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 155:
-//#line 961 "jparser.y"
+//#line 1025 "jparser.y"
 { yyval.obj = new CaseNode((TreeNode) val_peek(1).obj); }
 break;
 case 156:
-//#line 963 "jparser.y"
+//#line 1027 "jparser.y"
 { yyval.obj = new CaseNode(AbsentTreeNode.instance); }
 break;
 case 157:
-//#line 970 "jparser.y"
+//#line 1034 "jparser.y"
 { yyval.obj = new LoopNode(new EmptyStmtNode(), (ExprNode) val_peek(2).obj, (TreeNode) val_peek(0).obj); }
 break;
 case 158:
-//#line 972 "jparser.y"
+//#line 1036 "jparser.y"
 { yyval.obj = new LoopNode((TreeNode) val_peek(5).obj, (ExprNode) val_peek(2).obj, new EmptyStmtNode()); }
 break;
 case 159:
-//#line 974 "jparser.y"
+//#line 1038 "jparser.y"
 { yyval.obj = new ForNode((LinkedList) val_peek(5).obj, (ExprNode) val_peek(4).obj,
       (LinkedList) val_peek(2).obj, (StatementNode) val_peek(0).obj); }
 break;
 case 160:
-//#line 977 "jparser.y"
+//#line 1041 "jparser.y"
 { yyval.obj = new ForNode((LinkedList) val_peek(4).obj, new BoolLitNode("true"), (LinkedList) val_peek(2).obj,
       (StatementNode) val_peek(0).obj); }
 break;
 case 161:
-//#line 983 "jparser.y"
+//#line 1047 "jparser.y"
 { yyval.obj = val_peek(1).obj; }
 break;
 case 162:
-//#line 985 "jparser.y"
+//#line 1049 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 163:
-//#line 989 "jparser.y"
+//#line 1053 "jparser.y"
 { }
 break;
 case 164:
-//#line 991 "jparser.y"
+//#line 1055 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 165:
-//#line 995 "jparser.y"
+//#line 1059 "jparser.y"
 { }
 break;
 case 166:
-//#line 997 "jparser.y"
+//#line 1061 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 167:
-//#line 1002 "jparser.y"
+//#line 1066 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 168:
-//#line 1004 "jparser.y"
+//#line 1068 "jparser.y"
 { yyval.obj = cons(val_peek(2).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 169:
-//#line 1012 "jparser.y"
+//#line 1076 "jparser.y"
 { yyval.obj = new BreakNode((TreeNode) val_peek(1).obj); }
 break;
 case 170:
-//#line 1014 "jparser.y"
+//#line 1078 "jparser.y"
 { yyval.obj = new ContinueNode((TreeNode) val_peek(1).obj); }
 break;
 case 171:
-//#line 1016 "jparser.y"
+//#line 1080 "jparser.y"
 { yyval.obj = new ReturnNode((TreeNode) val_peek(1).obj); }
 break;
 case 172:
-//#line 1018 "jparser.y"
+//#line 1082 "jparser.y"
 { yyval.obj = new ThrowNode((ExprNode) val_peek(1).obj); }
 break;
 case 173:
-//#line 1023 "jparser.y"
+//#line 1087 "jparser.y"
 { }
 break;
 case 174:
-//#line 1025 "jparser.y"
+//#line 1089 "jparser.y"
 { yyval.obj = AbsentTreeNode.instance; }
 break;
 case 175:
-//#line 1033 "jparser.y"
+//#line 1097 "jparser.y"
 { yyval.obj = new SynchronizedNode((ExprNode) val_peek(2).obj, (TreeNode) val_peek(0).obj); }
 break;
 case 176:
-//#line 1035 "jparser.y"
+//#line 1099 "jparser.y"
 { yyval.obj = new TryNode((BlockNode) val_peek(1).obj, new LinkedList(), (TreeNode) val_peek(0).obj); }
 break;
 case 177:
-//#line 1037 "jparser.y"
+//#line 1101 "jparser.y"
 { yyval.obj = new TryNode((BlockNode) val_peek(1).obj, (LinkedList) val_peek(0).obj, AbsentTreeNode.instance); }
 break;
 case 178:
-//#line 1039 "jparser.y"
+//#line 1103 "jparser.y"
 { yyval.obj = new TryNode((BlockNode) val_peek(2).obj, (LinkedList) val_peek(1).obj, (TreeNode) val_peek(0).obj); }
 break;
 case 179:
-//#line 1044 "jparser.y"
+//#line 1108 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 180:
-//#line 1046 "jparser.y"
+//#line 1110 "jparser.y"
 { yyval.obj = cons(val_peek(1).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 181:
-//#line 1051 "jparser.y"
+//#line 1115 "jparser.y"
 { yyval.obj = new CatchNode((ParameterNode) val_peek(2).obj, (BlockNode) val_peek(0).obj); }
 break;
 case 182:
-//#line 1056 "jparser.y"
+//#line 1120 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 183:
-//#line 1067 "jparser.y"
+//#line 1131 "jparser.y"
 { yyval.obj = new ObjectNode((NameNode) val_peek(0).obj); }
 break;
 case 185:
-//#line 1070 "jparser.y"
+//#line 1134 "jparser.y"
 { yyval.obj = new TypeClassAccessNode(new TypeNameNode((NameNode) val_peek(2).obj)); }
 break;
 case 186:
-//#line 1072 "jparser.y"
+//#line 1136 "jparser.y"
 { yyval.obj = new TypeClassAccessNode((TypeNode) val_peek(2).obj); }
 break;
 case 187:
-//#line 1074 "jparser.y"
+//#line 1138 "jparser.y"
 { yyval.obj = new TypeClassAccessNode((TypeNode) val_peek(2).obj); }
 break;
 case 188:
-//#line 1076 "jparser.y"
+//#line 1140 "jparser.y"
 { yyval.obj = new OuterThisAccessNode(new TypeNameNode((NameNode) val_peek(2).obj)); }
 break;
 case 189:
-//#line 1078 "jparser.y"
+//#line 1142 "jparser.y"
 { yyval.obj = new OuterSuperAccessNode(new TypeNameNode((NameNode) val_peek(2).obj)); }
 break;
 case 193:
-//#line 1089 "jparser.y"
+//#line 1153 "jparser.y"
 { yyval.obj = new NullPntrNode(); }
 break;
 case 194:
-//#line 1091 "jparser.y"
+//#line 1155 "jparser.y"
 { yyval.obj = new ThisNode(); }
 break;
 case 195:
-//#line 1093 "jparser.y"
+//#line 1157 "jparser.y"
 { yyval.obj = val_peek(1).obj; }
 break;
 case 196:
-//#line 1095 "jparser.y"
+//#line 1159 "jparser.y"
 { yyval.obj = new ObjectNode((NameNode) val_peek(1).obj); }
 break;
 case 198:
-//#line 1098 "jparser.y"
+//#line 1162 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 200:
-//#line 1102 "jparser.y"
+//#line 1166 "jparser.y"
 { yyval.obj = new TypeClassAccessNode((TypeNode) val_peek(2).obj); }
 break;
 case 201:
-//#line 1111 "jparser.y"
+//#line 1175 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 203:
-//#line 1117 "jparser.y"
+//#line 1181 "jparser.y"
 { yyval.obj = new NameNode(AbsentTreeNode.instance, val_peek(0).sval); }
 break;
 case 204:
-//#line 1122 "jparser.y"
+//#line 1186 "jparser.y"
 { yyval.obj = new NameNode((NameNode) val_peek(2).obj, val_peek(0).sval); }
 break;
 case 205:
-//#line 1129 "jparser.y"
+//#line 1193 "jparser.y"
 { yyval.obj = new ArrayAccessNode(new ObjectNode((NameNode) val_peek(3).obj), (ExprNode) val_peek(1).obj); }
 break;
 case 206:
-//#line 1131 "jparser.y"
+//#line 1195 "jparser.y"
 { yyval.obj = new ArrayAccessNode((ExprNode) val_peek(3).obj, (ExprNode) val_peek(1).obj); }
 break;
 case 207:
-//#line 1140 "jparser.y"
+//#line 1204 "jparser.y"
 { yyval.obj = new ObjectFieldAccessNode((TreeNode) val_peek(2).obj, (NameNode) val_peek(0).obj); }
 break;
 case 208:
-//#line 1142 "jparser.y"
+//#line 1206 "jparser.y"
 { yyval.obj = new SuperFieldAccessNode((NameNode) val_peek(0).obj); }
 break;
 case 209:
-//#line 1150 "jparser.y"
+//#line 1214 "jparser.y"
 { yyval.obj = new MethodCallNode((NameNode) val_peek(3).obj, (LinkedList) val_peek(1).obj); }
 break;
 case 210:
-//#line 1152 "jparser.y"
+//#line 1216 "jparser.y"
 { yyval.obj = new MethodCallNode((TreeNode) val_peek(3).obj, (LinkedList) val_peek(1).obj); }
 break;
 case 211:
-//#line 1155 "jparser.y"
+//#line 1219 "jparser.y"
 { yyval.obj = new MethodCallNode(new NameNode((NameNode) val_peek(5).obj, val_peek(3).sval), (LinkedList) val_peek(1).obj); }
 break;
 case 212:
-//#line 1159 "jparser.y"
+//#line 1223 "jparser.y"
 {  }
 break;
 case 213:
-//#line 1161 "jparser.y"
+//#line 1225 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 214:
-//#line 1166 "jparser.y"
+//#line 1230 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 215:
-//#line 1168 "jparser.y"
+//#line 1232 "jparser.y"
 { yyval.obj = cons(val_peek(2).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 216:
-//#line 1176 "jparser.y"
+//#line 1240 "jparser.y"
 { yyval.obj = new AllocateNode((TypeNameNode) val_peek(3).obj, (LinkedList) val_peek(1).obj, new ThisNode()); }
 break;
 case 217:
-//#line 1179 "jparser.y"
+//#line 1243 "jparser.y"
 {
      yyval.obj = new AllocateAnonymousClassNode((TypeNameNode) val_peek(4).obj,
                (LinkedList) val_peek(2).obj, (LinkedList) val_peek(0).obj, new ThisNode());
    }
 break;
 case 218:
-//#line 1184 "jparser.y"
+//#line 1248 "jparser.y"
 {
      yyval.obj = new AllocateArrayNode((TypeNode) val_peek(2).obj, (LinkedList) val_peek(1).obj, val_peek(0).ival,
            AbsentTreeNode.instance);
    }
 break;
 case 219:
-//#line 1190 "jparser.y"
+//#line 1254 "jparser.y"
 {
      yyval.obj = new AllocateArrayNode((TypeNode) val_peek(2).obj, new LinkedList(), val_peek(1).ival,
           (TreeNode) val_peek(0).obj);
    }
 break;
 case 220:
-//#line 1195 "jparser.y"
+//#line 1259 "jparser.y"
 {
      yyval.obj = new AllocateArrayNode((TypeNode) val_peek(2).obj, (LinkedList) val_peek(1).obj, val_peek(0).ival,
            AbsentTreeNode.instance);
    }
 break;
 case 221:
-//#line 1201 "jparser.y"
+//#line 1265 "jparser.y"
 {
      yyval.obj = new AllocateArrayNode((TypeNode) val_peek(2).obj, new LinkedList(), val_peek(1).ival,
            (TreeNode) val_peek(0).obj);
    }
 break;
 case 222:
-//#line 1207 "jparser.y"
+//#line 1271 "jparser.y"
 {
      yyval.obj = new AllocateNode(
            new TypeNameNode(new NameNode(AbsentTreeNode.instance, val_peek(3).sval)),
@@ -1541,7 +1573,7 @@ case 222:
    }
 break;
 case 223:
-//#line 1214 "jparser.y"
+//#line 1278 "jparser.y"
 {
      yyval.obj = new AllocateAnonymousClassNode(
            new TypeNameNode(new NameNode(AbsentTreeNode.instance, val_peek(4).sval)),
@@ -1549,7 +1581,7 @@ case 223:
    }
 break;
 case 224:
-//#line 1222 "jparser.y"
+//#line 1286 "jparser.y"
 {
      yyval.obj = new AllocateNode(
            new TypeNameNode(new NameNode(AbsentTreeNode.instance, val_peek(3).sval)),
@@ -1557,7 +1589,7 @@ case 224:
    }
 break;
 case 225:
-//#line 1229 "jparser.y"
+//#line 1293 "jparser.y"
 {
      yyval.obj = new AllocateAnonymousClassNode(
            new TypeNameNode(new NameNode(AbsentTreeNode.instance, val_peek(4).sval)),
@@ -1565,218 +1597,218 @@ case 225:
    }
 break;
 case 226:
-//#line 1238 "jparser.y"
+//#line 1302 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 227:
-//#line 1240 "jparser.y"
+//#line 1304 "jparser.y"
 { yyval.obj = cons(val_peek(1).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 228:
-//#line 1245 "jparser.y"
+//#line 1309 "jparser.y"
 { yyval.obj = val_peek(1).obj; }
 break;
 case 229:
-//#line 1249 "jparser.y"
+//#line 1313 "jparser.y"
 { }
 break;
 case 230:
-//#line 1251 "jparser.y"
+//#line 1315 "jparser.y"
 { yyval.ival = 0; }
 break;
 case 231:
-//#line 1256 "jparser.y"
+//#line 1320 "jparser.y"
 { yyval.ival = 1; }
 break;
 case 232:
-//#line 1258 "jparser.y"
+//#line 1322 "jparser.y"
 { yyval.ival = val_peek(1).ival + 1; }
 break;
 case 236:
-//#line 1272 "jparser.y"
+//#line 1336 "jparser.y"
 { yyval.obj = new PostIncrNode((ExprNode) val_peek(1).obj); }
 break;
 case 237:
-//#line 1277 "jparser.y"
+//#line 1341 "jparser.y"
 { yyval.obj = new PostDecrNode((ExprNode) val_peek(1).obj); }
 break;
 case 240:
-//#line 1287 "jparser.y"
+//#line 1351 "jparser.y"
 { yyval.obj = new UnaryPlusNode((ExprNode) val_peek(0).obj); }
 break;
 case 241:
-//#line 1289 "jparser.y"
+//#line 1353 "jparser.y"
 { yyval.obj = new UnaryMinusNode((ExprNode) val_peek(0).obj); }
 break;
 case 243:
-//#line 1295 "jparser.y"
+//#line 1359 "jparser.y"
 { yyval.obj = new PreIncrNode((ExprNode) val_peek(0).obj); }
 break;
 case 244:
-//#line 1300 "jparser.y"
+//#line 1364 "jparser.y"
 { yyval.obj = new PreDecrNode((ExprNode) val_peek(0).obj); }
 break;
 case 246:
-//#line 1306 "jparser.y"
+//#line 1370 "jparser.y"
 { yyval.obj = new ComplementNode((ExprNode) val_peek(0).obj); }
 break;
 case 247:
-//#line 1308 "jparser.y"
+//#line 1372 "jparser.y"
 { yyval.obj = new NotNode((ExprNode) val_peek(0).obj); }
 break;
 case 249:
-//#line 1314 "jparser.y"
+//#line 1378 "jparser.y"
 { yyval.obj = new CastNode((TypeNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 250:
-//#line 1316 "jparser.y"
+//#line 1380 "jparser.y"
 { yyval.obj = new CastNode((TypeNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 251:
-//#line 1318 "jparser.y"
+//#line 1382 "jparser.y"
 { yyval.obj = new CastNode(new TypeNameNode((NameNode) val_peek(2).obj), (ExprNode) val_peek(0).obj); }
 break;
 case 252:
-//#line 1329 "jparser.y"
+//#line 1393 "jparser.y"
 { }
 break;
 case 253:
-//#line 1331 "jparser.y"
+//#line 1395 "jparser.y"
 { yyval.obj = AbsentTreeNode.instance; }
 break;
 case 255:
-//#line 1337 "jparser.y"
+//#line 1401 "jparser.y"
 { yyval.obj = new MultNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 256:
-//#line 1339 "jparser.y"
+//#line 1403 "jparser.y"
 { yyval.obj = new DivNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 257:
-//#line 1341 "jparser.y"
+//#line 1405 "jparser.y"
 { yyval.obj = new RemNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 258:
-//#line 1343 "jparser.y"
+//#line 1407 "jparser.y"
 { yyval.obj = new PlusNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 259:
-//#line 1345 "jparser.y"
+//#line 1409 "jparser.y"
 { yyval.obj = new MinusNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 260:
-//#line 1347 "jparser.y"
+//#line 1411 "jparser.y"
 { yyval.obj = new LeftShiftLogNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 261:
-//#line 1349 "jparser.y"
+//#line 1413 "jparser.y"
 { yyval.obj = new RightShiftLogNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 262:
-//#line 1351 "jparser.y"
+//#line 1415 "jparser.y"
 { yyval.obj = new RightShiftArithNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 263:
-//#line 1353 "jparser.y"
+//#line 1417 "jparser.y"
 { yyval.obj = new LTNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 264:
-//#line 1355 "jparser.y"
+//#line 1419 "jparser.y"
 { yyval.obj = new GTNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 265:
-//#line 1357 "jparser.y"
+//#line 1421 "jparser.y"
 { yyval.obj = new LENode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 266:
-//#line 1359 "jparser.y"
+//#line 1423 "jparser.y"
 { yyval.obj = new GENode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 267:
-//#line 1361 "jparser.y"
+//#line 1425 "jparser.y"
 { yyval.obj = new InstanceOfNode((ExprNode) val_peek(2).obj, (TypeNode) val_peek(0).obj); }
 break;
 case 268:
-//#line 1363 "jparser.y"
+//#line 1427 "jparser.y"
 { yyval.obj = new EQNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 269:
-//#line 1365 "jparser.y"
+//#line 1429 "jparser.y"
 { yyval.obj = new NENode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 270:
-//#line 1367 "jparser.y"
+//#line 1431 "jparser.y"
 { yyval.obj = new BitAndNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 271:
-//#line 1369 "jparser.y"
+//#line 1433 "jparser.y"
 { yyval.obj = new BitOrNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 272:
-//#line 1371 "jparser.y"
+//#line 1435 "jparser.y"
 { yyval.obj = new BitXorNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 273:
-//#line 1373 "jparser.y"
+//#line 1437 "jparser.y"
 { yyval.obj = new CandNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 274:
-//#line 1375 "jparser.y"
+//#line 1439 "jparser.y"
 { yyval.obj = new CorNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 275:
-//#line 1377 "jparser.y"
+//#line 1441 "jparser.y"
 { yyval.obj = new IfExprNode((ExprNode) val_peek(4).obj, (ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 277:
-//#line 1386 "jparser.y"
+//#line 1450 "jparser.y"
 { yyval.obj = new AssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 278:
-//#line 1388 "jparser.y"
+//#line 1452 "jparser.y"
 { yyval.obj = new MultAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 279:
-//#line 1390 "jparser.y"
+//#line 1454 "jparser.y"
 { yyval.obj = new DivAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 280:
-//#line 1392 "jparser.y"
+//#line 1456 "jparser.y"
 { yyval.obj = new RemAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 281:
-//#line 1394 "jparser.y"
+//#line 1458 "jparser.y"
 { yyval.obj = new PlusAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 282:
-//#line 1396 "jparser.y"
+//#line 1460 "jparser.y"
 { yyval.obj = new MinusAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 283:
-//#line 1398 "jparser.y"
+//#line 1462 "jparser.y"
 { yyval.obj = new LeftShiftLogAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 284:
-//#line 1400 "jparser.y"
+//#line 1464 "jparser.y"
 { yyval.obj = new RightShiftLogAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 285:
-//#line 1402 "jparser.y"
+//#line 1466 "jparser.y"
 { yyval.obj = new RightShiftArithAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 286:
-//#line 1404 "jparser.y"
+//#line 1468 "jparser.y"
 { yyval.obj = new BitAndAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 287:
-//#line 1406 "jparser.y"
+//#line 1470 "jparser.y"
 { yyval.obj = new BitXorAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 288:
-//#line 1408 "jparser.y"
+//#line 1472 "jparser.y"
 { yyval.obj = new BitOrAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
-//#line 3329 "parser.java"
+//#line 3361 "parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

@@ -12,7 +12,7 @@ public class GenerateVisitor {
        System.out.println("Usage : GenerateVisitor TypeNameListFile [VisitorClassName] [BaseNodeName]");
        return;
     }
-
+   
     GenerateVisitor genVisitor = new GenerateVisitor(args);
 
     genVisitor.generate();
@@ -48,14 +48,14 @@ public class GenerateVisitor {
     try {
       _ofs = new FileWriter(fdest);
     } catch (FileNotFoundException e) {
-      System.out.println("Couldn't open destination file.");
+      System.err.println("Couldn't open destination file.");
       return;
     }
 
     try {
       _ifs = new LineNumberReader(new FileReader(fsrc));
     } catch (FileNotFoundException e) {
-      System.out.println("Couldn't open input file.");
+      System.err.println("Couldn't open input file.");
       return;
     }
 
@@ -195,18 +195,15 @@ public class GenerateVisitor {
 
     sb.append("public ");
 
+    boolean concreteClass = isConcrete && !isInterface;
+
     if (!isConcrete && !isInterface) {
        sb.append("abstract ");
     } else if (isSingleton) {
        sb.append("final ");
     }
 
-    if (isInterface) {
-       sb.append("interface ");
-    } else {
-       sb.append("class ");
-    }
-
+    sb.append(isInterface ? "interface " : "class ");
     sb.append(typeName);
 
     if (!parentTypeName.equals("<none>")) {
@@ -232,6 +229,17 @@ public class GenerateVisitor {
 
     sb.append(" {\n");
 
+    String idString = null;
+    if (concreteClass) { 
+       // add a static integer representing the class id
+       idString = typeName.toUpperCase() + "_ID";
+    
+       methodList.add(new ClassField("int", idString, "public static final", 
+        Integer.toString(_classCount)));
+       
+       _classCount++;
+    } 
+
     // do methods first
     Iterator methodItr = methodList.listIterator();
 
@@ -254,6 +262,13 @@ public class GenerateVisitor {
          sb.append(o.toString());
          sb.append('\n');
       }
+    }
+          
+    if (concreteClass) {
+       // set the class id number in a static initializer
+       sb.append("\n    static {\n        classID = ");
+       sb.append(idString);     
+       sb.append(";\n    }\n");       
     }
 
     sb.append("}\n");
@@ -284,7 +299,7 @@ public class GenerateVisitor {
 
          className = strTokenizer.nextToken();
 
-         System.out.println("Reading class info for : " + className);
+         ApplicationUtility.trace("Reading class info for : " + className);
 
          try {
             _typeList.addLast(className);
@@ -392,6 +407,7 @@ public class GenerateVisitor {
   }
 
   private static final String ident = "    ";
+  private static int _classCount = 0;
 
   public static class MethodSignature {
     public MethodSignature() {}
@@ -413,7 +429,7 @@ public class GenerateVisitor {
 
       _isInterface = isInterface;
 
-      System.out.println("method sig constructor begin");
+      ApplicationUtility.trace("method sig constructor begin");
 
       _defConstruct = (sigType == 'k');
       _construct = (sigType == 'c') || _defConstruct;
@@ -437,7 +453,7 @@ public class GenerateVisitor {
 
       String s = strToken.nextToken();
 
-      System.out.println("first s : " + s);
+      ApplicationUtility.trace("first s : " + s);
 
       while (!(s.equals("c") || s.equals("m") || s.equals("k"))) {
          if (s.charAt(0) == '{') {
@@ -490,10 +506,10 @@ public class GenerateVisitor {
 
          s = strToken.nextToken();
 
-         System.out.println("next s : " + s);
+         ApplicationUtility.trace("next s : " + s);
       }
 
-      System.out.println("method sig constructor end");
+      ApplicationUtility.trace("method sig constructor end");
     }
 
     public String methodBody() {
@@ -672,7 +688,9 @@ public class GenerateVisitor {
       return sb.toString();
     }
 
-    /** a getter or a setter method for a child in the list */
+    /** A getter or a setter method for a child in the list. The childIndex parameter
+     *  is necessary to differentiate ithis constructor from the following constructor.
+     */
     public MethodSignature(String returnType, String name, int childIndex, boolean setter) {
 
       Character firstLetter = new Character(Character.toUpperCase(name.charAt(0)));
@@ -686,19 +704,19 @@ public class GenerateVisitor {
         _paramTypes.addLast(returnType);
         _paramNames.addLast(name);
 
-        _methodBody = "_childList.set(" + childIndex + ", " + name + ");";
+        _methodBody = "_childList.set(CHILD_INDEX_" + name.toUpperCase() + ", " + name + ");";
 
       } else {
         _returnType = returnType;
         _name = "get" + partName;
 
 
-        _methodBody = "return (" + _returnType + ") _childList.get(" +
-                      childIndex + ");";
+        _methodBody = "return (" + _returnType + ") _childList.get(CHILD_INDEX_" + 
+                      name.toUpperCase() + ");";
       }
     }
 
-    // a getter or a setter method for data not in the list
+    /** A getter or a setter method for data not in the list. */
     public MethodSignature(String returnType, String name, boolean setter) {
       Character firstLetter = new Character(Character.toUpperCase(name.charAt(0)));
 

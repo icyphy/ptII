@@ -89,7 +89,7 @@ public class ApplicationUtility {
   public static boolean enableAsserts  = false;
   public static boolean enableWarnings = true;
   public static boolean enableTrace  = false;
-  public static boolean exceptionOnError = false;
+  public static boolean exceptionOnError = true;
   public static boolean exitOnError = true;
   public static boolean errorOnWarning = false;
 
