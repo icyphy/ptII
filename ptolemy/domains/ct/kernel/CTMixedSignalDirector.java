@@ -42,29 +42,36 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// CTMixedSignalDirector
 /**
-This class adds the event detection capability to the MultiSolverDirector.
-FIXME: Consider just use this as the MultiSolverDirector.
+This a CTDirector that supports the interaction of the continuous time 
+simulation with event-based domains. This director can both serve as
+a top-level director and an embedded director that is contained by
+a composite actor in an event-based domain. If it is a top-level
+director, it acts exactly like a CTMultiSolverDirector. If it is 
+embedded in another domainc, it will run ahead of time and prepare to
+roll back if necessary.s
+
 @author  Jie Liu
 @version $Id$
 @see classname
 @see full-classname
 */
 public class CTMixedSignalDirector extends CTMultiSolverDirector{
-    /** Construct a CTDirector with no name and no Container.
-     *  The default startTime and stopTime are all zeros. There's no
-     *  scheduler associated.
+    /** Construct a CTMixedSignalDirector with no name and no Container.
+     *  All parameters take their default values. The scheduler is a
+     *  CTScheduler.
      */
     public CTMixedSignalDirector () {
         super();
         _initParameters();
     }
 
-    /** Construct a CTDirector in the default workspace with the given name.
+    /** Construct a CTMixedSignalDirectorin the default workspace 
+     *  with the given name.
      *  If the name argument is null, then the name is set to the empty
      *  string. The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *  The default startTime and stopTime are all zeros. There's no
-     *  scheduler associated.
+     *  All parameters take their default values. The scheduler is a
+     *  CTScheduler.
      *
      *  @param name The name of this director.
      */
@@ -73,13 +80,14 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         _initParameters();
     }
 
-    /** Construct a director in the given workspace with the given name.
+    /** Construct a CTMixedSignalDirector in the given workspace with
+     *  the given name.
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     *  The default startTime and stopTime are all zeros. There's no
-     *  scheduler associated.
+     *  All parameters take their default values. The scheduler is a
+     *  CTScheduler.   
      *
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
@@ -92,15 +100,18 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the end time of this director fire.
+    /** Return the end time of this director's firing.
+     *  @return The fire end time.
      */
     public final double getFireEndTime() {
         return _fireEndTime;
     }
 
-    /** This does the initialization for the entire subsystem. This
+    /** Initialize the director parameters (including time) and intialize 
+     *  all the actors in the container. This
      *  is called exactly once at the start of the entire execution.
-     *  It set the current time to the start time and the current step
+     *  If this is the top-level director, 
+     *  It sets the current time to the start time of the and the current step
      *  size to the initial step size.
      *  It invoke the initialize() method for all the Actors in the
      *  system. The ODE solver are instanciated, and the current solver
