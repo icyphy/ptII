@@ -56,9 +56,7 @@ JSRCS = \
 	ConditionalSend.java \
 	CSPActor.java \
 	CSPDirector.java \
-	CSPReceiver.java \
-	PNThread.java \
-	TerminateProcessException.java
+	CSPReceiver.java
 
 
 EXTRA_SRCS =	$(JSRCS)
