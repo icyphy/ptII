@@ -191,7 +191,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
             Variable variable = (Variable)relation.getAttribute("bufferSize");
             result += (relation.getName() + ": ");
             if (variable == null) {
-                result+=("null");
+                result += ("null");
             } else {
                 result += variable.getExpression();
             }
