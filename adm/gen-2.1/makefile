@@ -360,11 +360,16 @@ REMOTE1PTIIDIST = $(REMOTE1HOME)/ptII$(VERSION)
 # Log file to save the results in
 REMOTE1LOG = $(GENLOGDIR)/remote1.out
 
+#JSHOME = $(HOME)
+JSHOME = /users/ptII
 # JavaScope database, gets removed every night
 # Note that this must be a directory called jsdatabase in the user's
 # home directory.  Overriding this is tricky, it requires setting
 # up a javascope.properties file that can be read at runtime
-JSDATABASE=/users/ptII/jsdatabase
+JSDATABASE=$(JSHOME)/jsdatabase
+
+# Directory to place output in
+JSOUTDIR=$(JSHOME)/public_html/nightly/js
 
 # Directory to place output in
 JSOUTDIR=/users/ptII/public_html/nightly/js
