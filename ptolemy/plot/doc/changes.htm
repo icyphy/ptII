@@ -8,14 +8,18 @@
 <body>
 <h1><a name="ptplot changes">Ptplot Changes</a></h1>
 
+<H2>The changes between ptplot5.2 and ptplot5.2p1</H2>
+<menu>
+<li> Peter Carr: getData() and _setData() incorrectly were using
+_dataset instead of dataset.
+</menu>
+
 <H2>The changes between ptplot5.1p3 and ptplot5.2</H2>
 <menu>
-
-<li> Alberto Gobbi, Edward A. Lee:  Renamed _deferIfNecessary()
+<li> Edward A. Lee, Alberto Gobbi:  Renamed _deferIfNecessary()
 to deferIfNecessary() and made it public.  Added note about 
 using deferIfNecessary() to the Plot class comment that
 describes how to handle modifying the plot from a separate thread.
-
 <li> David French: added removeLegend()
 <li> John Olmstead, Edward A. Lee: rotate Y axis label
 
@@ -26,6 +30,7 @@ opening or saving as, use plot.xml as a default name
 about how to use Log axes.
 <li> Alberto Gobbi, Christopher Hylands:
 Fix for &lt;dataset name= ... connected=...&gt; to PlotMLParser.java
+
 </menu>
 
 <H2>The changes between ptplot5.1p2 and ptplot5.1p3</H2>
