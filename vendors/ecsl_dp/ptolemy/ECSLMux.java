@@ -41,6 +41,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
+import java.util.Iterator;
+import java.util.List;
+
 //////////////////////////////////////////////////////////////////////////
 //// ECSLMux
 /**
@@ -95,6 +98,7 @@ public class ECSLMux extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+
     /** FIXME: noop
      *  @exception IllegalActionException If there is no director,
      *   or if addition and subtraction are not supported by the
@@ -103,5 +107,23 @@ public class ECSLMux extends Transformer {
     public void fire() throws IllegalActionException {
         super.fire();
         throw new IllegalActionException(this, "fire() not yet supported.");
+    }
+
+    /** Set the type of all ports to double
+     */
+    public void preinitialize() throws IllegalActionException {
+        List inputPorts = inputPortList();
+        Iterator inputPortsIterator = inputPorts.iterator();
+        while (inputPortsIterator.hasNext()) {
+            TypedIOPort inputPort = (TypedIOPort)inputPortsIterator.next();
+            inputPort.setTypeEquals(BaseType.DOUBLE);
+        }
+
+        List outputPorts = outputPortList();
+        Iterator outputPortsIterator = outputPorts.iterator();
+        while (outputPortsIterator.hasNext()) {
+            TypedIOPort outputPort = (TypedIOPort)outputPortsIterator.next();
+            outputPort.setTypeEquals(BaseType.DOUBLE);
+        }
     }
 }
