@@ -4,21 +4,17 @@
 <entity name="Switch" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="6">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 30.0">
-        </property>
-    </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={208, 118, 815, 509}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
+        <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="maximumQueueCapacity" class="ptolemy.data.expr.Parameter" value="65536">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 50.0">
+        </property>
     </property>
     <entity name="Switch" class="ptolemy.actor.lib.Switch">
         <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 185.0">
@@ -35,7 +31,7 @@
         </port>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="6">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -56,7 +52,7 @@
         </port>
     </entity>
     <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="6">
         </property>
         <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1, 2}">
         </property>
