@@ -35,7 +35,6 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.expr.Parameter;
 
 // Java imports.
-import diva.canvas.*;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.print.*;
