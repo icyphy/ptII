@@ -58,6 +58,7 @@ public class PNAlternate extends PNStar {
         _output1 = addOutPort(this, "output1");
         _output2 = addOutPort(this, "output2");
         _myExecutive = myExecutive;
+        _myExecutive.register(this);
     }
     
     public void run() {
