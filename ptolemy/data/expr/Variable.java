@@ -32,6 +32,15 @@ in expressions.
 
 package ptolemy.data.expr;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.StructuredType;
@@ -52,15 +61,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// Variable
@@ -1063,12 +1063,17 @@ public class Variable extends Attribute
             // originating here.
             throw new IllegalActionException(message.toString());
         }
+        // NOTE: The call to _propagate() above has already done
+        // notification, but only if _needsEvaluation was true.
+        // Can we safely remove this redundant notification?  EAL 5/22/03.
+        /*
         if (!_isLazy) {
             NamedObj container = (NamedObj)getContainer();
             if (container != null) {
                 container.attributeChanged(this);
             }
         }
+        */
     }
 
     /** React to the change in the specified instance of Settable.
@@ -1524,6 +1529,9 @@ public class Variable extends Attribute
 
     /** Stores the variables that are referenced by this variable. */
     private HashMap _variablesDependentOn = null;
+    
+    /** Version of the workspace when _variablesDependentOn was updated. */
+    private transient long _variablesDependentOnVersion = -1;
 
     // Stores the Class object which represents the type of this variable.
     private Type _varType = BaseType.UNKNOWN;
@@ -1690,17 +1698,31 @@ public class Variable extends Attribute
          */
         public ptolemy.data.Token get(String name)
                 throws IllegalActionException {
+            if (_variablesDependentOn == null) {
+                _variablesDependentOn = new HashMap();
+            } else {
+                // Variable might be cached.
+                if (_variablesDependentOnVersion == workspace().getVersion()) {
+                    // Cache is valid. Look up the variable.
+                    Variable result = (Variable)_variablesDependentOn.get(name);
+                    if (result != null) {
+                        return result.getToken();
+                    }
+                } else {
+                    // Cache is invalid.  Clear it.
+                    _variablesDependentOn.clear();
+                }
+            }
+            // Either cache is not valid, or the variable is not in the cache.
+            _variablesDependentOnVersion = workspace().getVersion();
+            
             Variable result = getScopedVariable(
                     Variable.this,
                     (NamedObj)Variable.this.getContainer(), name);
 
-            // FIXME: use _variablesDependentOn as a cache.
-
-            // Cache the result..
             if (result != null) {
-                if (_variablesDependentOn == null) {
-                    _variablesDependentOn = new HashMap();
-                }
+                // If the variable is not in the cache, then we also
+                // may not be a value listener for it.
                 if (!_variablesDependentOn.containsValue(result)) {
                     result.addValueListener(Variable.this);
                     _variablesDependentOn.put(name, result);
