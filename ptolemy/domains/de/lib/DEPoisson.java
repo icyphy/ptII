@@ -72,7 +72,7 @@ public class DEPoisson extends DEActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         Ports and Parameters              ////
+    ////                     ports and parameters                  ////
 
     /** The output port, which has type at least that of the value
      *  parameter.
