@@ -23,8 +23,8 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Green (yourname@eecs.berkeley.edu)
-@AcceptedRating Green (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Red (liux@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
@@ -37,8 +37,6 @@ import java.io.*;
 Description of the class
 @author  Jie Liu, William Wu
 @version $Id$
-@see classname
-@see full-classname
 */
 public interface IPCInterface {
     /** Return the external tool process.
