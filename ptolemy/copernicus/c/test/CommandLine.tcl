@@ -128,7 +128,7 @@ test CommandLine-1.1 {Generate all required files for CommandLine.java} {
     cd $outputDir
     # The nightly build does not have . in the path, so we use ./ here.
     set exeFile ".[java::call System getProperty file.separator]$exeFile"
-    set output [exec $exeFile]
+    set output [exec $exeFile "a b c d"]
     
     # Check if the output is correct.
     set template [exec java -classpath . $className "a b c d"]
