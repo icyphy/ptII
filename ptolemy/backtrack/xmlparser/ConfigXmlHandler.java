@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import ptolemy.util.StringUtilities;
+
 import com.microstar.xml.XmlParser;
 
 /**
@@ -104,9 +106,9 @@ public class ConfigXmlHandler extends XmlHandler {
         REMOVE_ELEMENT_SET.addAll(Arrays.asList(REMOVE_ELEMENTS));
         REMOVE_CLASS_SET.addAll(Arrays.asList(REMOVE_CLASSES));
         
-        String PTII = System.getenv("PTII");
+        String PTII = StringUtilities.getProperty("ptolemy.ptII.dir");
         if (PTII != null)
-            PTOLEMY_PATH = PTII + "/";
+            PTOLEMY_PATH = PTII + File.separatorChar;
     }
 
 }
