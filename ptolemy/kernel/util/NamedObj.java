@@ -1048,7 +1048,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  in a file and used to re-create the object. A non-persistent
      *  object has an empty MoML description.
      *  @return True if the object is persistent.
-     *  @see #setPeristent(boolean)
+     *  @see #setPersistent(boolean)
      */
     public boolean isPersistent() {
         return _isPersistent;
