@@ -478,7 +478,8 @@ public class Exec extends TypedAtomicActor {
 //             }
 //
 //         } catch (IOException ex) {
-//             System.out.println("Exec._terminate: IOException" + Thread.currentThread());
+//             System.out.println("Exec._terminate: IOException"
+//                     + Thread.currentThread());
 //             ex.printStackTrace();
 //             // ignore
 //         }
