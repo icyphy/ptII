@@ -146,7 +146,7 @@ public class Parameter extends Attribute implements ParameterListener {
 
     /** Clone the parameter.
      *  The state of the cloned parameter will be identical to the original
-     *  parameter, but without the ParameterListner dependencies set up.
+     *  parameter, but without the ParameterListener dependencies set up.
      *  To achieve this evaluate() should be called after cloning the
      *  parameter.  Evaluate() should only be called after all
      *  the parameters on which this parameter depends have been created.
@@ -192,8 +192,8 @@ public class Parameter extends Attribute implements ParameterListener {
     /** Evaluate the current expression to a Token. If this parameter
      *  was last set directly with a Token do nothing. This method is also
      *  called after a Parameter is cloned.
-     *  @excpetion IllegalArgumentException If the token resulting
-     *   from evaluating the xpression  cannot be stored in this parameter.
+     *  @exception IllegalArgumentException If the token resulting
+     *   from evaluating the expression cannot be stored in this parameter.
      */
     public void evaluate() throws IllegalArgumentException {
         if (_needsEvaluation) {
@@ -228,7 +228,7 @@ public class Parameter extends Attribute implements ParameterListener {
      *  same NamedObj and those one level up in the hierarchy.
      *  It catches any exceptions thrown by NamedList as 1) the parameter must
      *  have a container with a NamedList of Attributes, and 2) if there is
-     *  a clash in the names of the two scopeing levels, the parameter from
+     *  a clash in the names of the two scoping levels, the parameter from
      *  the top level is considered not to be visible in the scope of this
      *  Parameter. A parameter also cannot reference itself.
      *  @return The parameters on which this parameter can depend.
@@ -303,7 +303,7 @@ public class Parameter extends Attribute implements ParameterListener {
      *  @return The type of this parameter.
      */
     public Class getType() {
-        return _ParamType;
+        return _paramType;
     }
 
     /** This method is called by a Parameter this Parameter is
@@ -338,8 +338,8 @@ public class Parameter extends Attribute implements ParameterListener {
     }
 
     /** Register an interest with this Parameter.
-     *  @param newListener The ParamListener that is will be notified whenever
-     *   the token stored in this Parameter changes.
+     *  @param newListener The ParameterListener that is will be notified 
+     *   whenever the token stored in this Parameter changes.
      */
      public void registerListener(ParameterListener newListener) {
          if (_listeners == null) {
