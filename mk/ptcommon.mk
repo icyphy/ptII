@@ -346,7 +346,7 @@ $(PTCLASSALLJAR): $(PTCLASSALLJARS) $(JCLASS)
 	# Copy any class files from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
 	-cp *.class $(PTJAR_TMPDIR)/$(ME)
-	for jar in $^; do \
+	for jar in $(PTCLASSALLJARS) ; do \
 		echo "Unjaring $$jar"; \
 		(cd $(PTJAR_TMPDIR); jar -xf ../$$jar); \
 	done
