@@ -38,7 +38,7 @@ package ptolemy.backtrack.ast;
  *  @since Ptolemy II 4.1
  *  @Pt.ProposedRating Red (tfeng)
  */
-public class UnknownASTException extends ASTException {
+public class UnknownASTException extends ASTRuntimeException {
 
     /** Constrcut an unknown exception caused by the AST analyzer.
      */
