@@ -1,4 +1,4 @@
-/* Parent class of conditional rendezvous branches.
+/* Parent class of guarded communication branches.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -38,31 +38,69 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalBranch
 /**
-Base class of both conditional communication classes (send and receive).
+Base class for classes representing guarded communication statements. A 
+guarded comunication statement is of the form
+<br>
+      guard; communication => statements
+<br>
+If the guard is true, or absent which implies true, then the branch 
+is enabled. Guarded communication statements are the used to perfrom 
+both forms of conditional communication constructs: CIF and CDO.  Each guarded 
+comunication statement is one branch of a CIF or CDO. 
+<p>
+A CDO has the form
+<br>
+CDO {
+     G1; C1 => S1;
+[]
+     G2; C2 => s2;
+[]
+     ...
+}
+<br>
+While at least one of the branches is enabled, the construct continues
+to evaluate and execute one of the enabled branches. If more than one 
+branch is enabled, the first branch to be able to rendezvous succeeds 
+and its statements are executed. Note that this construct in 
+nondeterministic as it may be  a race condition that determines 
+which branch is sucessful. The CIF is similar to the CDO excpet that 
+it is only evaluated once.
+<p>
+If the guard is true, or absent which implies true, then the branch is 
+enabled. The conditional communication construct chooses one of the 
+enabled branches that can rendezvous nondeterministically and 
+performs the communication. The statements for that guarded 
+communication are then executed.
+<p>
+The communication part of a guarded communication statement can be 
+either a send() or a receive(). There are thus two subclasses of this 
+class, each representing a guarded communication statement for one of 
+the communication primitives. The subclasses are ConditionalSend and 
+ConditionalReceive.
+<p>
+Each branch in a conditional communication construct is executed 
+in a seperate thread, if more than one branch is enabled.
 For rendezvous, the receiver is the key synchronization point.
 Conditional branches are designed to be used once. Upon instantiation,
 they are given the port and the channel they are trying to rendezvous with.
 The port and the channel together define the CSPReceiver with which to
-rendezvous. The CSPActor, that contains this conditional branch, is
+rendezvous. The CSPActor, that contains this branch, is
 assumed to be the container of the port argument.
 It is also given the identification number of the branch according
-to the parent.
+to the parent. 
 <p>
-A conditional branch is created to perform a single conditional communication.
-The information it contains in its private members is immutable and
-fixed upon creation.
-<p>
-FIXME: a bit strange to only use the constructor arguments to set internal
-fields!
-
 @author  Neil Smyth
 @version $Id$
-
 */
 
 public abstract class ConditionalBranch {
 
-    /** Create a conditional branch.
+    /** Create a guarded communicatio statement. This parent class
+     *  for the two types of guarded communication statements sets 
+     *  the memebers that are common to both. The receiver is set 
+     *  in the subclass as it is subject to communication specific tests.
+     *  @param guard The guard for the guarded communication statement
+     *   represented by this object.
      *  @param port The IOPort to try and rendezvous with.
      *   that this branch will try to rendezvous with.
      *  @param branch The identification number assigned to this branch
@@ -70,20 +108,29 @@ public abstract class ConditionalBranch {
      *  @exception IllegalActionException thrown if the channel has more
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
-    public ConditionalBranch(IOPort port, int branchID)
+    public ConditionalBranch(boolean guard, IOPort port, int branchID)
             throws IllegalActionException {
-        // FIXME: should this allow CSPCompositeActor?
         Nameable tmp = port.getContainer();
         if (!(tmp instanceof CSPActor)) {
-            String str = " A conditional branch can only be created with a po";
-            throw new IllegalActionException(port, "rt contained by CSPActor");
+            throw new IllegalActionException(port, "A conditional branch " +
+                    "can only be created with a port contained by CSPActor");
         }
-        _parent = (CSPActor)tmp;
         _branchID = branchID;
+        _guard = guard;
+        _parent = (CSPActor)tmp;
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
+
+    /** Returns the guard for this guarded commiunication statement.
+     *  If it is true the branch is said to be enabled.
+     *  @return The guard for the guarded communication statement
+     *   represented by this object.
+     */
+    public boolean getGuard() {
+        return _guard;
+    }
 
     /** Returns the identification number of this branch(according to its
      *  parent).
@@ -107,6 +154,16 @@ public abstract class ConditionalBranch {
         return _receiver;
     }
 
+    /** the token transfered if the branch succeeded. For a ConditionalSend 
+     *  it is set upon creation, and set to null after the rendezvous. 
+     *  For a ConditionalReceive it is set after the rendezvous has 
+     *  occured, and is null before that. 
+     *  @return The Token transfered if the rendezvous succeeded.
+     */
+    public Token getToken() {
+        return _token;
+    }
+        
     /** Boolean indicating if this branch is still alive. If it is false, it
      *  indicates another conditional branch was able to rendezvous before
      *  this branch. The branch should stop trying to rendezvous with
@@ -148,20 +205,25 @@ public abstract class ConditionalBranch {
     // The receiver this thread is trying to rendezvous with. It is immutable.
     protected CSPReceiver _receiver;
 
+    // The Token transfered in a rensdezvous.
+    protected Token _token;
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
+
+    // The identification number of this branch (according to its parent)
+    private int _branchID;
 
     // Has another branch successfully rendezvoused?
     private boolean _alive = true;
 
+    // the guard for this guarded communication statement.
+    private boolean _guard;
+
     // The parent this thread is trying to perform a conditional
     // rendezvous for.
     private CSPActor _parent;
-
-    // The identification number of this branch (according to its parent)
-    private int _branchID;
 }
-
 
 
 
