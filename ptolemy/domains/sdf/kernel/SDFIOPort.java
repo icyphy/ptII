@@ -46,29 +46,13 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// SDFIOPort
 /**
-This class extends IOPort to allow the transmission of arrays of tokens.
-There is no added expressive power in allowing this, and sending an array of
-tokens is exactly equivalent to sending each token individually.  Tokens
-that are sent using sendArray can be received using get and vice versa.
-<p>
-This class exists solely as an optimization.  There are two large pieces
-of overhead in sending a large number of tokens using the standard IOPort
-implementation.  We list them below, and the steps that this class takes to
-reduce them.
-<ol>
-<li>Finding the remote receivers. <br>
-getArray() and sendArray() only have to get the receivers once.
-<li>Inserting each element into the QueueReceiver.<br>
-SDFIOPort creates SDFReceivers, which are based on ArrayFIFOQueue, instead
-of FIFOQueue.  ArrayFIFOQueue uses a circular array instead of a linked list to
-represent the queue.  ArrayFIFOQueue also optimizes insertion and removal of
-arrays of objects using the java.lang.System.arraycopy() method.
-</ol>
+This class extends IOPort with convenience methods for handling the token
+production and consumption rates.  These are merely convenience methods,
+as the pertinent attributes can be added to any IOPort and the SDF domain
+will respect them.
 
 @author Stephen Neuendorffer
 @version $Id$
-@see SDFReceiver
-@see ArrayFIFOQueue
 */
 public final class SDFIOPort extends TypedIOPort {
 
