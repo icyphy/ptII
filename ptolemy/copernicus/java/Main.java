@@ -363,7 +363,7 @@ public class Main extends KernelMain {
        }
        
        addTransform(pack, "wjtp.ttn",
-               TokenToNativeTransformer.v(toplevel),"debug:true");//, "debug:true level:1");
+               TokenToNativeTransformer.v(toplevel));//, "debug:true level:1");
        
        addStandardOptimizations(pack, 4);
               

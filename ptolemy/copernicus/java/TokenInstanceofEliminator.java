@@ -136,7 +136,6 @@ public class TokenInstanceofEliminator extends BodyTransformer
                     // General, is unfortuantely, considered instantiable.
                     if(type.equals(BaseType.UNKNOWN) || //!type.isInstantiable() ||
                             type.equals(BaseType.GENERAL)) {
-                        System.out.println("uninstantiable instanceof = " + type);
                         continue;
                     }
 
