@@ -63,7 +63,8 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 //////////////////////////////////////////////////////////////////////////
 //// GeneratorTableau
@@ -147,11 +148,31 @@ public class GeneratorTableau extends Tableau {
             // FIXME: getProperty() will probably fail in applets.
             final File cwd = new File(System.getProperty("user.dir"));
 
-            query.addLine("directory", "Destination directory", cwd.toString());
+            query.addLine("directory", "Destination directory",
+			  cwd.toString());
+	    // The vergil start up script sets ptolemy.ptII.dir to $PTII
+	    query.addLine("classpath",
+			  "Usually, location of Ptolemy II home directory",
+			  System.getProperty("ptolemy.ptII.dir")
+			  + File.pathSeparator
+			  + ".");
             query.addLine("package", "Package name", "");
             query.addCheckBox("show", "Show code", true);
             query.addCheckBox("compile", "Compile code", true);
             query.addCheckBox("run", "Run code", true);
+	    // FIXME: we need entries for javac and java
+
+            component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
+            component.add(buttonPanel);
+            component.add(query);
+	    
+	    // JTextArea for compiler and run output.
+	    final JTextArea text = new JTextArea("", 20, 40);
+	    text.setEditable(false);
+	    JScrollPane scrollPane = new JScrollPane(text);
+	    component.add(scrollPane);
+
+            getContentPane().add(component, BorderLayout.CENTER);
 
             goButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
@@ -185,14 +206,42 @@ public class GeneratorTableau extends Tableau {
                             config.openModel(null, codeFile,
                                   codeFile.toExternalForm());
                         }
+
+			String classpath = query.stringValue("classpath");
+			if (classpath.length() > 0 
+			    && !classpath.startsWith("-classpath")) {
+			    classpath = "-classpath \"" + classpath + "\" ";
+			}
+
                         if (query.booleanValue("compile")) {
-                            // FIXME: hardwired file name.
-                            _exec("javac RampPlot.java");
+			    text.setText("");
+			    _Exec exec = new _Exec(text,
+						   "javac "
+						   + classpath
+						   + directoryName
+						   + File.separatorChar
+						   + model.getName()
+						   + ".java");
+			    new Thread(exec).start();
                             report("Compilation complete.");
                         }
                         if (query.booleanValue("run")) {
-                            // FIXME: hardwired file name.
-                            _exec("java ptolemy.actor.gui.CompositeActorApplication -class RampPlot");
+			    String packageName =
+				query.stringValue("package");
+			    if (packageName.length() > 0
+				&& ! packageName.endsWith(".") ) {
+				packageName = packageName + '.';
+			    }
+			    _Exec exec =
+				new _Exec(text,
+					  "java " 
+					  + classpath
+					  + "ptolemy.actor.gui.CompositeActorApplication "
+					  + "-class " 
+					  + packageName 
+					  + model.getName()
+					  + " -iterations 5");
+			    new Thread(exec).start();
                             report("Execution complete.");
                         }
                     } catch (Exception ex) {
@@ -200,38 +249,7 @@ public class GeneratorTableau extends Tableau {
                     }
                 }
             });
-
-            component.add(buttonPanel);
-            component.add(query);
-
-            getContentPane().add(component, BorderLayout.CENTER);
 	}
-
-        // Execute the specified command and report errors.
-        private void _exec(String command) throws Exception {
-            Runtime runtime = Runtime.getRuntime();
-            // FIXME: hardwired file name.
-            Process process = runtime.exec(command);
-
-            InputStream errorStream = process.getErrorStream();
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(errorStream));
-            String line;
-            while((line = reader.readLine()) != null) {
-                // FIXME: do something better here.
-                System.out.println(line);
-            }
-
-            errorStream = process.getInputStream();
-            reader = new BufferedReader(
-                    new InputStreamReader(errorStream));
-            while((line = reader.readLine()) != null) {
-                // FIXME: do something better here.
-                System.out.println(line);
-            }
-
-            process.waitFor();
-        }
     }
 
     /** A factory that creates a control panel for code generation.
@@ -288,6 +306,63 @@ public class GeneratorTableau extends Tableau {
 		return null;
 	    }
 	}
+    }
+
+
+    // Wrapper for exec() that runs the process in a separate thread.
+    private class _Exec implements Runnable {
+	
+	// Construct an _Exec object to run a command.
+	public _Exec(JTextArea text, String command) {
+	    _text = text;
+	    _command = command;
+	}
+
+        // Execute the specified command and report errors to the
+	// JTextArea.
+        public void run() {
+            Runtime runtime = Runtime.getRuntime();
+	    try {
+		_text.append("Executing: " + _command + '\n' );
+
+		Process process = runtime.exec(_command);
+
+		InputStream errorStream = process.getErrorStream();
+		BufferedReader reader =
+		    new BufferedReader(new InputStreamReader(errorStream));
+		String line;
+		while((line = reader.readLine()) != null) {
+		    _text.append(line + '\n');
+		}
+		reader.close();
+
+		errorStream = process.getInputStream();
+		reader =
+		    new BufferedReader(new InputStreamReader(errorStream));
+		while((line = reader.readLine()) != null) {
+		    _text.append(line);
+		}
+		reader.close();
+
+		try {
+		    process.waitFor();
+		} catch (InterruptedException interrupted) {
+		    _text.append("InterruptedException: "
+				+ interrupted + '\n' );
+		}
+
+	    } catch (IOException io) {
+		_text.append("IOException: " + io + '\n' );
+	    }
+	    _text.append("Done.\n");
+
+        }
+
+	// The command to be executed
+	private String _command;
+
+	// JTextArea to write the command and the output of the command.
+	private JTextArea _text;
     }
 }
 
