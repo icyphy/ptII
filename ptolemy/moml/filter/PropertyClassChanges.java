@@ -31,6 +31,7 @@ package ptolemy.moml.filter;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
@@ -150,6 +151,12 @@ public class PropertyClassChanges implements MoMLFilter {
                     .containsKey(attributeValue)) {
                 // We found a class with a property class change.
                 _currentlyProcessingActorWithPropertyClassChanges = true;
+                if (container == null) {
+                    throw new InternalErrorException(
+                            "Filter container is null! attributeName: " 
+                             +  attributeName
+                            + " attributeValue: " + attributeValue);
+                }
                 _currentActorFullName = container.getFullName()
                     + "." + _lastNameSeen;
                 _propertyMap =
