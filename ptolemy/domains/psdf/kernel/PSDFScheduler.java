@@ -240,6 +240,105 @@ public class PSDFScheduler extends BaseSDFScheduler {
         }
  
         _saveBufferSizes(_bufferSizeMap);
+       
+        // Crazy hack to Infer port production: FIXME: This should be
+        // done as part of the APGAN expansion where the rates of
+        // external ports are unknown The reason is that it will make
+        // rate information propagate from an actor input port to
+        // another actors input port that are connected on the inside
+        // to the same external input port.  See
+        // BaseSDFScheduler.setContainerRates.
+        
+        CompositeActor container = (CompositeActor) director.getContainer();
+        Iterator ports = container.portList().iterator();
+        while (ports.hasNext()) {
+            IOPort port = (IOPort) ports.next();
+            if (_debugging && VERBOSE) {
+                _debug("External Port " + port.getName());
+            }
+            if (port.isInput() && port.isOutput()) {
+                throw new NotSchedulableException(port,
+                        "External port is both an input and an output, "
+                        + "which is not allowed in SDF.");
+            } else if (port.isInput()) {
+                List sinks = port.insideSinkPortList();
+                if(sinks.size() > 0) {
+                    Variable variable = SDFUtilities.getRateVariable(
+                            (IOPort)sinks.get(0), "tokenConsumptionRate");
+                    if(variable != null) {
+                        String expression = SDFUtilities.getRateVariable(
+                                (IOPort)sinks.get(0), 
+                                "tokenConsumptionRate").getExpression();
+                        SDFUtilities.setExpressionIfNotDefined(
+                                port, "tokenConsumptionRate",
+                                expression);
+                        
+                        if (_debugging && VERBOSE) {
+                            _debug("Setting tokenConsumptionRate to "
+                                    + expression);
+                        }
+                    }
+                }
+            } else if (port.isOutput()) {
+                List sources = port.insideSourcePortList();
+                if(sources.size() > 0) {
+                    Variable variable = SDFUtilities.getRateVariable(
+                            (IOPort)sources.get(0), "tokenProductionRate");
+                    if(variable != null) {
+                        String expression = variable.getExpression();
+                        SDFUtilities.setExpressionIfNotDefined(
+                                port, "tokenProductionRate",
+                                expression);
+                        if (_debugging && VERBOSE) {
+                            _debug("Setting tokenProductionRate to "
+                                    + expression);
+                        }
+                    }
+                }
+                    // Infer init production.
+                // Note that this is a very simple type of inference...
+                // However, in general, we don't want to try to
+                // flatten this model...
+               //  Iterator connectedPorts =
+//                     port.insideSourcePortList().iterator();
+//                 IOPort foundOutputPort = null;
+//                 int inferredRate = 0;
+//                 while (connectedPorts.hasNext()) {
+//                     IOPort connectedPort = (IOPort) connectedPorts.next();
+                    
+//                     int newRate;
+//                     if (connectedPort.isOutput()) {
+//                         newRate = 
+//                             SDFUtilities.getTokenInitProduction(connectedPort);
+//                     } else {
+//                         newRate = 0;
+//                     }
+//                     // If we've already set the rate, then check that the
+//                     // rate for any other internal port is correct.
+//                     if (foundOutputPort != null &&
+//                             newRate != inferredRate) {
+//                         throw new NotSchedulableException(
+//                                 "External output port " + port
+//                                 + " is connected on the inside to ports "
+//                                 + "with different initial production: "
+//                                 + foundOutputPort + " and "
+//                                 + connectedPort);
+//                     }
+//                     foundOutputPort = connectedPort;
+//                     inferredRate = newRate;
+//                 }
+//                 SDFUtilities._setIfNotDefined(
+//                         port, "tokenInitProduction", inferredRate);
+//                 if (_debugging && VERBOSE) {
+//                     _debug("Setting tokenInitProduction to "
+//                             + inferredRate);
+//                 }
+            } else {
+                throw new NotSchedulableException(port,
+                        "External port is neither an input and an output, "
+                        + "which is not allowed in SDF.");
+            }
+        }        
     
         if(resultSchedule instanceof Schedule) {
             return (Schedule)resultSchedule;
@@ -307,7 +406,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 // sink clusters.
                 String producedExpression = apgan.producedExpression(edge);
                 String consumedExpression = apgan.consumedExpression(edge);
-
+             
                 // These errors should not occur.
                 if (producedExpression == null) {
                     throw new RuntimeException("Internal error: null "
