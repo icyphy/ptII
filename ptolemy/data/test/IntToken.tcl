@@ -163,14 +163,14 @@ test IntToken-4.0 {Test dividing ints.} {
 
 ######################################################################
 ####
-# Test equals operator applied to other ints and Tokens types 
+# Test isEqualTo operator applied to other ints and Tokens types 
 # below it in the lossless type hierarchy.
 test IntToken-5.0 {Test equality between ints.} {
     set tok1 [java::new {ptolemy.data.IntToken int} 7]
     set tok2 [java::new {ptolemy.data.IntToken int} 4]
 
-    set res1 [$tok1 {equals ptolemy.data.Token} $tok1]
-    set res2 [$tok1 {equals ptolemy.data.Token} $tok2]
+    set res1 [$tok1 {isEqualTo ptolemy.data.Token} $tok1]
+    set res2 [$tok1 {isEqualTo ptolemy.data.Token} $tok2]
 
     list [$res1 toString] [$res2 toString]
 } {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}

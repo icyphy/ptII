@@ -68,10 +68,10 @@ public class ASTPtRelationalNode extends ASTPtRootNode {
         _lexicalTokens.insertLast(x);
         try {
             if (x.image.compareTo("==") == 0) {
-                result = result.equals(childTokens[1]);
+                result = result.isEqualTo(childTokens[1]);
                 return result;
             } else  if (x.image.compareTo("!=") == 0) {
-                result = result.equals(childTokens[1]);
+                result = result.isEqualTo(childTokens[1]);
                 return ((ptolemy.data.BooleanToken)result).negate();
             } else  {
                 // relational operators only make sense on types below double

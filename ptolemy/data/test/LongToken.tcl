@@ -194,14 +194,14 @@ test LongToken-4.1 {Test dividing longs and ints.} {
 
 ######################################################################
 ####
-# Test equals operator applied to other longs and Tokens types 
+# Test isEqualTo operator applied to other longs and Tokens types 
 # below it in the lossless type hierarchy.
 test LongToken-5.0 {Test equality between longs.} {
     set tok1 [java::new {ptolemy.data.LongToken long} 7]
     set tok2 [java::new {ptolemy.data.LongToken long} 2]
 
-    set res1 [$tok1 {equals ptolemy.data.Token} $tok1]
-    set res2 [$tok1 {equals ptolemy.data.Token} $tok2]
+    set res1 [$tok1 {isEqualTo ptolemy.data.Token} $tok1]
+    set res2 [$tok1 {isEqualTo ptolemy.data.Token} $tok2]
 
     list [$res1 toString] [$res2 toString]
 } {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
@@ -214,10 +214,10 @@ test LongToken-5.1 {Test equality between longs and ints.} {
     set tok3 [java::new {ptolemy.data.LongToken long} 2]
     set tok4 [java::new {ptolemy.data.IntToken int} 2]
 
-    set res1 [$tok1 {equals ptolemy.data.Token} $tok2]
-    set res2 [$tok1 {equals ptolemy.data.Token} $tok4]
+    set res1 [$tok1 {isEqualTo ptolemy.data.Token} $tok2]
+    set res2 [$tok1 {isEqualTo ptolemy.data.Token} $tok4]
 
-    set res3 [$tok2 {equals ptolemy.data.Token} $tok1]
+    set res3 [$tok2 {isEqualTo ptolemy.data.Token} $tok1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
 } {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false) ptolemy.data.BooleanToken(true)}

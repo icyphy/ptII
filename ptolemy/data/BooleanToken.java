@@ -136,7 +136,7 @@ public class BooleanToken extends Token {
      *  is not a BooleanToken.
      *  @return A new BooleanToken containing the result.
      */
-    public BooleanToken equals(Token token) throws IllegalActionException {
+    public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if ( !(token instanceof BooleanToken)) {
             String str = "Cannot compare a BooleanToken with a ";
             throw new IllegalActionException(str + "non-BooleanToken");

@@ -214,11 +214,11 @@ public class LongToken extends ScalarToken {
      *  not of a type that can be compared with this Tokens value.
      *  @return BooleanToken indicating whether the values are equal.
     */
-    public BooleanToken equals(Token token) throws IllegalActionException {
+    public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         long typeInfo = TypeLattice.compare(this, token);
         try {
             if (typeInfo == CPO.LOWER) {
-                return token.equals(this);
+                return token.isEqualTo(this);
             } else if (token instanceof LongToken) {
                 if ( _value == ((LongToken)token).longValue()) {
                     return new BooleanToken(true);

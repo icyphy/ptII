@@ -217,7 +217,7 @@ test ComplexToken-4.2 {Test dividing Complex and int} {
 
 ######################################################################
 ####
-# Test equals operator applied to other Complex and Tokens types 
+# Test isEqualTo operator applied to other Complex and Tokens types 
 # below it in the lossless type hierarchy.
 test ComplexToken-5.0 {Test equality between Complex} {
     set c1 [java::new {ptolemy.math.Complex double double} 7.7 8.8]
@@ -225,8 +225,8 @@ test ComplexToken-5.0 {Test equality between Complex} {
     set c2 [java::new {ptolemy.math.Complex double double} 0.5 0.6]
     set p2 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c2]
 
-    set res1 [$p1 {equals ptolemy.data.Token} $p1]
-    set res2 [$p1 {equals ptolemy.data.Token} $p2]
+    set res1 [$p1 {isEqualTo ptolemy.data.Token} $p1]
+    set res2 [$p1 {isEqualTo ptolemy.data.Token} $p2]
 
     list [$res1 toString] [$res2 toString]
 } {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
@@ -243,11 +243,11 @@ test ComplexToken-5.1 {Test equality between Complex and double} {
     set d1 [java::new {ptolemy.data.DoubleToken double} 8]
     set d2 [java::new {ptolemy.data.DoubleToken double} 4]
 
-    set res1 [$p1 {equals ptolemy.data.Token} $d1]
-    set res2 [$p1 {equals ptolemy.data.Token} $d2]
+    set res1 [$p1 {isEqualTo ptolemy.data.Token} $d1]
+    set res2 [$p1 {isEqualTo ptolemy.data.Token} $d2]
 
-    set res3 [$d1 {equals ptolemy.data.Token} $p1]
-    set res4 [$d1 {equals ptolemy.data.Token} $p2]
+    set res3 [$d1 {isEqualTo ptolemy.data.Token} $p1]
+    set res4 [$d1 {isEqualTo ptolemy.data.Token} $p2]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
 } {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false) ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
@@ -261,11 +261,11 @@ test ComplexToken-5.2 {Test equality between Complex and int} {
     set i1 [java::new {ptolemy.data.IntToken int} 8]
     set i2 [java::new {ptolemy.data.IntToken int} 4]
 
-    set res1 [$p1 {equals ptolemy.data.Token} $i1]
-    set res2 [$p1 {equals ptolemy.data.Token} $i2]
+    set res1 [$p1 {isEqualTo ptolemy.data.Token} $i1]
+    set res2 [$p1 {isEqualTo ptolemy.data.Token} $i2]
 
-    set res3 [$i1 {equals ptolemy.data.Token} $p1]
-    set res4 [$i1 {equals ptolemy.data.Token} $p2]
+    set res3 [$i1 {isEqualTo ptolemy.data.Token} $p1]
+    set res4 [$i1 {isEqualTo ptolemy.data.Token} $p2]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
 } {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false) ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}

@@ -150,8 +150,8 @@ public class Token {
      *   supported by the derived class.
      *  @return A  new BooleanToken which contains the result of the test.
      */
-    public BooleanToken equals(Token token) throws IllegalActionException {
-        String str = "equals method not supported on ";
+    public BooleanToken isEqualTo(Token token) throws IllegalActionException {
+        String str = "isEqualTo method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }

@@ -157,24 +157,24 @@ test DoubleToken-3.5 {Test adding String and double} {
 ######################################################################
 ####
 # 
-test StringToken-4.0 {Test equals} {
+test StringToken-4.0 {Test isEqualTo} {
     set tok1 [java::new {ptolemy.data.StringToken} foo]
     set tok2 [java::new {ptolemy.data.StringToken} foo]
     set tok3 [java::new {ptolemy.data.StringToken} bar]
 
-    set res1 [$tok1 {equals ptolemy.data.Token} $tok2]
-    set res2 [$tok1 {equals ptolemy.data.Token} $tok3]
+    set res1 [$tok1 {isEqualTo ptolemy.data.Token} $tok2]
+    set res2 [$tok1 {isEqualTo ptolemy.data.Token} $tok3]
     list [$res1 toString] [$res2 toString]
 } {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
 
 ######################################################################
 ####
 # 
-test StringToken-4.0 {Test equals} {
+test StringToken-4.0 {Test isEqualTo} {
     set tok1 [java::new {ptolemy.data.StringToken} 33]
     set tok2 [java::new {ptolemy.data.IntToken int} 33]
 
-    catch {[$tok1 {equals ptolemy.data.Token} $tok2]} msg
+    catch {[$tok1 {isEqualTo ptolemy.data.Token} $tok2]} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: equality method not supported between ptolemy.data.StringToken and ptolemy.data.IntToken}}
 

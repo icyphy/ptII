@@ -265,7 +265,7 @@ public final class ImageToken extends MatrixToken {
 	return array;
     }
 
-    /** Test if the content of this token equals that of the specified
+    /** Test if the content of this token is equal to that of the specified
      *  token. These two tokens are equal only if the specified token
      *  is also a matrix token with the same dimension, and all the
      *  corresponding elements of the arrays are equal, and lossless
@@ -276,7 +276,7 @@ public final class ImageToken extends MatrixToken {
      *  @exception IllegalActionException If the specified token is
      *   not a matrix token, or lossless conversion is not possible.
      */
-    public BooleanToken equals(Token t)
+    public BooleanToken isEqualTo(Token t)
 	    throws IllegalActionException {
 	int compare = TypeLattice.compare(this, t);
 	if ( !(t instanceof MatrixToken) ||
@@ -292,7 +292,7 @@ public final class ImageToken extends MatrixToken {
 	}
 
 	if (compare == CPO.LOWER) {
-	    return t.equals(this);
+	    return t.isEqualTo(this);
 	} else {
 	    // type of specified token <= ImageToken
 	    ImageToken tem = null;

@@ -163,7 +163,7 @@ public class StringToken extends Token {
      *  @exception IllegalActionException If the passed token
      *  is not of a type that can be compared this Tokens value.
      */
-    public BooleanToken equals(Token token) throws IllegalActionException {
+    public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if (token instanceof StringToken) {
             if ( _value.compareTo(token.stringValue()) == 0) {
                 return new BooleanToken(true);

@@ -240,18 +240,18 @@ public class ComplexToken extends ScalarToken {
      *  @exception IllegalActionException If the specified token is
      *   not of a type that can be compared with this Token.
      */
-    public BooleanToken equals(Token token)
+    public BooleanToken isEqualTo(Token token)
 	     throws IllegalActionException {
         int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException("ComplexToken.equals: " +
+            throw new IllegalActionException("ComplexToken.isEqualTo: " +
                 "type of argument: " + token.getClass().getName() +
                 "is incomparable with ComplexToken in the type " +
                 "hierarchy.");
         }
 
         if (compare == CPO.LOWER) {
-            return token.equals(this);
+            return token.isEqualTo(this);
         } else {
 	    // argument type is lower or the same as Complex.
 	    ComplexToken comptoken = (ComplexToken)convert(token);

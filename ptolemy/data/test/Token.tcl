@@ -98,12 +98,12 @@ test Token-2.3 {Test divideReverse} {
 ######################################################################
 ####
 # 
-test Token-2.4 {Test equals} {
+test Token-2.4 {Test isEqualTo} {
     set p1 [java::new ptolemy.data.Token]
     set p2 [java::new ptolemy.data.Token]
-    catch {$p1 {equals ptolemy.data.Token} $p2} msg
+    catch {$p1 {isEqualTo ptolemy.data.Token} $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: equals method not supported on ptolemy.data.Token objects.}}
+} {{ptolemy.kernel.util.IllegalActionException: isEqualTo method not supported on ptolemy.data.Token objects.}}
 
 ######################################################################
 ####

@@ -240,11 +240,11 @@ public class DoubleToken extends ScalarToken {
      *  not of a type that can be compared with this Tokens value.
      *  @return BooleanToken indicating whether the values are equal.
      */
-    public BooleanToken equals(Token token) throws IllegalActionException {
+    public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, token);
         try {
             if (typeInfo == CPO.LOWER) {
-                return token.equals(this);
+                return token.isEqualTo(this);
             } else if (token instanceof DoubleToken) {
                 if ( _value == ((DoubleToken)token).doubleValue()) {
                     return new BooleanToken(true);

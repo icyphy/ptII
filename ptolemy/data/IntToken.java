@@ -226,11 +226,11 @@ public class IntToken extends ScalarToken {
      *  not of a type that can be compared with this Tokens value.
      *  @return A new Token containing the result.
      */
-    public BooleanToken equals(Token token) throws IllegalActionException {
+    public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, token);
         try {
             if (typeInfo == CPO.LOWER) {
-                return token.equals(this);
+                return token.isEqualTo(this);
             } else if (token instanceof IntToken) {
                 if ( _value == ((IntToken)token).intValue()) {
                     return new BooleanToken(true);
@@ -246,7 +246,7 @@ public class IntToken extends ScalarToken {
                 throw new Exception();
             }
         } catch (Exception ex) {
-            String str = "equality method not supported between";
+            String str = "isEqualTo method not supported between";
             str = str + this.getClass().getName() + " and ";
             str = str + token.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
