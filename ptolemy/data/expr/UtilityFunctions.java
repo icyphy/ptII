@@ -294,7 +294,7 @@ public class UtilityFunctions {
      *  of the argument.
      *  @param functionType The type of the predicate function.
      *  @param lengthType The type of the length argument.
-     *  @param arrayType The type of the array to be filtered.
+     *  @param arrayTokenType The type of the array to be filtered.
      *  @return The type of the result.
      *  @exception IllegalActionException If the specified function does not
      *   take exactly one argument, or if the type signature of the function
@@ -335,7 +335,7 @@ public class UtilityFunctions {
      *  @return An array of integers giving the indices of 'true' elements
      *   in the array given as an argument.
      *  @since Ptolemy II 4.1
-     *  @see find(ArrayToken, Token)
+     *  @see #find(ArrayToken, Token)
      *  @throws IllegalActionException If the specified array is not
      *   a boolean array.
      */
@@ -354,7 +354,7 @@ public class UtilityFunctions {
      *  @return An array of integers giving the indices of elements
      *   in the specified array that match the specified token.
      *  @since Ptolemy II 4.1
-     *  @see find(ArrayToken)
+     *  @see #find(ArrayToken)
      */
     public static ArrayToken find(ArrayToken array, Token match) {
         List result = new LinkedList();
