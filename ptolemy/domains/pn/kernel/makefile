@@ -40,7 +40,7 @@ include $(CONFIG)
 #JDOCFLAGS = 	-author -version -public
 
 
-DIRS = 		#demo test #doc
+DIRS = 		test #doc
 
 CLASSPATH = ../../../..
 
