@@ -498,6 +498,7 @@ public class InlinePortTransformer extends SceneTransformer {
         // Note that we would like to just put the types in the
         // Map, but types don't implement hashCode properly.
         Map typeMap = new HashMap();
+        // FIXME: This needs to be changed to handle hierarchy.
         List portList = port.deepConnectedInPortList();
         for(Iterator ports = portList.iterator();
             ports.hasNext();) {
