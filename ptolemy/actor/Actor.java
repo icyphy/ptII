@@ -69,7 +69,7 @@ public interface Actor extends Executable {
     public Director getExecutiveDirector();
 
     /** Return the Manager, if there is one. Otherwise, return null.
-     *  @return The Mangager.
+     *  @return The Manager.
      */
     public Manager getManager();
 
