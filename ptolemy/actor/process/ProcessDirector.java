@@ -36,6 +36,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.domains.odf.kernel.*;
 
 import java.util.Enumeration;
 import collections.LinkedList;
@@ -140,8 +141,7 @@ public class ProcessDirector extends Director {
      *  and return.
      *  @exception IllegalActionException If a derived class throws it.
      */
-    public void fire()
-	    throws IllegalActionException {
+    public void fire() throws IllegalActionException {
 	Workspace workspace = workspace();
 	synchronized (this) {
 	    while (!_checkForDeadlock()) {
@@ -190,6 +190,13 @@ public class ProcessDirector extends Director {
             while (allActors.hasMoreElements()) {
                 Actor actor = (Actor)allActors.nextElement();
                 ProcessThread pnt = _getProcessThread(actor, this);
+		/*
+		if( pnt instanceof ODFThread ) {
+		    System.out.println("ODFThread!!!!!");
+		} else if( pnt instanceof ProcessThread ) {
+		    System.out.println("ProcessThread!!!!!");
+		}
+		*/
                 // ProcessThread pnt = new ProcessThread(actor, this);
                 _threadList.insertFirst(pnt);
 		_newthreads.insertFirst(pnt);
@@ -390,7 +397,6 @@ public class ProcessDirector extends Director {
                 for (int i = 0; i<receivers.length; i++) {
                     for (int j = 0; j<receivers[i].length; j++) {
                         nextRec = (ProcessReceiver)receivers[i][j];
-                        //nextRec.setFinish();
                         nextRec.requestFinish();
                         recs.insertFirst(nextRec);
                     }
@@ -403,12 +409,11 @@ public class ProcessDirector extends Director {
             actorPorts  = cont.outputPorts();
             while (actorPorts.hasMoreElements()) {
                 IOPort port = (IOPort)actorPorts.nextElement();
-                // Terminating the ports and hence the star
+                // Terminating the ports and hence the actor 
                 Receiver[][] receivers = port.getReceivers();
                 for (int i = 0; i<receivers.length; i++) {
                     for (int j = 0; j<receivers[i].length; j++) {
                         nextRec = (ProcessReceiver)receivers[i][j];
-                        //nextRec.setFinish();
                         nextRec.requestFinish();
                         recs.insertFirst(nextRec);
                     }
@@ -423,13 +428,6 @@ public class ProcessDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** FIXME (davisj)
-     */
-    protected ProcessThread _getProcessThread(Actor actor, 
-	    ProcessDirector director) {
-	return new ProcessThread(actor, director);
-    }
 
     /** Add a thread to the list of threads in the model.
      *  This list is used in case of abrupt termination of the model
@@ -494,6 +492,22 @@ public class ProcessDirector extends Director {
      */
     protected synchronized long _getPausedActorsCount() {
 	return _actorsPaused;
+    }
+
+    /** Create a new ProcessThread for controlling the actor that
+     *  is passed as a parameter of this method. Subclasses are 
+     *  encouraged to override this method as necessary for domain 
+     *  specific functionality.
+     * @param actor The actor that the created ProcessThread will
+     *  control.
+     * @param director The director that manages the model that the
+     *  created thread is associated with.
+     * @return Return a new ProcessThread that will control the
+     *  actor passed as a parameter for this method.
+     */
+    protected ProcessThread _getProcessThread(Actor actor, 
+	    ProcessDirector director) {
+	return new ProcessThread(actor, director);
     }
 
     /** Return true.
