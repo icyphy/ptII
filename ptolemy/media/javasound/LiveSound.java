@@ -185,7 +185,7 @@ import javax.sound.sampled.TargetDataLine;
   audio output port. A future version of this class may support
   multiple objects playing to the output port simultaneously.
 
-   @author Brian K. Vogel
+   @author Brian K. Vogel and Neil E. Turner
    @version $Id$
    @since Ptolemy II 1.0
    @see ptolemy.media.javasound.SoundReader
@@ -203,6 +203,79 @@ public class LiveSound {
         if (!_liveSoundListeners.contains(listener)) {
             _liveSoundListeners.add(listener);
         }
+    }
+
+    /** Flush queued data from the capture buffer.  The flushed data is
+     *  discarded.  It is only legal to flush the capture buffer after
+     *  startCapture() is called, [(FIXME is the following statement correct)
+     *  and only makes sense to do so (but is
+     *  not required) before getSamples() is called].  Flushing an active audio
+     *  buffer is likely to cause a discontinuity in the data, resulting in a
+     *  perceptible click.
+     *  <p>
+     *  Note that only the object with the exclusive lock on the capture audio
+     *  resources is allowed to invoke this method. An exception will occur if
+     *  the specified object does not have the lock on the playback audio
+     *  resources.
+     *
+     *  @param producer The object that has an exclusive lock on
+     *   the playback audio resources.
+     *
+     *  @exception IllegalStateException If audio playback is currently
+     *  inactive. That is, If startPlayback() has not yet been called
+     *  or if stopPlayback() has already been called.  FIXME - I don't think
+     *  this exception documentation agrees with the code.  Figure out the
+     *  correct behavior and fix the docs and code.
+     */
+    public static void flushCaptureBuffer(Object consumer)
+            throws IOException, IllegalStateException {
+        if (!_soundConsumers.contains(consumer)) {
+            throw new IOException("Object: " + consumer.toString() +
+                    "attempted to call LiveSound.flushCaptureBuffer(), but " +
+                    "this object never called startCapture() and does " +
+                    "not have permission to access the audio capture " +
+                    "resource.");
+        }
+        if (_debug) {
+            System.out.println("LiveSound: flushCaptureBuffer(): invoked");
+        }
+        _flushCaptureBuffer();
+    }
+
+    /** Flush queued data from the playback buffer.  The flushed data is
+     *  discarded.  It is only legal to flush the playback buffer after
+     *  startPlayback() is called, and only makes sense to do so (but is
+     *  not required) after putSamples() is called.  Flushing an active audio
+     *  buffer is likely to cause a discontinuity in the data, resulting in a
+     *  perceptible click.
+     *  <p>
+     *  Note that only the object with the exclusive lock on the playback audio
+     *  resources is allowed to invoke this method. An exception will occur if
+     *  the specified object does not have the lock on the playback audio
+     *  resources.
+     *
+     *  @param producer The object that has an exclusive lock on
+     *   the playback audio resources.
+     *
+     *  @exception IllegalStateException If audio playback is currently
+     *  inactive. That is, If startPlayback() has not yet been called
+     *  or if stopPlayback() has already been called.  FIXME - I don't think
+     *  this exception documentation agrees with the code.  Figure out the
+     *  correct behavior and fix the docs and code.
+     */
+    public static void flushPlaybackBuffer(Object producer)
+            throws IOException, IllegalStateException {
+        if (!_soundProducers.contains(producer)) {
+            throw new IOException("Object: " + producer.toString() +
+                    "attempted to call LiveSound.flushPlaybackBuffer(), but " +
+                    "this object never called startPlayback() and does " +
+                    "not have permission to access the audio playback " +
+                    "resource.");
+        }
+        if (_debug) {
+            System.out.println("LiveSound: flushPlaybackBuffer(): invoked");
+        }
+        _flushPlaybackBuffer();
     }
 
     /** Return the number of bits per audio sample, which is
@@ -239,7 +312,7 @@ public class LiveSound {
      */
     public static int getBufferSizeCapture() throws IllegalStateException {
         if (_targetLine != null) {
-            // FIXME check this division operation 
+            // FIXME check this division operation?
             return _targetLine.getBufferSize() / _frameSizeInBytes;
         } else {
             throw new IllegalStateException("LiveSound: " + 
@@ -257,7 +330,7 @@ public class LiveSound {
      */
     public static int getBufferSizePlayback() {
         if (_sourceLine != null) {
-            // FIXME check this division operation 
+            // FIXME check this division operation?
             return _sourceLine.getBufferSize() / _frameSizeInBytes;
         } else {
             throw new IllegalStateException("LiveSound: " + 
@@ -316,7 +389,7 @@ public class LiveSound {
      *  does not have the lock on the captured audio resources.
      *
      *  @param consumer The object that has an exclusive lock on
-     *   the captured audio resources.
+     *   the capture audio resources.
      *
      *  @return Two dimensional array of captured audio samples.
      *
@@ -445,7 +518,7 @@ public class LiveSound {
      *  is not actually checked, however.
      *  <p>
      *  Note that only the object with the exclusive lock on
-     *  the playback audio resources is allowed to invoked this
+     *  the playback audio resources is allowed to invoke this
      *  method. An exception will occur if the specified object
      *  does not have the lock on the playback audio resources.
      *
@@ -845,7 +918,7 @@ public class LiveSound {
      *  exception will occur.
      *
      *  @param producer The object to be given exclusive access
-     *   to the playback playback resources.
+     *   to the playback resources.
      *
      *  @exception IllegalStateException If this method is called
      *   while audio playback is already active.
@@ -1076,6 +1149,14 @@ public class LiveSound {
             }
         }
         return byteArray;
+    }
+
+    private static void _flushCaptureBuffer() {
+        _targetLine.flush();
+    }
+
+    private static void _flushPlaybackBuffer() {
+        _sourceLine.flush();
     }
 
     /** Notify the live sound listeners about a change in an audio
