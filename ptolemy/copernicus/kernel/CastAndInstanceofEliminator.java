@@ -207,15 +207,15 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
             } else {
                 // opClass is a class, not an interface.
                 if (hierarchy.getImplementersOf(checkClass).contains(opClass)) {
-                                // Then we know the instanceof will be true.
+                    // Then we know the instanceof will be true.
                     if (debug) System.out.println("Replacing " +
                             box.getValue() + " with true.");
                     box.setValue(IntConstant.v(1));
                 } else {
-                                // We need to ensure that no subclass
-                                // of opclass implements the
-                                // interface.  This will mean we
-                                // replace with false.
+                    // We need to ensure that no subclass
+                    // of opclass implements the
+                    // interface.  This will mean we
+                    // replace with false.
                 }
             }
         } else {
@@ -224,15 +224,15 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
             } else {
                 if (hierarchy.isClassSuperclassOfIncluding(
                         checkClass, opClass)) {
-                                // Then we know the instanceof will be true.
+                    // Then we know the instanceof will be true.
                     if (debug) System.out.println("Replacing " +
                             box.getValue() + " with true.");
                     box.setValue(IntConstant.v(1));
                 } else if (!hierarchy.isClassSuperclassOfIncluding(
-                        opClass, checkClass)) {
-                                // Then we know the instanceof will be false,
-                                // because no subclass of opClass can suddenly
-                                // become a subclass of checkClass.
+                                   opClass, checkClass)) {
+                    // Then we know the instanceof will be false,
+                    // because no subclass of opClass can suddenly
+                    // become a subclass of checkClass.
                     if (debug) System.out.println("Replacing " +
                             box.getValue() + " with false.");
                     box.setValue(IntConstant.v(0));
