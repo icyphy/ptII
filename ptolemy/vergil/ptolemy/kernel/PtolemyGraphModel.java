@@ -774,7 +774,13 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    _linkMoML(moml, failmoml,
 			      (NamedObj)newLinkHead, linkTail);
 	    } catch (Exception ex) {
-		throw new GraphException(ex);
+                // The link is bad... remove it.
+                _linkSet.remove(link);
+                link.setHead(null);
+                link.setTail(null);
+                dispatchGraphEvent(new GraphEvent(
+                        PtolemyGraphModel.this,
+                        GraphEvent.STRUCTURE_CHANGED, getRoot()));
 	    }
 
 	    moml.append("</group>\n");
@@ -863,7 +869,13 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    _linkMoML(moml, failmoml,
 			      linkHead, (NamedObj)newLinkTail);
 	    } catch (Exception ex) {
-		throw new GraphException(ex);
+                // The link is bad... remove it.
+                _linkSet.remove(link);
+                link.setHead(null);
+                link.setTail(null);
+                dispatchGraphEvent(new GraphEvent(
+                        PtolemyGraphModel.this,
+                        GraphEvent.STRUCTURE_CHANGED, getRoot()));
 	    }
 
 	    moml.append("</group>\n");
