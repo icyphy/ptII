@@ -20,7 +20,6 @@ applet is displayed on a XGA screen-->
 	http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/applets.htm
      For information about java versions and applet tags, see:
 	http://java.sun.com/products/plugin/versions.html
-	http://java.sun.com/products/plugin/versions.html
      We are currently using 1.4.2 because:
         There is a bug under JDK1.4.1 XP with Radeon display cards
         that causes XP to hang when exiting.  For details, see
