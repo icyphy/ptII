@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -39,7 +39,7 @@ import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// FIFOQueue
-/** 
+/**
 A first-in, first-out (FIFO) queue with optional capacity and
 history. Objects are appended to the queue with the put() method,
 and removed from the queue with the take() method. The object
@@ -56,14 +56,14 @@ capacity is zero.
 public class FIFOQueue implements Cloneable {
 
     /** Construct an empty queue with no container.
-     */	
+     */
     public FIFOQueue() {
         _queuelist = new LinkedList();
         _historylist = new LinkedList();
     }
 
     /** Construct an empty queue with the specified container.
-     */	
+     */
     public FIFOQueue(Nameable container) {
         this();
         _container = container;
@@ -72,7 +72,7 @@ public class FIFOQueue implements Cloneable {
     /** Copy constructor.  Create a copy of the specified queue, but
      *  with no container.  This is useful to permit enumerations over
      *  a queue while the queue continues to be modified.
-     */	
+     */
     public FIFOQueue(FIFOQueue model) {
         this();
         _queuelist.appendElements(model.elements());
@@ -80,7 +80,7 @@ public class FIFOQueue implements Cloneable {
 
     /** Copy constructor.  Create a copy of the specified queue, but
      *  with the specified container.
-     */	
+     */
     public FIFOQueue(FIFOQueue model, Nameable container) {
         this(model);
         _container = container;
@@ -90,7 +90,7 @@ public class FIFOQueue implements Cloneable {
     ////                         public methods                           ////
 
     /** Return the capacity, or -1 if it is unbounded.
-     */	
+     */
     public int capacity() {
         return _queuecapacity;
     }
@@ -98,14 +98,14 @@ public class FIFOQueue implements Cloneable {
     /** Enumerate the items on the queue, beginning with the oldest.
      *  @return An enumeration of objects.
      *  @see collections.LinkedList#elements()
-     */	
+     */
     public CollectionEnumeration elements() {
         return _queuelist.elements();
     }
 
     /** Return true if the number of objects in the queue equals the
      *  capacity.
-     */	
+     */
     public boolean full() {
         return _queuelist.size() == _queuecapacity;
     }
@@ -116,14 +116,14 @@ public class FIFOQueue implements Cloneable {
      *  If there is no such element on the queue (the offset is greater
      *  than or equal to the size, or is negative), throw an exception.
      *  @exception NoSuchElementException The offset is out of range.
-     */	
-    public Object get(int offset) 
+     */
+    public Object get(int offset)
             throws NoSuchElementException {
         return _queuelist.at(size()-offset-1);
     }
 
     /** Return the container of the queue, or null if there is none.
-     */	
+     */
     public Nameable getContainer() {
         return _container;
     }
@@ -137,7 +137,7 @@ public class FIFOQueue implements Cloneable {
      *  empty enumeration.
      *  @return An enumeration of objects.
      *  @see collections.LinkedList#elements()
-     */	
+     */
     public CollectionEnumeration history() {
         return _historylist.elements();
     }
@@ -145,13 +145,13 @@ public class FIFOQueue implements Cloneable {
     /** Return the capacity of the history queue.
      *  This will be zero if the history mechanism is disabled
      *  and -1 if the history capacity is unbounded.
-     */	
+     */
     public int historyCapacity() {
         return _historycapacity;
     }
 
     /** Return the number of objects in the history.
-     */	
+     */
     public int historySize() {
         return _historylist.size();
     }
@@ -164,8 +164,8 @@ public class FIFOQueue implements Cloneable {
      *  than or equal to the number of objects in the history, or is
      *  negative), throw an exception.
      *  @exception NoSuchElementException The offset is out of range.
-     */	
-    public Object previous(int offset) 
+     */
+    public Object previous(int offset)
             throws NoSuchElementException {
         return _historylist.at(historySize()-offset-1);
     }
@@ -175,7 +175,7 @@ public class FIFOQueue implements Cloneable {
      *  the object on the queue and return false.
      *  @param element An object to put on the queue.
      *  @return A boolean indicating success.
-     */	
+     */
     public boolean put(Object element) {
         if (_queuecapacity == -1 || _queuecapacity > _queuelist.size()) {
             _queuelist.insertLast(element);
@@ -190,8 +190,8 @@ public class FIFOQueue implements Cloneable {
      *  desired capacity, throw an exception.
      *  @exception IllegalActionException Queue contains more elements
      *   than the proposed capacity.
-     */	
-    public void setCapacity(int capacity) 
+     */
+    public void setCapacity(int capacity)
             throws IllegalActionException {
         if (size() > capacity) {
             throw new IllegalActionException(_container,
@@ -207,7 +207,7 @@ public class FIFOQueue implements Cloneable {
      *  desired capacity, then remove the oldest items from
      *  the history list until its size equals the proposed capacity.
      *  Note that this can be used to clear the history list.
-     */	
+     */
     public void setHistoryCapacity(int capacity) {
         if (capacity > 0) {
             while (_historylist.size() > capacity) {
@@ -218,7 +218,7 @@ public class FIFOQueue implements Cloneable {
     }
 
     /** Return the number of objects in the queue.
-     */	
+     */
     public int size() {
         return _queuelist.size();
     }
@@ -230,7 +230,7 @@ public class FIFOQueue implements Cloneable {
      *  of the history queue would be exceeded by this, then first remove
      *  the oldest object on that queue.
      *  @return An object from the queue.
-     */	
+     */
     public Object take() {
         if (_queuelist.size() > 0) {
             // Ignore the exception since we ensure it can't occur.
