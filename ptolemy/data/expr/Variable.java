@@ -32,6 +32,7 @@ in expressions.
 
 package ptolemy.data.expr;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -350,6 +351,25 @@ public class Variable extends Attribute
      */
     public Type getDeclaredType() {
         return _declaredType;
+    }
+
+    /** Return the list of identifiers referenced by the current expression.
+     *  @return A set of Strings.
+     *  @exception IllegalActionException If the expression cannot be parsed.
+     */
+    public Set getFreeIdentifiers() throws IllegalActionException {
+        if(_currentExpression == null) {
+            return Collections.EMPTY_SET;
+        }
+        try {
+            workspace().getReadAccess();
+            _parseIfNecessary();
+            ParseTreeFreeVariableCollector collector =
+                new ParseTreeFreeVariableCollector();
+            return collector.collectFreeVariables(_parseTree);
+        } finally {
+            workspace().doneReading();
+        }
     }
 
     /** Get the expression currently used by this variable. The expression
@@ -1261,19 +1281,7 @@ public class Variable extends Attribute
 
         try {
             workspace().getReadAccess();
-            if (!_parseTreeValid) {
-                PtParser parser = new PtParser();
-                if(isStringMode()) {
-                    // Different parse rules for String mode parameters.
-                    _parseTree = parser.generateStringParseTree(
-                            _currentExpression);
-                } else {
-                    // Normal parse rules for expressions.
-                    _parseTree = parser.generateParseTree(
-                            _currentExpression);
-                } 
-                _parseTreeValid = (_parseTree != null);
-            }
+            _parseIfNecessary();
             if (_parseTreeEvaluator == null) {
                 _parseTreeEvaluator = new ParseTreeEvaluator();
             }
@@ -1304,6 +1312,26 @@ public class Variable extends Attribute
                 ValueListener listener = (ValueListener)listeners.next();
                 listener.valueChanged(this);
             }
+        }
+    }
+    
+    /** Parse the expression, if the current parse tree is not valid.
+     *  This method should only be called if the expression is valid.
+     *  @exception IllegalActionException If the exception cannot be parsed.
+     */
+    protected final void _parseIfNecessary() throws IllegalActionException {
+        if (!_parseTreeValid) {
+            PtParser parser = new PtParser();
+            if(isStringMode()) {
+                // Different parse rules for String mode parameters.
+                _parseTree = parser.generateStringParseTree(
+                        _currentExpression);
+            } else {
+                // Normal parse rules for expressions.
+                _parseTree = parser.generateParseTree(
+                        _currentExpression);
+            } 
+            _parseTreeValid = (_parseTree != null);
         }
     }
 
