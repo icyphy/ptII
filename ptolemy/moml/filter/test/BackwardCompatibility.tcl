@@ -710,13 +710,16 @@ The affected actors are:
 	ptolemy.actor.lib.TrigFunction
 	ptolemy.actor.lib.Scale
 	ptolemy.actor.lib.Expression
-} {ptolemy.moml.filter.ClassChanges: change any class names that have been renamed
-Below are original class names followed by the new class names.
+} {ptolemy.moml.filter.ClassChanges: change any class names that have been renamed and remove obsolete classes.
+Below are original class names followed by the new class names:
 	ptolemy.vergil.icon.ImageEditorIcon	 -> ptolemy.vergil.icon.ImageIcon
 	ptolemy.kernel.util.VersionAttribute	 -> ptolemy.kernel.attributes.VersionAttribute
 	ptolemy.domains.fsm.lib.RelationList	 -> ptolemy.domains.fsm.kernel.RelationList
 	ptolemy.moml.Location	 -> ptolemy.kernel.util.Location
 	ptolemy.actor.lib.comm.SerialComm	 -> ptolemy.actor.lib.io.comm.SerialComm
+
+Below are the classes to remove:
+	ptolemy.data.expr.NotEditableParameter
 } {ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
 'annotation1', then add _hideName if necessary.
 } {ptolemy.moml.filter.ParameterNameChanges: Update any Parameter names
@@ -792,13 +795,16 @@ The affected actors are:
 	ptolemy.actor.lib.Scale
 	ptolemy.actor.lib.Expression
 
-ptolemy.moml.filter.ClassChanges: change any class names that have been renamed
-Below are original class names followed by the new class names.
+ptolemy.moml.filter.ClassChanges: change any class names that have been renamed and remove obsolete classes.
+Below are original class names followed by the new class names:
 	ptolemy.vergil.icon.ImageEditorIcon	 -> ptolemy.vergil.icon.ImageIcon
 	ptolemy.kernel.util.VersionAttribute	 -> ptolemy.kernel.attributes.VersionAttribute
 	ptolemy.domains.fsm.lib.RelationList	 -> ptolemy.domains.fsm.kernel.RelationList
 	ptolemy.moml.Location	 -> ptolemy.kernel.util.Location
 	ptolemy.actor.lib.comm.SerialComm	 -> ptolemy.actor.lib.io.comm.SerialComm
+
+Below are the classes to remove:
+	ptolemy.data.expr.NotEditableParameter
 
 ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
 'annotation1', then add _hideName if necessary.
