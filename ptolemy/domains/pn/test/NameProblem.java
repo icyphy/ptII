@@ -53,6 +53,9 @@ public class NameProblem extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
+        //input = new TypedIOPort(this, "input", true, false);
+        //input.setMultiport(false);
+
         inputo = new TypedIOPort(this, "input", true, false);
         inputo.setMultiport(false);
 
@@ -61,10 +64,13 @@ public class NameProblem extends TypedAtomicActor {
         output.setTypeEquals(BaseType.STRING);
     }
 
+    //public TypedIOPort input;
     public TypedIOPort inputo;
+
     public TypedIOPort output;
 
     public void fire() throws IllegalActionException {
+        //StringToken tok = (StringToken) input.get(0);
         StringToken tok = (StringToken) inputo.get(0);
         output.broadcast(new StringToken("out"));
     }
