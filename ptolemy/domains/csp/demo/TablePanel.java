@@ -127,7 +127,7 @@ class TablePanel extends Panel {
     ////                         protected methods                 ////
 
     /**
-     * Constructs the new panel. Initialises the objects and the display.
+     * Constructs the new panel. Initializes the objects and the display.
      */
     protected TablePanel(CSPPhilosopher[] philosophers) {
         _philosophers = philosophers;
