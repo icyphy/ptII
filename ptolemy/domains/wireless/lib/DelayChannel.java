@@ -144,7 +144,7 @@ public class DelayChannel extends ErasureChannel {
             Reception reception = (Reception)_receptions.get(timeDouble);
             if (reception != null) {
                 // The time matches a pending reception.
-                _receptions.remove(reception);
+                _receptions.remove(timeDouble);
                 // Use the superclass, not this class, or we just delay again.
                 super._transmitTo(reception.token, reception.sender,
                         reception.receiver, reception.properties);
