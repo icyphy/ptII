@@ -43,6 +43,12 @@ does not always work, especially under Windows if Netscape is already
 running.  The workaround is to exit Netscape and let Ptolemy II
 start up Netscape for you.
 
+
+<li> Web Start does not work very well if the pathname to the 
+<CODE>vergil.jnlp</CODE> file has spaces in it.  The workaround is
+to place your Ptolemy II tree in a directory that does not have spaces
+in the path name if you plan on using Web Start.
+
 <li> Applet issues:
 	<ul>
 	<li> The DDE Zeno demo produces an error message in the Java Plug-in
@@ -171,7 +177,8 @@ User Interface.
 <ul>
 
 <li> Under JDK1.3.1_03, the tool tips do not work.  They work under
-JDK1.3.1_02.
+JDK1.3.1_02, see 
+<a href="http://developer.java.sun.com/developer/bugParade/bugs/4671567.html"><CODE>http://developer.java.sun.com/developer/bugParade/bugs/4671567.html</CODE></a>.
 
 
 <li> When setting the type of a port, we should provide a combo
