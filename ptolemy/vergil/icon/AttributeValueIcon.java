@@ -209,11 +209,12 @@ public class AttributeValueIcon extends XMLIcon {
                     int width = ((IntToken)displayWidth.getToken()).intValue();
                     if (value.length() > width) {
                         truncated = value.substring(0, width) + "...";
-                    } else if (value.length() == 0) {
-                        truncated = " ";
                     }
                 } catch (IllegalActionException ex) {
                     // Ignore... use whole string.
+                }
+                if (truncated.length() == 0) {
+                    truncated = " ";
                 }
                 return truncated;
             }
