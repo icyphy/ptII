@@ -54,20 +54,42 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
 
-// Java imports
 
 //////////////////////////////////////////////////////////////////////////
 //// VergilApplication
 /**
 This application opens run control panels for models specified on the
-command line.  The exact facilities that are available are determined
-by the configuration file ptolemy/configs/vergilConfiguration.xml,
-which is loaded before any command-line arguments are processed.
+command line.   
+
+<p>The exact facilities that are available are determined by an optional
+command line argument that names a directory in ptolemy/configs that
+contains a configuration.xml file.  For example, if we call vergil
+-ptiny, then we will use ptolemy/configs/ptiny/configuration.xml and
+ptolemy/configs/ptiny/intro.htm.  The default configuration is
+ptolemy/configs/vergilConfiguration.xml, which is loaded before any
+other command-line arguments are processed.
+
+<p>This application also takes an optional command line argument pair
+<code>-conf <i>configurationFile.xml</i></code> that names a configuration
+to be read.  For example,
+<pre>
+$PTII/bin/vergil -conf ptolemy/configs/ptiny/configuration.xml
+<pre>
+and
+<pre>
+$PTII/bin/vergil -ptiny
+</pre>
+are equivalent
+<p>
 If there are no command-line arguments at all, then the configuration
 file is augmented by the MoML file ptolemy/configs/vergilWelcomeWindow.xml.
 
-@author Edward A. Lee and Steve Neuendorffer
+
+
+@author Edward A. Lee, Steve Neuendorffer, Christopher Hylands 
 @version $Id$
 @since Ptolemy II 1.0
 @see ptolemy.actor.gui.ModelFrame
@@ -188,15 +210,27 @@ public class VergilApplication extends MoMLApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return a default Configuration, which in this case is given by
-     *  the MoML file ptolemy/configs/vergilConfiguration.xml.
+    /** Return a default Configuration.  The initial default configuration
+     *  is the MoML file ptolemy/configs/vergilConfiguration.xml, but
+     *  using different command line arguments can change the value    
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */
     protected Configuration _createDefaultConfiguration() throws Exception {
-        Configuration configuration = 
-            _readConfiguration("ptolemy/configs/vergilConfiguration.xml");
 
+        if (_configurationURLSpec == null) {
+            _configurationURLSpec = "ptolemy/configs/vergilConfiguration.xml";
+        }
+        Configuration configuration = null;
+        try {
+            configuration = _readConfiguration(_configurationURLSpec);
+        } catch (Exception ex) {
+            throw new Exception("Failed to read configuration '"
+                    + _configurationURLSpec + "'", ex);
+        }
+
+        // Read the user's vergilUserLibrary.xml file
+        //
         // Use StringUtilities.getProperty() so we get the proper 
         // canonical path
         String libraryName = StringUtilities.getProperty("user.home")
@@ -243,31 +277,165 @@ public class VergilApplication extends MoMLApplication {
         _parser.setContext(configuration);
         _parser.parse(inurl, inurl.openStream());
         Effigy doc = (Effigy)configuration.getEntity("directory.doc");
-        URL idurl = specToURL("ptolemy/configs/intro.htm");
+        URL idurl;
+        if (_configurationSubdirectory == null) {
+            idurl = specToURL("ptolemy/configs/intro.htm");
+        } else {
+            idurl = specToURL("ptolemy/configs/"
+                    + _configurationSubdirectory + "/intro.htm");
+        }
+
         doc.identifier.setExpression(idurl.toExternalForm());
         return configuration;
     }
 
-    /** Parse the command-line arguments. This overrides the base class
-     *  only to set the usage information.
+    /** Parse the command-line arguments.
      *  @exception Exception If an argument is not understood or triggers
      *   an error.
      */
     protected void _parseArgs(final String args[]) throws Exception {
         _commandTemplate = "vergil [ options ] [file ...]";
-        // NOTE: Java superstition dictates that if you want something
-        // to work, you should invoke it in event thread.  Otherwise,
-        // weird things happens at the user interface level.  This
-        // seems to prevent occasional errors rending HTML.
-        SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    try {
-                        VergilApplication.super._parseArgs(args);
-                    } catch (Exception ex) {
-                        MessageHandler.error("Command failed", ex);
-                        System.exit(0);
-                    }
-                }
-            });
+
+//         // NOTE: Java superstition dictates that if you want something
+//         // to work, you should invoke it in event thread.  Otherwise,
+//         // weird things happens at the user interface level.  This
+//         // seems to prevent occasional errors rending HTML.
+//         SwingUtilities.invokeLater(new Runnable() {
+//                 public void run() {
+//                     try {
+//                         VergilApplication.super._parseArgs(args);
+//                     } catch (Exception ex) {
+//                         MessageHandler.error("Command failed", ex);
+//                         System.exit(0);
+//                     }
+//                 }
+//            });
+
+        // VergilApplication.super._parseArgs(args)
+        // calls _createDefaultConfiguration() asap,
+        // so delay calling it until we process
+        // the arguments and possibly get a configuration.
+        List processedArgsList = new LinkedList();
+        for (int i = 0; i < args.length; i++) {
+            // Parse any configuration specific args first so that we can
+            // set up the configuration for later use by the parent class.
+            if (!_configurationParseArg(args[i])) {
+                // If we did not parse the arg, the
+                // add it to the list of args to be passed
+                // to the super class.
+                processedArgsList.add(args[i]);
+            }
+        }
+        if (_expectingConfiguration) {
+            throw new IllegalActionException(
+                    "Missing configuration");
+        }
+        String [] processedArgs =
+            (String [])processedArgsList
+            .toArray(new String[processedArgsList.size()]);
+
+        super._parseArgs(processedArgs);
     }
+
+    /** Return a string summarizing the command-line arguments.
+     *  @return A usage string.
+     */
+    protected String _usage() {
+        String result = "Usage: " + _commandTemplate + "\n\n"
+            + "Options that take values:\n";
+        int i;
+        for (i = 0; i < super._commandOptions.length; i++) {
+            result += " " + super._commandOptions[i][0] +
+                " " + super._commandOptions[i][1] + "\n";
+        }
+
+        for (i = 0; i < _commandOptions.length; i++) {
+            result += " " + _commandOptions[i][0] +
+                " " + _commandOptions[i][1] + "\n";
+        }
+
+        result += "\nBoolean flags:\n";
+        for (i = 0; i < super._commandFlags.length; i++) {
+            result += " " + super._commandFlags[i];
+        }
+        for (i = 0; i < _commandFlags.length; i++) {
+            result += " " + _commandFlags[i];
+        }
+        return result;
+    }
+
+    /** The command-line options that are either present or not. */
+    protected String _commandFlags[] = {
+        "-<configurationDirectory, for example -ptiny>  ",
+    };
+
+    /** The command-line options that take arguments. */
+    protected String _commandOptions[][] = {
+        {"-config", 
+         "<configuration URL, defaults to ptolemy/configs/vergilConfiguration.xml>"},
+    };
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Parse a command-line argument.  Usually, we would name this 
+     *  method _parseArg(), but we want to handle any arguments that
+     *  handle configuration changes before calling the parent class
+     *  _parseArg() because the parent class depends either having a
+     *  configuration to work with, or the parent class sets up a
+     *  configuration.   
+     *  @return True if the argument is understood, false otherwise.
+     *  @exception Exception If something goes wrong.
+     */
+    private boolean _configurationParseArg(String arg) throws Exception {
+        if (arg.startsWith("-conf")) {
+            _expectingConfiguration = true;
+        } else if (arg.startsWith("-")) {
+            // If the argument names a directory in ptolemy/configs
+            // that contains a file named configuration.xml that can
+            // be found either as a URL or in the classpath, then
+            // assume that it is a configuration.  For example, -ptiny
+            // will look for ptolemy/configs/ptiny/configuration.xml
+            // If the argument does not name a configuration, then
+            // we return false so that the argument can be processed
+            // by the parent class.
+            try {
+                _configurationSubdirectory = arg.substring(1);
+                String potentialConfiguration =
+                    "ptolemy/configs/" + _configurationSubdirectory
+                    + "/configuration.xml";
+                // This will throw an Exception if we can't find the config.
+                specToURL(potentialConfiguration);
+
+                _configurationURLSpec = potentialConfiguration;
+            } catch (Exception ex) {
+                // The argument did not name a configuration, let the parent
+                // class have a shot.
+                return false;
+            }
+        } else if (_expectingConfiguration) {
+            _expectingConfiguration = false;
+            _configurationURLSpec = arg;
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The subdirectory (if any) of ptolemy/configs where the configuration 
+    // may be found.  For example if vergil was called with -ptiny,
+    // then this variable will be set to "ptiny", and the configuration
+    // should be at ptolemy/configs/ptiny/configuration.xml
+    private String _configurationSubdirectory;
+
+    // URL of the configuration to read.                                      
+    // The URL may absolute, or relative to the Ptolemy II tree root.
+    private String _configurationURLSpec;
+
+    // Flag indicating that the previous argument was -conf
+    private boolean _expectingConfiguration = false;
 }
