@@ -100,6 +100,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public CompositeEntity() {
         super();
+	_addIcon();
     }
 
     /** Construct an entity in the specified workspace with an empty
@@ -111,6 +112,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     public CompositeEntity(Workspace workspace) {
 	super(workspace);
+	_addIcon();
     }
 
     /** Create an object with a name and a container.
@@ -129,6 +131,7 @@ public class CompositeEntity extends ComponentEntity {
     public CompositeEntity(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+	_addIcon();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1046,6 +1049,18 @@ public class CompositeEntity extends ComponentEntity {
 
     /** @serial List of contained entities. */
     protected NamedList _containedEntities = new NamedList(this);
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    private void _addIcon() {
+	_setDefaultIcon("<svg>\n" +
+               "<rect x=\"0\" y=\"0\" width=\"60\" " +
+               "height=\"40\" style=\"fill:blue\"/>\n" +
+               "<rect x=\"5\" y=\"5\" width=\"50\" " +
+               "height=\"30\" style=\"fill:white\"/>\n" +
+               "</svg>\n");
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
