@@ -19,9 +19,13 @@ int main(void) {
     struct i69615_FIR fir;
     int i;
 
+    /* Configure the filter with the desired paramters */
     f0651603000_initialize(&fir, taps, NUM_TAPS, data, INTERP, DEC, DECPHASE);
+
+    /* Execute one (SDF) invocation of the filter */
     f01625738578_fire(&fir, input, output);
 
+    /* Print the contents of the output buffer */
     for (i=0; i<10; i++) {
         printf("%f\n", output[i]);
     }
