@@ -37,7 +37,6 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
-import ptolemy.gui.Top;
 
 // Java imports.
 import java.awt.Container;
@@ -2443,32 +2442,22 @@ public class MoMLParser extends HandlerBase {
                 }
                 if ((security == null || withinUntrustedApplet == false)
                         && !_approvedRemoteXmlFiles.contains(xmlFile)) {
-		    // If the user invoked file -> Open URL
-		    // then do not warn for any URLS below the URL
-		    // they entered.
 
-		    // This code is not foolproof, but will work
-		    // for most simple situations.
-		    String lastOverallURLBase = null;
-		    String xmlFileBase = null;
-		    if (Top.getLastOverallURL() != null) {
-			lastOverallURLBase =
-                            Top.getLastOverallURL()
-                            .substring(0,
-                                    Top.getLastOverallURL().lastIndexOf("/"));
-			xmlFileBase =
-                            xmlFile.toString()
-                            .substring(0,
-                                    xmlFile.toString().lastIndexOf("/"));
-		    }
-		    if (Top.getLastOverallURL() == null
-                            || !xmlFileBase.startsWith(lastOverallURLBase)) {
+                    // If the xmlFile and _base have a common root,
+                    // then the code is ok.
+                    String xmlFileBase =
+                        xmlFile.toString() .substring(0,
+                                xmlFile.toString().lastIndexOf("/"));
+
+		    if (_base == null
+                            || !xmlFileBase.startsWith(_base.toString())) {
 			MessageHandler.warning("Security concern:\n"
                                 + "About to look for MoML from the "
                                 + "net at address:\n"
                                 + xmlFile.toExternalForm()
                                 + "\nOK to proceed?");
 		    }
+
 		    // If we get to here, the the user did not hit cancel,
 		    // so we cache the file
 		    _approvedRemoteXmlFiles.add(xmlFile);
