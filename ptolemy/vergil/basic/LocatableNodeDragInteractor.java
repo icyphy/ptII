@@ -47,7 +47,6 @@ import ptolemy.vergil.toolbox.SnapConstraint;
 import diva.canvas.Figure;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.SelectionModel;
-import diva.graph.GraphEvent;
 import diva.graph.NodeDragInteractor;
 
 //////////////////////////////////////////////////////////////////////////
