@@ -36,7 +36,7 @@ Description of the class
 @see classname
 @see full-classname
 */
-public class Port extends GenPort {
+public class Port extends GenericPort {
     /** Constructor
      * @see full-classname/method-name
      * @param parameter-name description
