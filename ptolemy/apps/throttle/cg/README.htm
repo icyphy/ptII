@@ -85,11 +85,23 @@ with the interpreted run above.
 <li> The output will be in the current directory
 <a href="./"><CODE>$PTII/ptolemy/apps/throttle/cg/</CODE></a>
 
+
+<li> To run the generated code by hand, run
+<pre>
+java -classpath "c:\users\cxh\ptII;." ptolemy.apps.throttle.cg.Main
+</pre>
+
 <li> To display the java code, run the following command in
 a Cygwin window:
 <pre>
 $PTII/bin/jode ptolemy.apps.throttle.cg.Main
 </pre>
+
+<li> To run the model by hand:
+<pre>
+java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication sliding2.xml
+</pre>
+
 </ol>
 
 
