@@ -77,12 +77,13 @@ MISC_FILES =	# doc test
 
 # OPTIONAL_JSRCS files are created by javacc.  
 # javadoc generates html for file in $(OPTIONAL_JSRCS)
+# PtParser.java must be at the top.
 OPTIONAL_JSRCS = \
+	PtParser.java \  
 	ASCII_CharStream.java \
 	JJTPtParserState.java \
 	Node.java \
 	ParseException.java \
-	PtParser.java \
 	PtParserConstants.java \
 	PtParserTokenManager.java \
 	PtParserTreeConstants.java \
@@ -96,7 +97,7 @@ OPTIONAL_FILES =  \
 	$(OPTIONAL_JSRCS) \
 	PtParser.jj
 
-JCLASS = $(JSRCS:%.java=%.class) $(OPTIONAL_JSRCS:%.java=%.class)
+JCLASS = $(OPTIONAL_JSRCS:%.java=%.class) $(JSRCS:%.java=%.class) 
 
 # Needed for compiling under Cygwin on NT
 LIB = dummylib
@@ -109,9 +110,9 @@ depend:
 	@echo "no dependencies in this directory"
 
 PtParser.jjt : 
-	
 	CLASSPATH=$(CLASSPATH) $(JJTREE) PtParser.jjt
 	CLASSPATH=$(CLASSPATH) $(JAVACC) PtParser.jj
+	CLASSPATH=$(CLASSPATH) $(JAVAC) PtParser.java
 	rm -f PtParser.jj
 	
 
