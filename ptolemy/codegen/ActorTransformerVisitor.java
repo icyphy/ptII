@@ -992,6 +992,10 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
     /** Return a new ExprNode representing the value of the argument Token. */
     public ExprNode tokenToExprNode(Token token) {
+        System.out.println("ActorTransformerVisitor.tokenToExprNode(): "
+                + token + " getType: " 
+                + token.getType()
+                + " _typeID: " + _typeID);
         switch (_typeID.kindOfTokenType(token.getType())) {
 
         case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
@@ -1044,6 +1048,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                 // FIXME : this does not handle special escape characters correctly
                 return new StringLitNode(((StringToken) token).stringValue());
             }
+
+        case PtolemyTypeIdentifier.TYPE_KIND_INT_ARRAY_TOKEN:
+            throw new RuntimeException("tokenToExprNode not supported on int arrays yet:" + token);
 
         case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
         case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
