@@ -185,7 +185,7 @@ test Yylex-1.2 {Parse JavaScope.java} {
                  }}                  {StringLitNode { 
                    {Literal /export/maury/maury2/cxh/src/ptII/ptolemy/lang/java/test/jsoriginal/JavaScope.java} 
                  }}                  {LongLitNode { 
-                   {Literal 975714324869} 
+                   {Literal 4869} 
                  }}                  {MethodCallNode { 
                    {Args  {}} 
                    {Method {ObjectNode { 
