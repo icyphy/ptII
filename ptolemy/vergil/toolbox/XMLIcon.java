@@ -30,12 +30,6 @@
 
 package ptolemy.vergil.toolbox;
 
-import java.io.Reader;
-import java.io.StringReader;
-import java.net.URL;
-
-import javax.swing.Icon;
-
 import diva.canvas.Figure;
 import diva.canvas.toolbox.PaintedFigure;
 import diva.canvas.toolbox.SVGParser;
@@ -44,15 +38,11 @@ import diva.util.java2d.PaintedList;
 import diva.util.xml.XmlDocument;
 import diva.util.xml.XmlElement;
 import diva.util.xml.XmlReader;
+import ptolemy.kernel.util.*;
 
-import ptolemy.kernel.util.ConfigurableAttribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.SingletonConfigurableAttribute;
-import ptolemy.kernel.util.ValueListener;
+import java.io.Reader;
+import java.io.StringReader;
+import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// XMLIcon

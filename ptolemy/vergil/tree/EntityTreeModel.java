@@ -30,11 +30,6 @@
 
 package ptolemy.vergil.tree;
 
-import ptolemy.kernel.util.ChangeListener;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.CompositeEntity;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,6 +37,8 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// EntityTreeModel

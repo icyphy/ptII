@@ -29,8 +29,7 @@
 
 package ptolemy.vergil.fsm.modal;
 
-import java.util.Iterator;
-
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.domains.ct.kernel.CTDirector;
@@ -41,6 +40,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.NamedObj.*;
 
 // NOTE: This is a combination of ModalController and CTStepSizeControlActor,
 // but because of the inheritance hierarchy, there appears to be no convenient

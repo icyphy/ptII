@@ -30,29 +30,23 @@
 
 package ptolemy.vergil.fsm;
 
-import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.icon.XMLIcon;
-import ptolemy.vergil.icon.EditorIcon;
-import java.awt.event.ActionEvent;
-
-import ptolemy.actor.TypedActor;
-import ptolemy.domains.fsm.kernel.State;
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.Location;
-import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.vergil.toolbox.MenuActionFactory;
-import ptolemy.vergil.icon.XMLIcon;
-
 import diva.canvas.Figure;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
+import ptolemy.actor.TypedActor;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.util.*;
+import ptolemy.moml.Location;
+import ptolemy.vergil.icon.EditorIcon;
+import ptolemy.vergil.icon.XMLIcon;
+import ptolemy.vergil.kernel.AttributeController;
+import ptolemy.vergil.toolbox.FigureAction;
+import ptolemy.vergil.toolbox.MenuActionFactory;
+import ptolemy.vergil.toolbox.MenuItemFactory;
+
+import javax.swing.Action;
+import java.awt.event.ActionEvent;
 
 //////////////////////////////////////////////////////////////////////////
 //// StateController

@@ -31,56 +31,14 @@
 package ptolemy.vergil.icon;
 
 // Diva imports.
-import diva.canvas.FigureLayer;
-import diva.canvas.GraphicsPane;
-import diva.canvas.interactor.BasicSelectionModel;
-import diva.canvas.interactor.BoundsManipulator;
-import diva.canvas.interactor.CircleManipulator;
-import diva.canvas.interactor.DragInteractor;
-import diva.canvas.interactor.PathManipulator;
-import diva.canvas.interactor.SelectionDragger;
-import diva.canvas.interactor.SelectionInteractor;
-import diva.canvas.JCanvas;
 import diva.canvas.toolbox.VersatileFigure;
 import diva.gui.AppContext;
-import diva.gui.AbstractApplication;
 import diva.gui.BasicFrame;
 import diva.gui.ExtensionFileFilter;
 import diva.gui.GUIUtilities;
-import diva.util.java2d.PaintedObject;
-import diva.util.java2d.PaintedPath;
 import diva.util.java2d.PaintedShape;
-import diva.util.java2d.PaintedString;
-import diva.util.java2d.Polygon2D;
+import ptolemy.kernel.util.*;
 
-// Java imports.
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.geom.CubicCurve2D;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Line2D;
-import java.awt.geom.QuadCurve2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RectangularShape;
-import java.awt.Paint;
-import java.awt.print.PrinterJob;
-import java.awt.Shape;
-import java.net.URL;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Vector;
-
-// Javax imports.
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -88,25 +46,45 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.geom.CubicCurve2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.QuadCurve2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.CubicCurve2D.Double;
+import java.awt.geom.Ellipse2D.Double;
+import java.awt.geom.Line2D.Double;
+import java.awt.geom.QuadCurve2D.Double;
+import java.awt.geom.Rectangle2D.Double;
+import java.net.URL;
+
+// Java imports.
+
+// Javax imports.
 
 // Ptolemy imports.
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.vergil.toolbox.GraphicElement;
-import ptolemy.vergil.icon.XMLIcon;
 
 // FIXME this should be an application that uses documents.
 

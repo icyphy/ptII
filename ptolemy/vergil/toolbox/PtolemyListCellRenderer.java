@@ -30,16 +30,11 @@
 
 package ptolemy.vergil.toolbox;
 
-import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JList;
 import java.awt.Component;
-import java.awt.Point;
-import java.awt.dnd.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.tree.*;
 
 /**
 A list cell renderer for Ptolemy objects.

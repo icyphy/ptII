@@ -30,17 +30,15 @@
 
 package ptolemy.vergil.fsm;
 
-import java.awt.Color;
-
-import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
+import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
+
+import java.awt.Color;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMGraphTableau

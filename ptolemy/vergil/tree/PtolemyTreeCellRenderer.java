@@ -30,27 +30,17 @@
 
 package ptolemy.vergil.tree;
 
-import ptolemy.vergil.icon.XMLIcon;
-import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.vergil.basic.IconController;
-import ptolemy.vergil.icon.XMLIcon;
-import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.vergil.basic.IconController;
-import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.*;
 import ptolemy.moml.Documentation;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 
-import java.awt.Component;
-import java.util.List;
+import javax.swing.Icon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import java.awt.Component;
+import java.util.List;
 
 /**
 A tree cell renderer for Ptolemy objects.  This renderer renders

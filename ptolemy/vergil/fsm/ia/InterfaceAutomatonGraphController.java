@@ -30,21 +30,20 @@
 
 package ptolemy.vergil.fsm.ia;
 
-import ptolemy.vergil.fsm.FSMGraphController;
-import java.io.File;
-import java.net.URL;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-
+import java.io.File;
+import java.net.URL;
 import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JToolBar;
-import javax.swing.JFileChooser;
-
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
+import ptolemy.gui.Top;
+import ptolemy.vergil.fsm.FSMGraphController;
 
 //////////////////////////////////////////////////////////////////////////
 //// InterfaceAutomatonGraphController

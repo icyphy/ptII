@@ -30,15 +30,10 @@
 
 package ptolemy.vergil.fsm.modal;
 
-import ptolemy.vergil.basic.NodeControllerFactory;
-import ptolemy.vergil.basic.NamedObjController;
-import ptolemy.vergil.basic.IconController;
-import ptolemy.kernel.util.*;
-import ptolemy.vergil.basic.NodeControllerFactory;
-import ptolemy.vergil.basic.NamedObjController;
-
 import diva.graph.GraphController;
-import diva.graph.NodeController;
+import ptolemy.kernel.util.*;
+import ptolemy.vergil.basic.NamedObjController;
+import ptolemy.vergil.basic.NodeControllerFactory;
 
 //////////////////////////////////////////////////////////////////////////
 //// HierarchicalStateControllerFactory

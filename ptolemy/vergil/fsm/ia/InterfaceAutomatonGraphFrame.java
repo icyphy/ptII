@@ -30,12 +30,14 @@
 
 package ptolemy.vergil.fsm.ia;
 
-import ptolemy.vergil.fsm.FSMGraphModel;
-import ptolemy.vergil.fsm.FSMGraphFrame;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
 import diva.graph.GraphPane;
-
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.vergil.fsm.FSMGraphFrame;
+import ptolemy.vergil.fsm.FSMGraphModel;
 
 //////////////////////////////////////////////////////////////////////////
 //// InterfaceAutomatonGraphFrame

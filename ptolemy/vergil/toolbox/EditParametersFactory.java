@@ -30,21 +30,18 @@
 
 package ptolemy.vergil.toolbox;
 
+import diva.gui.toolbox.JContextMenu;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.EditParametersDialog;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.*;
 
-import diva.gui.toolbox.JContextMenu;
-
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JMenuItem;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.util.List;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JMenuItem;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditParametersFactory

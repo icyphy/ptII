@@ -31,13 +31,12 @@
 package ptolemy.vergil.toolbox;
 
 import diva.canvas.AbstractSite;
-import diva.canvas.Site;
 import diva.canvas.Figure;
-
-import java.awt.geom.Rectangle2D;
-import javax.swing.SwingConstants;
-
 import ptolemy.actor.IOPort;
+
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 
 /**
 A site that locates itself on the bounds of a figure's shape, designed

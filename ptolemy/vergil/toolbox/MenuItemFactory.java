@@ -30,10 +30,10 @@
 
 package ptolemy.vergil.toolbox;
 
-import javax.swing.*;
-import diva.canvas.*;
-import diva.gui.toolbox.*;
+import diva.gui.toolbox.JContextMenu;
 import ptolemy.kernel.util.*;
+
+import javax.swing.JMenuItem;
 
 //////////////////////////////////////////////////////////////////////////
 //// MenuItemFactory

@@ -35,17 +35,16 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
-import java.awt.BorderLayout;
+import javax.swing.JScrollPane;
+import javax.swing.tree.TreeModel;
 import java.awt.Color;
+import java.awt.BorderLayout;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.JScrollPane;
+import java.io.Writer;
 
 //////////////////////////////////////////////////////////////////////////
 //// TreeTableau

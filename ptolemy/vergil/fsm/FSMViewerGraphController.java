@@ -30,32 +30,26 @@
 
 package ptolemy.vergil.fsm;
 
-import ptolemy.vergil.kernel.AnimationRenderer;
-import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.actor.ExternalIOPortController;
-import ptolemy.vergil.basic.NamedObjController;
-import ptolemy.vergil.basic.BasicGraphController;
 import diva.canvas.Figure;
 import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionDragger;
 import diva.canvas.interactor.SelectionInteractor;
-import diva.graph.GraphPane;
 import diva.graph.EdgeController;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
 import diva.graph.NodeController;
-
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.StateEvent;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.DebugEvent;
+import ptolemy.kernel.util.*;
 import ptolemy.moml.Location;
+import ptolemy.vergil.basic.BasicGraphController;
+import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.actor.ExternalIOPortController;
-import ptolemy.vergil.basic.NamedObjController;
-import ptolemy.vergil.basic.BasicGraphController;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMViewerGraphController

@@ -30,29 +30,31 @@
 
 package ptolemy.vergil.fsm;
 
-import ptolemy.vergil.fsm.ia.InterfaceAutomatonGraphFrame;
-import ptolemy.vergil.basic.BasicGraphFrame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.net.URL;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
 import diva.graph.GraphPane;
-
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.gui.CancelException;
 import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.Query;
 import ptolemy.gui.MessageHandler;
+import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.*;
 import ptolemy.vergil.basic.BasicGraphFrame;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import java.awt.Component;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
+import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMGraphFrame

@@ -29,12 +29,9 @@
 
 package ptolemy.vergil.fsm.modal;
 
-import ptolemy.vergil.kernel.Link;
-import java.util.Iterator;
-
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -43,17 +40,20 @@ import ptolemy.actor.gui.TableauFactory;
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.domains.ct.kernel.CTTransparentDirector;
-import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.HSDirector;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.NamedObj.*;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
+
+import java.util.Iterator;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModalModel

@@ -30,28 +30,30 @@
 
 package ptolemy.vergil.fsm.modal;
 
-import ptolemy.vergil.fsm.StateController;
+import diva.graph.GraphController;
+
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
-
+import javax.swing.Action;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
-import ptolemy.actor.TypedIOPort;
+import ptolemy.domains.fsm.kernel.State;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
-import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.fsm.StateController;
+import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-
-import diva.graph.GraphController;
+import ptolemy.vergil.toolbox.MenuItemFactory;
 
 //////////////////////////////////////////////////////////////////////////
 //// HierarchicalStateController

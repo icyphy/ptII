@@ -29,10 +29,6 @@
 
 package ptolemy.vergil.fsm.modal;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;

@@ -30,15 +30,11 @@
 
 package ptolemy.vergil.toolbox;
 
-import javax.swing.*;
-import diva.gui.toolbox.*;
-import ptolemy.kernel.*;
+import diva.gui.toolbox.JContextMenu;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.gui.style.*;
-import ptolemy.data.expr.*;
-import ptolemy.gui.ComponentDialog;
-import java.awt.event.*;
+
+import javax.swing.Action;
+import javax.swing.JMenuItem;
 
 //////////////////////////////////////////////////////////////////////////
 //// MenuActionFactory

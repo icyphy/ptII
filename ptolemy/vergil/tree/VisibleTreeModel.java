@@ -30,26 +30,16 @@
 
 package ptolemy.vergil.tree;
 
-import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.actor.Director;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.util.*;
 import ptolemy.moml.EntityLibrary;
-import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.icon.EditorIcon;
 
-import java.net.URL;
-import java.util.Iterator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import javax.swing.JTree;
-import javax.swing.tree.TreePath;
 
 //////////////////////////////////////////////////////////////////////////
 //// VisibleTreeModel

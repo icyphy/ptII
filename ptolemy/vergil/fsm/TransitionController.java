@@ -30,25 +30,15 @@
 
 package ptolemy.vergil.fsm;
 
-
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.Frame;
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-
 import diva.canvas.Figure;
 import diva.canvas.Site;
-import diva.canvas.connector.AbstractConnector;
 import diva.canvas.connector.ArcConnector;
 import diva.canvas.connector.ArcManipulator;
 import diva.canvas.connector.Arrowhead;
 import diva.canvas.connector.Connector;
 import diva.canvas.connector.ConnectorAdapter;
 import diva.canvas.connector.ConnectorEvent;
+import diva.canvas.connector.ConnectorListener;
 import diva.canvas.connector.ConnectorManipulator;
 import diva.canvas.connector.ConnectorTarget;
 import diva.canvas.connector.PerimeterTarget;
@@ -56,27 +46,40 @@ import diva.canvas.event.LayerEvent;
 import diva.canvas.event.MouseFilter;
 import diva.canvas.interactor.ActionInteractor;
 import diva.canvas.interactor.Interactor;
+import diva.canvas.interactor.Manipulator;
 import diva.canvas.interactor.SelectionInteractor;
 import diva.canvas.interactor.SelectionModel;
-import diva.canvas.toolbox.BasicController;
 import diva.canvas.toolbox.LabelFigure;
 import diva.graph.BasicEdgeController;
 import diva.graph.EdgeRenderer;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
+import diva.graph.GraphPane;
 import diva.gui.toolbox.MenuCreator;
-
+import diva.gui.toolbox.MenuFactory;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.*;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.toolbox.EditParametersFactory;
+import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Paint;
+import java.awt.event.ActionEvent;
 
 //////////////////////////////////////////////////////////////////////////
 //// TransitionController

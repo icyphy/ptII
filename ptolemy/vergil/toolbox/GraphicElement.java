@@ -30,15 +30,17 @@
 
 package ptolemy.vergil.toolbox;
 
-import ptolemy.data.*;
-import ptolemy.kernel.util.*;
-import diva.canvas.toolbox.*;
-import diva.util.java2d.*;
-import diva.util.xml.*;
-import java.awt.*;
-import java.awt.geom.*;
-import java.io.*;
-import java.util.*;
+import diva.canvas.toolbox.GraphicsParser;
+import diva.util.java2d.PaintedObject;
+import diva.util.java2d.PaintedString;
+import diva.util.xml.XmlElement;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphicElement

@@ -30,19 +30,15 @@
 
 package ptolemy.vergil.toolbox;
 
-import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.LabelFigure;
-import javax.swing.SwingConstants;
+import ptolemy.kernel.util.*;
 
+import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
-
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// BoxedValueIcon

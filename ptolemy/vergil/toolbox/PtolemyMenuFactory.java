@@ -30,18 +30,17 @@
 
 package ptolemy.vergil.toolbox;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import ptolemy.moml.*;
-import java.util.*;
-import diva.util.*;
-import diva.canvas.*;
-import diva.canvas.toolbox.*;
-import diva.gui.toolbox.*;
+import diva.canvas.Figure;
 import diva.graph.GraphController;
-import javax.swing.SwingConstants;
+import diva.graph.GraphModel;
+import diva.gui.toolbox.JContextMenu;
+import diva.gui.toolbox.MenuFactory;
+import ptolemy.kernel.util.*;
+
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyMenuFactory

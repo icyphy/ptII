@@ -30,13 +30,19 @@
 
 package ptolemy.vergil.toolbox;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import java.awt.dnd.*;
-import java.awt.event.*;
-import java.awt.datatransfer.*;
-import java.io.*;
-import java.util.*;
+import ptolemy.kernel.util.NamedObj;
+
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
 A transferable object that contains a local JVM reference to a

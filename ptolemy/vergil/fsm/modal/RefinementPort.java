@@ -32,13 +32,10 @@ package ptolemy.vergil.fsm.modal;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
-
-import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// RefinementPort

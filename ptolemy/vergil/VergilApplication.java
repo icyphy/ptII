@@ -35,12 +35,12 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.ErrorHandler;
+
+import javax.swing.SwingUtilities;
+import java.net.URL;
 
 // Java imports
-import java.net.URL;
-import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// VergilApplication

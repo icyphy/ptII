@@ -30,18 +30,20 @@
 
 package ptolemy.vergil.toolbox;
 
-import java.awt.event.*;
-import javax.swing.JComponent;
-import javax.swing.JMenuItem;
-import javax.swing.JButton;
-import javax.swing.AbstractAction;
-import javax.swing.event.*;
-import diva.canvas.*;
-import diva.canvas.event.*;
-import diva.graph.*;
-import diva.gui.toolbox.*;
+import diva.canvas.CanvasLayer;
+import diva.canvas.CanvasPane;
+import diva.canvas.Figure;
+import diva.canvas.event.LayerEvent;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
+import diva.gui.toolbox.JContextMenu;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.*;
+
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JMenuItem;
+import java.awt.event.ActionEvent;
 
 //////////////////////////////////////////////////////////////////////////
 //// FigureAction

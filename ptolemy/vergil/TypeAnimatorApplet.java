@@ -29,30 +29,19 @@
 
 package ptolemy.vergil;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypeEvent;
 import ptolemy.actor.TypeListener;
-import ptolemy.data.type.BaseType;
+import ptolemy.actor.Manager.State;
 import ptolemy.data.type.Type;
-import ptolemy.kernel.*;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.MoMLViewerApplet;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Font;
-import java.awt.event.*;
-import java.awt.geom.*;
 import java.util.Iterator;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeAnimatorApplet

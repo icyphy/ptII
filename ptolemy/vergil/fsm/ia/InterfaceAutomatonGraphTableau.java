@@ -30,17 +30,14 @@
 
 package ptolemy.vergil.fsm.ia;
 
-import ptolemy.vergil.fsm.FSMGraphTableau;
-import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
+import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
+import ptolemy.vergil.fsm.FSMGraphTableau;
 
 import java.awt.Color;
 

@@ -32,7 +32,6 @@ package ptolemy.vergil.fsm.modal;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
@@ -41,6 +40,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
 
 import java.util.Iterator;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModalPort

@@ -30,58 +30,54 @@
 
 package ptolemy.vergil.fsm;
 
-import ptolemy.vergil.kernel.PortDialogFactory;
-import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.actor.ExternalIOPortController;
-import ptolemy.vergil.basic.NamedObjController;
-import ptolemy.vergil.basic.BasicGraphFrame;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.InputEvent;
-import java.awt.geom.Point2D;
-
-import javax.swing.Action;
-import javax.swing.JMenu;
-import javax.swing.JToolBar;
-
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
 import diva.canvas.Site;
 import diva.canvas.connector.AutonomousSite;
 import diva.canvas.connector.Connector;
 import diva.canvas.connector.ConnectorManipulator;
+import diva.canvas.connector.ConnectorTarget;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.event.MouseFilter;
 import diva.canvas.interactor.AbstractInteractor;
-import diva.canvas.interactor.ActionInteractor;
 import diva.canvas.interactor.CompositeInteractor;
 import diva.canvas.interactor.GrabHandle;
 import diva.canvas.interactor.Interactor;
+import diva.canvas.interactor.SelectionModel;
+import diva.graph.EdgeController;
+import diva.graph.GraphController;
 import diva.graph.GraphException;
+import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
 import diva.gui.toolbox.FigureIcon;
-
+import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.gui.MessageHandler;
-import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.State;
+import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.*;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.basic.BasicGraphFrame;
-import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.actor.ExternalIOPortController;
-import ptolemy.vergil.kernel.PortDialogFactory;
+import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.NamedObjController;
+import ptolemy.vergil.basic.BasicGraphController.NewPortAction;
+import ptolemy.vergil.kernel.AttributeController;
+import ptolemy.vergil.kernel.PortDialogFactory;
 import ptolemy.vergil.toolbox.FigureAction;
+import ptolemy.vergil.toolbox.MenuItemFactory;
+import ptolemy.vergil.toolbox.FigureAction.SourceType;
+
+import javax.swing.Action;
+import javax.swing.JMenu;
+import javax.swing.JToolBar;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.geom.Point2D;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMGraphController
