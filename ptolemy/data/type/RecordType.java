@@ -353,6 +353,13 @@ public class RecordType extends StructuredType {
         }
     }
 
+    /** Return the labels of this record type as a Set.
+     *  @return A Set containing strings.
+     */
+    public Set labelSet() {
+        return _fields.keySet();
+    }   
+
     /** Update this Type to the specified RecordType.
      *  The specified type must be a RecordType and have the same structure
      *  as this one.
