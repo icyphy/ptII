@@ -444,7 +444,7 @@ remote1distjsall:
 			( cd $$x ; \
 			echo making jsall in $$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				jsall JFLAGS= JSINSTRFLAGS=;\
+				jsall JSINSTRFLAGS=;\
 			);  \
 		    fi ; \
 		done ; \
