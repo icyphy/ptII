@@ -1,0 +1,90 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>CT domain demo - Lorenz System</title>
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>CT domain demo - Lorenz System</H1>
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+
+<!-- The HTML below is for the Java Plugin.  The first 
+     section is for IE, the second is for Netscape
+ -->
+<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
+ width=450 height=450
+ name="Lorenz"
+ codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
+<PARAM NAME=CODE VALUE=ptolemy.domains.ct.demo.Lorenz.LorenzApplet.class>
+<PARAM NAME=CODEBASE VALUE=../../../../..>
+<PARAM NAME=ARCHIVE VALUE="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/ct/ct.jar,
+	ptolemy/domains/ct/demo/Lorenz/Lorenz.jar"
+<PARAM NAME=NAME VALUE="LorenzApplet">
+<PARAM NAME="type" VALUE="application/x-java-applet;version=1.2">
+<PARAM NAME="background" VALUE="#faf0e6">
+<param name="defaultiterations" value="5000">
+<COMMENT>
+<EMBED type="application/x-java-applet;version=1.2"
+ code=ptolemy.domains.ct.demo.Lorenz.LorenzApplet
+ codebase=../../../../..
+ archive="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/ct/ct.jar,
+	ptolemy/domains/ct/demo/Lorenz/Lorenz.jar"
+
+ java_CODE=ptolemy.domains.ct.demo.Lorenz.LorenzApplet.class
+ java_CODEBASE=../../../../..
+ java_ARCHIVE="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/ct/ct.jar,
+	ptolemy/domains/ct/demo/Lorenz/Lorenz.jar"
+ name="LorenzApplet"
+ width=450 height=450
+ background="#faf0e6"
+ defaultiterations="5000"
+ pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
+<NOEMBED></COMMENT>
+<I>If you were able to run applets, you would have a demo here.</I>
+</NOEMBED></EMBED>
+</OBJECT>
+</center>
+
+<H2>Introduction</H2>
+The Lorenz System is a famous nonlinear dynamic system that shows the 
+unstable periodic orbit.
+<p>
+The system is given by:
+<pre>
+<CODE>    dx1/dt = sigma*(x2-x1)</CODE>
+<CODE>    dx2/dt = (lamda-x3)*x1 -x2</CODE>
+<CODE>    dx3/dt = x1*x2-b*x3</CODE>
+</pre>
+<p>
+This applet show the chaotic attractor of the system state projected 
+on to the (x1, x2) plane. The initial conditions of the states are
+all 1.0. The parameters sigma, lamda and -b can be explored.
+
+<H2>Simulation</H2>
+To run the simulation, click <B>Go</B> in the above applet.
+<P>
+
+<H2>Result</H2>
+If the simulation runs correctly, the result should be like:<BR>
+<B>XYPlot:</B>
+<p>
+<CENTER><img src="CTXYPlot.gif"></CENTER>
+<P>
+
+<H2>References</H2>
+Fishwick, P. A.<I>"Simulation Model Design and Execution: Building Digital Worlds"</I>, Prentice Hall, 1995, pp213-214<BR>
+
+
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</BODY>
+</HTML>
