@@ -84,11 +84,15 @@ public class RealTimeDelay extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Output the inputs directly.
-     *  @exception IllegalActionException If there is no director.
+    /** Transfer tokens from inputs to outputs, one token from
+     *  each channel. If the width of the input port is less than
+     *  that of the output port, the tokens in the extra channels
+     *  are lost.
+     *  @exception IllegalActionException Never thrown.
      */
     public void fire() throws IllegalActionException {
         _transferTokens();
+        
     }
 
     /** Output the inputs with a real time delay, specified by
