@@ -422,7 +422,7 @@ public class Director extends NamedObj implements Executable {
      *  of threads that are operating in this model. This method is 
      *  synchronized.
      */
-    public synchronized void finish() throws IllegalActionException {
+    public synchronized void finish() {
     }
 
     /** Recursively terminate all of our actors.   Domains may need to
