@@ -199,11 +199,23 @@ test TotallyOrderedSet-8.2 { remove the second element } {
 ######################################################################
 ####  Take
 #
-test TotallyOrderedSet-9.1 { take the first element } {
+test TotallyOrderedSet-9.1 { remove the first element } {
     set f [$toset removeFirst]
     list [$toset size] $f [$toset at 0] \
             [$toset at 1]
 } {2 0.2 3.0 999.3}
+
+######################################################################
+####  Take
+#
+test TotallyOrderedSet-9.1.1 { take the first element } {
+    # take() is deprecated, but we test it anyway
+    $toset insert $p3
+    set f [$toset take]
+    list [$toset size] $f [$toset at 0] \
+            [$toset at 1]
+} {2 0.2 3.0 999.3}
+
 ######################################################################
 ####  To String
 #
