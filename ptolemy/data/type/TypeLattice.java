@@ -181,8 +181,8 @@ public class TypeLattice {
 	    Type t1Rep = _toRepresentative(ct1);
 	    Type t2Rep = _toRepresentative(ct2);
 
-	    if ( !_basicLattice.contains(t1Rep) ||
-	         !_basicLattice.contains(t2Rep)) {
+	    if ( !_basicLattice.containsNodeWeight(t1Rep) ||
+	         !_basicLattice.containsNodeWeight(t2Rep)) {
                 // one or both arguments are user defined
 		if (t1Rep == t2Rep) {
 		    return SAME;
@@ -236,8 +236,8 @@ public class TypeLattice {
 	    Type t1Rep = _toRepresentative(ct1);
 	    Type t2Rep = _toRepresentative(ct2);
 
-	    if ( !_basicLattice.contains(t1Rep) ||
-	         !_basicLattice.contains(t2Rep)) {
+	    if ( !_basicLattice.containsNodeWeight(t1Rep) ||
+	         !_basicLattice.containsNodeWeight(t2Rep)) {
                 // one or both arguments are user defined
 		if (t1Rep == t2Rep) {
 		    return ct1;
@@ -368,8 +368,8 @@ public class TypeLattice {
 	    Type t1Rep = _toRepresentative(ct1);
 	    Type t2Rep = _toRepresentative(ct2);
 
-	    if ( !_basicLattice.contains(t1Rep) ||
-	         !_basicLattice.contains(t2Rep)) {
+	    if ( !_basicLattice.containsNodeWeight(t1Rep) ||
+	         !_basicLattice.containsNodeWeight(t2Rep)) {
                 // one or both arguments are user defined
 		if (t1Rep == t2Rep) {
                     return ct1;
@@ -449,29 +449,29 @@ public class TypeLattice {
 	    StructuredType recordRep =
 	        (new RecordType(labels, types))._getRepresentative();
 
-	    _basicLattice.add(BaseType.BOOLEAN);
-	    _basicLattice.add(BaseType.BOOLEAN_MATRIX);
-	    _basicLattice.add(BaseType.BYTE);
-	    _basicLattice.add(BaseType.COMPLEX);
-	    _basicLattice.add(BaseType.COMPLEX_MATRIX);
-	    _basicLattice.add(BaseType.DOUBLE);
-	    _basicLattice.add(BaseType.DOUBLE_MATRIX);
-	    _basicLattice.add(BaseType.FIX);
-	    _basicLattice.add(BaseType.FIX_MATRIX);
-	    _basicLattice.add(BaseType.INT);
-	    _basicLattice.add(BaseType.INT_MATRIX);
-	    _basicLattice.add(BaseType.LONG);
-	    _basicLattice.add(BaseType.LONG_MATRIX);
-	    _basicLattice.add(BaseType.MATRIX);
-	    _basicLattice.add(BaseType.UNKNOWN);
-	    _basicLattice.add(BaseType.NUMERICAL);
-	    _basicLattice.add(BaseType.OBJECT);
-	    _basicLattice.add(BaseType.SCALAR);
-	    _basicLattice.add(BaseType.STRING);
-	    _basicLattice.add(BaseType.GENERAL);
+	    _basicLattice.addNodeWeight(BaseType.BOOLEAN);
+	    _basicLattice.addNodeWeight(BaseType.BOOLEAN_MATRIX);
+	    _basicLattice.addNodeWeight(BaseType.BYTE);
+	    _basicLattice.addNodeWeight(BaseType.COMPLEX);
+	    _basicLattice.addNodeWeight(BaseType.COMPLEX_MATRIX);
+	    _basicLattice.addNodeWeight(BaseType.DOUBLE);
+	    _basicLattice.addNodeWeight(BaseType.DOUBLE_MATRIX);
+	    _basicLattice.addNodeWeight(BaseType.FIX);
+	    _basicLattice.addNodeWeight(BaseType.FIX_MATRIX);
+	    _basicLattice.addNodeWeight(BaseType.INT);
+	    _basicLattice.addNodeWeight(BaseType.INT_MATRIX);
+	    _basicLattice.addNodeWeight(BaseType.LONG);
+	    _basicLattice.addNodeWeight(BaseType.LONG_MATRIX);
+	    _basicLattice.addNodeWeight(BaseType.MATRIX);
+	    _basicLattice.addNodeWeight(BaseType.UNKNOWN);
+	    _basicLattice.addNodeWeight(BaseType.NUMERICAL);
+	    _basicLattice.addNodeWeight(BaseType.OBJECT);
+	    _basicLattice.addNodeWeight(BaseType.SCALAR);
+	    _basicLattice.addNodeWeight(BaseType.STRING);
+	    _basicLattice.addNodeWeight(BaseType.GENERAL);
 
-	    _basicLattice.add(arrayRep);
-	    _basicLattice.add(recordRep);
+	    _basicLattice.addNodeWeight(arrayRep);
+	    _basicLattice.addNodeWeight(recordRep);
 
 	    _basicLattice.addEdge(BaseType.OBJECT, BaseType.GENERAL);
 	    _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.OBJECT);
