@@ -76,6 +76,7 @@ At most one token is consumed on each input channel.
 
 @author Paul Whitaker
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class NonStrictLogicFunction extends LogicFunction {
 

@@ -69,6 +69,7 @@ outDir parameter.
 </menu>
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class AppletWriter extends SceneTransformer {
     /** Construct a new transformer

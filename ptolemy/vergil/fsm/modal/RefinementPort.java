@@ -49,6 +49,7 @@ since changes to the ports can be initiated from either class.
 @see ModalPort
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class RefinementPort extends TypedIOPort {

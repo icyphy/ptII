@@ -64,6 +64,7 @@ Sampler reacts to the presence of it.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.domains.de.lib.Sampler
 */
 

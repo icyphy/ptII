@@ -57,6 +57,7 @@ it can be used to construct hybrid systems using the CT domain.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class Refinement extends TypedCompositeActor
          implements CTStepSizeControlActor {

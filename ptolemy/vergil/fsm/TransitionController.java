@@ -89,6 +89,7 @@ This class provides interaction techniques for transitions in an FSM.
 @author Steve Neuendorffer
 @contributor Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class TransitionController extends BasicEdgeController {
 

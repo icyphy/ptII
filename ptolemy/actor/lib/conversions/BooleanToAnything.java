@@ -48,6 +48,7 @@ by the <i>falseValue</i> parameter.
 <p>
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 
 @see ptolemy.data.BooleanToken
 */

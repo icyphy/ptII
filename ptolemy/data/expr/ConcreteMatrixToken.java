@@ -44,6 +44,7 @@ This is instantiated by the Constants class with name "matrix".
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 @see Constants
 */
 public class ConcreteMatrixToken extends MatrixToken {

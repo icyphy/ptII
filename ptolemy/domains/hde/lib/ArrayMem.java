@@ -65,6 +65,7 @@ length parameter.
 @see RecordDisassembler
 @authors Edward A. Lee, Elaine Cheong,Jim Armstrong
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class ArrayMem extends TypedAtomicActor {

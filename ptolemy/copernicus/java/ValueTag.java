@@ -43,6 +43,7 @@ value can be statically determined.
 
 @author Stephen Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class ValueTag implements Tag {
     

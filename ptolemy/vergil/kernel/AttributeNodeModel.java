@@ -45,6 +45,7 @@ This is used for visible attributes.
 
 @author  Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class AttributeNodeModel extends NamedObjNodeModel {
 

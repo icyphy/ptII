@@ -61,6 +61,7 @@ class from the Ptolemy plot package to do the rendering.
 
 @author  Neil Turner and Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
  */
 public class MatrixVisualizer extends TypedAtomicActor implements Placeable {
 

@@ -73,6 +73,7 @@ Iterator dynamicActorIterator =
 </pre>
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class CTSchedule extends Schedule {
 

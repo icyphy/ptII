@@ -50,6 +50,7 @@ java ptolemy.domains.fsm.kernel.test.DeadlockStates <automaton.xml>
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class DeadlockStates {

@@ -64,6 +64,7 @@ A graph model for graphically manipulating ptolemy FSM models.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class FSMGraphModel extends AbstractBasicGraphModel {
 

@@ -55,6 +55,7 @@ is given by the parameter <i>attributeName</i>.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class AttributeValueIcon extends XMLIcon {
 

@@ -65,6 +65,7 @@ remain synchronized with the state of a mutating model.
 @author Steve Neuendorffer
 @contributor Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public abstract class AbstractBasicGraphModel extends ModularGraphModel {
 

@@ -64,6 +64,7 @@ named objects that are constructed, but don't have an appropriate field.
 
 @author Stephen Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class NamedObjConstructorAnalysis {
     public NamedObjConstructorAnalysis(JimpleBody body) {

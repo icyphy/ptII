@@ -45,6 +45,7 @@ errors to a stream or to standard error, and requests that parsing continue.
 @see MoMLParser
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class StreamErrorHandler implements ErrorHandler {
 

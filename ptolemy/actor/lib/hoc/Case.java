@@ -42,6 +42,7 @@ An actor with several possible refinements.
 
 @author  Joern Janneck and Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class Case extends AbstractCase {
 

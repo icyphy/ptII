@@ -44,6 +44,7 @@ A director schedule listener that plots the schedule.
 
 @author Johan Eker
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.kernel.util.NamedObj
 @see ptolemy.kernel.util.RecorderListener
 

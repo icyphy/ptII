@@ -49,6 +49,7 @@ generic versions, where appropriate, have icons that indicate failure.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class VergilErrorHandler implements ErrorHandler {
 

@@ -73,6 +73,7 @@ a new instance of the entity, and adds it to the given graph.
 @author Steve Neuendorffer
 @contributor Michael Shilman and Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class EditorDropTarget extends DropTarget {
 

@@ -60,6 +60,7 @@ as both the input and the <i>initialValue</i> parameter.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class Previous extends Transformer {
 

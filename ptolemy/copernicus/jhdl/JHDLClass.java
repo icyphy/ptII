@@ -69,6 +69,7 @@ import byucc.jhdl.base.Node;
 
 @author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 class JHDLClass extends SootClass  {

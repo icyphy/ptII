@@ -63,6 +63,7 @@ The range of the output is specified by two parameters, <i>minimum</i> and
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class SliderSource extends Source implements ChangeListener, Placeable {
 

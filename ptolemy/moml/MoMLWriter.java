@@ -119,6 +119,7 @@ debugging or writing tests.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class MoMLWriter extends Writer {
     /** Create a new writer that wraps the given writer.

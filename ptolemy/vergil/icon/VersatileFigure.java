@@ -48,6 +48,7 @@ import diva.util.java2d.ShapeUtilities;
  * @deprecated Will be moved from Diva to ptolemy/vergil/icon.
  *
  * @version $Revision$
+ * @since Ptolemy II 2.0
  * @author  Nick Zamora
  */
 public class VersatileFigure extends AbstractFigure

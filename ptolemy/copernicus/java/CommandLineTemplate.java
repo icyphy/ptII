@@ -73,6 +73,7 @@ parameter values and the class values are fixed by the code generator.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class CommandLineTemplate {
 

@@ -78,6 +78,7 @@ may themselves be contained by other tokens.
 
 @author Stephen Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class TokenToNativeTransformer extends SceneTransformer {
     /** Construct a new transformer

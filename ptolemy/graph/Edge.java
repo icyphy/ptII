@@ -52,6 +52,7 @@ are allowed.
 
 @author Shuvra S. Bhattacharyya
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.graph.Node
 */
 public final class Edge {

@@ -42,6 +42,7 @@ the sendAbsent() method of the output port on each firing.
 
 @author Paul Whitaker
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class Absent extends Undefined {

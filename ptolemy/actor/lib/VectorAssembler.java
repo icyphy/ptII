@@ -55,6 +55,7 @@ However, that combination will not work in CT, so we need this actor.
 
 @author Jie Liu, Elaine Cheong
 @version $Id$
+@since Ptolemy II 2.0
 @see VectorDisassembler
 */
 

@@ -62,6 +62,7 @@ is used to update the location of the node as the figure moves.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class LocatableNodeController extends BasicNodeController {
 

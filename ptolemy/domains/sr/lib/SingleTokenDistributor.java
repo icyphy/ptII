@@ -53,6 +53,7 @@ produce an output on the next channel.
 
 @author Paul Whitaker, Mudit Goel, Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class SingleTokenDistributor extends Transformer
     implements SequenceActor {

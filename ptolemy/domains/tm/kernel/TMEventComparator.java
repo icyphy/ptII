@@ -41,6 +41,7 @@ parameters in CQComparator. Only the default parameters are used.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class TMEventComparator implements CQComparator {

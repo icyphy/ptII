@@ -65,6 +65,7 @@ manipulated (created or modified) only by classes of graphs that contain them.
 
 @author Shuvra S. Bhattacharyya
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.graph.Edge
 */
 public final class Node {

@@ -67,6 +67,7 @@ only supports a small subset of SVG.
 @author Steve Neuendorffer, John Reekie
 @contributor Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class XMLIcon extends EditorIcon implements ValueListener {
 

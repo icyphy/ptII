@@ -75,6 +75,7 @@ See the TMDirector class for the event dispatching mechanism.
 
 @author Edward A. Lee, Jie Liu
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.domains.tm.kernel.TMDirector
 */
 public class TMReceiver extends AbstractReceiver {

@@ -41,6 +41,7 @@ monotonicity constraint of the SR domain.
 
 @author Paul Whitaker
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.domains.sr.kernel.SRDirector
 @see ptolemy.domains.sr.kernel.SRReceiver
 */

@@ -57,6 +57,7 @@ thread. Also, it highlights objects in red rather than yellow.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class AnimationRenderer implements SelectionRenderer {
     

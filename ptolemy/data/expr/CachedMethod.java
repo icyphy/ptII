@@ -53,6 +53,7 @@ re-generated.
 
 @author Zoltan Kemenczy, Research in Motion Limited.
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.data.expr.ASTPtFunctionNode
 @see ptolemy.data.expr.PtParser
 */

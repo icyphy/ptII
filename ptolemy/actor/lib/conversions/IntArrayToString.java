@@ -60,6 +60,7 @@ array format as this actor.  Datagram actors can use this format as well.
 
 @author Michael Leung, Edward A. Lee, and Paul Whitaker
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class IntArrayToString extends TypedAtomicActor {

@@ -122,6 +122,7 @@ port to use
 @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
 (Based on my RxDatagram, and on the IRLink class writen by Xiaojun Liu)
 @version $Id$ */
+@since Ptolemy II 2.0
 public class SerialComm extends TypedAtomicActor
         implements SerialPortEventListener {
 

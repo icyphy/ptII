@@ -55,6 +55,7 @@ previous controller factory with the same name.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class NodeControllerFactory extends SingletonAttribute {
 

@@ -68,6 +68,7 @@ FIXME: EXPERIMENTAL.
 <P>
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class TMCompositeFacade extends TypedCompositeActor
     implements TMActor {

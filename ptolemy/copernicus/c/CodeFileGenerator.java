@@ -54,6 +54,7 @@ import soot.jimple.JimpleBody;
 
    @author Shuvra S. Bhattacharyya, Ankush Varma
    @version $Id$
+   @since Ptolemy II 2.0
 
 */
 

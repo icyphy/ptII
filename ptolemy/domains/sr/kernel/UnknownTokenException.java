@@ -40,6 +40,7 @@ Thrown on an attempt to obtain information about an unknown token.
 
 @author Paul Whitaker
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.domains.sr.kernel.SRDirector
 @see ptolemy.domains.sr.kernel.SRReceiver
 */

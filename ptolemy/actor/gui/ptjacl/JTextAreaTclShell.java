@@ -50,6 +50,7 @@ import javax.swing.SwingUtilities;
 
  @author John Reekie, Christopher Hylands
  @version $Id$
+ @since Ptolemy II 2.0
  */
 public class JTextAreaTclShell extends JPanel {
 

@@ -40,6 +40,7 @@ An event indicating a state change.  This event can be used for debugging.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class StateEvent implements DebugEvent {
 

@@ -56,6 +56,7 @@ differences between Ptolemy II and the generated code.
 
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class TestApplication implements ChangeListener {
     /** Parse the xml file and run it.

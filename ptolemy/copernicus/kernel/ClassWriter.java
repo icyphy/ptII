@@ -46,6 +46,7 @@ the appropriate subdirectory of that directory according to their package
 name.
 @author Stephen Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class ClassWriter extends SceneTransformer {
     private static ClassWriter instance = new ClassWriter();

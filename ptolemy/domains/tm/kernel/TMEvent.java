@@ -73,6 +73,7 @@ They are external events that carries time stamps, implemented
 using the DEEvent class.
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.domains.de.kernel.DEEvent
 */
 public class TMEvent implements Comparable {

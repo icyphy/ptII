@@ -43,6 +43,7 @@ You must now invoke start() on the SwingWorker after
 creating it.
 @author Sun Microsystems
 @version: $Id$
+@since Ptolemy II 2.0
  */
 public abstract class SwingWorker {
 

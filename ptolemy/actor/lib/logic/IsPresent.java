@@ -51,6 +51,7 @@ probably most useful in synchronous domains like SR and Giotto.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class IsPresent extends Transformer {

@@ -80,6 +80,7 @@ written out as part of the generated code.
 
 @author Stephen Neuendorffer, Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class ActorTransformer extends SceneTransformer {
     /** Construct a new transformer

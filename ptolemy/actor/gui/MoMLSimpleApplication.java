@@ -61,6 +61,7 @@ java -classpath $PTII ptolemy.actor.gui.MoMLSimpleApplication ../../../ptolemy/d
 
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class MoMLSimpleApplication implements ChangeListener {
 

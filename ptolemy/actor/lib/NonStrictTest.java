@@ -67,6 +67,7 @@ input data type is undeclared, so it can resolve to anything.
 @See Test
 @author Paul Whitaker, Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class NonStrictTest extends Test {

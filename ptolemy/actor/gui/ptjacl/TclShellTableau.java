@@ -60,6 +60,7 @@ a 100% Java implementation of Tcl
 
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class TclShellTableau extends Tableau {
 

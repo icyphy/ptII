@@ -44,6 +44,7 @@ and SoundWriter by performing soft clipping on an input sound file.
  *  of a simple soft clipping operation.
    @author Brian K. Vogel
    @version $Id$
+   @since Ptolemy II 2.0
  */
 public class ReaderProcessWriter {
     public static void main(String[] args) {

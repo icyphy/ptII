@@ -61,6 +61,7 @@ the queue.  This output, also, is constrained to be at least that of
 
 @author Winthrop Williams (based closely on Queue by Steve Neuendorffer)
 @version $Id$ */
+@since Ptolemy II 2.0
 
 //FIXME: make this consistent with the queue from ptolemy classic
 public class QueueWithNextOut extends DETransformer {

@@ -73,6 +73,7 @@ Any calls to the getDirector() method are replaced with null.
 
 @author Stephen Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class FieldsForAttributesTransformer extends SceneTransformer {
     /** Construct a new transformer

@@ -55,6 +55,7 @@ If no input tokens are available at all, then no output is produced.
 
 @author Paul Whitaker
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class NonStrictThreeBitAdder extends TypedAtomicActor {

@@ -47,6 +47,7 @@ interface.
 
 @author Michael Wirthlin, Steven Neuendorffer, Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class Accum extends TypedAtomicActor {

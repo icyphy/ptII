@@ -99,6 +99,7 @@ More details of PetriNetActor can be found in PetriNetDirector.java.
 
 @author  Yuke Wang
 @version $Id$ */
+@since Ptolemy II 2.0
 public class PetriNetActor extends TypedCompositeActor  {
 
     /** Construct a PetriNetActor in the default workspace with an empty string

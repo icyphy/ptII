@@ -53,6 +53,7 @@ March 2001.
 
 @author Shuvra S. Bhattacharyya
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class GraphReader {
 

@@ -49,6 +49,7 @@ This is usually used to properly trigger other discrete event actors
 
 @author Steve Neuendorffer and Sonia Sachs
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class EventFilter extends DETransformer {

@@ -89,6 +89,7 @@ FIXME: Need to set type constraints appropriately.
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class ClassWrapper extends TypedAtomicActor {

@@ -50,6 +50,7 @@ editor an instance of InterfaceAutomatonGraphController.
 @author  Steve Neuendorffer, Yuhong Xiong
 @contributor Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
 

@@ -62,6 +62,7 @@ the output event value will be the <i>defaultEventValue</i>.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class LevelCrossingDetector extends Transformer
     implements CTStepSizeControlActor, CTEventGenerator {

@@ -42,6 +42,7 @@ default icon.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class SDFConverter extends SDFTransformer {

@@ -54,6 +54,7 @@ as the version number and other properties
 
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class JVMTableau extends Tableau {
 

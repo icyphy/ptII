@@ -64,6 +64,7 @@ Output the current wall clock time in response to a click of a button.
 
 @author  Paul Whitaker
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class ButtonTime extends WallClockTime implements Placeable {
 

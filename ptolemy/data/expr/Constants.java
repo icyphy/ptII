@@ -52,6 +52,7 @@ added as a constant that can be used in the expression language.
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.data.expr.PtParser
 */
 

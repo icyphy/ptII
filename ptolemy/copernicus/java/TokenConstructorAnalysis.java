@@ -60,6 +60,7 @@ constructed at a particular statement.
 
 @author Stephen Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class TokenConstructorAnalysis {
     public TokenConstructorAnalysis(JimpleBody body, LocalDefs localDefs) {

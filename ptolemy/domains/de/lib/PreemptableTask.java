@@ -69,6 +69,7 @@ actor is currently executing a task or is currently interrupted.
 
 @author Elaine Cheong and Yang Zhao and Xiaojun Liu
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class PreemptableTask extends DETransformer {

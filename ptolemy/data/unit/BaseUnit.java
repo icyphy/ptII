@@ -56,6 +56,7 @@ In a Vergil configuration, such a property is used as. (Give example)
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.data.unit.UnitCategory
 */
 

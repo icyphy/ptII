@@ -45,6 +45,7 @@ an instance of this token.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 @see Constants
 */
 public class UnknownToken extends Token {

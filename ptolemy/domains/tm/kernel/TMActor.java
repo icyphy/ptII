@@ -39,6 +39,7 @@ This allows actors to estimate its execution time on a per iteration basis,
 and maybe in an input-dependent manner.
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 2.0
 
 */
 public interface TMActor extends Actor {

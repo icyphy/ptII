@@ -67,6 +67,7 @@ in as an input.
 @see ArrayElement
 @author Paul Whitaker, Christopher Hylands
 @version $Id$ */
+@since Ptolemy II 2.0
 
 public class LookupTable extends Transformer {
 

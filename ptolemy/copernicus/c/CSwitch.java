@@ -51,6 +51,7 @@ import soot.jimple.internal.*;
 
    @author Shuvra S. Bhattacharyya, Ankush Varma
    @version $Id$
+   @since Ptolemy II 2.0
 */
 public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 

@@ -74,6 +74,7 @@ attribute.
 
 @author Yuhong Xiong, Xiaojun Liu and Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 @see State
 @see InterfaceAutomatonTransition
 */

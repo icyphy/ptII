@@ -66,6 +66,7 @@ for the subList() operation, which results in an UnsupportedOperationException.
 
 @author Shuvra S. Bhattacharyya
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class LabeledList implements List {

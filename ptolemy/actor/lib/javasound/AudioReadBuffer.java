@@ -106,6 +106,7 @@ applets more privileges.
 Note: Requires Java 2 v1.3.0 or later.
 @author Brian K. Vogel
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.media.javasound.LiveSound
 */
 public class AudioReadBuffer extends Transformer {

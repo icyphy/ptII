@@ -81,6 +81,7 @@ to add commands to the menu or toolbar of the frame it is controlling.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public abstract class BasicGraphController extends AbstractGraphController
         implements DebugListener {

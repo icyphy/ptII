@@ -71,6 +71,7 @@ the field of the appropriate class that points to the correct port.
 
 @author Stephen Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class FieldsForPortsTransformer extends SceneTransformer {
     /** Construct a new transformer

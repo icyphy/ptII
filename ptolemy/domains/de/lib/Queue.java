@@ -53,6 +53,7 @@ is constrained to be of a type at least that of the input.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 //FIXME: make this consistent with the queue from ptolemy classic

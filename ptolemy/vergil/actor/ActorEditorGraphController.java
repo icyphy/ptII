@@ -98,6 +98,7 @@ the delete key on the keyboard.
 @author Steve Neuendorffer
 @contributor Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
  */
 public class ActorEditorGraphController extends ActorViewerGraphController {
 

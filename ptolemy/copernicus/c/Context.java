@@ -38,6 +38,7 @@ import java.util.Iterator;
 
    @author Shuvra S. Bhattacharyya
    @version $Id$
+   @since Ptolemy II 2.0
 */
 
 
@@ -94,7 +95,7 @@ public class Context {
         return _disableImports;
     }
 
-    /** Return the C identifer that corresponds to a string constant in this
+    /** Return the C identifier that corresponds to a string constant in this
      *  context.
      *  @param constant the string constant.
      *  @return the C identifier.

@@ -54,6 +54,7 @@ converge to a fixed point.
 
 @author  Paul Whitaker, Yuhong Xiong, Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class NonStrictDisplay extends Display {
 

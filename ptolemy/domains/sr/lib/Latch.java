@@ -59,6 +59,7 @@ $PTII/ptolemy/actor/lib/test/auto/Latch.xml
 @see ptolemy.domains.de.lib.Sampler
 @author Paul Whitaker, Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class Latch extends Transformer {

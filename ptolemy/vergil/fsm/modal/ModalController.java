@@ -52,6 +52,7 @@ Requests for attributes are delegated to the container.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class ModalController extends FSMActor {
 

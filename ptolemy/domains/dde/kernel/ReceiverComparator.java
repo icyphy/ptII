@@ -60,6 +60,7 @@ ReceiverTime and priority, then the compare() method returns 0.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.domains.dde.kernel.DDEThread
 */
 public class ReceiverComparator implements Comparator {

@@ -41,6 +41,7 @@ A model for a Ptolemy II object as a node in a diva graph.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public abstract class NamedObjNodeModel implements NodeModel {
 

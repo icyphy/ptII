@@ -74,6 +74,7 @@ create a context-sensitive menu for the graph.
 @author Steve Neuendorffer
 @contributor Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class ActorViewerGraphController extends BasicGraphController {
 

@@ -81,6 +81,7 @@ called "test.txt", then <i>sourceURL</i> should be set to
 @see ptolemy.actor.lib.javasound.AudioReader
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 2.0
  */
 public abstract class URLReader extends Source {
 

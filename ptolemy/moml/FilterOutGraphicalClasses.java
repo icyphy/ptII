@@ -45,6 +45,7 @@ run tests when there is no graphical display present.
 
 @author  Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class FilterOutGraphicalClasses implements MoMLFilter {

@@ -47,6 +47,7 @@ import java.awt.Color;
 
 @author  Steve Neuendorffer, Yuhong Xiong
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
 

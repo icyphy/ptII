@@ -126,6 +126,7 @@ values, and the iteration has converged.
 
 @author Paul Whitaker
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class SRDirector extends StaticSchedulingDirector {
 

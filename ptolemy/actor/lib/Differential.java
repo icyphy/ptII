@@ -42,6 +42,7 @@ has been no previous input, the current input itself.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class Differential extends Transformer {

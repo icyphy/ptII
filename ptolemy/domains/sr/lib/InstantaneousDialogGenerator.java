@@ -51,6 +51,7 @@ ports.
 
 @author Paul Whitaker
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class InstantaneousDialogGenerator extends TypedAtomicActor {

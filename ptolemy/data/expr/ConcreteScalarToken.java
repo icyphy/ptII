@@ -45,6 +45,7 @@ This is instantiated by the Constants class with name "scalar".
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class ConcreteScalarToken extends ScalarToken {
 

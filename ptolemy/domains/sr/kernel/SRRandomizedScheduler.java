@@ -58,6 +58,7 @@ no effect on the results of an iteration.
 
 @author Paul Whitaker
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.domains.sr.kernel.SRDirector
 */
 public class SRRandomizedScheduler extends Scheduler {

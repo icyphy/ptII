@@ -56,6 +56,7 @@ the <i>value</i> parameter.
 
 @author Brian K. Vogel
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class SDFTestZeroRate1 extends Transformer {

@@ -138,6 +138,7 @@ import ptolemy.math.ComplexMatrixMath;
  *
  * @author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited.
  * @version $Id$
+ * @since Ptolemy II 2.0
  */
 public class Engine {
     /** Load the "ptmatlab" native interface. */

@@ -167,6 +167,7 @@ otherwise. <p>
 (Based on TiltSensor actor written
    by Chamberlain Fong, Xiaojun Liu, Edward Lee)
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class DatagramReceiver extends TypedAtomicActor {
 

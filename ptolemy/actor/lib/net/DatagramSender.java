@@ -78,6 +78,7 @@ until the model is run.<p>
 (Based on TiltSensor actor written by
  Chamberlain Fong, Xiaojun Liu, Edward Lee)
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 

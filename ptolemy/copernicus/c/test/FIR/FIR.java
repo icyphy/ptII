@@ -2,6 +2,7 @@
 /* An FIR filter example for Java to C translation.
    @author Shuvra S. Bhattacharyya 
    @version $Id$
+   @since Ptolemy II 2.0
 
    This example is adapted from the FIR actor implementation in the
    Ptolemy II SDF domain. It is convenient for translation to C because

@@ -81,6 +81,7 @@ a regular expression that would allow us to filter the file names.
 
 @author  Christopher Hylands
 @version $Id$ */
+@since Ptolemy II 2.0
 public class URLDirectoryReader extends URLReader {
 
     /** Construct an actor with the given container and name.

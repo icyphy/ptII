@@ -75,6 +75,7 @@ process has been received.
 
 @author Winthrop Williams
 @version $Id$
+@since Ptolemy II 2.0
 @see PNQueueReceiver
 @see ptolemy.actor.QueueReceiver
 */

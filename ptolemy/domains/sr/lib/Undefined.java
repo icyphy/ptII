@@ -47,6 +47,7 @@ SR, the output will never converge to a defined value.
 
 @author Paul Whitaker
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class Undefined extends Source {

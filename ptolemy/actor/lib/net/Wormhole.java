@@ -86,6 +86,7 @@ on the clipboard portion. <p>
 
 @author Winthrop Williams
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class Wormhole extends TypedAtomicActor implements ClipboardOwner {
 

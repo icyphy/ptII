@@ -94,6 +94,7 @@ class that creates and executes the model being generated.
 
 @author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class CommandLineTransformer extends SceneTransformer {
     /** Construct a new transformer

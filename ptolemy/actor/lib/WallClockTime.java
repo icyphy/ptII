@@ -46,6 +46,7 @@ virtual machine, but with Sun's JDK 1.3 under Windows 2000, it is
 
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class WallClockTime extends Source {
 

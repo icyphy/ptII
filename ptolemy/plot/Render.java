@@ -40,6 +40,7 @@ import java.util.ListIterator;
 /**
 @author Neil Turner
 @version $Id$
+@since Ptolemy II 2.0
  */
 public class Render extends PlotBox {
 

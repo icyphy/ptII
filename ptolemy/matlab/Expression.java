@@ -119,6 +119,7 @@ ptmatlab debug statements as well.  A value of 0 or the absence of the
 
 @author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited
 @version $Id$ */
+@since Ptolemy II 2.0
 public class Expression extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.

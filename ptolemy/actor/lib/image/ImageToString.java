@@ -49,6 +49,7 @@ and writes information about the image to the output as a StringToken.
 
 @author  Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
  */
 public class ImageToString extends Transformer {
 

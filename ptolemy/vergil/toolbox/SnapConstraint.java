@@ -40,6 +40,7 @@ This constraint ensures that a point is a multiple of a constant
 that defaults to 5.0.
 
 @version $Id$
+@since Ptolemy II 2.0
 @author Edward A. Lee
 */
 public class SnapConstraint implements PointConstraint {

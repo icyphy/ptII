@@ -43,6 +43,7 @@ Utilities for working with graphs.
 
 @author Shuvra S. Bhattacharyya, Ming-Yung Ko
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.graph.Graph
 */
 public class Graphs {

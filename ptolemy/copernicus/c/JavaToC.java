@@ -49,6 +49,7 @@ import soot.SootClass;
 
    @author Shuvra S. Bhattacharyya, Ankush Varma
    @version $Id$
+   @since Ptolemy II 2.0
 */
 
 public class JavaToC {

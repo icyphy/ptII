@@ -69,6 +69,7 @@ import ptolemy.copernicus.kernel.SootUtilities;
 
 @author Stephen Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class NamedObjEliminator extends SceneTransformer {
     /** Construct a new transformer

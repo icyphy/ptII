@@ -51,6 +51,7 @@ contains a command to rename the node.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class AttributeController extends IconController {
 

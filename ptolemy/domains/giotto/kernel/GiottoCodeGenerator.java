@@ -96,6 +96,7 @@ the Giotto code in an appropriate file, if necessary.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class GiottoCodeGenerator extends Attribute {

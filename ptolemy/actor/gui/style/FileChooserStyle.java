@@ -50,6 +50,7 @@ This style can be used with any Settable attribute.
 @see ParameterEditorStyle
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class FileChooserStyle extends ParameterEditorStyle {

@@ -47,6 +47,7 @@ This can't be in an applet because applets cannot read from the local files.
 
 @author  Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.gui.Query
 */
 public class FileChooserQuery extends JFrame

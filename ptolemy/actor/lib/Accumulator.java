@@ -53,6 +53,7 @@ equal to the input type and the initial value type.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class Accumulator extends Transformer {

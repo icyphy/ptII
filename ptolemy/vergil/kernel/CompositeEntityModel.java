@@ -64,6 +64,7 @@ create a Vertex.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.moml.Location
  */
 public class CompositeEntityModel implements CompositeModel {

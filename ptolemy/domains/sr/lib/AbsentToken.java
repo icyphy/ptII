@@ -37,6 +37,7 @@ import ptolemy.data.Token;
 A placeholder that represents the absence of a token.
 @author Paul Whitaker
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class AbsentToken extends Token {

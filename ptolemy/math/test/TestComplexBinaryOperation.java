@@ -41,6 +41,7 @@ a single variable.
 
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class TestComplexBinaryOperation implements ComplexBinaryOperation {
 

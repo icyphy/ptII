@@ -49,6 +49,7 @@ that will run the model as an applet
 
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class Main extends KernelMain {
 

@@ -80,6 +80,7 @@ true if there is only one channel), then there is no need to have the
 index or portbuffer arrays.
 @author Stephen Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class InlinePortTransformer extends SceneTransformer {
     /** Construct a new transformer

@@ -51,6 +51,7 @@ class to get parameter handling for free.
 
 @author Stephen Neuendorffer, Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class WatchDogTimer extends SceneTransformer {
     private static WatchDogTimer instance = new WatchDogTimer();

@@ -57,6 +57,7 @@ produced.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class Counter extends TypedAtomicActor {

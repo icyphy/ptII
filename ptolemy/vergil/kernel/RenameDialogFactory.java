@@ -49,6 +49,7 @@ A factory that creates a dialog to rename an object.
 
 @author Edward A. Lee and Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class RenameDialogFactory implements MenuItemFactory {
 

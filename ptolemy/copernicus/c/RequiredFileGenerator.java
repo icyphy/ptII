@@ -47,6 +47,7 @@ transitive closure.
 
 @author Ankush Varma
 @version $Id$
+@since Ptolemy II 2.0
 
 */
 

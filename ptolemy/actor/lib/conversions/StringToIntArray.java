@@ -62,6 +62,7 @@ actors can take this format as well.
 <p>
 @author Winthrop Williams
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class StringToIntArray extends TypedAtomicActor {

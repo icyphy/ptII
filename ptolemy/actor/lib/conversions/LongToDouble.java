@@ -48,6 +48,7 @@ versa, as both have 64 bit representations in Java.
 <p>
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 
 @see ptolemy.data.DoubleToken
 @see ptolemy.data.LongToken

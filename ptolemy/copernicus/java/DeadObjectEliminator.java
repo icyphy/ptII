@@ -69,6 +69,7 @@ any interesting side effects after code generation is completed.
 
 @author Stephen Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class DeadObjectEliminator extends BodyTransformer {
     /** Construct a new transformer

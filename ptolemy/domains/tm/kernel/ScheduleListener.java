@@ -37,6 +37,7 @@ Interface for listeners that receive schedule messages.
 
 @author  Johan Eker
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.kernel.util.NamedObj
 
 */

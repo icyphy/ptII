@@ -128,6 +128,7 @@ This class consists of static utility methods for use with Soot
 
 @author Stephen Neuendorffer, Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class SootUtilities {
 

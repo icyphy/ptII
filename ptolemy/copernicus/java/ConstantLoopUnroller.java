@@ -68,6 +68,7 @@ source code, which can increase the power of other compile-time optimizations.
 
 @author Stephen Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class ConstantLoopUnroller extends BodyTransformer {
     /** Construct a new transformer

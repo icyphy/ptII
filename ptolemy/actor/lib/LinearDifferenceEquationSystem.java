@@ -71,6 +71,7 @@ actor also produce the state values <i>x</i> through port <i>state</i>.
 
 @author Jie Liu and Elaine Cheong
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class LinearDifferenceEquationSystem extends Transformer {

@@ -63,6 +63,7 @@ Output a "new Token()" in response to a click of a button.
 
 @author  Winthrop Williams, closely follows EventButton.java by Paul Whitaker
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class EventButton extends Source implements Placeable {
 

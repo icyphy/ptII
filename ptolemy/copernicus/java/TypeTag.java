@@ -46,6 +46,7 @@ instance, in the case of ArrayType).
 
 @author Stephen Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class TypeTag implements Tag {
     

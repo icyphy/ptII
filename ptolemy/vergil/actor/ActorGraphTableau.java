@@ -48,6 +48,7 @@ of ActorGraphFrame, which contains an editor pane based on diva.
 @see ActorGraphFrame
 @author  Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class ActorGraphTableau extends Tableau {
 

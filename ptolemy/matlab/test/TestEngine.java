@@ -52,6 +52,7 @@ in this directory to execute, output goes to stdout.<p>
 TODO: automate regression test (python?, jtcl?)
 @author Zoltan Kemenczy, Research in Motion Limited
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class TestEngine {
 

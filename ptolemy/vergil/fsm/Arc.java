@@ -41,6 +41,7 @@ using this class, see ArcModel in FSMGraphModel.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 @see FSMGraphModel.ArcModel
 */
 public class Arc {

@@ -68,6 +68,7 @@ rename, look inside, and get documentation.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class HierarchicalStateController extends StateController {
 

@@ -67,6 +67,7 @@ should be set to "file:///tmp/test.jpg" The default value is
 @see URLToImage
 @author  Christopher Hylands
 @version $Id$ */
+@since Ptolemy II 2.0
 public class ImageReader extends Source {
     // We don't extend ptolemy.actor.lib.Reader because we are not
     // reading in data by columns.  Probably this class and

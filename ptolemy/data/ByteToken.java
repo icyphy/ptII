@@ -57,6 +57,7 @@ even when the types of both operands are byte.
 
 @author Winthrop Williams
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class ByteToken extends ScalarToken {
 

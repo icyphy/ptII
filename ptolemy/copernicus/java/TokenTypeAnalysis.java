@@ -63,6 +63,7 @@ The result is used by transformers, such as TokenInstanceofEliminator.
 
 @author Stephen Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
     public TokenTypeAnalysis(SootMethod method, CompleteUnitGraph g) {

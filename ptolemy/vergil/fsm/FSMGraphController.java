@@ -90,6 +90,7 @@ control-clicking and dragging from one state to another.
 @contributor Edward A. Lee
 
 @version $Id$
+@since Ptolemy II 2.0
  */
 public class FSMGraphController extends FSMViewerGraphController {
 

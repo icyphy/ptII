@@ -57,6 +57,7 @@ container (via the setExpression() method of this attribute).
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class ValueIcon extends XMLIcon implements Settable {
 

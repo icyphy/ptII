@@ -54,6 +54,7 @@ import ptolemy.kernel.util.Attribute;
 This actor produces a ramp at 2 Hz.
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class PeriodicTrigger extends TypedAtomicActor {
 

@@ -39,6 +39,7 @@ variables.
 
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class TestLongBinaryOperation implements LongBinaryOperation {
 

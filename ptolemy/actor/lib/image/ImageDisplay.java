@@ -72,6 +72,7 @@ these two actors can be combined?
 
 @author Christopher Hylands, Steve Neuendorffer (based on sdf.lib.vq.ImageDisplay)
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class ImageDisplay extends Sink implements Placeable {

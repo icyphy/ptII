@@ -60,6 +60,7 @@ This actor outputs a set of events at a discrete set of time points.
 This is an event generator for the CT domain.
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 // FIXME: This is nearly a reimplementation of the SequentialClock.

@@ -61,6 +61,7 @@ actor.lib.VectorDisassembler instead.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class MatrixToDouble extends SDFConverter {

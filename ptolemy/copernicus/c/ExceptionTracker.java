@@ -47,6 +47,7 @@ public class ExceptionTracker
 A class that keeps track of Exceptions and Traps
 @author Ankush Varma
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 	public void ExceptionTracker()

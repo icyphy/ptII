@@ -41,6 +41,7 @@ represent internal state.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public interface NotPersistent {

@@ -89,6 +89,7 @@ fields for any toplevel attributes of the model.
 
 @author Stephen Neuendorffer, Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class ModelTransformer extends SceneTransformer {

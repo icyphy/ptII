@@ -45,6 +45,7 @@ which of the above contexts the link is being used in.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class Link {
 

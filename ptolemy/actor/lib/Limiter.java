@@ -49,6 +49,7 @@ output <i>top</i>.  If the input is less than <i>bottom</i>, output
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class Limiter extends Transformer {

@@ -56,6 +56,7 @@ is ready or not.
 
 @author  Yuke Wang and Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class Place extends Transformer {
 

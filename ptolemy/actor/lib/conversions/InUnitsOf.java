@@ -54,6 +54,7 @@ units.
 
 @author Yuhong Xiong, Xiaojun Liu, Edward Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class InUnitsOf extends Transformer {

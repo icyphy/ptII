@@ -46,6 +46,7 @@ for classes with property where the class name has changed
 
 @author Christopher Hylands, Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class FilterBackwardCompatibility implements MoMLFilter {
 

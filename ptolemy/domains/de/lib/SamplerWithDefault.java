@@ -72,6 +72,7 @@ properly typed initial value need be specified.
 
 @author Steve Neuendorffer, Jie Liu, Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class SamplerWithDefault extends DETransformer {

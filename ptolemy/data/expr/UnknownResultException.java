@@ -42,6 +42,7 @@ because some variables are unknown.
 
 @author Paul Whitaker
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class UnknownResultException extends KernelRuntimeException {
 

@@ -42,6 +42,7 @@ import java.io.*;
 A transformer that writes Jimple text.
 @author Stephen Neuendorffer, Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class JimpleWriter extends SceneTransformer {
     private static JimpleWriter instance = new JimpleWriter();

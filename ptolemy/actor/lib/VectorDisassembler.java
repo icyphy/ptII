@@ -57,6 +57,7 @@ actor.
 
 @author Jie Liu, Elaine Cheong
 @version $Id$
+@since Ptolemy II 2.0
 @see VectorAssembler
 */
 public class VectorDisassembler extends Transformer {

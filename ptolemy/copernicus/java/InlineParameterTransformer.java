@@ -78,6 +78,7 @@ of any parameter values.
 
 @author Stephen Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class InlineParameterTransformer extends SceneTransformer {
     /** Construct a new transformer

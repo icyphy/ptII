@@ -254,6 +254,7 @@ Prentice Hall, 1981.
 
 @author  Yuke Wang and Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class PetriNetDirector extends Director {

@@ -66,6 +66,7 @@ annotations to diagrams.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class AnnotationEditorFactory extends EditorFactory {

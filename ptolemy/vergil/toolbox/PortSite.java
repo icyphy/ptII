@@ -43,6 +43,7 @@ A site that locates itself on the bounds of a figure's shape, designed
 for placing ports.
 
 @version	$Id$
+@since Ptolemy II 2.0
 @author 	Edward A. Lee
 */
 public class PortSite extends AbstractSite {

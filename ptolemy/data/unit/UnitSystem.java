@@ -57,6 +57,7 @@ In a Vergil configuration, a unit system is defined as. (Give example)
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.data.expr.Constants
 */
 

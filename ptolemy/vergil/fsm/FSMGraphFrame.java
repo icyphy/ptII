@@ -67,6 +67,7 @@ editor an instance of FSMGraphController.
 @author  Steve Neuendorffer
 @contributor Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class FSMGraphFrame extends BasicGraphFrame {
 

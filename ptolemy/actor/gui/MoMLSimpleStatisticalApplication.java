@@ -64,6 +64,7 @@ java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication -iterat
 
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
     /** Parse the xml file and run it.

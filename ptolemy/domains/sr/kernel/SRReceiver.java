@@ -82,6 +82,7 @@ for an actor to reset a receiver to have unknown status.
 
 @author Paul Whitaker
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.domains.sr.kernel.SRDirector
 */
 public class SRReceiver extends Mailbox {

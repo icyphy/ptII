@@ -57,6 +57,7 @@ parameter is left empty, then no initial token is emitted.
 
 @author Paul Whitaker and Elaine Cheong
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class NonStrictDelay extends Transformer {

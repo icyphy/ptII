@@ -90,6 +90,7 @@ A tableau that creates a new control panel for code generation.
 
 @author Shuvra Bhattacharyya, Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class GeneratorTableau extends Tableau {
 

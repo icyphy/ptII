@@ -55,6 +55,7 @@ Ptolemy plot package as a public member.
 
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class RealTimePlotter extends Plotter {
 

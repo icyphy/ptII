@@ -68,6 +68,7 @@ browser.
 @see EditorPaneFactory
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public abstract class EditorFactory extends Attribute {

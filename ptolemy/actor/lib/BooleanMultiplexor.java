@@ -55,6 +55,7 @@ The <i>trueInput</i> and <i>falseInput</i> port may receive Tokens of any type.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class BooleanMultiplexor extends TypedAtomicActor {

@@ -41,6 +41,7 @@ version is less than the value set, we throw an expression.
 <p>
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class RequireVersion extends VersionAttribute {
 

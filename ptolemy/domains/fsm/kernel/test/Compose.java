@@ -48,6 +48,7 @@ java ptolemy.domains.fsm.kernel.test.Compose <automaton1.xml> <automaton2.xml> .
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class Compose {

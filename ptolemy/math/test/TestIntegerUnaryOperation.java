@@ -42,6 +42,7 @@ a single variable.
 
 @author Jeff Tsay
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class TestIntegerUnaryOperation implements IntegerUnaryOperation {
 

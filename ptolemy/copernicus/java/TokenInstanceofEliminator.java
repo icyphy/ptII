@@ -50,6 +50,7 @@ Ptolemy token types.
 
 @author Stephen Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class TokenInstanceofEliminator extends BodyTransformer

@@ -53,6 +53,7 @@ http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html
 
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
  */
 public class JTextAreaExec extends JPanel {
 

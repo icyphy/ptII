@@ -49,6 +49,7 @@ the generator tableau to configure the generator.
 
 @author Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class GeneratorTableauAttribute extends SingletonAttribute {
 

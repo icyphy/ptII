@@ -132,6 +132,7 @@ are supported using MoML.
 @author  Steve Neuendorffer
 @contributor Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public abstract class BasicGraphFrame extends PtolemyFrame
     implements Printable, ClipboardOwner, ChangeListener {

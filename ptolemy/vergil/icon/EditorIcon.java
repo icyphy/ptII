@@ -72,6 +72,7 @@ both createBackgroundFigure() and createIcon().
 @author Steve Neuendorffer, John Reekie
 @contributor Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class EditorIcon extends Attribute {
 

@@ -56,6 +56,7 @@ necessily named "_icon").
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 */
 public class IconController extends ParameterizedNodeController {
 

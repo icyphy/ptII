@@ -129,6 +129,7 @@ parameter to true.
 
 @author  Jie Liu, Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0
 @see ptolemy.domains.de.kernel.DEEvent
 */
 public class TMDirector extends Director {

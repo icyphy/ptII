@@ -60,6 +60,7 @@ The <i>input</i> port may receive Tokens of any type.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 2.0
 */
 
 public class BooleanSwitch extends TypedAtomicActor {
