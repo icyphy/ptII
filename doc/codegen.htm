@@ -68,131 +68,6 @@ only.  We expect it to mature considerably in the near future.
 <p>The following <a name="limitations">limitations</a>
 apply to all of the code generators:
 <ul>
-<li> The code generators uses <a href="#soot">Soot</a> to analyze a
-model and generate a set of Java .class files.  
-Soot works best with JDK1.3.  Under JDK1.4, Soot will work if
-Ptolemy II is compiled with the <code>javac</code>
-<code>-target 1.1</code> flag, and if Soot has been patched and recompiled
-
-
-
-<pre>
-Date: Mon, 13 May 2002 11:49:30 -0700
-To: soot-list@sable.mcgill.ca
-From: Stephen Neuendorffer &lt;neuendor@eecs.berkeley.edu&gt;
-Subject: jdk1.4 problems.
-
-
-See attached java file...  This uses the HashMap class.  under jdk1.4, 
-there are some conflict with new java.util classes (IdentityHashMap and 
-LinkedHashMap) that use private abstract inner classes...
-
-Under soot 1.2.2:
-Steve% soot --app -W test
-TINI_DIR: not found
-CLASSPATHSEPARATOR: not found
-TINI_DIR: not found
-"d:/jdk1.4/bin/java" "-Dptolemy.ptII.dir=c:/users/neuendor/ptII" 
--classpath "c:\
-users\neuendor\ptII;c:/users/neuendor/ptII/lib/sootclasses.jar;c:/users/neuendor
-/ptII/lib/jasminclasses.jar;d:\jdk1.4\jre\lib\rt.jar" soot.Main --app -W test
-Soot started on Mon May 13 11:38:10 PDT 2002
-java.lang.RuntimeException: could not resolve concrete dispatch!
-Type: java.util.LinkedHashMap$LinkedHashIterator
-Method: &lt;java.util.Iterator: java.lang.Object next()&gt;
-         at soot.Hierarchy.resolveConcreteDispatch(Hierarchy.java:455)
-         at soot.Hierarchy.resolveAbstractDispatch(Hierarchy.java:503)
-         at 
- soot.jimple.toolkits.invoke.ClassHierarchyAnalysis.newInvokeGraph(Cla
-ssHierarchyAnalysis.java:91)
-         at 
- soot.jimple.toolkits.invoke.InvokeGraphBuilder.internalTransform(Invo
-keGraphBuilder.java:47)
-         at soot.SceneTransformer.transform(SceneTransformer.java:46)
-         at soot.SceneTransformer.transform(SceneTransformer.java:58)
-         at 
- soot.jimple.toolkits.invoke.StaticInliner.internalTransform(StaticInl
-iner.java:61)
-         at soot.SceneTransformer.transform(SceneTransformer.java:46)
-         at soot.Pack.apply(Pack.java:79)
-         at soot.Main.run(Main.java:1535)
-         at java.lang.Thread.run(Thread.java:536)
-
-
-Under soot 1.2.3 a different problem appears:
-soot --app -W test
-TINI_DIR: not found
-CLASSPATHSEPARATOR: not found
-TINI_DIR: not found
-"d:/jdk1.4/bin/java" "-Dptolemy.ptII.dir=c:/users/neuendor/ptII" 
--classpath "c:\
-users\neuendor\ptII;c:/users/neuendor/ptII/lib/sootclasses.jar;c:/users/neuendor
-/ptII/lib/jasminclasses.jar;d:\jdk1.4\jre\lib\rt.jar" soot.Main --app -W test
-Soot started on Mon May 13 11:24:12 PDT 2002
-java.util.ConcurrentModificationException
-         at soot.util.HashChain$LinkIterator.hasNext(HashChain.java:465)
-         at 
- soot.jimple.toolkits.invoke.ClassHierarchyAnalysis.newInvokeGraph(Cla
-ssHierarchyAnalysis.java:68)
-         at 
- soot.jimple.toolkits.invoke.ClassHierarchyAnalysis.newInvokeGraph(Cla
-ssHierarchyAnalysis.java:42)
-         at 
- soot.jimple.toolkits.invoke.InvokeGraphBuilder.internalTransform(Invo
-keGraphBuilder.java:47)
-         at soot.SceneTransformer.transform(SceneTransformer.java:46)
-         at soot.SceneTransformer.transform(SceneTransformer.java:58)
-         at 
- soot.jimple.toolkits.invoke.StaticInliner.internalTransform(StaticInl
-iner.java:61)
-         at soot.SceneTransformer.transform(SceneTransformer.java:46)
-         at soot.Pack.apply(Pack.java:79)
-         at soot.Main.run(Main.java:1611)
-         at java.lang.Thread.run(Thread.java:536)
-Steve%
-
-This test works under jdk1.3.1 with both versions of soot...
-
---=====================_613917086==_
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: attachment; filename="test.java"
-
-import java.util.*;
-
-public class test {
-    public static void main(String args[]) {
-        Map map = new HashMap();
-        map.put(new Object(), new Integer(1));
-        map.put(new Object(), new Integer(2));
-        map.get(new Object());
-    }
-}
-
---=====================_613917086==_--
-
-</pre>
-To which there was this response:
-<pre>
- Hi Stephen,
- I haven't try soot-1.2.2 on JDK1.4, but tried soot-1.2.3, I did
- not find the source of the problem, but here is a quick hacker to
- make it runable on JDK1.4
- In soot/jimple/toolkits/invoke/ClassHierarchyAnalysis.java
- replace line 67 :
- Iterator methodsIt = c.getMethods().iterator();
-   by:
- Iterator methodsIt = c.getMethods().snapshotIterator();
- It is not verified that this change won't affect others. (look
- at the  code, it is not supposed to be).
- Cheers,
-===========================================================
-Feng Qian                             fqian@sable.mcgill.ca
-</pre>
-<code>$PTII/lib/sootclasses.jar</code> has this change folded in to it.
-
-<p>We are working on getting Ptolemy code generation and Soot
-working together without the <code>-target 1.1</code> command
-line option to <code>javac</code>
 
 <li> The primary interface to the code generator is through
 the makefiles and the 
@@ -251,6 +126,11 @@ the <code>ptolemy.math</code> package is required at runtime.
 
 <li> Deep code generation only works on flat SDF models.  Composite SDF
 models and domains other than SDF are not supported.
+
+<li> In Ptolemy II 3.0.x, the deep code generator does not work on
+actors that have a FileAttribute parameter.  Such actors
+include ExpressionReader, FileReader, LineReader, LineWriter.
+
 
 <li> Deep code generation consumes quite a bit of memory.  We usually exec
 the deep code generator as a separate process with the 
