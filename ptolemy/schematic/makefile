@@ -76,7 +76,7 @@ EXTRA_SRCS =	$(JSRCS)
 # want make checkjunk to barf on them.
 # Don't include DIRS here, since demo is in DIRS, so 'make sources' will
 # try to run 'make demo', which is wrong.
-MISC_FILES =	util xml test lib
+MISC_FILES =	util xml lib #test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
