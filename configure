@@ -6154,7 +6154,7 @@ PTMESCAL_DIR=
 MESCAL_USER_DIR="$PTII/mescal"
 if test -d "$MESCAL_USER_DIR"; then
    PTMESCAL_DIR=mescal
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|**/devel/|mescal/apps/|mescal/totem/domains/meta/codegen/|mescal|views|memory|registerfile/|mescal/views/simulation/model/probe/|mescal/xml2hmdes/"
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|**/devel/|mescal/apps/|mescal/totem/domains/meta/codegen/|mescal/views/memory/registerfile/|mescal/views/simulation/model/probe/|mescal/xml2hmdes/"
 
 fi
 
@@ -6260,7 +6260,7 @@ echo "$as_me: WARNING: '\"$JAVAC\" quickTime3dTest.java' failed.
 fi
 
 if test -z "$PTQUICKTIME_DIR"; then
-    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/lib/quicktime"
+    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/lib/quicktime/"
 else
     if test ! -z "$QTJAVA_ZIP"; then
         ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
@@ -6477,7 +6477,7 @@ fi
 #--------------------------------------------------------------------
 
 # PTGIOTTO_DIR is set to Giotto and used in
-# $PTII/ptolemy/apps/makefile if tini was found
+# $PTII/ptolemy/apps/makefile if giotto was found
 PTGIOTTO_DIR=
 #
 if test ! -d "$PTII/ptolemy/domains/giotto"; then
