@@ -262,7 +262,7 @@ public class LevelCrossingDetector extends Transformer
         _eventNow = false;
         _lastTrigger = ((DoubleToken)initialState.getToken()).doubleValue();
         _thisTrigger = 0.0;
-        _level = 0.0;
+        _level = ((DoubleToken)level.getToken()).doubleValue();;
     }
 
     /** Return true if there is no event detected during the current step size.

@@ -90,6 +90,9 @@ public class ContinuousClock extends Clock {
         // that this actor produce outputs with state semantics.
         ((Parameter)output.getAttribute("signalType"))
             .setToken(new StringToken("CONTINUOUS"));
+        // Override of the trigger signal type to CONTINUOUS.
+        ((Parameter)trigger.getAttribute("signalType"))
+            .setToken(new StringToken("CONTINUOUS"));
     }
 
     ///////////////////////////////////////////////////////////////////
