@@ -29,7 +29,10 @@
 
 package ptolemy.actor.gui;
 
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Manager;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 import ptolemy.moml.MoMLParser;
 
 import java.io.BufferedReader;
@@ -92,12 +95,12 @@ public class HTMLAbout {
             + "URL can be used here, but File -&gt Open URL does not handle\n"
             + "<code>about:</code>, so you will need to create a webpage\n"
             + "that has this as a URL."
-//             + "<li><a href=\"about:runAllDemos\"><code>about:runAllDemos</code></a>"
-//             + "Run all the demonstrations.\n"
-//             + "<li><a href=\"about:runAllDemos#ptolemy/configs/doc/demosPtiny.htm\">"
-//             + "<code>about:runAllDemosdemos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
-//             + "\nRun all the .xml files in\n"
-//             + "<code>ptolemy/configs/doc/demosPtiny.htm</code>.\n"
+            + "<li><a href=\"about:runAllDemos\"><code>about:runAllDemos</code></a>"
+            + "Run all the demonstrations.\n"
+            + "<li><a href=\"about:runAllDemos#ptolemy/configs/doc/demosPtiny.htm\">"
+            + "<code>about:runAllDemosdemos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
+            + "\nRun all the .xml files in\n"
+            + "<code>ptolemy/configs/doc/demosPtiny.htm</code>.\n"
             + "</ul>\n</body>\n</html>\n";
     }
 
@@ -159,11 +162,11 @@ public class HTMLAbout {
             // "ptolemy/configs/doc/demos.htm"
             URI aboutURI = new URI(event.getDescription());
             newURL = demos(aboutURI.getFragment(), configuration);
-//         } else if (event.getDescription()
-//                 .startsWith("about:runAllDemos")) {
-//             URI aboutURI = new URI(event.getDescription());
-//             newURL = runAllDemos(aboutURI.getFragment(),
-//                     configuration);
+        } else if (event.getDescription()
+                .startsWith("about:runAllDemos")) {
+            URI aboutURI = new URI(event.getDescription());
+            newURL = runAllDemos(aboutURI.getFragment(),
+                    configuration);
         } else {
             // Display a message about the about: facility 
             newURL = _temporaryHTMLFile("about", about());
@@ -178,20 +181,34 @@ public class HTMLAbout {
      *  @param configuration  The configuration to run the files in.
      *  @return the URL of the HTML file that was searched. 
      */   
-//     public static URL runAllDemos(String demosFileName,
-//             Configuration configuration)
-//             throws Exception {
+    public static URL runAllDemos(String demosFileName,
+            Configuration configuration)
+            throws Exception {
 
-//         URL demosURL = _getDemoURL(demosFileName);
-//         List modelList = _getModelURLs(demosURL);
-//         Iterator models = modelList.iterator();
-//         while (models.hasNext()) {
-//             URL model = (URL)models.next();
-//             configuration.openModel(demosURL, model,
-//                     model.toExternalForm());
-//         } 
-//         return demosURL;
-//     }
+        URL demosURL = _getDemoURL(demosFileName);
+        List modelList = _getModelURLs(demosURL);
+        Iterator models = modelList.iterator();
+        while (models.hasNext()) {
+            String model = (String)models.next();
+            URL modelURL = new URL(demosURL, model);
+            System.out.println("Model: " + modelURL);
+            Tableau tableau = configuration.openModel(demosURL, modelURL,
+                    modelURL.toExternalForm());
+            if ( ((Effigy)tableau.getContainer()) instanceof PtolemyEffigy) {
+                PtolemyEffigy effigy = (PtolemyEffigy)(tableau.getContainer());
+                CompositeActor actor = (CompositeActor)effigy.getModel();
+                // Create a manager if necessary.
+                Manager manager = actor.getManager();
+                if (manager == null) {
+                    manager = new Manager(actor.workspace(), "manager");
+                    actor.setManager(manager);
+                }
+                //manager.addExecutionListener(this);
+                manager.execute();
+            }
+        } 
+        return demosURL;
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
