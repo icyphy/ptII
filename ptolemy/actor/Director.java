@@ -1343,6 +1343,9 @@ public class Director extends Attribute implements Executable {
             // Since by default directors have no time, this is
             // invisible.
             timeResolution.setVisibility(Settable.NONE);
+            
+            // Make sure getCurrentTime() never returns null.
+            _currentTime = new Time(this, Double.NEGATIVE_INFINITY);
         } catch (Exception e) {
             // This is the only place to create
             // the timeResolution parameter, no exception should ever
