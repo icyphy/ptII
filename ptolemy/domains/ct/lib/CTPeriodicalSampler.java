@@ -47,7 +47,7 @@ which has the value of the input signal.
 public class CTPeriodicalSampler extends CTActor
         implements CTEventGenerateActor {
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     /** Construct a CTActor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception

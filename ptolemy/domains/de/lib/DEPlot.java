@@ -45,7 +45,7 @@ A plotter for discrete-event signals.
 */
 public class DEPlot extends DEActor {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     /** Construct a plot actor with a new plot window. The default Y-range is
      *  [-1, 1]. The default X-range is the start time to the stop time.

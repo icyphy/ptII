@@ -52,7 +52,7 @@ receivers of the port its output are connected.
 */
 public class CTZeroOrderHold extends CTActor{
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     /** Construct a CTActor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
