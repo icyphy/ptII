@@ -209,11 +209,11 @@ public class ArrayType extends StructuredType {
 	    if (argCast.getRowCount() == 1) {
 		// argument is 1-D
 		argType = new ArrayType(
-				argCast.getElementAsToken(0,0).getType());
+				argCast.getElementAsToken(0, 0).getType());
 	    } else {
 		// argument is 2-D
 		argType = new ArrayType(new ArrayType(
-				argCast.getElementAsToken(0,0).getType()));
+				argCast.getElementAsToken(0, 0).getType()));
 	    }
 	}
 
@@ -344,7 +344,7 @@ public class ArrayType extends StructuredType {
 	getElementTypeTerm().unfixValue();
     }
 
-    /** Update this Type to the specified ArrayType. 
+    /** Update this Type to the specified ArrayType.
      *  The specified type must be a substitution instance of this type.
      *  This method will only update the component whose declared type is
      *  BaseType.NAT, and leave the constant part of this type intact.
