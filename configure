@@ -3483,7 +3483,7 @@ echo "$as_me: WARNING: '\"$JAVAC\" JMFTest.java' failed.
 fi
 
 if test -z "$PTJMF_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/jmf/
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/jmf/"
 fi
 
 
