@@ -355,6 +355,13 @@ public class NonStrictTest extends Sink {
             correctValues.setToken(new ArrayToken(newTokens));
             correctValues.setPersistent(true);
         }
+        if (training && 
+                (_trainingTokens == null || (_trainingTokens.size() == 0))) {
+            System.err.println("Warning: '" + getFullName()
+                    + "' The test produced 0 tokens.");
+            correctValues.setExpression("");
+            correctValues.setPersistent(true);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
