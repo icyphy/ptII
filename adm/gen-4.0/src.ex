@@ -54,6 +54,7 @@ ptolemy/actor/corba
 ptolemy/actor/lib/Broadcast.java
 ptolemy/actor/lib/gui/KeystrokeSensor.java
 ptolemy/actor/lib/hoc/ModelUtilities.java
+ptolemy/actor/lib/hoc/test/auto/ApplyFunction.xml
 ptolemy/actor/lib/javasound/test/pitchshift
 ptolemy/actor/lib/javasound/test/outfile.wav
 ptolemy/actor/lib/jspaces
