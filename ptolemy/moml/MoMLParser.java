@@ -1354,11 +1354,33 @@ public class MoMLParser extends HandlerBase {
         } catch (InvocationTargetException ex) {
             // A constructor or method invoked via reflection has
             // triggered an exception.
+            if (_handler != null) {
+                int reply = _handler.handleError(
+                        _getCurrentElement(elementName), _current,
+                        ex.getTargetException());
+                if (reply == ErrorHandler.CONTINUE) {
+                    _attributes.clear();
+                    _attributeNameList.clear(); 
+                    _skipElement = 1;
+                    _skipElementName = elementName;
+                    return;
+                } else if (reply == ErrorHandler.CANCEL) {
+                    // NOTE: Since we have to throw an XmlException for
+                    // the exception to be properly handled, we communicate
+                    // that it is a user cancellation with the special
+                    // string pattern "*** Canceled." in the message.
+                    throw new XmlException(
+                        "*** Canceled.",
+                        _currentExternalEntity(),
+                        _parser.getLineNumber(),
+                        _parser.getColumnNumber());
+                }
+            }
+            // No handler.
             throw new XmlException(
                     "XML element \"" + elementName
                     + "\" triggers exception:\n  "
-                    + KernelException.stackTraceToString(
-                            ex.getTargetException()),
+                    + ex.getTargetException(),
                     _currentExternalEntity(),
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
@@ -1390,7 +1412,7 @@ public class MoMLParser extends HandlerBase {
                 throw new XmlException(
                         "XML element \"" + elementName
                         + "\" triggers exception:\n  "
-                        + KernelException.stackTraceToString(ex),
+                        + ex,
                         _currentExternalEntity(),
                         _parser.getLineNumber(),
                         _parser.getColumnNumber());
