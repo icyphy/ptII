@@ -68,6 +68,7 @@ JSRCS = \
 	ObservableParameter.java \
 	Param.java \
 	Parameter.java \
+	RendezvousPort.java \
 
 EXTRA_SRCS =	$(JSRCS)
 
