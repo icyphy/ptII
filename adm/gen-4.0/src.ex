@@ -63,6 +63,8 @@ ptolemy/actor/lib/net/test_auto
 ptolemy/actor/lib/python/demo/HelloWorld
 ptolemy/actor/lib/python/demo/NotifyFailedTest
 ptolemy/actor/lib/test/auto/FileWriter1Output.txt
+ptolemy/actor/lib/test/Const.txt
+ptolemy/actor/lib/test/ReadFile1Output.txt
 ptolemy/actor/xslt
 ptolemy/apps
 ptolemy/automata
