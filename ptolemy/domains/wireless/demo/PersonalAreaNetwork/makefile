@@ -49,6 +49,8 @@ JSRCS = \
 	BluetoothNode.java
 
 OTHER_FILES_TO_BE_JARED = \
+	Bluetooth2devices.xml \
+	BluetoothNodes.xml \
 	PersonalAreaNetwork.xml \
 	PersonalAreaNetwork2.xml
 
