@@ -148,9 +148,8 @@ public class MatrixToSequence extends SDFTransformer {
                 throw new IllegalActionException(this,
                         "Invalid number of columns: " + columnsValue);
             }
-        } else {
-            super.attributeChanged(attribute);
         }
+        super.attributeChanged(attribute);
     }
 
     /** Clone the actor into the specified workspace. This calls the

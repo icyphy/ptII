@@ -120,25 +120,20 @@ public class SequenceToMatrix extends SDFTransformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == rows || attribute == columns) {
+        if (attribute == rows) {
             int rowsValue = ((IntToken)rows.getToken()).intValue();
-            int columnsValue = ((IntToken)columns.getToken()).intValue();
             if (rowsValue <= 0) {
                 throw new IllegalActionException(this,
                         "Invalid number of rows: " + rowsValue);
             }
+        } else if(attribute == columns) {
+            int columnsValue = ((IntToken)columns.getToken()).intValue();  
             if (columnsValue <= 0) {
                 throw new IllegalActionException(this,
                         "Invalid number of columns: " + columnsValue);
             }
-
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateSchedule();
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
+        } 
+        super.attributeChanged(attribute);
     }
 
     /** Clone the actor into the specified workspace. This calls the
