@@ -24,13 +24,17 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (yuhong@eecs.berkeley.edu)
-@AcceptedRating Green (kienhuis@eecs.berkeley.edu)
+@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
+@AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
 
+review methods attemptTopologicalSort(), sccDecomposition(), subgraph(), and
+               successorSet()
 */
 
 package ptolemy.graph;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 
 import java.util.*;
@@ -44,7 +48,7 @@ A directed graph and some graph algorithms.
 NOTE: This class is a starting point for implementing graph algorithms,
 more methods will be added.
 
-@author Yuhong Xiong, Jie Liu
+@author Yuhong Xiong, Jie Liu, Paul Whitaker
 @version $Id$
 */
 
@@ -114,6 +118,49 @@ public class DirectedGraph extends Graph {
 	_transitiveClosure = null;
     }
 
+    /** Sort the given graph objects in their topological order as long as
+     *  no two of the given objects are mutually reachable by each other.
+     *  This method use the transitive closure matrix. Since generally
+     *  the graph is checked for cyclicity before this method is
+     *  called, the use of the transitive closure matrix should
+     *  not add any overhead. A bubble sort is used for the internal
+     *  implementation, so the complexity is n^2.
+     *  @return The objects in their sorted order.
+     *  @exception IllegalActionException If any two nodes are strongly
+     *   connected.
+     */
+    public Object[] attemptTopologicalSort(Object[] objs)
+            throws IllegalActionException {
+        _computeTransitiveClosure();
+
+        int N = objs.length;
+        int[] ids = new int[N];
+        for (int i = 0; i < N; i++) {
+            ids[i] = _getNodeId(objs[i]);
+        }
+        for (int i = 0; i < N-1; i++) {
+            for (int j = i+1; j < N; j++) {
+                if (_transitiveClosure[ids[j]][ids[i]]) {
+                    if (_transitiveClosure[ids[i]][ids[j]]) {
+                        throw new IllegalActionException("Attempted to"
+                                + " topologically sort cyclic nodes.");
+                    } else {
+                        //swap
+                        int tmp = ids[i];
+                        ids[i] = ids[j];
+                        ids[j] = tmp;
+                    }
+                }
+
+            }
+        }
+        Object[] result = new Object[N];
+        for (int i = 0; i < N; i++) {
+            result[i] = _getNodeObject(ids[i]);
+        }
+        return result;
+    }
+    
     /** Find all the nodes that can be reached backward from the
      *  specified node.
      *  The reachable nodes do not include the argument unless
@@ -289,6 +336,146 @@ public class DirectedGraph extends Graph {
         return nodes.toArray();
     }
 
+    /** Compute the SCC decomposition of a graph.
+     *  @return An array of instances of DirectedGraph which represent
+     *   the SCCs of the graph in topological order.
+     */
+    public DirectedGraph[] sccDecomposition() {
+	_computeTransitiveClosure();
+
+        int N = getNodeCount();
+        if (_transitiveClosure.length != N)
+            throw new InternalErrorException("Graph inconsistency");
+
+        // initially, no nodes have been added to an SCC
+        boolean addedToAnSCC[] = new boolean[N];
+        for (int i = 0; i < N; i++) {
+            addedToAnSCC[i] = false;
+        }
+
+        ArrayList sccNodeLists = new ArrayList();
+        ArrayList sccRepresentatives = new ArrayList();
+
+        for (int i = 0; i < N; i++) {
+            // given a node, if that node is not part of an SCC, assign
+            // it to a new SCC
+            if (!addedToAnSCC[i]) {
+                ArrayList nodeList = new ArrayList();
+                sccNodeLists.add(nodeList);
+                Object node = _getNodeObject(i);
+                nodeList.add(node);
+                sccRepresentatives.add(node);
+                addedToAnSCC[i] = true;
+                for (int j = i + 1; j < N; j++) {
+                    // given two nodes, the two are in the same SCC if they
+                    // are mutually reachable
+                    if (!addedToAnSCC[j]) {
+                        if (_transitiveClosure[i][j] &&
+                                _transitiveClosure[j][i]) {
+                            nodeList.add(_getNodeObject(j));
+                            addedToAnSCC[j] = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        int numberOfSCCs = sccNodeLists.size();
+        Object sortedSCCRepresentatives[];
+        
+        try {
+            sortedSCCRepresentatives =
+                attemptTopologicalSort(sccRepresentatives.toArray());
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException("Objects in different SCCs were"
+                    + " found to be strongly connected.");
+        }
+ 
+        ArrayList sortedSCCNodeLists = new ArrayList();
+
+        for (int i = 0; i < numberOfSCCs; i++) {
+            Object sccRepresentative = sortedSCCRepresentatives[i];
+            for (int j = 0; j < numberOfSCCs; j++) {
+                ArrayList nodeList = (ArrayList) (sccNodeLists.get(j));
+                if (nodeList.get(0) == sccRepresentative)
+                    sortedSCCNodeLists.add(nodeList);
+            }
+        }
+
+        ArrayList sccs = new ArrayList(numberOfSCCs);
+	for (int i = 0; i < numberOfSCCs; i++) {
+            ArrayList nodeList = (ArrayList) (sortedSCCNodeLists.get(i));
+            sccs.add(subgraph(nodeList.toArray()));
+        }
+
+        return ((DirectedGraph[]) (sccs.toArray()));
+    }
+
+    /** Compute the subgraph of the graph containing only the specified nodes.
+     *  @return An array of instances of DirectedGraph which represent
+     *   the subgraph.
+     */
+    public DirectedGraph subgraph(Object[] objs) {
+
+	int N = objs.length;
+        int ids[] = new int[N];
+        DirectedGraph subgraph = new DirectedGraph(N);
+        for (int i = 0; i < N; i++) {
+            ids[i] = _getNodeId(objs[i]);
+            subgraph.add(objs[i]);
+        }
+
+        // now that all the nodes have been added, we check to see if any
+        // object in the subgraph has an edge that points to another object
+        // in the subgraph, and if so, we add it
+
+        // for all objects in the subgraph
+        for (int i = 0; i < N; i++) {
+            ArrayList edge = (ArrayList)(_graph.get(ids[i]));
+            // for all edges from the object
+            for (int j = 0; j < edge.size(); j++) {
+                int k = ((Integer)edge.get(j)).intValue();
+                // check all objects in the subgraph
+                for (int m = 0; m < N; m++) {
+                    if (k == ids[m]) subgraph.addEdge(objs[i], objs[m]);
+                }
+            }
+        }
+
+        return subgraph;
+    }
+
+    /** Compute the successor set of a given node.
+     *  @return An array of the nodes of the successor set.
+     */
+    public Object[] successorSet(Object obj) {
+
+        Object objs[] = new Object[1];
+        objs[0] = obj;
+        return successorSet(objs);
+    }
+
+    /** Compute the successor set of a given set of nodes.
+     *  @return An array of the nodes of the successor set.
+     */
+    public Object[] successorSet(Object[] objs) {
+
+	int N = objs.length;
+        HashSet successors = new HashSet();
+
+        // for all objects in the set
+        for (int i = 0; i < N; i++) {
+            ArrayList edge = (ArrayList)(_graph.get(_getNodeId(objs[i])));
+            // for all edges from the object
+            for (int j = 0; j < edge.size(); j++) {
+                int k = ((Integer)edge.get(j)).intValue();
+                successors.add(_getNodeObject(k));
+            }
+        }
+
+        return successors.toArray();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -367,3 +554,11 @@ public class DirectedGraph extends Graph {
 
     private boolean _isAcyclic;
 }
+
+
+
+
+
+
+
+
