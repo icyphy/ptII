@@ -64,15 +64,67 @@ test NamedList-2.1 {Construct a list, call get} {
     set result1 [expr {$n1 == [$dir get "n1"]}]
     $dir prepend $n2
     $dir prepend $n3
-    set result2 [expr {$n1 == [$dir get n1]}]
-    set result3 [expr {$n3 == [$dir get n3]}]
-    list $result1 $result2 $result3
-} {1 1 1}
+    set result2 [[$dir first] getName]
+    set result3 [expr {$n1 == [$dir get n1]}]
+    set result4 [expr {$n3 == [$dir get n3]}]
+    list $result1 $result2 $result3 $result4
+} {1 n3 1 1}
 
 ######################################################################
 ####
 #
-test NamedList-4.1 {Test insertAt and last} {
+test NamedList-3.1 {Test append by using a class that can take null names} {
+    set dir [java::new ptolemy.kernel.util.NamedList]
+    set n1 [java::new ptolemy.kernel.util.test.TestNullNamedObj "n1"]
+    set n2 [java::new ptolemy.kernel.util.test.TestNullNamedObj]
+    set n3 [java::new ptolemy.kernel.util.test.TestNullNamedObj [java::null]]
+    $dir append $n1
+    $dir append $n2
+    catch {$dir append $n3} errMsg
+    list [_testEnums elements $dir] \
+	    $errMsg
+} {{{n1 {}}} {ptolemy.kernel.util.IllegalActionException: Attempt to add an object with a null name to a NamedList.}}
+
+######################################################################
+####
+#
+test NamedList-3.2 {Test clone} {
+    set dir [java::new ptolemy.kernel.util.NamedList]
+    set n1 [java::new ptolemy.kernel.util.NamedObj "n1"]
+    set n2 [java::new ptolemy.kernel.util.NamedObj "n2"]
+    set n3 [java::new ptolemy.kernel.util.NamedObj]
+    $dir append $n1
+    $dir append $n2
+    $dir append $n3
+    set clonedDir [java::cast ptolemy.kernel.util.NamedList [$dir clone]]
+    _testEnums elements $clonedDir
+} {{n1 n2 {}}}
+
+######################################################################
+####
+#
+test NamedList-3.3 {Test includes} {
+    set dir [java::new ptolemy.kernel.util.NamedList]
+    set n1 [java::new ptolemy.kernel.util.NamedObj "n1"]
+    set n2 [java::new ptolemy.kernel.util.NamedObj "n2"]
+    set n3 [java::new ptolemy.kernel.util.NamedObj]
+    set n4 [java::new ptolemy.kernel.util.NamedObj "n4"]
+    $dir append $n1
+    $dir append $n2
+    $dir {remove ptolemy.kernel.util.Nameable} $n2
+    $dir append $n3
+    list [$dir includes $n1] \
+	    [$dir includes $n2] \
+	    [$dir includes $n3] \
+	    [$dir includes $n4]
+
+} {1 0 1 0}
+
+
+######################################################################
+####
+#
+test NamedList-4.1 {Test insertAt, first last} {
     set dir [java::new ptolemy.kernel.util.NamedList]
     set n1 [java::new ptolemy.kernel.util.NamedObj "n1"]
     set n2 [java::new ptolemy.kernel.util.NamedObj "n2"]
@@ -80,11 +132,26 @@ test NamedList-4.1 {Test insertAt and last} {
     $dir prepend $n1
     $dir prepend $n2
     $dir prepend $n3
-    list [[$dir get n1] getName]\
-	    [[$dir get n2] getName] \
-	    [[$dir get n3] getName] \
+    list [_testEnums elements $dir] \
+            [[$dir first] getName] \
             [[$dir last] getName]
-} [list n1 n2 n3 n1]
+} {{{n3 n2 n1}} n3 n1}
+
+######################################################################
+####
+#
+test NamedList-4.2 {Test insertBefore} {
+    set dir [java::new ptolemy.kernel.util.NamedList]
+    set n1 [java::new ptolemy.kernel.util.NamedObj "n1"]
+    set n2 [java::new ptolemy.kernel.util.NamedObj ""]
+    set n3 [java::new ptolemy.kernel.util.NamedObj "n3"]
+    $dir insertBefore "foo" $n1
+    $dir insertBefore "n1" $n2
+    $dir insertBefore "" $n3
+    catch {$dir insertBefore "" $n3} errMsg
+    list [_testEnums elements $dir] \
+	    $errMsg
+} {{{n3 {} n1}} {ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "n3" into a container that already contains an object with that name.}}
 
 ######################################################################
 ####
@@ -137,7 +204,7 @@ test NamedList-5.4 {prepend two nodes with null names} {
 ######################################################################
 ####
 #
-test NamedList-6.1 {Test insertAfter} {
+test NamedList-6.1 {Test insertAfter and removeAll } {
     set dir [java::new ptolemy.kernel.util.NamedList]
     set n1 [java::new ptolemy.kernel.util.NamedObj "n1"]
     set n2 [java::new ptolemy.kernel.util.NamedObj "n2"]
@@ -145,8 +212,13 @@ test NamedList-6.1 {Test insertAfter} {
     $dir prepend $n1
     $dir insertAfter [$n1 getName] $n2
     $dir insertAfter [$n2 getName] $n3
-    _testEnums elements $dir
-} {{n1 n2 n3}}
+    set result1 [_testEnums elements $dir]
+    set size1 [$dir size]
+    $dir removeAll
+    set result2 [_testEnums elements $dir]
+    set size2 [$dir size]
+    list $result1 $size1 $result2 $size2
+} {{{n1 n2 n3}} 3 {{}} 0}
 
 ######################################################################
 ####
@@ -239,3 +311,5 @@ test NamedList-9.1 {Test copy constructor} {
     set result3 [_testEnums elements $dir]
     list $result1 $result2 $result3
 } {{{n3 n2 n1}} {{n3 n2 n1}} {{n3 n1}}}
+
+

@@ -45,6 +45,7 @@ TCL_SRCS = \
 
 JSRCS = \
 	PtestWorkspace.java \
+	TestNullNamedObj.java \
 	TestWorkspace.java
 
 # Non-graphical Java tests written in Tcl
