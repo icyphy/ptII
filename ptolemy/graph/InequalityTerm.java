@@ -50,6 +50,14 @@ of this interface.
 
 public interface InequalityTerm {
 
+    /** If this term is a variable, disallow its value to be changed by
+     *  setValue(). After this method is called, isSettable() will return
+     *  false, setValue() and initialize() will generate an exception, and
+     *  getVariables() will return an empty array, until unfixValue()
+     *  is called. This method has no effect on constant terms.
+     */
+    public void fixValue();
+
     /** Return the Object associated with this term. If this term is
      *  not associated with a particular Object, or it is not necessary
      *  to obtain the reference of the associated Object, this method
@@ -57,7 +65,6 @@ public interface InequalityTerm {
      *  @return an Object.
      */
     public Object getAssociatedObject();
-
 
     /** Return the value of this term.  If this term is a constant,
      *  return that constant; if this term is a variable, return the
@@ -114,4 +121,11 @@ public interface InequalityTerm {
      */
     public void setValue(Object e)
             throws IllegalActionException;
+
+    /** If this term is a variable, allow its value to be changed by
+     *  setValue(). This method reverses the effect of fixValue(). If this
+     *  term is a constant, this method does nothing.
+     */
+    public void unfixValue();
 }
+

@@ -54,7 +54,8 @@ JSIMPLE_TESTS = \
 	DirectedGraph.tcl \
 	DirectedAcyclicGraph.tcl \
 	Graph.tcl \
-	InequalitySolver.tcl
+	InequalitySolver.tcl \
+	InequalityTerm.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

@@ -291,13 +291,22 @@ public class TypedIOPort extends IOPort implements Typeable {
         super.setContainer(container);
     }
 
-    /** Constrain that the type of this port is equal to or greater
+    /** Constrain that the type of this port to be equal to or greater
      *  than the type of the specified Typeable object.
      *  @param less A Typeable object.
      */
     public void setTypeAtLeast(Typeable lesser) {
 	Inequality ineq = new Inequality(lesser.getTypeTerm(),
                 this.getTypeTerm());
+	_constraints.insertLast(ineq);
+    }
+
+    /** Constrain that the type of this port to be equal to or greater
+     *  than the type represented by the specified InequalityTerm.
+     *  @param typeTerm An InequalityTerm.
+     */
+    public void setTypeAtLeast(InequalityTerm typeTerm) {
+	Inequality ineq = new Inequality(typeTerm, this.getTypeTerm());
 	_constraints.insertLast(ineq);
     }
 
@@ -549,6 +558,16 @@ public class TypedIOPort extends IOPort implements Typeable {
 	///////////////////////////////////////////////////////////////
 	////                       public inner methods            ////
 
+	/** Disallow the value of this term to be changed.
+	 */
+	public void fixValue() {
+	    _valueFixed = true;
+	    Object value = getValue();
+	    if (value instanceof StructuredType) {
+		((StructuredType)value).fixType();
+	    }
+	}
+
 	/** Return this TypedIOPort.
 	 *  @return A TypedIOPort.
 	 */
@@ -569,19 +588,21 @@ public class TypedIOPort extends IOPort implements Typeable {
 	 *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-	    if ( !_declaredType.isConstant()) {
-	    	InequalityTerm[] variable = new InequalityTerm[1];
-	    	variable[0] = this;
-	    	return variable;
+	    if (isSettable()) {
+	    	if ( !_declaredType.isConstant()) {
+	    	    InequalityTerm[] variable = new InequalityTerm[1];
+	    	    variable[0] = this;
+	    	    return variable;
+	        }
+	        return (new InequalityTerm[0]);
 	    }
 	    return (new InequalityTerm[0]);
         }
 
-        /** Reset the resolved type to the declared type.
-	 *  @param e Must be BaseType.NAT.
-         *  @exception IllegalActionException If the type is set to a
-	 *   constant through setTypeEquals(), or the argument is not
-	 *   BaseType.NAT.
+        /** Reset the variable part of this type to the specified type.
+	 *  @param e A Type.
+         *  @exception IllegalActionException If the type is not settable,
+	 *   or the argument is not a Type.
          */
         public void initialize(Object e)
 		throws IllegalActionException {
@@ -590,9 +611,9 @@ public class TypedIOPort extends IOPort implements Typeable {
 		    "Cannot initialize a constant type.");
 	    }
 
-	    if (e != BaseType.NAT) {
+	    if ( !(e instanceof Type)) {
 		throw new IllegalActionException("TypeTerm.initialize: " +
-		    "The argument is not BaseType.NAT.");
+		    "The argument is not a Type.");
 	    }
 
 	    Type oldType = _resolvedType;
@@ -615,7 +636,10 @@ public class TypedIOPort extends IOPort implements Typeable {
 	 *   false otherwise.
          */
         public boolean isSettable() {
-	    return ( !_declaredType.isConstant());
+	    if (_declaredType.isConstant() || _valueFixed) {
+		return false;
+	    }
+	    return true;
         }
 
         /** Check whether the current type of this port is acceptable.
@@ -641,6 +665,12 @@ public class TypedIOPort extends IOPort implements Typeable {
 	 *   substitution instance of the type of this port.
          */
         public void setValue(Object e) throws IllegalActionException {
+	    if ( !isSettable()) {
+		throw new IllegalActionException(
+		    "TypedIOPort$TypeTerm.setValue: The type is not " +
+		    "settable.");
+	    }
+
 	    if ( !_declaredType.isSubstitutionInstance((Type)e)) {
 		// FIXME: should throw TypeConflictException.
 	        throw new IllegalActionException("TypeTerm.setValue: The " +
@@ -669,10 +699,22 @@ public class TypedIOPort extends IOPort implements Typeable {
             return "(" + _port.toString() + ", " + getType() + ")";
         }
 
+	/** Allow the value of this term to be changed, if this term is a
+	 *  variable.
+	 */
+	public void unfixValue() {
+	    _valueFixed = false;
+	    Object value = getValue();
+	    if (value instanceof StructuredType) {
+		((StructuredType)value).unfixType();
+	    }
+	}
+
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
 
         private TypedIOPort _port = null;
+	private boolean _valueFixed = false;
     }
 }
 

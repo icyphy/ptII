@@ -59,6 +59,11 @@ public class TypeConstant implements InequalityTerm {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Do nothing, since this term is a constant.
+     */
+    public void fixValue() {
+    }
+
     /** Return null.
      *  @return null.
      */
@@ -115,6 +120,18 @@ public class TypeConstant implements InequalityTerm {
 	    throws IllegalActionException {
 	throw new IllegalActionException("TypeConstant.setValue: Cannot set "
                 + "the value of a type constant.");
+    }
+
+    /** Return a string representation of this term.
+     *  @return A String.
+     */
+    public String toString() {
+	return "(TypeConstant, " + getValue() + ")";
+    }
+
+    /** Do nothing, since this term is a constant.
+     */
+    public void unfixValue() {
     }
 
     ///////////////////////////////////////////////////////////////////

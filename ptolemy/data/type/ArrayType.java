@@ -65,6 +65,25 @@ public class ArrayType extends StructuredType {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return a deep copy of this ArrayType if it is a variable, or
+     *  itself if it is a constant. The returned copy does
+     *  not have the user set.
+     *  @return An ArrayType.
+     */
+    public Object clone() {
+	ArrayType newObj = new ArrayType(_declaredElementType);
+	if ( !isConstant()) {
+	    try {
+	        newObj.updateType(this);
+	    } catch (IllegalActionException ex) {
+		throw new InternalErrorException("ArrayType.clone: Cannot " +
+			"update new instance. " + ex.getMessage());
+	    }
+	}
+
+	return newObj;
+    }
+
     /** Convert the specified token into an ArrayToken having the
      *  type represented by this object.
      *  @param t A token.
@@ -88,6 +107,12 @@ public class ArrayType extends StructuredType {
 	}
 
 	return new ArrayToken(result);
+    }
+
+    /** Disallow type resolution to change this type.
+     */
+    public void fixType() {
+	getElementTypeTerm().fixValue();
     }
 
     /** Return the type of the array elements. This methods always
@@ -190,26 +215,7 @@ public class ArrayType extends StructuredType {
      *  @return A String.
      */
     public String toString() {
-	return "(" + _elementType.toString() + ") array";
-    }
-
-    /** Return a deep copy of this ArrayType if it is a variable, or
-     *  itself if it is a constant. The returned copy does
-     *  not have the user set.
-     *  @return An ArrayType.
-     */
-    public Object clone() {
-	ArrayType newObj = new ArrayType(_declaredElementType);
-	if ( !isConstant()) {
-	    try {
-	        newObj.updateType(this);
-	    } catch (IllegalActionException ex) {
-		throw new InternalErrorException("ArrayType.clone: Cannot " +
-			"update new instance. " + ex.getMessage());
-	    }
-	}
-
-	return newObj;
+	return "(" + _elementType.toString() + ")array";
     }
 
     /** Reset the element type to the value it was first constructed.
@@ -229,6 +235,12 @@ public class ArrayType extends StructuredType {
 	    // element type is a structured type.
 	    ((StructuredType)_elementType).reset();
 	}
+    }
+
+    /** Allow type resolution to change this type, if this type is a variable.
+     */
+    public void unfixType() {
+	getElementTypeTerm().unfixValue();
     }
 
     /** Update this Type to the specified ArrayType. 
@@ -410,6 +422,16 @@ public class ArrayType extends StructuredType {
         ///////////////////////////////////////////////////////////////
         ////                   public inner methods                ////
 
+	/** Disallow the value of this term to be changed.
+	 */
+	public void fixValue() {
+	    _valueFixed = true;
+	    Object value = getValue();
+	    if (value instanceof StructuredType) {
+		((StructuredType)value).fixType();
+	    }
+	}
+
         /** Return this ArrayType.
          *  @return an ArrayType.
          */
@@ -430,7 +452,7 @@ public class ArrayType extends StructuredType {
 	 *  @return An array of InequalityTerm.
 	 */
     	public InequalityTerm[] getVariables() {
-	    if ( !isConstant()) {
+	    if (isSettable()) {
 		InequalityTerm[] variable = new InequalityTerm[1];
 		variable[0] = this;
 		return variable;
@@ -438,16 +460,22 @@ public class ArrayType extends StructuredType {
 	    return (new InequalityTerm[0]);
 	}
 
-        /** Reset the element type to the value it was first constructed.
-	 *  @parameter e Must be BaseType.NAT.
-         *  @exception IllegalActionException If this type is a constant,
-	 *   or the argument is not BaseType.NAT.
+        /** Reset the variable part of the element type to the specified
+	 *  type.
+	 *  @parameter e A Type.
+         *  @exception IllegalActionException If this type is not settable,
+	 *   or the argument is not a Type.
          */
         public void initialize(Object e)
 	    throws IllegalActionException {
-	    if (e != BaseType.NAT) {
+	    if ( !isSettable()) {
+		throw new IllegalActionException("ArrayType$ElementTypeTerm." +
+		    "initialize: The type is not settable.");
+	    }
+
+	    if ( !(e instanceof Type)) {
 		throw new IllegalActionException("ElementTypeTerm.initialize: "
-		    + "The argument is not BaseType.NAT.");
+		    + "The argument is not a Type.");
 	    }
 
 	    reset();
@@ -457,7 +485,10 @@ public class ArrayType extends StructuredType {
 	 *  @return True if the element type is a type variable.
      	 */
     	public boolean isSettable() {
-	    return !isConstant();
+	    if(isConstant() || _valueFixed) {
+		return false;
+	    }
+	    return true;
 	}
 
         /** Check whether the current element type is acceptable.
@@ -478,6 +509,12 @@ public class ArrayType extends StructuredType {
      	 */
     	public void setValue(Object e)
              throws IllegalActionException {
+	    if ( !isSettable()) {
+		throw new IllegalActionException(
+		    "ArrayType$ElementTypeTerm.setValue: The type is not " +
+		    "settable.");
+	    }
+
 	    // check for circular type containment
 	    if (e instanceof StructuredType) {
 		if (_arrayType._deepIsUser(e)) {
@@ -513,10 +550,29 @@ public class ArrayType extends StructuredType {
 	    }
 	}
 
+	/** Return a string representation of this term.
+	 *  @return A String.
+	 */
+	public String toString() {
+	    return "(ArrayElementType, " + getValue() + ")";
+	}
+
+	/** Allow the type of this term to be changed, if this term is a
+	 *  variable.
+	 */
+	public void unfixValue() {
+	    _valueFixed = false;
+	    Object value = getValue();
+	    if (value instanceof StructuredType) {
+		((StructuredType)value).unfixType();
+	    }
+	}
+
         ///////////////////////////////////////////////////////////////
         ////                  private inner variables              ////
 
 	private ArrayType _arrayType = null;
+	private boolean _valueFixed = false;
     }
 }
 

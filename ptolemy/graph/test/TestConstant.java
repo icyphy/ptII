@@ -55,6 +55,10 @@ public class TestConstant implements InequalityTerm {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Do nothing.
+     */
+    public void fixValue() {}
+
     /** Return the string value.
      *  @return A String
      */
@@ -131,6 +135,10 @@ public class TestConstant implements InequalityTerm {
 	throw new IllegalActionException("TestConstant.setValue: This term " +
 		"is a constant.");
     }
+
+    /** Do nothing.
+     */
+    public void unfixValue() {}
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

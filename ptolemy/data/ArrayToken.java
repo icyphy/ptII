@@ -117,6 +117,16 @@ public class ArrayToken extends Token {
 	    "in ArrayType.");
     }
 
+    /** Return the element at the specified index.
+     *  @param index The index of the desired element.
+     *  @return A Token.
+     *  @exception ArrayIndexOutOfBoundException If the specified index is
+     *   outside the range of the token array.
+     */
+    public Token getElement(int index) {
+	return _value[index];
+    }
+
     /** Return the type of this ArrayToken.
      *  @return An ArrayType.
      */
@@ -151,6 +161,38 @@ public class ArrayToken extends Token {
      */
     public int length() {
 	return _value.length;
+    }
+
+    /** Return a String representing the value of this token.
+     */
+    public String stringValue() {
+	String s = "[";
+	for (int i=0; i<length(); i++) {
+	    s += _value[i].toString();
+	    if (i < (length()-1)) {
+		s += ", ";
+	    }
+	}
+	return s + "]";
+    }
+
+    /** Return the name of this class, the class name of the element tokens,
+     *  and the string value of the element tokens. The format is
+     *  <i>class_name</i>(<i>element_token_class_name</i>)([<i>
+     *  string_value_of_element_tokens_separated_by_,</i>]).
+     *  @return A String.
+     */
+    public String toString() {
+	String result = getClass().getName() + "(" +
+			_value[0].getClass().getName() + ")([";
+	for (int i=0; i<_value.length; i++) {
+	    result += _value[i].stringValue();
+	    if (i < (_value.length-1)) {
+		result += ", ";
+	    }
+	}
+	result += "])";
+	return result;
     }
 
     ///////////////////////////////////////////////////////////////////

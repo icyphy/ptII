@@ -69,8 +69,17 @@ public interface Typeable
      *  than the type of the argument.  Notice that this constraint
      *  is not enforced until type resolution is done, and is not
      *  enforced if type resolution is not done.
+     *  @param lesser A Typeable object.
      */
     public void setTypeAtLeast(Typeable lesser);
+
+    /** Constrain the type of this object to be equal to or greater
+     *  than the type represented by the specified InequalityTerm. Notice
+     *  that this constraint is not enforced until type resolution is done, 
+     *  and is not enforced if type resolution is not done.
+     *  @typeTerm An InequalityTerm object.
+     */
+    public void setTypeAtLeast(InequalityTerm typeTerm);
 
     /** Constrain the type of this object to be equal to or less
      *  than the argument.  Because the argument is a concrete type,

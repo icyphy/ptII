@@ -615,11 +615,22 @@ public class Variable extends Attribute implements Typeable {
      *  This constraint is not enforced
      *  here, but is returned by the typeConstraints() method for use
      *  by a type system.
-     *  @param equal A Typeable object.
+     *  @param lesser A Typeable object.
      */
     public void setTypeAtLeast(Typeable lesser) {
         Inequality ineq = new Inequality(lesser.getTypeTerm(),
                 this.getTypeTerm());
+	_constraints.insertLast(ineq);
+    }
+
+    /** Constrain the type of this variable to be equal to or
+     *  greater than the type represented by the specified InequalityTerm.
+     *  This constraint is not enforced here, but is returned by the 
+     *  typeConstraints() method for use by a type system.
+     *  @param typeTerm An InequalityTerm object.
+     */
+    public void setTypeAtLeast(InequalityTerm typeTerm) {
+        Inequality ineq = new Inequality(typeTerm, this.getTypeTerm());
 	_constraints.insertLast(ineq);
     }
 
@@ -696,14 +707,6 @@ public class Variable extends Attribute implements Typeable {
      *   token cannot be converted losslessly to the specified type.
      */
     public void setTypeEquals(Type type) throws IllegalActionException {
-        if (type == BaseType.NAT) {
-	    _varType = BaseType.NAT;
-            _declaredType = BaseType.NAT;
-            return;
-        }
-
-        // Create an instance of the declared type, to be used to invoke
-        // the convert() method.
         if (_token != null) {
 	    if (type.isConstant()) {
                 int typeInfo = TypeLattice.compare(_token.getType(), type);
@@ -714,6 +717,7 @@ public class Variable extends Attribute implements Typeable {
                         + " cannot be losslessly converted to the desired "
 			+ "type " + type.toString());
                 }
+                _token = type.convert(_token);
 	    } else {
 		// argument is a variable
 		if ( !type.isSubstitutionInstance(_token.getType())) {
@@ -723,39 +727,46 @@ public class Variable extends Attribute implements Typeable {
 			+ "type " + type.toString());
 		}
 	    }
-            _token = type.convert(_token);
         }
 
+	// set _declaredType to the argument.
 	if (type instanceof BaseType) {
-            _varType = type;
+            _declaredType = type;
 	} else {
 	    // new type is StructuredType
 	    StructuredType typeStruct = (StructuredType)type;
 
 	    if (typeStruct.isConstant()) {
-            	_varType = type;
+          	_declaredType = type;
 	    } else {
 		// new type is a variable StructuredType.
 		try {
 		    if (typeStruct.getUser() == null) {
-			typeStruct.setUser(this);
-			_varType = type;
+		        typeStruct.setUser(this);
+			_declaredType = type;
 		    } else {
-			// new type already has a user, clone it.
+		        // new type already has a user, clone it.
 			StructuredType newType =
-				(StructuredType)typeStruct.clone();
+				    (StructuredType)typeStruct.clone();
 			newType.setUser(this);
-			_varType = newType;
+			_declaredType = newType;
 		    }
 		} catch (IllegalActionException ex) {
 		    // since the user was null, this should never happen.
 		    throw new InternalErrorException("Variable.setTypeEquals: "
-			+ "Cannot set user on the new type."
-			+ ex.getMessage());
+			    + "Cannot set user on the new type."
+			    + ex.getMessage());
 		}
 	    }
 	}
-	_declaredType = _varType;
+
+	// set _varType. It is _token.getType() if _token is not null, or
+	// _declaredType if _token is null.
+	_varType = _declaredType;
+	if (_token != null && _declaredType instanceof StructuredType) {
+	    ((StructuredType)_varType).updateType(
+					(StructuredType)_token.getType());
+        }
     }
 
     /** Constrain the type of this variable to be the same as the
@@ -796,6 +807,18 @@ public class Variable extends Attribute implements Typeable {
      *  @see ptolemy.graph.Inequality
      */
     public Enumeration typeConstraints() {
+
+	// If this variable has a structured type, and the TypeTerm of this
+	// variable is unsettable, make the component of the structured type
+	// to be unsettable.
+	if (_varType instanceof StructuredType) {
+	    if ( !getTypeTerm().isSettable()) {
+	    	((StructuredType)_varType).fixType();
+	    } else  {
+	    	((StructuredType)_varType).unfixType();
+	    }
+	}
+
         // Include all relative types that have been specified.
 	LinkedList result = new LinkedList();
 	result.appendElements(_constraints.elements());
@@ -1068,6 +1091,14 @@ public class Variable extends Attribute implements Typeable {
             }
             _token = null;
             _needsEvaluation = false;
+
+	    // set _varType
+	    if (_declaredType instanceof BaseType) {
+	    	_varType = _declaredType;
+	    } else {
+		// _varType = _declaredType
+		((StructuredType)_varType).reset();
+	    }
         } else {
             // Argument is not null
             Type tokenType = newToken.getType();
@@ -1085,10 +1116,10 @@ public class Variable extends Attribute implements Typeable {
                     } else {
                         // Incompatible type!
                         throw new IllegalActionException(this,
-                        "Cannot store a token of type "
-                        + tokenType.toString()
-                        + ", which is incompatible with type "
-                        + _varType.toString());
+                            "Variable._setToken: Cannot store a token of type "
+                            + tokenType.toString()
+                            + ", which is incompatible with type "
+                            + _varType.toString());
                     }
                 }
             } else {
@@ -1103,7 +1134,7 @@ public class Variable extends Attribute implements Typeable {
 		    }
 		} else {
                         throw new IllegalActionException(this,
-                        "Cannot store a token of type "
+                        "Variable._setToken: Cannot store a token of type "
                         + tokenType.toString()
                         + ", which is incompatible with type "
                         + _varType.toString());
@@ -1268,6 +1299,16 @@ public class Variable extends Attribute implements Typeable {
 	///////////////////////////////////////////////////////////////
 	////                       public inner methods            ////
 
+	/** Disallow the value of this term to be changed.
+	 */
+	public void fixValue() {
+	    _valueFixed = true;
+	    Object value = getValue();
+	    if (value instanceof StructuredType) {
+	    	((StructuredType)value).fixType();
+	    }
+	}
+
 	/** Return this Variable.
 	 *  @return A Variable.
 	 */
@@ -1293,7 +1334,7 @@ public class Variable extends Attribute implements Typeable {
 	 *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-	    if ( isSettable()) {
+	    if (isSettable()) {
 	    	InequalityTerm[] result = new InequalityTerm[1];
 	    	result[0] = this;
 	    	return result;
@@ -1301,21 +1342,21 @@ public class Variable extends Attribute implements Typeable {
 	    return (new InequalityTerm[0]);
         }
 
-	/** Reset the resolved type to the declared Type.
-	 *  @param e Must be BaseType.NAT.
-	 *  @exception IllegalActionException If the type is a constant,
-	 *   or the argument is not BaseType.NAT.
+	/** Reset the variable part of this type to te specified type.
+	 *  @param e A Type.
+	 *  @exception IllegalActionException If the type is not settable,
+	 *   or the argument is not a Type.
 	 */
 	public void initialize(Object e)
 		throws IllegalActionException {
 	    if ( !isSettable()) {
 		throw new IllegalActionException("TypeTerm.initialize: " +
-		    "Cannot initialize a constant type.");
+		    "The type is not settable.");
 	    }
 
-	    if (e != BaseType.NAT) {
+	    if ( !(e instanceof Type)) {
 		throw new IllegalActionException("TypeTerm.initialize: " +
-		    "The argument is not BaseType.NAT.");
+		    "The argument is not a Type.");
 	    }
 
 	    if (_declaredType == BaseType.NAT) {
@@ -1337,7 +1378,7 @@ public class Variable extends Attribute implements Typeable {
 	    // return ( !_declaredType.isConstant());
 
 	    if (_token != null || _currentExpression != null ||
-		_declaredType.isConstant()) {
+		_declaredType.isConstant() || _valueFixed) {
 		return false;
 	    }
 	    return true;
@@ -1367,7 +1408,7 @@ public class Variable extends Attribute implements Typeable {
          */
         public void setValue(Object e) throws IllegalActionException {
 	    if ( !isSettable()) {
-	    	throw new IllegalActionException("TypeTerm.setValue: This " +
+	    	throw new IllegalActionException("TypeTerm.setValue: The " +
 		    "type is not settable.");
 	    }
 
@@ -1387,7 +1428,7 @@ public class Variable extends Attribute implements Typeable {
 
         /** Override the base class to give a description of the variable
          *  and its type.
-         *  @return A description of the port and its type.
+         *  @return A description of the variable and its type.
          */
         public String toString() {
 	    try {
@@ -1398,9 +1439,21 @@ public class Variable extends Attribute implements Typeable {
 	    }
         }
 
+	/** Allow the value of this term to be changed, if this term is a
+	 *  variable.
+	 */
+	public void unfixValue() {
+	    _valueFixed = false;
+	    Object value = getValue();
+	    if (value instanceof StructuredType) {
+		((StructuredType)value).unfixType();
+	    }
+	}
+
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
 
         private Variable _variable = null;
+	private boolean _valueFixed = false;
     }
 }

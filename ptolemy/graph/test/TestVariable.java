@@ -61,6 +61,12 @@ public class TestVariable implements InequalityTerm {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Disallow the value of this term to be set.
+     */
+    public void fixValue() {
+	_valueFixed = true;
+    }
+
     /** Return the string value.
      *  @return A String
      */
@@ -88,9 +94,13 @@ public class TestVariable implements InequalityTerm {
      *  @return an array of InequalityTerms
      */
     public InequalityTerm[] getVariables() {
-	InequalityTerm[] variable = new InequalityTerm[1];
-	variable[0] = this;
-	return variable;
+	if (isSettable()) {
+	    InequalityTerm[] variable = new InequalityTerm[1];
+	    variable[0] = this;
+	    return variable;
+	} else {
+	    return new InequalityTerm[0];
+	}
     }
 
     /** Set the value of this variable to the specified String.
@@ -99,14 +109,19 @@ public class TestVariable implements InequalityTerm {
      */
     public void initialize(Object e)
             throws IllegalActionException {
-	_value = (String)e;
+	if (isSettable()) {
+	    _value = (String)e;
+	} else {
+	    throw new IllegalActionException("TestVariable.initialize: " +
+		"This term is not settable.");
+	}
     }
 
     /** Return true.
      *  @return true
      */
     public boolean isSettable() {
-	return true;
+	return !_valueFixed;
     }
 
     /** Check whether the current value of this term is acceptable,
@@ -136,7 +151,18 @@ public class TestVariable implements InequalityTerm {
      */
     public void setValue(Object e)
             throws IllegalActionException {
-	_value = (String)e;
+	if (isSettable()) {
+	    _value = (String)e;
+	} else {
+	    throw new IllegalActionException("TestVariable.isSettable: " +
+		"value is not settable.");
+	}
+    }
+
+    /** Allow the value of this term to be changed.
+     */
+    public void unfixValue() {
+	_valueFixed = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -144,4 +170,5 @@ public class TestVariable implements InequalityTerm {
 
     private String _name = "";
     private String _value = null;
+    private boolean _valueFixed = false;
 }
