@@ -30,8 +30,23 @@
 package ptolemy.copernicus.kernel;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.*;
+// FIXME: bad dependencies.
+import ptolemy.copernicus.java.EntitySootClass;
 
+import soot.util.Chain;
+
+import soot.Local;
+import soot.Modifier;
 import soot.Options;
 import soot.RefType;
 import soot.Scene;
@@ -39,6 +54,10 @@ import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.Type;
+
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.StringConstant;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -135,37 +154,44 @@ public class ActorTransformer extends SceneTransformer {
 
             String newClassName = getInstanceClassName(entity, options);
 
-            SootClass newClass =
-                SootUtilities.copyClass(entityClass, newClassName);
-            newClass.setApplicationClass();
+            // FIXME the code below should probably copy the class and then
+            // add init stuff.  EntitySootClass handles this nicely, but
+            // doesn't let us use copyClass.  Generally adding this init crap
+            // is something we have to do alot.  How do we handle it nicely?
+            // 
+            //            SootClass newClass =
+            //     SootUtilities.copyClass(entityClass, newClassName);
+            //  newClass.setApplicationClass();
 
-            /*
-              // create a class for the entity instance.
-              EntitySootClass entityInstanceClass =
-              new EntitySootClass(entityClass, newClassName,
-              Modifier.PUBLIC);
-              Scene.v().addClass(entityInstanceClass);
-              entityInstanceClass.setApplicationClass();
-
-              // populate the method to initialize this instance.
-              SootMethod initMethod = entityInstanceClass.getInitMethod();
-              JimpleBody body = Jimple.v().newBody(initMethod);
-              // Add this and read the parameters into locals
-              body.insertIdentityStmts();
-              initMethod.setActiveBody(body);
-              Chain units = body.getUnits();
-              Local thisLocal = body.getThisLocal();
-
-              // insert code to initialize the settable
-              // parameters of this instance
-              // FIXME don't assume that the parameter has already been
-              // created.
-              initializeParameters(body, entity, entity, thisLocal);
-
-              // return void
-              units.add(Jimple.v().newReturnVoidStmt());
-            */
+            
+            // create a class for the entity instance.
+            EntitySootClass entityInstanceClass =
+                new EntitySootClass(entityClass, newClassName,
+                        Modifier.PUBLIC);
+            Scene.v().addClass(entityInstanceClass);
+            entityInstanceClass.setApplicationClass();
+            
+            // populate the method to initialize this instance.
+            SootMethod initMethod = entityInstanceClass.getInitMethod();
+            JimpleBody body = Jimple.v().newBody(initMethod);
+            // Add this and read the parameters into locals
+            body.insertIdentityStmts();
+            initMethod.setActiveBody(body);
+            Chain units = body.getUnits();
+            Local thisLocal = body.getThisLocal();
+            
+            // insert code to initialize the settable
+            // parameters of this instance
+            // FIXME don't assume that the parameter has already been
+            // created.
+            _initializeParameters(body, 
+                    entity, entity, thisLocal);
+            
+            // return void
+            units.add(Jimple.v().newReturnVoidStmt());
+            
         }
+
 
         // Take the classes we just created and fold them with their
         // superclasses until we get to TypedAtomicActor or TypedCompositeActor
@@ -187,6 +213,70 @@ public class ActorTransformer extends SceneTransformer {
     public static String getInstanceClassName(Entity entity, Map options) {
         return Options.getString(options, "targetPackage")
             + "." + entity.getName();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+
+    // FIXME: duplicate with ModelTransformer.
+    // Generate code in the given body to initialize all of the attributes
+    // in the given entity.
+    private static void _initializeParameters(JimpleBody body,
+            NamedObj context, NamedObj container, Local contextLocal) {
+        SootClass namedObjClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
+        SootMethod getAttributeMethod = namedObjClass.getMethod(
+                "ptolemy.kernel.util.Attribute getAttribute(java.lang.String)");
+        SootClass attributeClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
+        Type attributeType = RefType.v(attributeClass);
+
+        SootClass settableClass =
+            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
+        Type settableType = RefType.v(settableClass);
+        SootMethod setExpressionMethod =
+            settableClass.getMethodByName("setExpression");
+
+        Chain units = body.getUnits();
+        // First create a local variable.
+        Local attributeLocal = Jimple.v().newLocal("attribute",
+                attributeType);
+        body.getLocals().add(attributeLocal);
+
+        Local settableLocal = Jimple.v().newLocal("settable",
+                settableType);
+        body.getLocals().add(settableLocal);
+
+        // now initialize each settable.
+        for(Iterator attributes =
+                container.attributeList(Settable.class).iterator();
+            attributes.hasNext();) {
+            Attribute attribute = (Attribute)attributes.next();
+            if(attribute instanceof ptolemy.moml.Location) {
+                // ignore locations.
+                // FIXME: this is a bit of a hack.
+                continue;
+            }
+            Settable settable = (Settable)attribute;
+
+            // first assign to temp
+            units.add(Jimple.v().newAssignStmt(attributeLocal,
+                    Jimple.v().newVirtualInvokeExpr(contextLocal,
+                            getAttributeMethod,
+                            StringConstant.v(attribute.getName(context)))));
+            // cast to Settable.
+            units.add(Jimple.v().newAssignStmt(settableLocal,
+                    Jimple.v().newCastExpr(attributeLocal,
+                            settableType)));
+            // call setExpression.
+            units.add(Jimple.v().newInvokeStmt(
+                    Jimple.v().newInterfaceInvokeExpr(settableLocal,
+                            setExpressionMethod,
+                            StringConstant.v(((Settable)attribute)
+                                    .getExpression()))));
+
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -130,7 +130,7 @@ public class CommandLineTransformer extends SceneTransformer {
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        System.out.println("ModelTransformer.internalTransform("
+        System.out.println("CommandLineTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
         if(!Options.getBoolean(options, "deep")) {
@@ -476,37 +476,13 @@ public class CommandLineTransformer extends SceneTransformer {
         SootUtilities.unrollIteratorInstances(mainClass,
                 modelsField, modelList);
         
-        SootMethod startRunMethod = mainClass.getMethodByName("startRun");
-        SootMethod stopRunMethod = mainClass.getMethodByName("stopRun");
         // inline calls to the startRun and stopRun method.  
-        for(Iterator methods = mainClass.getMethods().iterator();
-            methods.hasNext();) {
-            SootMethod newMethod = (SootMethod)methods.next();
-            // System.out.println("newMethod = " + newMethod.getSignature());
+        SootMethod startRunMethod = mainClass.getMethodByName("startRun");
+        SootUtilities.inlineCallsToMethod(startRunMethod, mainClass);
+        SootMethod stopRunMethod = mainClass.getMethodByName("stopRun");
+        SootUtilities.inlineCallsToMethod(stopRunMethod, mainClass);
 
-            Body newBody = newMethod.retrieveActiveBody();
-
-            // use a snapshotIterator since we are going to be manipulating
-            // the statements.
-            Iterator j = newBody.getUnits().snapshotIterator();
-            while(j.hasNext()) {
-                Stmt stmt = (Stmt)j.next();
-                if(stmt.containsInvokeExpr()) {
-                    InvokeExpr invoke = (InvokeExpr)stmt.getInvokeExpr();
-                    if(invoke.getMethod() == startRunMethod ||
-                       invoke.getMethod() == stopRunMethod) {
-                        System.out.println("inlining " + invoke.getMethod());
-                        // Force the body of the thing we are inlining to be
-                        // loaded
-                        invoke.getMethod().retrieveActiveBody();
-                        SiteInliner.inlineSite(invoke.getMethod(),
-                                stmt, newMethod);
-                    }
-                }
-            }
-        }
-
-        // unroll places where the list of models is used.
+        // unroll places where the model itself is looked at.
         // SootField modelsField = mainClass.getFieldByName("_models");
         // SootUtilities.unrollIteratorInstances(mainClass,
         //        modelsField, modelList);        

@@ -501,11 +501,12 @@ public class SootUtilities {
 
         // Loop through all the methods again, this time looking for
         // method invocations on the old superClass...  Inline these calls.
+        // This code is similar to inlineCallsToMethod, but avoids iterating
+        // over all the methods in the class twice, which could get 
+        // very expensive.
         for(Iterator methods = theClass.getMethods().iterator();
             methods.hasNext();) {
             SootMethod newMethod = (SootMethod)methods.next();
-            // System.out.println("newMethod = " + newMethod.getSignature());
-
             Body newBody = newMethod.retrieveActiveBody();
 
             // use a snapshotIterator since we are going to be manipulating
@@ -516,7 +517,6 @@ public class SootUtilities {
                 if(stmt.containsInvokeExpr()) {
                     InvokeExpr invoke = (InvokeExpr)stmt.getInvokeExpr();
                     if(invoke.getMethod().getDeclaringClass() == superClass) {
-                        //System.out.println("inlining " + invoke.getMethod());
                         // Force the body of the thing we are inlining to be
                         // loaded
                         invoke.getMethod().retrieveActiveBody();
@@ -574,6 +574,41 @@ public class SootUtilities {
             }
         }
         return foundMethod;
+    }
+
+    /** Inline all calls to the given method that occur within the given class.
+     *  Note that this alone will really only increase the size of the 
+     *  affected code, but it turns cross-method optimizations into local 
+     *  optimizations which often allows us to do interesting things
+     *  afterwards, since we know the values of any parameters to the method.
+     */
+    public static void inlineCallsToMethod(SootMethod inlineMethod,
+            SootClass theClass) {
+        // Force the body of the thing we are inlining to be loaded
+        // This is required by the inliner.
+        inlineMethod.retrieveActiveBody();
+        
+        for(Iterator methods = theClass.getMethods().iterator();
+            methods.hasNext();) {
+            SootMethod method = (SootMethod)methods.next();
+            // System.out.println("method = " + method.getSignature());
+
+            Body body = method.retrieveActiveBody();
+            // use a snapshotIterator since we are going to be manipulating
+            // the statements.
+            Iterator j = body.getUnits().snapshotIterator();
+            while(j.hasNext()) {
+                Stmt stmt = (Stmt)j.next();
+                if(stmt.containsInvokeExpr()) {
+                    InvokeExpr invoke = (InvokeExpr)stmt.getInvokeExpr();
+                    if(invoke.getMethod() == inlineMethod) {
+                        //System.out.println("inlining " + invoke.getMethod());
+                        SiteInliner.inlineSite(inlineMethod,
+                                stmt, method);
+                    }
+                }
+            }
+        }    
     }
 
     /** Get the method with the given name in the given class

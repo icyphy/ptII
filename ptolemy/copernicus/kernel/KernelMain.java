@@ -202,6 +202,12 @@ public class KernelMain {
             _toplevel = modelClass;
         }
 
+        // FIXME: insert code to parse parameters like
+        // CompositeActorApplication does.  i.e. --iterations=50
+        // These should get parsed and affect the model that was loaded.
+        // They will be folded into the generated code during the code 
+        // generation process.
+
         // Initialize the model to ensure type resolution and scheduling
         // are done.
         try {

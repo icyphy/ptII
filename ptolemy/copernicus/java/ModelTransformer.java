@@ -345,7 +345,7 @@ public class ModelTransformer extends SceneTransformer {
                                 Jimple.v().newCastExpr(tempPortLocal,
                                         portType)));
                     }
-
+                    /*
                     // Set the type of the port if we need to.
                     if(Options.getBoolean(options, "deep") &&
                             (port instanceof TypedIOPort)) {
@@ -365,7 +365,7 @@ public class ModelTransformer extends SceneTransformer {
                                 Jimple.v().newVirtualInvokeExpr(ioportLocal,
                                         portSetTypeMethod, typeLocal)));
                     }
-
+                    */
                     Iterator relations = port.linkedRelationList().iterator();
                     int index = -1;
                     while (relations.hasNext()) {
