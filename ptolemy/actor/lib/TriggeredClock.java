@@ -74,7 +74,7 @@ contains an array of IntTokens with values 1 and 0.  The default
 alternating 1 and 0 with 50% duty cycle.  The default period
 is 2.0.
 
-The <i>numberOfCycles</i> parameter controlls the number of
+The <i>numberOfCycles</i> parameter controls the number of
 times the specified cycle repeats.
 <p>
 The actor uses the fireAt() method of the director to request
