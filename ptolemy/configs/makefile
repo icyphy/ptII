@@ -45,7 +45,13 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	configs
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	doc/doc.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS =
 

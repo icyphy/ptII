@@ -46,20 +46,26 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	doc
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =	$(PTPACKAGE).jar
+
 JSRCS =
 
-EXTRA_SRCS =	$(JSRCS) \
+OTHER_FILES_TO_BE_JARED = \
 	basicHelp.htm \
 	copyright.htm \
 	demos.htm \
+	demosPtiny.htm \
 	vergilFsmEditorHelp.htm \
 	vergilGraphEditorHelp.htm
 
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) \
-	demosPtiny.htm
-
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
@@ -70,7 +76,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass demosPtiny.htm
 	@echo "nothing need be done for make all in this directory"
 
-install: all
+install: all jars
 	@echo "nothing need be done for make install in this directory"
 
 depend:
