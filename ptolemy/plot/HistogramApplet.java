@@ -63,7 +63,7 @@ public class HistogramApplet extends Applet {
 
     /** Return information about parameters.
      */
-    public String[][] getParameterInfo () {
+    public String[][] getParameterInfo() {
         String pinfo[][] = {
             {"background", "hexcolor value", "background color"},
             {"foreground", "hexcolor value", "foreground color"},
@@ -77,7 +77,7 @@ public class HistogramApplet extends Applet {
     /**
      * Initialize the applet.
      */
-    public void init () {
+    public void init() {
         super.init();
         Histogram histogram = new Histogram();
         add(histogram);
@@ -131,7 +131,7 @@ public class HistogramApplet extends Applet {
         }
         if (!urlgiven) {
             histogram.samplePlot();
-            histogram.setYRange(0,100);
+            histogram.setYRange(0, 100);
         }
         histogram.fillPlot();
     }
