@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    one column) from the <i>input</i> port and send out individual
    DoubleTokens to each channel of the <i>output</i> port.  If the width
    of the <i>output</i> port (say, <i>n</i>) is less than the number of
-   rows (say, <i>m</i>) in the input token, then the first <i>n<i>
+   rows (say, <i>m</i>) in the input token, then the first <i>n</i>
    elements in the vector will be sent, and the remaining tokens are
    discarded.  If <i>n</i> is greater than <i>m<i>, then the last
    <i>n-m</i> channels of the output port will never send tokens out.
