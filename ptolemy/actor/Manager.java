@@ -376,9 +376,6 @@ public class Manager extends NamedObj implements Runnable {
 
             _resumeNotifyWaiting = false;
 
-            // Initialize the topology
-            _container.preinitialize();
-
             // NOTE: This is needed because setExpression() on parameters
             // does not necessarily trigger their evaluation. Thus,
             // if one calls setExpression() without calling validate(),
@@ -390,6 +387,18 @@ public class Manager extends NamedObj implements Runnable {
             // it would seem counterintuitive to have to do so.
             // EAL 5/30/02
             _container.validateSettables();
+
+            // Initialize the topology.
+            // NOTE: Some actors require that parameters be set prior
+            // to preinitialize().  Hence, this occurs after the call
+            // above to validateSettables(). This makes sense, since the
+            // preinitialize() method may depend on these parameters.
+            // E.g., in CT higher-order components, such as
+            // ContinuousTransferFunction, during preinitialize(),
+            // the inside of the higher-order components is constructed
+            // based on the parameter values.
+            // EAL 5/31/02.
+            _container.preinitialize();
 
             resolveTypes();
             _typesResolved = true;
