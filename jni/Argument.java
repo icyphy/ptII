@@ -445,8 +445,6 @@ public class Argument extends Attribute implements Settable {
                     "TRT error! Bad expression for Argument "
                     + getName(), e);
         }
-        // Make sure the new value is exported in MoML.  EAL 12/03.
-        setOverrideDepth(0);
     }
 
     /** Set the expression of the argument from its attributes
@@ -597,6 +595,19 @@ public class Argument extends Attribute implements Settable {
         }
     }
 
+    /** Propagate the value of this object to the
+     *  specified object. The specified object is required
+     *  to be an instance of the same class as this one, or
+     *  a ClassCastException will be thrown.
+     *  @param destination Object to which to propagate the
+     *   value.
+     *  @exception IllegalActionException If the value cannot
+     *   be propagated.
+     */
+    protected void _propagateValue(NamedObj destination)
+            throws IllegalActionException {
+        ((Settable)destination).setExpression(getExpression());
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
