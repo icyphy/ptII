@@ -59,11 +59,11 @@ public interface InequalityTerm {
      */
     public boolean settable();
  
-    /** Evaluates the value of this term.  If this term is a constant,
-     *  it evaluates to that constant; if this term is a variable, it
-     *  evaluates to the current value of that variable; if this term
-     *  is a function, it evaluates to the value of the function
-     *  based on the current value of variables in the function.
+    /** Returns the value of this term.  If this term is a constant,
+     *  that constant is returned; if this term is a variable, the
+     *  current value of that variable is returned; if this term
+     *  is a function, the value of the function based on the current
+     *  value of variables in the function is returned.
      *  @return an object representing an element in the underlining CPO.
      */
     public Object value();
