@@ -308,6 +308,13 @@ public class CompositeActorApplication {
                     arg + "\"/>";
                 CompositeActor model
                     = (CompositeActor)parser.parse(string);
+                // Temporary hack because cloning doesn't properly clone
+                // type constraints.
+                CompositeActor modelClass = (CompositeActor)
+                    parser._searchForClass(arg, model.getMoMLInfo().source);
+                if(modelClass != null) {
+                    model = modelClass;
+                }                    
 
                 _models.add(model);
 
