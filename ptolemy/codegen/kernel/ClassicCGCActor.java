@@ -94,11 +94,19 @@ public class ClassicCGCActor extends CodeGenActor {
     }
 
     public void addGlobal(String code) {
-        addCode(code, "global");
+        addCode(code, "globals");
+    }
+
+    public void addGlobal(String code, String streamName) {
+        addCode(code, streamName);
     }
 
     public void addProcedure(String code) {
         addCode(code, "procedure");
+    }
+
+    public void addProcedure(String code, String streamName) {
+        addCode(code, streamName);
     }
 
     public String getCode(String streamName) {
