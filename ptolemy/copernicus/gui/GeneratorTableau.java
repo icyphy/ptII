@@ -500,7 +500,7 @@ public class GeneratorTableau extends Tableau {
 
                                 execCommands.add("javap "
                                         + "-classpath \""
-                                        + classPath
+                                        + ptIIUserDirectory
                                         + "\" "
                                         + className);
                             }
