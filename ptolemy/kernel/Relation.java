@@ -41,7 +41,7 @@ Ports may link themselves to Relations, but the other direction is
 not supported.
 
 @author Neil Smyth, Edward A. Lee
-@version $Id$
+@version @(#)Relation.java	1.58  01/20/98
 @see Port
 @see Entity
 */
@@ -108,7 +108,7 @@ public class Relation extends NamedObj {
 
             while( ports.hasMoreElements() ) {
                 Port port = (Port)ports.nextElement();
-                Entity parent = (Entity) port.getAssocEntity();
+                Entity parent = (Entity) port.getContainer();
                 // Ignore ports with no container.
                 if (parent != null) {
                     storedEntities.insertLast( parent );
