@@ -9,16 +9,47 @@
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 35.0">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={105, 30, 815, 509}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This is the second model we use to test
+RunCompositeActor.
+This model invokes RunCompositeActor to
+create RunCompositeActor.txt
+
+To test RunCompositeActor, run
+the tests in the following order:
+RunCompositeActor1.xml
+RunCompositeActor2.xml
+RunCompositeActor3.xml</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 200.0">
+        </property>
     </property>
     <entity name="run composite actor" class="ptolemy.actor.RunCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 165.0">
@@ -28,15 +59,13 @@
             </property>
             <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
-            </property>
-        </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
         <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
@@ -82,10 +111,6 @@
             <doc>Create a sequence of tokens with increasing value</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 165.0">
             </property>
-            <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -97,36 +122,26 @@
                 <property name="input"/>
             </port>
         </entity>
-        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
+            <property name="fileName" class="ptolemy.data.expr.FileParameter" value="RunCompositeActor.txt">
             </property>
-            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="append" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="title" class="ptolemy.kernel.util.StringAttribute">
+            <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={333, 519, 292, 222}}">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 165.0">
-            </property>
-            <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
+            <doc>Write the value of a string token, one per line, to a text file.</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 165.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="multiport"/>
             </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="170.0, 165.0">
             </vertex>
-            <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </relation>
         <link port="Ramp.output" relation="relation"/>
-        <link port="Display.input" relation="relation"/>
+        <link port="LineWriter.input" relation="relation"/>
     </entity>
     <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
         <property name="sleepTime" class="ptolemy.data.expr.Parameter" value="1000L">
@@ -138,10 +153,6 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 85.0">
-        </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -160,11 +171,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 155.0">
-        </property>
-        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 165.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -177,12 +184,10 @@
             <property name="input"/>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="165.0, 165.0">
+        </vertex>
     </relation>
-    <link port="run composite actor.init" relation="relation"/>
-    <link port="Ramp.output" relation="relation"/>
+    <link port="run composite actor.init" relation="relation2"/>
+    <link port="Ramp.output" relation="relation2"/>
 </entity>
