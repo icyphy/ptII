@@ -105,7 +105,7 @@ public class Ramp extends SequenceSource {
     /** The amount by which the ramp output is incremented on each iteration.
      *  The default value of this parameter is the integer 1.
      */
-    public Parameter step;
+    public PortParameter step;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
