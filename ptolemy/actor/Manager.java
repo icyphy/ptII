@@ -40,6 +40,7 @@ import collections.HashedSet;
 import java.util.Enumeration;
 import java.lang.reflect.*;
 
+import java.util.Date;			// For timing measurements
 
 //////////////////////////////////////////////////////////////////////////
 //// Manager
@@ -312,6 +313,8 @@ public final class Manager extends NamedObj implements Runnable {
      * then returns immediately.
      */
     public void run() {
+        // Used for profiling;
+        long startTime = (new Date()).getTime();
 
         if (_simulationThread == null) {
             // If the simulation is started by calling the run() method
@@ -417,6 +420,8 @@ public final class Manager extends NamedObj implements Runnable {
         // The simulation is finished, the thread has finished its job.
         _simulationThread = null;
 
+        long endTime = (new Date()).getTime();
+        System.out.println("ptolemy.actor.Manager run(): elapsed time: " + (endTime - startTime) + " ms");
     }
 
     /** Start an execution that will run for an unspecified number of
@@ -687,7 +692,3 @@ public final class Manager extends NamedObj implements Runnable {
     // FIXME: a hack until mutation got implemented.
     private boolean _typeResolved = false;
 }
-
-
-
-
