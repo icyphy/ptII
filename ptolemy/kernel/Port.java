@@ -376,4 +376,9 @@ public class Port extends NamedObj {
 
     // The entity that contains this port.
     private Entity _container;
+
+    // FIXME: THIS IS A HACK Should Go AFTER demo
+    public boolean isAtomic = true;
+
+    public boolean ISINPUT = false;
 }
