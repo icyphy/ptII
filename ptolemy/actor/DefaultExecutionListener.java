@@ -82,7 +82,8 @@ public class DefaultExecutionListener implements ExecutionListener {
     /** Called to report that a toplevel iteration has begun
      */
     public void executionIterationStarted(ExecutionEvent event) {
-        System.out.println("DefaultExecutionListener.executionIterationStarted()");
+        //This is printed every iteration.. way too much for now..
+        //System.out.println("DefaultExecutionListener.executionIterationStarted()");
     }
 
     /** Called to report a successful pause of execution
