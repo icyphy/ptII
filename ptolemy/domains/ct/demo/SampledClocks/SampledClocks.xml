@@ -34,9 +34,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -2, 916, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -2, 916, 544}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[701, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[701, 426]">
     </property>
     <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -70,7 +70,16 @@ one value at the time of the discontinuity.
 Discrete signals can also be sampled, but if
 the discrete signal has only one value at each
 discrete time, then the samples will reflect
-exactly that value.</text></svg></configure>
+exactly that value. 
+
+Note that the samplers for continuous and 
+discrete signals are different. In particular,
+to sample a continuous signal, the CTPeriodicSampler
+needs to be used; while the Sampler samples a 
+discrete signal. The key difference between
+these two samplers is that the CTPeriodicSampler
+constrains the signal type of its input port
+to be "CONTINUOUS".</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -83,19 +92,19 @@ exactly that value.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 5.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.5, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.5, 213.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng and Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 365.0]">
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -107,7 +116,7 @@ exactly that value.</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[274.3203125, 290.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 240.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -207,7 +216,7 @@ exactly that value.</text></svg></configure>
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[151.0, 225.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 335.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -247,37 +256,23 @@ exactly that value.</text></svg></configure>
 </plot>?>
         </configure>
     </entity>
-    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
+    <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 240.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 290.0]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-            </property>
-        </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[106.0, 290.5]">
+        <vertex name="vertex1" value="{105.0, 290.0}">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[91.0, 105.5]">
         </vertex>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation4"/>
     <link port="ContinuousClock.output" relation="relation"/>
     <link port="DiscreteClock.output" relation="relation6"/>
     <link port="PeriodicSampler2.input" relation="relation"/>
@@ -285,6 +280,7 @@ exactly that value.</text></svg></configure>
     <link port="TimedPlotter2.input" relation="relation3"/>
     <link port="TimedPlotter3.input" relation="relation6"/>
     <link port="TimedPlotter4.input" relation="relation"/>
-    <link port="PeriodicSampler.input" relation="relation6"/>
-    <link port="PeriodicSampler.output" relation="relation2"/>
+    <link port="Sampler.input" relation="relation6"/>
+    <link port="Sampler.output" relation="relation4"/>
+    <link port="Sampler.trigger" relation="relation6"/>
 </entity>
