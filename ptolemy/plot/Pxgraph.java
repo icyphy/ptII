@@ -28,6 +28,7 @@
 package ptolemy.plot;
 
 import java.awt.*;
+import java.awt.event.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -449,11 +450,41 @@ public class Pxgraph extends Frame {
     public Pxgraph(String args[]) {
         //setLayout(new FlowLayout(FlowLayout.LEFT));
         //setLayout(new BorderLayout());
-        _plotApplet = new Plot();
+        _plotPanel = new Plot();
         _makeButtons();
 
+        // Regrettably, in JDK 1.1, you have to explicitly handle window
+        // closing events.
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                // Strangely, calling _exit() here sends javac into
+                // an infinite loop (in jdk 1.1.4).
+                //              _exit();
+                System.exit(0);
+            }
+        });
+
+        // Inner class to handle keystrokes
+        _plotPanel.addKeyListener (new KeyAdapter() {
+            public void keyPressed(KeyEvent event) {
+                char c = (char) event.getKeyChar();
+                System.out.println("Pxgraph: got '" + c +"'");
+                switch (c) {
+                case '\003':        // Control-C
+                case '\004':        // Control-D
+                case 'q':
+                    System.exit(0);
+                    break;
+                case 'x':
+                    // Used for debugging, brings up pxgraph.x11.
+                    _pxgraphX11();
+                break;
+                }
+            }
+        });
+
         pack();
-        add("Center",_plotApplet);
+        add("Center",_plotPanel);
         try {
             _parseArgs(args);
         } catch (CmdLineArgException e) {
@@ -465,8 +496,8 @@ public class Pxgraph extends Frame {
         }
 
         show();
-        _plotApplet.init();
-        //        _plotApplet.start();
+        _plotPanel.setButtons(true);
+
         if (_printDialog) {
             // -print option
             _print();
@@ -474,73 +505,6 @@ public class Pxgraph extends Frame {
 
     }
 
-
-    /**
-     * Handle an Action.
-     * @deprecated As of JDK1.1 in java.awt.component, but we need
-     * to compile under 1.0.2 for netscape3.x compatibility.
-     */
-    public boolean action(Event e, Object arg) {
-        Object target = e.target;
-        if (_debug > 20) System.out.println("Pxgraph: action: "+e+" "+target);
-        if (target == _exitButton) {
-            System.exit(1);
-            return true;
-        } else if (target == _printButton) {
-            _print();
-            return true;
-        } else if (target == _htmlButton) {
-            _html();
-            return true;
-        } else if (target == _aboutButton) {
-            _about();
-            return true;
-        } else
-            return super.action (e, arg); // FIXME: action() is deprecated.
-    }
-
-    /** Handle an event.
-     * @deprecated As of JDK1.1 in java.awt.component
-     * but we need to compile under 1.0.2 for netscape3.x compatibility.
-     */
-    public boolean handleEvent(Event e) {
-        switch (e.id) {
-        case Event.WINDOW_ICONIFY:
-            //stopAnimation();
-            break;
-        case Event.WINDOW_DEICONIFY:
-            //startAnimation();
-            break;
-        case Event.WINDOW_DESTROY:
-            System.exit(0);
-            break;
-        }
-
-        return super.handleEvent(e); // FIXME: handleEvent is
-        // deprecated in 1.1, we should use processEvent(),
-        // However, we need to compile under 1.0.2 for compatibility with
-        // netscape3.x so we stick with handleEvent().
-    }
-
-    /** Handle key down and key up events.
-     */
-    public boolean keyDown(Event e, int key) {
-        int keyflags = e.modifiers;
-        if (e.id == Event.KEY_PRESS) {
-            char c = (char) e.key;
-            switch (c) {
-            case '\003':        // Control-C
-            case '\004':        // Control-D
-            case 'q':
-                System.exit(0);
-                break;
-            case 'x':
-                _pxgraphX11();  // Used for debugging, brings up pxgraph.x11.
-                break;
-            }
-        }
-        return true;
-    }
 
     /** Parse the command line arguments, do any preprocessing, then plot.
      * If you have the <code>pxgraph</code> shell script, then
@@ -668,12 +632,10 @@ public class Pxgraph extends Frame {
         System.exit(1);
     }
 
-    /* Dump out html that can be used to redisplay the plot as an applet.
+    /* Dump out HTML that can be used to redisplay the plot as an applet.
      */
-    private void _html() {
-        Dimension dim = size(); // FIXME: size() is deprecated in 1.1, we
-                                // should use getSize(), but getSize
-                                // is not in 1.0.2.
+    private void _HTML() {
+        Dimension dim = getSize();
 
         // Read in the user's CLASSPATH and get the first directory,
         // which should be the location of the Plot classes
@@ -728,26 +690,12 @@ public class Pxgraph extends Frame {
 
     /* Set the visibility of the buttons
      */
-    private void _setButtonsVisibility(boolean vis) {
-        //_exitButton.setVisible(vis);
-        //_printButton.setVisible(vis);
-        //_htmlButton.setVisible(vis);
-        //_aboutButton.setVisible(vis);
-        if (vis) {
-            _exitButton.show(); // FIXME: show() is
-            // deprecated in JDK1.1, but we need to compile under
-            // 1.0.2 for netscape3.x compatibility.
-            _printButton.show(); // FIXME: show() deprecated, but . . .
-            _htmlButton.show(); // FIXME: show() deprecated, but . . .
-            _aboutButton.show(); // FIXME: show() deprecated, but . . .
-        } else {
-            _exitButton.hide(); // FIXME: hide() is
-            // deprecated in JDK1.1, but we need to compile under
-            // 1.0.2 for netscape3.x compatibility.
-            _printButton.hide(); // FIXME: hide() deprecated, but . . .
-            _htmlButton.hide(); // FIXME: hide() deprecated, but . . .
-            _aboutButton.hide(); // FIXME: hide() deprecated, but . . .
-        }
+    private void _setButtons(boolean vis) {
+        _plotPanel.setButtons(vis);
+        _exitButton.setVisible(vis);
+        _printButton.setVisible(vis);
+        _HTMLButton.setVisible(vis);
+        _aboutButton.setVisible(vis);
     }
 
     /* Create buttons.
@@ -757,17 +705,29 @@ public class Pxgraph extends Frame {
         Panel panel = new Panel();
         panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        _exitButton = new Button("Exit");
-        panel.add(_exitButton);
+        if (_exitButton == null) {
+            _exitButton = new Button("Exit");
+            _exitButton.addActionListener(new ExitButtonListener());
+            panel.add(_exitButton);
+        }
 
-        _printButton = new Button("Print");
-        panel.add(_printButton);
+        if (_printButton == null) {
+            _printButton = new Button("Print");
+            _printButton.addActionListener(new PrintButtonListener());
+            panel.add(_printButton);
+        }
 
-        _htmlButton = new Button("HTML");
-        panel.add(_htmlButton);
+        if (_HTMLButton == null) {
+            _HTMLButton = new Button("HTML");
+            _HTMLButton.addActionListener(new HTMLButtonListener());
+            panel.add(_HTMLButton);
+        }
 
-        _aboutButton = new Button("About");
-        panel.add(_aboutButton);
+        if (_aboutButton == null) {
+            _aboutButton = new Button("About");
+            _aboutButton.addActionListener(new AboutButtonListener());
+            panel.add(_aboutButton);
+        }
 
         add("South", panel);
     }
@@ -868,9 +828,8 @@ public class Pxgraph extends Frame {
         }
 
         // Set up the frame
-        resize(width, height);   // FIXME: resize is deprecated in 1.1,
-                                // we should use setsize(width,height)
-                                // but setsize is not in JDK1.0.2
+        setSize(width, height);
+
         setTitle(title);
 
         argsread = i++;
@@ -880,7 +839,7 @@ public class Pxgraph extends Frame {
             System.err.println("Pxgraph: width = " + width +
                     " height = " + height + " _debug = " + _debug);
         }
-        _plotApplet.parseArgs(args);
+        _plotPanel.parseArgs(args);
         return argsread;
     }
 
@@ -907,25 +866,18 @@ public class Pxgraph extends Frame {
         if (printjob != null) {
             Graphics printgraphics = printjob.getGraphics();
             if (printgraphics != null) {
-                Dimension dim = size(); // size is deprecated in 1.1, we
-                // should use getSize(), but getSize
-                // is not in 1.0.2.
+                Dimension dim = getSize();
 
                 // Make the buttons invisible
-                _setButtonsVisibility(false);
-                _plotApplet._setButtonsVisibility(false);
+                _setButtons(false);
 
                 // Print
                 printAll(printgraphics);
 
                 // Make the buttons visible, reset the graphics.
-                _plotApplet._setButtonsVisibility(true);
-                _setButtonsVisibility(true);
+                _setButtons(true);
 
-                resize(dim.width, dim.height);   // FIXME: resize is deprecated
-                // in 1.1, we should use
-                // setsize(width, height) but
-                // setsize is not in JDK1.0.2
+                setSize(dim.width, dim.height);
 
                 show();
                 printgraphics.dispose();
@@ -972,7 +924,7 @@ public class Pxgraph extends Frame {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Button _exitButton, _printButton, _htmlButton, _aboutButton;
+    private Button _exitButton, _printButton, _HTMLButton, _aboutButton;
 
     //  Command line args pxgraph was called with.
     private String _cmdLineArgs[];
@@ -983,12 +935,39 @@ public class Pxgraph extends Frame {
     // The output file name
     private String _outputFile = "/tmp/t.ps";
 
-    // The Plot applet.
-    private Plot _plotApplet;
+    // The Plot Panel.
+    private Plot _plotPanel;
 
     // If true, then bring up the print dialog upon startup.
     private boolean _printDialog = false;
 
     // If true, then auto exit after a few seconds.
     private static boolean _test = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    class AboutButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            _about();
+        }
+    }
+
+    class ExitButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            System.exit(1);
+        }
+    }
+
+    class HTMLButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            _HTML();
+        }
+    }
+
+    class PrintButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            _print();
+        }
+    }
 }
