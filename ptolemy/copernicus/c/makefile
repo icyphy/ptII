@@ -71,7 +71,7 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-	@echo "To run the demo, run 'make demo'"
+	@echo "To run the demo, cd to the 'test' directory, and run 'make Object'"
 
 install: all
 
