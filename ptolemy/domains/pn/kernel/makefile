@@ -55,10 +55,8 @@ PTCLASSALLJAR = kernel.jar
 
 JSRCS = BasePNDirector.java \
 	PNDirector.java \
-	NPNQueueReceiver.java \
 	PNQueueReceiver.java \
 	TimedPNDirector.java
-
 
 EXTRA_SRCS =	$(JSRCS)
 
