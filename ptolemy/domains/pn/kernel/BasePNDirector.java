@@ -26,7 +26,7 @@ Kahn-MacQueen process network semantics.
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (mudit@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating yellow (mudit@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.pn.kernel;

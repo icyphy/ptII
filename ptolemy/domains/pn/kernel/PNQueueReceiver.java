@@ -26,7 +26,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (mudit@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (mudit@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.pn.kernel;
@@ -98,8 +98,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         super.reset();
     }
 
-    //FIXME: Add Clone()
-    
     /** Remove and return the oldest token from the FIFO queue contained 
      *  in the receiver. Terminate the calling process by throwing a 
      *  TerminateProcessException if requested. 
