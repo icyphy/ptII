@@ -493,7 +493,7 @@ public final class Manager extends NamedObj implements Runnable {
      *  If the argument is not the toplevel CompositeActor, then we throw
      *  an InvalidStateException.
      */
-    protected void _makeManagerOf (CompositeActor ca) {
+    protected void _makeManagerOf(CompositeActor ca) {
         if (ca != null) {
             if(ca.getContainer() != null)
                 throw new InvalidStateException("Manager's container must " +
