@@ -48,7 +48,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	DeletionListener.java \
 	JModelViewer.java \
 	MoMLViewerApplet.java \
 	Module.java \
