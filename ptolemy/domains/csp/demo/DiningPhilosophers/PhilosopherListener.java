@@ -41,7 +41,7 @@ public interface PhilosopherListener {
 
     /** Indicate to the object that implements this interface
      *  that the state of a philosopher has changed.
-     * @see ptolemy.domains.csp.demo.Philosopher
+     * @see ptolemy.domains.csp.demo.DiningPhilosophers
      */
     public void philosopherChanged();
 }
