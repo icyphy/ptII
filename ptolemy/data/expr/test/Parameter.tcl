@@ -448,7 +448,7 @@ test Parameter-15.1 {Removing an actor that contains a parameter should throw an
     list $msg $msg2
 } {{ptolemy.kernel.util.IllegalActionException: Object name: .e2.p3:
 Error evaluating expression: "p1"
-In variable: ..e2.p3
+In variable: .e2.p3
 Caused by:
  ptolemy.kernel.util.IllegalActionException: The ID p1 is undefined.} {}}
 
