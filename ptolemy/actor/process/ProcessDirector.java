@@ -164,6 +164,12 @@ public class ProcessDirector extends Director {
      */
     public void initialize()
             throws IllegalActionException {
+	_notdone = true;
+	_actorsActive = 0;
+	_actorsPaused = 0;
+	_pausedReceivers = new LinkedList();
+	_threadList = new LinkedList();
+	_newthreads = new LinkedList();
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
             Enumeration allActors = container.deepGetEntities();
@@ -180,6 +186,7 @@ public class ProcessDirector extends Director {
             }
             setCurrentTime(getCurrentTime());
         }
+
     }
 
 
@@ -487,22 +494,20 @@ public class ProcessDirector extends Director {
 
     // Count of the number of processes that were started by this
     // director but have not yet finished.
-    private long _actorsActive = 0;
+    private long _actorsActive;
 
     // Count of the number of processes that have been paused
     // following a request for a pause.
-    private long _actorsPaused = 0;
-
-    //private boolean _deadlock = false;
+    private long _actorsPaused;
 
     // The receivers that were paused when a pause was requested.
-    private LinkedList _pausedReceivers = new LinkedList();
+    private LinkedList _pausedReceivers;
 
     // The threads started by this director.
-    private LinkedList _threadList = new LinkedList();
+    private LinkedList _threadList;
 
     //A copy of threads started by the directors in this iteration.
-    private LinkedList _newthreads = new LinkedList();
+    private LinkedList _newthreads;
 }
 
 
