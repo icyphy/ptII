@@ -90,8 +90,8 @@ test BranchController-2.2 {Multiple addBranches() invocations} {
    
     list $msg1 $msg2 $msg3 $msg4
 
-} {{ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.inport:
-This port is already controlled by this BranchController} {ptolemy.kernel.util.IllegalActionException: Can not contain a port that is not contained by this BranchController's container.} {ptolemy.kernel.util.IllegalActionException: BranchControllers must contain only input ports or only output ports; not both} {ptolemy.kernel.util.IllegalActionException: BranchControllers must contain only input ports or only output ports; not both}}
+} {{ptolemy.kernel.util.IllegalActionException: This port is already controlled by this BranchController
+  in .<Unnamed Object>.inport} {ptolemy.kernel.util.IllegalActionException: Can not contain a port that is not contained by this BranchController's container.} {ptolemy.kernel.util.IllegalActionException: BranchControllers must contain only input ports or only output ports; not both} {ptolemy.kernel.util.IllegalActionException: BranchControllers must contain only input ports or only output ports; not both}}
 
 
 
