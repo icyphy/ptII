@@ -86,6 +86,8 @@ test VariableClock-2.3 {Connect a second clock to the periodControl input} {
             [java::field [java::cast ptolemy.actor.lib.Source $control] \
             output] \
             [java::field $clock periodControl]
+    # [$e0 getDirector] addDebugListener \
+            # [java::new ptolemy.kernel.util.StreamListener]
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {1 1 1 1 1 1 1 1}
