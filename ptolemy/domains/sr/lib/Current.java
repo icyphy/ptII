@@ -35,33 +35,19 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// Latch
+//// Current
 /**
-   This actor implements a latch.  It has one input port and
-   one output port, both of which are single ports.  A token that is received
-   on the input port is sent to the output port immediately, and also every time
-   the actor is fired until a new token is received.  No tokens are output until
-   the first token is received at the input.
+ * At each tick of the clock, this actor outputs the most recently received
+ * non-absent input. If no input has been received, then the output is absent.
+ * This implements the Lustre "current" operator. 
+ * 
+ * @author Paul Whitaker, Christopher Hylands, Edward A. Lee
+ * @version $Id$
+ * @Pt.ProposedRating Yellow (cxh)
+ * @Pt.AcceptedRating Red (cxh) Should support multiports
+ */
 
-   <p>Note that this actor is not really a latch in the classical sense
-   of the term since it is missing a trigger.  This actor will not
-   be of much use in the DE domain, see the DE Sampler actor for
-   an alternative.  This actor is useful in domains with non-strict semantics
-   like SR and Giotto.
-
-   <p>FIXME: This actor should be modified to handle multiports, but under SR
-   a multiport version of this actor hangs in
-   $PTII/ptolemy/actor/lib/test/auto/Latch.xml
-
-   @see ptolemy.domains.de.lib.Sampler
-   @author Paul Whitaker, Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (cxh)
-   @Pt.AcceptedRating Red (cxh) Should support multiports
-*/
-
-public class Latch extends Transformer {
+public class Current extends Transformer {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -72,7 +58,7 @@ public class Latch extends Transformer {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public Latch(CompositeEntity container, String name)
+    public Current(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -87,11 +73,11 @@ public class Latch extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            _lastInputs = input.get(0);
+            _lastInput = input.get(0);
         }
 
-        if (_lastInputs != null) {
-            output.send(0, _lastInputs);
+        if (_lastInput != null) {
+            output.send(0, _lastInput);
         }
     }
 
@@ -99,7 +85,7 @@ public class Latch extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {
-        _lastInputs = null;
+        _lastInput = null;
         super.initialize();
     }
 
@@ -107,5 +93,5 @@ public class Latch extends Transformer {
     ////                         private variables                 ////
 
     // The most recent token received.
-    private Token _lastInputs;
+    private Token _lastInput;
 }

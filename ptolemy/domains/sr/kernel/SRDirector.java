@@ -47,6 +47,7 @@ import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -177,10 +178,10 @@ public class SRDirector extends StaticSchedulingDirector {
     public Parameter iterations;
 
     /** The name of the scheduler to be used.  The default is a String
-     *  "ptolemy.domains.sr.kernel.SRRandomizedScheduler".  The only other
-     *  valid value is "ptolemy.domains.sr.kernel.SROptimizedScheduler".
+     *  "ptolemy.domains.sr.kernel.SROptimizedScheduler".  The only other
+     *  valid value is "ptolemy.domains.sr.kernel.SRRandomizedScheduler".
      */
-    public Parameter scheduler;
+    public StringParameter scheduler;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -200,14 +201,26 @@ public class SRDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
         if (attribute == scheduler) {
             _debug(getFullName() + " updating scheduler...");
-            String schedulerClassName =
+            String className =
                 ((StringToken)scheduler.getToken()).stringValue();
-            if (_isValidSchedulerClassName(schedulerClassName)) {
-                _schedulerClassName = schedulerClassName;
+            
+            // For backward compatibility, strip quotation marks that
+            // may be left over from when the scheduler parameter was not
+            // a StringParameter.
+            className = className.trim();
+            if (className.startsWith("\"")) {
+                className = className.substring(1);
+            }
+            if (className.endsWith("\"")) {
+                className = className.substring(0, className.length() - 1);
+            }
+
+            if (_isValidSchedulerClassName(className)) {
+                _schedulerClassName = className;
                 _updateScheduler = true;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized SR scheduler: " + schedulerClassName);
+                        "Unrecognized SR scheduler: " + className);
             }
         } else {
             super.attributeChanged(attribute);
@@ -673,13 +686,10 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     private void _init() {
         try {
-            String schedulerClassName =
-                "ptolemy.domains.sr.kernel.SROptimizedScheduler";
-            //            String schedulerClassName =
-            //                "ptolemy.domains.sr.kernel.SRRandomizedScheduler";
-            scheduler = new Parameter(
-                    this, "scheduler", new StringToken(schedulerClassName));
-            scheduler.setTypeEquals(BaseType.STRING);
+            scheduler = new StringParameter(this, "scheduler");
+            scheduler.setExpression("ptolemy.domains.sr.kernel.SROptimizedScheduler");
+            scheduler.addChoice("ptolemy.domains.sr.kernel.SROptimizedScheduler");
+            scheduler.addChoice("ptolemy.domains.sr.kernel.SRRandomizedScheduler");
             attributeChanged(scheduler);
 
             iterations = new Parameter(this, "iterations", new IntToken(0));
@@ -777,13 +787,6 @@ public class SRDirector extends StaticSchedulingDirector {
             // because according to the SR semantics, the
             // the inputs, which are the outputs from other
             // actors, can not change.
-
-            // FIXME:
-            // Two issues here: 1. if the nonStrict actor receives multiple
-            // tokens at the same time instant, e.g., its input connects
-            // to a Repeat actor. 2. if the inputs connects to outside
-            // domain which does not have SR semantics, they may change.
-            // Does this composition make sense?
 
             // Check whether the inputs have changed.
             // Note, the isChanged method forces the receivers to update

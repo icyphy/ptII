@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="GuardedCount" class="ptolemy.actor.TypedCompositeActor">
+<entity name="EnabledComposite" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 4, 933, 627}, maximized=false}">
@@ -42,16 +42,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 305.0]">
         </property>
     </property>
-    <entity name="DisplayCount" class="ptolemy.domains.sr.lib.NonStrictDisplay">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="21">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={154, 350, 152, 416}, maximized=false}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 175.0]">
-        </property>
-    </entity>
     <entity name="CountDown" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 185.0]">
         </property>
@@ -315,16 +305,6 @@
         <link port="Comparator2.output" relation="relation12"/>
         <link port="Const3.output" relation="relation11"/>
     </entity>
-    <entity name="DisplayEnable" class="ptolemy.domains.sr.lib.NonStrictDisplay">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="21">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={306, 351, 152, 416}, maximized=false}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 260.0]">
-        </property>
-    </entity>
     <entity name="EnabledComposite" class="ptolemy.domains.sr.lib.EnabledComposite">
         <property name="SRDirector" class="ptolemy.domains.sr.kernel.SRDirector">
             <property name="scheduler" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.sr.kernel.SROptimizedScheduler">
@@ -384,16 +364,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 110.0]">
             </property>
         </entity>
-        <entity name="DisplayCountRequests" class="ptolemy.domains.sr.lib.NonStrictDisplay">
-            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="21">
-            </property>
-            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 350, 152, 416}, maximized=false}">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 165.0]">
-            </property>
-        </entity>
         <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
             <property name="initialValue" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -406,6 +376,14 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 110.0]">
             </property>
         </entity>
+        <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 5, 3, 2}">
+            </property>
+            <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 160.0]">
+            </property>
+        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="{165.0, 110.0}">
             </vertex>
@@ -414,23 +392,39 @@
         </relation>
         <link port="output" relation="relation"/>
         <link port="Sequence.output" relation="relation2"/>
-        <link port="DisplayCountRequests.input" relation="relation"/>
         <link port="NonStrictDelay.input" relation="relation2"/>
         <link port="NonStrictDelay.output" relation="relation"/>
+        <link port="NonStrictTest.input" relation="relation"/>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, false, true, false, false, false, false, false, true, false, false, false, true, false, false, true, true, true, true, true}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{355, 260}">
+        </property>
+    </entity>
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 0, 5, 4, 3, 2, 1, 0, 3, 2, 1, 0, 2, 1, 0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 175.0]">
+        </property>
     </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[270.0, 260.0]">
         </vertex>
     </relation>
-    <relation name="relation10_21" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="DisplayCount.input" relation="relation10_21"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="CountDown.start" relation="relation"/>
-    <link port="CountDown.count" relation="relation10_21"/>
+    <link port="CountDown.count" relation="relation2"/>
     <link port="CountDown.ready" relation="relation7"/>
-    <link port="DisplayEnable.input" relation="relation7"/>
     <link port="EnabledComposite.enable" relation="relation7"/>
     <link port="EnabledComposite.output" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation7"/>
+    <link port="NonStrictTest2.input" relation="relation2"/>
 </entity>

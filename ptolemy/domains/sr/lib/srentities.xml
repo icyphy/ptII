@@ -28,7 +28,13 @@
      </property>
 </entity>
 
+<entity name="Current" class="ptolemy.domains.sr.lib.Current">
+</entity>
+
 <entity name="Default" class="ptolemy.domains.sr.lib.Default">
+</entity>
+
+<entity name="EnabledComposite" class="ptolemy.domains.sr.lib.EnabledComposite">
 </entity>
 
 <entity name="InstantaneousDialogGenerator" class="ptolemy.domains.sr.lib.InstantaneousDialogGenerator">

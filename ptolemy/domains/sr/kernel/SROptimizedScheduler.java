@@ -187,6 +187,14 @@ public class SROptimizedScheduler extends Scheduler {
             }
 
             actor = (Actor) ioPort.getContainer();
+            
+            // If the actor is the container of this director (which
+            // can occur if this director is not at the top level),
+            // then skip this actor. The container of the director
+            // should not be listed in the schedule.
+            if (actor == compositeActor) {
+            	continue;
+            }
             // We record the information of last actor.
             // If some consecutive ports belong to the
             // same actor, we only schedule that actor once.

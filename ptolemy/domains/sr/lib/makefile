@@ -52,9 +52,10 @@ JSRCS = \
 	Absent.java \
 	AbsentToken.java \
 	ButtonTime.java \
+	Current.java \
 	Default.java \
+	EnabledComposite.java \
 	InstantaneousDialogGenerator.java \
-	Latch.java \
 	NonStrictDelay.java \
 	NonStrictDisplay.java \
 	NonStrictLogicFunction.java \
