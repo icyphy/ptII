@@ -1323,7 +1323,7 @@ fi
 PTJACL_JAR=$PTII/lib/ptjacl.jar
 # JTCLSH uses JAVAFLAGS for use with the 
 # vergil/test/VergilConfiguration.tcl test
-JTCLSH='"$(JAVA)" "$(JAVAFLAGS)" tcl.lang.Shell'
+JTCLSH='"$(JAVA)" $(JAVAFLAGS) tcl.lang.Shell'
 
 if test ! -d "$PTII/util/testsuite"; then
     echo "$ac_t""$PTII/util/testsuite is not present,
@@ -1359,7 +1359,7 @@ echo "configure:1354: checking for how to run jacl with "$JAVA" "$PTJACL_FLAG"" 
 	instead. ptjacl is used by the test suite, so you may be able to
 	ignore this error." 1>&6
 		fi
-		JTCLSH='"$(JAVA)" "$(JAVAFLAGS) tcl.lang.Shell'
+		JTCLSH='"$(JAVA)" $(JAVAFLAGS) tcl.lang.Shell'
 	fi
     else
 	echo "configure: warning: The ptjacl.jar file was not found at '$PTJACL_JAR'
