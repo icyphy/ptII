@@ -34,10 +34,11 @@ package ptolemy.lang;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Collection;
 import java.util.LinkedList;
+import java.util.ArrayList;
 
 //////////////////////////////////////////////////////////////////////////
 //// TreeNode
@@ -47,8 +48,6 @@ AST can have as nodes just about anything.  If a node is a List, then
 it will be interpreted as a hierarchical object.  An instance of this
 class is also a hierarchical object.
 
-@author Jeff Tsay
-@version $Id$
 */
 public abstract class TreeNode extends TrackedPropertyMap
     implements ITreeNode {
@@ -59,14 +58,14 @@ public abstract class TreeNode extends TrackedPropertyMap
     public TreeNode() {
         // The list will grow as needed, and should be trimmed after
         // all members are added.
-        _childList = new ArrayList();
+        _childList = new ChildList(this);
     }
 
     /** Construct a TreeNode with the specified number of children to be
      *  added to the child list later.
      */
     public TreeNode(int numberOfChildren) {
-        _childList = new ArrayList(numberOfChildren);
+        _childList = new ChildList(this, numberOfChildren);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,6 +98,8 @@ public abstract class TreeNode extends TrackedPropertyMap
 
                 // Remove the children return values to prevent
                 // exponential usage of memory.
+                // FIXME: a similar, appropriately-placed call for the 
+                // new RETURN_VALUE_AS_ELEMENT_KEY key may be appropriate.
                 removeProperty(CHILD_RETURN_VALUES_KEY);
             }
             break;
@@ -143,6 +144,16 @@ public abstract class TreeNode extends TrackedPropertyMap
     }
 
     /** Get the return value of the most recent
+     *  visitor to this node when the node was visited as a "hierarchical"
+     *  node (a list of nodes).
+     *  @return The most recent result of visiting this node as an
+     *  element of a hierarchical node.
+     */
+    public Object returnValueAsElement() {
+        return getProperty(RETURN_VALUE_AS_ELEMENT_KEY);
+    }
+
+    /** Get the return value of the most recent
      *  visitor to the specified child node.
      *  @param child The child whose visit result is returned.
      *  @return The most recent result of visiting the specified child.
@@ -174,7 +185,8 @@ public abstract class TreeNode extends TrackedPropertyMap
             return this;
         }
         TreeNode copy = (TreeNode) super.clone();
-        copy._childList = (ArrayList) TNLManip.cloneList(_childList);
+        copy._childList = (ChildList) TNLManip.cloneList(_childList);
+        copy._childList.setParent(this);
         return copy;
     }
 
@@ -207,13 +219,15 @@ public abstract class TreeNode extends TrackedPropertyMap
      */
     public void setChild(int index, Object child) {
         _childList.set(index, child);
+        
     }
 
     /** Set the children of this node to the specified list.
      *  @param childList The list of children.
      */
     public void setChildren(ArrayList childList) {
-        _childList = childList;
+        _childList = new ChildList(this);
+        _childList.addAll(childList);
     }
 
     /** Return a String representation of this node and all its children.
@@ -254,7 +268,8 @@ public abstract class TreeNode extends TrackedPropertyMap
 
             if (methodName.startsWith("get") &&
                     (method.getParameterTypes().length == 0) &&
-                    !methodName.equals("getClass")) {
+                    (!methodName.equals("getClass")) &&
+                    (!methodName.equals("getParent"))) {
 
                 matchingMethods++;
                 if (matchingMethods == 1) {
@@ -315,6 +330,36 @@ public abstract class TreeNode extends TrackedPropertyMap
                 TNLManip.traverseList(visitor, args, _childList));
     }
 
+    /** Return the parent of a tree node. If the tree node is part of
+     *  a list, then the parent is the tree node that contains the list
+     *  within its list of children. If the parent of this node has
+     *  not yet been set, null is returned.
+     *  @param The parent of the given tree node.
+     */
+    public TreeNode getParent() {
+        return _parent;
+    }
+    
+    /** Set this tree node as the parent of the argument. If the argument
+     *  is a list or collection (a "hierarchical tree node"), then recursively
+     *  set this to be the parent of all tree nodes in the list.
+     *  @param child The child (or list of children) that this is the parent of.
+     */
+    public void setAsParent(Object child) {
+        if (child instanceof TreeNode) ((TreeNode)child)._parent = this;
+        else if (child instanceof Collection) {
+            Iterator children = ((Collection)child).iterator();
+            while (children.hasNext()) {
+                setAsParent(children.next());
+            }            
+        }
+        else {
+            // FIXME: insert an exception here?
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected variables                ////
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
@@ -385,14 +430,17 @@ public abstract class TreeNode extends TrackedPropertyMap
         return stringBuffer.toString();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                        protected variables                ////
+
+
 
     /** The class of this object, cached locally. */
     protected Class _myClass = null;
 
     /** The list of children. */
-    protected ArrayList _childList;
+    protected ChildList _childList = null;
+
+    /** The parent of this object in the AST */
+    protected TreeNode _parent = null; 
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
