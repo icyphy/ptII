@@ -31,14 +31,6 @@ package ptolemy.plot;
 
 import ptolemy.gui.*;
 
-import javax.swing.KeyStroke;
-import javax.swing.JPanel;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -52,6 +44,15 @@ import java.io.*;
 import java.net.URL;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import javax.swing.KeyStroke;
+import javax.swing.JPanel;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 
 // TO DO:
 //   - Add a mechanism for combining two plots into one
@@ -327,13 +328,7 @@ public class PlotFrame extends JFrame {
         fileDialog.setDialogTitle("Select a plot file");
 
         // Filter file names.
-        // NOTE: This filter is not built in yet... add this when it is.
-        // It is not worth the trouble to design our own filter.
-        // ExtensionFileFilter filter = new ExtensionFileFilter();
-        // filter.addExtension("plt");
-        // filter.addExtension("xml");
-        // filter.setDescription("Plot files");
-        // fileDialog.addChoosableFileFilter(filter);
+	fileDialog.addChoosableFileFilter(new PLTOrXMLFileFilter());
 
         if (_directory != null) {
             fileDialog.setCurrentDirectory(_directory);
@@ -418,6 +413,7 @@ public class PlotFrame extends JFrame {
     protected void _saveAs() {
 
         JFileChooser fileDialog = new JFileChooser();
+	fileDialog.addChoosableFileFilter(new PLTOrXMLFileFilter());
         fileDialog.setDialogTitle("Save plot as...");
         if (_directory != null) {
             fileDialog.setCurrentDirectory(_directory);
@@ -430,8 +426,10 @@ public class PlotFrame extends JFrame {
                 fileDialog.setCurrentDirectory(new File(cwd));
             }
         }
-        // FIXME: Can't seem to suggest a file name:
-        // fileDialog.setCurrentFile("plot.xml");
+
+	fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
+					    "plot.xml"));
+
         int returnVal = fileDialog.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             _file = fileDialog.getSelectedFile();
@@ -530,4 +528,46 @@ public class PlotFrame extends JFrame {
             repaint();
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Display only .plt and .xml files */
+    class PLTOrXMLFileFilter extends FileFilter {
+    
+	/** Accept only .plt or .xml files.
+	 *  @param file The file to be checked.
+	 *  @return true if the file is a directory, a .xml or a .moml file.
+         */
+	public boolean accept(File fileOrDirectory) {
+	    if (fileOrDirectory.isDirectory()) {
+		return true;
+	    }
+
+	    String fileOrDirectoryName = fileOrDirectory.getName();
+	    int dotIndex = fileOrDirectoryName.lastIndexOf('.');
+	    if (dotIndex == -1) {
+		return false;
+	    }
+	    String extension =
+		fileOrDirectoryName
+		.substring(dotIndex);
+
+	    if (extension != null) {
+		if (extension.equalsIgnoreCase(".plt")
+		    || extension.equalsIgnoreCase(".xml")) {
+                    return true;
+		} else {
+		    return false;
+		}
+	    }
+	    return false;
+	}
+    
+	/**  The description of this filter */
+	public String getDescription() {
+	    return ".plt and .xml files";
+	}
+    }
+
 }
