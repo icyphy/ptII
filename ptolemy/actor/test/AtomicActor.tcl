@@ -80,6 +80,16 @@ test AtomicActor-3.1 {Test getDirector} {
 ######################################################################
 ####
 #
+test AtomicActor-3.2 {Test getManager} {
+    # NOTE: Uses the setup in 2.1
+    list [expr {[$e1 getManager] == [java::null]}] \
+            [expr {[$e2 getManager] == [java::null]}] \
+            [expr {[$e3 getManager] == $manager}]
+} {1 1 1}
+
+######################################################################
+####
+#
 test AtomicActor-4.1 {Test input/output lists} {
     # NOTE: Uses the setup above
     set p1 [java::new ptolemy.actor.IOPort $e3 P1]
