@@ -225,7 +225,7 @@ public abstract class ODESolver extends NamedObj {
     protected void _prefireIfNecessary(Actor actor)
             throws IllegalActionException {
         CTDirector dir = (CTDirector)getContainer();
-        if (dir.isPrefireComplete(actor)) {
+        if (!dir.isPrefireComplete(actor)) {
             _debug(getFullName()
                     + " is prefiring: "
                     + ((Nameable)actor).getName());
