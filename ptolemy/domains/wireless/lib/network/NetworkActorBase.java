@@ -30,22 +30,19 @@
 
 package ptolemy.domains.wireless.lib.network;
 
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
-import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// MACActorBase
+//// NetWorkActorBase
 
 /** 
 This is a base class designed for the Network actors. 
@@ -54,7 +51,7 @@ Currently, it mainly contains several methods for dealing with timers
 that are widely used in the OMNET c++ classes.
 
 
-@author Yang Zhao
+@author Yang Zhao, Charlie Zhong
 @version $ $
 */
 
@@ -76,80 +73,111 @@ public class NetworkActorBase extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }    
-        
-    public int getID() {
+    
+    /** Initialize the <i>_timersSet<i> variable.
+     *  @exception IllegalActionException If thrown by the base class.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _timersSet = new HashSet();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////        
+    /** Check whether this has a <i>id<i> attribute. If yes, return
+     *  the value of it; if no, return the default value 0.
+     *  @return return the value of the <i>id<i> attribute of 0 if no
+     *  such an attribute.
+     *  
+     * FIXME: why use 0 as the default id? some node may use 0 as its id...
+     * FIXME: when this method is used?
+     */
+    protected int getID() {
         int id = 0;
         try {
-            Parameter p = (Parameter)getAttribute("id", Parameter.class);
-            id = ((IntToken)p.getToken()).intValue();
+            Attribute idAttribute = getAttribute("id");
+            if (idAttribute instanceof Variable) {
+                Variable idVariable = (Variable)idAttribute;
+                id = ((IntToken)(idVariable.getToken())).intValue();
+            }
         } catch (IllegalActionException ex) {
             // ignore, use default id 0
         }
         return id;
     }
 
-    // timer related methods
-
-    // This function creates a Timer object, records the timer type and
-    // its expiration time. Afterwards, this timer is added to the end
-    // of a queue. The pointer to this timer is returned to the caller
-    // function (make it easy for it to cancel the timer).
-    public Timer setTimer(int kind, double expirationTime) 
-	// kind corresponds to processing type
+    /** Construct a timer object with the specified <i>kink<i> and 
+     *  <i>experationTime<i> and add the timer to the timers set.
+     *  @return return the created timer to the caller method
+     *  (make it easy for it to cancel the timer).
+     *  @exception IllegalActionException If thrown by 
+     *  getDirector().fireAt().
+     */
+    protected Timer setTimer(int kind, double expirationTime) 
             throws IllegalActionException {
 
-	// do director didn't do for the timers:
-	Timer timer=new Timer();
-	timer.kind=kind;	
-	timer.expirationTime=expirationTime;
-	// put all timers of this object into a queue
-	timersQueue.add(timer);
-	getDirector().fireAt(this, expirationTime);
-	return timer;
+	    Timer timer=new Timer();
+	    timer.kind=kind;	
+	    timer.expirationTime=expirationTime;
+	    // put all timers of this object into a queue
+	    _timersSet.add(timer);
+	    getDirector().fireAt(this, expirationTime);
+	    return timer;
     }
   
-    // This function search in the queue for the pointer to the timer
-    // to be cancled and if a match is found, the timer is removed from
-    // the queue
-    public void cancelTimer(Timer timerToCancel)
+    /** Remove the timer that matches with the <i>timerToCancel<i> argument
+     *  from the timers set. If no match is found, do nothing.
+     */ 
+    protected void cancelTimer(Timer timerToCancel)
             throws IllegalActionException {
-        Iterator timers =timersQueue.listIterator();
+        Iterator timers = _timersSet.iterator();
 	// iterate through the queue to find the timer to be canceled
         while (timers.hasNext()) {
             Timer timer = (Timer) timers.next();
-	    // if the address of timer object matches with
-	    // that stored in the queue, remove the entry
-	    if (timer==timerToCancel)
-		timers.remove();
-	}
+	        if (timer==timerToCancel){
+	            _timersSet.remove(timer);
+                break;
+            }
+	    }
     }
 
-    // This function goes through the queue and find the 1st timer whose
-    // expiration time is equal to the current time. The timer is removed
-    // from the queue and its type is returned.
-    public int whoTimeout()
+    /** Get the timer with experation time that matches the current time.
+     *  Remove the timer from the timers set and return the <i>kind<i> 
+     *  parameter of the timer to the caller method. If there are multiple
+     *  timers with experation time matching the current time, return the 
+     *  first one from the iterator list. 
+     *  @return return the i>kind<i> parameter of the timeout timer.
+     *  @exception IllegalActionException If thrown by 
+     *  getDirector().getCurrentTime().
+     */ 
+    protected int whoTimeout()
             throws IllegalActionException {
 	// find the 1st timer expired
-        Iterator timers =timersQueue.listIterator();
+        Iterator timers = _timersSet.iterator();
         while (timers.hasNext()) {
             Timer timer = (Timer) timers.next();
-	    if (timer.expirationTime==getDirector().getCurrentTime())
-		{
-		    // remove it from the queue no matter that
-		    // it will be processed or ignored 
-		    timers.remove();
-		    return timer.kind;
-		}
-	}
-	return -1;
+	        if (timer.expirationTime==getDirector().getCurrentTime())
+		    {
+		        // remove it from the set no matter that
+		        // it will be processed or ignored 
+		        timers.remove();
+		        return timer.kind;
+		    }
+	    }
+	    return -1;
     }
 
-    public class Timer {
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables                 ////
+    // The set for the timers to be processed when they are expried.
+    protected HashSet _timersSet;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    protected class Timer {
   
-	public int kind;
+	    public int kind;
         public double expirationTime;
     }
-    
-    protected List timersQueue=new LinkedList();
 
 }
