@@ -198,7 +198,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Together.p = P1; Together.v = V1; Together.stickiness = 10.0">
+                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Together.p = P1; Together.v = (V1+V2)/2.0; Together.stickiness = 10.0">
                 </property>
                 <property name="reset1" class="ptolemy.domains.fsm.kernel.ResetRefinement">
                 </property>
@@ -485,9 +485,9 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 142]">
             </property>
-            <property name="p" class="ptolemy.data.expr.Parameter" value="1.4669138">
+            <property name="p" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="v" class="ptolemy.data.expr.Parameter" value="0.2638656">
+            <property name="v" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="stickiness" class="ptolemy.data.expr.Parameter" value="10.0">
             </property>
