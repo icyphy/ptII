@@ -771,6 +771,11 @@ public class SDFScheduler extends Scheduler {
 			    (IORelation) crelations.nextElement();
 
 			Enumeration cports = crelation.linkedSourcePorts();
+                        if(!cports.hasMoreElements())
+                            throw new IllegalActionException(crelation, 
+                                    ainputport, "Relation is only connected " +
+                                    "to input ports");
+                        
 			IOPort cport = (IOPort) cports.nextElement();
 
 			// Check for the non-deterministic
@@ -888,6 +893,7 @@ public class SDFScheduler extends Scheduler {
         // call if we've run out of things to schedule.
         // FIXME: This should probably throw another exception if
         // unscheduledActors still contains elements.
+        // FIXME: This is a stupid way to do this.
         catch (NoSuchElementException e) {
             _debug("Caught NSEE:");
             _debug(e.getMessage());
