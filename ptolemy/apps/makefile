@@ -40,7 +40,7 @@ ME =		ptolemy/apps
 # PTLEGO_DIR is set to lego if the commapi was found.
 # PTWABA_DIR is set to waba if waba was found
 #
-DIRS =		 agilent $(PTKVM_DIR) $(PTLEGO_DIR) $(PTWABA_DIR)
+DIRS =		 agilent $(PTKVM_DIR) $(PTLEGO_DIR) tini $(PTWABA_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		../..
@@ -56,7 +56,8 @@ PTCLASSJAR =
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
-MISC_FILES =	$(DIRS)
+MISC_FILES =	$(DIRS) \
+	robot
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
