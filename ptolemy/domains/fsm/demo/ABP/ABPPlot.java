@@ -108,6 +108,7 @@ public class ABPPlot extends DEActor {
         }
 
         _plot.clear(true);
+        //_plot.setBackground(getBackground());
         _plot.setButtons(true);
         _plot.setMarksStyle("dots");
         _plot.setImpulses(true);
