@@ -34,7 +34,7 @@ ME =		ptolemy/copernicus
 # kernel first, then alphabetical
 # PTJHDL_DIR is set by configure in $PTII/mk/ptII.mk if the jhdl jar file
 # was found
-DIRS =		kernel deep c shallow $(PTJHDL_DIR)
+DIRS =		kernel c java $(PTJHDL_DIR)
 
 # Root of the Java directory
 ROOT =		../..
