@@ -198,7 +198,7 @@ public class XMLElement extends Object {
     }
 
     /**
-     * Test if this schematic has the attribute wuth the given name.
+     * Test if this element has the attribute wuth the given name.
      */
     public boolean hasAttribute (String name) {
         return _attributes.includesKey(name);
