@@ -153,11 +153,11 @@ public class KeyReader extends Source {
 
     /** True if we should get the public key.  False if we should
      *  get the private key.  The default value is true.
-     *  Getting the private key requires using the password.
+     *  Getting the private key requires using the keyPassword.
      */
     public Parameter getPublicKey;
 
-    /** The password to the Key itself
+    /** The password to the Key itself.
      *  The default password is "this.is.not.secure,it.is.for.testing.only".
      */
     public StringParameter keyPassword;
@@ -177,8 +177,9 @@ public class KeyReader extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the specified attribute is <i>URL</i>, then close
-     *  the current file (if there is one) and open the new one.
+    /** Override the base class to reinitialize the state if
+     *  the <i>alias</i>, <i>fileOrURL</i>, or <i>getPublicKey</i>
+     *  parameter is changed.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the specified attribute
      *   is <i>URL</i> and the file cannot be opened.
@@ -199,7 +200,7 @@ public class KeyReader extends Source {
         }
     }
 
-    /** Output the data read in the prefire.
+    /** Output the key that was created in initialize().
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {
@@ -214,11 +215,9 @@ public class KeyReader extends Source {
 
         InputStream keyStoreStream;
         try {
-
             // FIXME: this will not work if the input is stdin.
             // FileParameter needs to have a way of getting the
             // unbuffered stream.
-
             keyStoreStream = _url.openStream();
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
@@ -274,15 +273,15 @@ public class KeyReader extends Source {
     private String _alias;
 
     // True if we should get the public key, false if we should get
-    // the private key
+    // the private key.
     private boolean _getPublicKey;
 
     // The KeyStore itself.
     private KeyStore _keyStore;
 
-    // The PublicKey located in the Certificate
+    // The PublicKey located in the Certificate.
     private java.security.Key _key;
 
-    // The URL of the file.
+    // The URL of the keystore file.
     private URL _url;
 }

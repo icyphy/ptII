@@ -1,5 +1,4 @@
-/* Reads in a key and encrypts incoming data based on a given
- symmetric algorithm.
+/* Encrypt data using a symmetric algorithm.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -46,18 +45,29 @@ import javax.crypto.Cipher;
 //////////////////////////////////////////////////////////////////////////
 //// SymmetricEncryption
 /**
+Decrypt an unsigned byte array using a symmetric algorithm.
 
-This actor takes an unsigned byte array at the input and encrypts the
-message.  The resulting output is an unsigned byte array. Various
-ciphers that are implemented by "providers" and installed maybe used
-by specifying the algorithm in the <i>algorithm</i> parameter.  The
-specified algorithm must be symmetric.  The mode and padding can also
-be specified in the mode and padding parameters.  In case a provider
-specific instance of an algorithm is needed the provider may also be
-specified in the provider parameter. This actor reads its secret key
-on the <i>key</i> port.
-This key should not be visible to users as the security of
-the encrypted message relies on the secrecy of this key.
+<p>In cryptography, a symmetric algorithm is an algorithm that uses
+the same key for encryption and decryption.  An asymmetric algorithm uses
+a two different keys: a public key and private key.  Asymmetric algorithms
+are usually much slower than symmetric algorithms.  The initial
+default set of algorithms that comes with the Sun JDK does
+not include a symmetric encryption algorithm.
+
+<p>This actor reads an unsigned byte array at the <i>input<i> port,
+encrypts the data using the data from the <i>key</i> port and then
+writes the unsigned byte array results to the <i>output</i> port.
+
+<p>The <i>key</i> is should be the same for both the
+SymmetricDecryption actor and this actor.  The <i>key</i> should not
+be visible to users as the security of the encrypted message relies on
+the secrecy of this key.
+
+<p>The <i>algorithm</i> parameter determines which algorithm is used.
+algorithm specified must be symmetric. The mode and padding can also
+be specified in the <i>mode</i> and <i>padding</i> parameters.  In
+case a provider specific instance of an algorithm is needed the
+provider may also be specified in the <i>provider</i> parameter.
 
 <p>Note that for simplicity, this actor does not support the
 notion of algorithm parameters, so the algorithm must not require

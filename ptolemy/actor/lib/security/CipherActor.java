@@ -1,4 +1,4 @@
-/* A base class for cipher actors.
+/* A base class for actors that encrypt and decrypt data.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -42,10 +42,11 @@ import javax.crypto.Cipher;
 
 //////////////////////////////////////////////////////////////////////////
 //// CipherActor
-/**
+/** 
+A base class that implements general functions used by cipher
+actors.
 
-This is a base class that implements general functions used by cipher
-actors.  Cipher actors are any actors which perform encryption or
+<p>Cipher actors are any actors which perform encryption or
 decryption based on the Java JCE.  Actors extending this class take in
 an unsigned byte array at the <i>input</i>, perform the transformation
 specified in the <i>algorithm</i> parameter and send a unsigned byte
@@ -155,7 +156,7 @@ public class CipherActor extends CryptographyActor {
      *  Possible values include
      * <dl>
      * <dt><code></code> (<i>The empty string</i>)
-     * <dd>Use the default setting for the algorithm
+     * <dd>Use the default setting for the algorithm.
      *
      * <dt><code>NoPadding</code>
      * <dd>No padding.
@@ -188,9 +189,8 @@ public class CipherActor extends CryptographyActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class to reinitialize the state if
-     *  the <i>algorithm</i>, <i>provider</i>, or <i>keysize</i>
-     *  parameter is changed.
+    /** Override the base class to reinitialize the state if the
+     *  the <i>mode</i>, or <i>padding</i>parameter is changed.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -204,10 +204,8 @@ public class CipherActor extends CryptographyActor {
             super.attributeChanged(attribute);
         }
     }
-    /** This method retrieves the <i>algorithm</i>, <i>provider</i>,
-     *  <i>mode</i>, <i>keySize</i> and <i>padding</i>.  The cipher is also
-     *  initialized.  If provider is left as "SystemDefault" the system
-     *  chooses the provider based on the JCE.
+
+    /** Retrieve the values of the parameters and initialize the Cipher.
      *
      * @exception IllegalActionException If the algorithm cannot be found,
      * the padding scheme is illegal for the the given algorithm or

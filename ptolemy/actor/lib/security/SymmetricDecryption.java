@@ -1,5 +1,4 @@
-/* Receives a key from a SymmetricEncryption actor and uses it to decrypt
-   a data input based on a given symmetric algorithm.
+/* Decrypt data using a symmetric algorithm.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -49,17 +48,20 @@ import javax.crypto.Cipher;
 //////////////////////////////////////////////////////////////////////////
 //// SymmetricDecryption
 /**
-This actor takes an unsigned byte array at the input and decrypts the
-message.  The resulting output is an unsigned byte array.  The shared
-secret key is received from the SymmetricEncryption actor on the
-<i>key</i> and is used to decrypt the message.
-Various ciphers that are implemented by "providers" and
-installed maybe used by specifying the algorithm in the
-<i>algorithm</i> parameter.  The algorithm specified must be
-symmetric. The mode and padding can also be specified in the
-<i>mode</i> and <i>padding</i> parameters.  In case a provider
-specific instance of an algorithm is needed the provider may also be
-specified in the provider parameter.
+Decrypt an unsigned byte array using a symmetric algorithm.
+
+Read an unsigned byte array at the <i>input<i>, decrypt
+the data using the data from the <i>key</i> port and
+write the unsigned byte array results to the <i>output</i> port.
+
+<p>The <i>key</i> is should be the same for both the SymmetricEncryption
+actor and this actor.
+
+The <i>algorithm</i> parameter determines which algorithm is used.
+algorithm specified must be symmetric. The mode and padding can also
+be specified in the <i>mode</i> and <i>padding</i> parameters.  In
+case a provider specific instance of an algorithm is needed the
+provider may also be specified in the <i>provider</i> parameter.
 
 <p>Note that for simplicity, this actor does not support the
 notion of algorithm parameters, so the algorithm must not require

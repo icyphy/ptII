@@ -64,14 +64,14 @@ This is a base class that implements general and helper functions used
 by cryptographic actors. Actors extending this class take in an
 unsigned byte array at the <i>input</i>, process the the data based on
 the <i>algorithm</i> parameter and send an unsigned byte array on the
-<i>output</i>.  These transformations include ciphers and signatures
-implemented by JCE.  The algorithms that maybe implemented are limited
-those that are implemented by "providers" following the JCE
-specifications and installed on the machine being run.  In case a
-provider specific instance of an algorithm is needed, the provider may
-be specified in the <i>provider</i> parameter.  This class takes care
-of basic initialization of the subclasses. The <i>keySize</i> also
-allows implementations of algorithms using various key sizes.
+<i>output</i>.  These transformations include ciphers implemented by
+JCE.  The algorithms that maybe implemented are limited those that are
+implemented by "providers" following the JCE specifications and
+installed on the machine being run.  In case a provider specific
+instance of an algorithm is needed, the provider may be specified in
+the <i>provider</i> parameter.  This class takes care of basic
+initialization of the subclasses. The <i>keySize</i> also allows
+implementations of algorithms using various key sizes.
 
 <p>Actors derived from this baseclass usually have a
 process(byte[] dataBytes) method that processes the data appropriately.
@@ -115,6 +115,7 @@ public class CryptographyActor extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
+        // Add the possible algorithm choices.
         algorithm = new StringParameter(this, "algorithm");
         Set algorithms = Security.getAlgorithms("Cipher");
         Iterator algorithmsIterator = algorithms.iterator();
@@ -126,6 +127,7 @@ public class CryptographyActor extends TypedAtomicActor {
             algorithm.addChoice(algorithmName);
         }
 
+        // Add the possible provider choices.
         provider = new StringParameter(this, "provider");
         provider.setExpression("SystemDefault");
         provider.addChoice("SystemDefault");
@@ -145,7 +147,7 @@ public class CryptographyActor extends TypedAtomicActor {
      *  implemented by providers using the Java JCE which are found on the
      *  system.
      *  The initial default is the first value returned by
-     *  Security.getAlgorithms();
+     *  java.security.Security.getAlgorithms();
      *
      */
     public StringParameter algorithm;
@@ -172,12 +174,12 @@ public class CryptographyActor extends TypedAtomicActor {
      */
     public Parameter keySize;
 
-    /** This port takes in an UnsignedByteArray and processes the data.
+    /** This port read in an unsigned byte array and processes the data.
      */
     public TypedIOPort input;
 
     /** This port sends out the processed data received from <i>input</i> in
-     *  the form of an UnsignedByteArray.
+     *  the form of an unsigned byte array.
      */
     public TypedIOPort output;
 
@@ -260,26 +262,6 @@ public class CryptographyActor extends TypedAtomicActor {
         _keySize = ((IntToken)keySize.getToken()).intValue();
     }
 
-    /** Convert a key Object to a byte array using an ObjectStream.
-     *
-     * @param key the object whose byte array value is determined.
-     * @return the byte array of the key object.
-     * @exception IllegalActionException If IOException occurs.
-     */
-    public static byte[] keyToBytes(Key key) throws IllegalActionException {
-        ByteArrayOutputStream byteArrayOutputStream =
-            new ByteArrayOutputStream();
-        try {
-            ObjectOutputStream objectOutputStream =
-                new ObjectOutputStream(byteArrayOutputStream);
-            objectOutputStream.writeObject(key);
-            return byteArrayOutputStream.toByteArray();
-        } catch (IOException ex) {
-            throw new IllegalActionException(null, ex,
-                    "Problem with writing key");
-        }
-    }
-
     /** Take an array of unsigned bytes and convert it to an ArrayToken.
      *
      * @param dataBytes data to be converted to an ArrayToken.
@@ -300,7 +282,7 @@ public class CryptographyActor extends TypedAtomicActor {
     ////                         Protected Methods                 ////
 
     /** Processes the data based on parameter specifications.  This
-     *  class returns the data in its original form.  Subclasses
+     *  base class returns the data in its original form.  Subclasses
      *  should process the data using one of the signature or cipher
      *  classes provided in the JCE or JCA.
      *

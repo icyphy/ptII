@@ -30,7 +30,7 @@
 
 package ptolemy.actor.lib.security;
 
-import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.StringParameter;
@@ -75,7 +75,7 @@ Information about JCE can be found at
 @version $Id$
 @since Ptolemy II 3.1
 */
-public class SignatureActor extends TypedCompositeActor {
+public class SignatureActor extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.

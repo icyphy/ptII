@@ -1,4 +1,4 @@
-/* Create and send a Key
+/* Create and send a Key.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -57,6 +57,9 @@ import javax.crypto.SecretKey;
 /**
 
 This actor creates a key and sends it on the output.
+
+The key can be used by the {@link SymmetricEncryption} and 
+{@link SymmetricDecryption} actors.
 
 <p>This key should be not be visible to users as the security of
 the encrypted message relies on the secrecy of this key.
@@ -122,7 +125,6 @@ public class Key extends Source {
      *  system.
      *  The initial default is the first value returned by
      *  Security.getAlgorithms();
-     *
      */
     public StringParameter algorithm;
 
@@ -205,9 +207,6 @@ public class Key extends Source {
             }
             keyGen.init(_keySize, new SecureRandom());
             _secretKey = keyGen.generateKey();
-
-            // _secretKey = (SecretKey)_createSymmetricKey();
-
             _secretKeyObjectToken = new ObjectToken(_secretKey);
 
         } catch (Exception ex) {
