@@ -177,7 +177,7 @@ public class ViterbiDecoder extends Transformer {
     /** Boolean defining the decoding mode. If it is true, the decoder
      *  will do soft decoding, and the input data type will be double;
      *  otherwise it will do hard decoding, and the input data type will
-     *  be boolean. The default value is true.
+     *  be boolean. The default value is false.
      */
     public Parameter softDecoding;
 
