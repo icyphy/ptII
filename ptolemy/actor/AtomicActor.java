@@ -48,83 +48,83 @@ public class AtomicActor extends Actor{
      * @exception full-classname description
      */	
     public AtomicActor(CompositeActor container, String name) 
-           throws NameDuplicationException {
+            throws NameDuplicationException {
         super(container, name);
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
     
-//     public NamedList deepSuccessorList() {
-//         synchronized(workspace()) {
-//             if(_deepSuccVersion == workspace().getVersion()) {
-//                 return _deepSuccessors;
-//             }
-//             NamedList successorList = new NamedList();
-//             Enumeration outputs = outputPorts();
-//             while(outputs.hasMoreElements()) {
-//                 Enumeration deepConnectedInports = 
-//                     ((AtomicIOPort)outputs.nextElement()).deepConnectedInputPorts();
-//                 while(deepConnectedInports.hasMoreElements()) {
-//                     AtomicIOPort p = (AtomicIOPort)deepConnectedInports.nextElement();
-//                     Actor succ = (Actor) p.getContainer();
-//                     if(!successorList.includes(succ)) {
-//                         try {
-//                             successorList.append(succ);
-//                         } catch (KernelException e) {}
-//                     }
-//                 }
-//             }
-//             _deepSuccessors = successorList;
-//             _deepSuccVersion = workspace().getVersion();
-//             return _deepSuccessors;
-//         }
-//     }
-//     /** get an list of successor (ComponentEntity)
-//      * keep uniqueness. identity entity appears only once in the 
-//      * enumeration. The reason of returning a NamedList is that 
-//      * both the enumeration and the size can be get easily.
-//      */
-//     public Enumeration deepSuccessors() {
-//             return deepSuccessorList().getElements();
-//     }
-// 
-// 
-//     /** get an list of predecessors (ComponentEntity)
-//      * keep uniqueness. identity entity appears only once in the 
-//      * enumeration. The reason of returning a NamedList is that 
-//      * both the enumeration and the size can be get easily.
-//      */
-//     public NamedList deepPredecessorList() {
-//         synchronized(workspace()) {
-//             if(_deepPredVersion == workspace().getVersion()) {
-//                 return _deepPredecessors;
-//             }
-//             NamedList predecessorList = new NamedList();
-//             Enumeration inputs = inputPorts();
-//             while(inputs.hasMoreElements()) {
-//                 Enumeration deepConnectedOutports = 
-//                     ((AtomicIOPort)inputs.nextElement()).deepConnectedOutputPorts();
-//                 while(deepConnectedOutports.hasMoreElements()) {
-//                     AtomicIOPort p = (AtomicIOPort)deepConnectedOutports.nextElement();
-//                     Actor pred =
-//                         (Actor)p.getContainer();
-//                     if(!predecessorList.includes(pred)) {
-//                         try {
-//                             predecessorList.append(pred);
-//                         } catch (KernelException e) {}
-//                     }
-//                 }
-//             }
-//             _deepPredecessors = predecessorList;
-//             _deepPredVersion = workspace().getVersion();
-//             return _deepPredecessors;
-//         }
-//     }
-//     
-//     public Enumeration deepPredecessors() {
-//         return deepPredecessorList().getElements();
-//     }
+    //     public NamedList deepSuccessorList() {
+    //         synchronized(workspace()) {
+    //             if(_deepSuccVersion == workspace().getVersion()) {
+    //                 return _deepSuccessors;
+    //             }
+    //             NamedList successorList = new NamedList();
+    //             Enumeration outputs = outputPorts();
+    //             while(outputs.hasMoreElements()) {
+    //                 Enumeration deepConnectedInports = 
+    //                     ((AtomicIOPort)outputs.nextElement()).deepConnectedInputPorts();
+    //                 while(deepConnectedInports.hasMoreElements()) {
+    //                     AtomicIOPort p = (AtomicIOPort)deepConnectedInports.nextElement();
+    //                     Actor succ = (Actor) p.getContainer();
+    //                     if(!successorList.includes(succ)) {
+    //                         try {
+    //                             successorList.append(succ);
+    //                         } catch (KernelException e) {}
+    //                     }
+    //                 }
+    //             }
+    //             _deepSuccessors = successorList;
+    //             _deepSuccVersion = workspace().getVersion();
+    //             return _deepSuccessors;
+    //         }
+    //     }
+    //     /** get an list of successor (ComponentEntity)
+    //      * keep uniqueness. identity entity appears only once in the 
+    //      * enumeration. The reason of returning a NamedList is that 
+    //      * both the enumeration and the size can be get easily.
+    //      */
+    //     public Enumeration deepSuccessors() {
+    //             return deepSuccessorList().getElements();
+    //     }
+    // 
+    // 
+    //     /** get an list of predecessors (ComponentEntity)
+    //      * keep uniqueness. identity entity appears only once in the 
+    //      * enumeration. The reason of returning a NamedList is that 
+    //      * both the enumeration and the size can be get easily.
+    //      */
+    //     public NamedList deepPredecessorList() {
+    //         synchronized(workspace()) {
+    //             if(_deepPredVersion == workspace().getVersion()) {
+    //                 return _deepPredecessors;
+    //             }
+    //             NamedList predecessorList = new NamedList();
+    //             Enumeration inputs = inputPorts();
+    //             while(inputs.hasMoreElements()) {
+    //                 Enumeration deepConnectedOutports = 
+    //                     ((AtomicIOPort)inputs.nextElement()).deepConnectedOutputPorts();
+    //                 while(deepConnectedOutports.hasMoreElements()) {
+    //                     AtomicIOPort p = (AtomicIOPort)deepConnectedOutports.nextElement();
+    //                     Actor pred =
+    //                         (Actor)p.getContainer();
+    //                     if(!predecessorList.includes(pred)) {
+    //                         try {
+    //                             predecessorList.append(pred);
+    //                         } catch (KernelException e) {}
+    //                     }
+    //                 }
+    //             }
+    //             _deepPredecessors = predecessorList;
+    //             _deepPredVersion = workspace().getVersion();
+    //             return _deepPredecessors;
+    //         }
+    //     }
+    //     
+    //     public Enumeration deepPredecessors() {
+    //         return deepPredecessorList().getElements();
+    //     }
 
     /** get an enumeration of the input ports
      */ 
