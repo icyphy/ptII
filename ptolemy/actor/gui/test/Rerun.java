@@ -80,10 +80,10 @@ public class Rerun extends MoMLSimpleApplication {
      *  @param xmlFileName A string that refers to an MoML file that
      *  contains a Ptolemy II model.  The string should be
      *  a relative pathname.
-     *  @exception Exception If there was a problem parsing
+     *  @exception Throwable If there was a problem parsing
      *  or running the model.
      */
-    public Rerun(String xmlFileName) throws Exception {
+    public Rerun(String xmlFileName) throws Throwable {
         super(xmlFileName);
     }
 
@@ -124,7 +124,7 @@ public class Rerun extends MoMLSimpleApplication {
             for ( int i = 0; i < runs; i++) {
                 reRun.rerun();
             }
-        } catch (Exception ex) {
+        } catch (Throwable ex) {
             System.err.println("Command failed: " + ex);
             ex.printStackTrace();
         }
