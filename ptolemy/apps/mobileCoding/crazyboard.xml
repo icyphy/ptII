@@ -345,7 +345,7 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 41, 927, 608}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={68, 41, 927, 601}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[712, 492]">
     </property>
@@ -415,7 +415,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 240.0">
         </property>
         <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -435,9 +435,9 @@
     <entity name="MobileModel" class="ptolemy.actor.MobileModel">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="{85ub, 0ub, 0ub}">
         </property>
-        <property name="director" class="ptolemy.actor.Director">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 320.0">
-            </property>
+        <property name="defaultDirector" class="ptolemy.actor.Director">
+        </property>
+        <property name="director" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.de.kernel.DEDirector&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="356.0, 250.8671875">
         </property>
