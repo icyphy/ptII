@@ -153,7 +153,7 @@ public class BackwardEulerSolver extends FixedStepSolver {
      *  states have not converged but the number of iterations reaches the
      *  <i>maxIterations</i> number. Meanwhile, the round count is reset.
      *  @return True if the resolved states have converged.
-     *  @exception IllegalActionException Not thrown in this class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean resolveStates() throws IllegalActionException {
         CTDirector dir = (CTDirector)getContainer();

@@ -119,7 +119,8 @@ public class ExplicitRK23Solver extends ODESolver {
         Time iterationBeginTime = dir.getIterationBeginTime();
         double currentStepSize = dir.getCurrentStepSize();
         dir.setModelTime(
-                iterationBeginTime.add(currentStepSize*_timeInc[_getRoundCount()]));
+                iterationBeginTime.add(currentStepSize
+                        * _timeInc[_getRoundCount()]));
     }
 
 
