@@ -31,6 +31,7 @@
 package ptolemy.vergil.ptolemy.kernel;
 
 import ptolemy.actor.*;
+import ptolemy.data.type.Typeable;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.vergil.*;
@@ -48,9 +49,11 @@ import diva.canvas.toolbox.*;
 import java.awt.geom.Rectangle2D;
 import diva.util.Filter;
 import diva.util.java2d.Polygon2D;
+
 import java.awt.*;
-import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -105,7 +108,7 @@ public class EntityPortController extends BasicNodeController {
      */
     public class EntityPortRenderer implements NodeRenderer {
 	public Figure render(Object n) {
-	    Port port = (Port)n;
+	    final Port port = (Port)n;
 	    Polygon2D.Double polygon = new Polygon2D.Double();
 	    polygon.moveTo(-4, 4);
 	    polygon.lineTo(4, 0);
@@ -117,11 +120,27 @@ public class EntityPortController extends BasicNodeController {
             } else {
                 fill = Color.black;
             }
-	    Figure figure = new BasicFigure(polygon, fill, (float)1.5);
+	    Figure figure = new BasicFigure(polygon, fill, (float)1.5) {
+                // Override this because we want to show the type.
+                // It doesn't work to set it once because the type
+                // has not been resolved, and anyway, it may change.
+                public String getToolTipText() {
+                    String tipText = port.getName();
+                    if (port instanceof Typeable) {
+                        try {
+                            tipText = tipText + ", type:"
+                                     + ((Typeable)port).getType();
+                    } catch (IllegalActionException ex) {}
+                }
+                return tipText;
+                }
+            };
+            // Have to do this also, or the awt doesn't display any
+            // tooltip at all.
+            figure.setToolTipText(port.getName());
 
             PtolemyGraphModel model =
                 (PtolemyGraphModel)getController().getGraphModel();
-            figure.setToolTipText(port.getName());
 
 	    // Wrap the figure in a TerminalFigure to set the direction that
 	    // connectors exit the port.  Note that this direction is the
