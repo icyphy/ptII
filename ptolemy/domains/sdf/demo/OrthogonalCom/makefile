@@ -40,8 +40,7 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-JSRCS = \
-	OrthogonalCom.java
+JSRCS = 
 
 EXTRA_SRCS = \
 	$(JSRCS)
