@@ -348,12 +348,12 @@ public class Manager extends NamedObj implements Runnable {
 
         // Since Manager.resume() is synchronized, start a thread
         // to call resume() in order to avoid deadlock
-        Thread resumeThread = new PtolemyThread( new Runnable() {
-                public void run() {
-                    resume();
-                }
-            });
-        resumeThread.start();
+//         Thread resumeThread = new PtolemyThread( new Runnable() {
+//                 public void run() {
+//                     resume();
+//                 }
+//             });
+//         resumeThread.start();
     }
 
     /** Get the analysis with the given name, or return null if no such 
