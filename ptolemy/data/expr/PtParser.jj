@@ -3,8 +3,8 @@
 /* Input file to JJTree and JavaCC to generate Ptolemy II Parser */
 
 options {
-LOOKAHEAD=1;                                                                   
-STATIC = false;                          
+LOOKAHEAD=1;                                                                      
+STATIC = false;                           
 }
 
 PARSER_BEGIN(PtParser)
@@ -81,7 +81,7 @@ the syntax is
 JavaCC by itself simply generates a file (and support files) that allow an 
 input to be parsed, it does not return a parse tree. For the purposes of 
 type checking we require a parse tree, and this is obtained using JJTree, a 
-preprocesssor for JavaCC. 
+preprocessor for JavaCC. 
 <p>
 JJtree operates by annotating the grammar file to support the generation
 of the parse tree. Thus the process is
@@ -503,6 +503,82 @@ TOKEN : /* literal strings */
         )>
 }
 
+TOKEN : /* Assignment */
+{
+	< SETEQUALS: "=" > | 
+	< SEPARATOR: ";" >
+}
+
+ASTPtRootNode startAssignmentList(List IDList)             :
+{/*@bgen(jjtree) PtRootNode */
+  ASTPtRootNode jjtn000 = new ASTPtRootNode(JJTPTROOTNODE);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) PtRootNode */
+    try {
+/*@egen*/
+    assignment() (<SEPARATOR> assignment())* <EOF>/*@bgen(jjtree)*/
+        {
+          jjtree.closeNodeScope(jjtn000, true);
+          jjtc000 = false;
+        }
+/*@egen*/
+        { return jjtn000; }/*@bgen(jjtree)*/
+    } catch (Throwable jjte000) {
+      if (jjtc000) {
+        jjtree.clearNodeScope(jjtn000);
+        jjtc000 = false;
+      } else {
+        jjtree.popNode();
+      }
+      if (jjte000 instanceof RuntimeException) {
+        throw (RuntimeException)jjte000;
+      }
+      if (jjte000 instanceof ParseException) {
+        throw (ParseException)jjte000;
+      }
+      throw (Error)jjte000;
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
+/*@egen*/
+}
+
+void assignment()                   :
+{/*@bgen(jjtree) PtAssignmentNode */
+  ASTPtAssignmentNode jjtn000 = new ASTPtAssignmentNode(JJTPTASSIGNMENTNODE);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) PtAssignmentNode */
+    try {
+/*@egen*/
+    identifier() <SETEQUALS> expression()/*@bgen(jjtree)*/
+    } catch (Throwable jjte000) {
+      if (jjtc000) {
+        jjtree.clearNodeScope(jjtn000);
+        jjtc000 = false;
+      } else {
+        jjtree.popNode();
+      }
+      if (jjte000 instanceof RuntimeException) {
+        throw (RuntimeException)jjte000;
+      }
+      if (jjte000 instanceof ParseException) {
+        throw (ParseException)jjte000;
+      }
+      throw (Error)jjte000;
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
+/*@egen*/ 
+}
+
 ASTPtRootNode start()             :
 {/*@bgen(jjtree) PtRootNode */
   ASTPtRootNode jjtn000 = new ASTPtRootNode(JJTPTROOTNODE);
@@ -510,40 +586,46 @@ ASTPtRootNode start()             :
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}
 {/*@bgen(jjtree) PtRootNode */
-        try {
+    try {
 /*@egen*/
-	(
-      	LOOKAHEAD(<FUNCTION> "(")
-		functionDefinition()
-      |
-      	funcIf()
-	) <EOF>/*@bgen(jjtree)*/
+    expression() <EOF>/*@bgen(jjtree)*/
         {
           jjtree.closeNodeScope(jjtn000, true);
           jjtc000 = false;
         }
 /*@egen*/
 	{ return jjtn000; }/*@bgen(jjtree)*/
-        } catch (Throwable jjte000) {
-          if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            throw (RuntimeException)jjte000;
-          }
-          if (jjte000 instanceof ParseException) {
-            throw (ParseException)jjte000;
-          }
-          throw (Error)jjte000;
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
+    } catch (Throwable jjte000) {
+      if (jjtc000) {
+        jjtree.clearNodeScope(jjtn000);
+        jjtc000 = false;
+      } else {
+        jjtree.popNode();
+      }
+      if (jjte000 instanceof RuntimeException) {
+        throw (RuntimeException)jjte000;
+      }
+      if (jjte000 instanceof ParseException) {
+        throw (ParseException)jjte000;
+      }
+      throw (Error)jjte000;
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
 /*@egen*/
+}
+
+void expression()       :
+{}
+{
+    (
+     LOOKAHEAD(<FUNCTION> "(")
+         functionDefinition()
+         |
+         funcIf()
+     )
 }
 
 void funcIf()       :
@@ -1533,7 +1615,7 @@ String tidied, x;
   |   LOOKAHEAD("(" <FUNCTION> "(")
       "(" functionDefinition() ")"
 
-  | "(" funcIf() ")"
+  |   "(" funcIf() ")"
  
   |   LOOKAHEAD( "[" )
       matrixConstruct()

@@ -394,7 +394,7 @@ public abstract class BaseType implements Type, Serializable {
     /** The general data type: The top of the lattice.  */
     public static class GeneralType extends BaseType {
         private GeneralType() {
-            super(Token.class, "general");
+            super(GeneralToken.class, "general");
         }
         public Token convert(Token t) throws IllegalActionException {
             // FIXME: what does converting to general MEAN?
@@ -408,6 +408,24 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
     public static final GeneralType GENERAL = new GeneralType();
+
+    /** The event data type */
+    public static class EventType extends BaseType {
+        private EventType() {
+            super(EventToken.class, "general");
+        }
+        public Token convert(Token t) throws IllegalActionException {
+            // FIXME: what does converting to general MEAN?
+            return t;
+            //     throw new IllegalActionException("Cannot convert token "
+            //         + t + " to type general, because general is not a "
+            //         + concrete type.");
+        }
+        public int getTypeHash() {
+            return 12;
+        }
+    }
+    public static final EventType EVENT = new EventType();
 
     ///////////////////////////////////////////////////////////////////
     ////                    package private method                 ////

@@ -50,7 +50,7 @@ function is valid in the scope of the expression.
 @see ptolemy.data.expr.ASTPtRootNode
 */
 
-public class ParseTreeFreeVariableCollector implements ParseTreeVisitor {
+public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -66,7 +66,7 @@ public class ParseTreeFreeVariableCollector implements ParseTreeVisitor {
         //node.visit(this);
         //_set = null;
         //return set;
-                return collectFreeVariables(node, null);
+        return collectFreeVariables(node, null);
     }
 
     public Set collectFreeVariables(ASTPtRootNode node, ParserScope scope)
@@ -74,7 +74,7 @@ public class ParseTreeFreeVariableCollector implements ParseTreeVisitor {
         Set set = new HashSet();
         _set = set;
         _scope = scope;
-                _functionArgumentListStack.clear();
+        //        _functionArgumentListStack.clear();
         node.visit(this);
         _scope = null;
         _set = null;
@@ -97,15 +97,17 @@ public class ParseTreeFreeVariableCollector implements ParseTreeVisitor {
             _visitChild(node, i);
         }
 
+        // FIXME: the function name should just be an open variable.
         if(_isValidName(node.getFunctionName())) {
             _set.add(node.getFunctionName());
         }
     }
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
-                _functionArgumentListStack.push(node.getArgumentNameList());
+        //        _functionArgumentListStack.push(node.getArgumentNameList());
         _visitAllChildren(node);
-                _functionArgumentListStack.pop();
+        _set.removeAll(node.getArgumentNameList());
+        //  _functionArgumentListStack.pop();
     }
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
@@ -117,17 +119,16 @@ public class ParseTreeFreeVariableCollector implements ParseTreeVisitor {
         if(node.isConstant() && node.isEvaluated()) {
             return;
         }
-
-                Iterator nameLists = _functionArgumentListStack.iterator();
-                while (nameLists.hasNext()) {
-                        List nameList = (List)nameLists.next();
-                        if (nameList.contains(node.getName())) {
-                                // this leaf node refers to an argument of a defined
-                                // function
-                                return;
-                        }
-                }
-
+        /*       Iterator nameLists = _functionArgumentListStack.iterator();
+        while (nameLists.hasNext()) {
+            List nameList = (List)nameLists.next();
+            if (nameList.contains(node.getName())) {
+                // this leaf node refers to an argument of a defined
+                // function
+                return;
+            }
+        }
+         */
         _set.add(node.getName());
     }
 
@@ -213,5 +214,5 @@ public class ParseTreeFreeVariableCollector implements ParseTreeVisitor {
 
     protected ParserScope _scope;
     protected Set _set;
-        private Stack _functionArgumentListStack = new Stack();
+    //    private Stack _functionArgumentListStack = new Stack();
 }

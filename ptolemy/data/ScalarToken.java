@@ -27,7 +27,6 @@
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Green (yuhong@eecs.berkeley.edu)
 FIXME: setUnitCategory seems to violate immutability.
-FIXME: _unitString should use StringBuffer.
 */
 
 package ptolemy.data;

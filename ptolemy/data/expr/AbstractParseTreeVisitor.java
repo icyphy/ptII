@@ -38,10 +38,13 @@ import java.util.Hashtable;
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
-//// ParseTreeVisitor
+//// AbstractParseTreeVisitor
 /**
-This class implements the visitor pattern for parse trees in the
-expression language.
+This class implements a base class visitor for parse trees in the
+expression language.  Primarily this class exists to give nice error
+messages for visitors that are partly implemented, and to allow us to
+extend the expression language without completely breaking existing
+code.
 
 @author Steve Neuendorffer
 @version $Id$
@@ -49,44 +52,83 @@ expression language.
 @see ptolemy.data.expr.ASTPtRootNode
 */
 
-public interface ParseTreeVisitor {
+public class AbstractParseTreeVisitor implements ParseTreeVisitor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
-            throws IllegalActionException;
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtArrayConstructNode");
+    }
     public void visitAssignmentNode(ASTPtAssignmentNode node)
-            throws IllegalActionException;
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtAssignmentNode");
+    }
     public void visitBitwiseNode(ASTPtBitwiseNode node)
-            throws IllegalActionException;
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtBitwiseNode");
+    }
     public void visitFunctionNode(ASTPtFunctionNode node)
-            throws IllegalActionException;
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtFunctionNode");
+    }
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-            throws IllegalActionException;
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtFunctionDefinitionNode");
+    }
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
-            throws IllegalActionException;
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtFunctionalIfNode");
+    }
     public void visitLeafNode(ASTPtLeafNode node)
-            throws IllegalActionException;
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtLeafNode");
+    }
     public void visitLogicalNode(ASTPtLogicalNode node)
-            throws IllegalActionException;
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtLogicalNode");
+    }
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
-            throws IllegalActionException;
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtMatrixConstructNode");
+    }
     public void visitMethodCallNode(ASTPtMethodCallNode node)
-            throws IllegalActionException;
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtMethodCallNode");
+    }
     public void visitPowerNode(ASTPtPowerNode node)
-            throws IllegalActionException;
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtPowerNode");
+    }
     public void visitProductNode(ASTPtProductNode node)
-            throws IllegalActionException;
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtProductNode");
+    }
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
-            throws IllegalActionException;
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtRecordConstructNode");
+    }
     public void visitRelationalNode(ASTPtRelationalNode node)
-            throws IllegalActionException;
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtRelationalNode");
+    }
     public void visitShiftNode(ASTPtShiftNode node)
-            throws IllegalActionException;
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtShiftNode");
+    }
     public void visitSumNode(ASTPtSumNode node)
-            throws IllegalActionException;
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtSumNode");
+    }
     public void visitUnaryNode(ASTPtUnaryNode node)
-            throws IllegalActionException;
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtUnaryNode");
+    }
+
+    protected IllegalActionException _unsupportedVisitException(String name) {
+        return new IllegalActionException("Nodes of type " + name + 
+                " cannot be visited by a " + getClass().getName() + ".");
+    }
 
 }

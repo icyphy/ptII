@@ -48,7 +48,7 @@ parse tree.  This type is stored in the parse tree.
 @see ptolemy.data.expr.ASTPtRootNode
 */
 
-public class ParseTreeTypeInference implements ParseTreeVisitor {
+public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -142,13 +142,15 @@ public class ParseTreeTypeInference implements ParseTreeVisitor {
         }
 
         if (functionName.compareTo("eval") == 0) {
+            // We can't infer the type of eval expressions...
             _setType(node, BaseType.GENERAL);
             return;
         }
 
         if (functionName.compareTo("matlab") == 0) {
-            throw new IllegalActionException(
-                    "unimplemented case");
+            // We can't infer the type of eval expressions...
+            _setType(node, BaseType.GENERAL);
+            return;
         }
 
         // Otherwise, try to reflect the method name.
@@ -160,7 +162,6 @@ public class ParseTreeTypeInference implements ParseTreeVisitor {
                 throw new RuntimeException("node " + node + " has null child.");
             }
         }
-
 
         CachedMethod cachedMethod =
             CachedMethod.findMethod(functionName,
@@ -225,7 +226,7 @@ public class ParseTreeTypeInference implements ParseTreeVisitor {
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
-       _setType(node, BaseType.BOOLEAN);
+        _setType(node, BaseType.BOOLEAN);
     }
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
@@ -239,6 +240,7 @@ public class ParseTreeTypeInference implements ParseTreeVisitor {
         Type matrixType = UnsizedMatrixType.getMatrixTypeForElementType(elementType);
        _setType(node, matrixType);
     }
+
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
         _visitAllChildren(node);

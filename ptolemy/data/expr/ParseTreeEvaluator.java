@@ -59,7 +59,7 @@ This class visits parse trees and evaluates them into a token value.
 @see ptolemy.data.expr.ASTPtRootNode
 */
 
-public class ParseTreeEvaluator implements ParseTreeVisitor {
+public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

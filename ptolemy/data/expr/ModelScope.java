@@ -51,21 +51,19 @@ scopes for Ptolemy models.
 
 public abstract class ModelScope implements ParserScope {
 
-    /** Return the object in the model that corresponds to the given
-     *  identifier name in this scope.
-     */
-    public abstract NamedObj getScopedObject(String name);
-
     /** Get the variable with the given name in the scope of the given
-     *  variable.  The scope of the object includes any container of the
+     *  container.  The scope of the object includes any container of the
      *  given object, and any variable contained in a scope extending
      *  attribute inside any of those containers.  If no variable exists
      *  with the given name, then return null.
+     *  @param exclude A variable to exclude from the search.
+     *  @param container The container to search upwards from.
+     *  @param name The variable name to search for.
      */
-    public static Variable getScopedVariable(Variable variable, String name) {
-        NamedObj container = (NamedObj)variable.getContainer();
+    public static Variable getScopedVariable(
+            Variable exclude, NamedObj container, String name) {
         while (container != null) {
-            Variable result = _searchIn(variable, container, name);
+            Variable result = _searchIn(exclude, container, name);
             if (result != null) {
                 return result;
             } else {
@@ -78,12 +76,12 @@ public abstract class ModelScope implements ParserScope {
     // Search in the container for an attribute with the given name.
     // Search recursively in any instance of ScopeExtender in the
     // container.
-    private static Variable _searchIn(Variable variable,
+    private static Variable _searchIn(Variable exclude,
             NamedObj container, String name) {
         Attribute result = container.getAttribute(name);
         if (result != null
                 && result instanceof Variable
-                && result != variable) {
+                && result != exclude) {
             return (Variable)result;
         } else {
             Iterator extenders =
@@ -93,7 +91,7 @@ public abstract class ModelScope implements ParserScope {
                 result = extender.getAttribute(name);
                 if (result != null
                         && result instanceof Variable
-                        && result != variable) {
+                        && result != exclude) {
                     return (Variable)result;
                 }
                 return null;

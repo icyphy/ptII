@@ -503,16 +503,41 @@ TOKEN : /* literal strings */
         )>
 }
 
+TOKEN : /* Assignment */
+{
+	< SETEQUALS: "=" > | 
+	< SEPARATOR: ";" >
+}
+
+ASTPtRootNode startAssignmentList(List IDList) #PtRootNode :
+{}
+{
+    assignment() (<SEPARATOR> assignment())* <EOF>
+        { return jjtThis; }
+}
+
+void assignment() #PtAssignmentNode :
+{}
+{
+    identifier() <SETEQUALS> expression() 
+}
+
 ASTPtRootNode start() #PtRootNode :
 {}
 {
-	(
-      	LOOKAHEAD(<FUNCTION> "(")
-		functionDefinition()
-      |
-      	funcIf()
-	) <EOF>
+    expression() <EOF>
 	{ return jjtThis; }
+}
+
+void expression() #void :
+{}
+{
+    (
+     LOOKAHEAD(<FUNCTION> "(")
+         functionDefinition()
+         |
+         funcIf()
+     )
 }
 
 void funcIf() #void :
@@ -933,7 +958,7 @@ String tidied, x;
   |   LOOKAHEAD("(" <FUNCTION> "(")
       "(" functionDefinition() ")"
 
-  | "(" funcIf() ")"
+  |   "(" funcIf() ")"
  
   |   LOOKAHEAD( "[" )
       matrixConstruct()

@@ -1672,7 +1672,9 @@ public class Variable extends Attribute
          */
         public ptolemy.data.Token get(String name)
                 throws IllegalActionException {
-            Variable result = getScopedVariable(Variable.this, name);
+            Variable result = getScopedVariable(
+                    Variable.this, 
+                    (NamedObj)Variable.this.getContainer(), name);
 
             // FIXME: use _variablesDependentOn as a cache.
 
@@ -1691,14 +1693,6 @@ public class Variable extends Attribute
             }
         }
 
-        /** Return the object in the model that corresponds to the given
-         *  identifier name in this scope.  This class always returns a
-         *  variable.
-         */
-        public NamedObj getScopedObject(String name) {
-            return getScopedVariable(Variable.this, name);
-        }
-
         /** Look up and return the type of the attribute with the
          *  specified name in the scope. Return null if such an
          *  attribute does not exist.
@@ -1708,7 +1702,9 @@ public class Variable extends Attribute
          */
         public ptolemy.data.type.Type getType(String name)
                 throws IllegalActionException {
-            Variable result = getScopedVariable(Variable.this, name);
+            Variable result = getScopedVariable(
+                    Variable.this, 
+                    (NamedObj)Variable.this.getContainer(), name);
             if (result != null) {
                 return result.getType();
             } else {

@@ -55,7 +55,9 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	AbstractParseTreeVisitor.java \
 	ASTPtArrayConstructNode.java \
+	ASTPtAssignmentNode.java \
 	ASTPtBitwiseNode.java \
 	ASTPtFunctionNode.java \
         ASTPtFunctionDefinitionNode.java \
@@ -78,6 +80,7 @@ JSRCS = \
 	Constants.java \
 	ExplicitScope.java \
 	FixPointFunctions.java \
+	GeneralToken.java \
 	ModelScope.java \
         NamedConstantsScope.java \
         NestedScope.java \

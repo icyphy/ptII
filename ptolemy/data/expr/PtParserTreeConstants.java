@@ -5,27 +5,29 @@ package ptolemy.data.expr;
 public interface PtParserTreeConstants
 {
   public int JJTPTROOTNODE = 0;
-  public int JJTVOID = 1;
-  public int JJTPTFUNCTIONALIFNODE = 2;
-  public int JJTPTLOGICALNODE = 3;
-  public int JJTPTBITWISENODE = 4;
-  public int JJTPTRELATIONALNODE = 5;
-  public int JJTPTPOWERNODE = 6;
-  public int JJTPTSHIFTNODE = 7;
-  public int JJTPTSUMNODE = 8;
-  public int JJTPTPRODUCTNODE = 9;
-  public int JJTPTUNARYNODE = 10;
-  public int JJTPTMETHODCALLNODE = 11;
-  public int JJTPTFUNCTIONNODE = 12;
-  public int JJTPTLEAFNODE = 13;
-  public int JJTPTFUNCTIONDEFINITIONNODE = 14;
-  public int JJTPTMATRIXCONSTRUCTNODE = 15;
-  public int JJTPTRECORDCONSTRUCTNODE = 16;
-  public int JJTPTARRAYCONSTRUCTNODE = 17;
+  public int JJTPTASSIGNMENTNODE = 1;
+  public int JJTVOID = 2;
+  public int JJTPTFUNCTIONALIFNODE = 3;
+  public int JJTPTLOGICALNODE = 4;
+  public int JJTPTBITWISENODE = 5;
+  public int JJTPTRELATIONALNODE = 6;
+  public int JJTPTPOWERNODE = 7;
+  public int JJTPTSHIFTNODE = 8;
+  public int JJTPTSUMNODE = 9;
+  public int JJTPTPRODUCTNODE = 10;
+  public int JJTPTUNARYNODE = 11;
+  public int JJTPTMETHODCALLNODE = 12;
+  public int JJTPTFUNCTIONNODE = 13;
+  public int JJTPTLEAFNODE = 14;
+  public int JJTPTFUNCTIONDEFINITIONNODE = 15;
+  public int JJTPTMATRIXCONSTRUCTNODE = 16;
+  public int JJTPTRECORDCONSTRUCTNODE = 17;
+  public int JJTPTARRAYCONSTRUCTNODE = 18;
 
 
   public String[] jjtNodeName = {
     "PtRootNode",
+    "PtAssignmentNode",
     "void",
     "PtFunctionalIfNode",
     "PtLogicalNode",

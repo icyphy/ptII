@@ -141,7 +141,7 @@ public class Constants {
         _table.put("complex", new ComplexToken(new Complex(0.0, 0.0)));
         _table.put("double", new DoubleToken(0.0));
         _table.put("fixedpoint", new FixToken(0.0, 2, 1));
-        _table.put("general", new ptolemy.data.Token());
+        _table.put("general", new GeneralToken());
         _table.put("int", new IntToken(0));
         _table.put("long", new LongToken(0));
         _table.put("matrix", new ConcreteMatrixToken());

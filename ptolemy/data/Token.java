@@ -27,6 +27,7 @@
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 Added pow() method for integer exponentiation.
+Don't use to represent pure events.
 */
 
 package ptolemy.data;
@@ -67,9 +68,12 @@ AbstractConvertibleToken is useful for implementing tokens that are
 losslessly convertible to a token in another class, but don't have
 units, such as BooleanToken.
 
-<p> Instances of this base class can be used to represent pure events,
-i.e., to indicate that an event is present. To support this use, the
-toString() method returns the String "present".
+<p> Instances of this base class *should not* be used to represent
+pure events, i.e., to indicate that an event is present. To represent
+pure events, it is better to use the EventToken class.  The reasoning
+is that the type BaseType.GENERAL is reserved to represent types which
+the type system cannot represent exactly.  Using the EventToken class,
+and the type BaseType.EVENT allows typesafe use of pure events.
 
 @author Neil Smyth, Yuhong Xiong, Edward A. Lee, Christopher Hylands,
 Steve Neuendorffer
