@@ -44,7 +44,8 @@ Description of the class
 @see classname
 @see full-classname
 */
-public class CTDummyStatefulActor extends CTActor{
+public class CTDummyStatefulActor extends CTActor
+        implements CTStatefulActor {
     /** Constructor
      */	
     public CTDummyStatefulActor(TypedCompositeActor container, String name)
