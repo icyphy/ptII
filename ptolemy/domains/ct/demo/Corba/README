@@ -49,7 +49,10 @@ To execute the model in the applet, please follow these steps:
    	 the default ORBInitialPort is 900.
 4. Possibly from another window, start the model server by:
 
-   prompt> java ptolemy.domains.ct.demo.Corba.ModelServer -ORBInitialPort 1050
+   prompt> java -cp d:/ptII ptolemy.domains.ct.demo.Corba.ModelServer \
+	-ORBInitialPort 1050
+
+   where "d:/ptII" is replaced by the location of your Ptolemy II installation.
    
 5. Possibly from a third window, start the client model 
    using appletviewer:

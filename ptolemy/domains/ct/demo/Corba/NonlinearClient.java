@@ -30,7 +30,6 @@
 
 package ptolemy.domains.ct.demo.Corba;
 
-import java.awt.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.gui.Query;
@@ -44,6 +43,8 @@ import ptolemy.domains.ct.gui.CTApplet;
 import ptolemy.domains.ct.kernel.solver.*;
 import ptolemy.domains.ct.lib.*;
 
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
 //// NonlinearClient
@@ -65,30 +66,26 @@ public class NonlinearClient extends CTApplet{
      */
     public void init() {
         super.init();
-        Panel controlpanel = new Panel();
+        JPanel controlpanel = new JPanel();
         controlpanel.setLayout(new BorderLayout());
-        add(controlpanel);
+        controlpanel.setBackground(_getBackground());
+        getContentPane().add(controlpanel, BorderLayout.NORTH);
 
         _query = new Query();
         _query.setBackground(_getBackground());
         //_query.addQueryListener(new ParameterListener());
-        controlpanel.add("West", _query);
+        controlpanel.add(_query, BorderLayout.WEST);
         _query.addLine("stopT", "Stop Time", "6.0");
-        _query.addLine("init", "ORB init parameter",
-                "-ORBInitialPort 1050");
-        _query.addLine("servant", "Servant Name",
-                "Nonlinear");
+        _query.addLine("init", "ORB init parameter", "-ORBInitialPort 1050");
+        _query.addLine("servant", "Servant Name", "Nonlinear");
 
-        Panel runcontrols = new Panel();
-        controlpanel.add("East",runcontrols);
-        runcontrols.add(_createRunControls(2));
+        controlpanel.add(_createRunControls(2), BorderLayout.EAST);
     
         //public void main(String[] args) {
         try {
             _toplevel.setName( "system");
 
-            _dir = new CTMultiSolverDirector(
-                    _toplevel, "DIR");
+            _dir = new CTMultiSolverDirector(_toplevel, "DIR");
             _dir.STAT = true;
             //_dir.addDebugListener(new StreamListener());
             Clock sqwv = new Clock(_toplevel, "SQWV");
@@ -103,7 +100,8 @@ public class NonlinearClient extends CTApplet{
             TypedIOPort cin = new TypedIOPort(_client, "input", true, false);
             TypedIOPort cout = new TypedIOPort(_client, "output", false, true);
             TimedPlotter myplot = new TimedPlotter( _toplevel, "Sink");
-            myplot.place(this);
+            myplot.place(getContentPane());
+            myplot.plot.setBackground(_getBackground());
             myplot.plot.setGrid(true);
             myplot.plot.setXRange(0.0, 6.0);
             myplot.plot.setYRange(-2.0, 2.0);
