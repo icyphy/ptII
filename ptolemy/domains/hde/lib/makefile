@@ -1,10 +1,10 @@
-# Makefile for the Hardware Discrete Event domain actor library
+# Makefile for the HDE  domain actor library
 #
-# @Authors: Jim Armstrong and Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands and Jim Armstrong, based on a file by Thomas M.# Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2002, The Regents of the University of California.
+# @Copyright (c) 1998-2002 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/hde/lib
 
-DIRS = 		test
+DIRS =  
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -49,10 +49,12 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	StateSampler.java\
-      ArrayMem.java
+	StateSampler.java \
+        ArrayMem.java \
+         
 
-OTHER_FILES_TO_BE_JARED =
+	OTHER_FILES_TO_BE_JARED = \
+	hdeentities.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -64,7 +66,9 @@ MISC_FILES =	 $(DIRS) \
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'EventButton$$1.class' \
+	'EventButton$$ButtonListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
