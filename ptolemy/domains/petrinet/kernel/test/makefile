@@ -67,7 +67,6 @@ EXTRA_SRCS = \
 	test1.xml \
 	test2.xml \
 	test6.xml \
-	test7.xml \
 	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
