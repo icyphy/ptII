@@ -62,7 +62,8 @@ public class LogicAnalyzer extends PlotBox {
      *  @param connected If true, a line is drawn to connect to the previous
      *   point.
      */
-    public synchronized void addPoint(int dataset, double time, int logicValue) {
+    public synchronized void addPoint(int dataset, double time,
+            int logicValue) {
         double yVal = 0;
         if (logicValue == ONE) {
             yVal = -dataset + _heightRatio*0.5;
@@ -71,8 +72,8 @@ public class LogicAnalyzer extends PlotBox {
         }
 
         if (DEBUG) {
-            System.out.println("Set="+dataset + " X-value=" + time +
-                    " Y-value=" + yVal);
+            System.out.println("Set = "+dataset + " X-value = " + time +
+                    " Y-value = " + yVal);
         }
         _addPoint(dataset, time, yVal);
     }
@@ -282,6 +283,13 @@ public class LogicAnalyzer extends PlotBox {
         }
     }
 
+    /** Don't draw the legend in the upper right hand corner
+     */
+    protected int _drawLegend(Graphics graphics, int urx, int ury) {
+        // no legend, so the width is equal to 0
+        return 0;
+    }
+
     /** Draw a line from the specified starting point to the specified
      *  ending point.  The current color is used.  If the <i>clip</i> argument
      *  is true, then draw only that portion of the line that lies within the
@@ -401,7 +409,7 @@ public class LogicAnalyzer extends PlotBox {
             if (legend == null) {
                 legend = new String("Data "+dataset);
             }
-            addYTick(legend,-dataset);
+            addYTick(legend, -dataset);
             Vector data = (Vector)_points.elementAt(dataset);
             for (int pointnum = 0; pointnum < data.size(); pointnum++) {
                 _drawPlotPoint(graphics, dataset, pointnum);
@@ -513,15 +521,6 @@ public class LogicAnalyzer extends PlotBox {
         }
     }
 
-    /* We don't wanna have a legend in the upper right hand corner.
-     *
-     */
-    protected int _drawLegend(Graphics graphics, int urx, int ury) {
-        // no legend, so the width is equal to 0
-        return 0;
-    }
-
-
     /* Draw the specified point and associated lines, if any.
      * Note that paint() should be called before
      * calling this method so that it calls _drawPlot(), which sets
@@ -555,9 +554,9 @@ public class LogicAnalyzer extends PlotBox {
             prevx = _ulx + (long)((prev.x - _xMin) * _xscale);
             // draw lines to the previous point.
             // a horizontal line
-            _drawLine(graphics, dataset, xpos, prevy,prevx, prevy, true);
+            _drawLine(graphics, dataset, xpos, prevy, prevx, prevy, true);
             // a vertical line
-            _drawLine(graphics, dataset, xpos, ypos,xpos, prevy, true);
+            _drawLine(graphics, dataset, xpos, ypos, xpos, prevy, true);
         } else {
 
         }
@@ -572,9 +571,9 @@ public class LogicAnalyzer extends PlotBox {
           long prevx = ((Long)_prevx.elementAt(dataset)).longValue();
           long prevy = ((Long)_prevy.elementAt(dataset)).longValue();
           // a horizontal line
-          _drawLine(graphics, dataset, xpos, prevy,prevx, prevy, true);
+          _drawLine(graphics, dataset, xpos, prevy, prevx, prevy, true);
           // a vertical line
-          // _drawLine(graphics, dataset, xpos, ypos,xpos, prevy, true);
+          // _drawLine(graphics, dataset, xpos, ypos, xpos, prevy, true);
 
           // Save the current point as the "previous" point for future
           // line drawing.
