@@ -34,7 +34,7 @@ import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.actor.sched.*;
 import ptolemy.kernel.util.*;
-import ptolemy.data.expr.*;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.*;
 import ptolemy.math.Fraction;
 
@@ -144,7 +144,15 @@ public class SDFScheduler extends Scheduler {
             if(param == null) {
                 return 1;
             } else {
-                return ((IntToken)param.getToken()).intValue();
+                Token token = param.getToken();
+                if(token instanceof IntToken) {
+                    return ((IntToken)token).intValue();
+                } else {
+                    throw new IllegalActionException("Parameter " 
+                            + param.getFullName() + " was expected "
+                            + "to contain an IntToken, but instead "
+                            + "contained a " + token.getType() + ".");
+                }
             }
         } else 
             return 0;
@@ -167,7 +175,15 @@ public class SDFScheduler extends Scheduler {
             if(param == null) {
                 return 0;
             } else {
-                return ((IntToken)param.getToken()).intValue();
+                Token token = param.getToken();
+                if(token instanceof IntToken) {
+                    return ((IntToken)token).intValue();
+                } else {
+                    throw new IllegalActionException("Parameter " 
+                            + param.getFullName() + " was expected "
+                            + "to contain an IntToken, but instead "
+                            + "contained a " + token.getType() + ".");
+                }
             }
         } else 
             return 0;
@@ -190,7 +206,15 @@ public class SDFScheduler extends Scheduler {
             if(param == null) {
                 return 1;
             } else {
-                return ((IntToken)param.getToken()).intValue();
+                Token token = param.getToken();
+                if(token instanceof IntToken) {
+                    return ((IntToken)token).intValue();
+                } else {
+                    throw new IllegalActionException("Parameter " 
+                            + param.getFullName() + " was expected "
+                            + "to contain an IntToken, but instead "
+                            + "contained a " + token.getType() + ".");
+                }
             }
         } else 
             return 0;
@@ -359,7 +383,8 @@ public class SDFScheduler extends Scheduler {
             firings = _solveBalanceEquations(AllActors);
         } catch (IllegalActionException ex) {
             throw new NotSchedulableException(this, "Check expression of "
-                    + "rate and initial production parameters.");
+                    + "rate and initial production parameters:\n" 
+                    + ex.getMessage() + ".");
         }
         _normalizeFirings(firings);
 
