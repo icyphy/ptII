@@ -47,7 +47,7 @@ import java.util.EmptyStackException;
  *  <p>
  *  Two stacks of information are maintained - one for undo information and
  *  one for redo information. The information in the redo stack is placed there
- *  whenever an undo is carried out, and can be used to reverese the effect
+ *  whenever an undo is carried out, and can be used to reverse the effect
  *  of the undo.
  *  <p>
  *  NOTE: the information in the redo stack is emptied when a new undo entry is
