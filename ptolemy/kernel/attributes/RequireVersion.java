@@ -28,7 +28,9 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.kernel.util;
+package ptolemy.kernel.attributes;
+
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// RequireVersion

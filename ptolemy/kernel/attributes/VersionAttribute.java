@@ -28,7 +28,9 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.kernel.util;
+package ptolemy.kernel.attributes;
+
+import ptolemy.kernel.util.*;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -274,7 +276,7 @@ public class VersionAttribute
 
     static {
 	try {
-	    CURRENT_VERSION = new VersionAttribute("2.1-devel");
+	    CURRENT_VERSION = new VersionAttribute("2.1-devel-2");
 	} catch (Exception ex) {
 	    throw new ExceptionInInitializerError(
                     "Failed to create CURRENT_VERSION: "
