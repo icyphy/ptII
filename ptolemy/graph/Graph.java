@@ -1302,7 +1302,8 @@ public class Graph implements Cloneable {
      *  the graph.
      *  @exception GraphElementException If the weight of the given edge
      *  is not valid, as determined by {@link #validEdgeWeight(Object)}.
-     *  @see #validateWeight(Edge, Object).
+     *  @see #validateWeight(Edge, Object)
+     *  @see #validateWeight(Node)
      */
     public boolean validateWeight(Edge edge) {
         if (edge == null) {
@@ -1375,7 +1376,7 @@ public class Graph implements Cloneable {
      *  the graph.
      *  @exception GraphElementException If the weight of the given node
      *  is not valid, as determined by {@link #validNodeWeight(Object)}.
-     *  @see #validateWeight(Node, Object).
+     *  @see #validateWeight(Node, Object)
      */
     public boolean validateWeight(Node node) {
         if (node == null) {
