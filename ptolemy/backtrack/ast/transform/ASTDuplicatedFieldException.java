@@ -1,4 +1,4 @@
-/* 
+/* A field is duplicated in a class declaration.
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -33,16 +33,22 @@ import ptolemy.backtrack.ast.ASTRuntimeException;
 //////////////////////////////////////////////////////////////////////////
 //// ASTDuplicatedFieldException
 /**
+   Thrown on an attempt to create a field in a class declaration, which
+   already contains a field with the same name.
  
- 
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class ASTDuplicatedFieldException extends ASTRuntimeException {
 
+    /** Construct an exception about creating a duplicated field in a class.
+     * 
+     *  @param className The class name.
+     *  @param fieldName The field name.
+     */
     public ASTDuplicatedFieldException(String className, String fieldName) {
         super("Trying to create a duplicated field \"" +
                 fieldName +
