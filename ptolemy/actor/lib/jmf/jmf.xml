@@ -19,9 +19,6 @@
 	<entity name="VideoCamera" class="ptolemy.actor.lib.jmf.VideoCamera">
 	</entity>
 
-	<entity name="VideoToImage" class="ptolemy.actor.lib.jmf.VideoToImage">
-	</entity>
-	
       </group>
     ?>
   </configure>

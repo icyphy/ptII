@@ -52,8 +52,7 @@ JSRCS = \
 	BufferToImageConversion.java\
 	GreenFinder.java\
 	ImageDisplay.java\
-	VideoCamera.java\
-	VideoToImage.java
+	VideoCamera.java
 
 OTHER_FILES_TO_BE_JARED = \
 	jmf.xml
