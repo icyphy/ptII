@@ -69,10 +69,8 @@ JSRCS = \
 	PlotPoint.java \
 	LogicAnalyzer.java \
 	LogicAnalyzerFrame.java \
-	Message.java
-
-# removed
-#	Pxgraph.java
+	Message.java \
+	Pxgraph.java
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) ptplot pxgraph.bat index.html copyright.txt
