@@ -98,4 +98,3 @@ public interface Typeable
      */
     public Enumeration typeConstraints();
 }
-

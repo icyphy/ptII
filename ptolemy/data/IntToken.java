@@ -448,4 +448,3 @@ public class IntToken extends ScalarToken {
     ////                         private variables                 ////
     private int _value;
 }
-

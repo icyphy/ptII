@@ -267,4 +267,3 @@ public class ComponentRelation extends Relation {
     private transient LinkedList _deeplinkedports;
     private transient long _deeplinkedportsversion = -1;
 }
-

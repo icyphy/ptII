@@ -77,7 +77,3 @@ public class StringPNListener implements PNProcessListener {
     private String _profile = "";
 
 }
-
-
-
-

@@ -916,4 +916,3 @@ public class Type extends SDFApplet {
         }
     }
 }
-

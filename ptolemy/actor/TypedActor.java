@@ -64,4 +64,3 @@ public interface TypedActor extends Actor {
     public Enumeration typeConstraints()
 	    throws IllegalActionException;
 }
-

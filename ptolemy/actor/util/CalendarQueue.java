@@ -1145,8 +1145,3 @@ public class CalendarQueue {
     private int _minBucket;
 
 }
-
-
-
-
-

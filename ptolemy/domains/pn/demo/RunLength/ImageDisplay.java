@@ -195,5 +195,3 @@ public final class ImageDisplay extends AtomicActor {
     private String _framename;
 
 }
-
-

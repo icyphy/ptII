@@ -263,10 +263,3 @@ public class DEHistogram extends DEActor {
     private double _percentGap = 0.005;
 
 }
-
-
-
-
-
-
-

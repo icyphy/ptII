@@ -234,4 +234,3 @@ public class DEFIRfilter extends DEActor {
     private static final double[] _DEFAULT_TAPS = {1, 1};
 
 }
-

@@ -1235,10 +1235,3 @@ public class SDFScheduler extends Scheduler {
     private boolean _firingvectorvalid;
 
 }
-
-
-
-
-
-
-

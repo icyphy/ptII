@@ -180,4 +180,3 @@ public class MultiplyDivide extends TypedAtomicActor {
         output.broadcast(numerator);
     }
 }
-

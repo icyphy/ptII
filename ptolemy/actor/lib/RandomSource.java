@@ -106,4 +106,3 @@ public abstract class RandomSource extends Source {
 
     protected Random _random = new Random();
 }
-

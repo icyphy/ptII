@@ -123,4 +123,3 @@ public class Scale extends Transformer {
         }
     }
 }
-

@@ -95,4 +95,3 @@ public class TypeEvent {
     private Class _oldtype = null;
     private Class _newtype = null;
 }
-

@@ -376,4 +376,3 @@ public class ComplexMatrixToken extends MatrixToken {
     private int _rowCount = 0;
     private int _columnCount = 0;
 }
-

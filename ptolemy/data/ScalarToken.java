@@ -107,4 +107,3 @@ public abstract class ScalarToken extends Token {
     		getClass().getName() + " to a long losslessly.");
     }
 }
-

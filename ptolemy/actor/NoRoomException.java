@@ -96,15 +96,3 @@ public class NoRoomException extends RuntimeException {
     // The error message.
     private String _message ;
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -376,11 +376,3 @@ public class PNDirector extends BasePNDirector {
     //This flag is set to true when mutations are pending
     private boolean _mutationsRequested = false;
 }
-
-
-
-
-
-
-
-

@@ -83,16 +83,3 @@ public interface CQComparator extends Comparator{
      */
     public Object getBinWidth(Object[] keyArray);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

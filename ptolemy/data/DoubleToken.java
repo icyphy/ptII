@@ -455,4 +455,3 @@ public class DoubleToken extends ScalarToken {
     ////                         private variables                 ////
     private double _value;
 }
-

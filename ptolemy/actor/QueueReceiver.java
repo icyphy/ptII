@@ -279,14 +279,3 @@ public class QueueReceiver implements Receiver {
     private FIFOQueue _queue = new FIFOQueue();
     private IOPort _container;
 }
-
-
-
-
-
-
-
-
-
-
-

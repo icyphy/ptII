@@ -108,6 +108,3 @@ public interface Receiver {
      */
     public void setContainer(IOPort port) throws IllegalActionException;
 }
-
-
-

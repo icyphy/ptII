@@ -183,7 +183,3 @@ public class DDENullFBDelay extends DDEActor {
     private double _delay = 4.0;
 
 }
-
-
-
-

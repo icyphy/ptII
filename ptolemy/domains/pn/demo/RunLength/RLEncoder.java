@@ -136,5 +136,3 @@ public class RLEncoder extends AtomicActor {
     private int _inputlength = 0;
     private int _outputlength = 0;
 }
-
-

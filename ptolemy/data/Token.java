@@ -293,4 +293,3 @@ public class Token {
         throw new IllegalActionException(str);
     }
 }
-

@@ -98,4 +98,3 @@ public class CurrentTime extends TimedSource {
         }
     }
 }
-

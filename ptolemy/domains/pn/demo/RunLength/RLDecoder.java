@@ -99,7 +99,3 @@ public class RLDecoder extends AtomicActor {
     private IOPort _output;
     private IOPort _input;
 }
-
-
-
-

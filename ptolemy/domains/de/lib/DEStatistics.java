@@ -184,9 +184,3 @@ public class DEStatistics extends DEActor {
     private double _sum2 = 0;
 
 }
-
-
-
-
-
-

@@ -176,4 +176,3 @@ public class LineCoder extends SDFAtomicActor {
     private int _wordlength;
     private double[] _table;
 }
-

@@ -147,4 +147,3 @@ public class Print extends TypedAtomicActor implements Placeable {
 
     private Panel _panel;
 }
-

@@ -649,4 +649,3 @@ public class TypedIOPort extends IOPort implements Typeable {
         private TypedIOPort _port = null;
     }
 }
-

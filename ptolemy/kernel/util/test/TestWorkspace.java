@@ -89,4 +89,3 @@ public class TestWorkspace extends Thread {
     private Workspace _workspace;
     private String _profile = "";
 }
-

@@ -116,7 +116,3 @@ public interface ReceiverListener {
     public void receiverWriteUnblocked(ReceiverActionEvent event);
 
 }
-
-
-
-

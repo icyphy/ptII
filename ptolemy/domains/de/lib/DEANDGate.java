@@ -131,7 +131,3 @@ public class DEANDGate extends DEActor {
     private double _in1;
     private double _in2;
 }
-
-
-
-

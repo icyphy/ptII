@@ -169,9 +169,3 @@ public class DEPassGate extends DEActor {
     // the last token seen in the input port.
     private DoubleToken _lastToken = null;
 }
-
-
-
-
-
-

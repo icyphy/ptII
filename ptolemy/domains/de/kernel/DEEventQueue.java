@@ -87,5 +87,3 @@ public interface DEEventQueue {
      */
     public DEEvent take() throws IllegalAccessException;
 }
-
-

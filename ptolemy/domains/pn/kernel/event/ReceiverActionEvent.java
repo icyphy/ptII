@@ -87,13 +87,3 @@ public class ReceiverActionEvent {
     private PNQueueReceiver _receiver;
     private int _capacity;
 }
-
-
-
-
-
-
-
-
-
-

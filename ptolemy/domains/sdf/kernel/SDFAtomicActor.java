@@ -335,11 +335,3 @@ public class SDFAtomicActor extends TypedAtomicActor {
     ////                      private variables                    ////
 
 }
-
-
-
-
-
-
-
-

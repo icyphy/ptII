@@ -188,5 +188,3 @@ public class PNGalaxySieve extends AtomicActor {
     private IOPort _output;
     private int _prime;
 }
-
-

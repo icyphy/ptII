@@ -69,4 +69,3 @@ public class SimpleNode implements Node {
         }
     }
 }
-

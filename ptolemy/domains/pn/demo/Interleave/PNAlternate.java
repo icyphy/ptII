@@ -82,5 +82,3 @@ public class PNAlternate extends AtomicActor {
     // The output port
     private IOPort _output;
 }
-
-

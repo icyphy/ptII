@@ -270,14 +270,3 @@ public class BusContentionGraphic extends Frame {
 
     private BusContentionDemo _demo;
 }
-
-
-
-
-
-
-
-
-
-
-

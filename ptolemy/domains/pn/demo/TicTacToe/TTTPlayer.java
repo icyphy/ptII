@@ -234,4 +234,3 @@ public class TTTPlayer extends AtomicActor {
     int _row = -1;
     int _col = -1;
 }
-

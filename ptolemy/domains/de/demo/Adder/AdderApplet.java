@@ -353,6 +353,3 @@ public class AdderApplet extends Applet implements Runnable {
     }
 
 }
-
-
-

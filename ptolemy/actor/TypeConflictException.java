@@ -131,4 +131,3 @@ public class TypeConflictException extends KernelException {
 
     private LinkedList _typeables = new LinkedList();
 }
-

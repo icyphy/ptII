@@ -415,6 +415,3 @@ public final class HTVQEncode extends SDFAtomicActor {
     private int _ypartsize;
     private URL _baseurl;
 }
-
-
-

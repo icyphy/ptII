@@ -99,4 +99,3 @@ public class TestNullNamedObj extends NamedObj {
     /** @serial The name. */
     private String _name;
 }
-

@@ -345,4 +345,3 @@ public class DirectedGraph extends Graph {
 
     private boolean _isAcyclic;
 }
-

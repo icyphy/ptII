@@ -379,4 +379,3 @@ public final class CrossRefList implements Serializable  {
         /* private */ CrossRef _ref;
     }
 }
-

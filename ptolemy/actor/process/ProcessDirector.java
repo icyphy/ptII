@@ -646,13 +646,3 @@ public class ProcessDirector extends Director {
     // have been stopped
     private int _threadsStopped = 0;
 }
-
-
-
-
-
-
-
-
-
-

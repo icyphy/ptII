@@ -148,7 +148,3 @@ public class PtolemyThread extends Thread {
     // After the bug in JavaScope got fixed, remove the word 'public' (lmuliadi)
     public int readDepth;
 }
-
-
-
-

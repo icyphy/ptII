@@ -70,7 +70,3 @@ public interface PNProcessListener {
     public void processStateChanged(PNProcessEvent event);
 
 }
-
-
-
-

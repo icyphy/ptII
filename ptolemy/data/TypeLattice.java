@@ -238,4 +238,3 @@ public final class TypeLattice
 
     private static DirectedAcyclicGraph _typeLattice = _setup();
 }
-

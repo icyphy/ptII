@@ -107,9 +107,3 @@ public class SDFConsumer extends SDFAtomicActor {
 
     private StringBuffer _history;
 }
-
-
-
-
-
-

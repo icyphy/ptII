@@ -47,4 +47,3 @@ public class IllegalExpressionException extends RuntimeException {
         super(msg);
     }
 }
-

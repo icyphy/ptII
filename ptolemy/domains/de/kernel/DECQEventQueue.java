@@ -218,9 +218,3 @@ public class DECQEventQueue implements DEEventQueue {
     private CalendarQueue _cQueue = new CalendarQueue(new DECQComparator());
 
 }
-
-
-
-
-
-

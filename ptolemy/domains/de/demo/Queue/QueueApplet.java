@@ -325,6 +325,3 @@ public class QueueApplet extends Applet {
     }
 
 }
-
-
-

@@ -250,7 +250,3 @@ public abstract class ConditionalBranch {
     // The Token transferred in a rendezvous.
     private Token _token;
 }
-
-
-
-

@@ -410,4 +410,3 @@ public class ComplexToken extends ScalarToken {
     ////                         private variables                 ////
     private Complex _value = null;
 }
-

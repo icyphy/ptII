@@ -325,4 +325,3 @@ public class Pulse extends SequenceSource {
     // go away.
     private Variable _dummy;
 }
-

@@ -115,4 +115,3 @@ public class SDFRamp extends SDFAtomicActor {
 
     private int _value;
 }
-

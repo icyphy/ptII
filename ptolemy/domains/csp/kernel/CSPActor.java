@@ -596,4 +596,3 @@ public class CSPActor extends TypedAtomicActor {
     // terminated abruptly.
     private LinkedList _threadList = null;
 }
-

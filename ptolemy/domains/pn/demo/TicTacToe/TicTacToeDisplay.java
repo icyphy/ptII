@@ -269,9 +269,3 @@ public final class TicTacToeDisplay extends AtomicActor {
     }
 
 }
-
-
-
-
-
-

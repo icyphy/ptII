@@ -278,7 +278,3 @@ public class PNApplet extends PtolemyApplet {
         }
     }
 }
-
-
-
-

@@ -263,13 +263,3 @@ public class DEIOPort extends TypedIOPort {
     // List of ports triggered immediately by this input port.
     private LinkedList _triggerList = new LinkedList();
 }
-
-
-
-
-
-
-
-
-
-

@@ -446,5 +446,3 @@ public class DoubleArrayMath {
     return array1.length;
   }
 }
-
-

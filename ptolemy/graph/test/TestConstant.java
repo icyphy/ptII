@@ -128,4 +128,3 @@ public class TestConstant implements InequalityTerm {
     private String _name = "";
     private String _value = null;
 }
-

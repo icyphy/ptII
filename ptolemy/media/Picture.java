@@ -196,4 +196,3 @@ public class Picture extends Canvas {
     private Image _image;
     private MemoryImageSource _imagesource;
 }
-

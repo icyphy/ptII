@@ -96,4 +96,3 @@ public class PNAdder extends AtomicActor {
     // The output port
     private IOPort _output;
 }
-

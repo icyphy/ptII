@@ -40,4 +40,3 @@ public class CmdLineArgException extends Throwable {
     public CmdLineArgException() { super(); }
     public CmdLineArgException(String s) { super(s); }
 }
-

@@ -326,13 +326,3 @@ public class FIFOQueue implements Cloneable {
     private LinkedList _historyList = null;
 
 }
-
-
-
-
-
-
-
-
-
-

@@ -83,23 +83,3 @@ public class TimedSource extends DDEActor {
     private double _interval = 1.0;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

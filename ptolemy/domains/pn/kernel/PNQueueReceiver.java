@@ -323,11 +323,3 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     private boolean _pause = false;
     private boolean _terminate = false;
 }
-
-
-
-
-
-
-
-

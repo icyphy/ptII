@@ -281,6 +281,3 @@ public class SDFDirector extends StaticSchedulingDirector {
     // private CircularList _mutationListeners = null;
     //    private ActorListener _actorListener = null;
 }
-
-
-

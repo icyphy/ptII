@@ -283,6 +283,3 @@ public class HierarchyApplet extends Applet {
     }
 
 }
-
-
-

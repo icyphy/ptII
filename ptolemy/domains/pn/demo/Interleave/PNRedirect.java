@@ -111,4 +111,3 @@ public class PNRedirect extends AtomicActor{
     /* Output port */
     private IOPort _output;
 }
-

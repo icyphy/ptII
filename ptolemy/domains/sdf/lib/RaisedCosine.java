@@ -207,4 +207,3 @@ public class RaisedCosine extends FIR {
         super.initialize();
     }
 }
-

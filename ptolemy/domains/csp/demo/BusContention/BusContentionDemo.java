@@ -196,23 +196,3 @@ public class BusContentionDemo {
     private Processor _proc3;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

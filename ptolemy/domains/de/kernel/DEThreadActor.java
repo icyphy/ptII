@@ -184,4 +184,3 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
     protected static Object _monitor = new Object();
 
 }
-

@@ -119,4 +119,3 @@ public class TypeConstant implements InequalityTerm {
 
     private Class _type = null;
 }
-

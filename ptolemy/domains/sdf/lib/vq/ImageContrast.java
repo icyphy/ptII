@@ -180,11 +180,3 @@ public final class ImageContrast extends SDFAtomicActor {
     private int colorHistogram[];
     private int distributionConstant;
 }
-
-
-
-
-
-
-
-

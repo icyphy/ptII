@@ -91,4 +91,3 @@ public class PtestWorkspace extends PtolemyThread {
     private Workspace _workspace;
     private String _profile = "";
 }
-

@@ -635,4 +635,3 @@ public class ComplexArrayMath {
     return array1.length;
   }
 }
-

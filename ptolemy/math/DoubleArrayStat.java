@@ -542,4 +542,3 @@ public class DoubleArrayStat extends DoubleArrayMath {
         return retval;
     }
 }
-

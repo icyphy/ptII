@@ -116,15 +116,3 @@ public class TTTApplet extends PNApplet {
         _manager.terminate();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

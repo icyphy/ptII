@@ -790,4 +790,3 @@ public class MatrixMath {
         return matrix.length;
     }
 }
-

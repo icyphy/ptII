@@ -72,4 +72,3 @@ public class PNSink extends AtomicActor{
     /* Input port */
     private IOPort _input;
 }
-

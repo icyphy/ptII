@@ -512,7 +512,3 @@ public class CSPReceiver implements ProcessReceiver {
     private Token _token;
 
 }
-
-
-
-

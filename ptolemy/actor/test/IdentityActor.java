@@ -93,5 +93,3 @@ public class IdentityActor extends AtomicActor {
     public IOPort output;
 
 }
-
-

@@ -91,4 +91,3 @@ public class Maximum extends Transformer {
         }
     }
 }
-

@@ -689,6 +689,3 @@ public class ABPApplet extends Applet {
         }
     }
 }
-
-
-

@@ -128,13 +128,3 @@ public class DERegister extends DEActor {
     public DEIOPort input;
     public DEIOPort clock;
 }
-
-
-
-
-
-
-
-
-
-

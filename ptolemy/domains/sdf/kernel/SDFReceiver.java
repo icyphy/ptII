@@ -309,14 +309,3 @@ public final class SDFReceiver implements Receiver {
     private ArrayFIFOQueue _queue;
     private IOPort _container;
 }
-
-
-
-
-
-
-
-
-
-
-

@@ -139,7 +139,3 @@ public class DoubleCQComparator implements CQComparator {
 
     }
 }
-
-
-
-

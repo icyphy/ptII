@@ -119,7 +119,3 @@ public class PNImageSink extends AtomicActor {
     private IOPort _output;
     private IOPort _input;
 }
-
-
-
-

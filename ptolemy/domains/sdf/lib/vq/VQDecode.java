@@ -221,6 +221,3 @@ public final class VQDecode extends SDFAtomicActor {
     private URL _baseurl;
 
 }
-
-
-

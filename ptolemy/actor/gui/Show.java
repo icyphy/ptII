@@ -185,4 +185,3 @@ public class Show extends TypedAtomicActor implements Placeable {
     private Table _table = null;
     private boolean _populated = false;
 }
-

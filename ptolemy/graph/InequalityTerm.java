@@ -101,4 +101,3 @@ public interface InequalityTerm {
     public void setValue(Object e)
             throws IllegalActionException;
 }
-

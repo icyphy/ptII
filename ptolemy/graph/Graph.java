@@ -283,4 +283,3 @@ public class Graph {
     // representing the graph nodes with the corresponding node IDs.
     private ArrayList _nodeObjects;
 }
-

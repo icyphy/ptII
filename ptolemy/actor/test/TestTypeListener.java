@@ -88,4 +88,3 @@ public class TestTypeListener implements TypeListener {
 
     private String _message = "";
 }
-

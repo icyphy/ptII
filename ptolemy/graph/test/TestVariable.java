@@ -136,4 +136,3 @@ public class TestVariable implements InequalityTerm {
     private String _name = "";
     private String _value = null;
 }
-

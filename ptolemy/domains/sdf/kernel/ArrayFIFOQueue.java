@@ -556,5 +556,3 @@ public final class ArrayFIFOQueue implements Cloneable {
     private LinkedList _historylist = null;
 
 }
-
-

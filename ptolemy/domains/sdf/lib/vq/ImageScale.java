@@ -163,11 +163,3 @@ public final class ImageScale extends SDFAtomicActor {
     private int outmax;
     private int outmin;
 }
-
-
-
-
-
-
-
-

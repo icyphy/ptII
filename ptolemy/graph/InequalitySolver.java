@@ -415,4 +415,3 @@ public class InequalitySolver {
     // index of inequalities in _Ilist.
     private Hashtable _Clist = new Hashtable();
 }
-

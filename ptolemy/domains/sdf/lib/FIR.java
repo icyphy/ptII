@@ -243,4 +243,3 @@ public class FIR extends SDFAtomicActor {
     private double[] _data;
     private int _mostRecent;
 }
-

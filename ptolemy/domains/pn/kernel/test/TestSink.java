@@ -85,4 +85,3 @@ public class TestSink extends AtomicActor{
     private IOPort _input;
     private static StringBuffer _list = new StringBuffer(1024);
 }
-

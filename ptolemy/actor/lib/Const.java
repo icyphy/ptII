@@ -118,4 +118,3 @@ public class Const extends Source {
         output.broadcast(value.getToken());
     }
 }
-

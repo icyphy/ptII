@@ -430,4 +430,3 @@ public class LongToken extends ScalarToken {
     ////                         private variables                 ////
     private long _value;
 }
-

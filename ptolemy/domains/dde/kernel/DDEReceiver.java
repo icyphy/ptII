@@ -518,6 +518,3 @@ public class DDEReceiver extends TimedQueueReceiver
     private boolean _ignoreNotSeen = true;
     private boolean _hideNullTokens = true;
 }
-
-
-

@@ -129,4 +129,3 @@ public class Bernoulli extends RandomSource {
     // The random boolean for the current iteration.
     private boolean _current;
 }
-

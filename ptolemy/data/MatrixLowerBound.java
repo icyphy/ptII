@@ -41,4 +41,3 @@ type hierarchy.
 */
 public interface MatrixLowerBound {
 }
-

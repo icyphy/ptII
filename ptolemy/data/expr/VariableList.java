@@ -434,4 +434,3 @@ public class VariableList extends Attribute {
     private LinkedList _dependents = null;
 
 }
-

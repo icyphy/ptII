@@ -445,5 +445,3 @@ public class FSMDirector extends Director {
     protected FSMController _controller = null;
 
 }
-
-

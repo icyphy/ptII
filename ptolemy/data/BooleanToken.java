@@ -175,4 +175,3 @@ public class BooleanToken extends Token {
     ////                         private variables                 ////
     private boolean _value;
 }
-

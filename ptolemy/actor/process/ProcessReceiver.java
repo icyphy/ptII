@@ -109,6 +109,3 @@ public interface ProcessReceiver extends Receiver {
      */
     public void requestFinish();
 }
-
-
-

@@ -206,10 +206,3 @@ public class DEWaveForm extends DEActor {
 
     private static double[] _DEFAULT_VALUE = {0.0, 1.0};
 }
-
-
-
-
-
-
-

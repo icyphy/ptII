@@ -139,9 +139,3 @@ public class DEFullAdder extends TypedCompositeActor {
     public TypedIOPort Cout;
 
 }
-
-
-
-
-
-

@@ -176,4 +176,3 @@ public class Ramp extends SequenceSource {
 
     private Token _stateToken = null;
 }
-

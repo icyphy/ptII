@@ -139,4 +139,3 @@ public class Average extends Transformer {
     private int _count = 1;
     private Token _latestSum;
 }
-

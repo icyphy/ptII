@@ -96,4 +96,3 @@ public class TimedRamp extends AtomicActor {
     private IOPort _output;
     private double _delay = 1.0;
 }
-
