@@ -76,7 +76,7 @@ public class Cylinder3D extends GRShadedShape {
         radius.moveToFirst();
         
         circleDivisions = new Parameter(this, "circleDivisions");
-        circleDivisions.setExpression("roundToInt(radius * 60)");
+        circleDivisions.setExpression("max(6, roundToInt(radius * 100))");
         circleDivisions.setTypeEquals(BaseType.INT);
 
         sideDivisions = new Parameter(this, "sideDivisions");
@@ -89,7 +89,7 @@ public class Cylinder3D extends GRShadedShape {
 
     /** The number of divisions in the circles forming the ends of the
      *  cylinder. This is an integer with
-     *  default value "roundToInt(radius * 60)". This parameter
+     *  default value "max(6, roundToInt(radius * 100))". This parameter
      *  determines the resolution of the cylinder, which is approximated
      *  as a surface composed of rectangular facets. Increasing this
      *  value makes the surface smoother, but also increases the cost

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FurutaPendulum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[688, 479]">
     </property>
@@ -84,7 +84,7 @@ The objective is to swing the pendulum up and then balance it.
         <property name="_location" class="ptolemy.kernel.util.Location" value="[186.5, 342.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {7, 13, 903, 588}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 13, 903, 595}, maximized=false}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -545,7 +545,7 @@ time (CT).</text></svg></configure>
     <entity name="Plotter for u" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={504, 512, 508, 249}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={504, 512, 508, 172}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 117]">
         </property>
@@ -634,7 +634,7 @@ time (CT).</text></svg></configure>
     <entity name="Plotter for E+mode" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 431, 508, 332}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 431, 508, 172}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 117]">
         </property>
@@ -707,52 +707,62 @@ time (CT).</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="268.0, 31.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={206, 131, 936, 707}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={81, 54, 936, 707}, maximized=false}">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{360.5, 295.5}">
         </property>
         <port name="theta" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="location1" class="ptolemy.kernel.util.Location" value="25.0, 135.0">
+            <property name="location1" class="ptolemy.kernel.util.Location" value="[20.0, 115.0]">
             </property>
         </port>
         <port name="phi" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="location1" class="ptolemy.kernel.util.Location" value="25.0, 360.0">
+            <property name="location1" class="ptolemy.kernel.util.Location" value="[25.0, 370.0]">
             </property>
         </port>
         <entity name="Pendulum" class="ptolemy.domains.gr.lib.Cylinder3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.6, 0.0, 0.0]">
-            </property>
-            <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
             <property name="radius" class="ptolemy.data.expr.Parameter" value="0.01">
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="0.6">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 80.0">
-            </property>
-        </entity>
-        <entity name="Arm" class="ptolemy.domains.gr.lib.Cylinder3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.6, 0.0]">
+            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.0,1.0}">
             </property>
             <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
+            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.6, 0.0, 0.0]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 60.0]">
+            </property>
+        </entity>
+        <entity name="Arm" class="ptolemy.domains.gr.lib.Cylinder3D">
             <property name="radius" class="ptolemy.data.expr.Parameter" value="0.02">
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="0.8">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 175.0">
-            </property>
-        </entity>
-        <entity name="base cylinder" class="ptolemy.domains.gr.lib.Cylinder3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.7, 0.7, 0.7]">
+            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,0.8,1.0}">
             </property>
             <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
+            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.6, 0.0]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 165.0]">
+            </property>
+        </entity>
+        <entity name="base cylinder" class="ptolemy.domains.gr.lib.Cylinder3D">
             <property name="radius" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="0.7">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 325.0">
+            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.0,1.0}">
+            </property>
+            <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+            </property>
+            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.7, 0.7, 0.7]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 320.0]">
             </property>
         </entity>
         <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen">
@@ -770,9 +780,9 @@ time (CT).</text></svg></configure>
             </property>
             <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="backgroundColor" class="ptolemy.data.expr.Parameter" value="[0.75, 0.75, 0.75]">
+            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.75, 0.75, 0.75}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="575.0, 375.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 270.0]">
             </property>
         </entity>
         <entity name="Rotate3" class="ptolemy.domains.gr.lib.Rotate3D">
@@ -836,13 +846,13 @@ time (CT).</text></svg></configure>
             </property>
         </entity>
         <entity name="Base Pivot" class="ptolemy.domains.gr.lib.Sphere3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.7]">
+            <property name="radius" class="ptolemy.data.expr.Parameter" value="0.05">
             </property>
             <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="radius" class="ptolemy.data.expr.Parameter" value="0.05">
+            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.7]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 240.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 240.0]">
             </property>
         </entity>
         <entity name="Translate3" class="ptolemy.domains.gr.lib.Translate3D">
@@ -854,7 +864,7 @@ time (CT).</text></svg></configure>
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="268.0, 260.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 260.0]">
             </property>
         </entity>
         <entity name="Scale3D" class="ptolemy.domains.gr.lib.Scale3D">
@@ -872,15 +882,15 @@ time (CT).</text></svg></configure>
             </property>
         </entity>
         <entity name="base" class="ptolemy.domains.gr.lib.PolyCylinder3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.3, 0.3, 0.0]">
-            </property>
             <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="polygon" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.85, 0.0, 0.75, 0.10, 0.0,0.10]">
             </property>
             <property name="thickness" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 400.0">
+            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.3, 0.3, 0.0]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 425.0]">
             </property>
         </entity>
         <entity name="Translate4" class="ptolemy.domains.gr.lib.Translate3D">
@@ -892,7 +902,7 @@ time (CT).</text></svg></configure>
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.4">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 420.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 445.0]">
             </property>
         </entity>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -921,13 +931,11 @@ time (CT).</text></svg></configure>
         </relation>
         <relation name="relation13" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="135.0, 135.0">
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[260.0, 370.0]">
             </vertex>
         </relation>
-        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="260.0, 360.0">
-            </vertex>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="theta" relation="relation3"/>
         <link port="phi" relation="relation7"/>
@@ -1327,8 +1335,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <entity name="init" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="dummyController">
                     </property>
-                    <property name="_centerName" class="ptolemy.kernel.util.Attribute">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 100.0">
@@ -1336,8 +1342,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </entity>
                 <entity name="swing-up" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="swingUpController">
-                    </property>
-                    <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                     </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
@@ -1347,8 +1351,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <entity name="catch" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="catchController">
                     </property>
-                    <property name="_centerName" class="ptolemy.kernel.util.Attribute">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 290.0">
@@ -1356,8 +1358,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </entity>
                 <entity name="stabilize" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="stabilizeController">
-                    </property>
-                    <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                     </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                     </property>
@@ -2169,7 +2169,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                 </entity>
                 <entity name="Phi0" class="ptolemy.actor.lib.Const">
-                    <property name="value" class="ptolemy.data.expr.Parameter" value="-2.4921920930936">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="-2.4921920930947">
                     </property>
                     <doc>Create a constant sequence</doc>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 315.0">

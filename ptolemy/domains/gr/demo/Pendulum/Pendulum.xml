@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Pendulum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -41,18 +41,18 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 15.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {114, 149, 796, 469}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 149, 796, 476}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.5, 180.0}">
     </property>
     <entity name="Sphere" class="ptolemy.domains.gr.lib.Sphere3D">
-        <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.5, 0.5, 0.0]">
+        <property name="radius" class="ptolemy.data.expr.Parameter" value="bob_radius">
         </property>
         <property name="shininess" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
-        <property name="radius" class="ptolemy.data.expr.Parameter" value="bob_radius">
+        <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.5, 0.5, 0.0]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 170.0">
         </property>
@@ -90,7 +90,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </property>
         <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="backgroundColor" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0}">
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -98,15 +98,15 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </property>
     </entity>
     <entity name="Cylinder" class="ptolemy.domains.gr.lib.Cylinder3D">
-        <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.3, 0.3, 0.3]">
-        </property>
-        <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
         <property name="radius" class="ptolemy.data.expr.Parameter" value="0.005">
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="0.75">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 237.5">
+        <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.3, 0.3, 0.3]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 250.0]">
         </property>
     </entity>
     <entity name="Rotate" class="ptolemy.domains.gr.lib.Rotate3D">
@@ -122,11 +122,11 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </property>
     </entity>
     <entity name="Text" class="ptolemy.domains.gr.lib.TextString3D">
-        <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0]">
-        </property>
         <property name="shininess" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
         <property name="text" class="ptolemy.data.expr.Parameter" value="&quot;Pendulum Model&quot;">
+        </property>
+        <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 105.0">
         </property>
@@ -210,7 +210,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="76.0, 41.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 320.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 330.0]">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[537, 350]">
         </property>
@@ -321,6 +321,12 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 101, 815, 566}, maximized=false}">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 225.0}">
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
@@ -336,7 +342,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 260.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 295.0]">
             </property>
         </entity>
         <entity name="0:Translate11" class="ptolemy.domains.gr.lib.Translate3D">
@@ -348,21 +354,21 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 195.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 220.0]">
             </property>
         </entity>
         <entity name="0:Box14" class="ptolemy.domains.gr.lib.Box3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.4]">
-            </property>
-            <property name="shininess" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
             <property name="xLength" class="ptolemy.data.expr.Parameter" value="1.4">
             </property>
             <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.01">
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 175.0">
+            <property name="shininess" class="ptolemy.data.expr.Parameter" value="20.0">
+            </property>
+            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.4]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 200.0]">
             </property>
         </entity>
         <entity name="0:Translate6" class="ptolemy.domains.gr.lib.Translate3D">
@@ -374,49 +380,49 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 60.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 70.0]">
             </property>
         </entity>
         <entity name="0:Box15" class="ptolemy.domains.gr.lib.Box3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.4]">
-            </property>
-            <property name="shininess" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
             <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.01">
             </property>
             <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.90">
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 40.0">
+            <property name="shininess" class="ptolemy.data.expr.Parameter" value="20.0">
+            </property>
+            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.4]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 50.0]">
             </property>
         </entity>
         <entity name="0:Box12" class="ptolemy.domains.gr.lib.Box3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.4]">
-            </property>
-            <property name="shininess" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
             <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.01">
             </property>
             <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.90">
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 110.0">
+            <property name="shininess" class="ptolemy.data.expr.Parameter" value="20.0">
+            </property>
+            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.4]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 125.0]">
             </property>
         </entity>
         <entity name="0:Box13" class="ptolemy.domains.gr.lib.Box3D">
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.4]">
-            </property>
-            <property name="shininess" class="ptolemy.data.expr.Parameter" value="20.0">
-            </property>
             <property name="xLength" class="ptolemy.data.expr.Parameter" value="1.4">
             </property>
             <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.01">
             </property>
             <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.5">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 240.0">
+            <property name="shininess" class="ptolemy.data.expr.Parameter" value="20.0">
+            </property>
+            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.4]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 275.0]">
             </property>
         </entity>
         <entity name="0:Translate1" class="ptolemy.domains.gr.lib.Translate3D">
@@ -428,7 +434,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             </property>
             <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 130.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 145.0]">
             </property>
         </entity>
         <entity name="Scale3D0" class="ptolemy.domains.gr.lib.Scale3D">

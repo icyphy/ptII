@@ -81,7 +81,7 @@ public class Sphere3D extends GRShadedShape {
         radius.moveToFirst();
         
         divisions = new Parameter(this, "divisions");
-        divisions.setExpression("roundToInt(radius * 300)");
+        divisions.setExpression("max(6, roundToInt(radius * 300))");
         divisions.setTypeEquals(BaseType.INT);
     }
 
@@ -89,7 +89,7 @@ public class Sphere3D extends GRShadedShape {
     ////                         parameters                        ////
 
     /** The number of divisions in the sphere. This is an integer with
-     *  default value "roundToInt(radius * 300)". This parameter
+     *  default value "max(6, roundToInt(radius * 300))". This parameter
      *  determines the resolution of the sphere, which is approximated
      *  as a surface composed of triangular facets. Increasing this
      *  value makes the surface smoother, but also increases the cost
