@@ -48,11 +48,13 @@ import ptolemy.util.MessageHandler;
    DialogTableau is just like all the other XXXTableau classes except that the
    Frame associated with DialogTableau is not an extension of TableauFrame, and,
    ultimately, the Top class. The reason being that Top adorns the GUI
-   manifestation with the normal status bar which isn't appropriate for a dialog.
-   In addition, the created dialog is not a JDialog, but a JFrame. And, the created
-   dialog is non-modal.
+   manifestation with the normal status bar which isn't appropriate for a
+   dialog.
+   In addition, the created dialog is not a JDialog, but a JFrame. And, the
+   created dialog is non-modal.
    <p>
-   There can be any number of instances of this class in an effigy, however, there
+   There can be any number of instances of this class in an effigy, however,
+    there
    can only be one each for the model represented by the effigy, and one each of
    the actors that are part of the model.
 
@@ -75,12 +77,12 @@ public class DialogTableau extends Tableau {
      *   attribute already in the container.
      */
     public DialogTableau(Effigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container.workspace());
         if (!(container instanceof Effigy)) {
             throw new IllegalActionException(
-                    this,
-                    "Effigy for Dialog must be an instance of " + "Effigy.");
+                this,
+                "Effigy for Dialog must be an instance of " + "Effigy.");
         }
         setName(name);
         setContainer(container);
@@ -99,11 +101,11 @@ public class DialogTableau extends Tableau {
      *  @return DialogTableau
      */
     public static DialogTableau createDialog(
-            Frame parent,
-            Configuration configuration,
-            Effigy effigy,
-            Class dialogClass,
-            Entity target) {
+        Frame parent,
+        Configuration configuration,
+        Effigy effigy,
+        Class dialogClass,
+        Entity target) {
 
         if (PtolemyDialog.class.isAssignableFrom(dialogClass)) {
             // First see whether the effigy already contains a dialog of
@@ -116,8 +118,9 @@ public class DialogTableau extends Tableau {
                         (DialogTableau) dialogs.next();
                     PtolemyDialog existingDialog =
                         ((PtolemyDialog) (dialogTableau.getFrame()));
-                    if ((existingDialog.getClass() == dialogClass)
-                            && (dialogTableau.hasTarget(target))) {
+                    if (existingDialog != null
+                        && (existingDialog.getClass() == dialogClass)
+                        && (dialogTableau.hasTarget(target))) {
                         return dialogTableau;
                     }
                 }
@@ -127,15 +130,15 @@ public class DialogTableau extends Tableau {
             if ((container != null) && (container instanceof PtolemyEffigy)) {
                 Iterator dialogs =
                     ((PtolemyEffigy) container)
-                    .entityList(DialogTableau.class)
-                    .iterator();
+                        .entityList(DialogTableau.class)
+                        .iterator();
                 while (dialogs.hasNext()) {
                     DialogTableau dialogTableau =
                         (DialogTableau) dialogs.next();
                     PtolemyDialog existingDialog =
                         ((PtolemyDialog) (dialogTableau.getFrame()));
                     if ((existingDialog.getClass() == dialogClass)
-                            && (dialogTableau.hasTarget(target))) {
+                        && (dialogTableau.hasTarget(target))) {
                         return dialogTableau;
                     }
                 }
@@ -153,10 +156,10 @@ public class DialogTableau extends Tableau {
             for (int i = 0; i < constructors.length; i++) {
                 Class pType[] = constructors[i].getParameterTypes();
                 if (pType.length == 4
-                        && pType[0] == DialogTableau.class
-                        && pType[1] == Frame.class
-                        && pType[2] == Entity.class
-                        && pType[3] == Configuration.class) {
+                    && pType[0] == DialogTableau.class
+                    && pType[1] == Frame.class
+                    && pType[2] == Entity.class
+                    && pType[3] == Configuration.class) {
                     constructor = constructors[i];
                     break;
                 }
@@ -171,16 +174,16 @@ public class DialogTableau extends Tableau {
             }
             if (dialog == null) {
                 throw new KernelException(
-                        target,
-                        null,
-                        "Can't create a " + dialogClass);
+                    target,
+                    null,
+                    "Can't create a " + dialogClass);
             }
 
             newDialogTableau.setFrame(dialog);
             return newDialogTableau;
         } catch (Exception ex) {
             MessageHandler.error(
-                    "Failed to create a DialogTableau for " + target.getFullName());
+                "Failed to create a DialogTableau for " + target.getFullName());
         }
         return null;
     }
@@ -209,14 +212,4 @@ public class DialogTableau extends Tableau {
         return false;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    ///////////////////////////////////////////////////////////////////
-    ////                     public inner classes                  ////
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-    ///////////////////////////////////////////////////////////////////
-    ////                         public varialbles                 ////
 }
