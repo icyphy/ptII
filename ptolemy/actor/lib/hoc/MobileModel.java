@@ -451,7 +451,7 @@ public class MobileModel extends TypedCompositeActor {
         }
     }
 
-    /** Construct a modl string for the composite actor to delete
+    /** Construct a MoML string for the composite actor to delete
      *  of its entities and relations.
      *  @param actor The composite actor.
      */
@@ -460,6 +460,8 @@ public class MobileModel extends TypedCompositeActor {
                             _debug("create request to remove old model");
                         }
         StringBuffer delete = new StringBuffer("<group>");
+        // FIXME: Should this also remove class definitions?
+        // To do that, use classDefinitionList().
         Iterator entities = actor.entityList().iterator();
         while (entities.hasNext()) {
             Entity entity = (Entity) entities.next();
@@ -475,6 +477,7 @@ public class MobileModel extends TypedCompositeActor {
         delete.append("</group>");
         return delete.toString();
     }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**the inside director.
