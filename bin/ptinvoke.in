@@ -525,7 +525,7 @@ and run:
         help="Mescal UI"
 	javastartupclass=mescal.MescalApplication
 	javasourcedir=mescal
-	jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$PTII/mescal/lib/jsat.jar${CLASSPATHSEPARATOR}$PTII/mescal/lib/mescal_java_cup.jar"
+	jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$PTII/mescal/lib/jsat.jar${CLASSPATHSEPARATOR}$PTII/mescal/lib/mescal_java_cup.jar${CLASSPATHSEPARATOR}$PTII/mescal/lib/chloe.jar"
 	javaflag="$ALL_JFLAG \"-DmescalBinaries=$PTII/mescal/bin\""
 	;;	
     moml)
