@@ -42,6 +42,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 
@@ -295,7 +296,9 @@ public class CompositeActorApplication {
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-version")) {
-            System.out.println("Version 1.1, Build $Id$");
+            System.out.println("Version "
+                    + VersionAttribute.CURRENT_VERSION 
+                    + ", Build $Id$");
             // quit the program if the user asked for the version
             // Don't call System.exit(0) here, it will break the test suites
         } else if (arg.equals("")) {
