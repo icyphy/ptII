@@ -714,6 +714,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                     + "length of the specified array is zero.");
         }
 
+        _elementPrototype = value[0];
         Type elementType = value[0].getType();
         int length = value.length;
         // It would be nice to have this, but the Code generator cannot
