@@ -106,17 +106,16 @@ public class Ramp extends SequenceSource {
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    /*
-      public void attributeChanged(Attribute attribute)
-      throws IllegalActionException {
-      if (attribute == step) {
-      //_step = step.getToken();
-      //_stateToken = init.getToken();
-      } else if (attribute == init) {
-      //_stateToken = init.getToken();
-      }
-      }
-    */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == step) {
+            _step = step.getToken();
+            _stateToken = init.getToken();
+        } else if (attribute == init) {
+            _stateToken = init.getToken();
+        }
+    }
+    
     /** Notify the director when type changes in the parameters occur.
      *  This will cause type resolution to be redone at the next opportunity.
      *  It is assumed that type changes in the parameters are implemented
@@ -168,7 +167,7 @@ public class Ramp extends SequenceSource {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _stateToken = init.getToken();
-	//_step = step.getToken();
+	_step = step.getToken();
     }
 
     /** Invoke a specified number of iterations of this actor. Each
@@ -226,7 +225,7 @@ public class Ramp extends SequenceSource {
      */
     public boolean postfire() throws IllegalActionException {
         try {
-            //_stateToken = _stateToken.add(_step);
+            _stateToken = _stateToken.add(_step);
             _stateToken = _stateToken.add(step.getToken());
         } catch (IllegalActionException ex) {
             // Should not be thrown because
