@@ -13,4 +13,4 @@ rem @author Shuvra S. Bhattacharyya
 rem @version $Id$
 rem
 if exist %1-out.txt del %1-out.txt
-java ptolemy.lang.c.JavaToC %1.java > %1-out.txt 
+java ptolemy.lang.c.JavaToC %1.java > %1-out.txt 2>&1
