@@ -33,9 +33,11 @@ package ptolemy.data.expr;
 
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.automata.util.Variable;		/* Needed for javadoc */ 
 import collections.LinkedList;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// VariableList
