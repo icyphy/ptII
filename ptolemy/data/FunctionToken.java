@@ -31,7 +31,9 @@
 package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.data.expr.*;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
@@ -48,14 +50,36 @@ arguments, supplied as a list of tokens.
 Currently, no operations between function tokens (add, multiply, etc.)
 are supported.
 
-@author Xiaojun Liu
+@author Xiaojun Liu, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 2.1
 */
 public class FunctionToken extends Token {
 
+    public FunctionToken(String init) throws IllegalActionException {
+        PtParser parser = new PtParser();
+        ASTPtRootNode tree = parser.generateParseTree(init);
+        Token token = tree.evaluateParseTree();
+        if(token instanceof FunctionToken) {
+            _function = ((FunctionToken)token)._function;
+        } else {
+            throw new IllegalActionException("A function token cannot be"
+                    + " created from the expression '" + init + "'");
+        }
+        Type[] argTypes = new Type[_function.getNumberOfArguments()];
+        for(int i = 0; i < _function.getNumberOfArguments(); i++) {
+            argTypes[i] = BaseType.UNKNOWN;
+        }
+        _type = new FunctionType(argTypes, BaseType.UNKNOWN);
+    }
+
     public FunctionToken(Function f) {
         _function = f;
+        Type[] argTypes = new Type[_function.getNumberOfArguments()];
+        for(int i = 0; i < _function.getNumberOfArguments(); i++) {
+            argTypes[i] = BaseType.UNKNOWN;
+        }
+        _type = new FunctionType(argTypes, BaseType.UNKNOWN);
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -73,18 +97,25 @@ public class FunctionToken extends Token {
     }
     
     /** Return the type of this token.
-     *  FIXME: before a function type is implemented, use BaseType.GENERAL.
      *  @return BaseType.GENERAL
      */
     public Type getType() {
-        return BaseType.GENERAL;
+        return _type;
     }
     
+    /** Return a String representation of this function
+     */
+    public String toString() {
+        return _function.toString();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
     
     // The object that implements the function.
     private Function _function;
+
+    private FunctionType _type;
     
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

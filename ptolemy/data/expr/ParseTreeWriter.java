@@ -110,20 +110,21 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
     }
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException  {
+        // This code is duplicated with the FunctionToken.
         _writer.print("(function (");
         List args = node.getArgumentNameList();
-                int n = args.size();
-                for (int i = 0; i < n - 1; ++i) {
-                        _writer.print((String)args.get(i));
-                        _writer.print(", ");
-                }
-                if (n > 0) {
-                        _writer.print((String)args.get(n - 1));
-                }
-                _writer.print(") ");
-                _printChildrenSeparated(node, ", ");
-                _writer.print(")");
+        int n = args.size();
+        for (int i = 0; i < n - 1; ++i) {
+            _writer.print((String)args.get(i));
+            _writer.print(", ");
         }
+        if (n > 0) {
+            _writer.print((String)args.get(n - 1));
+        }
+        _writer.print(") ");
+        _printChildrenSeparated(node, ", ");
+        _writer.print(")");
+    }
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         _printChild(node, 0);

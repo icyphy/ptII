@@ -36,14 +36,16 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.TypeLattice;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayToken
 /**
 A token that contains an array of tokens.  The operations between
 arrays are defined pointwise, and require that the lengths of the
-arrays are the same.  The elements of an ArrayToken are all assumed to
-have the same type, and zero length array tokens cannot be created.
+arrays are the same.  The elements of the ArrayToken will be converted
+to the least upper bound of their input types and zero length array
+tokens cannot be created.
 
 @author Yuhong Xiong, Steve Neuendorffer
 @version $Id$
@@ -537,16 +539,23 @@ public class ArrayToken extends AbstractNotConvertibleToken {
 
         Type elementType = value[0].getType();
         int length = value.length;
+        for (int i = 0; i < length; i++) {
+            Type valueType = value[i].getType();
+            if (!elementType.equals(valueType)) {
+                elementType = (Type) TypeLattice.lattice().leastUpperBound(
+                        elementType, valueType);
+            }
+        }
         _value = new Token[length];
         for (int i = 0; i < length; i++) {
-            if (elementType.equals(value[i].getType())) {
-                _value[i] = value[i];
-            } else {
-                throw new IllegalActionException(
-                        "Elements of the array do not have the same type:"
-                        + "value[0]=" + value[0]
-                        + " value[" + i + "]=" + value[i]);
-            }
+            //    if (elementType.equals(value[i].getType())) {
+            _value[i] = elementType.convert(value[i]);
+       //      } else {
+//                 throw new IllegalActionException(
+//                         "Elements of the array do not have the same type:"
+//                         + "value[0]=" + value[0]
+//                         + " value[" + i + "]=" + value[i]);
+//             }
         }
     }
 

@@ -71,6 +71,11 @@ test ArrayToken-1.2 {trigger exception when creating empty array using wrong con
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: The length of the specified array is zero.}}
 
+test ArrayToken-1.3 {Create an int array with conversion} {
+    set valToken [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3.0}"]
+    $valToken toString
+} {{1.0, 2.0, 3.0}}
+
 ######################################################################
 ####
 # 

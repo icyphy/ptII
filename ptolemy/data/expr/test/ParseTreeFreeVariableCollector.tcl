@@ -183,7 +183,7 @@ test ParseTreeFreeVariableAnalysis-7.0 {Construct a Parser, try simple functiona
 # 
 test ParseTreeFreeVariableAnalysis-7.1 {Construct a Parser, try harder if then else} {
     list [theTest "(false) ? (3/.5*4) : (pow(3.0,2.0))"]
-} {{}}
+} {pow}
 
 ######################################################################
 ####
@@ -191,14 +191,14 @@ test ParseTreeFreeVariableAnalysis-7.1 {Construct a Parser, try harder if then e
 test ParseTreeFreeVariableAnalysis-7.2 {Test complicated expression within boolean test condition} {
     list [theTest "((3<5) && (\"test\" == \"test\")) ? (3/.5*4) : (pow(3.0,2.0))"]
 
-} {{}}
+} {pow}
 
 ######################################################################
 ####
 # 
 test ParseTreeFreeVariableAnalysis-7.3 {Test nested if then elses} {
     list [theTest "(true ? false: true ) ? (3/.5*4) : (pow(3.0,2.0))"]
-} {{}}
+} {pow}
 
 ######################################################################
 ####
@@ -206,7 +206,7 @@ test ParseTreeFreeVariableAnalysis-7.3 {Test nested if then elses} {
 test ParseTreeFreeVariableAnalysis-7.4 {Test many levels of parenthesis nesting} {
     list [theTest "(true ? false: true ) ? (((((3/.5*4))))) : ((((((pow(3.0,2.0)))))))"]
    
-} {{}}
+} {pow}
 
 ######################################################################
 ####
@@ -245,7 +245,7 @@ test ParseTreeFreeVariableAnalysis-10.0 {Test that constants can be registered a
 test ParseTreeFreeVariableAnalysis-10.1 {Test that functions can access registered classes.
 } {
     list [theTest "min(1,3)"] [theTest "sin(30*PI/180)"]
-} {{} {}}
+} {min {sin PI}}
 
 #
 
@@ -266,11 +266,11 @@ test ParseTreeFreeVariableAnalysis-12.2 {Test matrix construction.} {
 # Test array reference.
 test ParseTreeFreeVariableAnalysis-13.0 {Test array reference.} {
     list [theTest "v1(0+1,2)+v1(0, v2-1)"] [theTest "cast(complex,v1(0+1,2)+v1(0, v2-1).add(v2))"]
-} {{v1 v2} {v1 v2}}
+} {{v1 v2} {v1 v2 cast}}
 
 test ParseTreeFreeVariableAnalysis-13.1 {Test array method calls.} {
     list [theTest "cast(int, {1, 2, 3}.getElement(1))"]
-} {{}}
+} {cast}
 
 # Test record construction,
 test ParseTreeFreeVariableAnalysis-13.2 {Test record construction.} {
@@ -282,14 +282,14 @@ test ParseTreeFreeVariableAnalysis-13.2 {Test record construction.} {
 # Test eval
 test ParseTreeFreeVariableAnalysis-14.0 {Test eval inference.} {
     list [theTest "eval(\"1+1\")" ]
-} {{}}
+} {eval}
 
 ######################################################################
 ####
 # 
 test ParseTreeFreeVariableAnalysis-16.0 {Test method calls on arrays, matrices, etc.} {
     list [theTest "cast({int},{1,2,3}.add({3,4,5}))"] [theTest "cast({int},{{a=1,b=2},{a=3,b=4},{a=5,b=6}}.get(\"a\"))"] [theTest "cast(\[int\],create({1,2,3,4,5,6},2,3))"] [theTest "cast({int},{1,1,1,1}.leftShift({1,2,3,4}))"]
-} {{} {} {} {}}
+} {cast cast {create cast} cast}
 
 test ParseTreeFreeVariableCollector-16.2 {Test record indexing} {
     list [theTest "true ? 2 : ({a={0,0,0}}.a).length()"] [theTest "false ? 2 : ({a={0,0,0}}.a).length()"]
@@ -297,12 +297,12 @@ test ParseTreeFreeVariableCollector-16.2 {Test record indexing} {
 
 test ParseTreeFreeVariableCollector-16.3 {Test property} {
     list [theTest "getProperty(\"ptolemy.ptII.dir\")"] [theTest "property(\"ptolemy.ptII.dir\") + \"foo\""]
-} {{} {}}
+} {getProperty property}
 
 
 test ParseTreeFreeVariableCollector-17.1 {Test correct scoping in function definitions.} {
     list [theTest "function(x) x + p3"] [theTest "4 + p1(6)"]
-} {p3 {}}
+} {p3 p1}
 
 test ParseTreeFreeVariableCollector-17.2 {Test nested function definitions.} {
     list [theTest "function (y) function(x) x + y + p3"] [theTest "p1(6)"] [theTest "p2(4)"]

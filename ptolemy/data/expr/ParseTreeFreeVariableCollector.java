@@ -98,9 +98,9 @@ public class ParseTreeFreeVariableCollector extends AbstractParseTreeVisitor {
         }
 
         // FIXME: the function name should just be an open variable.
-        if(_isValidName(node.getFunctionName())) {
-            _set.add(node.getFunctionName());
-        }
+        //      if(_isValidName(node.getFunctionName())) {
+        _set.add(node.getFunctionName());
+            //}
     }
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {

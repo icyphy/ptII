@@ -413,7 +413,7 @@ public abstract class BaseType implements Type, Serializable {
     /** The event data type */
     public static class EventType extends BaseType {
         private EventType() {
-            super(EventToken.class, "general");
+            super(EventToken.class, "event");
         }
         public Token convert(Token t) throws IllegalActionException {
             // FIXME: what does converting to general MEAN?

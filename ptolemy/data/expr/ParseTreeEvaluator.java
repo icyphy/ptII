@@ -1041,6 +1041,23 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             return _argumentNames.size();
         }
         
+        public String toString() {
+            StringBuffer buffer = new StringBuffer("(function(");
+            if(_argumentNames.size() > 0) {
+                buffer.append((String)_argumentNames.get(0));
+            }
+            for(int i = 1; i < _argumentNames.size(); i++) {
+                buffer.append(", ");
+                buffer.append((String)_argumentNames.get(i));
+            }
+            buffer.append(") ");
+            ParseTreeWriter writer = new ParseTreeWriter();
+            String string = writer.printParseTree(_exprRoot);
+            buffer.append(string);
+            buffer.append(")");
+            return buffer.toString();
+        }
+
         private ASTPtRootNode _exprRoot;
         private List _argumentNames;
         private ParserScope _freeVariablesScope;

@@ -51,6 +51,14 @@ public class TypeLattice {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the an instance of CPO representing the basic type
+     *  lattice.
+     *  @return an instance of CPO.
+     */
+    public static CPO basicLattice() {
+        return _lattice._basicLattice;
+    }
+
     /** Compare the types of the two specified tokens in the type lattice.
      *  This method returns one of ptolemy.graph.CPO.LOWER,
      *  ptolemy.graph.CPO.SAME, ptolemy.graph.CPO.HIGHER,

@@ -1794,7 +1794,7 @@ String tidied, x;
         // until the parse tree is evaluated.
         jjtn000._name = token.image;
 
-        //FIXME: Constants shouldn't shadow other variables in scope.
+        //BIG FIXME: Constants shouldn't shadow other variables in scope.
         if (Constants.get(token.image) != null) {
             // A named constant that is recognized by the parser.
             jjtn000._ptToken = Constants.get(token.image);

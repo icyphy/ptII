@@ -163,13 +163,13 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     ////                         public methods                    ////
 
     public String getFunctionName() {
-		Node n = jjtGetChild(0);
-		if (!(n instanceof ASTPtLeafNode))
-			return null;
-		else
-			return ((ASTPtLeafNode)n).getName();
+        Node n = jjtGetChild(0);
+        if (!(n instanceof ASTPtLeafNode))
+            return null;
+        else
+            return ((ASTPtLeafNode)n).getName();
     }
-
+    
     public void jjtClose() {
         super.jjtClose();
         // We cannot assume that the result of a function call is

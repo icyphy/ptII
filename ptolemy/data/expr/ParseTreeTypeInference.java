@@ -108,11 +108,29 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                     "unimplemented case");
         }
 
+        // Get the child types.
+        Type[] childTypes = new Type[argCount];
+        for (int i = 0; i < argCount; i++) {
+            childTypes[i] =  
+                ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType();
+            if(childTypes[i] == null) {
+                throw new RuntimeException("node " +
+                        node + " has null child.");
+            }
+        }
+
         if(_isValidName(functionName)) {
             // Handle as an array or matrix index into a named
             // variable reference.
             Type type = _getTypeForName(node.getFunctionName());
-            if(argCount == 1) {
+            if(type instanceof FunctionType) {
+                // Hack?: unify the function type with argument types we have.
+                FunctionType functionType = (FunctionType)type;
+                FunctionType unifyType = 
+                    new FunctionType(childTypes, BaseType.UNKNOWN);
+                functionType.updateType(unifyType);
+                _setType(node, ((FunctionType)type).getReturnType());
+            } else if(argCount == 1) {
                 if(type instanceof ArrayType) {
                     _setType(node, ((ArrayType)type).getElementType());
                     return;
@@ -154,15 +172,6 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         }
 
         // Otherwise, try to reflect the method name.
-        //Type[] childTypes = _getChildTypes(node);
-        Type[] childTypes = new Type[argCount];
-        for (int i = 0; i < argCount; i++) {
-            childTypes[i] =  ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType();
-            if(childTypes[i] == null) {
-                throw new RuntimeException("node " + node + " has null child.");
-            }
-        }
-
         CachedMethod cachedMethod =
             CachedMethod.findMethod(functionName,
                     childTypes, CachedMethod.FUNCTION);
