@@ -96,6 +96,7 @@ public class VergilClassFactoryAttribute extends ClassFactoryAttribute
      */
     public VergilClassFactoryAttribute() {
 	super();
+	System.out.println("VergilClassFactorAttribute()  after super();");
     }
 
     /** Construct an attribute with the given name contained by the specified
@@ -116,5 +117,7 @@ public class VergilClassFactoryAttribute extends ClassFactoryAttribute
     public VergilClassFactoryAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+	System.out.println("VergilClassFactorAttribute(" + container + "," 
+			   + name + ") after super();");
     }
 }
