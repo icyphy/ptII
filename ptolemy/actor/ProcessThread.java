@@ -95,7 +95,8 @@ public class ProcessThread extends PtolemyThread {
                 iterate = false;
                 // container is checked for null to detect the
                 // termination of the actor
-                if (((Entity)_actor).getContainer()!=null && _actor.prefire()){
+                if (((Entity)_actor).getContainer() != null 
+                        && _actor.prefire()){
                     _actor.fire();
                     iterate =  _actor.postfire();
                 }
