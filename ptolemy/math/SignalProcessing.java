@@ -140,7 +140,9 @@ public final class SignalProcessing {
         double[] imags = new double[size];
         // Copy the array.  Zero filling is implicit because Java
         // always initializes arrays.
-        for (int i = 0; i < x.length; i++) {
+        // If the input array is larger than size, just copy the first
+        // size elements.
+        for (int i = 0; i < ((x.length < size)? x.length : size) ; i++) {
             if (x[i] != null) {
                 reals[i] = x[i].real;
                 imags[i] = x[i].imag;
