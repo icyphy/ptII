@@ -1,4 +1,9 @@
 
+data.expr:
+
+from expr_bad: UnknownResultException, Variable
+make UnknownResultException runtime, for now
+
 To Do:
 
 5 FIXMEs
@@ -9,7 +14,7 @@ To Do:
 7 test SR in SR (to make the inner actor strict, use an inner director)
 7 test SR embedded in DT for timed SR
 7 test efficiency
-3 FSM composite actor in SR - talk to xiaojun
+3 FSM composite actor in SR
 
 7 stopwatch, global resets, UI activity, reflex game, examples by sedwards
 7 run ptolemy classic SR
