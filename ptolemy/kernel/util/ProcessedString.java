@@ -174,7 +174,8 @@ public class ProcessedString
         super._exportMoMLContents(output, depth);
 	if(_instruction == null) {
 	    output.write(_getIndentPrefix(depth) + "<configure>\n" 
-			 + _string + "\n"
+			 + "<![CDATA[\n"
+			 + _string + "]]>\n"
 			 + _getIndentPrefix(depth) + "</configure>\n");
 	} else {
 	    output.write(_getIndentPrefix(depth) + "<configure><?" 

@@ -315,14 +315,18 @@ public class ComponentEntity extends Entity {
 	try {
 	    icon = new NonpersistentProcessedString(this, "iconDescription");
 	} catch (KernelException ex) {
-	    throw new InternalErrorException(
-                    "Error creating icon for " + getFullName());
+	    throw new InternalErrorException("Error creating icon for " + 
+                    getFullName());
 	}
-	icon.setInstruction("graphml");
-	icon.setString("<xmlgraphic>\n" + 
-		"<rectangle coords=\"0 0 60 40\" fill=\"white\"/>\n" +
-		"<polygon coords=\"10 10 50 20 10 30\" fill=\"blue\"/>\n" + 
-		"</xmlgraphic>\n");
+        // FIXME: should be 'svg'
+        icon.setInstruction(null);
+	icon.setString("<svg>\n" +
+                "<rect x=\"0\" y=\"0\" width=\"60\" " +
+                "height=\"40\" style=\"fill:white\"/>\n" +
+                "<polygon points=\"10,10 50,20 10,30\" " +
+                "style=\"fill:blue\"/>\n" +
+                "</svg>\n");
+        
     }
 
     ///////////////////////////////////////////////////////////////////
