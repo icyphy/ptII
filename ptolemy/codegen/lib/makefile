@@ -161,8 +161,7 @@ CGCWaveForm.java \
 CGCXMgraph.java \
 CGCXYgraph.java \
 CGCXgraph.java \
-CGCXscope.java \
-jindenttmp24733.java \
+CGCXscope.java
 
 OTHER_FILES_TO_BE_JARED = 	lib.xml
 
