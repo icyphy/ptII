@@ -49,7 +49,8 @@ JSRCS = \
 JSIMPLE_TESTS = \
 		BasePNDirector.tcl \
 		PNDirector.tcl \
-		PNQueueReceiver.tcl
+		PNQueueReceiver.tcl \
+		TimedPNDirector.tcl
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
