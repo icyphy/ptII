@@ -58,6 +58,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -142,10 +143,10 @@ public class PtolemyQuery extends Query
         boolean foundStyle = false;
         if (attribute instanceof NamedObj) {
             Iterator styles = ((NamedObj)attribute)
-                .attributeList(ParameterEditorStyle.class).iterator();
+                    .attributeList(ParameterEditorStyle.class).iterator();
             while (styles.hasNext() && !foundStyle) {
                 ParameterEditorStyle style =
-                    (ParameterEditorStyle)styles.next();
+                        (ParameterEditorStyle)styles.next();
                 try {
                     style.addEntry(this);
                     foundStyle = true;
@@ -187,7 +188,18 @@ public class PtolemyQuery extends Query
                     }
                     // FIXME: Other types?
                 } else if (attribute instanceof FileAttribute) {
-                    // FIXME: Third argument is the directory.
+                    // Specify the directory in which to start
+                    // to be the location where the model is defined,
+                    // if that is known.
+                    // FIXME: Should remember previous browse location?
+                    URL base = ((FileAttribute)attribute).getModelURL();
+                    String directory = "";
+                    if (base != null) {
+                        if (base.getProtocol().equals("file")) {
+                            directory = base.getFile();
+                        }
+                    }
+                    // Third argument is the directory.
                     addFileChooser(name, name, attribute.getExpression(), "");
                     attachParameter(attribute, name);
                     foundStyle = true;
@@ -310,31 +322,11 @@ public class PtolemyQuery extends Query
                 if (parent == null) {
                     parent = (NamedObj)castAttribute.getContainer();
                 }
-		String moml;
-                if (attribute instanceof SliderParameter) {
-                    SliderParameter slider = (SliderParameter)attribute;
-                    try {
-                        moml = "<property name=\""
-                                + castAttribute.getName(parent)
-                                + "\" value=\"{min="
-                                + slider.getMinValue()
-                                + ", max="
-                                + slider.getMaxValue()
-                                + ", current="
-                                + getStringValue(name)
-                                + "}\"/>";
-                    } catch (IllegalActionException ex) {
-                        // Should not occur.
-                        throw new InternalErrorException(slider, ex,
-                        "Malformed SliderParameter!");
-                    }
-                } else {
-                    moml = "<property name=\""
-                            + castAttribute.getName(parent)
-                            + "\" value=\""
-                            + StringUtilities.escapeForXML(getStringValue(name))
-                            + "\"/>";
-                }
+		String moml = "<property name=\""
+                        + castAttribute.getName(parent)
+                        + "\" value=\""
+                        + StringUtilities.escapeForXML(getStringValue(name))
+                        + "\"/>";
                 request = new MoMLChangeRequest(
                         this,         // originator
                         parent,       // context
@@ -584,18 +576,7 @@ public class PtolemyQuery extends Query
 
                         while (entryNames.hasNext()) {
                             String name = (String)entryNames.next();
-                            String newValue;
-                            if (attribute instanceof SliderParameter) {
-                                try {
-                                    newValue = "" + ((SliderParameter)attribute)
-                                           .getCurrentValue();
-                                } catch (IllegalActionException ex) {
-                                    throw new InternalErrorException(attribute,
-                                            ex, "Malformed SliderParameter!");
-                                }
-                            } else {
-                                newValue = attribute.getExpression();
-                            }
+                            String newValue = attribute.getExpression();
 
                             // Compare value against what is in
                             // already to avoid changing it again.
