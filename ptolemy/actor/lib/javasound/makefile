@@ -56,8 +56,11 @@ JSRCS = \
 	AudioReadBuffer.java \
 	AudioWriteBuffer.java
 
+# We include voice.wav so that we can include the voice.wav file in
+# the jar file for use under Web Start.
 OTHER_FILES_TO_BE_JARED = \
-	javasound.xml
+	javasound.xml \
+	voice.wav
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
