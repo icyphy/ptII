@@ -35,14 +35,11 @@ import diva.canvas.Figure;
 import diva.canvas.toolbox.LabelFigure;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
-import diva.graph.GraphViewListener;
 import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.AbstractGlobalLayout;
 import diva.graph.layout.GlobalLayout;
 import diva.graph.layout.IncrLayoutAdapter;
-import diva.graph.layout.IncrementalLayout;
 import diva.graph.layout.IncrementalLayoutListener;
-import diva.graph.layout.LayoutTarget;
 import diva.util.Filter;
 
 import ptolemy.actor.IOPort;
@@ -54,7 +51,8 @@ import ptolemy.actor.gui.TextEffigy;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.moml.Location;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.basic.BasicGraphFrame;
@@ -63,13 +61,9 @@ import ptolemy.vergil.kernel.PortDialogFactory;
 import ptolemy.vergil.ptdb.BreakpointDialogFactory;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PortSite;
 
-import javax.swing.Action;
-import javax.swing.SwingConstants;
 import java.awt.Font;
-import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -77,6 +71,8 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import javax.swing.Action;
+import javax.swing.SwingConstants;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorController
