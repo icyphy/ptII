@@ -52,18 +52,14 @@ JSRCS = \
 	XmlHandler.java \
 	XmlParser.java
 
-# We don't have SAX
-#	SAXDriver.java
-
 EXTRA_SRCS = \
 	$(JSRCS) \
-	README.txt \
-	SAXDriver.java
+	README.txt
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include $(DIRS) here, we don't want make sources to run make demo
-MISC_FILES =	#$(DIRS)
+MISC_FILES =	driver #$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
