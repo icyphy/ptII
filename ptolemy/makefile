@@ -52,7 +52,6 @@ PTCLASSJAR =
 # Include these jars in PTAUXALLJAR
 # plotmlapplet pulls in the com/microstar/xml classes
 PTAUXALLJARS = \
-		../collections/ptcollections.jar \
 		gui/gui.jar \
 		kernel/kernel.jar \
 		plot/plotmlapplet.jar \
@@ -83,9 +82,6 @@ OPTIONAL_FILES = filter system
 
 all: suball $(EXTRA_SRCS)
 install: subinstall jars
-
-../collections/ptcollections.jar:
-	(cd ../collections; $(MAKE) ptcollections.jar)
 
 # Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk
