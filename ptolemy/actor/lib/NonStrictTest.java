@@ -64,7 +64,7 @@ specified <i>tolerance</i> (which defaults to 10<sup>-9</sup>.  The
 input data type is undeclared, so it can resolve to anything.
 
 
-@See Test
+@see Test
 @author Paul Whitaker, Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.0
