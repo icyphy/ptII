@@ -43,13 +43,13 @@ JFLAGS =
 DIRS = 		#doc
 
 # Used to build zip files
-TYPACKAGE = 	ptolemy.domains.sdf.lib
-TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = ptolemy/domains/sdf/lib
-TYVERSION =	1.0
-TYDIST =	$(TYPACKAGE)$(TYVERSION)
-TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
-JARFILE = 	$(TYPACKAGE).jar
+PTPACKAGE = 	ptolemy.domains.sdf.lib
+PTPACKAGE_ROOTDIR = $(CLASSPATH)
+PTPACKAGE_DIR = ptolemy/domains/sdf/lib
+PTVERSION =	1.0
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSZIP =		$(PTPACKAGE_DIR)/$(TYPACKAGE).zip
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 CLASSPATH = ../../../../..
 
@@ -71,7 +71,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
-install: jclass javadocs $(JARFILE)
+install: jclass javadocs $(PTCLASSJAR)
 docs: javadocs
 
 depend:
