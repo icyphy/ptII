@@ -47,8 +47,6 @@ compositeActor. Do it by override getReceivers(), which return the
 receivers of the port its output are connected.
 @author Jie Liu
 @version $Id$
-@see classname
-@see full-classname
 */
 public class CTZeroOrderHold extends CTActor 
     implements CTEventInterpreter{
