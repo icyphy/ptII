@@ -140,8 +140,8 @@ public class CTSchedule extends Schedule {
      */
     public void add(ScheduleElement element) {
         element.setParent(this);
-	_incrementVersion();
-	_schedule.add(element);
+        _incrementVersion();
+        _schedule.add(element);
     }
 
     /** Return the element at the specified position in the list.
@@ -150,7 +150,7 @@ public class CTSchedule extends Schedule {
      * @return The element at the specified position in the list.
      */
     public ScheduleElement get(int index) {
-	return((ScheduleElement)_schedule.get(index));
+        return((ScheduleElement)_schedule.get(index));
     }
 
     /** Return all the scheduling information in a Sting.

@@ -310,14 +310,14 @@ public class CTScheduler extends Scheduler {
 
     /** Return the SignalType as a String */
     public String signalTypeToString(CTReceiver.SignalType signalType) {
-	if (signalType == CONTINUOUS) {
-	    return "CONTINUOUS";
-	} else if (signalType == DISCRETE) {
-	    return "DISCRETE";
-	} else if (signalType == UNKNOWN) {
-	    return "UNKNOWN";
-	}
-	return "INVALID:" + signalType + " is invalid";
+        if (signalType == CONTINUOUS) {
+            return "CONTINUOUS";
+        } else if (signalType == DISCRETE) {
+            return "DISCRETE";
+        } else if (signalType == UNKNOWN) {
+            return "UNKNOWN";
+        }
+        return "INVALID:" + signalType + " is invalid";
     }
 
     /** Return all the scheduling information in a String.
@@ -798,7 +798,7 @@ public class CTScheduler extends Scheduler {
                 }
             }
         }
-	return graph;
+        return graph;
     }
 
     /** Convert the given actors to a directed acyclic graph.
@@ -832,7 +832,7 @@ public class CTScheduler extends Scheduler {
                 }
             }
         }
-	return g;
+        return g;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -991,10 +991,10 @@ public class CTScheduler extends Scheduler {
                     throw new NotSchedulableException(
                             "Signal type conflict: "
                             + port.getFullName() + " (of type "
-			    + signalTypeToString(getType(port))
-			    + ") and "
+                            + signalTypeToString(getType(port))
+                            + ") and "
                             + nextPort.getFullName() + " (of type "
-			    + signalTypeToString(getType(nextPort)) + ")"
+                            + signalTypeToString(getType(nextPort)) + ")"
                             + "). Perhaps the connections has "
                             + "sequence semantics instead of the continuous "
                             + "signal semantics that CT requires?  This "
@@ -1034,10 +1034,10 @@ public class CTScheduler extends Scheduler {
                     throw new NotSchedulableException(
                             "Signal type conflict: "
                             + port.getFullName() + " (of type "
-			    + signalTypeToString(getType(port))
-			    + ") and "
+                            + signalTypeToString(getType(port))
+                            + ") and "
                             + nextPort.getFullName() + " (of type "
-			    + signalTypeToString(getType(nextPort)) + ")"
+                            + signalTypeToString(getType(nextPort)) + ")"
                             + "). Perhaps the connections has "
                             + "sequence semantics instead of the continuous "
                             + "signal semantics that CT requires?  This "

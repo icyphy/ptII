@@ -96,7 +96,7 @@ public class CTCompositeActor extends TypedCompositeActor
      *  @param workspace The workspace that will list the actor.
      */
     public CTCompositeActor(Workspace workspace) {
-	super(workspace);
+        super(workspace);
         // When exporting MoML, set the class name to CTCompositeActor
         // instead of the default TypedCompositeActor.
         getMoMLInfo().className = "ptolemy.domains.ct.kernel.CTCompositeActor";
