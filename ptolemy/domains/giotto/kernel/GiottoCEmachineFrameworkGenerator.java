@@ -1102,8 +1102,14 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                                          + " array" + sanitizedPortName + "_2"
                                          + "[" + arrayLength + "]" + ";" + _endLine;
                     FHfuncVarDeclString += _endLine;
-                     
-                    // Writng into f_code_init
+
+		    FHfuncVarDeclString += "extern " + portType
+			                 + " local_" + sanitizedPortName + ";" + _endLine;
+		    FHfuncVarDeclString += "extern " + portType
+			                 + " global_" + sanitizedPortName + ";" + _endLine;
+                    FHfuncVarDeclString += _endLine;
+
+                    // Writing into f_code_init
                     FCVarInitString += _tabChar + "local_" + sanitizedPortName
                                      + " = array" + sanitizedPortName + "_1;" + _endLine;
                     FCVarInitString += _tabChar + "global_" + sanitizedPortName
@@ -1134,8 +1140,12 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                                          + "[" + arrayLength + "]" + ";" + _endLine;
                     FHfuncVarDeclString += _endLine;
                      
-                    // Writng into f_code_init
-                    FCVarInitString += _tabChar + sanitizedPortName
+		    FHfuncVarDeclString += "extern " + portType
+			                 + " " + actorName + "_" + sanitizedPortName + ";" + _endLine;
+                    FHfuncVarDeclString += _endLine;
+
+                    // Writing into f_code_init
+                    FCVarInitString += _tabChar + actorName + "_" + sanitizedPortName
                                      + " = array" + sanitizedPortName + ";" + _endLine;
                 }
             }
