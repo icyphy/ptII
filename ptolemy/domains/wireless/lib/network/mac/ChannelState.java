@@ -39,6 +39,8 @@ import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.RecordType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -92,8 +94,18 @@ public class ChannelState extends MACActorBase {
         fromControl = new TypedIOPort(this, "fromControl", true, false);
         
         toTransmission = new TypedIOPort(this, "toTransmission", false, true);
-        //Don't infer the type from input.
-        toTransmission.setTypeEquals(BaseType.UNKNOWN);     
+        
+        String[] labels = {"type", "content"};
+        Type[] types = {BaseType.INT, BaseType.GENERAL};
+        RecordType recordType = new RecordType(labels, types);
+        
+        channelStatus.setTypeEquals(recordType);
+        updateNav.setTypeEquals(recordType);
+        fromControl.setTypeEquals(recordType);
+        
+        //types[2] = BaseType.GENERAL;
+        //RecordType recordType2 = new RecordType(labels, types); 
+        toTransmission.setTypeEquals(recordType);     
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -135,6 +147,18 @@ public class ChannelState extends MACActorBase {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         ChannelState newObject = (ChannelState)super.clone(workspace);
+        /*
+        String[] labels = {"type", "content"};
+        Type[] types = {BaseType.INT, BaseType.GENERAL};
+        RecordType recordType = new RecordType(labels, types);
+        
+        newObject.channelStatus.setTypeAtMost(recordType);
+        newObject.updateNav.setTypeAtMost(recordType);
+        newObject.fromControl.setTypeAtMost(recordType);
+        //no need to set type constraint for toTransmission since
+        //it has an absolute constraint.
+         *
+         */
         return newObject;
     }
 
@@ -153,7 +177,7 @@ public class ChannelState extends MACActorBase {
             _inputMessage = (RecordToken)IfsControl.get(0);
             _messageType = ((IntToken)_inputMessage.
                     get("type")).intValue();
-            _message = (RecordToken)_inputMessage.get("message");
+            _message = (RecordToken)_inputMessage.get("content");
             if (_messageType == (UseDifs)) {
                 _dIfs = _dDIfs - _RxTxTurnaroundTime;
             } else if (_messageType == UseEifs){
@@ -183,7 +207,7 @@ public class ChannelState extends MACActorBase {
         if(_inputMessage != null) {
             _messageType = ((IntToken)
                     _inputMessage.get("type")).intValue();
-            _message = (RecordToken)_inputMessage.get("message");
+            _message = (RecordToken)_inputMessage.get("content");
         } 
         
         switch (_state) {
@@ -350,11 +374,11 @@ public class ChannelState extends MACActorBase {
         }
     }
     
-    private RecordToken _createRecordToken(int type, RecordToken message) 
+    private RecordToken _createRecordToken(int type, RecordToken content) 
             throws IllegalActionException {
-        String[] labels = {"type", "message"};
-        RecordToken newMessage = message;
-        if(message == null ) {
+        String[] labels = {"type", "content"};
+        RecordToken newMessage = content;
+        if(content == null ) {
             String[] subLabels = {"ChannelStatus"};
             Token[] subValue = {new IntToken(type)};
             newMessage = new RecordToken(subLabels, subValue);
