@@ -48,10 +48,11 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include these jars in PTAUXALLJAR
-# plotmlapplet pulls in the com/microstar/xml and util/ classes
 PTAUXALLJARS = \
-		doc/doc.jar \
-		dll/dll.jar
+		demo/demo.jar \
+		doc/doc.jar
+
+PTAUXALLJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
