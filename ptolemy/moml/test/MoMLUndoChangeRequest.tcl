@@ -113,15 +113,12 @@ test MoMLUndoChangeRequest-1.2 {Undo} {
 	$originator $toplevel] 
     $toplevel requestChange $undoChange 
     set undoneMoML [$toplevel exportMoML]
-    # Unfortunately, under Windows, there is quite a bit of confusion
-    # about how end of line characters are returned by exec, so
-    # we take a subset of the result string and avoid some problems
+
     set r [diffText $originalMoML $undoneMoML]
-    puts $r
+
     # Unfortunately, under Windows, there are problems with end of line
     # characters that are returned by the diffText proc, so we just
-    # check  that the discard1 and discard3 actors are not present
-    # in the diff output
+    # check for key strings in the output
     list \
 	[regexp  {<     <entity name="const" class="ptolemy.actor.lib.Const">} \
 	     $r] \
