@@ -108,6 +108,60 @@ test FBDelay-2.1 {Cycle null tokens} {
 } {5.0 15.0 25.0} 
 
 
+######################################################################
+####
+#
+test FBDelay-3.1 {Cycle real tokens} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
+    set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
+    $toplevel setDirector $dir
+    $toplevel setManager $mgr
+    $dir setCompletionTime 20.0
+    
+    set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
+    set actorSend [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend" 3]
+    set join [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "join"]
+    set fork [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork"]
+    set fBack [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack"]
+    set sink [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "sink" 1]
+
+    $fBack setDelay 4.0
+
+    set tok1 [java::new ptolemy.data.Token]
+    $actorSend setToken $tok1 5.0 0 
+    $actorSend setToken $tok1 15.0 1
+    $actorSend setToken $tok1 25.0 2
+
+    set rcvrIn [$actorRcvr getPort "input"]
+    set sendOut [$actorSend getPort "output"]
+    set joinIn [$join getPort "input"]
+    set joinOut [$join getPort "output"]
+    set forkIn [$fork getPort "input"]
+    set forkOut1 [$fork getPort "output1"]
+    set forkOut2 [$fork getPort "output2"]
+    set fBackIn [$fBack getPort "input"]
+    set fBackOut [$fBack getPort "output"]
+    set sinkIn [$sink getPort "input"]
+
+    $toplevel connect $sendOut $joinIn
+    $toplevel connect $joinOut $forkIn
+    $toplevel connect $forkOut1 $rcvrIn 
+    $toplevel connect $forkOut2 $sinkIn 
+    $toplevel connect $fBackOut $joinIn
+    $toplevel connect $fBackIn $forkOut1
+
+    $mgr run
+
+    set time0 [$actorRcvr getAfterTime 0]
+    set time1 [$actorRcvr getAfterTime 1]
+    set time2 [$actorRcvr getAfterTime 2]
+
+    list $time0 $time1 $time2
+
+} {5.0 9.0 13.0}
+
 
 
 
