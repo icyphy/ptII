@@ -55,7 +55,7 @@ Convert an array of bytes into a string.  The conversion is performed
 using the default character set, returned by the system property
 "file.encoding".  The output is a string assembled from these bytes.
 
-@author Winthrop Williams, Steve Neuenodorffer
+@author Winthrop Williams, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 2.0
 */

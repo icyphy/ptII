@@ -58,7 +58,7 @@ SerialComm serial communication actor which uses the same kind of integer
 array format as this actor.  Datagram actors can use this format as well.
 <p>
 
-@author Winthrop Williams, Steve Neuenodorffer
+@author Winthrop Williams, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 2.0
 */
