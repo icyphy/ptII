@@ -78,6 +78,7 @@ OPTIONAL_FILES = \
 	'EditorDropTarget$$3.class' \
 	'EditorDropTarget$$4.class' \
 	'EditorDropTarget$$DTListener.class' \
+	'GraphFrame$$1.class' \
 	'GraphFrame$$DeletionListener.class' \
 	'GraphFrame$$GetDocumentationAction.class' \
 	'GraphFrame$$ImportLibraryAction.class' \
