@@ -58,7 +58,7 @@ public class DoubleToken extends ScalarToken {
 	_value = value;
     }
 
-    /** Construct an IntToken from the specified string.
+    /** Construct an DoubleToken from the specified string.
      *  @exception IllegalArgumentException If the Token could not
      *   be created with the given String.
 
