@@ -37,7 +37,8 @@ import pt.exceptions.NameDuplicationException;
 /** 
 A Relation is an arc in a hierarchical graph. Relations serve as a general 
 notion of connection between Entities and should be thought of as nets 
-that can be specialized to point-to-point connections. 
+that can be specialized to point-to-point connections. FIXME: What should 
+happen to a disconnected Short (zero connections)?
 @author John S. Davis, II
 @version $Id$
 */
@@ -133,6 +134,9 @@ public class Relation extends Node {
 	Short port1Short;
 	port1Short = createNewDanglingShort( port1 ); 
 	connectShortToPort( port1Short, port2 );
+
+	// Consolidate any duplicate Shorts
+	consolidateShorts();
         return;
     }
 
@@ -158,8 +162,8 @@ public class Relation extends Node {
     }
 
     /** Check all Shorts within this Relation and consolidate if necessary. 
-     *  // NOTE: Is it okay to remove elements as we iterate through the
-     *  // corresponding Enumeration?
+     *  NOTE: Is it okay to remove elements as we iterate through the
+     *  corresponding Enumeration?
      * @return Return the number of consolidations that occurred.
      */
     public int consolidateShorts() {
@@ -181,6 +185,60 @@ public class Relation extends Node {
 	}
 
         return numRemovedShorts;
+    }
+
+    /** Disconnect two Ports from each other.
+     * @param port1 The first Port being disconnected.
+     * @param port2 The first Port being disconnected.
+     * @returns Returns true if a disconnect occurs; returns false otherwise.
+     */
+    public boolean disconnectPorts(Port port1, Port port2) {
+	if( _shorts == null ) {
+	     return false;
+	}
+
+	// Make sure that no Shorts are being duplicated.
+	consolidateShorts();
+
+	// Find the Short that these two Ports have in common.
+	Short commonShort;
+	commonShort = getShort(port1, port2);
+
+	// Ports do not share a common Short and thus do not 
+	// need to be disconnected.
+	if( commonShort == null ) {
+	     return false;
+	}
+
+	// Ports do share a common Short.
+	commonShort.disconnectPort( port1 );
+	commonShort.disconnectPort( port2 );
+
+        return true;
+    }
+
+    /** Disconnect a Port from this Relation.
+     * @param port The Port being disconnected. 
+     * @return Returns true if the Port is found and is disconnected;
+     * returns false otherwise.
+     */
+    public boolean disconnectPort(Port port) {
+	boolean portWasConnected = false;
+	if( _shorts == null ) {
+	     return false;
+	}
+
+	Short aShort; 
+	Enumeration enum = _shorts.elements();
+	while( enum.hasMoreElements() ) {
+	     aShort = (Short)enum.nextElement();
+	     if( aShort.isPortConnected( port.getName() ) ) {
+		  aShort.disconnectPort( port );
+		  portWasConnected = true;
+	     }
+	}
+
+        return portWasConnected;
     }
 
     /** Description
@@ -213,10 +271,10 @@ public class Relation extends Node {
 
     /* Determine if two Shorts contain the same Ports. If so, 
      * remove one of the Shorts and consolidate one of them.
-     * // FIXME: What if both Shorts are dangling? This shouldn't
-     * // be a problem.
-     * // NOTE: Doug Lea's Collections package includes a sameStructure()
-     * // method which offers the functionality of this method.
+     * FIXME: What if both Shorts are dangling? This shouldn't
+     * be a problem.
+     * NOTE: Doug Lea's Collections package includes a sameStructure()
+     * method which offers the functionality of this method.
      * @param short1 The first Short for which a match is sought. 
      * @param short2 The first Short for which a match is sought. 
      * @return Returns true if a consolidation occurred; returns false
