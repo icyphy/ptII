@@ -1411,6 +1411,23 @@ else
 	    If Matlab is not present, then the Ptolemy II/Matlab interface in
     \$PTII/ptolemy/matlab will not be usable.]);
 	    else
+
+	    cd "$srcdir/config"
+	    if "$JAVAC" MajorOSName.java ; then
+	        AC_MSG_CHECKING([the which major type of OS we are running under])
+		# Older versions of cygwin might not have env, but 1.1 does
+		if env CLASSPATH="$PTII/config" "$JAVA" confTest > /dev/null; then
+		    # Run it again and get the results
+		    MAJOR_OS_NAME=`CLASSPATH="$PTII/config" "$JAVA" MajorOSName`
+		    AC_MSG_RESULT($MAJOR_OS_NAME)
+		else   
+		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MajorOSName' failed.
+    The Matlab interface will build fine, but not being able to determine
+    the major operating system name could cause problems with running 
+    (cd $PTII/ptolemy/matlab; make install)]);		    
+		fi
+	    fi
+	    cd "$startdir"
 		AC_MSG_RESULT([$MATLAB_DIR])
 		case "`uname -s`" in
 		Linux)
@@ -1430,13 +1447,11 @@ else
 		AC_MSG_CHECKING([for gcc])
 		AC_PATH_PROG(PTCC, gcc)
 		if test "${PTCC:-none}" != "none"; then
-			AC_MSG_RESULT([$PTCC])
 			PTMATLAB_DIR=matlab
 		else    
 			AC_MSG_WARN([Failed to find gcc])
 			AC_PATH_PROG(PTCC, cc)
 			if test "${PTCC:-none}" != "none"; then
-			    AC_MSG_RESULT([$PTCC])
 			    PTMATLAB_DIR=matlab
 			else	
 			    AC_MSG_WARN([Failed to find gcc or cc, so we will
@@ -1794,6 +1809,11 @@ AC_SUBST(KVM_DIR)
 # Set to the location of the lejos installation, usually in
 # $PTII/vendors/lejos
 AC_SUBST(LEJOS_DIR)
+
+# The major type of OS we are running under.
+# Under all forms Windows, this should be Windows; ynder Linux: Linux, etc.
+# Used in ptolemy/matlab/makefile
+AC_SUBST(MAJOR_OS_NAME)
 
 # Set to the location of the matlab installation, e.g. /matlabr11
 # This directory usually contains bin,...
