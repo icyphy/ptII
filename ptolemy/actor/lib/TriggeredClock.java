@@ -126,7 +126,7 @@ public class TriggeredClock extends TimedSource {
         // set up  parameter values
         period = new Parameter(this, "period", new DoubleToken(2.0));
         period.setTypeEquals(BaseType.DOUBLE);
-         
+
         numberOfCycles = new Parameter(this,"numberOfCycles");
         numberOfCycles.setExpression("1");
 
@@ -135,7 +135,7 @@ public class TriggeredClock extends TimedSource {
         offsets.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         // Call this so that we don't have to copy its code here...
         attributeChanged(offsets);
-	
+
 	IntToken[] defaultValues = new IntToken[2];
 	defaultValues[0] = new IntToken(1);
 	defaultValues[1] = new IntToken(0);
@@ -147,7 +147,7 @@ public class TriggeredClock extends TimedSource {
 	ArrayType valuesArrayType = (ArrayType)values.getType();
 	InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
 	output.setTypeAtLeast(elementTerm);
-        
+
         //set the trigger port to be a multiport
 	trigger.setMultiport(false);
 
@@ -178,7 +178,7 @@ public class TriggeredClock extends TimedSource {
     /** The number of cycles that the actor will produce
      */
     public Parameter numberOfCycles;
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -247,21 +247,21 @@ public class TriggeredClock extends TimedSource {
      *   than the period, or if there is no director.
      */
     public void fire() throws IllegalActionException {
-   
+
         // Get the current time and period.
-        
+
 	double periodValue = ((DoubleToken)period.getToken()).doubleValue();
 	double currentTime = getDirector().getCurrentTime();
-	                 
+
 	if(!_trigger){
 	    if(trigger.hasToken(0)){
 		_trigger  = ((BooleanToken)trigger.get(0)).booleanValue();
 		if (_trigger){
 		    _tentativeCycleStartTime = currentTime;
 		    _tentativePhase = 0;
-		    _tentativeCurrentValue = _getValue(_phase); 
+		    _tentativeCurrentValue = _getValue(_phase);
 		    _trigger = true;
-		}   
+		}
 	    }
 	} else {
 	    // In case time has gone backwards since the last call to fire()
@@ -270,9 +270,9 @@ public class TriggeredClock extends TimedSource {
 	    System.out.println("current time"+ currentTime);
 	    _tentativeCycleStartTime = _cycleStartTime;
 	    _tentativePhase = _phase;
-	    _tentativeCurrentValue = _currentValue;     
-	}     
-                       
+	    _tentativeCurrentValue = _currentValue;
+	}
+
         // In case current time has reached or crossed a boundary between
         // periods, update it.  Note that normally it will not
         // have advanced by more than one period
@@ -316,10 +316,10 @@ public class TriggeredClock extends TimedSource {
     public void initialize() throws IllegalActionException {
 	_trigger = false;
 	_cycleCount = 0;
-	super.initialize(); 
+	super.initialize();
     }
-   
- 
+
+
     /** Update the state of the actor and schedule the next firing,
      *  if appropriate.
      *  @exception IllegalActionException If the director throws it when
@@ -329,13 +329,13 @@ public class TriggeredClock extends TimedSource {
         _cycleStartTime = _tentativeCycleStartTime;
         _currentValue = _tentativeCurrentValue;
         _phase = _tentativePhase;
-         
+
         // Used to use any negative number here to indicate
         // that no future firing should be scheduled.
         // Now, we leave it up to the director, unless the value
         // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
 	_cycleCount++;
-	int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue(); 
+	int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
 	if (_cycleCount <= cycleLimit){
 	    if (_tentativeNextFiringTime != Double.NEGATIVE_INFINITY) {
 		getDirector().fireAt(this, _tentativeNextFiringTime);
@@ -369,10 +369,10 @@ public class TriggeredClock extends TimedSource {
     private boolean _oldTrigger;
     // The current value of the clock output.
     private transient Token _currentValue;
-   
+
     // The most recent cycle start time.
     private transient double _cycleStartTime;
-   
+
     // Cache of offsets array value.
     private transient double[] _offsets;
 
