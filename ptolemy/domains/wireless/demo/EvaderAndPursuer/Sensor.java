@@ -151,13 +151,16 @@ public class Sensor extends TypedAtomicActor {
         new Attribute(signal, "_hide");
     }
 
-    /** Explicitly declare which inputs and outputs are not dependent.
-     *
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> or <i>signal</i>
+     *  ports in a firing.
      */
-    public void removeDependencies() {
+    public void pruneDependencies() {
+        super.pruneDependencies();
         super.removeDependency(input, output);
         super.removeDependency(signal, output);
     }
+    
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 

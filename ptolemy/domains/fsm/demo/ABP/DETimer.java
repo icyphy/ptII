@@ -114,10 +114,11 @@ public class DETimer extends TypedAtomicActor {
         _expireTime = -1.0;
     }
 
-    /** Explicitly declare which inputs and outputs are not dependent.
-     *
+    /** Override the base class to declare that the <i>expired</i>
+     *  port does not depend on the <i>set</i> port in a firing.
      */
-    public void removeDependencies() {
+    public void pruneDependencies() {
+        super.pruneDependencies();
         removeDependency(set, expired);
     }
 

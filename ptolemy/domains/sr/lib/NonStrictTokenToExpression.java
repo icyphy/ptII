@@ -95,10 +95,11 @@ public class NonStrictTokenToExpression extends TokenToExpression {
         return input.isKnown(0);
     }
 
-    /** Explicitly declare which inputs and outputs are not dependent.
-     *
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
      */
-    public void removeDependencies() {
+    public void pruneDependencies() {
+        super.pruneDependencies();
         removeDependency(input, output);
     }
 }

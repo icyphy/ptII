@@ -72,14 +72,11 @@ public class Absent extends Undefined {
         output.sendClear(0);
     }
 
-    /** Explicitly declare which inputs and outputs are not dependent.
-     *
+    /** Override the base class to declare that the <i>output</i>
+     *  port does not depend on the <i>trigger</i> port in a firing.
      */
-    public void removeDependencies() {
+    public void pruneDependencies() {
+        super.pruneDependencies();
         removeDependency(trigger, output);
     }
-
 }
-
-
-
