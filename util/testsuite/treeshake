@@ -49,8 +49,8 @@ touch $manifest
 for arg in $@
 do
     echo "$arg" | egrep "^ptolemy\."
-    results=$?
-    if [ "$results" -eq 0 ]; then
+    retval=$?
+    if [ $retval = 0 ]; then
 	echo "Main-class: $arg" > $manifest
 	break
     fi
@@ -59,18 +59,20 @@ done
 # Generate a list of ptolemy classes to include by running
 # the demo with under java -verbose
 
+#set -x
 ptolemyFiles=`$javaCommand -verbose ${1+"$@"} | \
     egrep '^\[Loaded ' | \
     egrep 'Loaded (ptolemy|com.microstar)' | \
     awk '{print substr($2, 1, length($2)-1)}' | \
     sed 's@\.@/@g' | awk '{print $1 ".class"}'`
+#set +x
 (cd $PTII; jar -cm $manifest $ptolemyFiles) > $treeshakejar
 rm -f $manifest
 
 # Throw away everything before -classpath xxx, where xxx is also tossed
 echo "$@" | egrep -e "-classpath"
-results=$?
-if [ "$results" -eq 0 ]; then
+retval=$?
+if [ $retval = 0 ]; then
     for arg in $@
     do
 	if [ "$1" = "-classpath" ]; then
