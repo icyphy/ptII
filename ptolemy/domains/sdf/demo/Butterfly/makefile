@@ -50,6 +50,7 @@ JSRCS = \
 EXTRA_SRCS = \
 	Butterfly.htm \
 	Butterfly.xml \
+	ButterflyVergil.htm \
 	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
