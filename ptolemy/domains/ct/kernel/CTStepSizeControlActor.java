@@ -80,14 +80,14 @@ public interface CTStepSizeControlActor extends Actor{
     ////                         public methods                    ////
 
     /** Implementations of this method should return
-     *  true if the all output actors declare the 
+     *  true if the all output actors declare the
      *  current integration step is accurate.
      *  @return True if the current step is accurate.
      */
     public boolean isOutputAccurate();
-    
+
     /** Implementations of this method should return
-     *  true if all stateful actors declare the 
+     *  true if all stateful actors declare the
      *  current integration step is accurate.
      *  @return True if the current step is accurate.
      */

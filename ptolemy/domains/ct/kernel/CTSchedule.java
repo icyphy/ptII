@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NamedObj;
    STATE_STEP_SIZE_CONTROL_ACTORS
    WAVEFORM_GENERATORS
    </pre>
-   Each entry is a Schedule. Actors in the schedule are ordered according 
+   Each entry is a Schedule. Actors in the schedule are ordered according
    to the order they should be executed.
    <P>
    A typical use of this schedule is to get one of the subschedules.
@@ -64,7 +64,7 @@ import ptolemy.kernel.util.NamedObj;
    Iterator dynamicActorIterator =
        schedule.get(CTSchedule.DYNAMIC_ACTOR_SCHEDULE).actorIterator();
    </pre>
-   
+
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 2.0
@@ -95,7 +95,7 @@ public class CTSchedule extends Schedule {
      */
     public final static int DYNAMIC_ACTORS = 2;
 
-    /** Index for the schedule of actors that implement 
+    /** Index for the schedule of actors that implement
      *  the CTEventGenerator interface.
      */
     public final static int EVENT_GENERATORS = 3;
@@ -104,7 +104,7 @@ public class CTSchedule extends Schedule {
      */
     public final static int OUTPUT_ACTORS = 4;
 
-    /** Index for the schedule of actors that are in the output map and 
+    /** Index for the schedule of actors that are in the output map and
      *  implement the CTStepSizeControlActor.
      */
     public final static int OUTPUT_STEP_SIZE_CONTROL_ACTORS = 5;
@@ -113,17 +113,17 @@ public class CTSchedule extends Schedule {
      */
     public final static int STATE_TRANSITION_ACTORS = 6;
 
-    /** Index for the schedule of actors that implement the 
+    /** Index for the schedule of actors that implement the
      *  CTStatefulActor interface.
      */
     public final static int STATEFUL_ACTORS = 7;
 
-    /** Index for the schedule of actors that are in the state transition map 
+    /** Index for the schedule of actors that are in the state transition map
      *  and implement the CTStepSizeControlActor interface.
      */
     public final static int STATE_STEP_SIZE_CONTROL_ACTORS = 8;
 
-    /** Index for the schedule of actors that implement 
+    /** Index for the schedule of actors that implement
      *  the CTWaveformGenerator interface.
      */
     public final static int WAVEFORM_GENERATORS = 9;

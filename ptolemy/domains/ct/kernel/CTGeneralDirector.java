@@ -33,8 +33,8 @@ import ptolemy.actor.util.Time;
 //////////////////////////////////////////////////////////////////////////
 //// CTGeneralDirector
 /**
-   Interface for CT directors. This interface defines the methods for lower 
-   level CT directors to access information of the upper level CT director.    
+   Interface for CT directors. This interface defines the methods for lower
+   level CT directors to access information of the upper level CT director.
 
    @author  Haiyang Zheng
    @version $Id$
@@ -57,7 +57,7 @@ public interface CTGeneralDirector {
     /** Return the enclosing CT general director of this director, or null if
      *  this director is at the top level or the enclosing director is
      *  not a CT general director.
-     *  @return The enclosing CT general director of this director, if there 
+     *  @return The enclosing CT general director of this director, if there
      *  is any.
      */
     public CTGeneralDirector getEnclosingCTGeneralDirector();
@@ -66,18 +66,18 @@ public interface CTGeneralDirector {
      *  @return The the current execution phase.
      */
     public CTExecutionPhase getExecutionPhase();
-    
+
     /** Return the time the current iteration starts.
      *  @return The time the current iteration starts.
      */
     public Time getIterationBeginTime();
-    
+
     /** Return the ODE solver for normal integration.
      *  @return The ODE solver for normal integration.
      */
     public ODESolver getODESolver();
-    
-    /** Return true if the current execution phase is a discrete one. 
+
+    /** Return true if the current execution phase is a discrete one.
      *  @return true if the current execution phase is a discrete one.
      */
     public boolean isDiscretePhase();

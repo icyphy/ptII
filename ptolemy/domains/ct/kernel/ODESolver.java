@@ -39,50 +39,50 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// ODESolver
 /**
-   Abstract base class for ODE solvers. The key methods for the class are 
+   Abstract base class for ODE solvers. The key methods for the class are
    {@link #fireDynamicActors} and {@link #fireStateTransitionActors}.
-   CT directors call these methods to resolve the initial states in a future 
-   time in the continuous phase of exution of a complete iteration. The process 
-   of resolving the initial states in a future time is also known as an 
-   integration. A complete integration is composed of one or more rounds of 
-   executions. One round of execution consists of calling 
-   fireDynamicActors() once followed by calling fireStateTransitionActors() 
-   once. How the states are resolved are solver dependent. Derived classes 
+   CT directors call these methods to resolve the initial states in a future
+   time in the continuous phase of exution of a complete iteration. The process
+   of resolving the initial states in a future time is also known as an
+   integration. A complete integration is composed of one or more rounds of
+   executions. One round of execution consists of calling
+   fireDynamicActors() once followed by calling fireStateTransitionActors()
+   once. How the states are resolved are solver dependent. Derived classes
    need to implement these methods according to their ODE solving algorithms.
    <P>
-   The behavior of integrators also changes when changing the ODE solver, 
-   so this class provides some methods for the integrators too, including the 
-   fire() method and the step size control related methods. Here we use the 
-   strategy and delegation design patterns. CTBaseIntegrator delegated its 
-   corresponding methods to this class. And subclasses of this class provide 
+   The behavior of integrators also changes when changing the ODE solver,
+   so this class provides some methods for the integrators too, including the
+   fire() method and the step size control related methods. Here we use the
+   strategy and delegation design patterns. CTBaseIntegrator delegated its
+   corresponding methods to this class. And subclasses of this class provide
    concrete implementations of these methods.
    <P>
-   How many rounds are need in one integration is solver dependent. For some 
-   solving algorithms, (i.e. the so called explicit methods) the number of 
-   rounds is fixed. For some others (i.e. implicit methods), the number of 
-   rounds can not be decided beforehand. 
+   How many rounds are need in one integration is solver dependent. For some
+   solving algorithms, (i.e. the so called explicit methods) the number of
+   rounds is fixed. For some others (i.e. implicit methods), the number of
+   rounds can not be decided beforehand.
    <P>
-   A round counter is a counter for the number of rounds in one integration. 
-   It helps the solvers to decide how to behave under different rounds. 
-   The round counter can be retrieved by the _getRoundCound() method. 
-   The _incrementRoundCount() method will increase the counter by one, 
-   and _resetRoundCount() will always reset the counter to 0. These methods are 
+   A round counter is a counter for the number of rounds in one integration.
+   It helps the solvers to decide how to behave under different rounds.
+   The round counter can be retrieved by the _getRoundCound() method.
+   The _incrementRoundCount() method will increase the counter by one,
+   and _resetRoundCount() will always reset the counter to 0. These methods are
    protected because they are only used by solvers and CT directors.
    <p>
-   In this class, two methods {@link #_isConverged} and 
+   In this class, two methods {@link #_isConverged} and
    {@link #_voteForConverged} are defined to let CT directors know the status
-   of resolved states. If multiple integrators exist, only when all of them 
+   of resolved states. If multiple integrators exist, only when all of them
    vote true for converged, will the _isConverged return true. Another related
-   method is {@link #resolveStates()}, which always returns true in this base 
+   method is {@link #resolveStates()}, which always returns true in this base
    class. However, in the solvers that implement the implicit solving methods,
-   this method may return false if the maximum number of iterations is reached 
-   but states have not be resolved.  
+   this method may return false if the maximum number of iterations is reached
+   but states have not be resolved.
    <P>
    Conceptually, ODE solvers do not maintain simulation parameters,
    like step sizes and error tolerance.
    They get these parameters from the director. So the same set of parameters
    are shared by all the solvers in a simulation.
-   
+
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
@@ -128,8 +128,8 @@ public abstract class ODESolver extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire dynamic actors. Derived classes may advance the model time. The 
-     *  amount of time increment depends on the solving algorithms. 
+    /** Fire dynamic actors. Derived classes may advance the model time. The
+     *  amount of time increment depends on the solving algorithms.
      *  @exception IllegalActionException If schedule can not be found or
      *  dynamic actors throw it from their fire() methods.
      */
@@ -138,7 +138,7 @@ public abstract class ODESolver extends NamedObj {
             _debug(getFullName() + " firing dynamic actors ...");
         }
         CTSchedule schedule = _getSchedule();
-        Iterator actors = 
+        Iterator actors =
             schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
         while (actors.hasNext()) {
             Actor next = (Actor)actors.next();
@@ -149,7 +149,7 @@ public abstract class ODESolver extends NamedObj {
         }
     }
 
-    /** Fire state transition actors. 
+    /** Fire state transition actors.
      *  @exception IllegalActionException If schedule can not be found or
      *  state transition actors throw it from their fire() methods.
      */
@@ -223,8 +223,8 @@ public abstract class ODESolver extends NamedObj {
 
     /** Return true if the states of the system have been resolved successfully.
      *  In this base class, true is always returned. Derived classes may change
-     *  the returned value. 
-     *  @return True If states of the system have been resolved sucessfully. 
+     *  the returned value.
+     *  @return True If states of the system have been resolved sucessfully.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean resolveStates() throws IllegalActionException {
@@ -241,7 +241,7 @@ public abstract class ODESolver extends NamedObj {
         return _roundCount;
     }
 
-    /** Get the current schedule. 
+    /** Get the current schedule.
      *  @return The current schedule.
      *  @throws IllegalActionException If this solver is not contained by
      *  a director, or the director does not have a scheduler.
@@ -259,7 +259,7 @@ public abstract class ODESolver extends NamedObj {
         }
         return (CTSchedule)scheduler.getSchedule();
     }
-    
+
     /** Increase the round counter by one. In general, the round counter
      *  will be increased for each time the state transition actors are fired.
      */
@@ -267,9 +267,9 @@ public abstract class ODESolver extends NamedObj {
         _roundCount++;
     }
 
-    /** Return true if all integrators agree that the current states have 
-     *  converged to a fixed point. 
-     *  @return Return true if all integrators agree that the current states 
+    /** Return true if all integrators agree that the current states have
+     *  converged to a fixed point.
+     *  @return Return true if all integrators agree that the current states
      *  have converged to a fixed point.
      */
     protected boolean _isConverged() {
@@ -277,7 +277,7 @@ public abstract class ODESolver extends NamedObj {
     }
 
     /** Make this solver the solver of the given Director. This method
-     *  should only be called by CT directors, when they instantiate solvers 
+     *  should only be called by CT directors, when they instantiate solvers
      *  according to the ODESolver parameters.
      *  @param dir The CT director that contains this solver.
      */
@@ -316,21 +316,21 @@ public abstract class ODESolver extends NamedObj {
 
     /** Reset the round counter to 0. This method is called when either the
      *  fixed-point solution of states has been found or the current integration
-     *  fails to find the fixed-point solution within the maimum number of 
+     *  fails to find the fixed-point solution within the maimum number of
      *  rounds.
      */
     protected void _resetRoundCount() {
         _roundCount = 0;
     }
-    
-    /** Set a flag to indicate whether the fixed point of states has been 
-     *  reached. Solvers and CT directors may call this method to 
+
+    /** Set a flag to indicate whether the fixed point of states has been
+     *  reached. Solvers and CT directors may call this method to
      *  change the convergence.
      *  <p>
-     *  This method should not be called by individual integrators. 
+     *  This method should not be called by individual integrators.
      *  If an integrator thinks the states have not converged, it should call
      *  _voteForConverged() method, which influences the convergence of the
-     *  solver.   
+     *  solver.
      *  @param converged The flag setting.
      *  @see #_voteForConverged
      */
@@ -338,9 +338,9 @@ public abstract class ODESolver extends NamedObj {
         _isConverged = converged;
     }
 
-    /** An integrator calls this method to vote whether a fixed point has 
-     *  reached. The final result is the <i>and</i> of votes from all 
-     *  integrators. This method is particular designed for integrators and 
+    /** An integrator calls this method to vote whether a fixed point has
+     *  reached. The final result is the <i>and</i> of votes from all
+     *  integrators. This method is particular designed for integrators and
      *  it should be called from the integratorFire() method.
      *  Solvers and CT directors should use _setConverged() instead.
      *  @param converged True if vote for converge.
@@ -360,5 +360,5 @@ public abstract class ODESolver extends NamedObj {
     // The default value is false.
     private boolean _isConverged = false;
     // The round counter.
-    private int _roundCount = 0;   
+    private int _roundCount = 0;
 }

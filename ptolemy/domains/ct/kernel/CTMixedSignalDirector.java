@@ -186,7 +186,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             super.fire();
             return;
         }
-        
+
         _discretePhaseExecution();
         // Mark the FINAL states and prepare for roll back.
         _markStates();
@@ -196,15 +196,15 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         if (getIterationEndTime().equals(getIterationBeginTime())) {
             return;
         }
-        
+
         // Guarantee to stop at the iteration end time.
         fireAt((CompositeActor)getContainer(), getIterationEndTime());
 
         _continuousPhaseExecution();
     }
 
-    /** Initialize the execution. If this director is not at the top level, 
-     *  ask the executive director to fire the container of this director 
+    /** Initialize the execution. If this director is not at the top level,
+     *  ask the executive director to fire the container of this director
      *  at the current model time.
      *  @see CTMultiSolverDirector#initialize()
      *  @exception IllegalActionException If thrown by the initialize method
@@ -256,9 +256,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  resolved from the current time of the outside domains, say t1,
      *  the next iteration time of the outside domain, say t2, and
      *  the runAheadLength parameter of this director, say t3.
-     *  The iteration end time is set to be <code>t5 = t1 + min(t2, t3)</code>. 
-     *  The iteration end time may be further refined in the fire() method 
-     *  due to possible event generated during the iteration. 
+     *  The iteration end time is set to be <code>t5 = t1 + min(t2, t3)</code>.
+     *  The iteration end time may be further refined in the fire() method
+     *  due to possible event generated during the iteration.
      *  In particular, when the first event is detected, say at t5 and t5 < t4,
      *  then the iteration ends at t5.
      *  @return true Always.
@@ -277,7 +277,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             _outsideTime = executiveDirector.getModelTime();
             Time localTime = getModelTime();
             double timeResolution = getTimeResolution();
-            Time outsideNextIterationTime = 
+            Time outsideNextIterationTime =
                 executiveDirector.getModelNextIterationTime();
 
             if (_debugging) {
@@ -288,7 +288,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
             // Now, check the next iteration time.
             if (outsideNextIterationTime.compareTo(_outsideTime) < 0) {
-                // NOTE: This check is redundant. The outside director should 
+                // NOTE: This check is redundant. The outside director should
                 // guarantee that this never happen.
                 throw new IllegalActionException(this, "Outside domain"
                         + " time is going backward."
@@ -298,16 +298,16 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             }
 
 //            // If outside next iteration time is equal to the outside
-//            // time, then this iteration step size is 0.0. Request for 
-//            // a refiring of the container at the current time to 
+//            // time, then this iteration step size is 0.0. Request for
+//            // a refiring of the container at the current time to
 //            // response to new events from outside.
 //            if (outsideNextIterationTime.equals(_outsideTime)) {
 //                executiveDirector.fireAt(container, outsideNextIterationTime);
 //            }
 
-            // Ideally, the outside time should equal the local time. 
-            // If the outside time is less than the local time, then rollback 
-            // is needed. If the outside time is greater than the local time, 
+            // Ideally, the outside time should equal the local time.
+            // If the outside time is less than the local time, then rollback
+            // is needed. If the outside time is greater than the local time,
             // an exception will be thrown.
             if (_outsideTime.compareTo(localTime) > 0) {
                 throw new IllegalActionException(this, executiveDirector,
@@ -321,25 +321,25 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                         "due to outside time " +_outsideTime );
                 }
                 // The local time is set backwards to a known good time.
-                _rollback();  
-                
+                _rollback();
+
                 // FIXME: the following is unnecessary.
-//                // Set a catch-up destination time by registering the 
+//                // Set a catch-up destination time by registering the
 //                // outside time as a breakpoint.
 //                fireAt(container, _outsideTime);
-                
-                // NOTE: At this time, new inputs are not transferred yet. 
-                // The catchup will use the old inputs. This is one of the 
+
+                // NOTE: At this time, new inputs are not transferred yet.
+                // The catchup will use the old inputs. This is one of the
                 // reasons that catch up must be performed in the prefire()
                 // method.
                 // The local time is set to the outside time.
-                _catchUp(); 
-                
+                _catchUp();
+
                 if (_debugging) {
                     _debug("After catch up, the current time is " + localTime);
                 }
             }
-            
+
             // Now, the outside time must be equal to the local time.
             if (_debugging) {
                 _debug("The outside time is equal to the local time. " +
@@ -349,7 +349,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 //            // implementation of CT director should have already transfered
 //            // events to outside when the container of the director fires.
 //            // FIXME: this should be handled in the postfire method.
-//            
+//
 //            // Process local discrete events and emit outputs
 //            // if there are any. If there are any outputs emitted,
 //            // request for a zero delay refire and return false.
@@ -375,17 +375,17 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 //                    return false;
 //                }
 //            }
-            
+
             // set the start time of the current iteration
             // The begin time of an iteration can be changed only by directors.
-            // On the other hand, the model time may be changed by ODE solvers. 
-            // The reason is that when the CurrentTime actor is involved in a 
-            // multi-step integration, it needs to report the current time at 
-            // the intermediate steps. The CurrentTime actor reports the model 
+            // On the other hand, the model time may be changed by ODE solvers.
+            // The reason is that when the CurrentTime actor is involved in a
+            // multi-step integration, it needs to report the current time at
+            // the intermediate steps. The CurrentTime actor reports the model
             // time.
             _setIterationBeginTime(getModelTime());
 
-            double aheadLength 
+            double aheadLength
                 = outsideNextIterationTime.subtract(_outsideTime).
                     getDoubleValue();
             if (_debugging) {
@@ -440,7 +440,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         _setIterationBeginTime(localTime);
         while (!localTime.equals(outsideTime)) {
             setCurrentStepSize(getSuggestedNextStepSize());
-            if (_debugging) { 
+            if (_debugging) {
                 _debug("Catch up: ending..." +
                     (localTime.add(getCurrentStepSize())));
             }
@@ -475,12 +475,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
     }
 
-    // FIXME: this method is very confusing. Need a better way to 
-    // handle events. The bottom line is that whenever an event is 
+    // FIXME: this method is very confusing. Need a better way to
+    // handle events. The bottom line is that whenever an event is
     // generated, requrest a refiring and let the upper level react
     // to the event.
     // FIXME: it will be removed.
-    
+
     /** Return true if the current iteration is stopped due to
      *  the occurrence of events (predictable or unpredictable).
      *  @return True if the current fire phase is stopped by an event.
@@ -496,7 +496,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 breakpoint = (Time)table.first();
                 if (breakpoint.compareTo(localTime) < 0) {
                     // The breakpoints in the past.
-                    // This should not happen. 
+                    // This should not happen.
                     throw new InternalErrorException("The breakpoint " +
                             breakpoint + " is in the past.");
                 } else if (breakpoint.equals(localTime) &&
@@ -523,7 +523,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         return false;
     }
 
-    /**Return true if this is a top-level director. 
+    /**Return true if this is a top-level director.
      * @return True if this director is at the top level.
      */
     protected final boolean _isTopLevel() {

@@ -55,8 +55,8 @@ import ptolemy.kernel.util.InvalidStateException;
    <P>
    The behavior of the get() method depends on the type of the receiver.
    If it is CONTINUOUS, then get() only reads the value. Consecutive calls on
-   the get method will return the same token if the put method has not been 
-   called. For a CONTINUOUS CTReceiver, hasToken() will always return true 
+   the get method will return the same token if the put method has not been
+   called. For a CONTINUOUS CTReceiver, hasToken() will always return true
    after the first put() has been called. For a DISCRETE
    CTReceiver, get() will return and destroy the token, thus the token
    can only be retrived once. Therefore after the consumption, the hasToken()

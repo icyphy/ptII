@@ -65,8 +65,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    <P>
    An integrator is a dynamic actor that can emit a token (a state) at a time
-   without knowing the input at that time. An integrator is a step size control 
-   actor that can control the accuracy of the ODE solution by adjusting step 
+   without knowing the input at that time. An integrator is a step size control
+   actor that can control the accuracy of the ODE solution by adjusting step
    sizes. An integrator has memory, which is its state.
    <P>
    To help solving the ODE, a set of internal variables are used:<BR>
@@ -117,7 +117,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  @param name The name.
      *  @exception NameDuplicationException If the name is used by another
         actor in the container.
-     *  @exception IllegalActionException If ports can not be created, or 
+     *  @exception IllegalActionException If ports can not be created, or
      *  thrown by the super class.
      */
     public CTBaseIntegrator(CompositeEntity container, String name)
@@ -128,7 +128,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
 //        impulseInput = new TypedIOPort(this, "impulseInput", true, false);
 //        impulseInput.setTypeEquals(BaseType.DOUBLE);
-//        StringAttribute cardinality 
+//        StringAttribute cardinality
 //              = new StringAttribute(impulseInput, "_cardinal");
 //        cardinality.setExpression("NORTH");
 
@@ -155,7 +155,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
     /** The output port. This is a single port of type double.
      */
     public TypedIOPort output;
-    
+
     /** The initial state of type DoubleToken. The default value is 0.0.
      */
     public Parameter initialState;
@@ -179,9 +179,9 @@ public class CTBaseIntegrator extends TypedAtomicActor
         output.send(0, new DoubleToken(_tentativeState));
     }
 
-    /** Delegate to the integratorFire() method of the current ODE solver. 
+    /** Delegate to the integratorFire() method of the current ODE solver.
      *  The existence of a director and an ODE solver is not checked because
-     *  it is checked in the initialize method. 
+     *  it is checked in the initialize method.
      *
      *  @exception IllegalActionException If thrown by integratorFire()
      *  of the solver.
@@ -196,7 +196,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Return the auxiliary variables in a double array.
-     *  The auxiliary variables are created in the prefire() method and 
+     *  The auxiliary variables are created in the prefire() method and
      *  may be set during each firing of the actor. Return null if the
      *  auxiliary variables have never been created.
      *
@@ -294,8 +294,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  the tentative state and the state. Set tentative derivative to 0.0.
      *  Clear the history.
      *
-     *  @exception IllegalActionException If there's no director, 
-     *  or, the director is not a CT director, or the director has 
+     *  @exception IllegalActionException If there's no director,
+     *  or, the director is not a CT director, or the director has
      *  no ODE solver, or thrown by the integratorInitialize() of the solver.
      */
     public void initialize() throws IllegalActionException {
@@ -318,14 +318,14 @@ public class CTBaseIntegrator extends TypedAtomicActor
         _state = _tentativeState;
         _derivative = _tentativeDerivative;
         if (_debugging) {
-            _debug(getName(), 
+            _debug(getName(),
                     " initialize: initial state = " + _tentativeState
                     + " derivative = " + _tentativeDerivative);
         }
         _history.clear();
     }
 
-    /** Return true if the state is resolved successfully. 
+    /** Return true if the state is resolved successfully.
      *  If the input is not available, or the input is a result of
      *  divide by zero, an InternalErrorException is thrown.
      *  @return True if the state is resolved successfully.
@@ -350,7 +350,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Return true if this integration step is accurate from this
-     *  integrator's point of view. This method delegates to the 
+     *  integrator's point of view. This method delegates to the
      *  integratorIsAccurate() method of the current ODE solver.
      *  @return True if the last integration step is accurate.
      */
@@ -382,7 +382,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         _state = _tentativeState;
         _derivative = _tentativeDerivative;
         if (_debugging) {
-            _debug("Saving the following into history: state: " + _state 
+            _debug("Saving the following into history: state: " + _state
                     + " derivative: " + _derivative);
         }
         if (getHistoryCapacity() > 0) {
@@ -401,10 +401,10 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Setup the integrator to operate with the current ODE solver.
-     *  This method checks whether there are enough auxiliary variables 
-     *  in the integrator for the current ODE solver. If not, create 
-     *  more auxiliary variables. 
-     *  <p> 
+     *  This method checks whether there are enough auxiliary variables
+     *  in the integrator for the current ODE solver. If not, create
+     *  more auxiliary variables.
+     *  <p>
      *  This method also adjusts the history information w.r.t. the
      *  current ODE solver and the current step size.
      *  @return True always.
@@ -459,7 +459,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Set the value of an auxiliary variable.  If the index is out of
-     *  the bound of the auxiliary variable array, an InvalidStateException 
+     *  the bound of the auxiliary variable array, an InvalidStateException
      *  is thrown to indicate an inconsistency in the ODE solver.
      *
      *  @param index The index in the auxVariables array.
@@ -489,8 +489,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Set the tentative derivative, dx/dt. Tentative derivative
-     *  is the derivative of the state that the ODE solver resolved 
-     *  in one step. This may not be the final derivative due to 
+     *  is the derivative of the state that the ODE solver resolved
+     *  in one step. This may not be the final derivative due to
      *  error control or event detection.
      *  @param value The value to be set.
      *  @see #getTentativeDerivative
@@ -554,7 +554,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      */
     protected class History {
 
-        /** Construct a history object and associate it with the given 
+        /** Construct a history object and associate it with the given
          *  integrator.
          *  @param container The container that contains this history object.
          */

@@ -38,26 +38,26 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// CTCompositeActor
 /**
-   A composite actor specially designed for the CT domain. This class  
-   extends TypedCompositeActor and implements the following interfaces: 
-   CTDynamicActor, CTEventGenerator, CTStatefulActor, CTStepSizeControlActor, 
-   CTWaveformGenerator. 
+   A composite actor specially designed for the CT domain. This class
+   extends TypedCompositeActor and implements the following interfaces:
+   CTDynamicActor, CTEventGenerator, CTStatefulActor, CTStepSizeControlActor,
+   CTWaveformGenerator.
    <p>
    In the CT domain, normal opaque composite actors are not fired
    in every iteration. They are only fired in the discrete phase of execution,
-   when they have trigger events. However, CTCompositeActors are fired 
+   when they have trigger events. However, CTCompositeActors are fired
    in every iteration.
    <p>
    The key task of this actor is to implement step-size control methods.
    If the local director of this actor is an instance of CTTransparentDirector,
    then any step-size control methods called on this actor will be delegated
-   to the local director. If the local director is not a CTTransparentDirector,  
-   the implementations of the step-size control methods do not affect 
-   the current step size. 
+   to the local director. If the local director is not a CTTransparentDirector,
+   the implementations of the step-size control methods do not affect
+   the current step size.
    <P>
    This composite actor should be used when a CT subsystem needs to transfer
    its step size control information to the outer domain. Typical usage
-   includes CT inside CT or CT inside FSM inside CT. 
+   includes CT inside CT or CT inside FSM inside CT.
 
    @author  Jie Liu, Haiyang Zheng
    @version $Id$
@@ -72,11 +72,11 @@ import ptolemy.kernel.util.Workspace;
    @see CTTransparentDirector
 */
 public class CTCompositeActor extends TypedCompositeActor
-    implements CTDynamicActor, CTEventGenerator, CTStatefulActor, 
+    implements CTDynamicActor, CTEventGenerator, CTStatefulActor,
     CTStepSizeControlActor, CTWaveformGenerator {
 
-    /** Construct a CTCompositeActor in the default workspace with 
-     *  no container and an empty string as its name. Add the actor 
+    /** Construct a CTCompositeActor in the default workspace with
+     *  no container and an empty string as its name. Add the actor
      *  to the workspace directory.
      */
     public CTCompositeActor() {
@@ -87,11 +87,11 @@ public class CTCompositeActor extends TypedCompositeActor
     }
 
     /** Create an CTCompositeActor with a name and a container.
-     *  The container argument must not be null, or a NullPointerException 
-     *  will be thrown. This actor will use the workspace of the container 
-     *  for synchronization and version counts. If the name argument is null, 
-     *  then the name is set to the empty string. Increment the version of the 
-     *  workspace. This actor will have no local director initially, and its 
+     *  The container argument must not be null, or a NullPointerException
+     *  will be thrown. This actor will use the workspace of the container
+     *  for synchronization and version counts. If the name argument is null,
+     *  then the name is set to the empty string. Increment the version of the
+     *  workspace. This actor will have no local director initially, and its
      *  executive director will be simply the director of the container.
      *
      *  @param container The container actor.
@@ -110,8 +110,8 @@ public class CTCompositeActor extends TypedCompositeActor
     }
 
     /** Construct a CTCompositeActor in the specified workspace with no
-     *  container and an empty string as a name. If the workspace argument is 
-     *  null, then use the default workspace. Increment the version number of 
+     *  container and an empty string as a name. If the workspace argument is
+     *  null, then use the default workspace. Increment the version number of
      *  the workspace.
      *  @param workspace The workspace that will list the actor.
      */
@@ -187,7 +187,7 @@ public class CTCompositeActor extends TypedCompositeActor
         return true;
     }
 
-    /** Return true if the current step size if true w.r.t. both states and 
+    /** Return true if the current step size if true w.r.t. both states and
      *  outputs.
      *  @return True if this step is accurate w.r.t. both states and outputs.
      */
@@ -221,7 +221,7 @@ public class CTCompositeActor extends TypedCompositeActor
     /** Call the prefireDynamicActors method of the local director if the local
      *  director is an instance of CTTransparentDirector. Return true if all
      *  dynamic actors are prefired, otherwise, return false. If the local
-     *  director is not an instance of CTTransparentDirector, return true 
+     *  director is not an instance of CTTransparentDirector, return true
      *  always.
      *  @return True if all dynamic actors are prefired.
      *  @exception IllegalActionException If the local director throws it.
@@ -233,7 +233,7 @@ public class CTCompositeActor extends TypedCompositeActor
         }
         return true;
     }
-    
+
     /** Call the refinedStepSize method of the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise, return
      *  the current step size of the executive director.

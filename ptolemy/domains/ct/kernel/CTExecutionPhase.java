@@ -48,7 +48,7 @@ public final class CTExecutionPhase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the string representation of this object.
      *  @return the string representation of this object.
      */
@@ -60,45 +60,45 @@ public final class CTExecutionPhase {
     ////                         public variables                  ////
 
     /** This final static memeber indicates the director is creating
-     *  the starting states for the following continuous phase execution. 
+     *  the starting states for the following continuous phase execution.
      */
-    public final static CTExecutionPhase CREATING_STARTING_STATES_PHASE 
+    public final static CTExecutionPhase CREATING_STARTING_STATES_PHASE
         = new CTExecutionPhase("CREATING_STARTING_STATES_PHASE");
 
     /** This final static memeber indicates the director is firing dynamic
-     *  actors. 
+     *  actors.
      */
-    public final static CTExecutionPhase FIRING_DYNAMIC_ACTORS_PHASE 
+    public final static CTExecutionPhase FIRING_DYNAMIC_ACTORS_PHASE
         = new CTExecutionPhase("FIRING_DYNAMIC_ACTORS_PHASE");
 
     /** This final static memeber indicates the director is firing event
      *  generators.
      */
-    public final static CTExecutionPhase FIRING_EVENT_GENERATORS_PHASE 
+    public final static CTExecutionPhase FIRING_EVENT_GENERATORS_PHASE
         = new CTExecutionPhase("FIRING_EVENT_GENERATORS_PHASE");
 
     /** This final static memeber indicates the director is iterating
-     *  purely discrete actors. 
+     *  purely discrete actors.
      */
-    public final static CTExecutionPhase ITERATING_PURELY_DISCRETE_PHASE 
+    public final static CTExecutionPhase ITERATING_PURELY_DISCRETE_PHASE
         = new CTExecutionPhase("ITERATING_PURELY_DISCRETE_PHASE");
 
-    /** This final static memeber indicates the director is firing state 
-     *  transition actors. 
+    /** This final static memeber indicates the director is firing state
+     *  transition actors.
      */
-    public final static CTExecutionPhase FIRING_STATE_TRANSITION_ACTORS_PHASE 
+    public final static CTExecutionPhase FIRING_STATE_TRANSITION_ACTORS_PHASE
         = new CTExecutionPhase("FIRING_STATE_TRANSITION_ACTORS_PHASE");
 
     /** This final static memeber indicates the director is generating
-     *  discrete events by iterating event generators. 
+     *  discrete events by iterating event generators.
      */
-    public final static CTExecutionPhase GENERATING_EVENTS_PHASE 
+    public final static CTExecutionPhase GENERATING_EVENTS_PHASE
         = new CTExecutionPhase("GENERATING_EVENTS_PHASE");
 
     /** This final static memeber indicates the director is generating
-     *  continuous waveforms by iterating waveform generators. 
+     *  continuous waveforms by iterating waveform generators.
      */
-    public final static CTExecutionPhase GENERATING_WAVEFORMS_PHASE 
+    public final static CTExecutionPhase GENERATING_WAVEFORMS_PHASE
         = new CTExecutionPhase("GENERATING_WAVEFORMS_PHASE");
 
     /** This final static memeber indicates the director is postfiring event
@@ -108,33 +108,33 @@ public final class CTExecutionPhase {
         = new CTExecutionPhase("POSTFIRING_EVENT_GENERATORS_PHASE");
 
     /** This final static memeber indicates the director is prefiring
-     *  dynamic actors. 
+     *  dynamic actors.
      */
-    public final static CTExecutionPhase PREFIRING_DYNAMIC_ACTORS_PHASE 
+    public final static CTExecutionPhase PREFIRING_DYNAMIC_ACTORS_PHASE
         = new CTExecutionPhase("PREFIRING_DYNAMIC_ACTORS_PHASE");
 
     /** This final static memeber indicates the director is producing
      *  outputs via firing purely continuous actors.
      */
-    public final static CTExecutionPhase PRODUCING_OUTPUTS_PHASE 
+    public final static CTExecutionPhase PRODUCING_OUTPUTS_PHASE
         = new CTExecutionPhase("PRODUCING_OUTPUTS_PHASE");
 
     /** This final static memeber indicates the director is solving
-     *  the states of dynamic actors. 
+     *  the states of dynamic actors.
      */
-    public final static CTExecutionPhase SOLVING_STATES_PHASE 
+    public final static CTExecutionPhase SOLVING_STATES_PHASE
         = new CTExecutionPhase("SOLVING_STATES_PHASE");
 
-    /** This final static memeber indicates the director is not in any 
+    /** This final static memeber indicates the director is not in any
      *  of the well-defined phases.
      */
-    public final static CTExecutionPhase UNKNOWN_PHASE 
+    public final static CTExecutionPhase UNKNOWN_PHASE
         = new CTExecutionPhase("UNKNOWN_PHASE");
 
     /** This final static memeber indicates the director is updating
-     *  (postfiring) all the continuous actors. 
+     *  (postfiring) all the continuous actors.
      */
-    public final static CTExecutionPhase UPDATING_CONTINUOUS_STATES_PHASE 
+    public final static CTExecutionPhase UPDATING_CONTINUOUS_STATES_PHASE
         = new CTExecutionPhase("UPDATING_CONTINUOUS_STATES_PHASE");
 
     ///////////////////////////////////////////////////////////////////

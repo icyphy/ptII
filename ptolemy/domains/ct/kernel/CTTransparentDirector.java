@@ -36,10 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
    domain can transfer its internal step size control information to the
    executive director. It defines methods to support the step size control
    queries by the executive CTDirector, such that after the internal
-   CT subsystem finishes one integration step, its step size control 
+   CT subsystem finishes one integration step, its step size control
    information will be accessible by the outside CT director.
    <P>
-   Directors that implement this interface are typically contained by 
+   Directors that implement this interface are typically contained by
    CTCompositeActors.
 
    @see CTCompositeActor
@@ -74,14 +74,14 @@ public interface CTTransparentDirector extends CTGeneralDirector {
     public boolean hasCurrentEvent();
 
     /** Implementations of this method should return
-     *  true if the all output actors declare the 
+     *  true if the all output actors declare the
      *  current integration step is accurate.
      *  @return True if the current step is accurate.
      */
     public boolean isOutputAccurate();
-    
+
     /** Implementations of this method should return
-     *  true if all stateful actors declare the 
+     *  true if all stateful actors declare the
      *  current integration step is accurate.
      *  @return True if the current step is accurate.
      */
@@ -112,7 +112,7 @@ public interface CTTransparentDirector extends CTGeneralDirector {
      *  actors throw it in their prefire method, or they can not be prefired.
      */
     public boolean prefireDynamicActors() throws IllegalActionException;
-    
+
     /** Implementations of this method should return
      *  the refined step size if this step is not accurate.
      *  @return The refined step size.
