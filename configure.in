@@ -731,6 +731,10 @@ else
     cd "$startdir"
 fi
 
+if test -z "$PTJAI_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/jai/"
+fi
+
 #--------------------------------------------------------------------
 #       JHDL is a Java Highlevel Description Language, see
 #	http://www.jhdl.org
@@ -824,6 +828,10 @@ else
     http://java.sun.com/products/java-media/jmf])
     fi
     cd "$startdir"
+fi
+
+if test -z "$PTJMF_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/jmf/"
 fi
 
 
