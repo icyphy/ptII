@@ -89,7 +89,6 @@ JSRCS = \
 	ValueTag.java
 
 OTHER_FILES_TO_BE_JARED = \
-	compileCommandTemplate.txt \
 	makefile.in \
 	obfuscateScript.jos.in \
 	runCommandTemplate.txt
