@@ -47,6 +47,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -59,24 +60,23 @@ import java.util.List;
 /**
 
 This class implements a director for the Giotto model of computation
-without Giotto modes. ptolemy.domains.giotto.kernel.GiottoScheduler
-generates schedules according to the Giotto semantics.
-@see ptolemy.domains.giotto.kernel.GiottoReceiver implements
-the data flow between actors using double-buffering.
-@see ptolemy.domains.giotto.kernel.GiottoActorComparator implements
-a simple Comparator on actors comparing Giotto frequencies.
+without Giotto modes. Schedules are generated according to the Giotto
+semantics.  The GiottoScheduler class contains methods to compute the
+schedules.  The GiottoReceiver class implements the data flow between
+actors using double-buffering.
+
+@see GiottoScheduler
+@see GiottoReceiver
 
 @author  Christoph Meyer Kirsch and Edward A. Lee
-@version $Id$
-*/
+@version $Id$ */
 public class GiottoDirector extends StaticSchedulingDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
      */
-    public GiottoDirector()
-            throws IllegalActionException, NameDuplicationException {
+    public GiottoDirector() {
         super();
         _init();
     }
@@ -86,14 +86,13 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace for this object.
      */
-    public GiottoDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+    public GiottoDirector(Workspace workspace) {
         super(workspace);
         _init();
     }
 
     /** Construct a director in the given container with the given name.
-     *  If the container argument must not be null, or a
+     *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
@@ -102,9 +101,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
      *   with the specified container.
-     *  @exception NameDuplicationException If the base class has an
-     *   "iterations" parameter (which it should not), or if the container is
-     *   not a CompositeActor and the name collides with an entity in the
+     *  @exception NameDuplicationException If the container is
+     *   not a CompositeActor or the name collides with an attribute in the
      *   container.
      */
     public GiottoDirector(CompositeEntity container, String name)
@@ -145,17 +143,17 @@ public class GiottoDirector extends StaticSchedulingDirector {
         return newObject;
     }
 
-    /** Return the next time of interest in the Giotto model.
+    /** Return the next time at which the calling actor will be fired.
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
 	return _nextIterationTime;
     }
 
-    /** Return the real start time.
+    /** Return the real-time at which the fire method of this director
+     * has been called.
      *  @return The real start time in terms of milliseconds counting
-     *  from 1/1/1970
-     */
+     * from 1/1/1970.  */
     public long getRealStartTime() {
         return _realStartTime;
     }
@@ -205,11 +203,17 @@ public class GiottoDirector extends StaticSchedulingDirector {
         super.preinitialize();
 
         _iteration = 0;
+
+	Iterator receivers = _receivers.iterator();
+
+	while(receivers.hasNext()) {
+	    GiottoReceiver receiver = (GiottoReceiver) receivers.next();
+	    
+	    receiver.reset();
+	}
     }
 
-    /** Update all the receivers that have been created by the
-     *  newReceiver() method of this director.
-     *  Return false if the system has finished executing, either by
+    /** Return false if the system has finished executing, either by
      *  reaching the iteration limit, or having an actor in the model
      *  return false in postfire.
      *  Increment the number of iterations.
@@ -218,17 +222,6 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *   not have a valid token.
      */
     public boolean postfire() throws IllegalActionException {
-        // NOTE: Some of these receivers may no longer be in use, so this
-        // will be inefficient for models that are continually mutating.
-        // However, it is functionally harmless.
-
-        /* Legacy: Iterator receivers = _receivers.iterator();
-
-	   while(receivers.hasNext()) {
-	   GiottoReceiver receiver = (GiottoReceiver) receivers.next();
-
-	   receiver.update();
-	   } */
 
         int numberOfIterations =
             ((IntToken) (iterations.getToken())).intValue();
@@ -313,19 +306,19 @@ public class GiottoDirector extends StaticSchedulingDirector {
     /** Initialize the director by creating a scheduler and iterations
      *  parameter.
      */
-    private void _init()
-            throws IllegalActionException, NameDuplicationException {
+    private void _init() {
+	try {
+	    GiottoScheduler scheduler = new GiottoScheduler(workspace());
+	    setScheduler(scheduler);
 
-        GiottoScheduler scheduler = new GiottoScheduler(workspace());
-
-        setScheduler(scheduler);
-
-        period = new Parameter(this, "period");
-        period.setToken(new DoubleToken(_DEFAULT_GIOTTO_PERIOD));
-
-	setCurrentTime(0.0);
-
-        iterations = new Parameter(this, "iterations", new IntToken(0));
+	    period = new Parameter(this, "period");
+	    period.setToken(new DoubleToken(_DEFAULT_GIOTTO_PERIOD));
+	    iterations = new Parameter(this, "iterations", new IntToken(0));
+	    setCurrentTime(0.0);
+	} catch (KernelException ex) {
+	    throw new InternalErrorException(
+		    "Cannot initialize director: " + ex.getMessage());
+	}
     }
 
     /** Iterate actors according to the schedule.
@@ -354,7 +347,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		    double currentTime = getCurrentTime();
 
 		    int actorFrequency =
-                        GiottoActorComparator.getFrequency(actor);
+                        GiottoScheduler.getFrequency(actor);
 
 		    _nextIterationTime =
                         currentTime + (periodValue / actorFrequency);
@@ -402,7 +395,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		    Actor actor = (Actor) sameFrequencyList.get(0);
 
 		    int maxFrequency =
-                        GiottoActorComparator.getFrequency(actor);
+                        GiottoScheduler.getFrequency(actor);
 
 		    setCurrentTime(currentTime + (periodValue / maxFrequency));
 

@@ -40,18 +40,17 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// GiottoReceiver
 /**
-A receiver for the Giotto domain. It uses double-buffering.
-An actor may write to a receiver using put at any time.
-However, a new token will only be available to get
-if update has been called before.
-The update method makes the token from the last put invocation
-available to get.
-The Giotto Director (@see ptolemy.domains.giotto.kernel.GiottoDirector)
-delays calls to update according to the Giotto semantics.
+A receiver for the Giotto domain. It uses double-buffering.  An actor
+may write to a receiver using put at any time.  However, a new token
+will only be available to get if update has been called before.  The
+update method makes the token from the last put invocation available
+to get.  The GiottoDirector delays calls to update according to the
+Giotto semantics.
+
+@see GiottoDirector
 
 @author  Christoph Meyer Kirsch and Edward A. Lee
-@version $Id$
-*/
+@version $Id$ */
 public class GiottoReceiver extends AbstractReceiver {
 
     /** Construct an empty GiottoReceiver with no container.
@@ -72,10 +71,11 @@ public class GiottoReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the contained and available Token.
-     *  @return A token.
-     *  @exception NoTokenException If the receiver is empty.
-     */
+    /** Get the contained and available token, i.e., get the last
+     * token, which has been put into the receiver before the last
+     * update.
+     * @return A token.
+     * @exception NoTokenException If the receiver is empty.  */
     public Token get() throws NoTokenException {
         if(_token == null) {
             throw new NoTokenException(getContainer(),
@@ -84,7 +84,7 @@ public class GiottoReceiver extends AbstractReceiver {
         return _token;
     }
 
-    /** Return true, since writing to the receiver is always allowed.
+    /** Return true, since writing to this receiver is always allowed.
      *  @return True.
      */
     public boolean hasRoom() {
@@ -99,37 +99,44 @@ public class GiottoReceiver extends AbstractReceiver {
         return (numberOfTokens == 1 && _token == null);
     }
 
-    /** Return true if there is a token available.
-     *  @return True if there is a token available.
-     */
+    /** Return true if there is a token available. A token is
+     * available whenever put has been called at least once followed
+     * by a call to the update method.
+     * @return True if there is a token available.  */
     public boolean hasToken() {
         return (_token != null);
     }
 
     /** Return true if the argument is 1, and there is a token available.
-     *  @return True if the argument is 1, and there is a token available.
+     * @return True if the argument is 1, and there is a token available.
      */
     public final boolean hasToken(int numberOfTokens) {
         return (numberOfTokens == 1 && _token != null);
     }
 
-    /** Put a token into this receiver. If the argument is null,
-     *  then this receiver will not contain a token after this
-     *  returns. If the receiver already has a token, then the old
-     *  token will be lost. The token becomes available to the
-     *  get() method only when update() is called.
-     *  @param token The token to be put into this receiver.
-     *  @exception NoRoomException Not thrown in this base class
-     */
+    /** Put a token into this receiver.  Any token which has been put
+     * into the receiver before without calling update will be lost.
+     * The token becomes available to the get() method only after
+     * update() is called.
+     * @param token The token to be put into this receiver.
+     * @exception NoRoomException Not thrown in this base class */
     public void put(Token token) throws NoRoomException {
 	_nextToken = token;
     }
 
-    /** Update the receiver by making any token that has been
-     *  passed to put() available to get().
+    /** Update the receiver by making the last token that has been
+     * passed to put() available to get().
      */
     public void update() {
         _token = _nextToken;
+    }
+
+    /** Reset the receiver by removing any token from the receiver.
+     */
+    public void reset() {
+        _token = null;
+
+	_nextToken = null;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -36,6 +36,10 @@ import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.IntToken;
 
 import java.util.Collections;
 import java.util.Enumeration;
@@ -43,13 +47,15 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+import java.util.Comparator;
+
 //////////////////////////////////////////////////////////////////////////
 //// GiottoScheduler
 /**
 This class generates schedules for the actors of a CompositeActor
 according to the Giotto semantics.
-A schedule is represented by tree. Consider the following CompositeActor:
-
+A schedule is represented by a tree. Consider the following CompositeActor:
+<pre>
               +-----------------------+
               |           A           |
               +-----------------------+
@@ -59,29 +65,29 @@ A schedule is represented by tree. Consider the following CompositeActor:
               +---------+   +---------+
               |    C    |   |    C    |
               +---------+   +---------+
-
+</pre>
 There are three actors A, B, and C where C runs twice as often as A and B.
 The tree for this CompositeActor looks as follows:
-
--> +-------+               +-------+
-   | | | ----------------->| | |nil|
-   +-|-----+               +-|-----+
-     |                       |
-     V                       V
-   +-------+  +-------+    +-------+  +-------+  +-------+  +-------+
-   | | | ---->| | |nil|    | | | ---->|nil| ---->| | | ---->|nil|nil|
-   +-|-----+  +-|-----+    +-|-----+  +-------+  +-|-----+  +-------+
-     |          |            |                     |
-     V          V            V                     V
-   +---+      +---+        +-------+             +-------+
-   | A |      | B |        | | |nil|             | | |nil|
-   +---+      +---+        +-|-----+             +-|-----+
-                             |                     |
-                             V                     V
-                           +---+                 +---+
-                           | C |                 | C |
-                           +---+                 +---+
-
+<pre>
++-------+               +-------+
+| | | ----------------->| | |nil|
++-|-----+               +-|-----+
+  |                       |
+  V                       V
++-------+  +-------+    +-------+  +-------+  +-------+  +-------+
+| | | ---->| | |nil|    | | | ---->|nil| ---->| | | ---->|nil|nil|
++-|-----+  +-|-----+    +-|-----+  +-------+  +-|-----+  +-------+
+  |          |            |                     |
+  V          V            V                     V
++---+      +---+        +-------+             +-------+
+| A |      | B |        | | |nil|             | | |nil|
++---+      +---+        +-|-----+             +-|-----+
+                          |                     |
+                          V                     V
+                        +---+                 +---+
+                        | C |                 | C |
+                        +---+                 +---+
+</pre>
 Note that repeated parts of the tree are shared, no deep cloning!
 
 @author Christoph Meyer Kirsch
@@ -90,15 +96,13 @@ Note that repeated parts of the tree are shared, no deep cloning!
 
 public class GiottoScheduler extends Scheduler {
     /** Construct a Giotto scheduler with no container(director)
-     *  in the default workspace, the name of the scheduler is
-     *  "GiottoScheduler".
+     *  in the default workspace.
      */
     public GiottoScheduler() {
         super();
     }
 
-    /** Construct a Giotto scheduler in the given workspace with the name
-     *  "GiottoScheduler".
+    /** Construct a Giotto scheduler in the given workspace.
      *  If the workspace argument is null, use the default workspace.
      *  The scheduler is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
@@ -111,11 +115,29 @@ public class GiottoScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    public static int getFrequency(Actor actor) {
+        try {
+            Parameter parameter = (Parameter)
+                ((NamedObj) actor).getAttribute("frequency");
+
+            if (parameter != null) {
+                IntToken intToken = (IntToken) parameter.getToken();
+
+                return intToken.intValue();
+            } else
+                return _DEFAULT_GIOTTO_FREQUENCY;
+        } catch (ClassCastException ex) {
+            return _DEFAULT_GIOTTO_FREQUENCY;
+        } catch (IllegalActionException ex) {
+            return _DEFAULT_GIOTTO_FREQUENCY;
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // The static name, FIX ME: not used
-    protected static String _DEFAULT_GIOTTO_SCHEDULER_NAME = "GiottoScheduler";
+    // The static default Giotto frequency.
+    protected static int _DEFAULT_GIOTTO_FREQUENCY = 1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -124,15 +146,12 @@ public class GiottoScheduler extends Scheduler {
      *  Overrides _schedule() method in base class.
      *
      *  This method should not be called directly, rather the schedule()
-     *  method
-     *  will call it when the schedule is invalid. So it is not
+     *  method will call it when the schedule is invalid. So it is not
      *  synchronized on the workspace.
      *
-     * @see ptolemy.kernel.CompositeEntity#deepGetEntities()
      * @return an Enumeration of the scheduling sequence.
      * @exception NotSchedulableException If the CompositeActor is not
-     *  schedulable. Not thrown in this base class, but may be needed
-     *  by the derived scheduler.
+     *  schedulable.
      */
     protected Enumeration _schedule() throws NotSchedulableException {
         StaticSchedulingDirector director =
@@ -158,12 +177,12 @@ public class GiottoScheduler extends Scheduler {
 
 	    Actor actor = (Actor) actorList.get(0);
 
-	    int frequency = GiottoActorComparator.getFrequency(actor);
+	    int frequency = getFrequency(actor);
 
 	    // Compute schedule represented by a tree.
 	    List scheduleList = _treeSchedule(actorList.listIterator(),
-                    GiottoActorComparator._DEFAULT_GIOTTO_FREQUENCY,
-                    frequency);
+					      _DEFAULT_GIOTTO_FREQUENCY,
+					      frequency);
 
 	    // Return a shallow enumeration over the top list.
 	    return Collections.enumeration(scheduleList);
@@ -176,8 +195,42 @@ public class GiottoScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    ///////////////////////////////////////////////////////////////////
+    //// GiottoActor
+    /**
+       This class implements the Comparator interface for Actors
+       based on a "frequency" attribute of the actors.
+       The frequency of an actor which does not have a "frequency" attribute
+       is _DEFAULT_GIOTTO_FREQUENCY.
+       <p>
+       Given two actors A1 and A2, compare(A1, A2) is -1 (A1 < A2) if A1's
+       frequency is strictly less than A2's frequency, or compare(A1, A2) is 0
+       (A1 == A2) if A1's frequency is equal to A2's frequency, or
+       compare(A1, A2) is 1 (A1 > A2) if A1's frequency is strictly greater than
+       A2's frequency.
+    */
+    private class GiottoActorComparator implements Comparator {
+	///////////////////////////////////////////////////////////////////
+	////                         public methods                    ////
+	public int compare(Object object1, Object object2) {
+	    if (((object1 != null) && Actor.class.isInstance(object1)) &&
+                ((object2 != null) && Actor.class.isInstance(object2))) {
+		Actor actor1 = (Actor) object1;
+		Actor actor2 = (Actor) object2;
+
+		if (getFrequency(actor1) < getFrequency(actor2))
+		    return -1;
+		else if (getFrequency(actor1) == getFrequency(actor2))
+		    return 0;
+		else
+		    return 1;
+	    } else
+		throw new ClassCastException();
+	}
+    }
+
     /** Returns a schedule for a CompositeActor represented by a tree,
-     *  see top of file.
+     * see comment at top of file.
      *
      * @param iterator over all actors of CompositeActor.
      * @param lastFrequency of the previous call to this method.
@@ -187,8 +240,8 @@ public class GiottoScheduler extends Scheduler {
      *  schedulable.
      */
     private List _treeSchedule(ListIterator iterator,
-            int lastFrequency, int frequency)
-            throws NotSchedulableException {
+			       int lastFrequency, int frequency)
+	throws NotSchedulableException {
 	// This list contains all actors with frequency 'frequency'.
 	List sameFrequencyList = new LinkedList();
 
@@ -200,7 +253,7 @@ public class GiottoScheduler extends Scheduler {
 	while (iterator.hasNext()) {
 	    Actor actor = (Actor) (iterator.next());
 
-	    int actorFrequency = GiottoActorComparator.getFrequency(actor);
+	    int actorFrequency = getFrequency(actor);
 
 	    if (actorFrequency == frequency)
 		sameFrequencyList.add(actor);
@@ -223,7 +276,7 @@ public class GiottoScheduler extends Scheduler {
 		break;
 	    } else
 		throw new NotSchedulableException(
-                        "Sorting frequencies failed!");
+						  "Sorting frequencies failed!");
 	}
 
 	// This is actually a tree.
