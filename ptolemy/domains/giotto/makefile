@@ -1,9 +1,9 @@
-# Makefile for Java classes used to implement Ptolemy domains
+# Makefile for PtolemyII Giotto Domain
 #
 # @Version: $Id$
 # @Author: Christopher Hylands
 #
-# @Copyright (c) 1997-2000 The Regents of the University of California.
+# @Copyright (c) 1998-2000 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,52 +27,39 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/domains
+ME =		ptolemy/domains/giotto
 
-# Domains, in alphabetical order.  If you change this, change
-# PTCLASSALLJARS below
-# DT has to come after SDF, sorry.
-
-DIRS =		csp ct dde de fsm pn sdf dt giotto
+DIRS =		kernel demo
 
 # Root of Ptolemy II directory
-ROOT =		../..
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+
 # Used to build jar files
-PTPACKAGE = 	domains
+PTPACKAGE = 	giotto
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
 PTCLASSALLJARS = \
-		csp/csp.jar \
-		ct/ct.jar \
-		dde/dde.jar \
-		de/de.jar \
-                dt/dt.jar \
-		fsm/fsm.jar \
-		giotto/giotto.jar \
-		pn/pn.jar \
-		sdf/sdf.jar
+		kernel/kernel.jar \
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
-MISC_FILES =	$(DIRS)
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =	kernel
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	dfm \
-	generic
+	demo
 
 all: jclass
 install: jclass jars

@@ -1,9 +1,10 @@
-# Makefile for Java classes used to implement Ptolemy domains
+# Makefile for the Giotto domain kernel
+#
+# @Authors: Christopher Hylands
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
 #
-# @Copyright (c) 1997-2000 The Regents of the University of California.
+# @Copyright (c) 1998-2000 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,56 +28,49 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/domains
+ME =		ptolemy/domains/giotto/kernel
 
-# Domains, in alphabetical order.  If you change this, change
-# PTCLASSALLJARS below
-# DT has to come after SDF, sorry.
+DIRS = 		test
 
-DIRS =		csp ct dde de fsm pn sdf dt giotto
+# Root of the Java directory
+ROOT =		../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../..
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	domains
+PTPACKAGE = 	kernel
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-		csp/csp.jar \
-		ct/ct.jar \
-		dde/dde.jar \
-		de/de.jar \
-                dt/dt.jar \
-		fsm/fsm.jar \
-		giotto/giotto.jar \
-		pn/pn.jar \
-		sdf/sdf.jar
+JSRCS = \
+	GiottoDirector.java \
+	GiottoReceiver.java
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+EXTRA_SRCS =	$(JSRCS)
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	dfm \
-	generic
+	doc
+
+JCLASS = $(JSRCS:%.java=%.class)
+
 
 all: jclass
-install: jclass jars
+install: jclass $(PTCLASSJAR)
 
+
+depend:
+	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

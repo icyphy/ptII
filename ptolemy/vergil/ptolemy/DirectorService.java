@@ -52,6 +52,7 @@ import ptolemy.domains.csp.kernel.*;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.dt.kernel.*;
+import ptolemy.domains.giotto.kernel.GiottoDirector;
 
 //////////////////////////////////////////////////////////////////////////
 //// DirectorService
@@ -98,6 +99,9 @@ public class DirectorService extends AbstractService {
 	    addDirector(dir);
 	    dir = new CTMixedSignalDirector();	    
 	    dir.setName("CT");
+	    addDirector(dir);
+	    dir = new GiottoDirector();
+	    dir.setName("Giotto");
 	    addDirector(dir);
 	}
 	catch (Exception ex) {
