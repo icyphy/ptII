@@ -115,7 +115,7 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
      *  using {@link #setStartNode}.
      *
      *  @param endNode The ending node of the path.
-     *  @param The length of the longest path.
+     *  @return The length of the longest path.
      */
     public double pathLength(Node endNode) {
         return ((SingleSourceLongestPathAnalyzer) analyzer()).pathLength(endNode);

@@ -438,7 +438,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
         /** Return a MoML String that will delete the given edge from the
          *  Ptolemy model.
-         *  @param The edge to be removed.
+         *  @param edge The edge to be removed.
          *  @return A valid MoML string.
          */
         public String getDeleteEdgeMoML(Object edge) {

@@ -54,6 +54,7 @@ public class ActorToken extends Token {
     /** Construct an ActorToken.
      *  @param entity The entity that this Token contains.
      *  @exception IllegalActionException If cloning the entity fails.
+     */
     public ActorToken(Entity entity) throws IllegalActionException {
         super();
 

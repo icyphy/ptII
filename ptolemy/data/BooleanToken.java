@@ -121,7 +121,6 @@ public class BooleanToken extends AbstractConvertibleToken
     }
 
     /** Returns a token representing the bitwise NOT of this token.
-     *  @param rightArgument The BooleanToken to bitwise NOT with this one
      *  @return The boolean negation.
      */
     public BitwiseOperationToken bitwiseNot() {
