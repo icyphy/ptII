@@ -115,7 +115,13 @@ public class CodeStream {
      * @throws IllegalActionException
      */
     private void _constructCodeBlockTable() throws IllegalActionException {
-        String className = (_actorHelper == null) ? _testingClassName : _actorHelper.getClass().toString();
+        String className; 
+        if (_actorHelper == null)
+        	className = _testingClassName;
+        else {
+        	className = _actorHelper.getComponent().getClassName();
+            className = className.substring(className.lastIndexOf(".")+1);
+        }
         
         _codeBlockTable = new Hashtable();
         BufferedReader reader = null;
@@ -126,14 +132,17 @@ public class CodeStream {
 
             // create a string of all code in the file
             for (String line = reader.readLine(); line != null; line = reader.readLine()) {
-                codeInFile.append(line);
+                codeInFile.append(line+"\n");
             }
             
             // recursively parse the file
             while (_parseCodeBlock(codeInFile) != null); 
             
         } catch (IOException e) {
-            throw new IllegalActionException ("Cannot open file: " + className + ".c");
+            if (reader == null)
+                throw new IllegalActionException ("Cannot open file: " + className + ".c");
+            else 
+                throw new IllegalActionException ("Error reading file: " + className + ".c");
         }         
     }
  
@@ -192,7 +201,7 @@ public class CodeStream {
 	 */
 	private static String _checkCodeHeader(String name) throws IllegalActionException{
         // FIXME: type checking
-		return name;
+		return name.trim();
 	}
 
 	/**

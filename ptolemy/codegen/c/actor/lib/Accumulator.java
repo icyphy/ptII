@@ -56,7 +56,7 @@ public class Accumulator extends CCodeGeneratorHelper {
             throws IllegalActionException {
 
         CodeStream tmpStream = new CodeStream(this);    	
-    	tmpStream.append("codeBlock1");
+    	tmpStream.appendCodeBlock("codeBlock1");
         stream.append(processCode(tmpStream.toString()));
         
         /**** Previous Code Style *******
@@ -80,7 +80,7 @@ public class Accumulator extends CCodeGeneratorHelper {
     public String generateInitializeCode()
             throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);        
-        tmpStream.append("initBlock");
+        tmpStream.appendCodeBlock("initBlock");
         
         //stream.append(processCode(tmpStream.toString()));
         //stream.append(processCode(_initBlock));

@@ -62,11 +62,11 @@ public class Sequence extends CCodeGeneratorHelper {
         CodeStream tmpStream = new CodeStream(this);        
 
         if (actor.enable.getWidth() == 0) {
-            tmpStream.append("codeBlock1");
+            tmpStream.appendCodeBlock("codeBlock1");
         } else {
-            tmpStream.append("codeBlock2");
+            tmpStream.appendCodeBlock("codeBlock2");
         }
-        tmpStream.append("codeBlock3");
+        tmpStream.appendCodeBlock("codeBlock3");
         
         stream.append(processCode(tmpStream.toString()));
 
@@ -76,7 +76,7 @@ public class Sequence extends CCodeGeneratorHelper {
             throws IllegalActionException {
 
         CodeStream tmpStream = new CodeStream(this);        
-        tmpStream.append("initBlock");
+        tmpStream.appendCodeBlock("initBlock");
         
         //stream.append(processCode(tmpStream.toString()));
         return processCode(tmpStream.toString());

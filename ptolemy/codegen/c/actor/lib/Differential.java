@@ -56,7 +56,7 @@ public class Differential extends CCodeGeneratorHelper {
             throws IllegalActionException {
 
         CodeStream tmpStream = new CodeStream(this);        
-        tmpStream.append("codeBlock1");
+        tmpStream.appendCodeBlock("codeBlock1");
 
         stream.append(processCode(tmpStream.toString()));
     }
@@ -65,7 +65,7 @@ public class Differential extends CCodeGeneratorHelper {
             throws IllegalActionException {
 
         CodeStream tmpStream = new CodeStream(this);        
-        tmpStream.append("initBlock");
+        tmpStream.appendCodeBlock("initBlock");
         
         //stream.append(processCode(tmpStream.toString()));
         return processCode(tmpStream.toString());
