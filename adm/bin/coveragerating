@@ -1,5 +1,5 @@
 #!/bin/sh
-# -[Fri Nov 21 07:26:07 2003 by cxh]-
+# -[Fri Nov 21 07:26:54 2003 by cxh]-
 # Color the coverage file with the appropriate accepted ratings
 
 
@@ -20,13 +20,16 @@ ratingfile=/tmp/coveragerating.ratingfile
 
 complexityfile=/tmp/coveragerating.complexity
 
-find /tmp -name "$ratingfile" -mtime +1 -exec rm {} \;
+#find /tmp -name "$ratingfile" -mtime +1 -exec rm {} \;
+
+
 
 # Create a file that has two records on each line, one line
 # being the file name, the other being the rating
+rm -f $ratingfile
 #if [ ! -f $ratingfile ]; then
 	echo "Regenerating $javafiles"
-	find $tree -xdev -name adm -prune -o -name '*.java' -print > $javafiles
+	find $tree -xdev \( -name adm -o -name "*.tmp" \) -prune -o -name '*.java' -print > $javafiles
 
 	echo "Regenerating $ratingfile"
 	cat $javafiles | xargs grep AcceptedRating | 
@@ -187,7 +190,7 @@ awk '{
 # Create a TOC
 awk ' BEGIN {
 	print "<html><head>"
-	print "<title>Ptolemy II Coverage Summary</title>"
+	print "<title> @tree@ Coverage Summary</title>"
 	print "</head><body>"
 	print "<h1>&nbsp;&nbsp;Package Coverage</h1>"
 	print "<menu>"
@@ -204,7 +207,8 @@ awk ' BEGIN {
     }
     END {
         print "</menu>" 
-    }' date="`date`" /tmp/coveragerating.out >/tmp/coveragerating.toc
+    }' date="`date`" /tmp/coveragerating.out |
+sed "s=@tree@=$tree=" > /tmp/coveragerating.toc
 
 cp $summaryfile $summaryfile.bak
 cat /tmp/coveragerating.toc /tmp/coveragerating.out > $summaryfile
