@@ -95,9 +95,8 @@ OPTIONAL_FILES =	\
 COPERNICUSPACKAGES = \
 			ptolemy.copernicus.kernel \
 			ptolemy.copernicus.c \
-			ptolemy.copernicus.deep \
-			ptolemy.copernicus.jhdl \
-			ptolemy.copernicus.shallow
+			ptolemy.copernicus.java \
+			ptolemy.copernicus.jhdl
 
 # Java packages for codegen
 CODEGENPACKAGES = \
