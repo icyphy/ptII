@@ -69,8 +69,7 @@ PTAUXALLJAR =	ptsupport.jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		$(PTAUXALLJARS) \
-		domains/domains.jar \
-		schematic/schematic.jar
+		domains/domains.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
