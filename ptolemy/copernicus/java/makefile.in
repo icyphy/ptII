@@ -440,6 +440,8 @@ gcj2_0a: $(TARGETPATH)/gcj
 			echo "---Copying aux .class from \$$PTII to $$dir"; \
 			cp $(PTII)/$$dir/*.class $$dir; \
 		done;
+	(cd $(TARGETPATH)/gcj; rm -f $(GCJ_TO_BE_REMOVED))
+
 
 gcj2_1:
 	@echo "--- Run gcj on all the .class files in the jar file dir"
@@ -457,7 +459,6 @@ gcj2_1:
 					--encoding=UTF-8 *.class); \
 			fi; \
 		done;
-	(cd $(TARGETPATH)/gcj; rm -f $(GCJ_TO_BE_REMOVED))
 
 gcj2_2:
 	@echo "--- Run gcj on all the .o files in the jar file dir"
