@@ -29,7 +29,6 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-#ME =		ptolemy/domains/sdf/demo/AudioSinkDemo/AudioSink
 ME =		ptolemy/domains/sdf/test/pitchshift
 
 # Root of the Java directory
