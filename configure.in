@@ -2177,7 +2177,7 @@ fi
 #--------------------------------------------------------------------
 
 # PTGIOTTO_DIR is set to Giotto and used in
-# $PTII/ptolemy/apps/makefile if tini was found
+# $PTII/ptolemy/apps/makefile if giotto was found
 PTGIOTTO_DIR=
 #
 if test ! -d "$PTII/ptolemy/domains/giotto"; then
