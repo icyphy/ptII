@@ -75,7 +75,7 @@ public class ComponentEntity extends Entity {
      *   an entity already in the container.
      */	
     public ComponentEntity(CompositeEntity container, String name) 
-             throws NameDuplicationException {
+            throws NameDuplicationException {
         super(container.workspace(), name);
         try {
             container._addEntity(this);
@@ -107,7 +107,7 @@ public class ComponentEntity extends Entity {
             throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof ComponentPort)) {
             throw new IllegalActionException(this, port,
-                   "Component entities require ComponentPorts.");
+                    "Component entities require ComponentPorts.");
         }
         synchronized(workspace()) {
             super.addPort(port);
@@ -148,7 +148,7 @@ public class ComponentEntity extends Entity {
      *  that name.
      */	
     public Port newPort(String name) 
-             throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         synchronized(workspace()) {
             Port port = new ComponentPort(this, name);
             return port;
@@ -238,8 +238,8 @@ public class ComponentEntity extends Entity {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    /////////////////////////////////////////////////////////////////////////
+    ////                         private variables                       ////
 
     // The entity that contains this entity.
     private CompositeEntity _container;

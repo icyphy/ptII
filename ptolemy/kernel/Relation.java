@@ -90,8 +90,8 @@ public class Relation extends NamedObj {
         } catch (IllegalActionException ex) {}
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    /////////////////////////////////////////////////////////////////////////
+    ////                         public methods                          ////
 
     /** Enumerate the linked entities.  If any of the linked ports have no
      *  container, then those ports are ignored.  Thus, the enumeration may
@@ -143,7 +143,7 @@ public class Relation extends NamedObj {
             while(ports.hasMoreElements()) {
                 Port p = (Port)ports.nextElement();
                 if(p != except)
-                storedPorts.insertLast(p); 
+                    storedPorts.insertLast(p); 
             }
             return storedPorts.elements();
         }

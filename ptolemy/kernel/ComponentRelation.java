@@ -50,7 +50,7 @@ public class ComponentRelation extends Relation {
      *  Increment the version number of the workspace.
      */
     public ComponentRelation() {
-         super();
+        super();
     }
 
     /** Construct a relation in the specified workspace with an empty
@@ -75,7 +75,7 @@ public class ComponentRelation extends Relation {
      *   a relation already in the container.
      */	
     public ComponentRelation(CompositeEntity container, String name) 
-             throws NameDuplicationException {
+            throws NameDuplicationException {
         super(container.workspace(), name);
         try {
             container._addRelation(this);
@@ -226,8 +226,8 @@ public class ComponentRelation extends Relation {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    /////////////////////////////////////////////////////////////////////////
+    ////                        private variables                        ////
 
     // The entity that contains this entity.
     private CompositeEntity _container;

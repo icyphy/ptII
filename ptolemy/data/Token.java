@@ -44,8 +44,8 @@ so the default implementation here triggers an exception.
 */
 public abstract class Token implements Cloneable {
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    /////////////////////////////////////////////////////////////////////////
+    ////                         public methods                          ////
 
     /** Promote the clone method of the base class Object to public.
      *  @see java.lang.Object#clone()
@@ -64,10 +64,10 @@ public abstract class Token implements Cloneable {
      */	
     public void fromString(String init) 
             throws IllegalActionException {
-                // FIXME: Should throw a new exception: FormatException
+        // FIXME: Should throw a new exception: FormatException
         Class myclass = getClass();
         throw new IllegalActionException("Tokens of class "
-               + myclass.getName() + " cannot be initialized from a string.");
+                + myclass.getName() + " cannot be initialized from a string.");
     }
 
     /** Return a description of the token as a string.

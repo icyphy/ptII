@@ -109,7 +109,7 @@ public class ComponentPort extends Port {
      *   a port already in the container.
      */	
     public ComponentPort(ComponentEntity container, String name) 
-             throws NameDuplicationException {
+            throws NameDuplicationException {
 	super(container,name);
         // Ignore exception because "this" cannot be null.
         try {
@@ -139,13 +139,13 @@ public class ComponentPort extends Port {
             
             while( nearrelations.hasMoreElements() ) {
                 ComponentRelation relation =
-                       (ComponentRelation)nearrelations.nextElement();
+                    (ComponentRelation)nearrelations.nextElement();
 
                 Enumeration connectedports =
-                        relation.getLinkedPortsExcept(this);
+                    relation.getLinkedPortsExcept(this);
                 while (connectedports.hasMoreElements()) {
                     ComponentPort port =
-                            (ComponentPort)connectedports.nextElement();
+                        (ComponentPort)connectedports.nextElement();
                     // NOTE: If level-crossing transitions are not allowed, then
                     // a simpler test than that of the following would work.
                     if (port._outside(relation.getContainer())) {
@@ -192,10 +192,10 @@ public class ComponentPort extends Port {
                 while (relations.hasMoreElements()) {
                     Relation relation = (Relation)relations.nextElement();
                     Enumeration insideports =
-                            relation.getLinkedPortsExcept(this);
+                        relation.getLinkedPortsExcept(this);
                     while (insideports.hasMoreElements()) {
                         ComponentPort downport =
-                        (ComponentPort)insideports.nextElement();
+                            (ComponentPort)insideports.nextElement();
                         if (downport._outside(relation.getContainer())) {
                             result.appendElements(
                                     downport.deepGetConnectedPorts());
@@ -267,8 +267,8 @@ public class ComponentPort extends Port {
                 // An inside link
                 _checkRelation(relation);
                 if (getContainer() == null) {
-                throw new IllegalActionException(this, relation,
-                         "Port must have a container to establish a link.");
+                    throw new IllegalActionException(this, relation,
+                            "Port must have a container to establish a link.");
                 }
                 _insideLinks.link(relation._getPortList(this));
             } else {
@@ -360,7 +360,7 @@ public class ComponentPort extends Port {
             throws IllegalActionException {
         if (!(relation instanceof ComponentRelation)) {
             throw new IllegalActionException(this,
-                   "Attempt to link to an incompatible relation.");
+                    "Attempt to link to an incompatible relation.");
         }
     }
 
@@ -380,8 +380,8 @@ public class ComponentPort extends Port {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    /////////////////////////////////////////////////////////////////////////
+    ////                         private variables                       ////
 
     // The list of inside relations for this port.
     private CrossRefList _insideLinks;
