@@ -403,6 +403,8 @@ public class Clock extends TimedSource {
      *  parameter.
      *  @param index The index of the output values.
      *  @return A token that contains the output value. 
+     *  @throws IllegalActionException If the index is out of the range of
+     *  the values parameter.
      */
     protected Token _getValue(int index) throws IllegalActionException {
         ArrayToken val = (ArrayToken)(values.getToken());
