@@ -1,4 +1,4 @@
-/* An actor that delays the input for a certain amount of real time.
+/* An actor that distribute its input data to different output ports.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -44,22 +44,31 @@ import ptolemy.kernel.util.*;
 import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// Sleep
+//// QueueControl
 /**
-An actor that calls Thread.sleep() on the current thread the first
-time fire() is called.  The sleep delays the inputs for a certain
-amount of real time, specified by the <i>sleepTime</i> parameter.
+An actor that distribute its input data to different outputs.
+Its output ports <i>queue1<i> and <i>queue2<i> is connected
+to two <i>queue<i> actors respectively. The lengh of the two
+queue are fed back to its input ports <i>q1Length<i> and
+<i>q2Length<i>. The input token at <i>input<i> is distributed
+according to the following policy: if the total length of queue1
+and queue2 is less than threshold1, specified by the <i>minMark</i>
+parameter, the input token is send to <i>queue1<i> if queue1's
+length is less than queue2's, otherwise send to <i>queue2<i>; if
+the total length is greater than threshold1 but less than
+threshold2, specified by the <i>minMark</i> parameter, the
+input token may be dropped randomly(with a probability
+proportional to the amount larger than threshold1) or
+send to queues shorter; if the total length is greater than
+threshold2, then drop the input token. If the input token is
+dropped, it is send to the <i>dropped<i> output so that it can
+be catched or monitored when necessary.
 
-<p>Note that one way to slow dow the execution of a model while running
-inside vergil is to turn on animation.
-
-<p>If the width of the output port is less than that of the input port,
-the tokens in the extra channels are lost.
-
-@author Jie Liu, Christopher Hylands
+@author Xiaojun Liu
 @version $Id$
 @since Ptolemy II 1.0
 */
+
 public class QueueControl extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
@@ -74,23 +83,23 @@ public class QueueControl extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        q1_len = new TypedIOPort(this, "q1_len", true, false);
-        q1_len.setTypeEquals(BaseType.INT);
+        q1Length = new TypedIOPort(this, "q1Length", true, false);
+        q1Length.setTypeEquals(BaseType.INT);
 
-        pkt_in = new TypedIOPort(this, "pkt_in", true, false);
-        pkt_in.setTypeEquals(BaseType.GENERAL);
+        input = new TypedIOPort(this, "input", true, false);
+        input.setTypeEquals(BaseType.GENERAL);
 
-        q2_len = new TypedIOPort(this, "q2_len", true, false);
-        q2_len.setTypeEquals(BaseType.INT);
+        q2Length = new TypedIOPort(this, "q2Length", true, false);
+        q2Length.setTypeEquals(BaseType.INT);
 
-        q1_out = new TypedIOPort(this, "q1_out", false, true);
-        q1_out.setTypeEquals(BaseType.GENERAL);
+        queue1 = new TypedIOPort(this, "queue1", false, true);
+        queue1.setTypeEquals(BaseType.GENERAL);
 
         dropped = new TypedIOPort(this, "dropped", false, true);
         dropped.setTypeEquals(BaseType.GENERAL);
 
-        q2_out = new TypedIOPort(this, "q2_out", false, true);
-        q2_out.setTypeEquals(BaseType.GENERAL);
+        queue2 = new TypedIOPort(this, "queue2", false, true);
+        queue2.setTypeEquals(BaseType.GENERAL);
 
         minMark = new Parameter(this, "minMark");
         minMark.setTypeEquals(BaseType.INT);
@@ -104,68 +113,64 @@ public class QueueControl extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    public TypedIOPort q1_len, pkt_in, q2_len, q1_out, dropped, q2_out;
+    public TypedIOPort q1Length, input, q2Length, queue1, dropped, queue2;
+
+    //the thresholds used for control queue1 and queue2's length.
     public Parameter minMark, maxMark;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Call Thread.sleep() the first time fire is called and then
-     *  transfer tokens from inputs to outputs, one token from each
-     *  channel.  If fire() is called twice in a row without an
-     *  intervening call to either postfire() or prefire(), then no
-     *  output is produced.
-     *  <p>If the width of the output port is less than
-     *  that of the input port, the tokens in the extra channels
-     *  are lost.
+    /** update _q1Length if <i>q1Length<i> has token,
+     *  or update _q2Length if <i>q2Length<i> has token.
+     *  No output it produced if <i>input<i> doesn't has
+     *  token, otherwise, distribute the input data to
+     *  corresponding output.
      *  @exception IllegalActionException Not thrown in this base class */
     public void fire() throws IllegalActionException {
-        if (q1_len.hasToken(0)) {
-            _q1len = ((IntToken)q1_len.get(0)).intValue();
+        if (q1Length.hasToken(0)) {
+            _q1Length = ((IntToken)q1Length.get(0)).intValue();
         }
-        if (q2_len.hasToken(0)) {
-            _q2len = ((IntToken)q2_len.get(0)).intValue();
+        if (q2Length.hasToken(0)) {
+            _q2Length = ((IntToken)q2Length.get(0)).intValue();
         }
-        if (pkt_in.hasToken(0)) {
-            Token pkt = pkt_in.get(0);
+        if (input.hasToken(0)) {
+            Token pkt = input.get(0);
             double r = Math.random();
             int min = ((IntToken)minMark.getToken()).intValue();
             int max = ((IntToken)maxMark.getToken()).intValue();
             double l = 0.0;
-            if (_q1len + _q2len > min) {
-                l = (0.0 + _q1len + _q2len - min)/(max - min);
+            if (_q1Length + _q2Length > min) {
+                l = (0.0 + _q1Length + _q2Length - min)/(max - min);
             }
             if (l > r) {
                 dropped.broadcast(pkt);
             } else {
-                if (_q1len > _q2len) {
-                    q2_out.broadcast(pkt);
+                if (_q1Length > _q2Length) {
+                    queue2.broadcast(pkt);
                 } else {
-                    q1_out.broadcast(pkt);
+                    queue1.broadcast(pkt);
                 }
             }
         }
     }
 
-    /** Reset the flag that fire() checks so that fire() only sleeps once.
+    /** preinitialize the private variables _q1Length
+     *  and _q2Length to zero.
      *  @exception IllegalActionException If the parent class throws it.
-     *  @return Whatever the superclass returns (probably true).
+     *  @return Whatever the superclass returns.
      */
-    public boolean prefire() throws IllegalActionException {
-        return super.prefire();
-    }
-
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        _q1len = 0;
-        _q2len = 0;
+        _q1Length = 0;
+        _q2Length = 0;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // True if sleep was called in fire().  Sleep should only
-    // be called once in fire().
-    private int _q1len;
-    private int _q2len;
+    //length of the queue that <i>queue1<i> connected to.
+    private int _q1Length;
+    //length of the queue that <i>queue2<i> connected to.
+    private int _q2Length;
 }
