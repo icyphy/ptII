@@ -256,7 +256,7 @@ $Id$
 
      <property name="ptIIUserDirectoryAsURL" 
                class="ptolemy.data.expr.StringParameter"
-	       value="ptIIUserDirectory"
+	       value="$ptIIUserDirectory"
 	       >
 	       <doc>The top level directory to write the code in as a URL.  Derived from the value of the ptIIUserDirectory parameter.</doc>
      </property>
