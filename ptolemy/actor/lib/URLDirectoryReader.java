@@ -96,6 +96,11 @@ public class URLDirectoryReader extends URLReader {
         // Set the type of the output port.
         output.setTypeEquals(BaseType.STRING);
 
+        // Set the endsWith String.
+        endsWith = new Parameter(this, "endsWith", new StringToken(""));
+	endsWith.setTypeEquals(BaseType.STRING);
+        attributeChanged(endsWith);
+
         // Set the repeat Flag.
         repeat = new Parameter(this, "repeat", new BooleanToken(false));
 	repeat.setTypeEquals(BaseType.BOOLEAN);
@@ -246,15 +251,18 @@ public class URLDirectoryReader extends URLReader {
 		// First, try opening the source as a file.
 		File file = new File(sourceURL.getFile());
 		if (file.isDirectory()) {
+		    if (!source.endsWith("/")) {
+			source = source + "/";
+		    }
 		    // Note: we could use listFiles(FileFilter) here.
 		    // but since the filter is fairly simple, we don't
 		    File [] files = file.listFiles();
 		    List resultsList = new LinkedList();
 		    for (int i = 0; i < files.length; i++) {
-			String filename = files[i].getAbsolutePath();
+			String filename = files[i].getName();
 			if (endsWith == null || endsWith.length() == 0 
 			    || filename.endsWith(endsWith)) {
-			    resultsList.add(filename);
+			    resultsList.add(source + filename);
 			}
 		    }
 		    String [] results = new String[resultsList.size()];
