@@ -53,7 +53,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = ExpressionReader.java \
 	ExpressionWriter.java \
 	LineReader.java \
-	LineWriter.java
+	LineWriter.java \
+	FileReader.java
 
 OTHER_FILES_TO_BE_JARED = \
 	io.xml
