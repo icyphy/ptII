@@ -103,8 +103,10 @@ public class TimedQueueReceiver implements Receiver {
 	    if( thread instanceof ODFThread ) {
 	        ((ODFThread)thread).setCurrentTime( event.getTime() );
 	    } else {
+                /*
                 System.err.println("ERROR: TimedQueueReceiver.get()"
                         + " being invoked by non-ODFThread.");
+                */
 	    }
 
 	    if( getSize() > 0 ) {
@@ -241,8 +243,10 @@ public class TimedQueueReceiver implements Receiver {
 		    }
                     ((ODFThread)thread).updateRcvrList( triple ); 
 		} else {
+                    /*
 		    System.err.println("ERROR: Non-ODFThread calling "
 			    + "TimedQueueReceiver.put()");
+                    */
 		}
             }
 
