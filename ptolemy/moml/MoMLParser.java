@@ -425,7 +425,7 @@ public class MoMLParser extends HandlerBase {
         if (_undoEnabled && _undoContext != null && _undoContext.hasUndoMoML()) {
             String undoMoML = _undoContext.getUndoMoML();
             if (_undoDebug) {
-                // Print out what has been gnerated
+                // Print out what has been generated
                 System.out.println("=======================");
                 if (!_undoIsRedo) {
                     System.out.println("Generated UNDO MoML: ");
@@ -3784,7 +3784,6 @@ public class MoMLParser extends HandlerBase {
     // undoable. Primarily for incremental parsing.
     private boolean _undoEnabled = false;
 
-    // Set this to true to get debugging information for incremental parsing
     // Whether or not the undo is actally a redo
     private boolean _undoIsRedo = false;
 
