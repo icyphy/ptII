@@ -88,6 +88,7 @@ JSRCS = \
 	PlotApplication.java \
 	PlotBox.java \
 	PlotDataException.java \
+	PlotFormatter.java \
 	PlotFrame.java \
 	PlotLive.java \
 	PlotLiveApplet.java \
