@@ -442,6 +442,17 @@ public class ActorController extends AttributeController {
                         // Shift the label right so it doesn't
                         // collide with ports.
                         label.translateTo(x - 5, y);
+                    } else {
+                        // Not an input or output.
+                        // The 1.0 argument is the padding.
+                        label = new LabelFigure(
+                                port.getName(),
+                                _portLabelFont,
+                                1.0,
+                                SwingConstants.NORTH);
+                        // Shift the label right so it doesn't
+                        // collide with ports.
+                        label.translateTo(x, y + 5);
                     }
                     figure.add(label);
                 }
