@@ -59,8 +59,8 @@ import ptolemy.kernel.util.StringAttribute;
 /**
 This actor sends its input as a Datagram over the network using the
 UDP protocol.  Before being sent, the data is optionally encoded as a
-text string representing the value being sent.  When this option is 
-selected, any Ptolemy data type may be represented.  
+text string representing the value being sent.  When this option is
+selected, any Ptolemy data type may be represented.
 See the <i>encoding</i> parameter.<p>
 
 The address and socket number towards which the datagram is sent are
@@ -71,7 +71,7 @@ that optional input. <p>
 
 Each instance of this actor needs to allocate a local socket from
 which to transmit datagrams.  Initially, the local socket number is
-set to 4003, just to pick a number.  The socket is not allocated 
+set to 4003, just to pick a number.  The socket is not allocated
 until the model is run.<p>
 
 @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
@@ -81,8 +81,8 @@ until the model is run.<p>
 
 /** Construct a DatagramSender actor with given name in the given
  *  container.  Set up ports, parameters and default values.  Two of
- *  the parameters are used in a funny way.  They give default values for 
- *  the  <i>remoteAddress</i> and <i>remoteSocketNumber</i> ports in case 
+ *  the parameters are used in a funny way.  They give default values for
+ *  the  <i>remoteAddress</i> and <i>remoteSocketNumber</i> ports in case
  *  no tokens are available there.
  *  @param container The container.
  *  @param name The name for this actor.
@@ -173,14 +173,14 @@ public class DatagramSender extends TypedAtomicActor {
     public Parameter localSocketNumber;
 
     /** Data to be sent.  Data can be encoded different ways,
-     *  depending on the setting of <i>encoding</i>.  
+     *  depending on the setting of <i>encoding</i>.
      */
     public TypedIOPort data;
 
     /** The default remote address to which to send datagrams.
      *  This is a string.  It will get looked up to find the IP address.
      *  (Legal forms of this string include "128.32.239.10" and "localhost".)
-     *  NOTE: This is a parameter, but it is of type String and is a 
+     *  NOTE: This is a parameter, but it is of type String and is a
      *  special kind of parameter called a <i>StringAttribute</i>.
      */
     public StringAttribute defaultRemoteAddress;
@@ -204,10 +204,10 @@ public class DatagramSender extends TypedAtomicActor {
     /** If the parameter changed is <i>localSocketNumber</i>, then if
      *  the model is running (as evedenced by socket != null) then
      *  close socket and reopen with new socket number (even if same
-     *  as old socket number).  Do not close the socket until a new 
+     *  as old socket number).  Do not close the socket until a new
      *  one has been successfully opened.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If cannot create socket.  
+     *  @exception IllegalActionException If cannot create socket.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -267,7 +267,7 @@ public class DatagramSender extends TypedAtomicActor {
     /** Does up to three things, in this order: Set new remote address value,
      *  Set new remote socket number, transmit data as a UDP packet over the
      *  ethernet.  The first two can, of course, affect where the datagram
-     *  goes.  Any remote address/socket values supplied are saved and 
+     *  goes.  Any remote address/socket values supplied are saved and
      *  become the defaults for next time.
      */
     public void fire() throws IllegalActionException {
@@ -305,7 +305,7 @@ public class DatagramSender extends TypedAtomicActor {
 		int dataLengthInBytes =
 		        _encodedBytesPerInteger * dataIntArrayToken.length();
 		dataBytes = new byte[dataLengthInBytes];
-                for (int j = 0; j < dataLengthInBytes; 
+                for (int j = 0; j < dataLengthInBytes;
                         j += _encodedBytesPerInteger) {
                     IntToken dataIntOneToken =
                             (IntToken)dataIntArrayToken.getElement(j);

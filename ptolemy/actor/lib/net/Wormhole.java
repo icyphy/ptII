@@ -181,7 +181,7 @@ public class Wormhole extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables     
+    ////                         private variables
 
     private MyFrame _myframe;
 
@@ -241,19 +241,19 @@ public class Wormhole extends TypedAtomicActor {
         /** Comply with the ClipboardOwner interface.
          *  It requires a method exist named <i>lostOwnership</i>.
 	 */
-        public void lostOwnership(Clipboard clipboard, 
+        public void lostOwnership(Clipboard clipboard,
                 Transferable contents) {
         }
 
         /** Assuming the contents of the clipboard is MoML code, paste
-         *  it into the current model by issuing a change request.  
+         *  it into the current model by issuing a change request.
          */
         public void pasteFromBufferToPasteOutput() {
             if (_debugging) _debug("paste* has been called");
             try {
                 getDirector().fireAtCurrentTime(Wormhole.this);
             } catch (IllegalActionException ex) {
-                System.out.println(this 
+                System.out.println(this
                         + "Exception calling fireAtCurrentTime");
                 throw new RuntimeException("-fireAt* catch-");
             }
