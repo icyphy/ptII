@@ -6,6 +6,11 @@
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
 <meta name="LASTUPDATED" content="07/16/03 23:54:11">
+
+<!-- Heavily modified by cxh
+     See ../../expressions.htm and ptweb/doc/design/src/README.txt
+  -->
+
 <title>2 Using Vergil  </title>
 </head>
 
@@ -13,8 +18,14 @@
 
 <center><h1>2  Using Vergil</h1></center>
 
-</div>
 
+This version is in HTML, a PDF version can be found in Chapter 2 of 
+<a href="../ptIIdesign1-intro.pdf">Volume 1: Introduction to Ptolemy II</a>.
+
+<br>The Expression Language is documented in a separate
+<a href="../../expressions.htm">file</a>
+<p>
+<p>
 <a name="162678"> </a>Authors:		Edward A. Lee<br>
 
 
@@ -272,7 +283,7 @@ Object names: .&lt;Unnamed Object&gt;.Ramp.output and .&lt;Unnamed <a name="1699
 
 
 <p>
-  <a name="167859"> </a>The tokens produced by the <i>Const</i> actor can have any value that can be expressed in the Ptolemy II <i>expression language</i>. We will say more about the expression language in chapter 3, "Expressions", but for now, try giving the value 1 (the integer with value one), or 1.0 (the floating-point number with value one), or {1.0} (An array containing a one), or {value=1, name="one"} (A record with two elements: an integer named "value" and a string named "name"), or even [1,0;0,1] (the two-by-two identity matrix). These are all expressions.
+  <a name="167859"> </a>The tokens produced by the <i>Const</i> actor can have any value that can be expressed in the Ptolemy II <i>expression language</i>. We will say more about the expression language in <a href="../../expressions.htm">chapter 3, "Expressions",</a> but for now, try giving the value 1 (the integer with value one), or 1.0 (the floating-point number with value one), or {1.0} (An array containing a one), or {value=1, name="one"} (A record with two elements: an integer named "value" and a string named "name"), or even [1,0;0,1] (the two-by-two identity matrix). These are all expressions.
 </p>
 
 
@@ -428,7 +439,7 @@ at ptolemy.data.IntToken.subtract(IntToken.java:547)<a name="168270"> </a>
 
 <p>
   <a name="168902"> </a>Now we can use this parameter. First, let's use it to set the amount of noise. The <i>Gaussian</i> actor has a parameter called <i>standardDeviation</i>. In this case, the power of the noise is equal to the variance of the Gaussian, not the standard deviation. If you recall from basic statistics, the standard deviation is equal to the square root of the variance. Change the <i>standardDeviation </i>parameter of the <i>Gaussian</i> actor so its value is "sqrt(noisePower)", as shown in figure <img src="images/usingVergil36.gif" height="165" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="usingVergil.html#168902">2.28</a>. This is an expression that references the <i>noisePower</i> parameter. We will explain the expression language in the next chapter. But first, let check our improved model. Return to the top-level model, and edit the parameters of the <i>Channel</i> actor (by either double clicking or right clicking and selecting "Configure"). Change the noise power from the default 0.1 to 0.01. Run the model. You should now get a relatively clean sinusoid like that shown in figure <img src="images/usingVergil67.gif" usemap="#usingVergil67_gif" height="302" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="usingVergil.html#168902">2.28</a>. This is an expression that references the <i>noisePower</i> parameter. We will explain the expression language in the <a href="../../expressions.htm">next chapter</a>. But first, let check our improved model. Return to the top-level model, and edit the parameters of the <i>Channel</i> actor (by either double clicking or right clicking and selecting "Configure"). Change the noise power from the default 0.1 to 0.01. Run the model. You should now get a relatively clean sinusoid like that shown in figure <img src="images/usingVergil67.gif" usemap="#usingVergil67_gif" height="302" width="600" align="center" border="0" hspace="0" vspace="0">
 <map name="usingVergil67_gif">
 
 <area href="usingVergil.html#168725" shape=rect coords="3,269,597,296">
