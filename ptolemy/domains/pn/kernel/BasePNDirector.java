@@ -232,9 +232,7 @@ public class BasePNDirector extends ProcessDirector {
      *  @exception IllegalActionException Not thrown in the PN domain.
      */
     public boolean postfire() throws IllegalActionException {
-        //System.out.println("Postifre printing " +_notdone);
 	if (_readBlockCount == _getActiveActorsCount()) {
-	    //return _notdone;
 	    return false;
 	} else {
 	    return true;
@@ -323,13 +321,11 @@ public class BasePNDirector extends ProcessDirector {
      *  Notify the thread corresponding to the blocked process and return.
      */
     protected void _incrementLowestWriteCapacityPort() {
-        //System.out.println("Incrementing capacity");
         PNQueueReceiver smallestCapacityQueue = null;
         int smallestCapacity = -1;
         //FIXME: Should I traverse the topology and get receivers blocked on 
         // a write or should I stick with this strategy?
 	Enumeration receps = _writeblockedQs.elements();
-	//System.out.println("Enumeration receps done");
 	while (receps.hasMoreElements()) {
 	    PNQueueReceiver queue = (PNQueueReceiver)receps.nextElement();
 	    if (smallestCapacity == -1) {
@@ -341,14 +337,11 @@ public class BasePNDirector extends ProcessDirector {
 	        smallestCapacity = queue.getCapacity();
 	    }
 	}
-        //System.out.println("I am here");
         try {
             if (smallestCapacityQueue.getCapacity() <= 0) {
                 smallestCapacityQueue.setCapacity(1);
-                //System.out.println("Setting capacity of "+smallestCapacityQueue.getContainer().getFullName()+" to 1");
             } else {
 	        smallestCapacityQueue.setCapacity(smallestCapacityQueue.getCapacity()*2);
-                //System.out.println("Setting capacity of "+smallestCapacityQueue.getContainer().getFullName()+" to "+(smallestCapacityQueue.getCapacity()+1) );
             }
 	    _informOfWriteUnblock(smallestCapacityQueue);
 	    smallestCapacityQueue.setWritePending(false);
@@ -409,7 +402,6 @@ public class BasePNDirector extends ProcessDirector {
                 lis.processStateChanged(event);
             }
         }
-	//System.out.println("Readblocked with count "+_readBlockCount);
 	if (_checkForDeadlock() || _checkForPause()) {
 	    notifyAll();
 	}
@@ -458,7 +450,6 @@ public class BasePNDirector extends ProcessDirector {
                 lis.processStateChanged(event);
             }
         }
-	//System.out.println("WriteBlockedQ "+_writeBlockCount );
 	if (_checkForDeadlock() || _checkForPause()) {
 	    notifyAll();
 	}
