@@ -152,7 +152,7 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
      */
     public void preinitialize() throws IllegalActionException {
         _entryName = ((StringToken)entryName.getToken()).stringValue();
-        long numberofhistory =
+        long numberOfHistoryValue =
             ((LongToken)numberOfHistory.getToken()).longValue();
 
         _space = SpaceFinder.getSpace(
@@ -221,7 +221,7 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
 
             // depends on the where the numberOfHistory is:
             // _lastRead serves as a lock.
-            long lastread = maximum-numberofhistory;
+            long lastread = maximum - numberOfHistoryValue;
             if ( lastread < minimum) {
                 lastread = minimum -1;
             }
