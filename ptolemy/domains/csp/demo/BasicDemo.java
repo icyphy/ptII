@@ -65,15 +65,13 @@ public class BasicDemo {
         try {
             CSPCompositeActor univ = new CSPCompositeActor();
             univ.setName( "Universe");
-            CSPDirector execdir = new CSPDirector();
-            CSPDirector localdir = new CSPDirector();
+            CSPDirector execdir = new CSPDirector("Executive");
+            CSPDirector localdir = new CSPDirector("Local Director");
             univ.setExecutiveDirector(execdir);
             univ.setDirector(localdir);
 
-	    CSPReceiver rec = new CSPReceiver();
-
-            CSPSource source = new CSPSource(univ, "Source", rec);
-            CSPSink sink = new CSPSink(univ, "Sink", rec);
+	    CSPSource source = new CSPSource(univ, "Source");
+            CSPSink sink = new CSPSink(univ, "Sink");
             
             IOPort out = source.output;
             IOPort in = sink.input;
@@ -81,7 +79,7 @@ public class BasicDemo {
             IORelation rel = (IORelation)univ.connect(out, in, "R1");
             //System.out.println(univ.description(1023));
             System.out.println(univ.getFullName() + " starting!");
-            univ.getExecutiveDirector().run();
+            univ.getExecutiveDirector().run(1);
         } catch (Exception e) {
             System.out.println(e.getMessage() + ": " + e.getClass().getName());
             throw new InvalidStateException(e.getMessage());
