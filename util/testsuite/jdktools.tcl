@@ -1,6 +1,6 @@
 # procs useful for Tcl Blend
 #
-# @Author: Christopher Hylands
+# @Author: Christopher Hylands, John Reekie
 #
 # @Version: $Id$
 #
@@ -31,146 +31,72 @@
 #######################################################################
 
 # This file contains procs that may be useful when using Tcl Blend.
-
-namespace eval ::jdk {}
-
-######################################################################
-#### ::jdk::help
-# Print a help message about the::jdk package 
-#
-proc ::jdk::help {} {
-	puts "\
-The::jdk Tcl package contains utility procs that are useful with Tcl Blend \n\
- ::jdk::init { {version 1.0}} \n\
-    Print debugging information, then load Tcl Blend. \n\
- ::jdk::version {} \n\
-    Print::JDK and Tcl interpreter version information. \n\
- ::jdk::properties  \n\
-    Print out the JVM System properties \n\
-"
-}
-
-######################################################################
-####::jdk::init
-# This proc is useful in debugging Tcl Blend package loading problems.  
-# It first prints the CLASSPATH, PATH and auto_path variables.
-# Then the Tcl Blend package is loaded
-# If the load is successful, information about the::JDK and Tcl interpreters
-# is printed.
-#::jdkinit takes one optional argument, which is the version of
-# the java package to load.  The default is 1.0
-#
-proc ::jdk::init { {version 1.0}} {
-    global tcl_version auto_path env
-
-    puts "-->Starting ::jdk::init"
-    set envvars [list CLASSPATH LD_LIBRARY_PATH SHLIB_PATH PATH]
-    foreach envvar $envvars {
-	if [info exist env($envvar)] {
-	    puts [format "%16s: %s" $envvar $env($envvar)]
-	} else { 
-	    puts [format "%16s: %s" $envvar "is not set"]
-	}
+# Print the JDK property list
+proc jdkProperties {} {
+    set props [java::call System getProperties]
+    set names [$props propertyNames]
+    while { [$names hasMoreElements] } {
+	set name [$names nextElement]
+	puts "$name=[$props getProperty $name]"
     }
-
-    puts [format "%16s: %s" "auto_path" $auto_path]
-
-    # tclblend_init only works with::JDK1.2 and Tcl Blend 1.0 up2
-    #set tclblend_init "-verbose:jni,class"
-
-    puts "-->Initializing java"
-    puts [package require java]
-    puts "-->  Initialized Java"
-    ::jdk::version
 }
 
-
-######################################################################
-#### ::jdk::version
-# Print information about the Java and Tcl interpreters.
-#
-proc ::jdk::version {} {
-    global env tcl_version tcl_patchLevel
-    puts "env(CLASSPATH):   $env(CLASSPATH)\n\
-            java.class.path property:\
+# Print JDK version info
+proc jdkVersion {} {
+    global tcl_version tcl_patchLevel env
+    puts "env(CLASSPATH):   $env(CLASSPATH)\
+             \njava.class.path property:\
             [java::call System getProperty "java.class.path"]\n"
-    puts "jdk version: [java::call System getProperty "java.version"] \
-	    Tcl Blend patch level: $::java::patchLevel"
+    puts -nonewline "jdk version: [java::call System getProperty \
+	    "java.version"]"
+    if [info exists ::java::patchLevel] {
+	puts " Tcl Blend patch level: $::java::patchLevel"
+    } else {
+	puts ""
+    }
     puts "tcl version: $tcl_version \
 	    tcl patch level: $tcl_patchLevel"
-
     puts "java package: [package versions java] \
 	    info loaded: [info loaded]"   
 }
 
-
-######################################################################
-####::jdk::properties
-# Print the value of the Java System Properties
-# This proc shows how to use printStreams within TclBlend
-#
-proc ::jdk::properties {} {
-    set props [java::call System getProperties]
+# Capture output to System.out
+proc jdkCapture {script varName} {
+    upvar $varName output
     set stream [java::new java.io.ByteArrayOutputStream]
     set printStream [java::new \
 	    {java.io.PrintStream java.io.OutputStream} $stream]
-    $props {list java.io.PrintStream} $printStream
+    set stdout [java::field System out]
+    java::call System setOut $printStream
+    set result [uplevel $script]
+    java::call System setOut $stdout
     $printStream flush
-    puts [$stream toString]
+    set output [$stream toString]
+    return $result
 }
 
+# Print the most recent Java stack trace
+# Here's an example:
+# Create a String
+#   set s [java::new {String java.lang.String} "123"]
+# Try to get a character beyond the end of the array
+#   catch {$s charAt 4} err
+#   puts "The error was:\n$err"
+#   puts "The stack was:\n[jdkStackTrace]"
+proc jdkStackTrace {} {
+    global errorCode errorInfo
+    if { [string match {JAVA*} $errorCode] } {
+	set exception [lindex $errorCode 1]
+	set stream [java::new java.io.ByteArrayOutputStream]
+	set printWriter [java::new \
+		{java.io.PrintWriter java.io.OutputStream} $stream]
+	$exception {printStackTrace java.io.PrintWriter} $printWriter
+	$printWriter flush
 
-######################################################################
-#### ::jdk::getStackTrace
-# Return the stack trace from the e Exception.
-#
-# Below is an example:
-#<tcl><pre>
-# # Create a String
-# set s [java::new {String java.lang.String} "123"]
-# # Try to get a character beyond the end of the array
-# catch {$s charAt 4} err
-# puts "The error was:\n$err"
-# # Get the reference to the exception
-# set e [lindex $errorCode 1]
-# puts "The stack was:\n[getStackTrace $e]"
-#</pre></tcl>
-#
-proc ::jdk::getStackTrace {exception} {
-    set stream [java::new java.io.ByteArrayOutputStream]
-    set printWriter [java::new \
-	    {java.io.PrintWriter java.io.OutputStream} $stream]
-    $exception {printStackTrace java.io.PrintWriter} $printWriter
-    $printWriter flush
-    return [$stream toString]
-}
-
-
-######################################################################
-#### ::jdk::test
-# Run all the procs in the::jdk namespace
-#
-proc ::jdk::test {} {
-
-    # Test all the simple procs
-    set testprocs "help init properties"
-    foreach testproc $testprocs {
-	puts "### Now running $testproc" 
-	$testproc
+	puts "[$exception getMessage]"
+	puts "    while executing"
+	puts "[$stream toString]"
+	puts "    while executing"
     }
-
-    puts "### Now testing getStackTrace"
-    # Create a String
-    set s [java::new {String java.lang.String} "123"]
-    # Try to get a character beyond the end of the array
-    catch {$s charAt 4} err
-    puts "### The error was:\n$err"
-    # Get the reference to the exception
-    global errorCode
-    set e [lindex $errorCode 1]
-    puts "### The stack was:\n[getStackTrace $e]"
-
+    puts $errorInfo
 }
-
-
-
