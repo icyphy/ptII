@@ -138,7 +138,7 @@ public class Pulse extends SequenceSource {
         }
     }
 
-    /** Notify the director that a type change has occured that may
+    /** Notify the director that a type change has occurred that may
      *  affect the type of the output.
      *  This will cause type resolution to be redone at the next opportunity.
      *  It is assumed that type changes in the parameters are implemented
@@ -243,7 +243,7 @@ public class Pulse extends SequenceSource {
         _indexColCount = 0;
     }
 
-    /** Update the interation counters.
+    /** Update the iteration counters.
      */
     public boolean postfire() {
         ++_iterationCount;
