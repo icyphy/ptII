@@ -132,14 +132,24 @@ public class CalInterpreter extends TypedAtomicActor {
             throws IllegalActionException {
         if (attribute == calCode) {
             String s = calCode.getExpression();
-            try {
-                Actor actor = _stringToActor(s);
+            Actor actor;
+            try { 
+                actor = _stringToActor(s);
+            } catch (Throwable ex) {
+                // FIXME: It would be nice if _stringToActor threw
+                // something other than Throwable here.
+                throw new IllegalActionException(this, ex,
+                        "Failed to read in actor in:\n  " + s + "\n"
+                        + "This sometimes occurs if saxon7.jar is not in "
+                        + "your classpath.");
+            }
+            try {       
                 if (actor != null) {
                     _setupActor(actor);
                 }
             } catch (Throwable ex) {
                 throw  new IllegalActionException(this, ex,
-                        "Failed to set up actor.");
+                        "Failed to set up actor'" + s + "'");
             }
 
         } else {
