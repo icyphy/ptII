@@ -250,8 +250,8 @@ public class CompositeEntity extends ComponentEntity {
         } catch (NameDuplicationException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(
-                "Internal error in ComponentRelation connect() method!"
-                + ex.getMessage());
+                    "Internal error in ComponentRelation connect() method!"
+                    + ex.getMessage());
         }
     }
 
@@ -494,9 +494,9 @@ public class CompositeEntity extends ComponentEntity {
                 } catch (KernelException ex) {
                     // This exception should not be thrown.
                     throw new InternalErrorException(
-                        "Internal error in ComponentRelation "
-                        + "removeAllEntities() method!"
-                        + ex.getMessage());
+                            "Internal error in ComponentRelation "
+                            + "removeAllEntities() method!"
+                            + ex.getMessage());
                 }
             }
         } finally {
@@ -526,9 +526,9 @@ public class CompositeEntity extends ComponentEntity {
                 } catch (KernelException ex) {
                     // This exception should not be thrown.
                     throw new InternalErrorException(
-                        "Internal error in ComponentRelation "
-                        + "removeAllRelations() method!"
-                        + ex.getMessage());
+                            "Internal error in ComponentRelation "
+                            + "removeAllRelations() method!"
+                            + ex.getMessage());
                 }
             }
         } finally {
@@ -614,7 +614,7 @@ public class CompositeEntity extends ComponentEntity {
                     ComponentEntity entity =
                         (ComponentEntity)enume.nextElement();
                     result +=
-                            entity._description(detail, indent+1, 2) + "\n";
+                        entity._description(detail, indent+1, 2) + "\n";
                 }
                 result += _getIndentPrefix(indent) + "} relations {\n";
                 Enumeration enum = getRelations();

@@ -278,8 +278,8 @@ public class Entity extends NamedObj {
                 } catch (KernelException ex) {
                     // Should not be thrown.
                     throw new InternalErrorException(
-                        "Internal error in Port constructor!"
-                        + ex.getMessage());
+                            "Internal error in Port constructor!"
+                            + ex.getMessage());
                 }
             }
         } finally {

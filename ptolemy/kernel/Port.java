@@ -74,8 +74,8 @@ public class Port extends NamedObj {
         } catch (IllegalActionException ex) {
             // Should not be thrown because "this" cannot be null.
             throw new InternalErrorException(
-                "Internal error in Port constructor!"
-                + ex.getMessage());
+                    "Internal error in Port constructor!"
+                    + ex.getMessage());
         }
     }
 
@@ -94,8 +94,8 @@ public class Port extends NamedObj {
         } catch (IllegalActionException ex) {
             // Should not be thrown because "this" cannot be null.
             throw new InternalErrorException(
-                "Internal error in Port constructor!"
-                + ex.getMessage());
+                    "Internal error in Port constructor!"
+                    + ex.getMessage());
         }
     }
 
@@ -123,8 +123,8 @@ public class Port extends NamedObj {
         } catch (IllegalActionException ex) {
             // Should not be thrown because "this" cannot be null.
             throw new InternalErrorException(
-                "Internal error in Port constructor!"
-                + ex.getMessage());
+                    "Internal error in Port constructor!"
+                    + ex.getMessage());
         }
     }
 
@@ -147,8 +147,8 @@ public class Port extends NamedObj {
         } catch (IllegalActionException ex) {
             // This exception should not occur because newobj is not null.
             throw new InternalErrorException(
-                "Internal error in Port clone() method!"
-                + ex.getMessage());
+                    "Internal error in Port clone() method!"
+                    + ex.getMessage());
         }
         newobj._container = null;
         return newobj;

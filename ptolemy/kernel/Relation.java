@@ -67,8 +67,8 @@ public class Relation extends NamedObj {
         } catch (IllegalActionException ex) {
             // Should not be thrown because "this" cannot be null.
             throw new InternalErrorException(
-                "Internal error in Relation constructor!"
-                + ex.getMessage());
+                    "Internal error in Relation constructor!"
+                    + ex.getMessage());
         }
     }
 
@@ -85,8 +85,8 @@ public class Relation extends NamedObj {
         } catch (IllegalActionException ex) {
             // Should not be thrown because "this" cannot be null.
             throw new InternalErrorException(
-                "Internal error in Relation constructor!"
-                + ex.getMessage());
+                    "Internal error in Relation constructor!"
+                    + ex.getMessage());
         }
     }
 
@@ -105,7 +105,7 @@ public class Relation extends NamedObj {
         } catch (IllegalActionException ex) {
             // Should not be thrown because "this" cannot be null.
             throw new InternalErrorException(
-                "Internal error in Relation constructor!");
+                    "Internal error in Relation constructor!");
         }
     }
 
@@ -128,8 +128,8 @@ public class Relation extends NamedObj {
         } catch (IllegalActionException ex) {
             // This should not be thrown because newobj is not null.
             throw new InternalErrorException(
-                "Internal error in Port clone() method!"
-                + ex.getMessage());
+                    "Internal error in Port clone() method!"
+                    + ex.getMessage());
         }
         return newobj;
     }
