@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (celaine@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -60,7 +60,7 @@ zero (of the same type as the entries in the input array).
 With the default values of the parameters, only the first element
 of the input array is copied to the output array, which has length one.
 
-@author Edward A. Lee
+@author Edward A. Lee, Elaine Cheong
 @version $Id$
 */
 
@@ -78,7 +78,7 @@ public class ArrayExtract extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	// set type constraints.
+	// Set type constraints.
 	input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         output.setTypeAtLeast(input);
 
@@ -136,19 +136,20 @@ public class ArrayExtract extends Transformer {
 	    throws CloneNotSupportedException {
         ArrayExtract newObject = (ArrayExtract)(super.clone(workspace));
 
-        // set the type constraints
+        // Set the type constraints.
         newObject.output.setTypeAtLeast(newObject.input);
 
         return newObject;
     }
 
-    /** Consume at most one array from the input port and produce
-     *  one of its elements on the output port.  If there is no token
-     *  on the input, then no output is produced.
+    /** Consume one array from the input port and send a subarray to
+     *  the output port, padding the subarray with zeros if necessary.
      *  @exception IllegalActionException If any parameter value
      *   is out of range.
      */
     public void fire() throws IllegalActionException {
+        // NOTE: We could use attributeChange, but we rely on java to
+        // miss accessing the array.
         if(input.hasToken(0)) {
             Token[] inputArray = ((ArrayToken)input.get(0)).arrayValue();
             int sourcePositionValue = ((IntToken)sourcePosition
@@ -159,8 +160,9 @@ public class ArrayExtract extends Transformer {
                     .getToken()).intValue();
             int outputArrayLengthValue = ((IntToken)outputArrayLength
                     .getToken()).intValue();
-            Token[] outputArray = new Token[outputArrayLengthValue];
             try {
+                Token[] outputArray = new Token[outputArrayLengthValue];
+
                 Token zero = inputArray[0].zero();
                 for(int i = 0; i < destinationPositionValue; i++) {
                     outputArray[i] = zero;
@@ -172,10 +174,11 @@ public class ArrayExtract extends Transformer {
                     i < outputArrayLengthValue; i++) {
                     outputArray[i] = zero;
                 }
-                output.broadcast(new ArrayToken(outputArray));
+                output.send(0, new ArrayToken(outputArray));
             } catch (IndexOutOfBoundsException ex) {
                 throw new IllegalActionException(this,
-                        "Parameter values out of range for the array supplied.");
+                        "Parameter values out of range for the array supplied."
+                        + "inputArray has length" + inputArray.length);
             }
         }
     }

@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (celaine@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// ArrayLength
 /**
-Output the length of an array.  This actor reads an array from the
+Output the length of an array.  This actor reads an ArrayToken from the
 <i>input</i> port and sends its length to the <i>output</i> port.
 
 @author Edward A. Lee

@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (celaine@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -75,7 +75,7 @@ public class ArrayAppend extends Transformer {
         // The input is a multiport.
         input.setMultiport(true);
 
-	// set type constraints.
+	// Set type constraints.
 	input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         output.setTypeAtLeast(input);
     }
@@ -94,7 +94,7 @@ public class ArrayAppend extends Transformer {
 	    throws CloneNotSupportedException {
         ArrayAppend newObject = (ArrayAppend)(super.clone(workspace));
 
-        // set the type constraints
+        // Set the type constraints.
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
@@ -106,6 +106,8 @@ public class ArrayAppend extends Transformer {
      *  @exception IllegalActionException If a runtime type conflict occurs.
      */
     public void fire() throws IllegalActionException {
+        // NOTE: This is efficient for 2 or 3 input channels, but for
+        // many channels it ends up copying each array twice.
         Token array[] = null;
 	for(int i = 0; i < input.getWidth(); i++) {
             if(input.hasToken(i)) {

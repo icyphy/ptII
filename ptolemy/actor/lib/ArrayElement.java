@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (celaine@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -56,7 +56,7 @@ port.  The element that is extracted is determined by the
 <i>N</i>, where <i>N</i> is the length of the input array, or
 an exception will be thrown by the fire() method.
 
-@author Edward A. Lee
+@author Edward A. Lee, Elaine Cheong
 @version $Id$
 */
 
@@ -74,7 +74,7 @@ public class ArrayElement extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	// set type constraints.
+	// Set type constraints.
 	input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 	ArrayType inputType = (ArrayType)input.getType();
 	InequalityTerm elementTerm = inputType.getElementTypeTerm();
@@ -89,8 +89,8 @@ public class ArrayElement extends Transformer {
     ////                         parameters                        ////
 
     /** The index into the input array.  This is an integer that
-     *  defaults to 0, and is required to be less than the length
-     *  of the input array.
+     *  defaults to 0, and is required to be less than or equal to the
+     *  length of the input array.
      */
     public Parameter index;
 
@@ -108,7 +108,7 @@ public class ArrayElement extends Transformer {
 	    throws CloneNotSupportedException {
         ArrayElement newObject = (ArrayElement)(super.clone(workspace));
 
-        // set the type constraints
+        // Set the type constraints.
         ArrayType inputType = (ArrayType)newObject.input.getType();
         InequalityTerm elementTerm = inputType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elementTerm);
@@ -131,7 +131,7 @@ public class ArrayElement extends Transformer {
                         "index " + indexValue + " is out of range for the input "
                         + "array, which has length " + token.length());
             }
-            output.broadcast(token.getElement(indexValue));
+            output.send(0, token.getElement(indexValue));
         }
     }
 }
