@@ -253,7 +253,7 @@ $(PTII_SRC): $(PTII_FULL)
 		cd ptolemy; find . -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
 		find doc -name "*.jar" -ls -exec rm {} \; ;\
-		rm -rf doc/codeDoc; \
+		rm -rf doc/codeDoc*; \
 		cd ..; \
 		echo "#  Starting tar of $@"; \
 		$(TAR) -zcf $(PTII_SRC) ptII$(VERSION));
