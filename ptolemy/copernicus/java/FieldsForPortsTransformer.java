@@ -211,11 +211,9 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                 SootUtilities.sanitizeName(port.getName(container));
             SootField field;
             if(!theClass.declaresFieldByName(fieldName)) {
-                // FIXME: should be exception
-                System.out.println("Class " + theClass 
+                throw new RuntimeException("Class " + theClass 
                         + " does not declare field for port "
                         + port.getFullName());
-                continue;
             } else {
                 // retrieve the existing field.
                 field = theClass.getFieldByName(fieldName);  

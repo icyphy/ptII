@@ -206,10 +206,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
     // to exist in the given class
     private void _getAttributeFields(SootClass theClass, NamedObj container,
             NamedObj object, Map attributeToFieldMap) {
-        SootClass attributeClass = 
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
-        Type attributeType = RefType.v(attributeClass);
-
+       
         for(Iterator attributes =
                 object.attributeList().iterator();
             attributes.hasNext();) {
@@ -219,11 +216,9 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 SootUtilities.sanitizeName(attribute.getName(container));
             SootField field;
             if(!theClass.declaresFieldByName(fieldName)) {
-                // FIXME: should be exception
-                System.out.println("Class " + theClass 
+                throw new RuntimeException("Class " + theClass 
                         + " does not declare field for attribute "
                         + attribute.getFullName());
-                continue;
             } else {
                 // retrieve the existing field.
                 field = theClass.getFieldByName(fieldName);   

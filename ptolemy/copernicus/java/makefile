@@ -93,6 +93,7 @@ deepDemo: compileDeepDemo runDeepDemo
 SOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
 MODEL = OrthogonalCom 
 SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
+# SOURCECLASS = $(ROOT)/ptolemy/actor/lib/test/auto/IIR.xml
 
 DEEPTARGETPACKAGE = ptolemy.copernicus.java.cg.deep
 SHALLOWTARGETPACKAGE = ptolemy.copernicus.java.cg.shallow

@@ -118,12 +118,6 @@ import ptolemy.data.LongToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 
-/*
-import soot.jimple.toolkits.invoke.StaticInliner;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
-import soot.jimple.toolkits.scalar.CopyPropagator;
-import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
-*/
 //////////////////////////////////////////////////////////////////////////
 //// SootUtilities
 /**
@@ -333,7 +327,7 @@ public class SootUtilities {
         newClass.getInterfaces().addAll(oldClass.getInterfaces());
 
         // Copy the fields.
-        _copyAndReplaceFields(newClass, oldClass);
+        _copyFields(newClass, oldClass);
 
         // Copy the methods.
         Iterator methods = oldClass.getMethods().iterator();
@@ -374,7 +368,7 @@ public class SootUtilities {
                 oldField.setType(RefType.v(newClass));
                 // we have to do this seemingly useless 
                 // thing, since the scene caches a pointer
-                // to the method based on it's parameter types.
+                // to the field based on it's parameter types.
                 theClass.removeField(oldField);
                 theClass.addField(oldField);
             }
@@ -921,7 +915,7 @@ public class SootUtilities {
      * methods and fields of the super class will be added to the
      * given class, if they do not already exist.  Methods existing in
      * both the given class and the super class will be merged by
-     * inlining the super class method.
+     * inlining the super class method.  
      */
     public static void foldClass(SootClass theClass) {
         SootClass superClass = theClass.getSuperclass();
@@ -932,7 +926,7 @@ public class SootUtilities {
         theClass.getInterfaces().addAll(superClass.getInterfaces());
 
         // Copy the field declarations.
-        _copyAndReplaceFields(theClass, superClass);
+        List collidedFieldList = _copyFields(theClass, superClass);
 
         // Now create new methods in the given class for methods that
         // exist in the super class, but not in the given class.
@@ -1030,6 +1024,21 @@ public class SootUtilities {
         // And now replace any remaining references to the super class.
         changeTypesInMethods(theClass, superClass, theClass);
 
+        // Change the names of fields that were created
+        // that collided with existing fields.
+        for(Iterator fields = collidedFieldList.iterator();
+            fields.hasNext();) {
+            SootField field = (SootField)fields.next();
+            System.out.println("WARNING: fixing naming collision for " + field);
+            field.setName(sanitizeName(superClass.getName()) +
+                          field.getName());
+            // we have to do this seemingly useless 
+            // thing, since the scene caches a pointer
+            // to the field based on it's name.
+            theClass.removeField(field);
+            theClass.addField(field);
+        }
+        
         theClass.setSuperclass(superClass.getSuperclass());
     }
 
@@ -1526,20 +1535,30 @@ public class SootUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Merge the given class with its super class.  All of the
     /** Copy all the fields into the given class from the given old class.
-     *  Replace fields of type oldClass with fields of type newClass.
+     *  @return A list of fields in the new class that were created whose
+     *  names collide with fields already there.
      */
-    private static void _copyAndReplaceFields(SootClass newClass,
+    private static List _copyFields(SootClass newClass,
             SootClass oldClass) {
+        List list = new LinkedList();
         Iterator fields = oldClass.getFields().iterator();
         while(fields.hasNext()) {
             SootField oldField = (SootField)fields.next();
+            if(newClass.declaresFieldByName(oldField.getName())) {
+                // FIXME
+                throw new RuntimeException("Field " + oldField 
+                        + " cannot be folded into " + newClass 
+                        + " because its name is the same as "
+                        + newClass.getFieldByName(oldField.getName()));
+            }
+           
             SootField newField = new SootField(oldField.getName(),
                     oldField.getType(),
                     oldField.getModifiers());
             newClass.addField(newField);
         }
+        return list;
     }
 
     private static SootClass _getInnerClassCopy(

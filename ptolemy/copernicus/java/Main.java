@@ -196,6 +196,7 @@ public class Main extends KernelMain {
         // Removes references to instancefields that come from 'this'.
         Scene.v().getPack("jop").add(new Transform("jop.dae",
                 ImprovedDeadAssignmentEliminator.v()));
+        
     }
 
     /** Read in a MoML model, generate java files

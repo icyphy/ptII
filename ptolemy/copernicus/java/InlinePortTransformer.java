@@ -75,6 +75,11 @@ public class InlinePortTransformer extends SceneTransformer {
             return;
         }
       
+        // Some maps we use for storing the assocation between a port and
+        // the fields that we are replacing it with.
+        Map portToBufferField = new HashMap();
+        Map portToIndexArrayField = new HashMap();
+
         Type portType = RefType.v(PtolemyUtilities.portClass);
         
         // FIXME toplevel ports?
@@ -106,6 +111,10 @@ public class InlinePortTransformer extends SceneTransformer {
                     SootField bufferField = new SootField("_portbuffer_" + port.getName(),
                             ArrayType.v(tokenType, 2), Modifier.PUBLIC);
                     entityClass.addField(bufferField);
+
+                    // Store references to the new fields.
+                    portToIndexArrayField.put(port, indexArrayField);
+                    portToBufferField.put(port, bufferField);
 
                     // Tag the field we created with the type of its data.
                     bufferField.addTag(new TypeTag(type));
@@ -332,12 +341,11 @@ public class InlinePortTransformer extends SceneTransformer {
                                         // In either case, replace the get with circular array ref.
                                         Value channelValue = r.getArg(0);
                                        
-                                        Value bufferSizeValue = _getBufferAndSize(entityClass, body, 
-                                                unit, port, channelValue, bufferLocal);
+                                        Value bufferSizeValue = _getBufferAndSize(body, 
+                                                unit, port, channelValue, bufferLocal, portToBufferField);
                                     
-                                        _getCorrectIndex(entityClass, body, 
-                                                unit, port, indexLocal, indexArrayLocal, 
-                                                channelValue, bufferSizeValue);
+                                        _getCorrectIndex(body, unit, port, indexLocal, indexArrayLocal, 
+                                                channelValue, bufferSizeValue, portToIndexArrayField);
                                        
                                         // If we are calling with just a channel, then read the value.
                                         if(r.getArgCount() == 1) {
@@ -477,12 +485,11 @@ public class InlinePortTransformer extends SceneTransformer {
                                         // In either case, replace the send with circular array ref.
                                         Value channelValue = r.getArg(0);
 
-                                        Value bufferSizeValue = _getBufferAndSize(entityClass, body, 
-                                                unit, port, channelValue, bufferLocal);
+                                        Value bufferSizeValue = _getBufferAndSize(body, 
+                                                unit, port, channelValue, bufferLocal, portToBufferField);
                                         
-                                        _getCorrectIndex(entityClass, body, 
-                                                unit, port, indexLocal, indexArrayLocal, 
-                                                channelValue, bufferSizeValue);
+                                        _getCorrectIndex(body, unit, port, indexLocal, indexArrayLocal, 
+                                                channelValue, bufferSizeValue, portToIndexArrayField);
                                         
                                         // If we are calling with just a channel, then read the value.
                                         if(r.getArgCount() == 2) {
@@ -613,8 +620,8 @@ public class InlinePortTransformer extends SceneTransformer {
                                         // or broadcaste that takes an array of tokens.          
                                         // In either case, replace the broadcast with circular array ref.
                                         
-                                        SootField indexArrayField = 
-                                            entityClass.getFieldByName("_index_" + port.getName());
+                                        SootField indexArrayField = (SootField)portToIndexArrayField.get(port);
+                                        // entityClass.getFieldByName("_index_" + port.getName());
                                                       
                                         // Load the array of indexes.
                                         body.getUnits().insertBefore(
@@ -909,8 +916,9 @@ public class InlinePortTransformer extends SceneTransformer {
      *  port.  The given local variable will refer to the buffer.  A value
      *  containing the size of the given buffer will be returned.
      */
-    private Value _getBufferAndSize(SootClass entityClass, JimpleBody body, 
-            Unit unit, Port port, Value channelValue, Local bufferLocal) {
+    private Value _getBufferAndSize(JimpleBody body, 
+            Unit unit, Port port, Value channelValue, Local bufferLocal,
+            Map portToBufferField) {
         
         Value bufferSizeValue = null;
         // Now get the appropriate buffer
@@ -959,8 +967,8 @@ public class InlinePortTransformer extends SceneTransformer {
             }
         } else {
             // If we don't know the channel, then use the port indexes.
-            SootField arrayField = 
-                entityClass.getFieldByName("_portbuffer_" + port.getName());
+            SootField arrayField = (SootField)portToBufferField.get(port);
+                // entityClass.getFieldByName("_portbuffer_" + port.getName());
             Local bufferArrayLocal = 
                 Jimple.v().newLocal("bufferArray", 
                         ArrayType.v(PtolemyUtilities.tokenType, 2));
@@ -998,8 +1006,9 @@ public class InlinePortTransformer extends SceneTransformer {
     /** Retrieve the correct index into the given channel of the given port into the 
      *  given local variable.  
      */
-    private static void _getCorrectIndex(SootClass entityClass, JimpleBody body, Unit unit, 
-            TypedIOPort port, Local indexLocal, Local indexArrayLocal, Value channelValue, Value bufferSizeValue) {
+    private static void _getCorrectIndex(JimpleBody body, Unit unit, 
+            TypedIOPort port, Local indexLocal, Local indexArrayLocal, 
+            Value channelValue, Value bufferSizeValue, Map portToIndexArrayField) {
    
         if(bufferSizeValue.equals(IntConstant.v(1))) {
             // Load the correct index into indexLocal
@@ -1008,8 +1017,8 @@ public class InlinePortTransformer extends SceneTransformer {
                             IntConstant.v(0)),
                     unit); 
         } else {             
-            SootField indexArrayField = 
-                entityClass.getFieldByName("_index_" + port.getName());
+            SootField indexArrayField = (SootField)portToIndexArrayField.get(port);
+            //                entityClass.getFieldByName("_index_" + port.getName());
             
             // Load the array of indexes.
             body.getUnits().insertBefore(
