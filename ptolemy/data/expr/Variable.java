@@ -657,7 +657,7 @@ public class Variable extends Attribute implements Typeable, Settable {
 	    	_varType = _declaredType;
 	    } else {
 		// _varType = _declaredType
-		((StructuredType)_varType).reset();
+		((StructuredType)_varType).initialize(BaseType.ANY);
 	    }
         } else {
             _needsEvaluation = true;
@@ -1187,7 +1187,7 @@ public class Variable extends Attribute implements Typeable, Settable {
 	    	_varType = _declaredType;
 	    } else {
 		// _varType = _declaredType
-		((StructuredType)_varType).reset();
+		((StructuredType)_varType).initialize(BaseType.ANY);
 	    }
         } else {
 	    if (_declaredType.isCompatible(newToken)) {
@@ -1442,10 +1442,10 @@ public class Variable extends Attribute implements Typeable, Settable {
 	    }
 
 	    if (_declaredType == BaseType.NAT) {
-		_varType = BaseType.NAT;
+		_varType = (Type)e;
 	    } else {
 		// _declaredType is a StructuredType
-		((StructuredType)_varType).reset();
+		((StructuredType)_varType).initialize((Type)e);
 	    }
 	}
 

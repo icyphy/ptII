@@ -81,12 +81,11 @@ public abstract class StructuredType implements Type, Cloneable {
      */
     public abstract void setUser(Object user) throws IllegalActionException;
 
-    /** Reset this type to the value it was first constructed.
+    /** Set the elements that have declared type BaseType.ANY to the
+     *  specified type.
      *  This method is called at the beginning of type resolution.
      */
-    //  @exception IllegalActionException If this type is a constant.
-    public abstract void reset();
-    // throws IllegalActionException;
+    public abstract void initialize(Type t);
 
     /** Update this StructuredType to the specified Structured Type.
      *  The specified StructuredType must not be a constant, otherwise an

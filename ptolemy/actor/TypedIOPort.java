@@ -658,10 +658,10 @@ public class TypedIOPort extends IOPort implements Typeable {
 
 	    Type oldType = _resolvedType;
 	    if (_declaredType == BaseType.NAT) {
-	        _resolvedType = BaseType.NAT;
+	        _resolvedType = (Type)e;
 	    } else {
 		// _declaredType is a StructuredType
-		((StructuredType)_resolvedType).reset();
+		((StructuredType)_resolvedType).initialize((Type)e);
 	    }
 
 	    if (!oldType.isEqualTo(_resolvedType)) {

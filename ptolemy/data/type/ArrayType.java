@@ -302,24 +302,33 @@ public class ArrayType extends StructuredType {
 	return "(" + _elementType.toString() + ")array";
     }
 
-    /** Reset the element type to the value it was first constructed.
+    /** Set the elements that have declared type BaseType.ANY to the
+     *  specified type.
      *  This method is called at the beginning of type resolution.
      */
-    //  @exception IllegalActionException If this type is a constant.
-    public void reset() {
-        // throws IllegalActionException {
+    public void initialize(Type t) {
+        try {
+	    if (!isConstant()) {
+                getElementTypeTerm().initialize(t);
+            }
+	} catch (IllegalActionException iae) {
+	    throw new InternalErrorException("ArrayType.initialize: Cannot " +
+	        "initialize the element type to " + t + " " +
+		iae.getMessage());
+	}
+
+/*
 	if (isConstant()) {
-	    // throw new IllegalActionException("ArrayType.reset: " +
-	    //	"Cannot reset a constant type.");
 	    return;
 	}
 
 	if (_declaredElementType == BaseType.NAT) {
-	    _elementType = BaseType.NAT;
+	    _elementType = t;
 	} else {
 	    // element type is a structured type.
-	    ((StructuredType)_elementType).reset();
+	    ((StructuredType)_elementType).initialize(t);
 	}
+*/
     }
 
     /** Update this Type to the specified ArrayType.
@@ -547,12 +556,12 @@ public class ArrayType extends StructuredType {
         /** Reset the variable part of the element type to the specified
 	 *  type.
 	 *  @parameter e A Type.
-         *  @exception IllegalActionException If this type is not settable,
+         *  @exception IllegalActionException If this type is a constant,
 	 *   or the argument is not a Type.
          */
         public void initialize(Object e)
                 throws IllegalActionException {
-	    if ( !isSettable()) {
+	    if (isConstant()) {
 		throw new IllegalActionException("ArrayType$ElementTypeTerm." +
                         "initialize: The type is not settable.");
 	    }
@@ -562,7 +571,14 @@ public class ArrayType extends StructuredType {
                         + "The argument is not a Type.");
 	    }
 
-	    reset();
+//	    reset();
+
+	    if (_declaredElementType == BaseType.NAT) {
+	        _elementType = (Type)e;
+	    } else {
+	        // element type is a structured type.
+                ((StructuredType)_elementType).initialize((Type)e);
+	    }
 	}
 
         /** Test if the element type is a type variable.
