@@ -285,9 +285,12 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             Parameter param = (Parameter)attr;
             _timeResolution = ((DoubleToken)param.getToken()).doubleValue();
             TotallyOrderedSet bptable = getBreakPoints();
-            FuzzyDoubleComparator comp =
-                (FuzzyDoubleComparator) bptable.getComparator();
-            comp.setThreshold(_timeResolution);
+            // change the breakpoint table comparator if it is created.
+            if(bptable!=null) {
+                FuzzyDoubleComparator comp =
+                    (FuzzyDoubleComparator) bptable.getComparator();
+                comp.setThreshold(_timeResolution);
+            }
         } else if(attr == maxIterations) {
             Parameter param = (Parameter)attr;
             _maxIterations = ((IntToken)param.getToken()).intValue();
@@ -527,6 +530,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  @return A new CTReceiver.
      */
     public Receiver newReceiver() {
+        System.out.println(getName() + " return new CTReceiver.");
         return new CTReceiver();
     }
 
@@ -546,6 +550,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public void preinitialize() throws IllegalActionException {
         if(_debugging) _debug(getFullName(), "preinitializing.");
+        System.out.println(getName() + "preinitializing.");
         //from here
         CompositeActor ca = (CompositeActor) getContainer();
         if (ca == null) {
@@ -587,6 +592,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         while (allactors.hasNext()) {
             Actor actor = (Actor)allactors.next();
             if(_debugging) _debug("Invoking preinitialize(): ",
+                    ((NamedObj)actor).getFullName());
+            System.out.println("Invoking preinitialize(): " + 
                     ((NamedObj)actor).getFullName());
             actor.preinitialize();
         }

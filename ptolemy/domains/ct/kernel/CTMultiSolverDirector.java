@@ -144,13 +144,13 @@ public class CTMultiSolverDirector extends CTDirector {
         if(param == ODESolver) {
             if(_debugging) _debug(getFullName() + " updating  ODE solver...");
             _solverclassname =
-                ((StringToken)((Parameter)param).getToken()).toString();
+                ((StringToken)((Parameter)param).getToken()).stringValue();
             _defaultSolver = _instantiateODESolver(_solverclassname);
             _setCurrentODESolver(_defaultSolver);
         } else if (param == breakpointODESolver) {
             if(_debugging) _debug(getName() +" updating breakpoint solver...");
             _bpsolverclassname =
-                ((StringToken)param.getToken()).toString();
+                ((StringToken)param.getToken()).stringValue();
             _breakpointsolver =
                 _instantiateODESolver(_bpsolverclassname);
         } else {

@@ -57,6 +57,7 @@ public class CTReceiver extends Mailbox {
      */
     public CTReceiver(IOPort container) {
         super(container);
+        System.out.println(container.getFullName() + " CT receiver created"); 
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -81,7 +82,7 @@ public class CTReceiver extends Mailbox {
             get();
         }
         super.put(token);
-        //System.out.println(getContainer().getFullName() + 
-        //        " received " + token);
+        System.out.println(getContainer().getFullName() + 
+                " received " + token);
     }
 }
