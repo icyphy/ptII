@@ -1237,7 +1237,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
           return new DoubleLitNode("-777777.77");
 
           case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
-          return new LongLitNode("-777777777777L");
+          return new LongLitNode("-7777777777L");
 
           case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:
           case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:

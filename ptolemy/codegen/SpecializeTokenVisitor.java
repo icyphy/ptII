@@ -585,7 +585,6 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         private boolean _fixed = false;
     }
 
-
     static {
         // construct the type lattice
         _cpo = new DirectedAcyclicGraph(18);
