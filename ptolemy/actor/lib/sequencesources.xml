@@ -7,6 +7,10 @@
       <group>
 <doc>Sources of sequences of values. </doc>
 
+<entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
+<doc>Produce strings from an interactive shell on the screen</doc>
+</entity>
+
 <entity name="Interpolator" class="ptolemy.actor.lib.Interpolator">
 </entity>
 
