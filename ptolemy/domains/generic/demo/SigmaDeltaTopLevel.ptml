@@ -42,9 +42,9 @@
 <link name="CTSigmaDelta0.In0"></link>
 <link name="TestLevel0.output"></link>
 <layout coords="249 175.0" name="junction0" type="junction"></layout>
-<layout to="FIRfilter1 input" from="junction0 n" coords="" name="edge4" type="edge"></layout>
+<layout to="FIRfilter1 input" from="junction0 s" coords="" name="edge4" type="edge"></layout>
 <layout to="CTSigmaDelta0 In0" from="junction0 w" coords="" name="edge3" type="edge"></layout>
-<layout to="junction0 w" from="TestLevel0 output" coords="" name="edge2" type="edge"></layout>
+<layout to="junction0 e" from="TestLevel0 output" coords="" name="edge2" type="edge"></layout>
 </relation>
 <relation name="Relation3" width="1">
 <link name="Stats0.input"></link>
@@ -63,7 +63,7 @@
 <layout coords="482.0 344" name="junction1" type="junction"></layout>
 <layout to="Stats0 reset" from="junction1 e" coords="" name="edge8" type="edge"></layout>
 <layout to="Stats0 demand" from="junction1 n" coords="" name="edge7" type="edge"></layout>
-<layout to="junction1 terminal" from="Clock0 output" coords="" name="edge6" type="edge"></layout>
+<layout to="junction1 s" from="Clock0 output" coords="" name="edge6" type="edge"></layout>
 </relation>
 <relation name="Relation5" width="1">
 <link name="Plot0.input"></link>
