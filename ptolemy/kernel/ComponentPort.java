@@ -515,7 +515,7 @@ public class ComponentPort extends Port {
      *  defined in the NamedObj class.  Lines are indented according to
      *  to the level argument using the protected method _getIndentPrefix().
      *  Zero, one or two brackets can be specified to surround the returned
-     *  description.  If one is speicified it is the the leading bracket.
+     *  description.  If one is specified it is the the leading bracket.
      *  This is used by derived classes that will append to the description.
      *  Those derived classes are responsible for the closing bracket.
      *  An argument other than 0, 1, or 2 is taken to be equivalent to 0.
