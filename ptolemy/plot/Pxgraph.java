@@ -449,7 +449,6 @@ public class Pxgraph extends Frame {
       * type <code>pxgraph -help</code> for the complete set of arguments.
       */
     public static void main(String args[]) {
-        int argsread = 0, i;
 	Pxgraph pxgraph = new Pxgraph();
 	pxgraph.pxgraph(args);
 
@@ -471,6 +470,7 @@ public class Pxgraph extends Frame {
 	_makeButtons();
 
 	pack();
+	add(_plotApplet);
 	try {
 	    // First we parse the args for things like -help or -version
 	    // then we have the Plot applet parse them
