@@ -36,6 +36,7 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -50,6 +51,17 @@ class from the Ptolemy plot package as a public member. Data at
 the input, which can consist of any number of channels, are plotted
 on this instance.  Each input channel is plotted as a separate data set.
 Each input token is an array of doubles.
+<p>
+The <i>iterationsPerUpdate</i> parameter can be used to fine tune
+the display.  It can be quite expensive to generate the display, and
+by default, this actor generates it on every firing.  If
+<i>iterationsPerUpdate</i> is set to some integer greater than
+one, then it specifies how many iterations should be executed
+between updates. Thus, if <i>iterationsPerUpdate</i>, then every
+second time this actor fires, it will update the display. That is,
+it will update its display on the first firing, the third, the
+fifth, etc. It will, however, consume its inputs on every firing.
+The plot is always updated in the wrapup() method.
 
 @author  Edward A. Lee
 @version $Id$
@@ -73,6 +85,9 @@ public class BarGraph extends Plotter implements SequenceActor {
         input.setMultiport(true);
         input.setTypeEquals(BaseType.DOUBLE);
         input.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+
+        iterationsPerUpdate = new Parameter(this, "iterationsPerUpdate");
+        iterationsPerUpdate.setExpression("1");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -81,8 +96,26 @@ public class BarGraph extends Plotter implements SequenceActor {
     /** Input port, which has type DoubleToken. */
     public TypedIOPort input;
 
+    /** The number of iterations between updates of the display
+     *  on the screen.
+     *  This parameter has type IntToken, with default value 1.
+     *  Its value must be non-negative.
+     */
+    public Parameter iterationsPerUpdate;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the plot has not already been created, create it.
+     *  If configurations specified by a call to configure() have not yet
+     *  been processed, process them.  This overrides the base class to
+     *  also start counting iterations, so that the
+     *  <i>iterationsPerUpdate</i> parameter works.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        _iteration = 0;
+    }
 
     /** Specify the container into which this plot should be placed.
      *  This method needs to be called before the first call to initialize().
@@ -110,18 +143,60 @@ public class BarGraph extends Plotter implements SequenceActor {
      */
     public boolean postfire() throws IllegalActionException {
         int width = input.getWidth();
-        int offset = ((IntToken)startingDataset.getToken()).intValue();
+        _offset = ((IntToken)startingDataset.getToken()).intValue();
+        if (_tokens == null || _tokens.length != width) {
+           _tokens = new ArrayToken[width];
+       }
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
-                plot.clear(i + offset);
-                Token[] currentArray = ((ArrayToken)input.get(i)).arrayValue();
-                for (int j = 0; j < currentArray.length; j++) {
-                    double currentValue =
-                            ((DoubleToken)currentArray[j]).doubleValue();
-                    plot.addPoint(i + offset, j, currentValue, true);
+                _tokens[i] = (ArrayToken)input.get(i);
+                if (_iteration == 0) {
+                    Token[] currentArray = _tokens[i].arrayValue();
+                    plot.clear(i + _offset);
+                    for (int j = 0; j < currentArray.length; j++) {
+                        double currentValue =
+                                ((DoubleToken)currentArray[j]).doubleValue();
+                        plot.addPoint(i + _offset, j, currentValue, true);
+                    }
                 }
             }
         }
+        _iteration++;
+        if (_iteration == ((IntToken)iterationsPerUpdate
+                 .getToken()).intValue()) {
+            _iteration = 0;
+        }
         return super.postfire();
     }
+
+    /** Update the plot with the most recently read data.
+     *  If the <i>fillOnWrapup</i> parameter is true, rescale the
+     *  plot so that all the data is visible.
+     */
+    public void wrapup() {
+        for (int i = _tokens.length - 1; i >= 0; i--) {
+            if (_tokens[i] != null) {
+                Token[] currentArray = _tokens[i].arrayValue();
+                plot.clear(i + _offset);
+                for (int j = 0; j < currentArray.length; j++) {
+                    double currentValue =
+                            ((DoubleToken)currentArray[j]).doubleValue();
+                    plot.addPoint(i + _offset, j, currentValue, true);
+                }
+            }
+        }
+        super.wrapup();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private variables                     ////
+
+    // Iteration count, modulo the iterationsPerUpdate.
+    private int _iteration = 0;
+
+    // The value of the startingDataset parameter.
+    private int _offset;
+
+    // The most recently read tokens in the fire() method.
+    private ArrayToken[] _tokens;
 }
