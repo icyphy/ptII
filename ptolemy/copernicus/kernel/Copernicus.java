@@ -247,10 +247,11 @@ public class Copernicus {
 	for (int i = 0; i < commands.length; i++) {
 	    System.out.println("	" + commands[i]);
 	}
-
+        System.out.flush();
+        
 	// 0 indicates normal execution
 	int processReturnCode = 1;
-	try {
+     	try {
 	    Process process = Runtime.getRuntime().exec(commands);
 
 	    // Set up a Thread to read in any error messages
@@ -276,8 +277,9 @@ public class Copernicus {
 	    }
 	    System.out.println("All Done.");
 	} catch (final IOException io) {
+            System.out.flush();
 	    System.err.println("IOException: " + io);
-	} 
+	}
 	return processReturnCode;
     }
 
@@ -596,6 +598,7 @@ public class Copernicus {
                 while ( (line = bufferedReader.readLine()) != null)
 		    _stream.println(line);
 	    } catch (IOException ioe) {
+                System.out.flush();
 		System.err.println("IOException: " + ioe);
 	    }
 	}
