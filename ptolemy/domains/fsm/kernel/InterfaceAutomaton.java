@@ -345,12 +345,13 @@ public class InterfaceAutomaton extends FSMActor {
 
     // Add a transition to between two states in an automaton
     private void _addTransition(InterfaceAutomaton automaton,
-                                String relationName,
+                                String relationNamePrefix,
                                 State sourceState, State destinationState,
                                 String label)
                 throws IllegalActionException, NameDuplicationException {
+        String name = automaton.uniqueName(relationNamePrefix);
         InterfaceAutomatonTransition transition =
-                new InterfaceAutomatonTransition(automaton, relationName);
+                new InterfaceAutomatonTransition(automaton, name);
         sourceState.outgoingPort.link(transition);
         destinationState.incomingPort.link(transition);
         transition.label.setExpression(label);
@@ -1052,7 +1053,7 @@ public class InterfaceAutomaton extends FSMActor {
 
     // The state names in the composition automaton is formed by
     // <nameInThisAutomaton><NAME_CONNECTOR><nameInArgumentAutomaton>
-    // The transition names in the composition is formed by
+    // The transition names prefix in the composition is formed by
     // (1) <nameOfAutomaton><NAME_CONNECTOR><nameOfTransition> for
     // non-shared transitions;
     // (2) <nameOfAutomaton1><NAME_CONNECTOR><nameofAutomaton2>\
