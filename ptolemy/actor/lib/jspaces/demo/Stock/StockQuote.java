@@ -29,7 +29,6 @@
 
 */
 
-// FIXME: this may not be the right package for this actor.
 package ptolemy.actor.lib.jspaces.demo.Stock;
 
 import ptolemy.kernel.util.Workspace;
@@ -109,13 +108,19 @@ public class StockQuote extends Source {
 	    // The part of the returned HTML file from Yahoo that contains
 	    // the stock quote has the form:
 	    //
-	    // <td nowrap align=left><a href="/q?s=T&d=t">T</a></td>
-	    // <td nowrap align=center>11:03AM</td>
-	    // <td nowrap><b>54 <sup>1</sup>/<sub>8</sub></b></td>
+	    // <td nowrap align=left><a href="/q?s=FDX&d=t">FDX</a></td> ...
+	    // <td nowrap><b>49.06</b>
+	    //
+	    // or
+	    //
+	    // <td nowrap align=left><a href="/q?s=YHOO&d=t">YHOO</a></td> ...
+	    // <td nowrap><b>37 <sup>1</sup>/<sub>8</sub></b>
 	    //
 	    // To get the quote, a StreamTokenizer is used to extract each
-	    // line as a token, find the line that contains "/q?s=T&d=t",
-	    // and extract the line 2 lines below that.
+	    // line as a token, find the line that contains "/q?s=YHOO&d=t",
+	    // and extract number between <b> and </b>.
+	    // Note that the quote may be in either the decimal or fractional
+	    // form.
 	    // This code is fragile. If Yahoo changes the quote format, it
 	    // will break.
 
@@ -135,15 +140,22 @@ public class StockQuote extends Source {
 		}
 		if (st.sval.startsWith(_matchString + tickerString)) {
 		    // found the line
-		    st.nextToken();
-		    st.nextToken();
 		    break;
 		}
 	    }
 
 	    // st.sval contains the quote now.
-	    // The 14th char is the start of the price.
-	    double price = _getNumber(st.sval, 14);
+	    // the quote is between <b> and </b>
+	    int index1 = st.sval.indexOf("<b>");
+	    index1 += 3;
+	    // index1 is now the index of the first digit of the quote.
+	    int index2 = st.sval.indexOf("<", index1);
+	    String stringQuote = st.sval.substring(index1, index2);
+
+	    // If the quote is in decimal, stringQuote contains the whole
+	    // quote string; If the quote is in fractional, stringQuote
+	    // may have a trailing white space.
+	    double price = (Double.valueOf(stringQuote)).doubleValue();
 
 	    int index = st.sval.indexOf("sup");
 	    if (index != -1) {
