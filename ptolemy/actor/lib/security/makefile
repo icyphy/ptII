@@ -54,7 +54,7 @@ JSRCS = \
 	CryptographyActor.java \
 	Decryption.java \
 	Key.java \
-	PublicKeyReader.java \
+	KeyReader.java \
 	ServiceInformation.java \
 	SignatureActor.java \
 	SignatureSigner.java \
