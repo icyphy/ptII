@@ -127,7 +127,9 @@ test Simple-1.1 {Generate all required files for Simple.java} {
     # Run the automatically generated executible.
     cd $outputDir
 
-    exec ./$exeFile
+    # The nightly build does not have . in the path, so we use ./ here.
+    set exeFile ".[java::call System getProperty file.separator]$exeFile"
+    set output [exec $exeFile]
 
     list \
         [file readable $exeFile]
