@@ -5,7 +5,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997- The Regents of the University of California.
+# @Copyright (c) 1997-1998 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -66,52 +66,32 @@ doit() {
 EGREPMATCH="[ 	]+$"
 LOGMESSAGE="Removed trailing spaces"
 
-SCCS=/usr/ccs/bin/sccs
 topdir=`pwd`
-files=$@
-for fullfile in $files
+for fullfile in $@
 do
-	cd $topdir
-	echo "Now processing: $fullfile"
-        egrep -e  "$EGREPMATCH" $fullfile
-	retval=$?
-	if [ $retval = 0 ]; then
-		# There was a difference, so we might want to check this sucker out
-		file=`basename $fullfile`
-		dirname=`dirname $fullfile`
-		cd $dirname
-
-		if [ "$printonly" = "no" ]; then
-			$SCCS edit $file
-			#co -q -l $file
-			retval=$?
-		else
-			$SCCS info | awk '{print $1}' | grep "$file"
-			#rlog -R -L $file
-			retval=$?
-			if [ $retval = 1 ]; then
-				echo "	Would be checked out. "
-			else
-				echo "	Some sort of rlog problem. "
-			fi
-			doit
-			retval=0
-		fi
-		if [ "$printonly" = "no" ]; then
-			if [ $retval != 0 ]; then
-				echo "	Could not check out $1. Skipping"
-				continue
-			else
-				doit
-				cp $TMPFILE  $file
-				$SCCS delget -y"$LOGMESSAGE" $file
-				/users/ptdesign/adm/bin/sccsadmin $file
-    				#grep Copyright $file
-			fi
-		fi	
-	else
-	   echo "	No difference, so no checkout"
+    cd $topdir
+    echo "Now processing: $fullfile"
+    egrep "$EGREPMATCH" $fullfile
+    retval=$?
+    if [ $retval = 0 ]; then
+	# There was a difference, so we might want to check this sucker out
+	file=`basename $fullfile`
+	dirname=`dirname $fullfile`
+	cd $dirname
+	if [ -d SCCS -o -d RCS ]; then
+	    echo "Error: SCCS or RCS directory"
+	    exit 2
 	fi
-done
+	    doit
+	    if [ "$printonly" = "no" ]; then
+		cp $TMPFILE $file
+		if [ -d CVS ]; then
+		    cvs commit -m "$LOGMESSAGE" $file 
+		fi	
+	    else
+		echo "Would update and commit"
+	    fi	
 
+    fi
+done
 rm -f $TMPFILE
