@@ -51,7 +51,6 @@ JSRCS =	EntityLibrary.java \
 	ErrorHandler.java \
 	ImportAttribute.java \
 	LibraryAttribute.java \
-	Locatable.java \
 	Location.java \
 	Vertex.java \
 	MoMLAttribute.java \

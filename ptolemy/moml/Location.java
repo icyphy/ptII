@@ -68,7 +68,7 @@ getVisibility() method.
 @version $Id$
 */
 public class Location extends SingletonAttribute
-        implements Locatable, Settable {
+        implements Settable {
 
     /** Construct an attribute with the given name and position.
      *  @param container The container.
