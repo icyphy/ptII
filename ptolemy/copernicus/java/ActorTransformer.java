@@ -424,7 +424,7 @@ public class ActorTransformer extends SceneTransformer {
             }
         }
 
-        // The initialize method implemented in the actor package is wierd,
+        // The initialize method implemented in the actor package is weird,
         // because it calls getDirector.  Since we don't need it,
         // make sure that we never call the baseclass initialize method.
         // FIXME: When we get to the point where we no longer derive
