@@ -1,4 +1,4 @@
-/* An actor that converts a Buffer into a java.awt.Image
+/* An actor that converts a javax.media.Buffer into a java.awt.Image.
 
 @Copyright (c) 1998-2002 The Regents of the University of California.
 All rights reserved.
@@ -30,9 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jmf;
 
-import javax.media.Buffer;
-import javax.media.format.VideoFormat;
-
 import ptolemy.actor.lib.Transformer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
@@ -41,24 +38,44 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
 import java.awt.Image;
+
+import javax.media.Buffer;
+import javax.media.format.VideoFormat;
 import javax.media.util.BufferToImage;
 
 //////////////////////////////////////////////////////////////////////////
 //// BufferToImageConversion
 /**
-   Convert a Buffer into a java.awt.Image
+   Convert a javax.media.Buffer into a java.awt.Image.
 
    @author James Yeh
    @version $Id$
  */
 
 public class BufferToImageConversion extends Transformer {
+    
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public BufferToImageConversion(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT); }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Fire this actor.
+     *  Output a java.awt.Image.
+     *  @exception IllegalActionException If a contained method throws it,
+     *   or if a token is received that contains a null image.
+     */
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {

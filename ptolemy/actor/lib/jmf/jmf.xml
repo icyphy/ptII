@@ -16,26 +16,8 @@
 	<entity name="GreenFinder" class="ptolemy.actor.lib.jmf.GreenFinder">
 	</entity>
 
-	<entity name="ImageToJAI" class="ptolemy.actor.lib.jmf.ImageToJAI">
-	</entity>
-	
-	<entity name="JAIIDCT" class="ptolemy.actor.lib.jmf.JAIIDCT">
-	</entity>
-	
-	<entity name="JAIDCT" class="ptolemy.actor.lib.jmf.JAIDCT">
-	</entity>
-	
-	<entity name="JAIImageReader" class="ptolemy.actor.lib.jmf.JAIImageReader">
-	</entity>
-	
-	<entity name="JAIInterpolation" class="ptolemy.actor.lib.jmf.JAIInterpolation">
-	</entity>
-	
-	<entity name="JAIToImage" class="ptolemy.actor.lib.jmf.JAIToImage">
-	</entity>
-
 	<entity name="PlaySound" class="ptolemy.actor.lib.jmf.PlaySound">
-	</entity>
+	</entity>	
 
 	<entity name="VideoCamera" class="ptolemy.actor.lib.jmf.VideoCamera">
 	</entity>

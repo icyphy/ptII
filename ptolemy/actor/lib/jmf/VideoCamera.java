@@ -360,7 +360,7 @@ public class VideoCamera extends Source implements ControllerListener {
                 try {
                     wait();
                 } catch (InterruptedException ex) {
-                    throw new IllegalActionException("sdf");}
+                    throw new IllegalActionException("Error");}
             }
             _newFrame = false;
             return frameBuffer;

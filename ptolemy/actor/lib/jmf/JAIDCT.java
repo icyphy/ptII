@@ -36,8 +36,9 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
 import java.awt.image.renderable.ParameterBlock;
-
+import java.awt.image.BufferedImage;
 import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
 import javax.media.jai.RenderedOp;
 
 public class JAIDCT extends Transformer {
@@ -57,6 +58,16 @@ public class JAIDCT extends Transformer {
         image = (RenderedOp) objectToken.getValue();
         dctParameters.addSource(image);
         RenderedOp Dct = JAI.create("dct", dctParameters, null);
+        //int width = Dct.getWidth();
+        //int height = Dct.getHeight();
+        //int numBands = Dct.getSampleModel().getNumBands();
+        //int dataType = Dct.getSampleModel().getDataType();
+        //double[] dctData = Dct.getData().getPixels(0, 0, width, height, (double[])null);
+        //pb2 = new ParameterBlock();
+        //pb.add(new Float(width));
+        //pb.add(new Float(height));
+        //pb.add(dctData);
+        //BufferedImage bi = JAI.create("colorImage", width, height, dctData);
         output.send(0, new ObjectToken(Dct));
     }
     public RenderedOp image;
