@@ -90,15 +90,17 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
         _defaultVisit(node);
-
     }
+
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         // Check to see if we are referencing a function closure in scope.
         ptolemy.data.Token value = null;
         String functionName = node.getFunctionName();
         if (_scope != null && functionName != null) {
-            value = _scope.get(node.getFunctionName());
+            if (!_excludedNames.contains(functionName)) {
+                value = _scope.get(node.getFunctionName());
+            }
         }
 
         if (value == null) {
@@ -111,6 +113,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
             _defaultVisit(node);
         }
     }
+
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
         List excludedNames = new LinkedList(_excludedNames);

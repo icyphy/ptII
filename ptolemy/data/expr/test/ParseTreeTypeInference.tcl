@@ -711,15 +711,15 @@ test ParseTreeTypeInference-16.3 {Test property} {
 
 test ParseTreeTypeInference-17.1 {Test correct scoping in function definitions.} {
     list [theTest "function(x) x + 3.0"] [theTest "function(x:int) x + 3.0"]
-} {{function(a0:general) general} {function(a0:int) double}}
+} {{(function(a0:general) general)} {(function(a0:int) double)}}
 
 test ParseTreeTypeInference-17.2 {Test nested function definitions.} {
     list [theTest "function (y) function(x) x + y + 3"] [theTest "function (y:int) function(x) x + y + 3"] [theTest "function (y) function(x:int) x + y + 3"] [theTest "function (y:double) function(x:long) x + y + 3"] 
-} {{function(a0:general) function(a0:general) general} {function(a0:int) function(a0:general) general} {function(a0:general) function(a0:int) general} {function(a0:double) function(a0:long) scalar}}
+} {{(function(a0:general) (function(a0:general) general))} {(function(a0:int) (function(a0:general) general))} {(function(a0:general) (function(a0:int) general))} {(function(a0:double) (function(a0:long) scalar))}}
 
 test ParseTreeTypeInference-17.3 {Test nested function definitions.} {
     list [theTest "cast(function(x:int) double, function(x) x + 3.0)"] 
-} {{function(a0:int) double}}
+} {{(function(a0:int) double)}}
 
 ####################################################################
 

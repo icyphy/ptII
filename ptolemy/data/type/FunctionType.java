@@ -373,14 +373,14 @@ public class FunctionType extends StructuredType {
      */
     public String toString() {
         // construct the string representation of this token.
-        String s = "function(";
+        String s = "(function(";
         for (int i = 0; i < getArgCount(); i++) {
             if (i != 0) {
                 s += ", ";
             }
             s += "a" + i + ":" + getArgType(i);
         }
-        return s + ") " + getReturnType();
+        return s + ") " + getReturnType() + ")";
     }
 
     /** Update this type to the specified FunctionType.

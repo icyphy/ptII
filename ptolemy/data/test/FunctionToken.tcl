@@ -53,7 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test FunctionToken-1.0 {Create an empty instance} {
     set r [java::new {ptolemy.data.FunctionToken} "function() 4"]
     list [$r toString] [[$r getType] toString]
-} {{(function() 4)} {function() int}}
+} {{(function() 4)} {(function() int)}}
 
 ######################################################################
 ####
@@ -61,27 +61,27 @@ test FunctionToken-1.0 {Create an empty instance} {
 test FunctionToken-1.1 {Create a non-empty instance} {
     set r [java::new {ptolemy.data.FunctionToken} "function(x,y) 4+x+y"]
     list [$r toString] [[$r getType] toString]
-} {{(function(x, y) (4+x+y))} {function(a0:general, a1:general) general}}
+} {{(function(x, y) (4+x+y))} {(function(a0:general, a1:general) general)}}
 
 test FunctionToken-1.2 {Create a non-empty instance} {
     set r [java::new {ptolemy.data.FunctionToken} "function(x:int,y:double) 4+x+y"]
     list [$r toString] [[$r getType] toString]
-} {{(function(x:int, y:double) (4+x+y))} {function(a0:int, a1:double) double}}
+} {{(function(x:int, y:double) (4+x+y))} {(function(a0:int, a1:double) double)}}
 
 test FunctionToken-1.3 {Create an empty instance} {
     set r [java::new {ptolemy.data.FunctionToken} "function(x,y) 4"]
     list [$r toString] [[$r getType] toString]
-} {{(function(x, y) 4)} {function(a0:general, a1:general) int}}
+} {{(function(x, y) 4)} {(function(a0:general, a1:general) int)}}
 
 test FunctionToken-1.4 {Create an empty instance} {
     set r [java::new {ptolemy.data.FunctionToken} "function(x:long) function(y:double) 4"]
     list [$r toString] [[$r getType] toString]
-} {{(function(x:long) (function(y:double) 4))} {function(a0:long) function(a0:double) int}}
+} {{(function(x:long) (function(y:double) 4))} {(function(a0:long) (function(a0:double) int))}}
 
 test FunctionToken-1.5 {Create an empty instance} {
     set r [java::new {ptolemy.data.FunctionToken} "function(x:(function(y:double) long)) 4"]
     list [$r toString] [[$r getType] toString]
-} {{(function(x:function(a0:double) long) 4)} {function(a0:function(a0:double) long) int}}
+} {{(function(x:(function(a0:double) long)) 4)} {(function(a0:(function(a0:double) long)) int)}}
 
 ######################################################################
 ####

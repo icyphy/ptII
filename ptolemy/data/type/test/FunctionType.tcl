@@ -57,7 +57,7 @@ test FunctionType-1.0 {Create an empty instance} {
     set r [java::new {ptolemy.data.type.FunctionType} $t $vt]
     set TypeNothingToUnknown [java::cast ptolemy.data.type.FunctionType [$r clone]]
     list [$r toString] [$TypeNothingToUnknown toString]
-} {{function() unknown} {function() unknown}}
+} {{(function() unknown)} {(function() unknown)}}
 
 ######################################################################
 ####
@@ -70,7 +70,7 @@ test FunctionType-1.1 {Create a non-empty instance} {
     set r [java::new {ptolemy.data.type.FunctionType} $v $vt]
     set TypeIntIntToInt [java::cast ptolemy.data.type.FunctionType [$r clone]]
     list [$r toString] [$TypeIntIntToInt toString]
-} {{function(a0:int, a1:int) int} {function(a0:int, a1:int) int}}
+} {{(function(a0:int, a1:int) int)} {(function(a0:int, a1:int) int)}}
 
 ######################################################################
 ####
@@ -83,7 +83,7 @@ test FunctionType-1.2 {Create an instance with String, double args} {
     set r [java::new {ptolemy.data.type.FunctionType} $v $vt]
     set TypeStringDoubleToDouble [java::cast ptolemy.data.type.FunctionType [$r clone]]
     list [$r toString] [$TypeStringDoubleToDouble toString]
-} {{function(a0:string, a1:double) double} {function(a0:string, a1:double) double}}
+} {{(function(a0:string, a1:double) double)} {(function(a0:string, a1:double) double)}}
 
 ######################################################################
 ####
@@ -97,7 +97,7 @@ test FunctionType-1.2 {Create an instance with String, double args, int return} 
     set r [java::new {ptolemy.data.type.FunctionType} $v $it]
     set TypeStringDoubleToInt [java::cast ptolemy.data.type.FunctionType [$r clone]]
     list [$r toString] [$TypeStringDoubleToInt toString]
-} {{function(a0:string, a1:double) int} {function(a0:string, a1:double) int}}
+} {{(function(a0:string, a1:double) int)} {(function(a0:string, a1:double) int)}}
 
 ######################################################################
 ####
@@ -110,7 +110,7 @@ test FunctionType-1.3 {Create an instance with an UNKNOWN arg} {
     set r [java::new {ptolemy.data.type.FunctionType} $v $vt]
     set TypeStringUnknownToUnknown [java::cast ptolemy.data.type.FunctionType [$r clone]]
     list [$r toString] [$TypeStringUnknownToUnknown toString]
-} {{function(a0:string, a1:unknown) unknown} {function(a0:string, a1:unknown) unknown}}
+} {{(function(a0:string, a1:unknown) unknown)} {(function(a0:string, a1:unknown) unknown)}}
 
 ######################################################################
 ####
@@ -259,7 +259,7 @@ test FunctionType-8.0 {Test initialize} {
     set unknown [java::field ptolemy.data.type.BaseType UNKNOWN]
     $TypeNothingToUnknown initialize $unknown
     $TypeNothingToUnknown toString
-} {function() unknown}
+} {(function() unknown)}
 
 ######################################################################
 ####
@@ -268,7 +268,7 @@ test FunctionType-8.1 {Test initialize} {
     set unknown [java::field ptolemy.data.type.BaseType UNKNOWN]
     $TypeStringDoubleToDouble initialize $unknown
     $TypeStringDoubleToDouble toString
-} {function(a0:string, a1:double) double}
+} {(function(a0:string, a1:double) double)}
 
 ######################################################################
 ####
@@ -277,7 +277,7 @@ test FunctionType-8.2 {Test initialize} {
     set unknown [java::field ptolemy.data.type.BaseType UNKNOWN]
     $TypeStringUnknownToUnknown initialize $unknown
     $TypeStringUnknownToUnknown toString
-} {function(a0:string, a1:unknown) unknown}
+} {(function(a0:string, a1:unknown) unknown)}
 
 ######################################################################
 ####
@@ -285,7 +285,7 @@ test FunctionType-8.2 {Test initialize} {
 test FunctionType-9.0 {Test updateType} {
     catch {$TypeNothingToUnknown updateType $TypeStringDoubleToDouble} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: FunctionType.updateType: This type is a constant and the argument is not the same as this type. This type: function() unknown argument: function(a0:string, a1:double) double}}
+} {{ptolemy.kernel.util.IllegalActionException: FunctionType.updateType: This type is a constant and the argument is not the same as this type. This type: (function() unknown) argument: (function(a0:string, a1:double) double)}}
 
 ######################################################################
 ####
@@ -293,7 +293,7 @@ test FunctionType-9.0 {Test updateType} {
 test FunctionType-9.1 {Test updateType} {
     catch {$TypeStringDoubleToDouble updateType $TypeNothingToUnknown} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: FunctionType.updateType: This type is a constant and the argument is not the same as this type. This type: function(a0:string, a1:double) double argument: function() unknown}}
+} {{ptolemy.kernel.util.IllegalActionException: FunctionType.updateType: This type is a constant and the argument is not the same as this type. This type: (function(a0:string, a1:double) double) argument: (function() unknown)}}
 
 ######################################################################
 ####
@@ -301,7 +301,7 @@ test FunctionType-9.1 {Test updateType} {
 test FunctionType-9.2 {Test updateType} {
     catch {$TypeStringDoubleToDouble updateType $TypeStringUnknownToUnknown} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: FunctionType.updateType: This type is a constant and the argument is not the same as this type. This type: function(a0:string, a1:double) double argument: function(a0:string, a1:unknown) unknown}}
+} {{ptolemy.kernel.util.IllegalActionException: FunctionType.updateType: This type is a constant and the argument is not the same as this type. This type: (function(a0:string, a1:double) double) argument: (function(a0:string, a1:unknown) unknown)}}
 
 ######################################################################
 ####
@@ -309,5 +309,5 @@ test FunctionType-9.2 {Test updateType} {
 test FunctionType-9.3 {Test updateType} {
     $TypeStringUnknownToUnknown updateType $TypeStringDoubleToDouble
     $TypeStringUnknownToUnknown toString
-} {function(a0:string, a1:double) double}
+} {(function(a0:string, a1:double) double)}
 
