@@ -39,9 +39,9 @@ an actor.  The ports on a TypedActor are constrainted to be TypedIOPorts.
 
 @author Yuhong Xiong
 @version $Id$
-@see ptolemy.actors.TypedCompositeActor
-@see ptolemy.actors.TypedAtomicActor
-@see ptolemy.actors.TypedIOPort
+@see ptolemy.actor.TypedCompositeActor
+@see ptolemy.actor.TypedAtomicActor
+@see ptolemy.actor.TypedIOPort
 */
 public interface TypedActor extends Actor {
 
