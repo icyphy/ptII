@@ -43,110 +43,124 @@ set PI [java::field java.lang.Math PI]
 # set VERBOSE 1
 
 ####################################################################
+
 test FixPoint-1.1 {constructors} {
-    set c0 [java::new ptolemy.math.FixPoint]
-    set c1 [java::new ptolemy.math.FixPoint "(16/4)" 5.5734 ]
-    set c2 [java::new ptolemy.math.FixPoint "(4^32)" 5.5734 ]
-    list "[$c0 toBitString]\n[$c1 toBitString]\n[$c2 toBitString]"
-} {{0.0
-101.100100101100
+    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
+    set p1 [java::new ptolemy.math.Precision "(4^32)" ]
+    set c0 [java::call ptolemy.math.Quantizer round 5.5734 $p0 ]
+    set c1 [java::call ptolemy.math.Quantizer round 5.5734 $p1 ]
+    list "[$c0 toBitString]\n[$c1 toBitString]"
+} {{101.100100101101
 101.1001001011001010010101111010}}
 
 ####################################################################
+
 test FixPoint-2.1 {add} {
-    set c21 [java::new ptolemy.math.FixPoint "(16/4)" 5.5734 ]
-    set c22 [java::new ptolemy.math.FixPoint "(16/4)" -4.23 ]
-    set c23 [$c21 add $c22]
-    $c23 toBitString
-} {1.10101111110}
+    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
+    set p1 [java::new ptolemy.math.Precision "(4^32)" ]
+    set c20 [java::call ptolemy.math.Quantizer round 5.5734 $p0 ]
+    set c21 [java::call ptolemy.math.Quantizer round -4.23  $p0 ]
+    set c22 [$c20 add $c21]
+    $c22 toBitString
+} {1.10101111111}
 
 
 test FixPoint-2.2 {add} {
-    set c24 [java::new ptolemy.math.FixPoint "(16/4)" 5.5734 ]
-    set c25 [java::new ptolemy.math.FixPoint "(16/5)" -4.23  ]
+    set p2 [java::new ptolemy.math.Precision "(16/5)" ]
+    set c24 [java::call ptolemy.math.Quantizer round 5.5734 $p0 ]
+    set c25 [java::call ptolemy.math.Quantizer round -4.23  $p2 ]
     set c26 [$c24 add $c25]
     $c26 toBitString
-} {1.10101111110}
+} {1.10101111111}
 
 test FixPoint-2.3 {add} {
-    set c24 [java::new ptolemy.math.FixPoint "(16/4)" 5.5734 ]
-    set c25 [java::new ptolemy.math.FixPoint "(16/3)" -4.23  ]
+    set p3 [java::new ptolemy.math.Precision "(16/3)" ]
+    set c24 [java::call ptolemy.math.Quantizer round 5.5734 $p0 ]
+    set c25 [java::call ptolemy.math.Quantizer round -4.23  $p3]
     set c26 [$c24 add $c25]
     $c26 toBitString
-} {1.1001001011000}
+} {1.1001001011010}
 
 test FixPoint-2.4 {add} {
-    set c24 [java::new ptolemy.math.FixPoint "(16/4)" 5.5734 ]
-    set c25 [java::new ptolemy.math.FixPoint "(14/5)" -4.23  ]
+    set p4 [java::new ptolemy.math.Precision "(14/5)" ]
+    set c24 [java::call ptolemy.math.Quantizer round 5.5734 $p0 ]
+    set c25 [java::call ptolemy.math.Quantizer round -4.23  $p4]
     set c26 [$c24 add $c25]
     $c26 toBitString
-} {1.10110000100}
+} {1.10101111101}
 
 test FixPoint-2.5 {add} {
-    set c24 [java::new ptolemy.math.FixPoint "(16/4)" 5.5734 ]
-    set c25 [java::new ptolemy.math.FixPoint "(14/3)" -4.23  ]
+    set p5 [java::new ptolemy.math.Precision "(14/3)" ]
+    set c24 [java::call ptolemy.math.Quantizer round 5.5734 $p0 ]
+    set c25 [java::call ptolemy.math.Quantizer round -4.23  $p5]
     set c26 [$c24 add $c25]
     $c26 toBitString
-} {1.100100101100}
+} {1.100100101101}
 
 ####################################################################
+
 test FixPoint-3.1 {subtract} {
-    set c31 [java::new ptolemy.math.FixPoint "(16/6)" 5.5734 ]
-    set c32 [java::new ptolemy.math.FixPoint "(16/6)" -4.23 ]
+    set p6 [java::new ptolemy.math.Precision "(16/6)" ]
+    set c31 [java::call ptolemy.math.Quantizer round 5.5734 $p6 ]
+    set c32 [java::call ptolemy.math.Quantizer round -4.23  $p6 ]
     set c33 [$c31 subtract $c32]
     $c33 toBitString
-} {1001.1100110110}
+} {1001.1100110111}
 
 test FixPoint-3.2 {subtract} {
-    set c31 [java::new ptolemy.math.FixPoint "(16/6)" 5.5734 ]
-    set c32 [java::new ptolemy.math.FixPoint "(16/4)" -4.23 ]
+    set c31 [java::call ptolemy.math.Quantizer round 5.5734 $p6 ]
+    set c32 [java::call ptolemy.math.Quantizer round -4.23  $p0 ]
     set c33 [$c31 subtract $c32]
     $c33 toBitString
 } {1001.110011011010}
 
 ####################################################################
+
+
 test FixPoint-4.1 {multiply} {
-    set c41 [java::new ptolemy.math.FixPoint "(16/6)" 5.5734 ]
-    set c42 [java::new ptolemy.math.FixPoint "(16/6)" 4.23 ]
+    set c41 [java::call ptolemy.math.Quantizer round 5.5734 $p6 ]
+    set c42 [java::call ptolemy.math.Quantizer round 4.23   $p6 ]
     set c43 [$c41 multiply $c42]
     $c43 toBitString
-} {10111.10010010011011011001}
+} {10111.10010011110100100100}
 
 test FixPoint-4.2 {multiply} {
-    set c44 [java::new ptolemy.math.FixPoint "(16/4)" 7.5734 ]
-    set c45 [java::new ptolemy.math.FixPoint "(16/4)" -7.23 ]
+    set c44 [java::call ptolemy.math.Quantizer round 7.5734 $p0 ]
+    set c45 [java::call ptolemy.math.Quantizer round -7.23  $p0 ]
     set c46 [$c44 multiply $c45]
     $c46 toBitString
-} {-110111.1111101110000000011000}
+} {-110111.1111100110110001101010}
 
-test FixPoint-4.2 {multiply} {
-    set c47 [java::new ptolemy.math.FixPoint "(16/6)" 15.5734 ]
-    set c48 [java::new ptolemy.math.FixPoint "(16/4)" 7.23 ]
+test FixPoint-4.3 {multiply} {
+    set c47 [java::call ptolemy.math.Quantizer round 15.5734 $p6 ]
+    set c48 [java::call ptolemy.math.Quantizer round 7.23    $p0 ]
     set c49 [$c47 multiply $c48]
     $c49 toBitString
 } {1110000.100110000001111111101000}
 
+
 ####################################################################
+
 test FixPoint-5.1 {divide} {
-    set c51 [java::new ptolemy.math.FixPoint "(16/6)" 5.5734 ]
-    set c52 [java::new ptolemy.math.FixPoint "(16/6)" 4.23 ]
+    set c51 [java::call ptolemy.math.Quantizer round 5.5734 $p6 ]
+    set c52 [java::call ptolemy.math.Quantizer round 4.23   $p6 ]
     set c53 [$c51 divide $c52]
     $c53 toBitString
 } {1.101000101}
 
 test FixPoint-5.2 {divide} {
-    set c54 [java::new ptolemy.math.FixPoint "(16/4)" 7.5734 ]
-    set c55 [java::new ptolemy.math.FixPoint "(16/4)" -7.23 ]
+    set c54 [java::call ptolemy.math.Quantizer round 7.5734 $p0 ]
+    set c55 [java::call ptolemy.math.Quantizer round -7.23  $p0 ]
     set c56 [$c54 divide $c55]
     $c56 toBitString
-} {-10.111100111110}
+} {-10.111100111101}
 
 test FixPoint-5.3 {divide} {
-    set c57 [java::new ptolemy.math.FixPoint "(32/4)" 7.5734 ]
-    set c58 [java::new ptolemy.math.FixPoint "(32/4)" -7.23 ]
+    set p7 [java::new ptolemy.math.Precision "(32/4)" ]	
+    set c57 [java::call ptolemy.math.Quantizer round 7.5734 $p7 ]
+    set c58 [java::call ptolemy.math.Quantizer round -7.23  $p7 ]
     set c59 [$c57 divide $c58]
     $c59 toBitString
 } {-10.1111001111010111010001000100}
-
 
 ####################################################################
