@@ -52,14 +52,14 @@ import diva.gui.toolbox.*;
 //////////////////////////////////////////////////////////////////////////
 //// GraphPalette
 /**
-A palette of entities for the ptolemy schematic editor.  When nodes are 
+A palette of entities for the ptolemy schematic editor.  When nodes are
 dragged in this palette, instead of moving the entity, a swing drag and
-drop action is started, which can drop the entity on another canvas 
+drop action is started, which can drop the entity on another canvas
 with an appropriate drop target.  Drop targets will most likely
-support the GraphPalette.nodeFlavor data flavor in order to get a 
+support the GraphPalette.nodeFlavor data flavor in order to get a
 reference to the dropped node.
 
-@author Steve Neuendorffer 
+@author Steve Neuendorffer
 @contributor Michael Shilman
 @version $Id$
 */
@@ -88,7 +88,7 @@ public class GraphPalette extends JGraph {
     public Node getDraggedNode() {
         return _draggedNode;
     }
-    
+
     /**
      * Make the given component draggable; the given data string will
      * be the "dragged" object that is associated with the component.
@@ -102,7 +102,7 @@ public class GraphPalette extends JGraph {
                 c, DnDConstants.ACTION_COPY_OR_MOVE,
 		(DragGestureListener) dgl);
     }
-    
+
     public void setDraggedNode(Node node) {
 	_draggedNode = node;
     }
@@ -119,9 +119,9 @@ public class GraphPalette extends JGraph {
 
     /////////////////////////////////////////////////////////////
     //                    Inner Classes                        //
-    
+
     public class LayoutListener implements ActionListener {
-        public void actionPerformed(ActionEvent event) {	   
+        public void actionPerformed(ActionEvent event) {
 	    LayoutTarget target = new BasicLayoutTarget(_controller);
             Graph graph = _controller.getGraph();
             GlobalLayout layout = new GridAnnealingLayout();
@@ -143,7 +143,7 @@ public class GraphPalette extends JGraph {
         public void clearEdge(Edge edge) {
             throw new GraphException("PaletteController does not allow edges");
         }
-        
+
         public void clearNode(Node node) {
             _entityController.clearNode(node);
         }
@@ -151,7 +151,7 @@ public class GraphPalette extends JGraph {
         public Figure drawEdge(Edge edge) {
             throw new GraphException("PaletteController does not allow edges");
         }
-        
+
         public Figure drawNode(Node node) {
             return _entityController.drawNode(node);
         }
@@ -159,7 +159,7 @@ public class GraphPalette extends JGraph {
         public void removeEdge(Edge edge) {
             throw new GraphException("PaletteController does not allow edges");
         }
-        
+
         public void removeNode(Node node) {
             _entityController.removeNode(node);
         }
@@ -172,14 +172,14 @@ public class GraphPalette extends JGraph {
 	 * at that time.
 	 */
 	protected void initializeInteraction () {
-	    GraphPane pane = getGraphPane();    
+	    GraphPane pane = getGraphPane();
       	}
-	
+
 	public class NodeDnDInteractor extends DragInteractor {
 	    /** The Palette that this interactor is a part of.
 	     */
 	    private GraphPalette _palette;
-	    
+
 	    /** Create a new NodeDragInteractor and give it a pointer
 	     * to its controller to it can find other useful objects
 	     */
@@ -187,9 +187,9 @@ public class GraphPalette extends JGraph {
                 _palette = palette;
 	    }
 
-            /** Respond to a mouse press in the palette by setting the 
-             *  palette's dragged node.	
-             */    
+            /** Respond to a mouse press in the palette by setting the
+             *  palette's dragged node.
+             */
             public void mousePressed (LayerEvent layerEvent) {
                 Figure draggedFigure = layerEvent.getFigureSource();
                 _palette.setDraggedNode((Node)draggedFigure.getUserObject());
@@ -202,9 +202,9 @@ public class GraphPalette extends JGraph {
                 _palette.setDraggedNode(null);
             }
 
-            /** Respond to a translate request.  Don't actually do anything, 
-             *  since the palette uses swing drag and drop instead of 
-             *  figure translation.  
+            /** Respond to a translate request.  Don't actually do anything,
+             *  since the palette uses swing drag and drop instead of
+             *  figure translation.
              */
             public void translate(LayerEvent e, double x, double y) {
                 // This drag interactor doesn't actually drag.
@@ -215,7 +215,7 @@ public class GraphPalette extends JGraph {
 	private PortController _portController;
     }
 
-    /** A transferable object that contains a local JVM reference to a 
+    /** A transferable object that contains a local JVM reference to a
      *  a node.
      */
     public class NodeTransferable implements Transferable {
@@ -226,15 +226,15 @@ public class GraphPalette extends JGraph {
 	public synchronized DataFlavor[] getTransferDataFlavors() {
 	    return _flavors;
 	}
-	
+
 	public boolean isDataFlavorSupported( DataFlavor flavor ) {
 	    int i;
-	    for(i = 0; i < _flavors.length; i++) 
+	    for(i = 0; i < _flavors.length; i++)
 		if(_flavors[i].equals(flavor)) return true;
 	    return false;
 	}
 
-	public Object getTransferData(DataFlavor flavor) 
+	public Object getTransferData(DataFlavor flavor)
 	    throws UnsupportedFlavorException, IOException {
 	    if (flavor.equals(DataFlavor.plainTextFlavor)) {
 		return new ByteArrayInputStream(_node.toString().
@@ -246,7 +246,7 @@ public class GraphPalette extends JGraph {
 	    }
 	    throw new UnsupportedFlavorException(flavor);
 	}
-	
+
 	public final DataFlavor[] _flavors = {
 	    DataFlavor.plainTextFlavor,
 	    DataFlavor.stringFlavor,
@@ -265,10 +265,10 @@ public class GraphPalette extends JGraph {
 		    //intersection of the users selected action, and the
 		    //source and target actions
 		    int myaction = dsde.getDropAction();
-		    if( (myaction & DnDConstants.ACTION_COPY_OR_MOVE) != 0) { 
-			context.setCursor(DragSource.DefaultCopyDrop); 
+		    if( (myaction & DnDConstants.ACTION_COPY_OR_MOVE) != 0) {
+			context.setCursor(DragSource.DefaultCopyDrop);
 		    } else {
-			context.setCursor(DragSource.DefaultCopyNoDrop); 
+			context.setCursor(DragSource.DefaultCopyNoDrop);
 		    }
 		}
 		public void dragExit(DragSourceEvent dse) {}
@@ -279,13 +279,13 @@ public class GraphPalette extends JGraph {
 	    try {
 		if(_palette.getDraggedNode() == null) return;
 		// check to see if action is OK ...
-		NodeTransferable transferable = 
-		    new NodeTransferable(_palette.getDraggedNode()); 
+		NodeTransferable transferable =
+		    new NodeTransferable(_palette.getDraggedNode());
 
                 Node node = _palette.getDraggedNode();
 
-		//initial cursor, transferable, dsource listener 
-		e.startDrag(DragSource.DefaultCopyNoDrop, 
+		//initial cursor, transferable, dsource listener
+		e.startDrag(DragSource.DefaultCopyNoDrop,
 				transferable, dsl);
 
                 // reset the dragged node, so we can't drag again.
@@ -303,12 +303,12 @@ public class GraphPalette extends JGraph {
 	}
 	private GraphPalette _palette;
     };
-    
+
 
     ///////////////////////////////////////////////////////////////
     //                      Data Members                         //
-    public static final DataFlavor nodeFlavor = 
-	new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + 
+    public static final DataFlavor nodeFlavor =
+	new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType +
 		       "diva.graph.Node", "divanode");
 
     private Node _draggedNode;

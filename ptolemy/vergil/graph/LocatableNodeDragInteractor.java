@@ -57,7 +57,7 @@ as semantic objects.  When the node is dragged, this interactor
 updates the location in the locatable object with the new location of the
 figure.
 
-@author Steve Neuendorffer 
+@author Steve Neuendorffer
 @version $Id$
  */
 public class LocatableNodeDragInteractor extends NodeDragInteractor {
@@ -77,11 +77,11 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         //aren't locatable nodes, then they shouldn't be able to be
         //selected at the same time as a locatable node.
         Iterator targets = targets();
-        while (targets.hasNext()) {            
+        while (targets.hasNext()) {
             Figure figure = (Figure) targets.next();
             Object object = figure.getUserObject();
             if(object instanceof Node) {
-                Node node = (Node) object;  
+                Node node = (Node) object;
 		if(_controller.hasLocation(node)) {
 		    double[] location = _controller.getLocation(node);
 		    location[0] += x;

@@ -42,7 +42,7 @@ import ptolemy.moml.*;
 // Diva imports.
 import diva.gui.*;
 import diva.gui.toolbox.*;
-import diva.graph.*; 
+import diva.graph.*;
 import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
@@ -68,16 +68,16 @@ import javax.swing.event.*;
 //// BasicContextMenu
 /**
 This is a base class for context menus for most objects in the vergil
-editor.  It contains a single action, for editing the parameters of 
+editor.  It contains a single action, for editing the parameters of
 a named object.  This action creates configuration widgets using
 the Configurer class.
 
 This class also contains methods that make it simple to add new actions to
 this menu.
 
-@author Steve Neuendorffer 
+@author Steve Neuendorffer
 @version $Id$
-*/   
+*/
 public class BasicContextMenu extends JPopupMenu {
 
     public BasicContextMenu(NamedObj target) {
@@ -174,7 +174,7 @@ public class BasicContextMenu extends JPopupMenu {
 
     /** Add an action to this menu and return the menu item created.  If
      * the tool tip is null, use the "tooltip" property already in the
-     * action, otherwise add the property to the action. 
+     * action, otherwise add the property to the action.
      * The new menu item is added to the action as the
      * "menuItem" property.  The menu item's text is set using the
      * action's name and is enabled by default.
@@ -186,7 +186,7 @@ public class BasicContextMenu extends JPopupMenu {
 
     /** Add an action to this menu and return the menu item created.  If
      * the tool tip is null, use the "tooltip" property already in the
-     * action, otherwise add the property to the action. 
+     * action, otherwise add the property to the action.
      * The new menu item is added to the action as the
      * "menuItem" property.  The menu item's text is set to be "label",
      * and is disabled or enabled according to "isEnabled."
@@ -195,7 +195,7 @@ public class BasicContextMenu extends JPopupMenu {
             String tooltip, String label, boolean isEnabled) {
         if (tooltip == null) {
             tooltip = (String) action.getValue("tooltip");
-        } 
+        }
         action.putValue("tooltip", tooltip);
         JMenuItem item = add(action);
         item.setText(label);

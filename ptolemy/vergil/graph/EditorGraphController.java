@@ -39,7 +39,7 @@ import ptolemy.gui.*;
 import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
-import diva.graph.*; 
+import diva.graph.*;
 import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
@@ -63,19 +63,19 @@ import javax.swing.event.*;
 //// EditorGraphController
 /**
 A Graph Controller for the Ptolemy II schematic editor.  In addition to the
-interaction allowed in the viewer, this controller allows nodes to be 
+interaction allowed in the viewer, this controller allows nodes to be
 dragged and dropped onto its graph.  Relations can be created by
-control-clicking, and links can be created by control-clicking and dragging on 
-a port or a relation.  Anything can be deleted by selecting it and pressing 
-the delete key on the keyboard. 
- 
-@author Steve Neuendorffer 
+control-clicking, and links can be created by control-clicking and dragging on
+a port or a relation.  Anything can be deleted by selecting it and pressing
+the delete key on the keyboard.
+
+@author Steve Neuendorffer
 @version $Id$
  */
 public class EditorGraphController extends ViewerGraphController {
 
     /**
-     * Create a new basic controller with default 
+     * Create a new basic controller with default
      * terminal and edge interactors.
      */
     public EditorGraphController () {
@@ -83,11 +83,11 @@ public class EditorGraphController extends ViewerGraphController {
     }
 
     /** Add an edge to this graph editor and render it
-     * from the given tail node to the given head node.  This edge is 
+     * from the given tail node to the given head node.  This edge is
      * anchored to it's head and tail node, and does not have a regular edge
      * interactor.
-     
-    public void addAnchoredEdge(Edge edge, Node head, Node tail, 
+
+    public void addAnchoredEdge(Edge edge, Node head, Node tail,
 				double x, double y) {
         Figure hf = (Figure) head.getVisualObject();
         Figure tf = (Figure) tail.getVisualObject();
@@ -98,7 +98,7 @@ public class EditorGraphController extends ViewerGraphController {
 	getGraphImpl().setEdgeTail(edge, tail);
 	headSite = getConnectorTarget().getHeadSite(hf, x, y);
 	getGraphImpl().setEdgeHead(edge, head);
-        
+
         Connector ef = getEdgeRenderer().render(edge, tailSite, headSite);
 
         // Add to the view
@@ -125,12 +125,12 @@ public class EditorGraphController extends ViewerGraphController {
         _relationCreator = new RelationCreator();
         _relationCreator.setMouseFilter(_controlFilter);
         pane.getBackgroundEventLayer().addInteractor(_relationCreator);
-        
+
         // Create a listener that creates new terminals
 	//_portCreator = new PortCreator();
         //_portCreator.setMouseFilter(_controlFilter);
         //pane.getBackgroundEventLayer().addInteractor(_portCreator);
-        
+
         // Create the interactor that drags new edges.
 	_linkCreator = new LinkCreator();
 	_linkCreator.setMouseFilter(_controlFilter);
@@ -142,14 +142,14 @@ public class EditorGraphController extends ViewerGraphController {
 	//linkCreator2.setMouseFilter(new MouseFilter(InputEvent.BUTTON1_MASK,0));
 	//((CompositeInteractor)getEntityController().getPortController().getNodeInteractor()).addInteractor(_linkCreator);
 
-	
+
         /*        // Create the interactor that drags new edges.
 	_connectedVertexCreator = new ConnectedVertexCreator();
         _connectedVertexCreator.setMouseFilter(_shiftFilter);
         getNodeInteractor().addInteractor(_connectedVertexCreator);
-        */      
+        */
     }
-    
+
     ///////////////////////////////////////////////////////////////
     //// PortCreator
 
@@ -161,12 +161,12 @@ public class EditorGraphController extends ViewerGraphController {
         public void mousePressed(LayerEvent e) {
             System.out.println("Port Creator");
 	    Graph graph = getGraph();
-	    CompositeEntity toplevel = 
+	    CompositeEntity toplevel =
 		(CompositeEntity)graph.getSemanticObject();
 	    Port port;
-	    if(toplevel == null) 
+	    if(toplevel == null)
 		port = new Port();
-	    else { 
+	    else {
 		try {
 		    port = toplevel.newPort(toplevel.uniqueName("port"));
 		}
@@ -190,14 +190,14 @@ public class EditorGraphController extends ViewerGraphController {
         public void mousePressed(LayerEvent e) {
             System.out.println("Relation Creator");
 	    Graph graph = getGraph();
-	    CompositeEntity toplevel = 
+	    CompositeEntity toplevel =
 		(CompositeEntity)graph.getSemanticObject();
 	    Relation relation = null;
             Vertex vertex = null;
-            try {                
-                relation = 
+            try {
+                relation =
                     toplevel.newRelation(toplevel.uniqueName("relation"));
-                vertex = new Vertex(relation, 
+                vertex = new Vertex(relation,
                         relation.uniqueName("vertex"));
             }
             catch (Exception ex) {
@@ -219,25 +219,25 @@ public class EditorGraphController extends ViewerGraphController {
             Figure source = e.getFigureSource();
 	    Node sourcenode = (Node) source.getUserObject();
 	    NamedObj sourceObject = (NamedObj) sourcenode.getSemanticObject();
-   
+
 	    FigureLayer layer = (FigureLayer) e.getLayerSource();
-	    
+
 	    // Create a new edge
-	    CompositeEntity container = 
+	    CompositeEntity container =
 		(CompositeEntity)getGraph().getSemanticObject();
-	    
+
 	    // Add it to the editor
 	    Edge edge = getLinkController().addEdge(null,
 				    sourcenode,
 				    ConnectorEvent.TAIL_END,
 				    e.getLayerX(),
 				    e.getLayerY());
-	    
+
 	    // Add it to the selection so it gets a manipulator, and
 	    // make events go to the grab-handle under the mouse
 	    Figure ef = (Figure) edge.getVisualObject();
-	    getSelectionModel().addSelection(ef);	
-	    ConnectorManipulator cm = 
+	    getSelectionModel().addSelection(ef);
+	    ConnectorManipulator cm =
 		(ConnectorManipulator) ef.getParent();
 	    GrabHandle gh = cm.getHeadHandle();
 	    layer.grabPointer(e, gh);
@@ -255,12 +255,12 @@ public class EditorGraphController extends ViewerGraphController {
 	    Figure source = e.getFigureSource();
 	    Node sourcenode = (Node) source.getUserObject();
 	    NamedObj sourceObject = (NamedObj) sourcenode.getSemanticObject();
-	    
+
             if((sourceObject instanceof Vertex)) {
 		Relation relation = (Relation)sourceObject.getContainer();
 		Vertex vertex = null;
 		try {
-		    vertex = new Vertex(relation, 
+		    vertex = new Vertex(relation,
                             relation.uniqueName("vertex"));
                 }
 		catch (Exception ex) {
@@ -276,7 +276,7 @@ public class EditorGraphController extends ViewerGraphController {
 		//ConnectorEvent.TAIL_END,
 		//	e.getLayerX(),
 			//e.getLayerY());
-		
+
 		// Add it to the selection so it gets a manipulator, and
 		// make events go to the grab-handle under the mouse
 		Figure nf = (Figure) node.getVisualObject();
@@ -315,7 +315,7 @@ public class EditorGraphController extends ViewerGraphController {
             InputEvent.BUTTON1_MASK,
             InputEvent.CTRL_MASK);
 
-    /** The filter for shift operations 
+    /** The filter for shift operations
      */
     private MouseFilter _shiftFilter = new MouseFilter (
             InputEvent.BUTTON1_MASK,

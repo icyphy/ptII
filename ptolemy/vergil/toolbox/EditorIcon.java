@@ -46,7 +46,7 @@ import javax.swing.SwingConstants;
 /**
 
 An icon is the graphical representation of a schematic entity.
-EditorIcons are stored hierarchically in icon libraries.   Every icon has a 
+EditorIcons are stored hierarchically in icon libraries.   Every icon has a
 name, along with a graphical representation.
 
 @author Steve Neuendorffer, John Reekie
@@ -55,21 +55,21 @@ name, along with a graphical representation.
 public class EditorIcon extends Icon {
 
     /**
-     * Create a new icon with the name "_icon" in the given container. 
+     * Create a new icon with the name "_icon" in the given container.
      * By default, the icon contains no graphic
      * representations.
      */
-    public EditorIcon (NamedObj container) 
+    public EditorIcon (NamedObj container)
         throws IllegalActionException, NameDuplicationException {
         this(container, "_icon");
     }
 
     /**
-     * Create a new icon with the given name in the given container. 
+     * Create a new icon with the given name in the given container.
      * By default, the icon contains no graphic
      * representations.
      */
-    public EditorIcon (NamedObj container, String name) 
+    public EditorIcon (NamedObj container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -77,7 +77,7 @@ public class EditorIcon extends Icon {
     /**
      * Create a figure based on this icon.  The figure will be a
      * Composite Figure with the figure returned by createBackgroundFigure
-     * as its background.  
+     * as its background.
      */
     public Figure createFigure() {
 	Figure background = createBackgroundFigure();
@@ -88,7 +88,7 @@ public class EditorIcon extends Icon {
         label.setSize(10);
 	label.setPadding(1);
 	label.setAnchor(SwingConstants.SOUTH_WEST);
-	
+
 	label.translateTo(backBounds.getX(),backBounds.getY());
         ((CompositeFigure)figure).add(label);
         return figure;
@@ -101,7 +101,7 @@ public class EditorIcon extends Icon {
 	return _createDefaultBackgroundFigure();
     }
 
-    /** 
+    /**
      * The default background figure, if nothing else is available.
      */
     protected Figure _createDefaultBackgroundFigure() {

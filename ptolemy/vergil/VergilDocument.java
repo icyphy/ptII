@@ -108,7 +108,7 @@ public class VergilDocument extends AbstractDocument {
     }
 
     /** Save the document to the current file.
-     * 
+     *
      * @throws Exception  If there is no file, or if the I/O operation failed.
      */
     public void save () throws Exception {
@@ -142,7 +142,7 @@ public class VergilDocument extends AbstractDocument {
     }
 
     public void setGraph(CompositeEntity toplevel) {
-	_graph = toplevel; 
+	_graph = toplevel;
     }
 
     /** Print information about the graph document
@@ -155,8 +155,8 @@ public class VergilDocument extends AbstractDocument {
             + ", url = " + getURL()
             + "]\n" + _graph.exportMoML();
     }
- 
-    /** 
+
+    /**
      * A factory for vergil documents.
      */
     public static class Factory implements DocumentFactory {

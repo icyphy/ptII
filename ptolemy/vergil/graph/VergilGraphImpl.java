@@ -41,7 +41,7 @@ import java.util.*;
 //// VergilGraphImpl
 /**
 The graph implementation for ptolemy graphs.  This class represents the
-ptolemy clustered graphs within basic graphs of the diva.graph.model 
+ptolemy clustered graphs within basic graphs of the diva.graph.model
 package.  Currently, only flat graphs are supported.
 @author Steve Neuendorffer
 @version $Id$
@@ -52,11 +52,11 @@ public class VergilGraphImpl extends BasicGraphImpl {
      */
     public void addNode(Node n, Graph parent) {
 	super.addNode(n, parent);
-	CompositeEntity container = 
+	CompositeEntity container =
 	    (CompositeEntity)parent.getSemanticObject();
 	NamedObj object = (NamedObj)n.getSemanticObject();
-	if((object == null) || (container == null)) 
-	    return;	
+	if((object == null) || (container == null))
+	    return;
 	if(object instanceof Port) {
 	    Port port = (Port)object;
 	    try {
@@ -64,7 +64,7 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	    } catch (Exception ex) {
 		ex.printStackTrace();
 		throw new GraphException(ex.getMessage());
-	    }    
+	    }
 	} else if(object instanceof Icon) {
 	    Icon icon = (Icon)object;
 	    ComponentEntity entity = (ComponentEntity)icon.getContainer();
@@ -76,7 +76,7 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	    }
 	} else if(object instanceof Vertex) {
             Vertex vertex = (Vertex) object;
-            ComponentRelation relation = 
+            ComponentRelation relation =
                 (ComponentRelation)vertex.getContainer();
 	    try {
 		relation.setContainer(container);
@@ -84,7 +84,7 @@ public class VergilGraphImpl extends BasicGraphImpl {
 		ex.printStackTrace();
 		throw new GraphException(ex.getMessage());
 	    }
-	}    
+	}
     }
 
     /**
@@ -93,8 +93,8 @@ public class VergilGraphImpl extends BasicGraphImpl {
     public void removeNode(Node n) {
         super.removeNode(n);
 	NamedObj object = (NamedObj)n.getSemanticObject();
-	if((object == null)) 
-	    return;	
+	if((object == null))
+	    return;
 	if(object instanceof Port) {
 	    Port port = (Port)object;
 	    try {
@@ -103,7 +103,7 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	    } catch (Exception ex) {
 		ex.printStackTrace();
 		throw new GraphException(ex.getMessage());
-	    }    
+	    }
 	} else if(object instanceof Icon) {
 	    Icon icon = (Icon)object;
 	    ComponentEntity entity = (ComponentEntity)icon.getContainer();
@@ -120,7 +120,7 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	    }
 	} else if(object instanceof Vertex) {
             Vertex vertex = (Vertex) object;
-            ComponentRelation relation = 
+            ComponentRelation relation =
                 (ComponentRelation)vertex.getContainer();
 	    try {
                 relation.unlinkAll();
@@ -133,20 +133,20 @@ public class VergilGraphImpl extends BasicGraphImpl {
             throw new GraphException("removing unknown object:" + object);
         }
     }
-       
+
 
     /**
      * Return a new instance of a BasicCompositeNode with the given
      * semantic object.
      */
     public CompositeNode createCompositeNode(Object semanticObject) {
-	BasicCompositeNode n = 
+	BasicCompositeNode n =
 	    (BasicCompositeNode) super.createCompositeNode(semanticObject);
 	if(semanticObject instanceof Icon) {
 	    Icon icon = (Icon) semanticObject;
 	    Entity entity = (Entity) icon.getContainer();
 	    if(entity == null)
-		throw new GraphException("Icon must be contained " + 
+		throw new GraphException("Icon must be contained " +
 					 "in an entity");
 	    Iterator ports = entity.portList().iterator();
 	    while(ports.hasNext()) {
@@ -154,7 +154,7 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	        BasicNode portNode = (BasicNode) createNode(port);
 		n.add(portNode);
 	    }
-	}	
+	}
         return n;
     }
 
@@ -177,14 +177,14 @@ public class VergilGraphImpl extends BasicGraphImpl {
 			icon = new EditorIcon(entity);
 		    }
 		    catch (Exception e) {
-			throw new InternalErrorException("Failed to create " + 
+			throw new InternalErrorException("Failed to create " +
 			    "icon, even though one does not exist:" +
 							 e.getMessage());
 		    }
 		}
 		addNode(createCompositeNode(icon), g);
 	    }
-	    
+
 	    Iterator relations = toplevel.relationList().iterator();
 	    while(relations.hasNext()) {
 		Relation relation = (Relation)relations.next();
@@ -204,7 +204,7 @@ public class VergilGraphImpl extends BasicGraphImpl {
 		// If there are no vertecies, then give the relation a vertex
 		if(rootVertex == null) {
 		    try {
-			Vertex v = new Vertex(relation, 
+			Vertex v = new Vertex(relation,
 					      relation.uniqueName("Vertex"));
 			rootVertex = createNode(v);
 		    }
@@ -215,15 +215,15 @@ public class VergilGraphImpl extends BasicGraphImpl {
 		    }
 		    addNode(rootVertex, g);
 		}
-		
+
 		// FIXME connect everything to the root for now.
-		Enumeration links = relation.linkedPorts();	
+		Enumeration links = relation.linkedPorts();
 		while(links.hasMoreElements()) {
                     Port port = (Port)links.nextElement();
-                    // Figure out which node to put the edge to.  
+                    // Figure out which node to put the edge to.
 		    // this is a little ugly.
 		    Node foundNode = null;
-		    Iterator nodes = g.nodes();		    
+		    Iterator nodes = g.nodes();
 		    while(nodes.hasNext() && foundNode == null) {
 			Node node = (Node)nodes.next();
                         if(node.getSemanticObject().equals(port)) {
@@ -233,7 +233,7 @@ public class VergilGraphImpl extends BasicGraphImpl {
                             Iterator portNodes = ((CompositeNode)node).nodes();
                             while(portNodes.hasNext() && foundNode == null) {
                                 Node portNode = (Node)portNodes.next();
-                                if(portNode.getSemanticObject().equals(port)) 
+                                if(portNode.getSemanticObject().equals(port))
                                     foundNode = portNode;
                             }
                         }
@@ -246,7 +246,7 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	}
         return g;
     }
-    
+
     /**
      * Set the edge's head to the given node.
      */
@@ -288,7 +288,7 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	    obj = container.getAttribute(name);
 	}
 	return name;
-    }    
+    }
 
     private void _findObjectsAndUnlink(Node head, Node tail) {
 	Port port;
@@ -307,11 +307,11 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	    relation = (Relation)vertex.getContainer();
 	} else {
 	    throw new GraphException("Trying to link port to relation, " +
-                    "but head is " + head.getSemanticObject() + 
+                    "but head is " + head.getSemanticObject() +
                     " and tail is " + tail.getSemanticObject());
 	}
 	port.unlink(relation);
-	
+
     }
 
     private void _findObjectsAndLink(Node head, Node tail) {
@@ -331,7 +331,7 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	    relation = (Relation)vertex.getContainer();
 	} else {
 	    throw new GraphException("Trying to link port to relation, " +
-                    "but head is " + head.getSemanticObject() + 
+                    "but head is " + head.getSemanticObject() +
                     " and tail is " + tail.getSemanticObject());
 	}
 	try {
@@ -340,6 +340,6 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	catch (IllegalActionException ex) {
 	    ex.printStackTrace();
 	    throw new GraphException(ex.getMessage());
-	}	    
+	}
     }
 }

@@ -55,8 +55,8 @@ import ptolemy.moml.*;
 //////////////////////////////////////////////////////////////////////////
 //// MoMLViewerApplet
 /**
-A moml applet with visualization of the hierarchy.  In addition to the 
-features of MoMLApplet, this class adds a JModelViewer to the applet which 
+A moml applet with visualization of the hierarchy.  In addition to the
+features of MoMLApplet, this class adds a JModelViewer to the applet which
 is a view of the toplevel structure of the model.
 
 @see MoMLApplet

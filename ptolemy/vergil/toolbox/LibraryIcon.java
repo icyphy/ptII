@@ -47,7 +47,7 @@ import diva.canvas.toolbox.*;
 
 An icon is the graphical representation of a schematic entity.
 Some generic icons are stored in icon libraries to serve as generic templates.
-This icon references such an icon as its pattern. 
+This icon references such an icon as its pattern.
 
 If the icon is never configured, then it will use a default figure for its
 pattern.
@@ -62,15 +62,15 @@ public class LibraryIcon extends PatternIcon implements Configurable {
      * By default, the icon contains no graphic
      * representations.
      */
-    public LibraryIcon (NamedObj container) 
+    public LibraryIcon (NamedObj container)
             throws NameDuplicationException, IllegalActionException {
         this(container, "_icon");
     }
 
     /**
-     * Create a new icon with the name "_icon" in the given container. 
+     * Create a new icon with the name "_icon" in the given container.
      */
-    public LibraryIcon (NamedObj container, String name) 
+    public LibraryIcon (NamedObj container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
 	_iconName = "";
@@ -136,11 +136,11 @@ public class LibraryIcon extends PatternIcon implements Configurable {
      */
     protected String _description(int detail, int indent, int bracket) {
         String result = "";
-        if(bracket == 0) 
+        if(bracket == 0)
             result += super._description(detail, indent, 0);
-        else 
+        else
             result += super._description(detail, indent, 1);
-	//	result += " graphics {\n";	
+	//	result += " graphics {\n";
         //result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";
 

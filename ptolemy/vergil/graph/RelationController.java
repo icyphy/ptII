@@ -39,7 +39,7 @@ import ptolemy.gui.*;
 import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
-import diva.graph.*; 
+import diva.graph.*;
 import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
@@ -64,11 +64,11 @@ import javax.swing.event.*;
 /**
 This class provides interaction with nodes that represent Ptolemy II relations.
 (Or, more specifically, for the verteces that are contained in a relation.)
-Standard selection and movement interaction is 
+Standard selection and movement interaction is
 provided.  In addition, right clicking on the entity will create a context
-menu for the entity. 
+menu for the entity.
 
-@author Steve Neuendorffer 
+@author Steve Neuendorffer
 @version $Id$
 */
 public class RelationController extends LocatableNodeController {
@@ -76,7 +76,7 @@ public class RelationController extends LocatableNodeController {
 	super(controller);
 	setNodeRenderer(new RelationRenderer());
 	SelectionModel sm = controller.getSelectionModel();
-	SelectionInteractor interactor = 
+	SelectionInteractor interactor =
             (SelectionInteractor) getNodeInteractor();
 	interactor.setSelectionModel(sm);
 	_menuCreator = new MenuCreator(new RelationContextMenuFactory());
@@ -91,20 +91,20 @@ public class RelationController extends LocatableNodeController {
 	    Node sourcenode = (Node) source.getUserObject();
 	    NamedObj object = (NamedObj) sourcenode.getSemanticObject();
 	    return new Menu(object);
-	}    
-	
+	}
+
 	public class Menu extends BasicContextMenu {
 	    public Menu(NamedObj target) {
 		super(target);
 	    }
 	}
     }
-   
+
     public class RelationRenderer implements NodeRenderer {
 	public Figure render(Node n) {
-	    double h = 12.0;            
+	    double h = 12.0;
 	    double w = 12.0;
-	    
+
 	    Polygon2D.Double polygon = new Polygon2D.Double();
 	    polygon.moveTo(w/2, 0);
 	    polygon.lineTo(0, h/2);

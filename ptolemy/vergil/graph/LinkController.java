@@ -38,7 +38,7 @@ import ptolemy.gui.*;
 import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
-import diva.graph.*; 
+import diva.graph.*;
 import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
@@ -65,38 +65,38 @@ This class provides interaction techniques for edges that are to be connected
 between ports and relations.  Standard interaction techniques for an
 undirected edge are allowed.
 
-@author Steve Neuendorffer 
+@author Steve Neuendorffer
 @version $Id$
 */
 public class LinkController extends EdgeController {
     public LinkController(GraphController controller) {
 	super(controller);
 	// Create and set up the target for connectors
-	// This is wierd...  we want 2 targets, one for head and port, 
+	// This is wierd...  we want 2 targets, one for head and port,
 	// one for tail and vertex.
 	ConnectorTarget ct = new LinkTarget();
-	
+
 	setEdgeRenderer(new LinkRenderer());
-	
+
 	// Create and set up the manipulator for connectors
 	EdgeInteractor interactor = (EdgeInteractor)getEdgeInteractor();
 	BasicSelectionRenderer selectionRenderer = (BasicSelectionRenderer)
 	    interactor.getSelectionRenderer();
-	ConnectorManipulator manipulator = (ConnectorManipulator) 
+	ConnectorManipulator manipulator = (ConnectorManipulator)
 	    selectionRenderer.getDecorator();
 	manipulator.setConnectorTarget(ct);
 	//	    manipulator.addConnectorListener(new EdgeDropper());
 	//getEdgeInteractor().setPrototypeDecorator(manipulator);
-	
+
 	//    MouseFilter handleFilter = new MouseFilter(1, 0, 0);
 	//manipulator.setHandleFilter(handleFilter);
-	
+
 	// FIXME links should have context menus as well
-	//	    EdgeInteractor interactor = 
+	//	    EdgeInteractor interactor =
 	//(EdgeInteractor)getEdgeInteractor();
 	//new MenuCreator(interactor);
     }
-    
+
     public class LinkTarget extends PerimeterTarget {
         public boolean accept (Figure f) {
             Object object = f.getUserObject();
@@ -108,17 +108,17 @@ public class LinkController extends EdgeController {
             }
             return false;
         }
-        
+
         public Site getHeadSite (Figure f, double x, double y) {
             if(f instanceof StraightTerminal) {
 		return ((Terminal)f).getConnectSite();
             } else {
                 return super.getHeadSite(f, x, y);
             }
-        }        
+        }
         ConnectorTarget _vertexTarget;
     }
-             
+
     public class LinkRenderer implements EdgeRenderer {
 	/**
          * Render a visual representation of the given edge.

@@ -56,26 +56,26 @@ public class PatternIcon extends EditorIcon {
     /**
      * Create a new icon with the name "_icon" in the given container.
      */
-    public PatternIcon (NamedObj container) 
+    public PatternIcon (NamedObj container)
             throws NameDuplicationException, IllegalActionException {
         this(container, "_icon");
     }
 
     /**
-     * Create a new icon with the name "EditorIcon" in the given container. 
+     * Create a new icon with the name "EditorIcon" in the given container.
      */
-    public PatternIcon (NamedObj container, String name) 
+    public PatternIcon (NamedObj container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
     /**
      * Create a background figure based on this icon.  The background figure
-     * will be painted with each graphic element that this icon contains.  
-     * In this class, return the   
+     * will be painted with each graphic element that this icon contains.
+     * In this class, return the
      */
     public Figure createBackgroundFigure() {
-	if(_pattern == null) 
+	if(_pattern == null)
 	    return _createDefaultBackgroundFigure();
 	else
 	    return _pattern.createBackgroundFigure();
@@ -84,11 +84,11 @@ public class PatternIcon extends EditorIcon {
     public Icon getPattern() {
 	return _pattern;
     }
-    
+
     public void setPattern(EditorIcon icon) {
 	_pattern = icon;
     }
-    
+
     /**
      * Return a string this representing Icon.
      */
@@ -112,15 +112,15 @@ public class PatternIcon extends EditorIcon {
      */
     protected String _description(int detail, int indent, int bracket) {
         String result = "";
-        if(bracket == 0) 
+        if(bracket == 0)
             result += super._description(detail, indent, 0);
-        else 
+        else
             result += super._description(detail, indent, 1);
 	result += " pattern {\n";
-	if(_pattern == null) 
+	if(_pattern == null)
 	    result += _getIndentPrefix(indent + 1) + "null\n";
 	else
-	    result += _getIndentPrefix(indent + 1) + _pattern.toString() + "\n";	    
+	    result += _getIndentPrefix(indent + 1) + _pattern.toString() + "\n";
         result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";
 

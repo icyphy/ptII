@@ -37,7 +37,7 @@ import ptolemy.gui.*;
 import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
-import diva.graph.*; 
+import diva.graph.*;
 import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
@@ -59,13 +59,13 @@ import javax.swing.event.*;
 //////////////////////////////////////////////////////////////////////////
 //// PortController
 /**
- * A Graph Controller for the Ptolemy II schematic editor.  
+ * A Graph Controller for the Ptolemy II schematic editor.
  * Terminal creation: Ctrl-button 1
  * Edge creation: Ctrl-Button 1 Drag
  * Entity creation: Shift-Button 1
  * Edges can connect to Terminals, but not entities.
  *
- * @author Steve Neuendorffer 
+ * @author Steve Neuendorffer
  * @version $Id$
  */
 
@@ -75,14 +75,14 @@ public class PortController extends NodeController {
 	setNodeRenderer(new PortRenderer());
 	SelectionModel sm = controller.getSelectionModel();
 	NodeInteractor interactor = new NodeInteractor(sm);
-	setNodeInteractor(interactor);	
+	setNodeInteractor(interactor);
     }
-    
+
 
     public class PortRenderer implements NodeRenderer {
 	public Figure render(Node n) {
 	    Figure figure = new BasicRectangle(-2, -2, 4, 4, Color.black);
 	    return figure;
 	}
-    }    
+    }
 }

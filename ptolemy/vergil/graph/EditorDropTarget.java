@@ -48,9 +48,9 @@ import ptolemy.vergil.toolbox.*;
 //////////////////////////////////////////////////////////////////////////
 //// EditorDropTarget
 /**
-This class provides drag-and-drop support.  
-When this drop target receives a Transferable object 
-containing a ptolemy entity, it clones the entity, and 
+This class provides drag-and-drop support.
+When this drop target receives a Transferable object
+containing a ptolemy entity, it clones the entity, and
 adds it to the given graph.
 
 @author Steve Neuendorffer
@@ -85,7 +85,7 @@ public class EditorDropTarget extends DropTarget {
             }
             else {
                 dtde.rejectDrag();
-            }                
+            }
         }
 
         /**
@@ -125,14 +125,14 @@ public class EditorDropTarget extends DropTarget {
             else {
                 dtde.rejectDrop();
             }
-            
+
             if(data == null) {
                 System.out.println("Drop failure"); //DEBUG
                 dtde.dropComplete(false); //failure!
             }
             else {
                 Point p = dtde.getLocation();
-                GraphController gc = 
+                GraphController gc =
 		    ((JGraph)getComponent()).getGraphPane().getGraphController();
 		Icon sourceIcon = (Icon) data.getSemanticObject();
                 NamedObj sourceEntity = (NamedObj) sourceIcon.getContainer();

@@ -38,7 +38,7 @@ import ptolemy.gui.*;
 import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
-import diva.graph.*; 
+import diva.graph.*;
 import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
@@ -61,11 +61,11 @@ import javax.swing.event.*;
 //////////////////////////////////////////////////////////////////////////
 //// EntityPortController
 /**
-A controller for ports of entities.  Left clicking selects the port, but 
+A controller for ports of entities.  Left clicking selects the port, but
 dragging is not allowed (since the ports should remain attached to their
 entity).  Right clicking on the port will create a context menu for the port.
 
-@author Steve Neuendorffer 
+@author Steve Neuendorffer
 @version $Id$
 */
 public class EntityPortController extends NodeController {
@@ -79,12 +79,12 @@ public class EntityPortController extends NodeController {
 	_menuCreator = new MenuCreator(new PortContextMenuFactory());
 	interactor.addInteractor(_menuCreator);
     }
-    
+
 
     public class EntityPortRenderer implements NodeRenderer {
 	public Figure render(Node n) {
             Port port = (Port) n.getSemanticObject();
-          
+
 	    Polygon2D.Double polygon = new Polygon2D.Double();
 	    polygon.moveTo(-4, 4);
 	    polygon.lineTo(4, 0);
@@ -93,11 +93,11 @@ public class EntityPortController extends NodeController {
 	    Figure figure = new BasicFigure(polygon, Color.black);
 	    return figure;
 	}
-    }    
+    }
 
-    /** Given a node, add it to the given parent.  
+    /** Given a node, add it to the given parent.
      */
-    public void drawNode(Node node, CompositeNode parentNode, int direction, 
+    public void drawNode(Node node, CompositeNode parentNode, int direction,
 			double fraction) {
         // Create a figure for it
 	//System.out.println("adding port");
@@ -105,19 +105,19 @@ public class EntityPortController extends NodeController {
         nf.setInteractor(getNodeInteractor());
         nf.setUserObject(node);
         node.setVisualObject(nf);
-        CompositeFigure parentFigure = 
+        CompositeFigure parentFigure =
 	    (CompositeFigure)parentNode.getVisualObject();
-	BoundsSite site = 
-	    new BoundsSite(parentFigure.getBackgroundFigure(), 0, 
+	BoundsSite site =
+	    new BoundsSite(parentFigure.getBackgroundFigure(), 0,
                     direction, fraction);
 
-	nf.translate(site.getX() - 
+	nf.translate(site.getX() -
                 parentFigure.getBackgroundFigure().getBounds().getX(),
-                site.getY() - 
+                site.getY() -
                 parentFigure.getBackgroundFigure().getBounds().getY());
 	parentFigure.add(nf);;
     }
-    
+
     /**
      * The factory for creating context menus on entities.
      */
@@ -126,10 +126,10 @@ public class EntityPortController extends NodeController {
 	    Node sourcenode = (Node) source.getUserObject();
 	    NamedObj object = (NamedObj) sourcenode.getSemanticObject();
 	    return new Menu(object);
-	}    
-	
+	}
+
 	public class Menu extends BasicContextMenu {
-	    public Menu(NamedObj target) {	    
+	    public Menu(NamedObj target) {
 		super(target);
 		if(target instanceof IOPort) {
 		    IOPort port = (IOPort)target;
@@ -139,7 +139,7 @@ public class EntityPortController extends NodeController {
 		    checkBox = new JCheckBox("Output", port.isOutput());
 		    add(checkBox);
 		    checkBox = new JCheckBox("Multiport", port.isMultiport());
-		    add(checkBox);		
+		    add(checkBox);
 		}
 	    }
 	}

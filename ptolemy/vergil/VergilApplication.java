@@ -73,27 +73,27 @@ import javax.swing.filechooser.FileFilter;
 Vergil is the user interface for Ptolemy II.
 
 @author Steve Neuendorffer
-@contributor John Reekie 
+@contributor John Reekie
 @version $Id$
 */
 public class VergilApplication extends MDIApplication {
-    /** 
-     * Construct a new graph editing application. 
+    /**
+     * Construct a new graph editing application.
      */
     public VergilApplication () {
         super();
 
         // Create local objects
-	JTreePane treepane = new JTreePane(".");	
+	JTreePane treepane = new JTreePane(".");
         DesktopFrame frame = new DesktopFrame(this, treepane);
         setApplicationFrame(frame);
-       
+
         // Create and initialize the storage policy
         DefaultStoragePolicy storage = new DefaultStoragePolicy();
         setStoragePolicy(storage);
 	FileFilter ff = new FileFilter() {
 	    public boolean accept (File file) {
-		if(file.isDirectory()) { 
+		if(file.isDirectory()) {
 		    return true;
 		}
 		else {
@@ -105,7 +105,7 @@ public class VergilApplication extends MDIApplication {
 		return "XML files";
 	    }
 	};
-        JFileChooser fc;      
+        JFileChooser fc;
         fc = storage.getOpenFileChooser();
         fc.addChoosableFileFilter(ff);
         fc.setFileFilter(ff);
@@ -120,16 +120,16 @@ public class VergilApplication extends MDIApplication {
         // Initialize the menubar, toolbar, and palettes
         initializeMenuBar(frame.getJMenuBar());
         initializeToolBar(frame.getJToolBar());
-        initializePalette();     
-      
+        initializePalette();
+
         Icon icon = getResources().getImageIcon("GraphIconImage");
         Image iconImage = getResources().getImage("GraphIconImage");
-	
+
         frame.setFrameIcon(icon);
         frame.setIconImage(iconImage);
-		
+
         setCurrentDocument(null);
-        
+
         // Swing is stupid and adds components with the cross-platform UI and
         // not the system UI.
         SwingUtilities.updateComponentTreeUI(treepane);
@@ -149,26 +149,26 @@ public class VergilApplication extends MDIApplication {
      */
     public JComponent createView (Document d) {
         //FIXME
-	GraphPane pane = new GraphPane(new EditorGraphController(), 
+	GraphPane pane = new GraphPane(new EditorGraphController(),
 				       new VergilGraphImpl());
 	JGraph jgraph = new JGraph(pane);
 	new EditorDropTarget(jgraph);
-        GraphController controller = 
+        GraphController controller =
 	    jgraph.getGraphPane().getGraphController();
-        
-	CompositeEntity entity = 
+
+	CompositeEntity entity =
 	    (CompositeEntity) ((VergilDocument)d).getGraph();
 	GraphImpl impl = controller.getGraphImpl();
 	Graph graph = impl.createGraph(entity);
-	                
+
         // FIXME layout parts of graph that don't have a location.
 
         // Set and draw the new graph
         controller.setGraph(graph);
 
 	ActionListener deletionListener = new DeletionListener();
-        jgraph.registerKeyboardAction(deletionListener, "Delete", 
-	    KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), 
+        jgraph.registerKeyboardAction(deletionListener, "Delete",
+	    KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
 	    JComponent.WHEN_IN_FOCUSED_WINDOW);
         jgraph.setRequestFocusEnabled(true);
         jgraph.addMouseListener(new MouseFocusMover());
@@ -182,7 +182,7 @@ public class VergilApplication extends MDIApplication {
         public void actionPerformed(ActionEvent e) {
             JGraph jgraph = (JGraph) e.getSource();
             GraphPane graphPane = jgraph.getGraphPane();
-            EditorGraphController controller = 
+            EditorGraphController controller =
                 (EditorGraphController)graphPane.getGraphController();
             GraphImpl impl = controller.getGraphImpl();
             SelectionModel model = controller.getSelectionModel();
@@ -191,25 +191,25 @@ public class VergilApplication extends MDIApplication {
             // then removing the nodes might remove some of the edges.
             for(int i = 0; i < selection.length; i++) {
 		if(selection[i] instanceof Figure) {
-		    Object userObject = 
+		    Object userObject =
                         ((Figure)selection[i]).getUserObject();
 		    if(userObject instanceof Edge) {
                        model.removeSelection(selection[i]);
 		       Edge edge = (Edge) userObject;
                         controller.removeEdge(edge);
-		    } 
-                } 
+		    }
+                }
             }
 	    for(int i = 0; i < selection.length; i++) {
 		if(selection[i] instanceof Figure) {
-		    Object userObject = 
+		    Object userObject =
                         ((Figure)selection[i]).getUserObject();
-		   if(userObject instanceof Node) {	
+		   if(userObject instanceof Node) {
                         model.removeSelection(selection[i]);
 			Node node = (Node) userObject;
 			controller.removeNode(node);
-                    } 
-                } 
+                    }
+                }
             }
 	}
     }
@@ -217,16 +217,16 @@ public class VergilApplication extends MDIApplication {
     /** Grab the keyboard focus when the component that this listener is
      *  attached to is clicked on.
      */
-    public class MouseFocusMover extends MouseAdapter {        
+    public class MouseFocusMover extends MouseAdapter {
         public void mouseClicked(
                 MouseEvent mouseEvent) {
-	    Component component = 
+	    Component component =
                 mouseEvent.getComponent();
-                       
+
             if (!component.hasFocus()) {
                 component.requestFocus();
             }
-        }        
+        }
     }
 
     /** Redisplay a document after it appears on the screen. This method
@@ -238,7 +238,7 @@ public class VergilApplication extends MDIApplication {
         JGraph jgraph = (JGraph) c;
         //       redoLayout(jgraph, (String) _layoutComboBox.getSelectedItem());
     }
-   
+
     /** Return the entity library associated with this Vergil
      */
     public CompositeEntity getEntityLibrary () {
@@ -267,25 +267,25 @@ public class VergilApplication extends MDIApplication {
 	//System.out.println("Icons = " + _iconLibrary.description());
 
         CompositeEntity lib = getEntityLibrary();
- 
+
 	// We have "" because that is the name that was given in the
 	// treepane constructor.
 	//System.out.println("lib = " + lib.description());
-        createTreeNodes(pane, lib.getFullName(), lib);	
-	
+        createTreeNodes(pane, lib.getFullName(), lib);
+
 	JSplitPane splitPane = frame.getSplitPane();
 
 	// There are differences in the way swing acts in JDK1.2 and 1.3
 	// The way to get it to work with both is to set
-	// the preferred size along with the minimum size.   JDK1.2 has a 
+	// the preferred size along with the minimum size.   JDK1.2 has a
 	// bug where the preferred size may be inferred to be less than the
-	// minimum size when the pane is first created.  
+	// minimum size when the pane is first created.
 	pane.setMinimumSize(new Dimension(150,150));
 	((JComponent)pane.getTopComponent()).
 	    setMinimumSize(new Dimension(150,150));
 	((JComponent)pane.getTopComponent()).
 	    setPreferredSize(new Dimension(150,150));
-	splitPane.validate();	
+	splitPane.validate();
     }
 
     public void createTreeNodes(JTreePane pane,
@@ -297,10 +297,10 @@ public class VergilApplication extends MDIApplication {
             if(!(entity instanceof CompositeEntity)) {
 		GraphPalette palette = (GraphPalette)
 		    pane.getComponentAt(library.getFullName());
-		ptolemy.moml.Icon icon = 
+		ptolemy.moml.Icon icon =
 		    (ptolemy.moml.Icon) entity.getAttribute("_icon");
-                palette.addNode(icon, 
-                        60, 50 + (i++) * 50);     
+                palette.addNode(icon,
+                        60, 50 + (i++) * 50);
             }
 
             if(entity instanceof CompositeEntity) {
@@ -310,7 +310,7 @@ public class VergilApplication extends MDIApplication {
                         (CompositeEntity)entity);
 		palette.setMinimumSize(new Dimension(200, 200));
             }
-        }	
+        }
     }
 
     public RelativeBundle getGUIResources() {
@@ -350,7 +350,7 @@ public class VergilApplication extends MDIApplication {
 
         action = DefaultActions.saveAsAction(this);
         addAction(action);
-        addMenuItem(menuFile, action, 'A', 
+        addMenuItem(menuFile, action, 'A',
                 "Save the current graph document to a different file");
 
         menuFile.addSeparator();
@@ -382,18 +382,18 @@ public class VergilApplication extends MDIApplication {
                 VergilDocument d = (VergilDocument)getCurrentDocument();
                 if (d == null) {
                     return;
-                } 
+                }
                 try {
-		    CompositeActor toplevel = 
+		    CompositeActor toplevel =
 		    (CompositeActor) d.getGraph();
 
                     // FIXME there is alot of code in here that is similar
-                    // to code in MoMLApplet and MoMLApplication.  I think 
+                    // to code in MoMLApplet and MoMLApplication.  I think
                     // this should all be in ModelPane.
-                    // FIXME set the Director.  This is a hack, but it's the 
+                    // FIXME set the Director.  This is a hack, but it's the
                     // Simplest hack.
                     if(toplevel.getDirector() == null) {
-                        ptolemy.domains.sdf.kernel.SDFDirector director = 
+                        ptolemy.domains.sdf.kernel.SDFDirector director =
                             new ptolemy.domains.sdf.kernel.SDFDirector(toplevel.workspace());
 		    //		    _entityLibrary.getEntity(
 		    //	(String)_directorComboBox.getSelectedItem());
@@ -404,7 +404,7 @@ public class VergilApplication extends MDIApplication {
                     // Create a manager.
                     Manager manager = toplevel.getManager();
                     if(manager == null) {
-                        manager = 
+                        manager =
                             new Manager(toplevel.workspace(), "Manager");
                         toplevel.setManager(manager);
                         // manager.addDebugListener(new StreamListener());
@@ -418,7 +418,7 @@ public class VergilApplication extends MDIApplication {
                     }
 
                     ModelPane modelPane = new ModelPane(toplevel);
-                    _executionFrame.getContentPane().add(modelPane, 
+                    _executionFrame.getContentPane().add(modelPane,
                             BorderLayout.NORTH);
                     // Create a panel to place placeable objects.
                     JPanel displayPanel = new JPanel();
@@ -427,7 +427,7 @@ public class VergilApplication extends MDIApplication {
                     modelPane.setDisplayPane(displayPanel);
 
                     // Put placeable objects in a reasonable place
-                    for(Iterator i = toplevel.deepEntityList().iterator(); 
+                    for(Iterator i = toplevel.deepEntityList().iterator();
                         i.hasNext();) {
                         Object o = i.next();
                         if(o instanceof Placeable) {
@@ -435,13 +435,13 @@ public class VergilApplication extends MDIApplication {
                                     displayPanel);
                         }
                     }
-                    
+
                     if(_executionFrame != null) {
                         _executionFrame.setVisible(true);
                     }
-		    
+
                     //                    manager.startRun();
-                    
+
 		    final JFrame packframe = _executionFrame;
 		    Action packer = new AbstractAction() {
 			public void actionPerformed(ActionEvent event) {
@@ -450,7 +450,7 @@ public class VergilApplication extends MDIApplication {
 			    packframe.pack();
 			}
 		    };
-		    javax.swing.Timer timer = 
+		    javax.swing.Timer timer =
 		    new javax.swing.Timer(200, packer);
 		    timer.setRepeats(false);
 		    timer.start();
@@ -458,7 +458,7 @@ public class VergilApplication extends MDIApplication {
                     ex.printStackTrace();
                     throw new GraphException(ex.getMessage());
                 }
-                 
+
             }
         };
         addAction(action);
@@ -503,13 +503,13 @@ public class VergilApplication extends MDIApplication {
             }
         });
         tb.add(_layoutComboBox);
-	
+
         //tb.addSeparator();
 
 	//FIXME find these names somehow.
 	_directorComboBox = new JComboBox();
 	dflt = "sdf.director";
-        _directorComboBox.addItem(dflt);        
+        _directorComboBox.addItem(dflt);
         _directorComboBox.setSelectedItem(dflt);
         _directorComboBox.setMaximumSize(_directorComboBox.getMinimumSize());
         _directorComboBox.addItemListener(new ItemListener() {
@@ -535,16 +535,16 @@ public class VergilApplication extends MDIApplication {
         URL iconlibURL = null;
         URL entitylibURL = null;
         try {
-            iconlibURL = getGUIResources().getResource("rootIconLibrary"); 
-            entitylibURL = getGUIResources().getResource("rootEntityLibrary"); 
-				   	    
+            iconlibURL = getGUIResources().getResource("rootIconLibrary");
+            entitylibURL = getGUIResources().getResource("rootEntityLibrary");
+
             MoMLParser parser;
             parser = new MoMLParser();
-	    _iconLibrary = 
-                (CompositeEntity) parser.parse(iconlibURL, 
+	    _iconLibrary =
+                (CompositeEntity) parser.parse(iconlibURL,
                         iconlibURL.openStream());
             LibraryIcon.setIconLibrary(_iconLibrary);
-         
+
             //FIXME: this is bogus  The parser should be reusable.
             parser = new MoMLParser();
             _entityLibrary =
@@ -554,7 +554,7 @@ public class VergilApplication extends MDIApplication {
         catch (Exception e) {
             System.out.println(e);
         }
-    } 
+    }
 
     /** Redo the layout of the given JGraph.
      */
@@ -569,7 +569,7 @@ public class VergilApplication extends MDIApplication {
         } else if(type.equals("Grid layout")) {
 	    layout = new GridAnnealingLayout();
 	} else {
-            layout = new LevelLayout(); 
+            layout = new LevelLayout();
         }
         // Perform the layout and repaint
         try {
@@ -581,8 +581,8 @@ public class VergilApplication extends MDIApplication {
     }
 
     /** Set the given document to be the current document, and raise
-     * the internal window that corresponds to that component.  
-     * In this class, there are some things that we want to enable and 
+     * the internal window that corresponds to that component.
+     * In this class, there are some things that we want to enable and
      * disable if there are no documents present.
      */
     public void setCurrentDocument (Document d) {
@@ -598,30 +598,30 @@ public class VergilApplication extends MDIApplication {
             Action saveAsAction = getAction(DefaultActions.SAVE_AS);
             saveAsAction.setEnabled(true);
         }
-            
+
     }
 
     public class VergilExecutionListener implements ExecutionListener {
 	public VergilExecutionListener() {
 	}
-	
+
 	public void executionError(Manager manager, Exception exception) {
 	    showError(manager.getName(), exception);
 	}
 
 	public void executionFinished(Manager manager) {
-	    
+
 	}
 
 	public void managerStateChanged(Manager manager) {
 	    DesktopFrame frame = (DesktopFrame) getApplicationFrame();
 	    JStatusBar statusBar = frame.getStatusBar();
 	    statusBar.setMessage(manager.getState().getDescription());
-	}	
+	}
     }
 
     /** The frame in which any placeable objects create their output.
-     *  This will be null until a model with something placeable is 
+     *  This will be null until a model with something placeable is
      *  executed.
      */
     private JFrame _executionFrame = null;
@@ -640,13 +640,13 @@ public class VergilApplication extends MDIApplication {
 
     /** The application specific resources
      */
-    private RelativeBundle _guiResources = 
+    private RelativeBundle _guiResources =
     new RelativeBundle("ptolemy.vergil.Library", getClass(), null);
 
     /** The Icon Library
      */
     private CompositeEntity _iconLibrary;
-    
+
     /** The Entity Library
      */
     private CompositeEntity _entityLibrary;

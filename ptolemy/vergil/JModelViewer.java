@@ -40,7 +40,7 @@ import diva.gui.*;
 //// JModelViewer
 /**
 A simple viewer for ptolemy models.
-This class provides interaction similar to Vergil, the schematic editor, 
+This class provides interaction similar to Vergil, the schematic editor,
 but does not allow the topology of the model to be modified.  Parameters
 can still be modified by accessing them through context-menus.
 
@@ -52,15 +52,15 @@ public class JModelViewer extends JGraph {
      */
     public JModelViewer (CompositeEntity entity) {
         super();
-	GraphPane pane = new GraphPane(new ViewerGraphController(), 
+	GraphPane pane = new GraphPane(new ViewerGraphController(),
 				       new VergilGraphImpl());
         setGraphPane(pane);
-        GraphController controller = 
+        GraphController controller =
 	    pane.getGraphController();
 
 	GraphImpl impl = controller.getGraphImpl();
 	Graph graph = impl.createGraph(entity);
-	
+
         // Set and draw the new graph
         controller.setGraph(graph);
     }

@@ -39,7 +39,7 @@ import ptolemy.gui.*;
 import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
-import diva.graph.*; 
+import diva.graph.*;
 import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
@@ -62,18 +62,18 @@ import javax.swing.event.*;
 //////////////////////////////////////////////////////////////////////////
 //// ViewerGraphController
 /**
-A graph controller for the Ptolemy II schematic viewer.  
-This controller allows nodes to be moved and context menus to be created, 
+A graph controller for the Ptolemy II schematic viewer.
+This controller allows nodes to be moved and context menus to be created,
 but does not provide interaction for adding or removing nodes.
-Right-clicking on the background will 
+Right-clicking on the background will
 create a context-sensitive menu for the graph.
 
-@author Steve Neuendorffer 
+@author Steve Neuendorffer
 @version $Id$
 */
 public class ViewerGraphController extends CompositeGraphController {
     /**
-     * Create a new basic controller with default 
+     * Create a new basic controller with default
      * terminal and edge interactors.
      */
     public ViewerGraphController () {
@@ -132,13 +132,13 @@ public class ViewerGraphController extends CompositeGraphController {
 	_selectionDragger.addSelectionInteractor(
 	    (SelectionInteractor)_linkController.getEdgeInteractor());
 
-        // MenuCreator 	
+        // MenuCreator
         _menuCreator = new MenuCreator(new SchematicContextMenuFactory());
 	pane.getBackgroundEventLayer().addInteractor(_menuCreator);
 
-	pane.getBackgroundEventLayer().setConsuming(false);         
+	pane.getBackgroundEventLayer().setConsuming(false);
     }
-    
+
     /**
      * Return the node controller appropriate for the given node.
      */
@@ -147,10 +147,10 @@ public class ViewerGraphController extends CompositeGraphController {
         if(object instanceof Vertex) {
             return _relationController;
         } else if(object instanceof ptolemy.moml.Icon) {
-            return _entityController;  
+            return _entityController;
 	} else if(object instanceof Port) {
             return _portController;
-        } else 
+        } else
             throw new RuntimeException(
                     "Node with unknown semantic object: " + object);
     }
@@ -189,7 +189,7 @@ public class ViewerGraphController extends CompositeGraphController {
     public void setLinkController(LinkController controller) {
         _linkController = controller;
     }
-	
+
     /**
      * The graph that is being displayed.
      */
@@ -200,7 +200,7 @@ public class ViewerGraphController extends CompositeGraphController {
     private SelectionDragger _selectionDragger;
 
     /**
-     * The interactor for creating context sensitive menus on the 
+     * The interactor for creating context sensitive menus on the
      * graph itself.
      */
     private MenuCreator _menuCreator;
@@ -215,20 +215,20 @@ public class ViewerGraphController extends CompositeGraphController {
     public class SchematicContextMenuFactory extends MenuFactory {
 	public JPopupMenu create(Figure figure) {
 	    Graph graph = getGraph();
-	    CompositeEntity object = 
+	    CompositeEntity object =
 		(CompositeEntity) graph.getSemanticObject();
-	    return new Menu(object);		
+	    return new Menu(object);
 	}
 
         public class Menu extends BasicContextMenu {
 	    public Menu(CompositeEntity target) {
-		super(target);		
+		super(target);
 		//FIXME -- implement this.
 		JLabel domain = new JLabel("Domain");
 		add(domain);
 		JLabel director = new JLabel("Director");
 		add(director);
-		
+
 	    }
 	}
     }

@@ -38,7 +38,7 @@ import ptolemy.gui.*;
 import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
-import diva.graph.*; 
+import diva.graph.*;
 import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
@@ -62,12 +62,12 @@ This class provides interaction with nodes that represent Ptolemy II entities.
 (Or, more specifically, with the icon that is contained in an entity.)
 It contains a node controller for the ports that the entity contains, and when
 it draws an entity, it defers to that controller to draw the ports.  The
-figures for ports are automatically placed on the left and right side of the 
-figure for the entity.  Standard selection and movement interaction is 
+figures for ports are automatically placed on the left and right side of the
+figure for the entity.  Standard selection and movement interaction is
 provided.  In addition, right clicking on the entity will create a context
-menu for the entity. 
+menu for the entity.
 
-@author Steve Neuendorffer 
+@author Steve Neuendorffer
 @version $Id$
 */
 public class EntityController extends LocatableNodeController {
@@ -80,16 +80,16 @@ public class EntityController extends LocatableNodeController {
 	super(controller);
 	setNodeRenderer(new EntityRenderer());
 	setPortController(new EntityPortController(controller));
-	
+
 	SelectionModel sm = controller.getSelectionModel();
-        SelectionInteractor interactor = 
+        SelectionInteractor interactor =
             (SelectionInteractor) getNodeInteractor();
 	interactor.setSelectionModel(sm);
 
 	_menuCreator = new MenuCreator(new EntityContextMenuFactory());
 	interactor.addInteractor(_menuCreator);
     }
-    
+
     /** Create a new node with the given semantic object and
      *  add it to the graph.  Draw the node at the given location.
      */
@@ -101,14 +101,14 @@ public class EntityController extends LocatableNodeController {
         // Add to the graph
         controller.getGraphImpl().addNode(node, controller.getGraph());
         Figure nf = drawNode(node);
-	CanvasUtilities.translateTo(nf, x, y);     
+	CanvasUtilities.translateTo(nf, x, y);
         double location[] = new double[2];
         location[0] = x;
-        location[1] = y; 
+        location[1] = y;
         setLocation(node, location);
-        return node;             
+        return node;
     }
-	
+
     /** Draw the node and all the ports contained within the node.
      */
     public Figure drawNode(Node n) {
@@ -119,7 +119,7 @@ public class EntityController extends LocatableNodeController {
 	int inCount = 0;
 	int outCount = 0;
 	int inOutCount = 0;
-                                                  
+
 	Iterator nodes = ((CompositeNode) n).nodes();
 	while(nodes.hasNext()) {
 	    Node portNode = (Node) nodes.next();
@@ -143,10 +143,10 @@ public class EntityController extends LocatableNodeController {
 	}
 
 	int nodeNumber = 0;
-        
-	_createPortFigures((CompositeNode)n, inputs, inCount, 
+
+	_createPortFigures((CompositeNode)n, inputs, inCount,
 			   SwingConstants.WEST);
-	_createPortFigures((CompositeNode)n, outputs, outCount, 
+	_createPortFigures((CompositeNode)n, outputs, outCount,
 			   SwingConstants.EAST);
 	_createPortFigures((CompositeNode)n, inouts, inOutCount,
 			   SwingConstants.SOUTH);
@@ -158,8 +158,8 @@ public class EntityController extends LocatableNodeController {
     public NodeController getPortController() {
 	return _portController;
     }
-    
-    /** 
+
+    /**
      * Remove all the ports in this entity, all the edges connected to those
      * ports and this node.
      */
@@ -184,23 +184,23 @@ public class EntityController extends LocatableNodeController {
 	_portController = (EntityPortController)controller;
     }
 
-    /** Create figures for each node in the node list.  Place them on the 
+    /** Create figures for each node in the node list.  Place them on the
      * side of the composite given by direction.
      * Count must be the number of nodes in the list.
      */
     protected void _createPortFigures(CompositeNode node,
-				   LinkedList nodeList, int count, 
-				   int direction) {        
+				   LinkedList nodeList, int count,
+				   int direction) {
 	int nodeNumber = 0;
-	Iterator nodes = nodeList.iterator();            
-	while(nodes.hasNext()) {	    
+	Iterator nodes = nodeList.iterator();
+	while(nodes.hasNext()) {
 	    nodeNumber ++;
 	    Node portNode = (Node) nodes.next();
-	    _portController.drawNode(portNode, node, direction, 
+	    _portController.drawNode(portNode, node, direction,
 	    		    100.0*nodeNumber/(count+1));
 	}
-    }  
-    
+    }
+
     /**
      * The factory for creating context menus on entities.
      */
@@ -210,15 +210,15 @@ public class EntityController extends LocatableNodeController {
 	    Icon icon = (Icon)sourcenode.getSemanticObject();
 	    NamedObj object = (NamedObj) icon.getContainer();
 	    return new Menu(object);
-	}    
-	
+	}
+
 	public class Menu extends BasicContextMenu {
 	    public Menu(NamedObj target) {
 		super(target);
 	    }
 	}
     }
-	
+
     public class EntityRenderer implements NodeRenderer {
 	public Figure render(Node n) {
 	    Figure figure;

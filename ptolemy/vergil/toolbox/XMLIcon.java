@@ -46,7 +46,7 @@ import diva.util.xml.*;
 /**
 
 An icon is the graphical representation of a schematic entity.
-Icons are stored hierarchically in icon libraries.   Every icon has a 
+Icons are stored hierarchically in icon libraries.   Every icon has a
 name, along with a graphical representation.
 
 This icon is for those based on XML.  If the icon is never configured, then
@@ -62,7 +62,7 @@ public class XMLIcon extends EditorIcon implements Configurable {
      * By default, the icon contains no graphic
      * representations.
      */
-    public XMLIcon (NamedObj container) 
+    public XMLIcon (NamedObj container)
             throws NameDuplicationException, IllegalActionException {
        this(container, "_icon");
     }
@@ -72,16 +72,16 @@ public class XMLIcon extends EditorIcon implements Configurable {
      * By default, the icon contains no graphic
      * representations.
      */
-    public XMLIcon (NamedObj container, String name) 
+    public XMLIcon (NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _graphics = (LinkedList) new LinkedList();
     }
 
    /**
-     * Add a new graphic element to the icon. 
+     * Add a new graphic element to the icon.
      */
-    public void addGraphicElement (GraphicElement g) 
+    public void addGraphicElement (GraphicElement g)
             throws IllegalActionException {
         _graphics.add(g);
     }
@@ -102,14 +102,14 @@ public class XMLIcon extends EditorIcon implements Configurable {
         XmlReader reader = new XmlReader();
         reader.parse(document, in);
         XmlElement root = document.getRoot();
-        
+
         // FIXME this should be a little nicer, but it will work for now.
         Iterator graphics = root.elements();
         while(graphics.hasNext()) {
             XmlElement graphic = (XmlElement)graphics.next();
             GraphicElement g = _createGraphicElement(graphic);
             addGraphicElement(g);
-        }  
+        }
     }
 
     /**
@@ -167,7 +167,7 @@ public class XMLIcon extends EditorIcon implements Configurable {
                     "GraphicElement not found in icon.");
         }
     }
-    
+
     /**
      * Return a string this representing Icon.
      */
@@ -195,17 +195,17 @@ public class XMLIcon extends EditorIcon implements Configurable {
      */
     protected String _description(int detail, int indent, int bracket) {
         String result = "";
-        if(bracket == 0) 
+        if(bracket == 0)
             result += super._description(detail, indent, 0);
-        else 
+        else
             result += super._description(detail, indent, 1);
 	result += " graphics {\n";
 	Enumeration graphicElements = graphicElements();
-        while (graphicElements.hasMoreElements()) { 
+        while (graphicElements.hasMoreElements()) {
             GraphicElement p = (GraphicElement) graphicElements.nextElement();
             result +=  _getIndentPrefix(indent + 1) + p.toString() + "\n";
         }
-	
+
         result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";
 
@@ -221,14 +221,14 @@ public class XMLIcon extends EditorIcon implements Configurable {
         while(children.hasNext()) {
             XmlElement child = (XmlElement)children.next();
             System.out.println("Unrecognized element type = " +
-                    child.getType() + " found in " + 
+                    child.getType() + " found in " +
                     element.getClass().getName());
         }
-        
+
         Iterator attributes = e.attributeNames();
         while(attributes.hasNext()) {
             String n = (String) attributes.next();
-            String v = e.getAttribute(n);        
+            String v = e.getAttribute(n);
             element.setAttribute(n, v);
         }
 
@@ -236,8 +236,8 @@ public class XMLIcon extends EditorIcon implements Configurable {
         return element;
     }
 
-    
-    
+
+
     private LinkedList _graphics;
 }
 

@@ -69,9 +69,9 @@ public class GraphicElement extends Object {
     public Set attributeNameSet() {
         return _attributes.keySet();
     }
-        
-    /** 
-     * Return the type of this graphic element.  
+
+    /**
+     * Return the type of this graphic element.
      * The type is immutably set when the element is created.
      */
     public String getType() {
@@ -88,7 +88,7 @@ public class GraphicElement extends Object {
     }
 
     /**
-     * Return the label of this graphic element. This is 
+     * Return the label of this graphic element. This is
      * primarily useful for textual elements, but may be used for other
      * objects that have a label.
      */
@@ -102,10 +102,10 @@ public class GraphicElement extends Object {
     public PaintedObject getPaintedObject() {
 	String type = getType();
 	String label = getLabel();
-	PaintedObject paintedObject = 
+	PaintedObject paintedObject =
 	    GraphicsParser.createPaintedObject(type, _attributes, label);
 
-	if(paintedObject == null) 
+	if(paintedObject == null)
 	    return GraphicElement._errorObject;
 
         return paintedObject;
@@ -134,8 +134,8 @@ public class GraphicElement extends Object {
         _attributes.put(name, value);
     }
 
-    /** 
-     * Set the label for this graphic element. 
+    /**
+     * Set the label for this graphic element.
      */
     public void setLabel (String name) {
         _label = name;
@@ -154,18 +154,18 @@ public class GraphicElement extends Object {
             String p = (String) names.next();
             result += " {" + p + "=" + getAttribute(p) + "}";
         }
-	
+
         result += "} label {" + getLabel() + "}}";
 
-        return result;       
+        return result;
     }
 
-    private static final PaintedString _errorObject = 
+    private static final PaintedString _errorObject =
 	new PaintedString("ERROR!");
-    
+
     private Map _attributes;
     private String _type;
     private String _label;
 }
 
-    
+

@@ -37,7 +37,7 @@ import ptolemy.gui.*;
 import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
-import diva.graph.*; 
+import diva.graph.*;
 import diva.graph.model.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
@@ -63,15 +63,15 @@ import javax.swing.event.*;
 This node controller provides interaction techniques for nodes that are
 associated with locatable objects.   This is common when the node has some
 concept of its graphical location, but does not know about the figure that it
-is associated with.  This class provides the connection between the 
+is associated with.  This class provides the connection between the
 figure's notion of location and the node's concept of location.
 <p>
-When nodes are drawn, they are automatically placed at the 
+When nodes are drawn, they are automatically placed at the
 coordinate given by the Locatable interface, if that interface is
 implemented by the object attached to the node.  A LocatableNodeDragInteractor
 is used to update the location of the node as the figure moves.
 
-@author Steve Neuendorffer 
+@author Steve Neuendorffer
 @version $Id$
 */
 public class LocatableNodeController extends NodeController {
@@ -88,13 +88,13 @@ public class LocatableNodeController extends NodeController {
         Node node = super.addNode(semanticObject, x, y);
         double location[] = new double[2];
         location[0] = x;
-        location[1] = y; 
+        location[1] = y;
         setLocation(node, location);
         return node;
     }
 
     /** Draw the node at it's location.
-     */    
+     */
     public Figure drawNode(Node n) {
         Figure nf = super.drawNode(n);
         locateFigure(n);
@@ -120,8 +120,8 @@ public class LocatableNodeController extends NodeController {
     public double[] getLocation(Node n) {
         Object object = n.getSemanticObject();
         if(hasLocation(n)) {
-            return ((Locatable) object).getLocation();         
-        } else throw new GraphException("The node " + n + 
+            return ((Locatable) object).getLocation();
+        } else throw new GraphException("The node " + n +
                 "does not have a desired location");
     }
 
@@ -132,11 +132,11 @@ public class LocatableNodeController extends NodeController {
         Object object = n.getSemanticObject();
         if(object instanceof Locatable) {
             ((Locatable)object).setLocation(location);
-        } else throw new GraphException("The node " + n + 
+        } else throw new GraphException("The node " + n +
                 "can not have a desired location");
     }
 
-    /** Move the node's figure to the location specified in the node's 
+    /** Move the node's figure to the location specified in the node's
      *  semantic object, if that object is an instance of Locatable.
      *  If the semantic object is not locatable, then do nothing.
      */
@@ -146,7 +146,7 @@ public class LocatableNodeController extends NodeController {
             double[] location = getLocation(n);
             CanvasUtilities.translateTo(nf, location[0], location[1]);
         }
-    }           
+    }
 }
 
 
