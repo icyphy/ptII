@@ -263,7 +263,7 @@ public class Tableau extends CompositeEntity {
 
     /** Set the top-level window associated with this tableau.
      *  @param frame The top-level window associated with the tableau.
-     *  @throws IllegalActionException If the frame is not acceptable
+     *  @exception IllegalActionException If the frame is not acceptable
      *   (not thrown in this base class).
      */
     public void setFrame(JFrame frame) throws IllegalActionException {
