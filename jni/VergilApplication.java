@@ -110,7 +110,9 @@ public class VergilApplication extends MoMLApplication {
      *  @exception Exception If the configuration cannot be opened.
      */
     protected Configuration _createDefaultConfiguration() throws Exception {
-        return _readConfiguration("ptolemy/configs/vergilConfiguration.xml");
+	URL configurationURL =
+	    new URL("ptolemy/configs/jni/configuration.xml");
+        return _readConfiguration(configurationURL);
     }
 
     /** Return a default Configuration to use when there are no command-line
