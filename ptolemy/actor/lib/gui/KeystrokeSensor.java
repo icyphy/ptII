@@ -1,6 +1,6 @@
 /* An actor which pops up a keystroke-sensing JFrame.
 
- Copyright (c) 1998-2001 The Regents of the University of California.
+ Copyright (c) 1998-2002 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -80,7 +80,7 @@ This actor senses only two keystrokes, control-C (copy) and control-V
 (paste).  This actor is designed to work with SystemClipboard.java<p>
 
 This actor contains a private inner class which generated the JFrame.
-The frame sets up callbacks which react to the keystrokes.  When called, 
+The frame sets up call-backs which react to the keystrokes.  When called, 
 these call the director's fireAtCurrentTime() method.  This causes 
 the director to call fire() on the actor.   The actor then broadcasts 
 tokens from one or both outputs depending on which keystroke(s) have 
@@ -165,10 +165,10 @@ public class KeystrokeSensor extends TypedAtomicActor {
         public MyFrame() {
             if (_debugging) _debug("frame constructor called");
 
-	    // Copy callback
+	    // Copy call-back
             ActionListener myCopyListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-			if (_debugging) _debug("copy callback called");
+			if (_debugging) _debug("copy call-back called");
 			_copyKeyPressed = true;
 			try {
 			    getDirector().fireAtCurrentTime(
@@ -178,11 +178,11 @@ public class KeystrokeSensor extends TypedAtomicActor {
 			            + "Ex calling fireAtCurrentTime");
 			    throw new RuntimeException("-fireAt* C catch-");
 			}
-			if (_debugging) _debug("copy callback completed");
+			if (_debugging) _debug("copy call-back completed");
 		    }
 	    };
 
-	    // Paste callback
+	    // Paste call-back
             ActionListener myPasteListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
 			if (_debugging) _debug("pasteFrom.. has been called");
@@ -204,13 +204,13 @@ public class KeystrokeSensor extends TypedAtomicActor {
             JLabel label = new JLabel("Copy and/or Paste here!");
             getContentPane().add(label);
 
-	    // Paste registration of callback.
+	    // Paste registration of call-back.
             label.registerKeyboardAction(myPasteListener, "Paste",
                     KeyStroke.getKeyStroke(
                     KeyEvent.VK_V, java.awt.Event.CTRL_MASK),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-	    // Copy registration of callback.
+	    // Copy registration of call-back.
             label.registerKeyboardAction(myCopyListener, "Copy",
                     KeyStroke.getKeyStroke(
                     KeyEvent.VK_C, java.awt.Event.CTRL_MASK),

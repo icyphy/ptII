@@ -1,6 +1,6 @@
 /* An actor which pops up a keystroke-sensing JFrame.
 
- Copyright (c) 1998-2001 The Regents of the University of California.
+ Copyright (c) 1998-2002 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -85,7 +85,7 @@ coresponding output.  Upon each key release, the integer 0 is
 output.<p>
 
 This actor contains a private inner class which generated the JFrame.
-The frame sets up callbacks which react to the keystrokes.  When called, 
+The frame sets up call-backs which react to the keystrokes.  When called, 
 these call the director's fireAtCurrentTime() method.  This causes 
 the director to call fire() on the actor.   The actor then broadcasts 
 tokens from one or both outputs depending on which keystroke(s) have 
@@ -221,7 +221,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
         public MyFrame() {
             if (_debugging) _debug("frame constructor called");
 
-	    // up-arrow callbacks
+	    // up-arrow call-backs
             ActionListener myUpPressedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
 			_upKeyPressed = true;
@@ -238,7 +238,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 		    } 
 	    };
 
-	    // left-arrow callbacks
+	    // left-arrow call-backs
             ActionListener myLeftPressedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
 			_leftKeyPressed = true;
@@ -255,7 +255,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 		    } 
 	    };
 
-	    // right-arrow callbacks
+	    // right-arrow call-backs
             ActionListener myRightPressedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
 			_rightKeyPressed = true;
@@ -272,7 +272,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 		    } 
 	    };
 
-	    // down-arrow callbacks
+	    // down-arrow call-backs
             ActionListener myDownPressedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
 			_downKeyPressed = true;
@@ -300,7 +300,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 	    // with the String aCommand inserted to link them together.
 	    // See javax.swing.Jcomponent.registerKeyboardAction().
 
-	    // Registration of up-arrow callbacks.
+	    // Registration of up-arrow call-backs.
             label.registerKeyboardAction(myUpPressedListener, 
                     "UpPressed",
                     KeyStroke.getKeyStroke(
@@ -313,7 +313,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     KeyEvent.VK_UP, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-	    // Registration of left-arrow callbacks.
+	    // Registration of left-arrow call-backs.
             label.registerKeyboardAction(myLeftPressedListener, 
                     "LeftPressed",
                     KeyStroke.getKeyStroke(
@@ -326,7 +326,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     KeyEvent.VK_LEFT, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-	    // Registration of right-arrow callbacks.
+	    // Registration of right-arrow call-backs.
             label.registerKeyboardAction(myRightPressedListener, 
                     "RightPressed",
                     KeyStroke.getKeyStroke(
@@ -339,7 +339,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
                     KeyEvent.VK_RIGHT, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-	    // Registration of down-arrow callbacks.
+	    // Registration of down-arrow call-backs.
             label.registerKeyboardAction(myDownPressedListener, 
                     "DownPressed",
                     KeyStroke.getKeyStroke(
