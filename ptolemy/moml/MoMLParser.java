@@ -216,6 +216,7 @@ public class MoMLParser extends HandlerBase {
                 || elementName.equals("class")
                 || elementName.equals("director")
                 || elementName.equals("entity")
+                || elementName.equals("model")
                 || elementName.equals("port")
                 || elementName.equals("relation")
                 || elementName.equals("rendition")
@@ -223,7 +224,8 @@ public class MoMLParser extends HandlerBase {
             try {
                 _current = (NamedObj)_containers.pop();
             } catch (EmptyStackException ex) {
-                // We are back at the top level.  Ignore.
+                // We are back at the top level.
+                _current = null;
             }
         }
     }
@@ -390,6 +392,16 @@ public class MoMLParser extends HandlerBase {
         }
     }
 
+    /** Reset the MoML parser, forgetting about any previously parsed
+     *  models.
+     */
+    public void reset() {
+        _attributes = new HashMap();
+        _containers = new Stack();
+        _toplevel = null;
+        _current = null;
+    }
+
     /** Resolve an external entity.  If the first argument is the
      *  name of the MoML PUBLIC DTD ("-//UC Berkeley//DTD MoML 1//EN"),
      *  then return a StringReader
@@ -417,10 +429,9 @@ public class MoMLParser extends HandlerBase {
     /** Start a document.  This method is called just before the parser
      *  attempts to read the first entity (the root of the document).
      *  It is guaranteed that this will be the first method called.
+     *  In this implementation, this method does nothing.
      */
     public void startDocument() {
-        _attributes = new HashMap();
-        _toplevel = null;
     }
 
     /** Start an element.
@@ -453,8 +464,11 @@ public class MoMLParser extends HandlerBase {
                 NamedObj newEntity = _createEntity(className, entityName);
                 if (_current != null) {
                     _containers.push(_current);
-                } else {
-                    _toplevel = newEntity;
+                } else if (_toplevel == null) {
+                    // NOTE: Used to set _toplevel to newEntity, but
+                    // this isn't quite right because the entity may have a
+                    // composite name.
+                    _toplevel = (NamedObj)getTopLevel(newEntity);
                 }
                 newEntity.setMoMLElementName("class");
                 _current = newEntity;
@@ -508,8 +522,11 @@ public class MoMLParser extends HandlerBase {
                 // though this is not proper MoML.
                 if (_current != null) {
                     _containers.push(_current);
-                } else {
-                    _toplevel = newEntity;
+                } else if (_toplevel == null) {
+                    // NOTE: Used to set _toplevel to newEntity, but
+                    // this isn't quite right because the entity may have a
+                    // composite name.
+                    _toplevel = (NamedObj)getTopLevel(newEntity);
                 }
                 _current = newEntity;
 
@@ -912,8 +929,9 @@ public class MoMLParser extends HandlerBase {
 
                 // NOTE: While debugging, we print a stack trace here.
                 // This is because XmlException loses it.
-                // System.err.println("******** original error:");
-                // ex.printStackTrace();
+                // FIXME
+                System.err.println("******** original error:");
+                ex.printStackTrace();
 
                 throw new XmlException(msg,
                         _currentExternalEntity(),
@@ -1000,11 +1018,11 @@ public class MoMLParser extends HandlerBase {
     private NamedObj _createEntity(String className, String entityName)
                  throws Exception {
         CompositeEntity container = (CompositeEntity)_current;
-        ComponentEntity previous = _searchForEntity(entityName);
+        ComponentEntity previous = _searchForEntity(entityName, true);
         Class newClass = null;
         ComponentEntity reference = null;
         if (className != null) {
-            reference = _searchForEntity(className);
+            reference = _searchForEntity(className, false);
             if (reference == null) {
 		newClass = Class.forName(className, true, _classLoader);
 	    }
@@ -1015,16 +1033,6 @@ public class MoMLParser extends HandlerBase {
                         "entity named \"" + entityName
                         + "\" exists and is not an instance of "
                         + className);
-            }
-            // Check that the container is the same as that of the
-            // pre-existing instance.
-            if (previous.getContainer() != _current) {
-                throw new XmlException("Sorry: Ptolemy II does not support " +
-                "multiple containment.  Attempt to place " +
-                previous.getFullName() + " into " + _current.getFullName(),
-                _currentExternalEntity(),
-                _parser.getLineNumber(),
-                _parser.getColumnNumber());
             }
             return previous;
         }
@@ -1137,10 +1145,24 @@ public class MoMLParser extends HandlerBase {
         return (ComponentPort)port;
     }
 
+    // Return the top level of the specified object.
+    private Nameable getTopLevel(Nameable obj) {
+        Nameable candidate = obj;
+        Nameable container = obj.getContainer();
+        while (container != null) {
+            candidate = container;
+            container = candidate.getContainer();
+        }
+        return candidate;
+    }
+
     // Given a name that is either absolute (with a leading period)
     // or relative to _current, find a component entity with that name.
-    // Return null if it is not found.
-    private ComponentEntity _searchForEntity(String name) {
+    // Return null if it is not found.  If the second argument is true,
+    // then enforce that the entity found be within the current entity,
+    // if there is one.
+    private ComponentEntity _searchForEntity(String name,
+            boolean enforceContainment) throws XmlException {
         // If the name is absolute, we first have to find a
         // name from the imports that matches.
         if (name.startsWith(".")) {
@@ -1152,29 +1174,46 @@ public class MoMLParser extends HandlerBase {
             } else {
                 topLevelName = name.substring(1, nextPeriod);
             }
-
             // First search the current top level, if the name matches.
-            if (_toplevel != null && topLevelName.equals(_toplevel.getName())) {
+            if (_toplevel != null && _toplevel instanceof ComponentEntity
+                    && topLevelName.equals(_toplevel.getName())) {
                 if (nextPeriod < 1) {
-                    if (_toplevel instanceof ComponentEntity) {
-                        return (ComponentEntity)_toplevel;
+                    if (_current != null && enforceContainment == true) {
+                        throw new XmlException(
+                            "Multiple containment is not supported."
+                            + " Attempt to place " + _toplevel.getFullName()
+                            + " inside " + _current.getFullName(),
+                            _currentExternalEntity(),
+                            _parser.getLineNumber(),
+                            _parser.getColumnNumber());
                     }
+                    return (ComponentEntity)_toplevel;
                 } else {
-                    if (_toplevel instanceof CompositeEntity) {
-                        if (name.length() > nextPeriod + 1) {
-                            ComponentEntity result =
-                                   ((CompositeEntity)_toplevel).getEntity(
-                                   name.substring(nextPeriod + 1));
-                            if (result != null) {
-                                return result;
+                    if (name.length() > nextPeriod + 1) {
+                        ComponentEntity result =
+                                ((CompositeEntity)_toplevel).getEntity(
+                                name.substring(nextPeriod + 1));
+                        if (result != null) {
+                            if (enforceContainment == true && _current != null                                      && !_current.deepContains(result)) {
+                                throw new XmlException(
+                                    "Multiple containment is not supported."
+                                    + " Attempt to place "
+                                    + result.getFullName()
+                                    + " inside " + _current.getFullName(),
+                                    _currentExternalEntity(),
+                                    _parser.getLineNumber(),
+                                    _parser.getColumnNumber());
                             }
+                            return result;
                         }
                     }
                 }
             }
-
             // Next search the imports.
-            if (_imports != null) {
+            // NOTE: We assume that if the result is in the inports,
+            // then we never want to enforce containment.  Thus, we only
+            // search the imports if the second argument is false.
+            if (_imports != null && enforceContainment == false) {
                 Iterator entries = _imports.iterator();
                 while (entries.hasNext()) {
                     Object possibleCandidate = entries.next();
@@ -1203,7 +1242,19 @@ public class MoMLParser extends HandlerBase {
         } else {
             // Name is relative.
             if (_current instanceof CompositeEntity) {
-                return ((CompositeEntity)_current).getEntity(name);
+                ComponentEntity result =
+                       ((CompositeEntity)_current).getEntity(name);
+                if (result != null && enforceContainment == true &&
+                       !_current.deepContains(result)) {
+                    throw new XmlException(
+                            "Multiple containment is not supported."
+                            + " Attempt to place " + result.getFullName()
+                            + " inside " + _current.getFullName(),
+                            _currentExternalEntity(),
+                            _parser.getLineNumber(),
+                            _parser.getColumnNumber());
+                }
+                return result;
             }
             return null;
         }
@@ -1213,7 +1264,7 @@ public class MoMLParser extends HandlerBase {
     ////                         private members                   ////
 
     // Attributes associated with an entity.
-    private Map _attributes;
+    private Map _attributes = new HashMap();
 
     // Base for relative URLs.
     private URL _base;

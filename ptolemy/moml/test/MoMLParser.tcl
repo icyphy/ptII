@@ -72,7 +72,7 @@ set moml_2 "$header
 </model>
 "
 test MoMLParser-1.2 {parse simple model with doc only} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml_2]
     $toplevel exportMoML
 } $moml_2
@@ -84,7 +84,7 @@ set moml_2_1 "$header
 </model>
 "
 test MoMLParser-1.2.1 {parse simple model with HTML markup in CDATA} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml_2_1]
     $toplevel exportMoML
 } $moml_2_1
@@ -96,7 +96,7 @@ set moml_3 "$header
 </class>
 "
 test MoMLParser-1.3 {parse simple class with doc only} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml_3]
     $toplevel exportMoML
 } $moml_3
@@ -109,7 +109,7 @@ set moml_3_1 "$header
 </class>
 "
 test MoMLParser-1.3.1 {parse simple class with two doc tags} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml_3_1]
     $toplevel exportMoML
 } $moml_3_1
@@ -121,7 +121,7 @@ set moml_3_2 "$header
 </class>
 "
 test MoMLParser-1.3.2 {parse class with a property with no class} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml_3_2]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
@@ -146,7 +146,7 @@ set moml_3_3 "$header
 </model>
 "
 test MoMLParser-1.3.3 {check overriding class definition} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [java::cast ptolemy.actor.TypedCompositeActor \
             [$parser parse $moml_3_3]]
     set test [$toplevel getEntity test]
@@ -171,7 +171,7 @@ set moml_3_4 "$header
 </model>
 "
 test MoMLParser-1.3.4 {check overriding class definition} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [java::cast ptolemy.actor.TypedCompositeActor \
             [$parser parse $moml_3_4]]
     set test [$toplevel getEntity top]
@@ -196,7 +196,7 @@ set moml_3_5 "$header
 </model>
 "
 test MoMLParser-1.3.5 {check multiple reference with absolute name} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [java::cast ptolemy.actor.TypedCompositeActor \
             [$parser parse $moml_3_5]]
     set test [$toplevel getEntity top]
@@ -223,7 +223,7 @@ set moml_3_6 "$header
 </model>
 "
 test MoMLParser-1.3.6 {check multiple reference with absolute name} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     catch {$parser parse $moml_3_6]} msg
     string range $msg 0 29
 } {com.microstar.xml.XmlException}
@@ -234,7 +234,7 @@ set moml_4 {    <class name="top" extends="ptolemy.actor.TypedCompositeActor">
     </class>
 }
 test MoMLParser-1.4 {produce class without header} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml_4]
     set output [java::new java.io.StringWriter]
     $toplevel exportMoML $output 1
@@ -271,7 +271,7 @@ set result {<?xml version="1.0" standalone="no"?>
 }
 # NOTE: result is not the same as what is parsed...
 test MoMLParser-1.5 {test with an actor} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } $result
@@ -287,7 +287,7 @@ set moml "$header
 "
 # NOTE: result is not the same as what is parsed...
 test MoMLParser-1.6 {test with a pre-existing parameter given, with class} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } $result
@@ -303,7 +303,7 @@ set moml "$header
 "
 # NOTE: result is not the same as what is parsed...
 test MoMLParser-1.7 {test with a pre-existing port given, without class} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } $result
@@ -319,7 +319,7 @@ set moml "$header
 "
 # NOTE: result is not the same as what is parsed...
 test MoMLParser-1.8 {test with a pre-existing port given, with wrong class} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     catch {set toplevel [$parser parse $moml]} msg
     string range $msg 0 29
 } {com.microstar.xml.XmlException}
@@ -356,7 +356,7 @@ set result {<?xml version="1.0" standalone="no"?>
 }
 # NOTE: result is not the same as what is parsed...
 test MoMLParser-1.9 {test with changed parameter value from default} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } $result
@@ -383,7 +383,7 @@ set moml {
 </model>
 }
 test MoMLParser-1.10 {test with hierarchy} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
@@ -430,7 +430,7 @@ set body {
 set moml "$header $body"
 
 test MoMLParser-1.11 {test instantiation of a class} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
@@ -468,7 +468,7 @@ set moml "$header $body"
 # exported information will include an import state where the file location
 # depends on the type of system the test is run on.
 test MoMLParser-1.12 {test instantiation of a class} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [java::cast ptolemy.kernel.CompositeEntity \
             [$parser parse $moml]]
     set b [$toplevel getEntity b]
@@ -492,7 +492,7 @@ set body {
 set moml "$header $body"
 
 test MoMLParser-1.12.1 {test instantiation of a class} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [java::cast ptolemy.kernel.CompositeEntity \
             [$parser parse $moml]]
     set b [$toplevel getEntity b]
@@ -524,7 +524,7 @@ set moml "$header $body"
 test MoMLParser-1.12.2 {test import with a relative source } {
     # The bug here is that <import source="testClass2.xml"/>
     # should work
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [java::cast ptolemy.kernel.CompositeEntity \
             [$parser parse $moml]]
     set b [$toplevel getEntity b]
@@ -558,7 +558,7 @@ set body {
 set moml "$header $body"
 
 test MoMLParser-1.13 {test extension of a class} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
@@ -591,7 +591,7 @@ set body {
 set moml "$header $body"
 
 test MoMLParser-1.14 {test that instantiation of an entity fails} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     catch {set toplevel [$parser parse $moml]} msg
     string range $msg 0 29
 } {com.microstar.xml.XmlException}
@@ -613,7 +613,7 @@ set body {
 set moml "$header $body"
 
 test MoMLParser-1.15 {test extension of a composite class} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
@@ -650,7 +650,7 @@ set body {
 set moml "$header $body"
 
 test MoMLParser-1.15 {test extension of a composite class} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
@@ -687,7 +687,7 @@ set body {
 set moml "$header $body"
 
 test MoMLParser-1.16 {test extension of a composite class} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
@@ -722,7 +722,7 @@ set body {
 set moml "$header $body"
 
 test MoMLParser-1.17 {test extension of a composite class} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
@@ -748,7 +748,7 @@ set body {
 set moml "$header $body"
 
 test MoMLParser-1.18 {test director persistence} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
@@ -777,7 +777,7 @@ set result {<?xml version="1.0" standalone="no"?>
 </model>
 }
 test MoMLParser-1.19 {test quoted parameter values} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } $result
@@ -806,7 +806,7 @@ set moml "$header
 </class>
 "
 test MoMLParser-1.22 {test with an actor} {
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } $moml
@@ -852,8 +852,120 @@ test MoMLParser-1.23 {Simulate a problem we found with FSM, where pure propertie
     #     </entity>
     #</model>
 
-    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
 } $moml
 
+#----------------------------------------------------------------------
+test MoMLParser-2.1 {Test incremental parsing: add entity} {
+    set incMomlBase "$header
+<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <doc>xxx</doc>
+</model>
+"
+
+# NOTE: Here is the incremental MoML
+    set incMoml_1 "<entity name=\".top\">
+<entity name=\"inside\" class=\"ptolemy.actor.TypedCompositeActor\"/>
+</entity>
+"
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $incMomlBase]
+    set toplevel [$parser parse $incMoml_1]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.TypedCompositeActor">
+    <doc>xxx</doc>
+    <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+test MoMLParser-2.2 {Test additional incremental parsing} {
+    set incMoml_2 "<entity name=\".top.inside\">
+<property name=\"prop\" class=\"ptolemy.data.expr.Parameter\"/>
+</entity>
+"
+    set toplevel [$parser parse $incMoml_2]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.TypedCompositeActor">
+    <doc>xxx</doc>
+    <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
+        <property name="prop" class="ptolemy.data.expr.Parameter">
+        </property>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+test MoMLParser-3.1 {Test invalid containment} {
+    set incMoml_3_1 "$header
+<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+  <entity name=\"a\" class=\"ptolemy.actor.TypedCompositeActor\"/>
+  <entity name=\"b\" class=\"ptolemy.actor.TypedCompositeActor\">
+     <entity name=\".top.a\">
+        <entity name=\"c\" class=\"ptolemy.actor.TypedCompositeActor\"/>
+     </entity>
+  </entity>
+</model>
+"
+    set parser [java::new ptolemy.moml.MoMLParser]
+    catch {$parser parse $incMoml_3_1} msg
+    string range $msg 0 51
+} {com.microstar.xml.XmlException: Multiple containment}
+
+#----------------------------------------------------------------------
+test MoMLParser-3.2 {Test invalid containment} {
+    set incMoml_3_2 "$header
+<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+  <entity name=\"a\" class=\"ptolemy.actor.TypedCompositeActor\">
+     <entity name=\"b\" class=\"ptolemy.actor.TypedCompositeActor\">
+        <entity name=\".top.a\"/>
+     </entity>
+  </entity>
+</model>
+"
+    $parser reset
+    catch {$parser parse $incMoml_3_2} msg
+    string range $msg 0 51
+} {com.microstar.xml.XmlException: Multiple containment}
+
+#----------------------------------------------------------------------
+test MoMLParser-3.3 {Test invalid containment} {
+    set incMoml_3_3 "$header
+<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+  <entity name=\"a\" class=\"ptolemy.actor.TypedCompositeActor\">
+     <entity name=\"b\" class=\"ptolemy.actor.TypedCompositeActor\">
+        <entity name=\".top\"/>
+     </entity>
+  </entity>
+</model>
+"
+    $parser reset
+    catch {$parser parse $incMoml_3_3} msg
+    string range $msg 0 51
+} {com.microstar.xml.XmlException: Multiple containment}
+
+#----------------------------------------------------------------------
+test MoMLParser-3.4 {Test invalid containment} {
+    set incMoml_3_4 "$header
+<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+  <entity name=\"a\" class=\"ptolemy.actor.TypedCompositeActor\">
+     <entity name=\"b\" class=\"ptolemy.actor.TypedCompositeActor\">
+        <entity name=\".top\"/>
+     </entity>
+  </entity>
+  <entity name=\"a.b\"/>
+</model>
+"
+    $parser reset
+    catch {$parser parse $incMoml_3_4} msg
+    string range $msg 0 51
+} {com.microstar.xml.XmlException: Multiple containment}
