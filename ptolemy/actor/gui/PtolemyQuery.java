@@ -183,11 +183,18 @@ public class PtolemyQuery extends Query
                     Type declaredType = ((Variable)attribute).getDeclaredType();
                     Token current = ((Variable)attribute).getToken();
                     if (declaredType == BaseType.BOOLEAN) {
-                        addCheckBox(name,
-                                name,
-                                ((BooleanToken)current).booleanValue());
-                        attachParameter(attribute, name);
-                        foundStyle = true;
+                        // NOTE: If the expression is something other than
+                        // "true" or "false", then this parameter is set
+                        // to an expression that evaluates to to a boolean,
+                        // and the default Line style should be used.
+                        if (attribute.getExpression().equals("true")
+                               || attribute.getExpression().equals("false")) {
+                            addCheckBox(name,
+                                    name,
+                                 ((BooleanToken)current).booleanValue());
+                            attachParameter(attribute, name);
+                            foundStyle = true;
+                        }
                     }
                     // FIXME: Other types?
                 } else if (attribute instanceof FileAttribute) {
