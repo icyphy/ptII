@@ -1,6 +1,6 @@
 # Test Expression.
 #
-# @Author: Yuhong Xiong
+# @Author: Yuhong Xiong, Edward A. Lee
 #
 # @Version: $Id$
 #
@@ -51,10 +51,66 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test Expression-1.1 {test clone} {
-    set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    set expr [java::new ptolemy.actor.lib.Expression $e0 Expr]
-
-    set newobj [_testClone $expr]
-    $newobj description 1
+    set e0 [sdfModel 3]
+    set exprmaster [java::new ptolemy.actor.lib.Expression $e0 expr]
+    set expr [_testClone $exprmaster]
+    $exprmaster setContainer [java::null]
+    $expr setContainer $e0
+    $expr description 1
 } {ptolemy.actor.lib.Expression}
 
+test Expression-2.1 {run with default empty expression} {
+    set in1 [java::new ptolemy.actor.TypedIOPort $expr in1 true false]
+    set ramp1 [java::new ptolemy.actor.lib.Ramp $e0 ramp1]   
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    set r1 [$e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $ramp1] output] \
+            $in1]
+    $e0 connect \
+            [java::field $expr output] \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    set m [$e0 getManager]
+    catch {$m execute} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: .top.expr: Expression yields a null result: null}}
+
+test Expression-3.1 {run with a simple expression} {
+    set expression [java::field $expr expression]
+    $expression setExpression "firing + 5"
+    $m execute
+    enumToTokenValues [$rec getRecord 0]
+} {6 7 8}
+
+# FIXME: The following test fails because of limitations in the
+# type system.  When types can propogate through expressions.
+# test Expression-4.1 {run with a simple expression} {
+#     $expression setExpression "time + 5"
+#     $m execute
+#     enumToTokenValues [$rec getRecord 0]
+# } {6 7 8}
+
+test Expression-5.1 {run with a simple expression} {
+    set rampinit [java::field $ramp1 init]
+    $rampinit setExpression "0.0"
+    $expression setExpression "time + 5"
+    $m execute
+    enumToTokenValues [$rec getRecord 0]
+} {5.0 5.0 5.0}
+
+test Expression-6.1 {run with a simple expression} {
+    set rampinit [java::field $ramp1 init]
+    $expression setExpression "in1 + 5"
+    $m execute
+    enumToTokenValues [$rec getRecord 0]
+} {5.0 6.0 7.0}
+
+test Expression-7.1 {run with two inputs} {
+    set ramp2 [java::new ptolemy.actor.lib.Ramp $e0 ramp2]   
+    set in2 [java::new ptolemy.actor.TypedIOPort $expr in2 true false]
+    set r1 [$e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $ramp2] output] \
+            $in2]
+    $expression setExpression "in1 + in2"
+    $m execute
+    enumToTokenValues [$rec getRecord 0]
+} {0.0 2.0 4.0}

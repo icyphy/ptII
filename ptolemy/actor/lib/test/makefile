@@ -55,6 +55,7 @@ JSIMPLE_TESTS = \
 	Bernoulli.tcl \
 	Const.tcl \
 	Cosine.tcl \
+	Expression.tcl \
 	Gaussian.tcl \
 	Maximum.tcl \
 	Minimum.tcl \
@@ -63,8 +64,6 @@ JSIMPLE_TESTS = \
 	Ramp.tcl \
 	Scale.tcl \
 	Sine.tcl
-
-#	Expression.tcl \
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

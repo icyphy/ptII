@@ -32,6 +32,7 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
+import ptolemy.kernel.Port;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
@@ -40,25 +41,36 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// Expression
 /**
-Evaluate an expression that may include references to the inputs,
-current time, and a count of the firing.  The inputs are
-referenced by the variables input<i>n</i>, where <i>n</i>
-ranges from zero to the width of the input port minus one.
+On each firing, evaluate an expression that may include references
+to the inputs, current time, and a count of the firing.  The ports are
+referenced by the variables that have the same name as the port.
+To use this class, instantiate it, then add ports (instances of TypedIOPort).
 The type is polymorphic, with the only constraint that the
 types of the inputs must all be less than (in the type order)
 the type of the output.  What this means (loosely) is that
 the types of the input tokens can be converted losslessly into
 tokens with the type of the output.
-
-FIXME: Rework above.  Inputs must be of type TypedIOPort.
+<p>
+The <i>expression</i> parameter should be set using its
+setExpression() method.  By default, it is empty, and attempting
+to execute the actor without setting it triggers an exception.
+<p>
+NOTE: There are a number of limitations in the current implementation.
+First, multiports are not supported.  Second, the type constraints
+have nothing to do with the expression being evaluated.  Overcoming
+either of limitations requires extending the expression language.
+Such extensions are in progress.  Also, if name duplications occur,
+for example if a parameter and a port have the same name, then
+the results are unpredictable.  They will depend on the order
+in which things are defined, which may not be the same in the
+constructor as in the clone method.  This class attempts to
+detect name duplications and throw an exception.
 
 @author Xiaojun Liu, Edward A. Lee
 @version $Id$
 */
 
 public class Expression extends TypedAtomicActor {
-
-    // FIXME: This class won't deal with mutations properly.
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -73,22 +85,14 @@ public class Expression extends TypedAtomicActor {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
-        // FIXME: The following should not be done... The type should
-        // be inferred, ideally...
-        //        output.setTypeEquals(DoubleToken.class);
-
-        expression = new Parameter(this, "expression", new StringToken(""));
-
-        _time = new Variable(workspace());
-        _time.setName("time");
-        _time.setToken(new DoubleToken(0.0));
-        _firing = new Variable(workspace());
-        _firing.setName("firing");
-        _firing.setToken(new IntToken(0));
+        expression = new Parameter(this, "expression");
+        _time = new Variable(this, "time", new DoubleToken(0.0));
+        _firing = new Variable(this, "firing", new IntToken(1));
+        _expression = new Variable(this, "_expression");
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                         ports and parameters              ////
 
     /** The output port. */
     public TypedIOPort output;
@@ -101,6 +105,12 @@ public class Expression extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to allow arbitrary type changes
+     *  for the variables and parameters.
+     */
+    public void attributeTypeChanged(Attribute attribute) {
+    }
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
      *  @param ws The workspace for the new object.
@@ -108,16 +118,13 @@ public class Expression extends TypedAtomicActor {
      */
     public Object clone(Workspace ws) {
         try {
-            _firingCount = 1;
             Expression newobj = (Expression)super.clone(ws);
+            newobj._firingCount = 1;
             newobj.output = (TypedIOPort)newobj.getPort("output");
             expression = (Parameter)newobj.getAttribute("expression");
-            // newobj._time =
-            //     new Variable(this, "time", new DoubleToken(0.0));
-            // newobj._firing =
-            //     new Variable(this, "firing", new IntToken(0));
 	    newobj._time = (Variable)newobj.getAttribute("time");
 	    newobj._firing = (Variable)newobj.getAttribute("firing");
+	    newobj._expression = (Variable)newobj.getAttribute("_expression");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -126,107 +133,114 @@ public class Expression extends TypedAtomicActor {
         }
     }
 
-    /** Set up the list of variables within the scope of the expression.
-     *  All input ports are included, plus the <i>time</i> and
-     *  <i>firing</i> variables.  If any input bears the name <i>time</i>
-     *  or <i>firing</i>, then it will shadow these variables.
-     *  @exception IllegalActionException If the expression is evaluated
-     *   immediately and is invalid, or if the parent class throws it.
+    /** Initialize the firing count to 1.
+     *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        // NOTE: There is lots of try...catch in this code.
-        // One of these, IllegalActionException, could be passed up instead.
-        _variables = new NamedList();
-        Enumeration inputPorts = inputPorts();
-        try {
-            while(inputPorts.hasMoreElements()) {
-                TypedIOPort port = (TypedIOPort)(inputPorts.nextElement());
-                // FIXME: deal with multiports.
-                try {
-                    // Have to remove any attribute with the name of the port
-                    // first.
-                    String portName = port.getName();
-                    // FIXME
-                    // Attribute attr = getAttribute(portName);
-                    // if (attr != null) {
-                    //    attr.setContainer(null);
-                    //}
-                    Variable pVar = new Variable(workspace());
-                    pVar.setName(portName);
-                    _variables.prepend(pVar);
-                } catch (IllegalActionException ex) {
-                    // Not expected because a variable can be added to this
-                    // container.
-                    throw new InternalErrorException(ex.getMessage());
-                }
-            }
-        } catch (NameDuplicationException ex) {
-            // Can't occur because input names are unique.
-            throw new InternalErrorException(ex.getMessage());
-        }
-        try {
-            try {
-                _variables.prepend(_time);
-            } catch (NameDuplicationException ex) {
-                // Ignore to get shadowing.
-            }
-            try {
-                _variables.prepend(_firing);
-            } catch (NameDuplicationException ex) {
-                // Ignore to get shadowing.
-            }
-            // Attribute attr = getAttribute("_expression");
-            _expression = new Variable(workspace());
-        } catch (IllegalActionException ex) {
-            // Can't occur since these variables have names.
-            throw new InternalErrorException(ex.getMessage());
-        }
-        String expr = ((StringToken)(expression.getToken())).stringValue();
-        _expression.setExpression(expr);
-        _expression.addToScope(_variables.elements());
+        _firingCount = 1;
     }
 
     /** Evaluate the expression and broadcast its result to the output.
      *  @exception IllegalActionException If the evaluation of the expression
-     *   triggers is.
+     *   triggers it, or the evaluation yields a null result, or the evaluation
+     *   yields an incompatible type, or if there is no director.
      */
     public void fire() throws IllegalActionException {
+        // NOTE: It is important the expr not be evaluated, since
+        // the variables it refers to are not in its scope.  Thus,
+        // we copy the expression into a variable.
+        String expr = expression.getExpression();
+        _expression.setExpression(expr);
         Director dir = getDirector();
+        if (dir == null) {
+            throw new IllegalActionException(this, "No director!");
+        }
         _time.setToken(new DoubleToken(dir.getCurrentTime()));
         Enumeration inputPorts = inputPorts();
         while(inputPorts.hasMoreElements()) {
-            TypedIOPort port = (TypedIOPort)(inputPorts.nextElement());
+            IOPort port = (IOPort)(inputPorts.nextElement());
             // FIXME: Handle multiports
             if(port.hasToken(0)) {
                 Token inputToken = port.get(0);
                 Variable var =
-                    (Variable)(_variables.get(port.getName()));
+                    (Variable)(getAttribute(port.getName()));
                 var.setToken(inputToken);
             }
         }
-        _expression.evaluate();
-        output.broadcast(_expression.getToken());
+        Token result = _expression.getToken();
+        if (result == null) {
+            throw new IllegalActionException(this,
+            "Expression yields a null result: " + _expression.getExpression());
+        }
+        output.broadcast(result);
     }
 
-    /** Update the state.
+    /** Increment the firing count.
+     *  @IllegalActionException If the superclass throws it.
      */
-    public boolean postfire() {
-        try {
-            _firing.setToken(new IntToken(_firingCount++));
-        } catch (IllegalActionException ex) {
-            // Should not be thrown
-            throw new InternalErrorException(ex.getMessage());
-        }
+    public boolean postfire() throws IllegalActionException {
+        _firingCount++;
+        _firing.setToken(new IntToken(_firingCount));
         // This actor never requests termination.
         return true;
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Override the base class to create a variable with the same name
+     *  as the port.  If the port is an input, then the variable serves
+     *  as a repository for received tokens.  If it is an output, then
+     *  the variable contains the most recently transmitted token.
+     *  @param port The port being added.
+     *  @exception IllegalActionException If the port has no name, or
+     *   if the variable is rejected for some reason.
+     *  @exception NameDuplicationException If the port name collides with a
+     *   name already in the entity.
+     */
+    protected void _addPort(Port port)
+            throws IllegalActionException, NameDuplicationException {
+        super._addPort(port);
+        String portName = port.getName();
+        // The new variable goes on the list of attributes, unless it is
+        // already there.
+        Attribute there = getAttribute(portName);
+        if (there == null) {
+            new Variable(this, portName);
+        } else if ((there instanceof Parameter)
+                || !(there instanceof Variable)) {
+            throw new IllegalActionException(this, "Port name collides with"
+            + " another attribute name: " + portName);
+        }
+        // NOTE: We assume that if there is already a variable with
+        // this name then that is the variable we are intended to use.
+        // The variable will already be there, for example, if the
+        // actor was created through cloning.
+    }
+
+    /** Override the base class to remove the variable with the same name
+     *  as the port.
+     *  @param port The port being removed.
+     */
+    protected void _removePort(Port port) {
+        super._removePort(port);
+        String portName = port.getName();
+        Attribute attribute = getAttribute(portName);
+        if (attribute instanceof Variable) {
+            try {
+                attribute.setContainer(null);
+            } catch (KernelException ex) {
+                throw new InternalErrorException(ex.getMessage());
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private NamedList _variables;
-    private Variable _time, _firing, _expression;
+    private Variable _time;
+    private Variable _firing;
+    private Variable _expression;
     private int _firingCount = 1;
 }
-
