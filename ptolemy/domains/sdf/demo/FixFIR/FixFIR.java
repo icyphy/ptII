@@ -45,9 +45,10 @@ import ptolemy.data.expr.*;
 
 import ptolemy.actor.*;
 import ptolemy.actor.Manager;
+import ptolemy.actor.gui.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.lib.conversions.*;
-import ptolemy.actor.gui.*;
+import ptolemy.actor.lib.gui.SequencePlotter;
 
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;

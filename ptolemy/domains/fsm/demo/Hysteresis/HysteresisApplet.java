@@ -34,6 +34,7 @@ package ptolemy.domains.fsm.demo.Hysteresis;
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
 import ptolemy.actor.lib.*;
+import ptolemy.actor.lib.gui.SequencePlotter;
 import ptolemy.domains.fsm.kernel.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.*;

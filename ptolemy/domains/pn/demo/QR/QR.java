@@ -33,9 +33,9 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.Manager;
-import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
-
+import ptolemy.actor.lib.gui.MatrixViewer;
+import ptolemy.actor.lib.gui.SequencePlotter;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 
