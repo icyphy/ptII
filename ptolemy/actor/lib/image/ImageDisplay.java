@@ -178,7 +178,7 @@ public class ImageDisplay extends Sink implements Placeable {
                     }
                     _oldxsize = xsize;
                     _oldysize = ysize;
-                    
+
                     if (_picture != null) {
                         _container.remove(_picture);
                     }
@@ -203,11 +203,11 @@ public class ImageDisplay extends Sink implements Placeable {
                 else {
                     _picture.setImage(image);
                 }
-                
+
                 // display it.
                 _picture.displayImage();
                 _picture.repaint();
-                
+
                 // FIXME: Why is all this needed?  In theory,
                 // the repaint() call above should be enough.
                 Runnable painter = new Runnable() {
