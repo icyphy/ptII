@@ -451,11 +451,12 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
 	$(REMOTE1PTIIDIST)/ptolemy/lang \
 	$(REMOTE1PTIIDIST)/ptolemy/lang/java \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/saveasjava \
+	$(REMOTE1PTIIDIST)/ptolemy/copernicus/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/c \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/java \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/jhdl \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/saveasjava \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/codegen \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
