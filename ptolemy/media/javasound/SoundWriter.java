@@ -415,6 +415,7 @@ public class SoundWriter {
     private boolean _isAudioWriterActive;
     /////////////// For debugging: ///////////////////////////////
     // Set this variable to "true" to enable debugging information.
-    private boolean _debug = true;
+    //private boolean _debug = true;
+    private boolean _debug = false;
     //////////////////////////////////////////////////////////////
 }
