@@ -216,8 +216,10 @@ public class Location extends SingletonAttribute
     }
 
     /** Set the location in some cartesian coordinate system, and notify
-     *  the container and any value listeners of the new location.
-     *  No notification is done if the location is the same as before.
+     *  the container and any value listeners of the new location. Setting
+     *  the location involves maintaining a local copy of the passed 
+     *  parameter. No notification is done if the location is the same 
+     *  as before.
      *  @param location The location.
      */
     public void setLocation(double[] location)
@@ -239,7 +241,13 @@ public class Location extends SingletonAttribute
             }
         }
 
-        _location = location;
+        // Copying location array into member array _location
+        // Just referencing _location to location isn't enough, we need
+        // to maintain a local copy of the double array.
+        _location = new double[location.length];
+        for(int i = 0; i < location.length; i++) {
+            _location[i] = location[i];
+        }
 
         NamedObj container = (NamedObj)getContainer();
         if (container != null) {
