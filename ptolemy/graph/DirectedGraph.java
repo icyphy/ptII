@@ -205,13 +205,12 @@ public class DirectedGraph extends Graph {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /* Computes the transitive closure.
-     * @return a boolean matrix representing the adjacency matrix of the
-     *  transitive closure.
+    /* Computes the transitive closure. Puts the result in the protected
+     * variable _tranClosure.
      */ 
-    protected boolean[][] _compTranClosure() {
+    protected void _compTranClosure() {
         if (_tranClosureValid) {
-            return _tranClosure;
+            return;
         }
 
         int size = numNodes();
@@ -253,7 +252,6 @@ public class DirectedGraph extends Graph {
         }
         
         _tranClosureValid = true;
-	return _tranClosure;
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -265,11 +263,17 @@ public class DirectedGraph extends Graph {
      *  node.
      */
     protected Vector _inDegree;
-        
+
+    /** A boolean matrix representing the adjacency matrix of the
+     *  transitive closure. <code>_tranClosure[i][j] = true</code>
+     *  if there is a path from node i to node j, where i and j are
+     *  node IDs.
+     */
+    protected boolean[][] _tranClosure;
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////    
 
-    private boolean[][] _tranClosure;
     private boolean _isAcyclic;
     private boolean _tranClosureValid = false;
 }
