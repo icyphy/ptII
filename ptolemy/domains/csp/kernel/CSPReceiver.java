@@ -456,6 +456,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         _setPutWaiting(false);
         _setGetWaiting(false);
         _setRendezvousComplete(false);
+        // Wake up any pending threads. EAL 12/04
+        notifyAll();
     }
 
     /** Reset local flags.
