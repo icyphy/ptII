@@ -50,39 +50,6 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test PtParser-1.1 {Get information about an instance of PtParser} {
-    # If anything changes, we want to know about it so we can write tests.
-    set p [java::new pt.data.expr.PtParser]
-    list [getJavaInfo $p]
-} {{
-  class:         pt.data.expr.PtParser
-  fields:        lookingAhead nextToken token token_source
-    
-  methods:       {ReInit java.io.InputStream} {ReInit pt.data.expr.PtPar
-    serTokenManager} bitwiseAnd bitwiseOr bitwiseXor disabl
-    e_tracing element enable_tracing {equals java.lang.Obje
-    ct} funcIf function generateParseException {generatePar
-    seTree java.lang.String} {generateParseTree java.lang.S
-    tring pt.kernel.util.NamedList} getClass getNextToken {
-    getToken int} hashCode logicalAnd logicalEquals logical
-    Or notify notifyAll relational start sum term toString 
-    unary wait {wait long} {wait long int}
-    
-  constructors:  pt.data.expr.PtParser {pt.data.expr.PtParser java.io.In
-    putStream} {pt.data.expr.PtParser java.util.Observer} {
-    pt.data.expr.PtParser pt.data.expr.PtParserTokenManager
-    }
-    
-  properties:    class nextToken token
-    
-  superclass:    java.lang.Object
-    
-}}
-
-
-######################################################################
-####
-# 
 test PtParser-2.1 {Construct Parse objects using different constructors} {
     set p1 [java::new pt.data.expr.PtParser]
     set e [java::new {pt.kernel.Entity String} parent]
