@@ -163,9 +163,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                 .getFullName().replace('.', '_'));
                         result.append("_");
                         result.append(sinkPort.getName());
-                        if (sinkPort.getWidth() > 1) {
-                            result.append("_");
+                        if (sinkPort.isMultiport()) {
+                            result.append("[");
                             result.append((new Integer(j)).toString());
+                            result.append("]");
                         }
                         break;
                         //sinkPorts.add(sinkPort);
@@ -239,8 +240,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         throw new IllegalActionException(_component, 
                                 "Invalid channel number in " + name);
                     }
-                    result.append("_");
+                    result.append("[");
                     result.append(channel.toString());
+                    result.append("]");
                     return result.toString();
                 }
             }

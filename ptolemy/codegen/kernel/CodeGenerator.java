@@ -43,6 +43,7 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
@@ -128,9 +129,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
 
     /** Generate code.  This is the main entry point.
+     *  @exception 
      *  FIXME: more
      */
-    public void generateCode(StringBuffer code) throws IllegalActionException {
+    public void generateCode(StringBuffer code) throws KernelException {
         generateInitializeCode(code);
         generateVariableDeclarations(code);
         generateBodyCode(code);
@@ -186,22 +188,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             Iterator inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 TypedIOPort inputPort = (TypedIOPort)inputPorts.next();
-                StringBuffer temp = new StringBuffer();
-                temp.append(inputPort.getType().toString());
-                temp.append(" ");
-                temp.append(inputPort.getFullName().replace('.', '_'));
-                if (inputPort.getWidth() <= 1) {
-                    code.append(temp);
-                    code.append(";\n");
+                if (inputPort.getWidth() == 0) {
+                    return;
                 }
-                else {
-                    temp.append("_");
-                    for (int i = 0; i < inputPort.getWidth(); i ++) {
-                        code.append(temp);
-                        code.append((new Integer(i)).toString());
-                        code.append(";\n");
-                    }
-                }
+                code.append(inputPort.getType().toString());
+                code.append(" ");
+                code.append(inputPort.getFullName().replace('.', '_'));
+                
+                code.append("[");
+                code.append((new Integer(inputPort.getWidth())).toString());
+                code.append("];\n");
             }
             Iterator outputPorts = actor.outputPortList().iterator();
             while (outputPorts.hasNext()) {
@@ -212,6 +208,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     code.append(outputPort.getType().toString());
                     code.append(" ");
                     code.append(outputPort.getFullName().replace('.', '_'));
+                    code.append("[1]");
                     code.append(";\n");
                 }
             }

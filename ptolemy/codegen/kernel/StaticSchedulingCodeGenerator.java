@@ -82,9 +82,11 @@ public class StaticSchedulingCodeGenerator
     }
 
     /** Generate code.  This is the main entry point.
+     *  @exception KernelException If a type conflict occurs or the model
+     *  is running.
      *  FIXME: more
      */
-    public void generateCode(StringBuffer code) throws IllegalActionException {
+    public void generateCode(StringBuffer code) throws KernelException {
         // If necessary, create a manager.
         Actor container = ((Actor)getContainer());
         Manager manager = container.getManager();
@@ -95,12 +97,11 @@ public class StaticSchedulingCodeGenerator
         	toplevel.setManager(manager);
         }
         try {
-			manager.preinitializeAndResolveTypes();
-		} catch (KernelException ex) {
-			throw new IllegalActionException(getContainer());
-		}
-        
-        super.generateCode(code);
+            manager.preinitializeAndResolveTypes();
+            super.generateCode(code);
+        } finally {
+            manager.wrapup();
+        }
     }
 
     /** Generate into the specified code stream the code associated
