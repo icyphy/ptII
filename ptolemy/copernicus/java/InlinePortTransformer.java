@@ -205,7 +205,7 @@ public class InlinePortTransformer extends SceneTransformer {
             }
         }
      
-        // Some maps we use for storing the assocation between a port
+        // Some maps we use for storing the association between a port
         // and the fields that we are replacing it with.
         Map portToTypeNameToBufferField = new HashMap();
         Map portToIndexArrayField = new HashMap();
