@@ -673,11 +673,11 @@ public class IOPort extends ComponentPort {
                 // If a transparent port, ask its all inside receivers,
                 // and trim the returned Receivers array to get the
                 // part corresponding to the IORelation
-                Receiver[][] insideRecvrs = getReceivers();
-                if(insideRecvrs == null) {
+                Receiver[][] insideReceivers = getReceivers();
+                if(insideReceivers == null) {
                     return null;
                 }
-                int insideWidth = insideRecvrs.length;
+                int insideWidth = insideReceivers.length;
                 int index = 0;
                 result = new Receiver[width][];
                 Enumeration outsideRels = linkedRelations();
@@ -688,7 +688,7 @@ public class IOPort extends ComponentPort {
                         int rstSize =
                             java.lang.Math.min(width, insideWidth-index);
                         for (int i = 0; i< rstSize; i++) {
-                            result[i] = insideRecvrs[index++];
+                            result[i] = insideReceivers[index++];
                         }
                         break;
                     } else {
@@ -803,8 +803,8 @@ public class IOPort extends ComponentPort {
             if (width <= 0) return null;
 
             // no cache used.
-            Receiver[][] outsideRecvrs = getRemoteReceivers();
-            if(outsideRecvrs == null) {
+            Receiver[][] outsideReceivers = getRemoteReceivers();
+            if(outsideReceivers == null) {
                 return null;
             }
             Receiver[][] result = new Receiver[width][];
@@ -814,11 +814,11 @@ public class IOPort extends ComponentPort {
                 IORelation r = (IORelation) insideRels.nextElement();
                 if(r == relation) {
                     int size = java.lang.Math.min
-                        (width, outsideRecvrs.length-index);
+                        (width, outsideReceivers.length-index);
                     //NOTE: if size = 0, the for loop is skipped.
                     //      result in returning null.
                     for(int i = 0; i<size; i++) {
-                        result[i] = outsideRecvrs[i+index];
+                        result[i] = outsideReceivers[i+index];
                     }
                     break;
                 }
@@ -1257,19 +1257,19 @@ public class IOPort extends ComponentPort {
                 }
                 result += "receivers {\n";
                 try {
-                    Receiver[][] recvrs = null;
-                    recvrs = getReceivers();
-                    if (recvrs != null) {
-                        for (int i = 0; i < recvrs.length; i++) {
+                    Receiver[][] receivers = null;
+                    receivers = getReceivers();
+                    if (receivers != null) {
+                        for (int i = 0; i < receivers.length; i++) {
                             // One list item per group
                             result += _getIndentPrefix(indent+1) + "{\n";
-                            if (recvrs[i] != null) {
-                                for (int j = 0; j < recvrs[i].length; j++) {
+                            if (receivers[i] != null) {
+                                for (int j = 0; j < receivers[i].length; j++) {
                                     result += _getIndentPrefix(indent+2);
                                     result += "{";
-                                    if (recvrs[i][j] != null) {
+                                    if (receivers[i][j] != null) {
                                         result +=
-                                            recvrs[i][j].getClass().getName();
+                                            receivers[i][j].getClass().getName();
                                     }
                                     result += "}\n";
                                 }
@@ -1288,20 +1288,21 @@ public class IOPort extends ComponentPort {
                     result += " ";
                 }
                 result += "remotereceivers {\n";
-                Receiver[][] recvrs = null;
-                recvrs = getRemoteReceivers();;
-                if (recvrs != null) {
-                    for (int i = 0; i<recvrs.length; i++) {
+                Receiver[][] receivers = null;
+                receivers = getRemoteReceivers();;
+                if (receivers != null) {
+                    for (int i = 0; i<receivers.length; i++) {
                         // One list item per group
                         result += _getIndentPrefix(indent+1) + "{\n";
-                        if (recvrs[i] != null) {
-                            for (int j = 0; j< recvrs[i].length; j++) {
+                        if (receivers[i] != null) {
+                            for (int j = 0; j< receivers[i].length; j++) {
                                 result += _getIndentPrefix(indent+2);
                                 result += "{";
-                                if (recvrs[i][j] != null) {
-                                    result += recvrs[i][j].getClass().getName();
+                                if (receivers[i][j] != null) {
+                                    result +=
+                                        receivers[i][j].getClass().getName();
                                     result += " in ";
-                                    result += recvrs[i][j].
+                                    result += receivers[i][j].
                                         getContainer().getFullName();
                                 }
                                 result += "}\n";
