@@ -31,8 +31,7 @@
 
 package ptolemy.data.type;
 
-import ptolemy.graph.InequalityTerm;
-import ptolemy.graph.Inequality;	/* Needed for javadoc */ 
+import ptolemy.graph.*;
 import ptolemy.kernel.util.IllegalActionException;
 import java.util.Enumeration;
 
@@ -71,15 +70,18 @@ public final class DimensionTypeLattice implements CPO
      *  @param e2 an Object representing a CPO element.
      *  @return one of <code>CPO.LOWER, CPO.SAME,
      *   CPO.HIGHER, CPO.INCOMPARABLE</code>.
-     *  @exception IllegalArgumentException If at least one of the
+     *  @exception IllegalArgumentException If either of the
      *   specified Objects is not an element of this CPO.
      */
     public int compare(Object e1, Object e2) {
-        if(e1.isEqualTo(e2)) return CPO.SAME;
-        if(e1.isEqualTo(top())) return CPO.HIGHER;
-        if(e1.isEqualTo(bottom())) return CPO.LOWER;
-        if(e2.isEqualTo(top())) return CPO.LOWER;
-        if(e2.isEqualTo(bottom())) return CPO.HIGHER;
+	DimensionType t1 = _castType(e1);
+	DimensionType t2 = _castType(e2);
+        
+        if(t1.isEqualTo(t2)) return CPO.SAME;
+        if(t1.isEqualTo(DimensionType.TOP)) return CPO.HIGHER;
+        if(t1.isEqualTo(DimensionType.BOTTOM)) return CPO.LOWER;
+        if(t2.isEqualTo(DimensionType.TOP)) return CPO.LOWER;
+        if(t2.isEqualTo(DimensionType.BOTTOM)) return CPO.HIGHER;
         return CPO.INCOMPARABLE;
     }
 
@@ -92,19 +94,29 @@ public final class DimensionTypeLattice implements CPO
      *  @exception IllegalArgumentException If the specified Object is not
      *   an element in this CPO, or the set is infinite.
      */
-    public Object[] downSet(Object e) {
-        if(e.isEqualTo(top())) throw new IllegalArgumentException(
+    public Object[] downSet(Object e1) {
+        DimensionType t1 = _castType(e1);
+
+        if(t1.isEqualTo(DimensionType.TOP)) 
+            throw new IllegalArgumentException(
                 "The object has an infinite downset.");
         Object[] obj;
-        if(e.isEqualTo(bottom())) {
+        if(t1.isEqualTo(DimensionType.BOTTOM)) {
             obj = new Object[1];
-            obj[0] = bottom();
+            obj[0] = DimensionType.BOTTOM;
         } else {
             obj = new Object[2];
-            obj[0] = bottom();
-            obj[1] = e;
+            obj[0] = DimensionType.BOTTOM;
+            obj[1] = t1;
         }
         return obj;
+    }
+
+    /** 
+     * Return the singleton instance of this class;
+     */
+    public static DimensionTypeLattice getInstance() {
+        return _instance;
     }
             
     /** Compute the greatest lower bound (GLB) of two elements.
@@ -118,19 +130,12 @@ public final class DimensionTypeLattice implements CPO
      *   specified Objects is not an element of this CPO.
      */
     public Object greatestLowerBound(Object e1, Object e2) {
-	if(!(e1 instanceof DimensionType))
-	    throw new IllegalActionException(e1, "Object must be an " +
-					     "instance of DimensionType");
-        DimensionType t1 = (DimensionType) e1;
+        DimensionType t1 = _castType(e1);
+	DimensionType t2 = _castType(e2);
 
-	if(!(e2 instanceof DimensionType))
-	    throw new IllegalActionException(e2, "Object must be an " +
-					     "instance of DimensionType");
-	DimensionType t2 = (DimensionType) e2;
-
-	if(t1.isEqualTo(top())) return t2;
-	if(t2.isEqualTo(top())) return t1;
-	return bottom();
+	if(t1.isEqualTo(DimensionType.TOP)) return t2;
+	if(t2.isEqualTo(DimensionType.TOP)) return t1;
+	return DimensionType.BOTTOM;
     }
 
 
@@ -145,11 +150,11 @@ public final class DimensionTypeLattice implements CPO
      *   in the specified array is not an element of this CPO.
      */
     public Object greatestLowerBound(Object[] subset) {
-	DimensionType glb = top();
+	DimensionType glb = DimensionType.TOP;
 	int i;
 	for(i = 0; i < subset.length; i++) {
-	    glb = greatestLowerBound(glb, subset[i]);
-	    if(glb.isEqualTo(bottom()))
+	    glb = _castType(greatestLowerBound(glb, subset[i]));
+	    if(glb.isEqualTo(DimensionType.BOTTOM))
 		return glb;
 	}
 	return glb;
@@ -167,10 +172,10 @@ public final class DimensionTypeLattice implements CPO
      *   specified array is not an element of this CPO.
      */
     public Object greatestElement(Object[] subset) {
-        Object lub = leastUpperBound(subset);
+        DimensionType lub = _castType(leastUpperBound(subset));
         int i;
         for(i = 0; i < subset.length; i++) {
-            if(lub.isEqualTo(subset[i])) return lub;
+            if(lub.isEqualTo(_castType(subset[i]))) return lub;
         }
         return null;
     }
@@ -195,10 +200,10 @@ public final class DimensionTypeLattice implements CPO
      *   specified array is not an element of this CPO.
      */
     public Object leastElement(Object[] subset) {
-        Object glb = greatestLowerBound(subset);
+        DimensionType glb = _castType(greatestLowerBound(subset));
         int i;
         for(i = 0; i < subset.length; i++) {
-            if(glb.isEqualTo(subset[i])) return glb;
+            if(glb.isEqualTo(_castType(subset[i]))) return glb;
         }
         return null;
     }
@@ -214,19 +219,12 @@ public final class DimensionTypeLattice implements CPO
      *   specified Objects is not an element of this CPO.
      */
     public Object leastUpperBound(Object e1, Object e2) {
-	if(!(e1 instanceof DimensionType))
-	    throw new IllegalActionException(e1, "Object must be an " +
-					     "instance of DimensionType");
-        DimensionType t1 = (DimensionType) e1;
+        DimensionType t1 = _castType(e1);
+	DimensionType t2 = _castType(e2);
 
-	if(!(e2 instanceof DimensionType))
-	    throw new IllegalActionException(e2, "Object must be an " +
-					     "instance of DimensionType");
-	DimensionType t2 = (DimensionType) e2;
-
-	if(t1.isEqualTo(bottom())) return t2;
-	if(t2.isEqualTo(bottom())) return t1;
-	return top();
+	if(t1.isEqualTo(DimensionType.BOTTOM)) return t2;
+	if(t2.isEqualTo(DimensionType.BOTTOM)) return t1;
+	return DimensionType.TOP;
     }
 
     /** Compute the least upper bound (LUB) of a subset.
@@ -240,11 +238,11 @@ public final class DimensionTypeLattice implements CPO
      *   in the specified array is not an element of this CPO.
      */
     public Object leastUpperBound(Object[] subset) {
-	DimensionType lub = bottom();
+	DimensionType lub = DimensionType.BOTTOM;
 	int i;
 	for(i = 0; i < subset.length; i++) {
-	    lub = leastUpperBound(lub, subset[i]);
-	    if(lub.isEqualTo(top()))
+	    lub = _castType(leastUpperBound(lub, subset[i]));
+	    if(lub.isEqualTo(DimensionType.TOP))
 		return lub;
 	}
 	return lub;
@@ -268,21 +266,38 @@ public final class DimensionTypeLattice implements CPO
      *  @exception IllegalArgumentException If the specified Object is not
      *   an element of this CPO, or the set is infinite.
      */
-    public Object[] upSet(Object e) {
-        if(e.isEqualTo(bottom())) throw new IllegalArgumentException(
+    public Object[] upSet(Object e1) {
+        DimensionType t1 = _castType(e1);
+
+        if(t1.isEqualTo(DimensionType.BOTTOM)) 
+            throw new IllegalArgumentException(
                 "The object has an infinite upset.");
         Object[] obj;
-        if(e.isEqualTo(top())) {
+        if(t1.isEqualTo(DimensionType.TOP)) {
             obj = new Object[1];
-            obj[0] = top();
+            obj[0] = DimensionType.TOP;
         } else {
             obj = new Object[2];
-            obj[0] = top();
-            obj[1] = e;
+            obj[0] = DimensionType.TOP;
+            obj[1] = t1;
         }
         return obj;
     }
 
-    private static final _instance = new DimensionTypeLattice();
+    /** 
+     *  Cast the given object to a DimensionType.
+     *  Throw an exception appropriate when this lattice is given an object
+     *  that is not a DimensionType.
+     */
+    private DimensionType _castType(Object o) {
+        if(o instanceof DimensionType) 
+            return (DimensionType)o;
+        else
+            throw new IllegalArgumentException("Object must be an " +
+                    "instance of DimensionType");
+    }
+
+    private static final DimensionTypeLattice _instance = 
+    new DimensionTypeLattice();
 }
 

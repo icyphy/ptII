@@ -46,7 +46,7 @@ $Id$
 
 */
 
-public class DimensionType implements Type implements InequalityTerm
+public class DimensionType implements Type, InequalityTerm
 {
     /**
      * Create a new dimension type variable, initialized to 
@@ -122,11 +122,13 @@ public class DimensionType implements Type implements InequalityTerm
      *  an object with this type can be expressed as an object of Type t with 
      *  no conversion.
      */
-    public boolean isEqualTo(Type t) {
-        if(_dimensions != t._dimensions) return false;
+    public boolean isEqualTo(Type type) {
+        if(!(type instanceof DimensionType)) return false;
+        DimensionType dtype = (DimensionType) type;
+        if(_dimensions != dtype._dimensions) return false;
         int i;
         for(i = 0; i < _dimensions; i++) {
-            if(_size[i] != t._size[i]) return false;
+            if(_size[i] != dtype._size[i]) return false;
         }
         return true;
     }
@@ -163,14 +165,16 @@ public class DimensionType implements Type implements InequalityTerm
      */
     public void setValue(Object e)
             throws IllegalActionException {
-        if(!e instanceof DimensionType) throw new IllegalActionException(this,
-                e, "Cannot setvalue of a DimensionType to something that" +
-                " is not a DimensionType");
-        if(!isSettable()) throw new IllegalActionException(this, 
+        if(!(e instanceof DimensionType)) 
+            throw new IllegalActionException(
+                    "Cannot setvalue of a DimensionType to something that" +
+                    " is not a DimensionType");
+        if(!isSettable()) throw new IllegalActionException( 
                 "This dimension type is a constant and cannot have its "+
                 "value set!");
-        _dimensions = type._dimensions;
-        _size = type._size;        
+        DimensionType dtype = (DimensionType) e;
+        _dimensions = dtype._dimensions;
+        _size = dtype._size;        
     }
 
     /** 
@@ -197,6 +201,6 @@ public class DimensionType implements Type implements InequalityTerm
      * True if this type is a constant type.  False if this type is a
      * variable type.  This value is set at construction and cannot be changed.
      */
-    private int _isSettable;
+    private boolean _isSettable;
 }
 

@@ -54,8 +54,10 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	DimensionType.java \
 	DimensionTypeLattice.java \
-	DimensionTypeRsolver.java \
-	Type.java
+	DimensionTypeResolver.java \
+	LatticeTypeResolver.java \
+	Type.java \
+	TypeResolver.java
 
 EXTRA_SRCS =	$(JSRCS)
 

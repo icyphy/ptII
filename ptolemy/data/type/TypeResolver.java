@@ -1,4 +1,4 @@
-/** A class that solves constraints on DimensionTypes.
+/** An interface for classes that solve type constraints.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -37,18 +37,16 @@ import ptolemy.kernel.util.IllegalActionException;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
-//// DimensionTypeResolver
+//// TypeResolver
 /**
-This class solves constraints on DimensionType objects.  After executing
-the resolveTypes method, the dimension type of all the appropriate Typeable 
-objects will be fully resolved unless a type conflict occured.
+This interface represents a class that solves type contraints expressed.
 
 @author Steve Neuendorffer
 $Id$
 
 */
 
-public class DimensionTypeResolver 
+public interface TypeResolver 
 {
 
     /** Check types on all the connections and resolve undeclared types.
@@ -57,15 +55,9 @@ public class DimensionTypeResolver
      * 
      *  @return An enumeration of Typeable objects that failed type checking.
      *  @exception InternalErrorException If a constraint is given that
-     *  does not fall on DimensionTypes.
+     *  this resolver cannot handle.
      */
-    public Enumeration resolveTypes(Enumeration constraints) {
-        // FIXME should ensure that all the constraints act on 
-        // DimensionTypes.
+    public Enumeration resolveTypes(Enumeration constraints);
 
-        LatticeTypeResolver resolver = 
-            new LatticeTypeResolver(DimensionTypeLattice.getInstance());
-        return resolver.resolveTypes(constraints);
-    }
 }
 
