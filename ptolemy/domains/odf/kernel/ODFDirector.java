@@ -219,6 +219,13 @@ public class ODFDirector extends ProcessDirector {
         return false;
     }
     
+    /** 
+     */
+    protected ProcessThread _getProcessThread(Actor actor, 
+	    ProcessDirector director) {
+	return new ODFThread(actor, director);
+    }
+
     /** Resolve any deadlocks of the actors governed by this director.
      *  Return true if the deadlock has successfully been resolved;
      *  return false otherwise. 

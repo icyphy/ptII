@@ -91,7 +91,7 @@ public class ODFConservativeRcvr extends TimedQueueReceiver
     }
 
     /** Construct an empty receiver with the specified container.
-     * @param container The IOPort which contains this receiver.
+     * @param container The IOPort that contains this receiver.
      */
     public ODFConservativeRcvr(IOPort container) {
         super(container);
@@ -100,78 +100,124 @@ public class ODFConservativeRcvr extends TimedQueueReceiver
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Do a blocking read on the queue. If at any point during this
-     *  method this receiver is scheduled for termination, then throw 
-     *  a TerminateProcessException which will cease activity for the 
-     *  actor that contains this receiver. If no token is available, 
-     *  then inform the director that this receiver is blocking on a 
-     *  read and wait until a token becomes available. When a token 
-     *  becomes available, determine if this queue has the unique oldest 
-     *  rcvrTime with respect to all of the receivers contained by the 
-     *  actor that contains this receiver. If so, return the token. If 
-     *  the rcvrTime is a non-unique minimum but simultaneousIgnore is 
-     *  true, then return the token; otherwise return null. 
+    /** Do a blocking read on the queue. If no token is available, 
+     *  then inform the director that this receiver is blocking on 
+     *  a read and wait until a token becomes available. When a 
+     *  token becomes available, determine if this queue has the 
+     *  unique oldest rcvrTime with respect to all of the receivers 
+     *  contained by the actor that contains this receiver. If so, 
+     *  return the token. If the rcvrTime is a non-unique minimum but 
+     *  simultaneousIgnore is true, then return the token; otherwise 
+     *  return null. If at any point during this method this receiver 
+     *  is scheduled for termination, then throw a 
+     *  TerminateProcessException to cease execution of the actor 
+     *  that contains this receiver. 
      * @return Token The oldest token on this queue.
+     * @exception NoTokenException If this method is called while 
+     *  hasToken() returns false.
      */
     public Token get() {
-        // Cache values so that the synchronization hierarchy 
-        // will not be violated
         Workspace workspace = getContainer().workspace();
-        ODFActor actor = (ODFActor)getContainer().getContainer();
-        ODFDirector director = (ODFDirector)actor.getDirector(); 
-        ODFIOPort myPort = (ODFIOPort)getContainer();
-        String name = actor.getName(); 
-        Token token = null; 
-        
-        synchronized(this) {
-            if( _terminate ) {
-                throw new TerminateProcessException( getContainer(), "This "
-                        + "receiver has been terminated during get().");
-            }
-            if( super.hasToken() && !_terminate ) {
-	        // FIXME: What if current time = -1.0??
-	        if( getRcvrTime() <= actor.getNextTime() ) {
-                    if( actor.hasMinRcvrTime() ) {
-                        token = super.get();
-                        notifyAll(); 
-                        return token;
-                    } else if( isSimultaneousIgnore() ) {
-                        setSimultaneousIgnore(false);
-                        token = super.get();
-                        notifyAll(); 
-                        return token;
-                    }
-                    return null;
+        ODFDirector director = (ODFDirector)
+	        ((Actor)getContainer().getContainer()).getDirector();
+	ODFThread thread = (ODFThread)Thread.currentThread();
+
+	synchronized(this) {
+	    if( _hasToken(workspace, director, thread) ) {
+		Token token = super.get();
+		notifyAll();
+		return token;
+	    } else {
+		throw new NoTokenException(getContainer(), "No tokens "
+			+ "available in the ODF receiver");
+	    }
+	}
+    }
+
+    /** Return true if the get() method of this receiver will return a
+     *  non-null token. If this receiver has a rcvrTime that is not less 
+     *  than or equal to the rcvrTime of all receivers contained by the 
+     *  actor that contains this receiver then return false. If this 
+     *  receiver has a rcvrTime that is equal to the minimum rcvrTime of 
+     *  all receivers contained by the actor that contains this receiver
+     *  and at least one receiver has a rcvrTime equal to that of this
+     *  receiver, then return false if this receiver has a lower priority
+     *  when compared to all receivers sharing its rcvrTime. Otherwise, 
+     *  block until this receiver contains a token. If at any point during 
+     *  this method this receiver is scheduled for termination, then throw 
+     *  a TerminateProcessException to cease execution of the actor that 
+     *  contains this receiver. 
+     */
+    public boolean hasToken() {
+	Workspace workspace = getContainer().workspace();
+	ODFThread thread = (ODFThread)Thread.currentThread();
+        ODFDirector director = (ODFDirector)
+	        ((Actor)getContainer().getContainer()).getDirector();
+
+	return _hasToken( workspace, director, thread );
+    }
+
+    /**
+     */
+    private synchronized boolean _hasToken(Workspace workspace, 
+	    ODFDirector director, ODFThread thread ) {
+	// FIXME: synchronized not needed.
+	synchronized(this) {
+	    if( getRcvrTime() > thread.getNextTime() && !_terminate ) {
+		if( getContainer().getContainer().getName().equals("printer") ) {
+		    /*
+		    System.out.println("Printer: rcvrTime = "
+			    + getRcvrTime() + "  . Thread time = "
+			    + thread.getNextTime());
+		    */
 		}
-		// Return null in case rcvrTime is no longer the lowest.
-		return null;
-            } else if( !_terminate ) {
-                director.addReadBlock();
-                while( !_terminate && !super.hasToken() ) {
-                    notifyAll();
-                    workspace.wait( this );
-                }
-            } 
-            if( _terminate ) {
-                director.removeReadBlock(); 
-                throw new TerminateProcessException( getContainer(), "This "
-                        + "receiver has been terminated during get().");
-            } else {
-	        if( getRcvrTime() <= actor.getNextTime() ) {
-                    if( actor.hasMinRcvrTime() ) {
-                        token = super.get();
-                        notifyAll(); 
-                    } else if( isSimultaneousIgnore() ) {
-                        setSimultaneousIgnore(false);
-                        token = super.get();
-                        notifyAll(); 
-                    }
+		return false;
+	    } else if( !thread.hasMinRcvrTime() && !_terminate ) {
+		if( getContainer().getContainer().getName().equals("printer") ) {
+		    /*
+		    System.out.println("Printer: No minimum receiver time.");
+		    System.out.println("Printer: rcvrTime = "
+			    + getRcvrTime() + "  . Thread time = "
+			    + thread.getNextTime());
+		    // thread.printRcvrList();
+		    */
 		}
-                director.removeReadBlock(); 
-            }
-        }
-        
-        return token;
+		RcvrTimeTriple triple; 
+		triple = thread.getHighestPriorityTriple();
+		if( this != triple.getReceiver() ) {
+		    if( getContainer().getContainer().getName().equals("printer") ) {
+			/*
+		        System.out.println("Printer: Not highest priority "
+				+ "triple.");
+		        System.out.println("Printer: rcvrTime = "
+			        + getRcvrTime() + "  . Thread time = "
+			        + thread.getNextTime());
+			*/
+		    }
+		    return false;
+		}
+	    }
+	    if( super.hasToken() && !_terminate ) {
+		return true;
+	    }
+	    director.addReadBlock();
+	    while( !super.hasToken() && !_terminate ) {
+		if( getContainer().getContainer().getName().equals("printer") ) {
+		    // System.out.println("Printer: Preparing to block.");
+		}
+		notifyAll(); 
+		workspace.wait( this );
+	    }
+	    if( _terminate ) {
+		director.removeReadBlock();
+		throw new TerminateProcessException( getContainer(),
+			"This receiver has been terminated during "
+			+ "hasToken()");
+	    } else {
+		director.removeReadBlock();
+		return _hasToken(workspace, director, thread);
+	    }
+	}
     }
 
     /** Reset local flags.
@@ -179,6 +225,13 @@ public class ODFConservativeRcvr extends TimedQueueReceiver
     public void reset() {
         _simulIgnoreFlag = false; 
 	_terminate = false;
+    }
+
+    /** FIXME
+     */
+    public void put(double time) {
+	Token token = null;
+        put( token, time );
     }
 
     /** Do a blocking write on the queue. If at any point during this 
@@ -195,13 +248,23 @@ public class ODFConservativeRcvr extends TimedQueueReceiver
      * @param token The token to put on the queue.
      */
     public void put(Token token) {
+	/*
+        System.out.println( ((NamedObj)getContainer().getContainer()).getName()
+	        + ": call to ODFConservativeRcvr.put(Token)");
+	*/
+	Thread thread = Thread.currentThread(); 
         /* 
         double currentTime;
         currentTime = 
 	        ((ODFActor)getContainer().getContainer()).getCurrentTime();
         put( token, currentTime );
         */ 
-        put( token, getLastTime() );
+	if( thread instanceof ODFThread ) {
+	    double time = ((ODFThread)thread).getOutputTime();
+            put( token, time );
+	} else {
+            put( token, getLastTime() );
+	}
     }
 
     /** Do a blocking write on the queue. If at any point during this 
@@ -218,25 +281,30 @@ public class ODFConservativeRcvr extends TimedQueueReceiver
      * @param time The time stamp associated with the token.
      */
     public void put(Token token, double time) {
-        // System.out.println("\nCall to ODFConservativeRcvr.put()");
+	/*
+        System.out.println( ((NamedObj)getContainer().getContainer()).getName()
+	        + ": call to ODFConservativeRcvr.put(Token,"
+                +time+")");
+	*/
         // System.out.println("Previous queue size = " + getSize() );
         
         // Cache values so that the synchronization hierarchy 
         // will not be violated
         Workspace workspace = getContainer().workspace();
         ODFActor actor = (ODFActor)getContainer().getContainer();
-        ODFDirector director = (ODFDirector)actor.getDirector();
+        // ODFDirector director = (ODFDirector)actor.getDirector();
+        ODFDirector director = 
+                (ODFDirector)((Actor)getContainer().getContainer()).getDirector();
+	Thread thread = Thread.currentThread(); 
 
-	/*
 	String myName = ((ComponentEntity)actor).getName();
+	/*
 	if( token != null && myName.equals("printer") ) {
-	    if( (time==19.5) || (time==20.0) || (time==20.5) ) {
 	        StringToken sToken = (StringToken)token;
 	        String sValue = sToken.stringValue();
 	        System.out.println(sValue+" has been placed in "
 	        +((ComponentEntity)actor).getName()+"'s ODFConservativeRcvr. "
                 +"The time is: "+time);
-	    }
 	}
 	*/
         
@@ -244,8 +312,7 @@ public class ODFConservativeRcvr extends TimedQueueReceiver
 	    if( _terminate ) {
 	        throw new TerminateProcessException( getContainer(), "This " 
 		        + "receiver has been terminated during get().");
-	    }
-	    if( time > getCompletionTime() && getCompletionTime() != -5.0 ) {
+	    } if( time > getCompletionTime() && getCompletionTime() != -5.0 ) {
 	        time = -1.0;
 		token = null;
 	    }
@@ -275,6 +342,9 @@ public class ODFConservativeRcvr extends TimedQueueReceiver
 	        // Never Blocked.
                 super.put(token, time);
                 notifyAll(); 
+		if( thread instanceof ODFThread ) {
+		    ((ODFThread)thread).sendOutNullTokens();
+		}
                 /*
                 System.out.println("Actor(" 
                         + ((ComponentEntity)actor).getName() + 
@@ -298,6 +368,9 @@ public class ODFConservativeRcvr extends TimedQueueReceiver
                 director.removeWriteBlock(); 
                 super.put(token, time);
                 notifyAll();
+		if( thread instanceof ODFThread ) {
+		    ((ODFThread)thread).sendOutNullTokens();
+		}
 		return;
             }
         }
@@ -306,10 +379,11 @@ public class ODFConservativeRcvr extends TimedQueueReceiver
     /** Schedule this receiver to terminate.
      * FIXME: Synchronize this.
      */
-    public void requestFinish() {
+    public synchronized void requestFinish() {
+	System.out.println(getContainer().getContainer().getName() 
+		+ " called requestFinish()");
         _terminate = true;
-        // FIXME: Hmmm...
-	// notifyAll();
+	notifyAll();
     }
     
     /** Set the pause flag of this receiver.
@@ -354,5 +428,128 @@ public class ODFConservativeRcvr extends TimedQueueReceiver
 }
 
 
+	/* FROM _hasToken
+	boolean retValue = false;
+	Workspace workspace = getContainer().workspace();
+	ODFThread thread = getThread();
+        ODFDirector director = (ODFDirector)
+	        ((Actor)getContainer().getContainer()).getDirector();
+	synchronized(this) {
+	    if(_terminate) {
+		throw new TerminateProcessException( getContainer(),
+			"This receiver has been terminated during "
+			+ "hasToken()");
+	    }
+
+	    // Token available; check for minimum time
+	    if( super.hasToken() && !_terminate ) {
+		// FIXME: What if current time = -1.0?
+		if( getRcvrTime() <= thread.getNextTime() ) {
+		    if( thread.hasMinRcvrTime() ) {
+			return true;
+		    } else {
+			RcvrTimeTriple triple;
+			triple = thread.getHighestPriorityTriple();
+			if( this == triple.getReceiver() ) {
+			    return true;
+			} 
+			return false;
+		    }
+		}
+		return false;
+	    } else if( !_terminate ) {
+		director.addReadBlock();
+		while( !_terminate & !super.hasToken() ) {
+		    notifyAll();
+		    workspace.wait( this );
+		}
+	    }
+	    if( _terminate ) {
+		director.removeReadBlock();
+		throw new TerminateProcessException( getContainer(),
+			"This receiver has been terminated during "
+			+ "hasToken()");
+	    } else {
+		if( getRcvrTime() <= thread.getNextTime() ) {
+		    if( thread.hasMinRcvrTime() ) {
+			retValue = true;
+		    } else {
+			RcvrTimeTriple triple;
+			triple = thread.getHighestPriorityTriple();
+			if( this == triple.getReceiver() ) {
+			    retValue = true;
+			} else {
+			    retValue = false;
+			}
+		    }
+		}
+	    }
+	    director.removeReadBlock();
+	    return retValue;
+	}
+    }
+	*/
+
+	/* FROM get()
+        // ODFActor actor = (ODFActor)getContainer().getContainer();
+        // ODFDirector director = (ODFDirector)actor.getDirector(); 
+        ODFIOPort myPort = (ODFIOPort)getContainer();
+        String name = getContainer().getName(); 
+        // actor.getName(); 
+        Token token = null; 
+        synchronized(this) {
+            if( _terminate ) {
+                throw new TerminateProcessException( getContainer(), "This "
+                        + "receiver has been terminated during get().");
+            }
+            if( super.hasToken() && !_terminate ) {
+	        // FIXME: What if current time = -1.0??
+	        if( getRcvrTime() <= thread.getNextTime() ) {
+		    // if( getRcvrTime() <= actor.getNextTime() ) {
+                    if( thread.hasMinRcvrTime() ) {
+			// if( actor.hasMinRcvrTime() ) {
+                        token = super.get();
+                        notifyAll(); 
+                        return token;
+                    } else if( isSimultaneousIgnore() ) {
+                        setSimultaneousIgnore(false);
+                        token = super.get();
+                        notifyAll(); 
+                        return token;
+                    }
+                    return null;
+		}
+		// Return null in case rcvrTime is no longer the lowest.
+		return null;
+            } else if( !_terminate ) {
+                director.addReadBlock();
+                while( !_terminate && !super.hasToken() ) {
+                    notifyAll();
+                    workspace.wait( this );
+                }
+            } 
+            if( _terminate ) {
+                director.removeReadBlock(); 
+                throw new TerminateProcessException( getContainer(), "This "
+                        + "receiver has been terminated during get().");
+            } else {
+	        if( getRcvrTime() <= thread.getNextTime() ) {
+		    // if( getRcvrTime() <= actor.getNextTime() ) {
+                    if( thread.hasMinRcvrTime() ) {
+			// if( actor.hasMinRcvrTime() ) {
+                        token = super.get();
+                        notifyAll(); 
+                    } else if( isSimultaneousIgnore() ) {
+                        setSimultaneousIgnore(false);
+                        token = super.get();
+                        notifyAll(); 
+                    }
+		}
+                director.removeReadBlock(); 
+            }
+        }
+        
+        return token;
+	*/
 
 

@@ -227,6 +227,16 @@ public class ODFIOPort extends IOPort {
      */
     public void send(int channelindex, Token token, double delay)
             throws InvalidStateException, IllegalActionException  {
+	// String aName = ((NamedObj)getContainer()).getName();
+	/*
+	if( token instanceof StringToken ) {
+	    String val = ((StringToken)token).stringValue(); 
+	    System.out.println(val+": send() with delay of "+delay);
+	} else {
+	    System.out.println( ((NamedObj)getContainer()).getName() +
+		    ": Reinvoked send() with delay of "+delay);
+	}
+	*/
         if( delay < -1.0 ) {
             throw new IllegalActionException( this, "Negative delay "
                     + "values are not allowed.");
@@ -254,7 +264,13 @@ public class ODFIOPort extends IOPort {
             // System.out.println("\nAbout to call ODFConservativeRcvr.put() within " +
                     "ODFIOPort.send() for " + getName() ); 
             */
+	    Thread thread = Thread.currentThread(); 
+	    ODFThread odfthread = null;
+	    if( thread instanceof ODFThread ) {
+	        odfthread = (ODFThread)thread;
+	    }
             for (int j = 0; j < farRec[channelindex].length; j++) {
+                // double currentTime = odfthread.getCurrentTime();
                 double currentTime = ((ODFActor)getContainer()).getCurrentTime(); 
                 ((ODFConservativeRcvr)farRec[channelindex][j]).put(
                         // FIXME 

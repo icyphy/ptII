@@ -134,7 +134,12 @@ public class ODFActor extends AtomicActor {
      * @return The current time of this ODFActor.
      */
     public double getCurrentTime() {
-        return _currentTime;
+	Thread thread = Thread.currentThread();
+	if( thread instanceof ODFThread ) {
+	    _currentTime = ((ODFThread)thread).getCurrentTime();
+            return _currentTime;
+	}
+	return _currentTime;
     }
     
     /** Return the RcvrTimeTriple consisting of the receiver with the 
@@ -143,7 +148,6 @@ public class ODFActor extends AtomicActor {
      * @return The RcvrTimeTriple consisting of the receiver with the 
      *  highest priority and lowest nonnegative rcvrTime. If no triples 
      *  exist, return null.
-     */
     public RcvrTimeTriple getHighestPriorityTriple() {
         double time = -10.0;
 	double firstTime = -10.0;
@@ -177,17 +181,25 @@ public class ODFActor extends AtomicActor {
 	}
 	return highPriorityTriple;
     }
+     */
    
     /** Return a non-NullToken from the receiver which has the minimum
      *  rcvrTime.
      *  FIXME: Add thorough comments.
      */
     public Token getNextToken() {
+	/*
+	System.out.println(getName()+": Inside getNextToken()");
         sendOutNullTokens();
+	*/
         Token token = getNextInput(); 
         if( token instanceof NullToken ) {
-            return getNextInput();
-        }
+	    System.out.println(getName()+": got a NullToken from getNextInput()");
+            return getNextToken();
+        } else if( token == null ) {
+	    System.out.println(getName()+": got a null token from getNextInput()");
+            return getNextToken();
+	}
         return token;
     }
     
@@ -232,6 +244,18 @@ public class ODFActor extends AtomicActor {
      * @see ODFConservativeRcvr
      */
     public Token getNextInput() {
+	Thread thread = Thread.currentThread();
+	ODFThread odfthread = null;
+	if( thread instanceof ODFThread ) {
+	    // System.err.println(getName()+": Controlled by ODFThread");
+	    odfthread = (ODFThread)thread;
+	    if( odfthread.getActor() != this ) {
+		System.err.println("ODFThread does not own this actor!!!");
+	    }
+	} else {
+	    System.err.println("Non-ODFThread controlling "+getName());
+	}
+	/*
         if( _rcvrTimeList.size() == 0 ) {
             return null;
         }
@@ -239,25 +263,53 @@ public class ODFActor extends AtomicActor {
         Workspace workSpc = workspace();
         ODFDirector director = (ODFDirector)getDirector();
         String name = getName();
+	*/
         
-        RcvrTimeTriple bestTriple = (RcvrTimeTriple)_rcvrTimeList.first();
-        ODFConservativeRcvr lowestRcvr = 
+	/*
+        RcvrTimeTriple bestTriple = null;
+        ODFConservativeRcvr lowestRcvr = null;
+	synchronized(this) {
+        bestTriple = 
+	        (RcvrTimeTriple)odfthread._rcvrTimeList.first();
+        lowestRcvr = 
                 (ODFConservativeRcvr)bestTriple.getReceiver();
-        _currentTime = bestTriple.getTime();
+	}
+	*/
+        // _currentTime = bestTriple.getTime();
 
+        ODFConservativeRcvr lowestRcvr = odfthread.getFirstRcvr();
+
+	/*
 	if( bestTriple.getTime() == -1.0 ) {
-	    noticeOfTermination();
+	    // noticeOfTermination();
 	    lowestRcvr.requestFinish();
 	    lowestRcvr.get();
 	    System.out.println("Didn't throw TerminateProcessException "
 			       + "in ODFActor.get()");
 	}
+	*/
 
-        Token token = lowestRcvr.get();
+        // Token token = null;
+
+	if( lowestRcvr.hasToken() ) {
+	    /*
+	    if( getName().equals("printer") ) {
+	        System.out.println(getName()+": Lowest receiver has a token");
+	    } else {
+	        System.out.println(getName()+": Lowest receiver has a token");
+	    }
+	    */
+	    return lowestRcvr.get();
+	} else {
+	    /*
+	    if( getName().equals("printer") ) {
+	        System.out.println(getName()+": Lowest receiver does not have a token");
+	    }
+	    */
+	    return getNextInput();
+	}
         
-        if( token != null ) {
-            return token;
-        } else {
+	    /*
             if( this.hasMinRcvrTime() ) {
                 // This means that there must be a different receiver 
 	        // which has the minimum rcvrTime after the token was 
@@ -289,6 +341,7 @@ public class ODFActor extends AtomicActor {
                 }
             }
         }
+	*/
     }
 
     /** Return the earliest possible time stamp of the next token to be
@@ -298,7 +351,6 @@ public class ODFActor extends AtomicActor {
      * @return The next earliest possible time stamp to be produced by 
      *  this actor.
      * @see TimedQueueReceiver
-     */
     public double getNextTime() {
         if( _rcvrTimeList.size() == 0 ) {
             return _currentTime;
@@ -306,6 +358,7 @@ public class ODFActor extends AtomicActor {
         RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
         return triple.getTime();
     }
+     */
     
     /** Return true if the minimum receiver time is unique to a single
      *  receiver. Return true if there are no input receivers. Return
@@ -314,7 +367,6 @@ public class ODFActor extends AtomicActor {
      *  the same actor.
      * @return True if the minimum rcvrTime is unique to a single receiver 
      *  or if there are no receivers; otherwise return false.
-     */
     public synchronized boolean hasMinRcvrTime() {
         if( _rcvrTimeList.size() < 2 ) {
             return true;
@@ -328,22 +380,22 @@ public class ODFActor extends AtomicActor {
 	}
 	return true;
     }
+     */
     
     /** Initialize this actor by setting the receiver priorities.
      *  This method will also initialize the RcvrTimeTriple list
      *  via setPriorities().
      * @exception IllegalActionException If there is an error when
      *  setting the receiver priorities.
-     */
     public void initialize() throws IllegalActionException {
         super.initialize();
 	setPriorities();
     }
+     */
 
     /** Notify actors connected to this actor via its output ports, that 
      *  this actor is being terminated. Send events with time stamps of
      *  -1.0 to these "downstream" actors. 
-     */
     public void noticeOfTermination() { 
 	Enumeration outputPorts = outputPorts();
 	if( outputPorts == null ) {
@@ -362,6 +414,7 @@ public class ODFActor extends AtomicActor {
             }
 	}
     }
+     */
 
     /** Prepare to cease iterations of this actor. Notify actors which
      *  are connected downstream of this actor's cessation. Return false
@@ -371,7 +424,7 @@ public class ODFActor extends AtomicActor {
      *  thrown in derived classes.
      */
     public boolean postfire() throws IllegalActionException {
-        noticeOfTermination();
+        // noticeOfTermination();
         return false;
     }
     
@@ -379,7 +432,6 @@ public class ODFActor extends AtomicActor {
      *  less than the current time of this actor. Associate a time
      *  stamp with each NullToken that is equal to the current time
      *  of this actor.
-     */
     public void sendOutNullTokens() {
         Enumeration ports = outputPorts(); 
         while( ports.hasMoreElements() ) {
@@ -400,6 +452,7 @@ public class ODFActor extends AtomicActor {
             }
         }
     }
+     */
     
     /** Set the priorities of the receivers contained in the input 
      *  ports of this actor. Group the input receivers for this actor
@@ -428,7 +481,6 @@ public class ODFActor extends AtomicActor {
      *  polymorphic actors. A later version of this class will not have 
      *  this constraint.
      * @exception IllegalActionException If receiver access leads to an error.
-     */
     public void setPriorities() throws IllegalActionException {
         LinkedList listOfPorts = new LinkedList();
         Enumeration enum = inputPorts();
@@ -486,6 +538,7 @@ public class ODFActor extends AtomicActor {
             cnt++;
         }
     }
+     */
 
     /** Update the list of RcvrTimeTriples by positioning the 
      *  specified triple. If the specified triple is already
@@ -493,11 +546,11 @@ public class ODFActor extends AtomicActor {
      *  then added back to the list. The position of the triple
      *  is based on the triple's time value.
      * @param triple The RcvrTimeTriple to be positioned in the list.
-     */
     public synchronized void updateRcvrList(RcvrTimeTriple triple) {
 	_removeRcvrTriple( triple );
 	_addRcvrTriple( triple );
     }
+     */
     
     ///////////////////////////////////////////////////////////////////
     ////                   package friendly methods		   ////

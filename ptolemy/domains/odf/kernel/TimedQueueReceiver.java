@@ -74,25 +74,54 @@ public class TimedQueueReceiver implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**
+     */
+    public ODFThread getThread() {
+	return _controllingThread;
+    }
+
+    /**
+     */
+    public void setThread(ODFThread thread) {
+	_controllingThread = thread;
+    }
+
     /** Take the the oldest token off of the queue and return it.
      *  If the queue is empty, throw a NoTokenException. If there are 
      *  other tokens left on the queue after this removal, then set 
      *  the rcvrTime of this receiver to equal that of the next oldest 
-     *  token. Update the RcvrTimeTriple entry in the ODFActor which 
-     *  contains this receiver.
+     *  token. Update the RcvrTimeTriple entry in the ODFThread which 
+     *  manages this receiver.
      * @exception NoTokenException If the queue is empty.
      * @see ptolemy.domains.odf.kernel.RcvrTimeTriple
+     *  FIXME: Is there any way this can be called by a thread other
+     *  than an ODFThread??
      */
     public Token get() {
-        ODFActor actor = (ODFActor)getContainer().getContainer();
+	Thread thread = Thread.currentThread();
+        ODFActor actor = (ODFActor)getContainer().getContainer(); 
+	// System.out.println(actor.getName()+" inside of TimedQRcvr.get()"); 
 	Token token = null;
 	synchronized( this ) {
             Event event = (Event)_queue.take(); 
 	    if (event == null) {
                 throw new NoTokenException(getContainer(), 
-	                "Attempt to get token from an empty FIFO queue.");
+	                "Attempt to get token from an empty "
+                        + "TimedQueueReceiver.");
             } 
 	    token = event.getToken(); 
+	    if( thread instanceof ODFThread ) {
+		/*
+		System.out.println("\t" + actor.getName()+" get() time: " 
+                        + _rcvrTime);
+		*/
+	        ((ODFThread)thread).setCurrentTime( event.getTime() );
+	    } else {
+		/*
+		System.out.println(actor.getName()+" get() time: " 
+                        + _rcvrTime + "Not Called By ODFThread!!");
+		*/
+	    }
 
 	    if( getSize() > 0 ) {
 	        Event nextEvent = (Event)_queue.get(0); 
@@ -103,13 +132,17 @@ public class TimedQueueReceiver implements Receiver {
 	    // the triple is no longer in front.
 	    RcvrTimeTriple triple; 
 	    triple = new RcvrTimeTriple( this, _rcvrTime, _priority ); 
-	    actor.updateRcvrList( triple );
+	    if( thread instanceof ODFThread ) {
+	        ((ODFThread)thread).updateRcvrList( triple );
+	    }
+	    // actor.updateRcvrList( triple );
 	}
         return token;
     }
 
     /** Return the completion time of this receiver. 
      * @return double The completion time.
+     * FIXME: Should this be protected?
      */
     public synchronized double getCompletionTime() {
         return _completionTime;
@@ -172,7 +205,7 @@ public class TimedQueueReceiver implements Receiver {
      *  empty immediately prior to putting the token on the queue, then 
      *  set the rcvrTime flag value to be equal to the lastTime flag value. 
      *  If the queue is full, throw a NoRoomException. Update the 
-     *  RcvrTimeTriple entry in the ODFActor which contains this receiver.
+     *  RcvrTimeTriple entry in the ODFThread which manages this receiver.
      * @param token The token to put on the queue.
      */
     public void put(Token token) {
@@ -184,7 +217,7 @@ public class TimedQueueReceiver implements Receiver {
      *  If the queue is empty immediately prior to putting the token on 
      *  the queue, then set the rcvrTime flag value to be equal to the 
      *  lastTime flag value. If the queue is full, throw a NoRoomException. 
-     *  Update the RcvrTimeTriple entry in the ODFActor which contains 
+     *  Update the RcvrTimeTriple entry in the ODFThread which manages
      *  this receiver.
      * @param token The token to put on the queue.
      * @param time The time stamp of the token.
@@ -193,16 +226,17 @@ public class TimedQueueReceiver implements Receiver {
     public void put(Token token, double time) {
         // System.out.println("Previous queue size = " + getSize() );
         Event event;
-        ODFIOPort port = (ODFIOPort)getContainer();
+        IOPort port = (IOPort)getContainer();
+	ODFThread thread = getThread();
+        // ODFIOPort port = (ODFIOPort)getContainer();
         ODFActor actor = (ODFActor)port.getContainer();
         
         synchronized(this) {
             _lastTime = time; 
             /*
-	    if( _lastTime > 19.0 && myName.equals("printer") ) {
-                System.out.println("Update: _lastTime = " + _lastTime); 
-	    }
-            */
+	    System.out.println(actor.getName()+
+		    " put() time: "+ _lastTime);
+            */ 
 
             event = new Event(token, _lastTime);
             
@@ -211,7 +245,20 @@ public class TimedQueueReceiver implements Receiver {
                 _rcvrTime = _lastTime; 
                 triple = new RcvrTimeTriple( this, _rcvrTime, _priority ); 
                 // System.out.println("Update: _rcvrTime = " + _rcvrTime); 
-                actor.updateRcvrList( triple ); 
+		if( thread instanceof ODFThread ) {
+		    if( actor.getName().equals("printer") ) {
+                        System.out.println("\t\t***" + actor.getName() +
+				" calling update at time " + _rcvrTime); 
+		    }
+                    ((ODFThread)thread).updateRcvrList( triple ); 
+	            if( actor.getName().equals("printer") ) {
+			((ODFThread)thread).printRcvrList();
+		    }
+		} else {
+		    System.out.println("ERROR: Non-ODFThread calling "
+			    + "TimedQueueReceiver.put()");
+		}
+                // actor.updateRcvrList( triple ); 
             }
 
             if (!_queue.put(event)) {
@@ -249,6 +296,13 @@ public class TimedQueueReceiver implements Receiver {
         _priority = priority;
     }
 
+    /** Get the priority of this receiver. 
+     * @return Return the priority of this receiver.
+     */
+    public synchronized int getPriority() {
+        return _priority;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -269,4 +323,7 @@ public class TimedQueueReceiver implements Receiver {
 
     // The IOPort which contains this receiver.
     private IOPort _container;
+
+    // The thread controlling the actor that contains this receiver.
+    private ODFThread _controllingThread;
 }
