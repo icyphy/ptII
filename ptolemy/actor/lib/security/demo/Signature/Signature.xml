@@ -39,8 +39,8 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This test reads DSA keys from $PTII/ptKeystore. To generate this file, do 
-(cd $PTII; make ptKeystore)
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This test reads DSA keys from ptKeystore. To generate this file, do 
+(cd $PTII/ptolemy/actor/lib/security/demo/Signature; make ptKeystore)
 
 This test illustrates how we can use KeyStores to manage public and private keys. 
 The KeyStore itself and each private key in the KeyStore can have a separate 
@@ -332,7 +332,7 @@ which then causes an exception to be thrown.</text></svg></configure>
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="335.0, 190.0">
+        <vertex name="vertex1" value="[345.0, 190.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
