@@ -46,12 +46,8 @@ CLASSPATH = ../..
 JSRCS = \
 	Block.java \
 	Entity.java \
-	Galaxy.java \
 	NamedObj.java \
 	Node.java \
-	NoMethodOverrideException.java \
-	Port.java \
-	Star.java \
 	StatusArray.java
 
 EXTRA_SRCS =	$(JSRCS)
