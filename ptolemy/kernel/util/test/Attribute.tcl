@@ -154,3 +154,39 @@ test Attribute-7.2 {Test cloning of NamedObj with attributes} {
 }} {ptolemy.kernel.util.NamedObj {.N} attributes {
     {ptolemy.kernel.util.Attribute {.N.C}}
 }}}
+
+######################################################################
+####
+#
+test Attribute-8.1 {setContainer} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set n [java::new ptolemy.kernel.util.NamedObj N]
+    set a [java::new ptolemy.kernel.util.Attribute]
+    set b [java::new ptolemy.kernel.util.Attribute $w]
+    set c [java::new ptolemy.kernel.util.Attribute $n C]
+    set d [java::new ptolemy.kernel.util.Attribute $n D]
+    $a setContainer $c
+    $a description
+} {ptolemy.kernel.util.Attribute {.N.C.} attributes {
+}}
+    
+test Attribute-8.2 {setContainer, different workspace} {
+    # Builds on 8.1 above
+    catch {$b setContainer $c} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: W. and .N.C: Cannot set container because workspaces are different.}}
+    
+test Attribute-8.3 {setContainer, then setContainer again} {
+    # Builds on 8.1 above
+    # Note that this calls NamedObj _removeAttribute()
+    $a setContainer $c
+    $a setContainer $d
+    $a description
+} {ptolemy.kernel.util.Attribute {.N.D.} attributes {
+}}
+
+
+
+
+
+
