@@ -55,7 +55,7 @@ public class Fraction extends Object {
     public Fraction() {
         _num = 0;
         _den = 1;
-	_simplify();
+        _simplify();
     }
 
     /** Create a new fraction with the value i/1.
@@ -63,7 +63,7 @@ public class Fraction extends Object {
     public Fraction(int i) {
         _num = i;
         _den = 1;
-	_simplify();
+        _simplify();
     }
 
     /**
@@ -79,7 +79,7 @@ public class Fraction extends Object {
 
         _num = Numerator;
         _den = Denominator;
-	_simplify();
+        _simplify();
     }
 
     /** Create a new fraction with the same value as the given fraction.
@@ -117,7 +117,7 @@ public class Fraction extends Object {
         if (b.equals(ZERO)) throw new ArithmeticException(
                 "Division by zero!");
         Fraction f = new Fraction(_num * b._den, _den * b._num);
-	return f;
+        return f;
     }
 
     /** Compare this fraction with the given object.
@@ -218,7 +218,7 @@ public class Fraction extends Object {
      */
     public String toString() {
         StringBuffer s = new StringBuffer();
-	_simplify();
+        _simplify();
         s.append(_num);
         s.append('/');
         s.append(_den);

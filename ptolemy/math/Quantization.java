@@ -134,7 +134,7 @@ public abstract class Quantization implements Cloneable, Serializable {
         double maxVal = getMaximumValue();
         double minVal = getMinimumValue();
         double modVal = getNumberOfLevels();
-	return (maxVal - minVal) / (modVal - 1.0);
+        return (maxVal - minVal) / (modVal - 1.0);
     }
 
     /** Return the overflow bit-truth.
@@ -142,7 +142,7 @@ public abstract class Quantization implements Cloneable, Serializable {
      *  <i>minimum</i> values, false if greater range is acceptable..
      */
     public boolean getExactOverflow() {
-	return false;
+        return false;
     }
 
     /** Return the rounding bit-truth.
@@ -150,14 +150,14 @@ public abstract class Quantization implements Cloneable, Serializable {
      *  false if finer resolution is acceptable.
      */
     public boolean getExactRounding() {
-	return false;
+        return false;
     }
 
     /** Return the number of bits to represent the exponent.
      *  @return The length of the exponent.
      */
     public int getExponentBitLength() {
-	return 0;
+        return 0;
     }
 
     /** Return the number of bits representing the fractional part
@@ -165,7 +165,7 @@ public abstract class Quantization implements Cloneable, Serializable {
      *  @return The length of the fractional part of the mantissa.
      */
     public int getFractionBitLength() {
-	return getMantissaPrecision().getFractionBitLength();
+        return getMantissaPrecision().getFractionBitLength();
     }
 
     /** Return the number of bits representing the integer part
@@ -173,14 +173,14 @@ public abstract class Quantization implements Cloneable, Serializable {
      *  @return The length of the integer part of the mantissa.
      */
     public int getIntegerBitLength() {
-	return getMantissaPrecision().getIntegerBitLength();
+        return getMantissaPrecision().getIntegerBitLength();
     }
 
     /** Return the number of bits to represent the mantissa.
      *  @return The length of the mantissa.
      */
     public int getMantissaBitLength() {
-	return getIntegerBitLength() + getFractionBitLength();
+        return getIntegerBitLength() + getFractionBitLength();
     }
 
     /** Return the precision fore the mantissa of a compliant
@@ -195,7 +195,7 @@ public abstract class Quantization implements Cloneable, Serializable {
      */
     public BigInteger getMaximumUnscaledValue() {
         int numBits = getNumberOfBits();
-	return BigInteger.ZERO.setBit(numBits-1).subtract(BigInteger.ONE);
+        return BigInteger.ZERO.setBit(numBits-1).subtract(BigInteger.ONE);
     }
 
     /** Return the maximum quantizable value.
@@ -203,7 +203,7 @@ public abstract class Quantization implements Cloneable, Serializable {
      */
     public double getMaximumValue() {
         double maxVal = getMaximumUnscaledValue().doubleValue();
-	return maxVal * Math.pow(0.5, getFractionBitLength());
+        return maxVal * Math.pow(0.5, getFractionBitLength());
     }
 
     /** Return the minimum quantizable value after scaling so that
@@ -212,7 +212,7 @@ public abstract class Quantization implements Cloneable, Serializable {
      */
     public BigInteger getMinimumUnscaledValue() {
         int numBits = getNumberOfBits();
-	return BigInteger.ZERO.setBit(numBits-1).negate();
+        return BigInteger.ZERO.setBit(numBits-1).negate();
     }
 
     /** Return the minimum quantizable value.
@@ -220,7 +220,7 @@ public abstract class Quantization implements Cloneable, Serializable {
      */
     public double getMinimumValue() {
         double minVal = getMinimumUnscaledValue().doubleValue();
-	return minVal * Math.pow(0.5, getFractionBitLength());
+        return minVal * Math.pow(0.5, getFractionBitLength());
     }
 
     /** Return the modulo quantization range after scaling so that
@@ -231,42 +231,42 @@ public abstract class Quantization implements Cloneable, Serializable {
      */
     public BigInteger getModuloUnscaledValue() {
         int numBits = getNumberOfBits();
-	return BigInteger.ZERO.setBit(numBits);
+        return BigInteger.ZERO.setBit(numBits);
     }
 
     /** Return the number of bits to represent the value.
      *  @return The number of bits.
      */
     public int getNumberOfBits() {
-	return getMantissaBitLength() + getExponentBitLength();
+        return getMantissaBitLength() + getExponentBitLength();
     }
 
     /** Return the number of quantization levels in the mantissa.
      *  @return The number of levels.
      */
     public double getNumberOfLevels() {
-	return Math.pow(2.0, getMantissaBitLength());
+        return Math.pow(2.0, getMantissaBitLength());
     }
 
     /** Return the overflow strategy.
      *  @return The overflow strategy.
      */
     public Overflow getOverflow() {
-	return _overflow;
+        return _overflow;
     }
 
     /** Return the rounding strategy.
      *  @return The rounding strategy.
      */
     public Rounding getRounding() {
-	return _rounding;
+        return _rounding;
     }
 
     /** Return the quantizable value nearest to and above zero.
      *  @return The positive value nearest to zero.
      */
     public double getTinyValue() {
-	return getEpsilonValue();
+        return getEpsilonValue();
     }
 
     /** Return the quantized value of integerPart + fracPart.

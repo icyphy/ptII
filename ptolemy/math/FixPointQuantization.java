@@ -149,7 +149,7 @@ public class FixPointQuantization extends Quantization {
      *  @return The precision.
      */
     public Precision getMantissaPrecision() {
-	return _precision;
+        return _precision;
     }
 
     /** Return a FixPointQuantization with a changed overflow strategy.
@@ -157,7 +157,7 @@ public class FixPointQuantization extends Quantization {
      *  @return A new quantization.
      */
     public FixPointQuantization setOverflow(Overflow overflow) {
-	return new FixPointQuantization(_precision,
+        return new FixPointQuantization(_precision,
             overflow, getRounding());
     }
 
@@ -166,7 +166,7 @@ public class FixPointQuantization extends Quantization {
      *  @return A new quantization.
      */
     public FixPointQuantization setPrecision(Precision precision) {
-	return new FixPointQuantization(precision,
+        return new FixPointQuantization(precision,
             getOverflow(), getRounding());
     }
 
@@ -175,7 +175,7 @@ public class FixPointQuantization extends Quantization {
      *  @return A new quantization.
      */
     public FixPointQuantization setRounding(Rounding rounding) {
-	return new FixPointQuantization(_precision,
+        return new FixPointQuantization(_precision,
             getOverflow(), rounding);
     }
 
@@ -188,12 +188,12 @@ public class FixPointQuantization extends Quantization {
      *  @return A string representing this quantization.
      */
     public String toString() {
-	String x = "(" + _precision.getIntegerBitLength()
+        String x = "(" + _precision.getIntegerBitLength()
                   + "." + _precision.getFractionBitLength()
                   + "," + getOverflow().toString()
                   + "," + getRounding().toString()
                   + ")";
-	return x;
+        return x;
     }
 
     ///////////////////////////////////////////////////////////////////

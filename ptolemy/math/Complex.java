@@ -297,10 +297,10 @@ public class Complex implements Cloneable, Serializable {
      *  whether two tokens are close.
      *  @return True if the real and imaginary parts are equal.  */
     public final boolean isCloseTo(Complex z, double localEpsilon) {
-	// The argument is called localEpsilon so as to differentiate
-	// it from the epsilon field
-	return (Math.abs(z.real - real) < localEpsilon
-		&& Math.abs(z.imag - imag) < localEpsilon);
+        // The argument is called localEpsilon so as to differentiate
+        // it from the epsilon field
+        return (Math.abs(z.real - real) < localEpsilon
+                && Math.abs(z.imag - imag) < localEpsilon);
     }
 
     /** Return true if the real and imaginary parts of this complex number

@@ -154,7 +154,7 @@ public abstract class Overflow implements Cloneable, Serializable {
      *  @return The value if defined, null if not..
      */
     public BigInteger minusInfinity(Quantization quant) {
-	return null;
+        return null;
     }
 
     /** Return the value of plus infinity, or null if unrepresentable.
@@ -166,7 +166,7 @@ public abstract class Overflow implements Cloneable, Serializable {
      *  @return The value if defined, null if not.
      */
     public BigInteger plusInfinity(Quantization quant) {
-	return null;
+        return null;
     }
 
     /** Return the integerValue after applying the overflow constraints of

@@ -152,13 +152,13 @@ public class Precision implements Cloneable, Serializable {
      */
     public Precision(int length, int integerBits)
             throws IllegalArgumentException {
-	if (length <= 0 ) {
-	    throw new IllegalArgumentException("Incorrect definition of " +
+        if (length <= 0 ) {
+            throw new IllegalArgumentException("Incorrect definition of " +
                     "Precision. Do not use negative total length ");
-	}
-	_length   = length;
-	_integerBits  = integerBits;
-	_fraction = length - integerBits;
+        }
+        _length   = length;
+        _integerBits  = integerBits;
+        _fraction = length - integerBits;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -226,21 +226,21 @@ public class Precision implements Cloneable, Serializable {
      *  @return The length of the fractional part.
      */
     public int getFractionBitLength() {
-	return _fraction;
+        return _fraction;
     }
 
     /** Return the number of bits representing the integer part.
      *  @return the length of the integer part.
      */
     public int getIntegerBitLength() {
-	return _integerBits;
+        return _integerBits;
     }
 
     /** Return the total number of bits.
      *  @return the total number of bits.
      */
     public int getNumberOfBits() {
-	return _length;
+        return _length;
     }
 
     /** Return the precision that is the maximum of the two supplied
@@ -269,8 +269,8 @@ public class Precision implements Cloneable, Serializable {
      *  @return A string representing this precision.
      */
     public String toString() {
-	String x = "(" + _integerBits + "." + (_length - _integerBits) + ")";
-	return x;
+        String x = "(" + _integerBits + "." + (_length - _integerBits) + ")";
+        return x;
     }
 
     ///////////////////////////////////////////////////////////////////

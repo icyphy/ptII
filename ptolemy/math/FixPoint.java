@@ -102,13 +102,13 @@ public class FixPoint implements Cloneable, Serializable {
         _frac_bits = quant.getFractionBitLength();
         _int_bits = quant.getIntegerBitLength();
         _value = null;
-	try {
+        try {
             BigDecimal bigDecimal = new BigDecimal(doubleValue);
             _value = _integerValue(bigDecimal, quant);
-	} catch (NumberFormatException e) {
-	    throw new IllegalArgumentException("NumberFormatException " +
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("NumberFormatException " +
                 "while converting \"" + doubleValue + "\" to a FixPoint.");
-	}
+        }
     }
 
     /** Construct a FixPoint by converting a bigDecimal to comply
@@ -135,13 +135,13 @@ public class FixPoint implements Cloneable, Serializable {
         _frac_bits = quant.getFractionBitLength();
         _int_bits = quant.getIntegerBitLength();
         _value = null;
-	try {
+        try {
             BigDecimal bigDecimal = new BigDecimal(string);
             _value = _integerValue(bigDecimal, quant);
-	} catch (NumberFormatException e) {
-	    throw new IllegalArgumentException("NumberFormatException " +
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("NumberFormatException " +
                 "while converting \"" + string + "\" to a FixPoint.");
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -192,15 +192,15 @@ public class FixPoint implements Cloneable, Serializable {
         if (_frac_bits > 0) {
             // In order to avoid loss we must use the same number of powers
             // of ten in BigDecimal as we use powers of two in FixPoint.
-	    BigDecimal bigDecimal = new BigDecimal(_value);
-	    return bigDecimal.divide(_getTwoRaisedTo(_frac_bits),
+            BigDecimal bigDecimal = new BigDecimal(_value);
+            return bigDecimal.divide(_getTwoRaisedTo(_frac_bits),
                 _frac_bits, BigDecimal.ROUND_UNNECESSARY);
         }
         else if (_frac_bits == 0)
-	    return new BigDecimal(_value);
+            return new BigDecimal(_value);
         else {
-	    BigDecimal bigDecimal = new BigDecimal(_value);
-	    return bigDecimal.multiply(_getTwoRaisedTo(-_frac_bits));
+            BigDecimal bigDecimal = new BigDecimal(_value);
+            return bigDecimal.multiply(_getTwoRaisedTo(-_frac_bits));
         }
     }
 
@@ -231,7 +231,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  infinity not quantizable.
      */
     public FixPoint divide(FixPoint arg) throws IllegalArgumentException {
-	// Align the precision of the two FixPoints
+        // Align the precision of the two FixPoints
         int netFrac = Math.max(_frac_bits, arg._frac_bits);
         int netInt = Math.max(_int_bits, arg._int_bits);
         Precision netPrecision = new Precision(netInt + netFrac, netInt);
@@ -256,7 +256,7 @@ public class FixPoint implements Cloneable, Serializable {
      */
     public FixPoint divide(FixPoint arg, Quantization quant)
             throws IllegalArgumentException {
-	// Determine the extra results bits with respect to integer divide
+        // Determine the extra results bits with respect to integer divide
         int fracBits = quant.getFractionBitLength();
         int intBits = quant.getIntegerBitLength();
         int extraBits = _frac_bits - arg._frac_bits + fracBits;
@@ -264,22 +264,22 @@ public class FixPoint implements Cloneable, Serializable {
             _value.shiftLeft(extraBits) : _value;
         BigInteger denom = extraBits < 0 ?
             arg._value.shiftLeft(-extraBits) : arg._value;
-	try {
+        try {
             BigInteger[] result = num.divideAndRemainder(denom);
             double rem = result[1].doubleValue() / denom.doubleValue();
             Rounding aRounding = quant.getRounding();
             return new FixPoint(aRounding.quantize(result[0], rem),
                 intBits, fracBits);
-	} catch (ArithmeticException e) {
+        } catch (ArithmeticException e) {
             Overflow anOverflow = quant.getOverflow();
             BigInteger infinity = _value.signum() >= 0
                 ?  anOverflow.plusInfinity(quant)
                 :  anOverflow.minusInfinity(quant);
             if (infinity != null)
                 return new FixPoint(infinity, intBits, fracBits);
-	    throw new IllegalArgumentException("ArithmeticException while "
+            throw new IllegalArgumentException("ArithmeticException while "
                + "dividing " + toString() + " by " + arg.toString() + '.');
-	}
+        }
     }
 
     /** Return the value of this FixPoint as a double.  This
@@ -288,7 +288,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  @return The double value of this FixPoint.
      */
     public double doubleValue() {
-	return _value.doubleValue() * Math.pow(0.5, _frac_bits);
+        return _value.doubleValue() * Math.pow(0.5, _frac_bits);
     }
 
     /** Return true if this FixPoint is equal to the argument. Two
@@ -320,7 +320,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  @return The Precision of this number.
      */
     public Precision getPrecision() {
-	return new Precision(_int_bits + _frac_bits, _int_bits);
+        return new Precision(_int_bits + _frac_bits, _int_bits);
     }
 
     /** Return a hash code value for this value. This method returns the
@@ -356,21 +356,21 @@ public class FixPoint implements Cloneable, Serializable {
      *  out. This is used for debugging.
      */
     public void printFix() {
-	System.out.println (" unscale Value  (2) " +
+        System.out.println (" unscale Value  (2) " +
                 _value.toString(2));
-	System.out.println (" unscaled Value (10) " +
+        System.out.println (" unscaled Value (10) " +
                 _value.toString(10));
-	System.out.println (" scale Value (10) " + doubleValue()
+        System.out.println (" scale Value (10) " + doubleValue()
                 + " Precision: " + getPrecision().toString());
-	System.out.println (" BitCount:   " + _value.bitCount());
-	System.out.println (" BitLength   " + _value.bitLength());
+        System.out.println (" BitCount:   " + _value.bitCount());
+        System.out.println (" BitLength   " + _value.bitLength());
         BigInteger j = _value.abs();
-	System.out.println (" ABS value   " + j.toString(2));
-	System.out.println (" ABS bit count:  " + j.bitCount());
-	System.out.println (" ABD bitLength:  " + j.bitLength());
+        System.out.println (" ABS value   " + j.toString(2));
+        System.out.println (" ABS bit count:  " + j.bitCount());
+        System.out.println (" ABD bitLength:  " + j.bitLength());
         System.out.println (" Max value:  " +
                 getPrecision().findMaximum().doubleValue());
-	System.out.println (" Min value:  " +
+        System.out.println (" Min value:  " +
                 getPrecision().findMinimum().doubleValue());
     }
 
@@ -392,8 +392,8 @@ public class FixPoint implements Cloneable, Serializable {
             return new FixPoint(quant.quantize(_value, 0.0),
                 intBits, fracBits);
         else {
-	    BigInteger bigZero = BigInteger.ZERO;
-	    BigInteger bigOne = BigInteger.ONE;
+            BigInteger bigZero = BigInteger.ZERO;
+            BigInteger bigOne = BigInteger.ONE;
             BigInteger fracWeight = bigZero.setBit(-extraFracBits);
             BigInteger fracMask = fracWeight.subtract(bigOne);
             BigInteger bigInt = _value.shiftRight(-extraFracBits);
@@ -445,10 +445,10 @@ public class FixPoint implements Cloneable, Serializable {
             // significant bits that are zeros, this method recreates
             // these zeroes to get the correct representation of the
             // fractional part.
-	    BigInteger bigZero = BigInteger.ZERO;
-	    BigInteger bigOne = BigInteger.ONE;
-	    BigInteger fractionModulus = bigZero.setBit(_frac_bits);
-	    BigInteger fractionMask = fractionModulus.subtract(bigOne);
+            BigInteger bigZero = BigInteger.ZERO;
+            BigInteger bigOne = BigInteger.ONE;
+            BigInteger fractionModulus = bigZero.setBit(_frac_bits);
+            BigInteger fractionMask = fractionModulus.subtract(bigOne);
             BigInteger fractionPart = _value.and(fractionMask);
             int minFracBits = fractionPart.bitLength();
             int extraLeadingFracBits = _frac_bits - minFracBits;
@@ -511,7 +511,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  @return A BigInteger with aligned precision
      */
     private BigInteger _alignToFraction(int fracBits) {
-	int extraBits = fracBits - _frac_bits;
+        int extraBits = fracBits - _frac_bits;
         if (extraBits > 0)
             return _value.shiftLeft(extraBits);
         else  // This is a private method so we know that extraBits is +ve
@@ -602,11 +602,11 @@ public class FixPoint implements Cloneable, Serializable {
     ////                      static initializers                  ////
 
     static {
-	BigDecimal powerOf2 = BigDecimal.valueOf(1);
-	for (int i = 0; i < _twoRaisedTo.length; i++) {
-	    _twoRaisedTo[i] = powerOf2;
-	    powerOf2 = powerOf2.add(powerOf2);
-	}
+        BigDecimal powerOf2 = BigDecimal.valueOf(1);
+        for (int i = 0; i < _twoRaisedTo.length; i++) {
+            _twoRaisedTo[i] = powerOf2;
+            powerOf2 = powerOf2.add(powerOf2);
+        }
     }
 
     /** An instance of this class is used preserve backwards interface
@@ -618,11 +618,11 @@ public class FixPoint implements Cloneable, Serializable {
         // be instantiated.
         private Error() {}
 
-	/** Get a description of the Error.
-	 * @return A description of the Error.
-	 * @deprecated This functionality is obsolete.
+        /** Get a description of the Error.
+         * @return A description of the Error.
+         * @deprecated This functionality is obsolete.
          */
-	public String getDescription() {
-	    return " Overflow status is no longer tracked.";
-	}
+        public String getDescription() {
+            return " Overflow status is no longer tracked.";
+        }
     }}
