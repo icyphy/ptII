@@ -31,51 +31,60 @@
 
 package ptolemy.domains.de.lib;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
+
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Sampler
 /**
-Output the most recent input token when the <i>trigger</i> port receives a
-token.  If no token has been received on the <i>input</i> port when a
-token is received on the <i>trigger</i> port, then no output is
-produced.  The inputs can be of any token type, and the output
-is constrained to be of a type at least that of the input.
-<p>
-Both the <i>input</i> port and the <i>output</i> port are multiports.
-Generally, their widths should match. Otherwise, if the width of the
-<i>input</i> is greater than
-the width of the <i>output</i>, the extra input tokens will
-not appear on any output, although they will be consumed from
-the input port. If the width of the <i>output</i> is greater
-than that of the <i>input</i>, then the last few
-channels of the <i>output</i> will never emit tokens.
-<p>
-Note that an event on the input port does not directly cause an output event.
-Hence, this actor can be used to break feedback loops.
-<p>
-Note: If the width of the input changes during execution, then
-the most recent inputs are forgotten, as if the execution of the model
-were starting over.
-<p>
-This actor is similar to the Inhibit actor in that it modifies a
-stream of events based on the presence or absence of events from another
-input.  This actor reacts to the presence of the other event, whereas
-Inhibit reacts to the absence of it.
+Output the most recent input token when the <i>trigger</i> port
+receives a token.  If no token has been received on the <i>input</i>
+port when a token is received on the <i>trigger</i> port, then the
+value of the <i>initialValue</i> parameter is produced.  If, however,
+the <i>initialValue</i> parameter contains no value, then no output is
+produced.  The inputs can be of any token type, and the output is
+constrained to be of a type at least that of the input.
 
-@author Jie Liu, Edward A. Lee, Steve Neuendorffer
+<p> Both the <i>input</i> port and the <i>output</i> port are multiports.
+Generally, their widths should match. Otherwise, if the width of the
+<i>input</i> is greater than the width of the <i>output</i>, the extra
+input tokens will not appear on any output, although they will be
+consumed from the input port. If the width of the <i>output</i> is
+greater than that of the <i>input</i>, then the last few channels of
+the <i>output</i> will never emit tokens.
+
+<p> Note: If the width of the input changes during execution, then the
+most recent inputs are forgotten, as if the execution of the model
+were starting over.
+
+<p> This actor is similar to the Inhibit actor in that it modifies a
+stream of events based on the presence or absence of events from
+another input.  This actor reacts to the presence of the other event,
+whereas Inhibit reacts to the absence of it.
+
+@author Jie Liu, Edward A. Lee, Steve Neuendorffer, Elaine Cheong
 @version $Id$
 @since Ptolemy II 0.3
 @see ptolemy.domains.de.lib.Inhibit
 */
 
 public class Sampler extends DETransformer {
+    /* FIXME: It would be nice to have a version of this actor which
+       is a Register.  The difference is that a register ignores the
+       value of its input at the current time until after its output
+       has been generated.  A register could be used to break feedback
+       loops, whereas this cannot.
+    */
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -93,6 +102,8 @@ public class Sampler extends DETransformer {
         output.setTypeAtLeast(input);
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setTypeEquals(BaseType.GENERAL);
+
+        initialValue = new Parameter(this, "initialValue");
 
 	_attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-30\" y=\"-20\" "
@@ -113,6 +124,12 @@ public class Sampler extends DETransformer {
      */
     public TypedIOPort trigger;
 
+    /** The value that is output when no input has yet been received.
+     *  FIXME: ???The type should be the same as the input port.
+     *  @see #typeConstraintList()
+     */
+    public Parameter initialValue;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -127,42 +144,58 @@ public class Sampler extends DETransformer {
             throws CloneNotSupportedException {
         Sampler newObject = (Sampler)super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
-        _lastInputs = null;
+
+        // This is not strictly needed (since it is always recreated
+        // in preinitialize) but it is safer.
+        newObject._lastInputs = null;
+
         return newObject;
     }
 
-    /** If there is a token in the <i>trigger</i> port,
-     *  emit the most recent token from the <i>input</i> port. If there
-     *  has been no input token, or there is no token on the <i>trigger</i>
-     *  port, emit nothing.
+    /** If there is a token in the <i>trigger</i> port, emit the most
+     *  recent token from the <i>input</i> port. If there has been no
+     *  input token, but the <i>initialValue</i> parameter has been
+     *  set, emit the value of the <i>initialValue</i> parameter.
+     *  Otherwise, emit nothing.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        int inputWidth = input.getWidth();
+        int outputWidth = output.getWidth();
+        int commonWidth = Math.min(inputWidth, outputWidth);
+
+        // If the <i>initialValue</i> parameter was not set, or if the
+        // width of the input has changed.
+        if (_lastInputs == null || _lastInputs.length != inputWidth) {
+            _lastInputs = new Token[inputWidth];
+        }
+
+        // Consume the inputs we save.
+        for (int i = 0; i < commonWidth; i++) {
+            while (input.hasToken(i)) {
+                _lastInputs[i] = input.get(i);
+            }
+        }
+
+        // Consume the inputs we don't save.
+        for (int i = commonWidth; i < inputWidth; i++) {
+            while (input.hasToken(i)) {
+                input.get(i);
+            }
+        }
+
+        // If we have a trigger...
         if (trigger.hasToken(0)) {
             // Consume the trigger token.
             trigger.get(0);
-            int widthOfInputs = input.getWidth();
-            int widthOfOutputs = output.getWidth();
-            int n = Math.min(widthOfInputs, widthOfOutputs);
-            if (_lastInputs == null || _lastInputs.length != widthOfInputs) {
-                _lastInputs = new Token[widthOfInputs];
-            }
-            for (int i = 0; i < n; i++) {
-                while (input.hasToken(i)) {
-                    _lastInputs[i] = input.get(i);
-                }
-                // in is the most recent token, assuming
-                // the receiver has a FIFO behavior.
-                if (_lastInputs[i] != null) {
+            for (int i = 0; i < commonWidth; i++) {
+                // Do not output anything if the <i>initialValue</i>
+                // parameter was not set and this actor has not
+                // received any inputs.
+                if (_lastInputs[i] != null)
+                    // Output the most recent token, assuming the
+                    // receiver has a FIFO behavior.
                     output.send(i, _lastInputs[i]);
-                }
-            }
-            // Consume tokens in extra input channels so they
-            // don't get accumulated.
-            for (int i = n; i < widthOfInputs; i++) {
-                while (input.hasToken(i)) {
-                    input.get(i);
-                }
             }
         }
     }
@@ -186,9 +219,42 @@ public class Sampler extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void preinitialize() throws IllegalActionException {
-        _lastInputs = null;
+        if (initialValue.getToken() != null) {
+            _lastInputs = new Token[input.getWidth()];
+            for (int i = 0; i < input.getWidth(); i++) {
+                _lastInputs[i] = initialValue.getToken();
+            }
+        } else {
+            _lastInputs = null;
+        }
         super.preinitialize();
     }
+
+    /** Override the method in the base class so that the type
+     *  constraint for the <i>initialValue</i> parameter will be set
+     *  if it contains a value.
+     *  @return a list of Inequality objects.
+     *  @see ptolemy.graph.Inequality
+     */
+    public List typeConstraintList() {
+        List typeConstraints = super.typeConstraintList();
+
+        try {
+            if (initialValue.getToken() != null) {
+                Inequality ineq = new Inequality(initialValue.getTypeTerm(),
+                        output.getTypeTerm());
+                typeConstraints.add(ineq);
+            }
+        } catch (IllegalActionException ex) {
+            // Errors in the initialValue parameter should already
+            // have been caught in getAttribute() method of the base
+            // class.
+            throw new InternalErrorException("Bad initialValue value!");
+        }
+
+        return typeConstraints;
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
