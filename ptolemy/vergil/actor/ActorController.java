@@ -423,7 +423,7 @@ public class ActorController extends AttributeController {
             try {
                 _configuration.openModel(entity);
             } catch (Exception ex) {
-                MessageHandler.error("Look inside failed: ", ex);
+                MessageHandler.error("Look inside failed.", ex);
             }
         }
     }
