@@ -44,7 +44,7 @@ ME =		ptolemy/apps
 # PTWABA_DIR is set to waba if waba was found
 DIRS =		agilent $(PTKVM_DIR) $(PTJMF_DIR) \
 		$(PTLEGO_DIR) $(PTLEJOS) \
-		tini $(PTSOOT_DIR) $(PTWABA_DIR)
+		tini $(PTSOOT_DIR) $(PTWABA_DIR) softwalls
 
 # Root of Ptolemy II directory
 ROOT =		../..
