@@ -62,6 +62,7 @@ of the recorded token and the token it is currently reading.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 2.0.1
 */
 
 public class OrderedMerge extends TypedAtomicActor {
