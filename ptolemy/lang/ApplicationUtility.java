@@ -1,5 +1,4 @@
-/*
-Miscelleneous utilities for command-line applications.
+/* Miscellaneous utilities for command-line applications.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -35,7 +34,7 @@ package ptolemy.lang;
 
 //////////////////////////////////////////////////////////////////////////
 //// ApplicationUtility
-/** Miscelleneous utilities for command-line applications.
+/** Miscellaneous utilities for command-line applications.
 @author Jeff Tsay
 @version $Id$
  */
