@@ -41,8 +41,8 @@ import ptolemy.kernel.util.InternalErrorException;
    different from the real time of the physical world. This object is 
    immutable. It contains a BigDecimal number to record the time value, 
    which provides an arbitrary precision and an accuracy as small as 10^(-2^32).
-   There are two time constants specified in this class: NEGATIVEINFINITY and 
-   POSITIVEINFINITY.
+   There are two time constants specified in this class: NEGATIVE_INFINITY and 
+   POSITIVE_INFINITY.
    
    <p> The time value contained by a time object is quantized according to
    the time resolution specified by the <i>timeScale</i> parameter. The reason 
@@ -163,12 +163,12 @@ public class Time implements Comparable {
     // because these constants are invariant to any time resolution.
     /** A static and final time constant holding a negative infinity. 
      */
-    public static final Time NEGATIVEINFINITY 
+    public static final Time NEGATIVE_INFINITY 
         = new Time(null, Double.NEGATIVE_INFINITY); 
     
     /** A static and final time constant holding a positive infinity.
      */
-    public static final Time POSITIVEINFINITY 
+    public static final Time POSITIVE_INFINITY 
         = new Time(null, Double.POSITIVE_INFINITY); 
     
     ///////////////////////////////////////////////////////////////////
@@ -215,7 +215,7 @@ public class Time implements Comparable {
                             "Adding a positive infinity to a negative " +
                             "infinity yields a NaN.");
                 } else {
-                    return NEGATIVEINFINITY;
+                    return NEGATIVE_INFINITY;
                 }
             } else {
                 // time value is a positive infinity
@@ -224,7 +224,7 @@ public class Time implements Comparable {
                             "Adding a negative infinity to a positive " +
                             "infinity yields a NaN.");
                 } else {
-                    return POSITIVEINFINITY;
+                    return POSITIVE_INFINITY;
                 }
             }
         } else {
@@ -248,7 +248,7 @@ public class Time implements Comparable {
                         "Adding a positive infinity to a negative " +
                         "infinity yields a NaN.");
             } else {
-                return NEGATIVEINFINITY;
+                return NEGATIVE_INFINITY;
             }
         } else if (time.isPositiveInfinite()){
             // the time object has a positive infinity time value
@@ -257,7 +257,7 @@ public class Time implements Comparable {
                         "Adding a negative infinity to a positive " +
                         "infinity yields a NaN.");
             } else {
-                return POSITIVEINFINITY;
+                return POSITIVE_INFINITY;
             }
         } else {
             return add(time.getBigDecimalValue());
@@ -434,7 +434,7 @@ public class Time implements Comparable {
                         "Subtracting a negative infinity from a negative " +
                         "infinity yields a NaN.");
             } else {
-                return POSITIVEINFINITY;
+                return POSITIVE_INFINITY;
             }
         } else if (time.isPositiveInfinite()){
             // the time object has a positive infinity time value
@@ -443,7 +443,7 @@ public class Time implements Comparable {
                         "Subtracting a positive infinity from a positive " +
                         "infinity yields a NaN.");
             } else {
-                return NEGATIVEINFINITY;
+                return NEGATIVE_INFINITY;
             }
         } else {
             return add(time.getBigDecimalValue().negate());
