@@ -30,7 +30,7 @@
         </port>
     </entity>
     <entity name="LookupTable" class="ptolemy.actor.lib.LookupTable">
-        <property name="data" class="ptolemy.data.expr.Parameter" value="{1, 2, 4, 8, 16}">
+        <property name="table" class="ptolemy.data.expr.Parameter" value="{1, 2, 4, 8, 16}">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="364.0, 85.0">
         </property>
