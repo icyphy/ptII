@@ -91,7 +91,7 @@ public abstract class Token {
      *  actions for divide.
      *  @param divisor The Token whose value we divide the value of this
      *   Token by.
-     *  @exception IllegalActionException Thrown if this method is not
+     *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
