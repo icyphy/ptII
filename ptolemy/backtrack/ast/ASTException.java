@@ -1,7 +1,7 @@
-/* Superclass of all the exceptions to be raised during AST
- * manipulation.
+/* Superclass of all the non-runtime exceptions raised in AST
+analysis and manipulation.
 
-Copyright (c) 1998-2004 The Regents of the University of California.
+Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -32,25 +32,22 @@ package ptolemy.backtrack.ast;
 //////////////////////////////////////////////////////////////////////////
 //// ASTException
 /**
-   Superclass of all the exceptions to be raised during AST manipulation.
-   Because AST manipulation procedures are not explicitly declared to raise
-   exceptions in the superclasses, this exception is subclassed from {@link
-   RuntimeException}.
+   Superclass of all the non-runtime exceptions to be raised in AST
+   analysis and manipulation.
 
    @author Thomas Feng
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Red (tfeng)
 */
-
-public class ASTException extends RuntimeException {
+public class ASTException extends Exception {
 
     /** Construct an AST exception with a message.
      * 
      *  @param errorMessage The message.
      */
-    public ASTException(String errorMessage) {
-        super(errorMessage);
+    public ASTException(String message) {
+        super(message);
     }
     
 }
