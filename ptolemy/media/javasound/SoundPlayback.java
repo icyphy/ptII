@@ -323,16 +323,16 @@ public class SoundPlayback {
 
         _frameSizeInBytes = format.getFrameSize();
 
-	System.out.println("SoundPLayback: _startPlaybackRealTime(): " +
+	System.out.println("SoundPlayback: _startPlaybackRealTime(): " +
                 "sampling rate = " + _sampleRate);
-	System.out.println("SoundPLayback: _startPlaybackRealTime(): " +
+	System.out.println("SoundPlayback: _startPlaybackRealTime(): " +
                 "sample size in bits = " + _sampleSizeInBits);
 
         DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
                 format,
                 AudioSystem.NOT_SPECIFIED);
 
-	System.out.println("SoundPLayback: Dataline.Info : " +
+	System.out.println("SoundPlayback: Dataline.Info : " +
                 sourceInfo.toString());
 
         // get and open the source data line for playback.
@@ -450,7 +450,7 @@ public class SoundPlayback {
      * @param bytesPerSample Number of bytes per sample. Supported
      * bytes per sample by this method are 8, 16, 24, 32.
      * @param channels Number of audio channels.
-     * @return The linear signed pcm big endian byte array formated
+     * @return The linear signed pcm big endian byte array formatted
      * array representation of <i>doubleArray</i>. The length of
      * the returned array is (doubleArray.length*bytesPerSample*channels).
      */
@@ -491,7 +491,7 @@ public class SoundPlayback {
 		for (int i = 0; i < bytesPerSample; i += 1, l >>= 8)
 		    b[bytesPerSample - i - 1] = (byte) l;
 		// Copy the byte representation of current sample to
-		// the linear signed pcm big endian formated byte array.
+		// the linear signed pcm big endian formatted byte array.
 		for (int i = 0; i < bytesPerSample; i += 1) {
                     byteArray[currSamp*bytesPerSample*channels + 
                             bytesPerSample*currChannel + i] = b[i];

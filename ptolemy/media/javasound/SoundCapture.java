@@ -453,7 +453,7 @@ public class SoundCapture {
     /* Convert a byte array of audio samples in linear signed pcm big endian
      * format into a double array of audio samples (-1, 1) range.
      * @param byteArray  The linear signed pcm big endian byte array
-     * formated array representation of audio data.
+     * formatted array representation of audio data.
      * @param bytesPerSample Number of bytes per sample. Supported
      * bytes per sample by this method are 8, 16, 24, 32.
      * @param channels Number of audio channels. 1 for mono, 2 for
@@ -467,25 +467,25 @@ public class SoundCapture {
             int channels) {
 	int lengthInSamples = byteArray.length / (bytesPerSample*channels);
 	double[][] doubleArray = new double[channels][lengthInSamples];
-	//double maxSampleReciprical = 1/(Math.pow(2, 8 * bytesPerSample - 1));
+	//double maxSampleReciprocal = 1/(Math.pow(2, 8 * bytesPerSample - 1));
 	// Could use above line, but hopefully, code below will
 	// be faster.
-	double maxSampleReciprical;
+	double maxSampleReciprocal;
 	if (bytesPerSample == 2) {
 	    // 1 / 32768
-	    maxSampleReciprical = 3.0517578125e-5;
+	    maxSampleReciprocal = 3.0517578125e-5;
 	} else if (bytesPerSample == 1) {
 	    // 1 / 128
-	    maxSampleReciprical = 7.8125e-3;
+	    maxSampleReciprocal = 7.8125e-3;
 	} else if (bytesPerSample == 3) {
 	    // 1 / 8388608
-	    maxSampleReciprical = 1.1920928955e07;
+	    maxSampleReciprocal = 1.1920928955e07;
 	} else if (bytesPerSample == 4) {
 	    // 1 / 147483648e9
-	    maxSampleReciprical = 4.655661287308e-10;
+	    maxSampleReciprocal = 4.655661287308e-10;
 	} else {
 	    // Should not happen.
-	    maxSampleReciprical = 0;
+	    maxSampleReciprocal = 0;
 	}
 
 	byte[] b = new byte[bytesPerSample];
@@ -503,7 +503,7 @@ public class SoundCapture {
 		for (int i = 0; i < bytesPerSample; i += 1)
 		    result = (result << 8) + (b[i] & 0xff);
 		doubleArray[currChannel][currSamp] =
-		    ((double) result*maxSampleReciprical);
+		    ((double) result*maxSampleReciprocal);
 	    }
         }
 	return doubleArray;
