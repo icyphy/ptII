@@ -107,7 +107,8 @@ public class CommandLineTemplate {
 
     /** Parse the command-line arguments, creating models as specified.
      *  @param args The command-line arguments.
-     *  @exception If something goes wrong.
+     *  @exception Exception If there is a problem processing
+     *  the arguments.
      */
     public void processArgs(String args[]) throws Exception {
         if (args != null) {

@@ -163,13 +163,15 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
                                         PtolemyUtilities.namedObjClass)) {
                             try {
                                 NamedObj leftObject =
-                                    getNamedObjValue(method,(Local)left,
+                                    getNamedObjValue(method, (Local)left,
                                             stmt, localDefs, localUses);
                                 NamedObj rightObject =
                                     getNamedObjValue(method, (Local)right,
                                             stmt, localDefs, localUses);
-                                System.out.println("leftObject = " + leftObject);
-                                System.out.println("rightObject = " + rightObject);
+                                System.out.println("leftObject = "
+                                        + leftObject);
+                                System.out.println("rightObject = "
+                                        + rightObject);
 
                                 if (leftObject == rightObject) {
                                     binop.getOp1Box().setValue(

@@ -148,7 +148,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
                     ValueBox box = (ValueBox)unit.getInvokeExprBox();
                     InvokeExpr r = (InvokeExpr)box.getValue();
                     if (r.getMethod().getSubSignature().equals(
-                            PtolemyUtilities.invalidateResolvedTypesMethod.getSubSignature())) {
+                            PtolemyUtilities.invalidateResolvedTypesMethod
+                            .getSubSignature())) {
                         // Remove calls to invalidateResolvedTypes()
                         body.getUnits().remove(unit);
                     }

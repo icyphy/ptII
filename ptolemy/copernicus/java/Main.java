@@ -360,33 +360,6 @@ public class Main extends KernelMain {
                         WatchDogTimer.v(), "cancel:true"));
     }
 
-    /** Add transforms corresponding to the standard soot optimizations
-     *  to the given pack.
-     */
-    private void _addStandardOptimizations(Pack pack) {
-        pack.add(new Transform("jop.cse",
-                new TransformerAdapter(CommonSubexpressionEliminator.v())));
-        pack.add(new Transform("jop.cp",
-                new TransformerAdapter(CopyPropagator.v())));
-        pack.add(new Transform("jop.cpf",
-                new TransformerAdapter(ConstantPropagatorAndFolder.v())));
-        pack.add(new Transform("jop.cbf",
-                new TransformerAdapter(ConditionalBranchFolder.v())));
-        pack.add(new Transform("jop.dae",
-                new TransformerAdapter(ImprovedDeadAssignmentEliminator.v())));
-        pack.add(new Transform("jop.uce1",
-                new TransformerAdapter(UnreachableCodeEliminator.v())));
-        pack.add(new Transform("jop.ubf1",
-                new TransformerAdapter(UnconditionalBranchFolder.v())));
-        pack.add(new Transform("jop.uce2",
-                new TransformerAdapter(UnreachableCodeEliminator.v())));
-        pack.add(new Transform("jop.ubf2",
-                new TransformerAdapter(UnconditionalBranchFolder.v())));
-        pack.add(new Transform("jop.ule",
-                new TransformerAdapter(UnusedLocalEliminator.v())));
-    }
-
-
     /** Read in a MoML model, generate java files.
      */
     public static void main(String[] args) {
@@ -415,5 +388,31 @@ public class Main extends KernelMain {
             ex.printStackTrace(System.err);
 	    System.exit(2);
         }
+    }
+
+    /** Add transforms corresponding to the standard soot optimizations
+     *  to the given pack.
+     */
+    private void _addStandardOptimizations(Pack pack) {
+        pack.add(new Transform("jop.cse",
+                new TransformerAdapter(CommonSubexpressionEliminator.v())));
+        pack.add(new Transform("jop.cp",
+                new TransformerAdapter(CopyPropagator.v())));
+        pack.add(new Transform("jop.cpf",
+                new TransformerAdapter(ConstantPropagatorAndFolder.v())));
+        pack.add(new Transform("jop.cbf",
+                new TransformerAdapter(ConditionalBranchFolder.v())));
+        pack.add(new Transform("jop.dae",
+                new TransformerAdapter(ImprovedDeadAssignmentEliminator.v())));
+        pack.add(new Transform("jop.uce1",
+                new TransformerAdapter(UnreachableCodeEliminator.v())));
+        pack.add(new Transform("jop.ubf1",
+                new TransformerAdapter(UnconditionalBranchFolder.v())));
+        pack.add(new Transform("jop.uce2",
+                new TransformerAdapter(UnreachableCodeEliminator.v())));
+        pack.add(new Transform("jop.ubf2",
+                new TransformerAdapter(UnconditionalBranchFolder.v())));
+        pack.add(new Transform("jop.ule",
+                new TransformerAdapter(UnusedLocalEliminator.v())));
     }
 }

@@ -117,7 +117,7 @@ public class NamedObjConstructorAnalysis {
 
                     // Save the name.
                     Value nameValue = invokeExpr.getArg(1);
-                    System.out.println("attribute name =" + nameValue);
+                    System.out.println("attribute name = " + nameValue);
                     if (Evaluator.isValueConstantValued(nameValue)) {
                         StringConstant nameConstant =
                             (StringConstant)
@@ -136,7 +136,7 @@ public class NamedObjConstructorAnalysis {
 
                     // Save the name.
                     Value nameValue = invokeExpr.getArg(0);
-                    //System.out.println("attribute name =" + nameValue);
+                    //System.out.println("attribute name = " + nameValue);
                     if (Evaluator.isValueConstantValued(nameValue)) {
                         StringConstant nameConstant =
                             (StringConstant)

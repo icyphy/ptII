@@ -165,7 +165,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                     if (value instanceof InstanceInvokeExpr) {
                         InstanceInvokeExpr r = (InstanceInvokeExpr)value;
                         if (r.getMethod().getSubSignature().equals(
-                                PtolemyUtilities.getDirectorMethod.getSubSignature())) {
+                                PtolemyUtilities
+                                .getDirectorMethod.getSubSignature())) {
                                 // Replace calls to getDirector with
                                 // null.  FIXME: we should be able to
                                 // do better than this?

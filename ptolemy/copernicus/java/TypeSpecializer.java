@@ -547,7 +547,7 @@ public class TypeSpecializer extends SceneTransformer {
                         objectToInequalityTerm.get(
                                 r.getArg(0));
 
-                    _addInequality(debug, solver,firstArgTerm,
+                    _addInequality(debug, solver, firstArgTerm,
                             portTypeTerm);
                     // Return type is void.
                     return null;

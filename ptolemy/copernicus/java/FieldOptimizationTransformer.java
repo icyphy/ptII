@@ -57,10 +57,17 @@ import ptolemy.data.expr.Variable;
 import ptolemy.copernicus.kernel.SootUtilities;
 
 
+//////////////////////////////////////////////////////////////////////////
+//// FieldOptimizationTransformer
 /**
 A Transformer that is responsible for inlining the values of parameters.
 The values of the parameters are taken from the model specified for this
 transformer.
+
+@author Stephen Neuendorffer
+@version $Id$
+@since Ptolemy II 2.0
+
 */
 public class FieldOptimizationTransformer extends SceneTransformer {
     /** Construct a new transformer
@@ -69,9 +76,10 @@ public class FieldOptimizationTransformer extends SceneTransformer {
         _model = model;
     }
 
-    /** Return an instance of this transformer that will operate on the given model.
-     *  The model is assumed to already have been properly initialized so that
-     *  resolved types and other static properties of the model can be inspected.
+    /** Return an instance of this transformer that will operate on
+     *  the given model.  The model is assumed to already have been
+     *  properly initialized so that resolved types and other static
+     *  properties of the model can be inspected.
      */
     public static FieldOptimizationTransformer v(CompositeActor model) {
         return new FieldOptimizationTransformer(model);
@@ -150,10 +158,15 @@ public class FieldOptimizationTransformer extends SceneTransformer {
                         Stmt stmt = (Stmt)units.getLast();
                         while (!stmt.equals(units.getFirst())) {
                             if (stmt instanceof DefinitionStmt &&
-                                    ((DefinitionStmt)stmt).getLeftOp() instanceof InstanceFieldRef) {
-                                InstanceFieldRef ref = (InstanceFieldRef) ((DefinitionStmt)stmt).getLeftOp();
-                                if (ref.getField() == field && fieldValue == null) {
-                                    fieldValue = ((DefinitionStmt)stmt).getRightOp();
+                                    ((DefinitionStmt)stmt)
+                                    .getLeftOp() instanceof InstanceFieldRef) {
+                                InstanceFieldRef ref =
+                                    (InstanceFieldRef) ((DefinitionStmt)stmt)
+                                    .getLeftOp();
+                                if (ref.getField() == field
+                                        && fieldValue == null) {
+                                    fieldValue =
+                                        ((DefinitionStmt)stmt).getRightOp();
                                     break;
                                 } else if (fieldValue != null) {
                                     finalize = false;
@@ -164,7 +177,8 @@ public class FieldOptimizationTransformer extends SceneTransformer {
                     }
                 }
                 if (finalize && fieldValue != null) {
-                    System.out.println("field " + field + " has final value = " + fieldValue);
+                    System.out.println("field " + field
+                            + " has final value = " + fieldValue);
                 }
             }
         }

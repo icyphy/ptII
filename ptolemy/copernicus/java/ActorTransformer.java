@@ -253,7 +253,8 @@ public class ActorTransformer extends SceneTransformer {
                             ((Variable)classSettable).setToken(
                                     ((Variable)settable).getToken());
                         } else {
-                            classSettable.setExpression(settable.getExpression());
+                            classSettable
+                                .setExpression(settable.getExpression());
                             classSettable.validate();
                         }
                     } catch (Exception ex) {
@@ -535,14 +536,22 @@ public class ActorTransformer extends SceneTransformer {
                 Stmt stmt = (Stmt)units.next();
                 if (stmt.containsInvokeExpr()) {
                     InvokeExpr r = (InvokeExpr)stmt.getInvokeExpr();
-                    // This is steve...  This is steve gacking at the ugliest code
+                    // This is steve...
+                    // This is steve gacking at the ugliest code
                     // he's written in a while.   See steve gack.
+                    // gack steve, gack.
+                    // This is Christopher.
+                    // This is Christopher gacking on Steve's code
+                    // gack Christopher, gack.
                     if (r.getMethod().getName().equals("attributeChanged") ||
                             r.getMethod().getName().equals("setExpression") ||
                             r.getMethod().getName().equals("setToken") ||
-                            r.getMethod().getName().equals("setTokenConsumptionRate") ||
-                            r.getMethod().getName().equals("setTokenProductionRate") ||
-                            r.getMethod().getName().equals("setTokenInitProduction")) {
+                            r.getMethod().getName()
+                            .equals("setTokenConsumptionRate") ||
+                            r.getMethod().getName()
+                            .equals("setTokenProductionRate") ||
+                            r.getMethod().getName()
+                            .equals("setTokenInitProduction")) {
                         body.getUnits().remove(stmt);
                     }
                 }
