@@ -174,10 +174,17 @@ public class ParameterPort extends TypedIOPort {
                 _parameter = (PortParameter)parameter;
                 if (_parameter._port == null) {
                     _parameter._port = this;
-                    _parameter.setTypeSameAs(this);
+                    _setTypeConstraints();
                 }
             }
         }
+    }
+    
+    /** Get the associated parameter.
+     *  @returns The associated parameter.
+     */
+    public PortParameter getParameter() {
+        return _parameter;
     }
 
     /** Set the name, and propagate the name change to the
@@ -202,6 +209,20 @@ public class ParameterPort extends TypedIOPort {
                 _settingName = false;
             }
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Set the type constraints between the protected member _parameter
+     *  and this port.  This is a protected method so that subclasses
+     *  can define different type constraints.  It is assured that when
+     *  this is called, _parameter is non-null.  However, use caution,
+     *  since this method may be called during construction of this
+     *  port, and hence the port may not be fully constructed. 
+     */
+    protected void _setTypeConstraints() {
+        _parameter.setTypeSameAs(this);
     }
 
     ///////////////////////////////////////////////////////////////////

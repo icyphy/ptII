@@ -112,20 +112,7 @@ public class PortParameter extends Parameter {
     public PortParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        if (container instanceof TypedActor) {
-            // If we get to here, we know the container is a ComponentEntity,
-            // so the cast is safe.
-            _port = new ParameterPort((ComponentEntity)container, name);
-            // NOTE: The following two statements are not necessary, since
-            // the port will discover this parameter when it's setContainer()
-            // method is called.  Moreover, doing this again is not a good
-            // idea, since the setTypeSameAs() method will just add an
-            // extra (redundant) set of constraints.  This will cause
-            // the clone tests to fail, since cloning does not produce
-            // the extra set of constraints.
-            // _port._parameter = this;
-            // _port.setTypeSameAs(this);
-        }
+        _createParameterPort(container, name);
     }
 
     /** Construct a Parameter with the given container, name, and Token.
@@ -353,6 +340,35 @@ public class PortParameter extends Parameter {
         if (!(container instanceof Entity)) {
             throw new IllegalActionException(this,
                     "PortParameter can only be used in an instance of Entity.");
+        }
+    }
+
+    /** If the specified container is of type TypedActor, then create an
+     *  associated instance of ParameterPort and set the protected variable
+     *  _port equal to that port.  This method is called during construction,
+     *  so this parameter may not be fully constructed.  It is a protected
+     *  method to allow subclasses to create subclasses as associated ports.
+     *  @param container The container for the port.
+     *  @param name The name for the port.
+     *  @throws IllegalActionException If the port cannot be contained by
+     *   specified container.
+     *  @throws NameDuplicationException If a name collision occurs.
+     */
+    protected void _createParameterPort(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        if (container instanceof TypedActor) {
+            // If we get to here, we know the container is a ComponentEntity,
+            // so the cast is safe.
+            _port = new ParameterPort((ComponentEntity)container, name);
+            // NOTE: The following two statements are not necessary, since
+            // the port will discover this parameter when it's setContainer()
+            // method is called.  Moreover, doing this again is not a good
+            // idea, since the setTypeSameAs() method will just add an
+            // extra (redundant) set of constraints.  This will cause
+            // the clone tests to fail, since cloning does not produce
+            // the extra set of constraints.
+            // _port._parameter = this;
+            // _port.setTypeSameAs(this);
         }
     }
 
