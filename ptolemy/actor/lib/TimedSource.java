@@ -75,7 +75,8 @@ public class TimedSource extends Source implements TimedActor {
     public TimedSource(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        stopTime = new Parameter(this, "stopTime", new DoubleToken(0.0));
+        stopTime = new Parameter(this, "stopTime");
+        stopTime.setExpression("0.0");
         stopTime.setTypeEquals(BaseType.DOUBLE);
 
         _attachText("_iconDescription", "<svg>\n" +

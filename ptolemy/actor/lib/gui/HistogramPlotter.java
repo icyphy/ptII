@@ -95,47 +95,47 @@ public class HistogramPlotter extends PlotterBase
      */
     public HistogramPlotter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-                super(container, name);
+        super(container, name);
 
-                input = new TypedIOPort(this, "input", true, false);
-                input.setMultiport(true);
-                input.setTypeEquals(BaseType.DOUBLE);
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
+        input.setTypeEquals(BaseType.DOUBLE);
 
-                binWidth = new Parameter(this, "binWidth",
-                        new DoubleToken(1.0));
-                binWidth.setTypeEquals(BaseType.DOUBLE);
+        binWidth = new Parameter(this, "binWidth");
+        binWidth.setExpression("1.0");
+        binWidth.setTypeEquals(BaseType.DOUBLE);
 
-                binOffset = new Parameter(this, "binOffset",
-                        new DoubleToken(0.5));
-                binOffset.setTypeEquals(BaseType.DOUBLE);
+        binOffset = new Parameter(this, "binOffset");
+        binOffset.setExpression("0.5");
+        binOffset.setTypeEquals(BaseType.DOUBLE);
 
-                _attachText("_iconDescription", "<svg>\n" +
-                        "<rect x=\"-20\" y=\"-20\" "
-                        + "width=\"40\" height=\"40\" "
-                        + "style=\"fill:lightGrey\"/>\n"
-                        + "<rect x=\"-12\" y=\"-12\" "
-                        + "width=\"24\" height=\"24\" "
-                        + "style=\"fill:white\"/>\n"
-                        + "<rect x=\"2\" y=\"-18\" "
-                        + "width=\"4\" height=\"4\" "
-                        + "style=\"fill:grey\"/>\n"
-                        + "<rect x=\"8\" y=\"-18\" "
-                        + "width=\"4\" height=\"4\" "
-                        + "style=\"fill:grey\"/>\n"
-                        + "<rect x=\"14\" y=\"-18\" "
-                        + "width=\"4\" height=\"4\" "
-                        + "style=\"fill:grey\"/>\n"
-                        + "<rect x=\"-8\" y=\"2\" "
-                        + "width=\"4\" height=\"10\" "
-                        + "style=\"fill:red\"/>\n"
-                        + "<rect x=\"-2\" y=\"-8\" "
-                        + "width=\"4\" height=\"20\" "
-                        + "style=\"fill:red\"/>\n"
-                        + "<rect x=\"4\" y=\"-5\" "
-                        + "width=\"4\" height=\"17\" "
-                        + "style=\"fill:red\"/>\n"
-                        + "</svg>\n");
-            }
+        _attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"40\" height=\"40\" "
+                + "style=\"fill:lightGrey\"/>\n"
+                + "<rect x=\"-12\" y=\"-12\" "
+                + "width=\"24\" height=\"24\" "
+                + "style=\"fill:white\"/>\n"
+                + "<rect x=\"2\" y=\"-18\" "
+                + "width=\"4\" height=\"4\" "
+                + "style=\"fill:grey\"/>\n"
+                + "<rect x=\"8\" y=\"-18\" "
+                + "width=\"4\" height=\"4\" "
+                + "style=\"fill:grey\"/>\n"
+                + "<rect x=\"14\" y=\"-18\" "
+                + "width=\"4\" height=\"4\" "
+                + "style=\"fill:grey\"/>\n"
+                + "<rect x=\"-8\" y=\"2\" "
+                + "width=\"4\" height=\"10\" "
+                + "style=\"fill:red\"/>\n"
+                + "<rect x=\"-2\" y=\"-8\" "
+                + "width=\"4\" height=\"20\" "
+                + "style=\"fill:red\"/>\n"
+                + "<rect x=\"4\" y=\"-5\" "
+                + "width=\"4\" height=\"17\" "
+                + "style=\"fill:red\"/>\n"
+                + "</svg>\n");
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////

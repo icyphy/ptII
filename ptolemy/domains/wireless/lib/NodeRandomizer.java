@@ -100,9 +100,8 @@ public class NodeRandomizer extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        randomizeInPreinitialize = new Parameter(this,
-                "randomizeInPreinitialize",
-                new BooleanToken(false));
+        randomizeInPreinitialize = new Parameter(this, "randomizeInPreinitialize");
+        randomizeInPreinitialize.setExpression("false");
         randomizeInPreinitialize.setTypeEquals(BaseType.BOOLEAN);
 
         range = new Parameter(this, "range");
@@ -110,7 +109,8 @@ public class NodeRandomizer extends TypedAtomicActor {
         range.setTypeEquals(rangeType);
         range.setExpression("{{0.0, 500.0}, {0.0, 500.0}}");
 
-        seed = new Parameter(this, "seed", new LongToken(0));
+        seed = new Parameter(this, "seed");
+        seed.setExpression("0L");
         seed.setTypeEquals(BaseType.LONG);
         
         trigger = new TypedIOPort(this, "trigger", true, false);

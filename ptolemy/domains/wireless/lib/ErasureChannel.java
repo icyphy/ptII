@@ -96,7 +96,8 @@ public class ErasureChannel extends WirelessChannel {
         lossProbability.setTypeEquals(BaseType.DOUBLE);
         lossProbability.setExpression("0.0");
         
-        seed = new Parameter(this, "seed", new LongToken(0));
+        seed = new Parameter(this, "seed");
+        seed.setExpression("0L");
         seed.setTypeEquals(BaseType.LONG);
         
         _distance = new Variable(this, "distance");

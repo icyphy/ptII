@@ -32,11 +32,9 @@ package ptolemy.actor.lib;
 
 
 import ptolemy.actor.parameters.PortParameter;
-import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -83,8 +81,10 @@ public class Ramp extends SequenceSource {
     public Ramp(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        init = new Parameter(this, "init", new IntToken(0));
-        step = new PortParameter(this, "step", new IntToken(1));
+        init = new Parameter(this, "init");
+        init.setExpression("0");
+        step = new PortParameter(this, "step");
+        step.setExpression("1");
 
         // set the type constraints.
         output.setTypeAtLeast(init);

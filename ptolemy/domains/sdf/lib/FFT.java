@@ -77,7 +77,8 @@ public class FFT extends SDFTransformer {
         input.setTypeEquals(BaseType.COMPLEX);
         output.setTypeEquals(BaseType.COMPLEX);
 
-        order = new Parameter(this, "order", new IntToken(8));
+        order = new Parameter(this, "order");
+        order.setExpression("8");
         order.setTypeEquals(BaseType.INT);
 
         input_tokenConsumptionRate.setExpression("2^order");

@@ -94,7 +94,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 135.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 559}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 566}}">
     </property>
     <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
@@ -121,34 +121,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 215.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
-                </property>
-                <property name="asin" class="ptolemy.kernel.util.StringAttribute" value="asin">
-                </property>
-                <property name="atan" class="ptolemy.kernel.util.StringAttribute" value="atan">
-                </property>
-                <property name="cos" class="ptolemy.kernel.util.StringAttribute" value="cos">
-                </property>
-                <property name="sin" class="ptolemy.kernel.util.StringAttribute" value="sin">
-                </property>
-                <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
-                </property>
-            </property>
-        </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
@@ -157,12 +131,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 270.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="phase">
@@ -176,28 +144,10 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 295.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 270.0">
         </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="445.0, 270.0">

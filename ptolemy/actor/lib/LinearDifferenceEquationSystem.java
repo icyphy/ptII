@@ -92,25 +92,27 @@ public class LinearDifferenceEquationSystem extends Transformer {
         output.setMultiport(false);
         state = new TypedIOPort(this, "state", false, true);
 
-        double[][] one = {{1.0}};
-        double[][] zero = {{0.0}};
-
-        A = new Parameter(this, "A", new DoubleMatrixToken(one));
+        A = new Parameter(this, "A");
+        A.setExpression("[1.0]");
         A.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-        B = new Parameter(this, "B", new DoubleMatrixToken(one));
+        B = new Parameter(this, "B");
+        B.setExpression("[1.0]");
         B.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-        C = new Parameter(this, "C", new DoubleMatrixToken(one));
+        C = new Parameter(this, "C");
+        C.setExpression("[1.0]");
         C.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-        D = new Parameter(this, "D", new DoubleMatrixToken(zero));
+        D = new Parameter(this, "D");
+        D.setExpression("[0.0]");
         D.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-        initialStates = new Parameter(this, "initialStates",
-                new DoubleMatrixToken(zero));
+        initialStates = new Parameter(this, "initialStates");
+        initialStates.setExpression("[0.0]");
         initialStates.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
+        double[][] zero = {{0.0}};
         _x = new DoubleMatrixToken(zero);
         _initialStateChanged = true;
         // icon

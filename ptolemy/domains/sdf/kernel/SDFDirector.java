@@ -29,6 +29,8 @@
 
 package ptolemy.domains.sdf.kernel;
 
+import java.util.Iterator;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
@@ -36,27 +38,17 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.actor.util.ConstVariableModelAnalysis;
-import ptolemy.actor.util.DependencyDeclaration;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFDirector
@@ -533,19 +525,21 @@ public class SDFDirector extends StaticSchedulingDirector {
         SDFScheduler scheduler =
             new SDFScheduler(this, uniqueName("Scheduler"));
 
-        allowDisconnectedGraphs = new Parameter(this,
-                "allowDisconnectedGraphs", new BooleanToken(false));
+        allowDisconnectedGraphs = new Parameter(this, "allowDisconnectedGraphs");
         allowDisconnectedGraphs.setTypeEquals(BaseType.BOOLEAN);
+        allowDisconnectedGraphs.setExpression("false");
 
-        allowRateChanges = new Parameter(this,
-                "allowRateChanges", new BooleanToken(false));
+        allowRateChanges = new Parameter(this, "allowRateChanges");
         allowRateChanges.setTypeEquals(BaseType.BOOLEAN);
+        allowRateChanges.setExpression("false");
 
-        iterations = new Parameter(this, "iterations", new IntToken(0));
+        iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
-        vectorizationFactor =
-            new Parameter(this, "vectorizationFactor", new IntToken(1));
+        iterations.setExpression("0");
+        
+        vectorizationFactor = new Parameter(this, "vectorizationFactor");
         vectorizationFactor.setTypeEquals(BaseType.INT);
+        vectorizationFactor.setExpression("1");
     }
 
     ///////////////////////////////////////////////////////////////////

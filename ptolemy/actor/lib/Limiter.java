@@ -64,10 +64,12 @@ public class Limiter extends Transformer {
     public Limiter(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        bottom = new Parameter(this, "bottom", new DoubleToken(0.0));
+        bottom = new Parameter(this, "bottom");
+        bottom.setExpression("0.0");
         bottom.setTypeEquals(BaseType.DOUBLE);
 
-        top = new Parameter(this, "top", new DoubleToken(1.0));
+        top = new Parameter(this, "top");
+        top.setExpression("1.0");
         top.setTypeEquals(BaseType.DOUBLE);
 
         input.setTypeEquals(BaseType.DOUBLE);

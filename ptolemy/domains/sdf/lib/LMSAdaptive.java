@@ -32,7 +32,6 @@ package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -113,11 +112,12 @@ public class LMSAdaptive extends FIR {
         error = new TypedIOPort(this, "error", true, false);
         tapValues = new TypedIOPort(this, "tapValues", false, true);
 
-        // FIXME: Do we need to override attributeTypeChanged
-        // to allow this to be a non double?
-        stepSize = new Parameter(this, "stepSize", new DoubleToken(0.01));
+        stepSize = new Parameter(this, "stepSize");
+        stepSize.setExpression("0.01");
 
-        errorDelay = new Parameter(this, "errorDelay", new IntToken(1));
+        errorDelay = new Parameter(this, "errorDelay");
+        errorDelay.setExpression("1");
+        errorDelay.setTypeEquals(BaseType.INT);
 
         // NOTE: This parameter is really just a renaming of the
         // taps parameter of the base class.  Setting it will just
@@ -129,7 +129,7 @@ public class LMSAdaptive extends FIR {
 
         // set type constraints.
         error.setTypeSameAs(input);
-
+        stepSize.setTypeSameAs(input);
         tapValues.setTypeSameAs(taps);
     }
 

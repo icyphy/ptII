@@ -34,7 +34,6 @@ import ptolemy.actor.Director;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
@@ -105,15 +104,13 @@ public class PoissonClock extends TimedSource {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        meanTime = new Parameter(this, "meanTime", new DoubleToken(1.0));
+        meanTime = new Parameter(this, "meanTime");
+        meanTime.setExpression("1.0");
         meanTime.setTypeEquals(BaseType.DOUBLE);
 
-        // set the values parameter
-        IntToken[] defaultValues = new IntToken[2];
-        defaultValues[0] = new IntToken(1);
-        defaultValues[1] = new IntToken(0);
-        ArrayToken defaultValueToken = new ArrayToken(defaultValues);
-        values = new Parameter(this, "values", defaultValueToken);
+        // Set the values parameter
+        values = new Parameter(this, "values");
+        values.setExpression("{1, 0}");
         values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
         // set type constraint
@@ -124,7 +121,8 @@ public class PoissonClock extends TimedSource {
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
 
-        fireAtStart = new Parameter(this, "fireAtStart", BooleanToken.TRUE);
+        fireAtStart = new Parameter(this, "fireAtStart");
+        fireAtStart.setExpression("true");
         fireAtStart.setTypeEquals(BaseType.BOOLEAN);
     }
 

@@ -33,7 +33,6 @@ package ptolemy.actor.lib;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
@@ -83,9 +82,10 @@ public class Scale extends Transformer {
     public Scale(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        factor = new Parameter(this, "factor", new IntToken(1));
-        scaleOnLeft = new Parameter(this, "scaleOnLeft",
-                new BooleanToken(true));
+        factor = new Parameter(this, "factor");
+        factor.setExpression("1");
+        scaleOnLeft = new Parameter(this, "scaleOnLeft");
+        scaleOnLeft.setExpression("true");
 
         // set the type constraints.
         output.setTypeAtLeast(new PortParameterFunction(input, factor));

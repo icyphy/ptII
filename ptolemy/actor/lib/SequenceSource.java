@@ -75,8 +75,8 @@ public class SequenceSource extends Source implements SequenceActor {
     public SequenceSource(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        firingCountLimit = new Parameter(this, "firingCountLimit",
-                new IntToken(0));
+        firingCountLimit = new Parameter(this, "firingCountLimit");
+        firingCountLimit.setExpression("0");
         firingCountLimit.setTypeEquals(BaseType.INT);
     }
 

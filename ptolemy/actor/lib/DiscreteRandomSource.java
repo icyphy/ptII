@@ -32,7 +32,6 @@ package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
@@ -85,11 +84,8 @@ public class DiscreteRandomSource extends RandomSource {
         pmf.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         // set the values parameter
-        IntToken[] defaultValues = new IntToken[2];
-        defaultValues[0] = new IntToken(0);
-        defaultValues[1] = new IntToken(1);
-        ArrayToken defaultValueToken = new ArrayToken(defaultValues);
-        values = new Parameter(this, "values", defaultValueToken);
+        values = new Parameter(this, "values");
+        values.setExpression("{0, 1}");
         values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
         // set type constraint

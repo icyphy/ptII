@@ -117,14 +117,16 @@ public class FIR extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        decimation = new Parameter(this, "decimation", new IntToken(1));
+        decimation = new Parameter(this, "decimation");
+        decimation.setExpression("1");
         decimation.setTypeEquals(BaseType.INT);
 
-        decimationPhase = new Parameter(this, "decimationPhase",
-                new IntToken(0));
+        decimationPhase = new Parameter(this, "decimationPhase");
+        decimationPhase.setExpression("0");
         decimationPhase.setTypeEquals(BaseType.INT);
 
-        interpolation = new Parameter(this, "interpolation", new IntToken(1));
+        interpolation = new Parameter(this, "interpolation");
+        interpolation.setExpression("1");
         interpolation.setTypeEquals(BaseType.INT);
 
         taps = new Parameter(this, "taps");

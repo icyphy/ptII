@@ -64,7 +64,8 @@ public class FileWriter extends ptolemy.actor.lib.Writer {
     public FileWriter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        filename = new Parameter(this, "filename", new StringToken(""));
+        filename = new Parameter(this, "filename");
+        filename.setExpression("");
         filename.setTypeEquals(BaseType.STRING);
     }
 

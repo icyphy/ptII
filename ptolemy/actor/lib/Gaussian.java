@@ -70,8 +70,9 @@ public class Gaussian extends RandomSource {
 
         mean = new Parameter(this, "mean", new DoubleToken(0.0));
         mean.setTypeEquals(BaseType.DOUBLE);
-        standardDeviation = new Parameter(this, "standardDeviation",
-                new DoubleToken(1.0));
+        
+        standardDeviation = new Parameter(this, "standardDeviation");
+        standardDeviation.setExpression("1.0");
         standardDeviation.setTypeEquals(BaseType.DOUBLE);
     }
 

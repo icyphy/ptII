@@ -107,9 +107,9 @@ public class DifferentialSystem extends TypedCompositeActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         StringToken[] empty = new StringToken[1];
+        stateVariableNames = new Parameter(this, "stateVariableNames");
         empty[0] = new StringToken("");
-        stateVariableNames = new Parameter(this, "stateVariableNames",
-                new ArrayToken(empty));
+        stateVariableNames.setToken(new ArrayToken(empty));
         initialStates = new Parameter(this, "initialStates");
         initialStates.setTypeEquals(BaseType.DOUBLE_MATRIX);
 

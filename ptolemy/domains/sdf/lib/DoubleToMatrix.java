@@ -74,9 +74,11 @@ public class DoubleToMatrix extends SDFConverter {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        rows = new Parameter(this, "rows", new IntToken(2));
+        rows = new Parameter(this, "rows");
+        rows.setExpression("2");
         rows.setTypeEquals(BaseType.INT);
-        columns = new Parameter(this, "columns", new IntToken(2));
+        columns = new Parameter(this, "columns");
+        columns.setExpression("2");
         columns.setTypeEquals(BaseType.INT);
 
         input.setTypeEquals(BaseType.DOUBLE);

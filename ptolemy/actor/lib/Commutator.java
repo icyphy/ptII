@@ -86,8 +86,8 @@ public class Commutator extends Transformer implements SequenceActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
-        output_tokenProductionRate =
-            new Parameter(output, "tokenProductionRate", new IntToken(0));
+        output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate.setExpression("0");
     }
 
     ///////////////////////////////////////////////////////////////////

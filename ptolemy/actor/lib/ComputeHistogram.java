@@ -30,13 +30,9 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.gui.PlotEffigy;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -46,15 +42,9 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
-import ptolemy.plot.Histogram;
-import ptolemy.plot.PlotBox;
-
-import java.io.InputStream;
-import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// ComputeHistogram
@@ -106,24 +96,24 @@ public class ComputeHistogram extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(new ArrayType(BaseType.INT));
       
-        minimumValue = new Parameter(this, "minimumValue",
-                new DoubleToken(0.0));
+        minimumValue = new Parameter(this, "minimumValue");
+        minimumValue.setExpression("0.0");
         minimumValue.setTypeEquals(BaseType.DOUBLE);
         
-        maximumValue = new Parameter(this, "maximumValue",
-                new DoubleToken(1.0));
+        maximumValue = new Parameter(this, "maximumValue");
+        maximumValue.setExpression("1.0");
         maximumValue.setTypeEquals(BaseType.DOUBLE);
 
-        numberOfBins = new Parameter(this, "numberOfBins",
-                new IntToken(10));
+        numberOfBins = new Parameter(this, "numberOfBins");
+        numberOfBins.setExpression("10");
         numberOfBins.setTypeEquals(BaseType.INT);
         
-        inputCount = new PortParameter(this, "inputCount",
-                new IntToken(10));
+        inputCount = new PortParameter(this, "inputCount");
+        inputCount.setExpression("10");
         inputCount.setTypeEquals(BaseType.INT);
 
         input_tokenConsumptionRate =
-        new Parameter(input, "tokenConsumptionRate");
+                new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setExpression("inputCount");
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);

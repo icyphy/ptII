@@ -103,10 +103,10 @@ public class Display extends Sink implements Placeable {
         // Set the type of the input port.
         input.setTypeEquals(BaseType.GENERAL);
 
-        rowsDisplayed = new Parameter(this, "rowsDisplayed",
-                new IntToken(10));
-        columnsDisplayed = new Parameter(this, "columnsDisplayed",
-                new IntToken(40));
+        rowsDisplayed = new Parameter(this, "rowsDisplayed");
+        rowsDisplayed.setExpression("10");
+        columnsDisplayed = new Parameter(this, "columnsDisplayed");
+        columnsDisplayed.setExpression("40");
 
         title = new StringAttribute(this, "title");
         title.setExpression("");

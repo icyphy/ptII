@@ -126,7 +126,8 @@ public class Clock extends TimedSource {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        period = new Parameter(this, "period", new DoubleToken(2.0));
+        period = new Parameter(this, "period");
+        period.setExpression("2.0");
         period.setTypeEquals(BaseType.DOUBLE);
 
         offsets = new Parameter(this, "offsets");
@@ -136,12 +137,9 @@ public class Clock extends TimedSource {
         attributeChanged(offsets);
 
         // Set the values parameter.
-        IntToken[] defaultValues = new IntToken[2];
-        defaultValues[0] = new IntToken(1);
-        defaultValues[1] = new IntToken(0);
-        ArrayToken defaultValueToken = new ArrayToken(defaultValues);
-        values = new Parameter(this, "values", defaultValueToken);
+        values = new Parameter(this, "values");
         values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        values.setExpression("{1, 0}");
 
         // set type constraint
         ArrayType valuesArrayType = (ArrayType)values.getType();

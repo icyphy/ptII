@@ -102,13 +102,12 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
         output = new TypedIOPort(this, "output", false, true);
         _opaque = true;
 
-        DoubleToken[] defaultToken = {new DoubleToken(1.0)};
-        numerator = new Parameter(this, "numerator",
-                new ArrayToken(defaultToken));
+        numerator = new Parameter(this, "numerator");
+        numerator.setExpression("{1.0}");
         numerator.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
-        denominator = new Parameter(this, "denominator",
-                new ArrayToken(defaultToken));
+        denominator = new Parameter(this, "denominator");
+        denominator.setExpression("{1.0}");
         denominator.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         // Do not use TypedCompositeActor as the MoML name for this actor.

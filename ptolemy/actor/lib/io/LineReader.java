@@ -108,8 +108,8 @@ public class LineReader extends Source {
 
         fileOrURL = new FileParameter(this, "fileOrURL");
 
-        numberOfLinesToSkip = new Parameter(this, "numberOfLinesToSkip",
-                new IntToken(0));
+        numberOfLinesToSkip = new Parameter(this, "numberOfLinesToSkip");
+        numberOfLinesToSkip.setExpression("0");
         numberOfLinesToSkip.setTypeEquals(BaseType.INT);
 
         _attachText("_iconDescription", "<svg>\n"

@@ -73,10 +73,10 @@ public class FirstOrderHold extends Transformer
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         derivative = new TypedIOPort(this, "derivative", true, false);
-        defaultValue = new Parameter(this, "defaultValue",
-                new DoubleToken(0.0));
-        defaultDerivative = new Parameter(this, "defaultDerivative",
-                new DoubleToken(0.0));
+        defaultValue = new Parameter(this, "defaultValue");
+        defaultValue.setExpression("0.0");
+        defaultDerivative = new Parameter(this, "defaultDerivative");
+        defaultDerivative.setExpression("0.0");
 
         input.setTypeEquals(BaseType.DOUBLE);
         derivative.setTypeEquals(BaseType.DOUBLE);

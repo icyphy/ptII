@@ -70,8 +70,8 @@ public class Bernoulli extends RandomSource {
 
         output.setTypeEquals(BaseType.BOOLEAN);
 
-        trueProbability = new Parameter(this, "trueProbability",
-                new DoubleToken(0.5));
+        trueProbability = new Parameter(this, "trueProbability");
+        trueProbability.setExpression("0.5");
         trueProbability.setTypeEquals(BaseType.DOUBLE);
     }
 

@@ -87,7 +87,8 @@ public class ContinuousClock extends Clock {
     public ContinuousClock(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
            super(container, name);
-           defaultValue = new Parameter(this, "defaultValue", new IntToken(0));
+           defaultValue = new Parameter(this, "defaultValue");
+           defaultValue.setExpression("0");
     }
 
     ///////////////////////////////////////////////////////////////////

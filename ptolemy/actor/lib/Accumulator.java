@@ -76,7 +76,8 @@ public class Accumulator extends Transformer {
         reset.setTypeEquals(BaseType.BOOLEAN);
         reset.setMultiport(true);
 
-        init = new Parameter(this, "init", new IntToken(0));
+        init = new Parameter(this, "init");
+        init.setExpression("0");
 
         // set the type constraints.
         output.setTypeAtLeast(init);

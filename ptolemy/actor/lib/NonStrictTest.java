@@ -109,13 +109,12 @@ public class NonStrictTest extends Sink {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        Token[] defaultEntries = new Token[1];
-        defaultEntries[0] = new BooleanToken(true);
-        ArrayToken defaultArray = new ArrayToken(defaultEntries);
-        correctValues = new Parameter(this, "correctValues", defaultArray);
+        correctValues = new Parameter(this, "correctValues");
+        correctValues.setExpression("[true]");
         correctValues.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
-        tolerance = new Parameter(this, "tolerance", new DoubleToken(1e-9));
+        tolerance = new Parameter(this, "tolerance");
+        tolerance.setExpression("1.0E-9");
         tolerance.setTypeEquals(BaseType.DOUBLE);
 
         trainingMode = new Parameter(this, "trainingMode");

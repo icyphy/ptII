@@ -34,7 +34,6 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
@@ -84,7 +83,8 @@ public class EventSource extends TypedAtomicActor
         new Parameter(output, "signalType",
                 new StringToken("DISCRETE"));
 
-        period = new Parameter(this, "period", new DoubleToken(2.0));
+        period = new Parameter(this, "period");
+        period.setExpression("2.0");
         period.setTypeEquals(BaseType.DOUBLE);
 
         offsets = new Parameter(this, "offsets");
@@ -94,12 +94,9 @@ public class EventSource extends TypedAtomicActor
         attributeChanged(offsets);
 
         // set the values parameter
-        IntToken[] defaultValues = new IntToken[2];
-        defaultValues[0] = new IntToken(1);
-        defaultValues[1] = new IntToken(0);
-        ArrayToken defaultValueToken = new ArrayToken(defaultValues);
-        values = new Parameter(this, "values", defaultValueToken);
+        values = new Parameter(this, "values");
         values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        values.setExpression("{1, 0}");
 
         // set type constraint
         ArrayType valuesArrayType = (ArrayType)values.getType();
