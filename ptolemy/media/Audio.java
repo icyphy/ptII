@@ -442,7 +442,7 @@ public class Audio {
      *
      *  @param audio The audio data, as an array of doubles.
      *  @param output The output stream.
-     *  @xception IOException If an I/O error occurs writing to the stream.
+     *  @exception IOException If an I/O error occurs writing to the stream.
      */
     public static void writeAudio(double[] audio, DataOutputStream output)
             throws IOException {
