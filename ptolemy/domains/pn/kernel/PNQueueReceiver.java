@@ -1,7 +1,7 @@
-/* A Queue with optional history and capacity, preforming blocking reads 
+/* A Queue with optional history and capacity, performing blocking reads 
    and blocking writes.
 
- Copyright (c) 1997-1998 The Regents of the University of California.
+ Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -63,6 +63,7 @@ public class PNQueueReceiver extends QueueReceiver {
     }
 
     /** Construct an empty queue with the specified container.
+     *  @param container is the port containing this receiver.
      */
     public PNQueueReceiver(IOPort container) {
         super(container);
@@ -74,19 +75,15 @@ public class PNQueueReceiver extends QueueReceiver {
 
     /** Reads the oldest token from the Queue and returns it. If there are 
      *  no tokens in the Queue, then the method blocks on it. It throws
-     *  an exception in case the simulation has to be terminated.
+     *  a TerminateProcessException in case the simulation has to be 
+     *  terminated.
      *  @return Token read from the queue
-     *  @exception NoTokenException No Token in the queue and the process
-     *  could not block. Should never occur in PN. This is a runtime exception
-     *  @exception TerminateProcessException Terminate the simulation. 
-     *  This is a runtime exception
      */
     public Token get() {
 	Workspace workspace = getContainer().workspace();
 	PNDirector director = ((PNDirector)((Actor)(getContainer().getContainer())).getDirector());
         Token result = null;
 	//System.out.println(getContainer().getFullName() +" in receiver.get");
-        
         synchronized (this) {
             try {
                 while (!_terminate && !super.hasToken()) {
@@ -125,36 +122,44 @@ public class PNQueueReceiver extends QueueReceiver {
             return result;
         }
     }
-    
+
+    /** Always returns true as the Process Network model of computation does
+     *  not allow polling for data. 
+     * @return true
+     * @exception IllegalActionException never thrown in this class.
+     */    
     public boolean hasRoom() throws IllegalActionException {
 	return true;
     }
 
+    /** Always returns true as the Process Network model of computation does
+     *  not allow polling for data. 
+     * @return true
+     * @exception IllegalActionException never thrown in this class.
+     */    
     public boolean hasToken() throws IllegalActionException {
 	return true;
     }
 
     /** Returns a true or false to indicate if there is a read pending
      *  on this queue or not.
-     * @param recep is the receptionist/queue on which the check is being made
-     * @return val true if a read is pending else false
+     * @return true if a read is pending else false
      */
     public synchronized boolean isReadPending() {
 	return _readpending;
     }
 
     /** Returns a true or false to indicate if there is a write pending
-     *  on this queue or not.
-     * @param recep is the receptionist/queue on which the check is being made
-     * @return val true if a write is pending else false
+     *  on this queue.
+     * @return true if a write is pending else false
      */
     public synchronized boolean isWritePending() {
 	return _writepending;
     }
 
-    /** Put a token on the queue.  If the queue is full, throw an exception.
+    /** Put a token on the queue.  If the queue is full, then block
+     *  on a write to the queue.
      *  @param token The token to put on the queue.
-     *  @exception NoRoomException If the queue is full.
      */
     public void put(Token token) {
 	Workspace workspace = getContainer().workspace();
@@ -198,33 +203,37 @@ public class PNQueueReceiver extends QueueReceiver {
             }
         }
     }
-    
+
+    /** This pauses or wakes up the receiver and hence any actor trying to 
+     *  read or write to the queue
+     *  @param pause true if the receiver should be paused and false otherwise.
+     */    
     public synchronized void setPause(boolean pause) {
 	if (pause) {
 	    _pause = true;
-	    //System.out.println("Pausing ...........................");
 	} else {
 	    _pause = false;
-	    //System.out.println("Not paused AAAAAAAAAAAAAAAAAAAAAAA");
 	    notifyAll();
 	}
     }
 
-    /** Add or remove the queue from list of queues blocked on a read depending
-     * on the value of the boolean val
-     * @param val is true f 
+    /** Set the flag indicating a pending read from the queue
+     * @param readpending is true if there is a pending read, false otherwise. 
      */
     public synchronized void setReadPending(boolean readpending) {
 	_readpending = readpending;
     }
     
-    /** Set the write Pending flag to a true or a false
-     * @param val is the value to which the flag should be set to
+    /** Set the flag indicating a pending write from the queue
+     * @param writepending is true if there is a pending read, false otherwise.
      */
     public synchronized void setWritePending(boolean writepending) {
 	_writepending = writepending;
     }
 
+    /** This sets the flag in the receiver to indicate the onset of termination
+     *  the actor containing this receiver.
+     */
     public synchronized void setTerminate() {
 	_terminate = true;
         //System.out.println("Terminating a receiver");
