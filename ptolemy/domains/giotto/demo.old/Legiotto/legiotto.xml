@@ -1,0 +1,104 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="legiotto" class="ptolemy.actor.TypedCompositeActor">
+    <director name="director" class="ptolemy.domains.giotto.kernel.GiottoDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+    </director>
+    <import base="file:/C:/users/liuxj/ptII/ptolemy/domains/giotto/demo/Legiotto/legiotto.xml" source="lego.xml"/>
+    <entity name="lego1" class=".lego">
+        <property name="legoID" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="IRPortName" class="ptolemy.data.expr.Parameter" value="&quot;COM2&quot;">
+        </property>
+        <property name="initialStateName" class="ptolemy.data.expr.Parameter" value="&quot;leading&quot;">
+        </property>
+        <property name="leadingSteps" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="leadingRoutine" class="ptolemy.data.expr.Parameter" value="[3, 3, 3, 1, 1, 1, 1, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 1, 1, 1, 1, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]">
+        </property>
+        <property name="evadingSteps" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="evadingRoutine" class="ptolemy.data.expr.Parameter" value="[2, 0, 3, 3, 3, 1, 1, 1, 4, 4, 4, 0]">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="113.20001220703125, 43.5"/>
+        </rendition>
+    </entity>
+    <entity name="lego2" class=".lego">
+        <property name="legoID" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="IRPortName" class="ptolemy.data.expr.Parameter" value="&quot;COM2&quot;">
+        </property>
+        <property name="initialStateName" class="ptolemy.data.expr.Parameter" value="&quot;following&quot;">
+        </property>
+        <property name="leadingSteps" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="leadingRoutine" class="ptolemy.data.expr.Parameter" value="[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]">
+        </property>
+        <property name="evadingSteps" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="evadingRoutine" class="ptolemy.data.expr.Parameter" value="[2, 0, 4, 4, 1, 1, 1, 3, 3, 0]">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="117.20001220703125, 195.76666641235352"/>
+        </rendition>
+    </entity>
+    <entity name="lego3" class=".lego">
+        <property name="legoID" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="IRPortName" class="ptolemy.data.expr.Parameter" value="&quot;COM2&quot;">
+        </property>
+        <property name="initialStateName" class="ptolemy.data.expr.Parameter" value="&quot;following&quot;">
+        </property>
+        <property name="leadingSteps" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="leadingRoutine" class="ptolemy.data.expr.Parameter" value="[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]">
+        </property>
+        <property name="evadingSteps" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="evadingRoutine" class="ptolemy.data.expr.Parameter" value="[2, 0, 3, 3, 1, 1, 1, 4, 4, 0]">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="122.20001220703125, 397.23333740234375"/>
+        </rendition>
+    </entity>
+    <entity name="arbiter" class="ptolemy.apps.lego.Arbiter">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="643.8000030517578, 260.5"/>
+        </rendition>
+        <port name="bump" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="leader" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="r1" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex">
+            <location value="351.0, 107.80000305175781"/>
+        </vertex>
+    </relation>
+    <relation name="r2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="r3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="r4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="lego1.leader" relation="r1"/>
+    <link port="lego1.bumped" relation="r2"/>
+    <link port="lego2.leader" relation="r1"/>
+    <link port="lego2.bumped" relation="r3"/>
+    <link port="lego3.leader" relation="r1"/>
+    <link port="lego3.bumped" relation="r4"/>
+    <link port="arbiter.bump" relation="r2"/>
+    <link port="arbiter.bump" relation="r3"/>
+    <link port="arbiter.bump" relation="r4"/>
+    <link port="arbiter.leader" relation="r1"/>
+</model>
