@@ -77,3 +77,97 @@ proc getJavaInfo {obj} {
     properties:    [_splitline [lsort [java::info properties $obj]]]\n \
     superclass:    [_splitline [java::info superclass $obj]]\n"
 }
+
+
+######################################################################
+####
+# Given a string description returned by the pt.kernel.Nameable description()
+# method, return a Tcl Blend script that will regenerate the description
+#
+# An example use would be:
+# set desc [_description2TclBlend [$e0 description \
+#	[java::field pt.kernel.Nameable PRETTYPRINT]]]
+# eval $desc
+#
+proc _description2TclBlend {descriptionString} {
+    set descList [split $descriptionString "\n"]
+    set results {}
+    set relationsSeen {}
+    foreach line $descList {
+	# Name of the class we are building.
+	set className [lindex $line 0]
+
+	# Use this list to get the name and the parentName
+	set nameList [split [lindex $line 1] .]
+
+	# Name of the object
+	set name [lindex $nameList [expr {[llength $nameList] - 1}]]
+
+	# Name of the parent
+	set parentName [lindex $nameList [expr {[llength $nameList] - 2}]]
+
+	switch -regexp $line {
+	    ^pt.kernel.CompositeEntity {
+		if { "$parentName" == "" } {
+		    # Handle the case where the entity has no parent
+		    append results "set $name\
+			    \[java::new $className\]\n\
+			    \$$name setName $name\n"
+		} else {   
+		    append results "set $name\
+			    \[java::new $className \$$parentName $name\]\n"
+		}
+	    }
+	    ^pt.kernel.ComponentEntity {
+		append results "set $name\
+			\[java::new $className \$$parentName $name\]\n"
+	    }
+	    ^pt.kernel.ComponentRelation {
+		# Relations appear more than once in the output
+		# of description().  This is because the Relation
+		# appears once for each port the Relation is connected to.
+		#
+		# If we have not yet seen this relation, then emit
+		# an instruction to create it.
+		if {[lsearch $relationsSeen $name] == -1} { 
+		    lappend relationsSeen $name
+		    append results "set $name\
+			    \[java::new $className \$$parentName $name\]\n"
+		}
+	    }
+	    ^pt.kernel.ComponentPort {
+		if {[llength $line] == 2} {
+		    # Construct a port
+		    append results "set $name\
+			    \[\$$parentName newPort $name\]\n"
+		} else {
+		    if {[lindex $line 2] == "link"} {
+			# Connect a port to a relation
+			set fullRelationList [split [lindex $line 4] .]
+			set relation [lindex $fullRelationList \
+				[expr {[llength $fullRelationList] - 1}]]
+
+			# Check to see if the link is a level crossing link.
+			# FIXME: Here, we are only checking the
+			# lengths of fullnames, not the actual contents
+			if { [expr {[llength $nameList] - \
+				[llength $fullRelationList] }] > 1 } {
+			    set commonParent [lindex $nameList \
+				    [expr {[llength $nameList] - \
+				    [llength $fullRelationList] }]]
+			    append results "\$$commonParent\
+				    allowLevelCrossingConnect true\n"
+			    append results "\$$name liberalLink \$$relation\n"
+
+			} else {
+			    append results "\$$name link \$$relation\n"
+			}
+		    }
+		}
+	    }
+	}
+    }
+    return $results
+}
+
+
