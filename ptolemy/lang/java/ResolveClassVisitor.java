@@ -42,6 +42,7 @@ import java.util.LinkedList;
 import java.util.HashSet;
 
 import ptolemy.lang.*;
+import ptolemy.lang.java.nodetypes.*;
 
 public class ResolveClassVisitor extends ResolveVisitorBase 
        implements JavaStaticSemanticConstants  {

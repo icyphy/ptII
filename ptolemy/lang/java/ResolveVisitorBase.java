@@ -33,8 +33,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import java.util.LinkedList;
-import ptolemy.lang.*;
 
+import ptolemy.lang.*;
+import ptolemy.lang.java.nodetypes.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ResolveVisitorBase

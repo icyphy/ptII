@@ -30,14 +30,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
-import ptolemy.lang.IVisitor;
-import java.util.LinkedList;
-
 import ptolemy.lang.TreeNode;
+import ptolemy.lang.java.nodetypes.TypeNode;
 
-public class LocalVarDecl extends TypedDecl {
+public class LocalVarDecl extends TypedDecl implements JavaStaticSemanticConstants {
     public LocalVarDecl(String name, TypeNode type, int modifiers, TreeNode source) {
-        super(name, JavaDecl.CG_LOCALVAR, type, modifiers);
+        super(name, CG_LOCALVAR, type, modifiers);
         _source = source;
     }
 

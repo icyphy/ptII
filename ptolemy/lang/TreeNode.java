@@ -36,6 +36,7 @@ package ptolemy.lang;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.List;
 import java.util.LinkedList;
 
 public abstract class TreeNode extends PropertyMap {
@@ -224,7 +225,7 @@ public abstract class TreeNode extends PropertyMap {
     }
 
     public Object childReturnValueAt(int index) {
-        LinkedList retList = (LinkedList) getDefinedProperty(CHILD_RETURN_VALUES_KEY);
+        List retList = (List) getDefinedProperty(CHILD_RETURN_VALUES_KEY);
         return retList.get(index);
     }
 

@@ -30,14 +30,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
-import ptolemy.lang.IVisitor;
-import java.util.LinkedList;
-
 import ptolemy.lang.TreeNode;
 
 public class StmtLblDecl extends JavaDecl {
     public StmtLblDecl(String name, TreeNode source) {
-        super(name, JavaDecl.CG_STMTLABEL);
+        super(name, CG_STMTLABEL);
         _source = source;
     }
 

@@ -35,7 +35,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import java.io.FileOutputStream;
+
 import ptolemy.lang.*;
+import ptolemy.lang.java.nodetypes.CompileUnitNode;
 
 public class Skeleton {
   public static void main(String[] args) {

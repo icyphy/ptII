@@ -34,11 +34,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
-import ptolemy.lang.*;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
+
+import ptolemy.lang.*;
+import ptolemy.lang.java.nodetypes.*;
 
 public class ResolvePackageVisitor extends ResolveVisitorBase 
        implements JavaStaticSemanticConstants {

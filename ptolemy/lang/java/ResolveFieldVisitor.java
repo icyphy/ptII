@@ -35,7 +35,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import java.util.LinkedList;
+
 import ptolemy.lang.*;
+import ptolemy.lang.java.nodetypes.*;
 
 /** A visitor that does field and method resolution.
  *  
@@ -210,7 +212,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
            resolveAField(node, false, false, ctx);
         }
 
-        if (expr.classID() == ThisNode.THISNODE_ID) {
+        if (expr.classID() == THISNODE_ID) {
            ThisFieldAccessNode retval = new ThisFieldAccessNode(node.getName());
            
            retval.setProperty(THIS_CLASS_KEY, 

@@ -34,9 +34,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
-import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.LinkedList;
+
 import ptolemy.lang.*;
+import ptolemy.lang.java.nodetypes.*;
 
 public class TypeUtility implements JavaStaticSemanticConstants {
 
@@ -52,17 +54,22 @@ public class TypeUtility implements JavaStaticSemanticConstants {
      *  and calls the appropriate more specific method. 
      */
     public static TypeNameNode accessedObjectType(FieldAccessNode node) {
-        if (node instanceof TypeFieldAccessNode) {
-           return accessedObjectType((TypeFieldAccessNode) node);
-        } else if (node instanceof ObjectFieldAccessNode) {
-           return accessedObjectType((ObjectFieldAccessNode) node);
-        } else if (node instanceof ThisFieldAccessNode) {
-           return accessedObjectType((ThisFieldAccessNode) node);
-        } else if (node instanceof SuperFieldAccessNode) {
-           return accessedObjectType((SuperFieldAccessNode) node);
-        } else {
-           ApplicationUtility.error("accessObjectType() not supported for node " + node);
-        }
+        switch (node.classID()) {
+        
+          case TYPEFIELDACCESSNODE_ID:
+          return accessedObjectType((TypeFieldAccessNode) node);
+          
+          case OBJECTFIELDACCESSNODE_ID:
+          return accessedObjectType((ObjectFieldAccessNode) node);
+
+          case THISFIELDACCESSNODE_ID:
+          return accessedObjectType((ThisFieldAccessNode) node);
+          
+          case SUPERFIELDACCESSNODE_ID:
+          return accessedObjectType((SuperFieldAccessNode) node);        
+        } 
+        
+        ApplicationUtility.error("accessObjectType() not supported for node " + node);        
         return null;              
     }
 
@@ -124,8 +131,7 @@ public class TypeUtility implements JavaStaticSemanticConstants {
     }
 
     /** Return true if TypeNameNodes tn1 and tn2 are identical. */
-    public static boolean compareTypeNames(TypeNameNode tn1,
-     TypeNameNode tn2) {
+    public static boolean compareTypeNames(TypeNameNode tn1, TypeNameNode tn2) {
         return (JavaDecl.getDecl((NamedNode) tn1) == JavaDecl.getDecl((NamedNode) tn2));
     }
 
@@ -200,7 +206,7 @@ public class TypeUtility implements JavaStaticSemanticConstants {
     }
 
     public static boolean isArrayType(TypeNode type) {
-        return (type instanceof ArrayTypeNode);
+        return (type.classID() == ARRAYTYPENODE_ID);
     }
 
     /** Return true iff type is a arithmetic type. */         
@@ -326,35 +332,37 @@ public class TypeUtility implements JavaStaticSemanticConstants {
        // type1 is class o
        return false;
     }   
-
+    
+    /** Return the kind of the type. */
     public static int kind(TypeNode type) {
     
        switch (type.classID()) {
        
          // null type
-         case NullTypeNode.NULLTYPENODE_ID:     return TYPE_KIND_NULL;              
+         case NULLTYPENODE_ID:     return TYPE_KIND_NULL;              
 
           // primitive types          
-         case BoolTypeNode.BOOLTYPENODE_ID:     return TYPE_KIND_BOOL;          
-         case CharTypeNode.CHARTYPENODE_ID:     return TYPE_KIND_CHAR; 
-         case ByteTypeNode.BYTETYPENODE_ID:     return TYPE_KIND_BYTE; 
-         case ShortTypeNode.SHORTTYPENODE_ID:   return TYPE_KIND_SHORT; 
-         case IntTypeNode.INTTYPENODE_ID:       return TYPE_KIND_INT; 
-         case LongTypeNode.LONGTYPENODE_ID:     return TYPE_KIND_LONG; 
-         case FloatTypeNode.FLOATTYPENODE_ID:   return TYPE_KIND_FLOAT; 
-         case DoubleTypeNode.DOUBLETYPENODE_ID: return TYPE_KIND_DOUBLE;                  
+         case BOOLTYPENODE_ID:    return TYPE_KIND_BOOL;          
+         case CHARTYPENODE_ID:    return TYPE_KIND_CHAR; 
+         case BYTETYPENODE_ID:    return TYPE_KIND_BYTE; 
+         case SHORTTYPENODE_ID:   return TYPE_KIND_SHORT; 
+         case INTTYPENODE_ID:     return TYPE_KIND_INT; 
+         case LONGTYPENODE_ID:    return TYPE_KIND_LONG; 
+         case FLOATTYPENODE_ID:   return TYPE_KIND_FLOAT; 
+         case DOUBLETYPENODE_ID:  return TYPE_KIND_DOUBLE;                  
          
          // class or interface
-         case TypeNameNode.TYPENAMENODE_ID:     return kind((TypeNameNode) type);
+         case TYPENAMENODE_ID:    return kind((TypeNameNode) type);
          
          // array types (derive from Object)
-         case ArrayTypeNode.ARRAYTYPENODE_ID:   return TYPE_KIND_CLASS;
+         case ARRAYTYPENODE_ID:   return TYPE_KIND_CLASS;
        }
 
        ApplicationUtility.error("unknown type encountered : " + type);
        return TYPE_KIND_UNKNOWN;
     }
 
+    /** Return the kind of the user type, either a class type or an interface type. */
     public static int kind(TypeNameNode type) {
        Decl d = JavaDecl.getDecl((NamedNode) type);
 

@@ -9,7 +9,7 @@ public class GenerateVisitor {
 
   public static void main(String[] args) throws IOException {
     if (args.length < 1) {
-       System.out.println("Usage : GenerateVisitor TypeNameListFile [VisitorClassName] [BaseNodeName]");
+       System.out.println("Usage : GenerateVisitor TypeNameListFile [VisitorClassName] [BaseNodeName] [node path]");
        return;
     }
    
@@ -36,6 +36,16 @@ public class GenerateVisitor {
     } else {
        _baseNodeName = args[2];
     }
+
+    if (args.length < 4) {
+       _nodePath = ".";
+    } else {
+       _nodePath = args[3];              
+    }
+
+    if (_nodePath.charAt(_nodePath.length() - 1) != File.separatorChar) {
+       _nodePath = _nodePath + File.separatorChar;
+    }       
 
     File fdest = new File(visitorOutFile);
 
@@ -70,6 +80,9 @@ public class GenerateVisitor {
 
     // get header for nodes
     _nodeHeader = commonHeader + _readBlock("nheader");
+    
+    // get header for classID's
+    _classIDHeader = commonHeader + _readBlock("iheader");    
   }
 
   /** Generate the visitor class and the node class files */
@@ -120,10 +133,14 @@ public class GenerateVisitor {
           " node, LinkedList args) {\n" +
           "        return _defaultVisit(node, args);\n" +
           "    }\n");
+          
+         _idStringList.add(typeName.toUpperCase() + "_ID");
       }
 
       _generateNodeFile(typeName, parentTypeName, isConcrete, isSingleton,
-       isInterface, methodList, implList);
+       isInterface, isInTree, methodList, implList);
+       
+      _generateClassIDFile(); 
     }
 
     _ofs.write(
@@ -174,15 +191,15 @@ public class GenerateVisitor {
     return sb.toString();
   }
 
-
   protected void _generateNodeFile(String typeName, String parentTypeName,
    boolean isConcrete, boolean isSingleton, boolean isInterface,
-   LinkedList methodList, LinkedList implList) throws IOException {
-    File fdest = new File(typeName + ".java");
+   boolean isInTree, LinkedList methodList, LinkedList implList) 
+   throws IOException {
+    File fdest = new File(_nodePath + typeName + ".java");
 
     if (!fdest.createNewFile()) {
        fdest.delete();
-       fdest = new File(typeName + ".java");
+       fdest = new File(_nodePath + typeName + ".java");
        fdest.createNewFile();
     }
 
@@ -228,18 +245,21 @@ public class GenerateVisitor {
 
     sb.append(" {\n");
 
-    if (concreteClass) { 
-       // add a static integer representing the class id
-       String idString = typeName.toUpperCase() + "_ID";
-    
-       methodList.add(new ClassField("int", idString, "public static final", 
-        Integer.toString(_classCount)));
+    if (concreteClass) {               
+       if (isInTree) {
+          String idString = typeName.toUpperCase() + "_ID";    
         
-       // add a method to return the class id
-       methodList.add(new MethodSignature("public final", "int", "classID", 
-        new LinkedList(), new LinkedList(), "return " + idString + ";"));  
-              
-       _classCount++;
+          // add a method to return the class id
+          methodList.add(new MethodSignature("public final", "int", "classID", 
+           new LinkedList(), new LinkedList(), "return NodeClassID." + idString + ";"));                
+       } else {
+       
+          // add a classID() method that throws an exception since the node type should not
+          // appear in the parse tree
+          methodList.add(new MethodSignature("public final", "int", "classID",
+           new LinkedList(), new LinkedList(), "throw new RuntimeException(\"classID() : " + 
+           "class should not appear in parse tree\");"));                
+       }
     } 
 
     if (isSingleton) {
@@ -282,6 +302,40 @@ public class GenerateVisitor {
           
     sb.append("}\n");
 
+    fw.write(sb.toString());
+    fw.close();
+  }
+  
+  protected void _generateClassIDFile() throws IOException {
+    File fdest = new File(_nodePath + "NodeClassID.java");
+
+    if (!fdest.createNewFile()) {
+       fdest.delete();
+       fdest = new File(_nodePath + "NodeClassID.java");
+       fdest.createNewFile();
+    }
+
+    FileWriter fw = new FileWriter(fdest);
+    
+    StringBuffer sb = new StringBuffer();
+    
+    sb.append(_classIDHeader);
+    
+    sb.append("public interface NodeClassID {\n");
+                  
+    int count = 0;      
+    
+    Iterator stringItr = _idStringList.iterator();
+    
+    while (stringItr.hasNext()) {
+        String idString = (String) stringItr.next();
+        ClassField field = new ClassField("int", idString, "public", 
+                                          Integer.toString(count));
+        sb.append(field.toString() + '\n');
+        count++;
+    }                                 
+    sb.append("}\n");
+    
     fw.write(sb.toString());
     fw.close();
   }
@@ -343,7 +397,7 @@ public class GenerateVisitor {
             _parentTypeList.addLast(nextToken);
          } catch (NullPointerException e) {
             System.err.println("Not enough parameters in line : " + _lastLine);
-           return;
+            return;
          }
 
          LinkedList methodList = new LinkedList();
@@ -405,7 +459,6 @@ public class GenerateVisitor {
   }
 
   private static final String ident = "    ";
-  private static int _classCount = 0;
 
   public static class MethodSignature {
     public MethodSignature() {}
@@ -917,11 +970,15 @@ public class GenerateVisitor {
   protected LinkedList _isInTreeList = new LinkedList();
   protected LinkedList _methodListList = new LinkedList();
   protected LinkedList _implListList = new LinkedList();
+  
+  protected LinkedList _idStringList = new LinkedList();
 
   protected String _visitorClassName;
   protected String _baseNodeName;
   protected String _nodeHeader;
   protected String _visitorHeader;
+  protected String _classIDHeader;
+  protected String _nodePath;
 
   protected String _lastLine;
 }

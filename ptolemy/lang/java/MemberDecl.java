@@ -34,6 +34,7 @@ import ptolemy.lang.IVisitor;
 import java.util.LinkedList;
 
 import ptolemy.lang.TreeNode;
+import ptolemy.lang.java.nodetypes.*;
 
 public abstract class MemberDecl extends TypedDecl {
     public MemberDecl(String name, int category0, TypeNode type, int modifiers, TreeNode source, JavaDecl container) {

@@ -33,7 +33,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
-import ptolemy.lang.IVisitor;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -41,6 +40,7 @@ import java.util.Set;
 import java.util.HashSet;
 
 import ptolemy.lang.TreeNode;
+import ptolemy.lang.java.nodetypes.TypeNode;
 
 public class MethodDecl extends MemberDecl {
     public MethodDecl(String name, int category0, TypeNode type, int modifiers,

@@ -35,6 +35,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import ptolemy.lang.*;
+import ptolemy.lang.java.nodetypes.CompileUnitNode;
 
 public class PrintTree {
 

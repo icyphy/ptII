@@ -34,8 +34,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import ptolemy.lang.*;
+import ptolemy.lang.java.nodetypes.NodeClassID;
 
-public interface JavaStaticSemanticConstants {
+public interface JavaStaticSemanticConstants extends NodeClassID {
 
     // modifiers
   

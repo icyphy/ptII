@@ -30,10 +30,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
-import ptolemy.lang.IVisitor;
-import java.util.LinkedList;
-
 import ptolemy.lang.TreeNode;
+import ptolemy.lang.java.nodetypes.*;
 
 public class FormalParameterDecl extends TypedDecl {
     public FormalParameterDecl(String name, TypeNode type, int modifiers, TreeNode source) {

@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import ptolemy.lang.*;
+import ptolemy.lang.java.nodetypes.CompileUnitNode;
 
 class Main {
   public static void main(String[] args) {

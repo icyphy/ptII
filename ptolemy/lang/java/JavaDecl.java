@@ -32,8 +32,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
-import java.util.LinkedList;
 import ptolemy.lang.*;
+import ptolemy.lang.java.nodetypes.*;
 
 /**
  *  The class JavaDecl declares many members, most of which make sense only

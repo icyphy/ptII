@@ -66,7 +66,7 @@ Java Parser $Id$ */
 %token<sval> CHARACTER_LITERAL
 %token<sval> STRING_LITERAL
 
-			   /* SEPARATORS */
+         /* SEPARATORS */
 
 %token '(' ')' '{' '}' '[' ']' ',' '.' ';'
 
@@ -75,40 +75,40 @@ Java Parser $Id$ */
 /* resolve at least one awkward LALR(1) lookahead problem. */
 %token EMPTY_DIM
 
-			   /* OPERATORS */
+         /* OPERATORS */
 
 %token '=' '>' '<'  '!' '~' '?' ':'
 %token '+' '-' '*' '/' '&' '|' '^' '%'
 
-%token CAND	/* &&: conditional and */
-%token COR	/* ||: conditional or */
+%token CAND  /* &&: conditional and */
+%token COR  /* ||: conditional or */
 
-%token EQ		/* == */
-%token NE		/* != */
-%token LE		/* <= */
-%token GE		/* >= */
+%token EQ    /* == */
+%token NE    /* != */
+%token LE    /* <= */
+%token GE    /* >= */
 
-%token LSHIFTL	/* << */
-%token ASHIFTR	/* >> */
-%token LSHIFTR	/* >>> */
+%token LSHIFTL  /* << */
+%token ASHIFTR  /* >> */
+%token LSHIFTR  /* >>> */
 
-%token PLUS_ASG	/* += */
-%token MINUS_ASG	/* -= */
-%token MULT_ASG	/* *= */
-%token DIV_ASG	/* /= */
-%token REM_ASG	/* %= */
-%token LSHIFTL_ASG	/* <<= */
-%token ASHIFTR_ASG	/* >>= */
-%token LSHIFTR_ASG	/* >>>= */
-%token AND_ASG	/* &= */
-%token XOR_ASG	/* ^= */
-%token OR_ASG	/* |= */
+%token PLUS_ASG  /* += */
+%token MINUS_ASG  /* -= */
+%token MULT_ASG  /* *= */
+%token DIV_ASG  /* /= */
+%token REM_ASG  /* %= */
+%token LSHIFTL_ASG  /* <<= */
+%token ASHIFTR_ASG  /* >>= */
+%token LSHIFTR_ASG  /* >>>= */
+%token AND_ASG  /* &= */
+%token XOR_ASG  /* ^= */
+%token OR_ASG  /* |= */
 
-%token PLUSPLUS	/* ++ */
-%token MINUSMINUS	/* -- */
+%token PLUSPLUS  /* ++ */
+%token MINUSMINUS  /* -- */
 
 
-			  /* PRECEDENCES */
+        /* PRECEDENCES */
 
 /* LOWEST */
 
@@ -189,6 +189,7 @@ import java.io.IOException;
 import java.io.FileInputStream;
 
 import ptolemy.lang.*;
+import ptolemy.lang.java.nodetypes.*;
 
 %}
 
@@ -263,143 +264,143 @@ import ptolemy.lang.*;
 %%
 
 Start :
-	CompilationUnit   { _theAST = (CompileUnitNode) $1; }
+  CompilationUnit   { _theAST = (CompileUnitNode) $1; }
 
-			  /* 1.7 LITERALS */
+        /* 1.7 LITERALS */
 
 Literal :
-	  INT_LITERAL
-		{ $$ = new IntLitNode($1); }
-	| LONG_LITERAL
-		{ $$ = new LongLitNode($1); }
-	| FLOAT_LITERAL
-		{ $$ = new FloatLitNode($1); }
-	| DOUBLE_LITERAL
-		{ $$ = new DoubleLitNode($1); }
-	| TRUE
-		{ $$ = new BoolLitNode("true"); }
-	| FALSE
-		{ $$ = new BoolLitNode("false"); }
-	| CHARACTER_LITERAL
-		{ $$ = new CharLitNode($1); }
-	| STRING_LITERAL
-		{ $$ = new StringLitNode($1); }
-	;
+    INT_LITERAL
+    { $$ = new IntLitNode($1); }
+  | LONG_LITERAL
+    { $$ = new LongLitNode($1); }
+  | FLOAT_LITERAL
+    { $$ = new FloatLitNode($1); }
+  | DOUBLE_LITERAL
+    { $$ = new DoubleLitNode($1); }
+  | TRUE
+    { $$ = new BoolLitNode("true"); }
+  | FALSE
+    { $$ = new BoolLitNode("false"); }
+  | CHARACTER_LITERAL
+    { $$ = new CharLitNode($1); }
+  | STRING_LITERAL
+    { $$ = new StringLitNode($1); }
+  ;
 
 
-		      /* 2. TYPES AND VALUES */
+          /* 2. TYPES AND VALUES */
 
 Type :
-	  PrimitiveType
-	| ReferenceType
-	;
+    PrimitiveType
+  | ReferenceType
+  ;
 
 ReferenceType :
-	  ClassOrInterfaceType
-	| ArrayType
-	;
+    ClassOrInterfaceType
+  | ArrayType
+  ;
 
 
 /* Section 2.1 */
 
 PrimitiveType :
-	  BOOLEAN
-	    { $$ = BoolTypeNode.instance; }
-	| CHAR
-	    { $$ = CharTypeNode.instance; }
-	| BYTE
-		{ $$ = ByteTypeNode.instance; }
-	| SHORT
-		{ $$ = ShortTypeNode.instance; }
-	| INT
-		{ $$ = IntTypeNode.instance; }
-	| FLOAT
-		{ $$ = FloatTypeNode.instance; }
-	| LONG
-		{ $$ = LongTypeNode.instance; }
-	| DOUBLE
-		{ $$ = DoubleTypeNode.instance; }
-	;
+    BOOLEAN
+    { $$ = BoolTypeNode.instance; }
+  | CHAR
+    { $$ = CharTypeNode.instance; }
+  | BYTE
+    { $$ = ByteTypeNode.instance; }
+  | SHORT
+    { $$ = ShortTypeNode.instance; }
+  | INT
+    { $$ = IntTypeNode.instance; }
+  | FLOAT
+    { $$ = FloatTypeNode.instance; }
+  | LONG
+    { $$ = LongTypeNode.instance; }
+  | DOUBLE
+    { $$ = DoubleTypeNode.instance; }
+  ;
 
 
 /* Section 2.2 */
 
 ClassOrInterfaceType :
-	  Name			%prec ')'
-		{ $$ = new TypeNameNode((NameNode) $1); }
-	;
+    Name      %prec ')'
+    { $$ = new TypeNameNode((NameNode) $1); }
+  ;
 
 ArrayType :
-	  Type EMPTY_DIM
-		{ $$ = new ArrayTypeNode((TypeNode) $1); }
-	;
+    Type EMPTY_DIM
+    { $$ = new ArrayTypeNode((TypeNode) $1); }
+  ;
 
-		       /* 5. PROGRAM STRUCTURE */
+           /* 5. PROGRAM STRUCTURE */
 
 /* Section 5.4 */
 
 CompilationUnit :
-	  PackageDeclarationOpt ImportStatementsOpt TypeDeclarationsOpt
-		{ $$ = new CompileUnitNode((TreeNode) $1, (LinkedList) $2, (LinkedList) $3);  }
-	;
+    PackageDeclarationOpt ImportStatementsOpt TypeDeclarationsOpt
+    { $$ = new CompileUnitNode((TreeNode) $1, (LinkedList) $2, (LinkedList) $3);  }
+  ;
 
 PackageDeclarationOpt :
-	  PACKAGE Name ';'
-		{ $$ = $2; }
-	| empty
-		{ $$ = AbsentTreeNode.instance; }
-	;
+    PACKAGE Name ';'
+    { $$ = $2; }
+  | empty
+    { $$ = AbsentTreeNode.instance; }
+  ;
 
 ImportStatementsOpt :
-	  empty
-		{ $$ = new LinkedList(); }
-	| ImportStatement ImportStatementsOpt
-		{ $$ = cons($1, (LinkedList) $2); }
+    empty
+    { $$ = new LinkedList(); }
+  | ImportStatement ImportStatementsOpt
+    { $$ = cons($1, (LinkedList) $2); }
 
-	;
+  ;
 
 TypeDeclarationsOpt :
-	  empty
-		{ $$ = new LinkedList(); }
-	| TypeDeclaration TypeDeclarationsOpt
-		{ $$ = cons($1, (LinkedList) $2); }
- | ';' TypeDeclarationsOpt
-		{ $$ = $2; }
-	;
+    empty
+    { $$ = new LinkedList(); }
+  | TypeDeclaration TypeDeclarationsOpt
+    { $$ = cons($1, (LinkedList) $2); }
+  | ';' TypeDeclarationsOpt
+    { $$ = $2; }
+  ;
 
 TypeDeclaration :
-	  ClassDeclaration
-	| InterfaceDeclaration
-	;
+    ClassDeclaration
+  | InterfaceDeclaration
+  ;
 
 
 /* Section 5.7 */
 
 ImportStatement :
-	  TypeImportStatement
-	| TypeImportOnDemandStatement
-	;
+    TypeImportStatement
+  | TypeImportOnDemandStatement
+  ;
 
 TypeImportStatement :
-	  IMPORT Name ';'
-		{ $$ = new ImportNode((NameNode) $2); }
-	;
+    IMPORT Name ';'
+    { $$ = new ImportNode((NameNode) $2); }
+  ;
 
 TypeImportOnDemandStatement :
-	  IMPORT Name '.' '*' ';'
-		{ $$ = new ImportOnDemandNode((NameNode) $2); }
-	;
+    IMPORT Name '.' '*' ';'
+    { $$ = new ImportOnDemandNode((NameNode) $2); }
+  ;
 
 
 
-	    /* 6. CLASS AND INTERFACE TYPE DECLARATIONS */
+      /* 6. CLASS AND INTERFACE TYPE DECLARATIONS */
 
 
 /* Section 6.1 */
 
 ClassDeclaration :
-	  FieldModifiersOpt CLASS SimpleName SuperOpt InterfacesOpt ClassBody
-		{ 
+    FieldModifiersOpt CLASS SimpleName SuperOpt InterfacesOpt ClassBody
+    { 
       // add a default constructor if none is found
       NameNode name = (NameNode) $3;
       LinkedList body = (LinkedList) $6;
@@ -424,8 +425,8 @@ ClassDeclaration :
                   new BlockNode(new LinkedList()), // body
                   new SuperConstructorCallNode(new LinkedList())));  
       }
-              		   		
-		  $$ = new ClassDeclNode($1, name, (LinkedList) $5,
+                         
+      $$ = new ClassDeclNode($1, name, (LinkedList) $5,
            (LinkedList) body, (TypeNameNode) $4);
     }
  ;
@@ -439,47 +440,47 @@ ClassDeclaration :
 /* Section 6.1.2 */
 
 SuperOpt :
-	  EXTENDS ClassOrInterfaceType
-		{ $$ = $2; }
-	| empty
-		{ 
-		  // add the implicit subclass Object. Note this is wrong for Object itself.
-		  $$ = new TypeNameNode(new NameNode(AbsentTreeNode.instance, "Object")); 
-		}
-	;
+    EXTENDS ClassOrInterfaceType
+    { $$ = $2; }
+  | empty
+    { 
+      // add the implicit subclass Object. Note this is wrong for Object itself.
+      $$ = new TypeNameNode(new NameNode(AbsentTreeNode.instance, "Object")); 
+    }
+  ;
 
 
 /* Section 6.1.3 */
 
 InterfacesOpt :
-	  IMPLEMENTS TypeNameList
-		{ $$ = $2; }
-	| empty
-		{ $$ = new LinkedList(); }
-	;
+    IMPLEMENTS TypeNameList
+    { $$ = $2; }
+  | empty
+    { $$ = new LinkedList(); }
+  ;
 
 
 
 /* Section 6.1.4 */
 
 ClassBody :
-	  '{' FieldDeclarationsOpt '}'
-		{
+    '{' FieldDeclarationsOpt '}'
+    {
      $$ = $2; // in the original, an ABSENT tree is added
    }
-	;
+  ;
 
 FieldDeclarationsOpt :
-	  FieldDeclarations  { }
-	| empty
-		{ $$ = new LinkedList(); }
-	;
+    FieldDeclarations  { }
+  | empty
+    { $$ = new LinkedList(); }
+  ;
 
 FieldDeclarations :
-	  FieldDeclaration
-	| FieldDeclaration FieldDeclarations
+    FieldDeclaration
+  | FieldDeclaration FieldDeclarations
     { $$ = appendLists((LinkedList) $1, (LinkedList) $2); }
-	;
+  ;
 
 
 /* Section 6.2 */
@@ -503,31 +504,31 @@ FieldDeclaration :
     { $$ = cons($1); }
   | TypeDeclaration ';'
     { $$ = cons($1); }
-	 ;
+  ;
 
 
 /* Section 6.3 */
 
 FieldVariableDeclaration :
-	  FieldModifiersOpt Type VariableDeclarators ';'
+    FieldModifiersOpt Type VariableDeclarators ';'
    {
       Modifier.checkFieldModifiers($1);
-	     LinkedList result = new LinkedList();
+       LinkedList result = new LinkedList();
 
       LinkedList varDecls = (LinkedList) $3;
       Iterator itr = varDecls.iterator();
 
-	     while (itr.hasNext()) {
-		     DeclaratorNode decl = (DeclaratorNode) itr.next();
-		     result = cons(new FieldDeclNode($1,
-						            makeArrayType((TypeNode) $2, decl.getDims()),
-						            decl.getName(), decl.getInitExpr()),
-				               result);
-		   }
+       while (itr.hasNext()) {
+         DeclaratorNode decl = (DeclaratorNode) itr.next();
+         result = cons(new FieldDeclNode($1,
+                        makeArrayType((TypeNode) $2, decl.getDims()),
+                        decl.getName(), decl.getInitExpr()),
+                       result);
+       }
 
       $$ = result;
    }
-	;
+  ;
 
 /* Section 6.3.1, 6.4.1, 6.5.1 */
 /* Note: The nonterminals ConstructorModifier, MethodModifier, and */
@@ -536,50 +537,50 @@ FieldVariableDeclaration :
 /* sections of the compiler.  */
 
 FieldModifiersOpt :
-	  FieldModifiers   { }
-	| empty
-		{ $$ = Modifier.NO_MOD; }
-	;
+    FieldModifiers   { }
+  | empty
+    { $$ = Modifier.NO_MOD; }
+  ;
 
 FieldModifiers :
-	  FieldModifier		{ $$ = $1; }
-	| FieldModifiers FieldModifier
-		{
+    FieldModifier    { $$ = $1; }
+  | FieldModifiers FieldModifier
+    {
      $$ = ($1 | $2);
-		  if (($1 & $2) != 0) {
-		     yyerror("repeated modifier");
-     }
-   }
-	;
+      if (($1 & $2) != 0) {
+         yyerror("repeated modifier");
+      }
+    }
+  ;
 
 FieldModifier :
-   /* Applicable to methods, constructors, and variables (6.[345].1) */
-	  PUBLIC
-		{ $$ = Modifier.PUBLIC_MOD; }
-	| PROTECTED
-		{ $$ = Modifier.PROTECTED_MOD;  }
-	| PRIVATE
-		{ $$ = Modifier.PRIVATE_MOD;  }
-	  /* Applicable to methods and variables (6.[34].1) */
-	| STATIC
-		{ $$ = Modifier.STATIC_MOD;  }
-	| FINAL
-		{ $$ = Modifier.FINAL_MOD;  }
-	  /* Applicable to methods (6.4.1) */
-	| ABSTRACT
-		{ $$ = Modifier.ABSTRACT_MOD;  }
-	| NATIVE
-		{ $$ = Modifier.NATIVE_MOD;  }
-	| SYNCHRONIZED
-		{ $$ = Modifier.SYNCHRONIZED_MOD;  }
-	  /* Applicable to variables (6.3.1) */
-	| TRANSIENT
-		{ $$ = Modifier.TRANSIENT_MOD;  }
-	| VOLATILE
-		{ $$ = Modifier.VOLATILE_MOD;  }
+    /* Applicable to methods, constructors, and variables (6.[345].1) */
+    PUBLIC
+    { $$ = Modifier.PUBLIC_MOD; }
+  | PROTECTED
+    { $$ = Modifier.PROTECTED_MOD;  }
+  | PRIVATE
+    { $$ = Modifier.PRIVATE_MOD;  }
+    /* Applicable to methods and variables (6.[34].1) */
+  | STATIC
+    { $$ = Modifier.STATIC_MOD;  }
+  | FINAL
+    { $$ = Modifier.FINAL_MOD;  }
+    /* Applicable to methods (6.4.1) */
+  | ABSTRACT
+    { $$ = Modifier.ABSTRACT_MOD;  }
+  | NATIVE
+    { $$ = Modifier.NATIVE_MOD;  }
+  | SYNCHRONIZED
+    { $$ = Modifier.SYNCHRONIZED_MOD;  }
+    /* Applicable to variables (6.3.1) */
+  | TRANSIENT
+    { $$ = Modifier.TRANSIENT_MOD;  }
+  | VOLATILE
+    { $$ = Modifier.VOLATILE_MOD;  }
  | STRICTFP
    { $$ = Modifier.STRICTFP_MOD; }
-	;
+  ;
 
 /* Section 6.3.2 */
 
@@ -588,51 +589,51 @@ FieldModifier :
  * get reversed again. */
 
 VariableDeclarators :
-	  VariableDeclarator
-		{ $$ = cons($1); }
-	| VariableDeclarators ',' VariableDeclarator
-		{ $$ = cons($3, (LinkedList) $1); }
-	;
+    VariableDeclarator
+    { $$ = cons($1); }
+  | VariableDeclarators ',' VariableDeclarator
+    { $$ = cons($3, (LinkedList) $1); }
+  ;
 
 VariableDeclarator :
    SimpleName DimsOpt
-		{ $$ = new DeclaratorNode($2, (NameNode) $1, AbsentTreeNode.instance); }
-	| SimpleName DimsOpt '=' VariableInitializer
-		{ $$ = new DeclaratorNode($2, (NameNode) $1, (ExprNode) $4); }
-	;
+    { $$ = new DeclaratorNode($2, (NameNode) $1, AbsentTreeNode.instance); }
+  | SimpleName DimsOpt '=' VariableInitializer
+    { $$ = new DeclaratorNode($2, (NameNode) $1, (ExprNode) $4); }
+  ;
 
 
 /* Section 6.3.3 */
 
 VariableInitializer :
-	  Expression
-	| ArrayInitializer
-	;
+    Expression
+  | ArrayInitializer
+  ;
 
 /* Section 6.4 */
 
 MethodDeclaration :
-	  FieldModifiersOpt Type SimpleName '(' ParameterListOpt ')' DimsOpt
-		ThrowsOpt MethodBody
+    FieldModifiersOpt Type SimpleName '(' ParameterListOpt ')' DimsOpt
+    ThrowsOpt MethodBody
    {
      Modifier.checkMethodModifiers($1);
-	    $$ = new MethodDeclNode($1, (NameNode) $3, (LinkedList) $5,
+      $$ = new MethodDeclNode($1, (NameNode) $3, (LinkedList) $5,
                              (LinkedList) $8, (TreeNode) $9,
                              makeArrayType((TypeNode) $2, $7));
    }
-	| FieldModifiersOpt Void SimpleName '(' ParameterListOpt ')' DimsOpt
-		ThrowsOpt MethodBody
+  | FieldModifiersOpt Void SimpleName '(' ParameterListOpt ')' DimsOpt
+    ThrowsOpt MethodBody
    {
      Modifier.checkMethodModifiers($1);
-	    $$ = new MethodDeclNode($1, (NameNode) $3, (LinkedList) $5,
+      $$ = new MethodDeclNode($1, (NameNode) $3, (LinkedList) $5,
                              (LinkedList) $8, (TreeNode) $9,
                              makeArrayType((TypeNode) $2, $7));
    }
  ;
 
 Void :
-	VOID
-		{ $$ = VoidTypeNode.instance; }
+  VOID
+    { $$ = VoidTypeNode.instance; }
 
 /* Note: "Inlined" ResultType to avoid LALR(1) conflict. */
 
@@ -640,99 +641,98 @@ Void :
 /* Section 6.4.3 */
 
 ParameterListOpt :
-	  ParameterList    { }
-	| empty
-		{ $$ = new LinkedList();  }
-	;
+    ParameterList    { }
+  | empty
+    { $$ = new LinkedList();  }
+  ;
 
 ParameterList :
-	  Parameter
-	  { $$ = cons($1); }
-	| Parameter ',' ParameterList
-	  { $$ = cons($1, (LinkedList) $3); }
-	;
+    Parameter
+    { $$ = cons($1); }
+  | Parameter ',' ParameterList
+    { $$ = cons($1, (LinkedList) $3); }
+  ;
 
 Parameter :
-	  FieldModifiersOpt Type SimpleName DimsOpt
-   {
-     Modifier.checkParameterModifiers($1); 
-     $$ = new ParameterNode($1, makeArrayType((TypeNode) $2, $4),
-          (NameNode) $3);
-   }
-	;
-
+    FieldModifiersOpt Type SimpleName DimsOpt
+    {
+      Modifier.checkParameterModifiers($1); 
+      $$ = new ParameterNode($1, makeArrayType((TypeNode) $2, $4),
+                             (NameNode) $3);
+    }
+  ;
 
 /* Section 6.4.4 */
 
 ThrowsOpt :
-	  Throws       { }
-	| empty
-		{ $$ = new LinkedList(); }
-	;
+    Throws       { }
+  | empty
+    { $$ = new LinkedList(); }
+  ;
 
 Throws :
-	  THROWS TypeNameList
-   { $$ = $2; }
-	;
+    THROWS TypeNameList
+    { $$ = $2; }
+  ;
 
 TypeNameList :
-	  ClassOrInterfaceType
-		{ $$ = cons($1); }
-	| ClassOrInterfaceType ',' TypeNameList
-		{ $$ = cons($1, (LinkedList) $3); }
-	;
+    ClassOrInterfaceType
+    { $$ = cons($1); }
+  | ClassOrInterfaceType ',' TypeNameList
+    { $$ = cons($1, (LinkedList) $3); }
+  ;
 
 
 /* Section 6.4.5 */
 
 MethodBody :
-	  Block
-	| ';'
+    Block
+  | ';'
    { $$ = AbsentTreeNode.instance; }
-	;
+  ;
 
 
 /* Section 6.5 */
 
 ConstructorDeclaration :
-	  FieldModifiersOpt IDENTIFIER '(' ParameterListOpt ')'  ThrowsOpt
+    FieldModifiersOpt IDENTIFIER '(' ParameterListOpt ')'  ThrowsOpt
    '{' ExplicitConstructorCallStatement BlockStatementsOpt '}'
-	  {
+    {
       Modifier.checkConstructorModifiers($1);
-	     $$ = new ConstructorDeclNode($1,
+       $$ = new ConstructorDeclNode($1,
             new NameNode(AbsentTreeNode.instance, $2), (LinkedList) $4,
             (LinkedList) $6, new BlockNode((LinkedList) $9),
             (ConstructorCallNode) $8);
    }
-	| FieldModifiersOpt IDENTIFIER '(' ParameterListOpt ')'  ThrowsOpt
+  | FieldModifiersOpt IDENTIFIER '(' ParameterListOpt ')'  ThrowsOpt
    '{' BlockStatementsOpt '}'
-	  {
+    {
      Modifier.checkConstructorModifiers($1);
-	    $$ = new ConstructorDeclNode($1,
+      $$ = new ConstructorDeclNode($1,
            new NameNode(AbsentTreeNode.instance, $2), (LinkedList) $4,
            (LinkedList) $6, new BlockNode((LinkedList) $8),
            new SuperConstructorCallNode(new LinkedList()));
-	  }
-	;
+    }
+  ;
 
 /* Note: We use FieldModifiersOpt to avoid a LALR(1) conflict. */
 
 /* Section 6.5.4 */
 
 ExplicitConstructorCallStatement :
-	  THIS '(' ArgumentListOpt ')' ';'
-		{ $$ = new ThisConstructorCallNode((LinkedList) $3); }
-	| SUPER '(' ArgumentListOpt ')' ';'
-		{ $$ = new SuperConstructorCallNode((LinkedList) $3); }
-	;
+    THIS '(' ArgumentListOpt ')' ';'
+    { $$ = new ThisConstructorCallNode((LinkedList) $3); }
+  | SUPER '(' ArgumentListOpt ')' ';'
+    { $$ = new SuperConstructorCallNode((LinkedList) $3); }
+  ;
 
 
 /* Section 6.7.2 */
 
 StaticInitializer :
-	  STATIC Block
-		{ $$ = new StaticInitNode((BlockNode) $2); }
-	;
+    STATIC Block
+    { $$ = new StaticInitNode((BlockNode) $2); }
+  ;
 
 InstanceInitializer :
      Block
@@ -742,13 +742,13 @@ InstanceInitializer :
 /* Section 6.8 */
 
 InterfaceDeclaration :
-	  FieldModifiersOpt INTERFACE SimpleName ExtendsInterfacesOpt
-		InterfaceBody
-	  {
+    FieldModifiersOpt INTERFACE SimpleName ExtendsInterfacesOpt
+    InterfaceBody
+    {
      Modifier.checkInterfaceModifiers($1);
      $$ = new InterfaceDeclNode($1, (NameNode) $3, (LinkedList) $4, (LinkedList) $5);
-   }
-	;
+    }
+  ;
 
 /* Section 6.8.1 */
 
@@ -759,43 +759,43 @@ InterfaceDeclaration :
 /* Section 6.8.2 */
 
 ExtendsInterfacesOpt :
-	  ExtendsInterfaces   { }
-	| empty
-		{ $$ = new LinkedList(); }
-	;
+    ExtendsInterfaces   { }
+  | empty
+    { $$ = new LinkedList(); }
+  ;
 
 ExtendsInterfaces :
-	  EXTENDS TypeNameList
-		{ $$ = $2; }
-	;
+    EXTENDS TypeNameList
+    { $$ = $2; }
+  ;
 
 /* Section 6.8.3 */
 
 InterfaceBody :
-	  '{' InterfaceMemberDeclarationsOpt '}'
-		{ $$ = $2; }
-	;
+    '{' InterfaceMemberDeclarationsOpt '}'
+    { $$ = $2; }
+  ;
 
 InterfaceMemberDeclarationsOpt :
-	  empty
-		{ $$ = new LinkedList(); }
-	| InterfaceMemberDeclaration InterfaceMemberDeclarationsOpt
-		{ $$ = appendLists((LinkedList) $1, (LinkedList) $2); }
-	;
+    empty
+    { $$ = new LinkedList(); }
+  | InterfaceMemberDeclaration InterfaceMemberDeclarationsOpt
+    { $$ = appendLists((LinkedList) $1, (LinkedList) $2); }
+  ;
 
 InterfaceMemberDeclaration :
-	  ConstantFieldDeclaration
-	| MethodSignatureDeclaration
-		{ $$ = cons($1); }
- | TypeDeclaration
-   { $$ = cons($1); }
- | TypeDeclaration ';'
-   { $$ = cons($1); }
-	;
+    ConstantFieldDeclaration
+  | MethodSignatureDeclaration
+    { $$ = cons($1); }
+  | TypeDeclaration
+    { $$ = cons($1); }
+  | TypeDeclaration ';'
+    { $$ = cons($1); }
+  ;
 
 ConstantFieldDeclaration :
-	  FieldModifiersOpt Type VariableDeclarators ';'
-   {
+    FieldModifiersOpt Type VariableDeclarators ';'
+    {
      int modifiers = $1;
      modifiers |= (Modifier.STATIC_MOD | Modifier.FINAL_MOD);
 
@@ -803,97 +803,97 @@ ConstantFieldDeclaration :
      LinkedList varDecls = (LinkedList) $3;
      Iterator itr = varDecls.iterator();
 
-	    LinkedList result = new LinkedList();
+      LinkedList result = new LinkedList();
 
-	    while (itr.hasNext()) {
-		    DeclaratorNode decl = (DeclaratorNode) itr.next();
-		    result = cons(new FieldDeclNode(modifiers,
+      while (itr.hasNext()) {
+        DeclaratorNode decl = (DeclaratorNode) itr.next();
+        result = cons(new FieldDeclNode(modifiers,
                      makeArrayType((TypeNode) $2, decl.getDims()),
-						          decl.getName(), decl.getInitExpr()), result);
-		  }
+                      decl.getName(), decl.getInitExpr()), result);
+      }
 
-	    $$ = result;
-	  }
- ;
+      $$ = result;
+    }
+  ;
 
 MethodSignatureDeclaration :
-	  FieldModifiersOpt Type SimpleName '(' ParameterListOpt ')' DimsOpt
-		ThrowsOpt ';'
-	  {
+    FieldModifiersOpt Type SimpleName '(' ParameterListOpt ')' DimsOpt
+    ThrowsOpt ';'
+    {
      Modifier.checkMethodSignatureModifiers($1);
-	    $$ = new MethodDeclNode($1 | Modifier.ABSTRACT_MOD, (NameNode) $3,
+      $$ = new MethodDeclNode($1 | Modifier.ABSTRACT_MOD, (NameNode) $3,
                              (LinkedList) $5, (LinkedList) $8,
                              AbsentTreeNode.instance,
                              makeArrayType((TypeNode) $2, $7));
    }
- | FieldModifiersOpt Void SimpleName '(' ParameterListOpt ')' DimsOpt
-		ThrowsOpt ';'
-	  {
-     Modifier.checkMethodSignatureModifiers($1);
-	    $$ = new MethodDeclNode($1 | Modifier.ABSTRACT_MOD, (NameNode) $3,
+  | FieldModifiersOpt Void SimpleName '(' ParameterListOpt ')' DimsOpt
+     ThrowsOpt ';'
+    {
+      Modifier.checkMethodSignatureModifiers($1);
+      $$ = new MethodDeclNode($1 | Modifier.ABSTRACT_MOD, (NameNode) $3,
                              (LinkedList) $5, (LinkedList) $8,
                              AbsentTreeNode.instance,
                              makeArrayType((TypeNode) $2, $7));
-   }
-	;
+    }
+  ;
 
-			     /* ARRAYS */
+           /* ARRAYS */
 
 /* Section 7.3 */
 
 ArrayInitializer :
-	  '{' ElementInitializers '}'
-		{ $$ = new ArrayInitNode((LinkedList) $2); }
-	| '{' ElementInitializers ',' '}'
-		{ $$ = new ArrayInitNode((LinkedList) $2); }
-	| '{' '}'
-		{ $$ = new ArrayInitNode(new LinkedList()); }
-	;
+   '{' ElementInitializers '}'
+    { $$ = new ArrayInitNode((LinkedList) $2); }
+  | '{' ElementInitializers ',' '}'
+    { $$ = new ArrayInitNode((LinkedList) $2); }
+  | '{' '}'
+    { $$ = new ArrayInitNode(new LinkedList()); }
+  ;
 /* Note: I'm going to assume that they didn't intend to allow "{,}". */
 
 ElementInitializers :
-	  Element
-		{ $$ = cons($1); }
-	| ElementInitializers ',' Element
-		{ $$ = append((LinkedList) $1, $3); }
-	;
+    Element
+    { $$ = cons($1); }
+  | ElementInitializers ',' Element
+    { $$ = append((LinkedList) $1, $3); }
+  ;
 
 Element :
-	  Expression
-	| ArrayInitializer
-	;
+    Expression
+  | ArrayInitializer
+  ;
 
 
-		     /* BLOCKS AND STATEMENTS */
+         /* BLOCKS AND STATEMENTS */
 
 /* Section 8.1 */
 
 Block :
-	  '{' BlockStatementsOpt '}'
-		{ $$ = new BlockNode((LinkedList) $2); }
-	;
+    '{' BlockStatementsOpt '}'
+    { $$ = new BlockNode((LinkedList) $2); }
+  ;
 
 BlockStatementsOpt :
-	  BlockStatements     { }
-	| empty
-		{ $$ = new LinkedList(); }
-	;
+    BlockStatements     { }
+  | empty
+    { $$ = new LinkedList(); }
+  ;
 
 BlockStatements :
-	  BlockStatement
-		{ $$ = $1; }
-	| BlockStatements BlockStatement
-		{ $$ = appendLists((LinkedList) $1, (LinkedList) $2); }
-	;
+    BlockStatement
+    { $$ = $1; }
+  | BlockStatements BlockStatement
+    { $$ = appendLists((LinkedList) $1, (LinkedList) $2); }
+  ;
 
 BlockStatement :
-	  LocalVariableDeclarationStatement
-		{ $$ = $1; }
-	| Statement
-		{ $$ = cons($1); }
+    LocalVariableDeclarationStatement
+    { $$ = $1; }
+  | Statement
+    { $$ = cons($1); }
  | ClassDeclaration
    { $$ = cons(new UserTypeDeclStmtNode((UserTypeDeclNode) $1)); }
-	;
+  ;
 
 
 /* Section 8.2 */
@@ -908,9 +908,9 @@ LocalVariableDeclarationStatement :
 
      Iterator itr = varDecls.iterator();
 
-	    while (itr.hasNext()) {
-		    DeclaratorNode decl = (DeclaratorNode) itr.next();
-		    result = cons(new VarDeclNode($1,
+      while (itr.hasNext()) {
+        DeclaratorNode decl = (DeclaratorNode) itr.next();
+        result = cons(new VarDeclNode($1,
                      makeArrayType((TypeNode) $2, decl.getDims()),
                      decl.getName(), decl.getInitExpr()), result);
      }
@@ -924,87 +924,87 @@ LocalVariableDeclarationStatement :
 
      Iterator itr = varDecls.iterator();
 
-	    while (itr.hasNext()) {
-		    DeclaratorNode decl = (DeclaratorNode) itr.next();
-  	    result = cons(new VarDeclNode(Modifier.NO_MOD,
+      while (itr.hasNext()) {
+        DeclaratorNode decl = (DeclaratorNode) itr.next();
+        result = cons(new VarDeclNode(Modifier.NO_MOD,
                      makeArrayType((TypeNode) $1, decl.getDims()),
                      decl.getName(), decl.getInitExpr()), result);
      }
      $$ = result;
    }
-	;
+  ;
 
 /* Section 8.3 */
 
 Statement :
-	  EmptyStatement
-	| LabeledStatement
-	| ExpressionStatement ';'
-		{ $$ = new ExprStmtNode((ExprNode) $1); }
-	| SelectionStatement
-	| IterationStatement
-	| JumpStatement
-	| GuardingStatement
-	| Block
-	;
+    EmptyStatement
+  | LabeledStatement
+  | ExpressionStatement ';'
+    { $$ = new ExprStmtNode((ExprNode) $1); }
+  | SelectionStatement
+  | IterationStatement
+  | JumpStatement
+  | GuardingStatement
+  | Block
+  ;
 
 /* Section 8.4 */
 
 EmptyStatement :
-	  ';'
-		{ $$ = new EmptyStmtNode(); }
-	;
+    ';'
+    { $$ = new EmptyStmtNode(); }
+  ;
 
 
 /* Section 8.5 */
 
 LabeledStatement :
-	  SimpleName ':' Statement
-		{ $$ = new LabeledStmtNode((NameNode) $1, (StatementNode) $3); }
-	;
+    SimpleName ':' Statement
+    { $$ = new LabeledStmtNode((NameNode) $1, (StatementNode) $3); }
+  ;
 
 
 /* Section 8.6 */
 
 ExpressionStatement :
-	  Assignment
-		{ $$ = $1; }
-	| PreIncrement
-		{ $$ = $1; }
-	| PreDecrement
-		{ $$ = $1; }
-	| PostIncrement
-		{ $$ = $1; }
-	| PostDecrement
-		{ $$ = $1; }
-	| MethodCall
-		{ $$ = $1; }
-	| AllocationExpression
-		{ $$ = $1; }
-	;
+    Assignment
+    { $$ = $1; }
+  | PreIncrement
+    { $$ = $1; }
+  | PreDecrement
+    { $$ = $1; }
+  | PostIncrement
+    { $$ = $1; }
+  | PostDecrement
+    { $$ = $1; }
+  | MethodCall
+    { $$ = $1; }
+  | AllocationExpression
+    { $$ = $1; }
+  ;
 
 
 /* Section 8.7 */
 
 SelectionStatement :
-	  IF '(' Expression ')' Statement %prec ELSE
-		{ $$ = new IfStmtNode((ExprNode) $3, (StatementNode) $5, AbsentTreeNode.instance); }
-	| IF '(' Expression ')' Statement ELSE Statement
-		{ $$ = new IfStmtNode((ExprNode) $3, (StatementNode) $5, (TreeNode) $7); }
-	| SWITCH '(' Expression ')' SwitchBlock
-		{ $$ = new SwitchNode((ExprNode) $3, (LinkedList) $5); }
-	;
+    IF '(' Expression ')' Statement %prec ELSE
+    { $$ = new IfStmtNode((ExprNode) $3, (StatementNode) $5, AbsentTreeNode.instance); }
+  | IF '(' Expression ')' Statement ELSE Statement
+    { $$ = new IfStmtNode((ExprNode) $3, (StatementNode) $5, (TreeNode) $7); }
+  | SWITCH '(' Expression ')' SwitchBlock
+    { $$ = new SwitchNode((ExprNode) $3, (LinkedList) $5); }
+  ;
 
 SwitchBlock :
-	  '{' SwitchBlockStatementsOpt '}'
-		{ $$ = $2; }
-	;
+    '{' SwitchBlockStatementsOpt '}'
+    { $$ = $2; }
+  ;
 
 SwitchBlockStatementsOpt :
-	  empty
+    empty
    { $$ = new LinkedList(); }
-	| SwitchLabels BlockStatements SwitchBlockStatementsOpt
-		{
+  | SwitchLabels BlockStatements SwitchBlockStatementsOpt
+    {
      $$ = cons(new SwitchBranchNode((LinkedList) $1, (LinkedList) $2),
                (LinkedList) $3);
    }
@@ -1014,197 +1014,197 @@ SwitchBlockStatementsOpt :
  ;
 
 SwitchLabels :
-	  SwitchLabel
-		{ $$ = cons($1); }
-	| SwitchLabel SwitchLabels
-		{ $$ = cons($1, (LinkedList) $2); }
+    SwitchLabel
+    { $$ = cons($1); }
+  | SwitchLabel SwitchLabels
+    { $$ = cons($1, (LinkedList) $2); }
  ;
 
 SwitchLabel :
-	  CASE ConstantExpression ':'
-		{ $$ = new CaseNode((TreeNode) $2); }
-	| DEFAULT ':'
-		{ $$ = new CaseNode(AbsentTreeNode.instance); }
-	;
+    CASE ConstantExpression ':'
+    { $$ = new CaseNode((TreeNode) $2); }
+  | DEFAULT ':'
+    { $$ = new CaseNode(AbsentTreeNode.instance); }
+  ;
 
 /* Section 8.8 */
 
 IterationStatement :
-	  WHILE '(' Expression ')' Statement
-		{ $$ = new LoopNode(new EmptyStmtNode(), (ExprNode) $3, (TreeNode) $5); }
-	| DO Statement WHILE '(' Expression ')' ';'
-		{ $$ = new LoopNode((TreeNode) $2, (ExprNode) $5, new EmptyStmtNode()); }
-	| FOR '(' ForInit Expression ';' ForUpdateOpt ')' Statement
-		{ $$ = new ForNode((LinkedList) $3, (ExprNode) $4,
+    WHILE '(' Expression ')' Statement
+    { $$ = new LoopNode(new EmptyStmtNode(), (ExprNode) $3, (TreeNode) $5); }
+  | DO Statement WHILE '(' Expression ')' ';'
+    { $$ = new LoopNode((TreeNode) $2, (ExprNode) $5, new EmptyStmtNode()); }
+  | FOR '(' ForInit Expression ';' ForUpdateOpt ')' Statement
+    { $$ = new ForNode((LinkedList) $3, (ExprNode) $4,
       (LinkedList) $6, (StatementNode) $8); }
-	| FOR '(' ForInit ';' ForUpdateOpt ')' Statement
-		{ $$ = new ForNode((LinkedList) $3, new BoolLitNode("true"), (LinkedList) $5,
+  | FOR '(' ForInit ';' ForUpdateOpt ')' Statement
+    { $$ = new ForNode((LinkedList) $3, new BoolLitNode("true"), (LinkedList) $5,
       (StatementNode) $7); }
-	;
+  ;
 
 ForInit :
-	  ExpressionStatementsOpt ';'
-		{ $$ = $1; }
-	| LocalVariableDeclarationStatement
+    ExpressionStatementsOpt ';'
+    { $$ = $1; }
+  | LocalVariableDeclarationStatement
    { $$ = $1; }
-	;
+  ;
 
 ForUpdateOpt :
-	  ExpressionStatements   { }
-	| empty
-		{ $$ = new LinkedList(); }
-	;
+    ExpressionStatements   { }
+  | empty
+    { $$ = new LinkedList(); }
+  ;
 
 ExpressionStatementsOpt :
-	  ExpressionStatements   { }
-	| empty
-		{ $$ = new LinkedList(); }
-	;
+    ExpressionStatements   { }
+  | empty
+    { $$ = new LinkedList(); }
+  ;
 
 ExpressionStatements :
-	  ExpressionStatement
-		{ $$ = cons($1); }
-	| ExpressionStatement ',' ExpressionStatements
-		{ $$ = cons($1, (LinkedList) $3); }
-	;
+    ExpressionStatement
+    { $$ = cons($1); }
+  | ExpressionStatement ',' ExpressionStatements
+    { $$ = cons($1, (LinkedList) $3); }
+  ;
 
 
 /* Section 8.9 */
 
 JumpStatement :
-	  BREAK LabelOpt ';'
-		{ $$ = new BreakNode((TreeNode) $2); }
-	| CONTINUE LabelOpt ';'
-		{ $$ = new ContinueNode((TreeNode) $2); }
-	| RETURN ExpressionOpt ';'
-		{ $$ = new ReturnNode((TreeNode) $2); }
-	| THROW Expression ';'
-		{ $$ = new ThrowNode((ExprNode) $2); }
-	;
+    BREAK LabelOpt ';'
+    { $$ = new BreakNode((TreeNode) $2); }
+  | CONTINUE LabelOpt ';'
+    { $$ = new ContinueNode((TreeNode) $2); }
+  | RETURN ExpressionOpt ';'
+    { $$ = new ReturnNode((TreeNode) $2); }
+  | THROW Expression ';'
+    { $$ = new ThrowNode((ExprNode) $2); }
+  ;
 
 
 LabelOpt :
-	  SimpleName    { }
-	| empty
-		{ $$ = AbsentTreeNode.instance; }
-	;
+    SimpleName    { }
+  | empty
+    { $$ = AbsentTreeNode.instance; }
+  ;
 
 
 /* Section 8.10 */
 
 GuardingStatement :
-	  SYNCHRONIZED '(' Expression ')' Statement
-		{ $$ = new SynchronizedNode((ExprNode) $3, (TreeNode) $5); }
-	| TRY Block Finally
-		{ $$ = new TryNode((BlockNode) $2, new LinkedList(), (TreeNode) $3); }
-	| TRY Block Catches
-		{ $$ = new TryNode((BlockNode) $2, (LinkedList) $3, AbsentTreeNode.instance); }
-	| TRY Block Catches Finally
-		{ $$ = new TryNode((BlockNode) $2, (LinkedList) $3, (TreeNode) $4); }
-	;
+    SYNCHRONIZED '(' Expression ')' Statement
+    { $$ = new SynchronizedNode((ExprNode) $3, (TreeNode) $5); }
+  | TRY Block Finally
+    { $$ = new TryNode((BlockNode) $2, new LinkedList(), (TreeNode) $3); }
+  | TRY Block Catches
+    { $$ = new TryNode((BlockNode) $2, (LinkedList) $3, AbsentTreeNode.instance); }
+  | TRY Block Catches Finally
+    { $$ = new TryNode((BlockNode) $2, (LinkedList) $3, (TreeNode) $4); }
+  ;
 
 Catches :
-	  Catch
-		{ $$ = cons($1); }
-	| Catch Catches
-		{ $$ = cons($1, (LinkedList) $2); }
-	;
+    Catch
+    { $$ = cons($1); }
+  | Catch Catches
+    { $$ = cons($1, (LinkedList) $2); }
+  ;
 
 Catch :
-	  CATCH '(' Parameter ')' Block
-		{ $$ = new CatchNode((ParameterNode) $3, (BlockNode) $5); }
-	;
+    CATCH '(' Parameter ')' Block
+    { $$ = new CatchNode((ParameterNode) $3, (BlockNode) $5); }
+  ;
 
 Finally :
-	  FINALLY Block
-		{ $$ = $2; }
-	;
+    FINALLY Block
+    { $$ = $2; }
+  ;
 
 
-			  /* EXPRESSIONS */
+        /* EXPRESSIONS */
 
 
 /* Section 9.4 */
 
 PrimaryExpression :
-  Name			%prec ')'
-	 { $$ = new ObjectNode((NameNode) $1); }
- | NotJustName
- | Name '.' CLASS
-   { $$ = new TypeClassAccessNode(new TypeNameNode((NameNode) $1)); }
- | PrimitiveType '.' CLASS
-   { $$ = new TypeClassAccessNode((TypeNode) $1); }
- | Void '.' CLASS
-   { $$ = new TypeClassAccessNode((TypeNode) $1); }
- | Name '.' THIS
-   { $$ = new OuterThisAccessNode(new TypeNameNode((NameNode) $1)); }
- | Name '.' SUPER
-   { $$ = new OuterSuperAccessNode(new TypeNameNode((NameNode) $1)); }
-	;
+   Name      %prec ')'
+   { $$ = new ObjectNode((NameNode) $1); }
+  | NotJustName
+  | Name '.' CLASS
+    { $$ = new TypeClassAccessNode(new TypeNameNode((NameNode) $1)); }
+  | PrimitiveType '.' CLASS
+    { $$ = new TypeClassAccessNode((TypeNode) $1); }
+  | Void '.' CLASS
+    { $$ = new TypeClassAccessNode((TypeNode) $1); }
+  | Name '.' THIS
+    { $$ = new OuterThisAccessNode(new TypeNameNode((NameNode) $1)); }
+  | Name '.' SUPER
+    { $$ = new OuterSuperAccessNode(new TypeNameNode((NameNode) $1)); }
+  ;
 
 NotJustName :
-	  AllocationExpression
-	| ComplexPrimary
-	;
+    AllocationExpression
+  | ComplexPrimary
+  ;
 
 ComplexPrimary :
-	  Literal
-	| _NULL
-		{ $$ = new NullPntrNode(); }
-	| THIS
-		{ $$ = new ThisNode(); }
-	| '(' Expression ')'
-		{ $$ = $2; }
-	| '(' Name ')'
-		{ $$ = new ObjectNode((NameNode) $2); }
-	| ArrayAccess
-	| FieldAccess
-		{ $$ = $1; }
-	| MethodCall
-   /* NEW : Java 1.1 : D.7.3 : type class access */
- | ArrayType '.' CLASS
-   { $$ = new TypeClassAccessNode((TypeNode) $1); }
-	;
+    Literal
+  | _NULL
+    { $$ = new NullPntrNode(); }
+  | THIS
+    { $$ = new ThisNode(); }
+  | '(' Expression ')'
+    { $$ = $2; }
+  | '(' Name ')'
+    { $$ = new ObjectNode((NameNode) $2); }
+  | ArrayAccess
+  | FieldAccess
+    { $$ = $1; }
+  | MethodCall
+    /* NEW : Java 1.1 : D.7.3 : type class access */
+  | ArrayType '.' CLASS
+    { $$ = new TypeClassAccessNode((TypeNode) $1); }
+  ;
 /* Note: The fifth production above is redundant, but helps resolve a  */
 /* LALR(1) lookahead conflict arising in cases like "(T) + x" (Do we reduce  */
 /* Name T to ClassOrInterfaceType on seeing the ")"?). See also  */
 /* CastExpression in section 9.10.  */
 
 Name :
-   SimpleName
-		{ $$ = $1; }
-	| QualifiedName
-	;
+    SimpleName
+    { $$ = $1; }
+  | QualifiedName
+  ;
 
 SimpleName :
-	  IDENTIFIER
-  	{ $$ = new NameNode(AbsentTreeNode.instance, $1); }
-	;
+    IDENTIFIER
+    { $$ = new NameNode(AbsentTreeNode.instance, $1); }
+  ;
 
 QualifiedName :
-	  Name '.' IDENTIFIER
-		{ $$ = new NameNode((NameNode) $1, $3); }
+    Name '.' IDENTIFIER
+    { $$ = new NameNode((NameNode) $1, $3); }
  ;
 
 /* Section 9.5 */
 
 ArrayAccess :
-	  Name '[' Expression ']'
-		{ $$ = new ArrayAccessNode(new ObjectNode((NameNode) $1), (ExprNode) $3); }
-	| ComplexPrimary '[' Expression ']'
-		{ $$ = new ArrayAccessNode((ExprNode) $1, (ExprNode) $3); }
-	;
+    Name '[' Expression ']'
+    { $$ = new ArrayAccessNode(new ObjectNode((NameNode) $1), (ExprNode) $3); }
+  | ComplexPrimary '[' Expression ']'
+    { $$ = new ArrayAccessNode((ExprNode) $1, (ExprNode) $3); }
+  ;
 
 
 /* Section 9.6 */
 
 FieldAccess :
     /* The following never matches Name '.' IDENTIFIER */
-	  PrimaryExpression '.' SimpleName
-		{ $$ = new ObjectFieldAccessNode((TreeNode) $1, (NameNode) $3); }
-	| SUPER '.' SimpleName
-		{ $$ = new SuperFieldAccessNode((NameNode) $3); }
-	;
+    PrimaryExpression '.' SimpleName
+    { $$ = new ObjectFieldAccessNode((ExprNode) $1, (NameNode) $3); }
+  | SUPER '.' SimpleName
+    { $$ = new SuperFieldAccessNode((NameNode) $3); }
+  ;
 
 
 /* Section 9.7 */
@@ -1217,17 +1217,17 @@ MethodCall :
   ;
 
 ArgumentListOpt :
-	  ArgumentList   {  }
-	| empty
-		{ $$ = new LinkedList(); }
-	;
+    ArgumentList   {  }
+  | empty
+    { $$ = new LinkedList(); }
+  ;
 
 ArgumentList :
-	  Expression
-		{ $$ = cons($1); }
-	| Expression ',' ArgumentList
-		{ $$ = cons($1, (LinkedList) $3); }
-	;
+    Expression
+    { $$ = cons($1); }
+  | Expression ',' ArgumentList
+    { $$ = cons($1, (LinkedList) $3); }
+  ;
 
 
 /* Section 9.8 */
@@ -1295,89 +1295,89 @@ AllocationExpression :
  ;
 
 DimExprs :
-	  DimExpr
-		{ $$ = cons($1); }
-	| DimExpr DimExprs
-		{ $$ = cons($1, (LinkedList) $2); }
-	;
+    DimExpr
+    { $$ = cons($1); }
+  | DimExpr DimExprs
+    { $$ = cons($1, (LinkedList) $2); }
+  ;
 
 DimExpr :
-	'[' Expression ']'
-	{ $$ = $2; }
-	;
+  '[' Expression ']'
+  { $$ = $2; }
+  ;
 
 DimsOpt :
-	  Dims	{ }
-	| empty
-		{ $$ = 0; }
-	;
+    Dims  { }
+  | empty
+    { $$ = 0; }
+  ;
 
 Dims :
-	  EMPTY_DIM
-		{ $$ = 1; }
-	| Dims EMPTY_DIM
-		{ $$ = $1 + 1; }
-	;
+    EMPTY_DIM
+    { $$ = 1; }
+  | Dims EMPTY_DIM
+    { $$ = $1 + 1; }
+  ;
 
 
 /* Section 9.9 */
 
 PostfixExpression :
-	  PrimaryExpression
-	| PostIncrement
-	| PostDecrement
-	;
+    PrimaryExpression
+  | PostIncrement
+  | PostDecrement
+  ;
 
 PostIncrement :
-	  PostfixExpression PLUSPLUS
-		{ $$ = new PostIncrNode((ExprNode) $1); }
-	;
+    PostfixExpression PLUSPLUS
+    { $$ = new PostIncrNode((ExprNode) $1); }
+  ;
 
 PostDecrement :
-	  PostfixExpression MINUSMINUS
-		{ $$ = new PostDecrNode((ExprNode) $1); }
-	;
+    PostfixExpression MINUSMINUS
+    { $$ = new PostDecrNode((ExprNode) $1); }
+  ;
 
 
 /* Section 9.10 */
 
 UnaryExpression :
-	  PreIncrement
-	| PreDecrement
-	| '+' UnaryExpression
-		{ $$ = new UnaryPlusNode((ExprNode) $2); }
-	| '-' UnaryExpression
-		{ $$ = new UnaryMinusNode((ExprNode) $2); }
-	| UnaryExpressionNotPlusMinus
-	;
+    PreIncrement
+  | PreDecrement
+  | '+' UnaryExpression
+    { $$ = new UnaryPlusNode((ExprNode) $2); }
+  | '-' UnaryExpression
+    { $$ = new UnaryMinusNode((ExprNode) $2); }
+  | UnaryExpressionNotPlusMinus
+  ;
 
 PreIncrement :
-	  PLUSPLUS UnaryExpression
-		{ $$ = new PreIncrNode((ExprNode) $2); }
-	;
+    PLUSPLUS UnaryExpression
+    { $$ = new PreIncrNode((ExprNode) $2); }
+  ;
 
 PreDecrement :
-	  MINUSMINUS UnaryExpression
-		{ $$ = new PreDecrNode((ExprNode) $2); }
-	;
+    MINUSMINUS UnaryExpression
+    { $$ = new PreDecrNode((ExprNode) $2); }
+  ;
 
 UnaryExpressionNotPlusMinus :
-	  PostfixExpression
-	| '~' UnaryExpression
-		{ $$ = new ComplementNode((ExprNode) $2); }
-	| '!' UnaryExpression
-		{ $$ = new NotNode((ExprNode) $2); }
-	| CastExpression
-	;
+    PostfixExpression
+  | '~' UnaryExpression
+    { $$ = new ComplementNode((ExprNode) $2); }
+  | '!' UnaryExpression
+    { $$ = new NotNode((ExprNode) $2); }
+  | CastExpression
+  ;
 
 CastExpression :
-	  '(' PrimitiveType ')' UnaryExpression
-		{ $$ = new CastNode((TypeNode) $2, (ExprNode) $4); }
-	| '(' ReferenceType ')' UnaryExpressionNotPlusMinus
-		{ $$ = new CastNode((TypeNode) $2, (ExprNode) $4); }
-	| '(' Name ')' UnaryExpressionNotPlusMinus
-		{ $$ = new CastNode(new TypeNameNode((NameNode) $2), (ExprNode) $4); }
-	;
+    '(' PrimitiveType ')' UnaryExpression
+    { $$ = new CastNode((TypeNode) $2, (ExprNode) $4); }
+  | '(' ReferenceType ')' UnaryExpressionNotPlusMinus
+    { $$ = new CastNode((TypeNode) $2, (ExprNode) $4); }
+  | '(' Name ')' UnaryExpressionNotPlusMinus
+    { $$ = new CastNode(new TypeNameNode((NameNode) $2), (ExprNode) $4); }
+  ;
 /* Note: The last production is redundant, but helps resolve a LALR(1) */
 /* lookahead conflict arising in cases like "(T) + x" (Do we reduce Name  */
 /* T to ClassOrInterfaceType on seeing the ")"?). See also ComplexPrimary */
@@ -1387,96 +1387,96 @@ CastExpression :
 /* Sections 9.11 to 9.19 */
 
 ExpressionOpt :
-	  Expression	{ }
-	| empty
-		{ $$ = AbsentTreeNode.instance; }
-	;
+    Expression  { }
+  | empty
+    { $$ = AbsentTreeNode.instance; }
+  ;
 
 Expression :
-	  UnaryExpression
+    UnaryExpression
         | Expression '*' Expression
-		{ $$ = new MultNode((ExprNode) $1, (ExprNode) $3); }
-	| Expression '/' Expression
-		{ $$ = new DivNode((ExprNode) $1, (ExprNode) $3); }
-	| Expression '%' Expression
-		{ $$ = new RemNode((ExprNode) $1, (ExprNode) $3); }
-	| Expression '+' Expression
-		{ $$ = new PlusNode((ExprNode) $1, (ExprNode) $3); }
-	| Expression '-' Expression
-		{ $$ = new MinusNode((ExprNode) $1, (ExprNode) $3); }
-	| Expression LSHIFTL Expression
-		{ $$ = new LeftShiftLogNode((ExprNode) $1, (ExprNode) $3); }
-	| Expression LSHIFTR Expression
-		{ $$ = new RightShiftLogNode((ExprNode) $1, (ExprNode) $3); }
-	| Expression ASHIFTR Expression
-		{ $$ = new RightShiftArithNode((ExprNode) $1, (ExprNode) $3); }
-	| Expression '<' Expression
-		{ $$ = new LTNode((ExprNode) $1, (ExprNode) $3); }
-	| Expression '>' Expression
-		{ $$ = new GTNode((ExprNode) $1, (ExprNode) $3); }
-	| Expression LE Expression
-		{ $$ = new LENode((ExprNode) $1, (ExprNode) $3); }
-	| Expression GE Expression
-		{ $$ = new GENode((ExprNode) $1, (ExprNode) $3); }
-	| Expression INSTANCEOF ReferenceType
-		{ $$ = new InstanceOfNode((ExprNode) $1, (TypeNode) $3); }
-	| Expression EQ Expression
-		{ $$ = new EQNode((ExprNode) $1, (ExprNode) $3); }
-	| Expression NE Expression
-		{ $$ = new NENode((ExprNode) $1, (ExprNode) $3); }
-	| Expression '&' Expression
-		{ $$ = new BitAndNode((ExprNode) $1, (ExprNode) $3); }
-	| Expression '|' Expression
-		{ $$ = new BitOrNode((ExprNode) $1, (ExprNode) $3); }
-	| Expression '^' Expression
-		{ $$ = new BitXorNode((ExprNode) $1, (ExprNode) $3); }
-	| Expression CAND Expression
-		{ $$ = new CandNode((ExprNode) $1, (ExprNode) $3); }
-	| Expression COR Expression
-		{ $$ = new CorNode((ExprNode) $1, (ExprNode) $3); }
-	| Expression '?' Expression ':' Expression
-		{ $$ = new IfExprNode((ExprNode) $1, (ExprNode) $3, (ExprNode) $5); }
-	| Assignment
-	;
+    { $$ = new MultNode((ExprNode) $1, (ExprNode) $3); }
+  | Expression '/' Expression
+    { $$ = new DivNode((ExprNode) $1, (ExprNode) $3); }
+  | Expression '%' Expression
+    { $$ = new RemNode((ExprNode) $1, (ExprNode) $3); }
+  | Expression '+' Expression
+    { $$ = new PlusNode((ExprNode) $1, (ExprNode) $3); }
+  | Expression '-' Expression
+    { $$ = new MinusNode((ExprNode) $1, (ExprNode) $3); }
+  | Expression LSHIFTL Expression
+    { $$ = new LeftShiftLogNode((ExprNode) $1, (ExprNode) $3); }
+  | Expression LSHIFTR Expression
+    { $$ = new RightShiftLogNode((ExprNode) $1, (ExprNode) $3); }
+  | Expression ASHIFTR Expression
+    { $$ = new RightShiftArithNode((ExprNode) $1, (ExprNode) $3); }
+  | Expression '<' Expression
+    { $$ = new LTNode((ExprNode) $1, (ExprNode) $3); }
+  | Expression '>' Expression
+    { $$ = new GTNode((ExprNode) $1, (ExprNode) $3); }
+  | Expression LE Expression
+    { $$ = new LENode((ExprNode) $1, (ExprNode) $3); }
+  | Expression GE Expression
+    { $$ = new GENode((ExprNode) $1, (ExprNode) $3); }
+  | Expression INSTANCEOF ReferenceType
+    { $$ = new InstanceOfNode((ExprNode) $1, (TypeNode) $3); }
+  | Expression EQ Expression
+    { $$ = new EQNode((ExprNode) $1, (ExprNode) $3); }
+  | Expression NE Expression
+    { $$ = new NENode((ExprNode) $1, (ExprNode) $3); }
+  | Expression '&' Expression
+    { $$ = new BitAndNode((ExprNode) $1, (ExprNode) $3); }
+  | Expression '|' Expression
+    { $$ = new BitOrNode((ExprNode) $1, (ExprNode) $3); }
+  | Expression '^' Expression
+    { $$ = new BitXorNode((ExprNode) $1, (ExprNode) $3); }
+  | Expression CAND Expression
+    { $$ = new CandNode((ExprNode) $1, (ExprNode) $3); }
+  | Expression COR Expression
+    { $$ = new CorNode((ExprNode) $1, (ExprNode) $3); }
+  | Expression '?' Expression ':' Expression
+    { $$ = new IfExprNode((ExprNode) $1, (ExprNode) $3, (ExprNode) $5); }
+  | Assignment
+  ;
 
 
 /* Section 9.20 */
 
 Assignment :
-	  UnaryExpression '=' Expression
-		{ $$ = new AssignNode((ExprNode) $1, (ExprNode) $3); }
-	| UnaryExpression MULT_ASG Expression
-		{ $$ = new MultAssignNode((ExprNode) $1, (ExprNode) $3); }
-	| UnaryExpression DIV_ASG Expression
-		{ $$ = new DivAssignNode((ExprNode) $1, (ExprNode) $3); }
-	| UnaryExpression REM_ASG Expression
-		{ $$ = new RemAssignNode((ExprNode) $1, (ExprNode) $3); }
-	| UnaryExpression PLUS_ASG Expression
-		{ $$ = new PlusAssignNode((ExprNode) $1, (ExprNode) $3); }
-	| UnaryExpression MINUS_ASG Expression
-		{ $$ = new MinusAssignNode((ExprNode) $1, (ExprNode) $3); }
-	| UnaryExpression LSHIFTL_ASG Expression
-		{ $$ = new LeftShiftLogAssignNode((ExprNode) $1, (ExprNode) $3); }
-	| UnaryExpression LSHIFTR_ASG Expression
-		{ $$ = new RightShiftLogAssignNode((ExprNode) $1, (ExprNode) $3); }
-	| UnaryExpression ASHIFTR_ASG Expression
-		{ $$ = new RightShiftArithAssignNode((ExprNode) $1, (ExprNode) $3); }
-	| UnaryExpression AND_ASG Expression
-		{ $$ = new BitAndAssignNode((ExprNode) $1, (ExprNode) $3); }
-	| UnaryExpression XOR_ASG Expression
-		{ $$ = new BitXorAssignNode((ExprNode) $1, (ExprNode) $3); }
-	| UnaryExpression OR_ASG Expression
-		{ $$ = new BitOrAssignNode((ExprNode) $1, (ExprNode) $3); }
-	;
+    UnaryExpression '=' Expression
+    { $$ = new AssignNode((ExprNode) $1, (ExprNode) $3); }
+  | UnaryExpression MULT_ASG Expression
+    { $$ = new MultAssignNode((ExprNode) $1, (ExprNode) $3); }
+  | UnaryExpression DIV_ASG Expression
+    { $$ = new DivAssignNode((ExprNode) $1, (ExprNode) $3); }
+  | UnaryExpression REM_ASG Expression
+    { $$ = new RemAssignNode((ExprNode) $1, (ExprNode) $3); }
+  | UnaryExpression PLUS_ASG Expression
+    { $$ = new PlusAssignNode((ExprNode) $1, (ExprNode) $3); }
+  | UnaryExpression MINUS_ASG Expression
+    { $$ = new MinusAssignNode((ExprNode) $1, (ExprNode) $3); }
+  | UnaryExpression LSHIFTL_ASG Expression
+    { $$ = new LeftShiftLogAssignNode((ExprNode) $1, (ExprNode) $3); }
+  | UnaryExpression LSHIFTR_ASG Expression
+    { $$ = new RightShiftLogAssignNode((ExprNode) $1, (ExprNode) $3); }
+  | UnaryExpression ASHIFTR_ASG Expression
+    { $$ = new RightShiftArithAssignNode((ExprNode) $1, (ExprNode) $3); }
+  | UnaryExpression AND_ASG Expression
+    { $$ = new BitAndAssignNode((ExprNode) $1, (ExprNode) $3); }
+  | UnaryExpression XOR_ASG Expression
+    { $$ = new BitXorAssignNode((ExprNode) $1, (ExprNode) $3); }
+  | UnaryExpression OR_ASG Expression
+    { $$ = new BitOrAssignNode((ExprNode) $1, (ExprNode) $3); }
+  ;
 
 
 /* Section 9.22 */
 
 ConstantExpression :
-	  Expression
-	;
+    Expression
+  ;
 
-			 /* MISCELLANEOUS */
+       /* MISCELLANEOUS */
 
 empty :
       ;
@@ -1554,8 +1554,8 @@ protected void yyerror(String msg)
 protected static TypeNode makeArrayType(TypeNode elementType, int dims)
 {
   while (dims > 0) {
-	   elementType = new ArrayTypeNode(elementType);
-	   dims -= 1;
+     elementType = new ArrayTypeNode(elementType);
+     dims -= 1;
   }
   return elementType;
 }

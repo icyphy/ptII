@@ -34,6 +34,7 @@ import java.io.File;
 import java.util.LinkedList;
 
 import ptolemy.lang.*;
+import ptolemy.lang.java.nodetypes.*;
 
 public class ClassDecl extends TypeDecl 
        implements JavaStaticSemanticConstants {

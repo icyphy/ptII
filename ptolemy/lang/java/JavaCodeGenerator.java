@@ -32,10 +32,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
-import ptolemy.lang.*;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Iterator;
+
+import ptolemy.lang.*;
+import ptolemy.lang.java.nodetypes.*;
 
 public class JavaCodeGenerator extends JavaVisitor {
     public Object visitNameNode(NameNode node, LinkedList args) {

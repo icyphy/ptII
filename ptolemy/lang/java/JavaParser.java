@@ -59,8 +59,9 @@ import java.io.IOException;
 import java.io.FileInputStream;
 
 import ptolemy.lang.*;
+import ptolemy.lang.java.nodetypes.*;
 
-//#line 62 "JavaParser.java"
+//#line 63 "JavaParser.java"
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.io.FileReader;
@@ -478,15 +479,15 @@ protected void yyerror(String msg)
 protected static TypeNode makeArrayType(TypeNode elementType, int dims)
 {
   while (dims > 0) {
-	   elementType = new ArrayTypeNode(elementType);
-	   dims -= 1;
+     elementType = new ArrayTypeNode(elementType);
+     dims -= 1;
   }
   return elementType;
 }
 
 protected String _filename = null;
 protected Yylex _lexer = null;
-//#line 2026 "JavaParser.java"
+//#line 2027 "JavaParser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -640,123 +641,123 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 1:
-//#line 266 "jparser.y"
+//#line 267 "jparser.y"
 { _theAST = (CompileUnitNode) val_peek(0).obj; }
 break;
 case 2:
-//#line 272 "jparser.y"
+//#line 273 "jparser.y"
 { yyval.obj = new IntLitNode(val_peek(0).sval); }
 break;
 case 3:
-//#line 274 "jparser.y"
+//#line 275 "jparser.y"
 { yyval.obj = new LongLitNode(val_peek(0).sval); }
 break;
 case 4:
-//#line 276 "jparser.y"
+//#line 277 "jparser.y"
 { yyval.obj = new FloatLitNode(val_peek(0).sval); }
 break;
 case 5:
-//#line 278 "jparser.y"
+//#line 279 "jparser.y"
 { yyval.obj = new DoubleLitNode(val_peek(0).sval); }
 break;
 case 6:
-//#line 280 "jparser.y"
+//#line 281 "jparser.y"
 { yyval.obj = new BoolLitNode("true"); }
 break;
 case 7:
-//#line 282 "jparser.y"
+//#line 283 "jparser.y"
 { yyval.obj = new BoolLitNode("false"); }
 break;
 case 8:
-//#line 284 "jparser.y"
+//#line 285 "jparser.y"
 { yyval.obj = new CharLitNode(val_peek(0).sval); }
 break;
 case 9:
-//#line 286 "jparser.y"
+//#line 287 "jparser.y"
 { yyval.obj = new StringLitNode(val_peek(0).sval); }
 break;
 case 14:
-//#line 307 "jparser.y"
+//#line 308 "jparser.y"
 { yyval.obj = BoolTypeNode.instance; }
 break;
 case 15:
-//#line 309 "jparser.y"
+//#line 310 "jparser.y"
 { yyval.obj = CharTypeNode.instance; }
 break;
 case 16:
-//#line 311 "jparser.y"
+//#line 312 "jparser.y"
 { yyval.obj = ByteTypeNode.instance; }
 break;
 case 17:
-//#line 313 "jparser.y"
+//#line 314 "jparser.y"
 { yyval.obj = ShortTypeNode.instance; }
 break;
 case 18:
-//#line 315 "jparser.y"
+//#line 316 "jparser.y"
 { yyval.obj = IntTypeNode.instance; }
 break;
 case 19:
-//#line 317 "jparser.y"
+//#line 318 "jparser.y"
 { yyval.obj = FloatTypeNode.instance; }
 break;
 case 20:
-//#line 319 "jparser.y"
+//#line 320 "jparser.y"
 { yyval.obj = LongTypeNode.instance; }
 break;
 case 21:
-//#line 321 "jparser.y"
+//#line 322 "jparser.y"
 { yyval.obj = DoubleTypeNode.instance; }
 break;
 case 22:
-//#line 329 "jparser.y"
+//#line 330 "jparser.y"
 { yyval.obj = new TypeNameNode((NameNode) val_peek(0).obj); }
 break;
 case 23:
-//#line 334 "jparser.y"
+//#line 335 "jparser.y"
 { yyval.obj = new ArrayTypeNode((TypeNode) val_peek(1).obj); }
 break;
 case 24:
-//#line 343 "jparser.y"
+//#line 344 "jparser.y"
 { yyval.obj = new CompileUnitNode((TreeNode) val_peek(2).obj, (LinkedList) val_peek(1).obj, (LinkedList) val_peek(0).obj);  }
 break;
 case 25:
-//#line 348 "jparser.y"
+//#line 349 "jparser.y"
 { yyval.obj = val_peek(1).obj; }
 break;
 case 26:
-//#line 350 "jparser.y"
+//#line 351 "jparser.y"
 { yyval.obj = AbsentTreeNode.instance; }
 break;
 case 27:
-//#line 355 "jparser.y"
+//#line 356 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 28:
-//#line 357 "jparser.y"
+//#line 358 "jparser.y"
 { yyval.obj = cons(val_peek(1).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 29:
-//#line 363 "jparser.y"
+//#line 364 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 30:
-//#line 365 "jparser.y"
+//#line 366 "jparser.y"
 { yyval.obj = cons(val_peek(1).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 31:
-//#line 367 "jparser.y"
+//#line 368 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 36:
-//#line 385 "jparser.y"
+//#line 386 "jparser.y"
 { yyval.obj = new ImportNode((NameNode) val_peek(1).obj); }
 break;
 case 37:
-//#line 390 "jparser.y"
+//#line 391 "jparser.y"
 { yyval.obj = new ImportOnDemandNode((NameNode) val_peek(3).obj); }
 break;
 case 38:
-//#line 402 "jparser.y"
+//#line 403 "jparser.y"
 { 
       /* add a default constructor if none is found*/
       NameNode name = (NameNode) val_peek(3).obj;
@@ -782,218 +783,218 @@ case 38:
                   new BlockNode(new LinkedList()), /* body*/
                   new SuperConstructorCallNode(new LinkedList())));  
       }
-              		   		
-		  yyval.obj = new ClassDeclNode(val_peek(5).ival, name, (LinkedList) val_peek(1).obj,
+                         
+      yyval.obj = new ClassDeclNode(val_peek(5).ival, name, (LinkedList) val_peek(1).obj,
            (LinkedList) body, (TypeNameNode) val_peek(2).obj);
     }
 break;
 case 39:
-//#line 443 "jparser.y"
+//#line 444 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 40:
-//#line 445 "jparser.y"
+//#line 446 "jparser.y"
 { 
-		  /* add the implicit subclass Object. Note this is wrong for Object itself.*/
-		  yyval.obj = new TypeNameNode(new NameNode(AbsentTreeNode.instance, "Object")); 
-		}
+      /* add the implicit subclass Object. Note this is wrong for Object itself.*/
+      yyval.obj = new TypeNameNode(new NameNode(AbsentTreeNode.instance, "Object")); 
+    }
 break;
 case 41:
-//#line 456 "jparser.y"
+//#line 457 "jparser.y"
 { yyval.obj = val_peek(0).obj; }
 break;
 case 42:
-//#line 458 "jparser.y"
+//#line 459 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 43:
-//#line 467 "jparser.y"
+//#line 468 "jparser.y"
 {
      yyval.obj = val_peek(1).obj; /* in the original, an ABSENT tree is added*/
    }
 break;
 case 44:
-//#line 473 "jparser.y"
+//#line 474 "jparser.y"
 { }
 break;
 case 45:
-//#line 475 "jparser.y"
+//#line 476 "jparser.y"
 { yyval.obj = new LinkedList(); }
 break;
 case 47:
-//#line 481 "jparser.y"
+//#line 482 "jparser.y"
 { yyval.obj = appendLists((LinkedList) val_peek(1).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 49:
-//#line 490 "jparser.y"
+//#line 491 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 50:
-//#line 492 "jparser.y"
+//#line 493 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 51:
-//#line 494 "jparser.y"
+//#line 495 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 52:
-//#line 497 "jparser.y"
+//#line 498 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 53:
-//#line 503 "jparser.y"
+//#line 504 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 54:
-//#line 505 "jparser.y"
+//#line 506 "jparser.y"
 { yyval.obj = cons(val_peek(1).obj); }
 break;
 case 55:
-//#line 513 "jparser.y"
+//#line 514 "jparser.y"
 {
       Modifier.checkFieldModifiers(val_peek(3).ival);
-	     LinkedList result = new LinkedList();
+       LinkedList result = new LinkedList();
 
       LinkedList varDecls = (LinkedList) val_peek(1).obj;
       Iterator itr = varDecls.iterator();
 
-	     while (itr.hasNext()) {
-		     DeclaratorNode decl = (DeclaratorNode) itr.next();
-		     result = cons(new FieldDeclNode(val_peek(3).ival,
-						            makeArrayType((TypeNode) val_peek(2).obj, decl.getDims()),
-						            decl.getName(), decl.getInitExpr()),
-				               result);
-		   }
+       while (itr.hasNext()) {
+         DeclaratorNode decl = (DeclaratorNode) itr.next();
+         result = cons(new FieldDeclNode(val_peek(3).ival,
+                        makeArrayType((TypeNode) val_peek(2).obj, decl.getDims()),
+                        decl.getName(), decl.getInitExpr()),
+                       result);
+       }
 
       yyval.obj = result;
    }
 break;
 case 56:
-//#line 539 "jparser.y"
+//#line 540 "jparser.y"
 { }
 break;
 case 57:
-//#line 541 "jparser.y"
+//#line 542 "jparser.y"
 { yyval.ival = Modifier.NO_MOD; }
 break;
 case 58:
-//#line 545 "jparser.y"
+//#line 546 "jparser.y"
 { yyval.ival = val_peek(0).ival; }
 break;
 case 59:
-//#line 547 "jparser.y"
+//#line 548 "jparser.y"
 {
      yyval.ival = (val_peek(1).ival | val_peek(0).ival);
-		  if ((val_peek(1).ival & val_peek(0).ival) != 0) {
-		     yyerror("repeated modifier");
-     }
-   }
+      if ((val_peek(1).ival & val_peek(0).ival) != 0) {
+         yyerror("repeated modifier");
+      }
+    }
 break;
 case 60:
-//#line 558 "jparser.y"
+//#line 559 "jparser.y"
 { yyval.ival = Modifier.PUBLIC_MOD; }
 break;
 case 61:
-//#line 560 "jparser.y"
+//#line 561 "jparser.y"
 { yyval.ival = Modifier.PROTECTED_MOD;  }
 break;
 case 62:
-//#line 562 "jparser.y"
+//#line 563 "jparser.y"
 { yyval.ival = Modifier.PRIVATE_MOD;  }
 break;
 case 63:
-//#line 565 "jparser.y"
+//#line 566 "jparser.y"
 { yyval.ival = Modifier.STATIC_MOD;  }
 break;
 case 64:
-//#line 567 "jparser.y"
+//#line 568 "jparser.y"
 { yyval.ival = Modifier.FINAL_MOD;  }
 break;
 case 65:
-//#line 570 "jparser.y"
+//#line 571 "jparser.y"
 { yyval.ival = Modifier.ABSTRACT_MOD;  }
 break;
 case 66:
-//#line 572 "jparser.y"
+//#line 573 "jparser.y"
 { yyval.ival = Modifier.NATIVE_MOD;  }
 break;
 case 67:
-//#line 574 "jparser.y"
+//#line 575 "jparser.y"
 { yyval.ival = Modifier.SYNCHRONIZED_MOD;  }
 break;
 case 68:
-//#line 577 "jparser.y"
+//#line 578 "jparser.y"
 { yyval.ival = Modifier.TRANSIENT_MOD;  }
 break;
 case 69:
-//#line 579 "jparser.y"
+//#line 580 "jparser.y"
 { yyval.ival = Modifier.VOLATILE_MOD;  }
 break;
 case 70:
-//#line 581 "jparser.y"
+//#line 582 "jparser.y"
 { yyval.ival = Modifier.STRICTFP_MOD; }
 break;
 case 71:
-//#line 592 "jparser.y"
+//#line 593 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 72:
-//#line 594 "jparser.y"
+//#line 595 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj, (LinkedList) val_peek(2).obj); }
 break;
 case 73:
-//#line 599 "jparser.y"
+//#line 600 "jparser.y"
 { yyval.obj = new DeclaratorNode(val_peek(0).ival, (NameNode) val_peek(1).obj, AbsentTreeNode.instance); }
 break;
 case 74:
-//#line 601 "jparser.y"
+//#line 602 "jparser.y"
 { yyval.obj = new DeclaratorNode(val_peek(2).ival, (NameNode) val_peek(3).obj, (ExprNode) val_peek(0).obj); }
 break;
 case 77:
-//#line 617 "jparser.y"
+//#line 618 "jparser.y"
 {
      Modifier.checkMethodModifiers(val_peek(8).ival);
-	    yyval.obj = new MethodDeclNode(val_peek(8).ival, (NameNode) val_peek(6).obj, (LinkedList) val_peek(4).obj,
+      yyval.obj = new MethodDeclNode(val_peek(8).ival, (NameNode) val_peek(6).obj, (LinkedList) val_peek(4).obj,
                              (LinkedList) val_peek(1).obj, (TreeNode) val_peek(0).obj,
                              makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));
    }
 break;
 case 78:
-//#line 625 "jparser.y"
+//#line 626 "jparser.y"
 {
      Modifier.checkMethodModifiers(val_peek(8).ival);
-	    yyval.obj = new MethodDeclNode(val_peek(8).ival, (NameNode) val_peek(6).obj, (LinkedList) val_peek(4).obj,
+      yyval.obj = new MethodDeclNode(val_peek(8).ival, (NameNode) val_peek(6).obj, (LinkedList) val_peek(4).obj,
                              (LinkedList) val_peek(1).obj, (TreeNode) val_peek(0).obj,
                              makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));
    }
 break;
 case 79:
-//#line 635 "jparser.y"
+//#line 636 "jparser.y"
 { yyval.obj = VoidTypeNode.instance; }
 break;
 case 80:
-//#line 643 "jparser.y"
+//#line 644 "jparser.y"
 { }
 break;
 case 81:
-//#line 645 "jparser.y"
+//#line 646 "jparser.y"
 { yyval.obj = new LinkedList();  }
 break;
 case 82:
-//#line 650 "jparser.y"
+//#line 651 "jparser.y"
 { yyval.obj = cons(val_peek(0).obj); }
 break;
 case 83:
-//#line 652 "jparser.y"
+//#line 653 "jparser.y"
 { yyval.obj = cons(val_peek(2).obj, (LinkedList) val_peek(0).obj); }
 break;
 case 84:
-//#line 657 "jparser.y"
+//#line 658 "jparser.y"
 {
-     Modifier.checkParameterModifiers(val_peek(3).ival); 
-     yyval.obj = new ParameterNode(val_peek(3).ival, makeArrayType((TypeNode) val_peek(2).obj, val_peek(0).ival),
-          (NameNode) val_peek(1).obj);
-   }
+      Modifier.checkParameterModifiers(val_peek(3).ival); 
+      yyval.obj = new ParameterNode(val_peek(3).ival, makeArrayType((TypeNode) val_peek(2).obj, val_peek(0).ival),
+                             (NameNode) val_peek(1).obj);
+    }
 break;
 case 85:
 //#line 668 "jparser.y"
@@ -1023,7 +1024,7 @@ case 92:
 //#line 700 "jparser.y"
 {
       Modifier.checkConstructorModifiers(val_peek(9).ival);
-	     yyval.obj = new ConstructorDeclNode(val_peek(9).ival,
+       yyval.obj = new ConstructorDeclNode(val_peek(9).ival,
             new NameNode(AbsentTreeNode.instance, val_peek(8).sval), (LinkedList) val_peek(6).obj,
             (LinkedList) val_peek(4).obj, new BlockNode((LinkedList) val_peek(1).obj),
             (ConstructorCallNode) val_peek(2).obj);
@@ -1033,11 +1034,11 @@ case 93:
 //#line 709 "jparser.y"
 {
      Modifier.checkConstructorModifiers(val_peek(8).ival);
-	    yyval.obj = new ConstructorDeclNode(val_peek(8).ival,
+      yyval.obj = new ConstructorDeclNode(val_peek(8).ival,
            new NameNode(AbsentTreeNode.instance, val_peek(7).sval), (LinkedList) val_peek(5).obj,
            (LinkedList) val_peek(3).obj, new BlockNode((LinkedList) val_peek(1).obj),
            new SuperConstructorCallNode(new LinkedList()));
-	  }
+    }
 break;
 case 94:
 //#line 724 "jparser.y"
@@ -1060,7 +1061,7 @@ case 98:
 {
      Modifier.checkInterfaceModifiers(val_peek(4).ival);
      yyval.obj = new InterfaceDeclNode(val_peek(4).ival, (NameNode) val_peek(2).obj, (LinkedList) val_peek(1).obj, (LinkedList) val_peek(0).obj);
-   }
+    }
 break;
 case 99:
 //#line 762 "jparser.y"
@@ -1108,23 +1109,23 @@ case 109:
      LinkedList varDecls = (LinkedList) val_peek(1).obj;
      Iterator itr = varDecls.iterator();
 
-	    LinkedList result = new LinkedList();
+      LinkedList result = new LinkedList();
 
-	    while (itr.hasNext()) {
-		    DeclaratorNode decl = (DeclaratorNode) itr.next();
-		    result = cons(new FieldDeclNode(modifiers,
+      while (itr.hasNext()) {
+        DeclaratorNode decl = (DeclaratorNode) itr.next();
+        result = cons(new FieldDeclNode(modifiers,
                      makeArrayType((TypeNode) val_peek(2).obj, decl.getDims()),
-						          decl.getName(), decl.getInitExpr()), result);
-		  }
+                      decl.getName(), decl.getInitExpr()), result);
+      }
 
-	    yyval.obj = result;
-	  }
+      yyval.obj = result;
+    }
 break;
 case 110:
 //#line 822 "jparser.y"
 {
      Modifier.checkMethodSignatureModifiers(val_peek(8).ival);
-	    yyval.obj = new MethodDeclNode(val_peek(8).ival | Modifier.ABSTRACT_MOD, (NameNode) val_peek(6).obj,
+      yyval.obj = new MethodDeclNode(val_peek(8).ival | Modifier.ABSTRACT_MOD, (NameNode) val_peek(6).obj,
                              (LinkedList) val_peek(4).obj, (LinkedList) val_peek(1).obj,
                              AbsentTreeNode.instance,
                              makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));
@@ -1133,12 +1134,12 @@ break;
 case 111:
 //#line 831 "jparser.y"
 {
-     Modifier.checkMethodSignatureModifiers(val_peek(8).ival);
-	    yyval.obj = new MethodDeclNode(val_peek(8).ival | Modifier.ABSTRACT_MOD, (NameNode) val_peek(6).obj,
+      Modifier.checkMethodSignatureModifiers(val_peek(8).ival);
+      yyval.obj = new MethodDeclNode(val_peek(8).ival | Modifier.ABSTRACT_MOD, (NameNode) val_peek(6).obj,
                              (LinkedList) val_peek(4).obj, (LinkedList) val_peek(1).obj,
                              AbsentTreeNode.instance,
                              makeArrayType((TypeNode) val_peek(7).obj, val_peek(2).ival));
-   }
+    }
 break;
 case 112:
 //#line 846 "jparser.y"
@@ -1202,9 +1203,9 @@ case 127:
 
      Iterator itr = varDecls.iterator();
 
-	    while (itr.hasNext()) {
-		    DeclaratorNode decl = (DeclaratorNode) itr.next();
-		    result = cons(new VarDeclNode(val_peek(3).ival,
+      while (itr.hasNext()) {
+        DeclaratorNode decl = (DeclaratorNode) itr.next();
+        result = cons(new VarDeclNode(val_peek(3).ival,
                      makeArrayType((TypeNode) val_peek(2).obj, decl.getDims()),
                      decl.getName(), decl.getInitExpr()), result);
      }
@@ -1219,9 +1220,9 @@ case 128:
 
      Iterator itr = varDecls.iterator();
 
-	    while (itr.hasNext()) {
-		    DeclaratorNode decl = (DeclaratorNode) itr.next();
-  	    result = cons(new VarDeclNode(Modifier.NO_MOD,
+      while (itr.hasNext()) {
+        DeclaratorNode decl = (DeclaratorNode) itr.next();
+        result = cons(new VarDeclNode(Modifier.NO_MOD,
                      makeArrayType((TypeNode) val_peek(2).obj, decl.getDims()),
                      decl.getName(), decl.getInitExpr()), result);
      }
@@ -1491,7 +1492,7 @@ case 206:
 break;
 case 207:
 //#line 1204 "jparser.y"
-{ yyval.obj = new ObjectFieldAccessNode((TreeNode) val_peek(2).obj, (NameNode) val_peek(0).obj); }
+{ yyval.obj = new ObjectFieldAccessNode((ExprNode) val_peek(2).obj, (NameNode) val_peek(0).obj); }
 break;
 case 208:
 //#line 1206 "jparser.y"
@@ -1804,7 +1805,7 @@ case 287:
 //#line 1469 "jparser.y"
 { yyval.obj = new BitOrAssignNode((ExprNode) val_peek(2).obj, (ExprNode) val_peek(0).obj); }
 break;
-//#line 3341 "JavaParser.java"
+//#line 3342 "JavaParser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

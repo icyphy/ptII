@@ -31,20 +31,28 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
 
 */
-
-package ptolemy.lang.java;
 </cheader>
 
 <vheader>
+package ptolemy.lang.java;
+
 import java.util.LinkedList;
+
 import ptolemy.lang.IVisitor;
 import ptolemy.lang.TreeNode;
+import ptolemy.lang.java.nodetypes.*;
 </vheader>
 
 <nheader>
+package ptolemy.lang.java.nodetypes;
+
 import java.util.LinkedList;
 import ptolemy.lang.TreeNode;
 </nheader>
+
+<iheader>
+package ptolemy.lang.java.nodetypes;
+</iheader>
 
 // interfaces
 NamedNode I <none> m NameNode getName m m void setName NameNode name m
@@ -116,9 +124,9 @@ DeclaratorNode CN TreeNode i NamedNode i k 0 int dims NameNode name TreeNode ini
 
 // Types that don't arise during parsing.
 
-PackageNode CN TreeNode i NamedNode i k 0 NameNode name k
-NullTypeNode SN TypeNode
-ArrayInitTypeNode SN TypeNode
+PackageNode C TreeNode i NamedNode i k 0 NameNode name k
+NullTypeNode S TypeNode
+ArrayInitTypeNode S TypeNode
 
 // Declarations
 
