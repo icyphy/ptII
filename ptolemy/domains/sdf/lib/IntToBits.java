@@ -1,4 +1,4 @@
-/* An actor that converts  an IntToken to 32 BooleanTokens.
+/* An actor that converts an IntToken to 32 consecutive BooleanTokens.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -40,8 +40,8 @@ import ptolemy.math.Complex;
 
 ///////////////////////////////////////////////////////////////
 /// IntToBits
-/** This actor takes in an IntToken and output 32 BooleanTokens 
-    (bitwise representation of input IntToken).
+/** This actor takes in an IntToken and output 32 consecutive BooleanTokens 
+    (bitwise representation of the input IntToken).
 
 @author Michael Leung
 @version $Id$
@@ -100,11 +100,12 @@ public class IntToBits extends SDFAtomicActor {
     }
 
 
-    /** Consume a single IntToken on the input. Produce 32 BooleanTokens
-     *  on the output port which is the 32 bits representation of the input
-     *  IntToken. The most significant bit is at index 0. (The first boolean 
-     *  token send out.) The least significant bit is at index 31 (The last 
-     *  boolean token send out.).
+    /** Consume a single IntToken on the input. Produce 32 consecutive 
+     *  BooleanTokens on the output port which is the bitwise
+     *  representation of the input IntToken. 
+     *  The most significant bit is the first boolean 
+     *  token send out. The least significant bit is the last 
+     *  boolean token send out.
      *
      *  @exception IllegalActionException If there is no director.
      */
@@ -131,6 +132,7 @@ public class IntToBits extends SDFAtomicActor {
        output.sendArray(0, bits);
     }
 }
+
 
 
 
