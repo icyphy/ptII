@@ -31,8 +31,6 @@
 package ptolemy.schematic.editor;
 
 import ptolemy.schematic.util.EditorIcon;
-import ptolemy.schematic.util.IconLibrary;
-import ptolemy.schematic.util.IconLibraryFactory;
 import ptolemy.schematic.util.LibraryIcon;
 import ptolemy.actor.*;
 import ptolemy.actor.gui.ParameterEditor;
@@ -238,7 +236,7 @@ public class GraphEditor extends MDIApplication {
 
     /** Return the icon library associated with this GraphEditor
      */
-    public IconLibrary getIconLibrary () {
+    public CompositeEntity getIconLibrary () {
 	return _iconLibrary;
     }
 
@@ -517,15 +515,18 @@ public class GraphEditor extends MDIApplication {
             iconlibURL = getGUIResources().getResource("rootIconLibrary"); 
             entitylibURL = getGUIResources().getResource("rootEntityLibrary"); 
 				   	    
-            _iconLibrary = new IconLibrary();
-	    _iconLibrary.setName("root");
-	    IconLibraryFactory.parseIconLibrary(_iconLibrary, iconlibURL);
-	    LibraryIcon.setIconLibrary(_iconLibrary);
-
-            MoMLParser parser = new MoMLParser();
+            MoMLParser parser;
+            parser = new MoMLParser();
+	    _iconLibrary = 
+                (CompositeEntity) parser.parse(iconlibURL, 
+                        iconlibURL.openStream());
+            LibraryIcon.setIconLibrary(_iconLibrary);
+         
+            //FIXME: this is bogus  The parser should be reusable.
+            parser = new MoMLParser();
             _entityLibrary =
                 (CompositeEntity) parser.parse(entitylibURL,
-					       entitylibURL.openStream());
+                        entitylibURL.openStream());
         }
         catch (Exception e) {
             System.out.println(e);
@@ -597,7 +598,7 @@ public class GraphEditor extends MDIApplication {
 
     /** The Icon Library
      */
-    private IconLibrary _iconLibrary;
+    private CompositeEntity _iconLibrary;
     
     /** The Entity Library
      */
