@@ -291,13 +291,20 @@ public class NonStrictTest extends Sink {
         if (!training
                 && _numberOfInputTokensSeen
                 < ((ArrayToken)(correctValues.getToken())).length()) {
-            //throw new IllegalActionException(this,
-            System.out.println("Warning: NonStrictTest: " + getName()
-                    + "The test produced only " + _numberOfInputTokensSeen
+            String errorMessage = 
+                    "The test produced only " + _numberOfInputTokensSeen
                     + " tokens, yet the correctValues parameter was "
                     + "expecting "
                     + ((ArrayToken)(correctValues.getToken())).length()
-                    + " tokens.");
+                    + " tokens.";
+            if (isRunningNightlyBuild()) {
+                System.out.println("Warning: NonStrictTest: " 
+                        + getName() + errorMessage
+                        + "\nNote that the nightly build is running"
+                        + " so we are not throwing an exception here");
+            } else {
+                throw new IllegalActionException(this, errorMessage);
+            }
         }
 
         // Note that wrapup() might get called by the manager before
