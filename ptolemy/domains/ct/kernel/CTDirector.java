@@ -282,6 +282,41 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         return false;
     }
 
+    /** Clone the director into the specified workspace. This calls the
+     *  base class and then copies the parameter of this director.  The new
+     *  actor will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            CTDirector newobj = (CTDirector)(super.clone(ws));
+            newobj.startTime =
+                (Parameter)newobj.getAttribute("startTime");
+            newobj.stopTime =
+                (Parameter)newobj.getAttribute("stopTime");
+            newobj.initStepSize =
+                (Parameter)newobj.getAttribute("initStepSize");
+            newobj.minStepSize =
+                (Parameter)newobj.getAttribute("minStepSize");
+            newobj.maxStepSize =
+                (Parameter)newobj.getAttribute("maxStepSize");
+            newobj.maxIterations =
+                (Parameter)newobj.getAttribute("maxIterations");
+            newobj.errorTolerance =
+                (Parameter)newobj.getAttribute("errorTolerance");
+            newobj.valueResolution =
+                (Parameter)newobj.getAttribute("valueResolution");
+	    newobj.timeResolution =
+                (Parameter)newobj.getAttribute("timeResolution");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
+    }
+
     /** Return the break point table.
      *  @return The break point table.
      */
