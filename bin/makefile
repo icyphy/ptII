@@ -48,6 +48,7 @@ SHELL_FILES = \
 	ptinvoke \
 	ptjacl \
 	ptjaclapp \
+	ptjini \
 	ptplot \
 	ptolemy \
 	pxgraph \
@@ -83,6 +84,8 @@ all: ptinvoke
 	ln -s ptinvoke ptjacl
 	rm -f ptjaclapp
 	ln -s ptinvoke ptjaclapp
+	rm -f ptjini
+	ln -s ptinvoke ptjini
 	rm -f ptolemy
 	ln -s ptinvoke ptolemy
 	rm -f ptplot
