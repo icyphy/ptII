@@ -430,10 +430,17 @@ public class Director extends NamedObj implements Executable {
                 ((TypedCompositeActor)container).typeConstraints();
 
             InequalitySolver solver = new InequalitySolver(TypeCPO.cpo());
-            solver.addInequalities(constraints);
+	    while (constraints.hasMoreElements()) {
+                Object ineq = constraints.nextElement();
+		if ( !(ineq instanceof Inequality)) {
+		    throw new InvalidStateException("Director.resolveType: " +
+			"some of the type constraints is not an Inequality.");
+		}
+                solver.addInequality((Inequality)ineq);
+	    }
 
             // find the greatest solution (most general types)
-            boolean resolved = solver.solve(false);
+            boolean resolved = solver.solveGreatest();
             if ( !resolved) {
 		Enumeration unsatisfied = solver.unsatisfiedIneq();
                 // FIXME: should have a new TypeConflictException?
