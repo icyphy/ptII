@@ -79,6 +79,7 @@
             <input source="ptolemy/configs/automataLibrary.xml"/>
 	    <!-- Javacomm serial actors depend on javacomm being present  -->
             <input source="ptolemy/actor/lib/comm/comm.xml"/>
+            <input source="ptolemy/actor/lib/esoteric.xml"/>
             <input source="ptolemy/copernicus/copernicus.xml"/>
 	    <!-- matlab depends on Matlab being present -->
             <input source="ptolemy/matlab/matlab.xml"/>
