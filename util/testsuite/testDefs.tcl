@@ -271,6 +271,8 @@ proc epsilonDiff {newresults oldresults {epsilon 0.00001} {level 1}} {
 		[llength $newresults] != [llength $oldresults]"
     }
     set returnresults {}
+    # Handle complex numbers where the imaginary part is + 0.0i or - 0.0i
+    set zeroCheck 0
     foreach newelement $newresults oldelement $oldresults {
 
 	if {$newelement == $oldelement } {
@@ -296,6 +298,25 @@ proc epsilonDiff {newresults oldresults {epsilon 0.00001} {level 1}} {
 	# The numbers might be complex numbers with trailing 'i'
 	set newelement [string trimright $newelement "i"]
 	set oldelement [string trimright $oldelement "i"]
+
+	if { $zeroCheck == 1 } {
+	    set zeroCheck 0
+	    if { "$oldelement" != "0.0" } {
+		error "epsilonDiff {$newresults} {$oldresults}:\n\
+			Saw a complex number (
+		    previous element was + or -)\n, but current\
+	            element is not '0.0'"
+	    }
+	} 
+
+	if { "$newelement" == "+" && "$oldelement" == "-" || 
+   	    "$newelement" == "-" && "$oldelement" == "+" } {
+		# If we have a complex number like {-0.22500000000000 - 0.0i}
+		# then we want to compare it with  {-0.22500000000000 + 0.0i}
+		# when we handle the next element, which should be 0.0
+		set zeroCheck 1
+		continue
+	}
 
 	if [ catch {
 	    if { "$newelement" == "NaN" &&  "$oldelement" != "NaN" }  {
