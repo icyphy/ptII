@@ -1106,7 +1106,7 @@ remote4javatest:
 	@echo "$@ `date`"
 	(cd $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test; \
 		PTII=$(REMOTE4PTIIDIST) $(MAKE) \
-		JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
+		JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=21600 \
 		test_long)
 
 ##########################################################################
@@ -1178,8 +1178,8 @@ remote5shallowtest:
 	(cd $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow/test; \
 		PTII=$(REMOTE5PTIIDIST) \
 		$(MAKE) \
-			JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
-		test_long)
+			JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=10800 \
+			test_long)
 
 
 
