@@ -34,6 +34,7 @@ package ptolemy.lang.java;
 
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
+import java.io.File;
 import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -77,11 +78,15 @@ public class ASTReflect {
 
 	    String fullInterfaceName = interfaceClasses[i].getName();
 	    // FIXME: We should probably use the fully qualified name here?
+	    //TypeNode interfaceDeclNode =
+            //    new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+            //            fullInterfaceName.substring(1 +
+            //                    fullInterfaceName.lastIndexOf('.')
+            //                                        )));
 	    TypeNode interfaceDeclNode =
                 new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-                        fullInterfaceName.substring(1 +
-                                fullInterfaceName.lastIndexOf('.')
-                                                    )));
+                        fullInterfaceName));
+
 	    /* FIXME: The output of Skelton does not seem to use
 	     * InterfaceDeclNode?
 	     */
@@ -115,9 +120,7 @@ public class ASTReflect {
                 (TreeNode) _makeNameNode("Object");
 
         } else {
-            // FIXME: If this is java.lang.Object, should we
-            // use AbsentTreeNode?
-	    if (myClass.getSuperclass() != null) {
+    	    if (myClass.getSuperclass() != null) {
 		superClass =
 		    (TreeNode) _makeNameNode(myClass.getSuperclass().getName());
 	    }
@@ -228,12 +231,49 @@ public class ASTReflect {
     public static List innerClassesASTList(Class myClass) {
 	List innerClassList = new LinkedList();
 	// Handle inner classes
-	Class classes[] = myClass.getClasses();
+	Class classes[] = myClass.getDeclaredClasses();
 	for(int i = 0; i < classes.length; i++) {
 	    innerClassList.add(ASTClassDeclNode(classes[i]));
 	}
     	return innerClassList;
     }
+
+    /** Given a pathname, try to find a class that corresponds with it
+     *  by starting with the filename and adding directories from the
+     *  pathname until we find a class or run through all the directories.
+     *  If a class is not found, return null.
+     */
+    public static ClassDeclNode lookupClassDeclNode(String name) {
+      try {
+          // The classname was something like java.lang.Object
+          return ASTClassDeclNode(Class.forName(name));
+      } catch (ClassNotFoundException e) {
+          // The classname was something like Object, so
+          // we search the loaded packages.
+          // FIXME: we could try optimizing this so we
+          // look in java.lang first, which is where
+          // vast majority of things will be found.
+          Package packages[] = Package.getPackages();
+          for(int i = 0; i < packages.length; i++) {
+              String qualifiedName =
+                  new String(packages[i].getName() + "." + name);
+              try {
+                  return ASTClassDeclNode(Class.forName(qualifiedName));
+              } catch (ClassNotFoundException ee) {
+                  // Keep searching the packages.
+              }
+
+		if (myClass != null) {
+		    break;
+		}
+	    } 
+	}
+	if (myClass == null) {
+	    return null;
+	}
+	return ASTClassDeclNode(myClass);
+    }
+
 
     /** Return a List containing an AST that describes the methods
      *	for myclass.
@@ -277,38 +317,50 @@ public class ASTReflect {
 	return methodList;
     }
 
-    /** Lookup a ClassDeclNode by name
-     *  @param name The possibly unqualified name of the class.
+
+    /** Given a pathname, try to find a class that corresponds with it
+     *  by starting with the filename and adding directories from the
+     *  pathname until we find a class or run through all the directories.
+     *  If a class is not found, return null.
      */
-    public static ClassDeclNode lookupClassDeclNode(String name) {
-	try {
-	    // The classname was something like java.lang.Object
-	    return ASTClassDeclNode(Class.forName(name));
-	} catch (ClassNotFoundException e) {
-	    // The classname was something like Object, so
-	    // we search the loaded packages.
-	    
-	    // FIXME: we could try optimizing this so we
-	    // look in java.lang first, which is where
-	    // vast majority of things will be found.
-	    Package packages[] = Package.getPackages();
-	    for(int i = 0; i < packages.length; i++) {
-		String qualifiedName =
-		    new String(packages[i].getName() + "." + name);
-		try {
-		    return ASTClassDeclNode(Class.forName(qualifiedName));
-		} catch (ClassNotFoundException ee) {
-		    // Keep searching the packages.
-		}
-	    }
-	    // FIXME: We need to do this part
-	    throw new RuntimeException("ASTReflect.lookupClassDeclNode(): " +
-				       "Could not find class '" + name + 
-				       "'. The package of this class has " +
-				       "not yet been loaded, so we need to " +
-				       "look in the searchPath");
+    public static Class pathnameToClass(String pathname) {
+	Class myClass = null;
+	// Try to find a class by starting with the file name
+	// and then adding directories as we go along
+	
+	StringBuffer classname = null;
+	if(pathname.lastIndexOf('.') != -1) {
+	    // Strip out anything after the last '.', such as .java
+	    classname =
+		new StringBuffer(StringManip.rawFilename(StringManip.partBeforeLast(pathname, '.')));
+	} else {
+	    classname =	new StringBuffer(StringManip.rawFilename(pathname));
 	}
-	// return null;
+
+	// restOfPath contains the directories that we add one by one.
+	String restOfPath = pathname;
+
+	while (true) {
+	    try {
+		myClass = Class.forName(new String(classname));
+	    } catch (Exception e) {}
+
+	    if (myClass != null) {
+		// We found our class!
+		return myClass;
+	    }
+
+	    if (restOfPath.lastIndexOf(File.separatorChar) == -1) { 
+		// We are out of directories to try.
+		return null;
+	    }
+	    // First time through, we pull off the file name, after that
+	    // we pull off directories.
+	    restOfPath = StringManip.partBeforeLast(restOfPath,
+						    File.separatorChar);
+	    classname.insert(0, StringManip.rawFilename(restOfPath) + ".");
+	}
+	
     }
 
     /** Print the AST for ptolemy.lang.java.Skeleton for testing purposes. */
