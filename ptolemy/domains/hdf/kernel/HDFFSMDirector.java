@@ -206,19 +206,25 @@ public class HDFFSMDirector extends FSMDirector {
         HDFFSMActor ctrl = (HDFFSMActor)getController();
 	ctrl._setInputVariables(_firingsSoFar, _getFiringsPerSchedulIteration());
         State st = ctrl.currentState();
-	Actor ref = ctrl.currentState().getRefinement();
+	// FIXME
+	//Actor ref = ctrl.currentState().getRefinement();
+	Actor[] ref = ctrl.currentState().getRefinement();
         _fireRefinement = false;
         if (ref != null) {
 	  if(_debug_info) System.out.println(getName() + 
-			     " fire(): refinement is " + 
-			     ((CompositeActor)ref).getName());
+			     " fire(): refinement is " +
+			     // FIXME
+			     //((CompositeActor)ref).getName());
+			     ((CompositeActor)ref[0]).getName());
 	  // Note that we do not call refinement.prefire() in 
 	  // this.prefire(). This is because transferInputs() is
 	  // called by the composite actor in fire(), and 
 	  // refinement.prefire() should not be invoked until
 	  // the tokens have been transferred to the input ports of
 	  // the current refinement.
-	  _fireRefinement = ref.prefire();
+	  // FIXME
+	  //_fireRefinement = ref.prefire();
+	  _fireRefinement = ref[0].prefire();
         }
 	if(_debug_info) System.out.println(getName() + 
                " fire(): refinement is ready to fire = " + 
@@ -227,7 +233,9 @@ public class HDFFSMDirector extends FSMDirector {
             if(_debug_info) System.out.println(getName() + 
 					" firing refinement");
 	    // Fire the refinement.
-            ref.fire();
+	    // FIXME
+            //ref.fire();
+	    ref[0].fire();
             ctrl._setInputsFromRefinement();
         }
         ctrl.chooseTransition(st.nonpreemptiveTransitionList());
@@ -298,7 +306,9 @@ public class HDFFSMDirector extends FSMDirector {
         HDFFSMActor ctrl = (HDFFSMActor)getController();
 	State curState = ctrl.currentState();
 	// Get the current refinement actor.
-	TypedActor currentRefinement = 
+	// FIXME
+	//TypedActor currentRefinement = 
+	TypedActor[] currentRefinement =
 	    curState.getRefinement();
 	if (currentRefinement == null) {
 	    throw new IllegalActionException(this,
@@ -308,7 +318,9 @@ public class HDFFSMDirector extends FSMDirector {
 	    _debugPostfire(curState);
 	}
 	// Postfire the current refinement.
-	boolean postfireReturn = currentRefinement.postfire();
+	// FIXME
+	//boolean postfireReturn = currentRefinement.postfire();
+	boolean postfireReturn = currentRefinement[0].postfire();
 	// Increment current firing count. This is the number of
 	// times the current refining HDF actor has been fired
 	// in the current iteration of the current static schedule
@@ -380,7 +392,9 @@ public class HDFFSMDirector extends FSMDirector {
 
 		// Get the new current refinement actor.
 		TypedCompositeActor actor =
-		    (TypedCompositeActor)curState.getRefinement();
+		    // FIXME
+		    //(TypedCompositeActor)curState.getRefinement();
+		    (TypedCompositeActor)(curState.getRefinement())[0];
 		// Extract the token consumption/production rates from the
 		// ports of the current refinement and update the
 		// rates of the ports of the HDF actor containing
@@ -436,7 +450,9 @@ public class HDFFSMDirector extends FSMDirector {
 	}
 	// Get the current refinement.
 	TypedCompositeActor curRefinement =
-	    (TypedCompositeActor)initialState.getRefinement();
+	    // FIXME
+	    //(TypedCompositeActor)initialState.getRefinement();
+	    (TypedCompositeActor)(initialState.getRefinement())[0];
 	if (curRefinement != null) {
 	    Director refinementDir = curRefinement.getDirector();
 	    if (_debug_info) {
@@ -617,7 +633,9 @@ public class HDFFSMDirector extends FSMDirector {
     private void _debugPostfire(State curState) 
 	throws IllegalActionException {
 	    TypedCompositeActor ta = 
-		(TypedCompositeActor)curState.getRefinement();
+	        // FIXME
+	        //(TypedCompositeActor)curState.getRefinement();
+		(TypedCompositeActor)(curState.getRefinement())[0];
 	    System.out.println(getName() + " :  postfire(): firing " +
                     "current refinment: " +
                     ta.getFullName());
@@ -635,7 +653,9 @@ public class HDFFSMDirector extends FSMDirector {
 	    }
 	    System.out.println(getName() + " :  postfire(): firing " +
                     "current refinment right now: " +
-                    ((CompositeActor)(curState.getRefinement())).getFullName());
+		    // FIXME
+		    //((CompositeActor)(curState.getRefinement())).getFullName());
+                    ((CompositeActor)(curState.getRefinement())[0]).getFullName());
     }
 
     /** If the container of this director does not have an 
