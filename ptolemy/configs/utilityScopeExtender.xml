@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
 <!-- scopeExtendingAttribute -->
-<property name="scopeExtendingAttribute" 
+<property name="ScopeExtendingAttribute" 
           class="ptolemy.data.expr.ScopeExtendingAttribute">
   <property name="_iconDescription" 
             class="ptolemy.kernel.util.SingletonConfigurableAttribute">

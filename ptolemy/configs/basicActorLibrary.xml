@@ -14,6 +14,7 @@
   <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
   <input source="ptolemy/actor/lib/array.xml"/>
   <input source="ptolemy/actor/lib/matrix.xml"/>
+  <input source="ptolemy/actor/lib/hoc/hoc.xml"/>
   <input source="ptolemy/actor/lib/signalprocessing.xml"/>
   <input source="ptolemy/domains/ptinyDomains.xml"/>
 </group>

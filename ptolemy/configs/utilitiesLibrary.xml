@@ -3,18 +3,12 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
 <!-- Full utilities library. -->
-<entity name="utilities" class="ptolemy.moml.EntityLibrary">
+<entity name="Utilities" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>
-        <input source="ptolemy/configs/utilityIDAttribute.xml"/>
         <input source="ptolemy/configs/utilityCompositeActor.xml"/>
-        <class name="CompositeClassDefinition"
-		extends="ptolemy.actor.TypedCompositeActor"/>
-        <input source="ptolemy/configs/utilityModalModel.xml"/>
-        <input source="ptolemy/configs/utilityRunCompositeActor.xml"/>
-        <input source="ptolemy/configs/utilityModelReference.xml"/>
-        <input source="ptolemy/configs/utilityVisualModelReference.xml"/>
+        <class name="CompositeClassDefinition" extends="ptolemy.actor.TypedCompositeActor"/>
         <input source="ptolemy/configs/basicUtilities.xml"/>
         <!-- Do not include this as singleton parameters are buggy. -->
         <!-- input source="ptolemy/configs/customize.xml"/ -->

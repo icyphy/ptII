@@ -102,8 +102,24 @@ to another. Then delete this annotation.</text></svg></configure></property>
     <property name="_libraryMarker"
               class="ptolemy.kernel.util.SingletonAttribute"/>
 
-    <!-- Default utilities library. -->
-    <input source="ptolemy/configs/utilitiesLibrary.xml"/>
+    <!-- Override utilities library. -->
+	<entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+	  <class name="WirelessCompositeClass" extends="ptolemy.domains.wireless.kernel.WirelessComposite">
+		<!-- The inside MUST have a director, so we create one. -->
+		<property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector"/>
+	  </class>
+	  <entity name="WirelessComposite" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+		<!-- The inside MUST have a director, so we create one. -->
+		<property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector"/>
+	  </entity>
+      <class name="CompositeClass" extends="ptolemy.actor.TypedCompositeActor"/>
+      <input source="ptolemy/configs/utilityCompositeActor.xml"/>
+      
+      <input source="ptolemy/configs/basicUtilities.xml"/>
+      <!-- Do not include this as singleton parameters are buggy. -->
+      <!-- input source="ptolemy/configs/customize.xml"/ -->
+      <input source="ptolemy/data/unit/unitSystems.xml"/>
+    </entity>
 
     <!-- director library. -->
     <input source="ptolemy/configs/visualsense/directors.xml"/>
@@ -122,56 +138,10 @@ to another. Then delete this annotation.</text></svg></configure></property>
         ?>
       </configure>
     </entity>
-    
-    <entity name="actor library 2" class="ptolemy.moml.EntityLibrary">
-      <configure>
-        <?moml
-          <group>
-
-
-<!-- Sources list is custom. -->
-<input source="ptolemy/configs/hyvisual/sources.xml"/>
-
-<!-- Sinks list is custom. -->
-<input source="ptolemy/configs/hyvisual/sinks.xml"/>
-
-<!-- Math list is custom. -->
-<input source="ptolemy/configs/hyvisual/math.xml"/>
-
-<!---------------------------------------------------------------------------->
-<!-- Standard libraries. -->
-  <input source="ptolemy/actor/lib/logic/logic.xml"/>
-  <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
-
-<!---------------------------------------------------------------------------->
-<!-- Continuous-time actors. -->
-<input source="ptolemy/domains/ct/lib/dynamics.xml"/>
-<input source="ptolemy/domains/ct/lib/eventgenerators.xml"/>
-<input source="ptolemy/domains/ct/lib/wavegenerators.xml"/>
-
-<!---------------------------------------------------------------------------->
-<!-- Modified libraries -->
-<input source="ptolemy/configs/hyvisual/flowcontrol.xml"/>
-<input source="ptolemy/configs/hyvisual/io.xml"/>
-<!-- OMIT: input source="ptolemy/actor/lib/realtime.xml"/-->
-<input source="ptolemy/configs/hyvisual/array.xml"/>
-<input source="ptolemy/configs/hyvisual/random.xml"/>
-
-<!-- Discrete library is added to include a few useful actors. -->
-<input source="ptolemy/configs/hyvisual/discrete.xml"/>
-
-<!-- Matlab depends on Matlab being present -->
-<input source="ptolemy/matlab/matlab.xml"/>
-
-          </group>
-        ?>
-      </configure>
-    </entity>
-  </entity>
   
-      <!-- Optional packages that may or may not be present  -->
+    <!-- Optional packages that may or may not be present  -->
     <!-- Alphabetize these  -->
-    <entity name="more libraries" class="ptolemy.moml.EntityLibrary">
+    <entity name="MoreLibraries" class="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
@@ -186,9 +156,6 @@ to another. Then delete this annotation.</text></svg></configure></property>
 
  	    <!-- GR depends on the 3D graphics package of Java being present-->
             <!-- input source="ptolemy/domains/gr/gr.xml"/ -->
-
-	    <!-- Higher Order Components are somewhat experimental -->
-            <!-- input source="ptolemy/actor/lib/hoc/hoc.xml"/-->
 
             <input source="ptolemy/actor/lib/image/image.xml"/>
             <input source="ptolemy/vergil/actor/lib/interactive.xml"/>
@@ -206,6 +173,5 @@ to another. Then delete this annotation.</text></svg></configure></property>
         ?>
       </configure>
     </entity>
- 
-
+  </entity>
 </entity>

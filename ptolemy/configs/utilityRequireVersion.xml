@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
 <!-- RequireVersion, a parameter that insists on a specified version. -->
-<property name="requireVersion"
+<property name="RequireVersion"
           class="ptolemy.kernel.attributes.RequireVersion">
   <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
   <property name="_icon" class="ptolemy.vergil.icon.ValueIcon"/>

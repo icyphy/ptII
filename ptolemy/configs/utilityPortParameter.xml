@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
 <!-- PortParameter, a parameter that is also a port. -->
-<property name="portParameter" class="ptolemy.actor.parameters.PortParameter">
+<property name="PortParameter" class="ptolemy.actor.parameters.PortParameter">
   <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
   <property name="_iconDescription"
             class="ptolemy.kernel.util.SingletonConfigurableAttribute">
