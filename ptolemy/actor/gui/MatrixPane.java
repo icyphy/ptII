@@ -45,6 +45,11 @@ import javax.swing.table.TableModel;
 /**
 A graphical component that displays the values in a matrix.
 The data to display is supplied in the form of a MatrixToken.
+The table is currently not editable, although this may be changed
+in the future.  The table is an instance of Java's JTable class,
+which is exposed as a public member.  The rich interface
+of the JTable class can be used to customize the display
+in various ways.
 
 @author Bart Kienhuis and Edward A. Lee
 @version $Id$
@@ -59,19 +64,19 @@ public class MatrixPane extends JScrollPane {
         super();
 
         // Create a table.
-        _table = new JTable();
+        table = new JTable();
 
         // No table header.
-        _table.setTableHeader(null);
+        table.setTableHeader(null);
 
         // Do not adjust column widths automatically, use a scrollbar.
-        _table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         // Add the table to the scroll pane.
-        setViewportView(_table);
+        setViewportView(table);
 
         // Inherit the background color from the container.
-        _table.setBackground(null);
+        table.setBackground(null);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -81,14 +86,28 @@ public class MatrixPane extends JScrollPane {
      *  @param matrix The matrix to display in the table.
      */
     public void display(MatrixToken matrix) {
-        _table.setModel(new MatrixAsTable(matrix));
+        table.setModel(new MatrixAsTable(matrix));
     }
+
+    /** Clear the display. */
+    public void clear() {
+        table.setModel(_emptyTableModel);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The table representing the matrix. */
+    public JTable table;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The table representing the matrix. */
-    private JTable _table;
+    /** Emtpy string. */
+    private static Token _emptyStringToken = new StringToken("");
+
+    /** Empty table model. */
+    private static EmptyTableModel _emptyTableModel = new EmptyTableModel();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
@@ -143,7 +162,7 @@ public class MatrixPane extends JScrollPane {
             // rows and columns that are outside of range.
             if (row >= _matrix.getRowCount()
                    || column >= _matrix.getColumnCount()) {
-                return (new StringToken(""));
+                return (_emptyStringToken);
             }
             return (Object) (_matrix.getElementAsToken(row, column)).toString();
         }
@@ -153,5 +172,39 @@ public class MatrixPane extends JScrollPane {
 
         /** The Matrix for which a Table Model is created. */
         private MatrixToken _matrix = null;
+    }
+
+    /** This class provides an implementation of the
+     *  TableModel interface representing an empty matrix.
+     *  This is used to clear the display.
+     */
+    private static class EmptyTableModel extends AbstractTableModel {
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+        /** Get the column count of the Matrix.
+         *  @return Zero.
+         */
+        public int getColumnCount() {
+            return 0;
+        }
+
+        /** Get the row count of the Matrix.
+         *  @return Zero.
+         */
+        public int getRowCount() {
+            return 0;
+        }
+
+        /** Get the specified entry from the matrix as a Token.
+         *  @param row The row number.
+         *  @param column The column number.
+         *  @return An instance of Token representing the matrix value
+         *   at the specified row and columun.
+         */
+        public Object getValueAt(int row, int column) {
+            return (_emptyStringToken);
+        }
     }
 }
