@@ -54,7 +54,7 @@ the base class, IOPort, then the data they send is sent with zero delay.
 @authors Lukito Muliadi, Edward A. Lee
 @version $Id$
 */
-public class DEIOPort extends IOPort {
+public class DEIOPort extends TypedIOPort {
 
     /** Construct a DEIOPort with no container and no name that is
      *  neither an input nor an output.

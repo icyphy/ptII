@@ -47,7 +47,7 @@ and then figuring out the necessary delay..
 @version $Id$
 @see Actor
 */
-public class DEActor extends AtomicActor {
+public class DEActor extends TypedAtomicActor {
 
     /** Constructor.
      *  @param container The container.
@@ -60,7 +60,7 @@ public class DEActor extends AtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DEActor(CompositeActor container, String name)
+    public DEActor(TypedCompositeActor container, String name)
 	 throws NameDuplicationException, IllegalActionException  {
       super(container, name);
     }

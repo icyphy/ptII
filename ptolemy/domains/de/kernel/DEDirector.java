@@ -202,7 +202,21 @@ public abstract class DEDirector extends Director {
     public void setStopTime(double stopTime) {
 	this._stopTime = stopTime;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
     
+    /** Override the default Director implementation, because in DE
+     *  domain, we don't need write access inside an iteration.
+     *  @return false.
+     */ 
+    protected boolean _writeAccessPreference() { 
+        // Return false to let the workspace be write-protected.
+        // Return true to debug the PtolemyThread.
+        return true;
+    }
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
@@ -224,5 +238,3 @@ public abstract class DEDirector extends Director {
     protected boolean _shouldPostfireReturnFalse = false;
 
 }
-
-

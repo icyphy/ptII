@@ -114,7 +114,7 @@ import java.util.Enumeration;
 // currently supported.
 public class DECQDirector extends DEDirector {
     
-    public static final boolean DEBUG = false;
+    private static final boolean DEBUG = false;
 
     /** Construct a director with empty string as name in the
      *  default workspace.
@@ -310,6 +310,7 @@ public class DECQDirector extends DEDirector {
         super.initialize();
         // Set the depth field of the receivers.
         _computeDepth();
+        
     }
 
     /** Invoke the base class prefire() method, and if it returns true,
