@@ -87,7 +87,7 @@ public class QueueApp {
             // Create the actors.
             // ---------------------------------
             DEClock clock = new DEClock(sys, "Clock", 1.0, 1.0);
-            Ramp ramp = new Ramp(sys, "Ramp", 0, 1.0);
+            DERamp ramp = new DERamp(sys, "Ramp", 0, 1.0);
 
             DEFIFOQueue fifo1 = new DEFIFOQueue(sys, "FIFO1", 1, true, 10);
             DEPseudoPlot plot1 = new DEPseudoPlot(sys, "Queue 1 Size");
@@ -99,8 +99,8 @@ public class QueueApp {
             DEFIFOQueue fifo2 = new DEFIFOQueue(sys, "FIFO2", 1, true, 1000);
             DEPseudoPlot plot2 = new DEPseudoPlot(sys, "Queue 2 Size");
 
-            TestLevel testlevel = new TestLevel(sys, "TestLevel", true, 4);
-            Not not = new Not(sys, "Not");
+            DETestLevel testlevel = new DETestLevel(sys, "TestLevel", true, 4);
+            DENot not = new DENot(sys, "Not");
 
             DEServer server2 = new DEServer(sys, "Server2", 3.0);
 

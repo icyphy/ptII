@@ -127,7 +127,7 @@ public class HierarchyApplet extends Applet {
             blockA.setDirector(new DECQDirector("Director A"));
 
             DEClock clock = new DEClock(blockA, "Clock", 1.0, 1.0);
-            Ramp ramp1 = new Ramp(blockA, "Ramp1", 0, 2);
+            DERamp ramp1 = new DERamp(blockA, "Ramp1", 0, 2);
             DEPoisson poisson = new DEPoisson(blockA, "Poisson", 1.0, 0.5);
 
             DEIOPort A1 = new DEIOPort(blockA, "A1", false, true);
@@ -146,7 +146,7 @@ public class HierarchyApplet extends Applet {
             TypedCompositeActor blockB = new TypedCompositeActor(sys, "BlockB");
             blockB.setDirector(new DECQDirector("Director B"));
 
-            Ramp ramp2 = new Ramp(blockB, "Ramp2", -2, 2);
+            DERamp ramp2 = new DERamp(blockB, "Ramp2", -2, 2);
             DESampler sampler2 = new DESampler(blockB, "Sampler2");
 
             DEIOPort B1 = new DEIOPort(blockB, "B1", true, false);

@@ -254,7 +254,7 @@ public class SigmaDeltaApplet extends Applet {
             firdelay.setExpression("0.02");
             firdelay.parameterChanged(null);
             
-            TestLevel quan = new TestLevel(sys, "Quantizer");
+            DETestLevel quan = new DETestLevel(sys, "Quantizer");
             DEStatistics accu = new DEStatistics(sys, "Accumulator");
             DEClock clk = new DEClock(sys, "ADClock", 1, 1);
             DEPlot deplot = new DEPlot(sys, "DEPlot", dePanel);

@@ -159,7 +159,7 @@ public class InterruptApplet extends Applet {
             // ---------------------------------
 
             DEClock clock = new DEClock(sys, "Clock", 1.0, 1.0);
-            Ramp ramp = new Ramp(sys, "Ramp", 0.0, 1.0);
+            DERamp ramp = new DERamp(sys, "Ramp", 0.0, 1.0);
 
             // create a processor with min service time = 1.0
             // interrupt service time = 0.1

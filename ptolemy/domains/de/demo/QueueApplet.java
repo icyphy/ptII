@@ -145,7 +145,7 @@ public class QueueApplet extends Applet {
             // Create the actors.
             // ---------------------------------
             DEClock clock = new DEClock(sys, "Clock", 1.0, 1.0);
-            Ramp ramp = new Ramp(sys, "Ramp", 0, 1.0);
+            DERamp ramp = new DERamp(sys, "Ramp", 0, 1.0);
 
             DEFIFOQueue fifo1 = new DEFIFOQueue(sys, "FIFO1", 1, true, 10);
             DEPlot plot1 = new DEPlot(sys, "Queue 1 Size", panel1);
@@ -157,8 +157,8 @@ public class QueueApplet extends Applet {
             DEFIFOQueue fifo2 = new DEFIFOQueue(sys, "FIFO2", 1, true, 1000);
             DEPlot plot2 = new DEPlot(sys, "Queue 2 Size", panel2);
 
-            TestLevel testlevel = new TestLevel(sys, "TestLevel", true, 4);
-            Not not = new Not(sys, "Not");
+            DETestLevel testlevel = new DETestLevel(sys, "TestLevel", true, 4);
+            DENot not = new DENot(sys, "Not");
 
             DEServerAlt server2 = new DEServerAlt(sys, "Server2", 3.0);
 
