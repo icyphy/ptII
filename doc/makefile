@@ -57,7 +57,8 @@ UI_FILES_TO_BE_JARED = \
 	acks.htm \
 	authors.htm \
 	codegen.htm \
-	webStartHelp.htm
+	webStartHelp.htm \
+	whatsnew.htm
 
 EXTRA_SRCS = \
 	$(UI_FILES_TO_BE_JARED) \
@@ -253,6 +254,11 @@ ptII$(PTVERSION).releaseVergil.htm: ptII$(PTVERSION).release.htm
 	awk -f javahtml.awk ptII$(PTVERSION).release.htm > $@  
 troubleshootingVergil.htm: troubleshooting.htm
 	awk -f javahtml.awk troubleshooting.htm > $@  
+
+# Generate a file that consists of only the text within
+# <!--whatsnew--> ... <!--/whatsnew--> blocks
+whatsnew.htm: ptII$(PTVERSION).release.htm
+	awk -f whatsnew.awk ptII$(PTVERSION).release.htm > $@  
 
 docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html

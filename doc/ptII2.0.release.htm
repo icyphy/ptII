@@ -5,11 +5,33 @@
 </head>
 <body bgcolor="#faf0e6">
 <h1>Ptolemy II 2.0beta Release Notes</h1>
+
+Ptolemy II is a set of Java packages supporting heterogeneous,
+concurrent modeling and design.  Its <code>kernel</code> package
+supports clustered hierarchical graphs, which are collections of
+<I>entities</I> and <I>relations</I> between those entities.  Its
+<code>actor</code> package extends the kernel so that entities have
+functionality and can communicate via the relations.  Its
+<I>domains</I> extend the actor package by imposing <I>models of
+computation</I> on the interaction between entities.  Examples of
+models of computation include discrete-event systems, dataflow,
+process networks, synchronous/reactive systems, and communicating
+sequential processes.
+
+ <br>Ptolemy II includes a number of support packages, such as 
+<code>graph</code>, providing graph-theoretic manipulations,
+
+<code>math</code>, providing matrix and vector math and signal
+processing functions,
+
+<code>plot</code>, providing visual display of data,
+
+<code>data</code>, providing a type system, data encapsulation and an
+expression parser, etc.
+
+
 Ptolemy II 2.0beta is a release of the Ptolemy II 
 java classes and the Ptolemy II design document
-
- <p>Ptolemy II 2.0beta includes Vergil, a graphical user interface for
-developing models.
 
  <p>The design document describes the Ptolemy II design and the implementation
 of the Java classes.  The design document is not included
@@ -18,6 +40,55 @@ production release.   In the interim, please see the "Using Vergil"
 chapter (<a href="design/usingVergil.pdf">PDF</a> - 
 <a href="design/usingVergil/index.htm">HTML</a>)
 
+
+<h2>Complete List of Domains in Ptolemy II</h2>
+ <!-- We include this list here since we will be posting the release notes
+to the newsgroups etc.  See also main.htm
+ -->
+<ul>
+<li> <a href="../ptolemy/domains/csp/doc/body.htm" target="body">CSP</a>:
+	 communicating sequential processes,
+<li> <a href="../ptolemy/domains/ct/doc/body.htm" target="body">CT</a>:
+	continuous-time modeling,
+<li> <a href="../ptolemy/domains/de/doc/body.htm" target="body">DE</a>:
+	discrete-event modeling,
+<li> <a href="../ptolemy/domains/dde/doc/body.htm" target="body">DDE</a>:
+	distributed discrete events (experimental),
+<li> <a href="../ptolemy/domains/dt/doc/body.htm" target="body">DT</a>:
+	discrete time,
+<li> <a href="../ptolemy/domains/fsm/doc/body.htm" target="body">FSM</a>:
+b	 finite state machines,
+<li> <a href="../ptolemy/domains/giotto/doc/body.htm" target="body">Giotto</a>:
+	periodic time-driven (experimental),
+<li> <a href="../ptolemy/domains/gr/doc/body.htm" target="body">GR</a>:
+	3-D graphics (experimental),
+ <!-- petrinet ??-->
+<li> <a href="../ptolemy/domains/pn/doc/body.htm" target="body">PN</a>:
+	process networks,
+<li> <a href="../ptolemy/domains/sdf/doc/body.htm" target="body">SDF</a>:
+	synchronous dataflow,
+<li> <a href="../ptolemy/domains/sr/doc/body.htm" target="body">SR</a>:
+	synchronous/reactive (experimental), and
+<li> <a href="../ptolemy/domains/tm/doc/body.htm" target="body">TM</a>:
+	timed multitasking (experimental).
+
+</ul>
+
+<h2>Platforms</h2>
+
+The core of Ptolemy II 2.0 is 100% Java, so it should work on any
+platform that has JDK1.3
+
+ <p>We developed Ptolemy II 2.0 under Solaris 8 and Windows 2000 sr2
+and with JDK1.3.1 and JDK1.4beta.  Note that code generation 
+only works under JDK1.3.0 or 1.3.1 because of limitations in Soot.
+
+Ptolemy II 2.0 will not compile under JDK1.2.2.
+
+<p>The code generation facility requires JDK1.3.0, it will not
+work under JDK 1.4.0
+
+<!--whatsnew-->
 <h2>Major Features that are new in Ptolemy 2.0 </h2>
 <menu>
 
@@ -472,6 +543,7 @@ writing your own Java files, you should recompile all your java code with
 the new release.  In theory, copying the .class files should work, but
 recompiling is safer.
 
+<!--/whatsnew-->
 
 <h2>Major Features that were new in Ptolemy II 1.0.1 </h2>
 <menu>
@@ -516,61 +588,6 @@ recompiling is safer.
 <li> <a href="docbody.htm" target="body">On-line documentation (in HTML);</a>
 <li> <a href="../ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.htm" target="main">Audio signal processing capabilities;</a></br>
 </ul>
-
-<h2>Complete List of Domains in Ptolemy II</h2>
- <!-- We include this list here since we will be posting the release notes
-to the newsgroups etc.  See also main.htm
- -->
-<ul>
-<li> <a href="../ptolemy/domains/csp/doc/body.htm" target="body">CSP</a>:
-	 communicating sequential processes,
-<li> <a href="../ptolemy/domains/ct/doc/body.htm" target="body">CT</a>:
-	continuous-time modeling,
-<li> <a href="../ptolemy/domains/de/doc/body.htm" target="body">DE</a>:
-	discrete-event modeling,
-<li> <a href="../ptolemy/domains/dde/doc/body.htm" target="body">DDE</a>:
-	distributed discrete events (experimental),
-<li> <a href="../ptolemy/domains/dt/doc/body.htm" target="body">DT</a>:
-	discrete time,
-<li> <a href="../ptolemy/domains/fsm/doc/body.htm" target="body">FSM</a>:
-b	 finite state machines,
-<li> <a href="../ptolemy/domains/giotto/doc/body.htm" target="body">Giotto</a>:
-	periodic time-driven (experimental),
-<li> <a href="../ptolemy/domains/gr/doc/body.htm" target="body">GR</a>:
-	3-D graphics (experimental),
- <!-- petrinet ??-->
-<li> <a href="../ptolemy/domains/pn/doc/body.htm" target="body">PN</a>:
-	process networks,
-<li> <a href="../ptolemy/domains/sdf/doc/body.htm" target="body">SDF</a>:
-	synchronous dataflow,
-<li> <a href="../ptolemy/domains/sr/doc/body.htm" target="body">SR</a>:
-	synchronous/reactive (experimental), and
-<li> <a href="../ptolemy/domains/tm/doc/body.htm" target="body">TM</a>:
-	timed multitasking (experimental).
-
-</ul>
-
-<h2>Platforms</h2>
-
-The core of Ptolemy II 2.0 is 100% Java, so it should work on any
-platform that has JDK1.3
-
- <p>We developed Ptolemy II 2.0 under Solaris 8 and Windows 2000 sr2
-and with JDK1.3.1 and JDK1.4beta.  Note that code generation 
-only works under JDK1.3.0 or 1.3.1 because of limitations in Soot.
-
-Ptolemy II 2.0 will not compile under JDK1.2.2.
-
-<p>The code generation facility requires JDK1.3.0, it will not
-work under JDK 1.4.0
-
-<p>Ptolemy II is available in two versions
-   <menu>
-   <li> Ptiny - which can be used to build models in 
-   CT, DE, FSM, PN and SDF using built-in actors.
-   <li> Full - which includes other domains and 
-   support for devloping custom actors.
-   </menu>
 
 
 <!--vergilDocs-->
