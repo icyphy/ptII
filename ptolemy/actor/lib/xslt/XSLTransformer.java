@@ -49,12 +49,17 @@ import org.w3c.dom.Document;
 This actor reads an XSLT file and apply it to a dom tree. The file or
 URL is specified using any form acceptable to the FileAttribute class.
 
+<p>Currently, this actor requires the 
+<a href="http://saxon.sourceforge.net/">Saxon</a> XSLT processor
+so as to ensure reproducible results.  This restriction may
+be relaxed in later versions of this actor. 
+
 <p>FIXME: what should the type of the input/output ports be???.
 
 @see ptolemy.actor.lib.javasound.AudioReader
-@author  Yang Zhao
-@version $ $
-@since Ptolemy II 1.0
+@author  Yang Zhao, Chrisotpher Hylands Brooks
+@version $Id$
+@since Ptolemy II 3.1
 */
 public class XSLTransformer extends Transformer{
 
@@ -182,6 +187,38 @@ public class XSLTransformer extends Transformer{
             //System.out.println("processing xsltSource change in " + getFullName());
             if (_xsltSource != null) {
                 _transformerFactory = javax.xml.transform.TransformerFactory.newInstance();
+                if (!_transformerFactory.getClass()
+                        .getName().startsWith("net.sf.saxon")) {
+
+
+                    throw new IllegalActionException(this,
+                            "The XSLTransformer actor works best\nwith "
+                            + "saxon7.jar.\n"
+                            + "The transformerFactory was \""
+                            + _transformerFactory.getClass().getName()
+                            + "\".\nIf saxon7.jar was in the classpath, then "
+                            + "it should have\nstarted with "
+                            + "\"net.sf.saxon\".\n"
+                            + "If this actor does not use "
+                            + "saxon, then the results will be "
+                            + "different between\nruns that "
+                            + "use saxon and runs that "
+                            + "do not.\nDetails:\n"
+                            + "This actor uses "
+                            + "javax.xml.transform.TransformerFactory.\nThe "
+                            + "concrete TransformerFactory class can be "
+                            + "adjusted by\nsetting the "
+                            + "javax.xml.transform.TransformerFactory "
+                            + "property or by\nreading in a jar file that "
+                            + "has the appropriate\nService Provider set.\n"
+                            + "(For details about Jar Service Providers,\nsee "
+                            + "http://java.sun.com/j2se/1.4.2/docs/guide/jar/jar.html)\n"
+                            + "The saxon7.jar file includes a\n" 
+                            + "META-INF/services/javax.xml.transform.TransformerFactory "
+                            + "\nfile that sets the TransformerFactory "
+                            + "class name start with 'net.sf.saxon'."
+                                                     );
+                }
                 _transformer = _transformerFactory.newTransformer(_xsltSource);
                                 //System.out.println("1 processing xsltSource change in " + getFullName());
             }
