@@ -40,6 +40,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.Token;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Variable;
 import ptolemy.graph.DirectedGraph;
@@ -171,6 +172,20 @@ public class ConstVariableModelAnalysis {
         return (Entity)_variableToChangeContext.get(variable);
     }
 
+    /** Return the constant value of the given parameter, if the
+     *  parameter is actually constant.
+     *  @exception IllegalActionException If the given parameter is
+     *  not a constant parameter, as determined by this analysis.
+     */
+    public Token getConstantValue(Variable variable) 
+            throws IllegalActionException {
+        if(!isConstant(variable)) {
+            throw new IllegalActionException(variable,
+                    "This variable does not have a constant value.");
+        }
+        return variable.getToken();
+    }
+    
     /** Return the computed constant variables for the given container.
      *  @exception RuntimeException If the constant variables for the
      *  container have not already been computed.
@@ -214,6 +229,14 @@ public class ConstVariableModelAnalysis {
         return variableSet;
     }
 
+    /** Return true if the given variable is not reconfigured in the
+     *  model.  The variable is assumed to be contained by the model
+     *  this analysis was created with.
+     */
+    public boolean isConstant(Variable variable) {
+        return _variableToChangeContext.keySet().contains(variable);
+    }
+    
     /** Return true if the variable has been analyzed by this analysis
      *  and it depends on no other parameters.
      */
@@ -233,37 +256,22 @@ public class ConstVariableModelAnalysis {
     // dependence graph.
     private void _addDependencyDeclaration(
             DependencyDeclaration declaration) {
-        Node targetNode = null;
         Variable variable = (Variable)declaration.getContainer();
-        if (_dependencyGraph.containsNodeWeight(variable)) {
-            targetNode = _dependencyGraph.node(variable);
-        } else {
-            targetNode = _dependencyGraph.addNodeWeight(variable);
-        }
+        Node targetNode = _getNode(variable);
         for (Iterator dependents =
                  declaration.getDependents().iterator();
              dependents.hasNext();) {
             Variable dependent = (Variable)dependents.next();
-            Node node;
-            if (_dependencyGraph.containsNodeWeight(dependent)) {
-                node = _dependencyGraph.node(dependent);
-            } else {
-                node = _dependencyGraph.addNodeWeight(dependent);
-            }
+            Node dependentNode = _getNode(dependent);
             //  if (!_dependencyGraph.edgeExists(node, targetNode)) {
-            _dependencyGraph.addEdge(node, targetNode);
+            _dependencyGraph.addEdge(dependentNode, targetNode);
             //}
         }
     }
 
     // Collect all of the constraints from the given variable.
-    private void _collectConstraints(Variable variable) {
-        Node targetNode = null;
-        if (_dependencyGraph.containsNodeWeight(variable)) {
-            targetNode = _dependencyGraph.node(variable);
-        } else {
-            targetNode = _dependencyGraph.addNodeWeight(variable);
-        }
+    private void _collectVariableConstraints(Variable variable) {
+        Node targetNode = _getNode(variable);
 
         // compute the variables.
         try {
@@ -274,24 +282,9 @@ public class ConstVariableModelAnalysis {
                 Variable dependent = ModelScope.getScopedVariable(
                         variable, variable, name);
                 if (dependent != null) {
-                    Node node;
-                    if (_dependencyGraph.containsNodeWeight(dependent)) {
-                        node = _dependencyGraph.node(dependent);
-                    } else {
-                        node = _dependencyGraph.addNodeWeight(dependent);
-                    }
-                    _dependencyGraph.addEdge(node, targetNode);
-                }//  else {
-                //                         // Free variables (and methods) are
-                //                         // usually assumed to be static since
-                //                         // they will likely be bound to parser
-                //                         // constants or looked up as Java
-                //                         // methods.
-                //                         if (!_assumeUnboundVariablesAreConstant) {
-                //                             _variableToChangeContext.put(variable,
-                //                                     container.toplevel());
-                //                         }
-                //                     }
+                    Node dependentNode = _getNode(dependent);
+                    _dependencyGraph.addEdge(dependentNode, targetNode);
+                }
             }
         } catch (IllegalActionException ex) {
             // Assume that this will be changed later...
@@ -312,7 +305,7 @@ public class ConstVariableModelAnalysis {
             throws IllegalActionException {
         if (container instanceof Variable) {
             Variable variable = (Variable)container;
-            _collectConstraints(variable);
+            _collectVariableConstraints(variable);
 
         }
         if (container instanceof DependencyDeclaration) {
@@ -367,7 +360,7 @@ public class ConstVariableModelAnalysis {
         }
     }
 
-    // Recursively compute the set of const variables for all actors
+    // Recursively compute the set of constant variables for all actors
     // deeply contained in the given model.
     private void _analyzeAllVariables()
             throws IllegalActionException {
@@ -380,7 +373,8 @@ public class ConstVariableModelAnalysis {
             Node node = _dependencyGraph.node(variable);
             Entity changeContext = (Entity)
                 _variableToChangeContext.get(variable);
-            for (Iterator outputEdges = _dependencyGraph.outputEdges(node).iterator();
+            for (Iterator outputEdges =
+                     _dependencyGraph.outputEdges(node).iterator();
                  outputEdges.hasNext();) {
                 Node sinkNode = ((Edge)outputEdges.next()).sink();
                 Variable targetVariable =
@@ -390,6 +384,16 @@ public class ConstVariableModelAnalysis {
                     workList.addLast(targetVariable);
                 }
             }
+        }
+    }
+
+    // Get the node for the given variable, adding it to the graph if
+    // necessary.
+    private Node _getNode(Variable variable) {
+        if (_dependencyGraph.containsNodeWeight(variable)) {
+            return _dependencyGraph.node(variable);
+        } else {
+            return _dependencyGraph.addNodeWeight(variable);
         }
     }
 
@@ -441,5 +445,4 @@ public class ConstVariableModelAnalysis {
     private DirectedGraph _dependencyGraph;
     private Map _variableToChangeContext;
     private CompositeActor _model;
-    private static boolean _assumeUnboundVariablesAreConstant = true;
 }
