@@ -1345,35 +1345,41 @@ public class Query extends JPanel {
             float green = 0f;
             float blue = 0f;
             float alpha = 1.0f;
-            int i = 0;
-            // Ignore any blank strings that this simple parsing produces.
-            while (specArray[i].trim().equals("")) {
+            // If any exceptions occur during the attempt to parse,
+            // then just use the default color.
+            try {
+                int i = 0;
+                // Ignore any blank strings that this simple parsing produces.
+                while (specArray[i].trim().equals("")) {
+                    i++;
+                }
+                if (specArray.length > i) {
+                    red = Float.parseFloat(specArray[i]);
+                }
                 i++;
-            }
-            if (specArray.length > i) {
-                red = Float.parseFloat(specArray[i]);
-            }
-            i++;
-            while (specArray[i].trim().equals("")) {
+                while (specArray[i].trim().equals("")) {
+                    i++;
+                }
+                if (specArray.length > i) {
+                    green = Float.parseFloat(specArray[i]);
+                }
                 i++;
-            }
-            if (specArray.length > i) {
-                green = Float.parseFloat(specArray[i]);
-            }
-            i++;
-            while (specArray[i].trim().equals("")) {
+                while (specArray[i].trim().equals("")) {
+                    i++;
+                }
+                if (specArray.length > i) {
+                    blue = Float.parseFloat(specArray[i]);
+                }
                 i++;
+                while (specArray[i].trim().equals("")) {
+                    i++;
+                }
+                if (specArray.length > i) {
+                    alpha = Float.parseFloat(specArray[i]);
+                }
+            } catch (Exception ex) {
+                // Ignore and use default color.
             }
-            if (specArray.length > i) {
-                blue = Float.parseFloat(specArray[i]);
-            }
-            i++;
-            while (specArray[i].trim().equals("")) {
-                i++;
-            }
-            if (specArray.length > i) {
-                alpha = Float.parseFloat(specArray[i]);
-            } 
             Color newColor =
                 JColorChooser.showDialog(
                     Query.this,
