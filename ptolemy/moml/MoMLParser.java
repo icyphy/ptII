@@ -245,8 +245,16 @@ public class MoMLParser extends HandlerBase {
 	    String filteredValue =
 		_filter.filterAttributeValue(_current, name, value);
             if (value != null && filteredValue == null) {
-                _skipElementName = name;
-                _skipElement = 1;
+		// If attribute() found an element to skip, then
+		// the first time we startElement(), we do not
+		// want to increment _skipElement again in
+		// startElement() because we already did it in
+		// attribute().
+		_skipElementIsNew = true;
+                _skipElementName = _parser.getCurrentElement(); 
+		// Is there ever a case when _skipElement would not
+		// be 0 here?  I'm not sure . . .
+                _skipElement++;
             }
 	    value = filteredValue;
         }
@@ -685,6 +693,7 @@ public class MoMLParser extends HandlerBase {
         _namespace = DEFAULT_NAMESPACE;
         _namespaces = new Stack();
         _skipRendition = false;
+	_skipElementIsNew = false;
         _skipElement = 0;
         _toplevel = null;
     }
@@ -808,9 +817,19 @@ public class MoMLParser extends HandlerBase {
             }
             if (_skipElement > 0) {
                 if (elementName.equals(_skipElementName)) {
-                    // Nested element name.  Have to count so we properly
-                    // close the skipping.
-                    _skipElement++;
+		    // If attribute() found an element to skip, then
+		    // the first time we startElement(), we do not
+		    // want to increment _skipElement again in
+		    // startElement() because we already did it in
+		    // attribute().
+		    if (_skipElementIsNew) {
+			// After this, _skipElement no longer new.
+			_skipElementIsNew = false;
+		    } else {
+			// Nested element name.  Have to count so we properly
+			// close the skipping.
+			_skipElement++;
+		    }
                 }
                 return;
             }
@@ -2601,6 +2620,13 @@ public class MoMLParser extends HandlerBase {
 
     // If greater than zero, skipping an element.
     private int _skipElement = 0;
+
+    // If attribute() found an element to skip, then
+    // the first time we startElement(), we do not
+    // want to increment _skipElement again in
+    // startElement() because we already did it in
+    // attribute().
+    private boolean _skipElementIsNew = false;
 
     // If skipping an element, then this is the name of the element.
     private String _skipElementName;
