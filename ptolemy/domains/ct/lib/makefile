@@ -55,7 +55,7 @@ JSRCS = \
 	CTGain.java \
 	CTIntegrator.java \
 	CTMultiply.java \
-	CTPeriodicalSampler.java \
+	CTPeriodicSampler.java \
 	CTPlot.java \
 	CTPrintln.java \
 	CTRamp.java \

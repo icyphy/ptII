@@ -36,14 +36,14 @@ import java.util.Enumeration;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// CTPeriodicalSampler
+//// CTPeriodicSampler
 /**
 This actor periodically sample the input signal and generate an event
 which has the value of the input signal.
 @author Jie Liu
 @version $Id$
 */
-public class CTPeriodicalSampler extends CTActor
+public class CTPeriodicSampler extends CTActor
         implements CTEventGenerator {
 
     /** Construct an actor in the specified container with the specified
@@ -61,7 +61,7 @@ public class CTPeriodicalSampler extends CTActor
      *  @exception NameDuplicationException Name coincides with
      *   an entity already in the container.
      */
-    public CTPeriodicalSampler(TypedCompositeActor container, String name)
+    public CTPeriodicSampler(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input");
@@ -76,7 +76,7 @@ public class CTPeriodicalSampler extends CTActor
         output.setTypeEquals(DoubleToken.class);
 
         _samplePeriod = (double)1.0;
-        paramSamplePeriod = new Parameter(this,
+        SamplePeriod = new Parameter(this,
             "SamplePeriod", new DoubleToken(_samplePeriod));
     }
 
@@ -149,7 +149,7 @@ public class CTPeriodicalSampler extends CTActor
      *  The new parameter will be used only after this method is called.
      */
     public void updateParameters() throws IllegalActionException{
-        double p = ((DoubleToken)paramSamplePeriod.getToken()).doubleValue();
+        double p = ((DoubleToken)SamplePeriod.getToken()).doubleValue();
         if(p <= 0) {
             throw new IllegalActionException(this,
                     " Sample period must be greater than 0.");
@@ -183,7 +183,7 @@ public class CTPeriodicalSampler extends CTActor
 
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ////                         public variables                       ////
     
     /** The single input port with type double.
      */
@@ -196,7 +196,7 @@ public class CTPeriodicalSampler extends CTActor
     /** The parameter for the sampling period; the type is double; the 
      *  default value is 1.0.
      */
-    public Parameter paramSamplePeriod;
+    public Parameter SamplePeriod;
 
 
     ////////////////////////////////////////////////////////////////////////
