@@ -123,9 +123,9 @@ public class HTMLViewer extends TableauFrame
             }
 
             // Suggested mailto: extension from Paul Lieverse
-            String prot = newUrl.getProtocol();
-            if (prot != null) {
-                useBrowser |= prot.equals("mailto");
+            String protocol = newUrl.getProtocol();
+            if (protocol != null) {
+                useBrowser |= protocol.equals("mailto");
             }
 
             if (!useBrowser && event instanceof HTMLFrameHyperlinkEvent) {
