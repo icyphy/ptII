@@ -30,10 +30,22 @@
 
 package ptolemy.codegen.saveasjava;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringUtilities;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// SaveAsJava
@@ -92,8 +104,9 @@ class SaveAsJava {
                     + "super(w);\n\n" + _indent(2) + "try {\n";
 
                 // When exporting MoML, we want to identify the class
-                // as the parent class rather than this class so that this class
-                // need not be present to instantiate the model.
+                // as the parent class rather than this class so that
+                // this class need not be present to instantiate the
+                // model.
                 code += _indent(2)
                     + "getMoMLInfo().className = \""
                     + _getClassName(compositeModel)
@@ -102,22 +115,29 @@ class SaveAsJava {
                     // Generate attributes.
                     code += _generateAttributes(compositeModel);
 
-                    // Generate code to instantiate and connect the system components
+                    // Generate code to instantiate
+                    // and connect the system components.
                     code += _generateComponents(compositeModel);
 
-                    // Generate trailer code for the composite actor constructor
-                    code +=
-                        _indent(2) + "} catch (NameDuplicationException e) {\n" +
-                        _indent(3) + "throw new RuntimeException(e.toString());\n" +
-                        _indent(2) + "}\n" +
-                        _indent(1) + "}\n" +
-                        "}\n";
+                    // Generate trailer code for the
+                    // composite actor constructor
+                    code += _indent(2)
+                        + "} catch (NameDuplicationException e) {\n"
+                        + _indent(3)
+                        + "throw new RuntimeException(e.toString());\n"
+                        + _indent(2) + "}\n"
+                        + _indent(1) + "}\n"
+                        + "}\n";
 
                     // Generate statements for importing classes.
-                    _insertIfUnique("ptolemy.kernel.util.Workspace", _importList);
-                    _insertIfUnique("ptolemy.kernel.util.IllegalActionException",
+                    _insertIfUnique(
+                            "ptolemy.kernel.util.Workspace",
                             _importList);
-                    _insertIfUnique("ptolemy.kernel.util.NameDuplicationException",
+                    _insertIfUnique(
+                            "ptolemy.kernel.util.IllegalActionException",
+                            _importList);
+                    _insertIfUnique(
+                            "ptolemy.kernel.util.NameDuplicationException",
                             _importList);
                     try {
                         Iterator iter = _importList.iterator();
@@ -128,7 +148,8 @@ class SaveAsJava {
                         code = importCode + "\n" + code;
                     } catch (Exception ex) {
                         throw new IllegalActionException(ex.getMessage()
-                                + "Exception raised while creating the import list '"
+                                + "Exception raised while creating the "
+                                + "import list '"
                                 + importCode + "'.\n");
                     }
 
@@ -228,9 +249,12 @@ class SaveAsJava {
         // of another entitiy.
         String nameAsContainer;
 
-        if ((container=((CompositeEntity)(model.getContainer()))) != null) {
-            if (container.getContainer()==null) containerName = "this";
-            else containerName = _name(container);
+        if ((container = ((CompositeEntity)(model.getContainer()))) != null) {
+            if (container.getContainer() == null) {
+                containerName = "this";
+            } else {
+                containerName = _name(container);
+            }
             nameAsContainer = sanitizedName;
             code += _indent(3)
                 + className
@@ -276,7 +300,9 @@ class SaveAsJava {
                     Port port1 = (Port) ports.next();
                     Port port2 = (Port) ports.next();
                     code += _indent(3);
-                    if (container!=null) code += sanitizedName + ".";
+                    if (container != null) {
+                        code += sanitizedName + ".";
+                    }
                     code += "connect ("
                         + _name(port1)
                             + ", "
@@ -467,5 +493,4 @@ class SaveAsJava {
 
     // A table of names of objects.
     Map _nameTable = new HashMap();
-
 }
