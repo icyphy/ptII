@@ -265,20 +265,21 @@ whatsnew.htm: ptII$(PTVERSION).release.htm
 # For example:
 #  <a href="../ptolemy/domains/tm/doc/body.htm" target="body">Timed Multitasking Domain</a>
 # becomes:
-#  Timed Multitasking Domain
+#  <a href="../ptolemy/domains/tm/doc/main.htm">Timed Multitasking Domain</a>
 #
 whatsnewVergil.htm: whatsnew.htm
 	sed -e 's@\(demo/[^/]*/[^/]*\).htm@\1.xml@g' \
-	    -e 's@<a href="[^"]*/domains/[^/]*/doc/body.htm" target="[^"]*">\([^<]*\)</a>@\1@' \
+	    -e 's@<a href="\([^"]*/domains/[^/]*/doc/\)body.htm" target="[^"]*">\([^<]*\)</a>@<a href="\1main.htm">\2</a>@' \
 		< whatsnew.htm > whatsnewVergil.htm
 	-diff whatsnew.htm whatsnewVergil.htm
 
-update: ptII$(PTVERSION).releaseVergil.htm troubleshootingVergil.htm \
-		whatsnew.htm whatsnewVergil.htm
-	cvs commit -m "Master files changed" \
-		ptII$(PTVERSION).releaseVergil.htm \
+update: mainVergil.htm ptII$(PTVERSION).releaseVergil.htm \
 		troubleshootingVergil.htm \
-		whatsnew.htm whatsnewVergil.htm
+		whatsnew.htm whatsnewVergil.htm 
+	cvs commit -m "Master files changed" \
+		mainVergil.htm ptII$(PTVERSION).releaseVergil.htm \
+		troubleshootingVergil.htm \
+		whatsnew.htm whatsnewVergil.htm 
 	rm -f docConfig.jar
 	$(MAKE) docConfig.jar
 
