@@ -348,7 +348,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  called, the use of the transitive closure matrix should
      *  not add any overhead. A bubble sort is used for the internal
      *  implementation, so the complexity is n^2.
-     *  @return The objects in there sorted order.
+     *  @return The objects in their sorted order.
      */
     public Object[] topologicalSort(Object[] objs) {
         _validate();
