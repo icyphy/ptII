@@ -8,12 +8,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 55.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, -3, 815, 509}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <entity name="Clock" class="ptolemy.domains.dde.demo.LocalZeno.ListenClock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="90.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
@@ -64,6 +64,8 @@
         </property>
         <property name="realDelay" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="4.5">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 220.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -105,6 +107,8 @@
         <property name="nullDelay" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="realDelay" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="4.5">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 365.0">
         </property>
@@ -154,9 +158,9 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 503, 508, 255}}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 207]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -166,6 +170,15 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>upperPlotter</title>
+<xRange min="5.0" max="90.0"/>
+<yRange min="0.0" max="0.0"/>
+</plot>?>
+        </configure>
     </entity>
     <entity name="lowerTime" class="ptolemy.domains.dde.lib.TimeAdvance">
         <property name="outputValue" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -186,9 +199,9 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 501, 482, 257}}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[474, 209]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -198,6 +211,15 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>lowerPlotter</title>
+<xRange min="5.0" max="90.0"/>
+<yRange min="0.0" max="0.0"/>
+</plot>?>
+        </configure>
     </entity>
     <relation name="_R" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex" value="90.0, 200.0">

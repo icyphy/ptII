@@ -194,7 +194,7 @@ public class LocalZenoApplet extends PtolemyApplet {
         _clock.values.setExpression( "{1, 1, 1}" );
         _clock.period.setToken( new DoubleToken(20.0) );
         _clock.offsets.setExpression( "{5.0, 10.0, 15.0}" );
-        _clock.stopTime.setToken( new DoubleToken(90.0) );
+        _clock.stopTime.setToken( new DoubleToken(0.0) );
 
         _join1 = new ListenWire( toplevel, "UpperJoin" );
         _fork1 = new ListenFork( toplevel, "UpperFork" );
@@ -212,8 +212,8 @@ public class LocalZenoApplet extends PtolemyApplet {
         _lowerTime = new TimeAdvance( toplevel, "lowerTime" );
         _lowerPlotter = new TimedPlotter( toplevel, "lowerPlotter" );
 
-        _fBack1.setDelay(4.5);
-        _fBack2.setDelay(4.5);
+        _fBack1.delay.setToken(new DoubleToken(4.5));
+        _fBack2.delay.setToken(new DoubleToken(4.5));
 
         // Set up ports, relations and connections
         Relation clkRelation =
