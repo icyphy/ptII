@@ -96,7 +96,8 @@ awk '{
 	    if (jars[n] == mainjar) {
 		printf("\n\t\tmain=%ctrue%c", 34, 34)
 	    } else {
-	        if (n <= eagerjars) {
+                # Convert eagerjars to an integer by adding 0
+	        if (n <= (eagerjars+0)) {
 		    # Load the eagerjars number of jars eagerly.
 		    printf("\n\t\tdownload=%ceager%c", 34, 34)
 		} else {
