@@ -604,7 +604,20 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  FIXME: Update the above description with shallow loading becomes stable.
      *  FIXME: Is there a better place for this flag?
      */
-     public static boolean enableShallowLoading = false;
+     public static boolean enableShallowLoading = true;
+
+     /** A flag that indicates whether or not we should allow deep loading
+      *  of ASTs for user-defined classes (classes that are not core ptolemy
+      *  classes or Java system classes). Note classes that cannot be loaded
+      *  deeply also cannot be loaded shallowly (we don't have facilities for
+      *  shallow-to-full conversion), and thus if this flag is turned off,
+      *  user-defined classes are loaded in full form. Generally, this
+      *  flag should be turned off when generating code from Ptolemy II models
+      *  (to enable type specialization), but it may be possible to
+      *  leave it on with JavaConverters, which transform Java source files
+      *  into alternative formats.
+      */
+     public static boolean enableDeepUserASTs = false;
 
     /** A flag that indicates whether or not subsequent AST loadings of 
      *  class and interface declarations should be done in "shallow mode"
@@ -751,7 +764,11 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             JavaDecl currentPackage,
             int categories) {
 
-	//System.out.println("StaticResolution._findPossibles():" +  name.getIdent() + " " + currentPackage + " " + name.hashCode());
+	    if (traceLoading) 
+            System.out.println("Begin StaticResolution._findPossibles(): name = " 
+                    +  name.getIdent() + "; package = " + currentPackage 
+                    + "; code = " + name.hashCode() + "; cat = " + categories);
+
         ScopeIterator possibles = new ScopeIterator();
 
         if (name.getQualifier() == AbsentTreeNode.instance) {
@@ -759,10 +776,17 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                     (CG_FIELD | CG_METHOD | CG_LOCALVAR |
                             CG_FORMAL | CG_USERTYPE)) != 0) {
                 possibles = scope.lookupFirst(name.getIdent(), categories);
+                if (traceLoading) {
+                    System.out.println("Looked up scope for special "
+                            + "categories: " + "possibles.hasNext() = " 
+                            + possibles.hasNext()); 
+                }
             } else {
                 //System.out.println("StaticResolution._findPossibles(): looking up package " + name.getIdent());
                 possibles = ((Scope) SYSTEM_PACKAGE.getScope())
                     .lookupFirst(name.getIdent(), categories);
+                if (traceLoading) System.out.println("Looked up package; "
+                        + "possibles.hasNext() = " + possibles.hasNext()); 
             }
         } else {
             // The given NameNode has a qualifier
@@ -801,30 +825,40 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                         + ((container == null) ? "null" 
                         : container.getClass().getName()));
             }
-            if (container instanceof TypedDecl) {
-                ClassDecl classDecl = NodeUtil.typedDeclToClassDecl((TypedDecl)container);
-                if (classDecl != null) {
-                    UserTypeDeclNode classSource = 
-                            (UserTypeDeclNode)(classDecl.getSource()); 
-                    if (StaticResolution.traceLoading)
-                        System.out.println("findPossibles: Need to ensure deep loading "
-                                + "for type of " + qualifier.getIdent()
-                                + ", which is: "
-                                + ASTReflect.getFullyQualifiedName(classSource));
-                    ASTReflect.ensureDeepLoading(classSource); 
+            ClassDecl classDeclaration = null;
+            if (container instanceof TypedDecl) 
+                classDeclaration = NodeUtil.typedDeclToClassDecl((TypedDecl)container);
+            else if (container instanceof ClassDecl)
+                classDeclaration = (ClassDecl)container;
+            if (classDeclaration != null) {
+                UserTypeDeclNode classSource = 
+                        (UserTypeDeclNode)(classDeclaration.getSource()); 
+                if (traceLoading)
+                    System.out.println("findPossibles: Need to ensure deep loading "
+                            + "for type of " + qualifier.getIdent()
+                            + ", which is: "
+                            + ASTReflect.getFullyQualifiedName(classSource));
+                ASTReflect.ensureDeepLoading(classSource); 
+                container = JavaDecl.getDecl((TreeNode)classSource);
+                if (debugLoading) {
+                    System.out.println("has scope = " + container.hasScope()); 
+                    System.out.println("container class: " + 
+                        container.getClass().getName());
                 }
             }
 
             if (container.hasScope()) {
-
                 if ((categories & CG_USERTYPE) != 0) {
-
                     possibles = container.getTypeScope().lookupFirstLocal(
                             name.getIdent(), categories);
+                    if (traceLoading) System.out.println("Looked up TypeScope: "
+                        + "possibles.hasNext() = " + possibles.hasNext()); 
 
                 } else {
                     possibles = container.getScope().lookupFirstLocal(
                             name.getIdent(), categories);
+                    if (traceLoading) System.out.println("Looked up Scope: "
+                        + "possibles.hasNext() = " + possibles.hasNext()); 
                 }
 
             } else if (container instanceof TypedDecl) {
@@ -852,7 +886,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         if (!possibles.hasNext() & ((categories & CG_CLASS) == 1) && currentPackage != null) {
 	    System.out.println("StaticResolution_findPossibles(): looking " +
 			       "up " + name.getIdent() +
-			       "\nwith reflection Current Class: " +
+			       "\nwith reflection. Current Class: " +
 			       ((currentClass == null) ?
 				"null " : currentClass.toString()) +
 			       " Current Package: " +
@@ -861,8 +895,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 			       "\n categories :" + categories);
   	    // Use reflection
   	    ClassDeclNode classDeclNode =
-  		ASTReflect.lookupClassDeclNode(currentPackage.fullName() +
-                        "." + name.getIdent());
+  		ASTReflect.lookupClassDeclNode(currentPackage.fullName() + "." + name.getIdent());
   	    // FIXME: what if this is an interface
             ClassDecl classDecl = new ClassDecl(name.getIdent(),
                     CG_CLASS,
@@ -880,7 +913,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             if ((categories & CG_PACKAGE) != 0) {
                 message += "\n\nClasspath error?\n\n";
             }
-	    String scopeString = scope.toString();
+	        String scopeString = scope.toString();
 
             message += "Symbol name: \"" +
                 name.getIdent() + "\" is undefined in the scope.\n" +
@@ -902,7 +935,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         JavaDecl d = (JavaDecl) possibles.peek();
         name.setProperty(DECL_KEY, d);
 
-        //System.out.println("_findPossibles for " + nameString(name) + " ok");
+        if (traceLoading) 
+            System.out.println("_findPossibles for " + nameString(name) + " finished");
 
         return possibles;
     } // _findPossibles()
