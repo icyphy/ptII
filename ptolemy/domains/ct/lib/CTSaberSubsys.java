@@ -408,11 +408,6 @@ public class CTSaberSubsys extends CTActor
     ////                         protected methods                      ////
 
     /** Override Entity addPort. Create parameters for each port.
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     protected void _addPort(Port p) 
         throws IllegalActionException, NameDuplicationException {
@@ -426,11 +421,6 @@ public class CTSaberSubsys extends CTActor
     } 
 
     /** Override Entity removePort. Remove the corresponding parameter too.
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     protected void _removePort(Port p) {            
             String portname = p.getName();

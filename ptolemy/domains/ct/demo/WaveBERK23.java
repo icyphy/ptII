@@ -44,8 +44,6 @@ import ptolemy.domains.ct.lib.*;
 A second order system simulation. For performance testing.
 @author  Jie Liu
 @version $Id$
-@see classname
-@see full-classname
 */
 public class WaveBERK23 {
      public static void main(String[] args) {
