@@ -19,7 +19,7 @@ OBJ 	 = closure.o \
 	verbose.o \
 	warshall.o
 
-all: yacc
+all: ptbyacc
 
 SRCS   = closure.c \
 	error.c \
@@ -34,8 +34,10 @@ SRCS   = closure.c \
 	verbose.c \
 	warshall.c
 
-yacc: $(OBJ)
-	$(CC) -o yacc $(OBJ)
+# We rename the binary to ptbyacc so as to differentiate
+# it from the regular yacc and byacc
+ptbyacc: $(OBJ)
+	$(CC) -o $@ $(OBJ)
 	@echo "done"
 
 clean:
