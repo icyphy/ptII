@@ -103,6 +103,11 @@ public class ButtonTime extends WallClockTime implements Placeable {
         }
     }
 
+    /** Set the background */
+    public Color getBackground() {
+        return _button.getBackground();
+    }
+
     /** Create a button on the screen, if necessary. If a graphical
      *  container has
      *  not been specified, place the button into its own frame.
@@ -118,11 +123,6 @@ public class ButtonTime extends WallClockTime implements Placeable {
         if (_frame != null) {
             _frame.setVisible(true);
         }
-    }
-
-    /** Set the background */
-    public Color getBackground() {
-        return _button.getBackground();
     }
 
     /** An instance of JButton will be added to the specified container.
