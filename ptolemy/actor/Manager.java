@@ -678,8 +678,10 @@ public class Manager extends NamedObj implements Runnable {
             _container.preinitialize();
 
             // Clear the preinitialization analyses.
-            _nameToAnalysis.clear();
-            _nameToAnalysis = null;
+            if(_nameToAnalysis != null) {
+                _nameToAnalysis.clear();
+                _nameToAnalysis = null;
+            }
 
             _processChangeRequests();
 
