@@ -119,6 +119,9 @@ public class SoundReader {
      *  @param sourceURL A string describing a URL.
      *  @param getSamplesArraySize The number of samples per channel
      *   returned by getSamples().
+     *  @exception IOException If opening the sourceURL throws it,
+     *  if the file format is not supported or if there is no audio
+     *  to play. 
      */
     public SoundReader(String sourceURL, int getSamplesArraySize)
             throws IOException {
@@ -139,6 +142,9 @@ public class SoundReader {
      *  @param soundURL The URL of a sound file.
      *  @param getSamplesArraySize The number of samples per channel
      *   returned by getSamples().
+     *  @exception IOException If opening the sourceURL throws it,
+     *  if the file format is not supported or if there is no audio
+     *  to play. 
      */
     public SoundReader(URL soundURL, int getSamplesArraySize)
             throws IOException {

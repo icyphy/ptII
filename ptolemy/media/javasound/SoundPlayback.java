@@ -174,6 +174,16 @@ public class SoundPlayback {
      *  8 or 16).
      *  @param channels Number of audio channels. 1 for mono, 2 for
      *  stereo.
+     *  @param bufferSize Requested size of the internal audio input
+     *   buffer in samples. This controls the latency (delay from
+     *   the time putSamples() is called until the audio is
+     *   actually heard). A lower bound on the latency is given by
+     *   (<i>bufferSize</i> / <i>sampleRate</i>) seconds.
+     *   Ideally, the
+     *   smallest value that gives acceptable performance (no underflow)
+     *   should be used. Typical values are about 1/10 th the sample
+     *   rate. For example, at 44100 Hz sample rate, a typical buffer
+     *   size value might be 4410.
      *  @param putSamplesSize Size of the array parameter of
      *   putSamples(). There is no restriction on the value of
      *   this parameter, but typical values are 64-2024.

@@ -198,6 +198,7 @@ public class LiveSound {
      *  is already listening, then do nothing.
      *
      *  @param listener The LiveSoundListener to add.
+     *  @see #removeLiveSoundListener(LiveSoundListener)
      */
     public static void addLiveSoundListener(LiveSoundListener listener) {
         if (!_liveSoundListeners.contains(listener)) {
@@ -296,7 +297,7 @@ public class LiveSound {
      *  value of this parameter is 16 bits.
      *
      * @return The sample size in bits.
-     *
+     * @see #setBitsPerSample(int)
      */
     public static int getBitsPerSample() {
         return _bitsPerSample;
@@ -311,6 +312,7 @@ public class LiveSound {
      *
      *  @return The suggested internal buffer size in samples per
      *   channel.
+     *  @see #setBufferSize(int)
      */
     public static int getBufferSize() {
         return _bufferSize;
@@ -368,6 +370,7 @@ public class LiveSound {
      *  this parameter is 8000 Hz.
      *
      *  @return The sample rate in Hz.
+     *  @see #setSampleRate(int)
      */
     public static int getSampleRate() {
         return (int) _sampleRate;
@@ -464,6 +467,7 @@ public class LiveSound {
      *
      *  @return The size of the 2nd dimension of the 2-dimensional
      *   array used by the putSamples() and getSamples() methods.
+     *  @see #setTransferSize(int)
      */
     public static int getTransferSize() {
         return _transferSize;
@@ -576,6 +580,7 @@ public class LiveSound {
      *  is not listening, then do nothing.
      *
      *  @param listener The LiveSoundListener to remove.
+     *  @see #addLiveSoundListener(LiveSoundListener)
      */
     public static void removeLiveSoundListener(LiveSoundListener listener) {
         if (_liveSoundListeners.contains(listener)) {
@@ -626,6 +631,7 @@ public class LiveSound {
      *
      *  @exception IOException If the specified bits per sample is
      *   not supported by the audio hardware or by Java.
+     *  @see #getBitsPerSample()
      */
     public static void setBitsPerSample(int bitsPerSample)
             throws IOException {
@@ -685,6 +691,7 @@ public class LiveSound {
      *   playback audio buffers, in samples per channel.
      *  @exception IOException If the specified number of channels is
      *   not supported by the audio hardware or by Java.
+     *  @see #getBufferSize()
      */
     public static void setBufferSize(int bufferSize) throws IOException {
         _bufferSize = bufferSize;
@@ -790,7 +797,7 @@ public class LiveSound {
         _notifyLiveSoundListeners(LiveSoundEvent.CHANNELS);
 
         if (_debug) {
-            System.out.println("LiveSound: setSampleRate() " + "returning now.");
+            System.out.println("LiveSound: setChannels() " + "returning now.");
         }
     }
 
@@ -804,6 +811,7 @@ public class LiveSound {
      *
      *  @exception IOException If the specified sample rate is
      *   not supported by the audio hardware or by Java.
+     *  @see #getSampleRate()
      */
     public static void setSampleRate(int sampleRate) throws IOException {
         _sampleRate = (float) sampleRate;
@@ -869,6 +877,7 @@ public class LiveSound {
      *
      *  @exception IllegalStateException If this method is called
      *   while audio capture or playback are active.
+     *  @see #getTransferSize()
      */
     public static void setTransferSize(int transferSize)
             throws IllegalStateException {
@@ -899,6 +908,10 @@ public class LiveSound {
      *
      *  @param consumer The object to be given exclusive access
      *   to the captured audio resources.
+     *
+     *  @exception IOException If another object currently has access
+     *   to the audio capture resources or if starting the capture or
+     *   playback throws it.
      *
      *  @exception IllegalStateException If this method is called
      *   while audio capture is already active.
@@ -956,6 +969,9 @@ public class LiveSound {
      *  @param producer The object to be given exclusive access
      *   to the playback resources.
      *
+     *  @exception IOException If another object currently has access
+     *   to the audio capture resources or if starting the playback throws it.
+     *
      *  @exception IllegalStateException If this method is called
      *   while audio playback is already active.
      */
@@ -994,6 +1010,9 @@ public class LiveSound {
      *   lock on the captured audio resources when this
      *   method was invoked.
      *
+     *  @exception IOException If another object currently has access
+     *   to the audio capture resources or if stopping the capture throws it.
+     *
      *  @exception IllegalStateException If the specified
      *   object did not hold an exclusive lock on the
      *   captured audio resources when this method was invoked.
@@ -1026,6 +1045,9 @@ public class LiveSound {
      *   lock on the playback audio resources when this
      *   method was invoked.
      *
+     *  @exception IOException If another object currently has access
+     *   to the audio capture resources or if stopping the playback throws it.
+
      *  @exception IllegalStateException If the specified
      *   object did not hold an exclusive lock on the
      *   playback audio resources when this method was invoked.
