@@ -322,7 +322,7 @@ when viewing graphs with tick marks only.
 <b>Unsupported in the Java version.</b>
 </dl>
 
-<h2> Compatibility Issues </h2>
+<h2><a name="pxgraph script compatibility issues">Compatibility Issues</a></h2>
 Various compatibility issues are documented above in <b>bold</b>.
 Below are some other issues:
 <li>The original <code>xgraph</code> program allowed many formatting
@@ -332,6 +332,10 @@ directives inside the file.  This version only supports
 to separate datasets.  This version does not.  Instead, use the
 <code>move <i>X</i> <i>Y</i></code> directive.
 <li>This version does not support X resources.
+<li>The Java version of <code>pxgraph</code> takes longer to start up
+than the X11 version.  This is an inherent problem with standalone
+Java applications.  One guess is that most of the startup time comes
+from paging in the shared libraries. 
 <h2><a name="Installation Instructions">Installation Instructions</a></h2>
 The instructions below are for using the Java <CODE>pxgraph</CODE>
 script instead of the X11 <CODE>pxgraph</CODE> binary within Ptolemy.
