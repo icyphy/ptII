@@ -67,7 +67,6 @@ the antenna gain to a specific receiver(@see TransformProperties).
 The modified property transformer   
 
 @see WirelessChannel
-@see 
 @author Yang Zhao and Edward Lee
 @version $Id$
 @since Ptolemy II 3.1
