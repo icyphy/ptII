@@ -160,8 +160,9 @@ public class ThreadDemo {
  
             //Parameter p1 = (Parameter)a1.getAttribute("Image_file");
             //p1.setToken(new StringToken("/users/mudit/ptII/ptolemy/domains/pn/lib/test/ptII.pbm"));
-            String filename = 
-                "/users/mudit/_PTII/ptolemy/domains/pn/lib/test/ptII.pbm";
+            //String filename = 
+            //    "/users/mudit/_PTII/ptolemy/domains/pn/lib/test/ptII.pbm";
+            String filename = "ptII.pbm";
             try {
                 FileInputStream fis = new FileInputStream(filename);
                 a1.read(fis);
