@@ -105,7 +105,7 @@ public class GenerateCopyrights {
 
 
         _addIfPresent(copyrightsMap,
-                "ptolemy.copernicus.kernel.KernelMain"
+                "ptolemy.copernicus.kernel.KernelMain",
                 "ptolemy/copernicus/kernel/soot-license.html");
 
 
