@@ -315,7 +315,7 @@ public class PlotBox extends Applet {
         int ind = 0;
         if (_yticks == null) {
             // automatic ticks
-            for (double ypos=yStart; ypos <= _yMax; ypos += yStep) {
+            for (double ypos=yStart; ypos <= __yMax; ypos += yStep) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
                 // NOTE: The following clever solution doesn't always work:
@@ -382,7 +382,7 @@ public class PlotBox extends Applet {
         if (_yticks == null) {
             // auto-ticks
             ind = 0;
-            for (double ypos=yStart; ypos <= _yMax; ypos += yStep) {
+            for (double ypos=yStart; ypos <= __yMax; ypos += yStep) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
                 int yCoord1 = _lry - (int)((ypos-_yMin)*__ytickscale);
@@ -1230,11 +1230,11 @@ public class PlotBox extends Applet {
         // Use the exponent only if it's larger than 1 in magnitude.
         if (_yExp > 1 || __yExp < -1) {
             double ys = 1.0/Math.pow(10.0,(double)_yExp);
-            _yMin = min*ys;
-            _yMax = max*ys;
+            __yMin = min*ys;
+            __yMax = max*ys;
         } else {
-            _yMin = min;
-            _yMax = max;
+            __yMin = min;
+            __yMax = max;
             _yExp = 0;
         }
         _yMin = min;
@@ -1252,14 +1252,14 @@ public class PlotBox extends Applet {
     private boolean _binary = false;
 
     // The range of the plot as labeled (multiply by 10^exp for actual range.
-    private double _yMax, __yMin, __xMax, __xMin;
+    private double __yMax, __yMin, __xMax, __xMin;
     // The power of ten by which the range numbers should be multiplied.
     private int _yExp, __xExp;
 
     // Scaling used in making tick marks
-    private double _ytickscale, __xtickscale;
+    private double _ytickscale, _xtickscale;
 
-    private Font _labelfont, __superscriptfont, __titlefont;
+    private Font _labelfont, _superscriptfont, _titlefont;
     
     // For use in calculating log base 10.  A log times this is a log base 10.
     private static final double _log10scale = 1/Math.log(10);
