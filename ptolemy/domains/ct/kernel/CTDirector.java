@@ -501,7 +501,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                     "Requested fire time: " + time + " is earlier than" +
                     " the current time." + getCurrentTime() );
         }
-        // FIXME
         if (Math.abs(time - getCurrentTime()) < getTimeResolution()
                 && actor != null
                 && ((CTScheduler)getScheduler()).isDiscrete(actor)) {
@@ -619,26 +618,26 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     }
 
     /** Fire all the actors in the output schedule.
-     *  @exception IllegalActionException If the actor in the output
-     *      schedule throws it.
+     *  @exception IllegalActionException If an actor in the output
+     *   schedule throws it.
      */
     public void produceOutput() throws IllegalActionException {
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         // Integrators emit output.
         Iterator integrators =
-            schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-        while (integrators.hasNext()) {
+                schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
+        while (integrators.hasNext() && !_stopRequested) {
             CTDynamicActor dynamic = (CTDynamicActor)integrators.next();
-            if (_debugging) _debug("Emit tentative state: "+
-                    ((Nameable)dynamic).getName());
+            if (_debugging) _debug("Emit tentative state: "
+                    + ((Nameable)dynamic).getName());
             dynamic.emitTentativeOutputs();
         }
         Iterator actors =
-            schedule.get(CTSchedule.OUTPUT_ACTORS).actorIterator();
-        while (actors.hasNext()) {
+                schedule.get(CTSchedule.OUTPUT_ACTORS).actorIterator();
+        while (actors.hasNext() && !_stopRequested) {
             Actor actor = (Actor)actors.next();
-            if (_debugging) _debug("Fire output actor: "+
-                    ((Nameable)actor).getName());
+            if (_debugging) _debug("Fire output actor: "
+                    + ((Nameable)actor).getName());
             actor.fire();
         }
     }
@@ -646,13 +645,11 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     /** Call postfire() on all actors in the continuous part of the model.
      *  For a correct CT simulation,
      *  the state of an actor can only change at this stage of an
-     *  iteration.
-     *  FIXME: If the <i>synchronizeToRealTime</i> parameter is evaluated
-     *  to true,
-     *  then this method will block until the real time catches the
-     *  current modeling time.
+     *  iteration. If the <i>synchronizeToRealTime</i> parameter is
+     *  <i>true</i>,  then this method will block until the real time
+     *  catches up to current modeling time.
      *  @exception IllegalActionException If any of the actors
-     *      throws it.
+     *   throws it.
      */
     public void updateContinuousStates() throws IllegalActionException {
         if (((BooleanToken)synchronizeToRealTime.getToken()).booleanValue()) {

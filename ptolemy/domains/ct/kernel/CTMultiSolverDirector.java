@@ -453,7 +453,7 @@ public class CTMultiSolverDirector extends CTDirector {
     }
 
     /** Fire one iteration. Return immediately if any actor returns false
-     *  in their prefire() method. The time is advanced by the
+     *  in their prefire() method. Time is advanced by the
      *  step size used.
      *  @exception IllegalActionException If one the actors throws it
      *    in its execution methods.
@@ -465,11 +465,11 @@ public class CTMultiSolverDirector extends CTDirector {
         ODESolver solver = getCurrentODESolver();
         if (_debugging) _debug( "Using ODE solver", solver.getName());
         if (_prefireContinuousActors()) {
-            while (true) {
-                while (true) {
+            while (!_stopRequested) {
+                while (!_stopRequested) {
                     if (solver.resolveStates()) {
                         if (_debugging) _debug("state resolved.");
-                        // Check if this step is acceptable
+                        // Check whether this step is acceptable
                         if (!_isStateAccurate()) {
                             if (_debugging)
                                 _debug(getName(), "state not accurate.");
@@ -493,12 +493,13 @@ public class CTMultiSolverDirector extends CTDirector {
                         setCurrentStepSize(0.5*getCurrentStepSize());
                     }
                 }
+                if (_stopRequested) break;
                 produceOutput();
                 if (!_isOutputAccurate()) {
                     if (_debugging) _debug(getName(), "output not accurate.");
                     setCurrentTime(getIterationBeginTime());
                     setCurrentStepSize(_refinedStepWRTOutput());
-                }else {
+                } else {
                     break;
                 }
             }
@@ -578,28 +579,27 @@ public class CTMultiSolverDirector extends CTDirector {
     }
 
     /** Return true if the prefire() methods of all the actors in the
-     *  continuous part of the system return true.
-     *  @return The logical AND of the prefire() of continuous actors.
+     *  continuous part of the system return true and stop() is not called.
+     *  Otherwise, return false.  Note that prefire() is called on all
+     *  actors even if one returns false.
+     *  @return The logical AND of the prefire() of continuous actors, or
+     *   false if stop() is called.
      */
     protected boolean _prefireContinuousActors()
             throws IllegalActionException {
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
         Iterator actors =
-            schedule.get(CTSchedule.CONTINUOUS_ACTORS).actorIterator();
-        while (actors.hasNext()) {
+                schedule.get(CTSchedule.CONTINUOUS_ACTORS).actorIterator();
+        boolean result = true;
+        while (actors.hasNext() && !_stopRequested) {
             Actor actor = (Actor) actors.next();
             boolean ready = actor.prefire();
-            if (_debugging) _debug("Prefire "+((Nameable)actor).getName() +
-                    " returns " + ready);
-            // Ignore the false return values
-            //if (!ready) {
-            //    throw new IllegalActionException(((Nameable)actor).getName()
-            //            + " prefire returns false. This is not allowed in"
-            //            + " the CT domain. Does the actor require all inputs"
-            //            + " to be present at the prefire time?");
-            //}
+            if (_debugging) _debug("Prefire of " 
+                    + ((Nameable)actor).getName()
+                    + " returns " + ready);
+            result = result && ready;
         }
-        return true;
+        return result && !_stopRequested;
     }
 
     /** Clear obsolete breakpoints, switch to breakpointODESolver if this
@@ -609,7 +609,6 @@ public class CTMultiSolverDirector extends CTDirector {
      *     illegal.
      */
     protected void _processBreakpoints() throws IllegalActionException  {
-        double point;
         TotallyOrderedSet breakPoints = getBreakPoints();
         Double now = new Double(getCurrentTime());
         _setBreakpointIteration(false);
@@ -617,8 +616,8 @@ public class CTMultiSolverDirector extends CTDirector {
         _setCurrentODESolver(getODESolver());
         // If now is a break point, remove the break point from table;
         if (breakPoints != null && !breakPoints.isEmpty()) {
-            if (_debugging) _debug("first breakpoint is at " +
-                    breakPoints.first());
+            if (_debugging) _debug("first breakpoint is at "
+                    + breakPoints.first());
             breakPoints.removeAllLessThan(now);
             if (breakPoints.contains(now)) {
                 // It is at a break point now.
@@ -629,12 +628,12 @@ public class CTMultiSolverDirector extends CTDirector {
                 // by the breakpoint ODE solver.
                 if (_debugging) _debug(getFullName(),
                         "first step after a BREAKPOINT.");
-            }else {
+            } else {
                 // Adjust step size so that the first breakpoint is
                 // not in the middle of this step.
-                point = ((Double)breakPoints.first()).doubleValue();
+                double point = ((Double)breakPoints.first()).doubleValue();
                 double iterationEndTime =
-                    getCurrentTime() + getCurrentStepSize();
+                        getCurrentTime() + getCurrentStepSize();
                 if (iterationEndTime > point) {
                     setCurrentStepSize(point-getCurrentTime());
                 }

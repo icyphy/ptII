@@ -58,7 +58,7 @@ import ptolemy.kernel.util.Workspace;
 /**
 This is a CTDirector that supports the interaction of the continuous-time
 simulation with event-based domains. This director can both serve as
-a top-level director and a inside director that is contained by
+a top-level director and an inside director that is contained by
 a composite actor in an event-based domain. If it is a top-level
 director, it acts exactly like a CTMultiSolverDirector. If it is
 embedded in another event-based domain, it will run ahead of the global
@@ -68,7 +68,7 @@ This class has an extra parameter as compare to the CTMultiSolverDirector,
 which is the maximum run ahead of time length (<code>runAheadLength</code>).
 The default value is 1.0.
 <P>
-The running ahead of time is achieved by the following mechanism.<Br>
+The running ahead of time is achieved by the following mechanism.<br>
 <UL>
 <LI> At the initialize stage of the execution, the director will request
 a fire at the global current time.
@@ -214,16 +214,16 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         _setDiscretePhase(true);
         Iterator waveGenerators = getScheduler().getSchedule().get(
                 CTSchedule.WAVEFORM_GENERATORS).actorIterator();
-        while (waveGenerators.hasNext()) {
+        while (waveGenerators.hasNext() && !_stopRequested) {
             CTWaveformGenerator generator =
-                (CTWaveformGenerator) waveGenerators.next();
+                    (CTWaveformGenerator) waveGenerators.next();
             if (generator.prefire()) {
                 generator.fire();
                 generator.postfire();
             }
         }
         _setDiscretePhase(false);
-        while (true) {
+        while (!_stopRequested) {
             if (isBreakpointIteration()) {
                 // Just after a breakpoint iteration. This is the known
                 // good state. Note that isBreakpointIteration is

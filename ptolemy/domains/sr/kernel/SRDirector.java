@@ -225,8 +225,8 @@ public class SRDirector extends StaticSchedulingDirector {
     public void fire() throws IllegalActionException {
 
         Schedule schedule = _getSchedule();
-        boolean randomizedScheduler =
-            (getScheduler() instanceof SRRandomizedScheduler);
+        boolean usingRandomizedScheduler =
+               (getScheduler() instanceof SRRandomizedScheduler);
 
         _initFiring();
 
@@ -245,7 +245,7 @@ public class SRDirector extends StaticSchedulingDirector {
         do {
             Iterator firingIterator = schedule.firingIterator();
 
-            while (firingIterator.hasNext()) {
+            while (firingIterator.hasNext() && !_stopRequested) {
                 Firing firing = (Firing) firingIterator.next();
                 Actor actor = firing.getActor();
                 if (_isIterationAllowed(actor)) {
@@ -259,8 +259,9 @@ public class SRDirector extends StaticSchedulingDirector {
                 }
 
             }
-        } while (randomizedScheduler && !_hasIterationConverged());
-
+        } while (usingRandomizedScheduler
+                && !_hasIterationConverged()
+                && !_stopRequested);
     }
 
     /** Return the number of iterations to be executed by the director, which
@@ -310,7 +311,8 @@ public class SRDirector extends StaticSchedulingDirector {
 
     /** Call postfire() on all contained actors.  Return false if the system
      *  has finished executing, either by reaching the iteration limit, or if
-     *  no actors in the model return true in postfire().
+     *  no actors in the model return true in postfire(), or if stop() has
+     *  been called.
      *  @return True if the execution is not finished.
      *  @exception IllegalActionException If the iterations parameter does
      *   not have a valid token.
@@ -321,12 +323,14 @@ public class SRDirector extends StaticSchedulingDirector {
 
         // Actors are postfired here since updating the state of contained
         // actors inherently updates the state of a composite actor.
+        // They are postfired in the order specified by the schedule,
+        // but only on their first appearance in the schedule.
 
-        LinkedList actorsPostfired = new LinkedList();
+        Set actorsPostfired = new HashSet();
 
         Schedule schedule = _getSchedule();
         Iterator firingIterator = schedule.firingIterator();
-        while (firingIterator.hasNext()) {
+        while (firingIterator.hasNext() && !_stopRequested) {
             Firing firing = (Firing) firingIterator.next();
             Actor actor = firing.getActor();
             if (_isIterationAllowed(actor)) {
@@ -448,8 +452,9 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     private void _doAllowFiringOf(Actor actor) {
         if (actor != null) {
-            if (_actorsAllowedToFire == null)
+            if (_actorsAllowedToFire == null) {
                 _actorsAllowedToFire = new HashSet();
+            }
             _actorsAllowedToFire.add(actor);
         }
     }
@@ -459,8 +464,9 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     private void _doNotAllowIterationOf(Actor actor) {
         if (actor != null) {
-            if (_actorsNotAllowedToIterate == null)
+            if (_actorsNotAllowedToIterate == null) {
                 _actorsNotAllowedToIterate = new HashSet();
+            }
             _debug("  Added to _actorsNotAllowedToIterate:",
                     _getNameOf(actor));
             _actorsNotAllowedToIterate.add(actor);
@@ -473,7 +479,7 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     private void _fireActor(Actor actor) throws IllegalActionException {
 
-        if (_isReadyToFire(actor)) {
+        if (_isReadyToFire(actor) && !_stopRequested) {
             if (!_isFiringAllowed(actor)) {
                 _debug("    SRDirector is prefiring", _getNameOf(actor));
                 if (actor.prefire()) {
@@ -488,10 +494,12 @@ public class SRDirector extends StaticSchedulingDirector {
                     // Whether all inputs are known must be checked before
                     // firing to handle cases with self-loops.
                     boolean allInputsKnownBeforeFiring =
-                        _areAllInputsKnown(actor);
+                            _areAllInputsKnown(actor);
                     actor.fire();
 
-                    if (_actorsFired == null) _actorsFired = new HashSet();
+                    if (_actorsFired == null) {
+                        _actorsFired = new HashSet();
+                    }
                     _actorsFired.add(actor);
 
                     // If all of the inputs of this actor are known, firing
@@ -500,8 +508,9 @@ public class SRDirector extends StaticSchedulingDirector {
                     // it will have no new inputs to react to.  Thus, we
                     // can assume that any unknown outputs of this actor
                     // are actually absent.
-                    if (allInputsKnownBeforeFiring)
+                    if (allInputsKnownBeforeFiring) {
                         _sendAbsentToAllUnknownOutputsOf(actor);
+                    }
                 }
             }
         }
@@ -704,8 +713,8 @@ public class SRDirector extends StaticSchedulingDirector {
      *  the prefire method of the actor has returned true.
      */
     private boolean _isFiringAllowed(Actor actor) {
-        return (!(_actorsAllowedToFire == null) &&
-                _actorsAllowedToFire.contains(actor));
+        return (!(_actorsAllowedToFire == null)
+                && _actorsAllowedToFire.contains(actor));
     }
 
     /** Return true if the specified actor is allowed to iterate.
@@ -745,10 +754,12 @@ public class SRDirector extends StaticSchedulingDirector {
      *  scheduler for this domain.
      */
     private boolean _isValidSchedulerClassName(String name) {
-        if (name.equals("ptolemy.domains.sr.kernel.SRRandomizedScheduler"))
+        if (name.equals("ptolemy.domains.sr.kernel.SRRandomizedScheduler")) {
             return true;
-        if (name.equals("ptolemy.domains.sr.kernel.SROptimizedScheduler"))
+        } else if (name.equals(
+                "ptolemy.domains.sr.kernel.SROptimizedScheduler")) {
             return true;
+        }
         return false;
     }
 
@@ -783,7 +794,9 @@ public class SRDirector extends StaticSchedulingDirector {
     private void _resetAllReceivers() {
         _debug("    SRDirector is resetting all receivers");
         _currentNumberOfKnownReceivers = 0;
-        if(_receivers==null){return;}
+        if (_receivers == null) {
+            return;
+        }
         Iterator receiverIterator = _receivers.iterator();
         while (receiverIterator.hasNext()) {
             ((SRReceiver) receiverIterator.next()).reset();
@@ -880,7 +893,3 @@ public class SRDirector extends StaticSchedulingDirector {
     // The name of an attribute that marks an actor as nonstrict.
     private static final String NON_STRICT_ATTRIBUTE_NAME = "_nonStrictMarker";
 }
-
-
-
-

@@ -145,8 +145,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         _outsideStepSize = nextIterationTime - getIterationBeginTime();
 
         if (_outsideStepSize == 0) {
-            if (_debugging) _debug("outside step size is 0",
-                    "So treat this as a breakpoint.");
+            if (_debugging) _debug(
+                    "Outside step size is 0 so treat this as a breakpoint.");
             // it must be a breakpoint now.
             _setCurrentODESolver(getBreakpointSolver());
             _setBreakpointIteration(true);
@@ -164,7 +164,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             if (breakPoints.contains(now)) {
                 if (_debugging)
                     _debug(getName(),
-                            " Break point now at" + _outsideTime);
+                            ": Break point now at" + _outsideTime);
                 // Breakpoints iterations are always successful
                 // so remove the breakpoints.
                 breakPoints.removeFirst();
@@ -176,14 +176,14 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             }
         }
 
-        if (_debugging) _debug(getName(), "at" + getCurrentTime(),
+        if (_debugging) _debug(getName(), " at " + getCurrentTime(),
                 " step size is " + getCurrentStepSize(),
-                "breakpoint table contains " + getBreakPoints().toString());
+                " breakpoint table contains " + getBreakPoints().toString());
 
         _setDiscretePhase(true);
         Iterator waveGenerators = getScheduler().getSchedule().get(
                 CTSchedule.WAVEFORM_GENERATORS).actorIterator();
-        while (waveGenerators.hasNext()) {
+        while (waveGenerators.hasNext() && !_stopRequested) {
             CTWaveformGenerator generator =
                 (CTWaveformGenerator) waveGenerators.next();
             generator.fire();
@@ -236,9 +236,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         setCurrentTime(exe.getCurrentTime());
         _setIterationBeginTime(getCurrentTime());
         super.initialize();
-
     }
-
 
     /** Return true if the current integration step
      *  is accurate. This is determined by asking all the
@@ -288,11 +286,10 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         super.preinitialize();
     }
 
-
     /** Update the states of actors directed by this director.
      *  Discrete events at current time will be consumed and produced.
      *  @return True if this is not a top-level director, or the simulation
-     *     is not finished.
+     *     is not finished and stop() has not been called.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
@@ -301,7 +298,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         updateContinuousStates();
         // The current time will be the begin time of the next iteration.
         _setIterationBeginTime(getCurrentTime());
-        return true;
+        return !_stopRequested;
     }
 
     /** Return the predicted next step size, which is the minimum
@@ -376,12 +373,3 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     // The current time of the outer domain.
     private double _outsideTime;
 }
-
-
-
-
-
-
-
-
-
