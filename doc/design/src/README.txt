@@ -1,16 +1,7 @@
 TOC
 ---
-To regenerate TOC and Index:
-
- 1) Open the book file.
- 2) Choose generate.
- 3) Open the TOC file.
- 4) Remove the silly page numbers for each "Part x" listing
- 5) If you feel ambitious, open the index file and reduce the font
-    size of all the page numbers --- frame is being really silly here...
-
-(5) is not essential.
-
+After generating the toc and idx, edit the idx and
+move the first index entry for the UML symbol - to below the header.
 
 Distiller
 ---------
