@@ -46,10 +46,10 @@ import java.util.List;
    The set does not containt repeated elements, which means comparing any two
    elements in this set never returns 0.
 
-   @author  Jie Liu
+   @author  Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Yellow (liuj)
+   @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (johnr)
 */
 

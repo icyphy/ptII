@@ -36,9 +36,14 @@ import java.util.Comparator;
    The threshold is set by setThreshold(). If the difference of the
    two double number is less than the threshold, then they are considered
    equal. The default value of the fuzzy threshold is 1e-10.
+   <p>
+   After Ptolemy II 4.1, this class is not used any more. 
+   
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 0.3
+   @deprecated As Ptolemy II 4.1, use GeneralComparator instead.
+   
    @Pt.ProposedRating Yellow (liuj)
    @Pt.AcceptedRating Red (johnr)
 */

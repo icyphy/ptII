@@ -39,7 +39,7 @@ import java.util.Comparator;
    @author Haiyang Zheng
    @version $Id$
    @since Ptolemy II 4.1
-   @Pt.ProposedRating Red (hyzheng)
+   @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
 */
 public class GeneralComparator implements Comparator{
@@ -50,10 +50,10 @@ public class GeneralComparator implements Comparator{
     /** Return -1, 0, or 1 if the first object is less than, equal to, or
      *  bigger than the second object.
      *
-     *  <p>If any of the argument is not a Comparable object, a
+     *  <p>If any of the argument is not a object of Comparable class, a
      *  ClassCastException will be thrown.
-     *  @param first The first Comparable object.
-     *  @param second The second Comparable object.
+     *  @param first The first comparable object.
+     *  @param second The second comparable object.
      *  @return The comparison result, -1, 0, or 1.
      */
     public int compare(Object first, Object second) {
