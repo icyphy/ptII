@@ -353,7 +353,7 @@ public final class FixPoint implements Cloneable, Serializable {
         if ( minValue < value && value < maxValue ) {
             Fixvalue newvalue = 
                 _scaleBits(_value, _precision, newprecision, mode );
-            return = new FixPoint(newprecision, newvalue);
+            return new FixPoint(newprecision, newvalue);
         } else {
 
             FixPoint result;
