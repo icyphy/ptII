@@ -69,8 +69,8 @@ all: $(JCLASS)
 install: all
 
 demos: demo
-demo:
-	CLASSPATH=$(CLASSPATH) appletviewer index.html
+demo:	all
+	CLASSPATH=$(CLASSPATH) appletviewer QueryApplet.htm
 
 
 depend:

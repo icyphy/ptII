@@ -48,6 +48,7 @@ PTPACKAGE = 	gui
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	BasicJApplet.java \
 	Message.java \
 	Query.java \
 	QueryListener.java \

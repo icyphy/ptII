@@ -30,30 +30,25 @@
 
 package ptolemy.gui.demo;
 
-import java.applet.Applet;
+import javax.swing.JApplet;
+import java.awt.Color;
 import ptolemy.gui.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// QueryApplet
 /**
 Applet demonstrating the Query class.
+
 @author  Edward A. Lee, Manda Sutijono
 @version $Id$
 @see ptolemy.gui.Query
 */
-public class QueryApplet extends Applet implements QueryListener {
+public class QueryApplet extends BasicJApplet implements QueryListener {
 
     /** Constructor.
      */
     public QueryApplet() {
-        _query = new Query();
-        add(_query);
-        _query.addCheckBox("check", "Check", true);
-        _query.setTextWidth(20);
-        _query.addLine("line1", "Line", "xxx");
-        _query.addLine("line2", "Another", "yyy");
-        _query.addLine("line3", "Yet Another", "");
-        _query.addQueryListener(this);
+        super();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -65,6 +60,20 @@ public class QueryApplet extends Applet implements QueryListener {
      */
     public void changed(String name) {
         showStatus("Changed " + name + " to: " + _query.stringValue(name));
+    }
+
+    /** Create a Query object and configure it.
+     */
+    public void init() {
+        super.init();
+        _query = new Query();
+        getContentPane().add(_query);
+        _query.addCheckBox("check", "Check box", true);
+        _query.setTextWidth(20);
+        _query.addLine("line", "Entry box", "default entry");
+        _query.addDisplay("display", "Display", "displayed string");
+        _query.addQueryListener(this);
+        _query.setBackground(_getBackground());
     }
 
     ///////////////////////////////////////////////////////////////////
