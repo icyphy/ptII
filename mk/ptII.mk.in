@@ -92,6 +92,10 @@ JAVA =		$(PTJAVA_DIR)/bin/java
 JAVACCDIR =	$(PTOLEMY)/vendors/sun/JavaCC
 JJTREE =	$(JAVACCDIR)/bin/jjtree
 JAVACC =	$(JAVACCDIR)/bin/javacc
+# Under NT the following should be used and JavaCC.zip must be in 
+# the CLASSPATH
+# JJTREE = 	$(JAVA) COM.sun.labs.jjtree.Main
+# JAVACC = 	$(JAVA) COM.sun.labs.javacc.Main
 
 # Script to run tclBlend for the test suite.
 JTCLSH =	jtclsh
