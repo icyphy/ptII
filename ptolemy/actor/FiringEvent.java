@@ -49,7 +49,7 @@ actors.  A user interface can also implement a breakpoint mechanism by
 pausing execution of the executing thread in response to one of these events.
 <p>
 Note that since most directors work with a constant set of actors, and fire
-them repeatedly, it may improve efficiency dramatically to use a 
+them repeatedly, it may improve efficiency dramatically to use a
 flyweight design pattern with firing events.  This can result in greatly
 reducing the load on the garbage collector.
 
@@ -140,7 +140,7 @@ public class FiringEvent implements DebugEvent {
     /** This type of event is published before an iterate method is called. */
     public static final FiringEventType BEFORE_ITERATE =
     new FiringEventType("will be iterated");
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

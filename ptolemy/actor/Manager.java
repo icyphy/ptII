@@ -263,7 +263,7 @@ public class Manager extends NamedObj implements Runnable {
    //       System.err.println("Error caught by manager.");
    //       e.printStackTrace();
    //       throw new RuntimeException("Manager: " + e.getMessage());
-	    
+
         } finally {
 	    try {
 		wrapup();
@@ -690,7 +690,7 @@ public class Manager extends NamedObj implements Runnable {
 	long totalMemory = runtime.totalMemory()/1024;
 	long freeMemory = runtime.freeMemory()/1024;
 	return System.currentTimeMillis() - startTime
-	    + " ms. Memory: " 
+	    + " ms. Memory: "
 	    + totalMemory + "K Free: " + freeMemory + "K ("
 	    + Math.round( (((double)freeMemory)/((double)totalMemory))
 			  * 100.0)

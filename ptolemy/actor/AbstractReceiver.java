@@ -135,10 +135,10 @@ public abstract class AbstractReceiver implements Receiver {
     public IOPort getContainer() {
         return _container;
     }
-    
-    /**  Return the current time associated with this receiver. For 
+
+    /**  Return the current time associated with this receiver. For
      *   non-DT receivers, this method reverts to the director's
-     *   getCurrentTime() method.  In DT, there is a local time 
+     *   getCurrentTime() method.  In DT, there is a local time
      *   associated with every receiver.
      *   @return The current time associated with this receiver.
      */
@@ -146,7 +146,7 @@ public abstract class AbstractReceiver implements Receiver {
         IOPort containerPort = getContainer();
         Actor containerActor = (Actor) containerPort.getContainer();
         Director containerDirector = containerActor.getDirector();
-        return containerDirector.getCurrentTime();        
+        return containerDirector.getCurrentTime();
     }
 
     /** Return true if the receiver has room to put a token into it
@@ -188,11 +188,11 @@ public abstract class AbstractReceiver implements Receiver {
      */
     public abstract boolean hasToken(int numberOfTokens);
 
-    /** Return true if this receiver has known state, that is, the tokens in 
+    /** Return true if this receiver has known state, that is, the tokens in
      *  this receiver are known or if this receiver is known not to contain
      *  any tokens.
      *  <p>
-     *  In this base class, assume that the receiver has known state, so 
+     *  In this base class, assume that the receiver has known state, so
      *  return true.  Receivers that may have unknown state must override
      *  this method.
      *  @return True.

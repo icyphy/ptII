@@ -28,7 +28,7 @@
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 setDirector throws NameDuplicationException
 fire: call transferOutputs on local, not executive director.
-preinitialize: validate attributes of this composite and 
+preinitialize: validate attributes of this composite and
     the attributes of its ports.
 */
 
@@ -226,7 +226,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  This method is read-synchronized on the workspace, so the
      *  fire() method of the director need not be (assuming it is only
      *  called from here).  After the fire() method of the director returns,
-     *  send any output data created by calling the local director's 
+     *  send any output data created by calling the local director's
      *  transferOutputs method.
      *
      *  @exception IllegalActionException If there is no director, or if
@@ -623,7 +623,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
         for(Iterator ports = portList().iterator();
             ports.hasNext();) {
             IOPort port = (IOPort)ports.next();
-            for(Iterator attributes = 
+            for(Iterator attributes =
                     port.attributeList(Settable.class).iterator();
                 attributes.hasNext();) {
                 Settable attribute = (Settable)attributes.next();

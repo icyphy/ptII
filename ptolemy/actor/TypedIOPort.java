@@ -220,7 +220,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                         + getFullName() + ", port type: "
                         + getType().toString());
             }
-            
+
             farReceivers = getRemoteReceivers();
             if (farReceivers == null) {
                 return;
@@ -238,7 +238,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                     (TypedIOPort)farReceivers[i][j].
                     getContainer();
                 Type farType = port.getType();
-                    
+
                 if (farType.equals(token.getType())) {
                     farReceivers[i][j].put(token);
                 } else {
@@ -247,7 +247,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                 }
             }
         }
-    }   
+    }
 
 
     /** Send the specified portion of a token array to all receivers connected
@@ -309,7 +309,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         // repeats the above on each call.
         for (int i = 0; i < farReceivers.length; i++) {
             if (farReceivers[i] == null) continue;
-                
+
             for (int j = 0; j < farReceivers[i].length; j++) {
                 TypedIOPort port =
                     (TypedIOPort)farReceivers[i][j].getContainer();
@@ -753,7 +753,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         Receiver[][] insideReceivers = this.deepGetReceivers();
         for (int i = 0; i < this.getWidth(); i++) {
 	    // NOTE: tokens on a channel are consumed only if the
-	    // corresponding inside reciever is not null. This behavior
+	    // corresponding inside receiver is not null. This behavior
 	    // should be OK for all of the current domains.
             if (insideReceivers != null && insideReceivers[i] != null) {
                 try {
@@ -761,7 +761,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                         if (this.hasToken(i)) {
                             Token token = this.get(i);
                             if(_debugging) _debug(getName(),
-                                    "transferring input from " 
+                                    "transferring input from "
                                     + this.getName());
                             for (int j = 0; j < insideReceivers[i].length;
                                  j++) {
@@ -769,7 +769,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                                     (TypedIOPort)insideReceivers[i][j].
                                     getContainer();
                                 Type insideType = port.getType();
-                                
+
                                 if (insideType.equals(token.getType())) {
                                     insideReceivers[i][j].put(token);
                                 } else {
