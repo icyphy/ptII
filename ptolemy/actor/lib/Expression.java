@@ -177,7 +177,8 @@ public class Expression extends TypedAtomicActor {
         Token result = expression.getToken();
         if (result == null) {
             throw new IllegalActionException(this,
-                    "Expression yields a null result: " + expression.getExpression());
+                    "Expression yields a null result: " +
+                    expression.getExpression());
         }
         output.broadcast(result);
     }
