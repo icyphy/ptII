@@ -24,23 +24,6 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-FIXME: Need review of _classElement related changes.  Look
-for comments with:
-     EAL 12/03
-     Corresponding changes are made in:
-     kernel.Port
-     kernel.ComponentEntity
-     kernel.Relation
-     (all in their setContainer() methods)
-     moml.MoMLParser
-FIXME: Need review of:
-     isDeferChangeRequests()
-     requestChange()
-     executeChangeRequests()
-     setDeferChangeRequests()
-@AcceptedRating Yellow (eal@eecs.berkeley.edu)
-
 */
 
 package ptolemy.kernel.util;
@@ -132,6 +115,24 @@ description.
 @author Mudit Goel, Edward A. Lee, Neil Smyth
 @version $Id$
 @since Ptolemy II 0.2
+@Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+FIXME: Need review of _classElement related changes.  Look
+for comments with:
+     EAL 12/03
+     Corresponding changes are made in:
+     kernel.Port
+     kernel.ComponentEntity
+     kernel.Relation
+     (all in their setContainer() methods)
+     moml.MoMLParser
+FIXME: Need review of:
+     isDeferChangeRequests()
+     requestChange()
+     executeChangeRequests()
+     setDeferChangeRequests()
+@Pt.AcceptedRating Yellow (eal@eecs.berkeley.edu)
+
+
 */
 
 public class NamedObj implements Nameable, Debuggable, DebugListener,
