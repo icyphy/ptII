@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (cxh)
-@AcceptedRating Red (cxh)
 */
 
 package ptolemy.copernicus.kernel;
@@ -46,6 +44,12 @@ import java.util.Map;
    An adapter that turns a body transformer into a scene transformer.
    This applies the transformer specified in the constructor to
    all of the bodies in the scene.
+
+   @author Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
+   @ProposedRating Red (cxh)
+   @AcceptedRating Red (cxh)
 */
 public class TransformerAdapter extends SceneTransformer {
     /** Construct a new transformer

@@ -24,9 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor)
-@AcceptedRating Red (cxh)
-
 */
 
 package ptolemy.data.type;
@@ -44,6 +41,9 @@ import ptolemy.kernel.util.InternalErrorException;
 
    @author Steve Neuendorffer, Yuhong Xiong
    @version $Id$
+   @since Ptolemy II 4.0
+   @ProposedRating Red (cxh)
+   @AcceptedRating Red (cxh)
 */
 public class ArrayType extends StructuredType {
 

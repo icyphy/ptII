@@ -23,10 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-
-@ProposedRating Red (neuendor)
-@AcceptedRating Red (neuendor)
-
 */
 package ptolemy.data;
 
@@ -49,6 +45,9 @@ import java.io.Serializable;
 
    @author Steve Neuendorffer
    @version $Id$
+   @since Ptolemy II 4.0
+   @ProposedRating Red (cxh)
+   @AcceptedRating Red (cxh)
 */
 public class ActorToken extends Token {
 

@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (cxh)
-@AcceptedRating Red (cxh)
 */
 
 package ptolemy.copernicus.kernel;
@@ -39,6 +37,11 @@ import soot.toolkits.scalar.FlowSet;
    An analysis that can determine, at any point in the code, if
    a local variable points to null.  This is just a nice wrapper class
    for soot's BranchedRefVarsAnalysis.
+   @author Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 4.0
+   @ProposedRating Red (cxh)
+   @AcceptedRating Red (cxh)
 */
 public class NullPointerAnalysis extends BranchedRefVarsAnalysis {
     public NullPointerAnalysis(UnitGraph g) {

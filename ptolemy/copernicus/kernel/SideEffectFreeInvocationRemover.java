@@ -52,7 +52,11 @@ import java.util.Map;
 
 
 /**
-
+ @author Steve Neuendorffer
+ @version $Id$
+ @since Ptolemy II 4.0
+ @ProposedRating Red (cxh)
+ @AcceptedRating Red (cxh)
 */
 public class SideEffectFreeInvocationRemover extends SceneTransformer {
     /** Construct a new transformer
