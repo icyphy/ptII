@@ -41,7 +41,6 @@
   	<nativelib href="signed/lib/matlabWindows.jar"/>
   </resources>
   <application-desc main-class="ptolemy.actor.gui.jnlp.HyVisualApplication">
-	<argument>ptolemy/configs/hyvisual/configuration.xml</argument>
-	<argument>ptolemy/configs/hyvisual/intro.htm</argument>
+	<argument>-hyvisual</argument>
   </application-desc>
 </jnlp>
