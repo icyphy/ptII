@@ -30,7 +30,8 @@ being present.  The way around this is to modify $PTII/configure.in
 so that it looks for the package in question and then sets makefile
 variables appropriately.  Usually, the best thing to do is to
 send email to cxh and ask him to make the changes to configure.in
-for you.
+for you.  $PTII/doc/coding/develsetup.htm includes some instructions
+about how to do this.
 
 
 
