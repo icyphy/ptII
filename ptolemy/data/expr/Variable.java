@@ -688,7 +688,8 @@ public class Variable extends Attribute
         _isLazy = lazy;
     }
 
-    /** Put a new token in this variable. If an expression had been
+    /** Put a new token in this variable and notify the container and
+     *  and value listeners. If an expression had been
      *  previously given using setExpression(), then that expression
      *  is forgotten. If the type of this variable has been set with
      *  setTypeEquals(), then convert the specified token into that
