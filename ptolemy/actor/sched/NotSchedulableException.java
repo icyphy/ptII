@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu) 3/2/98
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.sched;
