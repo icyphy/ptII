@@ -44,11 +44,11 @@ import java.net.URI;
     matlab includes would be found at
     matlabr12/extern/include/...
 
-    @@author Christopher Hylands
-    @@version $Id$
-    @@since Ptolemy II 2.0
-    @@Pt.ProposedRating Green (cxh)
-    @@Pt.AcceptedRating Red
+    @author Christopher Hylands
+    @version $Id$
+    @since Ptolemy II 2.0
+    @Pt.ProposedRating Green (cxh)
+    @Pt.AcceptedRating Red
 */
 public class MatlabRootDirectory {
     public static void main(String args[]) throws IOException {
