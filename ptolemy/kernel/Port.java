@@ -29,14 +29,15 @@ package pt.kernel;
 
 import java.util.Hashtable;
 import java.util.Enumeration;
-import pt.exceptions.NameDuplicationException;
+import collections.LinkedList;
 import pt.exceptions.NullReferenceException;
+import pt.exceptions.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Port
 /** 
 A Port is the interface between Entities and Relations.
-@author John S. Davis, II
+@author John S. Davis II
 @author Neil Smyth
 @version $Id$
 */
@@ -57,8 +58,6 @@ public class Port extends GenericPort {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-
-    
 
     /** Connect this Port to a Relation.
      * @param relation The Relation to which this Port will be connected.
@@ -120,7 +119,19 @@ public class Port extends GenericPort {
         return _relation.getName();
     }
 
-    
+    /** Get the port count of this port.
+     */
+    public int getPortCount() {
+	return portCount_;
+    }
+
+    /** Return false since this is a Port.
+    /** Set the port count of this port to the value of the argument.
+     */
+    public void setPortCount(int count) {
+	portCount_ = count;
+    }
+
     /** Return false since this is a Port.
      */
     public final boolean isMulti() {
@@ -173,6 +184,10 @@ public class Port extends GenericPort {
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
 
+    /** The storage location for particles in this port.
+     */
+    protected LinkedList _buffer;
+
     /** This is the Relation through which the Port connects to other
      *  Ports. 
      */
@@ -183,6 +198,11 @@ public class Port extends GenericPort {
     
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
+
+    /* Port count is the maximum number of particles that can reside 
+     * in a port.
+     */
+    private int portCount_ = 1;
 
     /* The MultiPort which contains this Port.
      */

@@ -30,6 +30,8 @@ package pt.kernel;
 
 import java.util.Hashtable;
 import java.util.Enumeration;
+import collections.LinkedList;
+import java.util.NoSuchElementException;
 import pt.exceptions.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -43,7 +45,7 @@ it is connected to a dangling Relation.
 @author John S. Davis, II
 @version $Id$
 */
-public class Relation extends GraphElement {
+public abstract class Relation extends GraphElement {
     /** 
      */	
     public Relation() {
@@ -99,7 +101,7 @@ public class Relation extends GraphElement {
 	if( links_ == null ) {
 	     return null;
 	}
-	if( size() == 0 ) {
+	if( numberOfConnections() == 0 ) {
 	     return null;
 	}
         return links_.elements();
@@ -135,27 +137,53 @@ public class Relation extends GraphElement {
 	return links_.containsKey( portName );
     }
 
+    /** Return the number of particles stored in this relation.
+    public int numberOfParticles() {
+	 if( _buffer == null ) {
+	      return 0;
+	 }
+	 return _buffer.size();
+    }
+     */	
+
     /** Return the number of Ports connected to the net.
      */	
-    public int size() {
+    public int numberOfConnections() {
 	if( links_ == null ) {
 	     return 0;
 	}
         return links_.size();
     }
 
+    /** Get a particle from this relation.
+     */
+    public abstract Particle get();
+
+    /** Put a particle into this relation.
+     */
+    public abstract void put(Particle particle); 
+
+    /** Return the number of particles stored in this relation. 
+     */
+    public abstract int numberOfParticles(); 
+
+
     /** Generate a Relation object from a String.
      *  FIXME: How should this method be implemented??
-     */
     public static Relation valueOf(String string) {
         return new Relation(string);
     }
+     */
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
+
+    /** The storage of particles occurs here. 
+    private LinkedList _buffer;
+     */
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
@@ -166,6 +194,7 @@ public class Relation extends GraphElement {
     /* A hashtable of links which are connected to this Relation.
      */
     private Hashtable links_;
+
 }
 
 
