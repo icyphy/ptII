@@ -364,14 +364,13 @@ public final class Manager extends NamedObj implements Runnable {
             if (!_needWriteAccess()) {
                 workspace().setReadOnly(true);
             }
-
             if (_container.prefire()) {
                 _container.fire();
                 result = _container.postfire();
             }
         } finally {
-            workspace().doneReading();
             workspace().setReadOnly(false);
+            workspace().doneReading();
         }
         return result;
     }
@@ -465,7 +464,6 @@ public final class Manager extends NamedObj implements Runnable {
         }
 	try {
 	    workspace().getWriteAccess();
-
             _setState(RESOLVING_TYPES);
 
 	    LinkedList conflicts = new LinkedList();
@@ -474,7 +472,6 @@ public final class Manager extends NamedObj implements Runnable {
 
             Enumeration constraints =
                 ((TypedCompositeActor)_container).typeConstraints();
-
 	    if (constraints.hasMoreElements()) {
                 InequalitySolver solver = new InequalitySolver(
                         TypeLattice.lattice());
@@ -641,6 +638,7 @@ public final class Manager extends NamedObj implements Runnable {
 
         // Wrapup completed successfully
         _setState(IDLE);
+        workspace().doneReading();
     }
 
     ///////////////////////////////////////////////////////////////////

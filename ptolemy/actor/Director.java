@@ -251,9 +251,12 @@ public class Director extends NamedObj implements Executable {
             Enumeration allactors = container.deepGetEntities();
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
+                _debug(getName() + " initializes actor "+
+                        ((NamedObj)actor).getName()); 
                 actor.initialize();
             }
         }
+        _debug(getName() + " finished initializing.");
     }
 
     /** Perform domain-specific initialization on the specified actor, if any.
