@@ -39,9 +39,6 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for Java Advanced Imaging and sets PTJAI_DIR in
 # $PTII/mk/ptII.mk if was found.  Otherwise, PTJAI_DIR is empty.
 #
-# $PTII/configure looks for javasound and sets PTJAVASOUND_DIR
-# in $PTII/mk/ptII.mk if it was found.  Otherwise, PTJAVASOUND is empty.
-#
 # $PTII/configure looks for Java Media Framework and sets PTJMF_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJMF_DIR is empty.
 #
@@ -51,8 +48,8 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for JXTA and sets PTJXTA_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJXTA_DIR is empty.
 
-DIRS = 		conversions gui logic hoc image net io \
-		test $(PTCOMM_DIR) $(PTJAI_DIR) $(PTJAVASOUND_DIR) \
+DIRS = 		conversions gui logic hoc image javasound net io \
+		test $(PTCOMM_DIR) $(PTJAI_DIR) \
 		$(PTJMF_DIR) $(PTJSPACES_DIR) $(PTJXTA_DIR)
 
 # Root of the Java directory
@@ -77,6 +74,7 @@ PTCLASSALLJARS = \
 	hoc/hoc.jar \
 	io/io.jar \
 	logic/logic.jar \
+	javasound/javasound.jar \
 	net/net.jar
 
 # Don't include comm.jar, it requires javacomm

@@ -31,10 +31,7 @@
 
 ME =		ptolemy/media
 
-# PTJAVASOUND_DIR is set in $PTII/mk/ptII.mk by configure
-# if sound.jar is found.
-
-DIRS =		test $(PTJAVASOUND_DIR)
+DIRS =		test javasound
 
 # Root of the Java directory
 ROOT =		../..
@@ -62,10 +59,7 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# javasound is in MISC_FILES because JDK1.2 does not have the javasound
-# facility, so DIRS will not contain javasound, but we don't want
-# make checkjunk to barf
-MISC_FILES =	$(DIRS) javasound
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
