@@ -45,7 +45,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CTPeriodicSampler
 /**
-This actor periodically sample the input signal and generate events
+Generate discrete events by periodically sampling a CT signal.
+
+<p>This actor periodically sample the input signal and generate events
 which has the value of the input signal. The sampling rate is given by
 parameter "samplePeriod", which has default value 0.1.
 The actor has a multi-input port and a multi-output port. Signals in

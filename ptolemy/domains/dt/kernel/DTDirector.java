@@ -70,6 +70,7 @@ import java.util.Map;
 //////////////////////////////////////////////////////////////////////////
 //// DTDirector
 /**
+The Discrete Time (DT) domain director.
 
 <h1>DT overview</h1>
 

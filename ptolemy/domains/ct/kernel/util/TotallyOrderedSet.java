@@ -40,8 +40,10 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// TotallyOrderedSet
 /**
-Totally ordered set with no repeated elements (
-elements that the comparator returns 0).
+Totally ordered set with no repeated elements.
+
+A repeated element is an element that the comparator returns 0 for.
+
 @author  Jie Liu
 @version $Id$
 @since Ptolemy II 0.2

@@ -39,7 +39,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// VectorDisassembler
 /**
-On each firing, read one column vector (i.e. a DoubleMatrixToken with
+An actor that disassembles a DoubleMatrixToken to a multiport output.
+<p>On each firing, read one column vector (i.e. a DoubleMatrixToken with
 one column) from the <i>input</i> port and send out individual
 DoubleTokens to each channel of the <i>output</i> port.  If the width
 of the <i>output</i> port (say, <i>n</i>) is less than the number of

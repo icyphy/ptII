@@ -1,4 +1,4 @@
-/*
+/* Change the contrast of an image.
 @Copyright (c) 1998-2003 The Regents of the University of California.
 All rights reserved.
 
@@ -39,8 +39,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// ImageContrast
 /**
-This actor changes the contrast of an image. i.e.
-if the input image has a lot of pixels with the same or similar color,
+Change the constrast of an image.
+
+<p>If the input image has a lot of pixels with the same or similar color,
 This actor uses gray scale equalization to redistribute the value of each
 pixel between 0 and 255.
 

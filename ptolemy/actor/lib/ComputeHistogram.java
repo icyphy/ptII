@@ -49,8 +49,7 @@ import ptolemy.kernel.util.Settable;
 //////////////////////////////////////////////////////////////////////////
 //// ComputeHistogram
 /**
-   
-Compute a histogram
+Compute a histogram.
 <p>
 The output array consists of a set of vertical bars, each representing
 a histogram bin.  The height of the bar is the count of the number

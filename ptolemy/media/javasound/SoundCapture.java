@@ -45,6 +45,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 //////////////////////////////////////////////////////////////////////////
 //// SoundCapture
 /**
+A buffer supporting the capturing of audio samples from a file or
+from the computer's audio input port.
+
    <h2>Overview</h2>
    A buffer supporting the capturing of audio samples from a file or
    from the computer's audio input port. This class supports the

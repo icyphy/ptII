@@ -52,7 +52,9 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// LinearStateSpace
 /**
-The State-Space model implements a system whose behavior is defined by:
+Linear state space model in the CT domain.
+
+<p>The State-Space model implements a system whose behavior is defined by:
 <pre>
     dx/dt = Ax + Bu
         y = Cx + Du

@@ -42,7 +42,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// LinearDifferenceEquationSystem
 /**
-The linear state-space model implements a system whose behavior is defined by:
+Linear Difference Equation System.
+
+<p>The linear state-space model implements a system whose behavior is defined by:
 <pre>
     x(k+1) = Ax(k) + Bu(k)
       y(k) = Cx(k) + Du(k)

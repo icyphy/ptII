@@ -48,6 +48,9 @@ import javax.sound.sampled.SourceDataLine;
 /////////////////////////////////////////////////////////////
 //// SoundPlayback
 /**
+A buffer supporting the playback of audio data and the the
+writing of audio data to a sound file.
+
    <h2>Overview</h2>
    A buffer supporting the real-time playback of audio and the writing
    of audio data to a sound file. Single channel

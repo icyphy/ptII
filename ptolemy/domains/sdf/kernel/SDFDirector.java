@@ -53,6 +53,8 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// SDFDirector
 /**
+Director for the synchronous dataflow (SDF) model of computation.
+
 <h1>SDF overview</h1>
 The Synchronous Dataflow(SDF) domain supports the efficient
 execution of Dataflow graphs that

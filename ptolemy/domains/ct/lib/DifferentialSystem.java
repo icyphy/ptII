@@ -55,7 +55,9 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// DifferentialSystem
 /**
-The differential system  model implements a system whose behavior
+A differential system in the CT domain.
+
+<p>The differential system  model implements a system whose behavior
 is defined by:
 <pre>
     dx/dt = f(x, u, t)
