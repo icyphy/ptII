@@ -142,13 +142,13 @@ if test -d "$PTJAVA_DIR"; then
     at that location, so we will try it.])
 else
     if test -z "$PTJAVA_DIR"; then
-	AC_MSG_WARN([PTJAVA_DIR environment variable was not set,
-so we search for the java compiler.])
+	AC_MSG_RESULT([PTJAVA_DIR environment variable was not set,
+    so we search for the java compiler.])
 
     else
 	AC_MSG_WARN([PTJAVA_DIR environment variable is set to
-'${PTJAVA_DIR}', which is not a directory,
-so we search for the java compiler.])
+    '${PTJAVA_DIR}', which is not a directory,
+    so we search for the java compiler.])
     fi
     AC_PATH_PROG(JAVAC, javac)
     if test -x "$JAVAC"; then
@@ -327,14 +327,19 @@ case "$JVERSION" in
     Please upgrade your JDK to 1.3 and try again]) 	
 	;;
 	1.4*)
-		AC_MSG_WARN([Warning, you are running '$JVERSION'.
+		AC_MSG_WARN([You are running '$JVERSION'.
     The deep and shallow code generation facilities use Soot, which
     does not yet work under JDK1.4.  Soot requires JDK1.3 or JDK1.3.1.
     If you do not plan on using code generation, then you may build
     under JDK1.4.
     If you plan on using code generation, then you must _build_ under
     JDK1.4.  Soot will not run properly if you compile with JDK1.3
-    and try to run with JDK1.4 later.])
+    and try to run with JDK1.4 later.
+    To build under JDK1.3, set your path so that 'java -version'
+    prints 1.3 and then do
+	cd $PTII
+	rm config.*
+	./configure])
         ;;
 	*) AC_MSG_RESULT([ok, you are running $JVERSION])
 	;;
@@ -423,14 +428,28 @@ else
 	PTCOMM_DIR=comm
 	COMMAPI_PRESENT=yes
     else
-        AC_MSG_WARN(['Failed to find $COMMAPI_DIR/comm.jar'])
-	COMMAPI_DIR='${PTII}/vendors/sun/commapi'
+	AC_MSG_RESULT([Did not find
+	'$COMMAPI_DIR/comm.jar'])
+	AC_MSG_CHECKING([for commapi by compiling a test program ])
+        # We need to run javac in the config directory so that javac from
+        # jdk1.1.6 under NT and cygwin works properly
+	startdir=`pwd`
+	cd "$srcdir/config"
+	# Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+	if "$JAVAC" javaCommAPI.java ; then
+	    AC_MSG_RESULT(ok)
+	    PTLEGO_DIR=lego
+	    PTCOMM_DIR=comm
+	    COMMAPI_PRESENT=yes
+	else
+	    COMMAPI_DIR='${PTII}/vendors/sun/commapi'
+	fi
+	cd "$startdir"
     fi
 
     if test "$COMMAPI_PRESENT" = "no"; then
         AC_MSG_WARN(['Perhaps commapi is not installed?
-    You need not download commapi unless you plan on use the Lego Mindstorm
-    demos in \$PTII/ptolemy\apps or the actors in actor.lib.comm.
+    You need not download commapi unless you plan the actors in actor.lib.comm.
     The commapi can be downloaded from http://java.sun.com/products/javacomm/
     and placed  in \$PTII/vendors/sun/commapi'])
     fi
@@ -623,8 +642,9 @@ else
 Be sure that your CLASSPATH includes JavaCC.zip]);
     else
 	if test ! -d "$JAVACC_DIR"; then
-	    AC_MSG_WARN(['${JAVACC_DIR}' is not a directory,
-    so we search for the jjtree command.])
+	    AC_MSG_WARN([Could not find directory
+	'${JAVACC_DIR}'
+	so we search for the jjtree command.])
 	    AC_PATH_PROG(JJTREE, jjtree)
 	    if test -x "$JJTREE"; then
 		AC_MSG_RESULT([$JJTREE]);
