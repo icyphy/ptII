@@ -5,7 +5,7 @@
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -50,52 +50,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={92, 42, 815, 516}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={92, 42, 815, 509}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 130.0">
-        </property>
-        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
-            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 90.0">
-            </property>
-        </property>
-        <port name="port" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 145.0">
-            </property>
-        </port>
-        <entity name="Test" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1051666666667, 0.2213933611111, 0.349843229588, 0.4918017425663, 0.6486895591595, 0.8220767444645, 1.0136984820906, 1.2254724391238, 1.459517957305, 1.7181869924831}">
-            </property>
-            <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 185.0">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="225.0, 170.0">
-            </vertex>
-        </relation>
-        <link port="port" relation="relation2"/>
-        <link port="Test.input" relation="relation2"/>
-    </entity>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -261,6 +219,8 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 140.0">
         </property>
@@ -272,16 +232,32 @@
             <property name="multiport"/>
         </port>
     </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1051666683331, 0.2213933629528, 0.3498432316233, 0.4918017448157, 0.6486895616455, 0.8220767472119, 1.013698485127, 1.2254724424795, 1.4595179610136, 1.7181772706788, 1.8988722498417, 2.0985703147834, 2.3192699595548, 2.5631798503013, 2.8327409312247, 3.1306508524918, 3.4598909671456, 3.8237561671904, 4.2258878574399, 4.6703104041561}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 130.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="typed composite actor.port" relation="relation2"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="PeriodicSampler.input" relation="relation"/>
     <link port="PeriodicSampler.output" relation="relation2"/>
     <link port="LinearStateSpace.input" relation="relation3"/>
     <link port="LinearStateSpace.output" relation="relation"/>
     <link port="Clock.output" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
 </entity>

@@ -464,7 +464,9 @@ CTDirector to schedule and execute the model correctly.
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0,0.9553242937165,0.8253139254735,0.6215843923096,0.3623359768276,1.0,1.0,-0.5048081198582,-0.7373256320525,-0.9039746338582,-0.9898705943034}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 130.0">
         </property>

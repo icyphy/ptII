@@ -7,7 +7,7 @@
     <property name="CT0" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -56,6 +56,8 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-6, 213, 819, 563}}">
+    </property>
     <entity name="DifferentialSystem0" class="ptolemy.domains.ct.lib.DifferentialSystem">
         <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x1&quot;, &quot;x2&quot;}">
         </property>
@@ -92,6 +94,12 @@
         <entity name="x1_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sin(x2+x1)+u">
             </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -122,6 +130,12 @@
         <entity name="x2_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="u-1.0">
             </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -137,6 +151,12 @@
         </entity>
         <entity name="output_y" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x1+x2">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -187,6 +207,8 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
         </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="88.0, 138.0">
         </property>
@@ -198,27 +220,54 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.1886983, 1.3768637, 1.5537528, 1.7245374, 1.8926281, 2.0606199, 2.2312549, 2.4085155, 2.6005658, 2.7040121, 2.753334, 2.7774008, 2.7892869, 2.7951932, 2.7981372, 2.7996069, 2.8003412, 2.8010751}">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.1886982660708, 1.384521464445, 1.5839808665428, 1.7831786788437, 1.9782477347885, 2.1657825426717, 2.3431485894653, 2.5086125761763, 2.6613056784349, 2.8010769394427, 2.7374912269307, 2.6794920185586, 2.6264598650989, 2.5778487011535, 2.5331786666847, 2.4920287328976, 2.4540296327581, 2.4188573497836, 2.3862272694621, 2.3558890108855}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 266.0">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 185.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="multiport"/>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
+    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+        <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 185.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="340.0, 185.0">
+        </vertex>
+    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="460.0, 185.0">
+        </vertex>
     </relation>
     <link port="DifferentialSystem0.u" relation="relation2"/>
-    <link port="DifferentialSystem0.y" relation="relation"/>
+    <link port="DifferentialSystem0.y" relation="relation3"/>
     <link port="Clock1.output" relation="relation2"/>
-    <link port="Test.input" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="PeriodicSampler.input" relation="relation3"/>
+    <link port="PeriodicSampler.output" relation="relation"/>
 </entity>

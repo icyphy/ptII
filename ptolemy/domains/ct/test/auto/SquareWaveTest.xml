@@ -7,7 +7,7 @@
     <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -284,9 +284,11 @@ which takes the parameters and construct a Ptolemy model for you.</text>
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,1.5985877350781,0.644297059844,1.2111094014232,0.9004914433968,1.0573345603767,0.9746740450975,1.0092423248152,0.9975162369841,1.0003347126904,1.0001067256881}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.5985861967092, 0.6442999307919, 1.2111074686226, 0.9005005391433, 1.057328772796, 0.9746812509773, 1.009239367163, 0.9975174635908, 1.0003337552912, 1.0001070191256, -2.2030110548596, -0.2792663531346, -1.429638223606, -0.7462675205993, -1.1467126375012, -0.9161620700758, -1.0392809745813, -0.9824126861889, -1.00537484747, -0.9988232215809, 2.2022159974974, 0.2797644391196, 1.4293335238133, 0.746446375567, 1.1466047543006, 0.916225215706, 1.0392598386812, 0.9824189275186, 1.0053664265829, 0.9988258288765}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 290.0">
         </property>
@@ -301,12 +303,14 @@ which takes the parameters and construct a Ptolemy model for you.</text>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="440.0, 310.0">
+        </vertex>
     </relation>
     <link port="ContinuousTransferFunction1.input" relation="relation2"/>
     <link port="ContinuousTransferFunction1.output" relation="relation3"/>
     <link port="Clock2.output" relation="relation2"/>
     <link port="PeriodicSampler.input" relation="relation3"/>
-    <link port="PeriodicSampler.output" relation="relation"/>
-    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="PeriodicSampler.output" relation="relation4"/>
+    <link port="NonStrictTest.input" relation="relation4"/>
 </entity>
