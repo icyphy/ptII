@@ -37,10 +37,13 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.RecordType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -58,12 +61,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// Execute
 /**
 Execute a command as a separately running subprocess.
-<p>FIXME: Talk about different uses.
 
 <p>This actor uses java.lang.Runtime.exec() to invoke the subprocess
 For information about Runtime.exec(), see:
@@ -104,10 +107,15 @@ public class Exec extends TypedAtomicActor {
         directory.setVisibility(Settable.EXPERT);
 
         environment = new Parameter(this, "environment");
-        environment.setTypeEquals(new ArrayType(BaseType.STRING));
+        String [] labels = new String [] {"name", "value"};
+        Type [] values = new Type [] {BaseType.STRING, BaseType.STRING};
+            
+        // An array of records {{name="MYNAME", value="Mr. Ptolemy}}
+        environment.setTypeEquals(new ArrayType(new RecordType(labels, values)));
+
         // Array with a size of one empty element means use the
         // default environment of the calling process.
-        environment.setExpression("{\"\"}");
+        environment.setExpression("{{\"\"}}");
         // Hide the environment parameter.
         environment.setVisibility(Settable.EXPERT);
 
@@ -131,7 +139,8 @@ public class Exec extends TypedAtomicActor {
 
     /** Indicator of whether the fire() method blocks on the process
      *  and waits for output.
-     *  If true, fire() waits until there is output from the subprocess.
+     *  If true, fire() waits until there is output from the stdout or stderr 
+     *  of the subprocess.
      *  The type is boolean with default true.
      *  <P>FIXME: output on stderr breaks this.
      *  <P>FIXME: How much output is generated.
@@ -174,21 +183,29 @@ public class Exec extends TypedAtomicActor {
      */
     public FileParameter directory;
 
-    /** The environment to execute the command in.
+    /** The environment to execute the command in.  
+     *   
+     *  <p> This parameter is an Expert mode parameter, so it is
+     *  usually hidden.  To edit it, right click on the actor, select
+     *  'Configure', then hit the 'Preferences' button and select
+     *  'Expert Mode'.
      *   
      *  <p>This parameter is read each time the subprocess is started,
      *  once the subprocess is running, this parameter is not read
      *  each time fire() is called.
      *
-     *  <p>This parameter is an array of strings of the format
-     *  {"name=value"}.  If the length of the array is zero (the
-     *  default), then the environment from the current process is
-     *  used in the new command.  This parameter is an Expert mode
-     *  parameter, so it is usually hidden.  To edit it, right click
-     *  on the actor, select 'Configure', then hit the 'Preferences'
-     *  button and select 'Expert Mode'.  
-     *   
-     *  <P>FIXME: have it be a record token.
+     *  <p>This parameter is an array of records the format:
+     *  <pre>
+     *  {{name="<i>NAME1</i>", value="</i>value1</i>"}...}
+     *  </pre>
+     *  Where <code><i>NAME1</i></code> is the name of the environment
+     *  variable, and <code><i>value1</i></code> is the value.
+     *  <p>For example <code>{{name="PTII", value="c:/ptII"}}</code>
+     *  would set the value of the <code>PTII</code> to <code>c:/ptII</code>
+     *
+     *  <p>If the length of the array is zero (the default), then the
+     *  environment from the current process is used in the new
+     *  command.
      */
     public Parameter environment;
 
@@ -414,24 +431,30 @@ public class Exec extends TypedAtomicActor {
                         + "\"\n with environment:");
             }
 
-            Token [] environmentToken =
-                ((ArrayToken)environment.getToken()).arrayValue();
+            ArrayToken environmentTokens = (ArrayToken)environment.getToken();
 
+            if (_debugging) {
+                _debug("environmentTokens: " + environmentTokens);
+            }
             String [] environmentArray = null;
-            if (environmentToken.length >= 1) {
-                environmentArray = new String[environmentToken.length];
-                for (int i = 0; i < environmentToken.length; i++) {
-                    // FIXME: is there a better way to convert a Token []
-                    // to a String []?
-                    StringToken stringToken =
-                        (StringToken)environmentToken[i];
-                    environmentArray[i] = stringToken.stringValue();
+            if (environmentTokens.length() >= 1) {
+                environmentArray = new String[environmentTokens.length()];
+                for (int i = 0; i < environmentTokens.length(); i++) {
+                    StringToken nameToken= (StringToken)
+                        (((RecordToken) environmentTokens.getElement(i))
+                        .get("name"));
+                    StringToken valueToken= (StringToken)
+                        (((RecordToken) environmentTokens.getElement(i))
+                        .get("value"));
+                    environmentArray[i] = nameToken.stringValue()
+                        + "=" + valueToken.stringValue();
+
                     if (_debugging) {
                         _debug("  " + i + ". \"" + environmentArray[i]
                                 + "\"");
                     }
 
-                    if ( i == 0 && environmentToken.length == 1
+                    if ( i == 0 && environmentTokens.length() == 1
                             && environmentArray[0].length() == 0) {
                         if (_debugging) {
                             _debug("There is only one element, "
