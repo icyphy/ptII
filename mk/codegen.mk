@@ -82,6 +82,7 @@ generate:
 		"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 		-class $(SOURCE_SYSTEM_CLASS) \
 		-iterations $(ITERATIONS) \
+		-shallowLoading \
 		-outdir $(CG_ROOT) \
 		-outpkg $(OUTPKG)
 
