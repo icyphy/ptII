@@ -109,28 +109,6 @@ to something else</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 220.0">
         </property>
     </property>
-    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:red">The Algorithm and KeyPairGenerator parameters
-depend on the values of the keytool -keyalg and
--sigalg parameters.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, -5.0">
-        </property>
-    </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -172,7 +150,11 @@ depend on the values of the keytool -keyalg and
         </property>
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptKeystore">
         </property>
-        <property name="password" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
+        <property name="getPublicKey" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="keyPassword" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
+        </property>
+        <property name="storePassword" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
         </property>
         <doc>Read a key public or private key from a key store
 	   and output it.</doc>
@@ -191,7 +173,11 @@ depend on the values of the keytool -keyalg and
         </property>
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptKeystore">
         </property>
-        <property name="password" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
+        <property name="getPublicKey" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="keyPassword" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
+        </property>
+        <property name="storePassword" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
         </property>
         <doc>Read a key public or private key from a key store
 	   and output it.</doc>

@@ -50,6 +50,7 @@ import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.Security;
 import java.security.SignatureException;
+import java.security.cert.X509Certificate;
 import java.util.Iterator;
 import java.util.Set;
 

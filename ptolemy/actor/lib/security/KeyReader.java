@@ -38,15 +38,18 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.PublicKey;
@@ -122,6 +125,12 @@ public class KeyReader extends Source {
             throw new IllegalActionException(this, ex,
                     "Failed to get instance of key store");
         }
+
+        signatureAlgorithm = new StringParameter(this, "signatureAlgorithm");
+        signatureAlgorithm.setExpression(
+                "Unknown, will be set after first run");
+        signatureAlgorithm.setVisibility(Settable.NOT_EDITABLE);
+        signatureAlgorithm.setPersistent(false);
     }
 
 
@@ -151,6 +160,13 @@ public class KeyReader extends Source {
      *  The default password is "this.is.not.secure,it.is.for.testing.only".
      */
     public StringParameter keyPassword;
+
+    /** The name of the signature algorithm used to generate the key.
+     *  This StringParameter is not settable by the user, it is set
+     *  after initialize() is called and the certificate has been
+     *  obtained from the KeyStore.
+     */
+    public StringParameter signatureAlgorithm; 
 
     /** The password to the KeyStore.
      *  The default password is "this.is.not.secure,it.is.for.testing.only".
@@ -215,21 +231,32 @@ public class KeyReader extends Source {
                 alias.addChoice(aliasName);
             }
 
-            _certificate = _keyStore.getCertificate(_alias);
-            if (_certificate == null) {
+            Certificate certificate = _keyStore.getCertificate(_alias);
+            if (certificate == null) {
                 throw new KeyStoreException("Failed to get certificate "
                         + "for alias '"
                         + _alias + "' from  keystore '" + _url + "'");
             }
 
-            // Get either the public key or the private key
+            PublicKey publicKey = certificate.getPublicKey();
+            certificate.verify(publicKey);
+
+            if (certificate instanceof X509Certificate) {
+                signatureAlgorithm.setExpression(
+                        ((X509Certificate)certificate)
+                        .getSigAlgName());
+            } else {
+                signatureAlgorithm.setExpression(
+                        "Unknown, certificate was not a X509 cert.");
+            }
 
             if (_getPublicKey) {
-                _key = _certificate.getPublicKey();
+                _key = publicKey;
             } else {
                 _key = _keyStore.getKey(_alias,
                         keyPassword.getExpression().toCharArray());
             }
+
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to get key store aliases or certificate");
@@ -241,9 +268,6 @@ public class KeyReader extends Source {
 
     // The alias of the Certificate that we are looking for.
     private String _alias;
-
-    // The Certificate that we look up in the KeyStore according to an alias
-    private Certificate _certificate;
 
     // True if we should get the public key, false if we should get
     // the private key
