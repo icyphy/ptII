@@ -596,10 +596,16 @@ public class Manager extends NamedObj implements Runnable {
      *  execution, since the thread controlling the execution is
      *  suspended.
      */
-    public synchronized void resume() {
+    public void resume() {
+        // Avoid the case when the director is not actually paused causing the 
+        // swing thread to block.
         if (_state == PAUSED) {
-            _pauseRequested = false;
-            notifyAll();
+            synchronized(this) {
+                if(_state == PAUSED) {
+                    _pauseRequested = false;
+                    notifyAll();
+                }
+            }
         }
     }
 
