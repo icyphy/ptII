@@ -155,8 +155,20 @@ public class FSMTransitionController extends EdgeController {
                     buffer.append(guard);
                     aLabel = true;
                 }
-                String action = transition.actions.getExpression();
-                if (action != null && !action.trim().equals("")) {
+                String action = null;
+		String expression = transition.outputActions.getExpression();
+                if (expression != null && !expression.trim().equals("")) {
+		    action = expression;
+		}
+		expression = transition.setActions.getExpression();
+		if (expression != null && !expression.trim().equals("")) {
+		    if (action != null) {
+			action = action + "; " + expression;
+		    } else {
+			action = expression;
+		    }
+		}
+		if (action != null) {
                     if(aLabel) buffer.append("\n");
                     buffer.append(action);
                     aLabel = true;
