@@ -18,6 +18,6 @@ do
 	retval=$?
 	if [ "$retval" = "0" ]; then	
 		echo $file
-		$PTII/adm/bin/fixapplets $minusNFlag "$file"
+		$PTII/adm/bin/fixapplets141 $minusNFlag "$file"
 	fi
 done
