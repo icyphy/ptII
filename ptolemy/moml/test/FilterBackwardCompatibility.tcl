@@ -392,7 +392,7 @@ test FilterBackwardCompatibility-8.1 {Is a parameter, does not have _editorFacto
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="355.0, 200.0">
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
         </property>
     </property>
 </entity>
