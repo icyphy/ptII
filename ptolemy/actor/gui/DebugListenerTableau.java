@@ -60,7 +60,7 @@ accessed using the getFrame() method. As with other tableaux,
 this is an entity that is contained by an effigy of the model.
 There can be any number of instances of this class in an effigy.
 
-@author  Steve Neuendorffer and Edward A. Lee
+@author  Steve Neuendorffer and Edward A. Lee, Elaine Cheong
 @version $Id$
 @since Ptolemy II 1.0
 @see Effigy
