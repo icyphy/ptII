@@ -37,21 +37,47 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLChangeRequest;
 
 //////////////////////////////////////////////////////////////////////////
 //// RunCompositeActor
 /**
-   A composite actor that performs a complete execution of the submodel
-   in the fire() method.
+   A composite actor that performs a complete execution of the inside model
+   in the fire() method. It overwrite its initialize() and wrapup() method 
+   to do nothing; it overwite its prefire() to always return true to indicate
+   that this actor is always ready to fire; it overwrite its postfire() 
+   method to indicate that the execution can continue; In its fire() method, 
+   it run a complete execution of the contained model, which consists of 
+   invocation of super.initialize(), repeated invocations of super.prefire(), 
+   super.fire(), and super.postfire(), followed by super.wrapup().  The 
+   invocations of prefire(), fire(), and postfire() are repeated until either
+   the model indicates it is not ready to execute (prefire() returns false), 
+   or it request a stop (postfire() returns false or stop() is called).
+   Before running the complete execution, this method calls the director's 
+   transferInputs() method to read any available inputs. After running the 
+   complete execution, it calls transferOutputs() to to transfer outputs.
    <p>
-   FIXME: More details.
-   <P>
+   The subclass of this may need to call a method, for example prefire(), 
+   of  the superclass of this when execute the inside model. Since Java 
+   doesn't supported super.super.prefire(), this class uses a boolean 
+   variable <i>_isSubclassOfRunCompositeActor</i> to provide a mechanism to
+   call the method of the superclass of this. To to so, Subclass of this can
+   set the <i>_isSubclassOfRunCompositeActor</i> to be true.
+   <p>
+   This actor also overwrite the requestChange() method and the 
+   executeChangerRequests() method to execute the given change. It does not
+   delegate the change request to the container, but execute the request 
+   immediately or record it, depending on the argument when 
+   setDeferringChangeRequests() is called, i.e. if setDeferChangeRequests() 
+   has been called with a true argument, then simply queue the request until 
+   either setDeferChangeRequests() is called with a false argument or 
+   executeChangeRequests() is called. 
 
-   @author Edward A. Lee, (Contributor: Yang Zhao)
+   @author Edward A. Lee, Yang Zhao
    @version $Id$
-@since Ptolemy II 4.0
-@Pt.ProposedRating Yellow (eal)
-@Pt.AcceptedRating Red (eal)
+   @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (eal)
+   @Pt.AcceptedRating Red (eal)
 */
 public class RunCompositeActor extends TypedCompositeActor {
 
@@ -170,6 +196,25 @@ public class RunCompositeActor extends TypedCompositeActor {
                                     + change.getDescription());
                         }
                         change.execute();
+                        //Note: The display of an entity in the UI window are
+                        //handled by some listeners's changeExecuted() method. 
+                        //When a change request is executed sucessfully, the 
+                        //listeners of it will be notified. Here, each change
+                        //request is set to have the same set of listeners as 
+                        //this actor's. But the listeners deal with UI changes
+                        //are not registered with this actor and in turn will 
+                        //not be notified when the change is executed, i.e. 
+                        //copy/paste entities to this actor couldn't be displayed.
+                        //To fix this problem, we issue a dumy change request 
+                        //to the container of this, which will notify the proper
+                        //listeners to update the graph. Yang
+                        //FIXME: instead of using a dumy change request, can we
+                        //set the listeners of the change to be the listeners of
+                        //the top level?
+                        MoMLChangeRequest dumyChange =
+                            new MoMLChangeRequest(this, getContainer(), "<group> </group>");
+                        dumyChange.setUndoable(true);
+                        getContainer().requestChange(dumyChange);
                     }
                 } finally {
                     _workspace.doneWriting();
@@ -202,7 +247,7 @@ public class RunCompositeActor extends TypedCompositeActor {
         if (_debugging) {
             _debug("---- Firing RunCompositeActor, which will execute a subsystem.");
         }
-        if (_isSubclassOfThis) {
+        if (_isSubclassOfRunCompositeActor) {
             super.fire();
             return;
         }
@@ -264,7 +309,7 @@ public class RunCompositeActor extends TypedCompositeActor {
             _debug("Called initialize()");
         }
         //Call the initialize method of the superclass.
-        if (_isSubclassOfThis) {
+        if (_isSubclassOfRunCompositeActor) {
             super.initialize();
         }
     }
@@ -285,7 +330,7 @@ public class RunCompositeActor extends TypedCompositeActor {
      */
     public boolean postfire() throws IllegalActionException {
         //Call the initialize method of the superclass.
-        if (_isSubclassOfThis) {
+        if (_isSubclassOfRunCompositeActor) {
             return super.postfire();
         }
         return true;
@@ -342,7 +387,7 @@ public class RunCompositeActor extends TypedCompositeActor {
             _debug("Called wrapup()");
         }
         //Call the method of the superclass.
-        if (_isSubclassOfThis) {
+        if (_isSubclassOfRunCompositeActor) {
             super.wrapup();
         }
     }
@@ -411,5 +456,5 @@ public class RunCompositeActor extends TypedCompositeActor {
      *  provided so that subclasses have a mechanism for doing
      *  this, since Java doesn't supported super.super.initialize(), etc.
      */
-    protected boolean _isSubclassOfThis = false;
+    protected boolean _isSubclassOfRunCompositeActor = false;
 }
