@@ -100,6 +100,7 @@ public class DDEApplet extends PtolemyApplet {
 	    _director.stopTime.setToken( new DoubleToken(stopTime) );
         } catch (Exception ex) {
             report("Failed to setup director:\n", ex);
+            _setupOK = false;
         }
     }
 

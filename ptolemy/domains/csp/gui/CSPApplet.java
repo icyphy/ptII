@@ -66,6 +66,7 @@ public class CSPApplet extends PtolemyApplet {
 	    _director = new CSPDirector(_toplevel, "CSPDirector");
         } catch (Exception ex) {
             report("Failed to setup director:\n", ex);
+            _setupOK = false;
         }
     }
 
