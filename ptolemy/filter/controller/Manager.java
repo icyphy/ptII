@@ -1,4 +1,4 @@
-/* Manager of the ptfilter.   
+/* Internel manager of filter package.   
  
 Copyright (c) 1997-1998 The Regents of the University of California.
 All rights reserved.
@@ -22,15 +22,13 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-$Id$ %S%
- 
+$Id$ 
 */
  
 package ptolemy.filter.controller;
 
 import java.util.*;
 import ptolemy.math.Complex;
-import ptolemy.math.PoleZero;
 import ptolemy.math.FType;
 import ptolemy.filter.filtermodel.*;
 import ptolemy.filter.view.*;
@@ -74,11 +72,8 @@ public class Manager {
        if (_fobj!= null){
           deletefilter();
        } 
-       _fobj = new FilterObj(this);
+       _fobj = new FilterObj();
        _fobj.init(name, type);
-       addpolezeroview();
-       addfreqview();
-       addimpulview();
        if (type == FType.IIR){ // IIR
           if (_opMode == FrameMode){ // frame mode, it is ok to start 
                                      // filter design now since all the 
@@ -88,17 +83,12 @@ public class Manager {
           }
           addfiltparamview(); 
        }
+       addpolezeroview();
+       addfreqview();
+       addimpulview();
         
     }
 
-    public void start(){
-       int type = _fobj.getType();
-       if (type==FType.IIR){ //IIR
-           _fobj.setIIRParameter(FType.Butterworth, FType.Bilinear, 
-                                 FType.Lowpass, 1.0);
-       } 
-    }
-  
     public PoleZeroView getPoleZeroView(){
        return _pzv;
     } 
@@ -116,33 +106,11 @@ public class Manager {
     } 
     
 
-    /**
-     * Set all parameters of the filter to the given value.  This function
-     * will create the filter object then passes all the parameters.
-     * Called by TMain when the new parameters are set by the user.
-     */ 
-    public void setupfilter(int trans, int approx, int f, 
-       double g1, double g2, double b1, double b2, double fs, String name){
-
-       double [] band = {b1, b2};
-       double [] gain = {g1, g2};
-       
-       _fobj = new FilterObj(this);
-    
-       // set the name, and type to be IIR
-       _fobj.init(name, 1);
-    
-       // set the parameters  
-       _fobj.setIIRParameter(approx, trans, f, fs);
-       _fobj.updateBandValue(band, gain, 0.0, 0.0);
-
-   }
-
    /** 
     * get the gain of the filter. Called by TMain for 
     * saving the filter to file.
     */
-   public double getfilterGain(){
+   public Complex getfilterGain(){
        return _fobj.getGain();
    }
 
@@ -151,7 +119,7 @@ public class Manager {
     * get the numerator of the filter. Called by TMain for
     * saving the filter to file.
     */
-   public double [] getfilterNumerator(){
+   public Complex [] getfilterNumerator(){
        return _fobj.getNumerator();
    } 
 
@@ -160,7 +128,7 @@ public class Manager {
     * get the denominator of the filter. Called by TMain for
     * saving the filter to file.
     */
-   public double [] getfilterDenominator(){
+   public Complex [] getfilterDenominator(){
        return _fobj.getDenominator();
    } 
 
@@ -171,14 +139,14 @@ public class Manager {
     */
    public int getfilter(Vector ival1, Vector ival2, Vector ival3, 
                         String name){
-      PoleZero [] pole;
-      PoleZero [] zero;
+      Complex [] pole;
+      Complex [] zero;
       name = null;
       if (_fobj!=null){
            pole = _fobj.getPole();
            for (int i = 0;i<pole.length;i++){
-                Double d1 = new Double(pole[i].re());  
-                Double d2 = new Double(pole[i].im());  
+                Double d1 = new Double(pole[i].real);  
+                Double d2 = new Double(pole[i].imag);  
                 Boolean po = new Boolean(true);  
                 ival1.addElement(d1); 
                 ival2.addElement(d2); 
@@ -186,8 +154,8 @@ public class Manager {
            }
            zero = _fobj.getZero();
            for (int i = 0;i<zero.length;i++){
-                Double d1 = new Double(zero[i].re());  
-                Double d2 = new Double(zero[i].im());  
+                Double d1 = new Double(zero[i].real);  
+                Double d2 = new Double(zero[i].imag);  
                 Boolean po = new Boolean(false);  
                 ival1.addElement(d1); 
                 ival2.addElement(d2); 
@@ -214,8 +182,8 @@ public class Manager {
               deletefilter();
          }
       
-         PoleZero [] pole;
-         PoleZero [] zero;
+         Complex [] pole;
+         Complex [] zero;
          int pcount = 0;
          int zcount = 0;
          int curpole = 0;
@@ -229,15 +197,15 @@ public class Manager {
              }
          } 
  
-         pole = new PoleZero[pcount];
-         zero = new PoleZero[zcount];
+         pole = new Complex[pcount];
+         zero = new Complex[zcount];
 
-         _fobj = new FilterObj(this);
+         _fobj = new FilterObj();
 // need reconstruct vector to feed into filter
          if (type == 1) { // IIR 
               Vector initvalue = new Vector();
               for (int i = 0; i<ival1.size();i++){
-                     PoleZero c = new PoleZero(new Complex(((Double)ival1.elementAt(i)).doubleValue(), ((Double)ival2.elementAt(i)).doubleValue()));
+                     Complex c = new Complex(((Double)ival1.elementAt(i)).doubleValue(), ((Double)ival2.elementAt(i)).doubleValue());
                      if(((Boolean)ival3.elementAt(i)).booleanValue()==true){
                          pole[curpole]=c;
                          curpole++;
@@ -247,7 +215,7 @@ public class Manager {
                      } 
               }
               _fobj.init(name, type);
-              _fobj.updatePoleZero(pole, zero);
+              _fobj.setPoleZeroGain(pole, zero, null, null, new Complex(1.0));
               addpolezeroview();
               addfreqview();
               addimpulview();
