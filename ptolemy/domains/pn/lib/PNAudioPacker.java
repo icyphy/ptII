@@ -68,8 +68,11 @@ public class PNAudioPacker extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    //public void setInitState(String filename) {
-    public void initialize() {
+    /** Initialize the actor.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
 	String filename = ((StringToken)_source.getToken()).stringValue();
 	try {
 	    _file = new FileOutputStream(filename, true);
