@@ -1081,12 +1081,12 @@ public class CalendarQueue {
 
         public Object take() {
             // remove the head
-            LLCell oldhead = head;
+            LLCell oldHead = head;
             head = head.next();
             if (head == null) {
                 tail = null;
             }
-            return oldhead.element();
+            return oldHead.element();
         }
 
         // These fields are public because I can assume that the outer
