@@ -159,6 +159,9 @@ HYVISUALPACKAGES = \
 			ptolemy.actor.lib.conversions \
 			ptolemy.actor.lib.gui \
 			ptolemy.actor.lib.io \
+			ptolemy.actor.lib.jai \
+			ptolemy.actor.lib.jmf \
+			ptolemy.actor.lib.joystick \
 			ptolemy.actor.lib.logic \
 			ptolemy.actor.lib.python \
 			ptolemy.actor.parameters \
