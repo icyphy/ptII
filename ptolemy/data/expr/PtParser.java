@@ -201,8 +201,8 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
 
 
     /** Add a constant to the list of constants that the parser recognizes.
-     *  It is a static method. It stores the constant in a Hashtable, with 
-     *  the corresponding entry for each name being a ptolemy.data.Token 
+     *  It is a static method. The constants are stored in a hash table by
+     *  the Constants class. The entry for each name is a ptolemy.data.Token 
      *  of the appropriate type. The value for the constant can be given
      *  in a ptolemy.data.Token or in one of the data wrapper classes 
      *  in java.lang.
@@ -217,9 +217,6 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         if ( (value == null) || (name == null)) {
             throw new IllegalArgumentException("PtParser: cannot register " +
                     "a constant if either the name or value object is null.");
-        }
-        if (_constantsRecognized == null) {
-            _constantsRecognized = new Hashtable();
         }
         ptolemy.data.Token tmp;
         if  (value instanceof ptolemy.data.Token) {
@@ -240,7 +237,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
             throw new IllegalArgumentException("PtParser: cannot register " +
                     name + "  as a constant of the parser.");
         }
-        _constantsRecognized.put(name, tmp);
+        Constants.add(name, tmp);
         return;
     }
 
@@ -276,23 +273,13 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      */
     protected Variable _owner;
 
-    /** Initialize the static variables containing the constants 
-     *  recognized by the Parser and the classes searched by the parser 
-     *  upon encountering a function call.
+    /** Initialize the static variable containing the classes searched by
+     *  the parser upon encountering a function call.
      */
     private void _initialize() {
         if (!_alreadyInitialized) {
             //System.out.println("Initializing...");
             _alreadyInitialized = true;
-            registerConstant("PI", new DoubleToken(java.lang.Math.PI));
-            registerConstant("pi", new DoubleToken(java.lang.Math.PI));
-            registerConstant("E", new DoubleToken(java.lang.Math.E));
-            registerConstant("e", new DoubleToken(java.lang.Math.E));
-            Complex i = new Complex(0.0, 1.0);
-            registerConstant("i", new ComplexToken(i));
-            registerConstant("j", new ComplexToken(i));
-            registerConstant("true", new BooleanToken(true));
-            registerConstant("false", new BooleanToken(false));
             registerFunctionClass("java.lang.Math");
             registerFunctionClass("ptolemy.data.expr.UtilityFunctions");
             registerFunctionClass("ptolemy.data.expr.FixPointFunctions");
@@ -309,14 +296,14 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
                 result = true;
             }
         }
-        if (_constantsRecognized.containsKey(token.image)) {
+        if (Constants.get(token.image) != null) {
             result = true;
         }
         return result;
     }
 
-    /* Flag indicating if the default constants and classes searched 
-     * by the parser have already been loaded.
+    /* Flag indicating whether the default set of classes searched 
+     * by the parser has already been loaded.
      */
     private static boolean _alreadyInitialized = false;
 
@@ -325,14 +312,6 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      *  contains the java.lang.Math class.
      */
     private static LinkedList _classesSearched;
-
-    /*  Stores the Tokens corresponding to constants that the parser
-     *  recognizes. It stores them by name, with each name corresponding
-     *  to a ptolemy.data.Token. It is static, and by default only 
-     *  contains the java.lang.Math PI and E constants and the imaginary
-     *  numbers i and j.
-     */
-    private static Hashtable _constantsRecognized;
 
     /*  Stores the variables to which the input expression can reference
      */
@@ -428,7 +407,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         x = jj_consume_token(COND_OR);
         logicalAnd();
-        jjtn001._lexicalTokens.add(x);
+                      jjtn001._lexicalTokens.add(x);
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -1196,10 +1175,9 @@ String tidied, x;
            if (_owner != null) {
                 referredVar._addValueDependent(_owner);
             }
-        } else if (_constantsRecognized.containsKey(token.image)) {
-            // constant is registered with the parser.
-            Object tmp = _constantsRecognized.get(token.image);
-            jjtn006._ptToken = (ptolemy.data.Token)tmp;
+        } else if (Constants.get(token.image) != null) {
+            // A named constant that is recognized by the parser.
+            jjtn006._ptToken = Constants.get(token.image);
             jjtn006._isConstant = true;
         } else {
             if (true) {
@@ -1259,10 +1237,9 @@ String tidied, x;
             referredVar._addValueDependent(_owner);
           }
           isArrayRef = true;
-        } else if (_constantsRecognized.containsKey(x.image)) {
-          // constant is registered with the parser.
-          Object tmp = _constantsRecognized.get(x.image);
-          jjtn001._ptToken = (ptolemy.data.Token)tmp;
+        } else if (Constants.get(x.image) != null) {
+          // A named constant that is recognized by the parser.
+          jjtn001._ptToken = Constants.get(x.image);
           jjtn001._isConstant = true;
           isArrayRef = true;
         }

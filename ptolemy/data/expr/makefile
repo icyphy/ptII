@@ -68,6 +68,7 @@ JSRCS = \
 	ASTPtRootNode.java \
 	ASTPtSumNode.java \
 	ASTPtUnaryNode.java \
+	Constants.java \
 	Parameter.java \
 	UnknownResultException.java \
 	UtilityFunctions.java \
