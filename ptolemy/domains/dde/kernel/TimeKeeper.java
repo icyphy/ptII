@@ -507,7 +507,7 @@ public class TimeKeeper {
      *  TimeKeeper currently has receivers that contain IGNORE
      *  tokens at the head of their queues.
      * @param ignore Set to true if IGNORE tokens exist at the
-     *  head of a receiver queue; set to false othewise.
+     *  head of a receiver queue; set to false otherwise.
      */
     void setIgnoredTokens(boolean ignore) {
 	_ignoredReceivers = ignore;
