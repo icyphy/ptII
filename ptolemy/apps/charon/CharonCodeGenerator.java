@@ -404,6 +404,7 @@ public class CharonCodeGenerator extends Attribute {
 				 + outportName;
 	    }
 	}
+	if (outputString != "") outputString += ";";
 
 	if (privateVariables.length() != 0) privateVariables += ";";
 

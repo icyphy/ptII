@@ -43,7 +43,10 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
-	CharonCodeGenerator.java
+	Agent.java \
+	CharonCodeGenerator.java \
+	CharonToPtolemyII.java \
+	CharonProcessor.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
