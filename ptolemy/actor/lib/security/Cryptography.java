@@ -252,7 +252,7 @@ public class Cryptography extends TypedAtomicActor {
      *
      * @param initialData data to be transformed.
      * @return byte[] the transformed data.
-     * @throws IllegalActionException when exception is thrown.
+     * @exception IllegalActionException when exception is thrown.
      */
     protected byte[] _crypt(byte[] initialData)throws IllegalActionException{
         return initialData;
@@ -263,7 +263,7 @@ public class Cryptography extends TypedAtomicActor {
      *  then the key size is set to this value.  If the algorithm is not found
      *  in this list then and exception is thrown.
      *
-     * @throws IllegalActionException when a key size is not specified and the
+     * @exception IllegalActionException when a key size is not specified and the
      *          does not exist in the list below.
      */
     protected void _defaultKeySize() throws IllegalActionException{
@@ -304,7 +304,7 @@ public class Cryptography extends TypedAtomicActor {
      *
      * @param dataBytes data to be converted to an ArrayToken.
      * @return dataArrayToken the resulting ArrayToken.
-     * @throws IllegalActionException if ArrayTOken can not be created.
+     * @exception IllegalActionException if ArrayTOken can not be created.
      */
     protected ArrayToken _unsignedByteArrayToArrayToken( byte[] dataBytes)
             throws IllegalActionException{

@@ -127,7 +127,7 @@ public class SignatureSigner extends SignatureActor {
      *  port.  All parameters should be the same as the corresponding
      *  encryption actor.
      *
-     *  @throws IllegalActionException if thrown by base class.
+     *  @exception IllegalActionException if thrown by base class.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -157,7 +157,7 @@ public class SignatureSigner extends SignatureActor {
      *
      * @param initialData the data to be decrypted.
      * @return byte[] the decrypted data.
-     * @throws IllegalActionException if exception is thrown.
+     * @exception IllegalActionException if exception is thrown.
      * @exception IOException when error occurs in ByteArrayOutputStream.
      * @exception InvalideKeyException when key is invalid.
      * @exception BadPaddingException when padding is bad.

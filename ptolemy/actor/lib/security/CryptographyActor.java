@@ -213,7 +213,7 @@ public class CryptographyActor extends TypedAtomicActor {
      *
      * @param key the object whose byte array value is determined.
      * @return the byte array of the key object.
-     * @throws IllegalActionException if IOException or ClassNotFound
+     * @exception IllegalActionException if IOException or ClassNotFound
      *  exceptions occurs.
      */
     protected Key _bytesToKey(byte keyBytes[])throws IllegalActionException{
@@ -236,7 +236,7 @@ public class CryptographyActor extends TypedAtomicActor {
 
     /** Create a pair of keys to be used for asymmetric algorithms.
      *
-     * @throws IllegalActionException if algorithm or provider is not found.
+     * @exception IllegalActionException if algorithm or provider is not found.
      *
      */
     protected KeyPair _createAsymmetricKeys()throws IllegalActionException{
@@ -262,7 +262,7 @@ public class CryptographyActor extends TypedAtomicActor {
 
     /** Create a symmetric secret key for symmetric algorithms.
      *
-     * @throws IllegalActionException if algorithm or provider is not found.
+     * @exception IllegalActionException if algorithm or provider is not found.
      */
     protected Key _createSymmetricKey() throws IllegalActionException{
         try{
@@ -288,7 +288,7 @@ public class CryptographyActor extends TypedAtomicActor {
      *
      * @param key the object whose byte array value is determined.
      * @return the byte array of the key object.
-     * @throws IllegalActionException if IOException occurs.
+     * @exception IllegalActionException if IOException occurs.
      */
     protected byte[] _keyToBytes(Key key) throws IllegalActionException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -308,7 +308,7 @@ public class CryptographyActor extends TypedAtomicActor {
      *
      * @param dataBytes the data to be processed.
      * @return dataBytes the data unchanged.
-     * @throws IlligalActionException if subclass throws exception.
+     * @exception IlligalActionException if subclass throws exception.
      */
     protected byte[] _process(byte [] dataBytes)throws IllegalActionException{
         return dataBytes;
@@ -318,7 +318,7 @@ public class CryptographyActor extends TypedAtomicActor {
      *
      * @param dataBytes data to be converted to an ArrayToken.
      * @return dataArrayToken the resulting ArrayToken.
-     * @throws IllegalActionException if ArrayTOken can not be created.
+     * @exception IllegalActionException if ArrayTOken can not be created.
      */
     protected ArrayToken _unsignedByteArrayToArrayToken( byte[] dataBytes)
             throws IllegalActionException{

@@ -277,7 +277,7 @@ public class Decryption extends TypedAtomicActor {
     /** Get parameter information and sets token poduction for iniitialize to
      *  one.
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -312,7 +312,7 @@ public class Decryption extends TypedAtomicActor {
     /** Create a pair of keys to be used for asymmetric encryption and
      *  decryption.
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      * @exception NoSuchAlgorithmException when algorithm is not found.
      * @exception NoSuchProviderException when provider is not found.
      */
@@ -352,7 +352,7 @@ public class Decryption extends TypedAtomicActor {
 
     /** Create a symmetric secret key for encryption and decryption use.
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected void _createSymmetricKey() throws IllegalActionException{
         try{
@@ -375,7 +375,7 @@ public class Decryption extends TypedAtomicActor {
      *
      * @param initialData
      * @return byte[]
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      * @exception IOException
      * @exception InvalideKeyException when key is invalid.
      * @exception BadPaddingException when padding is bad.
@@ -425,7 +425,7 @@ public class Decryption extends TypedAtomicActor {
      *
      * @param dataBytes
      * @return dataArrayToken
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected ArrayToken _UnsignedByteArrayToArrayToken( byte[] dataBytes)throws IllegalActionException{
         int bytesAvailable = dataBytes.length;

@@ -215,7 +215,7 @@ public class SymmetricEncryption extends CipherActor {
 
     /** Sets token production for initialize to one and resolves scheduling.
      *
-     * @throws IllegalActionException if thrown by base class.
+     * @exception IllegalActionException if thrown by base class.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -232,7 +232,7 @@ public class SymmetricEncryption extends CipherActor {
      *
      * @param dataBytes the data to be encrypted.
      * @return byte[] the encrypted data.
-     * @throws IllegalActionException if exception below it thrown.
+     * @exception IllegalActionException if exception below it thrown.
      * @exception IOException if error occurs in ByteArrayOutputStream.
      * @exception InvalideKeyException if key is invalid.
      * @exception BadPaddingException if padding is bad.

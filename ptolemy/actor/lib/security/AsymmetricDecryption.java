@@ -137,7 +137,7 @@ public class AsymmetricDecryption extends CipherActor {
 
     /** Sets token production for keyOut to 1 and resolves scheduling.
      *
-     * @throws IllegalActionException If thrown by base class.
+     * @exception IllegalActionException If thrown by base class.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();

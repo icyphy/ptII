@@ -83,7 +83,7 @@ public class SignatureActor extends CryptographyActor {
     /** This method initializes the Signature object.  If provider is left
      *  as "SystemDefault" the system chooses the provider based on the JCE.
      *
-     * @throws IllegalActionException if exception below is thrown.
+     * @exception IllegalActionException if exception below is thrown.
      * @exception NoSuchAlgorihmException when the algorithm is not found.
      * @exception NoSuchProviderException if the specified provider does not
      *  exist.

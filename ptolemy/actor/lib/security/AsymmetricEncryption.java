@@ -131,7 +131,7 @@ public class AsymmetricEncryption extends CipherActor {
      *
      * @param dataBytes the data to be encrypted.
      * @return byte[] the encrypted data.
-     * @throws IllegalActionException if an exception below is thrown.
+     * @exception IllegalActionException if an exception below is thrown.
      * @exception IOException when error occurs in ByteArrayOutputStream.
      * @exception InvalideKeyException when key is invalid.
      * @exception BadPaddingException when padding is bad.

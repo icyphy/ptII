@@ -131,9 +131,9 @@ public class SymmetricDecryption extends CipherActor {
      *  corresponding encryption actor.
      *
      *  @exception IllegalActionException if exception below is thrown.
-     *  @throws IOException if retrieving paramters fails.
-     *  @throws NoSuchAlgorithmException if algoritm does not exist.
-     *  @throws NoSuchProviderException if provider does not exist.
+     *  @exception IOException if retrieving paramters fails.
+     *  @exception NoSuchAlgorithmException if algoritm does not exist.
+     *  @exception NoSuchProviderException if provider does not exist.
      */
     public void fire() throws IllegalActionException {
         try{
@@ -182,7 +182,7 @@ public class SymmetricDecryption extends CipherActor {
      *
      * @param dataBytes the data to be decrypted.
      * @return byte[] the decrypted data.
-     * @throws IllegalActionException if an exception below is thrown.
+     * @exception IllegalActionException if an exception below is thrown.
      * @exception IOException if error occurs in ByteArrayOutputStream.
      * @exception InvalideKeyException if key is invalid.
      * @exception BadPaddingException if padding is bad.
