@@ -119,7 +119,7 @@ test PtParser-2.4 {Construct a Parser, try simple double expressions} {
     set res4  [ $root evaluateParseTree ]
 
     list [$res toString] [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {ptolemy.data.DoubleToken(9.7) ptolemy.data.DoubleToken(-5.6) ptolemy.data.DoubleToken(29.400) ptolemy.data.DoubleToken(1.6) ptolemy.data.DoubleToken(2)}
+} {ptolemy.data.DoubleToken(9.7) ptolemy.data.DoubleToken(-5.6) ptolemy.data.DoubleToken(29.400) ptolemy.data.DoubleToken(1.6) ptolemy.data.DoubleToken(2.0)}
 ######################################################################
 ####
 # 
@@ -321,7 +321,7 @@ test PtParser-7.2 {Test complicated expression within boolean test condition} {
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {ptolemy.data.DoubleToken(24)}
+} {ptolemy.data.DoubleToken(24.0)}
 ######################################################################
 ####
 # 
@@ -351,7 +351,7 @@ test PtParser-8.0 {Test method calls on PtTokens} {
     set res1  [ $root1 evaluateParseTree ]
 
     list [$res1 toString] 
-} {ptolemy.data.DoubleToken(7)}
+} {ptolemy.data.DoubleToken(7.0)}
 ######################################################################
 ####
 # 
