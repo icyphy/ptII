@@ -107,6 +107,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
      */
     public boolean isPtolemyExceptionKind(int kind) {
         return (/*(kind >= TYPE_KIND_CHANGE_FAILED_EXCEPTION) &&*/
+		(kind >= TYPE_KIND_ILLEGAL_ACTION_EXCEPTION) &&
                 (kind <= TYPE_KIND_NO_TOKEN_EXCEPTION));
     }
 
@@ -659,7 +660,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         //CHANGE_FAILED_EXCEPTION_TYPE = CHANGE_FAILED_EXCEPTION_DECL.getDefType();
 
-        CompileUnitNode illegalActionUnit = StaticResolution.load(
+       CompileUnitNode illegalActionUnit = StaticResolution.load(
                 SearchPath.NAMED_PATH.openSource(
                         "ptolemy.kernel.util.IllegalActionException", true), 1);
 
