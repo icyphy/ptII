@@ -39,6 +39,7 @@ import ptolemy.domains.de.kernel.DEIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEMessageSource
@@ -124,7 +125,8 @@ public class DEMessageSource extends TypedAtomicActor {
                 // compute a random delay between zero and MaxDelay.
                 double delay = maxDelayValue * Math.random();
                 dir.fireAt(this, now + delay);
-                _nextMsgTime = now + delay;
+                _nextMsgTime = Utilities.round(now + delay,
+                    getDirector().getTimeResolution());
             }
 
             //System.out.println("DEMessageSource " + this.getFullName() +
@@ -132,7 +134,7 @@ public class DEMessageSource extends TypedAtomicActor {
 
         }
 
-        if (Math.abs(now - _nextMsgTime) < 1e-14) {
+        if (now == _nextMsgTime) {
             ++_msgNum;
             output.broadcast(new IntToken(_msgNum));
         } else {
