@@ -39,7 +39,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 EXTRA_SRCS = \
-	index.html
+	index.htm
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
@@ -54,12 +54,12 @@ DIRS =
 
 ALLJSRCS = 	*.java
 
-all: codeDoc/tree.html
+all: codeDoc/tree.htm
 
-codeDoc/tree.html: ../*.java
+codeDoc/tree.htm: ../*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	(cd ..; CLASSPATH=$(CLASSPATH):$(JAVAHOME)/lib/classes.zip:.. $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
-	@for x in codeDoc/*.html; do \
+	@for x in codeDoc/*.htm; do \
 		echo "Fixing paths in $$x"; \
 		sed -e 's|<a href="java|<a href="$(JAVAHTMLDIR)/java|g' \
 		-e 's|<img src="images/|<img src="$(JAVAHTMLDIR)/images/|g' \

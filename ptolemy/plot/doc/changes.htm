@@ -30,9 +30,9 @@ on the various browsers.
 <li> Added <a href="../Histogram.java"><CODE>Histogram.java</CODE></a>,
 <a href="../HistogramApplet.java"><CODE>HistogramApplet.java</CODE></a>,
 and 
-<a href="../demo/Histogram.html"><CODE>../demo/Histogram.java</CODE></a>.
+<a href="../demo/Histogram.htm"><CODE>../demo/Histogram.java</CODE></a>.
 
-<li> Moved index.html out of the top level, and set up files to use frames.
+<li> Moved index.htm out of the top level, and set up files to use frames.
 <li> Modified top level makefile to use InstallShield's JShield
 to build releases.
 <li> Added <a href="download"><code>doc/download</code></a>
@@ -43,7 +43,7 @@ Use <CODE>"\t"</CODE> instead of an actual tab so as to avoid problems
 with reindentation.
 Reported by Louis Hernandez, Jr. &lt;lhernan@sandia.gov&gt;
 
-<li> Added <a href="thirdparty.html">Third Party uses of Ptplot</a>
+<li> Added <a href="thirdparty.htm">Third Party uses of Ptplot</a>
 web page
 
 <li> Ptplot2.1 was released as part of 
@@ -53,7 +53,7 @@ web page
 
 <H2>The changes between ptplot2.0a2 and ptplot2.0</H2>
 <menu>
-<li> Added <a href="thirdparty.html">Third Party uses of Ptplot</a>
+<li> Added <a href="thirdparty.htm">Third Party uses of Ptplot</a>
 web page
 </menu>
 
@@ -65,7 +65,7 @@ web page
 
 <H2>The changes between ptplot2.0a1 and ptplot2.0a2</H2>
 <menu>
-<li> Changed image on index.html
+<li> Changed image on index.htm
 <li> Modified help and about content
 <li> Modified Message constructors
 <li> No longer ship LogicAnalyzer, it is not ready
@@ -290,7 +290,7 @@ machine, then use the <code>-littleendian</code> flag.
 native to the machine where the Java Ptplot process is running.
 The other binary format read by the <CODE>-binary</CODE> option,
 known as the raw binary format is always reads data as big-endian.
-The <a href="../demo/Endian.html">Endian Examples</a> page
+The <a href="../demo/Endian.htm">Endian Examples</a> page
 illustrates use of the three options.
 
 <li> The Pxgraph class and the <code>pxgraph</code>script now take
@@ -340,7 +340,7 @@ The change that caused the bug was that in Ptplot1.2, we used
 <code>java.io.StreamTokenizer</code> to parse the
 numbers.  Unfortunately, StreamTokenizer is buggy, it fails to parse
 scientific notation.  For more information, see
-<A href="http://developer.javasoft.com/developer/bugParade/bugs/4079180.html"><code>http://developer.javasoft.com/developer/bugParade/bugs/4079180.html</code></A>.
+<A href="http://developer.javasoft.com/developer/bugParade/bugs/4079180.htm"><code>http://developer.javasoft.com/developer/bugParade/bugs/4079180.htm</code></A>.
 The fix was to adapt the Ptplot1.1 number parsing code to handle error bars.
  <br>
 This bug was reported by Marion Schroeder &lt;schroeder@hmi.de&gt;.
@@ -350,17 +350,17 @@ This bug was reported by Marion Schroeder &lt;schroeder@hmi.de&gt;.
 <menu>
 <li> Added support for JAR files.
 
-<li> Added <A href="troubleshooting.html">Troubleshooting Ptplot</A>
-and <A href="ptplotfaq.html">Ptplot FAQ</A>.
+<li> Added <A href="troubleshooting.htm">Troubleshooting Ptplot</A>
+and <A href="ptplotfaq.htm">Ptplot FAQ</A>.
 
 
 <li> Added a demo that illustrates a
-<A href="../demo/Ptplot.html">JavaScript Interface to Ptplot</A>.
+<A href="../demo/Ptplot.htm">JavaScript Interface to Ptplot</A>.
 
 <li> If <code>setXRange()</code> or <code>setYRange()</code> are not
 explicitly called by the user, then the data is padded slightly so that
 the data is not plotted on the axes.  The
-<A href="../demo/Marks.html">Black and white plot using unique marks</A>
+<A href="../demo/Marks.htm">Black and white plot using unique marks</A>
 demo is padded.  Many of the other demos are not padded because the X
 and Y ranges are explicitly set either in the data file or in the Java
 code that created the plot.
@@ -369,7 +369,7 @@ code that created the plot.
 <li> Raw binary files that consist only of 4 byte floats are now supported.
 Formerly, ptplot only supported Joe Buck's binary format, which used
 single characters as plot directives (see the
-<A href="codeDoc/ptolemy.plot.Pxgraph.html#-binary flag">javadoc Pxgraph documentation</A>
+<A href="codeDoc/ptolemy.plot.Pxgraph.htm#-binary flag">javadoc Pxgraph documentation</A>
 for details about this format).  The new raw binary format
 now reads the first byte, and if it is not a <code>d</code>, then
 the raw 4 byte float format is assumed.
@@ -382,7 +382,7 @@ format.
 consists of four numbers, then the first two numbers are assumed to be the
 x and y values, and the last two numbers are assumed to be the lower and upper
 y values for the error bar.  The numbers can be separated by white space
-or a comma.  See the <A href="../demo/ErrorBars.html">Error Bars</A> demo
+or a comma.  See the <A href="../demo/ErrorBars.htm">Error Bars</A> demo
 for more information.
  <br>The error bar code is based on a code fragment from
 Michael Altmann &lt;michael@email.labmed.umn.edu&gt;.
@@ -391,7 +391,7 @@ Michael Altmann &lt;michael@email.labmed.umn.edu&gt;.
 controlled by the file directives: <code>XLog: on</code> and
 <code>YLog: on</code>.  The <code>pxgraph</code> script
 now takes <code>-lnx</code> and <code>-lny</code> arguments as well.
-See the <A href="../demo/LogAxes.html">Log Axes</A> demo for more information.
+See the <A href="../demo/LogAxes.htm">Log Axes</A> demo for more information.
 
 <li> Fixed problem with recycling colors and marks.
 The bug was reported by Lutz Harnisch, &lt;Lutz.Harnisch@hmrag.com&gt;
@@ -411,13 +411,13 @@ Formerly, they used
 <code>code="ptplot.Plot"</code>
 <li> The directory structure has been reorganized so that
 the plot classes are in ptplot, and the demo classes are in
-<A href="../demo/toc.html" target="toc"><code>ptplot/demo</code></A>.
+<A href="../demo/toc.htm" target="toc"><code>ptplot/demo</code></A>.
 This means that the ptplot.zip does not contain the demo
 classes, which is better if anyone actually wants to _use_ the plotter
 instead of just running the demos.
 <li> There is a Playing Wave Applet that uses real time audio.
 <I>Note, this demo was removed, see
-<a href="http://ptolemy.eecs.berkeley.edu/java/old/ptplot1.3/ptplot/demo/audio/PlayingWave.html"><CODE>http://ptolemy.eecs.berkeley.edu/java/old/ptplot1.3/ptplot/demo/audio/PlayingWave.html</CODE></a>
+<a href="http://ptolemy.eecs.berkeley.edu/java/old/ptplot1.3/ptplot/demo/audio/PlayingWave.htm"><CODE>http://ptolemy.eecs.berkeley.edu/java/old/ptplot1.3/ptplot/demo/audio/PlayingWave.htm</CODE></a>
 </I>
 <li> Edward Lee fixed a bar graph label bug reported by Marc Ellis.
 <li> A few other minor bugs were fixed.

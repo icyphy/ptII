@@ -54,23 +54,23 @@ JSRCS = \
 	PlotLiveDemoApplet.java
 
 EXTRA_SRCS = $(JSRCS) \
-	BarGraph.html \
-	Binary.html \
-	Butterfly.html \
-	Endian.html \
-	ErrorBars.html \
-	FourierSeries.html \
-	Live.html \
-	LogAxes.html \
-	Marks.html \
-	Ptplot.html \
+	BarGraph.htm \
+	Binary.htm \
+	Butterfly.htm \
+	Endian.htm \
+	ErrorBars.htm \
+	FourierSeries.htm \
+	Live.htm \
+	LogAxes.htm \
+	Marks.htm \
+	Ptplot.htm \
 	Ptplot.js \
-	PtplotHelp.html \
-	Sinusoids.html \
+	PtplotHelp.htm \
+	Sinusoids.htm \
 	bargraph.plt \
 	data.plt \
 	errorbars.plt \
-	index.html \
+	index.htm \
 	logaxes.plt
 
 # The data directory contains binary plot files that cannot be checked

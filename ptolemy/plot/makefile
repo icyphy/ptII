@@ -46,7 +46,7 @@ include $(CONFIG)
 # Variables and rules used to create source file distributions
 PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
-#    Pxgraph.java, PlotApplication.java, doc/index.html, doc/changes.html
+#    Pxgraph.java, PlotApplication.java, doc/index.htm, doc/changes.htm
 PTVERSION =	2.2
 PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
@@ -81,7 +81,7 @@ EXTRA_SRCS = $(JSRCS) \
 	PtolemyGraphics1_1.java.in \
 	PtolemyGraphics1_2.java.in \
 	copyright.txt \
-	index.html \
+	index.htm \
 	ptplot \
 	pxgraph.bat
 
@@ -251,7 +251,7 @@ fixtmpdist:
 	echo "implemented in Java." >>  $(PTTMPDIR)/$(PTDIST)/README
 	echo "Ptplot is embeddable in applets and applications." >> \
 		$(PTTMPDIR)/$(PTDIST)/README
-	echo "For more information, see ptolemy/plot/index.html" >> \
+	echo "For more information, see ptolemy/plot/index.htm" >> \
 		$(PTTMPDIR)/$(PTDIST)/README
 	@echo "Remove LogicAnalyzer from makefile"
 	grep -v LogicAnalyzer \
@@ -264,13 +264,13 @@ fixtmpdist:
 	@echo "Fixing up doc/download directory"
 	rm -rf $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download
 	mkdir $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download
-	echo "<html>" > $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
-	echo "<head>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
-	echo "<title>Download Ptplot</title>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
-	echo '<body bgcolor="#faf0e6">'  >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
-	echo "<H1>Download Ptplot<H1>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
-	echo "The Ptplot distribution itself does not include all the available download formats." >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
-	echo 'See <a href="http://ptolemy.eecs.berkeley.edu/ptplot/download"><code>http://ptolemy.eecs.berkeley.edu/ptplot/download</code></a>' >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
-	echo "<hr>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
-	echo "</body>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
-	echo "</html>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.html
+	echo "<html>" > $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
+	echo "<head>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
+	echo "<title>Download Ptplot</title>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
+	echo '<body bgcolor="#faf0e6">'  >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
+	echo "<H1>Download Ptplot<H1>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
+	echo "The Ptplot distribution itself does not include all the available download formats." >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
+	echo 'See <a href="http://ptolemy.eecs.berkeley.edu/ptplot/download"><code>http://ptolemy.eecs.berkeley.edu/ptplot/download</code></a>' >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
+	echo "<hr>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
+	echo "</body>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
+	echo "</html>" >> $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/download/index.htm
