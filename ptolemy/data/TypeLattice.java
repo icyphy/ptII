@@ -151,12 +151,16 @@ public final class TypeLattice
         Class tObject = ObjectToken.class;
         Class tString = StringToken.class;
 
+	Class tMatrixUpperBound = MatrixUpperBound.class;
+
         Class tNumerical = Numerical.class;
         Class tBooleanMatrix = BooleanMatrixToken.class;
         Class tLongMatrix = LongMatrixToken.class;
         Class tComplexMatrix = ComplexMatrixToken.class;
         Class tDoubleMatrix = DoubleMatrixToken.class;
 	Class tIntMatrix = IntMatrixToken.class;
+
+	Class tMatrixLowerBound = MatrixLowerBound.class;
 
 	Class tBoolean = BooleanToken.class;
 
@@ -172,12 +176,14 @@ public final class TypeLattice
         lattice.add(tObject);
 
         lattice.add(tString);
+	lattice.add(tMatrixUpperBound);
         lattice.add(tNumerical);
         lattice.add(tBooleanMatrix);
         lattice.add(tLongMatrix);
         lattice.add(tComplexMatrix);
         lattice.add(tDoubleMatrix);
         lattice.add(tIntMatrix);
+	lattice.add(tMatrixLowerBound);
 	lattice.add(tBoolean);
 	lattice.add(tScalar);
 	lattice.add(tLong);
@@ -191,16 +197,21 @@ public final class TypeLattice
         lattice.addEdge(tNaT, tObject);
 
         lattice.addEdge(tString, tGeneral);
-        lattice.addEdge(tBooleanMatrix, tString);
+        lattice.addEdge(tMatrixUpperBound, tString);
+        lattice.addEdge(tBooleanMatrix, tMatrixUpperBound);
         lattice.addEdge(tBoolean, tBooleanMatrix);
         lattice.addEdge(tNaT, tBoolean);
 
-	lattice.addEdge(tNumerical, tString);
+	lattice.addEdge(tNumerical, tMatrixUpperBound);
         lattice.addEdge(tLongMatrix, tNumerical);
         lattice.addEdge(tComplexMatrix, tNumerical);
         lattice.addEdge(tDoubleMatrix, tComplexMatrix);
         lattice.addEdge(tIntMatrix, tLongMatrix);
         lattice.addEdge(tIntMatrix, tDoubleMatrix);
+
+        lattice.addEdge(tMatrixLowerBound, tBooleanMatrix);
+        lattice.addEdge(tMatrixLowerBound, tIntMatrix);
+        lattice.addEdge(tNaT, tMatrixLowerBound);
 
 	lattice.addEdge(tScalar, tNumerical);
 	lattice.addEdge(tLong, tScalar);
