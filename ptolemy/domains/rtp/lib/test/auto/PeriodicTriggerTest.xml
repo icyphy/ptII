@@ -43,7 +43,7 @@
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="eval(readFile(findFile(&quot;ptolemy/domains/rtp/kernel/test/auto/simpleTestData.txt&quot;)))">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="eval(readFile(findFile(&quot;ptolemy/domains/rtp/lib/test/auto/PeriodicTriggerTestData.txt&quot;)))">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="2000.0">
         </property>
