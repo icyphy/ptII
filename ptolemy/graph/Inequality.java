@@ -28,12 +28,16 @@
 
 package pt.graph;
 
+import java.util.Vector;
+
 //////////////////////////////////////////////////////////////////////////
 //// Inequality
 /**
 An inequality over a CPO.
 Each inequality consists of two <code>InequalityTerm</code>s, the relation
-between them is <i>less than or equal</i>.
+between them is <i>less than or equal to</i>.  In addition, an inequality
+keeps a list of variables in it.  The variables are
+<code>Inequalityterm</code>s.
 
 @author Yuhong Xiong
 $Id$
@@ -47,8 +51,15 @@ public class Inequality {
      *   equal to the <code>greaterTerm</code> term.
      *  @param greaterTerm an <code>InequalityTerm</code> that is greater than
      *   or equal to the <code>lesserTerm</code> term.
+     *  @exception IllegalArgumentException <code>lesserTerm</code> or
+     *   <code>greaterTerm</code> is <code>null</code>.
      */
     public Inequality(InequalityTerm lesserTerm, InequalityTerm greaterTerm) {
+	if (lesserTerm == null || greaterTerm == null) {
+	    throw new IllegalArgumentException("Inequality.Inequality: " +
+		"lesserTerm of greaterTerm is null.");
+	}
+
         _lesserTerm = lesserTerm;
         _greaterTerm = greaterTerm;
     }
@@ -56,14 +67,28 @@ public class Inequality {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Gets the greater term of this inequality.
+    /*  Adds the specified <code>InequalityTerm</code> to the list of
+     *  variabls in this inequality.
+     *  @param variable an <code>InequalityTerms</code> representing
+     *   a variable in this inequality.
+     *  @exception IllegalArgumentException variable is <code>null</code>.
+     */
+    public void addVariable(InequalityTerm variable) {
+	if (variable == null) {
+	    throw new IllegalArgumentException("Inequality.addVariable: " +
+			"the variable is null.");
+	}
+	_variables.addElement(variable);
+    }
+
+    /** Returns the greater term of this inequality.
      *  @return an <code>InequalityTerm</code>
      */
     public InequalityTerm greaterTerm() {
         return _greaterTerm;
     }
  
-    /** Gets the term that is less than the other in this inequality.
+    /** Returns the term that is less than the other in this inequality.
      *  @return an <code>InequalityTerm</code>
      */
     public InequalityTerm lesserTerm() {
@@ -72,7 +97,7 @@ public class Inequality {
 
     /** Tests if this inequality is satisfied with the current value
      *  of variables.
-     *  @param cpo a CPO over which this inequality is defined over.
+     *  @param cpo a CPO over which this inequality is defined.
      *  @return <code>true</code> if this inequality is satisfied;
      *   <code>false</code> otherwise.
      */
@@ -82,9 +107,25 @@ public class Inequality {
         return (result == CPO.STRICT_LESS || result == CPO.EQUAL);
     }
     
+    /** Returns all the variables in this inequality.
+     *  @return an array of <code>InequalityTerm</code>s that are 
+     *   variables in this inequality.
+     */
+    public InequalityTerm[] variables() {
+	// note: can't use toArray() since return type is InequalityTerm[]
+	InequalityTerm[] result = new InequalityTerm[_variables.size()];
+	for (int i = 0; i < _variables.size(); i++) {
+	    result[i] = (InequalityTerm)_variables.elementAt(i);
+	}
+	return result;
+    }
+
     ////////////////////////////////////////////////////////////////////////
     ////                       private variables                        ////
     private InequalityTerm _lesserTerm = null;
     private InequalityTerm _greaterTerm = null;
+
+    // list of InequalityTerms that are variables. initialCapacity is 2.
+    private Vector _variables = new Vector(2);
 }
 
