@@ -1,4 +1,4 @@
-/* Wrapper class to start up the Ptiny Sandbox version
+/* Wrapper class to start up the Ptiny Sandbox
 
  Copyright (c) 2001-2003 The Regents of the University of California.
  All rights reserved.
@@ -30,15 +30,18 @@
 
 package ptolemy.actor.gui.jnlp;
 
-import ptolemy.vergil.VergilApplication;
-import ptolemy.gui.MessageHandler;
-
-import javax.swing.SwingUtilities;
-
 //////////////////////////////////////////////////////////////////////////
 //// PtinySandboxApplication
-/** A wrapper class that calls ptolemy.actor.gui.MoMLApplication for
-use with Java Network Launching Protocol (JNLP) aka Web Start.
+
+/** Run the Ptiny version of Vergil inside a security sandbox.
+
+This wrapper class that calls eventually calls
+ptolemy.vergil.VergilApplication for use with Java Network Launching
+Protocol (JNLP) aka Web Start.
+
+<p>This class is very similar to other classes that invoke
+Vergil applications under Web Start because each application
+needs to have its own jar file.
 
 <p>In Web Start 1.0.1, it is necessary to sign the application
 if it is to have access to the local disk etc.  The way that this is
@@ -49,28 +52,20 @@ that two Web Start applications cannot share one jar file, so
 we create these wrapper classes that call the appropriate main class.
 <p>For more information about JNLP, see $PTII/mk/jnlp.in.
 
-@see ptolemy.actor.gui.MoMLApplication
+@see MenuApplication
 
 @author Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class PtinySandboxApplication {
+public class PtinySandboxApplication extends MenuApplication {
     public static void main(final String [] args) {
 
-	// Invoke in the event thread so that we don't have problems
-	// rendering HTML.
-	// Note that this makes Web Start a little slower to come up,
-	// but it avoids the problems in rendering that HyVisual 2.2-beta had.
-	SwingUtilities.invokeLater(new Runnable() {
-		public void run() {
-		    try {
-			ptolemy.vergil.VergilApplication.main(args);
-		    } catch (Exception ex) {
-			MessageHandler.error("Command failed", ex);
-			System.exit(0);
-		    }
-		}
-	    });
+	// Since we are running in a sandbox, we do not set the
+	// securityManager to null
+
+        //System.setSecurityManager(null);
+
+	MenuApplication.main(args);
     }
 }
