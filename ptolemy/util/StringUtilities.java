@@ -650,7 +650,7 @@ public class StringUtilities {
      *  files that exist, see java.io.File.getCanonicalFile() for details.
      *
      *  <p>If <i>prefix</i> is not a prefix of <i>string</i>, then
-     *  we return <i>string<i>
+     *  we return <i>string</i>
      *
      *  @param prefix The prefix string, for example, "c:/ptII".
      *  @param string The string to be substituted, for example,
