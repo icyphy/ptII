@@ -162,11 +162,6 @@ public class Reader extends Source {
             throws CloneNotSupportedException {
         Reader newObject = (Reader)super.clone(workspace);
         newObject.output.setMultiport(true);
-        try {
-            newObject.attributeChanged(newObject.sourceURL);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(ex.getMessage());
-        }
         return newObject;
     }
 

@@ -216,17 +216,9 @@ public class Pulse extends SequenceSource {
     public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
         Pulse newObject = (Pulse)super.clone(workspace);
-        try {
-            newObject.attributeChanged(newObject.indexes);
-            newObject.attributeChanged(newObject.values);
-            newObject.attributeChanged(newObject.repeat);
-            // set the type constraints
-	    ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
-	    InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-	    newObject.output.setTypeAtLeast(elementTerm);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(ex.getMessage());
-        }
+        ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
+        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
+        newObject.output.setTypeAtLeast(elementTerm);
         return newObject;
     }
 

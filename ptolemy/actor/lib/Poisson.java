@@ -186,15 +186,9 @@ public class Poisson extends TimedSource {
     public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
         Poisson newObject = (Poisson)super.clone(workspace);
-        try {
-            newObject.attributeChanged(values);
-	    // set the type constraints
-	    ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
-	    InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-	    newObject.output.setTypeAtLeast(elementTerm);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(ex.getMessage());
-        }
+        ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
+        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
+        newObject.output.setTypeAtLeast(elementTerm);
         return newObject;
     }
 
