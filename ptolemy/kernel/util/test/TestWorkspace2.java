@@ -78,7 +78,7 @@ public class TestWorkspace2 extends Thread {
                 } catch (InterruptedException ex) {}
             }
             synchronized(_notif) {
-                _notif.getwriteaccess = true;
+                _notif.getWriteAccess = true;
                 _workspace.wait(_notif);
                 _notif.done = true;
             }
@@ -122,7 +122,7 @@ public class TestWorkspace2 extends Thread {
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {}
                 synchronized(this) {
-                    if (getwriteaccess) {
+                    if (getWriteAccess) {
                         try {
                             TestWorkspace2.this._workspace.getWriteAccess();
                             TestWorkspace2.this.profile +=
@@ -132,14 +132,14 @@ public class TestWorkspace2 extends Thread {
                             TestWorkspace2.this.profile +=
                                 _name + ".doneWriting()\n";
                         }
-                        getwriteaccess = false;
+                        getWriteAccess = false;
                         notifyAll();
                     }
                 }
             }
         }
         public boolean done = false;
-        public boolean getwriteaccess = false;
+        public boolean getWriteAccess = false;
         public String _name;
     }
 }
