@@ -193,7 +193,7 @@ public class Constants {
                 new DoubleToken(Double.POSITIVE_INFINITY));
         _table.put("NegativeInfinity",
                 new DoubleToken(Double.NEGATIVE_INFINITY));
-
+        
         // Type constants.
         _table.put("boolean", BooleanToken.FALSE);
         _table.put("complex", new ComplexToken(new Complex(0.0, 0.0)));
@@ -204,7 +204,7 @@ public class Constants {
         _table.put("long", new LongToken(0));
         _table.put("matrix", new ConcreteMatrixToken());
         _table.put("object", new ObjectToken());
-		_table.put("xmltoken", new XMLToken());
+        _table.put("xmltoken", new XMLToken());
         _table.put("scalar", new ConcreteScalarToken());
         _table.put("string", new StringToken(""));
         _table.put("unknown", new UnknownToken());

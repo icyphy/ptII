@@ -1101,22 +1101,6 @@ public class UtilityFunctions {
         return new ArrayType(type2);
     }
 
-    /** Set a variable with the specified name to have the specified value.
-     *  This is done in the global namespace of the expression evaluator,
-     *  and will replace any previously defined constants with the specified
-     *  name.
-     *  @param name The name of the variable.
-     *  @param value The value of the variable.
-     *  @return The value.
-     */
-    /* FIXME: Removed pending implementing assignments.
-       public static ptolemy.data.Token set(String name,
-           ptolemy.data.Token value) {
-       Constants.add(name, value);
-       return value;
-       }
-    */
-
     /** Return a new array that is the sorted contents of a specified
      *  array, in ascending order. The specified array can contain
      *  scalar tokens (except complex) or string tokens. If the

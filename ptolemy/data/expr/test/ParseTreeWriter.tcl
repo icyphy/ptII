@@ -298,3 +298,7 @@ test ParseTreeWriter-17.2 {Test nested function definitions.} {
     list [theTest "function (y) function(x) x + y + p3"] [theTest "p1(6)"] [theTest "p2(4)"]
 } {{(function(y) (function(x) (x+y+p3)))} p1(6) p2(4)}
 
+test ParseTreeWriter-17.2 {Test nested function definitions.} {
+    list [theTest "function (y) function(x) double + y + p3"] [theTest "p1(6)"] [theTest "p2(4)"]
+} {{(function(y) (function(x) (double+y+p3)))} p1(6) p2(4)}
+
