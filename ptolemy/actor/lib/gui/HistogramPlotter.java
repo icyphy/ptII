@@ -55,6 +55,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 import javax.swing.SwingUtilities;
 
+//////////////////////////////////////////////////////////////////////////
+//// HistogramPlotter
 /**
 A histogram plotter.  This plotter contains an instance of the Histogram
 class from the Ptolemy plot package as a public member.  A histogram

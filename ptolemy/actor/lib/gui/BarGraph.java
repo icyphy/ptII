@@ -45,6 +45,8 @@ import ptolemy.plot.Plot;
 
 import java.awt.Container;
 
+//////////////////////////////////////////////////////////////////////////
+//// BarGraph
 /**
 A bar graph plotter.  This plotter contains an instance of the Plot
 class from the Ptolemy plot package as a public member. Data at

@@ -40,6 +40,8 @@ import ptolemy.actor.lib.TimedActor;
 import ptolemy.plot.*;
 import java.awt.Panel;
 
+//////////////////////////////////////////////////////////////////////////
+//// TimedPlotter
 /**
 A signal plotter.  This plotter contains an instance of the Plot class
 from the Ptolemy plot package as a public member.  Data at the input, which

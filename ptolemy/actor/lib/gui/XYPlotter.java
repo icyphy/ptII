@@ -39,6 +39,8 @@ import ptolemy.actor.*;
 import ptolemy.plot.*;
 import java.awt.Panel;
 
+//////////////////////////////////////////////////////////////////////////
+//// XYPlotter
 /**
 An XY plotter.  This plotter contains an instance of the Plot class
 from the Ptolemy plot package as a public member.

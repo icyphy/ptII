@@ -55,6 +55,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 import javax.swing.SwingUtilities;
 
+//////////////////////////////////////////////////////////////////////////
+//// Plotter
 /**
 Base class for plotters.  This class contains an instance of the
 Plot class from the Ptolemy plot package as a public member.

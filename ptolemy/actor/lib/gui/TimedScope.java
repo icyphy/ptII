@@ -42,6 +42,8 @@ import java.awt.Panel;
 
 import javax.swing.SwingUtilities;
 
+//////////////////////////////////////////////////////////////////////////
+//// TimedScope
 /**
 A signal plotter that plots in an oscilloscope style, meaning that the
 horizontal axis is wrapped and that there is finite persistence.

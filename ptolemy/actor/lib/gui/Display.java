@@ -55,6 +55,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.text.BadLocationException;
 
+//////////////////////////////////////////////////////////////////////////
+//// Display
 /**
 Display the values of the tokens arriving on the input channels in a
 text area on the screen.  Each input token is written on a

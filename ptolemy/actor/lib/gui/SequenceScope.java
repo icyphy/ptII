@@ -39,6 +39,8 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.plot.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// SequenceScope
 /**
 A sequence plotter for sequences that are potentially infinitely long.
 This plotter contains an instance of the Plot

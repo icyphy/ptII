@@ -39,6 +39,9 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.plot.*;
 
+
+//////////////////////////////////////////////////////////////////////////
+//// SequencePlotter
 /**
 A sequence plotter.  This plotter contains an instance of the Plot
 class from the Ptolemy plot package as a public member. Data at

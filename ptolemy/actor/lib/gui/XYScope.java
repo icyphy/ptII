@@ -42,6 +42,8 @@ import java.awt.Panel;
 
 import javax.swing.SwingUtilities;
 
+//////////////////////////////////////////////////////////////////////////
+//// XYScope
 /**
 An X-Y plotter that plots with finite persistence.
 This plotter contains an instance of the Plot class
