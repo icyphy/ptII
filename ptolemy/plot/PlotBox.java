@@ -551,6 +551,51 @@ public class PlotBox extends Applet {
 	    "($Id$)";
     }
 
+    /**
+     * Get the Font by name.  
+     * @deprecated: As of JDK1.1, use Font.decode() instead.
+     * We need to compile under JDK1.0.2, so we use this method.
+     */
+    public Font getFontByName(String fullfontname) {
+	// Can't use Font.decode() here, it is not present in jdk1.0.2
+        //_labelfont = Font.decode(fullfontname);
+
+	String fontname = new String ("helvetica");
+	int style = Font.PLAIN;
+	int size = 12;
+	StringTokenizer stoken = new StringTokenizer(fullfontname,"-");
+	
+	if (stoken.hasMoreTokens()) {
+	    fontname = stoken.nextToken();
+	}
+	if (stoken.hasMoreTokens()) {
+		String stylename = stoken.nextToken();
+		// FIXME: we need to be able to mix and match these
+		if (stylename.equals("PLAIN")) {
+		    style = Font.PLAIN;
+		} else if (stylename.equals("BOLD")) {
+		    style = Font.BOLD;
+		} else if (stylename.equals("ITALIC")) {
+		    style = Font.ITALIC;
+		} else {
+		    // Perhaps this is a font size?
+		    try {
+			size = Integer.valueOf(stylename).intValue();
+		    } catch (NumberFormatException e) {
+		    }
+		}
+	}
+	if (stoken.hasMoreTokens()) {
+	    try {
+		size = Integer.valueOf(stoken.nextToken()).intValue();
+	    } catch (NumberFormatException e) {
+	    }
+	}
+	if (_debug > 7) System.out.println("PlotBox: getFontByName: "+
+                                           fontname+" "+style+" "+size);
+	return new Font(fontname, style, size);
+    }
+
     /** 
      * Convert a color name into a Color.
      */
@@ -571,7 +616,6 @@ public class PlotBox extends Applet {
 	    {"red","ff0000"}, {"green","00ff00"}, {"blue","0000ff"}
 	};
 	for(int i=0;i< names.length; i++) {
-	    System.out.println("PlotBox:getColorByName: "+name+" "+names[i][0]);
 	    if(name.equals(names[i][0])) {
 		try {
 		    Color col = new Color(Integer.parseInt(names[i][1],16));
@@ -628,9 +672,12 @@ public class PlotBox extends Applet {
     public void init() {
         super.init();
 		
-        _labelfont = new Font("Helvetica", Font.PLAIN, 12);
-        _superscriptfont = new Font("Helvetica", Font.PLAIN, 9);
-        _titlefont = new Font("Helvetica", Font.BOLD, 14);
+	if (_labelfont == null)  
+	    _labelfont = new Font("Helvetica", Font.PLAIN, 12);
+	if (_superscriptfont == null)  
+	    _superscriptfont = new Font("Helvetica", Font.PLAIN, 9);
+	if (_titlefont == null)  
+	    _titlefont = new Font("Helvetica", Font.BOLD, 14);
         
         _xticks = null;
         _xticklabels = null;
@@ -959,6 +1006,8 @@ public class PlotBox extends Applet {
      * until a  later time.
      */
     public void saveForeground (Color foreground) {
+	// Can't call this setForeground, or we will get confused
+	// with the Component method.
 	_foreground = foreground;
     }
 
@@ -970,6 +1019,15 @@ public class PlotBox extends Applet {
     }
     
     /**
+     * Set the label font, which is used for axis labels and legend labels.
+     */
+    public void setLabelFont (String fullfontname) {
+	// Can't use Font.decode() here, it is not present in jdk1.0.2
+        //_labelfont = Font.decode(fullfontname);
+
+	_labelfont = getFontByName(fullfontname);
+    }
+    /**
      * Set the title of the graph.  The title will appear on the subsequent
      * call to <code>paint()</code> or <code>drawPlot()</code>.
      */
@@ -977,6 +1035,16 @@ public class PlotBox extends Applet {
         _title = title;
     }
     
+    /**
+     * Set the title font.
+     */
+    public void setTitleFont (String fullfontname) {
+	// Can't use Font.decode() here, it is not present in jdk1.0.2
+        //_titlefont = Font.decode(fullfontname);
+
+	_titlefont = getFontByName(fullfontname);
+    }
+
     /** 
      * Set the label for the X (horizontal) axis.  The label will
      * appear on the subsequent call to <code>paint()</code> or
@@ -1392,7 +1460,8 @@ public class PlotBox extends Applet {
     // Scaling used in making tick marks
     private double _ytickscale, _xtickscale;
 
-    private Font _labelfont, _superscriptfont, _titlefont;
+    private Font _labelfont =null, _superscriptfont = null,
+	_titlefont = null;
     
     // For use in calculating log base 10.  A log times this is a log base 10.
     private static final double _log10scale = 1/Math.log(10);
