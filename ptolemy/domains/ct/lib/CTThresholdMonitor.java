@@ -92,8 +92,9 @@ public class CTThresholdMonitor extends CTActor
     /** consume this input.
      */
     public void fire() throws IllegalActionException {
+        System.out.println("Monitor" + getFullName() + " fired.");
         _thisInput = ((DoubleToken) input.get(0)).doubleValue();
-        _success = true;
+        //_success = true;
     }
 
     /** Return true always. Set this input to last input.
@@ -101,6 +102,7 @@ public class CTThresholdMonitor extends CTActor
     public boolean postfire() throws IllegalActionException {
         super.postfire();
         _lastInput = _thisInput;
+        _first = false;
         return true;
     }
 
@@ -108,13 +110,13 @@ public class CTThresholdMonitor extends CTActor
      */
     public boolean isThisStepSuccessful() {
         if (!_first) {
-            _first = false;
-            if (((_lastInput > _upperBound) && (_thisInput < _lowerBound)) ||
-                ((_lastInput < _lowerBound) && (_thisInput < _upperBound))) {
+            if (((_lastInput >= _upperBound) && (_thisInput <= _lowerBound)) ||
+                ((_lastInput <= _lowerBound) && (_thisInput >= _upperBound))) {
                 _success = false;
                 return false;
             }
         }
+        _success = true;
         return true;
     }
 

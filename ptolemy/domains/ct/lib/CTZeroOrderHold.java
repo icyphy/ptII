@@ -50,7 +50,8 @@ receivers of the port its output are connected.
 @see classname
 @see full-classname
 */
-public class CTZeroOrderHold extends CTActor{
+public class CTZeroOrderHold extends CTActor 
+    implements CTEventInterpreter{
 
     public static final boolean DEBUG = false;
 
@@ -95,6 +96,12 @@ public class CTZeroOrderHold extends CTActor{
      *  @exception IllegalActionException Never thrown.
      */
     public boolean postfire() throws IllegalActionException {
+        return true;
+    }
+
+    /** consume event.
+     */
+    public void consumeCurrentEvents() throws IllegalActionException{
         if(input.hasToken(0)) {
             _lasteventvalue = ((DoubleToken)input.get(0)).doubleValue();
             if(DEBUG) {
@@ -104,7 +111,6 @@ public class CTZeroOrderHold extends CTActor{
                 System.out.println("Event value="+_lasteventvalue);
             }
         }
-        return true;
     }
 
     /** Output a doubleToken of the last event value.
