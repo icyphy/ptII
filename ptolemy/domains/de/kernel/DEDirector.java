@@ -490,7 +490,7 @@ public class DEDirector extends Director {
      *  than the main simulation thread, making it useful for actors
      *  that perform asynchronous processing, such as waiting for data
      *  in another thread. In these cases, calling fireAt(actor,
-     *  getCurrenttime()) is not sufficient, since there is no way for
+     *  getCurrentTime()) is not sufficient, since there is no way for
      *  an asynchronous thread to ensure that time does not advance in
      *  the model.  When invoked from an asynchronous thread, this
      *  method will attempt to fire the actor at the earliest time
