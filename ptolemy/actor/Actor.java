@@ -30,16 +30,14 @@ package ptolemy.actor;
 
 import java.util.List;
 
-import ptolemy.actor.util.HasFunctionDependencies;
+import ptolemy.actor.util.FunctionDependency;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Actor
 /**
    An Actor is an executable entity. This interface defines the common
-   functionality in AtomicActor and CompositeActor. It also extends
-   the HasFunctionDependencies interface.
-
+   functionality in AtomicActor and CompositeActor.
 
    @author Edward A. Lee
    @version $Id$
@@ -49,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @see ptolemy.actor.CompositeActor
    @see ptolemy.actor.AtomicActor
 */
-public interface Actor extends Executable, HasFunctionDependencies {
+public interface Actor extends Executable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -64,6 +62,14 @@ public interface Actor extends Executable, HasFunctionDependencies {
      *  @return The executive director.
      */
     public Director getExecutiveDirector();
+    
+    /** Return a representation of the function dependencies that output
+     *  ports have on input ports.
+     *  @return A representation of the function dependencies of the
+     *   ports of this actor.
+     *  @see ptolemy.actor.util.FunctionDependency
+     */
+    public FunctionDependency getFunctionDependency();
 
     /** Return the Manager, if there is one. Otherwise, return null.
      *  @return The Manager.
