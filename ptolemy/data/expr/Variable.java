@@ -90,17 +90,13 @@ which require the type to be consistent with the specified constraints
 (or an exception will be thrown):
 <ul>
 <li> It can be set directly by a call to setTypeEquals(). If this call occurs
-after the variable has a value, then the specified type must be compatible
+when the variable has a non-null value, then the specified type must
+be compatible
 with the value.  Otherwise, an exception will be thrown. Type resolution
 will not change the type set through setTypeEquals() unless the argument
 of that call is null. If this method is not called, or called with a null
 argument, type resolution will resolve the variable type according to
 all the type constraints.
-Note that when calling setTypeEquals() with a non-null argument while
-the variable already constrains a non-null token, the argument must
-be a type no less than then the type of the contained token. To set type
-of the variable lower than the type of the currently contained token,
-setToken() must be called with a null argument before setTypeEquals().
 <li> Setting the value of the variable to a non-null token constrains the
 variable type to be no less than the type of the token. This constraint
 will be used in type resolution, together with other constraints.
@@ -1259,7 +1255,7 @@ public class Variable extends Attribute implements Typeable {
             return false;
         }
 
-        /** Set the type of this port if it is not set through
+        /** Set the type of this variable if it is not set through
 	 *  setTypeEquals().
          *  @exception IllegalActionException If the type is already set
 	 *   through setTypeEquals().
