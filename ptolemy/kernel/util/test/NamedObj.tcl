@@ -63,8 +63,10 @@ test NamedObj-2.1 {Create a NamedObj, set the name, change it} {
     set result3 [$n getName]
     $n setName {}
     set result4 [$n getName]
-    list $result1 $result2 $result3 $result4
-} {{} {A Named Obj} {A different Name} {}}
+    set result5 [$n description]
+    list $result1 $result2 $result3 $result4 $result5
+} {{} {A Named Obj} {A different Name} {} {ptolemy.kernel.util.NamedObj {.} attributes {
+}}}
 
 ######################################################################
 ####
