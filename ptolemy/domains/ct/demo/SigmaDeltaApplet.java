@@ -258,7 +258,7 @@ public class SigmaDeltaApplet extends Applet {
             DEStatistics accu = new DEStatistics(sys, "Accumulator");
             DEClock clk = new DEClock(sys, "ADClock", 1, 1);
             DEPlot deplot = new DEPlot(sys, "DEPlot", dePanel);
-            String[] deLegends = {"Accumulator output", "Quantizer output"};
+            String[] deLegends = {"Accumulator", "Quantizer"};
             deplot.setLegend(deLegends);
             DEFIRfilter mav = new DEFIRfilter(sys, "MAV", "0.1 0.1 0.1 0.1" + 
                     " 0.1 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05");
@@ -342,7 +342,8 @@ public class SigmaDeltaApplet extends Applet {
             // Setting up parameters.
             _firTaps = (Parameter)fir.getAttribute("taps");
             _ts = (Parameter)sampler.getAttribute("SamplePeriod");
-
+            _ctpXmin = (Parameter)ctPlot.getAttribute("X_Min");
+            _ctpXmax = (Parameter)ctPlot.getAttribute("X_Max");
 
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
@@ -379,6 +380,8 @@ public class SigmaDeltaApplet extends Applet {
     private String _fir2;
     private Parameter _firTaps;
     private Parameter _ts;
+    private Parameter _ctpXmin;
+    private Parameter _ctpXmax;
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
@@ -466,6 +469,10 @@ public class SigmaDeltaApplet extends Applet {
                 
 
                 _localDirector.setStopTime(_stopTime);
+                _ctpXmin.setToken(new DoubleToken(0.0));
+                _ctpXmin.parameterChanged(null);
+                _ctpXmax.setToken(new DoubleToken(_stopTime));
+                _ctpXmax.parameterChanged(null);
 
                 // Start the CurrentTimeThread.
                 Thread ctt = new CurrentTimeThread();
