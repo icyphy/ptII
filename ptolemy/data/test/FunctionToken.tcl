@@ -100,16 +100,34 @@ test FunctionToken-2.1 {Test add} {
 test FunctionToken-10.0 {test equals} {
     set r1 [java::new {ptolemy.data.FunctionToken} "function(x,y) 4+x+y"] 
     set r2 [java::new {ptolemy.data.FunctionToken} "function(x,y) 4+x+y"] 
-    set r3 [java::new {ptolemy.data.FunctionToken} "function(a,b) 8+2"]
+    set r3 [java::new {ptolemy.data.FunctionToken} "function(a,b) 4+a+b"]
     
     list [$r1 equals $r1] [$r1 equals $r2] [$r1 equals $r3]
-} {1 1 0} {Equals is not implemented properly}
+} {1 0 0} {Equals is not implemented properly.  It should be equal under renaming.}
+
+test FunctionToken-10.1 {test hashCode} {
+    # use t1, t2, t3 above
+    list [$r1 hashCode] [$r2 hashCode] [$r3 hashCode]
+} {8 8 14} {Hashcode is not implemented properly}
 
 ######################################################################
 ####
 # 
-test FunctionToken-11.0 {test hashCode} {
-    # use t1, t2, t3 above
-    list [$r1 hashCode] [$r2 hashCode] [$r3 hashCode]
-} {8 8 14} {Hashcode is not implemented properly}
+
+test FunctionToken-11.0 {test isCloseTo} {
+    set r1 [java::new {ptolemy.data.FunctionToken} "function(x,y) 4+x+y"] 
+    set r2 [java::new {ptolemy.data.FunctionToken} "function(x,y) 4+x+y"] 
+    set r3 [java::new {ptolemy.data.FunctionToken} "function(a,b) 4+a+b"]
+    
+    list [[$r1 isCloseTo $r1] toString] [[$r1 isCloseTo $r2] toString] [[$r1 isCloseTo $r3] toString]
+} {true true true} {Equals is not implemented properly.  It should be equal under argument renaming.}
+
+test FunctionToken-11.1 {test isEqualTo} {
+    set r1 [java::new {ptolemy.data.FunctionToken} "function(x,y) 4+x+y"] 
+    set r2 [java::new {ptolemy.data.FunctionToken} "function(x,y) 4+x+y"] 
+    set r3 [java::new {ptolemy.data.FunctionToken} "function(a,b) 4+a+b"]
+    
+    list [[$r1 isEqualTo $r1] toString] [[$r1 isEqualTo $r2] toString] [[$r1 isEqualTo $r3] toString]
+} {true true truee} {Equals is not implemented properly.  It should be equal under argument renaming.}
+
 
