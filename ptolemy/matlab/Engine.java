@@ -300,7 +300,7 @@ public class Engine {
                         + "): can't find matlab "
                         + "variable \""
                         + name + "\"\n"
-                        getOutput().stringValue());
+                        + getOutput().stringValue());
             }
             retval = _convertMxArrayToToken(ma);
             ptmatlabDestroy(ma, name);
@@ -468,7 +468,7 @@ public class Engine {
                             fieldValues[k] = _convertMxArrayToToken(fma);
                         } else {
                             throw new IllegalActionException("can't get field "
-                                    + fieldNames[k] +
+                                    + fieldNames[k]
                                     + "from matlab "
                                     + "struct "
                                     + nRows + "x"

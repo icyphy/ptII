@@ -142,6 +142,7 @@ public class Expression extends TypedAtomicActor {
         TransientSingletonConfigurableAttribute
             iconDescription = new TransientSingletonConfigurableAttribute(
                     this, "_iconDescription");
+	/*
         iconDescription.configure(null, null,
                 "<svg>"
                 + "<rect width=\"50\" height=\"40\" style=\"fill:white\"/>"
@@ -153,7 +154,7 @@ public class Expression extends TypedAtomicActor {
 
                 + "<text x=\"6\" y=\"38\" style=\"font-size:12\">Matlab</text>"
                 + "</svg>");
-
+		*/
         matlabEngine = new Engine();
     }
 
