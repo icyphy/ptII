@@ -35,7 +35,7 @@ import diva.util.ModelWriter;
  * file.  The document writer must be provided with a model writer
  * which is used to write out the app-specific model on a single page.
  *
- * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
+ * @author Heloise Hse
  * @author  Michael Shilman
  * @version $Id$
  * @rating  Red

@@ -30,7 +30,7 @@ package diva.gui;
  * generally contains a single object, the "model," that contains part
  * of the document's data.
  *
- * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
+ * @author Heloise Hse
  * @author John Reekie
  * @version $Id$
  * @rating Red

@@ -32,7 +32,7 @@ import java.io.Reader;
  * specified model parsers.  Its job is to parse data into an
  * application specific data structure.
  *
- * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
+ * @author Heloise Hse
  * @version $Id$
  */
 public interface ModelParser {

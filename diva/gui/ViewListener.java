@@ -36,7 +36,7 @@ package diva.gui;
  * <p> This interface is partly based on the Swing InternalFrameListener
  * interface.
  *
- * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
+ * @author Heloise Hse
  * @author John Reekie
  * @version $Id$
  */

@@ -28,7 +28,7 @@ package diva.gui;
 /**
  * A simple concrete implementation of the Page interface.
  *
- * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
+ * @author Heloise Hse
  * @author John Reekie
  * @version $Id$
  * @rating Red

@@ -32,7 +32,7 @@ import javax.swing.JComponent;
  * iconified, selected, closed, and so on.
  *
  * @author John Reekie
- * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
+ * @author Heloise Hse
  * @version $Id$
  * @rating Red
  */

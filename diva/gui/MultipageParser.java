@@ -40,7 +40,7 @@ import diva.util.ModelParser;
  * parser must be provided with a model parser that is used to parse
  * the app-specific model on a single page.
  *
- * @author  Heloise Hse (hwawen@eecs.berkeley.edu)
+ * @author  Heloise Hse
  * @author  Michael Shilman
  * @version $Id$
  * @rating  Red

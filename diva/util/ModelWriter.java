@@ -34,7 +34,7 @@ import java.io.Writer;
  * stream.  For example, a SketchWriter extends this interface and
  * writes out a sketch model to a stream.
  *
- * @author Heloise Hse  (hwawen@eecs.berkeley.edu)
+ * @author Heloise Hse
  * @version $Id$
  */
 public interface ModelWriter {
