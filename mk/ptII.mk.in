@@ -103,7 +103,7 @@ WABA_DIR = @WABA_DIR@
 
 # Lejos is a JDK for Lego Mindstorms, see
 # http://lejos.sourceforge.net
-LEJOS_DIR = ${PTII}/vendors/lejos/lejosBeta3
+LEJOS_DIR = @LEJOS_DIR@
 
 ########## You should not have to change anything below this line ######
 
@@ -191,6 +191,10 @@ COMMAPI_DIR =   @COMMAPI_DIR@
 # Set to lego and used in $PTII/ptolemy/apps/makefile if
 # the Java Communications API was found
 PTLEGO_DIR =	@PTLEGO_DIR@
+
+# Set to lejos and used in $PTII/ptolemy/apps/makefile if
+# the Java Communications API and Lejos was found
+PTLEJOS_DIR =	@PTLEJOS_DIR@
 
 # Set to tini and used in $PTII/ptolemy/apps/makefile if the Dallas Semi
 # TINI was found
