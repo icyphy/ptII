@@ -46,18 +46,16 @@ earlier releases will run in the current release.
 <p>This class will filter for classes with properties where the class
 name has changed.
 
-<p>For example, after Ptolemy II 2.0.1, the Expression actor
+<p>For example, after Ptolemy II 3.0.1, the Expression actor
 changed in such a way that the expression property changed from
-being a Parameter to being a StringAttribute.  To add this
+being a StringAttribute to a StringParameter.  To add this
 change to this filter, we add a code to the static section at
 the bottom of the file.
 <pre>
-        // Expression: After 2.0.1, expression
-        // property is now a StringAttribute
         HashMap expressionClassChanges = new HashMap();
         // Key = property name, Value = new class name
         expressionClassChanges.put("expression",
-                "ptolemy.kernel.util.StringAttribute");
+                "ptolemy.data.expr.StringParameter");
 </pre>
 The expressionClassChange HashMap maps property names to the new
 classname
@@ -253,7 +251,7 @@ public class PropertyClassChanges implements MoMLFilter {
         HashMap expressionClassChanges = new HashMap();
         // Key = property name, Value = new class name
         expressionClassChanges.put("expression",
-                "ptolemy.kernel.util.StringAttribute");
+                "ptolemy.data.expr.StringParameter");
 
         _actorsWithPropertyClassChanges
             .put("ptolemy.actor.lib.Expression",
