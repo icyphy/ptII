@@ -225,7 +225,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  @see CompositeEntity.isAtomic
      *  @return True if this contains the argument, directly or indirectly.
      */
-    public boolean deepContains(NamedObj inside) {     
+    public boolean deepContains(NamedObj inside) {
         try {
             workspace().getReadAccess();
             // Start with the inside and check its containers in sequence.

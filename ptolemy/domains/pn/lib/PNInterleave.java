@@ -1,6 +1,6 @@
 /* This interleaves elements from it's different streams into one stream
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -35,8 +35,8 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNInterleave
-/** 
-Merges it's input streams into one output stream by alternating/circulating 
+/**
+Merges it's input streams into one output stream by alternating/circulating
 between it's inputs and directing them to the output.
 
 @author Mudit Goel
@@ -47,11 +47,11 @@ public class PNInterleave extends AtomicActor{
     /** Constructor Adds ports to the star
      *  @param container This is the compositeActor containing this actor
      *  @param name This is the name of this actor.
-     *  @exception NameDuplicationException This indicates that an actor 
+     *  @exception NameDuplicationException This indicates that an actor
      *  with an identical name already exists in the container.
-     *  @exception IllegalActionException This can be thrown by one of the 
+     *  @exception IllegalActionException This can be thrown by one of the
      *  called methods.
-     */ 
+     */
     public PNInterleave(CompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -64,10 +64,10 @@ public class PNInterleave extends AtomicActor{
     ////                         public methods                    ////
 
     /** This reads tokens from each of its inputs in a circular fashion and
-     *  redirects them each to the output 
-     *  @exception IllegalActionException This can be thrown by a called 
+     *  redirects them each to the output
+     *  @exception IllegalActionException This can be thrown by a called
      *  method
-     */	
+     */
     public void fire() throws IllegalActionException {
         Token data;
 	while (true) {
@@ -78,13 +78,13 @@ public class PNInterleave extends AtomicActor{
 	    }
 	}
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Input ports 
+    // Input ports
     private IOPort _input;
-    // Output port 
+    // Output port
     private IOPort _output;
 
 }

@@ -122,7 +122,7 @@ public class InvalidStateException extends RuntimeException {
                 }
             }
         }
-    } 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

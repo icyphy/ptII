@@ -204,7 +204,7 @@ public class ComponentPort extends Port {
             return _deepInsidePorts(null);
         } finally {
             workspace().doneReading();
-        }    
+        }
     }
 
     /** Enumerate the ports connected on the inside to this port. Note that
@@ -438,7 +438,7 @@ public class ComponentPort extends Port {
      *  If this port is already on the list of ports on the path to this
      *  port in deeply traversing the topology, then there is a loop in
      *  the topology, and an InvalidStateException is thrown.
-     *  This method not synchronized on the workspace, so the 
+     *  This method not synchronized on the workspace, so the
      *  caller should.
      *  @param path The list of ports on the path to this port in deeply
      *   traversing the topology.
@@ -456,15 +456,15 @@ public class ComponentPort extends Port {
                 throw new InvalidStateException( path.elements(),
                         "loop in topology!");
             }
-        }  
+        }
         path.insertFirst(this);
         Enumeration nearrelations = linkedRelations();
         LinkedList result = new LinkedList();
-        
+
         while( nearrelations.hasMoreElements() ) {
             ComponentRelation relation =
                 (ComponentRelation)nearrelations.nextElement();
-             
+
             Enumeration connectedports =
                 relation.linkedPorts(this);
             while (connectedports.hasMoreElements()) {
@@ -497,9 +497,9 @@ public class ComponentPort extends Port {
         _deeplinkedports = result;
         _deeplinkedportsversion = workspace().getVersion();
         path.removeFirst();
-        return _deeplinkedports.elements();   
+        return _deeplinkedports.elements();
     }
-    
+
     /** If this port is transparent, then deeply enumerate the ports
      *  connected on the inside.  Otherwise, enumerate
      *  just this port. All ports enumerated are opaque. Note that
@@ -529,7 +529,7 @@ public class ComponentPort extends Port {
                 throw new InvalidStateException( path.elements(),
                         "loop in topology!");
             }
-        }  
+        }
         path.insertFirst(this);
         LinkedList result = new LinkedList();
         if (isOpaque()) {

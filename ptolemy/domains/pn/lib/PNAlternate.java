@@ -1,6 +1,6 @@
 /* Alternates the input into its different outputs
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -36,14 +36,14 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNAlternate
-/** 
+/**
 @author Mudit Goel
 @version $Id$
 */
 public class PNAlternate extends AtomicActor {
-    
+
     /** Constructor. Creates ports
-     * @exception NameDuplicationException is thrown if more than one port 
+     * @exception NameDuplicationException is thrown if more than one port
      *  with the same name is added to the star or if another star with an
      *  an identical name already exists.
      */
@@ -55,14 +55,14 @@ public class PNAlternate extends AtomicActor {
         _output = new IOPort(this, "output", false, true);
         _output.setMultiport(true);
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Reads one Token from it's input port and writes this token to 
+
+    /** Reads one Token from it's input port and writes this token to
      *  it's output ports. Needs to read one token for every output
-     *  port. 
+     *  port.
      */
     public void fire() throws IllegalActionException {
         Token data;
@@ -74,13 +74,13 @@ public class PNAlternate extends AtomicActor {
 	    index = (index+1)%width;
 	}
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
-    // The input port 
+
+    // The input port
     private IOPort _input;
-    // The output port 
+    // The output port
     private IOPort _output;
 }
 

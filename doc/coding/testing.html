@@ -18,7 +18,7 @@ mentioned below are not included in the Ptolemy II distribution.
 
 <H2><A NAME="test suite">Test Suite</A></H2>
 
-We have included regression tests for most of the Ptolemy IIcode.  Usually, 
+We have included regression tests for most of the Ptolemy IIcode.  Usually,
 wherever there is Java file, the tests are in the <CODE>test</CODE>
 directory.
 
@@ -33,7 +33,7 @@ and any subdirectories.
 
 <H3>Writing your own tests</H3>
 
-The test suite infrastructure is based on the Tcl test suite code.  The 
+The test suite infrastructure is based on the Tcl test suite code.  The
 
  <P>The file <A HREF="../../util/testsuite/testDefs.tcl"><CODE>$PTII/util/testsuite/testDefs.tcl</CODE></A> defines the Tcl proc <CODE>test</CODE>.
 
@@ -47,7 +47,7 @@ The test suite infrastructure is based on the Tcl test suite code.  The
 	<MENU>
 	<LI> The first part of
 	name of the test should reflect the command that is
-	being tested.  
+	being tested.
 
 	<LI> The test number should be separated by a dash '<CODE>-</CODE>'
 
@@ -80,7 +80,7 @@ has the incorrect value return results to be compared against, so the
 test suite properly indicates that the test failed.
 
 <tcl><pre>
-if {[string compare test [info procs test]] == 1} then { 
+if {[string compare test [info procs test]] == 1} then {
     source [file join $PTII util testsuite testDefs.tcl]
 } {}
 test testExample-1.1 {This is the first test example, it does very little} {
@@ -111,7 +111,7 @@ is either <CODE>.tcl</CODE> or <CODE>.itcl</CODE>:
 	<CODE>$TYCHO/kernel/gui/test/testPath.tcl</CODE> is an example.
 
 <LI> <CODE>.itcl</CODE> if the file contains Itcl constructs or tests
-	Itcl classes. 
+	Itcl classes.
 </MENU>
 Most of the tests are <CODE>.itcl</CODE> files.
 
@@ -130,7 +130,7 @@ produce verbose messages:
 </PRE>
 
 
-<LI> The individual tests, which should loosely follow the Tycho 
+<LI> The individual tests, which should loosely follow the Tycho
 file format standard:
 <PRE>
 ############################################################################
@@ -151,7 +151,7 @@ There are two types of tests:
 </OL>
 
 In general, each test file should be able to be run over and over again
-in a binary without exiting the binary (it should be idempotent).  
+in a binary without exiting the binary (it should be idempotent).
 
  <P>It is up to the author of the tests as to whether each individual
 test does all the set up necessary.  If each test is atomic, then it
@@ -167,7 +167,7 @@ Tcl Blend is Sun's Tcl/Java interface.  We use Tcl Blend to test Java
 by writing Tcl code that exercises the Java classes.
 
 <H3>Running the tests</H3>
-If you run <CODE>make</CODE> in a test directory that contains 
+If you run <CODE>make</CODE> in a test directory that contains
 tests written in Tcl for testing Java classes, then the 'right thing'
 should just happen.  The Java testbed does have a few differences:
 <DL>
@@ -192,7 +192,7 @@ Java classes.
 methods.  We use Tcl Blend and the standard Tcl test bed to create tests.
 In the example below, we call <CODE>java::new</CODE> to create an
 instance of the Java <CODE>NamedObj</CODE> class.  We can then
-call public methods of <CODE>NamedObj</CODE> by referring to the 
+call public methods of <CODE>NamedObj</CODE> by referring to the
 Java object handle <CODE>$n</CODE>:
 <PRE>
 test NamedObj-2.1 {Create a NamedObj, set the name, change it} {
@@ -215,7 +215,7 @@ the Tcl test file should be at <CODE>test/NamedObj.tcl</CODE>.
 
 <H4><A NAME="getJavaInfo testing proc">getJavaInfo Testing Proc</A></H4>
  <P>Tcl Blend provides a Tcl procedure called <CODE>java::info</CODE>
-which returns information about an instance of a Java class.  
+which returns information about an instance of a Java class.
 <A HREF="../../kernel/gui/test/testDefs.tcl"><CODE>$TYCHO/kernel/gui/test/testDefs.tcl</CODE></A>
 defines the <CODE>getJavaInfo</CODE> Tcl proc, which takes a Java object
 handle and returns a string that describes the object's fields, methods
@@ -225,15 +225,15 @@ so that if the Java class definition changes, then the test will fail.
 This will hopefully prompt the developer to write a test for the
 changed feature.
  <P>If a test fails because of changes in the values returned by
-<CODE>getJavaInfo</CODE>, then the way to fix the test is to run 
+<CODE>getJavaInfo</CODE>, then the way to fix the test is to run
 the test and grab the strings actually returned and substitute it back
-into the test file.  Of course, you should write tests that cover any 
+into the test file.  Of course, you should write tests that cover any
 changes reported by <CODE>getJavaInfo</CODE>.
 
 
 <H3><A NAME="JavaScope">JavaScope</A></H3>
 <A HREF="http://www.suntest.com/JavaScope">JavaScope</A> is Sun's
-Java code coverage tool.  
+Java code coverage tool.
  <P>Here's how to review the test suite code coverage:
 <OL>
 
@@ -271,9 +271,9 @@ make jsrestore
 </OL>
 <H4>JavaScope Details</H4>
 <MENU>
-<LI> <CODE>jsinstr</CODE> saves the original Java files to the 
+<LI> <CODE>jsinstr</CODE> saves the original Java files to the
 <CODE>jsoriginal</CODE> directory.  The <CODE>jsall</CODE> makefile
-rule checks to see if this directory is present, and if it is not, runs 
+rule checks to see if this directory is present, and if it is not, runs
 <CODE>jsinstr</CODE>.  The <CODE>jsrestore</CODE> rule runs
 <CODE>jsrestore</CODE> and then attempts to remove the <CODE>jsoriginal</CODE>
 directory so that the next run of the <CODE>jsall</CODE> rule will
@@ -307,13 +307,13 @@ information for the current class at the end of each method.
 information at the end of each method.
 
 </OL>
-Obviously, using <CODE>IFLUSH</CODE> will take more time than using 
+Obviously, using <CODE>IFLUSH</CODE> will take more time than using
 <CODE>IFLUSHCLASS</CODE>.
 
  <P>The <CODE>jsintr</CODE> options are set by consulting the following
 resources in order.
 <OL>
-<LI> system properties - environment variables 
+<LI> system properties - environment variables
 
 <LI> <CODE>$HOME/javascope.properties</CODE>
 
@@ -354,7 +354,7 @@ public class JavaScopeFlush {
 java::call JavaScopeFlush flush
 </PRE>
 Unfortunately, it looks like embedded comments are broken.
- <P>For more information, see the 
+ <P>For more information, see the
 <A HREF="http://www.suntest.com/NewJavaScope/faq.html#Q5">JavaScope FAQ</A>.
 
 
@@ -471,12 +471,18 @@ classes that have been removed.
 <DD> This file looks for gif files that are not used by HTML files
 in the distribution.
 
-</DL> 
+</DL>
 
 <p>
 <a href="../../doc/index.html">Tycho Home Page</a><br>
 <HR>
+<<<<<<< testing.html
+Copyright &#169 1996-, The Regents of the University of California.
+All rights reserved.
+<br> Last updated: $Date$, comments to:
+=======
 Copyright &#169 1996-1998 The Regents of the University of California.
 All rights reserved. 
 <br> Last updated: $Date$, comments to:
+>>>>>>> 1.2
 <author>ptII@eecs.berkeley.edu</author> </body> </html>
