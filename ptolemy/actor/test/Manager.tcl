@@ -165,7 +165,8 @@ test Manager-8.3 {Test run-time type checking} {
     $director preinitialize
     catch {$p1 broadcast $token} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Run-time type checking failed. Token type: double, port: .E0.E1.P1, port type: int}}
+} {{ptolemy.kernel.util.IllegalActionException: Run-time type checking failed. Token 0.0 with type double is incompatible with port type: int
+  in .E0.E1.P1}}
 
 ######################################################################
 ####

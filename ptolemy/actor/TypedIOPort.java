@@ -912,7 +912,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(this,
                     "Run-time type checking failed. Token " +
-                    token + " with type " +
+                    token + " with type " + token.getType() +
                     " is incompatible with port type: "
                     + getType().toString());
         }
