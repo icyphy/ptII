@@ -161,8 +161,8 @@ import java.util.*;
  */
 public class Plot extends PlotBox {
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    /////////////////////////////////////////////////////////////////////////
+    ////                         public methods                          ////
    
     /**
      * In the specified data set, add the specified x,y point to the
@@ -1397,10 +1397,10 @@ public class Plot extends PlotBox {
                 // Any more separators?
                 int fieldsplit2 = y.indexOf(",");
                 if (fieldsplit2 == -1) {
-                        fieldsplit2 = y.indexOf(" ");
-                    }
+                    fieldsplit2 = y.indexOf(" ");
+                }
                 if (fieldsplit2 == -1) {
-                        fieldsplit2 = y.indexOf(" ");  // a tab
+                    fieldsplit2 = y.indexOf(" ");  // a tab
                 }
                 if (fieldsplit2 > 0) {
                     line = (y.substring(fieldsplit2+1)).trim();
@@ -1604,8 +1604,8 @@ public class Plot extends PlotBox {
         if (_bars) _drawBar(graphics, dataset, xpos, ypos, true);
         if (pt.errorBar) 
             _drawErrorBar(graphics, dataset, xpos,
-                _lry - (long)((pt.yLowEB - _yMin) * _yscale),
-                _lry - (long)((pt.yHighEB - _yMin) * _yscale), true);
+                    _lry - (long)((pt.yLowEB - _yMin) * _yscale),
+                    _lry - (long)((pt.yHighEB - _yMin) * _yscale), true);
 
         // Restore the color, in case the box gets redrawn.
         graphics.setColor(_foreground);
@@ -1656,8 +1656,8 @@ public class Plot extends PlotBox {
         if (_bars) _drawBar(graphics, dataset, xpos, ypos, true);
         if (pt.errorBar) 
             _drawErrorBar(graphics, dataset, xpos,
-                _lry - (long)((pt.yLowEB - _yMin) * _yscale),
-                _lry - (long)((pt.yHighEB - _yMin) * _yscale), true);
+                    _lry - (long)((pt.yLowEB - _yMin) * _yscale),
+                    _lry - (long)((pt.yHighEB - _yMin) * _yscale), true);
 
         // Restore the color, in case the box gets redrawn.
         graphics.setColor(_foreground);
