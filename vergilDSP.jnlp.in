@@ -8,12 +8,11 @@
      it will appear in the desktop icon
 -->
 <jnlp codebase="@PTII_LOCALURL@"
-      href="@PTII_LOCALURL@/vergil.jnlp"> 
+      href="@PTII_LOCALURL@/vergilDSP.jnlp"> 
   <information>
-	  <title>Ptolemy II @PTVERSION@</title>
+	  <title>Ptolemy II @PTVERSION@DSP </title>
 	  <vendor>Ptolemy Project, UC Berkeley</vendor>
-	  <description>Full Runtime Release Simulation Environment</description>
-	  <description kind="tooltip">Full Version</description>
+	  <description kind="tooltip">DSP Only Runtime Release of the Simulation Environment</description>
 	  <icon href="doc/img/PtolemyIISmall.gif"/>
 	  <homepage href="http://ptolemy.eecs.berkeley.edu/ptolemyII"/>
 	  <offline-allowed/>
@@ -26,6 +25,9 @@
 	<!-- Start Jars -->
 	<!-- End Jars -->
   </resources>
-  <application-desc main-class="ptolemy.actor.gui.jnlp.FullApplication"/>
+  <application-desc main-class="ptolemy.actor.gui.jnlp.DSPApplication">
+	<argument>ptolemy/configs/vergilConfigurationDSP.xml</argument>
+	<argument>ptolemy/configs/introPtiny.htm</argument>
+  </application-desc>
   <!-- Need to deal with Java 3D -->
 </jnlp>
