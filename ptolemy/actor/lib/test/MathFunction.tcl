@@ -81,7 +81,7 @@ test MathFunction-2.1 {test with the default output values} {
 #
 test MathFunction-2.3 {test with log} {
     # Uses setup from MathFunction 1-1 and 2-2
-    set function [java::cast ptolemy.kernel.util.StringAttribute \
+    set function [java::cast ptolemy.data.expr.StringParameter \
 	    [$mathFunction getAttribute function]]
     $function setExpression "log"
     $init setExpression {1.0}
