@@ -32,9 +32,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 /// NestedExceptions
-/*** 
+/***
 A simple program to exceptions across methods.
- 
+
 @author Ankush Varma
 @version $Id$
 */
@@ -44,7 +44,7 @@ public class GlobalExceptions
     public static void main(String[] args)
     {
         System.out.println(1);
-        
+
         try
         {
             System.out.println(2);
@@ -53,7 +53,7 @@ public class GlobalExceptions
         }
         catch(Exception e)
         {
-            System.out.println(4);    
+            System.out.println(4);
         }
     }
 

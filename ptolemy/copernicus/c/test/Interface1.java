@@ -1,4 +1,4 @@
-/* 
+/*
 
 Copyright (c) 2001-2002 The University of Maryland
 All rights reserved.
@@ -41,5 +41,5 @@ ENHANCEMENTS, OR MODIFICATIONS.
 public interface Interface1 {
     void print();
 
-    void doNothing(); 
+    void doNothing();
 }

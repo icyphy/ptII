@@ -1,4 +1,4 @@
-/* 
+/*
 A class that sets an integer array and prints it out.
 
 Copyright (c) 2001-2002 The University of Maryland
@@ -61,7 +61,7 @@ public class Array1{
     public static void main(String args[]) {
         // Initialize array.
         int data[] = new int[10];
-        
+
         // Set the data.
         for (int i = 0; i < 10; i++) {
             data[i] = i * 10;
@@ -71,6 +71,6 @@ public class Array1{
         for (int i = 0; i < 10; i++) {
             System.out.println(data[i]);
         }
-        
+
     }
 }

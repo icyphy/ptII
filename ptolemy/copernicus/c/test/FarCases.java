@@ -35,7 +35,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 //// Cases
 /** A simple program to test the switch construct with a variable that can take
     well-separated values. This causes a LookupSwitch instead of a TableSwitch.
-    
+
     The output of the program would be:
     Today is Friday.
 

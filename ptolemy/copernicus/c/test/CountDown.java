@@ -1,4 +1,4 @@
-/* A class that outputs the numbers from 10 down to 0. 
+/* A class that outputs the numbers from 10 down to 0.
 
 Copyright (c) 2001-2002 The University of Maryland
 All rights reserved.

@@ -32,7 +32,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 /// NestedExceptions
-/*** 
+/***
 A simple program to test local inner classes. Local inner classes must be
 able to access:
 - public, protected and private fields/methods of the outer class. We only
@@ -77,5 +77,5 @@ public class InnerLocal {
 
 
 
-    
+
 

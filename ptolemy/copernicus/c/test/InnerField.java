@@ -33,9 +33,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 /// NestedExceptions
-/*** 
+/***
 A simple program to exceptions across methods.
- 
+
 @author Ankush Varma
 @version $Id$
 */
@@ -68,5 +68,5 @@ public class InnerField {
 
 
 
-    
+
 

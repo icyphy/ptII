@@ -23,13 +23,13 @@ public class FIR2 {
         int interpolation = 3;
         int decimation = 4;
         int decimationPhase = 0;
-        
+
         // Initialize the fields.
         initialize(taps, numberOfTaps, data, interpolation, decimation,
                 decimationPhase);
-        
+
         float[] output = new float[10];
-        
+
         // Fire the actor.
         fire(data, output);
 
@@ -38,7 +38,7 @@ public class FIR2 {
             System.out.println(output[i]);
         }
     }
-    
+
    /** Perform an invocation of the FIR filter that operates on given input
     *  and output arrays.
     *  @param input The input array.

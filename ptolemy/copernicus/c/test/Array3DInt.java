@@ -1,4 +1,4 @@
-/* 
+/*
 A class that sets an 3-dimensional integer array and prints it out.
 
 Copyright (c) 2001-2002 The University of Maryland
@@ -50,12 +50,12 @@ public class Array3DInt{
     public static void main(String args[]) {
         // Initialize array.
         int data[][][] = new int[3][3][3];
-        
+
         // Set the diagonal of the data.
         for (int i = 0; i < 3; i++) {
             data[i][i][i] = i;
         }
-        
+
         for (int i = 0; i < 3; i++) {
             System.out.println(data[i][i][i]);
         }

@@ -1,4 +1,4 @@
-/* 
+/*
 
 Copyright (c) 2001-2002 The University of Maryland
 All rights reserved.
@@ -39,7 +39,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 
 public class Interface1_Class2 implements Interface1 {
-    
+
     public void method1() {
     }
 

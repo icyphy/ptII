@@ -1,4 +1,4 @@
-/* 
+/*
 A class that sets an 2-dimensional integer array and prints it out.
 
 Copyright (c) 2001-2002 The University of Maryland
@@ -51,15 +51,15 @@ public class Array2DInt{
         // Initialize array.
         int data[][] = new int[2][];
         data [0] = new int[2];
-        
+
         // Set the data.
         data[0][0] = 0;
         data[0][1] = 1;
         data[1][0] = 10;
         data[1][1] = 11;
-        
+
         // Print out the data.
-        System.out.println(data[0][0]); 
+        System.out.println(data[0][0]);
         System.out.println(data[0][1]);
         System.out.println(data[1][0]);
         System.out.println(data[1][1]);

@@ -1,4 +1,4 @@
-/* 
+/*
 A class that sets an array of Objects and prints it out.
 
 Copyright (c) 2001-2002 The University of Maryland
@@ -50,7 +50,7 @@ public class ArrayOfObjects{
     public static void main(String args[]) {
         // Initialize array.
         Object data[] = new String[2];
-        
+
         // Set the data.
         data[0] = new String("I, said the sparrow.");
         data[1] = new String("With my bow and arrow.");
@@ -62,6 +62,6 @@ public class ArrayOfObjects{
             System.out.println(data[i].toString());
         }
 
-        
+
     }
 }

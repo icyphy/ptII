@@ -1,4 +1,4 @@
-/* 
+/*
 
 Copyright (c) 2001-2002 The University of Maryland
 All rights reserved.
@@ -41,10 +41,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 public class Interface1_Main {
     public static void main(String args[]) {
         Interface1 a, b;
-        
+
         a = new Interface1_Class1();
         b = new Interface1_Class2();
-       
+
         print(a);
         print(b);
     }

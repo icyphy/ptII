@@ -1,4 +1,4 @@
-/* 
+/*
 A class that tests a single simple non-nested exception within a method. It
 throws an Exception of type java.io.IOException and catches anything of
 type java.lang.Exception.

@@ -1,4 +1,4 @@
-/* 
+/*
 A class that tests a single simple non-nested exception within a method.
 
 Copyright (c) 2001-2002 The University of Maryland

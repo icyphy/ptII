@@ -65,8 +65,8 @@ public class RightShift {
         System.out.println(shortNumber >> shiftIndex);
         System.out.println(shortNumber >>> shiftIndex);
         System.out.println(-shortNumber >> shiftIndex);
-        System.out.println(-shortNumber >>> shiftIndex);        
+        System.out.println(-shortNumber >>> shiftIndex);
 
-        
+
     }
 }
