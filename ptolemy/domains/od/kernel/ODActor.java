@@ -72,7 +72,7 @@ receivers of port pB will have a higher priority than the receivers of port
 pA.
 <P>
 Within a group the receiver priorities are further refined so that receivers
-within a group can be ordered relative to one another. Receiver priorities 
+of the same group can be ordered relative to one another. Receiver priorities 
 within a group are ordered according to the inverse order in which they were 
 added to the containing ODIOPort. I.e., if two input receivers (rA and rB) 
 are added to an ODActor such that receiver rA is added before receiver rB, 
