@@ -31,7 +31,6 @@ package ptplot;
 //   - support for oscilloscope-like plots (where x axis wraps around).
 //   - steps between points rather than connected lines.
 //   - cubic spline interpolation
-//   - log scale axes
 //   - get rid of all of the deprecated lines and require JDK1.1
 //     
 // NOTE: The XOR drawing mode is needed in order to be able to erase
