@@ -194,6 +194,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
                 Class loadedClass = null;
 
                 if (StaticResolution.shallowLoading && 
+                        StaticResolution.enableDeepUserASTs &&
                         StaticResolution.enableShallowLoading) {
                     // First, make sure that the class is already loaded or that
                     // we can load the class. Otherwise,
