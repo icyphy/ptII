@@ -405,16 +405,6 @@ public class Main extends KernelMain {
 //                UnreachableMethodRemover.v());
        /* */   
        
-       // Convert to grimp.
-       addTransform(pack, "wjtp.gt",
-               GrimpTransformer.v());
-       // This snapshot should be last...
-       addTransform(pack, "wjtp.finalSnapshotJimple",
-               JimpleWriter.v(),
-               "outDir:" + _outputDirectory);
-       addTransform(pack, "wjtp.finalSnapshot", 
-               ClassWriter.v(),
-               "outDir:" + _outputDirectory);
     }
 
 
@@ -426,6 +416,17 @@ public class Main extends KernelMain {
  
         Pack pack = PackManager.v().getPack("wjtp");
  
+       // Convert to grimp.
+       addTransform(pack, "wjtp.gt",
+               GrimpTransformer.v());
+       // This snapshot should be last...
+       addTransform(pack, "wjtp.finalSnapshotJimple",
+               JimpleWriter.v(),
+               "outDir:" + _outputDirectory);
+       addTransform(pack, "wjtp.finalSnapshot", 
+               ClassWriter.v(),
+               "outDir:" + _outputDirectory);
+
         // And write C!
         //      pack.add(
         //                 new Transform("wjtp.finalSnapshot", CWriter.v());
