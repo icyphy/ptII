@@ -49,11 +49,19 @@ else
     TNAMEHOST=$1
     MODELSERVERHOST=$2
 
-    rsh $TNAMEHOST tnameserv -ORBInitialPort 1050 &
+    # Under NT, do
+    # SSH=ssh
+    # export SSH
+
+    if [ -z "${SSH-}" ]; then
+	SSH=ssh
+    fi
+
+    $SSH $TNAMEHOST tnameserv -ORBInitialPort 1050 &
     # Get the pid of the last process started up in the background
     TPID=$!
 
-    rsh $MODELSERVERHOST "cd $PTII/ptolemy/domains/ct/demo/Corba; 
+    $SSH $MODELSERVERHOST "cd $PTII/ptolemy/domains/ct/demo/Corba; 
 	 java -cp $PTII ptolemy.domains.ct.demo.Corba.ModelServer \
         -ORBInitialHost ${TNAMEHOST:-localhost} -ORBInitialPort 1050" &
     MPID=$!
