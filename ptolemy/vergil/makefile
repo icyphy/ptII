@@ -94,6 +94,7 @@ OPTIONAL_FILES = \
 	'MoMLViewerApplet$$PortContextMenuFactory.class' \
 	'MoMLViewerApplet$$StateContextMenuFactory.class' \
 	'MoMLViewerApplet$$TransitionContextMenuFactory.class' \
+	'TypeAnimatorApplet$$1.class' \
 	'TypeAnimatorApplet$$PortTypeListener.class' \
 	'VergilApplication$$1.class' \
 	'VergilApplication$$2.class' \
