@@ -29,35 +29,23 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# This script attempts to determine the location of the
-# Java Ptplot class file and JAVAHOME.
+# If this script is named 'ptplot' or 'pxgraph' don't edit it!
+# instead, edit ptplot.in and run configure
+# 
+# configure substitutes in variables that are surrounded with @,
 #
-# To run this script, you need to set the PTII and JAVAHOME
-# environment variables.  If you do not set these variables
-# then the script will guess values.
-#
-# If the PlotApplication class is at
-# /users/ptII/ptolemy/plot/PlotApplication.class
-# then the PTII variable should be set to /users/ptII
-#
-# Your JAVAHOME variable should be set to the directory that
-# contains your Java distribution.  For example, your .cshrc could contain:
-# setenv JAVAHOME /opt/jdk1.1.7
-#
-# See the PlotApplication class documentation for further instructions.
-#
-# These are the defaults that we use in the script below.
-# If you are installing this script, feel free to edit these
 
-PTIIDEFAULT=/users/ptII
-JAVADEFAULT=/usr/java
+# Location of the Ptolemy II tree.  The plot directory should be found
+# at $PTIIDEFAULT/ptolemy/plot
+PTII_DEFAULT=@PTII_DEFAULT@
+PTJAVA_DIR=@PTJAVA_DIR@
 
 ################
 # You probably don't want to edit below here
 
 if [ -z "$PTII" ]; then
-    if [ -d "$PTIIDEFAULT" ]; then
-	PTII="$PTIIDEFAULT"
+    if [ -d "$PTII_DEFAULT" ]; then
+	PTII="$PTII_DEFAULT"
 	export PTII
     fi
 fi
@@ -88,8 +76,8 @@ case "${OSTYPE-no}" in
 esac
 
 if [ -z "$JAVAHOME" ]; then
-    if [ -d "$JAVADEFAULT" ]; then
-	JAVAHOME="$JAVADEFAULT"
+    if [ -d "$PTJAVA_DIR" ]; then
+	JAVAHOME="$PTJAVA_DIR"
 	export JAVAHOME
     else
 	if [ "$windows" = "yes" ]; then
@@ -146,5 +134,3 @@ elif [ "$PTARCH" = "alpha4" ]; then
 else
     $JAVAHOME/bin/java -classpath $PTII:$JAVAHOME/lib/classes.zip $javastartupclass ${1+"$@"}
 fi
-
-
