@@ -90,7 +90,7 @@ OPTIONAL_JSRCS = \
 	JJTMatrixParserState.java \
 	MatrixParserConstants.java \
 	MatrixParserTokenManager.java \
-	MatrixParserTreeConstants.java 
+	MatrixParserTreeConstants.java \
 	SimpleNode.java \
 	Token.java \
 	TokenMgrError.java
