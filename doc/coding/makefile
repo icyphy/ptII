@@ -42,6 +42,7 @@ DIRS =
 EXTRA_SRCS = \
 	directories.html \
 	index.html \
+	style.html \
 	packages.html
 
 MISC_FILES =	$(DIRS)
