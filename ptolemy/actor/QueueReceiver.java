@@ -93,7 +93,7 @@ public class QueueReceiver extends NamedObj implements Receiver {
     /** Return the container of the queue, or null if there is none.
      */
     public Nameable getContainer() {
-        return _container;
+        return (Nameable)_container;
     }
 
     /** Returns the FIFOQueue */
