@@ -2,10 +2,20 @@
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/moml.dtd">
 <model name="modulation" class="ptolemy.actor.TypedCompositeActor">
-  <doc>Multiply a low-frequency sine wave by a higher frequency one.</doc>
-
+  <doc>Multiply a low-frequency sine wave (the signal)
+by a higher frequency one (the carrier).</doc>
+  <property name="frequency1" value="PI*0.2"
+      class="ptolemy.data.expr.Parameter">
+      <doc>Frequency of the carrier</doc>
+  </property>
+  <property name="frequency2" value="PI*0.02"
+      class="ptolemy.data.expr.Parameter">
+      <doc>Frequency of the sinusoidal signal</doc>
+  </property>
   <director class="ptolemy.domains.sdf.kernel.SDFDirector">
-    <property name="iterations" value="100"></property>
+    <property name="iterations" value="100">
+        <doc>Number of iterations in an execution.</doc>
+    </property>
   </director>
 
   <import source="sinewave.xml"/>
@@ -13,13 +23,13 @@
   <!-- Define the actors -->
   <entity name="carrier" class=".sinewave">
     <property name="samplingFrequency" value="2*PI"></property>
-    <property name="frequency" value="PI*0.2"></property>
+    <property name="frequency" value="frequency1"></property>
     <port name="output"></port>
   </entity>
 
   <entity name="signal" class=".sinewave">
     <property name="samplingFrequency" value="2*PI"></property>
-    <property name="frequency" value="PI*0.02"></property>
+    <property name="frequency" value="frequency2"></property>
     <port name="output"></port>
   </entity>
 

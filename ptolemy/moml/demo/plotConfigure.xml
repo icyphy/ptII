@@ -1,5 +1,6 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model SYSTEM "../../plot/plotml/plotml.dtd">
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/plotml.dtd">
 <plot>
   <xLabel>sample count</xLabel>
   <yLabel>amplitude</yLabel>

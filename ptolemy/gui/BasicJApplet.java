@@ -30,10 +30,12 @@
 
 package ptolemy.gui;
 
-import javax.swing.JApplet;
+// Java imports.
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
+import javax.swing.JApplet;
+import javax.swing.JOptionPane;
 
 //////////////////////////////////////////////////////////////////////////
 //// BasicJApplet
@@ -95,34 +97,41 @@ public class BasicJApplet extends JApplet {
     }
 
     /** Report an exception.  This prints a message to the standard error
-     *  stream, followed by the stack trace.
+     *  stream, followed by the stack trace, but displays on the screen
+     *  only the error message associated with the exception.
      */
     public void report(Exception ex) {
-        String msg = "Exception thrown by applet.\n" + ex.toString();
+        String msg = "Exception thrown by applet.";
         System.err.println(msg);
         ex.printStackTrace();
-        showStatus("Exception occurred.");
+        showStatus("exception occurred.");
 
-	// Put the stack trace into a string.
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        PrintWriter printWriter = new PrintWriter(stream);
-        ex.printStackTrace(printWriter);
-        printWriter.flush();
-
-        new Message(msg + "\n" + stream.toString());
+        JOptionPane.showMessageDialog(this, ex.getMessage(),
+                "Ptolemy II Error Message", JOptionPane.ERROR_MESSAGE);
     }
 
-    /** Report an exception with an additional message.  Currently
-     *  this prints a message to standard error, followed by the stack trace,
-     *  although soon it will pop up a message window instead.
+    /** Report a message to the user.
+     *  This shows the message on the browser's status bar.
+     *  @param message The message to report.
+     */
+    public void report(String message) {
+	showStatus(message);
+    }
+
+    /** Report an exception with an additional message.
+     *  This prints a message to standard error, followed by the stack trace,
+     *  and pops up a window with the message and the message of the
+     *  exception.
      */
     public void report(String message, Exception ex) {
-        String msg = "Exception thrown by applet.\n" + message + "\n"
-            + ex.toString();
-            System.err.println(msg);
-            ex.printStackTrace();
-            showStatus("Exception occurred.");
-            new Message(msg + "\nSee Java console for stack trace.");
+        String msg = "Exception thrown by applet.\n" + message;
+        System.err.println(msg);
+        ex.printStackTrace();
+        showStatus("exception occurred.");
+        JOptionPane.showMessageDialog(this,
+               message + "\n" + ex.getMessage(),
+               "Ptolemy II Error Message",
+               JOptionPane.ERROR_MESSAGE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -150,19 +159,31 @@ public class BasicJApplet extends JApplet {
      *  This is protected so that derived classes can find out what the
      *  background color is. Derived classes may wish to know the
      *  color so they can match it in some of their components.
+     *  @deprecated Use the public method getBackground() instead.
      */
     protected Color _getBackground() {
         return _background;
     }
 
+    /** Get the stack trace and return as a string.
+     *  @param ex The exception for which we want the stack trace.
+     *  @return The stack trace.
+     */
+    protected String _getStackTrace(Exception ex) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        PrintWriter printWriter = new PrintWriter(stream);
+        ex.printStackTrace(printWriter);
+        printWriter.flush();
+        return stream.toString();
+    }
+
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
     /*  The background color as set by the "background" applet parameter.
      *  This is protected so that derived classes can find out what the
-     *  background color is.  The Applet base class does not provide
-     *  a getBackground() method.  Derived classes may wish to know the
+     *  background color is. Derived classes may wish to know the
      *  color so they can match it in some of their components.
      */
-    private Color _background;
+    protected Color _background;
 }

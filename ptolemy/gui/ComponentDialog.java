@@ -46,10 +46,11 @@ top-level dialog box.  The general way to use this class is to create
 the component that you wish to have contained in the dialog.
 Then pass that component to the constructor of this class.  The dialog
 is modal, so the statement that creates the dialog will not return
-until the user dismisses the dialog.  The method changesAccepted()
+until the user dismisses the dialog.  The method buttonPressed()
 can then be called to find out whether the user clicked the OK button
-or the Cancel button.  Then you can access the component to determine
-what values were set by the user.
+or the Cancel button (or any other button specified in the constructor).
+Then you can access the component to determine what values were set
+by the user.
 
 @author Edward A. Lee
 @version $Id$
@@ -157,7 +158,6 @@ public class ComponentDialog extends JDialog {
     /** The component contained by this dialog.
      */
     public Component contents;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

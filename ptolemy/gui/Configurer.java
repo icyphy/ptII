@@ -1,4 +1,4 @@
-/* An interface for graphical widgets which can configure NamedObjects.
+/* An interface for graphical widgets that can configure NamedObjects.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
