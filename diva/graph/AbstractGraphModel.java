@@ -64,7 +64,7 @@ public abstract class AbstractGraphModel implements GraphModel {
      * <p>
      * This method furthermore ensures that all graph events are
      * dispatched in the event thread.
-     * @see setDispatchEnabled(boolean)
+     * @see #setDispatchEnabled(boolean)
      */
     public void dispatchGraphEvent(final GraphEvent e) {
         if (_dispatch) {

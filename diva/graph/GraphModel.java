@@ -66,7 +66,7 @@ public interface GraphModel {
      * allows the user to send a STRUCTURE_CHANGED after some
      * inner-loop operations.
      *
-     * @see setDispatchEnabled(boolean)
+     * @see #setDispatchEnabled(boolean)
      */
     public void dispatchGraphEvent(GraphEvent e);
 

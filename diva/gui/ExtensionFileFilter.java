@@ -134,7 +134,7 @@ public class ExtensionFileFilter extends FileFilter {
      * Files that begin with "." are ignored.
      *
      * @see #getExtension(File)
-     * @see FileFilter#accept(Object)
+     * @see FileFilter#accept(File)
      */
     public boolean accept(File f) {
         if (f != null) {
