@@ -40,11 +40,11 @@ import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
 /** A class that identifies special types.
- *
- *  This class is intended to be overridden to implement different
- *  typing policies.
- *
- *  @author Jeff Tsay
+This class is intended to be overridden to implement different
+typing policies.
+
+@author Jeff Tsay
+@version: $Id$
  */
 public class TypeIdentifier implements JavaStaticSemanticConstants {
 
@@ -69,11 +69,14 @@ public class TypeIdentifier implements JavaStaticSemanticConstants {
     }
 
 
-    /** Return the kind (an integer) of the type. If the type node is a TypeNameNode,
-     *  return kindOfTypeNameNode(type).
+    /** Return the kind (an integer) of the type. If the type node is
+     *  a TypeNameNode, return kindOfTypeNameNode(type).
      */
     public int kind(TypeNode type) {
+        //System.err.println("TypeIdentifier.kind(" + type +") classID:"
+        //                   + type.classID());
 
+        // type.classID() will return an integer from nodetypes.NodeClassID.
         switch (type.classID()) {
             // null type
         case NULLTYPENODE_ID:      return TYPE_KIND_NULL;
@@ -89,7 +92,8 @@ public class TypeIdentifier implements JavaStaticSemanticConstants {
         case DOUBLETYPENODE_ID:    return TYPE_KIND_DOUBLE;
 
             // class or interface
-        case TYPENAMENODE_ID:      return kindOfTypeNameNode((TypeNameNode) type);
+        case TYPENAMENODE_ID:
+            return kindOfTypeNameNode((TypeNameNode) type);
 
             // array initializer (not used in the static semantic analysis)
         case ARRAYINITTYPENODE_ID: return TYPE_KIND_ARRAYINIT;
@@ -105,8 +109,9 @@ public class TypeIdentifier implements JavaStaticSemanticConstants {
         //return TYPE_KIND_UNKNOWN;
     }
 
-    /** Return the kind of the user type, either a class type or an interface type.
-     *  This method should be called in kind() for TypeNameNodes.
+    /** Return the kind of the user type, either a class type or an
+     *  interface type.  This method should be called in kind() for
+     *  TypeNameNodes.
      */
     public int kindOfTypeNameNode(TypeNameNode type) {
         return kindOfClassDecl((ClassDecl) JavaDecl.getDecl((NamedNode) type));
@@ -116,7 +121,7 @@ public class TypeIdentifier implements JavaStaticSemanticConstants {
         if (classDecl != null) {
             if (classDecl.category == CG_INTERFACE) {
                 return TYPE_KIND_INTERFACE;
-            }
+
         }
         return TYPE_KIND_CLASS;
     }
@@ -134,13 +139,14 @@ public class TypeIdentifier implements JavaStaticSemanticConstants {
         return _PRIMITIVE_KIND_TO_TYPE[kind];
     }
 
-    // kinds of types, a mapping from types to integers
+    // Kinds of types, a mapping from types to integers.
 
     public static final int TYPE_KIND_UNKNOWN = -1;
 
-    // primitive types
+    // Primitive types.
 
-    public static final int TYPE_KIND_BOOLEAN = 0; // first primitive type should start at 0
+    // First primitive type should start at 0.
+    public static final int TYPE_KIND_BOOLEAN = 0; 
     public static final int TYPE_KIND_BYTE    = 1;
     public static final int TYPE_KIND_SHORT   = 2;
     public static final int TYPE_KIND_CHAR    = 3;
@@ -152,7 +158,7 @@ public class TypeIdentifier implements JavaStaticSemanticConstants {
     /** The number of primitive types in Java. */
     public static final int NUM_PRIMITIVE_TYPES = TYPE_KIND_DOUBLE + 1;
 
-    // user defined types
+    // User defined types.
 
     public static final int TYPE_KIND_CLASS   = 8;
     public static final int TYPE_KIND_INTERFACE = 9;
@@ -168,9 +174,17 @@ public class TypeIdentifier implements JavaStaticSemanticConstants {
 
     public static final int TYPE_KINDS = TYPE_KIND_VOID + 1;
 
-    /** An array, indexed by kind, of the primitive type corresponding to the kind. */
+    /** An array, indexed by kind, of the primitive type corresponding
+     *  to the kind.
+     */
     protected static final TypeNode[] _PRIMITIVE_KIND_TO_TYPE = new TypeNode[]
         { BoolTypeNode.instance, ByteTypeNode.instance, ShortTypeNode.instance,
-              CharTypeNode.instance, IntTypeNode.instance, LongTypeNode.instance,
+              CharTypeNode.instance, IntTypeNode.instance,
+              LongTypeNode.instance,
               FloatTypeNode.instance, DoubleTypeNode.instance };
 }
+
+
+
+
+
