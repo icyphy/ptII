@@ -234,6 +234,23 @@ public class Expression extends TypedAtomicActor {
         return true;
     }
 
+    /** Create receivers and validate the attributes contained by this
+     *  actor and the ports contained by this actor.  This method overrides
+     *  the base class to not throw exceptions if the parameters of this 
+     *  actor cannot be validated.  This is done because the expression
+     *  depends on the input values, which may not be valid before type
+     *  resolution occurs.
+     *
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void preinitialize() throws IllegalActionException {
+        try {
+            super.preinitialize();
+        }
+        catch(Exception ex) {
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -264,7 +281,9 @@ public class Expression extends TypedAtomicActor {
             // FIXME: Have to initialize with a token since vergil
             // evaluates variables at start-up.  This needs to be a double
             // so that expressions that use java.Math work.
-            new Variable(this, portName, new DoubleToken(1.0));
+            Variable variable = new Variable(this, portName);
+            variable.setToken(new Token());
+            //, new DoubleToken(1.0));
         } else if ((there instanceof Parameter)
                 || !(there instanceof Variable)) {
             throw new IllegalActionException(this, "Port name collides with"
