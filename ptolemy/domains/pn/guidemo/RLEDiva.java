@@ -49,6 +49,7 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.media.Picture;
 import ptolemy.domains.pn.kernel.*;
+import ptolemy.domains.pn.kernel.event.*;
 import ptolemy.domains.pn.lib.*;
 import ptolemy.actor.*;
 import ptolemy.actor.util.PtolemyApplet;

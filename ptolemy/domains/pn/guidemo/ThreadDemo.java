@@ -16,6 +16,7 @@ import diva.util.gui.TutorialWindow;
 import diva.surfaces.trace.*;
 
 import ptolemy.domains.pn.kernel.*;
+import ptolemy.domains.pn.kernel.event.*;
 import ptolemy.domains.pn.lib.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
