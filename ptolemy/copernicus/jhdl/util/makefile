@@ -57,7 +57,6 @@ JSRCS =		BlockGraphToDotty.java \
 		PtDirectedGraphToDotty.java \
 		MergedControlFlowGraph.java \
 		GraphToDotty.java \
-		JHDLNotExpr.java \
 		HashListMap.java
 
 
