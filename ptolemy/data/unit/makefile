@@ -52,7 +52,6 @@ JSRCS = \
 	Bindings.java \
 	EquationVisitor.java \
 	ExpandPortNames.java \
-	Solver.java \
 	Unit.java \
 	UnitCategory.java \
 	UnitConstraint.java \
