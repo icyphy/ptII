@@ -51,7 +51,7 @@ import javax.swing.ImageIcon;
 //////////////////////////////////////////////////////////////////////////
 //// ImageReader
 /**
-This actor reads an Image from a FileAttribute, and outputs it as an 
+This actor reads an Image from a FileAttribute, and outputs it as an
 AWTImageToken.
 
 <p>FIXME: It would be nice if we could read images from stdin.
@@ -149,7 +149,7 @@ public class ImageReader extends Source {
         if (_url == null) {
             throw new IllegalActionException("sourceURL was null");
         }
-        _fileRoot = _url.getFile();                
+        _fileRoot = _url.getFile();
         _image = new ImageIcon(_fileRoot).getImage();
         if (_image.getWidth(null) == -1
                 && _image.getHeight(null) == -1) {
