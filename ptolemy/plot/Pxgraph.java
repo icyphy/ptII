@@ -30,13 +30,7 @@ package ptolemy.plot;
 import java.awt.*;
 import java.awt.event.*;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import java.lang.Thread;
-import java.lang.InterruptedException;
+import java.io.*;
 
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -453,6 +447,7 @@ public class Pxgraph extends Frame {
         _plotPanel = new Plot();
         _makeButtons();
 
+        _debug = 0;
         // Regrettably, in JDK 1.1, you have to explicitly handle window
         // closing events.
         addWindowListener(new WindowAdapter() {
@@ -523,6 +518,13 @@ public class Pxgraph extends Frame {
             }
             System.exit(0);
         }
+    }
+
+    /** Write the current data and plot configuration to the
+     * specified stream.
+     */
+    public void write(OutputStream out) {
+        _plotPanel.write(out);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -924,22 +926,23 @@ public class Pxgraph extends Frame {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Button _exitButton, _printButton, _HTMLButton, _aboutButton;
+    private transient Button _exitButton, _printButton;
+    private transient Button _HTMLButton, _aboutButton;
 
-    //  Command line args pxgraph was called with.
+    /** @serial Command line args pxgraph was called with. */
     private String _cmdLineArgs[];
 
     // For debugging, call with -db or -debug.
     private static int _debug = 0;
 
     // The output file name
-    private String _outputFile = "/tmp/t.ps";
+    private transient String _outputFile = "/tmp/t.ps";
 
-    // The Plot Panel.
+    /** @serial The Plot Panel. */
     private Plot _plotPanel;
 
-    // If true, then bring up the print dialog upon startup.
-    private boolean _printDialog = false;
+    /// If true, then bring up the print dialog upon startup.
+    private transient boolean _printDialog = false;
 
     // If true, then auto exit after a few seconds.
     private static boolean _test = false;
