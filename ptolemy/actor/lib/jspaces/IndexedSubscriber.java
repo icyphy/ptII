@@ -456,7 +456,7 @@ public class IndexedSubscriber extends Source implements RemoteEventListener {
 
         /** Return the serial number of the last token entry being
          *  read.
-         *  @return The last read serail number.
+         *  @return The last read serial number.
          */
         public long getSerialNumber() {
             return _lastSerialNumber;
