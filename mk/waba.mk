@@ -46,17 +46,17 @@
 #		$PTII/mk/ptII.mk by configure		
 # JAVA		The location of the Java Interpreter.  Set in ptII.mk
 # JAVAC		The location of the Java Compiler.  Set in ptII.mk
-# KVM_CLASSES	CLASSPATH specification to find the KVM.  Set in ptII.mk
-# KVM_DIR	Directory where the KVM is located.  Set in ptII.mk
-# ME		Directory where the makefile that includes kvm.mk is located.
+# WABA_CLASSES	CLASSPATH specification to find the WABA.  Set in ptII.mk
+# WABA_DIR	Directory where the WABA is located.  Set in ptII.mk
+# ME		Directory where the makefile that includes waba.mk is located.
 # ROOT		Location of the PTII directory to the makefile that
-#		includes kvm.mk.
+#		includes waba.mk.
 
-# KVM specific makefiles variables that need to be set before
-# including kvm.mk:
+# WABA specific makefiles variables that need to be set before
+# including waba.mk:
 #
 # SOURCE_SYSTEM_CLASS  Classpath to the source system we are generating
-#		code for, for example ptolemy.kvm.demo.ramp.RampSystem
+#		code for, for example ptolemy.waba.demo.ramp.RampSystem
 # ITERATIONS	Number of iterations, for example 50
 # OUTPKG	Output package name for generated code, which also
 # 		determines the directory relative to PTII where the
@@ -75,6 +75,9 @@
 #JAVA_VERBOSE =	-verbose:class
 #MAKEPALMAPP_VERBOSE = -v -v
 
+WARP = $(WABA_DIR)/bin/warp 
+EXEGEN = $(WABA_DIR)/bin/exegen
+
 # Run the demo via the usual method without any codegen.
 demo_interpreted: $(PTCLASSJAR)
 	CLASSPATH="$(CLASSPATH)" \
@@ -82,7 +85,7 @@ demo_interpreted: $(PTCLASSJAR)
 		-class $(SOURCE_SYSTEM_CLASS) \
 		-iterations $(ITERATIONS)
 
-codegen: generate_sdf_code compile_codegen preverify build_prc run_codegen kvm
+codegen: generate_sdf_code compile_codegen preverify build_prc run_codegen waba
 
 # FIXME: JAVASRC_SKELETON_DIR needs to go away.
 # It is the location of the java sources and the .skel files
@@ -107,47 +110,32 @@ $(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).java:
 		-iterations $(ITERATIONS) \
 		-outdir $(ROOT) -outpkg $(OUTPKG)
 
-# Compile the codegen kvm code in $(PTII)/$(OUTPKG)
+# Compile the codegen waba code in $(PTII)/$(OUTPKG)
 # Note that we compile without debug as the default
 compile_codegen: $(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class
 $(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class: \
 			$(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).java
 	@echo "###################################"
-	@echo "# Compiling codegen kvm *.java files in $(PTII)/$(OUTPKG)"
+	@echo "# Compiling codegen waba *.java files in $(PTII)/$(OUTPKG)"
 	@echo "###################################"
 	(cd $(ROOT)/$(OUTPKG_DIR); \
 	$(JAVAC) -g:none -O $(JAVAC_VERBOSE) \
-		-bootclasspath $(KVM_CLASSES)  \
+		-bootclasspath $(WABA_CLASSES)  \
 		-classpath $(OUTPKG_ROOT) \
 		$(OUTPKG_MAIN_CLASS).java)
 
-# Compile the non-codegen kvm code in $(PTII)/$(OUTPKG)
+# Compile the non-codegen waba code in $(PTII)/$(OUTPKG)
 # Note that we compile without debug as the default
-compile_kvm: 
+compile_waba: 
 	@echo "###################################"
-	@echo "# Compiling non-codegen kvm *.java files in $(PTII)/$(OUTPKG)"
+	@echo "# Compiling non-codegen waba *.java files in $(PTII)/$(OUTPKG)"
 	@echo "###################################"
 	(cd $(ROOT)/$(OUTPKG_DIR); \
 	$(JAVAC) -g:none -O $(JAVAC_VERBOSE) \
-		-bootclasspath $(KVM_CLASSES)  \
+		-bootclasspath $(WABA_CLASSES)  \
 		-classpath $(OUTPKG_ROOT) \
 		$(OUTPKG_MAIN_CLASS).java)
 
-
-# Run the kvm preverify tool in $(PTII)/$(OUTPKG)
-# and generate .class files in $(PTII)/$(OUTPKG)/output/$(OUTPKG_DIR)
-preverify:
-	@echo "###################################"
-	@echo "# preverifying in $(PTII)/$(OUTPKG_DIR), creating new .class files"
-	@echo "###################################"
-	(cd $(ROOT)/$(OUTPKG_DIR); \
-	for class in *.class; do \
-		echo $$class ; \
-		$(KVM_DIR)/bin/preverify \
-			-classpath \
-			"$(KVM_CLASSES)$(CLASSPATHSEPARATOR)$(OUTPKG_ROOT)" \
-			$(OUTPKG).`basename $$class .class`; \
-	done)
 
 
 # Create a Palm binary from the class files in 
@@ -156,60 +144,20 @@ preverify:
 #   and then use the .class files from the output directory that are
 #   created by the preverifier.  If you use the class files that were
 #   created by javac directly, then you may get verifier errors.
-build_prc: $(KVM_DIR)/tools/palm/src/palm/database/MakePalmApp.class
+build_prc: $(WABA_DIR)/tools/palm/src/palm/database/MakePalmApp.class
 	@echo "###################################"
 	@echo "# Creating Palm executable from classes in"
 	@echo "# $(PTII)/$(OUTPKG_DIR)"
 	@echo "###################################"
 	(cd $(ROOT)/$(OUTPKG_DIR); \
-	$(JAVA) -classpath $(KVM_DIR)/tools/palm/src \
-		 palm.database.MakePalmApp \
-		$(MAKEPALMAPP_VERBOSE) \
-		-version "1.0" \
-		-bootclasspath $(KVM_CLASSES)  \
-		-classpath output \
-		$(OUTPKG).$(OUTPKG_MAIN_CLASS))
-
-# Build the MakePalmApp tool if necessary
-$(KVM_DIR)/tools/palm/src/palm/database/MakePalmApp.class: \
-		$(KVM_DIR)/tools/palm/src/palm/database/MakePalmApp.java
-	(cd $(KVM_DIR)/tools/palm/src/palm/database; $(JAVAC) *.java)
-
-# Run the java profiler (javap) on all the classes
-javap:
-	(cd $(ROOT)/$(OUTPKG_DIR); \
-	javap -classpath $PTII `ls -1 *.class | awk '{s=substr($0,1,length($0)-6); print "$(OUTPKG)."s}' `)
-
-# Remove all "import ptolemy.*" lines
-fix:
-	(cd $(ROOT)/$(OUTPKG_DIR); \
-	for files in *.java; do \
-		sed 's@\(import ptolemy.*;\)@//\1@' $$files > tmp; \
-		diff $$files  tmp; \
-		cp tmp $$files; \
-	done)
+	$(WARP) c /q $(OUTPKG_MAIN_CLASS) *.class
+	$(EXEGEN) /q /i icon.bmp \
+		$(OUTPKG_MAIN_CLASS) $(OUTPKG_MAIN_CLASS) $(OUTPKG_MAIN_CLASS)
 
 run_codegen: 	
 	(cd $(ROOT)/$(OUTPKG_DIR); \
-		$(JAVA) -classpath $(OUTPKG_ROOT) \
-			$(OUTPKG).$(OUTPKG_MAIN_CLASS))
-
-# FIXME: what about Solaris?
-KVM_BINARY = $(KVM_DIR)/kvm/VmWin/build/kvm.exe
-# Run a Java simulator of the Palm
-# kvm.exe needs to be built by hand, see the kvm instructions. 
-kvm:
-	if [ ! -f "$(KVM_BINARY)" ]; then \
-		echo "$(KVM_BINARY) is not found."; \
-		echo "This binary simulates the Palm/KVM environment"; \
-		echo "It is not required but it is useful for debugging"; \
-		echo "To build it, see the kvm instructions."; \
-	else \
-		(cd $(ROOT)/$(OUTPKG_DIR); \
-			$(KVM_BINARY) -classpath \
-			"$(KVM_CLASSES)$(CLASSPATHSEPARATOR)output" \
-			$(OUTPKG).$(OUTPKG_MAIN_CLASS)); \
-	fi
+		CLASSPATH=$(OUTPKG_ROOT)$(CLASSPATHSEPARATOR)$(WABA_CLASSES)
+		$(JAVA) waba.applet.Applet $(OUTPKG).$(OUTPKG_MAIN_CLASS))
 
 clean_codegen: clean
 	rm -rf $(ROOT)/$(OUTPKG_DIR)
