@@ -1,7 +1,20 @@
 #!/bin/sh
-# Compare two jar files and report the differences
+# @version: Christopher Hylands
+# $Id$
+# javadiff -  Compare two jar files and report the differences
+#
+# 1) prints out files that are only present in the first jar file,
+# 2) prints out files that are only present in the second jar file
+# 3) runs javap on any common classes and prints the difference
+#
 # Example usage:
-# ./jardiff "c:/Program Files/Ptolemy/Ptolemy II 1.0.1/ptolemy/actor/lib/lib.jar" "$PTII/ptolemy/actor/lib/lib.jar"
+# cd $PTII
+# cvs update
+# make install
+# $PTII/adm/bin/jardiff "c:/Program Files/Ptolemy/Ptolemy II 1.0.1/ptolemy/actor/lib/lib.jar" "$PTII/ptolemy/actor/lib/lib.jar"
+
+#or 
+#$PTII/adm/bin/jardiff "c:/Program Files/Ptolemy/Ptolemy II 1.0.1/ptolemy/ptsupport.jar" "$PTII/ptolemy/ptsupport.jar"
 
 if [ $# -ne 2 ]; then
     echo "$0: Wrong number of arguments, got $#, expected 2"
@@ -28,11 +41,11 @@ contents2=${tmpfile}_contents2
 
 jar -tf "$jarfile1" | sort > $contents1
 jar -tf "$jarfile2" | sort > $contents2
-echo "Files found only in $jarfile1":
-comm -23 $contents1 $contents2
+echo "# Files found only in $jarfile1":
+comm -23 $contents1 $contents2| awk ' {print "Only in <", $0}'
 
-echo "Files found only in $jarfile2":
-comm -13 $contents1 $contents2
+echo "# Files found only in $jarfile2":
+comm -13 $contents1 $contents2 | awk ' {print "Only in >", $0}'
 
 classpathseparator=:
 case "${OSTYPE-no}" in
@@ -44,19 +57,29 @@ case "${OSTYPE-no}" in
     classpathseparator=";" ;;
 esac
 
+echo "# Print a + for non .class files such as directories"
+echo "# Print a . for .class files that had the same javap output"
 description1=${tmpfile}_desc1
 description2=${tmpfile}_desc2
 files=`comm -12 $contents1 $contents2`
 for file in $files
 do
+    if [ "`basename $file`" = "`basename $file .class`" ]; then 
+	# $file does not end with .class
+        /bin/echo -n "+"
+	continue
+    fi
+    /bin/echo -n "."
     class=`echo $file | sed -e 's@/@.@g' -e 's@.class@@'`
-    echo "$class"
+    # FIXME: note that we could have problems here if the kernel
+    # has changed signicantly and we are not comparing ptsupport.jar
     javap -classpath "$jarfile1${classpathseparator}${PTII}" $class > $description1
     javap -classpath "$jarfile2${classpathseparator}${PTII}" $class > $description2
     diff $description1 $description2 > /dev/null 2>&1
     retval=$? 
     if [ $retval -eq 1 ]; then
-	echo "$file has differences:"
+        echo ""
+	echo "$class has differences:"
 	diff $description1 $description2
     fi
 done
