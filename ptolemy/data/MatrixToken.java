@@ -245,22 +245,37 @@ public abstract class MatrixToken extends Token {
 
         Type type = (Type)TypeLattice.lattice().leastUpperBound(
                 typeTerms);
+        
+        return arrayToMatrix(type, tokens, rows, columns);
+    }
 
+    /** Create a new instance of a MatrixToken subclass with the given
+     *  element type and number of rows and columns.  The token will
+     *  contain all of the elements of the given array.  The size of
+     *  the array must be (rows*columns).
+     *  @return An instance of a subclass of MatrixToken.
+     *  @exception IllegalActionException If the type is not possible,
+     *  or the array of tokens is not the right size, or the array is
+     *  null.
+     */
+    public static MatrixToken arrayToMatrix(Type type,
+            Token[] tokens, int rows, int columns)
+            throws IllegalActionException {
         MatrixToken token;
-        if (type == BaseType.UNKNOWN) {
+        if (type.equals(BaseType.UNKNOWN)) {
             throw new IllegalActionException("Cannot resolve type for "
                     + "matrix construction.");
-        } else if (type == BaseType.BOOLEAN) {
+        } else if (type.equals(BaseType.BOOLEAN)) {
             token = new BooleanMatrixToken(tokens, rows, columns);
-        } else if (type == BaseType.INT) {
+        } else if (type.equals(BaseType.INT)) {
             token = new IntMatrixToken(tokens, rows, columns);
-        } else if (type == BaseType.LONG) {
+        } else if (type.equals(BaseType.LONG)) {
             token = new LongMatrixToken(tokens, rows, columns);
-        } else if (type == BaseType.DOUBLE) {
+        } else if (type.equals(BaseType.DOUBLE)) {
             token = new DoubleMatrixToken(tokens, rows, columns);
-        } else if (type == BaseType.COMPLEX) {
+        } else if (type.equals(BaseType.COMPLEX)) {
             token = new ComplexMatrixToken(tokens, rows, columns);
-        } else if (type == BaseType.FIX) {
+        } else if (type.equals(BaseType.FIX)) {
             token = new FixMatrixToken(tokens, rows, columns);
         } else {
             throw new IllegalActionException("Unrecognized type " + type +
