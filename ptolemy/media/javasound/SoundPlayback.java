@@ -44,12 +44,19 @@ import javax.sound.sampled.*;
    of audio data to a sound file. Single channel
    (mono) and multichannel audio (stereo) are supported. This class,
    along with SoundCapture, intends to provide an easy to use interface
-   to Java Sound, Java's audio API.
+   to Java Sound, Java's audio API. Java Sound supports the writing
+   of audio data to a sound file or the computer's audio output port, 
+   but only at the byte level, which is audio format specific. This class,
+   however, provides higher level support for the writing of double
+   or integer valued samples to the computer's audio output port or
+   any supported sound file type. This class is therefore useful when
+   it one desires to playback audio samples in an audio format independent 
+   way.
    <p>
    Depending on available
    system resources, it may be possible to run an instance of this
    class and an instance of SoundCapture concurrently. This allows
-   for the concurrent capture, processing, and playback of audio data.
+   for the concurrent capture, signal processing, and playback of audio data.
    <p>
    <h2>Usage</h2>
    Two constructors are provided. One constructor creates a sound playback
@@ -66,15 +73,14 @@ import javax.sound.sampled.*;
    must be called to initialize the audio system.
    The putSamples() method should then be repeatedly
    called to deliver the audio data to the audio output device
-   (speaker or file).
-   Finally, after no more audio playback is desired, <i>stopPlayback()</i>
+   (speaker or file). The audio samples delivered to putSamples()
+   should be in the range (-1,1), or clipping will occur.
+   Finally, after no more audio playback is desired, stopPlayback()
    should be called to free up audio system resources.
    <p>
    <h2>Security issues</h2>: Applications have no restrictions on the
-   capturing or playback of audio. Applets, however, may only capture
-   audio from a file specified as a URL on the same machine as the
-   one the applet was loaded from. Applet code is not allowed to
-   read or write native files. The .java.policy file must be
+   capturing or playback of audio. Applet code is not allowed to
+   write native files by default. The .java.policy file must be
    modified to grant applets more privileges.
    <p>
    Note: Requires Java 2 v1.3.0 RC1 or later.
@@ -107,14 +113,15 @@ public class SoundPlayback {
      *   rate. For example, at 44100 Hz sample rate, a typical buffer
      *   size value might be 4410.
      *  @param putSamplesSize Size of the array parameter of
-     *   <i>putSamples()</i>. For performance reasons, the size should
+     *   putSamples(). For performance reasons, the size should
      *   be chosen smaller than <i>bufferSize</i>. Typical values
      *   are 1/2 to 1/16 th of <i>bufferSize</i>.
      */
     public SoundPlayback(float sampleRate, int sampleSizeInBits,
             int channels, int bufferSize,
             int putSamplesSize) {
-	System.out.println("SoundPlayback: constructor 1: invoked");
+	//System.out.println("SoundPlayback: constructor 1: invoked");
+	_isAudioPlaybackActive = false;
 	// Set mode to real-time.
 	this._playbackMode = "speaker";
 	this._sampleSizeInBits = sampleSizeInBits;
@@ -123,16 +130,17 @@ public class SoundPlayback {
 	this._bufferSize = bufferSize;
 	this._putSamplesSize = putSamplesSize;
 
-	System.out.println("SoundPlayback: constructor 1: sampleSizeInBits = "
-                + sampleSizeInBits);
-	System.out.println("SoundPlayback: constructor 1: sampleRate = "
-                + sampleRate);
-	System.out.println("SoundPlayback: constructor 1: channels = "
-                + channels);
-	System.out.println("SoundPlayback: constructor 1: bufferSize = "
-                + bufferSize);
-	System.out.println("SoundPlayback: constructor 1: putSamplesSize = "
-                + putSamplesSize);
+	// For debug only:
+	//System.out.println("SoundPlayback: constructor 1: sampleSizeInBits = "
+	//      + sampleSizeInBits);
+	//System.out.println("SoundPlayback: constructor 1: sampleRate = "
+	//      + sampleRate);
+	//System.out.println("SoundPlayback: constructor 1: channels = "
+	//      + channels);
+	//System.out.println("SoundPlayback: constructor 1: bufferSize = "
+	//      + bufferSize);
+	//System.out.println("SoundPlayback: constructor 1: putSamplesSize = "
+	//      + putSamplesSize);
     }
 
     /** Construct a sound playback object that writes audio to 
@@ -141,6 +149,11 @@ public class SoundPlayback {
      *  Thereafter, each call to putSamples() will add
      *  <i>putSamplesSize</i> many samples to the sound file. To
      *  close and save the sound file, call method stopPlayback().
+     *  <p>
+     *  Note that the audio data will not actually be saved to file,
+     *  <i>fileName</i>, until stopPlayback() is called. If an
+     *  unknown audio format is used, an exception will be thrown
+     *  in stopPlayback().
      *  @param fileName The file name to create. If the file already
      *  exists, overwrite it. Valid sound file formats are WAVE (.wav),
      *  AIFF (.aif, .aiff), AU (.au). The file format to write is
@@ -160,8 +173,8 @@ public class SoundPlayback {
             float sampleRate, int sampleSizeInBits,
             int channels, int bufferSize,
             int putSamplesSize) {
-	System.out.println("SoundPlayback: constructor 2: invoked");
-
+	//System.out.println("SoundPlayback: constructor 2: invoked");
+	_isAudioPlaybackActive = false;
 	this._playbackMode = "file";
 	this._fileName = fileName;
 	this._sampleSizeInBits = sampleSizeInBits;
@@ -169,16 +182,17 @@ public class SoundPlayback {
 	this._channels = channels;
 	this._productionRate = putSamplesSize;
 
-	System.out.println("SoundPlayback: constructor 1: sampleSizeInBits = "
-                + sampleSizeInBits);
-	System.out.println("SoundPlayback: constructor 1: sampleRate = "
-                + sampleRate);
-	System.out.println("SoundPlayback: constructor 1: channels = "
-                + channels);
-	System.out.println("SoundPlayback: constructor 1: bufferSize = "
-                + bufferSize);
-	System.out.println("SoundPlayback: constructor 1: putSamplesSize = "
-                + putSamplesSize);
+	// For debug only:
+	//System.out.println("SoundPlayback: constructor 1: sampleSizeInBits = "
+	//      + sampleSizeInBits);
+	//System.out.println("SoundPlayback: constructor 1: sampleRate = "
+	//      + sampleRate);
+	//System.out.println("SoundPlayback: constructor 1: channels = "
+	//      + channels);
+	//System.out.println("SoundPlayback: constructor 1: bufferSize = "
+	//      + bufferSize);
+	//System.out.println("SoundPlayback: constructor 1: putSamplesSize = "
+	//      + putSamplesSize);
     }
 
     ///////////////////////////////////////////////////////////////
@@ -188,24 +202,40 @@ public class SoundPlayback {
      *  This method must be invoked prior
      *  to the first invocation of putSamples(). This method
      *  must not be called more than once between invocations of
-     *  stopPlayback().
+     *  stopPlayback(), or an exception will be thrown.
+     *
+     *  @exception IOException If there is a problem setting up
+     *  the system for audio playback. This will occur if
+     *  a file cannot be oppened or if the audio out port cannot
+     *  be accessed.
+     *  @exception IllegalStateException If this method is called
+     *  more than once between invocations of stopCapture().
      */
-    public void startPlayback() {
-	System.out.println("SoundPlayback: startPlayback(): invoked");
-	if (_playbackMode == "speaker") {
-	    // Real time playback to speaker.
-	    _startPlaybackRealTime();
-	} else if (_playbackMode == "file") {
-	    // Record data to sound file.
-	    _startPlaybackToFile();
-	} else if (_playbackMode == "both") {
-	    // Real time playback to speaker.
-	    // **AND**
-	    // Record data to sound file.
-	    _startPlaybackRealTime();
-	    _startPlaybackToFile();
+    public void startPlayback() throws IOException, 
+                               IllegalStateException {
+	//System.out.println("SoundPlayback: startPlayback(): invoked");
+	if (_isAudioPlaybackActive == false) {
+	    if (_playbackMode == "speaker") {
+		// Real time playback to speaker.
+		_startPlaybackRealTime();
+	    } else if (_playbackMode == "file") {
+		// Record data to sound file.
+		_startPlaybackToFile();
+	    } else  {
+		// FIXME: IOException is probably not the
+		// best exception to throw here.
+		throw new IOException("SoundPlayback: " +
+                "startPlayback(): unknown playback mode: " +
+                _playbackMode);
+	    }
+	    _bytesPerSample = _sampleSizeInBits/8;
+	    _isAudioPlaybackActive = true;
+	} else {
+	    throw new IllegalStateException("SoundPlayback: " +
+	    "startPlayback() was called while audio playback was" +
+	    " already active (startPlayback() was called " +
+            "more than once between invocations of stopPlayback()).");
 	}
-	_bytesPerSample = _sampleSizeInBits/8;
     }
 
     /** Stop playing/writing audio. This method should be called when
@@ -216,8 +246,14 @@ public class SoundPlayback {
      *  If the "write audio data to file" constructor was used, then
      *  the sound file specified by the constructor is saved and
      *  closed.
+     *
+     *  @exception IOException If there is a problem closing the
+     *   audio resources, or if the "write audio data 
+     *   to file" constructor was used  and the soundfile has an
+     *   unsupported format.
      */
-    public void stopPlayback() {
+    public void stopPlayback() throws IOException {
+	_isAudioPlaybackActive = false;
 	if (_playbackMode == "speaker") {
 	    // Stop real-time playback to speaker.
 	    _sourceLine.stop();
@@ -226,21 +262,91 @@ public class SoundPlayback {
 	} else if (_playbackMode == "file") {
 	    // Record data to sound file.
 	    _stopPlaybackToFile();
-	} else if (_playbackMode == "both") {
-	    // Stop real-time playback to speaker.
-	    _sourceLine.stop();
-	    _sourceLine.close();
-	    _sourceLine = null;
-	    // **AND**
-	    // Record data to sound file.
-	    _stopPlaybackToFile();
+	} else  {
+	    // Should not happen.
 	}
     }
 
     /** If the "play audio to speaker" constructor was called,
      *  then queue the array of audio samples in
      *  <i>putSamplesArray</i> for playback. There will be a
-     *  latency before
+     *  latency before the audio data is actually heard, since the
+     *  audio data in <i>putSamplesArray</i> is queued to an
+     *  internal audio buffer. The size of the internal buffer
+     *  is set by the constructor. A lower bound on the latency
+     *  is given by (<i>bufferSize</i> / <i>sampleRate</i>)
+     *  seconds. If the "play audio to speaker" mode is
+     *  used, then this method should be invoked often
+     *  enough to prevent underflow of the internal audio buffer.
+     *  <p>
+     *  If the "write audio to file" constructor was used,
+     *  then append the audio data contained in <i>putSamplesArray</i>
+     *  to the sound file specified in the constructor.
+     *  <p>
+     *  The samples should be in the range (-1,1).
+     *  @param putSamplesArray A two dimensional array containing
+     *  the samples to play or write to a file. The first index
+     *  represents the channel number (0 for first channel, 1 for
+     *  second channel, etc.). The second index represents the
+     *  sample index within a channel. For example,
+     *  putSamplesArray[n][m] contains the (m+1)th sample
+     *  of the (n+1)th channel. putSamplesArray should be a
+     *  rectangular array such that putSamplesArray.length() gives
+     *  the number of channels and putSamplesArray[n].length() is
+     *  equal to <i>putSamplesSize</i>, for all channels n. This
+     *  is not actually checked, however.
+     *
+     *  @exception IOException If there is a problem playing audio.
+     *  @exception IllegalStateException If audio playback is currently
+     *  innactive. That is, If startPlayback() has not yet been called
+     *  or if stopPlayback() has already been called.
+     */
+    public void putSamples(double[][] putSamplesArray) throws IOException,
+                                   IllegalStateException {
+	//System.out.println("SoundPlayback: putSamples(): invoked");
+	if (_isAudioPlaybackActive == true) {
+	    if (_playbackMode == "speaker") {
+		
+		// Convert array of double valued samples into
+		// the proper byte array format.
+		_data = _doubleArrayToByteArray(putSamplesArray,
+						_bytesPerSample,
+						_channels);
+		
+		// Note: _data is a byte array containing data to
+		// be written to the output device.
+		// Note: consumptionRate is amount of data to write, in bytes.
+		
+		// Now write the array to output device.
+		_sourceLine.write(_data, 0, _putSamplesSize*_frameSizeInBytes);
+	    } else if (_playbackMode == "file") {
+		//System.out.println("SoundPlayback: putSamples(): file");
+		
+		// Convert array of double valued samples into
+		// the proper byte array format.
+		_data = _doubleArrayToByteArray(putSamplesArray,
+						_bytesPerSample,
+						_channels);
+		// Add new audio data to the file buffer array.
+		for (int i = 0; i < _data.length; i++) {
+		    _toFileBuffer.add(new Byte(_data[i]));
+		}
+	    } else {
+		// Should not happen since caught by constructor.
+	    }
+	} else {
+	    throw new IllegalStateException("SoundPlayback: " +
+	    "putSamples() was called while audio playback was" +
+	    " innactive (startPlayback() was never called or " +
+            "stopPlayback has already been called).");
+	}
+    }
+
+    /** If the "play audio to speaker" constructor was called,
+     *  then queue the array of audio samples in
+     *  <i>putSamplesArray</i> for playback. The samples should be
+     *  in the range (-2^(bits_per_sample/2), 2^(bits_per_sample/2)).
+     *  There will be a latency before
      *  the audio data is actually heard, since the
      *  audio data in <i>putSamplesArray</i> is queued to an
      *  internal audio buffer. The size of the internal buffer
@@ -253,6 +359,9 @@ public class SoundPlayback {
      *  If the "write audio to file" constructor was used,
      *  then append the audio data contained in <i>putSamplesArray</i>
      *  to the sound file specified in the constructor.
+     *  <p>
+     *  The samples should be in the range 
+     *  (-2^(bits_per_sample/2), 2^(bits_per_sample/2)).
      *  @param putSamplesArray A two dimensional array containing
      *  the samples to play or write to a file. The first index
      *  represents the channel number (0 for first channel, 1 for
@@ -264,58 +373,58 @@ public class SoundPlayback {
      *  the number of channels and putSamplesArray[n].length() is
      *  equal to <i>putSamplesSize</i>, for all channels n. This
      *  is not actually checked, however.
+     *
+     *  @exception IOException If there is a problem playing audio.
+     *  @exception IllegalStateException If audio playback is currently
+     *  innactive. That is, If startPlayback() has not yet been called
+     *  or if stopPlayback() has already been called.
      */
-    public void putSamples(double[][] putSamplesArray) {
+    public void putSamplesInt(int[][] putSamplesArray) throws IOException,
+                                   IllegalStateException {
 	//System.out.println("SoundPlayback: putSamples(): invoked");
-	if (_playbackMode == "speaker") {
-
-	    // Convert array of double valued samples into
-	    // the proper byte array format.
-	    _data = _doubleArrayToByteArray(putSamplesArray,
-                    _bytesPerSample,
-                    _channels);
-
-	    // Note: _data is a byte array containing data to
-	    // be written to the output device.
-	    // Note: consumptionRate is amount of data to write, in bytes.
-
-	    // Now write the array to output device.
-	    _sourceLine.write(_data, 0, _putSamplesSize*_frameSizeInBytes);
-	} else if (_playbackMode == "file") {
-	    //System.out.println("SoundPlayback: putSamples(): file");
-
-	    // Convert array of double valued samples into
-	    // the proper byte array format.
-	    _data = _doubleArrayToByteArray(putSamplesArray,
-                    _bytesPerSample,
-                    _channels);
-	    // Add new audio data to the file buffer array.
-	    for (int i = 0; i < _data.length; i++) {
-		_toFileBuffer.add(new Byte(_data[i]));
-	    }
-	} else if (_playbackMode == "both") {
-	    // Convert array of double valued samples into
-	    // the proper byte array format.
-	    _data = _doubleArrayToByteArray(putSamplesArray,
-                    _bytesPerSample,
-                    _channels);
-            
-	    // Now write the array to output device.
-	    _sourceLine.write(_data, 0, _putSamplesSize*_frameSizeInBytes);
-	    // Add new audio data to the file buffer array.
-	    for (int i = 0; i < _data.length; i++) {
-		_toFileBuffer.add(new Byte(_data[i]));
+	if (_isAudioPlaybackActive == true) {
+	    if (_playbackMode == "speaker") {
+		
+		// Convert array of double valued samples into
+		// the proper byte array format.
+		_data = _intArrayToByteArray(putSamplesArray,
+						_bytesPerSample,
+						_channels);
+		
+		// Note: _data is a byte array containing data to
+		// be written to the output device.
+		// Note: consumptionRate is amount of data to write, in bytes.
+		
+		// Now write the array to output device.
+		_sourceLine.write(_data, 0, _putSamplesSize*_frameSizeInBytes);
+	    } else if (_playbackMode == "file") {
+		//System.out.println("SoundPlayback: putSamples(): file");
+		
+		// Convert array of double valued samples into
+		// the proper byte array format.
+		_data = _intArrayToByteArray(putSamplesArray,
+						_bytesPerSample,
+						_channels);
+		// Add new audio data to the file buffer array.
+		for (int i = 0; i < _data.length; i++) {
+		    _toFileBuffer.add(new Byte(_data[i]));
+		}
+	    } else {
+		// Should not happen since caught by constructor.
 	    }
 	} else {
-	    // Should not happen since caught by constructor.
-	    // FIXME: throw exception anyway?
+	    throw new IllegalStateException("SoundPlayback: " +
+	    "putSamples() was called while audio playback was" +
+	    " innactive (startPlayback() was never called or " +
+            "stopPlayback has already been called).");
 	}
     }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private void _startPlaybackRealTime() {
+    private void _startPlaybackRealTime() throws IOException {
         boolean signed = true;
         boolean bigEndian = true;
 
@@ -325,17 +434,17 @@ public class SoundPlayback {
 
         _frameSizeInBytes = format.getFrameSize();
 
-	System.out.println("SoundPlayback: _startPlaybackRealTime(): " +
-                "sampling rate = " + _sampleRate);
-	System.out.println("SoundPlayback: _startPlaybackRealTime(): " +
-                "sample size in bits = " + _sampleSizeInBits);
+	//System.out.println("SoundPlayback: _startPlaybackRealTime(): " +
+	//      "sampling rate = " + _sampleRate);
+	//System.out.println("SoundPlayback: _startPlaybackRealTime(): " +
+	//      "sample size in bits = " + _sampleSizeInBits);
 
         DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
                 format,
                 AudioSystem.NOT_SPECIFIED);
 
-	System.out.println("SoundPlayback: Dataline.Info : " +
-                sourceInfo.toString());
+	//System.out.println("SoundPlayback: Dataline.Info : " +
+	//      sourceInfo.toString());
 
         // get and open the source data line for playback.
 	try {
@@ -350,8 +459,8 @@ public class SoundPlayback {
                     " samples.");
 
 	} catch (LineUnavailableException ex) {
-            System.err.println("LineUnavailableException " + ex);
-	    return;
+            throw new IOException("Unable to open the line for " +
+                        "real-time audio playback: " + ex);
 	}
 
 	// Array of audio samples in byte format.
@@ -382,7 +491,7 @@ public class SoundPlayback {
     }
 
 
-    private void _stopPlaybackToFile() {
+    private void _stopPlaybackToFile() throws IOException {
 
 	int size =  _toFileBuffer.size();
 	byte[] audioBytes = new byte[size];
@@ -406,8 +515,9 @@ public class SoundPlayback {
 
 	    // Do error checking:
 	    if (st.countTokens() != 2) {
-		System.err.println("Error: Incorrect file name format. " +
-                        "Format: filename.extension");
+		throw new  IOException("Error: Incorrect " +
+					    "file name format. " +
+					    "Format: filename.extension");
 	    }
 
 	    st.nextToken(); // Advance to the file extension.
@@ -435,17 +545,20 @@ public class SoundPlayback {
 		AudioSystem.write(audioInputStream,
                         AudioFileFormat.Type.AIFC, outFile);
 	    } else {
-		System.err.println("Error saving file: Unknown file format: "
-                        + fileExtension);
+		throw new  IOException("Error saving " +
+			"file: Unknown file format: " +
+                        fileExtension);
 	    }
 	} catch (IOException e) {
-            System.err.println("SoundPlayback: error saving" +
+            throw new IOException("SoundPlayback: error saving" +
                     " file: " + e);
 	}
     }
 
-    /* Convert a double array of audio samples in linear signed pcm big endian
-     * format into a byte array of audio samples (-1, 1) range.
+    /* Convert a double array of audio samples into a byte array of 
+     * audio samples in linear signed pcm big endian format. The
+     * samples contained in <i>doubleArray</i> should be in the
+     * range (-1,1).
      * @param doubleArray Two dimensional array holding audio samples.
      * For each channel, m, doubleArray[m] is a single dimensional
      * array containing samples for channel m.
@@ -485,10 +598,55 @@ public class SoundPlayback {
 
 	    // For each channel,
 	    for (int currChannel = 0; currChannel < channels; currChannel++) {
-		// signed long representation of current sample of the
+		// signed integer representation of current sample of the
 		// current channel.
-		long l =
-		    (long)(doubleArray[currChannel][currSamp] * maxSample);
+		int l =
+		    (int)(doubleArray[currChannel][currSamp] * maxSample);
+		// Create byte representation of current sample.
+		for (int i = 0; i < bytesPerSample; i += 1, l >>= 8)
+		    b[bytesPerSample - i - 1] = (byte) l;
+		// Copy the byte representation of current sample to
+		// the linear signed pcm big endian formatted byte array.
+		for (int i = 0; i < bytesPerSample; i += 1) {
+                    byteArray[currSamp*bytesPerSample*channels + 
+                            bytesPerSample*currChannel + i] = b[i];
+		}
+	    }
+	}
+	return byteArray;
+    }
+
+    /* Convert a integer array of audio samples into a byte array of 
+     * audio samples in linear signed pcm big endian format.
+     * The samples contained by <i>intArray</i> should be in the range
+     * (-2^(bits_per_sample/2), 2^(bits_per_sample/2)).
+     * @param intArray Two dimensional array holding audio samples.
+     * For each channel, m, doubleArray[m] is a single dimensional
+     * array containing samples for channel m.
+     * @param bytesPerSample Number of bytes per sample. Supported
+     * bytes per sample by this method are 8, 16, 24, 32.
+     * @param channels Number of audio channels.
+     * @return The linear signed pcm big endian byte array formatted
+     * array representation of <i>doubleArray</i>. The length of
+     * the returned array is (doubleArray.length*bytesPerSample*channels).
+     */
+    private byte[] _intArrayToByteArray(int[][] intArray,
+            int bytesPerSample, int channels) {
+        // All channels had better have the same number
+	// of samples! This is not checked!
+	int lengthInSamples = intArray[0].length;
+
+	byte[] byteArray =
+	    new byte[lengthInSamples * bytesPerSample * channels];
+	byte[] b = new byte[bytesPerSample];
+	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
+
+	    // For each channel,
+	    for (int currChannel = 0; currChannel < channels; currChannel++) {
+		// signed integer representation of current sample of the
+		// current channel.
+		int l =
+		    intArray[currChannel][currSamp];
 		// Create byte representation of current sample.
 		for (int i = 0; i < bytesPerSample; i += 1, l >>= 8)
 		    b[bytesPerSample - i - 1] = (byte) l;
@@ -525,4 +683,5 @@ public class SoundPlayback {
     // This is the format of _toFileBuffer.
     private AudioFormat _playToFileFormat;
     private int _bytesPerSample;
+    private boolean _isAudioPlaybackActive;
 }

@@ -48,12 +48,18 @@ import javax.sound.sampled.*;
    a URL. Single channel
    (mono) and multichannel audio (stereo) are supported. This class,
    along with SoundPlayback, intends to provide an easy to use interface
-   to Java Sound, Java's audio API.
+   to Java Sound, Java's audio API. Java Sound supports the capture
+   of audio data, but only at the byte level, which is audio format 
+   specific. This class, however, provides higher level support for the 
+   capture of double or integer valued samples from the computer's audio 
+   input port or any supported sound file type. This class is therefore
+   useful when it one desires to capture audio samples in an audio format 
+   independent way.
    <p>
    Depending on available audio
    system resources, it may be possible to run an instance of this
    class and an instance of SoundPlayback concurrently. This allows
-   for the concurrent capture, processing, and playback of audio data.
+   for the concurrent capture, signal processing, and playback of audio data.
    <p>
    <h2>Usage</h2>
    Two constructors are provided. One constructor creates a sound capture
@@ -513,13 +519,14 @@ public class SoundCapture {
                         "real-time audio capture: " + ex);
         }
 
-        System.out.println("JavaSound (microphone/line in)" +
-                "line buffer size in samples = " +
-                _targetLine.getBufferSize()/_frameSizeInBytes);
+        System.out.println("SoundCapture: internal audio " +
+                "buffer size = " +
+                _targetLine.getBufferSize()/_frameSizeInBytes +
+		" samples.");
 
         int targetBufferLengthInBytes = _productionRate *
             _frameSizeInBytes;
-	System.out.println("frameSizeInBytes = " + _frameSizeInBytes);
+	//System.out.println("frameSizeInBytes = " + _frameSizeInBytes);
 
 	DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
                 format,
