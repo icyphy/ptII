@@ -197,7 +197,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
                 args[0] = workspace;
                 NamedObj newModel = (NamedObj)constructor.newInstance(args);
 
-	    } else {
+            } else {
                 if (!arg.startsWith("-")) {
                     // Assume the argument is a file name or URL.
                     // Attempt to read it.
@@ -282,9 +282,9 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
                             // Force evaluation so that listeners
                             // are notified.
                             ((Variable)attribute).getToken();
-			}
-		    }
-		}
+                        }
+                    }
+                }
             }
             if (!match) {
                 // Unrecognized option.

@@ -72,10 +72,10 @@ public class TextEditorTableau extends Tableau {
         super(container, name);
         String title = "Unnamed";
         TextEditor frame = new TextEditor(title, container.getDocument());
-	frame.text.setColumns(80);
-	frame.text.setRows(40);
-	setFrame(frame);
-	frame.setTableau(this);
+        frame.text.setColumns(80);
+        frame.text.setRows(40);
+        setFrame(frame);
+        frame.setTableau(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -101,17 +101,17 @@ public class TextEditorTableau extends Tableau {
      */
     public static class Factory extends TableauFactory {
 
-	/** Create a factory with the given name and container.
-	 *  @param container The container entity.
-	 *  @param name The name of the entity.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this attribute.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an attribute already in the container.
-	 */
-	public Factory(NamedObj container, String name)
+        /** Create a factory with the given name and container.
+         *  @param container The container entity.
+         *  @param name The name of the entity.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this attribute.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
+            super(container, name);
             String editorPreference =
                 System.getProperty("ptolemy.user.texteditor",".");
             Class tableauClass;
@@ -146,12 +146,12 @@ public class TextEditorTableau extends Tableau {
             } catch (NoSuchMethodException ex) {
                 throw new IllegalActionException(ex.toString());
             }
-	}
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-	/** If the specified effigy is a TextEffigy and it
+        /** If the specified effigy is a TextEffigy and it
          *  already contains a tableau named
          *  "textTableau", then return that tableau; otherwise, create
          *  a new instance of TextEditorTableau in the specified
@@ -168,14 +168,14 @@ public class TextEditorTableau extends Tableau {
          *  It is the responsibility of callers of this method to check the
          *  return value and call show().
          *
-	 *  @param effigy The effigy.
-	 *  @return A text editor tableau, or null if one cannot be
-	 *    found or created.
+         *  @param effigy The effigy.
+         *  @return A text editor tableau, or null if one cannot be
+         *    found or created.
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
-	 */
-	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if (effigy instanceof TextEffigy) {
+         */
+        public Tableau createTableau(Effigy effigy) throws Exception {
+            if (effigy instanceof TextEffigy) {
                 // First see whether the effigy already contains a
                 // TextEditorTableau with the appropriate name.
                 TextEditorTableau tableau =
@@ -187,7 +187,7 @@ public class TextEditorTableau extends Tableau {
                 }
                 tableau.setEditable(effigy.isModifiable());
                 return tableau;
-	    } else {
+            } else {
                 // The effigy is not an instance of TextEffigy.
                 // See whether it contains an instance of TextEffigy
                 // named "textEffigy", and if it does return that instance.
@@ -234,7 +234,7 @@ public class TextEditorTableau extends Tableau {
                 }
                 return textTableau;
             }
-	}
+        }
 
         private Constructor _tableauConstructor;
         private Method _newTextEffigyText;

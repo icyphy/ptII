@@ -186,13 +186,13 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs() {
-	if (_model == null || _model.getName().length() == 0) {
-	    _initialSaveAsFileName = "model.xml";
-	} else {
-	    // We are not sanitizing the name here . . .
-	    _initialSaveAsFileName = _model.getName() + ".xml";
-	}
-	return super._saveAs();
+        if (_model == null || _model.getName().length() == 0) {
+            _initialSaveAsFileName = "model.xml";
+        } else {
+            // We are not sanitizing the name here . . .
+            _initialSaveAsFileName = _model.getName() + ".xml";
+        }
+        return super._saveAs();
     }
 
     /** Write the model to the specified file.  This method delegates

@@ -86,11 +86,11 @@ public class MoMLSimpleApplication implements ChangeListener {
         // and the list of filters is static, so we reset it each time
         // so as to avoid adding filters every time we run an auto test.
 
-	// We set the list of MoMLFilters to handle Backward Compatibility.
+        // We set the list of MoMLFilters to handle Backward Compatibility.
         parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
-	// Filter out any graphical classes.
-	parser.addMoMLFilter(new RemoveGraphicalClasses());
+        // Filter out any graphical classes.
+        parser.addMoMLFilter(new RemoveGraphicalClasses());
 
         // If there is a MoML error, then throw the exception as opposed
         // to skipping the error.  If we call StreamErrorHandler instead,
@@ -143,11 +143,11 @@ public class MoMLSimpleApplication implements ChangeListener {
         // We can't throw and Exception here because this method in
         // the base class does not throw Exception.
 
-	// In JDK1.4, we can construct exceptions from exceptions, but
-	// not in JDK1.3.1
+        // In JDK1.4, we can construct exceptions from exceptions, but
+        // not in JDK1.3.1
         //throw new RuntimeException(exception);
 
-	throw new RuntimeException(exception.toString());
+        throw new RuntimeException(exception.toString());
     }
 
     /** Create an instance of a single model and run it

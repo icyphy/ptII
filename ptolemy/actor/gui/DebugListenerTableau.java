@@ -79,10 +79,10 @@ public class DebugListenerTableau extends Tableau {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         final DebugListenerFrame frame = new DebugListenerFrame();
-	setFrame(frame);
-	frame.setTableau(this);
-	// Listen for window closing events to unregister.
-	frame.addWindowListener(new WindowAdapter() {
+        setFrame(frame);
+        frame.setTableau(this);
+        // Listen for window closing events to unregister.
+        frame.addWindowListener(new WindowAdapter() {
                 public void windowClosing(WindowEvent e) {
                     setDebuggable(null);
                 }
@@ -90,8 +90,8 @@ public class DebugListenerTableau extends Tableau {
         if (container instanceof TextEffigy) {
             ((TextEffigy)container).setDocument(frame.text.getDocument());
         }
-	frame.setVisible(true);
-	frame.pack();
+        frame.setVisible(true);
+        frame.pack();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -139,32 +139,32 @@ public class DebugListenerTableau extends Tableau {
     public static class DebugListenerFrame extends TextEditor
         implements DebugListener {
 
-	/** Create a debug listener that displays messages in a top-level
-	 *  window.
-	 */
-	public DebugListenerFrame() {
-	    super();
-	    text.setEditable(false);
-	    text.setColumns(80);
-	    text.setRows(20);
-	    pack();
-	}
+        /** Create a debug listener that displays messages in a top-level
+         *  window.
+         */
+        public DebugListenerFrame() {
+            super();
+            text.setEditable(false);
+            text.setColumns(80);
+            text.setRows(20);
+            pack();
+        }
 
-	///////////////////////////////////////////////////////////////////
-	////                         public methods                    ////
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
 
-	/** Display a string representation of the specified event.
-	 */
-	public void event(DebugEvent event) {
-	    text.append(event.toString() + "\n");
-	    scrollToEnd();
-	}
+        /** Display a string representation of the specified event.
+         */
+        public void event(DebugEvent event) {
+            text.append(event.toString() + "\n");
+            scrollToEnd();
+        }
 
-	/** Display the specified message.
-	 */
-	public void message(String message) {
-	    text.append(message + "\n");
-	    scrollToEnd();
-	}
+        /** Display the specified message.
+         */
+        public void message(String message) {
+            text.append(message + "\n");
+            scrollToEnd();
+        }
     }
 }

@@ -57,7 +57,7 @@ public class ConfigurationEffigy extends PtolemyEffigy {
      *  @param workspace The workspace for this effigy.
      */
     public ConfigurationEffigy(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Create a new effigy in the given directory with the given name.
@@ -66,7 +66,7 @@ public class ConfigurationEffigy extends PtolemyEffigy {
      */
     public ConfigurationEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -100,9 +100,9 @@ public class ConfigurationEffigy extends PtolemyEffigy {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-	super.setContainer(container);
-	if (container != null) {
-	    setModel(container.toplevel());
-	}
+        super.setContainer(container);
+        if (container != null) {
+            setModel(container.toplevel());
+        }
     }
 }

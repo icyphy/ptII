@@ -62,9 +62,9 @@ public class RenameConfigurer extends Query
      */
     public RenameConfigurer(NamedObj object) {
         super();
-	this.addQueryListener(this);
-	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-	setTextWidth(25);
+        this.addQueryListener(this);
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setTextWidth(25);
         _object = object;
         addLine("New name", "New name", object.getName());
         // By default, names are not shown for ports, and are shown
@@ -74,11 +74,11 @@ public class RenameConfigurer extends Query
         // be shown on the outside of the composite actor.
         boolean nameShowing = false;
         if (object instanceof Port) {
-	    // FIXME: If the object is a Port, then Diva displays
-	    // the name twice, which looks really bad.
-	    // In Ptolemy II 2.0beta, we shipped a modified
-	    // version of this file that does not display the the
-	    // Show name checkbox
+            // FIXME: If the object is a Port, then Diva displays
+            // the name twice, which looks really bad.
+            // In Ptolemy II 2.0beta, we shipped a modified
+            // version of this file that does not display the the
+            // Show name checkbox
             nameShowing = _object.getAttribute("_showName") != null;
         } else {
             nameShowing = _object.getAttribute("_hideName") == null;

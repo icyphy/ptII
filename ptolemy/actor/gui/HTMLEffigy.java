@@ -54,7 +54,7 @@ public class HTMLEffigy extends Effigy {
      *  @param workspace The workspace for this effigy.
      */
     public HTMLEffigy(Workspace workspace) {
-	super(workspace);
+        super(workspace);
         // Indicate that we cannot save to URL.
         setModifiable(false);
     }
@@ -65,7 +65,7 @@ public class HTMLEffigy extends Effigy {
      */
     public HTMLEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
         // Indicate that we cannot save to URL.
         setModifiable(false);
     }

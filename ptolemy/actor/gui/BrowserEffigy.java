@@ -53,7 +53,7 @@ public class BrowserEffigy extends Effigy {
      *  @param workspace The workspace for this effigy.
      */
     public BrowserEffigy(Workspace workspace) {
-	super(workspace);
+        super(workspace);
         // Indicate that we cannot save to URL.
         setModifiable(false);
     }
@@ -64,7 +64,7 @@ public class BrowserEffigy extends Effigy {
      */
     public BrowserEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
         // Indicate that we cannot save to URL.
         setModifiable(false);
     }
@@ -94,12 +94,12 @@ public class BrowserEffigy extends Effigy {
         BrowserEffigy effigy = new BrowserEffigy(container,
                 container.uniqueName("browserEffigy"));
 
-	// We cannot easily communicate with the Browser once we launch
-	// it, so mark this effigy as unmodifiable
-	effigy.setModifiable(false);
+        // We cannot easily communicate with the Browser once we launch
+        // it, so mark this effigy as unmodifiable
+        effigy.setModifiable(false);
 
-	// The BrowserLauncher will read the URL for us, so no need
-	// to read it here.
+        // The BrowserLauncher will read the URL for us, so no need
+        // to read it here.
         effigy.uri.setURL(in);
         return effigy;
     }
@@ -120,20 +120,20 @@ public class BrowserEffigy extends Effigy {
      */
     public static class Factory extends EffigyFactory {
 
-	/** Create a factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this entity.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an entity already in the container.
-	 */
-	public Factory(CompositeEntity container, String name)
+        /** Create a factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this entity.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an entity already in the container.
+         */
+        public Factory(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
+            super(container, name);
             // Record the latest factory for use by HTMLViewer.
             staticFactory = this;
-	}
+        }
 
         ///////////////////////////////////////////////////////////////
         ////                     public methods                    ////
@@ -166,17 +166,17 @@ public class BrowserEffigy extends Effigy {
         public Effigy createEffigy(
                 CompositeEntity container, URL base, URL in)
                 throws Exception {
-	    if (in == null) {
-		return null;
-	    }
-	    String extension = getExtension(in);
-	    // This could be a list, or a user preference
-	    if (extension.equals("pdf")
+            if (in == null) {
+                return null;
+            }
+            String extension = getExtension(in);
+            // This could be a list, or a user preference
+            if (extension.equals("pdf")
                    || extension.startsWith("htm")
                    || extension.startsWith("shtm")) {
-		Effigy effigy = newBrowserEffigy(container, base, in);
-		return effigy;
-	    }
+                Effigy effigy = newBrowserEffigy(container, base, in);
+                return effigy;
+            }
             // The extension doesn't match.  Try the content type.
             URLConnection connection = in.openConnection();
             if (connection == null) return null;
@@ -184,10 +184,10 @@ public class BrowserEffigy extends Effigy {
             if (contentType == null) return null;
             if (contentType.startsWith("text/html")
                     || contentType.startsWith("text/rtf")) {
-		Effigy effigy = newBrowserEffigy(container, base, in);
-		return effigy;
+                Effigy effigy = newBrowserEffigy(container, base, in);
+                return effigy;
             }
-	    return null;
-	}
+            return null;
+        }
     }
 }

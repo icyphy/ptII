@@ -65,7 +65,7 @@ import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
 
-import java.util.Date;			// For timing measurements
+import java.util.Date;                        // For timing measurements
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLApplication
@@ -121,7 +121,7 @@ public class MoMLApplication {
      *  @exception Exception If command line arguments have problems.
      */
     public MoMLApplication(String args[]) throws Exception {
-	super();
+        super();
 
         // The Java look & feel is pretty lame, so we use the native
         // look and feel of the platform we are running on.
@@ -137,7 +137,7 @@ public class MoMLApplication {
         // Create a parser to use.
         _parser = new MoMLParser();
 
-	// We set the list of MoMLFilters to handle Backward Compatibility.
+        // We set the list of MoMLFilters to handle Backward Compatibility.
         _parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
         _parseArgs(args);
@@ -150,7 +150,7 @@ public class MoMLApplication {
         // Even if the user is set up for foreign locale, use the US locale.
         // This is because certain parts of Ptolemy (like the expression
         // language) are not localized.
-	// FIXME: This is a workaround for the locale problem, not a fix.
+        // FIXME: This is a workaround for the locale problem, not a fix.
         // FIXME: In March, 2001, Johan Ecker writes
         // Ptolemy gave tons of exception when started on my laptop
         // which has Swedish settings as default. The Swedish standard
@@ -163,12 +163,12 @@ public class MoMLApplication {
         // expression parser should just ignore the delimiter settings
         // on the local computer and always use dot, otherwise Ptolemy
         // will crash using its own init files.
-	try {
-	    java.util.Locale.setDefault(java.util.Locale.US);
-	} catch (java.security.AccessControlException accessControl) {
-	    // FIXME: If the application is run under Web Start, then this
-	    // exception will be thrown.
-	}
+        try {
+            java.util.Locale.setDefault(java.util.Locale.US);
+        } catch (java.security.AccessControlException accessControl) {
+            // FIXME: If the application is run under Web Start, then this
+            // exception will be thrown.
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -179,8 +179,8 @@ public class MoMLApplication {
      *  @param args The command-line arguments.
      */
     public static void main(String args[]) {
-	try {
-	    new MoMLApplication(args);
+        try {
+            new MoMLApplication(args);
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);
             System.exit(0);
@@ -218,19 +218,19 @@ public class MoMLApplication {
         } catch (MalformedURLException ex) {
             try {
                 File file = new File(spec);
-		try {
-		    if (!file.exists()) {
-			throw new MalformedURLException();
-		    }
-		} catch (java.security.AccessControlException accessControl) {
-		    throw new MalformedURLException();
-		}
+                try {
+                    if (!file.exists()) {
+                        throw new MalformedURLException();
+                    }
+                } catch (java.security.AccessControlException accessControl) {
+                    throw new MalformedURLException();
+                }
                 return file.getCanonicalFile().toURL();
             } catch (MalformedURLException ex2) {
                 try {
                     // Try one last thing, using the classpath.
                     // Need a class context, and this is a static method, so...
-		    // we can't use this.getClass().getClassLoader()
+                    // we can't use this.getClass().getClassLoader()
 
                     // NOTE: There doesn't seem to be any way to convert
                     // this a canonical name, so if a model is opened this
@@ -241,13 +241,13 @@ public class MoMLApplication {
                     //        "ptolemy.kernel.util.NamedObj");
                     //URL inURL = refClass.getClassLoader().getResource(spec);
 
-		    // This works in Web Start, see
-		    // http://java.sun.com/products/javawebstart/faq.html#54
-		    URL inURL = Thread.currentThread()
-			.getContextClassLoader().getResource(spec);
+                    // This works in Web Start, see
+                    // http://java.sun.com/products/javawebstart/faq.html#54
+                    URL inURL = Thread.currentThread()
+                        .getContextClassLoader().getResource(spec);
 
                     if (inURL == null) {
-			throw new Exception();
+                        throw new Exception();
                     } else {
                         return inURL;
                     }
@@ -351,7 +351,7 @@ public class MoMLApplication {
                     }
                     effigy.setContainer(directory);
                 }
-	    } else {
+            } else {
                 if (!arg.startsWith("-")) {
                     // Assume the argument is a file name or URL.
                     // Attempt to read it.
@@ -375,46 +375,46 @@ public class MoMLApplication {
 
                         String key = inURL.toExternalForm();
 
-			//long startTime = (new Date()).getTime();
+                        //long startTime = (new Date()).getTime();
 
                         // Now defer to the model reader.
                         _config.openModel(base, inURL, key);
 
-			//System.out.println("Model open done: " +
-			//		   Manager.timeAndMemory(startTime));
+                        //System.out.println("Model open done: " +
+                        //                   Manager.timeAndMemory(startTime));
 
                     } else {
                         // No configuration has been encountered.
                         // Assume this is a MoML file, and open it.
                         _parser.reset();
 
-			try {
-			    NamedObj toplevel = _parser.parse(base, inURL.openStream());
-			    if (toplevel instanceof Configuration) {
-				_config = (Configuration)toplevel;
-			    }
-			} catch (Exception ex) {
-			    // Unfortunately, java.util.zip.ZipException
-			    // does not include the file name.
+                        try {
+                            NamedObj toplevel = _parser.parse(base, inURL.openStream());
+                            if (toplevel instanceof Configuration) {
+                                _config = (Configuration)toplevel;
+                            }
+                        } catch (Exception ex) {
+                            // Unfortunately, java.util.zip.ZipException
+                            // does not include the file name.
 
-			    // If inURL is a jarURL check for %20
-			    String detailMessage = "";
-			    try {
-				if (inURL.toString().indexOf("!/") != -1
-				    && inURL.toString().indexOf("%20") != -1) {
-				    detailMessage = " The URL contains "
-					+ "'!/', so it may be a jar "
-					+ "URL, and jar URLs cannot contain "
-					+ "%20. This might happen if the "
-					+ "pathname to the jnlp file had a "
-					+ "space in it";
-				}
-			    } catch (Exception ex2) {
-				// Ignored
-			    }
-			    throw new Exception("Failed to parse '" + inURL
-					    + "'" + detailMessage , ex);
-			}
+                            // If inURL is a jarURL check for %20
+                            String detailMessage = "";
+                            try {
+                                if (inURL.toString().indexOf("!/") != -1
+                                    && inURL.toString().indexOf("%20") != -1) {
+                                    detailMessage = " The URL contains "
+                                        + "'!/', so it may be a jar "
+                                        + "URL, and jar URLs cannot contain "
+                                        + "%20. This might happen if the "
+                                        + "pathname to the jnlp file had a "
+                                        + "space in it";
+                                }
+                            } catch (Exception ex2) {
+                                // Ignored
+                            }
+                            throw new Exception("Failed to parse '" + inURL
+                                            + "'" + detailMessage , ex);
+                        }
                     }
                 } else {
                     // Argument not recognized.
@@ -434,7 +434,7 @@ public class MoMLApplication {
             _config = _createDefaultConfiguration();
         } else {
             _config = _createEmptyConfiguration();
-	}
+        }
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
             if (_parseArg(arg) == false) {
@@ -467,30 +467,30 @@ public class MoMLApplication {
 
             boolean match = false;
             ModelDirectory directory =
-		(ModelDirectory)_config.getEntity("directory");
+                (ModelDirectory)_config.getEntity("directory");
             if (directory == null) {
                 throw new InternalErrorException("No model directory!");
             }
             Iterator proxies
                 = directory.entityList(Effigy.class).iterator();
             while (proxies.hasNext()) {
-		Effigy effigy = (Effigy)proxies.next();
-		if (effigy instanceof PtolemyEffigy) {
-		    NamedObj model = ((PtolemyEffigy)effigy).getModel();
+                Effigy effigy = (Effigy)proxies.next();
+                if (effigy instanceof PtolemyEffigy) {
+                    NamedObj model = ((PtolemyEffigy)effigy).getModel();
                     System.out.println("model = " + model.getFullName());
-		    Attribute attribute = model.getAttribute(name);
-		    if (attribute instanceof Settable) {
-			match = true;
-			((Settable)attribute).setExpression(value);
+                    Attribute attribute = model.getAttribute(name);
+                    if (attribute instanceof Settable) {
+                        match = true;
+                        ((Settable)attribute).setExpression(value);
                         if (attribute instanceof Variable) {
                             // Force evaluation so that listeners are notified.
                             ((Variable)attribute).getToken();
                         }
-		    }
+                    }
                     if (model instanceof CompositeActor) {
                         Director director
                             = ((CompositeActor)model).getDirector();
-		        if (director != null) {
+                        if (director != null) {
                             attribute = director.getAttribute(name);
                             if (attribute instanceof Settable) {
                                 match = true;
@@ -501,9 +501,9 @@ public class MoMLApplication {
                                     ((Variable)attribute).getToken();
                                 }
                             }
-			}
-		    }
-		}
+                        }
+                    }
+                }
             }
             if (!match) {
                 // Unrecognized option.
@@ -515,9 +515,9 @@ public class MoMLApplication {
         // then we show them now.  This is deferred until now because
         // how they are shown may depend on command-line arguments
         // and/or parameters in some MoML file that is read.
-	if (_config == null) {
-	    throw new IllegalActionException("No configuration provided.");
-	}
+        if (_config == null) {
+            throw new IllegalActionException("No configuration provided.");
+        }
         _config.showAll();
     }
 

@@ -77,7 +77,7 @@ public class PtExecuteApplication extends MoMLApplication
         // http://developer.java.sun.com/developer/bugParade/bugs/4030718.html
         // However, since we now run with JDK1.4.1, this should not
         // be a problem.
-	super(args);
+        super(args);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -113,8 +113,8 @@ public class PtExecuteApplication extends MoMLApplication
      *  @param args The command-line arguments.
      */
     public static void main(String args[]) {
-	try {
-	    PtExecuteApplication application = new PtExecuteApplication(args);
+        try {
+            PtExecuteApplication application = new PtExecuteApplication(args);
             application.runModels();
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);

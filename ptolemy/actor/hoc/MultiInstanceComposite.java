@@ -89,7 +89,7 @@ import java.util.Iterator;
  connected to input multiports. The master MultiInstanceComposite
  creates additional relations to connect the output ports of its clones
  to the input port. Finally, after all these connections are made, the
- master's preinitialize() calls preinitalize() of the clones.<p>
+ master's preinitialize() calls preinitialize() of the clones.<p>
 
  From here on until wrapup(), nothing special happens. Type resolution
  occurs on all instances in the modified model, so does initialize() and
@@ -117,7 +117,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
     /** Construct a MultiInstanceComposite actor in the specified workspace with
      *  no container and an empty string as a name. */
      public MultiInstanceComposite(Workspace workspace) {
-	super(workspace);
+        super(workspace);
         _initialize();
      }
 
@@ -372,7 +372,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                 (getFullName()+": "+ex.toString());
         }
         _isMasterCopy = true;
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                     "<rect x=\"-30\" y=\"-20\" width=\"60\" " +
                     "height=\"40\" style=\"fill:red\"/>\n" +
                     "<rect x=\"-28\" y=\"-18\" width=\"56\" " +

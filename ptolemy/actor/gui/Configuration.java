@@ -125,7 +125,7 @@ public class Configuration extends CompositeEntity {
      *  @param workspace The workspace that will list the entity.
      */
     public Configuration(Workspace workspace) {
-	super(workspace);
+        super(workspace);
         _configurations.add(this);
     }
 
@@ -319,31 +319,31 @@ public class Configuration extends CompositeEntity {
                         + in.toExternalForm());
                 return null;
             }
-	    if (effigy.identifier.getExpression().compareTo("Unnamed") == 0) {
-		// If the value identifier field of the effigy we just
-		// created is "Unnamed", then set it to the value of
-		// the identifier parameter.
-		//
-		// HSIFEffigyFactory sets effiigy.identifier because it
-		// converts the file we specified from HSIF to MoML and then
-		// opens up a file other than the one we specified.
-		effigy.identifier.setExpression(identifier);
-	    }
+            if (effigy.identifier.getExpression().compareTo("Unnamed") == 0) {
+                // If the value identifier field of the effigy we just
+                // created is "Unnamed", then set it to the value of
+                // the identifier parameter.
+                //
+                // HSIFEffigyFactory sets effiigy.identifier because it
+                // converts the file we specified from HSIF to MoML and then
+                // opens up a file other than the one we specified.
+                effigy.identifier.setExpression(identifier);
+            }
             // Check the URL to see whether it is a file,
             // and if so, whether it is writable.
             if (in.getProtocol().equals("file")) {
                 String filename = in.getFile();
                 File file = new File(filename);
-		try {
-		    if (!file.canWrite()) {
-			effigy.setModifiable(false);
-		    }
-		} catch (java.security.AccessControlException
+                try {
+                    if (!file.canWrite()) {
+                        effigy.setModifiable(false);
+                    }
+                } catch (java.security.AccessControlException
                         accessControl) {
-		    // If we are running in a sandbox, then canWrite()
-		    // may throw an AccessControlException.
-		    effigy.setModifiable(false);
-		}
+                    // If we are running in a sandbox, then canWrite()
+                    // may throw an AccessControlException.
+                    effigy.setModifiable(false);
+                }
             } else {
                 effigy.setModifiable(false);
             }
@@ -430,23 +430,23 @@ public class Configuration extends CompositeEntity {
                     // Set the identifier of the effigy to be that
                     // of the parent with the model name appended.
 
-		    // Note that we add a # the first time, and
-		    // then add . after that.  So
-		    // file:/c:/foo.xml#bar.bif is ok, but
-		    // file:/c:/foo.xml#bar#bif is not
-		    // If the title does not contain a legitimate
-		    // way to reference the submodel, then the user
-		    // is likely to look at the title and use the wrong
-		    // value if they xml edit files by hand. (cxh-4/02)
-		    String entityName = parentEffigy.identifier
-			.getExpression();
-		    String separator = "#";
-		    if (entityName.indexOf("#") > 0) {
-			separator = ".";
-		    }
-		    effigy.identifier.setExpression(entityName
-						    + separator
-						    + entity.getName());
+                    // Note that we add a # the first time, and
+                    // then add . after that.  So
+                    // file:/c:/foo.xml#bar.bif is ok, but
+                    // file:/c:/foo.xml#bar#bif is not
+                    // If the title does not contain a legitimate
+                    // way to reference the submodel, then the user
+                    // is likely to look at the title and use the wrong
+                    // value if they xml edit files by hand. (cxh-4/02)
+                    String entityName = parentEffigy.identifier
+                        .getExpression();
+                    String separator = "#";
+                    if (entityName.indexOf("#") > 0) {
+                        separator = ".";
+                    }
+                    effigy.identifier.setExpression(entityName
+                                                    + separator
+                                                    + entity.getName());
 
                     // Set the uri of the effigy to that of
                     // the parent.
@@ -490,9 +490,9 @@ public class Configuration extends CompositeEntity {
      *  and call show() on them.  If there is no directory, then do nothing.
      */
     public void showAll() {
-	final ModelDirectory directory =
-	    (ModelDirectory)getEntity(_DIRECTORY_NAME);
-	if (directory == null) return;
+        final ModelDirectory directory =
+            (ModelDirectory)getEntity(_DIRECTORY_NAME);
+        if (directory == null) return;
         _showTableaux(directory);
     }
 
@@ -516,8 +516,8 @@ public class Configuration extends CompositeEntity {
      *  @param entity The entity to remove.
      */
     protected void _removeEntity(ComponentEntity entity) {
-	super._removeEntity(entity);
-	if (entity.getName().equals(_DIRECTORY_NAME)) {
+        super._removeEntity(entity);
+        if (entity.getName().equals(_DIRECTORY_NAME)) {
             System.exit(0);
         }
     }

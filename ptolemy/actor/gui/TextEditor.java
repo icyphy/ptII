@@ -104,8 +104,8 @@ public class TextEditor extends TableauFrame {
     /** Scroll as necessary so that the last line is visible.
      */
     public void scrollToEnd() {
-	// Song and dance to scroll to the new line.
-	text.scrollRectToVisible(new Rectangle(
+        // Song and dance to scroll to the new line.
+        text.scrollRectToVisible(new Rectangle(
                 new Point(0, text.getHeight())));
     }
 
@@ -113,7 +113,7 @@ public class TextEditor extends TableauFrame {
      *  @return The background color of the scroll pane.
      */
     public Color getBackground() {
-	return _scrollPane.getBackground();
+        return _scrollPane.getBackground();
     }
 
     /** Set background color.  This overrides the base class to set the

@@ -71,11 +71,11 @@ public class JVMTableau extends Tableau {
      */
     public JVMTableau(PtolemyEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
         NamedObj model = container.getModel();
 
-	JVMFrame frame = new JVMFrame((CompositeEntity)model, this);
-	setFrame(frame);
+        JVMFrame frame = new JVMFrame((CompositeEntity)model, this);
+        setFrame(frame);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -85,103 +85,103 @@ public class JVMTableau extends Tableau {
      */
     public class JVMFrame extends PtolemyFrame {
 
-	/** Construct a frame to display JVM properties.
-	 *  After constructing this, it is necessary
-	 *  to call setVisible(true) to make the frame appear.
+        /** Construct a frame to display JVM properties.
+         *  After constructing this, it is necessary
+         *  to call setVisible(true) to make the frame appear.
          *  This is typically accomplished by calling show() on
          *  enclosing tableau.
-	 *  @param model The model to put in this frame, or null if none.
+         *  @param model The model to put in this frame, or null if none.
          *  @param tableau The tableau responsible for this frame.
          *  @exception IllegalActionException If the model rejects the
          *   configuration attribute.
          *  @exception NameDuplicationException If a name collision occurs.
-	 */
-	public JVMFrame(final CompositeEntity model, Tableau tableau)
+         */
+        public JVMFrame(final CompositeEntity model, Tableau tableau)
                 throws IllegalActionException, NameDuplicationException {
-	    super(model, tableau);
+            super(model, tableau);
             JPanel component = new JPanel();
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
 
 
-	    // Display total memory and free memory.
+            // Display total memory and free memory.
             final JTextArea memoryArea = new JTextArea("", 1, 100);
-	    updateMemoryStatistics(memoryArea);
+            updateMemoryStatistics(memoryArea);
             memoryArea.setEditable(false);
-	    component.add(memoryArea);
+            component.add(memoryArea);
 
-	    // Button to request GC.
-	    JButton GCButton = new JButton("Request Garbage Collection");
-	    GCButton.addActionListener(new ActionListener() {
+            // Button to request GC.
+            JButton GCButton = new JButton("Request Garbage Collection");
+            GCButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent event) {
                         System.gc();
                         updateMemoryStatistics(memoryArea);
                     }
                 });
-	    component.add(GCButton);
+            component.add(GCButton);
 
-	    // Display system properties
-	    String lineSeparator = System.getProperty("line.separator");
-	    StringBuffer propertyBuffer = new StringBuffer();
+            // Display system properties
+            String lineSeparator = System.getProperty("line.separator");
+            StringBuffer propertyBuffer = new StringBuffer();
 
-	    try {
-		Properties properties = System.getProperties();
-		Enumeration propertyNames = properties.propertyNames();
-		while (propertyNames.hasMoreElements()) {
-		    String propertyName = (String)propertyNames.nextElement();
-		    propertyBuffer.append(propertyName + " = "
+            try {
+                Properties properties = System.getProperties();
+                Enumeration propertyNames = properties.propertyNames();
+                while (propertyNames.hasMoreElements()) {
+                    String propertyName = (String)propertyNames.nextElement();
+                    propertyBuffer.append(propertyName + " = "
                             + properties
                             .getProperty(propertyName)
                             + lineSeparator);
-		}
-	    } catch (java.security.AccessControlException accessControl) {
-		propertyBuffer.append("AccessControlException, probably from "
+                }
+            } catch (java.security.AccessControlException accessControl) {
+                propertyBuffer.append("AccessControlException, probably from "
                         + "System.getProperties():\n" +
                         accessControl);
-	    }
+            }
             final JTextArea messageArea =
-		new JTextArea(propertyBuffer.toString(), 20, 100);
+                new JTextArea(propertyBuffer.toString(), 20, 100);
 
             messageArea.setEditable(false);
-	    JScrollPane scrollPane = new JScrollPane(messageArea);
+            JScrollPane scrollPane = new JScrollPane(messageArea);
             component.add(scrollPane);
             getContentPane().add(component, BorderLayout.CENTER);
-	}
+        }
     }
 
     /** A factory that creates a control panel to display JVM Properties.
      */
     public static class Factory extends TableauFactory {
 
-	/** Create a factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this attribute.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an attribute already in the container.
-	 */
-	public Factory(NamedObj container, String name)
+        /** Create a factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this attribute.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-	/** Create a new instance of JVMTableau in the specified
+        /** Create a new instance of JVMTableau in the specified
          *  effigy. If the specified effigy is not an
          *  instance of PtolemyEffigy, then do not create a tableau
          *  and return null. It is the responsibility of callers of
          *  this method to check the return value and call show().
          *
-	 *  @param effigy The model effigy.
-	 *  @return A new control panel tableau if the effigy is
+         *  @param effigy The model effigy.
+         *  @return A new control panel tableau if the effigy is
          *    a PtolemyEffigy, or null otherwise.
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
-	 */
-	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if (effigy instanceof PtolemyEffigy) {
+         */
+        public Tableau createTableau(Effigy effigy) throws Exception {
+            if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a tableau
                 JVMTableau tableau =
                     (JVMTableau)effigy.getEntity("JVMTableau");
@@ -190,10 +190,10 @@ public class JVMTableau extends Tableau {
                             (PtolemyEffigy)effigy, "JVMTableau");
                 }
                 return tableau;
-	    } else {
-		return null;
-	    }
-	}
+            } else {
+                return null;
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -201,12 +201,12 @@ public class JVMTableau extends Tableau {
 
     // Update the memory statistics in textArea.
     private void updateMemoryStatistics(JTextArea textArea) {
-	// Report memory usage statistics.
-	Runtime runtime = Runtime.getRuntime();
-	long totalMemory = runtime.totalMemory()/1024;
-	long freeMemory = runtime.freeMemory()/1024;
+        // Report memory usage statistics.
+        Runtime runtime = Runtime.getRuntime();
+        long totalMemory = runtime.totalMemory()/1024;
+        long freeMemory = runtime.freeMemory()/1024;
 
-	textArea.setText("Memory: "
+        textArea.setText("Memory: "
                 + totalMemory + "K Free: "
                 + freeMemory + "K ("
                 + Math.round( (((double)freeMemory)/

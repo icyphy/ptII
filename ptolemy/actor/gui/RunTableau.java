@@ -79,34 +79,34 @@ public class RunTableau extends Tableau {
      */
     public RunTableau(PtolemyEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
         NamedObj model = container.getModel();
         if (!(model instanceof CompositeActor)) {
             throw new IllegalActionException(this,
                     "Cannot run a model that is not a CompositeActor."
                     + " It is: " + model);
         }
-	CompositeActor actor = (CompositeActor)model;
+        CompositeActor actor = (CompositeActor)model;
 
-	// Create a manager.
+        // Create a manager.
         Manager manager = actor.getManager();
         if (manager == null) {
-	    try {
-		actor.setManager(new Manager(actor.workspace(), "manager"));
-	    } catch ( IllegalActionException ex) {
-		throw new IllegalActionException(this, ex,
-	                "Failed to set manager.  This can occur if "
-			+ "you try to run a non-toplevel model that "
-			+ "is a component of a toplevel model.  "
-			+ "The solution is invoke View -> Run while in a "
-			+ "toplevel window." );
-	    }
-	    manager = actor.getManager();
+            try {
+                actor.setManager(new Manager(actor.workspace(), "manager"));
+            } catch ( IllegalActionException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to set manager.  This can occur if "
+                        + "you try to run a non-toplevel model that "
+                        + "is a component of a toplevel model.  "
+                        + "The solution is invoke View -> Run while in a "
+                        + "toplevel window." );
+            }
+            manager = actor.getManager();
         }
 
-	ModelFrame frame = new RunFrame(actor, this);
-	setFrame(frame);
-	frame.setBackground(BACKGROUND_COLOR);
+        ModelFrame frame = new RunFrame(actor, this);
+        setFrame(frame);
+        frame.setBackground(BACKGROUND_COLOR);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,17 +123,17 @@ public class RunTableau extends Tableau {
      */
     public class RunFrame extends ModelFrame {
 
-	/** Construct a frame to control the specified Ptolemy II model.
-	 *  After constructing this, it is necessary
-	 *  to call setVisible(true) to make the frame appear.
+        /** Construct a frame to control the specified Ptolemy II model.
+         *  After constructing this, it is necessary
+         *  to call setVisible(true) to make the frame appear.
          *  This is typically accomplished by calling show() on
          *  enclosing tableau.
-	 *  @param model The model to put in this frame, or null if none.
+         *  @param model The model to put in this frame, or null if none.
          *  @param tableau The tableau responsible for this frame.
-	 */
-	public RunFrame(CompositeActor model, Tableau tableau) {
-	    super(model, tableau);
-	}
+         */
+        public RunFrame(CompositeActor model, Tableau tableau) {
+            super(model, tableau);
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                         protected methods                 ////
@@ -212,23 +212,23 @@ public class RunTableau extends Tableau {
      */
     public static class Factory extends TableauFactory {
 
-	/** Create a factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this attribute.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an attribute already in the container.
-	 */
-	public Factory(NamedObj container, String name)
+        /** Create a factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this attribute.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-	/** If the specified effigy already contains a tableau named
+        /** If the specified effigy already contains a tableau named
          *  "runTableau", then return that tableau; otherwise, create
          *  a new instance of RunTableau for the effigy, and
          *  name it "runTableau".  If the specified effigy is not an
@@ -236,14 +236,14 @@ public class RunTableau extends Tableau {
          *  and return null. It is the responsibility of callers of
          *  this method to check the return value and call show().
          *
-	 *  @param effigy The model effigy.
-	 *  @return A new run tableau if the effigy is a PtolemyEffigy,
-	 *    or null otherwise.
+         *  @param effigy The model effigy.
+         *  @return A new run tableau if the effigy is a PtolemyEffigy,
+         *    or null otherwise.
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
-	 */
-	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if (effigy instanceof PtolemyEffigy) {
+         */
+        public Tableau createTableau(Effigy effigy) throws Exception {
+            if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a RunTableau.
                 RunTableau tableau =
                     (RunTableau)effigy.getEntity("runTableau");
@@ -251,13 +251,13 @@ public class RunTableau extends Tableau {
                     tableau = new RunTableau(
                             (PtolemyEffigy)effigy, "runTableau");
                 }
-		// Don't call show() here, it is called for us in
-		// TableauFrame.ViewMenuListener.actionPerformed()
+                // Don't call show() here, it is called for us in
+                // TableauFrame.ViewMenuListener.actionPerformed()
                 return tableau;
-	    } else {
-		return null;
-	    }
-	}
+            } else {
+                return null;
+            }
+        }
     }
 
     /** A factory that creates run control panel tableaux for the model
@@ -266,23 +266,23 @@ public class RunTableau extends Tableau {
      */
     public static class TopFactory extends Factory {
 
-	/** Create a factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this attribute.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an attribute already in the container.
-	 */
-	public TopFactory(NamedObj container, String name)
+        /** Create a factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this attribute.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public TopFactory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-	/** Create a tableau to run the model associated with the specified
+        /** Create a tableau to run the model associated with the specified
          *  effigy.  The top-level effigy, as returned by
          *  {@link Effigy#topEffigy()}, is the one that is run.
          *  If that effigy already contains a tableau named
@@ -293,14 +293,14 @@ public class RunTableau extends Tableau {
          *  and return null. It is the responsibility of callers of
          *  this method to check the return value and call show().
          *
-	 *  @param effigy The model effigy.
-	 *  @return A new run tableau if the effigy is a PtolemyEffigy,
-	 *    or null otherwise.
+         *  @param effigy The model effigy.
+         *  @return A new run tableau if the effigy is a PtolemyEffigy,
+         *    or null otherwise.
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
-	 */
-	public Tableau createTableau(Effigy effigy) throws Exception {
+         */
+        public Tableau createTableau(Effigy effigy) throws Exception {
             return super.createTableau(effigy.topEffigy());
-	}
+        }
     }
 }

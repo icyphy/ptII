@@ -78,7 +78,7 @@ public class BrowserTableau extends Tableau {
     }
 
     /** Make this tableau visible by calling
-     *	{@link BrowserLauncher#openURL(String)}
+     *        {@link BrowserLauncher#openURL(String)}
      *  with URL from the effigy.  Most browsers are smart enough
      *  so that if the browser is already displaying the URL, then
      *  that window will be brought to the foreground.  We are limited
@@ -92,18 +92,18 @@ public class BrowserTableau extends Tableau {
 
         // FIXME: Probably the following could make better use of URI
         // facilities (used to be URL based).
-	String url = ((Effigy)getContainer()).uri.getURI().toString();
-	try {
+        String url = ((Effigy)getContainer()).uri.getURI().toString();
+        try {
 
-	    if (url.startsWith("jar:")) {
-		// If the URL begins with jar: then we are inside Web
+            if (url.startsWith("jar:")) {
+                // If the URL begins with jar: then we are inside Web
                 // Start, or the Windows installer // and we should
                 // get the resource, and try to write the file to the
                 // place where it would appear in the classpath.
 
                 // For example,  if url is
                 // jar:file:/D:/ptII/doc/design.jar!/doc/design/design.pdf
-		// then we try to save the file as
+                // then we try to save the file as
                 // d:/ptII/doc/design.pdf
                 // if d:/ptII/doc is writable.
 
@@ -132,10 +132,10 @@ public class BrowserTableau extends Tableau {
                     // In this case, the temporary file is deleted when
                     // we exit.
                     url = JNLPUtilities.saveJarURLAsTempFile(url, "tmp",
-							 null, null);
+                                                         null, null);
                 }
-	    }
-	    BrowserLauncher.openURL(url);
+            }
+            BrowserLauncher.openURL(url);
             try {
                 // We set the container to null immediately because
                 // once we spawn the browser process, we have no
@@ -151,11 +151,11 @@ public class BrowserTableau extends Tableau {
                 throw new InvalidStateException((Nameable)null, ex2,
                         "setContainer(null) failed, url was " + url);
             }
-	} catch (IOException ex) {
-	    throw new InvalidStateException((Nameable)null, ex,
-					    "Failed to handle '"
-					     + url + "': ");
-	}
+        } catch (IOException ex) {
+            throw new InvalidStateException((Nameable)null, ex,
+                                            "Failed to handle '"
+                                             + url + "': ");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -165,23 +165,23 @@ public class BrowserTableau extends Tableau {
      */
     public static class Factory extends TableauFactory {
 
-	/** Create a factory with the given name and container.
-	 *  @param container The container entity.
-	 *  @param name The name of the entity.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this attribute.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an attribute already in the container.
-	 */
-	public Factory(NamedObj container, String name)
+        /** Create a factory with the given name and container.
+         *  @param container The container entity.
+         *  @param name The name of the entity.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this attribute.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
+        public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-	/** If the specified effigy is a BrowserEffigy and it
+        /** If the specified effigy is a BrowserEffigy and it
          *  already contains a tableau named
          *  "browserTableau", then return that tableau; otherwise, create
          *  a new instance of BrowserTableau in the specified
@@ -191,27 +191,27 @@ public class BrowserTableau extends Tableau {
          *  create a tableau and return null.  It is the
          *  responsibility of callers of this method to check the
          *  return value and call show().
-	 *  @param effigy The effigy.
-	 *  @return A browser editor tableau, or null if one cannot be
-	 *    found or created.
+         *  @param effigy The effigy.
+         *  @return A browser editor tableau, or null if one cannot be
+         *    found or created.
          *  @exception Exception If the factory should be able to create a
          *   tableau for the effigy, but something goes wrong.
-	 */
-	public Tableau createTableau(Effigy effigy) throws Exception {
-	    if (effigy instanceof BrowserEffigy) {
+         */
+        public Tableau createTableau(Effigy effigy) throws Exception {
+            if (effigy instanceof BrowserEffigy) {
                 // First see whether the effigy already contains a
                 // BrowserTableau with the appropriate name.
-		BrowserTableau tableau =
-		    (BrowserTableau)effigy.getEntity("browserTableau");
-		if (tableau == null) {
-		    tableau = new BrowserTableau(
+                BrowserTableau tableau =
+                    (BrowserTableau)effigy.getEntity("browserTableau");
+                if (tableau == null) {
+                    tableau = new BrowserTableau(
                             (BrowserEffigy)effigy, "browserTableau");
-		}
+                }
                 tableau.setEditable(effigy.isModifiable());
                 return tableau;
             } else {
-		return null;
-	    }
-	}
+                return null;
+            }
+        }
     }
 }

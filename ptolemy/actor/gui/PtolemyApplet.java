@@ -156,7 +156,7 @@ public class PtolemyApplet extends BasicJApplet
      */
     public String getAppletInfo() {
         return "Ptolemy applet for Ptolemy II "
-	    + VersionAttribute.CURRENT_VERSION
+            + VersionAttribute.CURRENT_VERSION
             + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
             + "See http://ptolemy.eecs.berkeley.edu/ptolemyII"
             + "\n(Build: $Id$)";
@@ -413,7 +413,7 @@ public class PtolemyApplet extends BasicJApplet
     protected void _stop() {
         // If an exception occurred during init, do not finish.
         if (!_setupOK) return;
-	_manager.stop();
+        _manager.stop();
     }
 
     ///////////////////////////////////////////////////////////////////

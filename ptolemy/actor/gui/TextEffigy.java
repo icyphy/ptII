@@ -61,7 +61,7 @@ public class TextEffigy extends Effigy {
      *  @param workspace The workspace for this effigy.
      */
     public TextEffigy(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Create a new effigy in the given directory with the given name.
@@ -70,7 +70,7 @@ public class TextEffigy extends Effigy {
      */
     public TextEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ public class TextEffigy extends Effigy {
      *  @return The document, or null if none has been set.
      */
     public Document getDocument() {
-	return _doc;
+        return _doc;
     }
 
     /** Create a new effigy in the given container containing the specified
@@ -220,17 +220,17 @@ public class TextEffigy extends Effigy {
      */
     public static class Factory extends EffigyFactory {
 
-	/** Create a factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this entity.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an entity already in the container.
-	 */
-	public Factory(CompositeEntity container, String name)
+        /** Create a factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this entity.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an entity already in the container.
+         */
+        public Factory(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
+            super(container, name);
             String editorPreference =
                 System.getProperty("ptolemy.user.texteditor",".");
             Class effigyClass;
@@ -253,7 +253,7 @@ public class TextEffigy extends Effigy {
             } catch (NoSuchMethodException ex) {
                 throw new IllegalActionException(ex.toString());
             }
-	}
+        }
 
         ///////////////////////////////////////////////////////////////
         ////                     public methods                    ////

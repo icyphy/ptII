@@ -112,12 +112,12 @@ public class TableauFactory extends Attribute {
      *   Tableau for the effigy, but something goes wrong.
      */
     public Tableau createTableau(Effigy effigy) throws Exception {
-	Tableau tableau = null;
-	Iterator factories = attributeList(TableauFactory.class).iterator();
-	while (factories.hasNext() && tableau == null) {
-	    TableauFactory factory = (TableauFactory)factories.next();
-	    tableau = factory.createTableau(effigy);
-	}
-	return tableau;
+        Tableau tableau = null;
+        Iterator factories = attributeList(TableauFactory.class).iterator();
+        while (factories.hasNext() && tableau == null) {
+            TableauFactory factory = (TableauFactory)factories.next();
+            tableau = factory.createTableau(effigy);
+        }
+        return tableau;
     }
 }

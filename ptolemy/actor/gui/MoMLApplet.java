@@ -125,26 +125,26 @@ public class MoMLApplet extends PtolemyApplet {
      *  @return A string giving information about the applet.
      */
     public String getAppletInfo() {
-	// Include the release and build number to aid in user support.
-	String version = new String("Ptolemy II "
+        // Include the release and build number to aid in user support.
+        String version = new String("Ptolemy II "
                 + VersionAttribute.CURRENT_VERSION);
-	String build = new String("\n(Build: $Id$)");
+        String build = new String("\n(Build: $Id$)");
         if (_toplevel != null) {
             String tip = Documentation.consolidate(_toplevel);
             if (tip != null) {
                 return version
-		    + " model given in MoML:\n" + tip
-		    + build;
+                    + " model given in MoML:\n" + tip
+                    + build;
             } else {
                 return version
-		    + " model given in MoML."
-		    + build;
+                    + " model given in MoML."
+                    + build;
             }
         }
         return "MoML applet for " + version
             + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
             + "See http://ptolemy.eecs.berkeley.edu/ptolemyII"
-	    + build;
+            + build;
     }
 
     /** Describe the applet parameters.
@@ -166,8 +166,8 @@ public class MoMLApplet extends PtolemyApplet {
      */
     protected NamedObj _createModel(Workspace workspace)
             throws Exception {
-	// Filter out graphical classes.
-	return _createModel(workspace, true);
+        // Filter out graphical classes.
+        return _createModel(workspace, true);
     }
 
     /** Read the model from the <i>modelURL</i> applet parameter.
@@ -181,8 +181,8 @@ public class MoMLApplet extends PtolemyApplet {
             boolean filterGraphicalClasses)
             throws Exception {
 
-	// ptolemy.vergil.MoMLViewerApplet() calls this with
-	// filterGraphicalClasses set to false.
+        // ptolemy.vergil.MoMLViewerApplet() calls this with
+        // filterGraphicalClasses set to false.
 
         String modelURL = getParameter("modelURL");
         if (modelURL == null) {
@@ -207,17 +207,17 @@ public class MoMLApplet extends PtolemyApplet {
 
         MoMLParser parser = new MoMLParser();
 
-	// FIXME: if we call _createModel twice, then we will add
-	// this filter twice.  We reset the filter list here,
-	// though we will lose any other filters
-	parser.setMoMLFilters(null);
+        // FIXME: if we call _createModel twice, then we will add
+        // this filter twice.  We reset the filter list here,
+        // though we will lose any other filters
+        parser.setMoMLFilters(null);
 
-	parser.setMoMLFilters(BackwardCompatibility.allFilters());
+        parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
-	if (filterGraphicalClasses) {
-	    // Filter out graphical classes so that we do not require diva.jar
-	    parser.addMoMLFilter(new RemoveGraphicalClasses());
-	}
+        if (filterGraphicalClasses) {
+            // Filter out graphical classes so that we do not require diva.jar
+            parser.addMoMLFilter(new RemoveGraphicalClasses());
+        }
 
         URL docBase = getDocumentBase();
         URL xmlFile = new URL(docBase, modelURL);

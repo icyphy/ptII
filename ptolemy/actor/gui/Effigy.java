@@ -94,7 +94,7 @@ public class Effigy extends CompositeEntity {
      *  @param workspace The workspace for this effigy.
      */
     public Effigy(Workspace workspace) {
-	super(workspace);
+        super(workspace);
         try {
             identifier = new StringAttribute(this, "identifier");
             identifier.setExpression("Unnamed");
@@ -114,7 +114,7 @@ public class Effigy extends CompositeEntity {
      */
     public Effigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
         identifier = new StringAttribute(this, "identifier");
         identifier.setExpression("Unnamed");
         uri = new URIAttribute(this, "uri");
@@ -157,14 +157,14 @@ public class Effigy extends CompositeEntity {
                     _modifiableURI = false;
                 } else {
                     File file = new File(uriValue);
-		    try {
-			_modifiableURI = file.canWrite();
-		    } catch (java.security.AccessControlException
+                    try {
+                        _modifiableURI = file.canWrite();
+                    } catch (java.security.AccessControlException
                             accessControl) {
-			// If we are running in a sandbox, then canWrite()
-			// may throw an AccessControlException.
-			_modifiableURI = false;
-		    }
+                        // If we are running in a sandbox, then canWrite()
+                        // may throw an AccessControlException.
+                        _modifiableURI = false;
+                    }
                 }
             }
         } else {
@@ -299,12 +299,12 @@ public class Effigy extends CompositeEntity {
                 tableau.setContainer(null);
             }
 
-	    // Remove all contained effigies as well.
-	    Iterator effigies = entityList(Effigy.class).iterator();
-	    while (effigies.hasNext()) {
-		ComponentEntity effigy = (ComponentEntity)effigies.next();
-		effigy.setContainer(null);
-	    }
+            // Remove all contained effigies as well.
+            Iterator effigies = entityList(Effigy.class).iterator();
+            while (effigies.hasNext()) {
+                ComponentEntity effigy = (ComponentEntity)effigies.next();
+                effigy.setContainer(null);
+            }
         }
         super.setContainer(container);
     }
@@ -418,13 +418,13 @@ public class Effigy extends CompositeEntity {
      */
     protected void _checkContainer(CompositeEntity container)
             throws IllegalActionException {
-	if (container != null
+        if (container != null
                 && !(container instanceof ModelDirectory)
                 && !(container instanceof Effigy)) {
-	    throw new IllegalActionException(this, container,
-		    "The container can only be set to an " +
+            throw new IllegalActionException(this, container,
+                    "The container can only be set to an " +
                     "instance of ModelDirectory or Effigy.");
-	}
+        }
     }
 
     /** Remove the specified entity from this container. If this effigy
@@ -434,15 +434,15 @@ public class Effigy extends CompositeEntity {
      *  @param entity The tableau to remove.
      */
     protected void _removeEntity(ComponentEntity entity) {
-	super._removeEntity(entity);
-       	if(numberOfOpenTableaux() == 0 && !isSystemEffigy()) {
-	    try {
-		setContainer(null);
-	    } catch (Exception ex) {
-		throw new InternalErrorException(this, ex,
+        super._removeEntity(entity);
+               if(numberOfOpenTableaux() == 0 && !isSystemEffigy()) {
+            try {
+                setContainer(null);
+            } catch (Exception ex) {
+                throw new InternalErrorException(this, ex,
                         "Cannot remove effigy!");
-	    }
-	}
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

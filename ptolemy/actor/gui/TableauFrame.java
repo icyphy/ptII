@@ -212,7 +212,7 @@ public class TableauFrame extends Top {
      *  @param tableau The tableau associated with this frame.
      */
     public void setTableau(Tableau tableau) {
-	_tableau = tableau;
+        _tableau = tableau;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -310,17 +310,17 @@ public class TableauFrame extends Top {
         super._addMenus();
         if (_tableau != null) {
             // Start with the File:New menu.
-	    // Check to see if we have an effigy factory, and whether it
+            // Check to see if we have an effigy factory, and whether it
             // is capable of creating blank effigies.
-	    final Configuration configuration = getConfiguration();
-	    EffigyFactory effigyFactory =
+            final Configuration configuration = getConfiguration();
+            EffigyFactory effigyFactory =
                 (EffigyFactory)configuration.getEntity("effigyFactory");
             boolean canCreateBlank = false;
             final ModelDirectory directory = getDirectory();
-	    if (effigyFactory != null && directory != null) {
+            if (effigyFactory != null && directory != null) {
                 List factoryList =
                     effigyFactory.entityList(EffigyFactory.class);
-	        Iterator factories = factoryList.iterator();
+                Iterator factories = factoryList.iterator();
                 while (factories.hasNext()) {
                     final EffigyFactory factory =
                         (EffigyFactory)factories.next();
@@ -347,12 +347,12 @@ public class TableauFrame extends Top {
                 }
             }
             if (canCreateBlank) {
-		// Enable the "New" item in the File menu.
-		_fileMenuItems[2].setEnabled(true);
-	    }
+                // Enable the "New" item in the File menu.
+                _fileMenuItems[2].setEnabled(true);
+            }
 
             // Next do the View menu.
-	    Effigy tableauContainer = (Effigy)_tableau.getContainer();
+            Effigy tableauContainer = (Effigy)_tableau.getContainer();
             if (tableauContainer != null) {
                 _factoryContainer = tableauContainer.getTableauFactory();
                 if (_factoryContainer != null) {
@@ -453,20 +453,20 @@ public class TableauFrame extends Top {
      *  @return The default icon image, or null if there is none.
      */
     protected Image _getDefaultIconImage() {
-	if (_defaultIconImage == null) {
-	    // Note that PtolemyIISmallIcon.gif is also in doc/img.
-	    // We place a duplicate copy here to make it easy to ship
-	    // jar files that contain all the appropriate images.
-	    URL url =
-		getClass().getResource(
+        if (_defaultIconImage == null) {
+            // Note that PtolemyIISmallIcon.gif is also in doc/img.
+            // We place a duplicate copy here to make it easy to ship
+            // jar files that contain all the appropriate images.
+            URL url =
+                getClass().getResource(
                         "/ptolemy/actor/gui/PtolemyIISmallIcon.gif");
-	    if (url == null) {
-		return null;
-	    }
-	    Toolkit tk = Toolkit.getDefaultToolkit();
+            if (url == null) {
+                return null;
+            }
+            Toolkit tk = Toolkit.getDefaultToolkit();
             _defaultIconImage = tk.createImage(url);
-	}
-	return _defaultIconImage;
+        }
+        return _defaultIconImage;
     }
 
     /** Get the name of this object, which in this class is the URI
@@ -577,9 +577,9 @@ public class TableauFrame extends Top {
                     "No associated Tableau! Can't save.");
         }
         JFileChooser fileDialog = new JFileChooser();
-	if (_fileFilter != null) {
-	    fileDialog.addChoosableFileFilter(_fileFilter);
-	}
+        if (_fileFilter != null) {
+            fileDialog.addChoosableFileFilter(_fileFilter);
+        }
         fileDialog.setDialogTitle("Save as...");
         if (_directory != null) {
             fileDialog.setCurrentDirectory(_directory);
@@ -597,11 +597,11 @@ public class TableauFrame extends Top {
             }
         }
 
-	if (_initialSaveAsFileName != null) {
-	    fileDialog.setSelectedFile(
+        if (_initialSaveAsFileName != null) {
+            fileDialog.setSelectedFile(
                     new File(fileDialog.getCurrentDirectory(),
-			     _initialSaveAsFileName));
-	}
+                             _initialSaveAsFileName));
+        }
 
         int returnVal = fileDialog.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -748,38 +748,38 @@ public class TableauFrame extends Top {
         ///////////////////////////////////////////////////////////////
         ////                     public methods                    ////
 
-	/** Accept only files with one of the extensions given in the
+        /** Accept only files with one of the extensions given in the
          *  constructor.
-	 *  @param fileOrDirectory The file to be checked.
-	 *  @return True if the file is a directory or has one of the
+         *  @param fileOrDirectory The file to be checked.
+         *  @return True if the file is a directory or has one of the
          *   specified extensions.
          */
-	public boolean accept(File fileOrDirectory) {
-	    if (fileOrDirectory.isDirectory()) {
-		return true;
-	    }
+        public boolean accept(File fileOrDirectory) {
+            if (fileOrDirectory.isDirectory()) {
+                return true;
+            }
 
-	    String fileOrDirectoryName = fileOrDirectory.getName();
-	    int dotIndex = fileOrDirectoryName.lastIndexOf('.');
-	    if (dotIndex == -1) {
-		return false;
-	    }
-	    String extension = fileOrDirectoryName.substring(dotIndex + 1);
+            String fileOrDirectoryName = fileOrDirectory.getName();
+            int dotIndex = fileOrDirectoryName.lastIndexOf('.');
+            if (dotIndex == -1) {
+                return false;
+            }
+            String extension = fileOrDirectoryName.substring(dotIndex + 1);
 
-	    if (extension != null) {
+            if (extension != null) {
                 Iterator extensions = _extensions.iterator();
                 while(extensions.hasNext()) {
                     String matchExtension = (String)extensions.next();
                     if (extension.equalsIgnoreCase(matchExtension)) {
                         return true;
                     }
-		}
-	    }
-	    return false;
-	}
+                }
+            }
+            return false;
+        }
 
-	/**  The description of this filter */
-	public String getDescription() {
+        /**  The description of this filter */
+        public String getDescription() {
             StringBuffer result = new StringBuffer();
             Iterator extensions = _extensions.iterator();
             int extensionNumber = 1;
@@ -796,8 +796,8 @@ public class TableauFrame extends Top {
                 extensionNumber++;
             }
             result.append(" files");
-	    return result.toString();
-	}
+            return result.toString();
+        }
 
         ///////////////////////////////////////////////////////////////
         ////                     private variables                 ////
@@ -821,8 +821,8 @@ public class TableauFrame extends Top {
                     Effigy tableauContainer = (Effigy)_tableau.getContainer();
                     try {
                         Tableau tableau =
-			    factory.createTableau(tableauContainer);
-			tableau.show();
+                            factory.createTableau(tableauContainer);
+                        tableau.show();
                     } catch (Exception ex) {
                         MessageHandler.error("Cannot create view", ex);
                     }

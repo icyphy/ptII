@@ -63,7 +63,7 @@ public class PtolemyApplication extends MoMLApplication {
      *  @exception Exception If command line arguments have problems.
      */
     public PtolemyApplication(String args[]) throws Exception {
-	super(args);
+        super(args);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -74,8 +74,8 @@ public class PtolemyApplication extends MoMLApplication {
      *  @param args The command-line arguments.
      */
     public static void main(String args[]) {
-	try {
-	    new PtolemyApplication(args);
+        try {
+            new PtolemyApplication(args);
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);
             System.exit(0);
@@ -87,7 +87,7 @@ public class PtolemyApplication extends MoMLApplication {
                 Thread.currentThread().sleep(2000);
             } catch (InterruptedException e) {
             }
-	    System.exit(0);
+            System.exit(0);
         }
     }
 
@@ -119,7 +119,7 @@ public class PtolemyApplication extends MoMLApplication {
         _parser.setContext(configuration);
         _parser.parse(inURL, inURL.openStream());
         Effigy doc = (Effigy)configuration.getEntity("directory.doc");
-	URL idURL = specToURL("ptolemy/configs/intro.htm");
+        URL idURL = specToURL("ptolemy/configs/intro.htm");
         doc.identifier.setExpression(idURL.toExternalForm());
         return configuration;
     }

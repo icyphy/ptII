@@ -77,7 +77,7 @@ public class HTMLViewer extends TableauFrame
     /** Construct a blank viewer.
      */
     public HTMLViewer() {
-	getContentPane().setLayout(new BorderLayout(0, 0));
+        getContentPane().setLayout(new BorderLayout(0, 0));
         pane.setEditable(false);
         pane.addHyperlinkListener(this);
         _scroller = new JScrollPane(pane);
@@ -210,22 +210,22 @@ public class HTMLViewer extends TableauFrame
     public int print(Graphics graphics, PageFormat format,
             int index) throws PrinterException {
 
-	Dimension dimension = pane.getSize();
+        Dimension dimension = pane.getSize();
 
-	// How much do we have to scale the width?
-	double scale = format.getImageableWidth() / dimension.getWidth();
-	double scaledHeight = dimension.getHeight() * scale;
-	int lastPage = (int) (scaledHeight / format.getImageableHeight());
+        // How much do we have to scale the width?
+        double scale = format.getImageableWidth() / dimension.getWidth();
+        double scaledHeight = dimension.getHeight() * scale;
+        int lastPage = (int) (scaledHeight / format.getImageableHeight());
 
-	// If we're off the end, then we're done.
-	if (index > lastPage) {
+        // If we're off the end, then we're done.
+        if (index > lastPage) {
             return Printable.NO_SUCH_PAGE;
         }
         AffineTransform at = new AffineTransform();
-	at.translate((int)format.getImageableX(),
+        at.translate((int)format.getImageableX(),
                 (int)format.getImageableY());
-	at.translate(0, -(format.getImageableHeight() * index));
-	at.scale(scale, scale);
+        at.translate(0, -(format.getImageableHeight() * index));
+        at.scale(scale, scale);
 
         ((Graphics2D) graphics).transform(at);
 

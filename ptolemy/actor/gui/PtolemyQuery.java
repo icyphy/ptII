@@ -107,9 +107,9 @@ public class PtolemyQuery extends Query
      *  @param handler The change handler.
      */
     public PtolemyQuery(NamedObj handler) {
-	super();
-	addQueryListener(this);
-	_handler = handler;
+        super();
+        addQueryListener(this);
+        _handler = handler;
 
         if (_handler != null) {
             // NOTE: Since we register as a listener to the handler,
@@ -158,7 +158,7 @@ public class PtolemyQuery extends Query
                     // the default dialog.
                 }
             }
-	}
+        }
 
         if (!foundStyle) {
             // NOTE: Infer the style.
@@ -235,11 +235,11 @@ public class PtolemyQuery extends Query
 
         String defaultValue = attribute.getExpression();
         if (defaultValue == null) defaultValue = "";
-	if (!(foundStyle)) {
-	    addLine(attribute.getName(), attribute.getName(), defaultValue);
+        if (!(foundStyle)) {
+            addLine(attribute.getName(), attribute.getName(), defaultValue);
             // The style itself does this, so we don't need to do it again.
             attachParameter(attribute, attribute.getName());
-	}
+        }
     }
 
     /** Attach an attribute to an entry with name <i>entryName</i>,
@@ -254,8 +254,8 @@ public class PtolemyQuery extends Query
      *  @param entryName The entry to attach the attribute to.
      */
     public void attachParameter(Settable attribute, String entryName) {
-	// Put the attribute in a Map from entryName -> attribute
-	_attributes.put(entryName, attribute);
+        // Put the attribute in a Map from entryName -> attribute
+        _attributes.put(entryName, attribute);
 
         // Make a record of the attribute value prior to the change,
         // in case a change fails and the user chooses to revert.
@@ -316,9 +316,9 @@ public class PtolemyQuery extends Query
      *  @param name The name of the entry that has changed.
      */
     public void changed(final String name) {
-	// Check if the entry that changed is in the mapping.
-	if (_attributes.containsKey(name)) {
-	    final Settable attribute
+        // Check if the entry that changed is in the mapping.
+        if (_attributes.containsKey(name)) {
+            final Settable attribute
                 = (Settable)(_attributes.get(name));
             if ( attribute == null ) {
                 // No associated attribute.
@@ -342,7 +342,7 @@ public class PtolemyQuery extends Query
                 if (parent == null) {
                     parent = (NamedObj)castAttribute.getContainer();
                 }
-		String moml = "<property name=\""
+                String moml = "<property name=\""
                         + castAttribute.getName(parent)
                         + "\" value=\""
                         + StringUtilities.escapeForXML(getStringValue(name))
@@ -363,10 +363,10 @@ public class PtolemyQuery extends Query
                        }
                    }
                };
-	    } else {
-		// If the attribute is not a NamedObj, then we
-		// set its value directly.
-		request = new ChangeRequest(this, name) {
+            } else {
+                // If the attribute is not a NamedObj, then we
+                // set its value directly.
+                request = new ChangeRequest(this, name) {
                         protected void _execute()
                             throws IllegalActionException {
                             attribute.setExpression(getStringValue(name));
@@ -388,7 +388,7 @@ public class PtolemyQuery extends Query
                             */
                         }
                     };
-	    }
+            }
             // NOTE: This object is never removed as a listener from
             // the change request.  This is OK because this query will
             // be closed at some point, and all references to it will
@@ -415,9 +415,9 @@ public class PtolemyQuery extends Query
                 // processes.
                 _savedErrorHandler = MoMLParser.getErrorHandler();
                 MoMLParser.setErrorHandler(null);
-		_handler.requestChange(request);
-	    }
-	}
+                _handler.requestChange(request);
+            }
+        }
     }
 
     /** Notify this class that a change has been successfully executed

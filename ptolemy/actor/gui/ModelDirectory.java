@@ -80,7 +80,7 @@ public class ModelDirectory extends CompositeEntity {
      */
     public ModelDirectory(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,11 +123,11 @@ public class ModelDirectory extends CompositeEntity {
      *  @param entity The entity to remove.
      */
     protected void _removeEntity(ComponentEntity entity) {
-	super._removeEntity(entity);
+        super._removeEntity(entity);
         List remainingEntities = entityList(Effigy.class);
-	if (remainingEntities.size() == 0) {
+        if (remainingEntities.size() == 0) {
             try {
-		setContainer(null);
+                setContainer(null);
             } catch (KernelException ex) {
                 throw new InternalErrorException("Cannot remove directory!");
             }

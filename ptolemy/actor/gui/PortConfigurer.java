@@ -72,17 +72,17 @@ public class PortConfigurer extends Query implements QueryListener {
      */
     public PortConfigurer(Entity object) {
         super();
-	this.addQueryListener(this);
-	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.addQueryListener(this);
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-	setTextWidth(15);
+        setTextWidth(15);
 
         // The second column is for type designators.
         setColumns(2);
 
         _object = object;
 
-	Iterator ports = _object.portList().iterator();
+        Iterator ports = _object.portList().iterator();
         while (ports.hasNext()) {
             Object candidate = ports.next();
             if (candidate instanceof TypedIOPort) {
@@ -99,7 +99,7 @@ public class PortConfigurer extends Query implements QueryListener {
                 addLine(typeEntryName, typeEntryName,
                         port.getType().toString());
             }
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -110,7 +110,7 @@ public class PortConfigurer extends Query implements QueryListener {
     public void apply() {
         StringBuffer moml = new StringBuffer("<group>");
         boolean foundOne = false;
-	Iterator ports = _object.portList().iterator();
+        Iterator ports = _object.portList().iterator();
         NamedObj parent = null;
         while (ports.hasNext()) {
             Object candidate = ports.next();

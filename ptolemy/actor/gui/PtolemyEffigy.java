@@ -70,7 +70,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *  @param workspace The workspace for this effigy.
      */
     public PtolemyEffigy(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Create a new effigy in the given container with the given name.
@@ -83,7 +83,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      */
     public PtolemyEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -144,7 +144,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *  @return The model, or null if none has been set.
      */
     public NamedObj getModel() {
-	return _model;
+        return _model;
     }
 
     /** Set the ptolemy model that this is an effigy of.
@@ -197,13 +197,13 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      */
     protected void _checkContainer(CompositeEntity container)
             throws IllegalActionException {
-	if (container != null
+        if (container != null
                 && !(container instanceof ModelDirectory)
                 && !(container instanceof PtolemyEffigy)) {
-	    throw new IllegalActionException(this, container,
-		    "The container can only be set to an " +
+            throw new IllegalActionException(this, container,
+                    "The container can only be set to an " +
                     "instance of ModelDirectory or PtolemyEffigy.");
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -219,18 +219,18 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      */
     public static class Factory extends EffigyFactory {
 
-	/** Create a factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this entity.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an entity already in the container.
-	 */
-	public Factory(CompositeEntity container, String name)
+        /** Create a factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this entity.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an entity already in the container.
+         */
+        public Factory(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
         ///////////////////////////////////////////////////////////////
         ////                     public methods                    ////
@@ -267,7 +267,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
         public Effigy createEffigy(
                 CompositeEntity container, URL base, URL input)
                 throws Exception {
-	    if (input == null) {
+            if (input == null) {
                 // Create a blank effigy.
                 PtolemyEffigy effigy = new PtolemyEffigy(
                         container, container.uniqueName("effigy"));
@@ -298,78 +298,78 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 
                 MoMLParser parser = new MoMLParser();
                 NamedObj toplevel = null;
-		try {
-		    try {
-			// If the following fails, we should remove the effigy.
-			try {
-			    toplevel = parser.parse(base, input);
-			} catch (IOException io) {
-			    // If we are running under Web Start, we
-			    // might have a URL that refers to another
-			    // jar file.
-			    URL anotherURL =
-				JNLPUtilities
-				.jarURLEntryResource(input.toString());
-			    if (anotherURL != null) {
-				toplevel = parser.parse(base,
+                try {
+                    try {
+                        // If the following fails, we should remove the effigy.
+                        try {
+                            toplevel = parser.parse(base, input);
+                        } catch (IOException io) {
+                            // If we are running under Web Start, we
+                            // might have a URL that refers to another
+                            // jar file.
+                            URL anotherURL =
+                                JNLPUtilities
+                                .jarURLEntryResource(input.toString());
+                            if (anotherURL != null) {
+                                toplevel = parser.parse(base,
                                         anotherURL.openStream());
-			    } else {
-				throw io;
-			    }
-			}
-			if (toplevel != null) {
-			    effigy.setModel(toplevel);
+                            } else {
+                                throw io;
+                            }
+                        }
+                        if (toplevel != null) {
+                            effigy.setModel(toplevel);
 
-			    // A MoMLFilter may have modified the model
-			    // as it was being parsed.
-			    effigy.setModified(MoMLParser.isModified());
+                            // A MoMLFilter may have modified the model
+                            // as it was being parsed.
+                            effigy.setModified(MoMLParser.isModified());
                             // The effigy will handle saving the modified
                             // moml for us, so MoMLParser need
                             // not care anymore.
                             MoMLParser.setModified(false);
 
-			    // Identify the URI from which the model was read
-			    // by inserting an attribute into both the model
-			    // and the effigy.
-			    URIAttribute uriAttribute =
+                            // Identify the URI from which the model was read
+                            // by inserting an attribute into both the model
+                            // and the effigy.
+                            URIAttribute uriAttribute =
                                 new URIAttribute(toplevel, "_uri");
-			    URI inputURI = null;
-			    try {
-				inputURI = new URI(input.toExternalForm());
-			    } catch (java.net.URISyntaxException ex) {
-				// This is annoying, if the input has a space
-				// in it, then we cannot create a URI,
-				// but we could create a URL.
-				// If, under Windows, we call
-				// File.createTempFile(), then we are likely
-				// to get a pathname that has space.
-				// FIXME: Note that jar urls will barf if there
-				// is a %20 instead of a space.  This could
-				// cause problems in Web Start
-				String inputExternalFormFixed = StringUtilities
-				    .substitute(input.toExternalForm(),
-						" ", "%20");
-				try {
-				    inputURI = new URI(inputExternalFormFixed);
-				} catch (Exception ex2) {
-				    throw new Exception("Failed to generate "
-							+ "a URI from '"
-							+ input.toExternalForm()
-							+ "' and from '"
-							+ inputExternalFormFixed
-							+ "'", ex);
-				}
-			    }
-			    uriAttribute.setURI(inputURI);
-			    // This is used by TableauFrame in its
-			    //_save() method.
-			    effigy.uri.setURI(inputURI);
+                            URI inputURI = null;
+                            try {
+                                inputURI = new URI(input.toExternalForm());
+                            } catch (java.net.URISyntaxException ex) {
+                                // This is annoying, if the input has a space
+                                // in it, then we cannot create a URI,
+                                // but we could create a URL.
+                                // If, under Windows, we call
+                                // File.createTempFile(), then we are likely
+                                // to get a pathname that has space.
+                                // FIXME: Note that jar urls will barf if there
+                                // is a %20 instead of a space.  This could
+                                // cause problems in Web Start
+                                String inputExternalFormFixed = StringUtilities
+                                    .substitute(input.toExternalForm(),
+                                                " ", "%20");
+                                try {
+                                    inputURI = new URI(inputExternalFormFixed);
+                                } catch (Exception ex2) {
+                                    throw new Exception("Failed to generate "
+                                                        + "a URI from '"
+                                                        + input.toExternalForm()
+                                                        + "' and from '"
+                                                        + inputExternalFormFixed
+                                                        + "'", ex);
+                                }
+                            }
+                            uriAttribute.setURI(inputURI);
+                            // This is used by TableauFrame in its
+                            //_save() method.
+                            effigy.uri.setURI(inputURI);
 
-			    return effigy;
-			} else {
-			    effigy.setContainer(null);
-			}
-		    } catch (Exception e) {
+                            return effigy;
+                        } else {
+                            effigy.setContainer(null);
+                        }
+                    } catch (Exception e) {
                         // The finally clause below can result in the
                         // application exiting if there are no other
                         // effigies open.  We check for that condition,
@@ -387,17 +387,17 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                             // Let the caller handle the error.
                             throw e;
                         }
-		    }
-		} finally {
-		    // If we failed to populate the effigy with a model,
-		    // then we remove the effigy from its container.
+                    }
+                } finally {
+                    // If we failed to populate the effigy with a model,
+                    // then we remove the effigy from its container.
                     if (toplevel == null) {
-			effigy.setContainer(null);
-		    }
-		}
+                        effigy.setContainer(null);
+                    }
+                }
                 return null;
             }
-	}
+        }
     }
 
     /** A factory for creating new Ptolemy effigies, but without the
@@ -407,18 +407,18 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      */
     public static class FactoryWithoutNew extends Factory {
 
-	/** Create a factory with the given name and container.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this entity.
-	 *  @exception NameDuplicationException If the name coincides with
-	 *   an entity already in the container.
-	 */
-	public FactoryWithoutNew(CompositeEntity container, String name)
+        /** Create a factory with the given name and container.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container is incompatible
+         *   with this entity.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an entity already in the container.
+         */
+        public FactoryWithoutNew(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
-	}
+            super(container, name);
+        }
 
         ///////////////////////////////////////////////////////////////
         ////                     public methods                    ////

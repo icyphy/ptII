@@ -92,7 +92,7 @@ public class Tableau extends CompositeEntity {
      */
     public Tableau(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
 
         size = new SizeAttribute(
                 this, "size");
@@ -162,7 +162,7 @@ public class Tableau extends CompositeEntity {
      *  @return A top-level window.
      */
     public JFrame getFrame() {
-	return _frame;
+        return _frame;
     }
 
     /** Return the title of this tableau.  Subclasses can override this to
@@ -178,7 +178,7 @@ public class Tableau extends CompositeEntity {
     public String getTitle() {
         if (_title == null) {
             Effigy effigy = (Effigy)getContainer();
-	    // Abbreviate the title to 80 chars for use on the Mac.
+            // Abbreviate the title to 80 chars for use on the Mac.
             return StringUtilities.abbreviate(
                     effigy.identifier.getExpression());
         } else {
@@ -222,29 +222,29 @@ public class Tableau extends CompositeEntity {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-	if (container == null) {
-	    Effigy oldContainer = (Effigy)getContainer();
-	    super.setContainer(container);
-	    // Blow away the frame.
-	    if (_frame != null) {
-		// Note that we call hide instead of dispose . . .
-		// The windowListener set in setFrame()
+        if (container == null) {
+            Effigy oldContainer = (Effigy)getContainer();
+            super.setContainer(container);
+            // Blow away the frame.
+            if (_frame != null) {
+                // Note that we call hide instead of dispose . . .
+                // The windowListener set in setFrame()
                 // will trigger dispose() to get called.
-		_frame.hide();
-	    }
+                _frame.hide();
+            }
 
             if (isMaster() && oldContainer != null) {
                 // Window is a master.  Close the model which will close all
-		// other tableaux.
-		oldContainer.setContainer(null);
+                // other tableaux.
+                oldContainer.setContainer(null);
             }
-	} else if (container instanceof Effigy) {
-	    super.setContainer(container);
-	} else {
-	    throw new IllegalActionException(this, container,
+        } else if (container instanceof Effigy) {
+            super.setContainer(container);
+        } else {
+            throw new IllegalActionException(this, container,
                     "The container can only be set to an " +
                     "instance of Effigy");
-	}
+        }
     }
 
     /** Make the tableau editable or uneditable.  Notice that this does
@@ -273,9 +273,9 @@ public class Tableau extends CompositeEntity {
             size.setSize(_frame);
         }
 
-	// Truncate the name so that dialogs under Web Start on the Mac
-	// work better.
-	frame.setTitle(getTitle());
+        // Truncate the name so that dialogs under Web Start on the Mac
+        // work better.
+        frame.setTitle(getTitle());
 
         // Set up a listener for window closing events.
         frame.addWindowListener(new WindowAdapter() {

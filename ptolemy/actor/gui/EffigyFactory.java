@@ -91,12 +91,12 @@ public class EffigyFactory extends CompositeEntity {
      *  @return True if this factory can create a blank effigy.
      */
     public boolean canCreateBlankEffigy() {
-	Iterator factories = entityList(EffigyFactory.class).iterator();
-	while (factories.hasNext()) {
-	    EffigyFactory factory = (EffigyFactory)factories.next();
+        Iterator factories = entityList(EffigyFactory.class).iterator();
+        while (factories.hasNext()) {
+            EffigyFactory factory = (EffigyFactory)factories.next();
             if (factory.canCreateBlankEffigy()) return true;
-	}
-	return false;
+        }
+        return false;
     }
 
     /** Create a new blank effigy in the given container. This base class
@@ -111,7 +111,7 @@ public class EffigyFactory extends CompositeEntity {
      *   duplication occurs.
      */
     public Effigy createEffigy(CompositeEntity container) throws Exception {
-	return createEffigy(container, null, null);
+        return createEffigy(container, null, null);
     }
 
     /** Create a new effigy in the given container by reading the specified
@@ -131,14 +131,14 @@ public class EffigyFactory extends CompositeEntity {
      *   is malformed in some way.
      */
     public Effigy createEffigy(CompositeEntity container, URL base, URL in)
-	    throws Exception {
-	Effigy effigy = null;
-	Iterator factories = entityList(EffigyFactory.class).iterator();
-	while (factories.hasNext() && effigy == null) {
-	    EffigyFactory factory = (EffigyFactory)factories.next();
-	    effigy = factory.createEffigy(container, base, in);
-	}
-	return effigy;
+            throws Exception {
+        Effigy effigy = null;
+        Iterator factories = entityList(EffigyFactory.class).iterator();
+        while (factories.hasNext() && effigy == null) {
+            EffigyFactory factory = (EffigyFactory)factories.next();
+            effigy = factory.createEffigy(container, base, in);
+        }
+        return effigy;
     }
 
     /** Return the extension on the name of the specified URL.

@@ -265,7 +265,7 @@ public class ModelPane extends JPanel implements CloseListener {
             _controlPanel.remove(_directorQuery);
             _directorQuery = null;
         }
-	if (model != null) {
+        if (model != null) {
             _manager = _model.getManager();
 
             if ((_show & TOP_PARAMETERS) != 0) {
@@ -446,7 +446,7 @@ public class ModelPane extends JPanel implements CloseListener {
     protected void _createPlaceable(CompositeActor model) {
         if (_displays != null) {
             remove(_displays);
-	    _displays = null;
+            _displays = null;
         }
         // place the placeable objects in the model
         _displays = new JPanel();
