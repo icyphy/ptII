@@ -367,7 +367,7 @@ fi
 
 #### Saxon is the XSLT and XQuery Processor (http://saxon.sourceforge.net/)
 # At runtime, ptolemy.util.XSLTUtilities, caltrop and hsif use Saxon.
-SAXON_JAR={CLASSPATHSEPARATOR}${PTII}/lib/saxon7.jar
+SAXON_JAR=${CLASSPATHSEPARATOR}${PTII}/lib/saxon7.jar
 
 #### X10 is the interface library for power line communication, see
 # http://x10.homelinux.org/download.html
