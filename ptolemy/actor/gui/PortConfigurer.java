@@ -145,7 +145,7 @@ public class PortConfigurer extends Query implements QueryListener {
                     moml.append(port.getName());
                     moml.append("\">");
 
-                    String cardinalVal = stringValue(nameCardinal);
+                    String cardinalVal = getStringValue(nameCardinal);
                     moml.append(
                             "<property name=\"_cardinal\" "
                             + "class = \"ptolemy.kernel.util.StringAttribute\" "
