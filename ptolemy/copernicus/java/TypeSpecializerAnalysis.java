@@ -417,7 +417,7 @@ public class TypeSpecializerAnalysis {
 
     // Given an object (which must be either a local, or a field) of
     // the given type, look into the given map and retrieve the
-    // inequality term for the object.  retreive the resolved type,
+    // inequality term for the object.  retrieve the resolved type,
     // and return it.
     private static Type _getUpdateType(boolean debug,
             Object object, Type type, Map objectToInequalityTerm) {
@@ -449,7 +449,7 @@ public class TypeSpecializerAnalysis {
 
     // Given an object (which must be either a local, or a field) of
     // the given type, look into the given map and retrieve the
-    // inequality term for the object.  retreive the resolved type,
+    // inequality term for the object.  retrieve the resolved type,
     // and return it.
     private Type _getUpdateType(Object object, Type type) {
         RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
