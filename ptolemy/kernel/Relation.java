@@ -38,7 +38,7 @@ import pt.exceptions.NameDuplicationException;
 A Relation is an arc in a hierarchical graph. Relations serve as a general 
 notion of connection between Entities and should be thought of as nets 
 that can be specialized to point-to-point connections. FIXME: What should 
-happen to a disconnected Short (zero connections)?
+happen to a disconnected Net (zero connections)?
 @author John S. Davis, II
 @version $Id$
 */
@@ -47,8 +47,8 @@ public class Relation extends Node {
      */	
     public Relation() {
 	 super();
-	 _shorts = null;
-	 _shortAdditionCount = 0;
+	 _nets = null;
+	 _netAdditionCount = 0;
     }
 
     /** 
@@ -56,8 +56,8 @@ public class Relation extends Node {
      */	
     public Relation(String name) {
 	 super(name);
-	 _shorts = null;
-	 _shortAdditionCount = 0;
+	 _nets = null;
+	 _netAdditionCount = 0;
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -73,7 +73,7 @@ public class Relation extends Node {
 	if( isPortAMember( newPort.getName() ) ) {
 	     return;
 	}
-	createNewDanglingShort( newPort );
+	createNewDanglingNet( newPort );
         return;
     }
 
@@ -84,7 +84,7 @@ public class Relation extends Node {
      * attempt is made to store two objects with identical names in the
      * same container.
      */
-    public void connectPorts(Port port1, Port port2) 
+    public void connectTwoPorts(Port port1, Port port2) 
 	throws NameDuplicationException {
 
 	boolean port1Membership;
@@ -94,97 +94,97 @@ public class Relation extends Node {
 	port2Membership = isPortAMember( port2.getName() );
 
 	if( port1Membership == false && port2Membership == false ) {
-	     Short aShort;
-	     aShort = createNewDanglingShort( port1 );
-	     connectShortToPort( aShort, port2 );
+	     Net net;
+	     net = createNewDanglingNet( port1 );
+	     connectNetToPort( net, port2 );
 
 	} else if( port1Membership == true && port2Membership == false ) {
-	     Short port1Short;
-	     port1Short = getDanglingShort( port1.getName() );
-	     if( port1Short == null ) {
-		  port1Short = createNewDanglingShort( port1 );
+	     Net port1Net;
+	     port1Net = getDanglingNet( port1.getName() );
+	     if( port1Net == null ) {
+		  port1Net = createNewDanglingNet( port1 );
 	     }
-	     connectShortToPort( port1Short, port2 );
+	     connectNetToPort( port1Net, port2 );
 
 	} else if( port1Membership == false && port2Membership == true ) {
-	     Short port2Short;
-	     port2Short = getDanglingShort( port2.getName() );
-	     if( port2Short == null ) {
-		  port2Short = createNewDanglingShort( port2 );
+	     Net port2Net;
+	     port2Net = getDanglingNet( port2.getName() );
+	     if( port2Net == null ) {
+		  port2Net = createNewDanglingNet( port2 );
 	     }
-	     connectShortToPort( port2Short, port1 );
+	     connectNetToPort( port2Net, port1 );
 
 	} else { 
-	     Short port1Short, port2Short;
+	     Net port1Net, port2Net;
 
-	     port1Short = getDanglingShort( port1.getName() );
-	     if( port1Short != null ) {
-	          connectShortToPort( port1Short, port2 );
+	     port1Net = getDanglingNet( port1.getName() );
+	     if( port1Net != null ) {
+	          connectNetToPort( port1Net, port2 );
 		  return;
 	     } 
 
-	     port2Short = getDanglingShort( port2.getName() );
-	     if( port2Short != null ) {
-	          connectShortToPort( port2Short, port1 );
+	     port2Net = getDanglingNet( port2.getName() );
+	     if( port2Net != null ) {
+	          connectNetToPort( port2Net, port1 );
 		  return;
 	     }
 	}
 
 	// Both ports have connections, neither of which are dangling.
-	Short port1Short;
-	port1Short = createNewDanglingShort( port1 ); 
-	connectShortToPort( port1Short, port2 );
+	Net port1Net;
+	port1Net = createNewDanglingNet( port1 ); 
+	connectNetToPort( port1Net, port2 );
 
-	// Consolidate any duplicate Shorts
-	consolidateShorts();
+	// Consolidate any duplicate Nets
+	consolidateNets();
         return;
     }
 
-    /** Determine if a Port is a member of any of the Shorts.
+    /** Determine if a Port is a member of any of the Nets.
      * @param portName The name of the Port for which membership is in question.
      * @return Returns true if the Port is a member; returns false otherwise.
      */
     public boolean isPortAMember(String portName) {
-	if( _shorts == null ) {
+	if( _nets == null ) {
 	     return false;
 	}
 
-	Short aShort; 
+	Net net; 
 
-	Enumeration enum = _shorts.elements();
+	Enumeration enum = _nets.elements();
 	while( enum.hasMoreElements() ) {
-	     aShort = (Short)enum.nextElement();
-	     if( aShort.isPortConnected( portName ) ) {
+	     net = (Net)enum.nextElement();
+	     if( net.isPortConnected( portName ) ) {
 		  return true;
 	     }
 	}
         return false;
     }
 
-    /** Check all Shorts within this Relation and consolidate if necessary. 
+    /** Check all Nets within this Relation and consolidate if necessary. 
      *  NOTE: Is it okay to remove elements as we iterate through the
      *  corresponding Enumeration?
      * @return Return the number of consolidations that occurred.
      */
-    public int consolidateShorts() {
-	Enumeration short1Enum, short2Enum;
-	Short short1, short2;
-	int numRemovedShorts = 0;
+    public int consolidateNets() {
+	Enumeration net1Enum, net2Enum;
+	Net net1, net2;
+	int numRemovedNets = 0;
 
-	short1Enum = _shorts.elements();
-	short2Enum = _shorts.elements();
+	net1Enum = _nets.elements();
+	net2Enum = _nets.elements();
 
-	while( short1Enum.hasMoreElements() ) {
-	     short1 = (Short)short1Enum.nextElement();
-	     while( short2Enum.hasMoreElements() ) {
-		  short2 = (Short)short2Enum.nextElement();
-		  if( consolidateShorts( short1, short2 ) ) {
-		       numRemovedShorts++;
+	while( net1Enum.hasMoreElements() ) {
+	     net1 = (Net)net1Enum.nextElement();
+	     while( net2Enum.hasMoreElements() ) {
+		  net2 = (Net)net2Enum.nextElement();
+		  if( consolidateNets( net1, net2 ) ) {
+		       numRemovedNets++;
 		  }
 	     }
 	}
 
-        return numRemovedShorts;
+        return numRemovedNets;
     }
 
     /** Disconnect two Ports from each other.
@@ -193,26 +193,26 @@ public class Relation extends Node {
      * @returns Returns true if a disconnect occurs; returns false otherwise.
      */
     public boolean disconnectPorts(Port port1, Port port2) {
-	if( _shorts == null ) {
+	if( _nets == null ) {
 	     return false;
 	}
 
-	// Make sure that no Shorts are being duplicated.
-	consolidateShorts();
+	// Make sure that no Nets are being duplicated.
+	consolidateNets();
 
-	// Find the Short that these two Ports have in common.
-	Short commonShort;
-	commonShort = getShort(port1, port2);
+	// Find the Net that these two Ports have in common.
+	Net commonNet;
+	commonNet = getNet(port1, port2);
 
-	// Ports do not share a common Short and thus do not 
+	// Ports do not share a common Net and thus do not 
 	// need to be disconnected.
-	if( commonShort == null ) {
+	if( commonNet == null ) {
 	     return false;
 	}
 
-	// Ports do share a common Short.
-	commonShort.disconnectPort( port1 );
-	commonShort.disconnectPort( port2 );
+	// Ports do share a common Net.
+	commonNet.disconnectPort( port1 );
+	commonNet.disconnectPort( port2 );
 
         return true;
     }
@@ -224,21 +224,32 @@ public class Relation extends Node {
      */
     public boolean disconnectPort(Port port) {
 	boolean portWasConnected = false;
-	if( _shorts == null ) {
+	if( _nets == null ) {
 	     return false;
 	}
 
-	Short aShort; 
-	Enumeration enum = _shorts.elements();
+	Net net; 
+	Enumeration enum = _nets.elements();
 	while( enum.hasMoreElements() ) {
-	     aShort = (Short)enum.nextElement();
-	     if( aShort.isPortConnected( port.getName() ) ) {
-		  aShort.disconnectPort( port );
+	     net = (Net)enum.nextElement();
+	     if( net.isPortConnected( port.getName() ) ) {
+		  net.disconnectPort( port );
 		  portWasConnected = true;
 	     }
 	}
 
         return portWasConnected;
+    }
+
+    /** Description
+     * @see full-classname#method-name()
+     * @param parameter-name description
+     * @param parameter-name description
+     * @return description
+     * @exception full-classname description
+     */
+    public void connectThreePorts(Port newPort, Port port1, Port port2) {
+        return;
     }
 
     /** Description
@@ -261,128 +272,128 @@ public class Relation extends Node {
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
 
-    /* Connect a new Port to a Short. 
+    /* Connect a new Port to a Net. 
      */
-    private void connectShortToPort(Short aShort, Port newPort ) 
+    private void connectNetToPort(Net net, Port newPort ) 
 	throws NameDuplicationException {
-	aShort.connectPort( newPort );
+	net.connectPort( newPort );
         return;
     }
 
-    /* Determine if two Shorts contain the same Ports. If so, 
-     * remove one of the Shorts and consolidate one of them.
-     * FIXME: What if both Shorts are dangling? This shouldn't
+    /* Determine if two Nets contain the same Ports. If so, 
+     * remove one of the Nets and consolidate one of them.
+     * FIXME: What if both Nets are dangling? This shouldn't
      * be a problem.
      * NOTE: Doug Lea's Collections package includes a sameStructure()
      * method which offers the functionality of this method.
-     * @param short1 The first Short for which a match is sought. 
-     * @param short2 The first Short for which a match is sought. 
+     * @param net1 The first Net for which a match is sought. 
+     * @param net2 The first Net for which a match is sought. 
      * @return Returns true if a consolidation occurred; returns false
      * otherwise.
      */
-    private boolean consolidateShorts(Short short1, Short short2) {
-	Enumeration short1PortEnum; 
-	Enumeration short2PortEnum;
-	Port short1Port, short2Port;
-	int shortMatchCount = 0;
-	int previousShortMatchCount = 0;
+    private boolean consolidateNets(Net net1, Net net2) {
+	Enumeration net1PortEnum; 
+	Enumeration net2PortEnum;
+	Port net1Port, net2Port;
+	int netMatchCount = 0;
+	int previousNetMatchCount = 0;
 
-	if( short1.size() != short2.size() ) {
+	if( net1.size() != net2.size() ) {
 	     return false;
 	}
 
-	short1PortEnum = short1.getPorts();
+	net1PortEnum = net1.getPorts();
 
 	// NOTES: This algorithm relies on the fact that no duplications
-	// of Ports connected to Shorts can occur.
-	while( short1PortEnum.hasMoreElements() ) { 
-	     short1Port = (Port)short1PortEnum.nextElement(); 
-	     previousShortMatchCount++;
+	// of Ports connected to Nets can occur.
+	while( net1PortEnum.hasMoreElements() ) { 
+	     net1Port = (Port)net1PortEnum.nextElement(); 
+	     previousNetMatchCount++;
 	     
-	     short2PortEnum = short2.getPorts();
-	     while( short2PortEnum.hasMoreElements() ) {
-		  short2Port = (Port)short2PortEnum.nextElement();
-		  if( short1Port.equals( short2Port ) ) {
-		       shortMatchCount++;
+	     net2PortEnum = net2.getPorts();
+	     while( net2PortEnum.hasMoreElements() ) {
+		  net2Port = (Port)net2PortEnum.nextElement();
+		  if( net1Port.equals( net2Port ) ) {
+		       netMatchCount++;
 		  }
 	     }
-	     if( previousShortMatchCount != shortMatchCount ) {
+	     if( previousNetMatchCount != netMatchCount ) {
 		  return false;
 	     }
-	     previousShortMatchCount++;
+	     previousNetMatchCount++;
 	}
 
-	// The Shorts are identical. Remove short2. 
-	short2PortEnum = short2.getPorts();
-	while( short2PortEnum.hasMoreElements() ) {
-	     short2Port = (Port)short2PortEnum.nextElement();
-	     short2.disconnectPort( short2Port );
+	// The Nets are identical. Remove net2. 
+	net2PortEnum = net2.getPorts();
+	while( net2PortEnum.hasMoreElements() ) {
+	     net2Port = (Port)net2PortEnum.nextElement();
+	     net2.disconnectPort( net2Port );
 	}
-	_shorts.remove( short2.getName() );
+	_nets.remove( net2.getName() );
         return true;
     }
 
-    /* Create a new dangling Short for a Port. A dangling Short is one 
+    /* Create a new dangling Net for a Port. A dangling Net is one 
      * which has only one Port connected to it. 
      */
-    private Short createNewDanglingShort(Port port) 
+    private Net createNewDanglingNet(Port port) 
 	throws NameDuplicationException {
-	if( _shorts == null ) {
-	     _shorts = new Hashtable();
+	if( _nets == null ) {
+	     _nets = new Hashtable();
 	}
-	Short newShort = new Short( createNewName() );
-	newShort.connectPort( port );
-	_shorts.put( newShort.getName(), newShort );
+	Net newNet = new Net( createNewName() );
+	newNet.connectPort( port );
+	_nets.put( newNet.getName(), newNet );
 
-        return newShort;
+        return newNet;
     }
 
-    /* Create a unique name for a new Short. Names are of the form 
-     * "short#num" where "num" is an enumeration of the order in which the
-     * Short in question was added.
+    /* Create a unique name for a new Net. Names are of the form 
+     * "net#num" where "num" is an enumeration of the order in which the
+     * Net in question was added.
      */
     private String createNewName() {
-	_shortAdditionCount++;
+	_netAdditionCount++;
         String name;
-        name = "short" + "#" + _shortAdditionCount;
+        name = "net" + "#" + _netAdditionCount;
         return name;
     }
 
-    /* Get a Short that is connected to two specified Ports. 
+    /* Get a Net that is connected to two specified Ports. 
      */
-    private Short getShort(Port port1, Port port2) {
-	if( _shorts == null ) {
+    private Net getNet(Port port1, Port port2) {
+	if( _nets == null ) {
 	     return null;
 	}
 
-	Short aShort;
+	Net net;
 
-	Enumeration enum = _shorts.elements();
+	Enumeration enum = _nets.elements();
 	while( enum.hasMoreElements() ) {
-	     aShort = (Short)enum.nextElement();
-	     if( aShort.isPortConnected( port1.getName() ) ) {
-		  if( aShort.isPortConnected( port2.getName() ) ) {
-		       return aShort;
+	     net = (Net)enum.nextElement();
+	     if( net.isPortConnected( port1.getName() ) ) {
+		  if( net.isPortConnected( port2.getName() ) ) {
+		       return net;
 		  }
 	     }
 	}
         return null;
     }
 
-    /* Determine if a Port has a dangling short. 
+    /* Determine if a Port has a dangling net. 
      */
-    private Short getDanglingShort(String portName) {
-	Short aShort; 
-	Enumeration enum = _shorts.elements();
+    private Net getDanglingNet(String portName) {
+	Net net; 
+	Enumeration enum = _nets.elements();
 
-	if( _shorts == null ) {
+	if( _nets == null ) {
 	     return null;
 	}
 	while( enum.hasMoreElements() ) {
-	     aShort = (Short)enum.nextElement();
-	     if( aShort.isPortConnected( portName ) ) {
-		  aShort.isDangling();
-		  return aShort;
+	     net = (Net)enum.nextElement();
+	     if( net.isPortConnected( portName ) ) {
+		  net.isDangling();
+		  return net;
 	     }
 	}
         return null;
@@ -392,16 +403,16 @@ public class Relation extends Node {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* The Shorts are the elemental connection units upon which a 
+    /* The Nets are the elemental connection units upon which a 
      * Relation is based. 
      */
-    private Hashtable _shorts;
+    private Hashtable _nets;
 
     /* This is a count of Ports that have been added to MultiPort. Note that
      * this only increments, even if Ports are removed. This variable is
      * used for creating unique Port names.
      */
-    private int _shortAdditionCount;
+    private int _netAdditionCount;
 }
 
 
