@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	BarGraph.java \
 	Display.java \
 	HistogramPlotter.java \
 	MatrixViewer.java \
