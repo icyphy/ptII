@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MatlabCT" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[666, 350]">
     </property>
@@ -32,7 +32,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 275.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {36, 277, 881, 459}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={36, 277, 881, 468}, maximized=false}">
     </property>
     <property name="Continuous-Time (CT) Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -50,8 +50,6 @@
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
-        </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -77,12 +75,20 @@
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 55.0">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.0, 175.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the integration of MATLAB with&#10;HyVisual and Ptolemy II. The MatlabExpression actor&#10;on the right invokes a command in MATLAB. In this case,&#10;the function &quot;surf&quot; (which renders a matrix as a surface&#10;plot) is invoked on the matrix input.&#10;&#10;This model also illustrates the use of the Ptolemy II&#10;expression language in the Expression actors.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 205.0]">
+        </property>
     </property>
     <entity name="MatlabExpression" class="ptolemy.matlab.Expression">
         <property name="expression" class="ptolemy.data.expr.StringParameter" value="surf(input)">
