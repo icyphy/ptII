@@ -1,6 +1,4 @@
 /*
- FIXME: Methods/fields are not in aphabetical order.
-
  Transform Actors using Soot and generate C code.
 
  Copyright (c) 2001-2002 The Regents of the University of California.

@@ -1,7 +1,5 @@
 /*
 
-FIXME: Methods/fields are not in aphabetical order.
-
 A class that handles generation and management of native methods.
 
 Copyright (c) 2002 The University of Maryland.
@@ -79,28 +77,6 @@ public class NativeMethodGenerator {
       */
     public static final String nativeBodyLib = "../runtime/native_bodies/";
 
-
-
-    /** Reads the corresponding file for the native method code and returns
-     *  it. The file containing the method code may or may not be a stub.
-     *  If the file does not exist, a stub file is generated.
-     *
-     *  @param method The Native method for which the code is needed.
-     *  @return The Code for the given method.
-     */
-    public static String getCode(SootMethod method) {
-        // File where the code for this method should be.
-        String fileName = nativeLib + fileContainingCodeFor(method);
-        String code;
-
-        if (!FileHandler.exists(fileName)) {
-            generateStub(method);
-        }
-
-        code = FileHandler.readStringFromFile(fileName);
-
-        return code;
-    }
 
     /** Generates a stub file for the given native method.
      *  @param method The method for which a stub is needed.
@@ -181,6 +157,28 @@ public class NativeMethodGenerator {
         if (!FileHandler.exists(fileName)) {
             FileHandler.write(fileName, code.toString());
         }
+    }
+
+
+    /** Reads the corresponding file for the native method code and returns
+     * it. The file containing the method code may or may not be a stub.
+     * If the file does not exist, a stub file is generated.
+     *
+     *  @param method The Native method for which the code is needed.
+     *  @return The Code for the given method.
+     */
+    public static String getCode(SootMethod method) {
+        // File where the code for this method should be.
+        String fileName = nativeLib + fileContainingCodeFor(method);
+        String code;
+
+        if (!FileHandler.exists(fileName)) {
+            generateStub(method);
+        }
+
+        code = FileHandler.readStringFromFile(fileName);
+
+        return code;
     }
 
      /** Return the name of the file where the C code for a native method

@@ -1,4 +1,5 @@
 /*
+
 A class that maintains context information for C code generation.
 
 Copyright (c) 2001-2002 The University of Maryland.
@@ -55,6 +56,15 @@ public class Context {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+
+    /** Add an array instance to the set of array instances in the context.
+     *  @param instanceName The name of the array instance.
+     */
+
+    public void addArrayInstance(String instanceName) {
+        _arrayInstanceSet.add(instanceName);
+    }
+
     /** Add an include file to the set of include files in the context.
      *  File name delimiters (double quotes or angle brackets), and the .h
      *  suffix, must be included in the argument.
@@ -64,14 +74,6 @@ public class Context {
         if (!_includeFileSet.contains(fileName)) {
             _includeFileSet.add(fileName);
         }
-    }
-
-    /** Add an array instance to the set of array instances in the context.
-     *  @param instanceName The name of the array instance.
-     */
-
-    public void addArrayInstance(String instanceName) {
-        _arrayInstanceSet.add(instanceName);
     }
 
     /** Reset the context to be empty. All information in the current context
@@ -97,6 +99,17 @@ public class Context {
         _singleClassMode = false;
     }
 
+
+    /** Return an Iterator over the set of array Instance names in the context.
+     *  Each element in the Iterator is a String representing the name of the
+     *  array instance.
+     *  @return The Iterator over the set of array Instances
+     */
+    public Iterator getArrayInstances() {
+        return _arrayInstanceSet.iterator();
+    }
+
+
     /** Return true if and only if importing of referenced include files
      *  is presently disabled.
      *  @return True if and only if importing is disabled.
@@ -114,6 +127,7 @@ public class Context {
         return (String)(_stringConstantMap.get(constant));
     }
 
+
     /** Return an Iterator over the set of include files in the context.
      *  Each element in the Iterator is a String representing an include
      *  file name.
@@ -123,15 +137,6 @@ public class Context {
      */
     public Iterator getIncludeFiles() {
         return _includeFileSet.iterator();
-    }
-
-    /** Return an Iterator over the set of array Instance names in the context.
-     *  Each element in the Iterator is a String representing the name of the
-     *  array instance.
-     *  @return The Iterator over the set of array Instances
-     */
-    public Iterator getArrayInstances() {
-        return _arrayInstanceSet.iterator();
     }
 
     /** Return true if and only if single class mode translation is

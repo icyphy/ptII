@@ -1,4 +1,5 @@
-/* A transformer that writes C source code.
+/*
+ A transformer that writes C source code.
 
  Copyright (c) 2002 The University of Maryland.
  All rights reserved.
@@ -45,11 +46,13 @@ import java.io.*;
     @since Ptolemy II 2.0
 */
 public class CWriter extends SceneTransformer {
-    /** Return a new CWriter.
-     *  @return The new CWriter.
+
+    /** Test if the internal transform associated with this writer has
+     *  completed.
+     *  @return True if the transform has completed.
      */
-    public static CWriter v() {
-        return instance;
+    public boolean completedTransform() {
+        return _completedTransform;
     }
 
     /** Get the options associated with the C Writer.
@@ -64,18 +67,18 @@ public class CWriter extends SceneTransformer {
         return super.getDeclaredOptions() + " outDir";
     }
 
-    /** Test if the internal transform associated with this writer has
-     *  completed.
-     *  @return True if the transform has completed.
+
+    /** Return a new CWriter.
+     *  @return The new CWriter.
      */
-    public boolean completedTransform() {
-        return _completedTransform;
+    public static CWriter v() {
+        return instance;
     }
 
 
     /** Write out the C (.i, .h, interface Header) files.
      *  Sample option arguments:
-     *	<code>-p wjtp.writeJimple1 outDir:jimple1</code>
+     *  <code>-p wjtp.writeJimple1 outDir:jimple1</code>
      *
      *  @param phaseName The name of the phase, for example
      *  <code>wjtp.writeJimple2</code>.

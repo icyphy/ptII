@@ -1,7 +1,5 @@
 /*
 
-FIXME: Methods/fields are not in aphabetical order.
-
 A class that handles generation and management of Java methods that are
 over-ridden by pre-defined C code.
 
@@ -58,6 +56,22 @@ public class OverriddenMethodGenerator {
      */
     public static String overriddenBodyLib = "../runtime/over_bodies/";
 
+    /** Returns the code for a given overridden method.
+     *
+     *  @param method The method for which C code is needed.
+     *  @return The code for the method.
+     */
+    public static String getCode(SootMethod method) {
+        StringBuffer code = new StringBuffer("/* Function that implements "
+                + "method " + method.getSubSignature() + "*/\n");
+
+        code.append(_getHeaderCode(method) + "{\n");
+        code.append(_getBodyCode(method) + "}\n");
+
+        return code.toString();
+
+    }
+
     /** Checks if the method is overridden.
      *
      * @return True if the method is overridden.
@@ -74,20 +88,22 @@ public class OverriddenMethodGenerator {
         }
     }
 
-    /** Returns the code for a given overridden method.
-     *
-     *  @param method The method for which C code is needed.
-     *  @return The code for the method.
-     */
-    public static String getCode(SootMethod method) {
-        StringBuffer code = new StringBuffer("/* Function that implements "
-                + "method " + method.getSubSignature() + "*/\n");
 
-        code.append(_getHeaderCode(method) + "{\n");
-        code.append(_getBodyCode(method) + "}\n");
+    /** Returns the code for the body of a given overridden method.
+     *
+     *  @return The code for the body of the method.
+     */
+    private static String _getBodyCode(SootMethod method) {
+        // We're putting 4 leading spaces for indentation.
+        String indent = "    ";
+        StringBuffer code = new StringBuffer();
+        code.append(indent + "/* OVERRIDDEN METHOD */\n");
+        code.append(indent + "#include \""
+                + overriddenBodyLib
+                + CNames.functionNameOf(method) + ".c\"");
+        code.append("\n");
 
         return code.toString();
-
     }
 
     /** Returns the code for the header of the overridden method. This is
@@ -138,21 +154,4 @@ public class OverriddenMethodGenerator {
         return code.toString();
     }
 
-
-    /** Returns the code for the body of a given overridden method.
-     *
-     *  @return The code for the body of the method.
-     */
-    private static String _getBodyCode(SootMethod method) {
-        // We're putting 4 leading spaces for indentation.
-        String indent = "    ";
-        StringBuffer code = new StringBuffer();
-        code.append(indent + "/* OVERRIDDEN METHOD */\n");
-        code.append(indent + "#include \""
-                + overriddenBodyLib
-                + CNames.functionNameOf(method) + ".c\"");
-        code.append("\n");
-
-        return code.toString();
-    }
 }

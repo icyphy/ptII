@@ -1,4 +1,5 @@
 /*
+
 A class that takes care of common File I/O functions.
 
 Copyright (c) 2001-2002 The University of Maryland.
@@ -55,22 +56,6 @@ public class FileHandler {
         return(f.exists());
     }
 
-    /** Write out the given string to a file.
-     *  @param fileName The file to write to.
-     *  @param code The String to write.
-     */
-    public static void write(String fileName, String code) {
-        try {
-            PrintWriter out = new PrintWriter(new FileOutputStream(fileName));
-            out.println(code.toString());
-            out.close();
-        }
-        catch(IOException e) {
-            System.err.println("FileHandler.write(String, String): "
-                    + "ERROR: Could not create file: " + fileName + "\n");
-        }
-    }
-
     /** Reads the contents of a text file and returns them as a String.
      *  Prints an error statement and returns an empty string if an IO
      *  error occurs.
@@ -99,6 +84,22 @@ public class FileHandler {
         return code.toString();
     }
 
+
+    /** Write out the given string to a file.
+     *  @param fileName The file to write to.
+     *  @param code The String to write.
+     */
+    public static void write(String fileName, String code) {
+        try {
+            PrintWriter out = new PrintWriter(new FileOutputStream(fileName));
+            out.println(code.toString());
+            out.close();
+        }
+        catch(IOException e) {
+            System.err.println("FileHandler.write(String, String): "
+                    + "ERROR: Could not create file: " + fileName + "\n");
+        }
+    }
 
 }
 

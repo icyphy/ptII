@@ -1,7 +1,5 @@
 /*
 
-FIXME: Methods/fields are not in aphabetical order.
-
 A C code generator for generating "code files" (.c files) that implement
 Java classes.
 
@@ -278,7 +276,123 @@ public class CodeFileGenerator extends CodeGenerator {
         return code.toString();
     }
 
-    
+    /** Generate the epilogue.
+     *  The method below generates epilogue for the code in a method.
+     *  @param tracker
+     *  @param visitor 
+     *  @return the code.
+     */
+    private String _generateEpilogue(ExceptionTracker tracker, CSwitch
+        visitor) {
+
+        StringBuffer code = new StringBuffer();
+
+        //Epilogue
+        if(tracker.trapsExist()) {
+            code.append(_indent(1) + "}\n");
+
+            code.append(_indent(1) + "else\n");
+            code.append(_indent(1) + "{\n");
+
+            //Code for mapping a trap name to an exception.
+            code.append(_generateExceptionMap(tracker, visitor));
+        }
+        return code.toString();
+    }
+
+    /** Generate the exception map.
+     *  The method below generates exception map for the code.
+     *  @param tracker
+     *  @param visitor
+     *  @return the code.
+     */
+    private String _generateExceptionMap(ExceptionTracker tracker
+            , CSwitch visitor) {
+
+        StringBuffer code = new StringBuffer();
+                
+        //Code for mapping an exception type to its handler.
+        code.append("\n"+_indent(2)+
+                    "/* Map exception_id to handler */\n");
+        code.append(_indent(2)+"switch (epc)\n");
+        code.append(_indent(2)+"{\n");
+        for(int i = 0;i<= (tracker.getEpc()-1); i++) {
+            code.append(_indent(3)+"case "+(i)+":\n");
+            if (tracker.getHandlerUnitList(i).size()>0) {
+                Iterator j = tracker.getTrapsForEpc(i).listIterator();
+
+                code.append(_indent(4));
+                while (j.hasNext()) {
+                        Trap currentTrap = (Trap)j.next();
+                        code.append("if (PCCG_instanceof(" 
+                                + "(PCCG_CLASS_INSTANCE*)exception_id, "
+                                + "(PCCG_CLASS*)&" 
+                                + CNames.classStructureNameOf(currentTrap
+                                        .getException())
+                                + "))\n");
+                        code.append(_indent(4) + "{\n");
+                        code.append(_indent(5) + "goto " +
+                            visitor.getLabel(currentTrap.getHandlerUnit())
+                                + ";\n");
+                        code.append(_indent(4) + "}\n");
+                        code.append(_indent(4) + "else ");
+                }
+
+                // For the last else.
+                code.append("\n"+_indent(4) + "{\n");
+                code.append(_indent(5) +
+                    "longjmp(caller_env, caller_epc);\n");
+                code.append(_indent(5) +
+                    "/* unhandled exception: " +
+                    "return control to caller */\n");
+                code.append(_indent(4) + "}\n");
+            }
+            else {
+                code.append(_indent(4) +
+                    "/* No active Traps for this epc. */\n");
+            }
+
+        }
+        code.append(_indent(3) +
+                "default: longjmp(caller_env, caller_epc);\n");
+
+        code.append(_indent(2) + "}\n");
+
+        code.append(_indent(1) + "}\n");
+        return code.toString();
+    }
+
+
+
+    /** Generate the local declarations.
+     *  The method below generates local declarations for the code.
+     *  @param method The method for which declarations are
+     *  needed.
+     *  @param parameterAndThisLocals The parameters and locals in this
+     *  method.
+     *  @return the code.
+     */
+    private String _generateLocal(SootMethod method
+            , HashSet parameterAndThisLocals) {
+        StringBuffer code = new StringBuffer();
+
+        JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+        // Declare all local variables.
+        Iterator locals = body.getLocals().iterator();
+        while (locals.hasNext()) {
+            Local nextLocal = (Local)(locals.next());
+            if (!parameterAndThisLocals.contains(nextLocal)) {
+                code.append(_indent(1));
+                Type localType = nextLocal.getType();
+                code.append(CNames.typeNameOf(localType));
+                code.append(" " + CNames.localNameOf(nextLocal) + ";\n");
+                _updateRequiredTypes(localType);
+            }
+        }
+
+        return code.toString();
+    }
+
     /** Generate code for a method.
      *  @param method The method.
      *  @return The code.
@@ -335,6 +449,40 @@ public class CodeFileGenerator extends CodeGenerator {
         }
     }
   
+    /** Generate the code for the body of a method.
+     *  @param method The method for which code is needed.
+     *  @param visitor The visitor.
+     *  @param tracker The ExceptionTracker.
+     *  @param thisLocalName the local name.
+     *  @return the code.
+     */
+    private String _generateMethodBody(SootMethod method, CSwitch visitor
+            , ExceptionTracker tracker, String thisLocalName) {
+        
+        JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+        StringBuffer code = new StringBuffer();
+        visitor.indentLevel = 0;
+
+        // Generate the method body.
+        Iterator units = body.getUnits().iterator();
+        if (thisLocalName != null) visitor.setThisLocalName(thisLocalName);
+        units = body.getUnits().iterator();
+
+        if (!_context.getSingleClassMode()) {
+            code.append(_generateMethodPrologue(tracker, visitor));
+        }
+        else {
+           visitor.indentLevel = 1;
+        }
+        
+        code.append(_generateMethodUnitCode(tracker, visitor
+                , method, visitor.indentLevel));
+        
+        code.append(_generateEpilogue(tracker, visitor));
+
+        return code.toString();
+    }
+
 
     /** Generate the method header for the code.
      *  The method below generates the method header.
@@ -381,123 +529,36 @@ public class CodeFileGenerator extends CodeGenerator {
         return code.toString();
     }
 
-    /** Generate the local declarations.
-     *  The method below generates local declarations for the code.
-     *  @param method The method for which declarations are
-     *  needed.
-     *  @param parameterAndThisLocals The parameters and locals in this
-     *  method.
-     *  @return the code.
+    /** Generate code to initialize method pointers (in the method table)
+        in a structure that implements a class.
+        
+        @param methodList The list of methods for which pointers are to be
+        initialized.
+
+        @param argumentReference A C reference pointing to the structure
+        which has the "methods" substructure containing the method
+        pointers. Typically this is a class structure in the C code.
      */
-    private String _generateLocal(SootMethod method
-            , HashSet parameterAndThisLocals) {
+    private String _generateMethodPointerInitialization(List methodList
+            , String argumentReference) {
         StringBuffer code = new StringBuffer();
+        Iterator methods = methodList.iterator();
+        while (methods.hasNext()) {
+            SootMethod method = (SootMethod)(methods.next());
 
-        JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-        // Declare all local variables.
-        Iterator locals = body.getLocals().iterator();
-        while (locals.hasNext()) {
-            Local nextLocal = (Local)(locals.next());
-            if (!parameterAndThisLocals.contains(nextLocal)) {
-                code.append(_indent(1));
-                Type localType = nextLocal.getType();
-                code.append(CNames.typeNameOf(localType));
-                code.append(" " + CNames.localNameOf(nextLocal) + ";\n");
-                _updateRequiredTypes(localType);
+            // Method Pointer Initialization is not done for methods that
+            // are not required, and for static methods.
+            if (!method.isStatic()
+                    && RequiredFileGenerator.isRequiredMethod(method)
+                    ) {
+
+                code.append(_indent(1) + argumentReference
+                        + "methods." + CNames.methodNameOf(method) + " = "
+                        + CNames.functionNameOf(method) + ";\n");
+                _updateRequiredTypes(method.getDeclaringClass().getType());
+
             }
         }
-
-        return code.toString();
-    }
-
-    /** Initialize the labels for branch targets in the method.
-     *  @param visitor The visitor design pattern.
-     *  @param tracker The ExceptionTracker.
-     *  @param method  The method for which labels need to be initialized.
-     */
-    private void _initializeLabels(CSwitch visitor, ExceptionTracker
-        tracker, SootMethod method) {
-        JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-        Iterator units = body.getUnits().iterator();
-        while (units.hasNext()) {
-            Unit unit = (Unit)(units.next());
-            Unit target = null;
-            // Direct "goto".
-            if (unit instanceof GotoStmt) {
-                target = ((GotoStmt)unit).getTarget();
-                if (target != null) {
-                visitor.addTarget(target);
-                }
-            } 
-            // Target of "if" statement.
-            else if (unit instanceof IfStmt) {
-                target = ((IfStmt)unit).getTarget();
-                if (target != null) {
-                    visitor.addTarget(target);
-                }
-            } 
-            // Handler for exceptions.
-            else if (tracker.isHandlerUnit(unit)){
-                target = unit;
-                if (target != null) {
-                visitor.addTarget(target);
-                }
-            }
-            // All targets for switch statements must be added.
-            else if (unit instanceof TableSwitchStmt) {
-                Iterator targets = ((TableSwitchStmt)unit).getTargets()
-                        .iterator();
-                        
-                while (targets.hasNext()) {
-                    visitor.addTarget((Unit)targets.next());
-                }
-
-                visitor.addTarget(((TableSwitchStmt)unit).getDefaultTarget());
-            }
-            else if (unit instanceof LookupSwitchStmt) {
-                Iterator targets = ((LookupSwitchStmt)unit).getTargets()
-                        .iterator();
-                        
-                while (targets.hasNext()) {
-                    visitor.addTarget((Unit)targets.next());
-                }
-
-                visitor.addTarget(((LookupSwitchStmt)unit).getDefaultTarget());
-            }
-        }
-    }
-
-    /** Generate the code for the body of a method.
-     *  @param method The method for which code is needed.
-     *  @param visitor The visitor.
-     *  @param tracker The ExceptionTracker.
-     *  @param thisLocalName the local name.
-     *  @return the code.
-     */
-    private String _generateMethodBody(SootMethod method, CSwitch visitor
-            , ExceptionTracker tracker, String thisLocalName) {
-        
-        JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-        StringBuffer code = new StringBuffer();
-        visitor.indentLevel = 0;
-
-        // Generate the method body.
-        Iterator units = body.getUnits().iterator();
-        if (thisLocalName != null) visitor.setThisLocalName(thisLocalName);
-        units = body.getUnits().iterator();
-
-        if (!_context.getSingleClassMode()) {
-            code.append(_generateMethodPrologue(tracker, visitor));
-        }
-        else {
-           visitor.indentLevel = 1;
-        }
-        
-        code.append(_generateMethodUnitCode(tracker, visitor
-                , method, visitor.indentLevel));
-        
-        code.append(_generateEpilogue(tracker, visitor));
-
         return code.toString();
     }
 
@@ -610,124 +671,64 @@ public class CodeFileGenerator extends CodeGenerator {
         return code.toString();
     }
 
-    /** Generate the epilogue.
-     *  The method below generates epilogue for the code.
-     *  @param tracker
-     *  @param visitor 
-     *  @return the code.
+    
+    /** Initialize the labels for branch targets in the method.
+     *  @param visitor The visitor design pattern.
+     *  @param tracker The ExceptionTracker.
+     *  @param method  The method for which labels need to be initialized.
      */
-    private String _generateEpilogue(ExceptionTracker tracker, CSwitch
-        visitor) {
-
-        StringBuffer code = new StringBuffer();
-
-        //Epilogue
-        if(tracker.trapsExist()) {
-            code.append(_indent(1) + "}\n");
-
-            code.append(_indent(1) + "else\n");
-            code.append(_indent(1) + "{\n");
-
-            //Code for mapping a trap name to an exception.
-            code.append(_generateExceptionMap(tracker, visitor));
-        }
-        return code.toString();
-    }
-
-    /** Generate the exception map.
-     *  The method below generates exception map for the code.
-     *  @param tracker
-     *  @param visitor
-     *  @return the code.
-     */
-    private String _generateExceptionMap(ExceptionTracker tracker
-            , CSwitch visitor) {
-
-        StringBuffer code = new StringBuffer();
-                
-        //Code for mapping an exception type to its handler.
-        code.append("\n"+_indent(2)+
-                    "/* Map exception_id to handler */\n");
-        code.append(_indent(2)+"switch (epc)\n");
-        code.append(_indent(2)+"{\n");
-        for(int i = 0;i<= (tracker.getEpc()-1); i++) {
-            code.append(_indent(3)+"case "+(i)+":\n");
-            if (tracker.getHandlerUnitList(i).size()>0) {
-                Iterator j = tracker.getTrapsForEpc(i).listIterator();
-
-                code.append(_indent(4));
-                while (j.hasNext()) {
-                        Trap currentTrap = (Trap)j.next();
-                        code.append("if (PCCG_instanceof(" 
-                                + "(PCCG_CLASS_INSTANCE*)exception_id, "
-                                + "(PCCG_CLASS*)&" 
-                                + CNames.classStructureNameOf(currentTrap
-                                        .getException())
-                                + "))\n");
-                        code.append(_indent(4) + "{\n");
-                        code.append(_indent(5) + "goto " +
-                            visitor.getLabel(currentTrap.getHandlerUnit())
-                                + ";\n");
-                        code.append(_indent(4) + "}\n");
-                        code.append(_indent(4) + "else ");
+    private void _initializeLabels(CSwitch visitor, ExceptionTracker
+        tracker, SootMethod method) {
+        JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+        Iterator units = body.getUnits().iterator();
+        while (units.hasNext()) {
+            Unit unit = (Unit)(units.next());
+            Unit target = null;
+            // Direct "goto".
+            if (unit instanceof GotoStmt) {
+                target = ((GotoStmt)unit).getTarget();
+                if (target != null) {
+                visitor.addTarget(target);
+                }
+            } 
+            // Target of "if" statement.
+            else if (unit instanceof IfStmt) {
+                target = ((IfStmt)unit).getTarget();
+                if (target != null) {
+                    visitor.addTarget(target);
+                }
+            } 
+            // Handler for exceptions.
+            else if (tracker.isHandlerUnit(unit)){
+                target = unit;
+                if (target != null) {
+                visitor.addTarget(target);
+                }
+            }
+            // All targets for switch statements must be added.
+            else if (unit instanceof TableSwitchStmt) {
+                Iterator targets = ((TableSwitchStmt)unit).getTargets()
+                        .iterator();
+                        
+                while (targets.hasNext()) {
+                    visitor.addTarget((Unit)targets.next());
                 }
 
-                // For the last else.
-                code.append("\n"+_indent(4) + "{\n");
-                code.append(_indent(5) +
-                    "longjmp(caller_env, caller_epc);\n");
-                code.append(_indent(5) +
-                    "/* unhandled exception: " +
-                    "return control to caller */\n");
-                code.append(_indent(4) + "}\n");
+                visitor.addTarget(((TableSwitchStmt)unit).getDefaultTarget());
             }
-            else {
-                code.append(_indent(4) +
-                    "/* No active Traps for this epc. */\n");
-            }
+            else if (unit instanceof LookupSwitchStmt) {
+                Iterator targets = ((LookupSwitchStmt)unit).getTargets()
+                        .iterator();
+                        
+                while (targets.hasNext()) {
+                    visitor.addTarget((Unit)targets.next());
+                }
 
+                visitor.addTarget(((LookupSwitchStmt)unit).getDefaultTarget());
+            }
         }
-        code.append(_indent(3) +
-                "default: longjmp(caller_env, caller_epc);\n");
-
-        code.append(_indent(2) + "}\n");
-
-        code.append(_indent(1) + "}\n");
-        return code.toString();
     }
 
 
-    /** Generate code to initialize method pointers (in the method table)
-        in a structure that implements a class.
-        
-        @param methodList The list of methods for which pointers are to be
-        initialized.
-
-        @param argumentReference A C reference pointing to the structure
-        which has the "methods" substructure containing the method
-        pointers. Typically this is a class structure in the C code.
-     */
-    private String _generateMethodPointerInitialization(List methodList
-            , String argumentReference) {
-        StringBuffer code = new StringBuffer();
-        Iterator methods = methodList.iterator();
-        while (methods.hasNext()) {
-            SootMethod method = (SootMethod)(methods.next());
-
-            // Method Pointer Initialization is not done for methods that
-            // are not required, and for static methods.
-            if (!method.isStatic()
-                    && RequiredFileGenerator.isRequiredMethod(method)
-                    ) {
-
-                code.append(_indent(1) + argumentReference
-                        + "methods." + CNames.methodNameOf(method) + " = "
-                        + CNames.functionNameOf(method) + ";\n");
-                _updateRequiredTypes(method.getDeclaringClass().getType());
-
-            }
-        }
-        return code.toString();
-    }
 }
 

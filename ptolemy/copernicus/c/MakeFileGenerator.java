@@ -1,5 +1,4 @@
 /*
-FIXME: Methods/fields are not in aphabetical order.
 
 A class that generates a makefile for a given class.
 
@@ -162,8 +161,7 @@ public class MakeFileGenerator {
 
     }
 
-    /** Finds the filename corresponding to this class and replaces
-     *  "$" with "$$" for compatibility with the <i>make</i> utility.
+    /** Finds the filename corresponding to this class.
      *  @param className The name of the class.
      *  @return The corresponding filename as it should be written to the
      *  makeFile.
@@ -171,18 +169,6 @@ public class MakeFileGenerator {
     protected static String _classNameToMakeFileName(String className) {
         StringBuffer name = new StringBuffer(
             CNames.classNameToFileName(className));
-
-        /* FIXME: Remove this code.
-        // Replace "$" with "$$"so that the make utility interprets names
-        // correctly.
-        for(int j = 0;j<name.length();j++) {
-            if (name.charAt(j) == '$') {
-                name.insert(j,"$");
-                j++;
-            }
-        }
-        */
-
         return name.toString();
     }
 }

@@ -1,7 +1,5 @@
 /*
 
-FIXME: Methods/fields are not in aphabetical order.
-
 An application that converts a Java class into  C source files (an
 "interface header" file, a .h file and a .c file) that implement the class.
 
@@ -137,21 +135,6 @@ public class JavaToC {
         }
     }
 
-    /** Prints out the help message on usage of this class and command-line
-     *  arguments.
-     */
-    public static void showHelp() {
-        System.out.println( "USAGE: java "
-                + " javatoc classPath [flags] [-lib <library>] className1"
-                + " [flags][className2]...\n");
-        System.out.println( "Compile mode flags: "
-                + "[-singleClass], [-headersOnly], [-full]");
-        System.out.println( "Verbose mode flags: "
-                + "[-v] for verbose, [-q] for quiet.");
-
-        System.out.println( "help flags        : [-h] to see this message");
-        System.out.println( "\nLater flags override earlier ones.");
-    }
 
     /** Entry point for the JavaToC application. See {@link JavaToC} for
      *  instructions on usage.
@@ -207,4 +190,21 @@ public class JavaToC {
         if(className.equals("")) showHelp();
 
     }
+
+    /** Prints out the help message on usage of this class and command-line
+     *  arguments.
+     */
+    public static void showHelp() {
+        System.out.println( "USAGE: java "
+                + " javatoc classPath [flags] [-lib <library>] className1"
+                + " [flags][className2]...\n");
+        System.out.println( "Compile mode flags: "
+                + "[-singleClass], [-headersOnly], [-full]");
+        System.out.println( "Verbose mode flags: "
+                + "[-v] for verbose, [-q] for quiet.");
+
+        System.out.println( "help flags        : [-h] to see this message");
+        System.out.println( "\nLater flags override earlier ones.");
+    }
+
 }

@@ -1,4 +1,7 @@
 /*
+
+FIXME: Methods/fields are not in aphabetical order.
+
 A class that extracts ordered lists of method declarations
 with an ordering convention that facilitates translation
 of methods into function pointers (e.g., for C code generation).

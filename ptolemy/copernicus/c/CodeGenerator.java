@@ -1,4 +1,5 @@
 /*
+
 A base class for C code generators in Ptolemy II.
 
 Copyright (c) 2001-2002 The University of Maryland.
@@ -51,8 +52,6 @@ import java.util.LinkedList;
 
 */
 
-
-
 public abstract class CodeGenerator {
 
     /** Construct a new code generator */
@@ -87,6 +86,7 @@ public abstract class CodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                  protected methods                        ////
 
+
     /** Enclose a given string of text within appropriate delimiters to
      *  form a comment in the generated code.
      *  Also, append a new line after the comment.
@@ -95,6 +95,29 @@ public abstract class CodeGenerator {
      */
     protected final String _comment(String text) {
         return("/* " + text + " */\n");
+    }
+
+
+    /** Generate code for typedef declaring array instances
+     * @param void
+     * @return A newline character (\n) separated string of typdefs for
+     * the arrays needed.
+     */
+    protected String _generateArrayInstanceDeclarations() {
+        Iterator i = _context.getArrayInstances();
+        String code = new String();
+
+        while (i.hasNext()) {
+            String name = i.next().toString();
+
+            code = code + "#ifndef A_DEF_"+ name + "\n"
+                +"#define A_DEF_" + name + "\n"
+                +"typedef PCCG_ARRAY_INSTANCE_PTR " + name +";\n"
+                +"#endif\n";
+        }
+
+        return code;
+
     }
 
     /** Generate include directives for all types that are required for the
@@ -156,27 +179,6 @@ public abstract class CodeGenerator {
         return header.toString();
     }
 
-    /** Generate code for typedef declaring array instances
-     * @param void
-     * @return A newline character (\n) separated string of typdefs for
-     * the arrays needed.
-     */
-    protected String _generateArrayInstanceDeclarations() {
-        Iterator i = _context.getArrayInstances();
-        String code = new String();
-
-        while (i.hasNext()) {
-            String name = i.next().toString();
-
-            code = code + "#ifndef A_DEF_"+ name + "\n"
-                +"#define A_DEF_" + name + "\n"
-                +"typedef PCCG_ARRAY_INSTANCE_PTR " + name +";\n"
-                +"#endif\n";
-        }
-
-        return code;
-
-    }
 
     /** Generate code for the parameter type list of a method,
      *  excluding parentheses.

@@ -1,5 +1,4 @@
 /*
-FIXME: Methods/fields are not in aphabetical order.
 
 A C code generator for generating "header files" (.h files) that implement
 Java classes.

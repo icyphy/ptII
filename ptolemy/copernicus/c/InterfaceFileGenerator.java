@@ -1,7 +1,4 @@
 /*
-
-FIXME: Methods/fields are not in aphabetical order.
-
 A C code generator for generating "interface header files"
 that implement Java classes.
 

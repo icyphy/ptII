@@ -1,6 +1,4 @@
 /*
-FIXME: Methods/fields are not in aphabetical order.
-
 A class that generates the other required files in the
 transitive closure.
 
@@ -78,16 +76,6 @@ public class RequiredFileGenerator {
         _strictlyRequiredClasses = new HashSet();
     }
 
-    /** Initialize and compute the required classes and methods.
-     *  @param classPath The classpath.
-     *  @param className The name of the class which we will take as the root
-     *  from which others are called.
-     */
-    public void init(String classPath, String className) {
-        _compute(classPath, className);
-    }
-
-
     /** Generate the .h files for all classes in the transitive closure of
      * the given class, and the .c files for required classes only. A class
      * is considered "required" if it contains at least one method that is
@@ -131,7 +119,6 @@ public class RequiredFileGenerator {
          }
     }
 
-
     /** Returns the set of all required classes.
      *  @return The set of all required Classes.
      */
@@ -146,6 +133,15 @@ public class RequiredFileGenerator {
      */
     public static Collection getStrictlyRequiredClasses() {
         return (Collection) _strictlyRequiredClasses;
+    }
+
+    /** Initialize and compute the required classes and methods.
+     *  @param classPath The classpath.
+     *  @param className The name of the class which we will take as the root
+     *  from which others are called.
+     */
+    public void init(String classPath, String className) {
+        _compute(classPath, className);
     }
 
 
@@ -211,13 +207,157 @@ public class RequiredFileGenerator {
              _requiredMethods.add(thisMethod);
          }
 
-         //System.out.println("Starting ...");
-
          _growRequiredTree();
 
-         //System.out.println("Ended...");
     }
 
+    /** Gets all fields called directly by a given method.
+     * @param method The method for which we want the target methods.
+     * @return The collection of all methods called by this method.
+     */
+    private static Collection _fieldsUsedBy(SootMethod method) {
+        // Set of all the called methods.
+        HashSet fields = new HashSet();
+
+        // FIXME: What about native methods?
+        if(method.isConcrete()) {
+            method.getDeclaringClass().setApplicationClass();
+            // Iterate over all the units and see which ones use fields.
+            Iterator units = ((JimpleBody)method.retrieveActiveBody()).
+                    getUnits().iterator();
+
+            while (units.hasNext()) {
+                Unit unit = (Unit)units.next();
+                if (unit instanceof Stmt) {
+                    if (((Stmt)unit).containsFieldRef()) {
+                        fields.add(((FieldRef)((Stmt)unit).
+                                getFieldRef()).getField());
+                    }
+                }
+            }
+        }
+
+        return ((Collection) fields);
+    }
+
+
+    /** Generate the C code for the given class.
+        @param classPath
+        @param className The name of the class.
+        @param compileMode The compilation mode.
+        @param verbose Whether routine messages should be generated.
+     */
+    private static void _generateC(String classPath, String className,
+            String compileMode, boolean verbose) {
+
+        // Initialize code generation.
+        Scene.v().setSootClassPath(classPath);
+        CodeFileGenerator cGenerator = new CodeFileGenerator();
+
+        String code;
+
+        cGenerator.clearSingleClassMode();
+
+        Scene.v().loadClassAndSupport(className);
+        SootClass sootClass = Scene.v().getSootClass(className);
+        CNames.setup();
+
+        // Make changes in the filename.
+        String fileName = new String();
+        fileName = CNames.classNameToFileName(className);
+
+        // Generate the .c file.
+        if (compileMode.equals("full")) {
+            if (FileHandler.exists(fileName+".c")) {
+                if(verbose) System.out.println( "\texists:"+fileName+".c");
+            }
+            else
+            {
+                code = cGenerator.generate(sootClass);
+                FileHandler.write(fileName+".c", code);
+                if(verbose) System.out.println( "\tcreated: "
+                    +fileName+".c");
+            }
+        }
+    }
+
+    /** Generate the .h and "interface header" Files required for a given
+     * class if they do not already exist.
+     *  @param classPath The class path.
+     *  @param className The class for which the files should be generated.
+     *  @param compileMode The compilation mode.
+     *  @param verbose Whether routine messages should be generated.
+     */
+    private static void _generateHeaders(String classPath, String className,
+            String compileMode, boolean verbose) throws IOException {
+
+        // Initialize code generation.
+        Scene.v().setSootClassPath(classPath);
+
+        HeaderFileGenerator hGenerator      = new HeaderFileGenerator();
+        InterfaceFileGenerator iGenerator   = new InterfaceFileGenerator();
+
+        String code;
+
+        hGenerator.clearSingleClassMode();
+        iGenerator.clearSingleClassMode();
+
+        Scene.v().loadClassAndSupport(className);
+        SootClass sootClass = Scene.v().getSootClass(className);
+        CNames.setup();
+
+        // Make changes in the filename.
+        String fileName = new String();
+        fileName = CNames.classNameToFileName(className);
+
+        // Create any parent directories, if required.
+        if (fileName.lastIndexOf('/')>0) {
+        // The file requires some directories.
+            if(verbose) {
+                System.out.println(className);
+            }
+
+            File dummyFile = new File(fileName.substring(0,
+                                        fileName.lastIndexOf('/')));
+            dummyFile.mkdirs();
+        }
+
+        // Generate the interface header file.
+        if (FileHandler.exists(fileName
+                    + InterfaceFileGenerator.interfaceFileNameSuffix())) {
+            if(verbose) System.out.println( "\texists: " + fileName
+                + InterfaceFileGenerator.interfaceFileNameSuffix());
+        }
+        else {
+            code = iGenerator.generate(sootClass);
+            String name = fileName
+                    + InterfaceFileGenerator.interfaceFileNameSuffix();
+
+            if (! FileHandler.exists(name)) {
+                FileHandler.write(name, code);
+            }
+
+            if(verbose) {
+                System.out.println( "\tcreated: " + name);
+            }
+        }
+
+
+        // Generate the .h file.
+        if(FileHandler.exists(fileName+".h")) {
+            if(verbose) {
+                System.out.println( "\texists: " + fileName + ".h");
+            }
+        }
+        else {
+            code = hGenerator.generate(sootClass);
+            FileHandler.write(fileName+".h", code);
+
+            if(verbose) {
+                System.out.println( "\tcreated: " + fileName + ".h");
+            }
+        }
+    }
 
     /** Add one more "layer" of methods and classes in the
      *  breadth-first-search for required method and classes. If a class
@@ -433,156 +573,6 @@ public class RequiredFileGenerator {
 
         return ((Collection) targets);
 
-    }
-
-    /** Gets all fields called directly by a given method.
-     * @param method The method for which we want the target methods.
-     * @return The collection of all methods called by this method.
-     */
-    private static Collection _fieldsUsedBy(SootMethod method) {
-        // Set of all the called methods.
-        HashSet fields = new HashSet();
-
-        // FIXME: What about native methods?
-        if(method.isConcrete()) {
-            method.getDeclaringClass().setApplicationClass();
-            // Iterate over all the units and see which ones use fields.
-            Iterator units = ((JimpleBody)method.retrieveActiveBody()).
-                    getUnits().iterator();
-
-            while (units.hasNext()) {
-                Unit unit = (Unit)units.next();
-                if (unit instanceof Stmt) {
-                    if (((Stmt)unit).containsFieldRef()) {
-                        fields.add(((FieldRef)((Stmt)unit).
-                                getFieldRef()).getField());
-                    }
-                }
-            }
-        }
-
-        return ((Collection) fields);
-    }
-
-
-
-
-    /** Generate the C code for the given class.
-        @param classPath
-        @param className The name of the class.
-        @param compileMode The compilation mode.
-        @param verbose Whether routine messages should be generated.
-     */
-    private static void _generateC(String classPath, String className,
-            String compileMode, boolean verbose) {
-
-        // Initialize code generation.
-        Scene.v().setSootClassPath(classPath);
-        CodeFileGenerator cGenerator = new CodeFileGenerator();
-
-        String code;
-
-        cGenerator.clearSingleClassMode();
-
-        Scene.v().loadClassAndSupport(className);
-        SootClass sootClass = Scene.v().getSootClass(className);
-        CNames.setup();
-
-        // Make changes in the filename.
-        String fileName = new String();
-        fileName = CNames.classNameToFileName(className);
-
-        // Generate the .c file.
-        if (compileMode.equals("full")) {
-            if (FileHandler.exists(fileName+".c")) {
-                if(verbose) System.out.println( "\texists:"+fileName+".c");
-            }
-            else
-            {
-                code = cGenerator.generate(sootClass);
-                FileHandler.write(fileName+".c", code);
-                if(verbose) System.out.println( "\tcreated: "
-                    +fileName+".c");
-            }
-        }
-    }
-
-    /** Generate the .h and "interface header" Files required for a given
-     * class if they do not already exist.
-     *  @param classPath The class path.
-     *  @param className The class for which the files should be generated.
-     *  @param compileMode The compilation mode.
-     *  @param verbose Whether routine messages should be generated.
-     */
-    private static void _generateHeaders(String classPath, String className,
-            String compileMode, boolean verbose) throws IOException {
-
-        // Initialize code generation.
-        Scene.v().setSootClassPath(classPath);
-
-        HeaderFileGenerator hGenerator      = new HeaderFileGenerator();
-        InterfaceFileGenerator iGenerator   = new InterfaceFileGenerator();
-
-        String code;
-
-        hGenerator.clearSingleClassMode();
-        iGenerator.clearSingleClassMode();
-
-        Scene.v().loadClassAndSupport(className);
-        SootClass sootClass = Scene.v().getSootClass(className);
-        CNames.setup();
-
-        // Make changes in the filename.
-        String fileName = new String();
-        fileName = CNames.classNameToFileName(className);
-
-        // Create any parent directories, if required.
-        if (fileName.lastIndexOf('/')>0) {
-        // The file requires some directories.
-            if(verbose) {
-                System.out.println(className);
-            }
-
-            File dummyFile = new File(fileName.substring(0,
-                                        fileName.lastIndexOf('/')));
-            dummyFile.mkdirs();
-        }
-
-        // Generate the interface header file.
-        if (FileHandler.exists(fileName
-                    + InterfaceFileGenerator.interfaceFileNameSuffix())) {
-            if(verbose) System.out.println( "\texists: " + fileName
-                + InterfaceFileGenerator.interfaceFileNameSuffix());
-        }
-        else {
-            code = iGenerator.generate(sootClass);
-            String name = fileName
-                    + InterfaceFileGenerator.interfaceFileNameSuffix();
-
-            if (! FileHandler.exists(name)) {
-                FileHandler.write(name, code);
-            }
-
-            if(verbose) {
-                System.out.println( "\tcreated: " + name);
-            }
-        }
-
-
-        // Generate the .h file.
-        if(FileHandler.exists(fileName+".h")) {
-            if(verbose) {
-                System.out.println( "\texists: " + fileName + ".h");
-            }
-        }
-        else {
-            code = hGenerator.generate(sootClass);
-            FileHandler.write(fileName+".h", code);
-
-            if(verbose) {
-                System.out.println( "\tcreated: " + fileName + ".h");
-            }
-        }
     }
 
     private static HashSet _requiredMethods;

@@ -1,6 +1,4 @@
 /*
-FIXME: Methods/fields are not in aphabetical order.
-
 A class that determines names of various entities to use for
 C code generation.
 
@@ -87,6 +85,19 @@ public class CNames {
         return ("C" + instanceNameOf(source));
     }
 
+    /** Returns the C filename corresponding to a class.
+     *  @param className The name of a class.
+     *  @return The C fileName corresponding to this class.
+     */
+    public static String classNameToFileName(String className) {
+        if (isSystemClass(className)) {
+            return(System.getProperty("j2c_lib")
+                + "/" + _sanitize(className).replace('.', '/'));
+        }
+        else {
+            return(_sanitize(className));
+        }
+    }
 
     /** Determine the C name for the class-specific structure variable that
      *  implements a Soot class. The type of this structure is
@@ -184,18 +195,18 @@ public class CNames {
         return name;
     }
 
-    /** Returns the C filename corresponding to a class.
-     *  @param className The name of a class.
-     *  @return The C fileName corresponding to this class.
+    /** Determine the C name for the instance-specific structure type that
+     *  implements a Soot class. The instance-specific structure has
+     *  type "struct {@link #instanceNameOf(SootClass)}". Additionally,
+     *  the identifier {@link #instanceNameOf(SootClass)} (i.e., without
+     *  the struct qualifier) is defined in the generated code to be a pointer
+     *  type that points to the class-specific structure.
+     *  @param source The Soot class.
+     *  @return The C name for the instance-specific structure type.
      */
-    public static String classNameToFileName(String className) {
-        if (isSystemClass(className)) {
-            return(System.getProperty("j2c_lib")
-                + "/" + _sanitize(className).replace('.', '/'));
-        }
-        else {
-            return(_sanitize(className));
-        }
+    public static String instanceNameOf(SootClass source) {
+        if (_nameMap.containsKey(source)) return (String)(_nameMap.get(source));
+        else return _instanceNameOf(source);
     }
 
     /** Returns whether a given class is a System class.
@@ -211,21 +222,6 @@ public class CNames {
         else {
             return(false);
         }
-    }
-
-
-    /** Determine the C name for the instance-specific structure type that
-     *  implements a Soot class. The instance-specific structure has
-     *  type "struct {@link #instanceNameOf(SootClass)}". Additionally,
-     *  the identifier {@link #instanceNameOf(SootClass)} (i.e., without
-     *  the struct qualifier) is defined in the generated code to be a pointer
-     *  type that points to the class-specific structure.
-     *  @param source The Soot class.
-     *  @return The C name for the instance-specific structure type.
-     */
-    public static String instanceNameOf(SootClass source) {
-        if (_nameMap.containsKey(source)) return (String)(_nameMap.get(source));
-        else return _instanceNameOf(source);
     }
 
     /** Return the name of a local.
@@ -261,6 +257,16 @@ public class CNames {
         return name;
     }
 
+    /** Return a version of a string with all $, <, >, or - characters
+     *  replaced by _.
+     *
+     *  @param name The String to be converted.
+     *  @return The sanitized version of this string.
+     */
+    public static String sanitize(String name) {
+        return _sanitize(name);
+    }
+
     /** Initialize C name generation. This method must be called once before any
      *  other method in this class is called.
      */
@@ -280,16 +286,6 @@ public class CNames {
      */
     public static String superclassPointerName() {
         return "superclass";
-    }
-
-    /** Return a version of a string with all $, <, >, or - characters
-     *  replaced by _.
-     *
-     *  @param name The String to be converted.
-     *  @return The sanitized version of this string.
-     */
-    public static String sanitize(String name) {
-        return _sanitize(name);
     }
 
 

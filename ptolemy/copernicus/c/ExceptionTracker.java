@@ -1,7 +1,5 @@
 /*
 
-FIXME: Methods/fields are not in aphabetical order.
-
 A class that keeps track of exceptions and traps.
 
 Copyright (c) 2001-2002 The University of Maryland.
@@ -58,31 +56,6 @@ public class ExceptionTracker {
 
     }
 
-    /** Checks if unit u is the beginUnit for any Trap in the body.
-     *  @param u The Unit to be checked.
-     *  @return True if u is a beginUnit.
-     */
-    public boolean isBeginUnit(Unit u) {
-        return(_beginUnitList.contains(u));
-    }
-
-    /** Checks if unit u is the endUnit for any Trap in the body.
-     *  @param u The Unit to be checked.
-     *  @return True if u is an endUnit.
-     */
-    public boolean isEndUnit(Unit u) {
-        return(_endUnitList.contains(u));
-    }
-
-    /** Checks if unit u is the handlerUnit for any Trap in the body.
-     *  @param u The Unit to be checked.
-     *  @return True if u is a handlerUnit.
-     */
-    public boolean isHandlerUnit(Unit u) {
-        return(_handlerUnitList.contains(u));
-    }
-
-
     /** Gives the index of the first incidence of Unit u in the list of
      *  beginUnits.
      *  @param u The Unit.
@@ -92,6 +65,24 @@ public class ExceptionTracker {
        return(_beginUnitList.indexOf(u));
     }
 
+    /** Record that this beginUnit has been encountered and perform the
+     *  appropriate housekeeping functions.
+     *  @param u The Unit.
+     */
+    public void beginUnitEncountered(Unit u) {
+        _storeState();
+
+        _epc++;
+        Iterator i = _trapChain.iterator();
+
+        // Record all traps beginning here as active
+        while (i.hasNext()) {
+            Trap ThisTrap = (Trap)i.next();
+            if (ThisTrap.getBeginUnit() == u)
+                _currently_active_traps.addLast(ThisTrap);
+        }
+    }
+
     /** Gives the index of the first incidence of Unit u in the list of
      *  endUnits.
      *  @param u The Unit.
@@ -99,6 +90,68 @@ public class ExceptionTracker {
      */
     public int endIndexOf(Unit u) {
             return(_endUnitList.indexOf(u));
+    }
+
+   /** Record that this endUnit has been encountered and perform the
+    *  appropriate housekeeping functions.
+    *  @param u The Unit.
+    */
+   public void endUnitEncountered(Unit u) {
+       _storeState();
+
+       _epc++;
+       Iterator i = _trapChain.iterator();
+
+       // Record all traps ending here as inactive.
+       while (i.hasNext()) {
+           Trap ThisTrap = (Trap)i.next();
+           if (ThisTrap.getEndUnit() == u)
+              _currently_active_traps.remove(ThisTrap);
+       }
+
+   }
+
+
+    /** Returns the current Exceptional PC.
+     *  @return The current Exceptional PC.
+     */
+    public int getEpc() {
+       return _epc;
+    }
+
+   /** Returns a list of all handler units associated with the given exceptional
+    *  pc.
+    *  @param epc The exceptional pc.
+    *  @return A list of all handlerUnits associated with
+    *  the given epc.
+    */
+   public LinkedList getHandlerUnitList(int epc) {
+       LinkedList ListOfTraps = (LinkedList)_trapsForEachEpc.get(epc);
+       LinkedList ListOfHandlers = new LinkedList();
+       Iterator i = ListOfTraps.listIterator();
+
+       while (i.hasNext()) {
+           Trap t = (Trap)i.next();
+           ListOfHandlers.add(t.getHandlerUnit());
+       }
+
+       return ListOfHandlers;
+   }
+
+    /** Returns a chain of all the Traps in the body.
+     *  @return A chain of all the Traps in the body.
+     */
+    public Chain getTrapChain() {
+        return _trapChain;
+    }
+
+
+    /** Returns a list of all Traps for the given exceptional PC.
+     *  @param epc The exceptional pc.
+     *  @return A list of all Traps for the given epc.
+     */
+    public LinkedList getTrapsForEpc(int epc) {
+        return (LinkedList)_trapsForEachEpc.get(epc);
     }
 
     /** Gives the index of the first incidence of Unit u in the list of
@@ -143,11 +196,28 @@ public class ExceptionTracker {
     }
 
 
-    /** Returns whether the body has any traps in it.
-     *  @return True if any traps exist in the body.
+    /** Checks if unit u is the beginUnit for any Trap in the body.
+     *  @param u The Unit to be checked.
+     *  @return True if u is a beginUnit.
      */
-    public boolean trapsExist() {
-        return(_beginUnitList.size() != 0);
+    public boolean isBeginUnit(Unit u) {
+        return(_beginUnitList.contains(u));
+    }
+
+    /** Checks if unit u is the endUnit for any Trap in the body.
+     *  @param u The Unit to be checked.
+     *  @return True if u is an endUnit.
+     */
+    public boolean isEndUnit(Unit u) {
+        return(_endUnitList.contains(u));
+    }
+
+    /** Checks if unit u is the handlerUnit for any Trap in the body.
+     *  @param u The Unit to be checked.
+     *  @return True if u is a handlerUnit.
+     */
+    public boolean isHandlerUnit(Unit u) {
+        return(_handlerUnitList.contains(u));
     }
 
     /** Returns the number of traps in the body.
@@ -157,84 +227,13 @@ public class ExceptionTracker {
         return(_beginUnitList.size());
     }
 
-    /** Returns the current Exceptional PC.
-     *  @return The current Exceptional PC.
+    /** Returns whether the body has any traps in it.
+     *  @return True if any traps exist in the body.
      */
-    public int getEpc() {
-       return _epc;
+    public boolean trapsExist() {
+        return(_beginUnitList.size() != 0);
     }
 
-    /** Record that this beginUnit has been encountered and perform the
-     *  appropriate housekeeping functions.
-     *  @param u The Unit.
-     */
-    public void beginUnitEncountered(Unit u) {
-        _storeState();
-
-        _epc++;
-        Iterator i = _trapChain.iterator();
-
-        // Record all traps beginning here as active
-        while (i.hasNext()) {
-            Trap ThisTrap = (Trap)i.next();
-            if (ThisTrap.getBeginUnit() == u)
-                _currently_active_traps.addLast(ThisTrap);
-        }
-    }
-
-   /** Record that this endUnit has been encountered and perform the
-    *  appropriate housekeeping functions.
-    *  @param u The Unit.
-    */
-   public void endUnitEncountered(Unit u) {
-       _storeState();
-
-       _epc++;
-       Iterator i = _trapChain.iterator();
-
-       // Record all traps ending here as inactive.
-       while (i.hasNext()) {
-           Trap ThisTrap = (Trap)i.next();
-           if (ThisTrap.getEndUnit() == u)
-              _currently_active_traps.remove(ThisTrap);
-       }
-
-   }
-
-
-   /** Returns a list of all handler units associated with the given exceptional
-    *  pc.
-    *  @param epc The exceptional pc.
-    *  @return A list of all handlerUnits associated with
-    *  the given epc.
-    */
-   public LinkedList getHandlerUnitList(int epc) {
-       LinkedList ListOfTraps = (LinkedList)_trapsForEachEpc.get(epc);
-       LinkedList ListOfHandlers = new LinkedList();
-       Iterator i = ListOfTraps.listIterator();
-
-       while (i.hasNext()) {
-           Trap t = (Trap)i.next();
-           ListOfHandlers.add(t.getHandlerUnit());
-       }
-
-       return ListOfHandlers;
-   }
-
-    /** Returns a list of all Traps for the given exceptional PC.
-     *  @param epc The exceptional pc.
-     *  @return A list of all Traps for the given epc.
-     */
-    public LinkedList getTrapsForEpc(int epc) {
-        return (LinkedList)_trapsForEachEpc.get(epc);
-    }
-
-    /** Returns a chain of all the Traps in the body.
-     *  @return A chain of all the Traps in the body.
-     */
-    public Chain getTrapChain() {
-        return _trapChain;
-    }
 
     /** Store the current state of the ExceptionTracker. */
     protected void _storeState() {

@@ -1,7 +1,5 @@
 /*
 
-FIXME: Methods/fields are not in aphabetical order.
-
 A C code generator for generating the c file containing the wrapper "main"
 method. This simply does some initialization and calls the main method of
 the class.
@@ -127,6 +125,43 @@ public class MainFileGenerator extends CodeGenerator {
         return (headerCode.append(bodyCode.append(footerCode))).toString();
     }
 
+    /** Generate a function that initializes the required class structures.
+     *
+     *  @return The code for the "classStructInit" method that initializes
+     *  the class structures.
+     */
+    private String _generateClassStructInit() {
+        StringBuffer code = new StringBuffer();
+
+        // Generate the method header.
+        code.append("void classStructInit()\n{\n");
+
+        // Generate the method body
+        code.append(_indent(1)
+                + "/* Class Structure initializations*/\n");
+
+        Iterator requiredClasses = RequiredFileGenerator
+                .getStrictlyRequiredClasses().iterator();
+
+        // Call the Class Structure Initializations for all required
+        // classes.
+        while (requiredClasses.hasNext()){
+            SootClass nextClass = (SootClass)requiredClasses.next();
+
+            code.append("\n" + _indent(1) + "/* " + nextClass.toString()
+                    + " */\n");
+
+            code.append(_indent(1) +  CNames.initializerNameOf(nextClass)
+                    + "(&" + CNames.classStructureNameOf(nextClass)
+                    + ");\n");
+
+        }
+
+        code.append("}\n");
+        return code.toString();
+    }
+
+
     /** Generate the code for a the wrapper "main" C function that calls
      *  the main method of the appropriate class.
      *  @param source The main class.
@@ -203,42 +238,6 @@ public class MainFileGenerator extends CodeGenerator {
         return bodyCode.toString();
     }
 
-    /** Generate a function that initializes the required class structures.
-     *
-     *  @return The code for the "classStructInit" method that initializes
-     *  the class structures.
-     */
-    private String _generateClassStructInit() {
-        StringBuffer code = new StringBuffer();
-
-        // Generate the method header.
-        code.append("void classStructInit()\n{\n");
-
-        // Generate the method body
-        code.append(_indent(1)
-                + "/* Class Structure initializations*/\n");
-
-        Iterator requiredClasses = RequiredFileGenerator
-                .getStrictlyRequiredClasses().iterator();
-
-        // Call the Class Structure Initializations for all required
-        // classes.
-        while (requiredClasses.hasNext()){
-            SootClass nextClass = (SootClass)requiredClasses.next();
-
-            code.append("\n" + _indent(1) + "/* " + nextClass.toString()
-                    + " */\n");
-
-            code.append(_indent(1) +  CNames.initializerNameOf(nextClass)
-                    + "(&" + CNames.classStructureNameOf(nextClass)
-                    + ");\n");
-
-        }
-
-        code.append("}\n");
-        return code.toString();
-    }
-
     /** Generate a function that calls the static initialization methods
      * for all required classes.
      *
@@ -285,7 +284,7 @@ public class MainFileGenerator extends CodeGenerator {
     }
 
     /** Generates a function that converts the C command-line
-     * arguments(argc,argv) into the String array that java wants.
+     * arguments(argc, argv) into the String array that java wants.
      *
      * @return The code for the commandLineArgs function that makes this
      * conversion.
