@@ -889,6 +889,20 @@ testArrayMathArrayArray divideElements $types
 
 ######################################################################
 ####
+#  *MatrixMath Test out: xxx[][] divide(xxx[][], xxx)
+
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{{1.0 + 0.0i 0.0 + 0.5i} {0.0 - 0.5i 0.0 + 0.0i}}}] \
+	[list Double double double {{{1.0 -0.5} {0.5 0.0}}}] \
+	[list Float float float {{{1.0 -0.5} {0.5 0.0}}}] \
+	[list Integer int int {{{1 0} {0 0}}}] \
+	[list Long long long {{{1 0} {0 0}}}]]
+
+testMatrixScalar divide $types
+
+######################################################################
+####
 #  *MatrixMath Test out: xxx[][] divide(xxx[][], xxx[][])
 
 set types [list \
