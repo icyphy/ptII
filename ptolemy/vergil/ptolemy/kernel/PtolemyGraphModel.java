@@ -764,8 +764,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 *  be a location representing a port, a port or a vertex.	 */
 	public void setHead(final Object edge, final Object newLinkHead) {
 	    final Link link = (Link)edge;
-	    NamedObj linkHead = (NamedObj)link.getHead();
-	    NamedObj linkTail = (NamedObj)link.getTail();
+	    final NamedObj linkHead = (NamedObj)link.getHead();
+	    final NamedObj linkTail = (NamedObj)link.getTail();
 	    Relation linkRelation = (Relation)link.getRelation();
 	    // This moml is parsed to execute the change
 	    final StringBuffer moml = new StringBuffer();
@@ -833,8 +833,9 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                     // Note: JDK1.2.2 requires that this variable not be
                     // called request or we get a compile error.
 
+                    // Note the source is NOT the graph model
                     ChangeRequest changeRequest =
-			new MoMLChangeRequest(PtolemyGraphModel.this,
+			new MoMLChangeRequest(this,
 					      container,
 					      failmoml.toString());
 		    container.requestChange(changeRequest);
@@ -848,6 +849,14 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
                     } else {
                         _linkSet.remove(edge);
                     }
+                    // Note that there is no GraphEvent dispatched here.
+                    // This is because the rerendering of edges is handled
+                    // totally within the LinkController.
+                    if(link.getHead() != null && link.getTail() != null) 
+                        dispatchGraphEvent(
+                                new GraphEvent(PtolemyGraphModel.this,
+                                        GraphEvent.STRUCTURE_CHANGED,
+                                        getRoot()));
                 } 
             });
 
@@ -864,8 +873,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 */
 	public void setTail(final Object edge, final Object newLinkTail) {
 	    final Link link = (Link)edge;
-	    NamedObj linkHead = (NamedObj)link.getHead();
-	    NamedObj linkTail = (NamedObj)link.getTail();
+	    final NamedObj linkHead = (NamedObj)link.getHead();
+	    final NamedObj linkTail = (NamedObj)link.getTail();
 	    Relation linkRelation = (Relation)link.getRelation();
 	    // This moml is parsed to execute the change
 	    final StringBuffer moml = new StringBuffer();
@@ -911,7 +920,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		       super._execute();
 		       link.setTail(newLinkTail);
 		       if(relationNameToAdd != null) {
-			    link.setRelation(container.getRelation(relationNameToAdd));
+                           link.setRelation(container.getRelation(
+                                   relationNameToAdd));
 		       } else {
 			   link.setRelation(null);
 		       }
@@ -931,8 +941,9 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    // and queue a new change request to clean up the model
                     // Note: JDK1.2.2 requires that this variable not be
                     // called request or we get a compile error.
+                    // Note the source is NOT the graph model
 		    ChangeRequest changeRequest =
-			new MoMLChangeRequest(PtolemyGraphModel.this,
+			new MoMLChangeRequest(this,
 					      container,
 					      failmoml.toString());
 		    container.requestChange(changeRequest);
@@ -946,7 +957,16 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		    } else {
 			_linkSet.remove(edge);
 		    }
-		}
+                    // Note that there is no GraphEvent dispatched here
+                    // if the edge is not fully connected.  This is to 
+                    // prevent an exception that will be thrown 
+                    // when edges are being created.
+                    if(link.getHead() != null && link.getTail() != null) 
+                        dispatchGraphEvent(
+                                new GraphEvent(PtolemyGraphModel.this,
+                                        GraphEvent.STRUCTURE_CHANGED,
+                                        getRoot()));
+  		}
 	    });
 
 	    container.requestChange(request);

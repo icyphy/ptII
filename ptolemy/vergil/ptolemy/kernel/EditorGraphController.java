@@ -334,7 +334,7 @@ public class EditorGraphController extends ViewerGraphController {
 	    // Set the tail, going through the model so the link is added
 	    // to the list of links.
             PtolemyGraphModel model = (PtolemyGraphModel)getGraphModel();
-	    model.getLinkModel().setTail(link, sourceObject);
+            model.getLinkModel().setTail(link, sourceObject);
 
             try {
 		// add it to the foreground layer.

@@ -190,12 +190,6 @@ public class LinkController extends EdgeController {
 		throw new IllegalStateException(
                         "Cannot handle both ends of an edge being dragged.");
 	    }
-            // rerender the edge.  This is necessary for several reasons.
-            // First, the edge is only associated with a relation after it
-            // is fully connected.  Second, edges that aren't
-            // connected should be erased (which this will rather
-            // conveniently take care of for us
-            getController().rerenderEdge(edge);
         }
     }
 
