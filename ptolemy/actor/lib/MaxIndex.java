@@ -55,7 +55,7 @@ public class MaxIndex extends Transformer {
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
-     *  @param name The name of this adder within the container.
+     *  @param name The name of this actor within the container.
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the name coincides with
