@@ -1,4 +1,4 @@
-# Makefile for the ptolemy/vergil/actor package
+# Makefile for the ptolemy/vergil/actor/lib package
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -30,12 +30,12 @@
 # 						COPYRIGHTENDKEY
 
 
-ME =		ptolemy/vergil/actor
+ME =		ptolemy/vergil/actor/lib
 
-DIRS =		lib
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
@@ -44,20 +44,12 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	actor
+PTPACKAGE = 	lib
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ActorController.java \
-	ActorEditorGraphController.java \
-	ActorGraphFrame.java \
-	ActorGraphModel.java \
-	ActorGraphTableau.java \
-	ActorViewerGraphController.java \
-	ExternalIOPortController.java \
-	IOPortController.java \
-	LinkController.java
+	MonitorImage.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -68,34 +60,7 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR) \
-	'ActorController$$1.class' \
-	'ActorController$$DebugListenerAction.class' \
-	'ActorController$$EntityLayout.class' \
-	'ActorController$$LookInsideAction.class' \
-	'ActorEditorGraphController$$1.class' \
-	'ActorEditorGraphController$$LinkCreator.class' \
-	'ActorEditorGraphController$$NewRelationAction.class' \
-	'ActorEditorGraphController$$RelationCreator.class' \
-	'ActorGraphFrame$$DebugMenuListener.class' \
-	'ActorGraphModel$$1.class' \
-	'ActorGraphModel$$2.class' \
-	'ActorGraphModel$$ExternalPortModel.class' \
-	'ActorGraphModel$$IconModel.class' \
-	'ActorGraphModel$$LinkModel$$LinkChangeListener.class' \
-	'ActorGraphModel$$LinkModel.class' \
-	'ActorGraphModel$$PortModel.class' \
-	'ActorGraphModel$$VertexModel.class' \
-	'ActorGraphTableau$$Factory.class' \
-	'ExternalIOPortController$$1.class' \
-	'ExternalIOPortController$$NameWrapper.class' \
-	'ExternalIOPortController$$PortRenderer.class' \
-	'IOPortController$$1.class' \
-	'IOPortController$$EntityPortRenderer.class' \
-	'LinkController$$1.class' \
-	'LinkController$$LinkDropper.class' \
-	'LinkController$$LinkRenderer.class' \
-	'LinkController$$LinkTarget.class'
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 

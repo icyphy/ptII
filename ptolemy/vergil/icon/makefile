@@ -54,6 +54,7 @@ JSRCS = \
 	EditorIcon.java \
 	IconEditor.java \
 	IconEditorPane.java \
+	ImageEditorIcon.java \
 	SimpleSelection.java \
 	UpdatedValueIcon.java \
 	ValueIcon.java \
