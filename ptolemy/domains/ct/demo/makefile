@@ -34,6 +34,7 @@ ME =		ptolemy/domains/ct/demo
 # PTJSPACES_DIR is set by configure to jspaces if Jini was found
 DIRS = 		BouncingBall CarTracking ComparedClocks \
 		Helicopter LevelCrossingDetector \
+		LevelCrossingDetectorWithGlitches \
 		Lorenz SigmaDelta SquareWave \
 		SampledClocks StickyMasses Switch \
 		Transmission Thermostat V2V Corba #$(PTJSPACES_DIR)
