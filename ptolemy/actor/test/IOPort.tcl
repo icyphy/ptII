@@ -369,8 +369,8 @@ test IOPort-10.3 {Check description use test-9.1 topology} {
     $p2 link $r1
     list [$p1 description 7] [$p1 description 8] [$p2 description 7] [$p2 description 8]
 } {{null
-} {..E1.P2.pt.actor.Mailbox
-} {..E1.P2.pt.actor.Mailbox
+} {..E1.P2.pt.actor.Mailbox 
+} {..E1.P2.pt.actor.Mailbox 
 } {null
 }}
 
@@ -392,10 +392,10 @@ test IOPort-10.4 {Check description use 1 sender 2 destinaton topology} {
     $p3 link $r1
     list [$p1 description 7] [$p1 description 8] [$p2 description 7] [$p2 description 8] [$p3 description 7] [$p3 description 8]
 } {{null
-} {..E2.P2.pt.actor.Mailbox ..E3.P3.pt.actor.Mailbox
-} {..E2.P2.pt.actor.Mailbox
+} {..E2.P2.pt.actor.Mailbox ..E3.P3.pt.actor.Mailbox 
+} {..E2.P2.pt.actor.Mailbox 
 } {null
-} {..E3.P3.pt.actor.Mailbox
+} {..E3.P3.pt.actor.Mailbox 
 } {null
 }}
 
@@ -422,11 +422,11 @@ test IOPort-10.5 {Check description use multi-output port} {
           [$p2 description 7] [$p2 description 8] \
           [$p3 description 7] [$p3 description 8]
 } {{null
-} {..E2.P2.pt.actor.Mailbox
-..E3.P3.pt.actor.Mailbox
-} {..E2.P2.pt.actor.Mailbox
+} {..E2.P2.pt.actor.Mailbox 
+..E3.P3.pt.actor.Mailbox 
+} {..E2.P2.pt.actor.Mailbox 
 } {null
-} {..E3.P3.pt.actor.Mailbox
+} {..E3.P3.pt.actor.Mailbox 
 } {null
 }}
 
@@ -497,14 +497,15 @@ test IOPort-10.6 {Check description use the example in design doc} {
     list [$p1 description 7] [$p1 description 8] \
          [$p10 description 7] [$p10 description 8]
 } {{null
-} {..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox
-..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox
-..E3.E4.P8.pt.actor.Mailbox
-..E3.E5.P9.pt.actor.Mailbox ..E3.E5.P9.pt.actor.Mailbox
+} {..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox 
+..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox 
+..E3.E4.P8.pt.actor.Mailbox 
+..E3.E5.P9.pt.actor.Mailbox ..E3.E5.P9.pt.actor.Mailbox 
 } {null
-} {..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox
-..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox
+} {..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox 
+..E3.E4.P8.pt.actor.Mailbox ..E6.P7.pt.actor.Mailbox 
 }}
+
 
 ######################################################################
 ####
