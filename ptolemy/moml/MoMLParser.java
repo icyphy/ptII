@@ -31,15 +31,15 @@
 package ptolemy.moml;
 
 // Ptolemy imports.
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Configurable;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Documentation;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.data.expr.Variable;
-
+import ptolemy.kernel.util.*;
+import ptolemy.kernel.*;
+import ptolemy.gui.MessageHandler;
 
 // Java imports.
 import java.awt.Container;
@@ -259,6 +259,21 @@ public class MoMLParser extends HandlerBase {
      *  @exception Exception is not thrown here.
      */
     public void endDocument() throws Exception {
+        // Force evaluation of parameters so that any listeners are notified.
+        Iterator parameters = _paramsToParse.iterator();
+        while(parameters.hasNext()) {
+            Variable param = (Variable)parameters.next();
+            try {
+                param.getToken();
+            } catch (IllegalActionException ex) {
+                // NOTE: The following may throw a KernelException, which
+                // will have the effect of cancelling the entire parse.
+                MessageHandler.warning("Evaluating parameter "
+                + param.getFullName() + " triggers exception:\n\n"
+                + ex.getMessage());
+            }
+        }
+
         if ( _toplevel instanceof CompositeEntity) {
             CompositeEntity container = (CompositeEntity)_toplevel;
             // Get the list of all actors for this model
@@ -538,6 +553,7 @@ public class MoMLParser extends HandlerBase {
      *  In this implementation, this method does nothing.
      */
     public void startDocument() {
+        _paramsToParse.clear();
     }
 
     /** Start an element.
@@ -1015,9 +1031,9 @@ public class MoMLParser extends HandlerBase {
                             }
                             Variable variable = (Variable)property;
                             variable.setExpression(value);
-                            // Force evaluation so that any listeners
-                            // are notified.
-                            variable.getToken();
+                            // Add to the list of parameters to evaluate
+                            // in endDocument().
+                            _paramsToParse.add(variable);
                         }
                     } else {
                         // Previously existing property with this name.
@@ -1037,10 +1053,9 @@ public class MoMLParser extends HandlerBase {
                             + " so its value cannot be set.");
                             Variable variable = (Variable)property;
                             variable.setExpression(value);
-                            // Force evaluation so that any listeners
-                            // are notified.
-                            variable.getToken();
-
+                            // Add to the list of parameters to evaluate
+                            // in endDocument().
+                            _paramsToParse.add(variable);
                         }
                     }
                     _containers.push(_current);
@@ -1202,7 +1217,7 @@ public class MoMLParser extends HandlerBase {
 
                 // NOTE: While debugging, we print a stack trace here.
                 // This is because XmlException loses it.
-                // FIXME
+                // FIXME: Printing stack trace temporarily.
                 System.err.println("******** original error:");
                 ex.printStackTrace();
 
@@ -1800,6 +1815,9 @@ public class MoMLParser extends HandlerBase {
 
     // The graphical container into which to place Placeable entities.
     private Container _panel;
+
+    // A list of parameters specified in property tags.
+    private List _paramsToParse = new LinkedList();
 
     // The parser.
     private XmlParser _parser = new XmlParser();
