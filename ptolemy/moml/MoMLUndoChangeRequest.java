@@ -148,27 +148,29 @@ public class MoMLUndoChangeRequest extends ChangeRequest {
                 (ParserAttribute)toplevel.getAttribute("_parser");
         // No parser associated with this model??
         if (parserAttribute == null) {
-            // FIXME: what to do? Given a context, but it has no parser
-            // associated with it!
-	    throw new InternalErrorException(_context, null,
-					     "There was no _parser attribute "
-					     + "found. "
-					     + "FIXME: Undo request on a "
-					     + "model with no "
-					     + "associated parser.\n"
-					     + "This might be caused if "
-					     + "an entity was created using "
-					     + "File -> New, and the entity "
-					     + "does not have a _parser "
-					     + "attribute because it has not "
-					     + "yet been saved. "
-					     + "See PtolemyEffigy.createEffigy"
-					     + "\n UndoChange was:\n"
-					     + getDescription()
-					     + "\n Source was:\n"
-					     + getSource()
-					     + "\n _context was:\n"
-					     + _context.exportMoML());
+            // If there is a context, but no parser, then there is 
+            // nothing to undo.  This may or may not be a bug.
+
+            // 	    throw new InternalErrorException(_context, null,
+            //                     "There was no _parser attribute "
+            //                     + "found. "
+            //                     + "FIXME: Undo request on a "
+            //                     + "model with no "
+            //                     + "associated parser.\n"
+            //                     + "This might be caused if "
+            //                     + "an entity was created using "
+            //                     + "File -> New, and the entity "
+            //                     + "does not have a _parser "
+            //                     + "attribute because it has not "
+            //                     + "yet been saved. "
+            //                     + "See PtolemyEffigy.createEffigy"
+            //                     + "\n UndoChange was:\n"
+            //                     + getDescription()
+            //                     + "\n Source was:\n"
+            //                     + getSource()
+            //                     + "\n _context was:\n"
+            //                     + _context.exportMoML());
+
         }
         _parser = parserAttribute.getParser();
         _parser.reset();
