@@ -1,6 +1,6 @@
 /* Miscellaneous utilities for working with AST Nodes.
 
-Copyright (c) 2001 The University of Maryland.  
+Copyright (c) 2001 The University of Maryland.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -23,7 +23,7 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 
-@ProposedRating Red (ssb@eng.umd.edu) 
+@ProposedRating Red (ssb@eng.umd.edu)
 @AcceptedRating Red (ssb@eng.umd.edu)
 
 */
@@ -39,12 +39,12 @@ import java.util.List;
 //// NodeUtil.
 /** Miscellaneous utilities for working with abstract syntax tree (AST) Nodes.
 @version $Id$
-@author Shuvra S. Bhattacharyya 
+@author Shuvra S. Bhattacharyya
  */
 public final class NodeUtil implements JavaStaticSemanticConstants {
 
-    /*  FIXME: Ideally, the functionality in this class should be contained within
-     *  appropriate AST nodes.
+    /* FIXME: Ideally, the functionality in this class should be
+     *  contained within appropriate AST nodes.
      */
 
     // private constructor prevent instantiation of this class
@@ -53,32 +53,37 @@ public final class NodeUtil implements JavaStaticSemanticConstants {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Given an AST compile unit node, return the corresponding user type type 
-     *  definition node.
+    /** Given an AST compile unit node, return the corresponding user
+     *  type type definition node.
      *  @param compileUnit The compile unit node.
-     *  @return The corresponding user type definition node. A null object is
-     *  returned if the given compileUnit is null, or has a null type definition
-     *  list. 
+     *  @return The corresponding user type definition node. A null
+     *  object is returned if the given compileUnit is null, or has a
+     *  null type definition list.
      */
     public static UserTypeDeclNode getDefinedType(CompileUnitNode compileUnit) {
-        List definedTypes; 
-        if (compileUnit == null) return null;
-        else if ((definedTypes = compileUnit.getDefTypes()) == null) return null;
+        List definedTypes;
+        if (compileUnit == null) {
+            return null;
+        } else if ((definedTypes = compileUnit.getDefTypes()) == null) {
+            return null;
+        } else if (definedTypes.size() > 1) {
+            // FIXME: what does it mean when there are multiple
+            // type definitions?
 
-        // FIXME: what does it mean when there are multiple type definitions?
-        else if (definedTypes.size() > 1) {
 	    StringBuffer buffer =
 		new StringBuffer("NodeUtil.getDefinedType() "
-				 + "has encountered a CompileUnitNode with multiple type definitions."
-				 + ". \nA dump of the offending AST follows.\n"
-				 + compileUnit.toString());
+                        + "has encountered a CompileUnitNode with "
+                        + "multiple type definitions."
+                        + ". \nA dump of the offending AST follows.\n"
+                        + compileUnit.toString());
 	    for(int i = 0; i< definedTypes.size(); i++){
 		buffer.append("\nDefined Type #" + i + definedTypes.get(0));
 	    }
 
-	    throw new RuntimeException(buffer.toString());
+	    //throw new RuntimeException(buffer.toString());
+            System.err.println("Warning: " + buffer.toString());
 	}
-        else return (UserTypeDeclNode)(definedTypes.get(0));
+        return (UserTypeDeclNode)(definedTypes.get(0));
     }
 
     /** Return the scope associated with an abstract syntax tree (AST) node.
@@ -90,22 +95,27 @@ public final class NodeUtil implements JavaStaticSemanticConstants {
         return (Scope)(node.getProperty(SCOPE_KEY));
     }
 
-    /** Given an AST TypedDecl, return the class or interface declaration 
-     *  (ClassDecl) associated
-     *  with the declared entity's type, if one exists. 
-     *  For example, if this method is called 
-     *  on a field declaration of the form 'myClass myField;', it will
+    /** Given an AST TypedDecl, return the class or interface
+     *  declaration (ClassDecl) associated with the declared entity's
+     *  type, if one exists.  For example, if this method is called on
+     *  a field declaration of the form 'myClass myField;', it will
      *  return the declaration of 'myClass'.
-     *  @param typedNode The AST TypedNode. 
+     *  @param typedNode The AST TypedNode.
      *  @return The declaration associated with the type of the AST TypedNode.
      *  Return null if we cannot resolve the desired declaration.
      */
      public static ClassDecl typedDeclToClassDecl(TypedDecl typedDecl) {
-         if (typedDecl == null) return null;
+         if (typedDecl == null) {
+             return null;
+         }
          TypeNode type = ((TypedDecl)typedDecl).getType();
-         if (!(type instanceof TypeNameNode)) return null; 
+         if (!(type instanceof TypeNameNode)) {
+             return null;
+         }
          JavaDecl declaration = JavaDecl.getDecl((TreeNode)type);
-         if (!(declaration instanceof ClassDecl)) return null;
+         if (!(declaration instanceof ClassDecl)) {
+             return null;
+         }
          return (ClassDecl)declaration;
      }
 }
