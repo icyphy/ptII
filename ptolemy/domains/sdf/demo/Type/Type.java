@@ -319,16 +319,16 @@ public class Type extends SDFApplet implements ChangeListener {
 	Graph graph = impl.createGraph(null);
 	
         // nodes, with user object set to the actor
-        Node n1 = impl.createNode(Void.TYPE);
-        Node n2 = impl.createNode(IntToken.class);
-        Node n3 = impl.createNode(DoubleToken.class);
-        Node n4 = impl.createNode(ComplexToken.class);
-        Node n5 = impl.createNode(StringToken.class);
-        Node n6 = impl.createNode(Token.class);
-        Node n7 = impl.createNode(BooleanToken.class);
-        Node n8 = impl.createNode(ObjectToken.class);
-        Node n9 = impl.createNode(ScalarToken.class);
-        Node n10 = impl.createNode(LongToken.class);
+        Node n1 = impl.createNode(BaseType.NAT);
+        Node n2 = impl.createNode(BaseType.INT);
+        Node n3 = impl.createNode(BaseType.DOUBLE);
+        Node n4 = impl.createNode(BaseType.COMPLEX);
+        Node n5 = impl.createNode(BaseType.STRING);
+        Node n6 = impl.createNode(BaseType.GENERAL);
+        Node n7 = impl.createNode(BaseType.BOOLEAN);
+        Node n8 = impl.createNode(BaseType.OBJECT);
+        Node n9 = impl.createNode(BaseType.SCALAR);
+        Node n10 = impl.createNode(BaseType.LONG);
 
         impl.addNode(n1, graph);
         impl.addNode(n2, graph);
@@ -826,34 +826,34 @@ public class Type extends SDFApplet implements ChangeListener {
             // Get the color and label
             Color color = Color.black;
             String label = "UNKNOWN";
-            if (typeObj == Void.TYPE) {
+            if (typeObj == BaseType.NAT) {
                 color = Color.black;
                 label = "NaT";
-            } else if (typeObj == IntToken.class) {
+            } else if (typeObj == BaseType.INT) {
                 color = Color.blue;
                 label = "Int";
-            } else if (typeObj == DoubleToken.class) {
+            } else if (typeObj == BaseType.DOUBLE) {
                 color = Color.cyan;
                 label = "Double";
-            } else if (typeObj == ComplexToken.class) {
+            } else if (typeObj == BaseType.COMPLEX) {
                 color = Color.green;
                 label = "Complex";
-            } else if (typeObj == StringToken.class) {
+            } else if (typeObj == BaseType.STRING) {
                 color = Color.magenta;
                 label = "String";
-            } else if (typeObj == Token.class) {
+            } else if (typeObj == BaseType.GENERAL) {
                 color = Color.red;
                 label = "General";
-            } else if (typeObj == BooleanToken.class) {
+            } else if (typeObj == BaseType.BOOLEAN) {
                 color = Color.pink;
                 label = "Boolean";
-            } else if (typeObj == ObjectToken.class) {
+            } else if (typeObj == BaseType.OBJECT) {
                 color = Color.yellow;
                 label = "Object";
-            } else if (typeObj == ScalarToken.class) {
+            } else if (typeObj == BaseType.SCALAR) {
                 color = Color.gray;
                 label = "Scalar";
-            } else if (typeObj == LongToken.class) {
+            } else if (typeObj == BaseType.LONG) {
                 color = Color.orange;
                 label = "Long";
             }
