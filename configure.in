@@ -100,6 +100,30 @@ AC_PREFIX_DEFAULT($PTII)
 
 
 #--------------------------------------------------------------------
+#	The PTII directory as a URL
+#--------------------------------------------------------------------
+
+# Read the PTII variable and substitute forward slashes
+# for backward slashes
+
+case "`uname -s`" in
+CYGWIN_98-*) 
+	# Windows 98 is not a real os, and it does not have CMD.
+	# So, we punt
+	PTII_DIR=$PTII
+	;;
+CYGWIN*)
+	# We use cmd /c chdir here to get rid of /cygwin/c
+	PTII_DIR=`(cd "$PTII"; cmd /c chdir) | tr -d '\r' | sed 's@\\\@/@g'`
+	;;
+*)
+	PTII_DIR=$PTII
+	;;
+esac
+
+# Substitute %20 for any spaces.
+PTII_LOCALURL=`echo "file:///$PTII_DIR" | sed 's/ /%20/g'`
+#--------------------------------------------------------------------
 #	See if there was a command-line option for where Java is;  if
 #	not, check to see if the PTJAVA_DIR environment variable is set;
 #       if it is not, look for javac on the path.
@@ -1277,6 +1301,10 @@ AC_SUBST(PTCC)
 # $PTII/ptolemy/matlab/makefile.
 AC_SUBST(PTDLLTOOL)
 
+# Location of the the PTII directory
+# $PTII/ptolemy/plot/ptplot.jnlp.in reads this
+AC_SUBST(PTII)
+
 # ptjacl.jar file, used to run the test suites
 AC_SUBST(PTJACL_JAR)
 
@@ -1334,8 +1362,9 @@ AC_SUBST(PTTINI_DIR)
 # $PTII/ptolemy/apps/makefile if Waba was found
 AC_SUBST(PTWABA_DIR)
 
-# Location of the PtII directory
-AC_SUBST(PTII_DEFAULT)
+# Location of the local $PTII directory as a file:/// URL
+# This variable is used with the Java Network Launching Protocol files
+AC_SUBST(PTII_LOCALURL)
 
 # tini/bin/tinclasses.jar file used Soot - a Java Optimization Framework
 AC_SUBST(SOOT_CLASSES)

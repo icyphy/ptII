@@ -175,6 +175,10 @@ PTCOPERNICUS_DIR = @PTCOPERNICUS_DIR@
 # $PTII/ptolemy/matlab/makefile.
 PTDLLTOOL = @PTDLLTOOL@
 
+# Location of the local $PTII directory as a file:/// URL
+# This variable is used with the Java Network Launching Protocol files
+PTII_LOCALURL = @PTII_LOCALURL@
+
 # Set to gr and used in
 # $PTII/ptolemy/domains/makefile if Java 3D was found
 PTJAVA3D_DIR = @PTJAVA3D_DIR@
