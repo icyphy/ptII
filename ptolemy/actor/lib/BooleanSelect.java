@@ -181,15 +181,17 @@ public class BooleanSelect extends TypedAtomicActor {
     public boolean prefire() throws IllegalActionException {
         if (control.hasToken(0)) {
             _control = ((BooleanToken)control.get(0)).booleanValue();
-        }
-        if (_control) {
-            if (!trueInput.hasToken(0)) {
-                return false;
+            if (_control) {
+                if (!trueInput.hasToken(0)) {
+                    return false;
+                }
+            } else {
+                if (!falseInput.hasToken(0)) {
+                    return false;
+                }
             }
         } else {
-            if (!falseInput.hasToken(0)) {
-                return false;
-            }
+            return false;
         }
         return super.prefire();
     }
