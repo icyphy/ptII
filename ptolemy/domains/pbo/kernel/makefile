@@ -49,7 +49,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	PBODirector.java \
-	PBOReceiver.java 
+	PBOReceiver.java \
+	PBOThreadDirector.java
 
 EXTRA_SRCS =	$(JSRCS)
 

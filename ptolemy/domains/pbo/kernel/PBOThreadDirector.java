@@ -38,6 +38,7 @@ import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.util.*;
 
+import java.util.HashMap;
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
@@ -100,13 +101,13 @@ communication.
 @author Steve Neuendorffer
 @version $Id$
 */
-public class PBODirector extends Director {
+public class PBOThreadDirector extends Director {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
      */
-    public PBODirector() {
+    public PBOThreadDirector() {
         super();
 	_init();
     }
@@ -116,7 +117,7 @@ public class PBODirector extends Director {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace of this object.
      */
-    public PBODirector(Workspace workspace) {
+    public PBOThreadDirector(Workspace workspace) {
         super(workspace);
 	_init();
     }
@@ -132,7 +133,7 @@ public class PBODirector extends Director {
      *  @exception It may be thrown in derived classes if the
      *      director is not compatible with the specified container.
      */
-    public PBODirector(CompositeEntity container, String name)
+    public PBOThreadDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 	_init();
@@ -140,6 +141,58 @@ public class PBODirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    public synchronized void actorFinished(Actor actor) {
+        PBOEvent event = (PBOEvent) _deadlineQueue.take();
+        if(event.actor() != actor) {
+            throw new InternalErrorException("an actor finished which" +
+                    "should not be running!");
+        }
+        _reschedule();
+    }
+    
+    private synchronized void _scheduleNew() throws IllegalActionException {
+        double currentTime = getCurrentTime();
+
+        // process new activations.
+        PBOEvent event = (PBOEvent)_requestQueue.get();
+        while(event.time() < currentTime) {
+            _requestQueue.take();
+            Actor actor = event.actor();
+            double requestTime = event.time();
+            // This is the time that the actor next wants to get fired.
+	    double nextRequestTime =
+                requestTime + _getExecutionPeriod(actor);
+            double deadlineTime = requestTime + _getExecutionTime(actor);
+            _requestQueue.put(new PBOEvent(actor, nextRequestTime));
+            _deadlineQueue.put(new PBOEvent(actor, deadlineTime));
+            event = (PBOEvent)_requestQueue.get();
+            _areActorsWaiting = true;
+        }      
+        _reschedule();
+    }      
+
+    private synchronized void _reschedule() {
+        PBOEvent nextEvent = (PBOEvent) _deadlineQueue.get();
+        Actor nextActor = nextEvent.actor();
+        if(nextActor != _executingActor) {
+            // Idle the current thread.
+            if(_executingActor != null) {
+                PBOThread thread = 
+                    (PBOThread) _threadMap.get(_executingActor);
+                thread.setPriority(IDLE);
+            }            
+            // Start the new thread.
+            if(nextActor != null) {
+                PBOThread nextThread =
+                    (PBOThread)_threadMap.get(nextEvent.actor());
+                nextThread.setPriority(RUNNING);
+                _areActorsWaiting = false;
+                _executionThread.notify();
+            }
+            _executingActor = nextActor;
+        }
+    }
 
     /** Invoke an iteration on all of the deeply contained actors of the
      *  container of this director.  In general, this may be called more
@@ -160,77 +213,86 @@ public class PBODirector extends Director {
      *  of the associated actors throws it.
      */
     public void fire() throws IllegalActionException {
-        if(_deadlineQueue.isEmpty()) {
-            // nothing is currently waiting, so update time to the
-            // make the next actor ready to execute.
-            PBOEvent event = (PBOEvent)_requestQueue.take();
-            Actor actor = event.actor();
-            double requestTime = event.time();
-            // This is the time that the actor next wants to get fired.
-	    double nextRequestTime =
-                requestTime + _getExecutionPeriod(actor);
-            double deadlineTime = requestTime + _getExecutionTime(actor);
-            _requestQueue.put(new PBOEvent(actor, nextRequestTime));
-            _deadlineQueue.put(new PBOEvent(actor, deadlineTime));
-            setCurrentTime(requestTime);
-            return;
+        _scheduleNew();
+ 	Workspace workspace = workspace();
+        synchronized (this) {
+            while(_areActorsWaiting) {
+		workspace.wait(this);
+            }
         }
-
-	_debug("Starting iteration at " + getCurrentTime());
-        PBOEvent deadlineEvent = (PBOEvent)_deadlineQueue.take();
-        Actor executingActor = deadlineEvent.actor();
-        // The time the actor expected to finish by.
-        double executingTime = deadlineEvent.time();
-        // The time the actor actually started executing.
-	double firingTime = getCurrentTime();
-        // The time the actor actually finished.
-        double endFiringTime = getCurrentTime() +
-            _getExecutionTime(executingActor);
-        
-        // first process any new activations that will 
-        // occur before endFiringTime.
-        double requestTime = ((PBOEvent)_requestQueue.get()).time();
-        while(requestTime < endFiringTime) {
-            // make the given actor ready to execute.
-            PBOEvent event = (PBOEvent)_requestQueue.take();
-            Actor actor = (Actor)event.actor();
-            // This is the time that the actor next wants to get fired.
-	    double nextRequestTime =
-                requestTime + _getExecutionPeriod(actor);
-            double deadlineTime = requestTime + _getExecutionTime(actor);
-            _requestQueue.put(new PBOEvent(actor, nextRequestTime));
-            _deadlineQueue.put(new PBOEvent(actor, deadlineTime));
-            // get the next requested time
-            requestTime = ((PBOEvent)_requestQueue.get()).time();
-        }
-            
-        // now fire the currently executing actor and update
-        // time to reflect the amount of time spent.
-	boolean postfireReturns;
-	if(executingActor.prefire()) {
-	    _debug("Firing actor " + ((Entity) executingActor).getFullName() + 
-		   " at " + firingTime);
-	    executingActor.fire();
-	    
-            // This is the time when the actor finishes.
-	    setCurrentTime(endFiringTime);
-	    _debug("Postfiring actor at " + getCurrentTime());
-	    postfireReturns = executingActor.postfire();
-	    _debug("done firing");
-	    
-	} else {
-            _debug("Actor " + ((Entity) executingActor).getFullName() + 
-                    " is not ready to fire.");
-        }
-
-	// reschedule this composite to handle the next process starting.
-	CompositeActor container = (CompositeActor)getContainer();
-	Director executive = container.getExecutiveDirector();
-	if(executive != null) {
-	    _debug("Rescheduling composite");
-	    executive.fireAt(container, getNextIterationTime());
-	}
     }
+           
+    /*       if(_deadlineQueue.isEmpty()) {
+             // nothing is currently waiting, so update time to the
+             // make the next actor ready to execute.
+             PBOEvent event = (PBOEvent)_requestQueue.take();
+             Actor actor = event.actor();
+             double requestTime = event.time();
+             // This is the time that the actor next wants to get fired.
+             double nextRequestTime =
+             requestTime + _getExecutionPeriod(actor);
+             double deadlineTime = requestTime + _getExecutionTime(actor);
+             _requestQueue.put(new PBOEvent(actor, nextRequestTime));
+             _deadlineQueue.put(new PBOEvent(actor, deadlineTime));
+             setCurrentTime(requestTime);
+             return;
+             }
+             _debug("Starting iteration at " + getCurrentTime());
+             PBOEvent deadlineEvent = (PBOEvent)_deadlineQueue.take();
+             Actor executingActor = deadlineEvent.actor();
+             // The time the actor expected to finish by.
+             double executingTime = deadlineEvent.time();
+             // The time the actor actually started executing.
+             double firingTime = getCurrentTime();
+             // The time the actor actually finished.
+             double endFiringTime = getCurrentTime() +
+             _getExecutionTime(executingActor);
+        
+             // first process any new activations that will 
+             // occur before endFiringTime.
+             double requestTime = ((PBOEvent)_requestQueue.get()).time();
+             while(requestTime < endFiringTime) {
+             // make the given actor ready to execute.
+             PBOEvent event = (PBOEvent)_requestQueue.take();
+             Actor actor = (Actor)event.actor();
+             // This is the time that the actor next wants to get fired.
+             double nextRequestTime =
+             requestTime + _getExecutionPeriod(actor);
+             double deadlineTime = requestTime + _getExecutionTime(actor);
+             _requestQueue.put(new PBOEvent(actor, nextRequestTime));
+             _deadlineQueue.put(new PBOEvent(actor, deadlineTime));
+             // get the next requested time
+             requestTime = ((PBOEvent)_requestQueue.get()).time();
+             }
+            
+             // now fire the currently executing actor and update
+             // time to reflect the amount of time spent.
+             boolean postfireReturns;
+             if(executingActor.prefire()) {
+             _debug("Firing actor " + ((Entity) executingActor).getFullName() + 
+             " at " + firingTime);
+             executingActor.fire();
+	    
+             // This is the time when the actor finishes.
+             setCurrentTime(endFiringTime);
+             _debug("Postfiring actor at " + getCurrentTime());
+             postfireReturns = executingActor.postfire();
+             _debug("done firing");
+	    
+             } else {
+             _debug("Actor " + ((Entity) executingActor).getFullName() + 
+             " is not ready to fire.");
+             }
+
+             // reschedule this composite to handle the next process starting.
+             CompositeActor container = (CompositeActor)getContainer();
+             Director executive = container.getExecutiveDirector();
+             if(executive != null) {
+             _debug("Rescheduling composite");
+             executive.fireAt(container, getNextIterationTime());
+             }
+        
+             }*/
 
     /** Schedule a firing of the given actor at the given time. It does
      *  nothing in this base class. Derived classes
@@ -251,6 +313,20 @@ public class PBODirector extends Director {
         // But we didn't do that, because otherwise we wouldn't be able
         // to run Tcl Blend testscript on this class.
 
+    }
+
+    /** Return the current time of the model being executed by this director.
+     *  This time can be set with the setCurrentTime method. In this base
+     *  class, time never passes, and there are no restrictions on valid
+     *  times.
+     *
+     *  @return The current time.
+     */
+    public double getCurrentTime() {
+        if(_startTime > 0)
+            return (double)System.currentTimeMillis() - _startTime;
+        else 
+            return 0.0;
     }
 
     /** Return the next time of interest in the model being executed by
@@ -290,6 +366,7 @@ public class PBODirector extends Director {
     public void initialize() throws IllegalActionException {
 	super.initialize();
 
+        _executionThread = Thread.currentThread();
         _deadlineQueue.clear();
         _requestQueue.clear();
         //Initialize the queue of deadlines and next firings to
@@ -299,6 +376,9 @@ public class PBODirector extends Director {
 	    Iterator allActors = container.deepEntityList().iterator();
 	    while(allActors.hasNext()) {
 		Actor actor = (Actor) allActors.next();
+                Thread thread = new PBOThread(_threadGroup, actor);
+                thread.setPriority(IDLE);
+                _threadMap.put(actor, thread);
                 _deadlineQueue.put(new PBOEvent(actor,
                         _getExecutionTime(actor)));
     		_requestQueue.put(new PBOEvent(actor,
@@ -308,6 +388,7 @@ public class PBODirector extends Director {
 	    throw new IllegalActionException("Cannot fire this director " +
                     "without a container");
 	}
+        _startTime = System.currentTimeMillis();
     }
 
     /** Return a new receiver of a type compatible with this director.
@@ -411,7 +492,7 @@ public class PBODirector extends Director {
 	    // this should never happen
 	    throw new InternalErrorException(e.getMessage());
 	}
-
+        
         addDebugListener(new StreamListener());
     }
 
@@ -432,7 +513,7 @@ public class PBODirector extends Director {
 	    (Parameter)((ComponentEntity)a).getAttribute("executionPeriod");
 	if(param == null) {
 	    throw new IllegalActionException("Actor does not have a " +
-		"executionPeriod parameter");
+                    "executionPeriod parameter");
 	}		     
 	return ((DoubleToken)param.getToken()).doubleValue();
     }
@@ -456,7 +537,7 @@ public class PBODirector extends Director {
 	    (Parameter)((ComponentEntity)a).getAttribute("executionTime");
 	if(param == null) {
 	    throw new IllegalActionException("Actor does not have an " +
-		"executionTime parameter.");
+                    "executionTime parameter.");
 	}		     
 	return ((DoubleToken)param.getToken()).doubleValue();
     }
@@ -466,7 +547,46 @@ public class PBODirector extends Director {
     // The queue of times when actors will next become ready, ordered
     // by request times.
     private CalendarQueue _requestQueue;
+    
+    private ThreadGroup _threadGroup;
+    private HashMap _threadMap;
+    private Thread _executionThread;
+    private boolean _areActorsWaiting;
+    private double _startTime;
+    private Actor _executingActor;
 
+    public static final int IDLE = Thread.MIN_PRIORITY;
+    public static final int RUNNING = Thread.MIN_PRIORITY + 1;
+    
+    private class PBOThread extends PtolemyThread {
+        public PBOThread (ThreadGroup group, Actor actor) {
+            super(group, ((NamedObj)actor).getName());
+            _actor = actor;
+        }
+        public void run() {
+            try {
+                // Copy the receivers.
+
+                // container is checked for null to detect the
+                // deletion of the actor from the topology.
+                if ( ((Entity)_actor).getContainer() != null ) {
+                    if (_actor.prefire()){
+                        _actor.fire();
+                        _actor.postfire();
+                    }
+                    // System.out.println(_name+" processThread.iterate = "+iterate);
+                }
+            } catch (IllegalActionException e) {
+                // notifyListenersOfException(e);
+            } finally {
+                //  _director._decreaseActiveCount();
+            }  
+            // Copy the receivers
+            actorFinished(_actor);
+        }
+        Actor _actor;
+    }
+    
     // An implementation of the CQComparator interface for use with
     // calendar queue that compares two PBOEvents according to their
     // time stamps, microstep, and depth in that order.
