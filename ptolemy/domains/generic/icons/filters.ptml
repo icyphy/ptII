@@ -74,6 +74,34 @@
     </tclscript>
     </graphic>
 </icon>
+<icon name="Delay">
+    <entitytype name="Delay" ports="2"/>
+    <port name="input" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {100 50} -direction e
+                -style arrowtail
+	</tclscript>
+	</graphic>
+    </port>
+
+    <port name="output" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {0 50} -direction w
+                -style arrowout
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl" color="lightsteelblue">
+    <tclscript>
+         polygon 30 50 70 80 70 20 -fill red -outline black
+         line 10 50 30 50 -width 1 -fill black
+         line 70 50 90 50 -width 1 -fill black
+    </tclscript>
+    </graphic>
+</icon>
 
 <icon name="GainRight">
     <entitytype name="Gain" ports="2"/>
@@ -278,7 +306,7 @@
 </icon>
 
 <icon name="Statistics">
-    <entitytype name="Statistic" ports="5"/>
+    <entitytype name="Stats" ports="5"/>
     <port name="input" input="true" type="string">
 	<graphic format="tcl">
 	<tclscript>

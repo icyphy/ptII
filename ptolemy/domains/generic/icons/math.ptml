@@ -52,6 +52,8 @@
     </graphic>
 </icon>
 
+<!--
+
 <icon name="Add2">
     <entitytype name="Add2" ports="2"/>
     <port name="input1" input="true" type="string">
@@ -94,6 +96,8 @@
     </tclscript>
     </graphic>
 </icon>
+
+-->
 
 <icon name="Add3">
     <entitytype name="Add" ports="2"/>

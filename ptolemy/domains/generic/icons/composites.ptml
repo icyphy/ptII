@@ -14,7 +14,7 @@
 	ports="1"
 	location="RampSampler.ptml" />
 
-    <port name="output" input="false" type="string">
+    <port name="Out0" input="false" type="string">
 	<graphic format="tcl">
 	<tclscript>
 	    -coords {100 50}
@@ -42,7 +42,7 @@
 	ports = "2" 
         location="SDProcessorSchematic.ptml" />
 
-    <port name="input" input="true" type="string">
+    <port name="In0" input="true" type="string">
 	<graphic format="tcl">
 	<tclscript>
 		-coords {0 50} -direction w
@@ -50,7 +50,7 @@
 	</tclscript>
 	</graphic>
     </port>
-    <port name="output" input="false" type="string">
+    <port name="Out0" input="false" type="string">
 	<graphic format="tcl">
 	<tclscript>
 		-coords {100 50} -direction e
@@ -75,7 +75,7 @@
 	ports = "2" 
         location="CTSigmaDeltaSchematic.ptml" />
 
-    <port name="input" input="true" type="string">
+    <port name="In0" input="true" type="string">
 	<graphic format="tcl">
 	<tclscript>
 		-coords {100 80} -direction e
@@ -83,7 +83,7 @@
 	</tclscript>
 	</graphic>
     </port>
-    <port name="output" input="false" type="string">
+    <port name="Out0" input="false" type="string">
 	<graphic format="tcl">
 	<tclscript>
 		-coords {100 30} -direction e
@@ -101,6 +101,37 @@
     </tclscript>
     </graphic>
 </icon>
+<icon name="CTSimple">
+    <entitytype name="CTSimple" 
+	type="composite" 
+	ports = "2" 
+        location="CTSimple.ptml" />
 
+    <port name="In0" input="true" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {100 80} -direction e
+                -style arrowtail
+	</tclscript>
+	</graphic>
+    </port>
+    <port name="Out0" input="false" type="string">
+	<graphic format="tcl">
+	<tclscript>
+		-coords {100 30} -direction e
+                -style arrowout
+	</tclscript>
+	</graphic>
+    </port>
+
+    <graphic format="tcl">
+    <tclscript>
+        oval 20 20 50 50 -fill green	
+	oval 60 20 90 45 -fill blue
+	oval 20 60 40 80 -fill red
+	oval 50 60 75 80 -fill orange
+    </tclscript>
+    </graphic>
+</icon>
 </iconlibrary>
 
