@@ -7,12 +7,12 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="10.0">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="411.0, 31.0">
+        <property name="_location" class="ptolemy.moml.Location" value="411.0, 30.0">
         </property>
     </property>
-    <entity name="typed composite actor0" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="CT subsystem" class="ptolemy.actor.TypedCompositeActor">
         <property name="CT0" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
@@ -57,7 +57,7 @@
             <property name="_location" class="ptolemy.moml.Location" value="492.0, 315.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="120.0, 225.0">
+        <property name="_location" class="ptolemy.moml.Location" value="132.0, 218.0">
         </property>
         <port name="port4" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -67,7 +67,7 @@
         <entity name="Integrator1" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="108.0, 225.0">
+            <property name="_location" class="ptolemy.moml.Location" value="102.0, 135.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -79,7 +79,7 @@
         <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="204.0, 135.0">
+            <property name="_location" class="ptolemy.moml.Location" value="183.0, 135.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -91,7 +91,7 @@
         <entity name="Scale3" class="ptolemy.actor.lib.Scale">
             <property name="factor" class="ptolemy.data.expr.Parameter" value="3">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="300.0, 135.0">
+            <property name="_location" class="ptolemy.moml.Location" value="270.0, 136.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -100,21 +100,39 @@
                 <property name="output"/>
             </port>
         </entity>
+        <entity name="CTPeriodicSampler1" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+            <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="448.0, 129.0">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation0" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="396.0, 225.0">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="354.0, 224.0">
             </vertex>
         </relation>
-        <link port="port4" relation="relation0"/>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port4" relation="relation2"/>
         <link port="Integrator1.input" relation="relation0"/>
         <link port="Integrator1.output" relation="relation7"/>
         <link port="Integrator2.input" relation="relation7"/>
         <link port="Integrator2.output" relation="relation6"/>
         <link port="Scale3.input" relation="relation6"/>
         <link port="Scale3.output" relation="relation0"/>
+        <link port="CTPeriodicSampler1.input" relation="relation0"/>
+        <link port="CTPeriodicSampler1.output" relation="relation2"/>
     </entity>
     <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -130,7 +148,7 @@
         </port>
     </entity>
     <entity name="Discard0" class="ptolemy.actor.lib.Discard">
-        <property name="_location" class="ptolemy.moml.Location" value="492.0, 117.0">
+        <property name="_location" class="ptolemy.moml.Location" value="426.0, 220.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -138,7 +156,7 @@
         </port>
     </entity>
     <entity name="Discard1" class="ptolemy.actor.lib.Discard">
-        <property name="_location" class="ptolemy.moml.Location" value="506.0, 246.0">
+        <property name="_location" class="ptolemy.moml.Location" value="516.0, 315.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -149,11 +167,13 @@
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="240.0, 225.0">
         </vertex>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation0" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="436.0, 320.0">
+        </vertex>
     </relation>
-    <link port="typed composite actor0.port4" relation="relation3"/>
-    <link port="CurrentTime2.output" relation="relation2"/>
+    <link port="CT subsystem.port4" relation="relation3"/>
+    <link port="CurrentTime2.output" relation="relation0"/>
     <link port="CurrentTime2.trigger" relation="relation3"/>
     <link port="Discard0.input" relation="relation3"/>
-    <link port="Discard1.input" relation="relation2"/>
+    <link port="Discard1.input" relation="relation0"/>
 </entity>
