@@ -10,10 +10,15 @@ core
 *.exe
 *.fm
 *.jar
+*.jsm
+*.mif
 *.vsd
+*/CVS
+*/Output
+*/Output.trash
 */SCCS
 */RCS
-*/CVS
+*/Temp
 OLD
 */adm
 */devel
