@@ -149,9 +149,15 @@ public class PtolemyQuery extends Query
 	// Put the variable in a Map from entryName -> var
 	_parameters.put(entryName, var);
         var.addValueListener(this);
-        String tip = Documentation.consolidate(var);
-        if (tip != null) {
-            setToolTip(entryName, tip);
+        Attribute tooltipAttribute = var.getAttribute("tooltip");
+        if (tooltipAttribute != null
+                && tooltipAttribute instanceof Documentation) {
+            setToolTip(entryName, ((Documentation)tooltipAttribute).getValue());
+        } else {
+            String tip = Documentation.consolidate(var);
+            if (tip != null) {
+                setToolTip(entryName, tip);
+            }
         }
 	// Put the variable in a Map from var -> (list of entry names
 	// attached to var), but only if entryName is not already
