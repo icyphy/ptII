@@ -715,11 +715,8 @@ public class PtolemyQuery extends Query
     private ErrorHandler _savedErrorHandler = null;
     
     // Background color for string mode edit boxes.
-    // FIXME: Until I figure out how to set the background
-    // color of a combo box, it is misleading to use
-    // anything but white here. @#*&^@!#$%&^$# Swing.
-    private static Color _STRING_MODE_BACKGROUND_COLOR = Color.white;
-    // Better would be: new Color(230, 255, 255, 255);
+    private static Color _STRING_MODE_BACKGROUND_COLOR
+            = new Color(230, 255, 255, 255);
 
     // Maps an attribute name to a list of entry names that the
     // attribute is attached to.

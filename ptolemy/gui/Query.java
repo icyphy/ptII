@@ -76,6 +76,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 //////////////////////////////////////////////////////////////////////////
 //// Query
@@ -232,15 +233,22 @@ public class Query extends JPanel {
             String[] values,
             String defaultChoice,
             boolean editable,
-            Color background) {
+            final Color background) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
         JComboBox combobox = new JComboBox(values);
         combobox.setEditable(editable);
-        // FIXME: Typical of Swing, the following does not set
-        // the background color.  How does one set the background
-        // color?
-        combobox.setBackground(background);
+        // NOTE: Typical of Swing, the following does not set
+        // the background color. So we have to specify a
+        // custom editor.  #$(#&$#(@#!!
+        // combobox.setBackground(background);
+        combobox.setEditor(new BasicComboBoxEditor() {
+            public Component getEditorComponent() {
+                Component result = super.getEditorComponent();
+                result.setBackground(background);
+                return result;
+            }
+        });
         combobox.setSelectedItem(defaultChoice);
         _addPair(name, lbl, combobox, combobox);
         // Add the listener last so that there is no notification
