@@ -40,7 +40,7 @@ import ptolemy.data.type.ArrayType;
 //// ArrayToken
 /**
 A token that contains an array of tokens.  The operations between arrays
-are defined pointwise, and require that the lengths of arrays are of 
+are defined pointwise, and require that the lengths of arrays are of
 similar lengths.
 
 @author Yuhong Xiong, Steve Neuendorffer
@@ -247,7 +247,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
- 
+
     /** Return a new token whose value is the value of the
      *  argument Token added to the value of this Token.  It is assumed
      *  that the type of the argument is the same as the type of this class.
@@ -270,7 +270,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
 	}
 
 	return new ArrayToken(result);
-    }            
+    }
 
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token.
@@ -281,7 +281,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If the argument token is
      *  not of a type that can divide the value of this token.
      */
-    protected Token _divide(Token rightArgument) 
+    protected Token _divide(Token rightArgument)
             throws IllegalActionException {
 	_checkArgument(rightArgument);
 	Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
@@ -374,7 +374,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If the argument token is
      *  not of a type that can be multiplied to this token.
      */
-    protected Token _multiply(Token rightArgument) 
+    protected Token _multiply(Token rightArgument)
             throws IllegalActionException {
 	_checkArgument(rightArgument);
 	Token[] argArray = ((ArrayToken)rightArgument).arrayValue();

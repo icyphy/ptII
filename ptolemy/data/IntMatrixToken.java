@@ -184,9 +184,9 @@ public class IntMatrixToken extends MatrixToken {
     }
 
     /** Convert the specified scalar token into an instance of
-     *  IntMatrixToken.  The resulting matrix will be square, with 
+     *  IntMatrixToken.  The resulting matrix will be square, with
      *  the number of rows and columns equal to the given size.
-     *  This method does lossless conversion. 
+     *  This method does lossless conversion.
      *  @param token The token to be converted to a IntMatrixToken.
      *  @return A IntMatrixToken
      *  @exception IllegalActionException If the conversion cannot
@@ -194,7 +194,7 @@ public class IntMatrixToken extends MatrixToken {
      */
     public static Token convert(ScalarToken token, int size)
             throws IllegalActionException {
-     
+
         // Check to make sure that the token is convertable to INT.
         int compare = TypeLattice.compare(BaseType.INT, token);
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
@@ -401,28 +401,28 @@ public class IntMatrixToken extends MatrixToken {
      *  class.
      *  @return A new IntMatrixToken containing the result.
      */
-    protected MatrixToken _add(MatrixToken rightArgument) 
+    protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         IntMatrixToken convertedArgument = (IntMatrixToken)rightArgument;
         int[][] result = IntegerMatrixMath.add(
                 convertedArgument._getInternalIntMatrix(), _value);
-        return new IntMatrixToken(result);   
+        return new IntMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of the argument
      *  Token added to the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class. 
+     *  of each element of this class.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected MatrixToken _addElement(Token rightArgument) 
+    protected MatrixToken _addElement(Token rightArgument)
             throws IllegalActionException {
         int scalar = ((IntToken)rightArgument).intValue();
         int[][] result = IntegerMatrixMath.add(_value, scalar);
-        return new IntMatrixToken(result);   
+        return new IntMatrixToken(result);
     }
 
     /** Return a reference to the internal 2-D matrix of ints that represents
@@ -433,7 +433,7 @@ public class IntMatrixToken extends MatrixToken {
     protected int[][] _getInternalIntMatrix() {
         return _value;
     }
-    
+
     /** Test for closeness of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
      *  IntMatrixToken.
@@ -443,11 +443,11 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isCloseTo(
-            MatrixToken rightArgument, double epsilon) 
+            MatrixToken rightArgument, double epsilon)
             throws IllegalActionException {
         return _isEqualTo(rightArgument);
-    }   
-    
+    }
+
     /** Test for equality of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
      *  IntMatrixToken.
@@ -456,14 +456,14 @@ public class IntMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A BooleanToken containing the result.
      */
-    protected BooleanToken _isEqualTo(MatrixToken rightArgument) 
+    protected BooleanToken _isEqualTo(MatrixToken rightArgument)
             throws IllegalActionException {
         IntMatrixToken convertedArgument = (IntMatrixToken)rightArgument;
         return BooleanToken.getInstance(
                 IntegerMatrixMath.within(_value,
                         convertedArgument._getInternalIntMatrix(), 0));
-    }   
-    
+    }
+
     /** Return a new token whose value is the value of this token
      *  multiplied by the value of the argument token.  It is assumed
      *  that the type of the argument is IntMatrixToken.
@@ -473,16 +473,16 @@ public class IntMatrixToken extends MatrixToken {
      *  class.
      *  @return A new IntMatrixToken containing the result.
      */
-    protected MatrixToken _multiply(MatrixToken rightArgument) 
+    protected MatrixToken _multiply(MatrixToken rightArgument)
             throws IllegalActionException {
         IntMatrixToken convertedArgument = (IntMatrixToken)rightArgument;
         int[][] result = IntegerMatrixMath.multiply(
                 _value, convertedArgument._getInternalIntMatrix());
-        return new IntMatrixToken(result);          
+        return new IntMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of this token
-     *  multiplied by the value of the argument scalar token. 
+     *  multiplied by the value of the argument scalar token.
      *  This method should be overridden in derived
      *  classes to provide type specific actions for multiply.
      *  @param rightArgument The token to multiply this token by.
@@ -490,11 +490,11 @@ public class IntMatrixToken extends MatrixToken {
      *   supported by the derived class.
      *  @return A new IntMatrixToken containing the result.
      */
-    protected MatrixToken _multiplyElement(Token rightArgument) 
+    protected MatrixToken _multiplyElement(Token rightArgument)
             throws IllegalActionException {
         int scalar = ((IntToken)rightArgument).intValue();
         int[][] result = IntegerMatrixMath.multiply(_value, scalar);
-        return new IntMatrixToken(result);          
+        return new IntMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -511,40 +511,40 @@ public class IntMatrixToken extends MatrixToken {
         IntMatrixToken convertedArgument = (IntMatrixToken)rightArgument;
         int[][] result = IntegerMatrixMath.subtract(_value,
                 convertedArgument._getInternalIntMatrix());
-        return new IntMatrixToken(result);          
+        return new IntMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class. 
+     *  of each element of this class.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected MatrixToken _subtractElement(Token rightArgument) 
+    protected MatrixToken _subtractElement(Token rightArgument)
             throws IllegalActionException {
         int scalar = ((IntToken)rightArgument).intValue();
         int[][] result = IntegerMatrixMath.add(_value, -scalar);
-        return new IntMatrixToken(result);   
+        return new IntMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class. 
+     *  of each element of this class.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected MatrixToken _subtractElementReverse(Token rightArgument) 
+    protected MatrixToken _subtractElementReverse(Token rightArgument)
             throws IllegalActionException {
         int scalar = ((IntToken)rightArgument).intValue();
         int[][] result = IntegerMatrixMath.negative(
                 IntegerMatrixMath.add(_value, -scalar));
-        return new IntMatrixToken(result);   
+        return new IntMatrixToken(result);
     }
 
     ///////////////////////////////////////////////////////////////////

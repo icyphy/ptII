@@ -71,7 +71,7 @@ public class Token implements Serializable {
     ////                         public methods                    ////
 
     /** Return a new token whose value is the sum of this token and
-     *  the argument. 
+     *  the argument.
      *  @param rightArgument The token to add to this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
@@ -84,7 +84,7 @@ public class Token implements Serializable {
     }
 
     /** Return a new token whose value is the sum of this token
-     *  and the argument. 
+     *  and the argument.
      *  @param leftArgument The token to add this token to.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
@@ -98,7 +98,7 @@ public class Token implements Serializable {
     }
 
     /** Return a new token whose value is the value of this token
-     *  divided by the value of the argument token. 
+     *  divided by the value of the argument token.
      *  @param rightArgument The token to divide into this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
@@ -119,7 +119,7 @@ public class Token implements Serializable {
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
-    public Token divideReverse(Token leftArgument) 
+    public Token divideReverse(Token leftArgument)
             throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("divideReverse", this, leftArgument));
@@ -172,17 +172,17 @@ public class Token implements Serializable {
      *  @exception IllegalActionException If the argument token is not
      *  of a type that can be compared with this token.
      */
-    public final BooleanToken isCloseTo(Token token) 
+    public final BooleanToken isCloseTo(Token token)
             throws IllegalActionException{
 	return isCloseTo(token, ptolemy.math.Complex.epsilon);
     }
 
     /** Test that the value of this Token is close to the argument
-     *  Token. 
+     *  Token.
      *
      *  @param rightArgument The token to test closeness of this token with.
      *  @param epsilon The value that we use to determine whether two
-     *  tokens are close.  
+     *  tokens are close.
      *  @return A boolean token that contains the value true if the
      *  value of this token are close to those of the
      *  argument token.
@@ -196,7 +196,7 @@ public class Token implements Serializable {
     }
 
     /** Test for equality of the values of this Token and the argument
-     *  Token.  
+     *  Token.
      *
      *  @param rightArgument The token with which to test equality.
      *  @return A BooleanToken which contains the result of the test.
@@ -210,7 +210,7 @@ public class Token implements Serializable {
     }
 
     /** Return a new token whose value is the value of this token
-     *  modulo the value of the argument token. 
+     *  modulo the value of the argument token.
      *  @param rightArgument The token to divide into this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
@@ -221,9 +221,9 @@ public class Token implements Serializable {
         throw new IllegalActionException(
                 notSupportedMessage("modulo", this, rightArgument));
     }
-  
+
     /** Return a new token whose value is the value of the argument token
-     *  modulo the value of this token. 
+     *  modulo the value of this token.
      *  @param leftArgument The token to apply modulo to by the value
      *  of this token.
      *  @return A new token containing the result.
@@ -238,7 +238,7 @@ public class Token implements Serializable {
     }
 
     /** Return a new token whose value is the value of this token
-     *  multiplied by the value of the argument token. 
+     *  multiplied by the value of the argument token.
      *  @param rightArgument The token to multiply this token by.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
@@ -300,7 +300,7 @@ public class Token implements Serializable {
                 + "' to the type "
                 + typeString + ".");
     }
-                
+
     /** Return a string with an error message that states that
      *  operation is not supported between two tokens, because they
      *  have incomparable types and cannot be converted to the same type.
@@ -317,7 +317,7 @@ public class Token implements Serializable {
                 + " '" + firstToken.toString()
                 + "' and "
                 + secondToken.getClass().getName()
-                + " '" + secondToken.toString() 
+                + " '" + secondToken.toString()
                 + "' because the types are incomparable.");
     }
 
@@ -359,7 +359,7 @@ public class Token implements Serializable {
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
-    public Token subtract(Token rightArgument) 
+    public Token subtract(Token rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("subtract", this, rightArgument));

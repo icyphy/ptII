@@ -167,7 +167,7 @@ public class ComplexMatrixToken extends MatrixToken {
             DoubleMatrixToken tem = DoubleMatrixToken.convert(token);
             return new ComplexMatrixToken(tem.complexMatrix());
         }
-        
+
         // The argument is below ComplexMatrixToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(
@@ -333,7 +333,7 @@ public class ComplexMatrixToken extends MatrixToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
- 
+
     /** Return a new token whose value is the value of the argument
      *  Token added to the value of this Token.  It is assumed that
      *  the type of the argument is ComplexMatrixToken.
@@ -343,29 +343,29 @@ public class ComplexMatrixToken extends MatrixToken {
      *  class.
      *  @return A new ComplexMatrixToken containing the result.
      */
-    protected MatrixToken _add(MatrixToken rightArgument) 
+    protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         ComplexMatrixToken convertedArgument =
             (ComplexMatrixToken)rightArgument;
     	Complex[][] result = ComplexMatrixMath.add(_value,
                 convertedArgument._getInternalComplexMatrix());
-        return new ComplexMatrixToken(result);   
+        return new ComplexMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of the argument
      *  Token added to the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class. 
+     *  of each element of this class.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
      *  @return A new ComplexMatrixToken containing the result.
      */
-    protected MatrixToken _addElement(Token rightArgument) 
+    protected MatrixToken _addElement(Token rightArgument)
             throws IllegalActionException {
         Complex scalar = ((ComplexToken)rightArgument).complexValue();
         Complex[][] result = ComplexMatrixMath.add(_value, scalar);
-        return new ComplexMatrixToken(result);   
+        return new ComplexMatrixToken(result);
     }
 
     /** Return a reference to the internal 2-D matrix of complex
@@ -387,16 +387,16 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isCloseTo(
-            MatrixToken rightArgument, double epsilon) 
+            MatrixToken rightArgument, double epsilon)
             throws IllegalActionException {
-        ComplexMatrixToken convertedArgument = 
+        ComplexMatrixToken convertedArgument =
             (ComplexMatrixToken)rightArgument;
         return BooleanToken.getInstance(
                 ComplexMatrixMath.arePartsWithin(_value,
                         convertedArgument._getInternalComplexMatrix(),
                         epsilon));
-    }   
-    
+    }
+
     /** Test for equality of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
      *  ComplexMatrixToken.
@@ -405,11 +405,11 @@ public class ComplexMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A BooleanToken containing the result.
      */
-    protected BooleanToken _isEqualTo(MatrixToken rightArgument) 
+    protected BooleanToken _isEqualTo(MatrixToken rightArgument)
             throws IllegalActionException {
         return _isCloseTo(rightArgument, 0.0);
-    }   
-    
+    }
+
     /** Return a new token whose value is the value of the argument
      *  Token multiplied to the value of this Token.  It is assumed that
      *  the type of the argument is ComplexMatrixToken.
@@ -419,17 +419,17 @@ public class ComplexMatrixToken extends MatrixToken {
      *  class.
      *  @return A new ComplexMatrixToken containing the result.
      */
-    protected MatrixToken _multiply(MatrixToken rightArgument) 
+    protected MatrixToken _multiply(MatrixToken rightArgument)
             throws IllegalActionException {
         ComplexMatrixToken convertedArgument =
             (ComplexMatrixToken)rightArgument;
     	Complex[][] result = ComplexMatrixMath.multiply(_value,
                 convertedArgument._getInternalComplexMatrix());
-        return new ComplexMatrixToken(result);   
+        return new ComplexMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of this token
-     *  multiplied by the value of the argument token. 
+     *  multiplied by the value of the argument token.
      *  This method should be overridden in derived
      *  classes to provide type specific actions for multiply.
      *  @param rightArgument The token to multiply this token by.
@@ -437,11 +437,11 @@ public class ComplexMatrixToken extends MatrixToken {
      *   supported by the derived class.
      *  @return A new ComplexMatrixToken containing the result.
      */
-    protected MatrixToken _multiplyElement(Token rightArgument) 
+    protected MatrixToken _multiplyElement(Token rightArgument)
             throws IllegalActionException {
         Complex scalar = ((ComplexToken)rightArgument).complexValue();
         Complex[][] result = ComplexMatrixMath.multiply(_value, scalar);
-        return new ComplexMatrixToken(result);          
+        return new ComplexMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of the argument
@@ -453,46 +453,46 @@ public class ComplexMatrixToken extends MatrixToken {
      *  class.
      *  @return A new ComplexMatrixToken containing the result.
      */
-    protected MatrixToken _subtract(MatrixToken rightArgument) 
+    protected MatrixToken _subtract(MatrixToken rightArgument)
             throws IllegalActionException {
         ComplexMatrixToken convertedArgument =
             (ComplexMatrixToken)rightArgument;
     	Complex[][] result = ComplexMatrixMath.subtract(_value,
                 convertedArgument._getInternalComplexMatrix());
-        return new ComplexMatrixToken(result);   
+        return new ComplexMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class. 
+     *  of each element of this class.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected MatrixToken _subtractElement(Token rightArgument) 
+    protected MatrixToken _subtractElement(Token rightArgument)
             throws IllegalActionException {
         Complex scalar = ((ComplexToken)rightArgument).complexValue();
         Complex[][] result = ComplexMatrixMath.add(_value, scalar.negate());
-        return new ComplexMatrixToken(result);   
+        return new ComplexMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class. 
+     *  of each element of this class.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected MatrixToken _subtractElementReverse(Token rightArgument) 
+    protected MatrixToken _subtractElementReverse(Token rightArgument)
             throws IllegalActionException {
         Complex scalar = ((ComplexToken)rightArgument).complexValue();
         Complex[][] result = ComplexMatrixMath.negative(
                 ComplexMatrixMath.add(_value, scalar.negate()));
-        return new ComplexMatrixToken(result);   
+        return new ComplexMatrixToken(result);
     }
 
     ///////////////////////////////////////////////////////////////////

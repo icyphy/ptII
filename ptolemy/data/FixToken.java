@@ -141,7 +141,7 @@ public class FixToken extends ScalarToken {
 	if (token instanceof FixToken) {
 	    return (FixToken)token;
 	}
-        
+
         int compare = TypeLattice.compare(BaseType.FIX, token);
         if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException(
@@ -247,19 +247,19 @@ public class FixToken extends ScalarToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-  
+
     /** Return a ScalarToken containing the absolute value of the
      *  value of this token. If this token contains a non-negative
      *  number, it is returned directly; otherwise, a new token is is
      *  return.  Note that it is explicitly allowable to return this
-     *  token, since the units are the same. 
+     *  token, since the units are the same.
      *  @return A FixToken.
      */
     protected ScalarToken _absolute() {
         FixToken result = new FixToken(_value.abs());
         return result;
-    }   
-    
+    }
+
     /** Return a new token whose value is the value of the
      *  argument Token added to the value of this Token.  It is assumed
      *  that the type of the argument is an FixToken.
@@ -269,7 +269,7 @@ public class FixToken extends ScalarToken {
     protected ScalarToken _add(ScalarToken rightArgument) {
         FixPoint result = _value.add(((FixToken)rightArgument).fixValue());
         return new FixToken(result);
-    }            
+    }
 
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed that
@@ -291,11 +291,11 @@ public class FixToken extends ScalarToken {
      *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isCloseTo(
-            ScalarToken rightArgument, double epsilon) 
+            ScalarToken rightArgument, double epsilon)
             throws IllegalActionException {
         return _isEqualTo(rightArgument);
-    }   
-    
+    }
+
     /** Test for equality of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
      *  FixToken.
@@ -304,13 +304,13 @@ public class FixToken extends ScalarToken {
      *  supported by the derived class.
      *  @return A BooleanToken containing the result.
      */
-    protected BooleanToken _isEqualTo(ScalarToken rightArgument) 
+    protected BooleanToken _isEqualTo(ScalarToken rightArgument)
             throws IllegalActionException {
         FixToken convertedArgument = (FixToken)rightArgument;
         FixPoint fixValue = convertedArgument.fixValue();
         return BooleanToken.getInstance(_value.equals(fixValue));
-    }   
-    
+    }
+
     /** Test for ordering of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is FixToken.
      *  @param rightArgument The token to add to this token.
@@ -318,7 +318,7 @@ public class FixToken extends ScalarToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected BooleanToken _isLessThan(ScalarToken rightArgument) 
+    protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         FixToken convertedArgument = (FixToken)rightArgument;
         return BooleanToken.getInstance(
@@ -335,7 +335,7 @@ public class FixToken extends ScalarToken {
      *  @return A new Token containing the result that is of the same class
      *  as this token.
      */
-    protected ScalarToken _modulo(ScalarToken rightArgument) 
+    protected ScalarToken _modulo(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("modulo", this, rightArgument));
@@ -360,7 +360,7 @@ public class FixToken extends ScalarToken {
      *  @return A new FixToken containing the result.
      */
     protected ScalarToken _subtract(ScalarToken rightArgument) {
-        FixPoint result = 
+        FixPoint result =
             _value.subtract(((FixToken)rightArgument).fixValue());
         return new FixToken(result);
      }

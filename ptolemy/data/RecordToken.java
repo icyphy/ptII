@@ -267,7 +267,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If calling the add method on
      *  one of the record fields throws it.
      */
-    protected Token _add(Token rightArgument) 
+    protected Token _add(Token rightArgument)
             throws IllegalActionException {
         RecordToken recordToken = (RecordToken)rightArgument;
 
@@ -300,8 +300,8 @@ public class RecordToken extends AbstractNotConvertibleToken {
             // arguments that were passed in.
             throw new IllegalActionException(null, ex,
                     notSupportedMessage("add", this, rightArgument));
-        }     
-        
+        }
+
         return new RecordToken(labels, values);
     }
 
@@ -346,7 +346,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             // arguments that were passed in.
             throw new IllegalActionException(null, ex,
                     notSupportedMessage("divide", this, rightArgument));
-        } 
+        }
         return new RecordToken(labels, values);
     }
 
@@ -378,14 +378,14 @@ public class RecordToken extends AbstractNotConvertibleToken {
                 if (result.booleanValue() == false) {
                     return BooleanToken.FALSE;
                 }
-            }            
+            }
         } catch (IllegalActionException ex) {
             // If the field operation fails, then create a
             // better error message that has the
             // arguments that were passed in.
             throw new IllegalActionException(null, ex,
                     notSupportedMessage("isCloseTo", this, rightArgument));
-        } 
+        }
         return BooleanToken.TRUE;
     }
 
@@ -424,7 +424,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             // arguments that were passed in.
             throw new IllegalActionException(null, ex,
                     notSupportedMessage("isEqualTo", this, rightArgument));
-        } 
+        }
         return BooleanToken.TRUE;
     }
 
@@ -436,7 +436,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If calling the multiply method on
      *  one of the record fields throws it.
      */
-    protected Token _modulo(Token rightArgument) 
+    protected Token _modulo(Token rightArgument)
             throws IllegalActionException {
         RecordToken recordToken = (RecordToken)rightArgument;
 
@@ -469,7 +469,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             // arguments that were passed in.
             throw new IllegalActionException(null, ex,
                     notSupportedMessage("modulo", this, rightArgument));
-        } 
+        }
         return new RecordToken(labels, values);
     }
 
@@ -514,7 +514,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             // arguments that were passed in.
             throw new IllegalActionException(null, ex,
                     notSupportedMessage("multiply", this, rightArgument));
-        } 
+        }
         return new RecordToken(labels, values);
     }
 
@@ -553,8 +553,8 @@ public class RecordToken extends AbstractNotConvertibleToken {
             // arguments that were passed in.
             throw new IllegalActionException(null, ex,
                     notSupportedMessage("subtract", this, rightArgument));
-        }     
-        
+        }
+
         return new RecordToken(labels, values);
     }
 
@@ -582,7 +582,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
                 _fields.put(labels[i], values[i]);
             } else {
                 throw new IllegalActionException("RecordToken: The " +
-                        "labels array contain duplicate element: " + 
+                        "labels array contain duplicate element: " +
                         labels[i]);
             }
         }

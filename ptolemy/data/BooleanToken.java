@@ -39,7 +39,7 @@ import ptolemy.data.type.*;
 A token that contains a boolean variable. Arithmetic on booleans is
 that of a two-element Galois field (modulo two arithmetic). Thus,
 add() is logical xor, multiply() is logical and, zero() is false,
-one() is true.  
+one() is true.
 <p>
 In order to reduce the number of instances of this object that are created,
 it is highly recommended that the getInstance() method be used, instead of
@@ -104,7 +104,7 @@ public class BooleanToken extends AbstractConvertibleToken {
 	    throws IllegalActionException {
 	if (token instanceof BooleanToken) {
 	    return (BooleanToken)token;
-	} 
+	}
 
         int compare = TypeLattice.compare(BaseType.BOOLEAN, token);
         if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
@@ -135,7 +135,7 @@ public class BooleanToken extends AbstractConvertibleToken {
 	return false;
     }
 
-    /** Return the instance of this class corresponding to the given 
+    /** Return the instance of this class corresponding to the given
      *  boolean value.
      *  @return BooleanToken.TRUE if the argument is true, or
      *  BooleanToken.FALSE otherwise.
@@ -187,7 +187,7 @@ public class BooleanToken extends AbstractConvertibleToken {
 
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
-     *  @return The string "true" if this token represents true, or the 
+     *  @return The string "true" if this token represents true, or the
      *  string "false" if it represents false.
      */
     public String toString() {
@@ -207,7 +207,7 @@ public class BooleanToken extends AbstractConvertibleToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
- 
+
     /** Return a new token whose value is the value of the
      *  argument Token added to the value of this Token.  It is assumed
      *  that the type of the argument is an BooleanToken.
@@ -221,8 +221,8 @@ public class BooleanToken extends AbstractConvertibleToken {
         } else {
             return FALSE;
         }
-    }            
-    
+    }
+
     /** Return a new token whose value is the value of the argument
      *  Token added to the value of this Token.  It is assumed that
      *  the type of the argument is an BooleanToken.  For booleans,
@@ -238,7 +238,7 @@ public class BooleanToken extends AbstractConvertibleToken {
      *  @exception IllegalActionException If the argument token is
      *  FALSE.
      */
-    protected Token _divide(Token rightArgument) 
+    protected Token _divide(Token rightArgument)
         throws IllegalActionException {
         boolean denomValue = ((BooleanToken)rightArgument).booleanValue();
         if (denomValue) {
@@ -258,11 +258,11 @@ public class BooleanToken extends AbstractConvertibleToken {
      *  supported by the derived class.
      *  @return A BooleanToken containing the result.
      */
-    protected BooleanToken _isCloseTo(Token rightArgument, double epsilon) 
+    protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
         return _isEqualTo(rightArgument);
-    }   
-    
+    }
+
     /** Test for equality of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
      *  BooleanToken.
@@ -271,7 +271,7 @@ public class BooleanToken extends AbstractConvertibleToken {
      *  supported by the derived class.
      *  @return A BooleanToken containing the result.
      */
-    protected BooleanToken _isEqualTo(Token rightArgument) 
+    protected BooleanToken _isEqualTo(Token rightArgument)
             throws IllegalActionException {
         boolean argumentValue = ((BooleanToken)rightArgument).booleanValue();
         if (_value == argumentValue) {
@@ -279,8 +279,8 @@ public class BooleanToken extends AbstractConvertibleToken {
         } else {
             return FALSE;
         }
-    }   
-    
+    }
+
     /** Return a new token whose value is the value of this token
      *  modulo the value of the argument token.  It is assumed
      *  that the type of the argument is BooleanToken.
@@ -290,7 +290,7 @@ public class BooleanToken extends AbstractConvertibleToken {
      *  @return A new Token containing the result that is of the same
      *  class as this token.
      */
-    protected Token _modulo(Token rightArgument) 
+    protected Token _modulo(Token rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("modulo", this, rightArgument));
@@ -303,7 +303,7 @@ public class BooleanToken extends AbstractConvertibleToken {
      *  @param rightArgument The token to multiply this token by.
      *  @return A new BooleanToken containing the result.
      */
-    protected Token _multiply(Token rightArgument) 
+    protected Token _multiply(Token rightArgument)
             throws IllegalActionException {
         boolean rightValue = ((BooleanToken)rightArgument).booleanValue();
         if (rightValue && _value) {

@@ -185,7 +185,7 @@ public class StringToken extends AbstractConvertibleToken {
             throws IllegalActionException {
         String result = _value + ((StringToken)rightArgument).stringValue();
         return new StringToken(result);
-    }            
+    }
 
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed
@@ -211,11 +211,11 @@ public class StringToken extends AbstractConvertibleToken {
      *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isCloseTo(
-            Token rightArgument, double epsilon) 
+            Token rightArgument, double epsilon)
             throws IllegalActionException {
         return _isEqualTo(rightArgument);
-    }   
-    
+    }
+
     /** Test for equality of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
      *  StringToken.
@@ -224,13 +224,13 @@ public class StringToken extends AbstractConvertibleToken {
      *  supported by the derived class.
      *  @return A BooleanToken containing the result.
      */
-    protected BooleanToken _isEqualTo(Token rightArgument) 
+    protected BooleanToken _isEqualTo(Token rightArgument)
             throws IllegalActionException {
         StringToken convertedArgument = (StringToken)rightArgument;
         return BooleanToken.getInstance(
                 toString().compareTo(convertedArgument.toString()) == 0);
-    }   
-    
+    }
+
     /** Return a new token whose value is the value of this token
      *  modulo the value of the argument token.  It is assumed
      *  that the type of the argument is StringToken.
@@ -240,7 +240,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  @return A new Token containing the result that is of the same
      *  class as this token.
      */
-    protected Token _modulo(Token rightArgument) 
+    protected Token _modulo(Token rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("modulo", this, rightArgument));
@@ -256,12 +256,12 @@ public class StringToken extends AbstractConvertibleToken {
      *  @return A new Token containing the result that is of the same class
      *  as this token.
      */
-    protected Token _multiply(Token rightArgument) 
+    protected Token _multiply(Token rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("multiply", this, rightArgument));
     }
-                
+
     /** Return a new token whose value is the value of the argument token
      *  subtracted from the value of this token.  It is assumed
      *  that the type of the argument is StringToken.

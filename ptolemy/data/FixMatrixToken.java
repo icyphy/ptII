@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
-This class does not handle operations well, because the result may have 
+This class does not handle operations well, because the result may have
 unusual precision.
 */
 
@@ -340,7 +340,7 @@ public class FixMatrixToken extends MatrixToken {
      *  class.
      *  @return A new FixMatrixToken containing the result.
      */
-    protected MatrixToken _add(MatrixToken rightArgument) 
+    protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         FixMatrixToken convertedArgument = (FixMatrixToken)rightArgument;
     	FixPoint[][] result = convertedArgument.fixMatrix();
@@ -349,19 +349,19 @@ public class FixMatrixToken extends MatrixToken {
                 result[i][j] = result[i][j].add(_value[i][j]);
             }
         }
-        return new FixMatrixToken(result);   
+        return new FixMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of the argument
      *  Token added from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class. 
+     *  of each element of this class.
      *  @param rightArgument The token to add from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected MatrixToken _addElement(Token rightArgument) 
+    protected MatrixToken _addElement(Token rightArgument)
             throws IllegalActionException {
         FixPoint scalar = ((FixToken)rightArgument).fixValue();
         FixPoint[][] result = fixMatrix();
@@ -370,7 +370,7 @@ public class FixMatrixToken extends MatrixToken {
                 result[i][j] = result[i][j].add(scalar);
             }
         }
-        return new FixMatrixToken(result);   
+        return new FixMatrixToken(result);
     }
 
     /** Test for closeness of the values of this Token and the argument
@@ -382,10 +382,10 @@ public class FixMatrixToken extends MatrixToken {
      *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isCloseTo(
-            MatrixToken rightArgument, double epsilon) 
+            MatrixToken rightArgument, double epsilon)
             throws IllegalActionException {
         return _isEqualTo(rightArgument);
-    }   
+    }
 
     /** Test for equality of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
@@ -395,7 +395,7 @@ public class FixMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A BooleanToken containing the result.
      */
-    protected BooleanToken _isEqualTo(MatrixToken rightArgument) 
+    protected BooleanToken _isEqualTo(MatrixToken rightArgument)
             throws IllegalActionException {
         FixMatrixToken convertedArgument = (FixMatrixToken)rightArgument;
         FixPoint[][] matrix = convertedArgument.fixMatrix();
@@ -408,18 +408,18 @@ public class FixMatrixToken extends MatrixToken {
             }
         }
         return BooleanToken.TRUE;
-    }   
+    }
 
     /** Return a new token whose value is the value of the argument
      *  Token multiplyed from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class. 
+     *  of each element of this class.
      *  @param rightArgument The token to multiply from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected MatrixToken _multiplyElement(Token rightArgument) 
+    protected MatrixToken _multiplyElement(Token rightArgument)
             throws IllegalActionException {
         FixPoint scalar = ((FixToken)rightArgument).fixValue();
         FixPoint[][] result = fixMatrix();
@@ -431,7 +431,7 @@ public class FixMatrixToken extends MatrixToken {
                 // System.out.println("result = " + result[i][j] + ", " + result[i][j].getPrecision());
             }
         }
-        return new FixMatrixToken(result);   
+        return new FixMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of the argument
@@ -443,7 +443,7 @@ public class FixMatrixToken extends MatrixToken {
      *  class.
      *  @return A new FixMatrixToken containing the result.
      */
-    protected MatrixToken _subtract(MatrixToken rightArgument) 
+    protected MatrixToken _subtract(MatrixToken rightArgument)
             throws IllegalActionException {
         FixMatrixToken convertedArgument = (FixMatrixToken)rightArgument;
     	FixPoint[][] result = convertedArgument.fixMatrix();
@@ -452,19 +452,19 @@ public class FixMatrixToken extends MatrixToken {
                 result[i][j] = result[i][j].subtract(_value[i][j]);
             }
         }
-        return new FixMatrixToken(result);   
+        return new FixMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class. 
+     *  of each element of this class.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected MatrixToken _subtractElement(Token rightArgument) 
+    protected MatrixToken _subtractElement(Token rightArgument)
             throws IllegalActionException {
         FixPoint scalar = ((FixToken)rightArgument).fixValue();
         FixPoint[][] result = fixMatrix();
@@ -473,19 +473,19 @@ public class FixMatrixToken extends MatrixToken {
                 result[i][j] = result[i][j].subtract(scalar);
             }
         }
-        return new FixMatrixToken(result);   
+        return new FixMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class. 
+     *  of each element of this class.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected MatrixToken _subtractElementReverse(Token rightArgument) 
+    protected MatrixToken _subtractElementReverse(Token rightArgument)
             throws IllegalActionException {
         FixPoint scalar = ((FixToken)rightArgument).fixValue();
         FixPoint[][] result = fixMatrix();
@@ -493,8 +493,8 @@ public class FixMatrixToken extends MatrixToken {
             for (int j = 0; j < _columnCount; j++) {
                 result[i][j] = scalar.subtract(result[i][j]);
             }
-        }  
-        return new FixMatrixToken(result);   
+        }
+        return new FixMatrixToken(result);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -520,7 +520,7 @@ public class FixMatrixToken extends MatrixToken {
 	    }
 	}
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

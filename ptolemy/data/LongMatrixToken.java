@@ -128,7 +128,7 @@ public class LongMatrixToken extends MatrixToken {
 
 	int compare = TypeLattice.compare(BaseType.LONG_MATRIX, token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-	    throw new IllegalActionException(  
+	    throw new IllegalActionException(
                     notSupportedIncomparableConversionMessage(
                             token, "[long]"));
 	}
@@ -358,28 +358,28 @@ public class LongMatrixToken extends MatrixToken {
      *  class.
      *  @return A new LongMatrixToken containing the result.
      */
-    protected MatrixToken _add(MatrixToken rightArgument) 
+    protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         LongMatrixToken convertedArgument = (LongMatrixToken)rightArgument;
         long[][] result = LongMatrixMath.add(
                 convertedArgument._getInternalLongMatrix(), _value);
-        return new LongMatrixToken(result);   
+        return new LongMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of the argument
      *  Token added to the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class. 
+     *  of each element of this class.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected MatrixToken _addElement(Token rightArgument) 
+    protected MatrixToken _addElement(Token rightArgument)
             throws IllegalActionException {
         long scalar = ((LongToken)rightArgument).longValue();
         long[][] result = LongMatrixMath.add(_value, scalar);
-        return new LongMatrixToken(result);   
+        return new LongMatrixToken(result);
     }
 
    /** Return a reference to the internal 2-D matrix of longs that
@@ -400,10 +400,10 @@ public class LongMatrixToken extends MatrixToken {
      *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isCloseTo(
-            MatrixToken rightArgument, double epsilon) 
+            MatrixToken rightArgument, double epsilon)
             throws IllegalActionException {
         return _isEqualTo(rightArgument);
-    }   
+    }
 
     /** Test for equality of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
@@ -413,13 +413,13 @@ public class LongMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A BooleanToken containing the result.
      */
-    protected BooleanToken _isEqualTo(MatrixToken rightArgument) 
+    protected BooleanToken _isEqualTo(MatrixToken rightArgument)
             throws IllegalActionException {
         LongMatrixToken convertedArgument = (LongMatrixToken)rightArgument;
         return BooleanToken.getInstance(
                 LongMatrixMath.within(_value,
                         convertedArgument._getInternalLongMatrix(), 0));
-    }   
+    }
 
     /** Return a new token whose value is the value of this token
      *  multiplied by the value of the argument token.  It is assumed
@@ -430,16 +430,16 @@ public class LongMatrixToken extends MatrixToken {
      *  class.
      *  @return A new LongMatrixToken containing the result.
      */
-    protected MatrixToken _multiply(MatrixToken rightArgument) 
+    protected MatrixToken _multiply(MatrixToken rightArgument)
             throws IllegalActionException {
         LongMatrixToken convertedArgument = (LongMatrixToken)rightArgument;
         long[][] result = LongMatrixMath.multiply(
                 _value, convertedArgument._getInternalLongMatrix());
-        return new LongMatrixToken(result);          
+        return new LongMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of this token
-     *  multiplied by the value of the argument scalar token. 
+     *  multiplied by the value of the argument scalar token.
      *  This method should be overridden in derived
      *  classes to provide type specific actions for multiply.
      *  @param rightArgument The token to multiply this token by.
@@ -447,11 +447,11 @@ public class LongMatrixToken extends MatrixToken {
      *   supported by the derived class.
      *  @return A new LongMatrixToken containing the result.
      */
-    protected MatrixToken _multiplyElement(Token rightArgument) 
+    protected MatrixToken _multiplyElement(Token rightArgument)
             throws IllegalActionException {
         long scalar = ((LongToken)rightArgument).longValue();
         long[][] result = LongMatrixMath.multiply(_value, scalar);
-        return new LongMatrixToken(result);          
+        return new LongMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -468,40 +468,40 @@ public class LongMatrixToken extends MatrixToken {
         LongMatrixToken convertedArgument = (LongMatrixToken)rightArgument;
         long[][] result = LongMatrixMath.subtract(_value,
                 convertedArgument._getInternalLongMatrix());
-        return new LongMatrixToken(result);          
+        return new LongMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class. 
+     *  of each element of this class.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected MatrixToken _subtractElement(Token rightArgument) 
+    protected MatrixToken _subtractElement(Token rightArgument)
             throws IllegalActionException {
         long scalar = ((LongToken)rightArgument).longValue();
         long[][] result = LongMatrixMath.add(_value, -scalar);
-        return new LongMatrixToken(result);   
+        return new LongMatrixToken(result);
     }
 
     /** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this Token. It is
      *  assumed that the type of the argument is the same as the type
-     *  of each element of this class. 
+     *  of each element of this class.
      *  @param rightArgument The token to subtract from this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected MatrixToken _subtractElementReverse(Token rightArgument) 
+    protected MatrixToken _subtractElementReverse(Token rightArgument)
             throws IllegalActionException {
         long scalar = ((LongToken)rightArgument).longValue();
         long[][] result = LongMatrixMath.negative(
                 LongMatrixMath.add(_value, -scalar));
-        return new LongMatrixToken(result);   
+        return new LongMatrixToken(result);
     }
 
     ///////////////////////////////////////////////////////////////////

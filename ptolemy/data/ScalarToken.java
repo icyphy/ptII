@@ -50,7 +50,7 @@ Abstract base class for tokens that contain a scalar.  This class
 defines methods for type conversion among different scalar tokens. The
 implementation in this base class just throws an exception.  Derived
 class should override the methods that the corresponding conversion
-can be achieved without loss of information.  
+can be achieved without loss of information.
 
 <p> Instances of ScalarToken may also have units. In the arithmetic
 methods add(), modulo(), and subtract(), the two operands must have the same
@@ -68,7 +68,7 @@ of the token.
 this class to perform the proper units conversion for all scalar
 types.  This class in turn defines a new set of protected methods that
 scalar tokens should override to inherit the proper type conversion
-and unit conversion operations.  
+and unit conversion operations.
 
 @author Yuhong Xiong, Mudit Goel, Steve Neuendorffer
 @version $Id$
@@ -127,13 +127,13 @@ public abstract class ScalarToken extends Token {
                 // arguments that were passed in.
                throw new IllegalActionException(null, ex,
                         notSupportedMessage("add", this, rightArgument));
-            }        
+            }
         } else if (typeInfo == CPO.LOWER) {
             Token result = rightArgument.addReverse(this);
             return result;
         } else {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("add", 
+                    notSupportedIncomparableMessage("add",
                             this, rightArgument));
         }
     }
@@ -168,7 +168,7 @@ public abstract class ScalarToken extends Token {
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                    notSupportedMessage("addReverse", 
+                    notSupportedMessage("addReverse",
                             this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
@@ -179,7 +179,7 @@ public abstract class ScalarToken extends Token {
             return result;
         } else {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("addReverse", 
+                    notSupportedIncomparableMessage("addReverse",
                             this, leftArgument));
         }
     }
@@ -208,7 +208,7 @@ public abstract class ScalarToken extends Token {
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
-    public final Token divide(Token rightArgument) 
+    public final Token divide(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
         if(typeInfo == CPO.SAME) {
@@ -233,7 +233,7 @@ public abstract class ScalarToken extends Token {
             return result;
         } else {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("divide", 
+                    notSupportedIncomparableMessage("divide",
                             this, rightArgument));
         }
     }
@@ -253,7 +253,7 @@ public abstract class ScalarToken extends Token {
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
-    public final Token divideReverse(Token leftArgument) 
+    public final Token divideReverse(Token leftArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(leftArgument, getType());
         // We would normally expect this to be LOWER, since this will almost
@@ -269,7 +269,7 @@ public abstract class ScalarToken extends Token {
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                    notSupportedMessage("divideReverse", 
+                    notSupportedMessage("divideReverse",
                             this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
@@ -280,7 +280,7 @@ public abstract class ScalarToken extends Token {
             return result;
         } else {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("divideReverse", 
+                    notSupportedIncomparableMessage("divideReverse",
                             this, leftArgument));
         }
     }
@@ -322,7 +322,7 @@ public abstract class ScalarToken extends Token {
      *  @see #isEqualTo
      *  @param rightArgument The token to test closeness of this token with.
      *  @param epsilon The value that we use to determine whether two
-     *  tokens are close. 
+     *  tokens are close.
      *  @return A boolean token that contains the value true if the
      *  units of this token and the argument token are the same, and their
      *  values are close.
@@ -352,7 +352,7 @@ public abstract class ScalarToken extends Token {
                 // arguments that were passed in.
                throw new IllegalActionException(null, ex,
                         notSupportedMessage("closeness", this, rightArgument));
-            }        
+            }
         } else if (typeInfo == CPO.LOWER) {
              return rightArgument.isCloseTo(this, epsilon);
         } else {
@@ -395,7 +395,7 @@ public abstract class ScalarToken extends Token {
                 // arguments that were passed in.
                throw new IllegalActionException(null, ex,
                         notSupportedMessage("equality", this, rightArgument));
-            }        
+            }
         } else if (typeInfo == CPO.LOWER) {
              return rightArgument.isEqualTo(this);
         } else {
@@ -447,7 +447,7 @@ public abstract class ScalarToken extends Token {
                 // arguments that were passed in.
                throw new IllegalActionException(null, ex,
                         notSupportedMessage("isGreaterThan", this, rightArgument));
-            }        
+            }
         } else if (typeInfo == CPO.LOWER) {
              return rightArgument.isLessThan(this);
         } else {
@@ -456,7 +456,7 @@ public abstract class ScalarToken extends Token {
                             this, rightArgument));
         }
     }
-    
+
 
     /** Check whether the value of this token is strictly less than that of the
      *  argument token.  The argument and this token are converted to
@@ -490,7 +490,7 @@ public abstract class ScalarToken extends Token {
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
                         notSupportedMessage("isLessThan", this, rightArgument));
-            }        
+            }
         } else if (typeInfo == CPO.LOWER) {
              return rightArgument.isGreaterThan(this);
         } else {
@@ -499,7 +499,7 @@ public abstract class ScalarToken extends Token {
                             this, rightArgument));
         }
     }
-    
+
     /** Return a scalar token that contains the value of this token in the
      *  units of the argument token. The unit category of the argument token
      *  must be the same as that of this token, otherwise, an exception will
@@ -544,7 +544,7 @@ public abstract class ScalarToken extends Token {
      *  this token are of incomparable types, or have different units,
      *  or the operation does not make sense for the given types.
      */
-    public final Token modulo(Token rightArgument) 
+    public final Token modulo(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
         if(typeInfo == CPO.SAME) {
@@ -562,17 +562,17 @@ public abstract class ScalarToken extends Token {
                 // arguments that were passed in.
                throw new IllegalActionException(null, ex,
                         notSupportedMessage("modulo", this, rightArgument));
-            }   
+            }
         } else if (typeInfo == CPO.LOWER) {
              Token result = rightArgument.moduloReverse(this);
              return result;
         } else {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("modulo", 
+                    notSupportedIncomparableMessage("modulo",
                             this, rightArgument));
         }
     }
-  
+
     /** Return a new token whose value is the value of this token
      *  modulo the value of the argument token.  Type conversion also
      *  occurs here, so that the operation is performed at the least
@@ -604,7 +604,7 @@ public abstract class ScalarToken extends Token {
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                    notSupportedMessage("moduloReverse", 
+                    notSupportedMessage("moduloReverse",
                             this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
@@ -615,7 +615,7 @@ public abstract class ScalarToken extends Token {
             return result;
         } else {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("moduloReverse", 
+                    notSupportedIncomparableMessage("moduloReverse",
                             this, leftArgument));
         }
     }
@@ -653,7 +653,7 @@ public abstract class ScalarToken extends Token {
                 // arguments that were passed in.
                throw new IllegalActionException(null, ex,
                         notSupportedMessage("multiply", this, rightArgument));
-            }        
+            }
         } else if (typeInfo == CPO.LOWER) {
              Token result = rightArgument.multiplyReverse(this);
              return result;
@@ -696,7 +696,7 @@ public abstract class ScalarToken extends Token {
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                    notSupportedMessage("multiplyReverse", 
+                    notSupportedMessage("multiplyReverse",
                             this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
@@ -707,7 +707,7 @@ public abstract class ScalarToken extends Token {
             return result;
         } else {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("multiplyReverse", 
+                    notSupportedIncomparableMessage("multiplyReverse",
                             this, leftArgument));
         }
     }
@@ -738,12 +738,12 @@ public abstract class ScalarToken extends Token {
      *  this token are of incomparable types, or have different units,
      *  or the operation does not make sense for the given types.
      */
-    public final Token subtract(Token rightArgument) 
+    public final Token subtract(Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(getType(), rightArgument);
         if(typeInfo == CPO.SAME) {
             Token result = _doSubtract(rightArgument);
-            return result;   
+            return result;
         } else if (typeInfo == CPO.HIGHER) {
             ScalarToken convertedArgument = (ScalarToken)
                 getType().convert(rightArgument);
@@ -756,13 +756,13 @@ public abstract class ScalarToken extends Token {
                 // arguments that were passed in.
                throw new IllegalActionException(null, ex,
                         notSupportedMessage("subtract", this, rightArgument));
-            }    
+            }
         } else if (typeInfo == CPO.LOWER) {
              Token result = rightArgument.subtractReverse(this);
              return result;
         } else {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("subtract", 
+                    notSupportedIncomparableMessage("subtract",
                             this, rightArgument));
         }
     }
@@ -798,7 +798,7 @@ public abstract class ScalarToken extends Token {
                 // better error message that has the types of the
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
-                    notSupportedMessage("subtractReverse", 
+                    notSupportedMessage("subtractReverse",
                             this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
@@ -809,7 +809,7 @@ public abstract class ScalarToken extends Token {
             return result;
         } else {
             throw new IllegalActionException(
-                    notSupportedIncomparableMessage("subtractReverse", 
+                    notSupportedIncomparableMessage("subtractReverse",
                             this, leftArgument));
         }
     }
@@ -907,9 +907,9 @@ public abstract class ScalarToken extends Token {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected abstract ScalarToken _add(ScalarToken rightArgument) 
+    protected abstract ScalarToken _add(ScalarToken rightArgument)
             throws IllegalActionException;
-            
+
     /** Add the corresponding unit category exponents.
      *  @param token A token whose exponent will be added with the
      *   exponents of this token.
@@ -992,7 +992,7 @@ public abstract class ScalarToken extends Token {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected abstract ScalarToken _divide(ScalarToken rightArgument) 
+    protected abstract ScalarToken _divide(ScalarToken rightArgument)
             throws IllegalActionException;
 
     /** Test for closeness of the values of this Token and the argument
@@ -1019,9 +1019,9 @@ public abstract class ScalarToken extends Token {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected abstract BooleanToken _isEqualTo(ScalarToken rightArgument) 
+    protected abstract BooleanToken _isEqualTo(ScalarToken rightArgument)
             throws IllegalActionException;
-            
+
     /** Test for ordering of the values of this Token and the argument
      *  Token.  It is assumed that the type and units of the argument
      *  is the same as the type of this class.  This method should be
@@ -1032,9 +1032,9 @@ public abstract class ScalarToken extends Token {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected abstract BooleanToken _isLessThan(ScalarToken rightArgument) 
+    protected abstract BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException;
-            
+
     /** Return true if this token does not have a unit.
      *  @return True if this token does not have a unit.
      */
@@ -1053,7 +1053,7 @@ public abstract class ScalarToken extends Token {
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected abstract ScalarToken _modulo(ScalarToken rightArgument) 
+    protected abstract ScalarToken _modulo(ScalarToken rightArgument)
             throws IllegalActionException;
 
     /** Return a new token whose value is the value of this token
@@ -1067,7 +1067,7 @@ public abstract class ScalarToken extends Token {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected abstract ScalarToken _multiply(ScalarToken rightArgument) 
+    protected abstract ScalarToken _multiply(ScalarToken rightArgument)
             throws IllegalActionException;
 
     /** Return a new token whose value is the value of the argument
@@ -1193,7 +1193,7 @@ public abstract class ScalarToken extends Token {
      *  class.
      *  @return A new Token containing the result.
      */
-    private Token _doAdd(Token rightArgument) 
+    private Token _doAdd(Token rightArgument)
             throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken)rightArgument;
         if (!_areUnitsEqual(convertedArgument)) {
@@ -1220,7 +1220,7 @@ public abstract class ScalarToken extends Token {
      *  compatible, or this operation is not supported by the derived
      *  class.
      */
-    private Token _doDivide(Token rightArgument) 
+    private Token _doDivide(Token rightArgument)
             throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken)rightArgument;
         ScalarToken result = _divide(convertedArgument);
@@ -1229,7 +1229,7 @@ public abstract class ScalarToken extends Token {
             _subtractCategoryExponents(convertedArgument);
         return result;
     }
-    
+
     /** Test for closeness of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is the
      *  same as the type of this class.  This class overrides the base
@@ -1244,7 +1244,7 @@ public abstract class ScalarToken extends Token {
      *  @return A BooleanToken which contains the result of the test.
      */
     private BooleanToken _doIsCloseTo(
-            Token rightArgument, double epsilon) 
+            Token rightArgument, double epsilon)
             throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken)rightArgument;
         if (!_areUnitsEqual(convertedArgument)) {
@@ -1271,7 +1271,7 @@ public abstract class ScalarToken extends Token {
      *  supported by the derived class.
      *  @return A BooleanToken which contains the result of the test.
      */
-    private BooleanToken _doIsEqualTo(Token rightArgument) 
+    private BooleanToken _doIsEqualTo(Token rightArgument)
             throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken)rightArgument;
         if (!_areUnitsEqual(convertedArgument)) {
@@ -1294,7 +1294,7 @@ public abstract class ScalarToken extends Token {
      *  supported by the derived class.
      *  @return A BooleanToken which contains the result of the test.
      */
-    private BooleanToken _doIsLessThan(Token rightArgument) 
+    private BooleanToken _doIsLessThan(Token rightArgument)
             throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken)rightArgument;
         if (!_areUnitsEqual(convertedArgument)) {
@@ -1322,7 +1322,7 @@ public abstract class ScalarToken extends Token {
      *  class.
      *  @return A new Token containing the result.
      */
-    private Token _doModulo(Token rightArgument) 
+    private Token _doModulo(Token rightArgument)
             throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken)rightArgument;
         ScalarToken result = _modulo(convertedArgument);
@@ -1332,11 +1332,11 @@ public abstract class ScalarToken extends Token {
                     + " because the units of this token: " + unitsString()
                     + " are not the same as those of the argument: "
                     + convertedArgument.unitsString());
-        } 
+        }
         result._unitCategoryExponents = _copyOfCategoryExponents();
         return result;
     }
-    
+
     /** Return a new token whose value is the value of this token
      *  multiplied by the value of the argument token.  It is assumed
      *  that the type of the argument is the same as the type of this
@@ -1350,12 +1350,12 @@ public abstract class ScalarToken extends Token {
      *  class.
      *  @return A new Token containing the result.
      */
-    private Token _doMultiply(Token rightArgument) 
+    private Token _doMultiply(Token rightArgument)
             throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken)rightArgument;
         ScalarToken result = _multiply(convertedArgument);
         // compute units
-        result._unitCategoryExponents = 
+        result._unitCategoryExponents =
             _addCategoryExponents(convertedArgument);
         return result;
     }

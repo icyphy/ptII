@@ -117,9 +117,9 @@ public class ByteToken extends ScalarToken {
      *  @param token The token to be converted to a ByteToken.
      *  @return A ByteToken.
      *  @exception IllegalActionException If the conversion
-     *   cannot be carried out.  
+     *   cannot be carried out.
      */
-    public static ByteToken convert(Token token) 
+    public static ByteToken convert(Token token)
             throws IllegalActionException {
         if (token instanceof ByteToken) {
             return (ByteToken)token;
@@ -251,7 +251,7 @@ public class ByteToken extends ScalarToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
- 
+
     /** Return a ScalarToken containing the absolute value of the
      *  value of this token. If this token contains a non-negative
      *  number, it is returned directly; otherwise, a new token is is
@@ -265,7 +265,7 @@ public class ByteToken extends ScalarToken {
      */
     protected ScalarToken _absolute() {
         return this;
-    }   
+    }
 
     /** Return a new token whose value is the value of the
      *  argument Token added to the value of this Token.  It is assumed
@@ -276,7 +276,7 @@ public class ByteToken extends ScalarToken {
     protected ScalarToken _add(ScalarToken rightArgument) {
         byte sum = (byte)(_value + ((ByteToken)rightArgument).byteValue());
         return new ByteToken(sum);
-    }            
+    }
 
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed that
@@ -301,11 +301,11 @@ public class ByteToken extends ScalarToken {
      *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isCloseTo(
-            ScalarToken rightArgument, double epsilon) 
+            ScalarToken rightArgument, double epsilon)
             throws IllegalActionException {
         return _isEqualTo(rightArgument);
-    }   
-    
+    }
+
     /** Test for equality of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
      *  ByteToken.
@@ -314,12 +314,12 @@ public class ByteToken extends ScalarToken {
      *  supported by the derived class.
      *  @return A BooleanToken containing the result.
      */
-    protected BooleanToken _isEqualTo(ScalarToken rightArgument) 
+    protected BooleanToken _isEqualTo(ScalarToken rightArgument)
             throws IllegalActionException {
         ByteToken convertedArgument = (ByteToken)rightArgument;
         return BooleanToken.getInstance(
                 _value == convertedArgument.byteValue());
-    }   
+    }
 
     /** Test for ordering of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is ByteToken.
@@ -328,7 +328,7 @@ public class ByteToken extends ScalarToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected BooleanToken _isLessThan(ScalarToken rightArgument) 
+    protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         ByteToken convertedArgument = (ByteToken)rightArgument;
         return BooleanToken.getInstance(

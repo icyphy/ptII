@@ -186,14 +186,14 @@ public class ComplexToken extends ScalarToken {
      *  value of this token. If this token contains a non-negative
      *  number, it is returned directly; otherwise, a new token is is
      *  return.  Note that it is explicitly allowable to return this
-     *  token, since the units are the same. 
+     *  token, since the units are the same.
      *  @return A DoubleToken.
      */
     protected ScalarToken _absolute() {
         DoubleToken result = new DoubleToken(_value.magnitude());
         return result;
     }
-    
+
     /** Return a new token whose value is the value of the
      *  argument Token added to the value of this Token.  It is assumed
      *  that the type of the argument is an ComplexToken.
@@ -201,10 +201,10 @@ public class ComplexToken extends ScalarToken {
      *  @return A new ComplexToken containing the result.
      */
     protected ScalarToken _add(ScalarToken rightArgument) {
-        Complex result = 
+        Complex result =
             _value.add(((ComplexToken)rightArgument).complexValue());
         return new ComplexToken(result);
-    }            
+    }
 
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed that
@@ -212,7 +212,7 @@ public class ComplexToken extends ScalarToken {
      *  @param rightArgument The token to divide this token by.
      *  @return A new ComplexToken containing the result.
      */
-    protected ScalarToken _divide(ScalarToken rightArgument) 
+    protected ScalarToken _divide(ScalarToken rightArgument)
             throws IllegalActionException {
         Complex result =
             _value.divide(((ComplexToken)rightArgument).complexValue());
@@ -228,12 +228,12 @@ public class ComplexToken extends ScalarToken {
      *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isCloseTo(
-            ScalarToken rightArgument, double epsilon) 
+            ScalarToken rightArgument, double epsilon)
             throws IllegalActionException {
         ComplexToken difference = (ComplexToken)subtract(rightArgument);
         return difference.absolute().isLessThan(new DoubleToken(epsilon));
-    }   
-    
+    }
+
     /** Test for equality of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
      *  ComplexToken.
@@ -242,13 +242,13 @@ public class ComplexToken extends ScalarToken {
      *  supported by the derived class.
      *  @return A BooleanToken containing the result.
      */
-    protected BooleanToken _isEqualTo(ScalarToken rightArgument) 
+    protected BooleanToken _isEqualTo(ScalarToken rightArgument)
             throws IllegalActionException {
         ComplexToken convertedArgument = (ComplexToken)rightArgument;
         Complex complexValue = convertedArgument.complexValue();
         return BooleanToken.getInstance(_value.equals(complexValue));
-    }   
-    
+    }
+
     /** Test for ordering of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is ByteToken.
      *  @param rightArgument The token to add to this token.
@@ -256,7 +256,7 @@ public class ComplexToken extends ScalarToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected BooleanToken _isLessThan(ScalarToken rightArgument) 
+    protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("isLessThan", this, rightArgument) +
@@ -272,7 +272,7 @@ public class ComplexToken extends ScalarToken {
      *  @return A new Token containing the result that is of the same class
      *  as this token.
      */
-    protected ScalarToken _modulo(ScalarToken rightArgument) 
+    protected ScalarToken _modulo(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("modulo", this, rightArgument));
@@ -285,7 +285,7 @@ public class ComplexToken extends ScalarToken {
      *  @return A new ComplexToken containing the result.
      */
     protected ScalarToken _multiply(ScalarToken rightArgument) {
-        Complex result = 
+        Complex result =
             _value.multiply(((ComplexToken)rightArgument).complexValue());
         return new ComplexToken(result);
     }
@@ -297,7 +297,7 @@ public class ComplexToken extends ScalarToken {
      *  @return A new ComplexToken containing the result.
      */
     protected ScalarToken _subtract(ScalarToken rightArgument) {
-        Complex result = 
+        Complex result =
             _value.subtract(((ComplexToken)rightArgument).complexValue());
         return new ComplexToken(result);
     }

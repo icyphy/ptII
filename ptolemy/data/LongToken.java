@@ -172,12 +172,12 @@ public class LongToken extends ScalarToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
- 
+
     /** Return a ScalarToken containing the absolute value of the
      *  value of this token. If this token contains a non-negative
      *  number, it is returned directly; otherwise, a new token is is
      *  return.  Note that it is explicitly allowable to return this
-     *  token, since the units are the same. 
+     *  token, since the units are the same.
      *  @return An LongToken.
      */
     protected ScalarToken _absolute() {
@@ -189,7 +189,7 @@ public class LongToken extends ScalarToken {
         }
         return result;
     }
-    
+
     /** Return a new token whose value is the value of the
      *  argument Token added to the value of this Token.  It is assumed
      *  that the type of the argument is an LongToken.
@@ -199,7 +199,7 @@ public class LongToken extends ScalarToken {
     protected ScalarToken _add(ScalarToken rightArgument) {
         long sum = _value + ((LongToken)rightArgument).longValue();
         return new LongToken(sum);
-    }            
+    }
 
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed that
@@ -221,11 +221,11 @@ public class LongToken extends ScalarToken {
      *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isCloseTo(
-            ScalarToken rightArgument, double epsilon) 
+            ScalarToken rightArgument, double epsilon)
             throws IllegalActionException {
         return _isEqualTo(rightArgument);
-    }   
-    
+    }
+
     /** Test for equality of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
      *  LongToken.
@@ -234,13 +234,13 @@ public class LongToken extends ScalarToken {
      *  supported by the derived class.
      *  @return A BooleanToken containing the result.
      */
-    protected BooleanToken _isEqualTo(ScalarToken rightArgument) 
+    protected BooleanToken _isEqualTo(ScalarToken rightArgument)
             throws IllegalActionException {
         LongToken convertedArgument = (LongToken)rightArgument;
         return BooleanToken.getInstance(
                 _value == convertedArgument.longValue());
-    }   
-    
+    }
+
     /** Test for ordering of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is LongToken.
      *  @param rightArgument The token to add to this token.
@@ -248,7 +248,7 @@ public class LongToken extends ScalarToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected BooleanToken _isLessThan(ScalarToken rightArgument) 
+    protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         LongToken convertedArgument = (LongToken)rightArgument;
         return BooleanToken.getInstance(

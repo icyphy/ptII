@@ -261,10 +261,10 @@ public class BooleanMatrixToken extends MatrixToken {
      *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isCloseTo(
-            MatrixToken rightArgument, double epsilon) 
+            MatrixToken rightArgument, double epsilon)
             throws IllegalActionException {
         return _isEqualTo(rightArgument);
-    }   
+    }
 
     /** Test for equality of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
@@ -274,9 +274,9 @@ public class BooleanMatrixToken extends MatrixToken {
      *  supported by the derived class.
      *  @return A BooleanToken containing the result.
      */
-    protected BooleanToken _isEqualTo(MatrixToken rightArgument) 
+    protected BooleanToken _isEqualTo(MatrixToken rightArgument)
             throws IllegalActionException {
-        BooleanMatrixToken convertedArgument = 
+        BooleanMatrixToken convertedArgument =
             (BooleanMatrixToken)rightArgument;
         boolean[][] matrix = convertedArgument.booleanMatrix();
         for (int i = 0; i < _rowCount; i++) {
@@ -287,8 +287,8 @@ public class BooleanMatrixToken extends MatrixToken {
             }
         }
         return BooleanToken.TRUE;
-    }   
-    
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

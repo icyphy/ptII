@@ -104,7 +104,7 @@ public class DoubleToken extends ScalarToken {
      *  @exception IllegalActionException If the conversion
      *   cannot be carried out.
      */
-    public static DoubleToken convert(Token token) 
+    public static DoubleToken convert(Token token)
             throws IllegalActionException {
         if (token instanceof DoubleToken) {
             return (DoubleToken)token;
@@ -128,7 +128,7 @@ public class DoubleToken extends ScalarToken {
                     notSupportedConversionMessage(token, "double"));
         }
     }
-    
+
     /** Return the value in the token as a double.
      *  @return The value contained in this token as a double.
      */
@@ -214,12 +214,12 @@ public class DoubleToken extends ScalarToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Return a ScalarToken containing the absolute value of the
      *  value of this token. If this token contains a non-negative
      *  number, it is returned directly; otherwise, a new token is is
      *  return.  Note that it is explicitly allowable to return this
-     *  token, since the units are the same. 
+     *  token, since the units are the same.
      *  @return An DoubleToken.
      */
     protected ScalarToken _absolute() {
@@ -241,7 +241,7 @@ public class DoubleToken extends ScalarToken {
     protected ScalarToken _add(ScalarToken rightArgument) {
         double sum = _value + ((DoubleToken)rightArgument).doubleValue();
         return new DoubleToken(sum);
-    }            
+    }
 
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed that
@@ -263,13 +263,13 @@ public class DoubleToken extends ScalarToken {
      *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isCloseTo(
-            ScalarToken rightArgument, double epsilon) 
+            ScalarToken rightArgument, double epsilon)
             throws IllegalActionException {
         DoubleToken convertedArgument = (DoubleToken)rightArgument;
         DoubleToken difference = (DoubleToken)subtract(convertedArgument);
         return difference.absolute().isLessThan(new DoubleToken(epsilon));
-    }   
-    
+    }
+
     /** Test for equality of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
      *  DoubleToken.
@@ -278,13 +278,13 @@ public class DoubleToken extends ScalarToken {
      *  supported by the derived class.
      *  @return A BooleanToken containing the result.
      */
-    protected BooleanToken _isEqualTo(ScalarToken rightArgument) 
+    protected BooleanToken _isEqualTo(ScalarToken rightArgument)
             throws IllegalActionException {
         DoubleToken convertedArgument = (DoubleToken)rightArgument;
         return BooleanToken.getInstance(
                 _value == convertedArgument.doubleValue());
-    }   
-    
+    }
+
     /** Test for ordering of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is DoubleToken.
      *  @param rightArgument The token to add to this token.
@@ -292,7 +292,7 @@ public class DoubleToken extends ScalarToken {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    protected BooleanToken _isLessThan(ScalarToken rightArgument) 
+    protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         DoubleToken convertedArgument = (DoubleToken)rightArgument;
         return BooleanToken.getInstance(
@@ -328,7 +328,7 @@ public class DoubleToken extends ScalarToken {
      *  @return A new DoubleToken containing the result.
      */
     protected ScalarToken _subtract(ScalarToken rightArgument) {
-        double difference = _value - 
+        double difference = _value -
             ((DoubleToken)rightArgument).doubleValue();
         return new DoubleToken(difference);
     }
