@@ -522,8 +522,6 @@
                 <entity name="AxBx_AyBy" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="(Ax*Bx+Ay*By)/(sqrtA*sqrtB)">
                     </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
-                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="314.0, 139.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -642,8 +640,6 @@
                 </entity>
                 <entity name="AxBy-AyBx" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="-(Ax*By-Ay*Bx)">
-                    </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="290.0, 308.0">
                     </property>
@@ -956,8 +952,6 @@
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
-                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="367.0, 96.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -984,8 +978,6 @@
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
-                    </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="360.0, 272.0">
                     </property>
@@ -1214,8 +1206,6 @@
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
-                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="367.0, 96.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -1242,8 +1232,6 @@
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
-                    </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="360.0, 272.0">
                     </property>
@@ -1511,8 +1499,6 @@
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
-                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="367.0, 96.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -1539,8 +1525,6 @@
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
-                    </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="360.0, 272.0">
                     </property>
@@ -2244,8 +2228,6 @@
                 <entity name="AxBx_AyBy" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="(Ax*Bx+Ay*By)/(sqrtA*sqrtB)">
                     </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
-                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="314.0, 139.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -2364,8 +2346,6 @@
                 </entity>
                 <entity name="AxBy-AyBx" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="-(Ax*By-Ay*Bx)">
-                    </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="290.0, 308.0">
                     </property>
@@ -2678,8 +2658,6 @@
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
-                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="367.0, 96.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -2706,8 +2684,6 @@
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
-                    </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="360.0, 272.0">
                     </property>
@@ -2936,8 +2912,6 @@
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
-                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="367.0, 96.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -2964,8 +2938,6 @@
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
-                    </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="360.0, 272.0">
                     </property>
@@ -3624,8 +3596,6 @@
                 <entity name="AxBx_AyBy" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="(Ax*Bx+Ay*By)/(sqrtA*sqrtB)">
                     </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
-                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="314.0, 139.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -3744,8 +3714,6 @@
                 </entity>
                 <entity name="AxBy-AyBx" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="-(Ax*By-Ay*Bx)">
-                    </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="290.0, 308.0">
                     </property>
@@ -4058,8 +4026,6 @@
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
-                    </property>
                     <property name="_location" class="ptolemy.moml.Location" value="367.0, 96.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -4086,8 +4052,6 @@
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
-                    </property>
-                    <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="360.0, 272.0">
                     </property>

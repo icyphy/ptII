@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="HybridSystem" class="ptolemy.actor.TypedCompositeActor">
+<entity name="HybridSystem" class="ptolemy.actor.TypedCompositeActor">
     <property name="CTTopLevelDirector" class="ptolemy.domains.ct.kernel.CTMultiSolverDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -65,6 +65,18 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Displacement of Masses</title>
+<xLabel>time</xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="50.0"/>
+<yRange min="-0.5" max="3.0"/>
+<noGrid/>
+</plot>?>
+        </configure>
     </entity>
     <entity name="HS" class="ptolemy.domains.ct.kernel.CTCompositeActor">
         <property name="HSDirector" class="ptolemy.domains.fsm.kernel.HSDirector">
@@ -270,7 +282,7 @@
                 </property>
             </port>
             <entity name="V1" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0272884">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="311.0, 144.0">
                 </property>
@@ -282,7 +294,7 @@
                 </port>
             </entity>
             <entity name="P1" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.7423391">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="445.0, 150.0">
                 </property>
@@ -309,7 +321,7 @@
                 </port>
             </entity>
             <entity name="V2" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0272884">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="323.0, 266.0">
                 </property>
@@ -321,7 +333,7 @@
                 </port>
             </entity>
             <entity name="P2" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="3.0">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.7423391">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="449.0, 269.0">
                 </property>
@@ -478,7 +490,7 @@
                 <property name="output"/>
             </port>
             <entity name="V1" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0236287">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -488,7 +500,7 @@
                 </port>
             </entity>
             <entity name="P1" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.5893722">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -498,7 +510,7 @@
                 </port>
             </entity>
             <entity name="STI" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="10.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -630,4 +642,4 @@
     <link port="HS.force2" relation="_R1"/>
     <link port="HS.P1" relation="_R2"/>
     <link port="HS.P2" relation="_R3"/>
-</model>
+</entity>

@@ -80,8 +80,6 @@ given by the signal frequency. The sample rate is assumed to be 8kHz.</text>
     <entity name="Expression1" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="signal*carrier + noise">
         </property>
-        <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute" value="signal, carrier, noise">
-        </property>
         <property name="_location" class="ptolemy.moml.Location" value="197.0, 192.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">

@@ -50,8 +50,17 @@ On each firing, evaluate an expression that may include references
 to the inputs, current time, and a count of the firing.  The ports are
 referenced by the variables that have the same name as the port.
 To use this class, instantiate it, then add ports (instances of TypedIOPort).
-You can add ports by setting the <i>inputPorts</i> parameter to a
-comma-separated list of names.
+In vergil, you can add ports by right clicking on the icon and selecting
+"Configure Ports".  In MoML you can add ports by just including ports
+of class TypedIOPort, set to be inputs, as in the following example:
+<pre>
+   &lt;entity name="exp" class="ptolemy.actor.lib.Expression"&gt;
+      &lt;port name="in" class="ptolemy.actor.TypedIOPort"&gt;
+          &lt;property name="input"/&gt;
+      &lt;/port&gt;
+   &lt;/entity&gt;
+</pre>
+<p>
 The type is polymorphic, with the only constraint that the
 types of the inputs must all be less than (in the type order)
 the type of the output.  What this means (loosely) is that
@@ -106,7 +115,6 @@ public class Expression extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         expression = new Parameter(this, "expression");
-	inputPorts = new StringAttribute(this, "inputPorts");
 
         _time = new Variable(this, "time", new DoubleToken(0.0));
         _iteration = new Variable(this, "iteration", new IntToken(1));
@@ -124,37 +132,15 @@ public class Expression extends TypedAtomicActor {
      */
     public Parameter expression;
 
-    /** The string attribute that specifies the names of the input ports
-     *  of this actor, separated by commas.
-     */
-    public StringAttribute inputPorts;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Override the base class to react to change in the <i>inputPorts</i>
-     *  attribute. For every port name specified by the attribute, if this
-     *  actor does not have an input port with that name, then create an
-     *  input port on this actor with the name. If this actor has an input
-     *  port with a name not specified by the attribute, remove the port.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If thrown when adding or removing
-     *   ports of this actor.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-	if (attribute == inputPorts) {
-	    _updateInputPorts();
-	} else {
-	    super.attributeChanged(attribute);
-	}
-    }
 
     /** Override the base class to allow arbitrary type changes
      *  for the variables and parameters.
      */
     public void attributeTypeChanged(Attribute attribute) {
-        // FIXME: Should this invalidate resolved types in the director?
+        Director director = getDirector();
+        if (director != null) director.invalidateResolvedTypes();
     }
 
     /** Clone the actor into the specified workspace. This calls the
@@ -282,53 +268,6 @@ public class Expression extends TypedAtomicActor {
                 throw new InternalErrorException(ex.getMessage());
             }
         }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /* Add or remove ports as necessary to make the input port list
-     * as specified by the inputPorts parameter.
-     */
-    private void _updateInputPorts()
-            throws IllegalActionException {
-	List _existingPorts = inputPortList();
-        String portSpec = inputPorts.getExpression();
-        if (portSpec == null) {
-            // No port specification has been given.  Ignore.
-            return;
-        }
-	StringTokenizer names = new StringTokenizer(portSpec, ", \t", false);
-	while (names.hasMoreTokens()) {
-	    String portName = names.nextToken();
-	    IOPort port = (IOPort)getPort(portName);
-	    if (port != null) {
-		if (!port.isInput()) {
-		    // A port with specified name already exists, but is not an
-		    // input port.
-		    port.setInput(true);
-		}
-                _existingPorts.remove(port);
-	    } else {
-		try {
-		    port = (IOPort)newPort(portName);
-		} catch (NameDuplicationException ex) {
-		    throw new InternalErrorException(
-                            "Unexpected name collision: " + ex.getMessage());
-		}
-		port.setInput(true);
-	    }
-	}
-	Iterator portsToRemove = _existingPorts.iterator();
-	while (portsToRemove.hasNext()) {
-	    IOPort port = (IOPort)portsToRemove.next();
-	    try {
-		port.setContainer(null);
-	    } catch (NameDuplicationException ex) {
-		throw new InternalErrorException("This should not happen: "
-			+ ex.getMessage());
-	    }
-	}
     }
 
     ///////////////////////////////////////////////////////////////////

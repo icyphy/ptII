@@ -55,7 +55,7 @@
     <entity name="Integrator1" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="329.0, 136.0">
+        <property name="_location" class="ptolemy.moml.Location" value="329.0, 156.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -67,9 +67,7 @@
     <entity name="Expression2" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="sigma*(x2-x1)">
         </property>
-        <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute" value="x1, x2">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="217.0, 136.0">
+        <property name="_location" class="ptolemy.moml.Location" value="217.0, 156.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -84,7 +82,7 @@
     <entity name="Integrator3" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="330.0, 215.0">
+        <property name="_location" class="ptolemy.moml.Location" value="330.0, 235.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -96,7 +94,7 @@
     <entity name="Integrator4" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="329.0, 292.0">
+        <property name="_location" class="ptolemy.moml.Location" value="329.0, 312.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -108,9 +106,7 @@
     <entity name="Expression1" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="(lambda-x3)*x1-x2">
         </property>
-        <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute" value="x1, x2, x3">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="220.0, 215.0">
+        <property name="_location" class="ptolemy.moml.Location" value="220.0, 235.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -128,9 +124,7 @@
     <entity name="Expression5" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="x1*x2-b*x3">
         </property>
-        <property name="inputPorts" class="ptolemy.kernel.util.StringAttribute" value="x1, x2, x3">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="226.0, 292.0">
+        <property name="_location" class="ptolemy.moml.Location" value="226.0, 312.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -150,7 +144,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="220.0, 37.0">
+        <property name="_location" class="ptolemy.moml.Location" value="226.0, 50.0">
         </property>
         <port name="inputX" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -167,24 +161,24 @@
 <title>Strange Attractor</title>
 <xLabel>x1</xLabel>
 <yLabel>x2</yLabel>
-<xRange min="1.33811091122839" max="10.533973932286514"/>
-<yRange min="-9.607768895575418" max="11.289033318914202"/>
+<xRange min="-15.0" max="20.0"/>
+<yRange min="-20.0" max="25.0"/>
 <noGrid/>
 </plot>?>
         </configure>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="154.0, 80.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="116.0, 87.0">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="165.0, 178.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="129.0, 102.0">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="177.0, 344.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="144.0, 115.0">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
