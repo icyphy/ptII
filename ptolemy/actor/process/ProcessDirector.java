@@ -120,7 +120,7 @@ public class ProcessDirector extends Director {
         newobj._actorsActive = 0;
         newobj._notDone = true;
         newobj._actorThreadList = new LinkedList();
-	newobj._actorsStopped = 0;
+	// newobj._actorsStopped = 0;
         return newobj;
     }
 
@@ -132,7 +132,8 @@ public class ProcessDirector extends Director {
     public void fire() throws IllegalActionException {
 	Workspace workspace = workspace();
         synchronized (this) {
-            while( !_areActorsStopped() && !_areActorsDeadlocked() ) {
+            while( !_areActorsDeadlocked() ) {
+                // while( !_areActorsStopped() && !_areActorsDeadlocked() ) {
 		workspace.wait(this);
             }
             if( _areActorsDeadlocked() ) {
@@ -143,24 +144,6 @@ public class ProcessDirector extends Director {
         }
     }
 
-    /** Return the input branch controller of this director. If
-     *  this method is called prior to the invocation of 
-     *  initialize(), then this method will return null.
-     *  @return The input branch controller of this director.
-     */
-    public BranchController getInputController() {
-        return _inputBranchController;
-    }
-    
-    /** Return the output branch controller of this director. If
-     *  this method is called prior to the invocation of 
-     *  initialize(), then this method will return null.
-     *  @return The output branch controller of this director.
-     */
-    public BranchController getOutputController() {
-        return _outputBranchController;
-    }
-    
     /** Invoke the initialize() methods of all the deeply contained
      *  actors in the container (a composite actor) of this director.
      *  These are expected to call initialize(Actor), which will result
@@ -174,7 +157,7 @@ public class ProcessDirector extends Director {
     public void initialize() throws IllegalActionException {
 	_notDone = true;
 	_actorsActive = 0;
-	_actorsStopped = 0;
+	// _actorsStopped = 0;
 	_actorThreadList = new LinkedList();
 	_newActorThreadList = new LinkedList();
         CompositeActor container = ((CompositeActor)getContainer());
@@ -198,21 +181,6 @@ public class ProcessDirector extends Director {
                 actor.initialize();
             }
         }
-        
-        _inputBranchController = new BranchController(container);
-        _outputBranchController = new BranchController(container);
-
-	// Instantiate Input/Output Branch Controllers
-	if( container != null ) {
-            Iterator inports = container.inputPortList().iterator();
-            createBranchController(inports);
-	    Iterator outports = container.outputPortList().iterator();
-            createBranchController(outports);
-	}
-        
-        _inputControllerIsBlocked = _inputBranchController.isBlocked();
-        _outputControllerIsBlocked = _outputBranchController.isBlocked();
-        
     }
 
     /** Perform domain-specific initialization on the specified actor, if any.
@@ -249,7 +217,7 @@ public class ProcessDirector extends Director {
      *  @return A new MailboxBoundaryReceiver.
      */
     public Receiver newReceiver() {
-        return new MailboxBoundaryReceiver();
+        return new Mailbox();
     }
 
     /** Return false if the model has reached a deadlock and can
@@ -276,51 +244,14 @@ public class ProcessDirector extends Director {
         // (Re)Start Actor Threads
         Iterator threads = _newActorThreadList.iterator();
         ProcessThread procThread = null;
-	if( _areActorsStopped() ) {
-	    threads = _actorThreadList.iterator();
-	    while( threads.hasNext() ) {
-		procThread = (ProcessThread)threads.next();
-		procThread.restartThread();
-		synchronized(procThread) {
-		    procThread.notifyAll();
-		}
-		if( _actorsStopped > 0 ) {
-		    _actorsStopped--;
-		}
-	    }
-	} else {
-            threads = _newActorThreadList.iterator();
-            while (threads.hasNext()) {
-                procThread = (ProcessThread)threads.next();
-		procThread.start();
-	    }
-	    _newActorThreadList.clear();
+        threads = _newActorThreadList.iterator();
+        while (threads.hasNext()) {
+            procThread = (ProcessThread)threads.next();
+            procThread.start();
         }
-        
-        // (Re)Start BranchControllers 
-        Thread thread = null;
-        if( _inputBranchController.isBlocked() ) {
-            _inputBranchController.restart();
-        } else if( _inputBranchController.hasBranches() ) {
-            thread = new Thread(_inputBranchController);
-            thread.start();
-        }
-        if( _outputBranchController.isBlocked() ) {
-            _outputBranchController.restart();
-        } else if( _outputBranchController.hasBranches() ) {
-            thread = new Thread(_outputBranchController);
-            thread.start();
-        }
+        _newActorThreadList.clear();
         
         return true;
-    }
-
-    /** Indicate to the director that a new thread under it's control
-     *  has been stopped.
-     */
-    public synchronized void registerStoppedThread() {
- 	_actorsStopped++;
- 	notifyAll();
     }
 
     /** Request that execution of the current iteration stop. Call
@@ -333,6 +264,7 @@ public class ProcessDirector extends Director {
     public void stopFire() {
  	Iterator threads = _actorThreadList.iterator();
  	while( threads.hasNext() ) {
+            // System.out.println("PROCESS THREADS.stopFire()");
  	    ProcessThread thread = (ProcessThread)threads.next();
 
 	    // Call stopThread() on the threads first
@@ -357,72 +289,6 @@ public class ProcessDirector extends Director {
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         // Do nothing
         return true;
-    }
-    
-    /**
-     *  @param port The port to transfer tokens from.
-     *  @return True if data are transferred.
-     */
-    public void createBranchController(Iterator ports) 
-    	    throws IllegalActionException {
-            
-        // Create Branches in the BranchController
-        IOPort port = null;
-        while( ports.hasNext() ) {
-            port = (IOPort)ports.next();
-            if (!port.isOpaque()) {
-                    throw new IllegalActionException(this, port,
-                    "port argument is not an opaque" +
-                    "input port.");
-            }
-	    if( port.isInput() ) {
-		_inputBranchController.addBranches(port);
-	    }
-	    if( port.isOutput() ) {
-		_outputBranchController.addBranches(port);
-	    }
-        }
-    }
-
-    /**
-     */
-    public void transferBoundaryData() {
-        /*
-	if( _inputBranchCntlr != null ) {
-	    _inputBranchCntlr.reset();
-	}
-	if( _outputBranchCntlr != null ) {
-	    _outputBranchCntlr.reset();
-	}
-        */
-    }
-
-    /** Stop the input branch controller of this director by 
-     *  ending the current iteration of the controller. This
-     *  method will block until the output branch controller
-     *  has stopped due to all of the branches it controls
-     *  stopping.
-     */
-    public void stopInputBranchController() {
-        Workspace workspace = workspace();
-        _inputBranchController.endIteration();
-        while( !_inputBranchController.isBlocked() ) {
-            workspace.wait(this);
-        }
-    }
-    
-    /** Stop the output branch controller of this director by 
-     *  ending the current iteration of the controller. This
-     *  method will block until the output branch controller
-     *  has stopped due to all of the branches it controls
-     *  stopping.
-     */
-    public void stopOutputBranchController() {
-        Workspace workspace = workspace();
-        _outputBranchController.endIteration();
-        while( !_outputBranchController.isBlocked() ) {
-            workspace.wait(this);
-        }
     }
     
     /** Terminates all threads under control of this director immediately.
@@ -462,32 +328,25 @@ public class ProcessDirector extends Director {
     public void wrapup() throws IllegalActionException {
         if( _debugging ) _debug(_name+": calling wrapup()");
         
-        // Kill all branch controllers
-        if( _inputBranchController != null ) {
-            _inputBranchController.deactivateBranches();
-        }
-        if( _outputBranchController != null ) {
-            _outputBranchController.deactivateBranches();
-        }
-        
-        if( _debugging ) _debug(_name+": finished deactivating branches");
-        
-	// Wake up threads if they are stopped.
-        ProcessThread thread = null;
-	if( _areActorsStopped() ) {
-	    Iterator threads = _actorThreadList.iterator();
-	    while( threads.hasNext() ) {
-		if( _actorsStopped > 0 ) {
-		    _actorsStopped--;
-		}
-		thread = (ProcessThread)threads.next();
-		thread.restartThread();
-                // FIXME: We should also set the local
-                // iterate variable of ProcessThread to
-                // false here...
-	    }
-	}
+// 	// Wake up threads if they are stopped.
+//      ProcessThread thread = null;
+// 	if( _areActorsStopped() ) {
+// 	    Iterator threads = _actorThreadList.iterator();
+// 	    while( threads.hasNext() ) {
+// 		if( _actorsStopped > 0 ) {
+// 		    _actorsStopped--;
+// 		}
+// 		thread = (ProcessThread)threads.next();
+//                 thread.finish();
+// 		thread.restartThread();
+//                 // FIXME: We should also set the local
+//                 // iterate variable of ProcessThread to
+//                 // false here...
+// 	    }
+// 	}
 
+        if( _debugging ) _debug(_name+": finished restarting threads during wrapup");
+        
 	CompositeActor cont = (CompositeActor)getContainer();
         Iterator actors = cont.deepEntityList().iterator();
         Iterator actorPorts;
@@ -509,26 +368,27 @@ public class ProcessDirector extends Director {
                 }
             }
 
-            // If this director is controlling a CompositeActor with
-            // output ports, need to set the finished flag
-            // there as well.
-            actorPorts  = cont.outputPortList().iterator();
-            while (actorPorts.hasNext()) {
-                IOPort port = (IOPort)actorPorts.next();
-                // Terminating the ports and hence the actor
-                Receiver[][] receivers = port.getReceivers();
-                for (int i = 0; i < receivers.length; i++) {
-                    for (int j = 0; j < receivers[i].length; j++) {
-                        nextRec = (ProcessReceiver)receivers[i][j];
-                        nextRec.requestFinish();
-                        recs.addFirst(nextRec);
-                    }
-                }
-            }
+//             // If this director is controlling a CompositeActor with
+//             // output ports, need to set the finished flag
+//             // there as well.
+//             actorPorts  = cont.outputPortList().iterator();
+//             while (actorPorts.hasNext()) {
+//                 IOPort port = (IOPort)actorPorts.next();
+//                 // Terminating the ports and hence the actor
+//                 Receiver[][] receivers = port.getReceivers();
+//                 for (int i = 0; i < receivers.length; i++) {
+//                     for (int j = 0; j < receivers[i].length; j++) {
+//                         nextRec = (ProcessReceiver)receivers[i][j];
+//                         nextRec.requestFinish();
+//                         recs.addFirst(nextRec);
+//                     }
+//                 }
+//             }
 
             // Now wake up all the receivers.
             (new NotifyThread(recs)).start();
         }
+        
         return;
     }
 
@@ -551,7 +411,6 @@ public class ProcessDirector extends Director {
      *  that are not present in this base class.
      * @return True if all actors controlled by this thread 
      *  have stopped; otherwise return false.
-     */   
     protected synchronized boolean _areActorsStopped() {
 	if( _actorsActive == 0 ) {
 	    return true;
@@ -561,16 +420,7 @@ public class ProcessDirector extends Director {
 	}
 	return false;
     }
-
-    /** Return true if the count of active processes in the container is 0.
-     *  Otherwise return true. Derived classes must override this method to
-     *  return true to any other forms of deadlocks that they might introduce.
-     * @return true if there are no active processes in the container.
-     * @deprecated use isDeadlocked() instead.
-     */
-    protected synchronized boolean _checkForDeadlock() {
-        return (_actorsActive == 0);
-    }
+     */   
 
     /** Decrease by one the count of active processes under the control of
      *  this director. 
@@ -581,10 +431,14 @@ public class ProcessDirector extends Director {
      */
     protected synchronized void _decreaseActiveCount() {
 	_actorsActive--;
+        /*
 	if (_areActorsDeadlocked()) {
 	    //Wake up the director waiting for a deadlock
 	    notifyAll();
 	}
+        */
+	notifyAll();
+        // if( _debugging ) _debug(_name+": finishing _decreaseActiveCount()");
     }
 
     /** Return the number of active processes under the control of this
@@ -614,10 +468,10 @@ public class ProcessDirector extends Director {
     /** Return the number of processes stopped because of a call to the
      *  stopfire method of the process.
      * @return The number of stopped processes.
-     */
     protected synchronized long _getStoppedProcessesCount() {
 	return _actorsStopped;
     }
+     */
 
     /** Return true.
      *  In derived classes, override this method to obtain domain
@@ -627,10 +481,10 @@ public class ProcessDirector extends Director {
      *  need not be terminated.
      * @return True.
      * @exception IllegalActionException Not thrown in this base class.
-     */
     protected boolean _handleDeadlock() throws IllegalActionException {
 	return true;
     }
+     */
 
     /** Increases the count of active actors in the composite actor
      *  corresponding to this director by 1. This method should be
@@ -690,107 +544,6 @@ public class ProcessDirector extends Director {
     protected synchronized void _actorUnBlocked(LinkedList rcvrs) {
     }
 
-    /** 
-     */
-    protected synchronized void _controllerBlocked(BranchController cntlr) {
-        /*
-        if( cntlr.isBlocked() ) {
-            // Determine which controller
-            // Set appropriate flag
-            notifyAll();
-        }
-        */
-        
-        if( cntlr == _inputBranchController ) {
-            _inputControllerIsBlocked = cntlr.isBlocked();
-        }
-        if( cntlr == _outputBranchController ) {
-            _outputControllerIsBlocked = cntlr.isBlocked();
-        }
-        notifyAll();
-    }
-
-    /** 
-     */
-    protected synchronized void _controllerUnBlocked(BranchController cntlr) {
-        /*
-        if( !cntlr.isBlocked() ) {
-            notifyAll();
-        }
-        */
-        if( cntlr == _inputBranchController ) {
-            _inputControllerIsBlocked = cntlr.isBlocked();
-        }
-        if( cntlr == _outputBranchController ) {
-            _outputControllerIsBlocked = cntlr.isBlocked();
-        }
-        notifyAll();
-    }
-
-    /** JFIXME: This method can lead to deadlock
-     */
-    protected synchronized boolean _isInputControllerBlocked() {
-        return _inputControllerIsBlocked;
-    }
-        
-    /** 
-     */
-    public synchronized boolean registerBlockedBranchReceiversWithExecutive() {
-    	Director execDir = ((Actor)getContainer()).getExecutiveDirector();
-        if( execDir == this ) {
-            return false;
-        } else if( !(execDir instanceof ProcessDirector) ) {
-            if(_debugging) _debug(_name+": Blocked branch registration didn't work; director not ProcessDirector");
-            return false;
-        } else if( !_inputBranchController.hasBranches() ) {
-            return false;
-        }
-    
-	if( _debugging ) _debug(_name+": registering blocked branches to executive director");
-        
-        if( _inputBranchController.isBlocked() ) {
-            Iterator branches = 
-                    _inputBranchController.getEngagedBranchList().iterator();
-            Branch branch = null;
-            ProcessReceiver rcvr = null;
-            LinkedList blockedRcvrs = new LinkedList();
-            while ( branches.hasNext() ) {
-                branch = (Branch) branches.next();
-                rcvr = branch.getProdReceiver();
-                if( !rcvr.isReadBlocked() ) {
-                    // FIXME: Throw Exception???
-                } else {
-                    blockedRcvrs.add(rcvr);
-                }
-            }
-            
-            if( blockedRcvrs.size() > 0 ) { 
-                if(_debugging) _debug(_name+": ProcessDirector blocking due to branches");
-                ((ProcessDirector)execDir)._actorBlocked(blockedRcvrs);
-                /*
-                Director dir = ((Actor)getContainer()).getDirector();
-                if( dir instanceof ProcessDirector ) {
-                    if(_debugging) _debug(_name+": ProcessDirector blocking due to branches");
-                    ProcessDirector pDir = (ProcessDirector)dir;
-                    pDir._actorBlocked(blockedRcvrs);
-                } else {
-                    if(_debugging) _debug(_name+": Blocked branch registration didn't work; director not ProcessDirector");
-                    // FIXME: Do something; Set _notDone = false???
-                }
-                */
-                notifyAll();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /** 
-     */
-    protected synchronized boolean _isOutputControllerBlocked() {
-        return _outputControllerIsBlocked;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -805,21 +558,15 @@ public class ProcessDirector extends Director {
     private long _actorsActive;
 
     // The threads started by this director.
-    private LinkedList _actorThreadList;
+    // FIXME
+    public LinkedList _actorThreadList;
 
     //A copy of threads started since the last invocation of prefire().
     private LinkedList _newActorThreadList;
 
     // A count of the active actors controlled by
     // this director that have been stopped
-    private int _actorsStopped = 0;
-    
-    // The Branch Controllers of this director
-    private BranchController _inputBranchController;
-    private BranchController _outputBranchController;
-    
-    private boolean _inputControllerIsBlocked = true;
-    private boolean _outputControllerIsBlocked = true;
+    // private int _actorsStopped = 0;
     
     
     private String _name = null;

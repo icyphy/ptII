@@ -95,10 +95,19 @@ public class ProcessThread extends PtolemyThread {
 	//count even before this thread has incremented the active count.
 	//This results in false deadlocks.
 	_director._increaseActiveCount();
+        
+        _name = ((Nameable)_actor).getName();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** End the iterations of the actor controlled by this thread
+     *  and prepare to wrapup.
+    public synchronized void finish() {
+        _preparingToWrapup = true;
+    }
+     */
 
     /** Return the actor being executed by this thread
      *  @return The actor being executed by this thread.
@@ -115,7 +124,7 @@ public class ProcessThread extends PtolemyThread {
 	Workspace workspace = _director.workspace();
 	boolean iterate = true;
 	try {
-	    while (iterate) {
+	    while (iterate && !_threadStopRequested ) {
 	        iterate = false;
                 // container is checked for null to detect the
                 // deletion of the actor from the topology.
@@ -123,42 +132,56 @@ public class ProcessThread extends PtolemyThread {
                     if (_actor.prefire()){
 			_actor.fire();
 			iterate =  _actor.postfire();
+                        System.out.println(_name+" finished an iteration");
 		    }
-		    if ( _threadStopRequested && iterate) {
- 		        _director.registerStoppedThread();
-			while( _threadStopRequested ) {
-			    synchronized(this) {
-                                wait();
-			    }
-			}
-		    }
+                    System.out.println(_name+" processThread.iterate = "+iterate);
+// 		    if ( _threadStopRequested && iterate) {
+//  		        _director.registerStoppedThread();
+// 			while( _threadStopRequested ) {
+//                             System.out.println(_name+" thread waiting while stopped.");
+// 			    synchronized(this) {
+//                                 wait();
+// 			    }
+// 			}
+// 		    }
 		}
             }
         } catch (TerminateProcessException t) {
             // Process was terminated.
+                   /*
 	} catch( InterruptedException e) {
             _manager.notifyListenersOfException(e);
+                   */
         } catch (IllegalActionException e) {
             _manager.notifyListenersOfException(e);
         } finally {
             try {
+                System.out.println(_name+" calling wrapup");
  		wrapup();
             } catch (IllegalActionException e) {
                 _manager.notifyListenersOfException(e);
             }
             _director._decreaseActiveCount();
             String name = ((Nameable)_actor).getName();
-            System.out.println(name+": has decreased active count");
+            System.out.println(name+": has called _decreaseActiveCount on "
+            + _director.getName() + "; there are "
+            + _director._getActiveActorsCount()+" active actors in "
+            + _director.getName() +".");
+            /*
+            System.out.println(name+": has decreased active count; there are "
+            + _director._getActiveActorsCount()+" active actors in "
+            + _director.getName());
+            */
         }
     }
 
     /** Restart this thread if it has stopped in response to a
      *  call to stopFire().
-     */
     public synchronized void restartThread() {
  	_threadStopRequested = false;
 	notifyAll();
     }
+     */
 
     /** Request that execution of the actor controlled by this
      *  thread stop. Call stopFire() on all composite actors
@@ -166,6 +189,7 @@ public class ProcessThread extends PtolemyThread {
      *  this director.
      */
     public void stopThread() {
+        System.out.println(_name+" called stopThread");
 	_threadStopRequested = true;
     }
 
@@ -187,4 +211,8 @@ public class ProcessThread extends PtolemyThread {
     private ProcessDirector _director;
     private Manager _manager;
     private boolean _threadStopRequested = false;
+    private boolean _preparingToWrapup = false;
+    
+    
+    private String _name;
 }
