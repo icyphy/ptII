@@ -237,6 +237,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 null);
         _graphicalClasses.put("ptolemy.vergil.icon.CopyCatIcon",
                 null);
+        _graphicalClasses.put("ptolemy.vergil.icon.EditorIcon",
+                null);
         _graphicalClasses.put("ptolemy.vergil.icon.XMLIcon",
                 null);
         // ptolemy/actor/lib/test/auto/StopSDF.xml has a MonitorValue actor,
