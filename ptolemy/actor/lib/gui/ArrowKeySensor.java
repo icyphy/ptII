@@ -1,6 +1,6 @@
 /* An actor which pops up a keystroke-sensing JFrame.
 
- Copyright (c) 1998-2002 The Regents of the University of California.
+ Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -28,64 +28,75 @@
 @AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
 */
 
-package ptolemy.actor.lib.gui;
+package ptolemy.actor.lib;
 
+// Imports from ptolemy/vergil/basic/BasicGraphFrame.java (not pruned)
 import diva.gui.toolbox.FocusMouseListener;
-import ptolemy.actor.Actor;
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.IntToken;
-import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseListener;
+//import java.awt.event.MouseListener;
+
+// Imports from ptolemy/actor/lib/net/DatagramReceiver.java (not pruned)
+//import ptolemy.actor.AtomicActor;
+//import ptolemy.actor.IOPort;
+  import ptolemy.actor.TypedAtomicActor;
+  import ptolemy.actor.TypedIOPort;
+  import ptolemy.data.ArrayToken;
+//import ptolemy.data.BooleanToken;
+  import ptolemy.data.IntToken;
+  import ptolemy.data.StringToken;
+  import ptolemy.data.Token;
+//import ptolemy.data.expr.Parameter;
+  import ptolemy.data.type.ArrayType;
+  import ptolemy.data.type.BaseType;
+//import ptolemy.data.type.Type;
+  import ptolemy.kernel.CompositeEntity;
+//import ptolemy.kernel.util.Attribute;
+  import ptolemy.kernel.util.IllegalActionException;
+  import ptolemy.kernel.util.NameDuplicationException;
+//import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrowKeySensor
 
 /**
-When this actor is preinitialized, it pops up a new JFrame window on
+When this actor is preinitialized, it pops up a new JFrame window on 
 the desktop, usually in the upper left hand corner of the screen.
 When this JFrame has the focus (such as when it has been clicked on)
 it is capable of sensing keystrokes.  <p>
 
-This actor senses only the four non-numeric-pad arrow-key keystrokes.
+This actor senses only the four non-memeric-pad arrow-key keystrokes.
 This actor is almost identical to KeystrokeSensor.java.  One
 difference is the different set of keystrokes sensed.  The other
 difference, is that this actor responds to key releases as well as key
 presses.  Upon each key press, the integer 1 is broadcast from the
-corresponding output.  Upon each key release, the integer 0 is
+coresponding output.  Upon each key release, the integer 0 is
 output.<p>
 
 This actor contains a private inner class which generated the JFrame.
-The frame sets up callbacks which react to the keystrokes.  When called,
-these call the director's fireAtCurrentTime() method.  This causes
-the director to call fire() on the actor.   The actor then broadcasts
-tokens from one or both outputs depending on which keystroke(s) have
-occurred since the actor was last fired.  <p>
+The frame sets up callbacks which react to the keystrokes.  When called, 
+these call the director's fireAtCurrentTime() method.  This causes 
+the director to call fire() on the actor.   The actor then broadcasts 
+tokens from one or both outputs depending on which keystroke(s) have 
+occured since the actor was last fired.  <p>
 
 @author Winthrop Williams
-@version $Id$
-*/
+@version $Id$ */
 public class ArrowKeySensor extends TypedAtomicActor {
 
     public ArrowKeySensor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Outputs
@@ -217,15 +228,15 @@ public class ArrowKeySensor extends TypedAtomicActor {
 			_upKeyReleased = false;
 			tryCallingFireAtCurrentTime();
 		    }
-                };
+	    };
 
             ActionListener myUpReleasedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
 			_upKeyReleased = true;
 			_upKeyPressed = false;
 			tryCallingFireAtCurrentTime();
-		    }
-                };
+		    } 
+	    };
 
 	    // left-arrow callbacks
             ActionListener myLeftPressedListener = new ActionListener() {
@@ -234,15 +245,15 @@ public class ArrowKeySensor extends TypedAtomicActor {
 			_leftKeyReleased = false;
 			tryCallingFireAtCurrentTime();
 		    }
-                };
+	    };
 
             ActionListener myLeftReleasedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
 			_leftKeyReleased = true;
 			_leftKeyPressed = false;
 			tryCallingFireAtCurrentTime();
-		    }
-                };
+		    } 
+	    };
 
 	    // right-arrow callbacks
             ActionListener myRightPressedListener = new ActionListener() {
@@ -251,15 +262,15 @@ public class ArrowKeySensor extends TypedAtomicActor {
 			_rightKeyReleased = false;
 			tryCallingFireAtCurrentTime();
 		    }
-                };
+	    };
 
             ActionListener myRightReleasedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
 			_rightKeyReleased = true;
 			_rightKeyPressed = false;
 			tryCallingFireAtCurrentTime();
-		    }
-                };
+		    } 
+	    };
 
 	    // down-arrow callbacks
             ActionListener myDownPressedListener = new ActionListener() {
@@ -268,15 +279,15 @@ public class ArrowKeySensor extends TypedAtomicActor {
 			_downKeyReleased = false;
 			tryCallingFireAtCurrentTime();
 		    }
-                };
+	    };
 
             ActionListener myDownReleasedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
 			_downKeyReleased = true;
 			_downKeyPressed = false;
 			tryCallingFireAtCurrentTime();
-		    }
-                };
+		    } 
+	    };
 
             getContentPane().setLayout(new BorderLayout());
             JLabel label = new JLabel("Copy and/or Paste here!");
@@ -285,60 +296,60 @@ public class ArrowKeySensor extends TypedAtomicActor {
 	    // As of jdk1.4, the .registerKeyboardAction() method below is
             // considered obsolete.  Docs recommend using these two methods:
 	    //  .getInputMap().put(aKeyStroke, aCommand);
-	    //  .getActionMap().put(aCommand, anAction);
+	    //  .getActionMap().put(aCommmand, anAction);
 	    // with the String aCommand inserted to link them together.
 	    // See javax.swing.Jcomponent.registerKeyboardAction().
 
 	    // Registration of up-arrow callbacks.
-            label.registerKeyboardAction(myUpPressedListener,
+            label.registerKeyboardAction(myUpPressedListener, 
                     "UpPressed",
                     KeyStroke.getKeyStroke(
-                            KeyEvent.VK_UP, 0, false),
+                    KeyEvent.VK_UP, 0, false),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-            label.registerKeyboardAction(myUpReleasedListener,
+            label.registerKeyboardAction(myUpReleasedListener, 
                     "UpReleased",
                     KeyStroke.getKeyStroke(
-                            KeyEvent.VK_UP, 0, true),
+                    KeyEvent.VK_UP, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 	    // Registration of left-arrow callbacks.
-            label.registerKeyboardAction(myLeftPressedListener,
+            label.registerKeyboardAction(myLeftPressedListener, 
                     "LeftPressed",
                     KeyStroke.getKeyStroke(
-                            KeyEvent.VK_LEFT, 0, false),
+                    KeyEvent.VK_LEFT, 0, false),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-            label.registerKeyboardAction(myLeftReleasedListener,
+            label.registerKeyboardAction(myLeftReleasedListener, 
                     "LeftReleased",
                     KeyStroke.getKeyStroke(
-                            KeyEvent.VK_LEFT, 0, true),
+                    KeyEvent.VK_LEFT, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 	    // Registration of right-arrow callbacks.
-            label.registerKeyboardAction(myRightPressedListener,
+            label.registerKeyboardAction(myRightPressedListener, 
                     "RightPressed",
                     KeyStroke.getKeyStroke(
-                            KeyEvent.VK_RIGHT, 0, false),
+                    KeyEvent.VK_RIGHT, 0, false),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-            label.registerKeyboardAction(myRightReleasedListener,
+            label.registerKeyboardAction(myRightReleasedListener, 
                     "RightReleased",
                     KeyStroke.getKeyStroke(
-                            KeyEvent.VK_RIGHT, 0, true),
+                    KeyEvent.VK_RIGHT, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
 	    // Registration of down-arrow callbacks.
-            label.registerKeyboardAction(myDownPressedListener,
+            label.registerKeyboardAction(myDownPressedListener, 
                     "DownPressed",
                     KeyStroke.getKeyStroke(
-                            KeyEvent.VK_DOWN, 0, false),
+                    KeyEvent.VK_DOWN, 0, false),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myDownReleasedListener,
                     "DownReleased",
                     KeyStroke.getKeyStroke(
-                            KeyEvent.VK_DOWN, 0, true),
+                    KeyEvent.VK_DOWN, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.setRequestFocusEnabled(true);

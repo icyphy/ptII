@@ -1,6 +1,6 @@
 /* An actor which pops up a keystroke-sensing JFrame.
 
- Copyright (c) 1998-2002 The Regents of the University of California.
+ Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -28,36 +28,50 @@
 @AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
 */
 
-package ptolemy.actor.lib.gui;
+package ptolemy.actor.lib;
 
+// Imports from ptolemy/vergil/basic/BasicGraphFrame.java (not pruned)
 import diva.gui.toolbox.FocusMouseListener;
-import ptolemy.actor.Actor;
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+//import java.awt.event.MouseListener;
+
+// Imports from ptolemy/actor/lib/net/DatagramReceiver.java (not pruned)
+//import ptolemy.actor.AtomicActor;
+//import ptolemy.actor.IOPort;
+  import ptolemy.actor.TypedAtomicActor;
+  import ptolemy.actor.TypedIOPort;
+  import ptolemy.data.ArrayToken;
+//import ptolemy.data.BooleanToken;
+  import ptolemy.data.IntToken;
+  import ptolemy.data.StringToken;
+  import ptolemy.data.Token;
+//import ptolemy.data.expr.Parameter;
+  import ptolemy.data.type.ArrayType;
+  import ptolemy.data.type.BaseType;
+//import ptolemy.data.type.Type;
+  import ptolemy.kernel.CompositeEntity;
+//import ptolemy.kernel.util.Attribute;
+  import ptolemy.kernel.util.IllegalActionException;
+  import ptolemy.kernel.util.NameDuplicationException;
+//import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// KeystrokeSensor
 
 /**
-When this actor is preinitialized, it pops up a new JFrame window on
+When this actor is preinitialized, it pops up a new JFrame window on 
 the desktop, usually in the upper left hand corner of the screen.
 When this JFrame has the focus (such as when it has been clicked on)
 it is capable of sensing keystrokes.  <p>
@@ -66,11 +80,11 @@ This actor senses only two keystrokes, control-C (copy) and control-V
 (paste).  This actor is designed to work with SystemClipboard.java<p>
 
 This actor contains a private inner class which generated the JFrame.
-The frame sets up callbacks which react to the keystrokes.  When called,
-these call the director's fireAtCurrentTime() method.  This causes
-the director to call fire() on the actor.   The actor then broadcasts
-tokens from one or both outputs depending on which keystroke(s) have
-occurred since the actor was last fired.  <p>
+The frame sets up callbacks which react to the keystrokes.  When called, 
+these call the director's fireAtCurrentTime() method.  This causes 
+the director to call fire() on the actor.   The actor then broadcasts 
+tokens from one or both outputs depending on which keystroke(s) have 
+occured since the actor was last fired.  <p>
 
 @author Winthrop Williams
 @version $Id$ */
@@ -183,7 +197,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
 			    throw new RuntimeException("-fireAt* catch-");
 			}
 			if (_debugging) _debug("pasteFrom.. has completed");
-		    }
+		    } 
 	    };
 
             getContentPane().setLayout(new BorderLayout());
