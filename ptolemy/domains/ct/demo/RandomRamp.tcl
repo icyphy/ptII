@@ -45,10 +45,10 @@ $sys setDirector $dedir
 set ctsub [java::new ptolemy.actor.TypedCompositeActor $sys CTSubsystem]
 set subin [java::new ptolemy.actor.TypedIOPort $ctsub Pin]
 #set ptype [java::call Class forName ptolemy.data.DoubleToken]
-$subin makeInput 1
+$subin setInput 1
 #$subin setDeclaredType $ptype
 set subout [java::new ptolemy.actor.TypedIOPort $ctsub Pout]
-$subout makeOutput 1
+$subout setOutput 1
 #$subout setDeclaredType $ptype
 
 set ctdir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector CTEmbDIR]
