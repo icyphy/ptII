@@ -289,6 +289,10 @@ public class Copernicus {
 	// 0 indicates normal execution
 	int processReturnCode = 1;
      	try {
+            // This code is similar to tcl.lang.ExecCmd, so if you
+            // make changes here, please take a look at ExecCmd and
+            // see if it needs updating.
+
 	    Process process = Runtime.getRuntime().exec(commands);
 
 	    // Set up a Thread to read in any error messages
