@@ -55,7 +55,7 @@ public class TestWorkspace2 extends Thread {
 
     public TestWorkspace2(String name, Workspace workspace) {
         _name = name;
-        _workspace = ws;
+        _workspace = workspace;
         _notif = new Notification(_name + ".notif");
     }
 

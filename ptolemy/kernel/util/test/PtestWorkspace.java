@@ -53,7 +53,7 @@ public class PtestWorkspace extends PtolemyThread {
 
     public PtestWorkspace(String name, Workspace workspace) {
         _name = name;
-        _workspace = ws;
+        _workspace = workspace;
     }
 
     public synchronized void run() {

@@ -51,7 +51,7 @@ public class TestWorkspace extends Thread {
 
     public TestWorkspace(String name, Workspace workspace) {
         _name = name;
-        _workspace = ws;
+        _workspace = workspace;
     }
 
     public synchronized void run() {
