@@ -34,8 +34,13 @@ package ptolemy.domains.sdf.codegen;
 import java.util.HashMap;
 import java.util.Map;
 
+import ptolemy.kernel.Entity;
+
 public class PerActorCodeGeneratorInfo {
     public PerActorCodeGeneratorInfo() {}
+
+    /** The actor itself. */
+    public Entity actor = null;
     
     /** The number of times the actor appears disjointly in the schedule
      *  for one iteration. By "disjointly" we mean that each disjoint
@@ -62,6 +67,11 @@ public class PerActorCodeGeneratorInfo {
      *  port names as keys.
      */
     public final Map portNameToPortMap = new HashMap();
+    
+    /** A map containing instances of Tokens, corresponding to the value
+     *  of Parameters, whose names are keys.
+     */
+    public final Map parameterNameToTokenMap = new HashMap();
  
     /** The total number of times the actor is fired in one iteration. */    
     public int totalFirings = -1;   

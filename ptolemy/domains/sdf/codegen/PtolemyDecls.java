@@ -39,6 +39,8 @@ import ptolemy.data.type.*;
 import ptolemy.lang.*;
 import ptolemy.lang.java.*;
 import ptolemy.lang.java.nodetypes.*;
+import ptolemy.math.Complex;
+import ptolemy.math.FixPoint;
 
 /** A class containing declarations created by the compiler of
  *  of known fields and methods in the ptolemy.actor and ptolemy.data
@@ -48,45 +50,49 @@ import ptolemy.lang.java.nodetypes.*;
  */
 public class PtolemyDecls implements JavaStaticSemanticConstants {
 
-    public static boolean isConcreteTokenType(int kind) {
+    public static boolean isConcreteTokenKind(int kind) {
         if (kind < TypeUtility.TYPE_KINDS) {
            return false;
         }
         return _isConcreteToken[kind - TypeUtility.TYPE_KINDS];
     }
 
-    public static boolean isScalarTokenType(int kind) {
+    public static boolean isMatrixTokenKind(int kind) {
+        return ((kind >= TYPE_KIND_MATRIX_TOKEN) && 
+                (kind <= TYPE_KIND_FIX_MATRIX_TOKEN)); 
+    }
+
+    public static boolean isScalarTokenKind(int kind) {
         return ((kind >= TYPE_KIND_SCALAR_TOKEN) && 
                 (kind <= TYPE_KIND_FIX_TOKEN)); 
     }
     
-    public static boolean isSupportedTokenType(int kind) {
+    public static boolean isSupportedTokenKind(int kind) {
         return ((kind >= TYPE_KIND_TOKEN) && 
                 (kind <= TYPE_KIND_FIX_MATRIX_TOKEN));
+    }
+
+    public static boolean isSupportedPortKind(int kind) {
+        return ((kind == TYPE_KIND_TYPED_IO_PORT) || 
+                (kind == TYPE_KIND_SDF_IO_PORT));
     }
 
     /** Return an integer representing the type, which may be a special type
      *  in Ptolemy. If the type is not a special type, return the integer given by
      *  TypeUtility.kind(type).
      */ 
-    public static int kind(TypeNode type) {              
-         switch (type.classID()) {
-                                           
-           case TYPENAMENODE_ID:
+    public static int kind(TypeNode type) {                       
+         if (type.classID() == TYPENAMENODE_ID) {
            ClassDecl classDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) type);
            return kind(classDecl); 
-             
-           // no break here
-                       
-           default:
-           // primitive types, arrays, and user types unknown to us
-           return TypeUtility.kind(type);
-         }            
+         }
+         // primitive types and arrays
+         return TypeUtility.kind(type);
     }
 
     /** Return an integer representing the user type that has the specified ClassDecl, 
      *  which may be a special type in Ptolemy. If the type is not a special type, 
-     *  return the integer given by TypeUtility.kind(type).
+     *  return the integer given by TypeUtility.kind(classDecl).
      */     
     public static int kind(ClassDecl classDecl) {    
         for (int i = 0; i < _knownClassDecls.length; i++) {
@@ -98,13 +104,13 @@ public class PtolemyDecls implements JavaStaticSemanticConstants {
     }
         
     /** Return the kind corresponding to a type in Ptolemy. Type should not be null. */
-    public static int kindOfTokenType(Type type) {
+    public static int kindOfTokenType(Type type) {    
         for (int i = 0; i < _knownTokenTypes.length; i++) {
-            if (type == _knownTypes[i]) {
+            if (type == _knownTokenTypes[i]) {
                return _knownKinds[i];
             }            
         }
-        ApplicationUtility.error("kindOfTokenType(): type unknown");
+        ApplicationUtility.error("kindOfTokenType(): type unknown, type = " + type);
         return TypeUtility.TYPE_KIND_UNKNOWN;
     }
     
@@ -126,7 +132,89 @@ public class PtolemyDecls implements JavaStaticSemanticConstants {
     public static TypeNameNode typeNodeForKind(int kind) {
         return _knownTypes[kind - TypeUtility.TYPE_KINDS];    
     }
-    
+
+    /** Return an ExprNode representing the value of the argument Token. */    
+    public static ExprNode tokenToExprNode(Token token) {
+        switch (kindOfTokenType(token.getType())) {
+        
+          case TYPE_KIND_BOOLEAN_TOKEN:
+          if (((BooleanToken) token).booleanValue()) {
+             return new BoolLitNode("true");
+          } 
+          return new BoolLitNode("false");
+          
+          case TYPE_KIND_INT_TOKEN:
+          {
+            int val = ((IntToken) token).intValue();
+            return new IntLitNode(String.valueOf(val));
+          }
+       
+          case TYPE_KIND_DOUBLE_TOKEN:
+          {
+            double val = ((DoubleToken) token).doubleValue();
+            return new DoubleLitNode(String.valueOf(val));
+          }
+
+          case TYPE_KIND_LONG_TOKEN:
+          {
+            long val = ((LongToken) token).longValue();
+            return new DoubleLitNode(String.valueOf(val) + "L");
+          }
+           
+          case TYPE_KIND_COMPLEX_TOKEN:
+          {
+            Complex val = ((ComplexToken) token).complexValue();
+            LinkedList args = new LinkedList();
+            args.addLast(new DoubleLitNode(String.valueOf(val.real)));
+            args.addLast(new DoubleLitNode(String.valueOf(val.imag)));
+                        
+            return new AllocateNode(COMPLEX_TYPE, args, AbsentTreeNode.instance);              
+          }
+          
+          case TYPE_KIND_FIX_TOKEN:
+          {
+            // FIXME : not done
+            FixPoint val = ((FixToken) token).fixValue();
+            return null;
+          }
+          
+          case TYPE_KIND_OBJECT_TOKEN:
+          ApplicationUtility.error("tokenToExprNode not supported on ObjectToken");            
+          
+          case TYPE_KIND_STRING_TOKEN:
+          {
+            return new StringLitNode(token.toString());
+          }
+          
+          case TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
+          case TYPE_KIND_INT_MATRIX_TOKEN:
+          case TYPE_KIND_DOUBLE_MATRIX_TOKEN:
+          case TYPE_KIND_LONG_MATRIX_TOKEN:
+          case TYPE_KIND_COMPLEX_MATRIX_TOKEN:
+          case TYPE_KIND_FIX_MATRIX_TOKEN: // won't work correctly, but same principle          
+          {
+            MatrixToken matrixToken = (MatrixToken) token;
+            
+            LinkedList rowList = new LinkedList();
+            for (int i = 0; i < matrixToken.getRowCount(); i++) {
+                
+                LinkedList columnList = new LinkedList();
+                for (int j = 0; j < matrixToken.getColumnCount(); j++) {
+                    columnList.addLast(tokenToExprNode(matrixToken.getElementAsToken(i, j)));                    
+                }
+                
+                rowList.addLast(new ArrayInitNode(columnList));
+            }
+            return new ArrayInitNode(rowList);
+          }
+                                                
+          default:                
+          ApplicationUtility.error("tokenToExpr() not supported on token class " + 
+           token.getClass().getName());
+        }    
+        return null;
+    }
+        
     // mathematical kinds
     
     public static final int TYPE_KIND_COMPLEX              = TypeUtility.TYPE_KINDS;      
@@ -152,12 +240,14 @@ public class PtolemyDecls implements JavaStaticSemanticConstants {
     public static final int TYPE_KIND_COMPLEX_MATRIX_TOKEN = TYPE_KIND_LONG_MATRIX_TOKEN + 1;
     public static final int TYPE_KIND_FIX_MATRIX_TOKEN     = TYPE_KIND_COMPLEX_MATRIX_TOKEN + 1;
 
+    // parameter kind
+    public static final int TYPE_KIND_PARAMETER            = TYPE_KIND_FIX_MATRIX_TOKEN + 1;
+    
     // port kinds
     
-    public static final int TYPE_KIND_TYPED_IO_PORT        = TYPE_KIND_FIX_MATRIX_TOKEN + 1;
+    public static final int TYPE_KIND_TYPED_IO_PORT        = TYPE_KIND_PARAMETER + 1;
     public static final int TYPE_KIND_SDF_IO_PORT          = TYPE_KIND_TYPED_IO_PORT + 1;
-    
-        
+            
     public static final MethodDecl fireDecl;
     
     //public static final ClassDecl actorDecl;
@@ -222,18 +312,24 @@ public class PtolemyDecls implements JavaStaticSemanticConstants {
             
     public static final ClassDecl FIX_MATRIX_TOKEN_DECL;
     public static final TypeNameNode FIX_MATRIX_TOKEN_TYPE;
-
-    public static final ClassDecl TYPED_IO_PORT_DECL;                      
-    public static final TypeNameNode TYPED_IO_PORT_TYPE;                      
     
     // a lower bound for type resolution                                 
     public static final ClassDecl DUMMY_LOWER_BOUND; 
     public static final TypeNameNode DUMMY_LOWER_BOUND_TYPE;
 
+    // parameter
+    public static final ClassDecl PARAMETER_DECL;
+    public static final TypeNameNode PARAMETER_TYPE;
+        
     // port types
+
+    public static final ClassDecl TYPED_IO_PORT_DECL;                      
+    public static final TypeNameNode TYPED_IO_PORT_TYPE;                      
     
     public static final ClassDecl SDF_IO_PORT_DECL;                      
     public static final TypeNameNode SDF_IO_PORT_TYPE;                          
+    
+    
                              
     protected static final ClassDecl[] _knownClassDecls;
     protected static final TypeNameNode[] _knownTypes;
@@ -410,6 +506,14 @@ public class PtolemyDecls implements JavaStaticSemanticConstants {
         dummyName.setProperty(DECL_KEY, DUMMY_LOWER_BOUND);
         DUMMY_LOWER_BOUND_TYPE = new TypeNameNode(dummyName);                
                 
+        CompileUnitNode parameterUnit = StaticResolution.load(
+         SearchPath.NAMED_PATH.openSource("ptolemy.data.expr.Parameter", true), 1);
+         
+        PARAMETER_DECL = (ClassDecl) StaticResolution.findDecl(
+         parameterUnit,  "Parameter", CG_CLASS, null);          
+         
+        PARAMETER_TYPE = PARAMETER_DECL.getDefType();                
+                                        
         CompileUnitNode typedIOPortUnit = StaticResolution.load(
          SearchPath.NAMED_PATH.openSource("ptolemy.actor.TypedIOPort", true), 1);
          
@@ -432,7 +536,7 @@ public class PtolemyDecls implements JavaStaticSemanticConstants {
          COMPLEX_TOKEN_DECL, FIX_TOKEN_DECL, OBJECT_TOKEN_DECL, STRING_TOKEN_DECL, 
          MATRIX_TOKEN_DECL, BOOLEAN_MATRIX_TOKEN_DECL, INT_MATRIX_TOKEN_DECL, 
          DOUBLE_MATRIX_TOKEN_DECL, LONG_MATRIX_TOKEN_DECL, COMPLEX_MATRIX_TOKEN_DECL,
-         FIX_MATRIX_TOKEN_DECL, TYPED_IO_PORT_DECL, SDF_IO_PORT_DECL };
+         FIX_MATRIX_TOKEN_DECL, PARAMETER_DECL, TYPED_IO_PORT_DECL, SDF_IO_PORT_DECL };
          
         _knownTypes = new TypeNameNode[] { 
          COMPLEX_TYPE, FIX_POINT_TYPE, TOKEN_TYPE, BOOLEAN_TOKEN_TYPE,
@@ -440,7 +544,7 @@ public class PtolemyDecls implements JavaStaticSemanticConstants {
          COMPLEX_TOKEN_TYPE, FIX_TOKEN_TYPE, OBJECT_TOKEN_TYPE, STRING_TOKEN_TYPE,
          MATRIX_TOKEN_TYPE, BOOLEAN_MATRIX_TOKEN_TYPE, INT_MATRIX_TOKEN_TYPE, 
          DOUBLE_MATRIX_TOKEN_TYPE, LONG_MATRIX_TOKEN_TYPE, COMPLEX_MATRIX_TOKEN_TYPE,
-         FIX_MATRIX_TOKEN_TYPE, TYPED_IO_PORT_TYPE, SDF_IO_PORT_TYPE };
+         FIX_MATRIX_TOKEN_TYPE, PARAMETER_TYPE, TYPED_IO_PORT_TYPE, SDF_IO_PORT_TYPE };
          
         _knownKinds = new int[] { 
          TYPE_KIND_COMPLEX, TYPE_KIND_FIX_POINT, TYPE_KIND_TOKEN, TYPE_KIND_BOOLEAN_TOKEN,
@@ -448,7 +552,7 @@ public class PtolemyDecls implements JavaStaticSemanticConstants {
          TYPE_KIND_COMPLEX_TOKEN, TYPE_KIND_FIX_TOKEN, TYPE_KIND_OBJECT_TOKEN, TYPE_KIND_STRING_TOKEN, 
          TYPE_KIND_MATRIX_TOKEN, TYPE_KIND_BOOLEAN_MATRIX_TOKEN, TYPE_KIND_INT_MATRIX_TOKEN, 
          TYPE_KIND_DOUBLE_MATRIX_TOKEN, TYPE_KIND_LONG_MATRIX_TOKEN, TYPE_KIND_COMPLEX_MATRIX_TOKEN,
-         TYPE_KIND_FIX_MATRIX_TOKEN, TYPE_KIND_TYPED_IO_PORT, TYPE_KIND_SDF_IO_PORT };
+         TYPE_KIND_FIX_MATRIX_TOKEN, TYPE_KIND_PARAMETER, TYPE_KIND_TYPED_IO_PORT, TYPE_KIND_SDF_IO_PORT };
          
         _knownTokenTypes = new Type[] { 
          null, null, BaseType.GENERAL, BaseType.BOOLEAN, 
@@ -456,7 +560,7 @@ public class PtolemyDecls implements JavaStaticSemanticConstants {
          BaseType.COMPLEX, BaseType.FIX, BaseType.OBJECT, BaseType.STRING, 
          BaseType.MATRIX, BaseType.BOOLEAN_MATRIX, BaseType.INT_MATRIX, 
          BaseType.DOUBLE_MATRIX, BaseType.LONG_MATRIX, BaseType.COMPLEX_MATRIX,
-         BaseType.FIX_MATRIX, null, null };
+         BaseType.FIX_MATRIX, null, null, null };
 
         _isConcreteToken = new boolean[] {
          false, false, false, false,
@@ -464,7 +568,7 @@ public class PtolemyDecls implements JavaStaticSemanticConstants {
          true, true, true, true,
          false, true, true,
          true, true, true,
-         true, false, false };  
+         true, false, false, false };  
     }    
 
 }

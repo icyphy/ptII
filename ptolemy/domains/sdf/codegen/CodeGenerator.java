@@ -86,7 +86,8 @@ public class CodeGenerator extends CompositeActorApplication {
             // see if this is the first appearance of this entity                                    
             if (_entitySet.add(entity)) { 
                PerActorCodeGeneratorInfo actorInfo = new PerActorCodeGeneratorInfo();                       
-                                                            
+               
+               actorInfo.actor = entity;                       
                actorInfo.disjointAppearances = 1;                                             
                actorInfo.totalFirings = scheduler.getFiringCount(entity);               
                
@@ -115,8 +116,7 @@ public class CodeGenerator extends CompositeActorApplication {
              Entity entity = (Entity) entityItr.next();  
              PerActorCodeGeneratorInfo actorInfo = 
               (PerActorCodeGeneratorInfo) _entityInfoMap.get(entity);        
-             
-             _makePortNameMap(entity, actorInfo);
+                          
              _makeInputInfo(entity, actorInfo);
              
              ActorCodeGenerator actorCodeGen = new ActorCodeGenerator(entity);
@@ -276,19 +276,6 @@ public class CodeGenerator extends CompositeActorApplication {
         }     
     }
 
-    protected void _makePortNameMap(Entity entity, 
-         PerActorCodeGeneratorInfo actorInfo) throws IllegalActionException {
-
-        Iterator portItr = entity.portList().iterator();
-           
-        while (portItr.hasNext()) {              
-           TypedIOPort port = (TypedIOPort) portItr.next();
-           
-           String portName = port.getName();
-           
-           actorInfo.portNameToPortMap.put(portName,  port);
-        }
-    }
 
     /** Given the name of an object, return a globally unique Java identifier 
      *  containing
