@@ -62,6 +62,7 @@ JSRCS = \
 	GenericPort.java \
 	GraphElement.java \
 	GraphException.java \
+	HashedLinkedList.java \
 	HasValue.java \
 	IntervalTag.java \
 	InvalidMoCException.java \
