@@ -197,7 +197,7 @@ public class BasicJApplet extends JApplet {
     }
 
     /** Get the stack trace and return as a string.
-     *  @param ex The exception for which we want the stack trace.
+     *  @param throwable The exception for which we want the stack trace.
      *  @return The stack trace.
      */
     protected String _stackTraceToString(Throwable throwable) {
