@@ -5,6 +5,11 @@
 
   <doc>Configuration to run but not edit Ptolemy II models</doc>
 
+  <!-- Factories for effigies. -->
+  <entity name="effigyFactory" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+    <doc name="description">Block Diagram Model</doc>
+  </entity>
+
   <!-- The directory of open models, each represented by an effigy. -->
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
   </entity>
@@ -51,5 +56,13 @@
         </group>
       ?>
     </configure>
+  </entity>
+
+  <!-- The initial documents -->
+  <entity name="directory">
+    <entity name="application" class="ptolemy.actor.gui.ConfigurationEffigy">
+      <entity name="tableau" class="ptolemy.vergil.tree.TreeTableau">
+      </entity>
+    </entity>
   </entity>
 </model>
