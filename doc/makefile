@@ -117,11 +117,15 @@ ALLJSRCS =		ptolemy.plot \
 			ptolemy.data.type \
 			ptolemy.graph \
 			ptolemy.gui \
+			ptolemy.codegen \
 			ptolemy.lang \
 			ptolemy.lang.java \
 			ptolemy.lang.java.extended \
 			ptolemy.lang.java.nodetypes \
 			ptolemy.lang.java.tree \
+			ptolemy.codegen \
+			ptolemy.codegen.saveasjava \
+			ptolemy.sdf.codegen \
 			ptolemy.math \
 			ptolemy.media \
 			ptolemy.moml \
@@ -182,6 +186,9 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/lang/java/extended/*.java \
 			../ptolemy/lang/java/nodetypes/*.java \
 			../ptolemy/lang/java/tree/*.java \
+			../ptolemy/codegen/*.java \
+			../ptolemy/codegen/saveasjava/*.java \
+			../ptolemy/domains/sdf/codegen \
 			../ptolemy/math/*.java \
 			../ptolemy/media/*.java \
 			../ptolemy/moml/*.java \
@@ -196,7 +203,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
-	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) $(JDOCSIZE) -d doc/codeDoc $(ALLJSRCS) )
 
 
 # We don't include common.mk since we don't use the compiler here
