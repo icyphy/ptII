@@ -830,10 +830,10 @@ public class FSMController extends CompositeEntity implements TypedActor {
     LinkedList _initialTransitions = null;
 
     /** @serial The input status variable list. */
-    VariableList _inputStatusVars = null;
+    protected VariableList _inputStatusVars = null;
 
     /** @serial The input value variable list. */
-    VariableList _inputValueVars = null;
+    protected VariableList _inputValueVars = null;
 
     /** @serial The local variable list. */
     VariableList _localVariables = null;
