@@ -164,7 +164,7 @@ public class SamplerWithDefault extends DETransformer {
             }
         }
         // Consume the inputs we don't save.
-        for(int i = commonWidth; i < outputWidth; i++) {
+        for(int i = commonWidth; i < inputWidth; i++) {
             while (input.hasToken(i)) {
                 input.get(i);
             }
