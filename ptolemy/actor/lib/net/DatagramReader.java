@@ -678,8 +678,6 @@ public class DatagramReader extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        if (_debugging) _debug(this + "initialize has begun");
-
         // Reset private variables
         _packetsAlreadyAwaitingFire = 0;
 
@@ -712,11 +710,6 @@ public class DatagramReader extends TypedAtomicActor {
         // Allocate & start a thread to read from the socket.
         _socketReadingThread = new SocketReadingThread();
         _socketReadingThread.start();
-        if (_debugging) _debug("Thread created & started.");
-
-        if (_debugging) _debug("initialize ends");
-        if (_debugging) _debug("------------------");
-
     }
 
     /** Override the setContainer() method to call wrapup() if the
@@ -823,7 +816,6 @@ public class DatagramReader extends TypedAtomicActor {
      *  flag.  (Does it already and I just don't know about it?)
      */
     public void stopFire() {
-        if (_debugging) _debug("stopFire() is called");
         synchronized(_syncFireAndThread) {
             if (_fireIsWaiting) {
                 // stopFire() gets called a lot.  Including each time
@@ -832,9 +824,6 @@ public class DatagramReader extends TypedAtomicActor {
                 // few firings.
                 _stopFire = true;
                 _syncFireAndThread.notifyAll();
-                if (_debugging) _debug("stopFire() has notified fire()");
-            } else {
-                if (_debugging) _debug("stopFire() did not notify fire()");
             }
         }
     }
