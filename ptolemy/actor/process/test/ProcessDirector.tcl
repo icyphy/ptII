@@ -179,18 +179,20 @@ test TestProcessDirector-6.1 {Test action methods} {
     set cRcvr2 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch2 getConsReceiver]]
     set cRcvr3 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch3 getConsReceiver]]
     
-    set val 1
+    set vala 1
+    set valb 1
+    set valc 1
     
     if { [$cRcvr1 hasToken] != 1 } {
-        set val 0
+        set vala 0
     }
     if { [$cRcvr2 hasToken] != 1 } {
-        set val 0
+        set valb 0
     }
     if { [$cRcvr3 hasToken] != 1 } {
-    	set val 0
+    	set valc 0
     }
     
-    list $val 
+    list $vala $valb $valc 
 
-} {1}
+} {1 1 1}
