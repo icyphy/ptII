@@ -70,7 +70,7 @@ public class RunCompositeActor extends TypedCompositeActor {
         // that is exported does not depend on the presence of the
         // derived class Java definition. Thus, we force the class name
         // here to be RunCompositeActor.
-        getMoMLInfo().className = "ptolemy.actor.RunCompositeActor";
+        setClassName("ptolemy.actor.RunCompositeActor");
     }
 
     /** Construct a RunCompositeActor in the specified workspace with
@@ -92,7 +92,7 @@ public class RunCompositeActor extends TypedCompositeActor {
         // that is exported does not depend on the presence of the
         // derived class Java definition. Thus, we force the class name
         // here to be RunCompositeActor.
-        getMoMLInfo().className = "ptolemy.actor.RunCompositeActor";
+        setClassName("ptolemy.actor.RunCompositeActor");
     }
 
     /** Construct a RunCompositeActor with a name and a container.
@@ -122,7 +122,7 @@ public class RunCompositeActor extends TypedCompositeActor {
         // that is exported does not depend on the presence of the
         // derived class Java definition. Thus, we force the class name
         // here to be RunCompositeActor.
-        getMoMLInfo().className = "ptolemy.actor.RunCompositeActor";
+        setClassName("ptolemy.actor.RunCompositeActor");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -149,7 +149,7 @@ public class RunCompositeActor extends TypedCompositeActor {
                 _changeRequests.clear();
 
                 Iterator requests = copy.iterator();
-                boolean previousDeferStatus = isDeferChangeRequests();
+                boolean previousDeferStatus = isDeferringChangeRequests();
                 try {
                     // Get write access once on the outside, to make
                     // getting write access on each individual
@@ -158,7 +158,7 @@ public class RunCompositeActor extends TypedCompositeActor {
 
                     // Defer change requests so that if changes are
                     // requested during execution, they get queued.                    
-                    setDeferChangeRequests(true);
+                    setDeferringChangeRequests(true);
                     while (requests.hasNext()) {
                         ChangeRequest change = (ChangeRequest)requests.next();
                         change.setListeners(_changeListeners);
@@ -171,7 +171,7 @@ public class RunCompositeActor extends TypedCompositeActor {
                     }
                 } finally {
                     _workspace.doneWriting();
-                    setDeferChangeRequests(previousDeferStatus);
+                    setDeferringChangeRequests(previousDeferStatus);
                 }
                 
                 // Change requests may have been queued during the execute.
@@ -208,7 +208,7 @@ public class RunCompositeActor extends TypedCompositeActor {
             _workspace.getReadAccess();
             // Make sure that change requests are not executed when requested,
             // but rather only executed when executeChangeRequests() is called.
-            setDeferChangeRequests(true);
+            setDeferringChangeRequests(true);
 
             Iterator inputPorts = inputPortList().iterator();
             while (inputPorts.hasNext() && !_stopRequested) {
@@ -228,7 +228,7 @@ public class RunCompositeActor extends TypedCompositeActor {
             } finally {
                 // Indicate that it is now safe to execute
                 // change requests when they are requested.
-                setDeferChangeRequests(false);
+                setDeferringChangeRequests(false);
             }
             if (!_stopRequested) {
                 try {
@@ -325,7 +325,7 @@ public class RunCompositeActor extends TypedCompositeActor {
                 _changeRequests = new LinkedList();
             }
             _changeRequests.add(change);
-            if (!isDeferChangeRequests()) {
+            if (!isDeferringChangeRequests()) {
                 executeChangeRequests();
             }
         }

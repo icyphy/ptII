@@ -305,7 +305,7 @@ public class CompositeActorApplication {
                 // Temporary hack because cloning doesn't properly clone
                 // type constraints.
                 CompositeActor modelClass = (CompositeActor)
-                    parser.searchForClass(arg, model.getMoMLInfo().source);
+                    parser.searchForClass(arg, model.getSource());
                 if (modelClass != null) {
                     model = modelClass;
                 }

@@ -75,7 +75,7 @@ public class Refinement extends CTCompositeActor {
 
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
-        getMoMLInfo().className = "ptolemy.domains.fsm.modal.Refinement";
+        setClassName("ptolemy.domains.fsm.modal.Refinement");
     }
 
     ///////////////////////////////////////////////////////////////////

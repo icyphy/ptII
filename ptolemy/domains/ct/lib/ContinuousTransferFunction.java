@@ -111,8 +111,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
         denominator.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         // Do not use TypedCompositeActor as the MoML name for this actor.
-        getMoMLInfo().className =
-            "ptolemy.domains.ct.lib.ContinuousTransferFunction";
+        setClassName("ptolemy.domains.ct.lib.ContinuousTransferFunction");
 
         // icon
         _attachText("_iconDescription", "<svg>\n" +

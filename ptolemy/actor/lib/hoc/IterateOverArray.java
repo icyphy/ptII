@@ -145,7 +145,7 @@ public class IterateOverArray extends TypedCompositeActor {
     public IterateOverArray(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        getMoMLInfo().className = "ptolemy.actor.lib.hoc.IterateOverArray";
+        setClassName("ptolemy.actor.lib.hoc.IterateOverArray");
         new IterateDirector(this, uniqueName("IterateDirector"));
 
         _iterationCount =

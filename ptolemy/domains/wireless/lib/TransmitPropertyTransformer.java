@@ -120,8 +120,7 @@ public class TransmitPropertyTransformer extends RunCompositeActor
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
                 + "style=\"fill:white\"/>\n" +
                 "</svg>\n");
-        getMoMLInfo().className =
-            "ptolemy.domains.wireless.lib.TransmitPropertyTransformer";
+        setClassName("ptolemy.domains.wireless.lib.TransmitPropertyTransformer");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -275,7 +274,7 @@ public class TransmitPropertyTransformer extends RunCompositeActor
         }
 
         try {
-            setDeferChangeRequests(true);
+            setDeferringChangeRequests(true);
             _executeInsideModel();
         } finally {
             try {
@@ -286,7 +285,7 @@ public class TransmitPropertyTransformer extends RunCompositeActor
             } finally {
                 // Indicate that it is now safe to execute
                 // change requests when they are requested.
-                setDeferChangeRequests(false);
+                setDeferringChangeRequests(false);
             }
         }
         RecordToken result = (RecordToken)property.getToken();

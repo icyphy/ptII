@@ -87,7 +87,7 @@ test Prototype-1.2 {instantiate} {
 #
 test Prototype-1.3 {instantiate} {
     $e1 setClassDefinition true
-    set e2 [$e1 instantiate [java::null] {e2}]
+    set e2 [java::cast ptolemy.kernel.Prototype [$e1 instantiate [java::null] {e2}]]
     $e2 exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
@@ -99,8 +99,8 @@ test Prototype-1.3 {instantiate} {
 ######################################################################
 ####
 #
-test Prototype-1.4 {maximumDeferralDepth} {
-    $e2 maximumDeferralDepth
+test Prototype-1.4 {maximumParentDepth} {
+    $e2 maximumParentDepth
 } {1}
 
 

@@ -395,7 +395,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
     private void _initialize() {
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
-        getMoMLInfo().className = "ptolemy.actor.lib.hoc.MultiInstanceComposite";
+        setClassName("ptolemy.actor.lib.hoc.MultiInstanceComposite");
         try {
             nInstances = new Parameter(this, "nInstances", new IntToken(1));
             instance = new Parameter(this, "instance", new IntToken(0));

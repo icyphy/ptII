@@ -441,10 +441,10 @@ public class Configuration extends CompositeEntity {
         Prototype deferredTo = null;
         boolean isClass = false;
         if (entity instanceof Prototype) {
-            deferredTo = ((Prototype)entity).getDeferTo();
+            deferredTo = (Prototype)((Prototype)entity).getParent();
             isClass = ((Prototype)entity).isClassDefinition();
         }
-        String elementName = entity.getMoMLElementName();        
+        String elementName = entity.getElementName();        
         if (deferredTo != null && !isClass) {
             entity = deferredTo;
         }

@@ -333,7 +333,7 @@ public class ModalModel extends CTCompositeActor {
 
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
-        getMoMLInfo().className = "ptolemy.domains.fsm.modal.ModalModel";
+        setClassName("ptolemy.domains.fsm.modal.ModalModel");
 
         // This actor contains an FSMDirector and an FSMActor.
         // The names are preceded with underscore to minimize the

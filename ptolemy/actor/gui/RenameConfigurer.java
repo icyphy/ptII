@@ -35,8 +35,6 @@ import javax.swing.BoxLayout;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
@@ -95,23 +93,11 @@ public class RenameConfigurer extends Query
         if (_changed) {
             String newName = getStringValue("New name");
 
-            // The context for the MoML should be the first container
-            // above this object in the hierarchy that defers its
-            // MoML definition, or the immediate parent if there is none.
             NamedObj parent = (NamedObj)_object.getContainer();
             String oldName = _object.getName();
 
-            // NOTE: This is awkward, but we need to know what is being
-            // renamed to create the right MoML.
             StringBuffer moml = new StringBuffer("<");
-            String elementName = "entity";
-            if (_object instanceof Port) {
-                elementName = "port";
-            } else if (_object instanceof Attribute) {
-                elementName = "property";
-            } else if (_object instanceof Relation) {
-                elementName = "relation";
-            }
+            String elementName = _object.getElementName();
             moml.append(elementName);
             moml.append(" name=\"");
             moml.append(oldName);

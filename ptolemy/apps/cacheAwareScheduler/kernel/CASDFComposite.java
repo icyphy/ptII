@@ -30,19 +30,18 @@
 
 package ptolemy.apps.cacheAwareScheduler.kernel;
 
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.lib.Writer;
 import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.data.expr.Parameter;
+import ptolemy.apps.cacheAwareScheduler.lib.ExperimentalActor;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.apps.cacheAwareScheduler.lib.ExperimentalActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -80,8 +79,7 @@ public class CASDFComposite extends TypedCompositeActor {
         _version = 0;
 
         // Copying what wireless composite does in its constructor
-        getMoMLInfo().className =
-            "ptolemy.apps.CacheAwareScheduler.kernel.CASDFComposite";
+        setClassName("ptolemy.apps.CacheAwareScheduler.kernel.CASDFComposite");
 
         // Set parameters.
         dSPMSize = new Parameter(this, "dSPMSize");

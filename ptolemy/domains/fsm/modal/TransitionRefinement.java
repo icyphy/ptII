@@ -79,7 +79,7 @@ public class TransitionRefinement extends Refinement {
 
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
-        getMoMLInfo().className = "ptolemy.domains.fsm.modal.TransitionRefinement";
+        setClassName("ptolemy.domains.fsm.modal.TransitionRefinement");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -76,8 +76,7 @@ public class WirelessComposite extends TypedCompositeActor {
         // that is exported does not depend on the presence of the
         // derived class Java definition. Thus, we force the class name
         // here to be WirelessComposite.
-        getMoMLInfo().className =
-            "ptolemy.domains.wireless.kernel.WirelessComposite";
+        setClassName("ptolemy.domains.wireless.kernel.WirelessComposite");
 
         _attachText("_iconDescription", "<svg>\n" +
                 "<ellipse cx=\"0\" cy=\"0\" " +

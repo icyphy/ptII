@@ -103,7 +103,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         // that is exported does not depend on the presence of the
         // derived class Java definition. Thus, we force the class name
         // here to be TypedCompositeActor.
-        getMoMLInfo().className = "ptolemy.actor.TypedCompositeActor";
+        setClassName("ptolemy.actor.TypedCompositeActor");
     }
 
     /** Construct a TypedCompositeActor in the specified workspace with
@@ -125,7 +125,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         // that is exported does not depend on the presence of the
         // derived class Java definition. Thus, we force the class name
         // here to be TypedCompositeActor.
-        getMoMLInfo().className = "ptolemy.actor.TypedCompositeActor";
+        setClassName("ptolemy.actor.TypedCompositeActor");
     }
 
     /** Construct a TypedCompositeActor with a name and a container.
@@ -155,7 +155,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         // that is exported does not depend on the presence of the
         // derived class Java definition. Thus, we force the class name
         // here to be TypedCompositeActor.
-        getMoMLInfo().className = "ptolemy.actor.TypedCompositeActor";
+        setClassName("ptolemy.actor.TypedCompositeActor");
     }
 
     ///////////////////////////////////////////////////////////////////

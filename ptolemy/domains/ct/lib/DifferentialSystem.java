@@ -115,7 +115,7 @@ public class DifferentialSystem extends TypedCompositeActor {
         initialStates = new Parameter(this, "initialStates");
         initialStates.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-        getMoMLInfo().className = "ptolemy.domains.ct.lib.DifferentialSystem";
+        setClassName("ptolemy.domains.ct.lib.DifferentialSystem");
 
         // icon
         _attachText("_iconDescription", "<svg>\n" +

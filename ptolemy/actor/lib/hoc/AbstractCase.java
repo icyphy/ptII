@@ -70,7 +70,7 @@ public abstract class AbstractCase extends TypedCompositeActor {
 
         // The base class forces the class name to be TypedCompositeActor.
         // Override that to get the current class name.
-        getMoMLInfo().className = getClass().getName();
+        setClassName(getClass().getName());
     }
 
     ///////////////////////////////////////////////////////////////////

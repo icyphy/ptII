@@ -197,7 +197,7 @@ public class Parameter extends Variable {
                 + " name=\""
                 + name
                 + "\" class=\""
-                + getMoMLInfo().className
+                + getClassName()
                 + "\""
                 + valueTerm
                 + ">\n");

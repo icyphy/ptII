@@ -37,7 +37,6 @@ import java.util.StringTokenizer;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.MessageHandler;
@@ -98,7 +97,7 @@ public class Argument extends Attribute implements Settable {
                 + " name=\""
                 + name.trim()
                 + "\" class=\""
-                + getMoMLInfo().className.trim()
+                + getClassName().trim()
                 + "\" value=\""
                 + value.trim()
                 + "\" >\n");
@@ -151,7 +150,7 @@ public class Argument extends Attribute implements Settable {
      *  @return The container, which is an instance
      *   of CompositeEntity.
      */
-    public Nameable getContainer() {
+    public NamedObj getContainer() {
         return _container;
     }
 

@@ -299,7 +299,7 @@ public class Manager extends NamedObj implements Runnable {
             } finally {
                 // Indicate that it is now safe to execute
                 // change requests when they are requested.
-                setDeferChangeRequests(false);
+                setDeferringChangeRequests(false);
                 // Wrapup may also throw an exception,
                 // So be sure to reset the state to idle!
                 if (_state != IDLE) {
@@ -377,7 +377,7 @@ public class Manager extends NamedObj implements Runnable {
      *  controls execution.
      *  @return The composite actor that this manager is responsible for.
      */
-    public Nameable getContainer() {
+    public NamedObj getContainer() {
         return _container;
     }
 
@@ -412,7 +412,7 @@ public class Manager extends NamedObj implements Runnable {
             
             // Make sure that change requests are not executed when requested,
             // but rather only executed when executeChangeRequests() is called.
-            setDeferChangeRequests(true);
+            setDeferringChangeRequests(true);
 
             preinitializeAndResolveTypes();
 
@@ -1022,7 +1022,7 @@ public class Manager extends NamedObj implements Runnable {
         // Also, wrapping up execution may cause change requests to be queued.
         // Also, at the same time, re-enable immediate execution of
         // change requests.
-        setDeferChangeRequests(false);
+        setDeferringChangeRequests(false);
 
         _workspace.incrVersion();
 

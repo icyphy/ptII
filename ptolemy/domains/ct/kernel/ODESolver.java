@@ -121,7 +121,7 @@ public abstract class ODESolver extends NamedObj {
     /** Return the director that contains this solver.
      *  @return the director that contains this solver.
      */
-    public final Nameable getContainer() {
+    public final NamedObj getContainer() {
         return _container;
     }
 

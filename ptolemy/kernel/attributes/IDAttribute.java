@@ -92,7 +92,7 @@ public class IDAttribute extends SingletonAttribute {
             isClass = ((Prototype)container).isClassDefinition();
         }
         
-        String className = container.getMoMLInfo().className;
+        String className = container.getClassName();
 
         baseClass = new StringAttribute(this, "baseClass");
         baseClass.setExpression(className);

@@ -70,8 +70,7 @@ public class PetriNetActor extends TypedCompositeActor  {
      */
     public PetriNetActor() {
         super();
-        getMoMLInfo().className =
-            "ptolemy.domains.petrinet.kernel.PetriNetActor";
+        setClassName("ptolemy.domains.petrinet.kernel.PetriNetActor");
     }
 
     /** Construct a PetriNetActor in the specified workspace with an empty
@@ -83,8 +82,7 @@ public class PetriNetActor extends TypedCompositeActor  {
      */
     public PetriNetActor(Workspace workspace) {
         super(workspace);
-        getMoMLInfo().className =
-            "ptolemy.domains.petrinet.kernel.PetriNetActor";
+        setClassName("ptolemy.domains.petrinet.kernel.PetriNetActor");
     }
 
     /** Create a PetriNetActor in the specified container with the specified
@@ -101,8 +99,7 @@ public class PetriNetActor extends TypedCompositeActor  {
     public PetriNetActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        getMoMLInfo().className =
-            "ptolemy.domains.petrinet.kernel.PetriNetActor";
+        setClassName("ptolemy.domains.petrinet.kernel.PetriNetActor");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -403,7 +403,7 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                 Entity classEntity = (Entity)_findDeferredInstance(entity);
 
                 if (!(entity instanceof CompositeEntity) ||
-                        className.equals(entity.getMoMLInfo().className)) {
+                        className.equals(entity.getClassName())) {
                     // If the entity is NOT a moml class....
                     // Then record the things inside the master as things
                     // that automagically get created when we construct the
@@ -682,15 +682,14 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
         NamedObj deferredObject = null;
         boolean isClass = false;
         if (object instanceof Prototype) {
-            deferredObject = ((Prototype)object).getDeferTo();
+            deferredObject = (Prototype)((Prototype)object).getParent();
             isClass = ((Prototype)object).isClassDefinition();
         }
-        NamedObj.MoMLInfo info = object.getMoMLInfo();
-        if (deferredObject == null && info.className != null) {
+        if (deferredObject == null && object.getClassName() != null) {
             try {
                 // First try to find the local moml class that
                 // we extend
-                String deferredClass = info.className;
+                String deferredClass = object.getClassName();
 
                 // No moml class..  must have been a java class.
                 // FIXME: This sucks.  We should integrate with

@@ -214,7 +214,7 @@ public class PlotterBase extends TypedAtomicActor
                 InputStream stream = xmlFile.openStream();
                 parser.parse(base, stream);
                 stream.close();
-                _source = source;
+                _configureSource = source;
             }
             if (text != null && !text.equals("")) {
                 // NOTE: Regrettably, the XML parser we are using cannot
@@ -251,8 +251,8 @@ public class PlotterBase extends TypedAtomicActor
      *  method was called.
      *  @return The string representation of the input URL.
      */
-    public String getSource() {
-        return _source;
+    public String getConfigureSource() {
+        return _configureSource;
     }
 
     /** Return the text string that represents the current configuration of
@@ -260,7 +260,7 @@ public class PlotterBase extends TypedAtomicActor
      *  specified using the source attribute need not be returned here.
      *  This returns a null string if there is no associated plot.
      */
-    public String getText() {
+    public String getConfigureText() {
         if (plot == null) {
             // NOTE: Is this the right thing to do?
             return "";
@@ -529,7 +529,7 @@ public class PlotterBase extends TypedAtomicActor
     private List _configureSources = null;
     private List _configureTexts = null;
 
-    private String _source;
+    private String _configureSource;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
