@@ -122,11 +122,12 @@ compileDemo: $(JCLASS)
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(TARGETCLASS)
 
+# Use MoMLSimpleApplication here so that the demo can run without a head.
 runDemo:
 	@echo "Run the interpreted model"
 	"$(JAVA)" \
 		-Xfuture -classpath "$(CLASSPATH)" \
-		ptolemy.actor.gui.MoMLSimpleStatisticalApplication \
+		ptolemy.actor.gui.MoMLSimpleApplication \
 		$(MODELPATH)
 
 # Get the rest of the rules
