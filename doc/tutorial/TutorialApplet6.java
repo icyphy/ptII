@@ -22,7 +22,7 @@ public class TutorialApplet extends DEApplet implements QueryListener {
             plotter.plot.setConnected(false);
             plotter.plot.setMarksStyle("dots");
             Dimension size = getSize();
-            plotter.plot.setSize(size.width, size.height - 50);
+            plotter.plot.setSize(700, 250);
             _toplevel.connect(_clock.output, plotter.input);
             add(_createRunControls(2));
             _query.setBackground(getBackground());

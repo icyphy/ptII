@@ -10,6 +10,7 @@ public class TutorialApplet extends DEApplet {
             Clock clock = new Clock(_toplevel,"clock");
             TimedPlotter plotter = new TimedPlotter(_toplevel,"plotter");
             plotter.setPanel(this);
+            plotter.plot.setSize(700,300);
             _toplevel.connect(clock.output, plotter.input);
         } catch (Exception ex) {
             report("Error constructing model.", ex);
