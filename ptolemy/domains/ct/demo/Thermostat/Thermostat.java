@@ -33,7 +33,7 @@ package ptolemy.domains.ct.demo.Thermostat;
 import java.awt.BorderLayout;
 import java.awt.event.*;
 
-import ptolemy.domains.hs.kernel.*;
+import ptolemy.domains.fsm.kernel.*;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.gui.CTApplet;
 import ptolemy.domains.ct.lib.*;
@@ -94,7 +94,7 @@ public void init() {
                 _toplevel, "CTTopLevelDirector");
         StreamListener dbl = new StreamListener();
         //topdir.addDebugListener(dbl);
-        // a CT ramp
+        // a const source
         Const source = new Const(_toplevel, "Const");
         source.value.setToken(new DoubleToken(1.0));
 
@@ -127,34 +127,51 @@ public void init() {
         //hstr.setOutput(true);
         //hstr.setTypeEquals(BaseType.DOUBLE);
 
-        HSController ctrl = new HSController(hs, "Controller");
-        FSMState ctrlInc = new FSMState(ctrl, "Increasing");
-        FSMState ctrlDec = new FSMState(ctrl, "Decreasing");
-        ctrl.setInitialState(ctrlInc);
-        FSMTransition ctrlTr1 =
-            ctrl.createTransition(ctrlInc, ctrlDec);
-        ctrlTr1.setTriggerEvent("output");
+        FSMActor ctrl = new FSMActor(hs, "Controller");
+        //ctrl.addDebugListener(dbl);
+        State ctrlInc = new State(ctrl, "Increasing");
+        State ctrlDec = new State(ctrl, "Decreasing");
+        ctrl.initialStateName.setExpression("\"Increasing\"");
+        Transition ctrlTr1 = new Transition(ctrl, "ctrlTr1");
+        ctrlInc.outgoingPort.link(ctrlTr1);
+        ctrlDec.incomingPort.link(ctrlTr1);
+        ctrlTr1.setGuardExpression("output_S");
         // ctrlTr1.setInitEntry(true);
-        HSInit hsinit1 = new HSInit(ctrlTr1, "Integrator", "state");
-        FSMTransition ctrlTr2 =
-            ctrl.createTransition(ctrlDec, ctrlInc);
-        ctrlTr2.setTriggerEvent("output");
+        SetRefinementVariable act0 =
+            new SetRefinementVariable(ctrlTr1, "act0");
+        act0.expression.setToken(new StringToken("state_V"));
+        act0.variableName.setExpression("\"Integrator.InitialState\"");
+        ResetRefinement act1 =
+            new ResetRefinement(ctrlTr1, "act1");
+        Transition ctrlTr2 = new Transition(ctrl, "ctrlTr2");
+        ctrlDec.outgoingPort.link(ctrlTr2);
+        ctrlInc.incomingPort.link(ctrlTr2);
+        ctrlTr2.setGuardExpression("output_S");
         //ctrlTr2.setInitEntry(true);
-        HSInit hsinit2 = new HSInit(ctrlTr2, "Integrator", "state");
+        SetRefinementVariable act2 =
+            new SetRefinementVariable(ctrlTr2, "act2");
+        act2.expression.setToken(new StringToken("state_V"));
+        act2.variableName.setExpression("\"Integrator.InitialState\"");
+        ResetRefinement act3 =
+            new ResetRefinement(ctrlTr2, "act3");
+        IOPort ctrlIn = new TypedIOPort(ctrl, "output");
+        ctrlIn.setInput(true);
+        IOPort ctrlSt = new TypedIOPort(ctrl, "state");
+        ctrlSt.setInput(true);
 
         // the hybrid system director
         HSDirector hsdir = new HSDirector(hs, "HSDirector");
         //hs.setDirector(hsdir);
-        hsdir.setController(ctrl);
-        //hsdir.addDebugListener(new StreamListener());
+        hsdir.controllerName.setExpression("\"Controller\"");
+        //hsdir.addDebugListener(dbl);
 
         CTCompositeActor ctInc = new CTCompositeActor(hs, "Increasing");
         ZeroOrderHold ctIncH = new ZeroOrderHold(ctInc, "Hold");
         Integrator ctIncI = new Integrator(ctInc, "Integrator");
-        //ctIncI.addDebugListener(new StreamListener());
+        //ctIncI.addDebugListener(dbl);
         ZeroCrossingDetector ctIncD =
             new ZeroCrossingDetector(ctInc, "ZD");
-        //ctIncD.addDebugListener(new StreamListener());
+        //ctIncD.addDebugListener(dbl);
         Expression ctIncGF =
             new Expression(ctInc, "EXPRESSION");
 
@@ -195,8 +212,9 @@ public void init() {
         CTEmbeddedDirector ctIncDir = new CTEmbeddedDirector(
                 ctInc, "CTIncDir");
         //ctIncDir.addDebugListener(dbl);
-        //System.out.println(ctIncDir.getScheduler().toString());
+
         CTCompositeActor ctDec = new CTCompositeActor(hs, "Decreasing");
+        //ctDec.addDebugListener(dbl);
         ZeroOrderHold ctDecH = new ZeroOrderHold(ctDec, "Hold");
         Integrator ctDecI = new Integrator(ctDec, "Integrator");
         Scale ctGain = new Scale(ctDec, "Gain");
@@ -242,10 +260,10 @@ public void init() {
         ctDecSt.link(ctDecR1);
         CTEmbeddedDirector ctDecDir = new CTEmbeddedDirector(
                 ctDec, "CTDecDir");
-        //ctDecDir.addDebugListener(new StreamListener());
+        //ctDecDir.addDebugListener(dbl);
 
-        ctrlInc.setRefinement(ctInc);
-        ctrlDec.setRefinement(ctDec);
+        ctrlInc.refinementName.setExpression("\"Increasing\"");
+        ctrlDec.refinementName.setExpression("\"Decreasing\"");
 
         // connect hs
         TypedIORelation hsr1 = (TypedIORelation)hs.newRelation("HSr1");
@@ -253,13 +271,14 @@ public void init() {
         ctIncIn.link(hsr1);
         ctDecIn.link(hsr1);
         TypedIORelation hsr2 = (TypedIORelation)hs.newRelation("HSr2");
-        //hsout.link(hsr2);
+        ctrlIn.link(hsr2);
         ctIncOut.link(hsr2);
         ctDecOut.link(hsr2);
         TypedIORelation hsr3 = (TypedIORelation)hs.newRelation("HSr3");
         hsst.link(hsr3);
         ctIncSt.link(hsr3);
         ctDecSt.link(hsr3);
+        ctrlSt.link(hsr3);
         Relation hsr4 = hs.newRelation("HSr4");
         //hstr.link(hsr4);
         ctIncTr.link(hsr4);
