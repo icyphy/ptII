@@ -1293,7 +1293,7 @@ public class IOPort extends ComponentPort {
      *  @exception NoRoomException If there is no room in the receiver.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void send(int channelIndex, Token token)
+    public void  send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
         try {
