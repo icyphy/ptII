@@ -145,8 +145,7 @@ public class PackageDecl extends JavaDecl
                 return;
         }
 
-	System.out.println("PackageDecl._initScope(): " +
-               "Now processing " + fullName('.'));
+	System.out.println("PackageDecl._initScope(): " + fullName('.'));
         // Use reflection to get at the Ptolemy Core packages.
         if (SearchPath.ptolemyCorePackageSet.contains(fullName('.'))) {
             _initScopeSystemPackages(SearchPath.ptolemyCoreClassSet,
