@@ -94,7 +94,7 @@ public class JAIPeriodicShift extends Transformer {
     ////                         public methods                    ////
 
     /** Override the base class and set the amount to shift vertically
-     *  and horizontally
+     *  and horizontally.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If a contained method throws it.
      */

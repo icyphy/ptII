@@ -51,6 +51,7 @@ import ptolemy.kernel.util.StringAttribute;
 //////////////////////////////////////////////////////////////////////////
 //// JAIConstant
 /**
+Produce an image with a uniform color.
 
 @author James Yeh, Steve Neuendorffer
 @version $Id$
@@ -85,12 +86,24 @@ public class JAIConstant extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** The band values of the image.  The default value is an Array
+     *  of 1 integer of value 0.
+     */
     public Parameter bandValues;
+
+    /** The height of the image in pixels.  The default value is
+     *  and integer with a value of 0.
+     */   
     public Parameter height;
+
+    /** The width of the image in pixels.  The default value is
+     *  and integer with a value of 0.
+     */   
     public Parameter width;
 
     /** The type to cast the data to.  This is a string valued
-     *  attribute that defaults to "byte".
+     *  attribute that defaults to "byte".  Other valid types
+     *  are "double", "float", "int" and "short".
      */
     public StringAttribute dataFormat;
 

@@ -94,10 +94,14 @@ public class JAICrop extends Transformer {
      */
     public Parameter width;
 
-    /** The point of origin for cropping.  The default value of both
-     *  these parameters is the integer value 0.
+    /** The x origin for cropping.  The default value is the integer
+     *  value 0.
      */
     public Parameter xOrigin;
+
+    /** The y origin for cropping.  The default value is the integer
+     *  value 0.
+     */
     public Parameter yOrigin;
 
     ///////////////////////////////////////////////////////////////////

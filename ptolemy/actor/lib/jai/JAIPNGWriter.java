@@ -126,6 +126,7 @@ public class JAIPNGWriter extends JAIWriter {
      */
     public Parameter background;
 
+    /** The bit depth.  The initial default is an integer of value 8. */
     public Parameter bitDepth;
 
     /** If <i>false</i>, then overwrite the specified file if it exists
@@ -134,10 +135,15 @@ public class JAIPNGWriter extends JAIWriter {
      */
     public Parameter confirmOverwrite;
 
+    /** The gamma.  The initial default is a double of value 0.455. */
     public Parameter gamma;
 
+    /** True if the background is to be set.  The initial value is false. */
     public Parameter setBackground;
 
+    /** True if the gamma parameter is to be used.
+     *  The initial value is false.
+     */
     public Parameter setGamma;
 
     ///////////////////////////////////////////////////////////////////

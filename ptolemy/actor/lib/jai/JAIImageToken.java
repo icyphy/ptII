@@ -58,6 +58,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class JAIImageToken extends ImageToken {
 
     /** Construct a token with a specified RenderedOp.
+     *  @param value The RenderedOp with whic to construct the JAIImageToken.
      */
     public JAIImageToken(RenderedOp value) {
         _renderedOp = value;

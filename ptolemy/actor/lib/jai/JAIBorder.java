@@ -107,7 +107,7 @@ public class JAIBorder extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The type of border to use */
+    /** The type of border to use. */
     public StringAttribute borderType;
 
     /** The constants to use if the Constant border type is chosen. */
