@@ -75,15 +75,16 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 	    // ptolemy/kernel/util.Visibility
 	    NameNode parentName = (NameNode) name.getQualifier();
   		System.err.println("ResolveTypesVisitor.visitTypeNameNode():" +
-  				   " failed to resolve\n" + node + 
-  				   "\n name = " + name +
+                        " failed to resolve " + node.getName().getIdent()); 
+//  				   " failed to resolve\n" + node + 
+//  				   "\n name = " + name +
 //    				   " node.hashCode() = " + node.hashCode() +
 //    				   " name.hashCode() = " + name.hashCode() +
-  				   "\n Trying potential inner class " +
+//  				   "\n Trying potential inner class " +
 //      				   parentName +
 //      				   " parentName.hashCode() = " + parentName.hashCode() +
 //    				   "\n parentName.getIdent()" +
-  				   parentName.getIdent());
+//  				   parentName.getIdent());
 	    if (parentName != null) {
 		try {
 		    NameNode newName =
@@ -121,7 +122,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 			node.setName(newerName);
   			System.out.println("ResolveTypesVisitor." +
   					   "visitTypeNameNode(): substituted "+
-					   node.getName());
+					   node.getName().getIdent());
 //  			System.out.println("ResolveTypesVisitor." +
 //  					   "visitTypeNameNode(): did " +
 //  					   "subsitution. " +
