@@ -81,7 +81,7 @@ public class BinaryTree extends java.lang.Object {
     public BinaryTree getRoot() {
         BinaryTree temp;
         temp = this;
-        while (temp._parent !=null) {
+        while (temp._parent != null) {
             temp = this._parent;
         }
         return temp;
@@ -171,7 +171,7 @@ public class BinaryTree extends java.lang.Object {
      * has a parent already.
      */
 
-    public void merge (BinaryTree leftTree, BinaryTree rightTree)
+    public void merge(BinaryTree leftTree, BinaryTree rightTree)
             throws IllegalActionException {
         if ((leftTree._parent != null) || (rightTree._parent != null)) {
             throw new IllegalActionException("BinaryTree: "+
@@ -194,7 +194,7 @@ public class BinaryTree extends java.lang.Object {
      */
 
     public String toString() {
-        String treeString="";
+        String treeString = "";
         treeString += "tree";
 
         if (getLeft() != null) {
