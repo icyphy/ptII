@@ -97,7 +97,7 @@ public class PTMLPrinter {
     static final String docheader = new String("<!DOCTYPE ");
     static final String dtdheader = new String(
             " PUBLIC \"ptml.dtd\" " +
-            "\"http:\\ptolemy.eecs.berkeley.edu\ptdesign\ptml.dtd\">\n");
+            "\"http:\\\\ptolemy.eecs.berkeley.edu\\ptdesign\\ptml.dtd\">\n");
     private XMLElement current;
     private XMLElement root;
     private String url;
