@@ -249,7 +249,7 @@ public class KernelException extends Exception {
         } else {
             prefix = object2String;
         }
-        return generateMessage(prefix, cause, detail);
+        return generateMessage("Object name: " + prefix, cause, detail);
     }
 
     /** Generate a properly formatted detail message.
@@ -307,7 +307,7 @@ public class KernelException extends Exception {
 
     /** Get the name of a Nameable object.
      *  If the argument is a null reference, return an empty string.
-     *  If the name is the empty string, then we return "<Unamed Object>".
+     *  If the name is the empty string, then we return "<Unnamed Object>".
      *
      *  @param object An object with a name.
      *  @return The name of the argument.
@@ -325,13 +325,14 @@ public class KernelException extends Exception {
         }
     }
 
-    /** Get the name of a Nameable object.  This method attempts to use
-     *  getFullName(), if it is defined, and resorts to getName() if it is
-     *  not.  If the argument is a null reference, return an empty string.
-     *  If the name of the argument is the empty string, then we return
-     *  "<Unamed Object>".
-     *
-     *  <p>This method is public static so that both
+    /** Get the name of a Nameable object.  This method uses
+     *  getName(), concatenating what it returns for each object in the
+     *  hierarchy, separated by periods.
+     *  If the argument is a null reference, return an empty string.
+     *  If the name of the argument or any of its containers is the
+     *  empty string, then that name is replaced with "<Unnamed Object>".
+     *  <p>
+     *  This method is public static so that both
      *  KernelException and KernelRuntimeException and any classes
      *  derived from those classes can use it.
      *  KernelRuntimeException must extend RuntimeException so that
@@ -347,11 +348,20 @@ public class KernelException extends Exception {
         if (object == null) {
             return "";
         } else {
-            String name;
+            String name = getName(object);
+            // First, check for recursive containment by calling getFullName().
             try {
-                name = object.getFullName();
+                object.getFullName();
             } catch (InvalidStateException ex) {
-                name = getName(object);
+                // If we have recursive containment, just return the
+                // name of the immediate object.
+                return name;
+            }
+            // Without recursive containment, we can elaborate the name.
+            Nameable container = object.getContainer();
+            while (container != null) {
+                name = getName(container) + "." + name;
+                container = container.getContainer();
             }
             return name;
         }
@@ -377,7 +387,7 @@ public class KernelException extends Exception {
         // constructors call super(), which would eventually set
         // the message in Exception, where Exception.getMessage()
         // returns the right thing, but this results in having to
-        // create private static methods that properly format the
+        // create private static methods that properly formats the
         // message for us in some of the derived classes like
         // NameDuplicationException.  The resulting code is difficult
         // to read, and forces developers to write classes in a stilted
