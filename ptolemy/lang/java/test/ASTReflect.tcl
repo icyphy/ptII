@@ -800,11 +800,11 @@ test ASTReflect-7.1 {check out Array Length} {
 ######################################################################
 ####
 #
-test ASTReflect-8.1 {check out characters} {
-    set class [ java::call Class forName "ptolemy.lang.java.test.CharTest"]
-    set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
-    list [listToStrings $astList]
-} {1}
+#test ASTReflect-8.1 {check out characters - ignored - signature is unchanged } {
+#    set class [ java::call Class forName "ptolemy.lang.java.test.CharTest"]
+#    set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
+#    list [listToStrings $astList]
+#} {1}
 
 ######################################################################
 ####
@@ -847,28 +847,48 @@ test ASTReflect-9.1 {check out class access} {
 ######################################################################
 ####
 #
-test ASTReflect-10.1 {check out exceptions} {
-    set class [ java::call Class forName "ptolemy.lang.java.test.ExceptionTest"]
-    set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
-    list [listToStrings $astList]
-} {}
+#test ASTReflect-10.1 {check out exceptions - ignored - signature is unchanged } {
+#    set class [ java::call Class forName "ptolemy.lang.java.test.ExceptionTest"]
+#    set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
+#    list [listToStrings $astList]
+#} {}
 
 ######################################################################
 ####
 #
-test ASTReflect-11.1 {check out for loops} {
-    set class [ java::call Class forName "ptolemy.lang.java.test.ForTest"]
-    set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
-    list [listToStrings $astList]
-} {}
+#test ASTReflect-11.1 {check out for loops - ignored - signature is unchanged } {
+#    set class [ java::call Class forName "ptolemy.lang.java.test.For"]
+#    set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
+#    list [listToStrings $astList]
+#} {}
 ######################################################################
 ####
 #
 test ASTReflect-12.1 {check out interfaces} {
     set class [ java::call Class forName "ptolemy.lang.java.test.IFace"]
-    set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
-    list [listToStrings $astList]
-} {}
+    set ast [java::call ptolemy.lang.java.ASTReflect ASTCompileUnitNode $class]
+    list [$ast toString]
+} {{ {CompileUnitNode { 
+  {DefTypes { 
+   {ClassDeclNode { 
+    {Interfaces  {}} 
+    {Members  {}} 
+    {Modifiers 8} 
+    {Name {NameNode { 
+           {Ident IFace} 
+           {Qualifier {AbsentTreeNode {leaf}}} 
+         }}} 
+    {SuperClass {NameNode { 
+                 {Ident Object} 
+                 {Qualifier {AbsentTreeNode {leaf}}} 
+               }}} 
+  }}}} 
+  {Imports  {}} 
+  {Pkg {NameNode { 
+        {Ident } 
+        {Qualifier {AbsentTreeNode {leaf}}} 
+      }}} 
+}}}}
 
 ######################################################################
 ####
@@ -884,9 +904,44 @@ test ASTReflect-12.1 {check out interfaces} {
 #
 test ASTReflect-14.1 {check out } {
     set class [ java::call Class forName "ptolemy.lang.java.test.InnerIFace"]
-    set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
-    list [listToStrings $astList]
-} {}
+    set ast [java::call ptolemy.lang.java.ASTReflect ASTCompileUnitNode $class]
+    list [$ast toString]
+} {{ {CompileUnitNode { 
+  {DefTypes { 
+   {ClassDeclNode { 
+    {Interfaces  {}} 
+    {Members { 
+     {ConstructorDeclNode { 
+      {Modifiers 0} 
+      {Name {NameNode { 
+             {Ident InnerIFace} 
+             {Qualifier {AbsentTreeNode {leaf}}} 
+           }}} 
+      {Params  {}} 
+      {ThrowsList  {}} 
+      {Body {BlockNode { 
+             {Stmts  {}} 
+           }}} 
+      {ConstructorCall {SuperConstructorCallNode { 
+                        {Args  {}} 
+                      }}} 
+    }}}} 
+    {Modifiers 0} 
+    {Name {NameNode { 
+           {Ident InnerIFace} 
+           {Qualifier {AbsentTreeNode {leaf}}} 
+         }}} 
+    {SuperClass {NameNode { 
+                 {Ident Object} 
+                 {Qualifier {AbsentTreeNode {leaf}}} 
+               }}} 
+  }}}} 
+  {Imports  {}} 
+  {Pkg {NameNode { 
+        {Ident } 
+        {Qualifier {AbsentTreeNode {leaf}}} 
+      }}} 
+}}}}
 
 ######################################################################
 ####
@@ -931,82 +986,163 @@ test ASTReflect-15.1 {check out one field, one method classes } {
 #
 test ASTReflect-16.1 {check out one field classes} {
     set class [ java::call Class forName "ptolemy.lang.java.test.OneField"]
-    set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
+    set astList [java::call ptolemy.lang.java.ASTReflect fieldsASTList $class]
     list [listToStrings $astList]
-} {}
+} {{{ {FieldDeclNode { 
+  {DefType {IntTypeNode {leaf}}} 
+  {Modifiers 1} 
+  {Name {NameNode { 
+         {Ident x} 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+       }}} 
+  {InitExpr {AbsentTreeNode {leaf}}} 
+}}}}}
 
 ######################################################################
 ####
 #
 test ASTReflect-17.1 {check out a simple class} {
-    set class [ java::call Class forName "ptolemy.lang.java.test.Simple"]
-    set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
-    list [listToStrings $astList]
-} {1}
+    set classDeclNode [java::call ptolemy.lang.java.ASTReflect  lookupClassDeclNode "ptolemy.lang.java.test.Simple"]
+    list [$classDeclNode toString]
+} {{ {ClassDeclNode { 
+  {Interfaces  {}} 
+  {Members { 
+   {ConstructorDeclNode { 
+    {Modifiers 1} 
+    {Name {NameNode { 
+           {Ident Simple} 
+           {Qualifier {AbsentTreeNode {leaf}}} 
+         }}} 
+    {Params  {}} 
+    {ThrowsList  {}} 
+    {Body {BlockNode { 
+           {Stmts  {}} 
+         }}} 
+    {ConstructorCall {SuperConstructorCallNode { 
+                      {Args  {}} 
+                    }}} 
+  }}}} 
+  {Modifiers 1} 
+  {Name {NameNode { 
+         {Ident Simple} 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+       }}} 
+  {SuperClass {NameNode { 
+               {Ident Object} 
+               {Qualifier {AbsentTreeNode {leaf}}} 
+             }}} 
+}}}}
 
 ######################################################################
 ####
 #
 test ASTReflect-18.1 {check out a simple class with an import} {
-    set class [ java::call Class forName "ptolemy.lang.java.test.Simple2"]
-    set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
-    list [listToStrings $astList]
-} {}
+    set classDeclNode [java::call ptolemy.lang.java.ASTReflect  lookupClassDeclNode "ptolemy.lang.java.test.Simple2"]
+    list [$classDeclNode toString]
+} {{ {ClassDeclNode { 
+  {Interfaces  {}} 
+  {Members { 
+   {ConstructorDeclNode { 
+    {Modifiers 1} 
+    {Name {NameNode { 
+           {Ident Simple2} 
+           {Qualifier {AbsentTreeNode {leaf}}} 
+         }}} 
+    {Params  {}} 
+    {ThrowsList  {}} 
+    {Body {BlockNode { 
+           {Stmts  {}} 
+         }}} 
+    {ConstructorCall {SuperConstructorCallNode { 
+                      {Args  {}} 
+                    }}} 
+  }}}} 
+  {Modifiers 1} 
+  {Name {NameNode { 
+         {Ident Simple2} 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+       }}} 
+  {SuperClass {NameNode { 
+               {Ident Object} 
+               {Qualifier {AbsentTreeNode {leaf}}} 
+             }}} 
+}}}}
+
 
 ######################################################################
 ####
 #
-test ASTReflect-19.1 {check out switches} {
-    set class [ java::call Class forName "ptolemy.lang.java.test.Switch"]
-    set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
-    lcompare [listToStrings $astList] \
-{{ {MethodDeclNode { 
-  {Modifiers 1} 
-  {Name {NameNode { 
-         {Ident ugh} 
-         {Qualifier {AbsentTreeNode {leaf}}} 
-       }}} 
-  {Params  {}} 
-  {ThrowsList  {}} 
-  {Body {AbsentTreeNode {leaf}}} 
-  {ReturnType {IntTypeNode {leaf}}} 
-}}}}
-} {1}
+#test ASTReflect-19.1 {check out switches - ignored - signature is unchanged } {} {
+#    set class [ java::call Class forName "ptolemy.lang.java.test.Switch"]
+#    set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
+#    lcompare [listToStrings $astList] \
+#} {} 
 
 ######################################################################
 ####
 #
 test ASTReflect-20.1 {check out superclasses} {
-    set class [ java::call Class forName "ptolemy.lang.java.test.TestSuper"]
-    set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
-    lcompare [listToStrings $astList] \
-{{ {MethodDeclNode { 
-  {Modifiers 513} 
-  {Name {NameNode { 
-         {Ident myIQ} 
-         {Qualifier {AbsentTreeNode {leaf}}} 
-       }}} 
-  {Params { 
-   {ParameterNode { 
-    {DefType {TypeNameNode { 
-              {Name {NameNode { 
-                     {Ident String} 
-                     {Qualifier {AbsentTreeNode {leaf}}} 
-                   }}} 
-            }}} 
-    {Modifiers 17} 
+    set classDeclNode [java::call ptolemy.lang.java.ASTReflect  lookupClassDeclNode "ptolemy.lang.java.test.SuperChild"]
+    list [$classDeclNode toString]
+} {{ {ClassDeclNode { 
+  {Interfaces  {}} 
+  {Members { 
+   {ConstructorDeclNode { 
+    {Modifiers 1} 
     {Name {NameNode { 
-           {Ident } 
+           {Ident SuperChild} 
            {Qualifier {AbsentTreeNode {leaf}}} 
          }}} 
+    {Params  {}} 
+    {ThrowsList  {}} 
+    {Body {BlockNode { 
+           {Stmts  {}} 
+         }}} 
+    {ConstructorCall {SuperConstructorCallNode { 
+                      {Args  {}} 
+                    }}} 
+  }}   {MethodDeclNode { 
+    {Modifiers 513} 
+    {Name {NameNode { 
+           {Ident test} 
+           {Qualifier {AbsentTreeNode {leaf}}} 
+         }}} 
+    {Params  {}} 
+    {ThrowsList  {}} 
+    {Body {AbsentTreeNode {leaf}}} 
+    {ReturnType {VoidTypeNode {leaf}}} 
   }}}} 
-  {ThrowsList  {}} 
-  {Body {AbsentTreeNode {leaf}}} 
-  {ReturnType {DoubleTypeNode {leaf}}} 
-}}} { {MethodDeclNode { 
   {Modifiers 1} 
   {Name {NameNode { 
-         {Ident stupor} 
+         {Ident SuperChild} 
+         {Qualifier {AbsentTreeNode {leaf}}} 
+       }}} 
+  {SuperClass {NameNode { 
+               {Ident Object} 
+               {Qualifier {AbsentTreeNode {leaf}}} 
+             }}} 
+}}}}
+
+######################################################################
+####
+#
+test ASTReflect-21.1 {check out field use} {
+    set class [ java::call Class forName "ptolemy.lang.java.test.UseFields"]
+    set astList [java::call ptolemy.lang.java.ASTReflect fieldsASTList $class]
+    lcompare [listToStrings $astList] {}
+} {1}
+
+######################################################################
+####
+#
+test ASTReflect-22.1 {check out method Use} {
+    set class [ java::call Class forName "ptolemy.lang.java.test.UseMethods"]
+    set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
+    list [listToStrings $astList]
+} {{{ {MethodDeclNode { 
+  {Modifiers 1} 
+  {Name {NameNode { 
+         {Ident use} 
          {Qualifier {AbsentTreeNode {leaf}}} 
        }}} 
   {Params { 
@@ -1022,27 +1158,8 @@ test ASTReflect-20.1 {check out superclasses} {
   {Body {AbsentTreeNode {leaf}}} 
   {ReturnType {TypeNameNode { 
                {Name {NameNode { 
-                      {Ident String} 
+                      {Ident Object} 
                       {Qualifier {AbsentTreeNode {leaf}}} 
                     }}} 
              }}} 
-}}}}
-} {1}
-
-######################################################################
-####
-#
-#test ASTReflect-21.1 {check out field use} {
-#    set class [ java::call Class forName "ptolemy.lang.java.test.UseFields"]
-#    set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
-#    lcompare [listToStrings $astList]
-#} {}
-
-######################################################################
-####
-#
-test ASTReflect-22.1 {check out } {
-#    set class [ java::call Class forName "ptolemy.lang.java.test.UseMethods"]
-#    set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
-#    lcompare [listToStrings $astList]
-#} {}
+}}}}}
