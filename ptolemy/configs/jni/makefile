@@ -60,6 +60,7 @@ OTHER_FILES_TO_BE_JARED = \
 	$(DERIVED_FILES) \
 	configuration.xml \
 	intro.htm \
+	jniGraphTableauFactory.xml \
 	welcomeWindow.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

@@ -29,44 +29,10 @@
   <!-- named "blank", then the effigy will initially refer to a clone -->
   <!-- of that blank entity. -->
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
-    <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-    <entity name="Graph Editor" class="jni.ThalesGraphTableau$Factory"/>
-      <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
-      </entity>
-    </entity>
-<property name="factory2" class="ptolemy.actor.gui.PtolemyTableauFactory">
-  <!-- These will appear in the View menu of a the graph editor. -->
-
-  <!-- property name="Graph Editor"
-
-            class="ptolemy.vergil.actor.ActorGraphTableau$Factory"/ -->
-
-  <!-- These will appear in the View menu of an entity tableau. -->
-  <property name="Graph Editor" class="jni.ThalesGraphTableau$Factory"/>
-
-
-  <property name="Run Window"
-            class="ptolemy.actor.gui.RunTableau$Factory"/>
-  <property name="Tree View"
-            class="ptolemy.vergil.tree.TreeTableau$Factory"/>
-  <property name="XML view"
-            class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
-  <!-- No code gen in this basic file. -->
-  <!--property name="Code Generator"
-            class="ptolemy.copernicus.gui.GeneratorTableau$Factory"/-->
-  <!-- FIXME: does this belong in the View menu? -->
-  <property name="JVM Properties"
-            class="ptolemy.actor.gui.JVMTableau$Factory"/>
-  <!-- FIXME: Tcl Shell does not belong in the View menu, nor in basic.
-    Commented out so that Web Start works
-    -->
-  <!--property name="Tcl Shell"
-            class="ptolemy.actor.gui.ptjacl.TclShellTableau$Factory"/-->
-</property>
-
+    <input source="ptolemy/configs/GraphEffigyFactory.xml"/>
     <input source="ptolemy/configs/fsmEffigyFactories.xml"/>
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
-  </entity>
+  </entity> 
 
   <!-- The list of tableau factories, which defines the visual   -->
   <!-- editors that are available.  After an effigy is created   -->
@@ -75,7 +41,7 @@
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
     <input source="ptolemy/configs/fsmTableauFactory.xml"/>
-    <input source="ptolemy/configs/graphTableauFactory.xml"/>
+    <input source="ptolemy/configs/jni/jniGraphTableauFactory.xml"/>
     <input source="ptolemy/configs/extendedTableauFactories.xml"/>
   </property>
 
@@ -87,7 +53,9 @@
    <entity name="jni" class="ptolemy.moml.EntityLibrary">
     <configure>
       <group>
-        <input source="jni/jni.xml"/>
+        <entity name="JNIActor" class="jni.GenericJNIActor">
+          <doc> An actor able to call a native function </doc>
+        </entity>
       </group>
     </configure>
    </entity>
