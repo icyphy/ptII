@@ -68,6 +68,7 @@ bash-2.05b$
 
 The solution is to uninstall GReAT, UDM and GME,
 trash the registry entries (Search for GME) and reinstall
+Then, click on the gear 
 
 BTW This command works:
 c:/Program\ Files/isis/great/bin/MetaGME2UML ECSL_DP.mga ECSL_DP_uml.mem
@@ -78,13 +79,26 @@ c:/Program\ Files/isis/great/bin/MetaGME2UML ECSL_DP.mga ECSL_DP_uml.mem
 >          (The interpreter is quite rudimentary, it always displays this
 >  message, even if re-registration is not necessary)
 
+Close GME
+Follow the instructions for "Import the model (metamodel?)" above
+Follow the instructions for "Generate the modeling lang/paradigm" above
+
 >  3. Open the ECSL-DP UML class diagram and run the UML2XML interpreter,
 >  which will produce an ECSL-DP.xml file.
+In GME, File ->Close Project
+File -> Open project
+Browse to "ECSL_DP_uml.mga" and open it
+Right click on the "Root Folder" in the right hand tree widget, select Interpret.
+  _or_ click on the icon in the toolbar that has the 
+  "UML 2 UDM/XML Interpreter" tooltip
+Save the file as ECSL_DP.xml
 
 >  4. Run the UDM code generator, udm.exe, on this ECSL-DP.xml file. You'll
 >  need the ECSL-DP.xsd file to perform the conversion below.
 
+In a shell, run
 c:/Program\ Files/ISIS/UDM/bin/udm.exe ECSL_DP.xml
+ECSL_DP.xsd will be produced
 
 >  5. Use the generated ECSL-DP.xml file to specify the <diagramname>
 >  argument(!) of udmcopy:
@@ -124,4 +138,4 @@ Ok, now:
   Exception: Not found
 
 The problem here is that we already have the ECSL file, so no need
-to run XML2ECSL
+to run XML2ECSL!
