@@ -100,7 +100,7 @@ public class LineStyle extends ParameterEditorStyle {
         String name = getContainer().getName();
         Parameter param = (Parameter)getContainer();
         Token current = param.getToken();
-        query.addLine(name, name, current.stringValue());
+        query.addLine(name, name, current.toString());
         query.attachParameter(param, name);
     }
 }
