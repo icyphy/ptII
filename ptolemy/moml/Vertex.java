@@ -38,6 +38,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import java.io.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Vertex
@@ -65,6 +66,7 @@ public class Vertex extends Attribute implements Locatable {
     public Vertex(Relation container, String name) 
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+	setMoMLElementName("vertex");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -144,6 +146,30 @@ public class Vertex extends Attribute implements Locatable {
             location.append("" +_location[i]);
         }
         return "(" + className + ", Location = (" + location.toString() + "))";
+    }
+
+    /** Write a MoML description of the contents of this object, which
+     *  in this base class is the attributes.  This method is called
+     *  by _exportMoML().  If there are attributes, then
+     *  each attribute description is indented according to the specified
+     *  depth and terminated with a newline character.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @throws IOException If an I/O error occurs.
+     *  @see exportMoMLContents
+     *  @see _exportMoMLContents
+     */
+    protected void _exportMoMLContents(Writer output, int depth)
+            throws IOException {
+	super._exportMoMLContents(output, depth);
+	if(_linked != null) {
+	    output.write(_getIndentPrefix(depth));
+	    output.write("<pathTo=\"" + _linked.getName() + "\"/>\n");
+	}
+ 	output.write(_getIndentPrefix(depth));
+	output.write("<location x=\"" + 
+		     _location[0] + "\" y=\"" + 
+		     _location[1] + "\"/>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -34,6 +34,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
+import java.io.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Icon
@@ -59,6 +60,7 @@ public class Icon extends Attribute implements Locatable {
     public Icon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+	setMoMLElementName("rendition");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,9 +98,29 @@ public class Icon extends Attribute implements Locatable {
         return "(" + className + ", Location = (" + location.toString() + "))";
     }
 
+    /** Write a MoML description of the contents of this object, which
+     *  in this base class is the attributes.  This method is called
+     *  by _exportMoML().  If there are attributes, then
+     *  each attribute description is indented according to the specified
+     *  depth and terminated with a newline character.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @throws IOException If an I/O error occurs.
+     *  @see exportMoMLContents
+     *  @see _exportMoMLContents
+     */
+    protected void _exportMoMLContents(Writer output, int depth)
+            throws IOException {
+	super._exportMoMLContents(output, depth);
+	output.write(_getIndentPrefix(depth));
+	output.write("<location x=\"" + 
+		     _location[0] + "\" y=\"" + 
+		     _location[1] + "\"/>\n");
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The location.
-    private int[] _location;
+    private int[] _location = new int[2];
 }
