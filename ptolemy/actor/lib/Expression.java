@@ -39,7 +39,12 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.ScopeExtender;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -47,6 +52,9 @@ import ptolemy.kernel.util.*;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Expression
@@ -101,15 +109,9 @@ for example if a parameter and a port have the same name, then
 the results are unpredictable.  They will depend on the order
 in which things are defined, which may not be the same in the
 constructor as in the clone method.  This class attempts to
-detect name duplications and throw an exception.  Furthermore, the
-values of the ports are given during the last execution.  It is possible
-to reconnect the ports so that their types change, and enter a legal
-expression (given those types) that is not accepted by this actor.
-Lastly, the connection
-between ports and the expression can be easily broken.  For example,
-removing a port that the expression depends on.
+detect name duplications and throw an exception.
 
-@author Xiaojun Liu, Edward A. Lee
+@author Xiaojun Liu, Edward A. Lee, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 0.2
 */
@@ -129,10 +131,7 @@ public class Expression extends TypedAtomicActor {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
-        expression = new Parameter(this, "expression");
-
-        _time = new Variable(this, "time", new DoubleToken(0.0));
-        _iteration = new Variable(this, "iteration", new IntToken(1));
+        expression = new StringAttribute(this, "expression");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -145,22 +144,20 @@ public class Expression extends TypedAtomicActor {
      *  Typically, this parameter evaluates an expression involving
      *  the inputs.
      */
-    public Parameter expression;
+    public StringAttribute expression;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a change in the type of an attribute.  This method is
-     *  called by a contained attribute when its type changes.
-     *  This class overrides the base class to allow all type changes.
-     *  The types of the attributes do not affect the types of the ports.
-     *  If an actor does not allow attribute types to change, then it should
-     *  override this method.
+    /** React to a change in the value of an attribute. 
      *  @param attribute The attribute whose type changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void attributeTypeChanged(Attribute attribute)
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
+        if(attribute == expression) {
+            _parseTree = null;
+        }
     }
 
     /** Clone the actor into the specified workspace. This calls the
@@ -175,8 +172,6 @@ public class Expression extends TypedAtomicActor {
  	    throws CloneNotSupportedException {
         Expression newObject = (Expression)super.clone(workspace);
         newObject._iterationCount = 1;
-        newObject._time = (Variable)newObject.getAttribute("time");
-        newObject._iteration = (Variable)newObject.getAttribute("iteration");
         return newObject;
     }
 
@@ -186,11 +181,6 @@ public class Expression extends TypedAtomicActor {
      *   yields an incompatible type, or if there is no director.
      */
     public void fire() throws IllegalActionException {
-        Director director = getDirector();
-        if (director == null) {
-            throw new IllegalActionException(this, "No director!");
-        }
-        _time.setToken(new DoubleToken(director.getCurrentTime()));
         Iterator inputPorts = inputPortList().iterator();
         while (inputPorts.hasNext()) {
             IOPort port = (IOPort)(inputPorts.next());
@@ -198,14 +188,24 @@ public class Expression extends TypedAtomicActor {
             if (port.getWidth() > 0) {
                 if (port.hasToken(0)) {
                     Token inputToken = port.get(0);
-                    Variable var =
-                        (Variable)(getAttribute(port.getName()));
-                    var.setToken(inputToken);
+                    _tokenMap.put(port.getName(), inputToken);
                 }
             }
         }
 
-        Token result = expression.getToken();
+        if(_parseTree == null) {
+            PtParser parser = new PtParser();
+            _parseTree = parser.generateParseTree(
+                    expression.getExpression());
+        }
+        if(_parseTreeEvaluator == null) {
+            _parseTreeEvaluator = new ParseTreeEvaluator();
+        }
+        if(_scope == null) {
+            _scope = new VariableScope();
+        }
+        Token result = _parseTreeEvaluator.evaluateParseTree(
+                _parseTree, _scope);
 
         if (result == null) {
             throw new IllegalActionException(this,
@@ -221,7 +221,7 @@ public class Expression extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iterationCount = 1;
-        _iteration.setToken(new IntToken(_iterationCount));
+        _tokenMap = new HashMap();
     }
 
     /** Increment the iteration count.
@@ -229,92 +229,75 @@ public class Expression extends TypedAtomicActor {
      */
     public boolean postfire() throws IllegalActionException {
         _iterationCount++;
-        _iteration.setToken(new IntToken(_iterationCount));
         // This actor never requests termination.
         return true;
     }
 
-    /** Create receivers and validate the attributes contained by this
-     *  actor and the ports contained by this actor.  This method overrides
-     *  the base class to not throw exceptions if the parameters of this 
-     *  actor cannot be validated.  This is done because the expression
-     *  depends on the input values, which may not be valid before type
-     *  resolution occurs.
-     *
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void preinitialize() throws IllegalActionException {
-        try {
-            super.preinitialize();
-        }
-        catch(Exception ex) {
-        }
-    }
+    private class VariableScope implements ParserScope {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+        /** Look up and return the attribute with the specified name in the
+         *  scope. Return null if such an attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         */
+        public Token get(String name) throws IllegalActionException {
+            Variable result = null;
 
-    /** Override the base class to create a variable with the same name
-     *  as the port.  If the port is an input, then the variable serves
-     *  as a repository for received tokens.  If it is an output, then
-     *  the variable contains the most recently transmitted token.
-     *  @param port The port being added.
-     *  @exception IllegalActionException If the port has no name, or
-     *   if the variable is rejected for some reason, or if the port
-     *   is not a TypedIOPort.
-     *  @exception NameDuplicationException If the port name collides with a
-     *   name already in the entity.
-     */
-    protected void _addPort(Port port)
-            throws IllegalActionException, NameDuplicationException {
-        if (!(port instanceof TypedIOPort)) {
-            throw new IllegalActionException(this,
-                    "Cannot add an input port that is not a TypedIOPort: "
-                    + port.getName());
-        }
-        super._addPort(port);
-        String portName = port.getName();
-        // The new variable goes on the list of attributes, unless it is
-        // already there.
-        Attribute there = getAttribute(portName);
-        if (there == null) {
-            // FIXME: Have to initialize with a token since vergil
-            // evaluates variables at start-up.  This needs to be a double
-            // so that expressions that use java.Math work.
-            Variable variable = 
-                new Variable(this, portName, new DoubleToken(1.0));
-        } else if ((there instanceof Parameter)
-                || !(there instanceof Variable)) {
-            throw new IllegalActionException(this, "Port name collides with"
-                    + " another attribute name: " + portName);
-        }
-        // NOTE: We assume that if there is already a variable with
-        // this name then that is the variable we are intended to use.
-        // The variable will already be there, for example, if the
-        // actor was created through cloning.
-    }
-
-    /** Override the base class to remove the variable with the same name
-     *  as the port.
-     *  @param port The port being removed.
-     */
-    protected void _removePort(Port port) {
-        super._removePort(port);
-        String portName = port.getName();
-        Attribute attribute = getAttribute(portName);
-        if (attribute instanceof Variable) {
-            try {
-                attribute.setContainer(null);
-            } catch (KernelException ex) {
-                throw new InternalErrorException(ex.getMessage());
+            if(name.equals("time")) {
+                return new DoubleToken(getDirector().getCurrentTime());
+            } else if(name.equals("iteration")) {
+                return new IntToken(_iterationCount);
             }
+
+            Token token = (Token)_tokenMap.get(name);
+            if(token != null) {
+                return token;
+            }
+                     
+            NamedObj container = (NamedObj)Expression.this;
+            while (container != null) {
+                result = _searchIn(container, name);
+                if (result != null) {
+                    return result.getToken();
+                } else {
+                    container = (NamedObj)container.getContainer();
+                }
+            }
+            return null;
+        }
+
+        /** Return the list of attributes within the scope.
+         *  @return The list of attributes within the scope.
+         */
+        public NamedList variableList() {
+            return null;
+        }
+
+        // Search in the container for an attribute with the given name.
+        // Search recursively in any instance of ScopeExtender in the
+        // container.
+        private Variable _searchIn(NamedObj container, String name) {
+            Attribute result = container.getAttribute(name);
+            if (result != null && result instanceof Variable)
+                return (Variable)result;
+            Iterator extenders =
+                    container.attributeList(ScopeExtender.class).iterator();
+            while (extenders.hasNext()) {
+                ScopeExtender extender = (ScopeExtender)extenders.next();
+                result = extender.getAttribute(name);
+                if (result != null && result instanceof Variable)
+                    return (Variable)result;
+            }
+            return null;
         }
     }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Variable _time;
-    private Variable _iteration;
     private int _iterationCount = 1;
+    private ParseTreeEvaluator _parseTreeEvaluator = null;
+    private ASTPtRootNode _parseTree = null;
+    private VariableScope _scope = new VariableScope();
+    private Map _tokenMap;
 }
