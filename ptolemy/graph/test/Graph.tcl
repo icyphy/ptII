@@ -591,6 +591,9 @@ the same nodes and edges} {
     list $sameg $ehash
 } {0 0}
 
+######################################################################
+####
+#
 test Graph-9.1 {testing the validateWeight(Node) method} {
     set gr  [java::new ptolemy.graph.Graph]
     set nw1 [java::new String "weight1"]
@@ -602,23 +605,31 @@ test Graph-9.1 {testing the validateWeight(Node) method} {
     $gr addNode $n2
     $gr addNode $n3
     # There should be 2 elements in set1 and 1 element in set2
-    set set1 [[java::new java.util.Vector [$gr nodes $nw1]] toString]
-    set set2 [[java::new java.util.Vector [$gr nodes $nw2]] toString]
+    set set1 [[java::new java.util.Vector [$gr nodes $nw1]] size]
+    set set2 [[java::new java.util.Vector [$gr nodes $nw2]] size]
     set counter1 [$gr changeCount]
-    $n1 setWeight $nw2
+    $n1 setWeight null
     # Result should be 1 since weight has changed
     set result [$gr validateWeight $n1]
+    # There should be 1 element at each.
+    set set3 [[java::new java.util.Vector [$gr nodes $nw1]] size]
+    set set4 [[java::new java.util.Vector [$gr nodes $nw2]] size]
+    $n1 setWeight $nw2
+    # Result should be 1 since weight has changed
+    set result2 [$gr validateWeight $n1]
     # Now there should be 1 element in set1 and 2 elements in set2
-    set set3 [[java::new java.util.Vector [$gr nodes $nw1]] toString]
-    set set4 [[java::new java.util.Vector [$gr nodes $nw2]] toString]
+    set set5 [[java::new java.util.Vector [$gr nodes $nw1]] size]
+    set set6 [[java::new java.util.Vector [$gr nodes $nw2]] size]
     set counter2 [$gr changeCount]
-    list $set1 $set2 $result $set3 $set4 $counter1 $counter2
-} {{[weight1, weight1]} {[weight2]} 1 {[weight1]} {[weight2, weight2]} 3 4}
+    list $set1 $set2 $result $set3 $set4 $result2 $set5 $set6 $counter1 \
+	$counter2
+} {2 1 1 1 1 1 1 2 3 5}
 
 ######################################################################
 ####
 #
 test Graph-9.2 {testing validateWeight(Node) method's effect on the counter} {
+    #Using the same graph in 9.1
     set result1 [$gr validateWeight $n1]
     #This shouldn't change the counter
     set counter3 [$gr changeCount]
@@ -627,7 +638,163 @@ test Graph-9.2 {testing validateWeight(Node) method's effect on the counter} {
     set result2 [$gr validateWeight $n1]
     set counter4 [$gr changeCount]
     list $result1 $counter3 $result2 $counter4
-} {0 4 1 5}
+} {0 5 1 6}
+
+######################################################################
+####
+#
+test Graph-9.3 {testing the GraphElementException} {
+    #Using the graph in 9.1
+    set n4 [java::new ptolemy.graph.Node $nw1]
+    $gr addNode $n4
+    $gr removeNode $n4
+    $n4 setWeight $nw2
+    catch {$gr validateWeight $n4} msg
+    list $msg
+} {{ptolemy.graph.GraphElementException: The specified node is not in the graph.
+Dumps of the offending node and graph follow.
+The offending node:
+weight2
+The offending graph:
+{ptolemy.graph.Graph
+Node Set:
+0: weight1
+1: weight2
+2: weight1
+Edge Set:
+
+}
+
+}}
+
+######################################################################
+####
+#
+test Graph-9.4 {testing validateWeight(Node, Weight)} {
+    set gr  [java::new ptolemy.graph.Graph]
+    set nw1 [java::new String "weight1"]
+    set nw2 [java::new String "weight2"]
+    set n1  [java::new ptolemy.graph.Node $nw1]
+    set n2  [java::new ptolemy.graph.Node $nw2]
+    set n3  [java::new ptolemy.graph.Node $nw1]
+    $gr addNode $n1
+    $gr addNode $n2
+    $gr addNode $n3
+    # There should be 2 elements in set1 and 1 element in set2
+    set set1 [[java::new java.util.Vector [$gr nodes $nw1]] size]
+    set set2 [[java::new java.util.Vector [$gr nodes $nw2]] size]
+    set counter1 [$gr changeCount]
+    $n1 setWeight null
+    # Result should be 1 since weight has changed
+    set result [$gr validateWeight $n1 $nw1]
+    # There should be 1 element at each.
+    set set3 [[java::new java.util.Vector [$gr nodes $nw1]] size]
+    set set4 [[java::new java.util.Vector [$gr nodes $nw2]] size]
+    $n1 setWeight $nw2
+    # Result should be 1 since weight has changed
+    set result2 [$gr validateWeight $n1 null]
+    # Now there should be 1 element in set1 and 2 elements in set2
+    set set5 [[java::new java.util.Vector [$gr nodes $nw1]] size]
+    set set6 [[java::new java.util.Vector [$gr nodes $nw2]] size]
+    set counter2 [$gr changeCount]
+    list $set1 $set2 $result $set3 $set4 $result2 $set5 $set6 $counter1 \
+	$counter2
+} {2 1 1 1 1 1 1 2 3 5}
+
+######################################################################
+####
+#
+test Graph-9.5 {testing validateWeight(Node, Weight) method's effect on the counter} {
+    #Using the same graph in 9.4
+    set result1 [$gr validateWeight $n1 $nw2]
+    #This shouldn't change the counter
+    set counter3 [$gr changeCount]
+    #Now the counter should change
+    $n1 setWeight $nw1
+    set result2 [$gr validateWeight $n1 $nw2]
+    set counter4 [$gr changeCount]
+    list $result1 $counter3 $result2 $counter4
+} {0 5 1 6}
+
+######################################################################
+####
+#
+test Graph-9.6 {testing validateWeight(Node, Weight) exceptions} {
+    #Using the graph in 9.4
+    set n4 [java::new ptolemy.graph.Node $nw1]
+    $gr addNode $n4
+    $gr removeNode $n4
+    $n4 setWeight $nw2
+    catch {$gr validateWeight $n4 $nw1} msg1
+    catch {$gr validateWeight $n1 $nw2} msg2
+    catch {$gr validateWeight $n1 null} msg3
+    $n1 setWeight null
+    catch {$gr validateWeight $n1 null} msg4
+    set set7 [[java::new java.util.Vector [$gr nodes $nw1]] size]
+    set set8 [[java::new java.util.Vector [$gr nodes $nw2]] size]
+    set set9 [[java::new java.util.Vector [$gr nodes null]] size]
+    $gr validateWeight $n1 $nw1
+    set set10 [[java::new java.util.Vector [$gr nodes $nw1]] size]
+    set set11 [[java::new java.util.Vector [$gr nodes $nw2]] size]
+    set set12 [[java::new java.util.Vector [$gr nodes null]] size]
+    list $msg1 $msg2 $msg3 $msg4 $set7 $set8 $set9 $set10 $set11 $set12
+} {{ptolemy.graph.GraphElementException: The specified node is not in the graph.
+Dumps of the offending node and graph follow.
+The offending node:
+weight2
+The offending graph:
+{ptolemy.graph.Graph
+Node Set:
+0: weight1
+1: weight2
+2: weight1
+Edge Set:
+
+}
+
+} {ptolemy.graph.GraphElementException: Incorrect previous weight specified.
+Dumps of the offending weight and graph follow.
+The offending weight:
+weight2
+The offending graph:
+{ptolemy.graph.Graph
+Node Set:
+0: weight1
+1: weight2
+2: weight1
+Edge Set:
+
+}
+
+} {ptolemy.graph.GraphElementException: Incorrect previous weight specified.
+Dumps of the offending weight and graph follow.
+The offending weight:
+null
+The offending graph:
+{ptolemy.graph.Graph
+Node Set:
+0: weight1
+1: weight2
+2: weight1
+Edge Set:
+
+}
+
+} {ptolemy.graph.GraphElementException: Incorrect previous weight specified.
+Dumps of the offending weight and graph follow.
+The offending weight:
+null
+The offending graph:
+{ptolemy.graph.Graph
+Node Set:
+0: null
+1: weight2
+2: weight1
+Edge Set:
+
+}
+
+} 2 1 0 1 1 1}
 
 ######################################################################
 ####
@@ -729,3 +896,94 @@ hiddenEdgeCount()} {
     list $result1 $result2 $result3 $result4
 } {2 2 1 1}
 
+######################################################################
+####
+#
+test Graph-11.1 {testing addGraph(Graph)} {
+    set gr  [java::new ptolemy.graph.Graph]
+    set nw1 [java::new String "weight1"]
+    set nw2 [java::new String "weight2"]
+    set n1  [java::new ptolemy.graph.Node $nw1]
+    set n2  [java::new ptolemy.graph.Node $nw2]
+    set n3  [java::new ptolemy.graph.Node $nw1]
+    set e1  [java::new ptolemy.graph.Edge $n1 $n2]
+    $gr addNode $n1
+    $gr addNode $n2
+    $gr addNode $n3
+    $gr addEdge $e1
+    set gr2 [java::new ptolemy.graph.Graph]
+    set n4  [java::new ptolemy.graph.Node]
+    set n5  [java::new ptolemy.graph.Node]
+    set n6  [java::new ptolemy.graph.Node]
+    set e2  [java::new ptolemy.graph.Edge $n4 $n5]
+    set e3  [java::new ptolemy.graph.Edge $n5 $n6]
+    set e4  [java::new ptolemy.graph.Edge $n6 $n4]
+    $gr2 addNode $n1
+    $gr2 addNode $n4
+    $gr2 addNode $n5
+    $gr2 addNode $n6
+    $gr2 addEdge $e2
+    $gr2 addEdge $e3
+    $gr2 addEdge $e4
+    set description1 [$gr  toString]
+    set description2 [$gr2 toString]
+    # This should throw an exception because n1 is included in both graphs.
+    catch {$gr2 addGraph $gr} msg
+    $gr2 removeNode $n1
+    set returnValue [$gr2 addGraph $gr]
+    set description3 [$gr2 toString]
+    # This should return false since we are adding an empty graph.
+    set returnValue2 [$gr2 addGraph [java::new ptolemy.graph.Graph]]
+    list $description1 $description2 $msg $description3 $returnValue \
+	$returnValue2
+} {{{ptolemy.graph.Graph
+Node Set:
+0: weight1
+1: weight2
+2: weight1
+Edge Set:
+0: (weight1, weight2)
+}
+} {{ptolemy.graph.Graph
+Node Set:
+0: weight1
+1: <unweighted node>
+2: <unweighted node>
+3: <unweighted node>
+Edge Set:
+0: (<unweighted node>, <unweighted node>)
+1: (<unweighted node>, <unweighted node>)
+2: (<unweighted node>, <unweighted node>)
+}
+} {ptolemy.graph.GraphConstructionException: Attempt to add a node that is already contained in the graph.
+Dumps of the offending node and graph follow.
+The offending node:
+weight1
+The offending graph:
+{ptolemy.graph.Graph
+Node Set:
+0: weight1
+1: <unweighted node>
+2: <unweighted node>
+3: <unweighted node>
+Edge Set:
+0: (<unweighted node>, <unweighted node>)
+1: (<unweighted node>, <unweighted node>)
+2: (<unweighted node>, <unweighted node>)
+}
+
+} {{ptolemy.graph.Graph
+Node Set:
+0: <unweighted node>
+1: <unweighted node>
+2: <unweighted node>
+3: weight1
+4: weight2
+5: weight1
+Edge Set:
+0: (<unweighted node>, <unweighted node>)
+1: (<unweighted node>, <unweighted node>)
+2: (<unweighted node>, <unweighted node>)
+3: (weight1, weight2)
+}
+} 1 0}
