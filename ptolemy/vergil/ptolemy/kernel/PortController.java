@@ -177,6 +177,7 @@ public class PortController extends LocatableNodeController {
 		Site tsite = new PerimeterSite(figure, 0);
 		tsite.setNormal(normal);
 		tsite = new FixedNormalSite(tsite);
+                figure = new NameWrapper(figure, port.getName());
 		figure = new TerminalFigure(figure, tsite);
 	    } else {
 		polygon.moveTo(0, 0);
@@ -190,6 +191,89 @@ public class PortController extends LocatableNodeController {
 	    return figure;
 	}
     }
+
+    private class NameWrapper extends AbstractFigure {
+        /** The child
+         */
+        private Figure _child = null;
+        
+        /** The label
+         */
+        private LabelFigure _label = null;
+        
+        /** The label anchor
+         */
+        private int _anchor = SwingConstants.SOUTH_WEST;
+        
+        /** Construct a new figure with the given child figure and
+         * the given string.
+         */
+        public NameWrapper (Figure f, String label) {
+            _child = f;
+            f.setParent(this);
+            
+            _label = new LabelFigure(label);
+            _label.setPadding(0);
+            _label.setAnchor(_anchor);
+            Rectangle2D bounds = _child.getBounds();
+            _label.translateTo(bounds.getX(), bounds.getY());
+        }
+        
+        /** Get the bounds of this figure.
+         */
+        public Rectangle2D getBounds () {
+            Rectangle2D bounds = _child.getBounds();
+            Rectangle2D.union(bounds, _label.getBounds(), bounds);
+            return bounds;
+        }
+        
+        /** Get the child figure
+         */
+        public Figure getChild () {
+            return _child;
+        }
+        
+        /** Get the label. This can be used to adjust the label
+         * appearance, anchor, and so on.
+         */
+        public LabelFigure getLabel () {
+            return _label;
+        }
+        
+        /** Get the shape of this figure. This is the shape
+         * of the child figure only -- the label is not included
+         * in the shape.
+         */
+        public Shape getShape () {
+            return _child.getShape();
+        }
+        
+        /** We are hit if either the child or the figure is hit.
+         */
+        public boolean hit (Rectangle2D r) {
+            return _child.hit(r);
+        }
+        
+        /** Paint this figure
+         */
+        public void paint (Graphics2D g) {
+            if (_child != null && isVisible()) {
+                _child.paint(g);
+                _label.paint(g);
+            }
+        }
+        
+        /** Transform the figure with the supplied transform.
+         */
+        public void transform (AffineTransform at) {
+            repaint();
+            _child.transform(at);
+            Rectangle2D bounds = _child.getBounds();
+            _label.translateTo(bounds.getX(), bounds.getY());
+            repaint();
+        }
+    }
+
     private MenuCreator _menuCreator;
 }
 
