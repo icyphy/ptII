@@ -162,7 +162,7 @@ public class ArcTutorial {
         frame.setVisible(true);
 
         controller = new BasicController(graphicsPane);
-   }
+    }
 
     /** Create the figures that we will draw connectors between.
      * This is fairly uninteresting.
@@ -255,13 +255,13 @@ public class ArcTutorial {
         // The listener just tells both connectors to reroute themselves.
         DragInteractor i = controller.getDragInteractor();
         i.addLayerListener(new LayerAdapter () {
-            public void mouseDragged (LayerEvent e) {
-                connectorA.reroute();
-                connectorB.reroute();
-                connectorC.reroute();
-                connectorD.reroute();
-            }
-        });
+                public void mouseDragged (LayerEvent e) {
+                    connectorA.reroute();
+                    connectorB.reroute();
+                    connectorC.reroute();
+                    connectorD.reroute();
+                }
+            });
 
         // The connector selection interactor uses the same selection model
         SelectionInteractor ci = new SelectionInteractor(si.getSelectionModel());
@@ -280,13 +280,13 @@ public class ArcTutorial {
         // Make resizing reroute the connectors too
         DragInteractor j = figureManipulator.getHandleInteractor();
         j.addLayerListener(new LayerAdapter () {
-            public void mouseDragged (LayerEvent e) {
-                connectorA.reroute();
-                connectorB.reroute();
-                connectorC.reroute();
-                connectorD.reroute();
-            }
-        });
+                public void mouseDragged (LayerEvent e) {
+                    connectorA.reroute();
+                    connectorB.reroute();
+                    connectorC.reroute();
+                    connectorD.reroute();
+                }
+            });
 
         // Create and set up the manipulators for connectors. Straight
         // connectors will have an instance of ConnectorManipulator
@@ -316,13 +316,13 @@ public class ArcTutorial {
      */
     public static void main (String argv[]) {
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                ArcTutorial ex = new ArcTutorial();
-                ex.createFigures();
-                ex.createConnectors();
-                ex.setupInteraction();
-            }
-        });
+                public void run() {
+                    ArcTutorial ex = new ArcTutorial();
+                    ex.createFigures();
+                    ex.createConnectors();
+                    ex.setupInteraction();
+                }
+            });
     }
 
     //////////////////////////////////////////////////////////////////////

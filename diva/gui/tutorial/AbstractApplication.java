@@ -164,7 +164,7 @@ public abstract class AbstractApplication implements Application {
     public JMenuItem addMenuItem (JMenu menu, String label, Action action,
             int mnemonic, String tooltip, boolean isEnabled) {
         return GUIUtilities.addMenuItem(menu, label, action,
-                                        mnemonic, tooltip, isEnabled);
+                mnemonic, tooltip, isEnabled);
     }
 
     /** Add an action to the toolbar.  If the tool tip is null, use
@@ -188,7 +188,7 @@ public abstract class AbstractApplication implements Application {
     public JButton addToolBarButton (JToolBar toolbar, Action action,
             String tooltip, Icon icon, boolean isEnabled) {
         return GUIUtilities.addToolBarButton(toolbar, action, tooltip,
-                                             icon, isEnabled);
+                icon, isEnabled);
     }
 
     /** Add a property change listener to this application. Changes to
@@ -283,7 +283,7 @@ public abstract class AbstractApplication implements Application {
      */
     public abstract View createView (Document d);
 
-   /** Get list of all document objects known by this
+    /** Get list of all document objects known by this
      * application.
      */
     public List documentList () {
@@ -453,7 +453,7 @@ public abstract class AbstractApplication implements Application {
     }
 
 
-   /** Show an error in a dialog box with stack trace.
+    /** Show an error in a dialog box with stack trace.
      */
     public void showError(String op, Exception e) {
         GUIUtilities.showStackTrace(getAppContext().makeComponent(), e,
@@ -467,7 +467,7 @@ public abstract class AbstractApplication implements Application {
         _appContext = ac;
     }
 
-   /** Get a list of all view objects known by this
+    /** Get a list of all view objects known by this
      * application.
      */
     public List viewList () {

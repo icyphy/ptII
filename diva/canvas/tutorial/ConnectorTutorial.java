@@ -201,7 +201,7 @@ public class ConnectorTutorial {
         frame.setVisible(true);
 
         controller = new BasicController(graphicsPane);
-   }
+    }
 
     /** Create the figures that we will draw connectors between.
      * This is fairly uninteresting.
@@ -281,11 +281,11 @@ public class ConnectorTutorial {
         // The listener just tells both connectors to reroute themselves.
         DragInteractor i = controller.getDragInteractor();
         i.addLayerListener(new LayerAdapter () {
-            public void mouseDragged (LayerEvent e) {
-                connectorA.reroute();
-                connectorB.reroute();
-            }
-        });
+                public void mouseDragged (LayerEvent e) {
+                    connectorA.reroute();
+                    connectorB.reroute();
+                }
+            });
 
         // The connector selection interactor uses the same selection model
         SelectionInteractor ci = new SelectionInteractor(si.getSelectionModel());
@@ -305,19 +305,19 @@ public class ConnectorTutorial {
         // manipulator, here is an simple example of a connector
         // listener
         ConnectorListener cl = new ConnectorListener() {
-            public void connectorDragged(ConnectorEvent e) {
-                //// System.out.println("Dragged");
-            }
-            public void connectorDropped(ConnectorEvent e) {
-                System.out.println("Dropped");
-            }
-            public void connectorSnapped(ConnectorEvent e) {
-                System.out.println("Snapped");
-            }
-            public void connectorUnsnapped(ConnectorEvent e) {
-                System.out.println("Unsnapped");
-            }
-        };
+                public void connectorDragged(ConnectorEvent e) {
+                    //// System.out.println("Dragged");
+                }
+                public void connectorDropped(ConnectorEvent e) {
+                    System.out.println("Dropped");
+                }
+                public void connectorSnapped(ConnectorEvent e) {
+                    System.out.println("Snapped");
+                }
+                public void connectorUnsnapped(ConnectorEvent e) {
+                    System.out.println("Unsnapped");
+                }
+            };
         manipulator.addConnectorListener(cl);
     }
 

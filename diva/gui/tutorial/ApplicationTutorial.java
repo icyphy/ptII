@@ -112,24 +112,24 @@ public class ApplicationTutorial extends AbstractApplication {
 	context.setIconImage(iconImage);
 
         /*
-	// create the editing component.
-	_displayedDocument = null;
-	displayDocument(getCurrentDocument());
+          // create the editing component.
+          _displayedDocument = null;
+          displayDocument(getCurrentDocument());
         */
             
 	// When the currently selected document is changed, this listener
 	// is notified.
 	addViewListener(new ListDataListener() {
-	    public void contentsChanged(ListDataEvent e) {
-		System.out.println("current document = " +
-				   getCurrentView().getDocument());
-                setCurrentView(getCurrentView());//FIXME
-	    }
-	    public void intervalAdded(ListDataEvent e) {
-	    }
-	    public void intervalRemoved(ListDataEvent e) {
-	    }
-	});
+                public void contentsChanged(ListDataEvent e) {
+                    System.out.println("current document = " +
+                            getCurrentView().getDocument());
+                    setCurrentView(getCurrentView());//FIXME
+                }
+                public void intervalAdded(ListDataEvent e) {
+                }
+                public void intervalRemoved(ListDataEvent e) {
+                }
+            });
 
 	// Set the size of the context.
 	context.makeComponent().setSize(800, 600);
@@ -147,31 +147,31 @@ public class ApplicationTutorial extends AbstractApplication {
      * added to the application. After calling this method, most
      * callers should set this document to be the current document.
      *
-    public void displayDocument (Document d) {
-	// only handle text documents.
-	TextDocument document = (TextDocument) d;
-	System.out.println("displaying");
+     public void displayDocument (Document d) {
+     // only handle text documents.
+     TextDocument document = (TextDocument) d;
+     System.out.println("displaying");
 	
-	if(_displayedDocument != null) {
-	    // Pull the text out of the editor and stuff it back into the 
-	    // document.
-	    _displayedDocument.setText(_editorPane.getText());
-	}
+     if(_displayedDocument != null) {
+     // Pull the text out of the editor and stuff it back into the 
+     // document.
+     _displayedDocument.setText(_editorPane.getText());
+     }
 
-	_displayedDocument = document;
+     _displayedDocument = document;
 
-	if(document != null) {
-	    // Pull the text out of the new document and stuff it 
-	    // into the editor.
-	    _editorPane.setText(document.getText());
-	    _editorPane.setEditable(true);
-	} else {
-	    // If we've closed all the documents, then disable the 
-	    // editor pane.
-	    _editorPane.setText("");
-	    _editorPane.setEditable(false);
-	}
-    }
+     if(document != null) {
+     // Pull the text out of the new document and stuff it 
+     // into the editor.
+     _editorPane.setText(document.getText());
+     _editorPane.setEditable(true);
+     } else {
+     // If we've closed all the documents, then disable the 
+     // editor pane.
+     _editorPane.setText("");
+     _editorPane.setEditable(false);
+     }
+     }
     */
 
     /** Get the title of this application
@@ -189,14 +189,14 @@ public class ApplicationTutorial extends AbstractApplication {
 	    setStoragePolicy(storage);
 	
 	    FileFilter ff = new FileFilter() {
-		public boolean accept (File file) {
-		    return GUIUtilities.getFileExtension(file).
-		    toLowerCase().equals("txt");
-		}
-		public String getDescription () {
-		    return "Text files";
-		}
-	    };
+                    public boolean accept (File file) {
+                        return GUIUtilities.getFileExtension(file).
+                            toLowerCase().equals("txt");
+                    }
+                    public String getDescription () {
+                        return "Text files";
+                    }
+                };
 	    JFileChooser fc;      
 	    fc = storage.getOpenFileChooser();
 	    fc.addChoosableFileFilter(ff);
@@ -226,24 +226,24 @@ public class ApplicationTutorial extends AbstractApplication {
         action = DefaultActions.newAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'N', 
-				 "Create a new graph document");
+                "Create a new graph document");
 
         action = DefaultActions.openAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'O', 
-				 "Open a graph document");
+                "Open a graph document");
 
         action = DefaultActions.closeAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'C', 
-				 "Close the current graph document");
+                "Close the current graph document");
 
         menuFile.addSeparator();
 
         action = DefaultActions.saveAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'S', 
-				 "Save the current graph document");
+                "Save the current graph document");
 
         action = DefaultActions.saveAsAction(this);
         addAction(action);
@@ -255,7 +255,7 @@ public class ApplicationTutorial extends AbstractApplication {
         action = DefaultActions.exitAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'X', 
-				 "Exit from the graph editor");
+                "Exit from the graph editor");
 	// Hook the exit action into the frame's close button, if we are
 	// running in an ApplicationContext.
 	getAppContext().setExitAction(action);
@@ -274,15 +274,15 @@ public class ApplicationTutorial extends AbstractApplication {
         // Conventional new/open/save buttons
         action = getAction("New");
         GUIUtilities.addToolBarButton(tb, action, null,
-				      resources.getImageIcon("NewImage"));
+                resources.getImageIcon("NewImage"));
 
         action = getAction("Open");
         GUIUtilities.addToolBarButton(tb, action, null, 
-				      resources.getImageIcon("OpenImage"));
+                resources.getImageIcon("OpenImage"));
 
         action = getAction("Save");
         GUIUtilities.addToolBarButton(tb, action, null, 
-				      resources.getImageIcon("SaveImage"));
+                resources.getImageIcon("SaveImage"));
     }
 }
 

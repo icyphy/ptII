@@ -132,14 +132,14 @@ public class MDIApplicationTutorial extends MDIApplication {
 	    DefaultStoragePolicy storage = new DefaultStoragePolicy();
 	    setStoragePolicy(storage);
 	    FileFilter ff = new FileFilter() {
-		public boolean accept (File file) {
-		    return GUIUtilities.getFileExtension(file).
-		    toLowerCase().equals("txt");
-		}
-		public String getDescription () {
-		    return "Text files";
-		}
-	    };
+                    public boolean accept (File file) {
+                        return GUIUtilities.getFileExtension(file).
+                            toLowerCase().equals("txt");
+                    }
+                    public String getDescription () {
+                        return "Text files";
+                    }
+                };
 	    JFileChooser fc;      
 	    fc = storage.getOpenFileChooser();
 	    fc.addChoosableFileFilter(ff);
@@ -169,24 +169,24 @@ public class MDIApplicationTutorial extends MDIApplication {
         action = DefaultActions.newAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'N', 
-				 "Create a new graph document");
+                "Create a new graph document");
 
         action = DefaultActions.openAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'O', 
-				 "Open a graph document");
+                "Open a graph document");
 
         action = DefaultActions.closeAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'C', 
-				 "Close the current graph document");
+                "Close the current graph document");
 
         menuFile.addSeparator();
 
         action = DefaultActions.saveAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'S', 
-				 "Save the current graph document");
+                "Save the current graph document");
 
         action = DefaultActions.saveAsAction(this);
         addAction(action);
@@ -198,7 +198,7 @@ public class MDIApplicationTutorial extends MDIApplication {
         action = DefaultActions.exitAction(this);
         addAction(action);
         GUIUtilities.addMenuItem(menuFile, action, 'X', 
-				 "Exit from the graph editor");
+                "Exit from the graph editor");
 	// Hook the exit action into the frame's close button, if we are
 	// running in an ApplicationContext.
 	getAppContext().setExitAction(action);
@@ -217,15 +217,15 @@ public class MDIApplicationTutorial extends MDIApplication {
         // Conventional new/open/save buttons
         action = getAction("New");
         GUIUtilities.addToolBarButton(tb, action, null,
-				      resources.getImageIcon("NewImage"));
+                resources.getImageIcon("NewImage"));
 
         action = getAction("Open");
         GUIUtilities.addToolBarButton(tb, action, null, 
-				      resources.getImageIcon("OpenImage"));
+                resources.getImageIcon("OpenImage"));
 
         action = getAction("Save");
         GUIUtilities.addToolBarButton(tb, action, null, 
-				      resources.getImageIcon("SaveImage"));
+                resources.getImageIcon("SaveImage"));
     }
 
     /**
@@ -235,25 +235,25 @@ public class MDIApplicationTutorial extends MDIApplication {
      * keeping the title of the internal frame for a document the same
      * as the title of the document.
      *
-    public class TitleChanger implements PropertyChangeListener {
-	/** 
-	 * When the file or url properties of the document change, 
-	 * assume that the title of the document has changed and
-	 * reset the title of the appropriate internal frame.
-	 *
-	public void propertyChange(PropertyChangeEvent e) {
-	    String name = e.getPropertyName();
-	    if (name.equals("file") || 
-		name.equals("url") || 
-		name.equals("title")) {
-		// the title has changed.
-		Document doc = (Document)e.getSource();
-		DesktopContext context = (DesktopContext)getAppContext();
-		JInternalFrame frame = context.getInternalFrame(getView(doc));
-		frame.setTitle(doc.getTitle());
-	    }
-	}
-        }*/
+     public class TitleChanger implements PropertyChangeListener {
+     /** 
+      * When the file or url properties of the document change, 
+      * assume that the title of the document has changed and
+      * reset the title of the appropriate internal frame.
+      *
+      public void propertyChange(PropertyChangeEvent e) {
+      String name = e.getPropertyName();
+      if (name.equals("file") || 
+      name.equals("url") || 
+      name.equals("title")) {
+      // the title has changed.
+      Document doc = (Document)e.getSource();
+      DesktopContext context = (DesktopContext)getAppContext();
+      JInternalFrame frame = context.getInternalFrame(getView(doc));
+      frame.setTitle(doc.getTitle());
+      }
+      }
+      }*/
 }
 
 

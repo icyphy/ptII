@@ -82,11 +82,11 @@ public class NodeRendererTutorial {
         context.setSize(800, 600);
 
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new NodeRendererTutorial(context);
-                context.setVisible(true);
-            }
-        });
+                public void run() {
+                    new NodeRendererTutorial(context);
+                    context.setVisible(true);
+                }
+            });
     }
 
     private NodeRendererTutorial(AppContext context) {
@@ -132,12 +132,12 @@ public class NodeRendererTutorial {
         bgc.setGraphModel(model);
 
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                LevelLayout random =
-                    new LevelLayout(new BasicLayoutTarget(bgc));
-                random.layout(model.getRoot());
-            }
-        });
+                public void run() {
+                    LevelLayout random =
+                        new LevelLayout(new BasicLayoutTarget(bgc));
+                    random.layout(model.getRoot());
+                }
+            });
     }
 
     /**

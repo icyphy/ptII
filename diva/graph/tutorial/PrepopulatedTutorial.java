@@ -74,11 +74,11 @@ public class PrepopulatedTutorial {
         context.setSize(300, 600);
 
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new PrepopulatedTutorial(context);
-                context.setVisible(true);
-            }
-        });
+                public void run() {
+                    new PrepopulatedTutorial(context);
+                    context.setVisible(true);
+                }
+            });
     }
 
     private PrepopulatedTutorial(AppContext context) {
@@ -132,7 +132,7 @@ public class PrepopulatedTutorial {
         RandomLayout random =
             new RandomLayout(new BasicLayoutTarget(gc));
         random.layout(model.getRoot());
-     }
+    }
 
     /**
      * In this version you construct the graph widget with
@@ -147,13 +147,13 @@ public class PrepopulatedTutorial {
         context.getContentPane().add(
                 new JGraph(new GraphPane(bgc, model)));
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                RandomLayout random =
-                    new RandomLayout(new BasicLayoutTarget(bgc));
-                random.layout(model.getRoot());
+                public void run() {
+                    RandomLayout random =
+                        new RandomLayout(new BasicLayoutTarget(bgc));
+                    random.layout(model.getRoot());
 
-            }
-        });
+                }
+            });
     }
 
     /**

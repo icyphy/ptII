@@ -41,7 +41,7 @@ import diva.gui.AppletContext;
  */
 public class AppletTutorial extends AppletContext {
     public AppletTutorial() {
-       new ApplicationTutorial(this);
+        new ApplicationTutorial(this);
     }
 }
 

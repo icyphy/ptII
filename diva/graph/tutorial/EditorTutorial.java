@@ -79,11 +79,11 @@ public class EditorTutorial {
         context.setSize(800, 600);
 
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new EditorTutorial(context);
-                context.setVisible(true);
-            }
-        });
+                public void run() {
+                    new EditorTutorial(context);
+                    context.setVisible(true);
+                }
+            });
     }
 
     public EditorTutorial(AppContext context) {

@@ -27,6 +27,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						COPYRIGHTENDKEY
 
 
+
+
  */
 
 package diva.graph.tutorial;
@@ -53,11 +55,11 @@ public class SimpleTutorial {
     public static void main(String argv[]) {
         final AppContext context = new BasicFrame("Simple Tutorial");
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new SimpleTutorial(context);
-                context.setVisible(true);
-            }
-        });
+                public void run() {
+                    new SimpleTutorial(context);
+                    context.setVisible(true);
+                }
+            });
     }
 
     public SimpleTutorial(AppContext context) {

@@ -67,11 +67,11 @@ public class NestedTutorial {
     public static void main(String argv[]) {
         final AppContext context = new BasicFrame("Nested Tutorial");
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new NestedTutorial(context);
-                context.setVisible(true);
-            }
-        });
+                public void run() {
+                    new NestedTutorial(context);
+                    context.setVisible(true);
+                }
+            });
     }
 
     private NestedTutorial(AppContext context) {
@@ -126,12 +126,12 @@ public class NestedTutorial {
         context.getContentPane().add(
                 new JGraph(new GraphPane(bgc, model)));
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                RandomLayout random =
-                    new RandomLayout(new BasicLayoutTarget(bgc));
-                random.layout(model.getRoot());
-            }
-        });
+                public void run() {
+                    RandomLayout random =
+                        new RandomLayout(new BasicLayoutTarget(bgc));
+                    random.layout(model.getRoot());
+                }
+            });
     }
 }
 

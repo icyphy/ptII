@@ -170,12 +170,12 @@ public class TransformedFigureTutorial {
     /** Create a JCanvas and put it into a window.
      */
     public TransformedFigureTutorial () {
-      canvas = new JCanvas();
-      graphicsPane = (GraphicsPane)canvas.getCanvasPane();
+        canvas = new JCanvas();
+        graphicsPane = (GraphicsPane)canvas.getCanvasPane();
 
-      BasicFrame frame = new BasicFrame("Figure tutorial", canvas);
-      frame.setSize(600,400);
-      frame.setVisible(true);
+        BasicFrame frame = new BasicFrame("Figure tutorial", canvas);
+        frame.setSize(600,400);
+        frame.setVisible(true);
     }
 
     /** Create instances of the class defined
@@ -352,7 +352,7 @@ public class TransformedFigureTutorial {
 
             // Pop the context
             _transformContext.pop(g);
-         }
+        }
 
         /** Transform the object.
          * In this example, we pre-concatenate the given transform with
