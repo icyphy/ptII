@@ -60,9 +60,9 @@ proc PNPrimeTycho { {numberOfCycles 10}} {
     $jrpc send "set initialDAGFileName $initialDAGFileName"
     $jrpc send "set finalDAGFileName $finalDAGFileName"
     $jrpc send "set numberOfCycles $numberOfCycles"
-    $jrpc send "source \
+    puts [$jrpc send "source \
 	    [file join $TYCHO java pt domains pn kernel demo \
-	    PNPrimeExample.tcl]"
+	    PNPrimeExample.tcl]"]
 
     ::tycho::File::openContext $initialDAGFileName
     ::tycho::File::openContext $finalDAGFileName
