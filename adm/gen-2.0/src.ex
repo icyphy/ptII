@@ -111,6 +111,7 @@ ptolemy/media/test/array.au
 ptolemy/media/test/tmp2.au
 ptolemy/moml/test/compat
 ptolemy/moml/test/compatDemo
+ptolemy/moml/test/outfile.wav
 ptolemy/plot/adm
 ptolemy/plot/Render
 ptolemy/plot/RenderApplication.*
