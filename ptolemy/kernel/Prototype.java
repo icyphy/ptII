@@ -478,3 +478,4 @@ public class Prototype extends NamedObj implements Instantiable {
 
     /** Indicator of whether this is a class definition. */
     private boolean _isClassDefinition;
+}
