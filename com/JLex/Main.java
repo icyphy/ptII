@@ -2290,7 +2290,7 @@ class CMinimize
             minimize();
 
             /* Column and row compression.
-               Save accept states in auxilary vector. */
+               Save accept states in auxiliary vector. */
             reduce();
 
             reset();
