@@ -100,32 +100,35 @@ public class ModelTransformer extends SceneTransformer {
         System.out.println("ModelTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        SootClass objectClass =
-            Scene.v().loadClassAndSupport("java.lang.Object");
-        SootClass namedObjClass =
+        //SootClass objectClass =
+        //    Scene.v().loadClassAndSupport("java.lang.Object");
+        _namedObjClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
-        SootMethod getAttributeMethod = namedObjClass.getMethod(
-                "ptolemy.kernel.util.Attribute getAttribute(java.lang.String)");
+        _getAttributeMethod = _namedObjClass.getMethod(
+                "ptolemy.kernel.util.Attribute "
+                + "getAttribute(java.lang.String)");
         SootClass attributeClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
-        Type attributeType = RefType.v(attributeClass);
+        _attributeType = RefType.v(attributeClass);
+
         SootClass settableClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
-        Type settableType = RefType.v(settableClass);
-        SootMethod setExpressionMethod =
+        _settableType = RefType.v(settableClass);
+        _setExpressionMethod =
             settableClass.getMethodByName("setExpression");
+
         SootClass actorClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedAtomicActor");
-        Type actorType = RefType.v(actorClass);
+        _actorType = RefType.v(actorClass);
         SootClass compositeActorClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedCompositeActor");
         SootClass portClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.ComponentPort");
-        Type portType = RefType.v(portClass);
-        SootMethod insertLinkMethod =
-            SootUtilities.searchForMethodByName(portClass,
-                    "insertLink");
+        _portType = RefType.v(portClass);
+        _insertLinkMethod = SootUtilities.searchForMethodByName(portClass,
+                "insertLink");
 
+        /*
         SootClass ioportClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedIOPort");
         Type ioportType = RefType.v(ioportClass);
@@ -133,10 +136,12 @@ public class ModelTransformer extends SceneTransformer {
             SootUtilities.searchForMethodByName(ioportClass,
                     "setTypeEquals");
 
+
         SootClass parameterClass =
             Scene.v().loadClassAndSupport("ptolemy.data.expr.Parameter");
         SootClass directorClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.Director");
+        */
 
         // Don't generate code for TypedAtomicActor
         actorClass.setLibraryClass();
@@ -154,6 +159,7 @@ public class ModelTransformer extends SceneTransformer {
         // not really sure what this does..
         Scene.v().setMainClass(modelClass);
 
+        /*
         SootMethod preinitializeMethod =
             SootUtilities.searchForMethodByName(compositeActorClass,
                     "preinitialize");
@@ -172,123 +178,33 @@ public class ModelTransformer extends SceneTransformer {
         SootMethod wrapupMethod =
             SootUtilities.searchForMethodByName(compositeActorClass,
                     "wrapup");
+        */
 
         // Initialize the model.
-        {
-            SootMethod initMethod = modelClass.getInitMethod();
-            JimpleBody body = Jimple.v().newBody(initMethod);
-            initMethod.setActiveBody(body);
-            body.insertIdentityStmts();
-            Chain units = body.getUnits();
-            Local thisLocal = body.getThisLocal();
 
-            // Now instantiate all the stuff inside the model.
+        SootMethod initMethod = modelClass.getInitMethod();
+        JimpleBody body = Jimple.v().newBody(initMethod);
+        initMethod.setActiveBody(body);
+        body.insertIdentityStmts();
+        Chain units = body.getUnits();
+        Local thisLocal = body.getThisLocal();
 
-	    _externalPorts(body, thisLocal, modelClass, portType);
+        // Now instantiate all the stuff inside the model.
 
-	    _entities(body, thisLocal, modelClass, actorType, options);
+        _externalPorts(body, thisLocal, modelClass);
+        _entities(body, thisLocal, modelClass, options);
+        _attributes(body, _model, modelClass);
+        _relations(body, thisLocal);
+        _links(body);
+        _linksOnPortsContainedByContainedEntities(body);
 
-            // now Attributes.
-	    _createAndSetAttributesFromLocal(_model,
-					     modelClass, 
-					     attributeType, settableType,
-					     setExpressionMethod,
-					     body);
-	    _relations(body, thisLocal);
+        units.add(Jimple.v().newReturnVoidStmt());
 
-	    _links(body, insertLinkMethod);
-
-            // This local is used to store the return from the getPort
-            // method, before it is stored in a type-specific local variable.
-            Local tempPortLocal = Jimple.v().newLocal("tempPort",
-                    RefType.v("ptolemy.kernel.Port"));
-            body.getLocals().add(tempPortLocal);
-
-            // Next, produce the links on ports contained
-            // by contained entities.
-            for(Iterator entities = _model.entityList().iterator();
-                entities.hasNext();) {
-                ComponentEntity entity = (ComponentEntity)entities.next();
-                Iterator ports = entity.portList().iterator();
-                while (ports.hasNext()) {
-                    ComponentPort port = (ComponentPort)ports.next();
-
-                    Local portLocal;
-                    // If we already have a local reference to the port
-                    if(_portLocalMap.keySet().contains(port)) {
-                        // then just get the reference.
-                        portLocal = (Local)_portLocalMap.get(port);
-                    } else {
-                        // otherwise, create a new local for the given port.
-                        Local entityLocal = (Local)_entityLocalMap.get(entity);
-                        portLocal = Jimple.v().newLocal(port.getName(),
-                                portType);
-                        body.getLocals().add(portLocal);
-                        _portLocalMap.put(port, portLocal);
-                        // reference the port.
-                        SootClass entityClass = Scene.v().getSootClass(
-                                entity.getClass().getName());
-                        SootMethod method =
-                            SootUtilities.searchForMethodByName(entityClass,
-                                    "getPort");
-
-                        // first assign to temp
-                        units.add(Jimple.v().newAssignStmt(tempPortLocal,
-                                Jimple.v().newVirtualInvokeExpr(entityLocal,
-                                        method,
-                                        StringConstant.v(port.getName()))));
-                        // and then cast to portLocal
-                        units.add(Jimple.v().newAssignStmt(portLocal,
-                                Jimple.v().newCastExpr(tempPortLocal,
-                                        portType)));
-                    }
-                    /*
-                    // Set the type of the port if we need to.
-                    if(Options.getBoolean(options, "deep") &&
-                            (port instanceof TypedIOPort)) {
-                        TypedIOPort typedPort = (TypedIOPort)port;
-
-                        // Build a type expression.
-                        Local typeLocal =
-                            _buildConstantTypeLocal(body, typedPort.getType());
-                        Local ioportLocal =
-                            Jimple.v().newLocal("typed_" + port.getName(),
-                                    ioportType);
-                        body.getLocals().add(ioportLocal);
-                        units.add(Jimple.v().newAssignStmt(ioportLocal,
-                                Jimple.v().newCastExpr(portLocal,
-                                        ioportType)));
-                        units.add(Jimple.v().newInvokeStmt(
-                                Jimple.v().newVirtualInvokeExpr(ioportLocal,
-                                        portSetTypeMethod, typeLocal)));
-                    }
-                    */
-                    Iterator relations = port.linkedRelationList().iterator();
-                    int index = -1;
-                    while (relations.hasNext()) {
-                        index++;
-                        ComponentRelation relation
-                            = (ComponentRelation)relations.next();
-                        if (relation == null) {
-                            // Gap in the links.  The next link has to use an
-                            // explicit index.
-                            continue;
-                        }
-                        Local relationLocal = (Local)
-                            _relationLocalMap.get(relation);
-
-                        // call the insertLink method with the current index.
-                        units.add(Jimple.v().newInvokeStmt(
-                                Jimple.v().newVirtualInvokeExpr(portLocal,
-                                        insertLinkMethod, IntConstant.v(index),
-                                        relationLocal)));
-                    }
-                }
-            }
-            units.add(Jimple.v().newReturnVoidStmt());
-        }
         Scene.v().setActiveHierarchy(new Hierarchy());
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     private Local _buildConstantTypeLocal(Body body,
             ptolemy.data.type.Type type) {
@@ -332,8 +248,10 @@ public class ModelTransformer extends SceneTransformer {
     // and type and add it to the
     // given class.  Add statements to the given body to initialize the
     // field from the given local.
-    private void _createAndSetFieldFromLocal(SootClass theClass, Type type,
-            String name, JimpleBody body, Local local) {
+    private void _createAndSetFieldFromLocal(JimpleBody body,
+            Local local,
+            SootClass theClass, Type type,
+            String name) {
         Chain units = body.getUnits();
         Local thisLocal = body.getThisLocal();
 
@@ -401,16 +319,11 @@ public class ModelTransformer extends SceneTransformer {
         return local;
     }
 
-    // Create and set attributes
-    private void
-	_createAndSetAttributesFromLocal(NamedObj namedObj,
-					 SootClass theClass,
-					 Type attributeType,
-					 Type settableType,
-					 SootMethod setExpressionMethod,
-					 JimpleBody body) {
+    // Create and set attributes.
+    private void _attributes(JimpleBody body, NamedObj namedObj,
+                SootClass theClass) {
 	Local settableLocal = Jimple.v().newLocal("settable",
-						  settableType);
+						  _settableType);
 	body.getLocals().add(settableLocal);
 
 
@@ -423,20 +336,20 @@ public class ModelTransformer extends SceneTransformer {
 	    Local local = _createNamedObjAndLocal(body, className,
 						  thisLocal,
 						  attribute.getName());
-	    _createAndSetFieldFromLocal(theClass, attributeType,
-					attribute.getName(), body, local);
+	    _createAndSetFieldFromLocal(body, local, theClass, _attributeType,
+					attribute.getName());
 	    if(attribute instanceof Settable) {
 		// cast to Settable.
 		units.add(Jimple.v().newAssignStmt(settableLocal,
 						   Jimple.v()
 						   .newCastExpr(local,
-								settableType)
+								_settableType)
 						   ));
 		// call setExpression.
 		units.add(Jimple.v()
 			  .newInvokeStmt(Jimple.v()
 					 .newInterfaceInvokeExpr(settableLocal,
-								 setExpressionMethod,
+								 _setExpressionMethod,
 								 StringConstant.v(((Settable)attribute).getExpression()))));
 	    }
 	    // Set the attributes of attributes.  This handles setting
@@ -446,11 +359,11 @@ public class ModelTransformer extends SceneTransformer {
 	}
     }
 
-    // Then Entities
+    // Create and set entities.
     private void _entities(JimpleBody body, Local thisLocal, 
-			   EntitySootClass modelClass, Type actorType,
+			   EntitySootClass modelClass,
 			   Map options) {
-	Map _entityLocalMap = new HashMap();
+	_entityLocalMap = new HashMap();
 	for(Iterator entities = _model.entityList().iterator();
 	    entities.hasNext();) {
 	    Entity entity = (Entity)entities.next();
@@ -475,8 +388,8 @@ public class ModelTransformer extends SceneTransformer {
 	    if(Options.getBoolean(options, "deep")) {
 		// If we are doing deep codegen, then we
 		// include a field for each actor.
-		_createAndSetFieldFromLocal(modelClass, actorType,
-					    entity.getName(), body, local);
+		_createAndSetFieldFromLocal(body, local, modelClass,
+                        _actorType, entity.getName());
 	    } else {
 		// If we are doing shallow code generation, then
 		// include code to initialize the parameters of this
@@ -487,9 +400,9 @@ public class ModelTransformer extends SceneTransformer {
 	}
     }
 
-    // Instantiate external ports
+    // Create and set external ports.
     private void _externalPorts(JimpleBody body, Local thisLocal,
-				EntitySootClass modelClass, Type portType) {
+            EntitySootClass modelClass) {
 	_portLocalMap = new HashMap();
 
 	for(Iterator ports = _model.portList().iterator();
@@ -499,37 +412,23 @@ public class ModelTransformer extends SceneTransformer {
 	    Local local = _createNamedObjAndLocal(body, className,
 						  thisLocal, port.getName());
 	    _portLocalMap.put(port, local);
-	    _createAndSetFieldFromLocal(modelClass, portType,
-					port.getName(), body, local);
+	    _createAndSetFieldFromLocal(body, local, modelClass, _portType,
+					port.getName());
 	}
     }
 
     // Generate code in the given body to initialize all of the attributes
     // in the given entity.
-    private static void _initializeParameters(JimpleBody body,
+    private void _initializeParameters(JimpleBody body,
             NamedObj context, NamedObj container, Local contextLocal) {
-        SootClass namedObjClass =
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.NamedObj");
-        SootMethod getAttributeMethod = namedObjClass.getMethod(
-                "ptolemy.kernel.util.Attribute getAttribute(java.lang.String)");
-        SootClass attributeClass =
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
-        Type attributeType = RefType.v(attributeClass);
-
-        SootClass settableClass =
-            Scene.v().loadClassAndSupport("ptolemy.kernel.util.Settable");
-        Type settableType = RefType.v(settableClass);
-        SootMethod setExpressionMethod =
-            settableClass.getMethodByName("setExpression");
-
         Chain units = body.getUnits();
         // First create a local variable.
         Local attributeLocal = Jimple.v().newLocal("attribute",
-                attributeType);
+                _attributeType);
         body.getLocals().add(attributeLocal);
 
         Local settableLocal = Jimple.v().newLocal("settable",
-                settableType);
+                _settableType);
         body.getLocals().add(settableLocal);
 
         // now initialize each settable.
@@ -547,24 +446,24 @@ public class ModelTransformer extends SceneTransformer {
             // first assign to temp
             units.add(Jimple.v().newAssignStmt(attributeLocal,
                     Jimple.v().newVirtualInvokeExpr(contextLocal,
-                            getAttributeMethod,
+                            _getAttributeMethod,
                             StringConstant.v(attribute.getName(context)))));
             // cast to Settable.
             units.add(Jimple.v().newAssignStmt(settableLocal,
                     Jimple.v().newCastExpr(attributeLocal,
-                            settableType)));
+                            _settableType)));
             // call setExpression.
             units.add(Jimple.v().newInvokeStmt(
                     Jimple.v().newInterfaceInvokeExpr(settableLocal,
-                            setExpressionMethod,
+                            _setExpressionMethod,
                             StringConstant.v(((Settable)attribute)
                                     .getExpression()))));
 
         }
     }
 
-    // initialize links
-    private void _links(JimpleBody body, SootMethod insertLinkMethod) {
+    // Create and set links.
+    private void _links(JimpleBody body) {
 	// To get the ordering right,
 	// we read the links from the ports, not from the relations.
 	// First, produce the inside links on contained ports.
@@ -585,11 +484,11 @@ public class ModelTransformer extends SceneTransformer {
 		}
 		Local portLocal = (Local)_portLocalMap.get(port);
 		Local relationLocal = (Local)_relationLocalMap.get(relation);
-		// call the insertLink method with the current index.
+		// call the _insertLink method with the current index.
 		units.add(Jimple.v()
 			  .newInvokeStmt(Jimple.v()
 					 .newVirtualInvokeExpr(portLocal,
-							       insertLinkMethod,
+							       _insertLinkMethod,
 							       IntConstant.v(index),
 							       relationLocal)));
 
@@ -597,9 +496,102 @@ public class ModelTransformer extends SceneTransformer {
 	}
     }
 
+    // Produce the links on ports contained by contained entities.
+    private void _linksOnPortsContainedByContainedEntities(
+            JimpleBody body) {
+        // This local is used to store the return from the getPort
+        // method, before it is stored in a type-specific local variable.
+        Local tempPortLocal = Jimple.v().newLocal("tempPort",
+                RefType.v("ptolemy.kernel.Port"));
+        body.getLocals().add(tempPortLocal);
+
+
+	Chain units = body.getUnits();
+
+        for(Iterator entities = _model.entityList().iterator();
+            entities.hasNext();) {
+            ComponentEntity entity = (ComponentEntity)entities.next();
+            Iterator ports = entity.portList().iterator();
+            while (ports.hasNext()) {
+                ComponentPort port = (ComponentPort)ports.next();
+                
+                Local portLocal;
+                // If we already have a local reference to the port
+                if(_portLocalMap.keySet().contains(port)) {
+                    // then just get the reference.
+                    portLocal = (Local)_portLocalMap.get(port);
+                } else {
+                    // Otherwise, create a new local for the given port.
+                    Local entityLocal = (Local)_entityLocalMap.get(entity);
+                    portLocal = Jimple.v().newLocal(port.getName(),
+                            _portType);
+                    body.getLocals().add(portLocal);
+                    _portLocalMap.put(port, portLocal);
+                    // Reference the port.
+                    SootClass entityClass = Scene.v().getSootClass(
+                            entity.getClass().getName());
+                    SootMethod method =
+                        SootUtilities.searchForMethodByName(entityClass,
+                                "getPort");
+
+                    // First assign to temp
+                    units.add(Jimple.v().newAssignStmt(tempPortLocal,
+                            Jimple.v().newVirtualInvokeExpr(entityLocal,
+                                    method,
+                                    StringConstant.v(port.getName()))));
+                    // and then cast to portLocal
+                    units.add(Jimple.v().newAssignStmt(portLocal,
+                            Jimple.v().newCastExpr(tempPortLocal,
+                                    _portType)));
+                }
+                    /*
+                    // Set the type of the port if we need to.
+                    if(Options.getBoolean(options, "deep") &&
+                            (port instanceof TypedIOPort)) {
+                        TypedIOPort typedPort = (TypedIOPort)port;
+
+                        // Build a type expression.
+                        Local typeLocal =
+                            _buildConstantTypeLocal(body, typedPort.getType());
+                        Local ioportLocal =
+                            Jimple.v().newLocal("typed_" + port.getName(),
+                                    ioportType);
+                        body.getLocals().add(ioportLocal);
+                        units.add(Jimple.v().newAssignStmt(ioportLocal,
+                                Jimple.v().newCastExpr(portLocal,
+                                        ioportType)));
+                        units.add(Jimple.v().newInvokeStmt(
+                                Jimple.v().newVirtualInvokeExpr(ioportLocal,
+                                        portSetTypeMethod, typeLocal)));
+                    }
+                    */
+                Iterator relations = port.linkedRelationList().iterator();
+                int index = -1;
+                while (relations.hasNext()) {
+                    index++;
+                    ComponentRelation relation
+                        = (ComponentRelation)relations.next();
+                    if (relation == null) {
+                        // Gap in the links.  The next link has to use an
+                        // explicit index.
+                        continue;
+                    }
+                    Local relationLocal = (Local)
+                        _relationLocalMap.get(relation);
+
+                    // Call the _insertLink method with the current index.
+                    units.add(Jimple.v().newInvokeStmt(
+                            Jimple.v().newVirtualInvokeExpr(portLocal,
+                                    _insertLinkMethod, IntConstant.v(index),
+                                    relationLocal)));
+                }
+            }
+        }
+    }
+
+    // Create and set relations.
     private void _relations(JimpleBody body, Local thisLocal) {
-	// next relations.
-	Map _relationLocalMap = new HashMap();
+	_relationLocalMap = new HashMap();
 	for(Iterator relations = _model.relationList().iterator();
 	    relations.hasNext();) {
 	    Relation relation = (Relation)relations.next();
@@ -611,16 +603,47 @@ public class ModelTransformer extends SceneTransformer {
 	    _relationLocalMap.put(relation, local);
 	}
     }
-    private CompositeActor _model;
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+
+    // Soot Type representing the ptolemy.actor.TypedAtomicActor class.
+    private Type _actorType;
+
+    // Soot Type representing the ptolemy.kernel.util.Settable class.
+    private Type _attributeType;
+
+    // SootMethod representing
+    // ptolemy.kernel.util.Attribute.getAttribute();
+    private SootMethod _getAttributeMethod;
 
     // Map from Entitys to Locals.
-    Map _entityLocalMap;
+    private Map _entityLocalMap;
+
+    // SootMethod representing ptolemy.kernel.ComponentPort.insertLink().
+    private SootMethod _insertLinkMethod;
+
+    // The model we are generating code for.
+    private CompositeActor _model;
+
+    // SootClass representing ptolemy.kernel.util.NamedObj.
+    private SootClass _namedObjClass;
 
     // Map from Ports to Locals.
-    Map _portLocalMap;
+    private Map _portLocalMap;
+
+    // Soot Type representing the ptolemy.kernel.ComponentPort class.
+    private Type _portType;
 
     // Map from Relations to Locals.
-    Map _relationLocalMap;
+    private Map _relationLocalMap;
 
+    // SootMethod representing ptolemy.kernel.util.Settable.setExpression().
+    private SootMethod _setExpressionMethod;
+
+    // Soot Type representing the ptolemy.kernel.util.Settable class.
+    private Type _settableType;
 }
 
