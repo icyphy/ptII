@@ -1443,11 +1443,11 @@ test ASTReflect-22.1 {check out method Use} {
 ######################################################################
 ####
 #
-test ASTReflect-23.1 {pathnameToClass} {
+test ASTReflect-23.1 {pathNameToClass} {
     set fileSeparator [java::call System getProperty file.separator]
     set fileList [list java lang Object.java]
     set path [join $fileList $fileSeparator]
-    set myclass [java::call ptolemy.lang.java.ASTReflect pathnameToClass $path]
+    set myclass [java::call ptolemy.lang.java.ASTReflect pathNameToClass $path]
     list [$myclass getName]
 } {java.lang.Object}
 
@@ -1455,11 +1455,11 @@ test ASTReflect-23.1 {pathnameToClass} {
 ######################################################################
 ####
 #
-test ASTReflect-23.2 {pathnameToClass} {
+test ASTReflect-23.2 {pathNameToClass} {
     set fileSeparator [java::call System getProperty file.separator]
     set fileList [list ptII ptolemy lang java ASTReflect]
     set path [join $fileList $fileSeparator]
-    set myclass [java::call ptolemy.lang.java.ASTReflect pathnameToClass $path]
+    set myclass [java::call ptolemy.lang.java.ASTReflect pathNameToClass $path]
     list [$myclass getName]
 } {ptolemy.lang.java.ASTReflect}
 
@@ -1467,16 +1467,16 @@ test ASTReflect-23.2 {pathnameToClass} {
 ######################################################################
 ####
 #
-test ASTReflect-23.3 {pathnameToClass on a non-existant class} {
-    set myclass [java::call ptolemy.lang.java.ASTReflect pathnameToClass "ptolemy/lang/java/NOTAClass"]
+test ASTReflect-23.3 {pathNameToClass on a non-existant class} {
+    set myclass [java::call ptolemy.lang.java.ASTReflect pathNameToClass "ptolemy/lang/java/NOTAClass"]
     list [java::isnull $myclass]
 } {1}
 
 ######################################################################
 ####
 #
-test ASTReflect-23.4 {pathnameToClass} {
-    set myclass [java::call ptolemy.lang.java.ASTReflect pathnameToClass "NOTAClass"]
+test ASTReflect-23.4 {pathNameToClass} {
+    set myclass [java::call ptolemy.lang.java.ASTReflect pathNameToClass "NOTAClass"]
     list [java::isnull $myclass]
 } {1}
 
