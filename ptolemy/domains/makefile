@@ -38,10 +38,13 @@ EXPERIMENTAL_DOMAINS = \
 # Domains, in alphabetical order.  If you change this, change
 # PTCLASSALLJARS below
 # DT has to come after SDF, sorry.
+# PTPSDF_DIR is set by configure in $PTII/mk/ptII.mk to psdf if
+#   $PTII/lib/synthesis.jar was found
 # PTJAVA3D_DIR is set by configure in $PTII/mk/ptII.mk to gr if
 #   Java 3D was found
 # The tm domain uses java.util.Timer, so it requires JDK 1.3
-DOMAINS =	ci csp ct dde de fsm hde pn sdf dt giotto pbo petrinet rtp \
+DOMAINS =	ci csp ct dde de fsm hde pn sdf dt giotto pbo petrinet \
+		$(PTPSDF_DIR) rtp \
 		sr tm $(PTJAVA3D_DIR) 
 
 DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS)
