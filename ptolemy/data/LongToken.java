@@ -67,12 +67,12 @@ public class LongToken extends ScalarToken {
     public Token add(pt.data.Token tok) throws IllegalActionException {
         long typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == CPO.STRICT_GREATER) {
+            if (typeInfo == CPO.STRICT_LESS) {
                 return tok.addR(this);
             } else if (tok instanceof LongToken) {
                 long result = _value + ((LongToken)tok).getValue();
                 return new LongToken(result);
-            } else if (typeInfo == CPO.STRICT_LESS) {
+            } else if (typeInfo == CPO.STRICT_GREATER) {
                 LongToken tmp = this.convert(tok);
                 long result = _value + tmp.getValue();
                 return new LongToken(result);
@@ -134,14 +134,14 @@ public class LongToken extends ScalarToken {
     public BooleanToken equality(Token tok) throws IllegalActionException {
         long typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == CPO.STRICT_GREATER) {
+            if (typeInfo == CPO.STRICT_LESS) {
                 return tok.equality(this);
             } else if (tok instanceof LongToken) {
                 if ( _value == ((LongToken)tok).getValue()) {
                     return new BooleanToken(true);
                 }
                 return new BooleanToken(false);
-            } else if (typeInfo == CPO.STRICT_LESS) {
+            } else if (typeInfo == CPO.STRICT_GREATER) {
                 LongToken tmp = this.convert(tok);
                 if ( _value == tmp.getValue()) {
                     return new BooleanToken(true);
@@ -194,12 +194,12 @@ public class LongToken extends ScalarToken {
     public Token modulo(Token tok) throws IllegalActionException {
         long typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == CPO.STRICT_GREATER) {
+            if (typeInfo == CPO.STRICT_LESS) {
                 return tok.moduloR(this);
             } else if (tok instanceof LongToken) {
                 long result = _value % ((LongToken)tok).getValue();
                 return new LongToken(result);
-            } else if (typeInfo == CPO.STRICT_LESS) {
+            } else if (typeInfo == CPO.STRICT_GREATER) {
                 LongToken tmp = this.convert(tok);
                 long result = _value % tmp.getValue();
                 return new LongToken(result);
@@ -239,12 +239,12 @@ public class LongToken extends ScalarToken {
     public Token multiply(Token tok) throws IllegalActionException {
         long typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == CPO.STRICT_GREATER) {
+            if (typeInfo == CPO.STRICT_LESS) {
                 return tok.multiplyR(this);
             } else if (tok instanceof LongToken) {
                 long result = _value * ((LongToken)tok).getValue();
                 return new LongToken(result);
-            } else if (typeInfo == CPO.STRICT_LESS){
+            } else if (typeInfo == CPO.STRICT_GREATER){
                 LongToken tmp = this.convert(tok);
                 long result = _value * tmp.getValue();
                 return new LongToken(result);
@@ -303,12 +303,12 @@ public class LongToken extends ScalarToken {
     public Token subtract(pt.data.Token tok) throws IllegalActionException {
         long typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == CPO.STRICT_GREATER) {
+            if (typeInfo == CPO.STRICT_LESS) {
                 return tok.addR(this);
             } else if (tok instanceof LongToken) {
                 long result = _value -  ((LongToken)tok).getValue();
                 return new LongToken(result);
-            } else if (typeInfo == CPO.STRICT_LESS){
+            } else if (typeInfo == CPO.STRICT_GREATER){
                 LongToken tmp = this.convert(tok);
                 long result = _value - tmp.getValue();
                 return new LongToken(result);

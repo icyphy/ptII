@@ -79,14 +79,14 @@ public class StringToken extends ObjectToken {
     public Token add(Token tok) throws IllegalActionException {
         int typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == CPO.STRICT_LESS) {
+            if (typeInfo == CPO.STRICT_GREATER) {
                 StringToken tmp = this.convert(tok);
                 String result = _value + tmp.getValue();
                 return new StringToken(result);
             } else if (tok instanceof StringToken) {
                 String result = _value + ((StringToken)tok).getValue();
                 return new StringToken(result);
-            } else if (typeInfo == CPO.STRICT_GREATER) {
+            } else if (typeInfo == CPO.STRICT_LESS) {
                 return tok.addR(this); 
             } else {
                 throw new Exception();
