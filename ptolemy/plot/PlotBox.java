@@ -143,7 +143,7 @@ public class PlotBox extends Panel {
      */
     public boolean action (Event evt, Object arg) {
         if (evt.target == _fillButton) {
-            fillPlot(_graphics);
+            _fillPlot(_graphics);
             return true;
         } else {
             return super.action (evt, arg); // action() is deprecated in 1.1
@@ -760,23 +760,6 @@ public class PlotBox extends Panel {
         }
     }
     
-    /**
-     * Rescales so that the data that is currently plotted just fits.
-     */
-    public synchronized void fillPlot () {
-        if (_debug > 7) System.out.println("PlotBox: fillPlot()");
-        fillPlot(_graphics);
-    }
-
-    /**
-     * Rescales so that the data that is currently plotted just fits.
-     */
-    public synchronized void fillPlot (Graphics graphics) {
-        setXRange(_xBottom, _xTop);
-        setYRange(_yBottom, _yTop);
-        paint(graphics);
-    }
-
     /**
      * Get the Font by name.  
      * @deprecated: As of JDK1.1, use Font.decode() instead.
@@ -1676,6 +1659,14 @@ public class PlotBox extends Panel {
             }
         }
         return 22 + maxwidth;  // NOTE: subjective spacing parameter.
+    }
+
+    /* Rescales so that the data that is currently plotted just fits.
+     */
+    private synchronized void _fillPlot (Graphics graphics) {
+        setXRange(_xBottom, _xTop);
+        setYRange(_yBottom, _yTop);
+        paint(graphics);
     }
 
     /*
