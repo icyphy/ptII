@@ -52,7 +52,9 @@ JSRCS = \
 	AudioReader.java \
 	AudioWriter.java \
 	AudioCapture.java \
-	AudioPlayer.java
+	AudioPlayer.java \
+	AudioReadBuffer.java \
+	AudioWriteBuffer.java
 
 OTHER_FILES_TO_BE_JARED = \
 	javasound.xml
