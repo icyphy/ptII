@@ -233,15 +233,15 @@ public class IconLibrary extends XMLElement{
             String filename = e.getPCData();
             sublibraries.putAt(filename,e);
         } else if(e.getElementType().equals("header")) {
-            // if it's a header, then get the old description element and
-            // swap it over.   Also remove the old header.   This makes sure
-            // we always have a description, even if no description gets parsed
+            /* Remove the old header and swap in the new one.
+               if the new header does not contain a description, then 
+               keep the old description */
+            if(!e.hasChildElement(description)) {
+                header.removeChildElement(description);
+                e.addChildElement(description);
+            }
             removeChildElement(header);
-            header.removeChildElement(description);
             header = e;
-            header.addChildElement(description);
-            /* what to do about the sublibraries?  
-               there shouldn't be any but..*/
         } else if(e.getElementType().equals("description")) {
             // if it's a description, then replace the old description that
             // was in the header. Remember that the description is not
