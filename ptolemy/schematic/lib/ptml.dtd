@@ -42,6 +42,12 @@ thing.
 @author Steve Neuendorffer, John Reekie
 -->
 
+<!-- domain libraries will be parsed into class DomainLibrary -->
+<!ELEMENT domainlibrary (actorpackage|domain)*>
+<!ATTLIST domainlibrary
+name ID #REQUIRED
+version CDATA #REQUIRED>
+
 <!-- icon elements will be parsed into class Icon -->
 <!ELEMENT entity (entitytype, parameter*, port*)>
 <!ATTLIST entity
@@ -110,9 +116,6 @@ name CDATA #REQUIRED>
 <!ELEMENT sublibrary (#PCDATA)>
 <!ELEMENT textline (#PCDATA)>
 <!ELEMENT textbox (#PCDATA)>
-
-
-
 
 
 
