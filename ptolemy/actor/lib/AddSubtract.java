@@ -126,17 +126,11 @@ public class AddSubtract extends TypedAtomicActor {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        try {
-            AddSubtract newobj = (AddSubtract)super.clone(ws);
-            newobj.plus = (TypedIOPort)newobj.getPort("plus");
-            newobj.minus = (TypedIOPort)newobj.getPort("minus");
-            newobj.output = (TypedIOPort)newobj.getPort("output");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        AddSubtract newobj = (AddSubtract)super.clone(ws);
+        newobj.plus = (TypedIOPort)newobj.getPort("plus");
+        newobj.minus = (TypedIOPort)newobj.getPort("minus");
+        newobj.output = (TypedIOPort)newobj.getPort("output");
+        return newobj;
     }
 
     /** If there is at least one token on the input ports, add
