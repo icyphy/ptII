@@ -207,7 +207,7 @@ public class InequalitySolver {
      *  <code>Enumeration</code> is returned.
      *  @return an Enumeration of Inequalities
      */
-    public Enumeration unsatisfiedIneq() {
+    public Enumeration unsatisfiedInequalities() {
 	LinkedList result = new LinkedList();
 
         for (int i = 0; i < _Ilist.size(); i++) {

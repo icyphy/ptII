@@ -156,51 +156,6 @@ public class DirectedGraph extends Graph {
         return arr;
     }
  
-    /** Topological sort of this graph. 
-     *  The implementation uses the method of A.B. Kahn: ``Topological
-     *  Sorting of Large Networks", Communications of the ACM, 
-     *  Vol. 5, 558-562, 1962. 
-     *  It has complexity O(|N|+|E|), where N for nodes and E for edges.
-     *
-     *  @return an array of Objects representing the nodes sorted
-     *   according to the topology.
-     *  @exception InvalidStateException the graph is cyclic.
-     */
-    public Object[] topSort() {
-        int size = getNodeCount();
-        int[] indeg = new int[size];
-        for (int i = 0; i < size; i++) {
-            indeg[i] = ((Integer)_inDegree.elementAt(i)).intValue();
-        }
-        Object[] result = new Object[size];
-        boolean finished = false;
-        boolean active = true;
-        int nextResultIndex = 0;
-        while (!finished) {
-            active = false;
-            finished = true;
-            for (int id = 0; id < size; id++) {
-                if(indeg[id] > 0) {
-                    active = true;
-                }
-                if(indeg[id] == 0) {
-                    finished = false;
-                    result[nextResultIndex++] = _getNodeObject(id);
-                    indeg[id]--;
-                    Vector arcs = (Vector)(_graph.elementAt(id));
-                    for(int i = 0; i < arcs.size(); i++) {
-                        int item = ((Integer)(arcs.elementAt(i))).intValue();
-                        indeg[item]--;
-                    }
-                }
-            }
-            if(finished && active) {
-                throw new InvalidStateException("Graph is cyclic.");
-            }
-        }
-        return result;
-    } 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

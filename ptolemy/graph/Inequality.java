@@ -91,7 +91,7 @@ public class Inequality {
     public boolean isSatisfied(CPO cpo) {
         int result = cpo.compare(_lesserTerm.getValue(),
                 _greaterTerm.getValue());
-        return (result == CPO.STRICT_LESS || result == CPO.EQUAL);
+        return (result == CPO.LOWER || result == CPO.SAME);
     }
     
     ///////////////////////////////////////////////////////////////////

@@ -152,22 +152,22 @@ public interface CPO
     ////                         public variables                  ////
 
     /** One of the return values of <code>compare</code>, indicating
-     *  that the first element is strictly less than the second.
+     *  that the first element is lower than the second.
      *  @see #compare
      */
-    public static final int STRICT_LESS = -1;
+    public static final int LOWER = -1;
     
     /** One of the return values of <code>compare</code>, indicating
-     *  that the two elements are equal.
+     *  that the two elements are the same.
      *  @see #compare
      */
-    public static final int EQUAL = 0;
+    public static final int SAME = 0;
  
     /** One of the return values of <code>compare</code>, indicating
-     *  that the first element is strictly greater than the second.
+     *  that the first element is higher than the second.
      *  @see #compare
      */
-    public static final int STRICT_GREATER = 1;
+    public static final int HIGHER = 1;
     
     /** One of the return values of <code>compare</code>, indicating
      *  that the two elements are incomparable.

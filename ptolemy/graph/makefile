@@ -59,8 +59,8 @@ JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
 	CPO.java \
+	DirectedAcyclicGraph.java \
 	DirectedGraph.java \
-	FiniteCPO.java \
 	Graph.java \
 	Inequality.java \
 	InequalitySolver.java \
