@@ -69,7 +69,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    If the <i>blocking<i> parameter is true, then wait until there is
    token received, otherwise, send a default value specified by the
-   <i>defaultToken<i> paremerter. Notice that the type of the output port
+   <i>defaultToken<i> parameter. Notice that the type of the output port
    is determined by the type of this parameter.
 
    @author Yang Zhao
