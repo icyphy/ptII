@@ -62,6 +62,12 @@ set ca3 [java::new {ptolemy.math.Complex[]} 4 [list $c3 $c2 $c4 $c1]]
 # ca2 is a Complex array used to store the results of tests
 
 
+# Double array
+set da0 [java::new {double[]} 0]
+set da1 [java::new {double[]} 4 [list 1.0 3.0 -4.9 -7.0]]
+set da2 [java::new {double[]} 4 [list 2.0 -4.0 -6.0 8.0]]
+set da5 [java::new {double[]} 5 [list 0.0 0.1 0.2 0.3 0.4]]
+
 ####################################################################
 test ComplexArrayMath-1.1 {add} {
     set ca2 [java::call ptolemy.math.ComplexArrayMath add $ca0 $c1]
@@ -76,7 +82,57 @@ test ComplexArrayMath-1.2 {add} {
 } {}
 
 ####################################################################
-test ComplexArrayMath-3.1 {conjugate} {
+test ComplexArrayMath-3.1 {append with two empty arrays} {
+    set ar [java::call ptolemy.math.ComplexArrayMath append $ca0 $ca0]
+    jdkPrintArray $ar
+} {}
+
+####################################################################
+test ComplexArrayMath-3.2 {append with 1 empty array, one non-empty array} {
+    set ar [java::call ptolemy.math.ComplexArrayMath append $ca0 $ca1]
+    epsilonDiff [jdkPrintArray $ar] [jdkPrintArray $ca1]
+} {}
+
+####################################################################
+test ComplexArrayMath-3.3 {append with one non-empty array, 1 empty array} {
+    set ar [java::call ptolemy.math.ComplexArrayMath append $ca1 $ca0]
+    epsilonDiff [jdkPrintArray $ar] [jdkPrintArray $ca1]
+} {}
+
+####################################################################
+test ComplexArrayMath-3.4 {append with 2 non-empty arrays} {
+    set ar [java::call ptolemy.math.ComplexArrayMath append $ca1 $ca3]
+    epsilonDiff [jdkPrintArray $ar] \
+    {{1.0 + 2.0i} {3.0 - 4.0000i} {-4.9 - 6.0i} {-7.0 + 8.0i} {-4.9 - 6.0i} {3.0 - 4.0i} {-7.0 + 8.0i} {1.0 + 2.0i}}
+} {}
+
+####################################################################
+test ComplexArrayMath-4.1 {append with two empty arrays} {
+    set ar [java::call ptolemy.math.ComplexArrayMath append $ca0 -4 0 $ca0 8 0]
+    jdkPrintArray $ar
+} {}
+
+####################################################################
+test ComplexArrayMath-4.2 {append with 1 empty array, one non-empty array} {
+    set ar [java::call ptolemy.math.ComplexArrayMath append $ca0 -4 0 $ca1 1 3]
+    epsilonDiff [jdkPrintArray $ar] {{3.0 - 4.0i} {-4.9 - 6.0i} {-7.0 + 8.0i}}
+} {}
+
+####################################################################
+test ComplexArrayMath-4.3 {append with one non-empty array, 1 empty array} {
+    set ar [java::call ptolemy.math.ComplexArrayMath append $ca1 1 3 $ca0 8 0]
+    epsilonDiff [jdkPrintArray $ar] {{3.0 - 4.0i} {-4.9 - 6.0i} {-7.0 + 8.0i}} 
+} {}
+
+####################################################################
+test ComplexArrayMath-4.4 {append with 2 non-empty arrays} {
+    set ar [java::call ptolemy.math.ComplexArrayMath append $ca1 3 1 $ca3 1 2]
+    epsilonDiff [jdkPrintArray $ar] \
+     {{-7.0 + 8.0i} {3.0 - 4.0i} {-7.0 + 8.0i}}    
+} {}
+
+####################################################################
+test ComplexArrayMath-3.1 {conjugate empty argument} {
     set ca2 [java::call ptolemy.math.ComplexArrayMath conjugate $ca0]
     jdkPrintArray $ca2
 } {}
@@ -86,6 +142,39 @@ test ComplexArrayMath-3.2 {conjugate} {
     set ca2 [java::call ptolemy.math.ComplexArrayMath conjugate $ca1]
     epsilonDiff [jdkPrintArray $ca2] {{1.0 - 2.0i} {3.0 + 4.0i} {-4.9 + 6.0i} {-7.0 - 8.0i}}
 } {}
+
+####################################################################
+test ComplexArrayMath-4.1 {formComplexArray empty arguments} {
+    set car [java::call ptolemy.math.ComplexArrayMath formComplexArray $da0 \
+     $da0]
+    jdkPrintArray $car
+} {}
+
+####################################################################
+test ComplexArrayMath-4.2 {formComplexArray unequally sized arguments} {
+    catch {set car [java::call ptolemy.math.ComplexArrayMath formComplexArray \
+     $da1 $da5]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.ComplexArrayMath.formComplexArray() : input arrays must have the same length, but the first array has length 4 and the second array has length 5.}}
+
+####################################################################
+test ComplexArrayMath-4.3 {formComplexArray normal arguments} {
+    set car [java::call ptolemy.math.ComplexArrayMath formComplexArray $da1 \
+     $da2]
+    epsilonDiff [jdkPrintArray $ca1] [jdkPrintArray $car]
+} {}
+
+####################################################################
+test ComplexArrayMath-5.1 {imagParts empty array} {
+    set result [java::call ptolemy.math.ComplexArrayMath imagParts $ca0]
+    jdkPrintArray $result
+} {} 
+
+####################################################################
+test ComplexArrayMath-5.2 {imagParts} {
+    set result [java::call ptolemy.math.ComplexArrayMath imagParts $ca1]
+    epsilonDiff [$result getrange 0] [$da2 getrange 0]
+} {} 
 
 ####################################################################
 test ComplexArrayMath-9.0 {polynomial: null array} {
@@ -123,6 +212,30 @@ test ComplexArrayMath-11.2 {product} {
 } {} 
 
 ####################################################################
+test ComplexArrayMath-14.1 {realParts empty array} {
+    set result [java::call ptolemy.math.ComplexArrayMath realParts $ca0]
+    jdkPrintArray $result
+} {} 
+
+####################################################################
+test ComplexArrayMath-14.2 {realParts} {
+    set result [java::call ptolemy.math.ComplexArrayMath realParts $ca1]
+    epsilonDiff [$result getrange 0] [$da1 getrange 0]
+} {} 
+
+####################################################################
+test ComplexArrayMath-15.1 {scale empty array} {
+    set result [java::call ptolemy.math.ComplexArrayMath scale $ca0 -3.2]
+    jdkPrintArray $result
+} {}
+
+####################################################################
+test ComplexArrayMath-15.1 {scale normal array} {
+    set result [java::call ptolemy.math.ComplexArrayMath scale $ca1 3.2]
+    epsilonDiff [jdkPrintArray $result] {{3.2 + 6.4i} {9.6 - 12.80i} {-15.68 - 19.2i} {-22.4 + 25.6i}}
+} {}
+
+####################################################################
 test ComplexArrayMath-12.2 {subtract} {
     set ca2 [java::call ptolemy.math.ComplexArrayMath subtract $ca1 $ca3]
     epsilonDiff [jdkPrintArray $ca2] {{5.9 + 8.0i} {0.0 + 0.0i} {2.1 - 14.0i} {-8.0 + 6.0i}}
@@ -136,7 +249,7 @@ test ComplexArrayMath-13.1 {magnitude: empty array} {
 } {}
 
 ####################################################################
-test ComplexArrayMath-13.2 {mag} {
+test ComplexArrayMath-13.2 {magnitude} {
     set da2 [java::call ptolemy.math.ComplexArrayMath magnitude $ca1]
     epsilonDiff [$da2 getrange 0] \
 	    {2.2360679775 5.0 7.74661216275 10.6301458127}
