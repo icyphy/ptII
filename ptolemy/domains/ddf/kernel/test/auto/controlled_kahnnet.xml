@@ -2,42 +2,42 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="controlled_kahnnet" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 635]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[717, 373]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[96, 19]">
     </property>
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 65.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {143, 17, 1032, 770}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {229, 280, 932, 508}, maximized = false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 317.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{358.5, 186.5}">
     </property>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="575.0, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 260.0}">
         </property>
     </entity>
     <entity name="SampleDelay2" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
         <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="580.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 55.0]">
         </property>
     </entity>
     <entity name="SingleTokenDistributor" class="ptolemy.domains.sr.lib.SingleTokenDistributor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 175.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 160.0]">
         </property>
     </entity>
     <entity name="DDFSingleTokenCommutator" class="ptolemy.domains.ddf.lib.DDFSingleTokenCommutator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 150.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 150.0]">
         </property>
     </entity>
     <entity name="1:BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
@@ -45,11 +45,11 @@
         </property>
         <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 320.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 305.0]">
         </property>
     </entity>
     <entity name="1:Switch" class="ptolemy.actor.lib.Switch">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 190.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 160.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -57,13 +57,13 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 315.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 305.0]">
         </property>
         <property name="requiredFiringsPerIteration" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </entity>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="255.0, 190.0">
+        <vertex name="vertex1" value="[255.0, 150.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
