@@ -134,8 +134,7 @@ public class IIR extends Transformer {
 	    // entered and just use 1.
 	    _denominator[0] = 1.0;
 	} else {
-	    throw new IllegalActionException(this,
-                "Unrecognized parameter: " + attribute.getName());
+	    super.attributeChanged(attribute);
         }
 	// Initialize filter state.
 	if ((_numerator != null) && (_denominator != null)) {
