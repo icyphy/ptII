@@ -199,6 +199,7 @@ fi
 #	Test the Java Compiler (javac)
 #--------------------------------------------------------------------
 AC_MSG_CHECKING([the Java compiler with a simple compile])
+JVERSION=unknown
 # We need to run javac in the config directory so that javac from jdk1.1.6
 # under NT and cygwin works properly
 startdir=`pwd`
@@ -214,12 +215,26 @@ if "$JAVAC" confTest.java ; then
 	grep -v "the one this VM was tested with. Please read the install documentation for" |
 	grep -v "patch installation instructions."`	
     AC_MSG_RESULT($JVERSION)
-
+	
 else
    AC_MSG_WARN(['"$JAVAC" confTest.java' failed'])
 fi
 cd $startdir
 
+#--------------------------------------------------------------------
+#	If we are under JDK1.2.2, then increase the size of
+#	of the Java heap when we run javadoc
+#--------------------------------------------------------------------
+
+AC_MSG_CHECKING([ the JDK version to see if we need to increase heap size for javadoc])
+JDOCSIZE=
+case "$JVERSION" in
+	1.2.*)  JDOCSIZE="-JXmx132m"
+		AC_MSG_RESULT([yes, use $JDOCSIZE])
+	;;
+	*) AC_MSG_RESULT([no, not necessary])
+	;;
+esac
 
 #--------------------------------------------------------------------
 #	Figure out which separator to use for CLASSPATH
@@ -770,6 +785,9 @@ AC_SUBST(JAVACC)
 
 # Directory that contains JavaCC, which is used in ptolemy/data/expr
 AC_SUBST(JAVACC_DIR)
+
+# Javadoc size flag for JDK1.2, see doc/makefile
+AC_SUBST(JDOCSIZE)
 
 # Jini home directory, see http://www.sun.com/jini/
 AC_SUBST(JINI_DIR)
