@@ -80,7 +80,7 @@ JINI_JARS="${JINI_JSPACES_JAR}${CLASSPATHSEPARATOR}${JINI_MAHALO_JAR}"
 PTJACL_JAR="@PTJACL_JAR@"
 
 # Flag to pass to java.  Solaris JDK1.2 reference version needs -native
-PTJACL_JFLAG=@PTJACL_JFLAG@
+PTJACL_JFLAG="@PTJACL_JFLAG@"
 
 # Jar file for JHDL
 JHDL_JAR="@JHDL_JAR@"
@@ -281,6 +281,13 @@ case `basename "$0"` in
 	jarfile="$JODE_JAR$CLASSPATHSEPARATOR$JHDL_JAR"
 	javaflag="$JODE_JFLAG"
 	;;
+    obfuscate)
+	# JAva decompiler
+	javastartupclass=jode.obfuscator.Main
+	javasourcedir=
+	jarfile="$JODE_JAR$CLASSPATHSEPARATOR$JHDL_JAR"
+	javaflag="$JODE_JFLAG"
+	;;
     mescal)
         # Mescal UI
 	javastartupclass=mescal.MescalApplication
@@ -318,7 +325,7 @@ case `basename "$0"` in
 	# tcl.lang.Shell brings up the Jacl prompt in the current window
 	javastartupclass=tcl.lang.Shell
 	javasourcedir=
-	jarfile="$PTJACL_JAR"
+	jarfile="$PTJACL_JAR$CLASSPATHSEPARATOR$ALL_JAR$CLASSPATHSEPARATOR$SOOT_JAR"
 	javaflag="$PTJACL_FLAG"
 	;;
     ptjaclapp)

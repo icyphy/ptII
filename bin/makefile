@@ -102,6 +102,8 @@ all: ptinvoke
 	ln -s ptinvoke decompile
 	rm -f jode
 	ln -s ptinvoke jode
+	rm -f obfuscate
+	ln -s ptinvoke obfuscate
 	rm -f mescal
 	ln -s ptinvoke mescal
 	rm -f moml
