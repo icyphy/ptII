@@ -342,6 +342,11 @@ public class DEDirector extends Director {
      *  @exception IllegalActionException If the firing actor throws it.
      */
     public void fire() throws IllegalActionException {
+
+        if (_debugging) {
+            _debug("DE director firing!");
+        }
+
         while (true) {
             Actor actorToFire = _dequeueEvents();
             if (actorToFire == null) {
@@ -714,6 +719,8 @@ public class DEDirector extends Director {
         }
         // Request a firing to the outer director if the queue is not empty.
         if (_isEmbedded() && !_eventQueue.isEmpty()) {
+            if (_debugging) _debug("DE director requests refiring" +
+                " because of nonempty event queue.");
             _requestFiring();
         }
     }
@@ -744,6 +751,9 @@ public class DEDirector extends Director {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("DE director postfiring!");
+        }
         boolean stop = ((BooleanToken)stopWhenQueueIsEmpty.getToken())
             .booleanValue();
         if (_noMoreActorsToFire && (stop || _exceedStopTime)) {
@@ -767,6 +777,9 @@ public class DEDirector extends Director {
      *          time stamp of the first event in the event queue.
      */
     public boolean prefire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("DE director prefiring!");
+        }
         if (!_isEmbedded()) {
             return true;
         }
