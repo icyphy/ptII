@@ -47,9 +47,9 @@ which is dependent on the time of events that flow through its input
 receivers. An event is simply an object which contains a token, a
 time stamp and a receiver (to which the event is destined).
 <P>
-To facilitate this process, the ODFConservativeRcvrs contained by ODFActors each have 
+To facilitate this process, the ODFReceivers contained by ODFActors each have 
 three important variables: rcvrTime, lastTime and priority. The rcvrTime 
-of an ODFConservativeRcvr is equal to the time of the oldest event that resides 
+of an ODFReceiver is equal to the time of the oldest event that resides 
 on the receiver. The lastTime is equal to the time of the newest event 
 residing in the receiver. 
 <P>
@@ -88,7 +88,7 @@ class will not have this constraint.
 <P>
 RcvrTimeTriple objects are used to facilitate the ordering of receivers 
 contained by an ODFActor according to rcvrTime/lastTime and priority. A
-RcvrTimeTriple is an object containing an ODFConservativeRcvr, the _rcvrTime of
+RcvrTimeTriple is an object containing an ODFReceiver, the _rcvrTime of
 the receiver and the priority of the receiver. Each actor contains a list 
 consisting of one RcvrTimeTriple per receiver contained by the actor. As 
 tokens are placed in and taken out of the receivers of an actor, the list 
@@ -241,7 +241,7 @@ public class ODFActor extends AtomicActor {
      *  has the minimum rcvrTime. If all receivers have expired then a 
      *  TerminateProcessException will be thrown. 
      * @see TimedQueueReceiver
-     * @see ODFConservativeRcvr
+     * @see ODFReceiver
      */
     public Token getNextInput() {
 	Thread thread = Thread.currentThread();
@@ -267,17 +267,17 @@ public class ODFActor extends AtomicActor {
         
 	/*
         RcvrTimeTriple bestTriple = null;
-        ODFConservativeRcvr lowestRcvr = null;
+        ODFReceiver lowestRcvr = null;
 	synchronized(this) {
         bestTriple = 
 	        (RcvrTimeTriple)odfthread._rcvrTimeList.first();
         lowestRcvr = 
-                (ODFConservativeRcvr)bestTriple.getReceiver();
+                (ODFReceiver)bestTriple.getReceiver();
 	}
 	*/
         // _currentTime = bestTriple.getTime();
 
-        ODFConservativeRcvr lowestRcvr = odfthread.getFirstRcvr();
+        ODFReceiver lowestRcvr = odfthread.getFirstRcvr();
 
 	/*
 	if( bestTriple.getTime() == -1.0 ) {
@@ -324,7 +324,7 @@ public class ODFActor extends AtomicActor {
 	        // time and priority.
                 
                 bestTriple = getHighestPriorityTriple();
-                lowestRcvr = (ODFConservativeRcvr)bestTriple.getReceiver();
+                lowestRcvr = (ODFReceiver)bestTriple.getReceiver();
                 lowestRcvr.setSimultaneousIgnore(true);
                 token = lowestRcvr.get();
                 
@@ -409,7 +409,7 @@ public class ODFActor extends AtomicActor {
 	    }
             for (int j = 0; j < rcvrs.length; j++) {
                 for (int i = 0; i < rcvrs[j].length; i++) {
-	            ((ODFConservativeRcvr) rcvrs[j][i]).put(null, -1.0);
+	            ((ODFReceiver) rcvrs[j][i]).put(null, -1.0);
 		}
             }
 	}
@@ -443,9 +443,9 @@ public class ODFActor extends AtomicActor {
             for (int i = 0; i < rcvrs.length; i++) {
                 for (int j = 0; j < rcvrs[i].length; j++) {
                     double time = getCurrentTime();
-                    if( time > ( (ODFConservativeRcvr)rcvrs[i][j]
+                    if( time > ( (ODFReceiver)rcvrs[i][j]
                             ).getRcvrTime() ) {
-                        ((ODFConservativeRcvr)rcvrs[i][j]).put( 
+                        ((ODFReceiver)rcvrs[i][j]).put( 
                                 new NullToken(), time );
                     }
 		}
@@ -527,9 +527,9 @@ public class ODFActor extends AtomicActor {
             Receiver[][] rcvrs = port.getReceivers();
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
-                    ((ODFConservativeRcvr)rcvrs[i][j]).setPriority(currentPriority); 
+                    ((ODFReceiver)rcvrs[i][j]).setPriority(currentPriority); 
                     RcvrTimeTriple triple = new RcvrTimeTriple( 
-                            (ODFConservativeRcvr)rcvrs[i][j], _currentTime, 
+                            (ODFReceiver)rcvrs[i][j], _currentTime, 
                             currentPriority );
                     updateRcvrList( triple );
                     currentPriority++;
@@ -576,11 +576,11 @@ public class ODFActor extends AtomicActor {
             String testString2 = "null";
             if( getName().equals("printer") ) {
 		System.out.println("   Printer -> size() = "
-                        +((ODFConservativeRcvr)testRcvr)._queue.size());
-		if( ((ODFConservativeRcvr)testRcvr)._queue.size() > 1 ) {
+                        +((ODFReceiver)testRcvr)._queue.size());
+		if( ((ODFReceiver)testRcvr)._queue.size() > 1 ) {
 		    /*
                     Event testEvent2 = 
-		            ((Event)((ODFConservativeRcvr)testRcvr)._queue.get(1));
+		            ((Event)((ODFReceiver)testRcvr)._queue.get(1));
                     StringToken testToken2 = 
 		            (StringToken)testEvent2.getToken();
 		    testString2 = testToken2.stringValue();
@@ -589,9 +589,10 @@ public class ODFActor extends AtomicActor {
 			    " and string: ");
 		    */
 		}
-		if( ((ODFConservativeRcvr)testRcvr)._queue.size() > 0 ) {
+                /*
+		if( ((ODFReceiver)testRcvr)._queue.size() > 0 ) {
                     Event testEvent = 
-                            ((Event)((ODFConservativeRcvr)testRcvr)._queue.get(0));
+                            ((Event)((ODFReceiver)testRcvr)._queue.get(0));
                     StringToken testToken = (StringToken)testEvent.getToken();
 		    if( testToken != null ) {
                         testString = testToken.stringValue();
@@ -599,6 +600,7 @@ public class ODFActor extends AtomicActor {
 		} else {
                     testString = "null";
 		}
+                */
             }
             System.out.println("\t"+getName()+"'s Receiver "+i+
 	            " has a time of " +time+" and string: "+testString);
