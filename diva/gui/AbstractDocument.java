@@ -114,7 +114,7 @@ public abstract class AbstractDocument implements Document {
     /** Close the document. Do not attempt to save the document first
      * or do any other user-interface things like that. This method
      * must never "fail." Note that actions such as querying the user
-     * to save a modified document and so on are the responsbility of the
+     * to save a modified document and so on are the responsibility of the
      * application, not the Document implementation. Return true if
      * the operation was successful, otherwise false.  In this base class
      * do nothing.
