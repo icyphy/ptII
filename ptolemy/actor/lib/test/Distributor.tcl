@@ -93,7 +93,7 @@ test Distributor-3.1 {run with two outputs} {
 
 test Distributor-4.1 {run with mutations} {
     $m addChangeListener \
-            [java::new ptolemy.kernel.event.StandardOutChangeListener]
+            [java::new ptolemy.kernel.event.StreamChangeListener]
     $m initialize
     $m iterate
     set c1 [java::new ptolemy.actor.event.RemoveActor $e0 $rec1]

@@ -88,7 +88,7 @@ test Commutator-3.1 {run with two inputs} {
 
 test Commutator-4.1 {run with mutations} {
     $m addChangeListener \
-            [java::new ptolemy.kernel.event.StandardOutChangeListener]
+            [java::new ptolemy.kernel.event.StreamChangeListener]
     set dir [$e0 getDirector]
     $dir addDebugListener \
             [java::new ptolemy.kernel.util.StreamListener]
