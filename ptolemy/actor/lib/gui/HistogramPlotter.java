@@ -466,7 +466,7 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
         String header
             = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
 	if (histogram != null) {
-	    output.write(_getIndentPrefix(depth) + "<configure><?plotml\n"
+	    output.write(_getIndentPrefix(depth) + "<configure>\n<?plotml"
                     + header + "\n<plot>\n");
 	    PrintWriter print = new PrintWriter(output);
 	    // The second (null) argument indicates that PlotML PUBLIC DTD
@@ -489,11 +489,19 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
                             + "<configure source=\""
                             + source
                             + "\">");
+		    if (text != null) {
+			output.write("<![CDATA[\n");
+		    }
                 } else {
-                    output.write(_getIndentPrefix(depth) + "<configure>");
+                    output.write(_getIndentPrefix(depth) + "<configure>\n");
                 }
-                if (text != null) output.write(text);
-                output.write(_getIndentPrefix(depth) + "</configure>");
+                if (text != null) {
+		    output.write(text.trim() + "\n");
+		    if (source != null && !source.trim().equals("")) {
+			output.write(_getIndentPrefix(depth) + "]]>\n");
+		    }
+		}
+                output.write(_getIndentPrefix(depth) + "</configure>\n");
             }
         }
     }

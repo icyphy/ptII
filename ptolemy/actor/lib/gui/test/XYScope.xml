@@ -2,7 +2,10 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="XYScope" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -31,7 +34,13 @@
         </port>
     </entity>
     <entity name="TrigFunction1" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" value="sin">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -61,9 +70,15 @@
         </port>
     </entity>
     <entity name="TrigFunction3" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" value="sin">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
         </property>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -74,6 +89,8 @@
     </entity>
     <entity name="XYScope4" class="ptolemy.actor.lib.gui.XYScope">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
