@@ -208,7 +208,8 @@ public class ShallowModelTransformer extends SceneTransformer {
     /** Return the name of the field that is created for the
      *  given entity.
      */
-    public static String getFieldNameForPort(Port port, NamedObj context) {
+    public static String getFieldNameForPort(
+            Port port, NamedObj context) {
         return "P" + SootUtilities.sanitizeName(port.getName(context));
     }
 
@@ -252,8 +253,7 @@ public class ShallowModelTransformer extends SceneTransformer {
 
         EntitySootClass modelClass =
             new EntitySootClass(PtolemyUtilities.compositeActorClass,
-                    modelClassName,
-                    Modifier.PUBLIC);
+                    modelClassName, Modifier.PUBLIC);
         Scene.v().addClass(modelClass);
         modelClass.setApplicationClass();
 
@@ -272,8 +272,8 @@ public class ShallowModelTransformer extends SceneTransformer {
 	_portLocalMap = new HashMap();
 
         // Now instantiate all the stuff inside the model.
-        _composite(body, thisLocal, _model, thisLocal,
-                _model, modelClass, new HashSet());
+        _composite(body, thisLocal, _model, thisLocal, _model, modelClass, 
+                new HashSet());
 
         units.add(Jimple.v().newReturnVoidStmt());
 
@@ -336,9 +336,9 @@ public class ShallowModelTransformer extends SceneTransformer {
         // create fields for attributes.
         createFieldsForAttributes(body, container, containerLocal,
                 composite, thisLocal, modelClass, createdSet);
-        _ports(body, containerLocal, container,
+        _ports(body, containerLocal, container, 
                 thisLocal, composite, modelClass, createdSet);
-        _entities(body, containerLocal, container,
+        _entities(body, containerLocal, container, 
                 thisLocal, composite, modelClass, createdSet);
 
         // handle the communication
