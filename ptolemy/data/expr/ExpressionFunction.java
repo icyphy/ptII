@@ -29,6 +29,7 @@
 */
 package ptolemy.data.expr;
 
+import ptolemy.data.Function;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -53,7 +54,7 @@ like "function(x:int, y:int) x+y".
 @see ptolemy.data.expr.ASTPtRootNode
 */
 
-public class ExpressionFunction implements FunctionToken.Function {
+public class ExpressionFunction implements Function {
     public ExpressionFunction(List argumentNames, Type[] argumentTypes,
             ASTPtRootNode exprRoot) {
         _argumentNames = new ArrayList(argumentNames);
@@ -102,7 +103,7 @@ public class ExpressionFunction implements FunctionToken.Function {
      *  same class.
      *  @param function The function to check congruency against.
      */
-    public boolean isCongruent(FunctionToken.Function function) {
+    public boolean isCongruent(Function function) {
         return toString().compareTo(function.toString()) == 0;
 
         // FIXME: The above is not terribly nice...  It would be nice
