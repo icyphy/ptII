@@ -48,6 +48,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.security.cert.Certificate;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.PublicKey;
 import java.util.Enumeration;
 
@@ -177,7 +178,7 @@ public class KeyReader extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        System.out.println("KeyReader: " + _key);
+        System.out.println("KeyReader: " + _key.getClass().toString() + " " + _key);
         output.broadcast(new ObjectToken(_key));
     }
 
@@ -202,10 +203,20 @@ public class KeyReader extends Source {
             // Add all the aliases as possible choices.
             for (Enumeration aliases = _keyStore.aliases();
                 aliases.hasMoreElements() ;) {
-                alias.addChoice((String)aliases.nextElement());
+                String aliasName = (String)aliases.nextElement();
+                System.out.println("KeyReader: " + aliasName 
+                        + " isKeyEntry: " + _keyStore.isKeyEntry(aliasName)
+                        + " isCertEntry: "
+                        + _keyStore.isCertificateEntry(aliasName));
+                alias.addChoice(aliasName);
             }
 
             _certificate = _keyStore.getCertificate(_alias);
+            System.out.println("KeyReader: certificate: " + _certificate);
+            if (_certificate == null) {
+                throw new KeyStoreException("Failed to get alias '"
+                        + _alias + "' from  keystore '" + _url + "'");
+            }
 
             // Get either the public key or the private key
 
@@ -214,6 +225,8 @@ public class KeyReader extends Source {
             } else {
                 _key = _keyStore.getKey(_alias, passwordArray);
             }
+            System.out.println("KeyReader: " + getName()
+                    + " key: " + _key.getClass().getName() + "\n" + _key );
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to get key store aliases or certificate");

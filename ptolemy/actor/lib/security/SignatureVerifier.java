@@ -31,12 +31,7 @@
 
 package ptolemy.actor.lib.security;
 
-
-import java.io.ByteArrayOutputStream;
-import java.security.InvalidKeyException;
-import java.security.PublicKey;
-import java.security.SignatureException;
-
+import ptolemy.data.ObjectToken;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -44,6 +39,11 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.io.ByteArrayOutputStream;
+import java.security.InvalidKeyException;
+import java.security.PublicKey;
+import java.security.SignatureException;
 
 //////////////////////////////////////////////////////////////////////////
 //// AsymmetricEncryption
@@ -88,8 +88,8 @@ public class SignatureVerifier extends SignatureActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        keyIn = new TypedIOPort(this, "keyIn", true, false);
-        keyIn.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+        publicKey = new TypedIOPort(this, "publicKey", true, false);
+        publicKey.setTypeEquals(BaseType.OBJECT);
 
         data = new TypedIOPort(this, "data", true, false);
         data.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
@@ -99,10 +99,9 @@ public class SignatureVerifier extends SignatureActor {
     ////                     ports and parameters                  ////
 
     /** This port receives the public key to be used from the
-     *  AsymmetricDecryption actor in the form of an unsigned byte array.
-     *  This key is used to encrypt data from the <i>input</i> port.
+     *  The type is an ObjectToken of type java.security.Key.
      */
-    public TypedIOPort keyIn;
+    public TypedIOPort publicKey;
 
     // FIXME: what is this port?
     public TypedIOPort data;
@@ -110,7 +109,7 @@ public class SignatureVerifier extends SignatureActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If there are tokens on the <i>input</i> and <i>keyIn</i>
+    /** If there are tokens on the <i>input</i> and <i>publicKey</i>
      *  ports, they are consumed.  This method takes the data from the
      *  <i>input</i> and encrypts the data based on the
      *  <i>algorithm</i>, <i>provider</i>, <i>mode</i> and
@@ -121,9 +120,9 @@ public class SignatureVerifier extends SignatureActor {
      *  @exception IllegalActionException If thrown by base class.
      */
     public void fire() throws IllegalActionException {
-        if (keyIn.hasToken(0)) {
-            _publicKey = (PublicKey)_bytesToKey(
-                    _arrayTokenToUnsignedByteArray((ArrayToken)keyIn.get(0)));
+        if (publicKey.hasToken(0)) {
+            ObjectToken objectToken = (ObjectToken)publicKey.get(0);
+            _publicKey = (PublicKey)objectToken.getValue(); 
         }
         if (input.hasToken(0) && data.hasToken(0) && _publicKey != null) {
             _data = _arrayTokenToUnsignedByteArray((ArrayToken)data.get(0));

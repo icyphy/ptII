@@ -195,7 +195,7 @@ public class CryptographyActor extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Override the base class to reinitialize the state if
-     *  the <i>algorith</i>, <i>provider</i>, or <i>keysize</i>
+     *  the <i>algorithm</i>, <i>provider</i>, or <i>keysize</i>
      *  parameter is changed.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.

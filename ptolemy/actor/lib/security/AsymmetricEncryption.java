@@ -120,7 +120,8 @@ public class AsymmetricEncryption extends CipherActor {
                 //SecretKey key = (SecretKey)objectToken.getValue();
                 //java.security.Key key = (java.security.Key)objectToken.getValue(); 
                 PublicKey key = (PublicKey)objectToken.getValue(); 
-                System.out.println("AsymmetricEncryption: " + key);
+                System.out.println("AsymmetricEncryption: "
+                        + key.getClass().toString() + " " + key);
                 _cipher.init(Cipher.ENCRYPT_MODE, key);
                 //_algorithmParameters = _cipher.getParameters();
             } catch (Exception ex) {

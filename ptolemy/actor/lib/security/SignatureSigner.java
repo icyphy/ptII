@@ -32,20 +32,26 @@ to be sent to the signature verifier.
 package ptolemy.actor.lib.security;
 
 
-import java.io.ByteArrayOutputStream;
-import java.security.InvalidKeyException;
-import java.security.KeyPair;
-import java.security.PrivateKey;
-import java.security.SignatureException;
-
+import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.io.ByteArrayOutputStream;
+import java.security.InvalidKeyException;
+import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.Security;
+import java.security.SignatureException;
+import java.util.Iterator;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// SignatureSigner
@@ -90,12 +96,31 @@ public class SignatureSigner extends SignatureActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        keyAlgorithm = new Parameter(this, "keyAlgorithm");
-        keyAlgorithm.setTypeEquals(BaseType.STRING);
-        keyAlgorithm.setExpression("");
+        // Reset the choices to possible signatures
+        algorithm.removeAllChoices();
+        Set algorithms = Security.getAlgorithms("Signature");
+        Iterator algorithmsIterator = algorithms.iterator();
+        for(int i = 0; algorithmsIterator.hasNext(); i++) {
+            String algorithmName = (String)algorithmsIterator.next();
+            if (i == 0) {
+                algorithm.setExpression(algorithmName);
+            }
+            algorithm.addChoice(algorithmName);
+        }
 
-        keyOut = new TypedIOPort(this, "keyOut", false, true);
-        keyOut.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+        keyAlgorithm = new StringParameter(this, "keyAlgorithm");
+        algorithms = Security.getAlgorithms("KeyGenerator");
+        algorithmsIterator = algorithms.iterator();
+        for(int i = 0; algorithmsIterator.hasNext(); i++) {
+            String algorithmName = (String)algorithmsIterator.next();
+            if (i == 0) {
+                keyAlgorithm.setExpression(algorithmName);
+            }
+            keyAlgorithm.addChoice(algorithmName);
+        }
+
+        publicKey = new TypedIOPort(this, "publicKey", false, true);
+        publicKey.setTypeEquals(BaseType.OBJECT);
 
         data = new TypedIOPort(this, "data", false, true);
         data.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
@@ -108,7 +133,7 @@ public class SignatureSigner extends SignatureActor {
     /** This port outputs the key to be used by the
      *  AsymmetricEncryption actor as an unsigned byte array.
      */
-    public TypedIOPort keyOut;
+    public TypedIOPort publicKey;
 
     /** This port sends out the original data to be verified with the
      *  encrypted digest
@@ -119,27 +144,39 @@ public class SignatureSigner extends SignatureActor {
      *  example, using RSAwithMD5 as the signature algorithm, RSA
      *  would be used for the <i>keyAlgorithm</i> parameter.
      */
-    public Parameter keyAlgorithm;
+    public StringParameter keyAlgorithm;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to reinitialize the state if
+     *  the <i>algorith</i>, <i>provider</i>, or <i>keysize</i>
+     *  parameter is changed.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == keyAlgorithm) {
+            _keyAlgorithm =
+                ((StringToken)keyAlgorithm.getToken()).stringValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
     /** If there is a token on the <i>input</i> port, this method
      *  takes the data from the <i>input</i> and decrypts the data
      *  based on the <i>algorithm</i>, <i>provider</i>, <i>mode</i>
      *  and <i>padding</i> using the created private key.  This is
      *  then sent on the <i>output</i>.  The public key is also sent
-     *  out on the <i>keyOut</i> port.  All parameters should be the
+     *  out on the <i>publicKey</i> port.  All parameters should be the
      *  same as the corresponding encryption actor.
      *
      *  @exception IllegalActionException If thrown by base class.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        keyOut.send(0,
-                CryptographyActor.unsignedByteArrayToArrayToken(
-                        CryptographyActor.keyToBytes(_publicKey)));
-
+        publicKey.send(0, (new ObjectToken(_publicKey)));
     }
 
     /** Get an instance of the cipher and outputs the key required for
@@ -148,13 +185,11 @@ public class SignatureSigner extends SignatureActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _keyAlgorithm = ((StringToken)keyAlgorithm.getToken()).stringValue();
+
         KeyPair pair = _createAsymmetricKeys();
         _publicKey = pair.getPublic();
         _privateKey = pair.getPrivate();
-        keyOut.send(0,
-                CryptographyActor.unsignedByteArrayToArrayToken(
-                        CryptographyActor.keyToBytes(_publicKey)));
+        //publicKey.send(0, new ObjectToken(_publicKey));
     }
 
     /** Takes the data and calculates a message digest for it.
