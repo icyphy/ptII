@@ -352,8 +352,8 @@ COMMAPI_PRESENT=no
 #
 PTLEGO_DIR=
 if test ! -d "$COMMAPI_USER_DIR"; then
-    AC_MSG_RESULT([$COMMAPI_USER_DIR is not present, so we need not
-find commapi])
+    AC_MSG_RESULT([$COMMAPI_USER_DIR is not present,
+	so we need not find commapi])
     # Use curly brackets around PTII so that if commapi is not present
     # then ${PTII} will appear in ptinvoke.
     COMMAPI_DIR='${PTII}/vendors/sun/commapi'
@@ -399,8 +399,8 @@ JHDL_JAR='${PTII}/vendors/jhdl/JHDL_0_3_4.jar'
 
 # We only need to look for jhdl if $PTII/ptolemy/copernicus/jhdl exists
 if test ! -d "$PTII/ptolemy/copernicus/jhdl"; then
-    AC_MSG_RESULT([$PTII/ptolemy/coperniucs/jhdl is not present, so we need not
-find the Jhdl - a Java Optimization Framework])
+    AC_MSG_RESULT([$PTII/ptolemy/copernicus/jhdl is not present,
+	so we need not find the Jhdl - a Java Optimization Framework])
     JHDL_JAR='${PTII}/vendors/jhdl/JHDL_0_3_4.jar'
 else
     AC_MSG_CHECKING([for jhdl jar file])
@@ -450,8 +450,8 @@ LEJOS_PRESENT=no
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
 PTLEJOS_DIR=
 if test ! -d "$LEJOS_USER_DIR"; then
-    AC_MSG_RESULT([$COMMAPI_USER_DIR is not present, so we need not
-find lejos])
+    AC_MSG_RESULT([$COMMAPI_USER_DIR is not present,
+	so we need not find lejos])
     # Use curly brackets around PTII so that if lejos is not present
     # then ${PTII} will appear in ptinvoke.
     LEJOS_DIR='${PTII}/vendors/lejos/lejosBeta3'
@@ -493,8 +493,8 @@ fi
 
 # We only need to look for JavaCC if $PTII/ptolemy/data/expr exists
 if test ! -d "$PTII/ptolemy/data/expr"; then
-    AC_MSG_RESULT([$PTII/ptolemy/data/expr is not present, so we need not
-find JavaCC])
+    AC_MSG_RESULT([$PTII/ptolemy/data/expr is not present,
+	so we need not find JavaCC])
     JAVACC_DIR=$PTII/vendors/sun/JavaCC
     JAVACC=javacc
     JJTREE=jjtree
@@ -614,8 +614,8 @@ PTJAVA3D_DIR=
 JAVA3D_USER_DIR="$PTII/ptolemy/domains/gr"
 
 if test ! -d "$JAVA3D_USER_DIR"; then
-    AC_MSG_RESULT([$JAVA3D_USER_DIR
-  is not present, so we need not find Java 3D])
+    AC_MSG_RESULT([$JAVA3D_USER_DIR is not present,
+	so we need not find Java 3D])
 else
     AC_MSG_CHECKING([for Java 3D])
     # We need to run javac in the config directory so that javac from jdk1.1.6
@@ -639,51 +639,64 @@ cd "$startdir"
 #--------------------------------------------------------------------
 #	Test for javax.sound
 #--------------------------------------------------------------------
+# We need only loo for javax.sound if actor/lib/javasound is present
+PTJAVASOUND_USER_DIR="$PTII/ptolemy/actor/lib/javasound"
 # PTJAVASOUND_DIR is set to javasound and used in
 # $PTII/ptolemy/actor/lib/makefile if javasound was found
 PTJAVASOUND_DIR=
 
-AC_MSG_CHECKING([for javax.sound])
-# We need to run javac in the config directory so that javac from jdk1.1.6
-# under NT and cygwin works properly
-startdir=`pwd`
-cd "$srcdir/config"
-# Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-if $JAVAC javasoundTest.java ; then
-    AC_MSG_RESULT(ok)
-    PTJAVASOUND_DIR=javasound
+if test ! -d "$PTJAVASOUND_USER_DIR"; then
+    AC_MSG_RESULT([$PTJAVASOUND_USER_DIR is not present,
+	so we need not find javax.sound])
 else
-   AC_MSG_WARN(['"$JAVAC" javasoundTest.java' failed.
+    AC_MSG_CHECKING([for javax.sound])
+    # We need to run javac in the config directory so that javac from jdk1.1.6
+    # under NT and cygwin works properly
+    startdir=`pwd`
+    cd "$srcdir/config"
+    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+    if $JAVAC javasoundTest.java ; then
+	AC_MSG_RESULT(ok)
+	PTJAVASOUND_DIR=javasound
+    else
+	AC_MSG_WARN(['"$JAVAC" javasoundTest.java' failed.
 	Perhaps you are running under JDK1.2?
 	javasound is used in actor.lib, but you can probably
 	get away without it.])
+    fi
+    cd "$startdir"
 fi
-cd "$startdir"
 
 #--------------------------------------------------------------------
 #	Test for java.util.Timer, which is used by rtos
 #--------------------------------------------------------------------
+PTRTOS_USER_DIR="$PTII/ptolemy/domains/rtos"
 # PTRTOS_DIR is set to rtos and used in
 # $PTII/ptolemy/domains/makefile if rtos was found
 PTRTOS_DIR=
 
-AC_MSG_CHECKING([for java.util.Timer])
-
-# We need to run javac in the config directory so that javac from jdk1.1.6
-# under NT and cygwin works properly
-startdir=`pwd`
-cd "$srcdir/config"
-# Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-if $JAVAC javaUtilTimerTest.java ; then
-    AC_MSG_RESULT(ok)
-    PTRTOS_DIR=rtos
+if test ! -d "$PTRTOS_USER_DIR"; then
+    AC_MSG_RESULT([$PTRTOS_USER_DIR is not present,
+	so we need not find java.util.Timer])
 else
-   AC_MSG_WARN(['"$JAVAC" javaUtilTimerTest.java' failed.
+    AC_MSG_CHECKING([for java.util.Timer])
+
+    # We need to run javac in the config directory so that javac from jdk1.1.6
+    # under NT and cygwin works properly
+    startdir=`pwd`
+    cd "$srcdir/config"
+    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+    if $JAVAC javaUtilTimerTest.java ; then
+	AC_MSG_RESULT(ok)
+	PTRTOS_DIR=rtos
+    else
+	AC_MSG_WARN(['"$JAVAC" javaUtilTimerTest.java' failed.
 	Perhaps you are running under JDK1.2?
 	java.util.Timer is used in the rtos domain, but you can probably
 	get away without it.])
+    fi
+    cd "$startdir"
 fi
-cd "$startdir"
 
 #--------------------------------------------------------------------
 #       Jini is connection technology from Sun, see http://www.sun.com/jini/
@@ -699,8 +712,8 @@ JINI_PRESENT=no
 # $PTII/ptolemy/actor/lib/makefile if jini was found
 PTJSPACES_DIR=
 if test ! -d "$JINI_USER_DIR"; then
-    AC_MSG_RESULT([$JINI_USER_DIR
-  is not present, so we need not find Jini])
+    AC_MSG_RESULT([$JINI_USER_DIR is not present,
+	so we need not find Jini])
     # We don't use JINI_VERSION here so that we don't expand PTII
     # in the makefile
     JINI_DIR='\$PTII/vendors/sun/jini/jini1_0_1'
@@ -746,7 +759,7 @@ fi
 # We only need to look for jode if $PTII/ptolemy/apps/jode exists
 if test ! -d "$PTII/vendors/jode"; then
     AC_MSG_RESULT(['$PTII/vendors/jode is not present,
-    so we need not find Jode, which is a java disassembler'])
+	so we need not find Jode, which is a java disassembler'])
     JODE_DIR='${PTII}/vendors/jode/1.0.93'
     JODE_CLASSES='$(JODE_DIR)/jode.jar'
 else
@@ -798,8 +811,8 @@ PTKVM_DIR=
 #
 # We only need to look for kvm if $PTII/ptolemy/apps/kvm exists
 if test ! -d "$PTII/ptolemy/apps/kvm"; then
-    AC_MSG_RESULT([$PTII/ptolemy/apps/kvm is not present, so we need not
-find the PalmOS kvm])
+    AC_MSG_RESULT([$PTII/ptolemy/apps/kvm is not present,
+	so we need not find the PalmOS kvm])
     KVM_DIR='${PTII}/vendors/sun/j2me_cldc'
     # Unfortunately, j2me_cldc does not ship with a jar of zip file
     # It needs to be built
@@ -881,8 +894,8 @@ SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasmin
 
 # We only need to look for soot if $PTII/ptolemy/copernicus exists
 if test ! -d "$PTII/ptolemy/copernicus"; then
-    AC_MSG_RESULT([$PTII/ptolemy/copernicus is not present, so we need not
-find the Soot - a Java Optimization Framework])
+    AC_MSG_RESULT([$PTII/ptolemy/copernicus is not present,
+	so we need not find the Soot - a Java Optimization Framework])
     SOOT_DIR='${PTII}/vendors/soot/1.2.2'
 else
     AC_MSG_CHECKING([for soot directory])
@@ -962,8 +975,8 @@ PTTINI_DIR=
 #
 # We only need to look for tini if $PTII/ptolemy/apps/tini exists
 if test ! -d "$PTII/ptolemy/apps/tini"; then
-    AC_MSG_RESULT([$PTII/ptolemy/apps/tini is not present, so we need not
-find the Dallas Semiconductor tini])
+    AC_MSG_RESULT([$PTII/ptolemy/apps/tini is not present,
+	so we need not find the Dallas Semiconductor tini])
     TINI_DIR='${PTII}/vendors/dalsemi/tini'
     TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
 else
@@ -1043,8 +1056,8 @@ PTWABA_DIR=
 #
 # We only need to look for waba if $PTII/ptolemy/apps/kvm exists
 if test ! -d "$PTII/ptolemy/apps/kvm"; then
-    AC_MSG_RESULT([$PTII/ptolemy/apps/kvm is not present, so we need not
-find the PalmOS waba])
+    AC_MSG_RESULT([$PTII/ptolemy/apps/kvm is not present,
+	so we need not find the PalmOS waba])
     WABA_DIR='${PTII}/vendors/misc/waba/wabasdk'
     # Unfortunately, j2me_cldc does not ship with a jar of zip file
     # It needs to be built
