@@ -60,6 +60,8 @@ public class FilterOutGraphicalClasses implements MoMLFilter {
      *  rest of the attribute is skipped.
      */
     public void put(String className, String replacement) {
+        // ptolemy.copernicus.kernel.KernelMain call this method
+        // so as to filter out the GeneratorAttribute
 	_graphicalClasses.put(className, replacement);
     }
 
