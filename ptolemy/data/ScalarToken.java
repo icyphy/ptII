@@ -33,6 +33,7 @@ package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Complex;
+import ptolemy.math.FixPoint;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.BaseType;
 
@@ -90,17 +91,16 @@ public abstract class ScalarToken extends Token {
 	return BaseType.SCALAR;
     }
 
-    // Return the value of this token as a Fix.
-    // In this base class, we just throw an exception.
-    // @return A Fix
-    // @exception IllegalActionException always thrown.
-    //
-    // FIXME: restore this method after the Fix class is available.
-    //    public Fix fixValue()
-    //        throws IllegalActionException {
-    //	throw new IllegalActionException("Cannot convert the value in " +
-    //		getClass().getName() + " to a Fix losslessly.");
-    // }
+    /** Return the value of this token as a FixPoint.
+     *  In this base class, we just throw an exception.
+     *  @return A FixPoint
+     *  @exception IllegalActionException always thrown.
+     */    
+   public FixPoint fixValue()
+            throws IllegalActionException {
+       throw new IllegalActionException("Cannot convert the value in " +
+               getClass().getName() + " to a FixPoint losslessly.");
+   }
 
     /** Return the value of this token as an int.
      *  In this base class, we just throw an exception.
