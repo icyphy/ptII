@@ -125,6 +125,8 @@ ptolemy/media/ByteArrayAudioQueue.java
 ptolemy/media/DoubleArrayAudioQueue.java
 ptolemy/media/SoundCapture.java
 ptolemy/media/SoundCapture.class
+ptolemy/media/javasound/demo/LiveSines
+ptolemy/media/javasound/demo/livesines
 ptolemy/media/test/array.au
 ptolemy/media/test/tmp2.au
 ptolemy/moml/test/compat
