@@ -2,9 +2,9 @@
 #
 # @Authors: Mudit Goel, Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: @(#)makefile	1.33 10/01/98
 #
-# @Copyright (c) 1997- The Regents of the University of California.
+# @Copyright (c) 1997-1998 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -50,25 +50,9 @@ JARFILE = 	$(JPACKAGE).jar
 CLASSPATH = ../../../..
 
 JSRCS = \
-	PNAdder.java \
 	PNAlternate.java \
-	PNAudioPacker.java \
-	PNAudioSource.java \
-	PNCirConvFilter.java \
-	PNDAConverter.java \
 	PNInterleave.java \
-	PNPlot.java \
-	PNQuantizer.java \
-	PNRDController.java \
-	PNRDDecider.java \
-	PNRDDecoder.java \
-	PNRDIdentifier.java \
-	PNRDInfo.java \
-	PNRDMainController.java \
-	PNRamp.java \
-	PNRedirect.java \
-	PNSieve.java \
-	PNSink.java
+	PNRedirect.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
