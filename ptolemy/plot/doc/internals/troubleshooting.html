@@ -14,6 +14,7 @@ Other sources of information:
 
 Below is a list of common Ptplot problems.
 
+
 <H2><A NAME="Problems Starting Ptplot">Problems Starting Ptplot</A></H2>
 
 <H3><A NAME="CLASSPATH">CLASSPATH</A></H3>
@@ -53,6 +54,7 @@ something like:
 sh -x pxgraph -help
 </PRE>
 
+ <HR>
 <H3><CODE>pxgraph</CODE> script fails with: Can't find class ptplot.Pxgraph</H3>
 Here is an example
 <PRE>
@@ -73,7 +75,7 @@ carson [9] which pxgraph
 The we use <CODE>sh -x</CODE>.  Note that the output you see might be
 different, depending on what version of the <CODE>pxgraph</CODE> script
 you are running.
-</PRE>
+<PRE>
 carson [10] sh -x /users/ptdesign/bin.sol2.5/pxgraph -help
 PTDEFAULT=/users/ptdesign
 TYDEFAULT=/users/ptdesign/tycho
@@ -120,6 +122,7 @@ See the Pxgraph
 <A HREF="../codeDoc/ptplot.Pxgraph.html#Installation Instructions">Installation Instructions</A> for details.
 
 
+ <HR>
 <H3>I can't access the Plot class from a java interpreter</H3>
 If you try to run the Pxgraph class by passing the Pxgraph classname as a command line argument to the java interpreter, you might see:
 <PRE>
