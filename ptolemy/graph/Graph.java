@@ -52,8 +52,8 @@ need not be.
 
 <p>Each node (edge) has a unique, integer label associated with it.
 These labels can be used, for example, to index arrays and matrixes
-whose rows/columns correspond to nodes (edges). See #nodeLabel(Node)
-(#edgeLabel(Edge)) for details.
+whose rows/columns correspond to nodes (edges). See {@link #nodeLabel(Node)}
+({@link #edgeLabel(Edge)}) for details.
 
 <p>Both directed and undirected graphs can be implemented using this
 class. In directed graphs, the order of nodes specified to the
@@ -67,13 +67,16 @@ graphs, see {@link DirectedGraph}.
 only one instance of the node. Node labels, however, are local to individual
 graphs. Thus, the same node may have different labels in different graphs.
 Furthermore, the label assigned in a given graph to a node may change over time
-(if the set of nodes in the graph changes). The weight of a node is identical
-for all instances of the node in multiple graphs.  All of this holds for edges
+(if the set of nodes in the graph changes). If a node is contained in
+multiple graphs, it has the same weight in all of the graphs.
+All of this holds for edges
 all well. The same weight may be shared among multiple nodes and edges.
 
+<p> Multiple edges in a graph can connect the same pair of nodes.
+Thus, multigraphs are supported.
+
 <p>Once assigned, node and edge weights should not be changed in ways that
-affect comparison under the <code>equals</code> method (this restriction allows
-us to efficiently map weights into their associated nodes and edges).
+affect comparison under the <code>equals</code> method.
 Otherwise, unpredictable behavior may result.
 
 @author Shuvra S. Bhattacharyya, Yuhong Xiong, Jie Liu, Shahrooz Shahparnia
@@ -99,7 +102,7 @@ public class Graph {
      *  specified number of nodes.  Memory management is more
      *  efficient with this constructor if the number of nodes is
      *  known.
-     *  @param nodeCount the number of nodes.
+     *  @param nodeCount The number of nodes.
      */
     public Graph(int nodeCount) {
         _nodes = new LabeledList(nodeCount);
@@ -114,8 +117,8 @@ public class Graph {
      *  specified number of edges, and number of nodes.  Memory
      *  management is more efficient with this constructor if the
      *  number of nodes and edges is known.
-     *  @param nodeCount the number of nodes.
-     *  @param edgeCount the number of edges.
+     *  @param nodeCount The number of nodes.
+     *  @param edgeCount The number of edges.
      */
     public Graph(int nodeCount, int edgeCount) {
         _nodes = new LabeledList(nodeCount);
@@ -131,7 +134,7 @@ public class Graph {
 
     /** Add a weighted node to this graph given the node weight.
      *
-     *  @param weight the node weight.
+     *  @param weight The node weight.
      *  @return The node.
      *  @exception IllegalArgumentException If the specified weight is null.
      *  @deprecated Use addNodeWeight(Object)
@@ -155,14 +158,14 @@ public class Graph {
 
     /** Add a weighted edge between two nodes.  If the edge is subsequently
      *  operated on as a directed edge, its orientation will be taken
-     *  to be directed <em>from</em> the first (<code>node1</code>) node
-     *  <code>to</code> the second (<code>node2</code>) node. Multiple edges
+     *  to be directed <i>from</i> the first (<code>node1</code>) node
+     *  <i>to</i> the second (<code>node2</code>) node. Multiple edges
      *  between the same nodes are allowed, and are considered
      *  different edges.  Self-loops are also allowed.
      *
-     *  @param node1 the first node.
-     *  @param node2 the second node.
-     *  @param weight the weight.
+     *  @param node1 The first node.
+     *  @param node2 The second node.
+     *  @param weight The weight.
      *  @return The edge.
      *  @exception IllegalArgumentException If the first node or second
      *  node is not already in the graph, or if the weight is
@@ -176,8 +179,8 @@ public class Graph {
      *  {@link #addEdge(Node, Node, Object)}, except that no
      *  weight is assigned to the edge.
      *
-     *  @param node1 the first node.
-     *  @param node2 the second node.
+     *  @param node1 The first node.
+     *  @param node2 The second node.
      *  @return The edge.
      *  @exception IllegalArgumentException If the first node or second
      *  node is not already in the graph.
@@ -186,10 +189,9 @@ public class Graph {
         return _addEdge(node1, node2, false, null);
     }
 
-    /** Given two node weights <em>w1</em> and <em>w2</em>, add all
-     *  edges of the form (<em>x1</em>, <em>x2</em>), where
+    /** Given two node weights <i>w1</i> and <i>w2</i>, add weighted
+     *  edges of the form (<i>x1</i>, <i>x2</i>), where
      *  <code>(x1.weight() == w1) && (x2.weight() == w2)</code>.
-     *  Furthermore, to each of these edges assign the specified weight.
      *
      *  @param weight1 The first node weight.
      *  @param weight2 The second node weight.
@@ -204,12 +206,12 @@ public class Graph {
         return _addEdges(weight1, weight2, true, newEdgeWeight);
     }
 
-    /** Given two node weights <em>w1</em> and <em>w2</em>, add all unweighted
-     *  edges of the form (<em>x1</em>, <em>x2</em>), where
+    /** Given two node weights <i>w1</i> and <i>w2</i>, add all unweighted
+     *  edges of the form (<i>x1</i>, <i>x2</i>), where
      *  <code>(x1.weight() == w1) && (x2.weight() == w2)</code>.
      *
-     *  @param weight1 the first node weight.
-     *  @param weight2 the second node weight.
+     *  @param weight1 The first node weight.
+     *  @param weight2 The second node weight.
      *  @return The set of edges that were added; each element
      *  of this set is an instance of {@link Edge}.
      *  @exception IllegalArgumentException If no edge is
@@ -221,7 +223,7 @@ public class Graph {
 
     /** Add a pre-constructed edge (unweighted or weighted).
      *
-     *  @param edge the edge.
+     *  @param edge The edge.
      *  @exception IllegalArgumentException If the source or sink node
      *  of the edge is not already in the graph, or if the edge is
      *  already in the graph.
@@ -275,9 +277,8 @@ public class Graph {
     }
 
     /** Add a pre-constructed node (unweighted or weighted).
-     *  The node must not be incident to any edges.
      *
-     *  @param node the node.
+     *  @param node The node.
      *  @exception IllegalArgumentException If the node is already in the graph.
      */
     public Node addNode(Node node) {
@@ -294,7 +295,7 @@ public class Graph {
 
     /** Add a weighted node to this graph given the node weight.
      *
-     *  @param weight the node weight.
+     *  @param weight The node weight.
      *  @return The node.
      *  @exception IllegalArgumentException If the specified weight is null.
      */
@@ -324,8 +325,10 @@ public class Graph {
     /** Return the present value of a counter that keeps track
      *  of changes to the graph.
      *  This counter is monitored by GraphListeners to determine
-     *  if associated computations are obsolete.
-     *  return The present value of the counter.
+     *  if associated computations are obsolete. Upon overflow, the counter
+     *  resets to zero, broadcasts a change to all graph listeners, and
+     *  begins counting again.
+     *  @return The present value of the counter.
      */
     public long changeCount() {
         return _changeCount;
@@ -341,7 +344,7 @@ public class Graph {
         // These components are repeatedly modified until they coincide with
         // the connected components. The following HashMap is a map from
         // nodes into the components that contain them. Each element in the map
-        // is an Node whose weight is an ArrayList of Nodes. We encapsulate
+        // is a Node whose weight is an ArrayList of Nodes. We encapsulate
         // each ArrayList as the weight of a Node (called the 'container' of
         // the ArrayList) so that we can modify the ArrayList without
         // interfering with the hashing semantics of the HashMap.
@@ -391,7 +394,7 @@ public class Graph {
      *  determined by the <code>equals</code> method. If the specified
      *  weight is null, return false.
      *
-     *  @param object the node weight to be tested.
+     *  @param weight The node weight to be tested.
      *  @return True if the specified object is a node weight in this graph.
      *  @deprecated Use containsNodeWeight(Object).
      */
@@ -400,22 +403,21 @@ public class Graph {
     }
 
     /** Return true if the specified edge exists in the
-     *  graph; otherwise, return <code>false</code>.
-     *  @param edge the specified edge.
+     *  graph; otherwise, return false.
+     *  @param edge The specified edge.
      *  @return True if the specified edge exists in the graph.
      */
     public boolean containsEdge(Edge edge) {
         return _edges.contains(edge);
     }
 
-    /** Test if the specified object is a edge weight in this
-     *  graph. The Object is an edge weight if it is equal to an Object
-     *  specified in a successful <code>add</code> call. Equality is
+    /** Test if the specified object is an edge weight in this
+     *  graph. Equality is
      *  determined by the <code>equals</code> method. If the specified
      *  edge weight is null, return false.
      *
-     *  @param object the edge weight to be tested.
-     *  @return True if the specified object is a edge weight in this graph.
+     *  @param weight The edge weight to be tested.
+     *  @return True if the specified object is an edge weight in this graph.
      */
     public boolean containsEdgeWeight(Object weight) {
         try {
@@ -426,10 +428,10 @@ public class Graph {
         return true;
     }
 
-    /** Return <code>true</code> if the specified node exists in the
-     *  graph; otherwise, return <code>false</code>.
-     *  @param node the specified node.
-     *  @return <code>true</code> if the specified node exists in the
+    /** Return True if the specified node exists in the
+     *  graph; otherwise, return false.
+     *  @param node The specified node.
+     *  @return True if the specified node exists in the
      *  graph.
      */
     public boolean containsNode(Node node) {
@@ -437,12 +439,11 @@ public class Graph {
     }
 
     /** Test if the specified object is a node weight in this
-     *  graph. The object is a node weight if it is equal to an Object
-     *  specified in a successful <code>add</code> call. Equality is
+     *  graph. Equality is
      *  determined by the <code>equals</code> method. If the specified
      *  weight is null, return false.
      *
-     *  @param object the node weight to be tested.
+     *  @param weight The node weight to be tested.
      *  @return True if the specified object is a node weight in this graph.
      */
     public boolean containsNodeWeight(Object weight) {
@@ -465,7 +466,8 @@ public class Graph {
      *  }
      *  </pre>
      *  where N is the number of nodes in the graph, nodeI denotes the node
-     *  whose label is I, each node is described by its <code>toString()</code>,
+     *  whose label is I, each node is described by its <code>toString()</code>
+     *  method,
      *  and sinks(nodeI) denotes the set of nodes nodeK such that (nodeI, nodeK)
      *  is an edge in the graph (with each node again represented by its
      *  <code>toString()</code> method).
@@ -492,7 +494,7 @@ public class Graph {
         return result.toString();
     }
 
-    /** Return an edge that has a specified weight. If multiple
+    /** Return an edge in this graph that has a specified weight. If multiple
      *  edges have the specified weight, then return one of them
      *  arbitrarily.
      *  @param weight The specified edge weight.
@@ -506,10 +508,11 @@ public class Graph {
         return (Edge)(((ArrayList)_sameWeightEdges(weight)).get(0));
     }
 
-    /** Return an edge in the graph given the edge label.
-     *  @param edge the edge label.
-     *  @return the edge.
-     *  @exception IllegalArgumentException If the label is not valid.
+    /** Return an edge in this graph given the edge label.
+     *  @param edge The edge label.
+     *  @return The edge.
+     *  @exception IllegalArgumentException If the label is not associated
+     *  with an edge in this graph.
      *  @see #edgeLabel(Edge).
      */
     public Edge edge(int label) {
@@ -518,7 +521,7 @@ public class Graph {
 
     /** Return the total number of edges in this graph.  Multiple
      *  connections between two nodes are counted multiple times.
-     *  @return the total number of edges in this graph.
+     *  @return The total number of edges in this graph.
      */
     public int edgeCount() {
         return _edges.size();
@@ -526,10 +529,10 @@ public class Graph {
 
     /** Return the edge label of the specified edge.
      *  The edge label is a unique integer from 0 through
-     *  <em>E</em>-1, where <em>E</em> is the number of edges
+     *  <i>E</i>-1, where <i>E</i> is the number of edges
      *  currently in the graph. Edge labels maintain their
      *  consistency (remain constant) during periods when
-     *  no edges are removed from the graph. When edges are removed;
+     *  no edges are removed from the graph. When edges are removed,
      *  the labels assigned to the remaining edges may change.
      *
      *  @param edge A graph edge.
@@ -541,10 +544,24 @@ public class Graph {
         return _edges.label(edge);
     }
 
+    /** Return the edge label of the specified edge given the edge weight.
+     *  If multiple edges have the specified weight, then return one of their
+     *  labels arbitrarily.
+     *
+     *  @param weight The edge weight.
+     *  @return The edge label.
+     *  @exception IllegalArgumentException If the specified weight is not
+     *  an edge weight in this graph.
+     *  @see #edgeLabel(Edge).
+     */
+    public int edgeLabel(Object weight) throws IllegalArgumentException {
+        return _edges.label(edge(weight));
+    }
+
     /** Return the weight of a given edge in the graph given the edge label.
      *
-     *  @param edge the edge label.
-     *  @return the weight of the edge.
+     *  @param edge The edge label.
+     *  @return The weight of the edge.
      *  @exception IndexOutOfBoundsException If the label is
      *  not valid.
      *  @exception IllegalArgumentException If the edge corresponding
@@ -555,9 +572,9 @@ public class Graph {
         return ((Edge)(_edges.get(label))).weight();
     }
 
-    /** Return all the edges in this graph in the form of a collection
+    /** Return all the edges in this graph in the form of a collection.
      *  Each element in the returned collection is an instance of {@link Edge}.
-     *  @return All the edges in the graph.
+     *  @return All the edges in this graph.
      */
     public Collection edges() {
         return Collections.unmodifiableList(_edges);
@@ -567,7 +584,7 @@ public class Graph {
      *  The edges are returned in the form of a collection.
      *  Each element in the returned collection is an instance of {@link Edge}.
      *  @param weight The specified weight.
-     *  @return The edges in the graph that have the specified weight.
+     *  @return The edges in this graph that have the specified weight.
      *  @exception NullPointerException If the specified weight
      *  is null.
      *  @exception IllegalArgumentException If the specified weight
@@ -586,7 +603,7 @@ public class Graph {
      *  {@link Edge}.
      *  @param collection The specified collection of weights.
      *  @return The edges in this graph whose weights are contained
-     *  in a specified collection.
+     *  in the specified collection.
      */
     public Collection edges(Collection collection) {
         ArrayList edges = new ArrayList();
@@ -596,9 +613,9 @@ public class Graph {
         }
         return edges;
     }
-    /** Return the number of incident edges of a specified node.
+    /** Return the number of edges that are incident to a specified node.
      *  @param node The node.
-     *  @return the number of incident edges.
+     *  @return The number of incident edges.
      */
     public int incidentEdgeCount(Node node) {
         return _incidentEdgeList(node).size();
@@ -646,7 +663,7 @@ public class Graph {
      *  is node X. In other words, a neighbor of X is a node that is adjacent
      *  to X. All elements in the returned collection are unique nodes.
      *  @param node The node whose neighbors are to be returned.
-     *  @return the neighbors of the node.
+     *  @return The neighbors of the node.
      */
     public Collection neighbors(Node node) {
         Collection incidentEdgeCollection = incidentEdges(node);
@@ -669,7 +686,7 @@ public class Graph {
         return result;
     }
 
-    /** Return a node that has a specified weight. If multiple
+    /** Return a node in this graph that has a specified weight. If multiple
      *  nodes have the specified weight, then return one of them
      *  arbitrarily.
      *  @param weight The specified node weight.
@@ -683,10 +700,11 @@ public class Graph {
         return (Node)(((ArrayList)_sameWeightNodes(weight)).get(0));
     }
 
-    /** Return a node in the graph given the node label.
-     *  @param node the node label.
-     *  @return the node.
-     *  @exception IllegalArgumentException If the label is not valid.
+    /** Return a node in this graph given the node label.
+     *  @param node The node label.
+     *  @return The node.
+     *  @exception IllegalArgumentException If the label is not associated with
+     *  a node in this graph.
      *  @see #nodeLabel(Node).
      */
     public Node node(int label) {
@@ -694,7 +712,7 @@ public class Graph {
     }
 
     /** Return the total number of nodes in this graph.
-     *  @return the total number of nodes in this graph.
+     *  @return The total number of nodes in this graph.
      */
     public int nodeCount() {
         return _nodes.size();
@@ -702,16 +720,16 @@ public class Graph {
 
     /** Return the node label of the specified node.
      *  The node label is a unique integer from 0 through
-     *  <em>N</em>-1, where <em>N</em> is the number of nodes
+     *  <i>N</i>-1, where <i>N</i> is the number of nodes
      *  currently in the graph. Node labels maintain their
      *  consistency (remain constant) during periods when
-     *  no nodes are removed from the graph. When nodes are removed;
+     *  no nodes are removed from the graph. When nodes are removed,
      *  the labels assigned to the remaining nodes may change.
      *
      *  @param node A graph node.
      *  @return The node label.
      *  @exception IllegalArgumentException If the specified node is not
-     *  not an node in this graph.
+     *  a node in this graph.
      */
     public int nodeLabel(Node node) throws IllegalArgumentException {
         return _nodes.label(node);
@@ -723,8 +741,8 @@ public class Graph {
      *
      *  @param weight The node weight.
      *  @return The node label.
-     *  @exception IllegalArgumentException If the specified weight was not
-     *  not a node weight in this graph.
+     *  @exception IllegalArgumentException If the specified weight is not
+     *  a node weight in this graph.
      *  @see #nodeLabel(Node).
      */
     public int nodeLabel(Object weight) throws IllegalArgumentException {
@@ -733,8 +751,8 @@ public class Graph {
 
     /** Return the weight of a given node in the graph given the node label.
      *
-     *  @param node the node label.
-     *  @return the weight of the node.
+     *  @param node The node label.
+     *  @return The weight of the node.
      *  @exception IndexOutOfBoundsException If the label is
      *  not valid.
      *  @exception IllegalArgumentException If the node corresponding
@@ -745,9 +763,9 @@ public class Graph {
         return ((Node)(_nodes.get(label))).weight();
     }
 
-    /** Return all the nodes in this graph in the form of a collection
+    /** Return all the nodes in this graph in the form of a collection.
      *  Each element in the returned collection is an instance of {@link Node}.
-     *  @return All the nodes in the graph.
+     *  @return All the nodes in this graph.
      */
     public Collection nodes() {
         return Collections.unmodifiableList(_nodes);
@@ -757,7 +775,7 @@ public class Graph {
      *  The nodes are returned in the form of a collection.
      *  Each element in the returned collection is an instance of {@link Node}.
      *  @param weight The specified weight.
-     *  @return The nodes in the graph that have the specified weight.
+     *  @return The nodes in this graph that have the specified weight.
      *  @exception NullPointerException If the specified weight
      *  is null.
      *  @exception IllegalArgumentException If the specified weight
@@ -789,7 +807,7 @@ public class Graph {
         return nodes;
     }
 
-    /** Remove an edge from the graph.
+    /** Remove an edge from this graph.
      * An edge that is removed from a graph can be re-inserted
      * into the graph at a later time (using {@link #addEdge(Edge)}),
      * provided that the incident nodes are still in the graph.
@@ -816,9 +834,9 @@ public class Graph {
         _registerChange();
     }
 
-    /** Remove a node from the graph.
+    /** Remove a node from this graph.
      * All edges incident to the node are also removed.
-     * @param node the node to be removed.
+     * @param node The node to be removed.
      * @exception IllegalArgumentException If the node is not contained
      * in the graph.
      */
@@ -845,7 +863,7 @@ public class Graph {
         _registerChange();
     }
 
-    /** Return the number of self loop edges in the graph.
+    /** Return the number of self loop edges in this graph.
      *  @param node The node.
      *  @return The number of self loop edges.
      */
@@ -863,8 +881,8 @@ public class Graph {
 
     /** Return the collection of all self-loop edges in this graph.
      *  Each element in the returned collection is an {@link Edge}.
-     *  This operation takes <em>O(E)</em> time.
-     *  @return The self-loop edges in the graph.
+     *  This operation takes <i>O(E)</i> time.
+     *  @return The self-loop edges in this graph.
      */
     public Collection selfLoopEdges() {
         if (_selfLoopListener.obsolete()) {
@@ -900,6 +918,9 @@ public class Graph {
     }
 
     /** Return the subgraph induced by a collection of nodes.
+     *  In other words, return the subgraph formed by the given collection N of
+     *  nodes together with the set of edges of the form (x, y), where
+     *  x and y are both in N.
      *  Node and edge weights are preserved. In derived classes, this
      *  method returns the same type of graph as is returned by
      *  {@link ptolemy.graph.Graph#_emptyGraph()}.
@@ -950,7 +971,7 @@ public class Graph {
      *  of {@link Node}.
      *  @param edges The subset of edges. Each element is an instance
      *  of {@link Edge}.
-     *  @return The induced subgraph.
+     *  @return The subgraph.
      */
     public Graph subgraph(Collection nodeCollection,
             Collection edgeCollection) {
@@ -970,7 +991,7 @@ public class Graph {
      *  representation lists the nodes, including their labels
      *  and their weights, followed by the edges, including their
      *  labels, source nodes, sink nodes, and weights.
-     *  return A string representation of this graph.
+     *  @return A string representation of this graph.
      */
     public String toString() {
         StringBuffer result = new StringBuffer("{"
@@ -1025,21 +1046,22 @@ public class Graph {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create and add an edge with a specified source node and sink node.
-     * The third parameter specifies whether the edge is to be
-     * weighted, and the fourth parameter is the weight that is
-     * to be applied if the edge is weighted.
-     * Returns the edge that is added.
-     * @param node1 The source node of the edge.
-     * @param node2 The sink node of the edge.
-     * @param weighted True if the edge is to be weighted.
-     * @param weight The weight that is to be applied if the edge is to
-     * be weighted.
-     * @return The edge.
-     * @exception IllegalArgumentException If either of the specified nodes
-     * is not in the graph.
-     * @exception NullPointerException If the edge is to be weighted, but
-     * the specified weight is null.
+    /** Create and add an edge with a specified source node, sink node,
+     *  and optional weight.
+     *  The third parameter specifies whether the edge is to be
+     *  weighted, and the fourth parameter is the weight that is
+     *  to be applied if the edge is weighted.
+     *  Returns the edge that is added.
+     *  @param node1 The source node of the edge.
+     *  @param node2 The sink node of the edge.
+     *  @param weighted True if the edge is to be weighted.
+     *  @param weight The weight that is to be applied if the edge is to
+     *  be weighted.
+     *  @return The edge.
+     *  @exception IllegalArgumentException If either of the specified nodes
+     *  is not in the graph.
+     *  @exception NullPointerException If the edge is to be weighted, but
+     *  the specified weight is null.
      */
     protected Edge _addEdge(Node node1, Node node2, boolean weighted,
             Object weight) {
@@ -1270,7 +1292,7 @@ public class Graph {
             ArrayList edgeList = (ArrayList)_edgeWeightMap.get(weight);
             if (edgeList == null) {
                 throw new IllegalArgumentException("The specified weight "
-                        + "is not a edge weight in this graph."
+                        + "is not an edge weight in this graph."
                         + _weightDump(weight));
             } else {
                 return edgeList;

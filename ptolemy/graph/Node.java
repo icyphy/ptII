@@ -27,41 +27,17 @@
 
 package ptolemy.graph;
 
-//////////////////////////////////////////////////////////////////////////
-//// Node
+////////////////////////////////////////////////////////////////////////// //
+//Node
 /**
-An optionally-weighted node for an undirected or directed graph.
-More specifically, a node consists
-of an optional <em>weight</em> (an arbitrary object that is associated with the
-node), and information about the edges that are incident to the node.
-The incidence information involves the set of input edges, set of
-output edges, and set of all incident edges (all input and output
-edges).  For run-time efficiency, there is some redundancy in the way
-this information is stored.  For undirected graphs, it does not matter
-whether an edge is attached (made incident) to a node as an input edge
-or an output edge. The orientation of attachment only becomes relevant
-when the graph is operated on in a manner that takes orientation into
-account (e.g., by iterating over the set of input edges, rather than
-the set of incident edges, in one or more nodes).
+An optionally-weighted node for an undirected or directed graph.  More
+specifically, a node consists of an optional <i>weight</i> (an arbitrary
+object that is associated with the node).  We say that a node is
+<i>unweighted</i> if it does not have an assigned weight. It is an error to
+attempt to access the weight of an unweighted node. Node weights must be
+genuine (non-null) objects.
 
-<p> We say that a node is <em>unweighted</em> if it does not have an
-assigned weight. It is an error to attempt to access the weight of
-an unweighted node. Node weights must be genuine (non-null) objects.
-
-<p> A directed self loop edge (an edge whose source and sink nodes are
-identical) is placed in both the input edge list and the output
-edge list of the incident node, but it is not duplicated in the
-incident edges list. Thus, the number of incident edges is equal to
-<em>I + O - S</em>, where <em>I</em> is the number of input edges,
-<em>O</em> is the number of output edges, and <em>S</em> is the number
-of self loop edges.
-
-<p> Multiple edges in the node's input (output) edge list that are
-directed from (to) the same node are allowed. Thus, multigraphs are
-supported.
-
-<p>Note that nodes and edge lists in nodes should normally be
-manipulated (created or modified) only by classes of graphs that contain them.
+<p> Nodes are immutable.
 
 @author Shuvra S. Bhattacharyya
 @version $Id$
@@ -79,6 +55,7 @@ public final class Node {
     /** Construct a node with a given node weight.
      *  @exception IllegalArgumentException If the specified weight is
      *  <code>null</code>.
+     *  @param weight The given weight.
      */
     public Node(Object weight) {
         if (weight == null) {
@@ -93,7 +70,7 @@ public final class Node {
     ////                         public methods                    ////
 
     /** Return <code>true</code> if and only if this is a weighted node.
-     *  @return <code>True</code> if and only if this is a weighted node.
+     *  @return True if and only if this is a weighted node.
      */
     public boolean hasWeight() {
         return _weight != null;
@@ -114,7 +91,7 @@ public final class Node {
     }
 
     /** Return the weight that has been associated with this node.
-     *  @return the associated weight.
+     *  @return The associated weight.
      *  @exception IllegalStateException If this is an unweighted node.
      */
     public Object weight() {

@@ -40,7 +40,7 @@ import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// LabeledList
-/** A list of unique objects (elements) with a mapping from the elements
+/** A list of unique objects (<i>elements</i>) with a mapping from the elements
 into consecutive integer labels. The labels are consecutive
 integers between 0 and <em>N</em>-1 inclusive, where <em>N</em> is
 the total number of elements in the list. This list features <em>O</em>(1)
@@ -56,13 +56,15 @@ More generally, element labels can be used to maintain arbitrary
 <p> Element labels maintain their consistency (remain constant) during periods
 when no elements are removed from the list. When elements are removed, the
 labels assigned to the remaining elements may change (see {@link
-#remove(Object)} for details.
+#remove(Object)} for details).
 
 <p> Elements themselves must be non-null and distinct, as determined by the
 <code>equals</code> method.
 
-<p> This class supports all required operations of the list interface, except
-for the subList() operation, which results in an UnsupportedOperationException.
+<p> This class supports all required operations of the {@link java.util.List}
+interface, except
+for the {@link java.util.List#subList(int, int)} operation,
+which results in an UnsupportedOperationException.
 
 @author Shuvra S. Bhattacharyya
 @version $Id$
@@ -113,21 +115,21 @@ public class LabeledList implements List {
         }
     }
 
-    /*  Unsupported optional method of the list interface.
+    /** Unsupported optional method of the List interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public void add(int index, Object element) {
         throw new UnsupportedOperationException();
     }
 
-    /*  Unsupported optional method of the list interface.
+    /** Unsupported optional method of the List interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public boolean addAll(Collection collection) {
         throw new UnsupportedOperationException();
     }
 
-    /*  Unsupported optional method of the list interface.
+    /** Unsupported optional method of the List interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public boolean addAll(int index, Collection collection) {
@@ -145,10 +147,10 @@ public class LabeledList implements List {
         }
     }
 
-    /* Return true if the specified object is an element of this list.
-     * @param object The specified object.
-     * @return True if the specified object is an element of this list;
-     * return false if the object is null or is not in the list.
+    /** Return true if the specified object is an element of this list.
+     *  @param object The specified object.
+     *  @return True if the specified object is an element of this list;
+     *  false if the object is null or is not in the list.
      */
     public boolean contains(Object object) {
         if (object == null) {
@@ -160,9 +162,9 @@ public class LabeledList implements List {
 
     /** Returns true if this list contains all of the elements of the
      *  specified collection
-     * @param collection The specified collection.
-     * @return True if this list contains all of the elements of the
-     * specified collection.
+     *  @param collection The specified collection.
+     *  @return True if this list contains all of the elements of the
+     *  specified collection.
      */
     public boolean containsAll(Collection collection) {
         Iterator elements = collection.iterator();
@@ -205,7 +207,7 @@ public class LabeledList implements List {
      *  contain the element.
      *  @param element The element.
      *  @return The label of the element.
-     *  @see #label(Object).
+     *  @see #label(Object)
      */
     public int indexOf(Object element) {
         if (element == null) {
@@ -241,7 +243,7 @@ public class LabeledList implements List {
      *  @exception IllegalArgumentException If the specified element is not
      *  not in this list.
      *  @exception NullPointerException If the specified element is null.
-     *  @see #indexOf(Object).
+     *  @see #indexOf(Object)
      */
     public final int label(Object element) {
         if (element == null) {
@@ -275,7 +277,7 @@ public class LabeledList implements List {
         return Collections.unmodifiableList(_elements).listIterator();
     }
 
-    /** Return a list iterator over the elements in the list, starting
+    /** Return a list iterator over the elements in this list, starting
      *  at a specified position in the list. The iterator
      *  returned is safe in that it cannot be used to modify the list.
      *  @param index The specified starting position.
@@ -285,11 +287,11 @@ public class LabeledList implements List {
         return Collections.unmodifiableList(_elements).listIterator(index);
     }
 
-    /** Remove an element from the list.
+    /** Remove an element from this list.
      * Elements that have higher-valued
      * labels than this element will have their labels reduced in value
      * by one. All other element labels will remain unchanged.
-     * If the specified element is not in the list, leave the list
+     * If the specified element is not in the list, the list will be
      * unchanged.
      * @param element The element.
      * @return True If this list contained the element.
@@ -308,7 +310,7 @@ public class LabeledList implements List {
         return true;
     }
 
-    /** Remove and return an element with a specified label from the list.
+    /** Remove and return an element with a specified label from this list.
      * Elements that have higher-valued
      * labels than this element will have their labels reduced in value
      * by one. All other element labels will remain unchanged.
@@ -325,21 +327,21 @@ public class LabeledList implements List {
         return removed;
     }
 
-    /**  Unsupported optional method of the list interface.
+    /**  Unsupported optional method of the List interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public boolean removeAll(Collection c) {
         throw new UnsupportedOperationException();
     }
 
-    /**  Unsupported optional method of the list interface.
+    /**  Unsupported optional method of the List interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public boolean retainAll(Collection c) {
         throw new UnsupportedOperationException();
     }
 
-    /**  Unsupported optional method of the list interface.
+    /**  Unsupported optional method of the List interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public Object set(int index, Object element)  {
@@ -353,7 +355,7 @@ public class LabeledList implements List {
         return _elements.size();
     }
 
-    /**  Unsupported method of the list interface.
+    /**  Unsupported method of the List interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public List subList(int fromIndex, int toIndex) {
@@ -378,7 +380,10 @@ public class LabeledList implements List {
         return _elements.toArray(array);
     }
 
-    /** Return a string representation of this list. The string
+    /** Return a string representation of this list, given a delimeter
+     *  for separating successive elements, and a flag that indicates
+     *  whether element labels should be included in the string.
+     *  The string
      *  representation is constructed by the concatenating
      *  the string representations of the individual elements,
      *  according to the order of their labels. The element strings
@@ -386,7 +391,7 @@ public class LabeledList implements List {
      *  preceded by the associated labels.
      *  @param delimiter The delimiter that separates elements in the
      *  generated string.
-     *  @param includeLabels If this is <code>/true<code>, then precede each
+     *  @param includeLabels If this is true, then precede each
      *  element with its label (followed by a colon and space) in the
      *  generated string; otherwise, omit the labels.
      *  @return A string representation of this list.
@@ -402,7 +407,9 @@ public class LabeledList implements List {
         return result.toString();
     }
 
-    /** Return a string representation of this list. The string
+    /** Return a string representation of this list with elements separated
+     *  by new lines, and element labels omitted from the representation.
+     *  The string
      *  representation is constructed by the concatenating
      *  the string representations of the individual elements,
      *  according to the order of their labels. The element strings

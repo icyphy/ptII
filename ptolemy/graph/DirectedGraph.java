@@ -44,14 +44,16 @@ import ptolemy.kernel.util.InternalErrorException;
 //////////////////////////////////////////////////////////////////////////
 //// DirectedGraph
 /**
-A directed graph and some graph algorithms.
-<p>
+A directed graph.
 Some methods in this class have two versions, one that operates
-on graph nodes, and another that operations on
-node weights. The latter form is called the <em>weights version</em>.
+on graph nodes, and another that operates on
+node weights. The latter form is called the <i>weights version</i>.
 More specifically, the weights version of an operation takes individual
 node weights or arrays of weights as arguments, and, when applicable, returns
 individual weights or arrays of weights.
+
+<p> Multiple edges in a graph can be directed between the same pair of nodes.
+Thus, directed multigraphs are supported.
 
 @author Yuhong Xiong, Jie Liu, Paul Whitaker, Shuvra S. Bhattacharyya,
 Shahrooz Shahparnia
@@ -72,7 +74,7 @@ public class DirectedGraph extends Graph {
      *  for the specified number of nodes.  Memory management is more
      *  efficient with this constructor if the number of nodes is
      *  known.
-     *  @param nodeCount the integer specifying the number of nodes
+     *  @param nodeCount The integer specifying the number of nodes
      */
     public DirectedGraph(int nodeCount) {
         super(nodeCount);
@@ -84,8 +86,8 @@ public class DirectedGraph extends Graph {
      *  specified number of edges, and number of nodes.  Memory
      *  management is more efficient with this constructor if the
      *  number of nodes and edges is known.
-     *  @param nodeCount the number of nodes.
-     *  @param edgeCount the number of edges.
+     *  @param nodeCount The number of nodes.
+     *  @param edgeCount The number of edges.
      */
     public DirectedGraph(int nodeCount, int edgeCount) {
         super(nodeCount, edgeCount);
@@ -98,18 +100,18 @@ public class DirectedGraph extends Graph {
 
     /** Sort a collection of graph nodes in their topological order as long as
      *  no two of the given nodes are mutually reachable by each other.
-     *  This method use the transitive closure matrix. Since generally
+     *  This method uses the transitive closure matrix. Since generally
      *  the graph is checked for cyclicity before this method is
      *  called, the use of the transitive closure matrix should
      *  not add any overhead. A bubble sort is used for the internal
-     *  implementation, so the complexity is <em>O(V^2)</em>.
+     *  implementation, so the complexity is <i>O(V^2)</i>.
      *  @param nodes The collection of nodes to be sorted; each element is
      *  a {@link Node}.
      *  @return The nodes in their sorted order in the form of a collection;
      *  each element is a {@link Node}.
      *  @exception IllegalActionException If any two nodes are strongly
      *  connected.
-     *  @see #attemptTopologicalSort(Object[]).
+     *  @see #attemptTopologicalSort(Object[])
      */
     public Collection attemptTopologicalSort(Collection nodeCollection)
             throws IllegalActionException {
@@ -153,7 +155,7 @@ public class DirectedGraph extends Graph {
      *  @return The weights of the sorted nodes.
      *  @exception IllegalActionException If any two nodes are strongly
      *   connected.
-     *  @see #attemptTopologicalSort(Collection).
+     *  @see #attemptTopologicalSort(Collection)
      */
     public Object[] attemptTopologicalSort(Object[] weights) throws
             IllegalActionException {
@@ -271,8 +273,9 @@ public class DirectedGraph extends Graph {
         return result;
     }
 
-    /** Return the nodes that are in cycles. If there are multiple cycles,
-     *  the nodes in all the cycles will be returned (weights version).
+    /** Return the nodes that are in cycles (weights version).
+     *  If there are multiple cycles,
+     *  the nodes in all the cycles will be returned.
      *  @return An array of node weights that are in cycles; each element
      *  is an {@link Object}.
      */
@@ -283,8 +286,8 @@ public class DirectedGraph extends Graph {
     /** Test if an edge exists from one node to another.
      *  @param node1 The weight of the first node.
      *  @param node2 The weight of the second node.
-     *  @return true if the graph includes an edge from the first node to
-     *  the second node; return false otherwise.
+     *  @return True if the graph includes an edge from the first node to
+     *  the second node; false otherwise.
      */
     public boolean edgeExists(Node node1, Node node2) {
 
@@ -324,17 +327,16 @@ public class DirectedGraph extends Graph {
 
     /** Return the number of input edges of a specified node.
      *  @param node The node.
-     *  @return the number of input edges.
+     *  @return The number of input edges.
      */
     public int inputEdgeCount(Node node) {
         return _inputEdgeList(node).size();
     }
 
-    /** Return the collection of input edges for
-     *  a specified node.
+    /** Return the collection of input edges for a specified node.
      *
      *  @param node The specified node.
-     *  @return The collection of input edges; each element is a {@link Node}.
+     *  @return The collection of input edges; each element is an {@link Edge}.
      */
     public Collection inputEdges(Node node) {
         return Collections.unmodifiableList(_inputEdgeList(node));
@@ -343,11 +345,11 @@ public class DirectedGraph extends Graph {
     /** Test if this graph is acyclic (is a DAG).
      *  The implementation computes the transitive closure of the
      *  graph, if it is not already computed after the last change to
-     *  this graph.  So the first call to this method after graph change
-     *  may be slow, but all the subsequent calls returns in constant
+     *  this graph.  So the first call to this method after a graph change
+     *  may be slow, but all the subsequent calls return in constant
      *  time.
-     *  @return <code>true</code> if the the graph is acyclic, or
-     *  empty; <code>false</code> otherwise.
+     *  @return True if the the graph is acyclic, or
+     *  empty; false otherwise.
      */
     public boolean isAcyclic() {
         _computeTransitiveClosure();
@@ -365,15 +367,15 @@ public class DirectedGraph extends Graph {
     /** Return the collection of output edges for a specified node.
      *
      *  @param node The specified node.
-     *  @return The collection of output edges; each element is a {@link Node}.
+     *  @return The collection of output edges; each element is an {@link Edge}.
      */
     public Collection outputEdges(Node node) {
         return Collections.unmodifiableList(_outputEdgeList(node));
     }
 
     /** Return the collection of edges that make a node n2 a predecessor of a
-     *  node n1. In other words, return the set of edges directed from n2 to n1.
-     *  Each element of the returned collection is an instance of {@link Edge}.
+     *  node n1. In other words, return the collection of edges directed from
+     *  n2 to n1. Each element of the collection is an {@link Edge}.
      *  @param n1 The node n1.
      *  @param n2 The node n2.
      *  @return The collection of edges that make n2 a predecessor of n1.
@@ -395,11 +397,11 @@ public class DirectedGraph extends Graph {
 
     /** Return all of the predecessors of a given node in the form of a
      *  a collection. Each element of the collection is a Node.
-     *  A predecessor of a node X is a node that is the source
+     *  A <i>predecessor</i> of a node X is a node that is the source
      *  of an edge whose sink is X. All elements in the returned collection
      *  are unique nodes.
      *  @param node The node whose predecessors are to be returned.
-     *  @return the predecessors of the node.
+     *  @return The predecessors of the node.
      */
     public Collection predecessors(Node node) {
         Collection inputEdgeCollection = inputEdges(node);
@@ -437,15 +439,14 @@ public class DirectedGraph extends Graph {
         return result;
     }
 
-    /** Find all the nodes that can be reached from the specified node weight
-     *  (weights version).
-     *  The reachable nodes do not include the specific one unless
-     *  there is a loop from the specified node back to itself.
+    /** Find all the nodes that can be reached from any node that has the
+     *  specified node weight (weights version).
      *  @param node The specified node weight.
      *  @return An array of node weights reachable from the specified weight;
      *  each element is an {@link Object}.
      *  @exception IllegalArgumentException If the specified node weight is
      *  not a node weight in this graph.
+     *  @see #reachableNodes(Node)
      */
     public Object[] reachableNodes(Object weight) {
         return weightArray(reachableNodes(nodes(weight)));
@@ -455,9 +456,11 @@ public class DirectedGraph extends Graph {
      *  of nodes (weights version). The reachable nodes do not include a
      *  specified one unless there is a loop from the specified node back to
      *  itself.
-     *  @param An array of node weights; each element is an {@link Object}.
+     *  @param weights An array of node weights; each element is an
+     *  {@link Object}.
      *  @return The array of nodes that are reachable from
      *  the specified one; each element is an {@link Object}.
+     *  @see #reachableNodes(Node)
      */
     public Object[] reachableNodes(Object[] weights) {
         return weightArray(reachableNodes(nodes(Arrays.asList(weights))));
@@ -581,6 +584,14 @@ public class DirectedGraph extends Graph {
     }
 
     /** Return the number of self loop edges of a specified node.
+     *  A directed self loop edge (an edge whose source and sink nodes are
+     *  identical) is both an input edge and an output
+     *  edge of the incident node, but it is not duplicated in the set of
+     *  incident edges. Thus, the number of edges incident edges
+     *  to a node is equal to
+     *  <i>I + O - S</i>, where <i>I</i> is the number of input edges,
+     *  <i>O</i> is the number of output edges, and <i>S</i> is the number
+     *  of self loop edges.
      *  @param node The node.
      *  @return The number of self loop edges.
      */
@@ -596,6 +607,7 @@ public class DirectedGraph extends Graph {
     }
 
     /** Return the number of sink nodes in this graph.
+     *  A <i>sink node</i> is a node that has no output edges.
      *  @param node The node.
      *  @return The number of sink nodes.
      */
@@ -604,8 +616,9 @@ public class DirectedGraph extends Graph {
     }
 
     /** Return all the sink nodes in this graph in the form of a collection.
-     *  Each element in the returned iterator is an {@link Node}.
-     *  @return the sink nodes in this graph.
+     *  Each element in the collection is a {@link Node}.
+     *  @return The sink nodes in this graph.
+     *  @see #sinkNodeCount()
      */
     public Collection sinkNodes() {
         if (_sinkNodeListener.obsolete()) {
@@ -623,6 +636,7 @@ public class DirectedGraph extends Graph {
     }
 
     /** Return the number of source nodes in this graph.
+     *  A <i>source node</i> is a node that has no input edges.
      *  @param node The node.
      *  @return The number of source nodes.
      */
@@ -631,8 +645,9 @@ public class DirectedGraph extends Graph {
     }
 
     /** Return all the source nodes in this graph in the form of a collection.
-     *  Each element in the returned collection is an {@link Node}.
-     *  @return the source nodes in this graph.
+     *  Each element in the collection is a {@link Node}.
+     *  @return The source nodes in this graph.
+     *  @see #sourceNodeCount()
      */
     public Collection sourceNodes() {
         if (_sourceNodeListener.obsolete()) {
@@ -650,9 +665,9 @@ public class DirectedGraph extends Graph {
     }
 
     /** Return the collection of edges that make a node n2 a successor of a
-     *  node n1. In other words, return the set of edges directed from n1 to n2.
-     *  Each element of the returned collection is an instance
-     *  of {@link Edge}.
+     *  node n1. In other words, return the collection of edges directed
+     *  from n1 to n2.
+     *  Each element of the collection is an {@link Edge}.
      *  @param n1 The node n1.
      *  @param n2 The node n2.
      *  @return The collection of edges that make n2 a successor of n1.
@@ -664,12 +679,12 @@ public class DirectedGraph extends Graph {
     }
 
     /** Return all of the successors of a given node in the form of a
-     *  a collection. Each element of the collection is a Node.
-     *  A successor of a node X is a node that is the sink
+     *  a collection. Each element of the collection is a {@link Node}.
+     *  A <i>successor</i> of a node X is a node that is the sink
      *  of an edge whose source is X. All elements in the returned collection
      *  are unique nodes.
      *  @param node The node whose successors are to be returned.
-     *  @return the successors of the node.
+     *  @return The successors of the node.
      */
     public Collection successors(Node node) {
         Collection outputEdgeCollection = outputEdges(node);
@@ -692,8 +707,8 @@ public class DirectedGraph extends Graph {
      *  set the dimension of _transitiveClosure to be 0 by 0.
      *  The implementation uses Warshall's algorithm, which can be
      *  found in chapter 6 of "Discrete Mathematics and Its
-     *  Applications", 3rd Ed., by Kenneth H. Rosen.  The complexity
-     *  of this algorithm is O(|N|^3), where N for nodes.
+     *  Applications," 3rd Ed., by K. H. Rosen.  The complexity
+     *  of this algorithm is O(N^3), where N is the number of nodes.
      *  This method also checks if the graph is cyclic and stores
      *  the result in an internal flag.
      */
@@ -782,7 +797,7 @@ public class DirectedGraph extends Graph {
     }
 
     /** Register a new edge in the graph.
-     *  @param edge the new edge;
+     *  @param edge The new edge.
      */
     protected void _registerEdge(Edge edge) {
         super._registerEdge(edge);
@@ -790,7 +805,7 @@ public class DirectedGraph extends Graph {
     }
 
     /** Register a new node in the graph.
-     *  @param node the new node;
+     *  @param node The new node.
      */
     protected void _registerNode(Node node) {
         super._registerNode(node);
@@ -804,8 +819,9 @@ public class DirectedGraph extends Graph {
 
     /** The adjacency matrix representation of the transitive closure.
      *  The entry (i, j) is <code>true</code> if and only if there
-     *  exists a path from the node with ID i to the node with ID j.
-     *  This array is computed by <code>_computeTransitiveClosure</code>.
+     *  exists a path from the node with label <i>i</i> to the node with label
+     *  <i>j</i>.
+     *  This array is computed by {@link #_computeTransitiveClosure()}.
      *  After each graph change, that method should be called before
      *  this array is used. Otherwise, this array is not valid.
      */

@@ -24,7 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu) was green, description() method only makes it red
+@ProposedRating Red (cxh@eecs.berkeley.edu) was green, description() method
+only makes it red
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
@@ -73,7 +74,7 @@ LUB or GLB of some elements does not exist, an Exception is thrown.
 public class InequalitySolver {
 
     /** Construct an inequality solver.
-     *  @param cpo the CPO over which the inequalities are defined.
+     *  @param cpo The CPO over which the inequalities are defined.
      */
     public InequalitySolver(CPO cpo) {
         _cpo = cpo;
@@ -83,7 +84,7 @@ public class InequalitySolver {
     ////                         public methods                    ////
 
     /** Add an <code>Inequality</code> to the set of constraints.
-     *  @param ineq an <code>Inequality</code>
+     *  @param ineq An <code>Inequality</code>.
      */
     public void addInequality(Inequality ineq) {
 	// put ineq. to _Ilist
@@ -97,8 +98,8 @@ public class InequalitySolver {
     }
 
     /** Add a group of inequalities to the set of constraints.
-     *  @param inequalities an <code>Iterator</code> for instances of
-     *   <code>Inequality</code>.
+     *  @param inequalities An <code>Iterator</code> for instances of
+     *  <code>Inequality</code>.
      */
     public void addInequalities(Iterator inequalities) {
         while (inequalities.hasNext()) {
@@ -110,7 +111,7 @@ public class InequalitySolver {
      *  values are the bottom of the underlying CPO. If none of the
      *  variables have its current value set to the bottom, an empty
      *  <code>Iterator</code> is returned.
-     *  @return an Iterator of InequalityTerms
+     *  @return An Iterator of InequalityTerms
      *  @exception InvalidStateException If the underlying CPO does not
      *   have a bottom element.
      */
@@ -151,8 +152,8 @@ public class InequalitySolver {
 
     /** Solve the set of inequalities for the greatest solution.
      *  If the set of inequalities is definite (when solving for the greatest
-     *  solution, definite means that the lesser terms of all the
-     *  inequalities are either a constant of a single variable.),
+     *  solution, <i>definite</i> means that the lesser terms of all the
+     *  inequalities are either constants or single variables),
      *  this method can always determine satisfiability. In this case, if
      *  the set of inequalities is satisfiable, this method returns
      *  <code>true</code>, and the variables are set to the greatest solution.
@@ -171,8 +172,8 @@ public class InequalitySolver {
      *  variables are set to the greatest solution for the subset of
      *  inequalities whose lesser terms are a single variable.
      *  See the paper referred in the class document for details.
-     *  @return <code>true</code> if a solution for the inequalities is found,
-     *   <code>false</code> otherwise.
+     *  @return True if a solution for the inequalities is found,
+     *  false otherwise.
      */
     public boolean solveGreatest() {
 	return _solve(false);
@@ -180,8 +181,8 @@ public class InequalitySolver {
 
     /** Solve the set of inequalities for the least solution.
      *  If the set of inequalities is definite (when solving for the least
-     *  solution, definite means that the greater terms of all the
-     *  inequalities are either a constant of a single variable.),
+     *  solution, <i>definite</i> means that the greater terms of all the
+     *  inequalities are either constants or single variables),
      *  this method can always determine satisfiability. In this case, if
      *  the set of inequalities is satisfiable, this method returns
      *  <code>true</code>, and the variables are set to the least solution.
@@ -199,8 +200,8 @@ public class InequalitySolver {
      *  In any case, if this method returns <code>false</code>, the
      *  variables are set to the least solution for the subset of
      *  inequalities whose greater terms are a single variable.
-     *  See the paper referred in the class document for details.
-     *  @return <code>true</code> if a solution for the inequalities is found,
+     *  See the paper referred to in the class document for details.
+     *  @return True if a solution for the inequalities is found,
      *   <code>false</code> otherwise.
      */
     public boolean solveLeast() {
@@ -211,7 +212,7 @@ public class InequalitySolver {
      *  values are the top of the underlying CPO. If none of the
      *  variables have the current value set to the top, an empty
      *  <code>Iterator</code> is returned.
-     *  @return an Iterator of InequalityTerms
+     *  @return An Iterator of InequalityTerms
      *  @exception InvalidStateException If the underlying CPO does not
      *   have a top element.
      */
@@ -229,7 +230,7 @@ public class InequalitySolver {
      *  that are not satisfied with the current value of variables.
      *  If all the inequalities are satisfied, an empty
      *  <code>Iterator</code> is returned.
-     *  @return an Iterator of Inequalities
+     *  @return An Iterator of Inequalities
      */
     public Iterator unsatisfiedInequalities() {
 	LinkedList result = new LinkedList();
@@ -245,7 +246,7 @@ public class InequalitySolver {
 
     /** Return an <code>Iterator</code> of all the variables in the
      *  inequality constraints.
-     *  @return an Iterator of InequalityTerms
+     *  @return An Iterator of InequalityTerms
      */
     public Iterator variables() {
 	return _filterVariables(null);

@@ -28,27 +28,29 @@
 
 package ptolemy.graph;
 
-//////////////////////////////////////////////////////////////////////////
-//// Edge
+////////////////////////////////////////////////////////////////////////// //
+//Edge
 /**
-A weighted or unweighted edge for a directed or undirected graph.
-Edges are immutable, and should
-normally created only by classes of
-graphs that contain them. The connectivity of edges is specified by
-"source" nodes and "sink" nodes.  A directed edge is directed "from"
-its source node "to" its sink node.  For an undirected edge, the
-source node is simply the first node that was specified when the edge
-was created, and the sink node is the second node.  This convention
-allows undirected edges to later be converted in a consistent manner
+A weighted or unweighted edge for a directed or undirected graph.  The
+connectivity of edges is specified by <i>source</i> nodes and <i>sink</i>
+nodes.  A
+directed edge is directed <i>from</i> its source node <i>to</i> its sink node.
+For an
+undirected edge, the source node is simply the first node that was specified
+when the edge was created, and the sink node is the second node.  This
+convention allows undirected edges to later be converted in a consistent manner
 to directed edges, if desired.
 
 <p>On creation of an edge, an arbitrary object can be associated with the edge
-as the weight of the edge.  We say that an edge is <em>unweighted</em> if it
+as the weight of the edge.  We say that an edge is <i>unweighted</i> if it
 does not have an assigned weight. It is an error to attempt to access the
 weight of an unweighted edge.
 
 <p>Self-loop edges (edges whose source and sink nodes are identical)
 are allowed.
+
+<p> Edges are immutable: the source node, sink node, and weight of an edge
+cannot be changed.
 
 @author Shuvra S. Bhattacharyya
 @version $Id$
@@ -117,7 +119,8 @@ public final class Edge {
         return _source;
     }
 
-    /** Return a string representation of the edge. The string
+    /** Return a string representation of the edge, optionally including
+     *  information about the edge weight. The string
      *  representation is of the form
      *
      *  <p> <code>(source, sink, weight)</code>,
@@ -146,10 +149,10 @@ public final class Edge {
         return result;
     }
 
-    /** Return a string representation of the edge. Include information
+    /** Return a string representation of the edge, including information
      *  about the edge weight.
-     *  @see #toString(boolean)
      *  @return A string representation of the edge.
+     *  @see #toString(boolean)
      */
     public String toString() {
         return toString(true);

@@ -50,9 +50,9 @@ variable.
 public class Inequality {
 
     /** Construct an inequality.
-     *  @param lesserTerm an <code>InequalityTerm</code> that is less than or
+     *  @param lesserTerm An <code>InequalityTerm</code> that is less than or
      *   equal to the second argument.
-     *  @param greaterTerm an <code>InequalityTerm</code> that is greater than
+     *  @param greaterTerm An <code>InequalityTerm</code> that is greater than
      *   or equal to the first argument.
      *  @exception IllegalArgumentException If the <code>lesserTerm</code> or
      *   the <code>greaterTerm</code> is <code>null</code>.
@@ -75,14 +75,14 @@ public class Inequality {
     ////                         public methods                    ////
 
     /** Return the greater term of this inequality.
-     *  @return an <code>InequalityTerm</code>
+     *  @return An <code>InequalityTerm</code>
      */
     public InequalityTerm getGreaterTerm() {
         return _greaterTerm;
     }
 
     /** Return the lesser term of this inequality.
-     *  @return an <code>InequalityTerm</code>
+     *  @return An <code>InequalityTerm</code>
      */
     public InequalityTerm getLesserTerm() {
         return _lesserTerm;
@@ -90,9 +90,9 @@ public class Inequality {
 
     /** Test if this inequality is satisfied with the current value
      *  of variables.
-     *  @param cpo a CPO over which this inequality is defined.
-     *  @return <code>true</code> if this inequality is satisfied;
-     *   <code>false</code> otherwise.
+     *  @param cpo A CPO over which this inequality is defined.
+     *  @return True if this inequality is satisfied;
+     *  false otherwise.
      */
     public boolean isSatisfied(CPO cpo) {
         int result = cpo.compare(_lesserTerm.getValue(),
