@@ -793,8 +793,8 @@ public class PortConfigurerDialog
                 }
 
                 String _type = null;
-                UnitAttribute _typeAttribute =
-                    (UnitAttribute) actualPort.getAttribute("_type");
+                TypeAttribute _typeAttribute =
+                    (TypeAttribute) actualPort.getAttribute("_type");
                 if (_typeAttribute != null) {
                     _type = _typeAttribute.getExpression();
                 }
