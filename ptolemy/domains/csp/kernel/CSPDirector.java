@@ -434,7 +434,7 @@ public class CSPDirector extends ProcessDirector {
 		  if (Math.abs(val._resumeTime - nextTime) < tolerance) {
 		      _delayedActorList.removeFirst();
 		      val._actor._continue();
-		      System.out.println("\nresumeing actor at time: " +
+		      System.out.println("\nresuming actor at time: " +
 					 val._resumeTime);
 		      _actorsDelayed--;
 		  } else {
