@@ -41,7 +41,7 @@ import ptolemy.data.Token;
 /**
 A receiver for the Giotto domain.  FIXME: Description of how this works.
 
-@author  Christoph Meyer, Ben Horowitz, and Edward A. Lee
+@author  Christoph Meyer Kirsch and Edward A. Lee
 @version $Id$
 */
 public class GiottoReceiver extends AbstractReceiver {

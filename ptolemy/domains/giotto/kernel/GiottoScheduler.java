@@ -46,9 +46,45 @@ import java.util.ListIterator;
 //////////////////////////////////////////////////////////////////////////
 //// GiottoScheduler
 /**
+This class generates schedules for the actors of a CompositeActor
+according to the Giotto semantics.
+A schedule is represented by tree. Consider the following CompositeActor:
 
+              +-----------------------+
+              |           A           |
+              +-----------------------+
+              +-----------------------+
+              |           B           |
+              +-----------------------+
+              +---------+   +---------+
+              |    C    |   |    C    |
+              +---------+   +---------+
 
-@author Christoph Meyer
+There are three actors A, B, and C where C runs twice as often as A and B.
+The tree for this CompositeActor looks as follows:
+
+-> +-------+               +-------+
+   | | | ----------------->| | |nil|
+   +-|-----+               +-|-----+
+     |                       |
+     V                       V
+   +-------+  +-------+    +-------+  +-------+  +-------+  +-------+
+   | | | ---->| | |nil|    | | | ---->|nil| ---->| | | ---->|nil|nil|
+   +-|-----+  +-|-----+    +-|-----+  +-------+  +-|-----+  +-------+
+     |          |            |                     |
+     V          V            V                     V
+   +---+      +---+        +-------+             +-------+
+   | A |      | B |        | | |nil|             | | |nil|
+   +---+      +---+        +-|-----+             +-|-----+
+                             |                     |
+                             V                     V
+                           +---+                 +---+
+                           | C |                 | C |
+                           +---+                 +---+
+
+Note that repeated parts of the tree are shared, no deep cloning!
+
+@author Christoph Meyer Kirsch
 @version $Id$
 */
 
@@ -109,7 +145,7 @@ public class GiottoScheduler extends Scheduler {
 
 	/* Sort all actors according to their frequency.
 	   Small frequency value means earlier in the list.
-	   Keeps order of actors with same frequency value. */
+	   Sort keeps order of actors with same frequency value. */
 	Collections.sort(actorList, new GiottoActorComparator());
 
 	// Compute schedule
@@ -124,10 +160,12 @@ public class GiottoScheduler extends Scheduler {
 
 	    int frequency = GiottoActorComparator.getFrequency(actor);
 
+	    // Compute schedule represented by a tree.
 	    List scheduleList = _treeSchedule(actorList.listIterator(),
                     GiottoActorComparator._DEFAULT_GIOTTO_FREQUENCY,
                     frequency);
 
+	    // Return a shallow enumeration over the top list.
 	    return Collections.enumeration(scheduleList);
 	}
     }
@@ -138,11 +176,25 @@ public class GiottoScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Returns a schedule for a CompositeActor represented by a tree,
+     *  see top of file.
+     *
+     * @param iterator over all actors of CompositeActor.
+     * @param lastFrequency of the previous call to this method.
+     * @param frequency of the first actor in iterator.
+     * @return a shallow Enumeration of the scheduling tree.
+     * @exception NotSchedulableException If the CompositeActor is not
+     *  schedulable.
+     */
     private List _treeSchedule(ListIterator iterator,
             int lastFrequency, int frequency)
             throws NotSchedulableException {
-
+	// This list contains all actors with frequency 'frequency'.
 	List sameFrequencyList = new LinkedList();
+
+	// This list is actually a tree.
+	// It contains all 'sameFrequencyList' lists with strictly
+	// higher frequencies than 'frequency'.
 	List higherFrequencyList = null;
 
 	while (iterator.hasNext()) {
@@ -153,10 +205,14 @@ public class GiottoScheduler extends Scheduler {
 	    if (actorFrequency == frequency)
 		sameFrequencyList.add(actor);
 	    else if (actorFrequency > frequency) {
-		// Makes sure that current actor will be read again.
+		// We reached the first actor with a strictly higher frequency
+		// than all actors before. Prepare for recursive call.
 
+		// Makes sure that current actor will be read again.
 		Actor dummy = (Actor) (iterator.previous());
 
+		// Recursive call where 'lastFrequency' becomes current 'frequency'
+		// and 'frequency' becomes the frequency of the current actor.
 		higherFrequencyList = _treeSchedule(iterator, frequency, actorFrequency);
 
 		// Redundant break because recursive call
@@ -167,10 +223,11 @@ public class GiottoScheduler extends Scheduler {
 		throw new NotSchedulableException("Sorting frequencies failed!");
 	}
 
+	// This is actually a tree.
+	// It will be the result of this method.
 	List scheduleList = new LinkedList();
 
 	// Assumption: frequency >= lastFrequency
-
 	if ((frequency%lastFrequency) == 0) {
 	    int currentFrequency = frequency / lastFrequency;
 

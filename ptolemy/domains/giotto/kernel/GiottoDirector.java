@@ -62,7 +62,7 @@ FIXME: document this.
 @see ptolemy.domains.kernel.GiottoReceiver
 @see ptolemy.domains.kernel.GiottoScheduler
 
-@author  Christoph Meyer, Ben Horowitz, and Edward A. Lee
+@author  Christoph Meyer Kirsch and Edward A. Lee
 @version $Id$
 */
 public class GiottoDirector extends StaticSchedulingDirector {
@@ -280,14 +280,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
-	// FIXME: actor must become method argument.
-	Actor actor = null;
-
-	double currentTime = getCurrentTime();
-
-	int actorFrequency = GiottoActorComparator.getFrequency(actor);
-
-        return currentTime + (_period / actorFrequency);
+	return _nextIterationTime;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -344,6 +337,12 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 		while (sameFrequency.hasMoreElements()) {
 		    Actor actor = (Actor) sameFrequency.nextElement();
+
+		    double currentTime = getCurrentTime();
+
+		    int actorFrequency = GiottoActorComparator.getFrequency(actor);
+
+		    _nextIterationTime = currentTime + (_period / actorFrequency);
 
 		    if (_debugging)
 			_debug("Prefiring " + ((NamedObj)actor).getFullName());
@@ -458,6 +457,9 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
     // The current period in milliseconds.
     private double _period = _DEFAULT_GIOTTO_PERIOD;
+
+    // The time of the next iteration in milliseconds.
+    private double _nextIterationTime = 0.0;
 
     // Specify whether the director should wait for elapsed real time to
     // catch up with model time.
