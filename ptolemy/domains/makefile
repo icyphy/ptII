@@ -35,7 +35,7 @@ ME =		ptolemy/domains
 # PTCLASSALLJARS below
 # DT has to come after SDF, sorry.
 
-DIRS =		csp ct dde de fsm pn sdf dt giotto
+DIRS =		csp ct dde de fsm pn sdf dt giotto rtp
 
 # Root of Ptolemy II directory
 ROOT =		../..
