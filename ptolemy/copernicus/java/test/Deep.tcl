@@ -61,9 +61,9 @@ proc autoDeepCG {autoDirectory} {
 	    global PTII
 	    # defaultIterations 1000
 	    # statsOnly 0
-	    # speedComparison 1
+	    # speedComparison 0 
 	    set elapsedTime [time {sootCodeGeneration $PTII $file "Deep" \
-		1000 0 1}]
+		1000 0 0}]
 	    puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds"
 	    list {}
 	} {{}}
