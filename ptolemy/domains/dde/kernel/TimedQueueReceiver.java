@@ -203,6 +203,8 @@ public class TimedQueueReceiver {
      */
     public void put(Token token, double time) throws NoRoomException {
 	if( time < _lastTime && time != INACTIVE ) {
+	    System.out.println("Time in the past: " + time + 
+			       "\t_lastTime:" + _lastTime);
 	    IOPort port = (IOPort)getContainer(); 
 	    NamedObj actor = (NamedObj)port.getContainer(); 
 	    throw new IllegalArgumentException(actor.getName() + 
