@@ -65,14 +65,14 @@ shares a common minimum receive time with one or more additional receivers.
 <P>
 The receiver priorities are set using the method setRcvrPriorities() in 
 the following manner. All of the input receivers associated with a given 
-TimeKeeper are prioritized according to the inverse order in which they were
-connected in the model topology. I.e., if two input receivers (rA and rB)
-of an actor are connected such that receiver rA is connected before receiver
-rB, then rB will have a higher priority than rA.
+TimeKeeper are prioritized according to the inverse order in which they 
+were connected in the model topology. I.e., if two input receivers (rA 
+and rB) of an actor are connected such that receiver rA is connected 
+before receiver rB, then rB will have a higher priority than rA.
 <P>
-The above approach provides each receiver associated with a given TimeKeeper 
-with a unique priority, such that the set of receiver priorities of the
-associated TimeKeeper is totally ordered.
+The above approach provides each receiver associated with a given 
+TimeKeeper with a unique priority, such that the set of receiver 
+priorities of the associated TimeKeeper is totally ordered.
 <P>
 A TimeKeeper manages the ordering of receivers by keeping track of 
 its receivers and their corresponding receiver times and priorities.
@@ -98,7 +98,6 @@ public class TimeKeeper {
         _rcvrTimeList = new LinkedList();
 
         setRcvrPriorities(); 
-	// initializeRcvrList();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -113,32 +112,41 @@ public class TimeKeeper {
         return _currentTime;
     }
 
-    /** Return the active DDEReceiver with the oldest receiver time of 
-     *  all DDEReceivers contained in the actor that this TimeKeeper 
-     *  controls. An DDEReceiver is considered active if its receiver 
-     *  time is nonnegative. If all DDEReceivers of the managed actor 
-     *  are no longer active, then return the first DDEReceiver to become
-     *  inactive. 
-     * @return DDEReceiver Return the oldest active DDEReceiver managed 
-     *  by this TimeKeeper.
+    /** Return the delay time associated with this time keeper.
+     *  The delay time value is expected to be updated possibly
+     * @return double The delay time of this time keeper.
+     *  once per every token consumption of a given actor.
      */
-    public synchronized DDEReceiver getFirstRcvr() {
+    public synchronized double getDelayTime() { 
+	return _delayTime;
+    }
+
+    /** Return the active TimedQueueReceiver with the oldest receiver time 
+     *  of all receivers contained in the actor that this TimeKeeper 
+     *  controls. A TimedQueueReceiver is considered active if its receiver 
+     *  time is nonnegative. If all receivers of the managed actor are no 
+     *  longer active, then return the first receiver to become inactive. 
+     * @return TimedQueueReceiver The oldest active TimedQueueReceiver 
+     *  managed by this TimeKeeper.
+     */
+    public synchronized TimedQueueReceiver getFirstRcvr() {
 	if( _rcvrTimeList.size() == 0 ) {
 	    return null;
 	}
         RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
-	return (DDEReceiver)triple.getReceiver();
+	return triple.getReceiver();
     }
 
-    /** Return the RcvrTimeTriple of this time keeper's list such that
-     *  the returned triple contains the receiver with the highest 
-     *  priority given that it has the lowest nonnegative receiver 
-     *  time of all receivers managed by this TimeKeeper. Return null 
-     *  if this time keeper's list of receivers is empty.
-     * @return The TimedQueueReceiver with the highest priority and 
-     *  lowest nonnegative rcvrTime. If no receivers exist, return null.
+    /** Return the TimedQueueReceiver of this time keeper's list such that
+     *  the returned receiver has the highest priority given that it has 
+     *  the lowest nonnegative receiver time of all receivers managed by 
+     *  this TimeKeeper. Return null if this time keeper's list of receivers 
+     *  is empty.
+     * @return The TimedQueueReceiver with the highest priority 
+     *  and lowest nonnegative rcvrTime. If no receivers exist, 
+     *  return null.
      */
-    public synchronized  TimedQueueReceiver getHighestPriorityReceiver() {
+    public synchronized TimedQueueReceiver getHighestPriorityReceiver() {
         double time = -10.0;
 	double firstTime = -10.0;
         int maxPriority = 0;
@@ -212,6 +220,25 @@ public class TimeKeeper {
 	return true;
     }
 
+    /** Resort the receivers that are controlled by this TimeKeeper. Use
+     *  this method in cases where the receiver times may have been 
+     *  modified without being reordered with respect to the other 
+     *  receivers.
+     */
+    public synchronized void resortRcvrList() {
+	int listSize = _rcvrTimeList.size();
+	LinkedList oldRcvrTimeList = _rcvrTimeList;
+	_rcvrTimeList = new LinkedList();
+	RcvrTimeTriple triple;
+	TimedQueueReceiver rcvr;
+	for( int i = 0; i < listSize; i++ ) {
+	    triple = (RcvrTimeTriple)oldRcvrTimeList.at(i);
+	    rcvr = triple.getReceiver();
+	    // updateRcvrList(rcvr, rcvr.getRcvrTime(), rcvr.getPriority() );
+	    updateRcvrList(rcvr);
+	}
+    }
+
     /** Cause the actor managed by this time keeper to send a NullToken
      *  to all output channels that have a receiver time less than the
      *  current time of this time keeper. Associate a time stamp with each
@@ -233,21 +260,6 @@ public class TimeKeeper {
 		}
             }
         }
-    }
-
-    /** 
-     */
-    public synchronized void resortRcvrList() {
-	int listSize = _rcvrTimeList.size();
-	LinkedList oldRcvrTimeList = _rcvrTimeList;
-	_rcvrTimeList = new LinkedList();
-	RcvrTimeTriple triple;
-	TimedQueueReceiver rcvr;
-	for( int i = 0; i < listSize; i++ ) {
-	    triple = (RcvrTimeTriple)oldRcvrTimeList.at(i);
-	    rcvr = triple.getReceiver();
-	    updateRcvrList(rcvr, rcvr.getRcvrTime(), rcvr.getPriority() );
-	}
     }
 
     /** Set the current time of this TimeKeeper. If the specified
@@ -296,8 +308,8 @@ public class TimeKeeper {
         }
 
         //
-        // Now set the priorities of each port's receiver, set the receiving
-	// time keeper and initialize the rcvrList
+        // Now set the priorities of each port's receiver, set 
+	// the receiving time keeper and initialize the rcvrList.
         //
         int cnt = 0;
         int currentPriority = 0;
@@ -308,25 +320,20 @@ public class TimeKeeper {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
                     ((DDEReceiver)rcvrs[i][j]).setPriority(
 			    currentPriority);
+		    //
 		    // Is the following necessary?? 
 		    //
+		    /*
 		    updateRcvrList( (DDEReceiver)rcvrs[i][j], 
 			    _currentTime, currentPriority );
+		    */
+		    updateRcvrList( (DDEReceiver)rcvrs[i][j] );
 
                     currentPriority++;
                 }
             }
             cnt++;
         }
-    }
-
-    /** Return the delay time associated with this time keeper.
-     *  The delay time value is expected to be updated possibly
-     * @return double The delay time of this time keeper.
-     *  once per every token consumption of a given actor.
-     */
-    public synchronized double getDelayTime() { 
-	return _delayTime;
     }
 
     /** Set the delay time associated with this time keeper.
@@ -350,12 +357,19 @@ public class TimeKeeper {
      *  contained in the list, then the triple is removed and
      *  then added back to the list. The position of the triple
      *  is based on the triple's time value. 
-     * @param tqr The TimedQueueReceiver whose position is being updated.
+     * @param tqr The TimedQueueReceiver whose position is being 
+     *  updated.
      * @param time The time of the repositioned TimedQueueReceiver.
-     * @param priority The priority of the repositioned TimedQueueReceiver.
+     * @param priority The priority of the repositioned 
+     *  TimedQueueReceiver.
      */
+    /*
     public synchronized void updateRcvrList(TimedQueueReceiver tqr,
 	    double time, int priority ) {
+    */
+    public synchronized void updateRcvrList(TimedQueueReceiver tqr) {
+	double time = tqr.getRcvrTime(); 
+	int priority = tqr.getPriority(); 
 	RcvrTimeTriple triple = 
 	        new RcvrTimeTriple(tqr, time, priority);
 	_removeRcvrTriple( triple );
