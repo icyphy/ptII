@@ -52,13 +52,14 @@ EXTRA_SRCS =	$(JSRCS) \
 	basicHelp.htm \
 	copyright.htm \
 	demos.htm \
-	demosPtiny.htm \
 	vergilFsmEditorHelp.htm \
 	vergilGraphEditorHelp.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	$(DIRS) \
+	demosPtiny.htm
+
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
@@ -66,14 +67,19 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+all: jclass demosPtiny.htm
 	@echo "nothing need be done for make all in this directory"
 
-install: jclass
+install: all
 	@echo "nothing need be done for make install in this directory"
 
 depend:
 	@echo "no dependencies in this directory"
+
+# Generate a file that consists of only the text within
+# <!--vergilDoc--> ... <!--/vergilDoc--> blocks
+demosPtiny.htm: demos.htm
+	awk -f $(ROOT)/doc/javahtml.awk $< > $@  
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
