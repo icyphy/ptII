@@ -85,34 +85,23 @@ import java.util.Enumeration;
 /**
 A Petri net Actor
 
-<p>This is the basic unit of the hierarchical PetriNet component. It contains
-ports, places, transitions, and hierarchical petrinet components.
+<p> As defined in the PetriNetDirector.java, a PetriNetActor is a
+directed and weighted graph <i>G = (V, E) </i> containing three kinds
+of nodes: Places <i>p_i</i>, Transitions <i>t_i</i>, and PetriNetActors
+<i>PA_i</i>, i.e., <i> V = {p_i} union {t_i} union {PA_i} </i>,
+where each <i>PA_i</i> itself is again defined as a PetriNetActor.
+Each node of <i>V</i> is called a <i>component</i> of the
+PetriNetActor <i>G</i>.
 
-<p>The current version restricts the ports to be uniformly connected to
-Places or transitions in one direction. It is not allowed to have the
-ports to connect to places and transitions in the same input or output
-direction.
+A PetriNetActor is implemented as an extension of TypedCompositeActor.
+A Transition is also implemented as any TypedCompositeActor. The
+difference between these two different kinds of TypedCOmpositeActors
+is that the firing of a PetriNetActor is controlled by the top level
+container, while the firing of a Transition is controlled by the
+local director of the Transition, if there is one.
 
-<p>It is also assumed that a transition is connected to places and a place
-is connected to transitions eventually in the hierarchy.
-
-<p>However, the system does not check for such restrictions.
-
-The flat Peti Net model is defined as follows.
-<br>            place ----> transition ----> place
-<br>A hierarchical Petri Net model is defined as follows:
-<br>            place ----> transition ----> place
-<br>            place ----> (ports) ----> transition ---> (ports) ----> place
-
-<br>where (ports) means it could be 0 or any finite number of
-different directional ports, ---> means one or more marked or unmarked arcs.
-
-<p>In this current implementation, it is restricted that all the inputs/outputs
-to a port are either all places or all transitions plus possible ports.
-
-<p>Multiple arcs are allowed for each connection. Each arc is counted
-as default weight 1, unless otherwise specified.
-
+The current file contains two main methods: fire() and prefire().
+More details of PetriNetActor can be found in PetriNetDirector.java.
 
 @author  Yuke Wang
 @version $Id$ */
@@ -175,34 +164,30 @@ public class PetriNetActor extends TypedCompositeActor  {
         return newObject;
     }
 
-    /** This method calls the firing method of the director, which
-     *  fires one enabled transition of this PetriNetActor.
-     *  It is assumed that the top level of the hierarchy is a
-     *  PetiNetDirector.
-     *  @exception IllegalActionException If
-     *  fireHierarchicalPetriNet throws exception.
+    /** This method fires the PetriNetActor by calling the firing method
+     *  of the director. It is assumed that the top level of the hierarchy
+     *  is PetiNetDirector.
+     *  @exception IllegalActionException If director.fire() throws exception.
+     *
      *
      */
     public void fire() throws IllegalActionException {
-        Nameable container = getContainer();
-        _debug("PetriNetActor.fire, the actors is"
-                + container.getFullName() + "  " + getFullName());
-        TypedCompositeActor pn = (TypedCompositeActor) this;
-        PetriNetDirector director = (PetriNetDirector) getDirector();
 
-        director.fireHierarchicalPetriNet(pn);
+        System.out.println("PetriNetActor.fire, the actors is "
+                           + "  " + getFullName()  + " Container is "
+                           + getContainer().getFullName());
+
+
+        PetriNetDirector director = (PetriNetDirector) getDirector();
+        director.fire();
 
     }
 
-    /** If any of the components are Transitions and are testReady,
-     *  return true, otherwise return false.
+    /** This method tests whether the PetriNetActor contains any
+     *  enabled Transitions or not. If any of the components are
+     *  enabled Transitions, the method returns true,
+     *  otherwise returns false.
      *
-     *  Find all the transitions contained in the PetriNetActor.
-     *  the transitions can be deeply contained....
-     *  We will check all the deeply contained transitions and
-     *  see which one is ready to fire.
-     *  If there is one transition ready to fire, then the container
-     *  PetriNetActor is ready to fire.
      *  @exception IllegalActionException If testReadyTransition
      *  throws exception.
      *  @return true or false, a PetriNetActor is ready to fire or not.
@@ -217,9 +202,9 @@ public class PetriNetActor extends TypedCompositeActor  {
         while (components.hasNext()) {
             Nameable componentActor = (Nameable) components.next();
             if (componentActor instanceof TypedCompositeActor) {
-                TypedCompositeActor transitionComponent 
+                TypedCompositeActor transitionComponent
                                  = (TypedCompositeActor) componentActor;
-		if(director.testReadyTransition(transitionComponent)) {
+		if(director.isTransitionReady(transitionComponent)) {
                     return true;
                 }
             }
@@ -227,20 +212,9 @@ public class PetriNetActor extends TypedCompositeActor  {
         return false;
     }
 
- 
+
 }
 
-/*               LinkedList componentList = _findTransitions(pnActor);
-                Iterator components = componentList.iterator();
-                while (components.hasNext()) {
 
-                    Nameable component1 = (Nameable) components.next();
-                    if (component1 instanceof TypedCompositeActor) {
-                        TypedCompositeActor transitionComponent 
-                                 = (TypedCompositeActor) component1;
-		        if(_testReadyTransition(transitionComponent))
-                            readyComponentList.add(transitionComponent);
-                    }
-                }
 
-*/
+
