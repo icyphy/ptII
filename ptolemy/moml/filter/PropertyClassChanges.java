@@ -248,14 +248,36 @@ public class PropertyClassChanges implements MoMLFilter {
         _actorsWithPropertyClassChanges = new HashMap();
 
         // Expression
+        // This is a second generation change.
+        // Used to change it to a StringAttribute
         HashMap expressionClassChanges = new HashMap();
         // Key = property name, Value = new class name
         expressionClassChanges.put("expression",
-                "ptolemy.kernel.util.StringAttribute");
+                "ptolemy.data.expr.StringParameter");
 
         _actorsWithPropertyClassChanges
             .put("ptolemy.actor.lib.Expression",
                     expressionClassChanges);
+
+        // MathFunction
+        HashMap mathFunctionClassChanges = new HashMap();
+        // Key = property name, Value = new class name
+        mathFunctionClassChanges.put("function",
+                "ptolemy.data.expr.StringParameter");
+
+        _actorsWithPropertyClassChanges
+            .put("ptolemy.actor.lib.MathFunction",
+                    mathFunctionClassChanges);
+
+        // TrigFunction
+        HashMap trigFunctionClassChanges = new HashMap();
+        // Key = property name, Value = new class name
+        trigFunctionClassChanges.put("function",
+                "ptolemy.data.expr.StringParameter");
+
+        _actorsWithPropertyClassChanges
+            .put("ptolemy.actor.lib.TrigFunction",
+                    trigFunctionClassChanges);
 
         // MatlabExpression
         HashMap matlabClassChanges = new HashMap();
