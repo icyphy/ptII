@@ -1,0 +1,11 @@
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+	<entity name="fileTest" class="ptolemy.actor.TypedCompositeActor">
+    <doc>Sample model for C code generation</doc>
+	<property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
+    <entity name="ramp" class="ptolemy.actor.lib.Ramp"/>
+    <entity name="sink" class="ptolemy.actor.lib.FileWriter"/>
+    <relation name="r" class="ptolemy.actor.TypedIORelation"/>
+    <link port="ramp.output" relation="r"/>
+    <link port="sink.input" relation="r"/>
+</entity>
