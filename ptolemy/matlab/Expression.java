@@ -312,7 +312,8 @@ public class Expression extends TypedAtomicActor {
                 }
 
                 matlabEngine.put(engine, "time",
-                        new DoubleToken(director.getCurrentTime()));
+                        new DoubleToken(
+                            director.getCurrentTime().getTimeValue()));
                 matlabEngine.put(engine, "iteration",
                         _iteration.getToken());
                 Iterator inputPorts = inputPortList().iterator();
