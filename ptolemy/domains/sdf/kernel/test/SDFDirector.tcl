@@ -214,6 +214,10 @@ test SDFDirector-6.1 {Test wormhole activation} {
     $c1 connect [java::field $a2 output] $p2 R3
     $e0 connect $p2 [java::field $a3 input] R4
 
+#set debug ptolemy.domains.sdf.kernel.Debug
+#set debugger [java::new ptolemy.domains.sdf.kernel.DebugListener]
+#java::call $debug register $debugger
+
     set iter [$d3 getAttribute Iterations]
     $iter setToken [java::new {ptolemy.data.IntToken int} 6]
     $manager run

@@ -194,7 +194,12 @@ public class SDFScheduler extends Scheduler{
      */
     protected int _getTokenConsumptionRate(IOPort p) {
         Parameter param = (Parameter)p.getAttribute("Token Consumption Rate");
-        if(param == null) return 1;
+        if(param == null) {
+            if(p.isInput()) 
+                return 1;
+            else
+                return 0;
+        }
         return ((IntToken)param.getToken()).intValue();
     }
 
@@ -207,7 +212,8 @@ public class SDFScheduler extends Scheduler{
      */
     protected int _getTokenInitProduction(IOPort p) {
         Parameter param = (Parameter)p.getAttribute("Token Init Production");
-        if(param == null) return 0;
+        if(param == null) 
+            return 0;
         return ((IntToken)param.getToken()).intValue();
     }
 
@@ -220,7 +226,12 @@ public class SDFScheduler extends Scheduler{
      */
     protected int _getTokenProductionRate(IOPort p) {
         Parameter param = (Parameter)p.getAttribute("Token Production Rate");
-        if(param == null) return 1;
+        if(param == null) {
+            if(p.isOutput()) 
+                return 1;
+            else 
+                return 0;
+        }
         return ((IntToken)param.getToken()).intValue();
     }
 
@@ -767,7 +778,7 @@ public class SDFScheduler extends Scheduler{
             int consumptionrate = 0;
             int productionrate = 0;
             int initproduction = 0;
-            if(connectedports.hasMoreElements() == true) {
+            if(connectedports.hasMoreElements()) {
                 IOPort cport = (IOPort) connectedports.nextElement();
                 Entity cactor = (Entity) cport.getContainer();
                 consumptionrate = getFiringCount(cactor) * 
@@ -776,6 +787,10 @@ public class SDFScheduler extends Scheduler{
                     _getTokenProductionRate(cport);
                 initproduction = getFiringCount(cactor) * 
                     _getTokenInitProduction(cport);
+                Debug.println("CPort " + cport.getName());
+                Debug.println("consumptionrate = " + consumptionrate);
+                Debug.println("productionrate = " + productionrate);
+                Debug.println("initproduction = " + initproduction);
             }
             // All the ports connected to this port must have the same rate
             while(connectedports.hasMoreElements()) {
@@ -799,7 +814,7 @@ public class SDFScheduler extends Scheduler{
                         "!");
                 int initp = getFiringCount(cactor) * 
                     _getTokenInitProduction(cport);
-                if(initp != productionrate) throw new NotSchedulableException(
+                if(initp != initproduction) throw new NotSchedulableException(
                         port, cport, "Port " + cport.getName() + 
                         " has an aggregate init production of " + initp + 
                         " which does not match the computed aggregate " +
@@ -807,16 +822,25 @@ public class SDFScheduler extends Scheduler{
                         "!");
                 
             }
+            Debug.println("Port " + port.getName());
+            Debug.println("consumptionrate = " + consumptionrate);
+            Debug.println("productionrate = " + productionrate);
+            Debug.println("initproduction = " + initproduction);
+            // SDFAtomicActor blindly creates parameters with bad values.
+
+            /*
             if((consumptionrate == 0) && port.isInput()) {
                 throw new NotSchedulableException(port, "Port " +
                         port.getName() + " declares that it consumes tokens," +
                         " but has a consumption rate of 0");
             }
+
             if((consumptionrate != 0) && !port.isInput()) {
                 throw new NotSchedulableException(port, "Port " +
                         port.getName() + " has a nonzero consumption rate, " +
                         "but does not declare that it is an input port.");
             }
+            
             if(_getTokenConsumptionRate(port) != consumptionrate) {
                 throw new NotSchedulableException(port, "Port " +
                         port.getName() + " has a declared consumption rate " +
@@ -833,7 +857,7 @@ public class SDFScheduler extends Scheduler{
                 throw new NotSchedulableException(port, "Port " +
                         port.getName() + " has a nonzero production rate, " +
                         "but does not declare that it is an output port.");
-            }
+                        }
             if(_getTokenProductionRate(port) != productionrate) {
                 throw new NotSchedulableException(port, "Port " +
                         port.getName() + " has a declared production rate " +
@@ -856,6 +880,28 @@ public class SDFScheduler extends Scheduler{
             _setTokenConsumptionRate(container, port, consumptionrate);
             _setTokenProductionRate(container, port, productionrate);
             _setTokenInitProduction(container, port, initproduction);
+            */
+            try {
+        Parameter param;
+        param = (Parameter)port.getAttribute("Token Consumption Rate");
+        if(param == null) 
+            param = new Parameter(port,"Token Consumption Rate",
+                    new IntToken(1)); 
+        param.setToken(new IntToken(consumptionrate));
+        param = (Parameter)port.getAttribute("Token Production Rate");
+        if(param == null) 
+            param = new Parameter(port,"Token Production Rate",
+                    new IntToken(1)); 
+        param.setToken(new IntToken(productionrate));
+        param = (Parameter)port.getAttribute("Token Init Production");
+        if(param == null) 
+            param = new Parameter(port,"Token Init Production",
+                    new IntToken(1)); 
+        param.setToken(new IntToken(initproduction));
+            }
+            catch (Exception ex) {
+            }
+
         }            
     }
 
