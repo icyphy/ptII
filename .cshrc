@@ -12,8 +12,8 @@ if (! $?PTII ) setenv PTII $HOME
 # Try to set up for Java.
 if ( ! $?PTJAVA_HOME ) then
 	# Search the likely places
-	if ( ! $?PTJAVA_HOME && -d /vol/doppler/doppler2/tools/java/j2sdk1_3_1) then
-		setenv PTJAVA_HOME /vol/doppler/doppler2/tools/java/j2sdk1_3_1
+	if ( ! $?PTJAVA_HOME && -d /vol/doppler/doppler2/tools/java/j2sdk1.4.1) then
+		setenv PTJAVA_HOME /vol/doppler/doppler2/tools/java/j2sdk1.4.1
 	endif
 	if ( ! $?PTJAVA_HOME && -d /usr/local/java) then
 		setenv PTJAVA_HOME /usr/local/java
