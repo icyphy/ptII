@@ -59,37 +59,22 @@ import ptolemy.kernel.util.Workspace;
 //// HDFDirector
 
 /**
-   The heterochronous dataflow (HDF) domain implements the HDF model
-   of computation [1]. The HDF model of computation is a generalization
-   of synchronous dataflow (SDF). In SDF, the set of port rates of an
-   actor (called the type signature) are constant. In HDF, however,
-   an actor has a finite number of type signatures which are allowed
-   to change between iterations of the HDF schedule.
+   The heterochronous dataflow (HDF) domain is an optimization of the
+   SDFDirector and implements the HDF model of computation [1]. The HDF
+   model of computation is a generalization of synchronous dataflow (SDF).
+   In SDF, the set of port rates of an actor (called rate signatures) are
+   constant. In HDF, however, rate signatures are allowed to change between
+   iterations of the HDF schedule. Within each state, the HDF model behaves
+   like an SDF model.
    <p>
-   An HDF actor has an initial type signature when execution begins.
-   The balance equations can then be solved to find a
-   periodic schedule, as in SDF. Unlike SDF, an HDF actor is allowed to
-   change its type signature after an iteration of the schedule.
-   If a port rate change occurs, a new schedule
-   corresponding to the new ports rates must then be obtained.
+   This director is often used with HDFFSMDirector. The HDFFSMDirector
+   governs the execution of a modal model. Rate signature changes can
+   be modeled by state transitions of the modal model, in which each state
+   refinement infers a set of rate signatures.
    <p>
-   Since an HDF actor has a finite number of type signatures, it
-   may be useful to use an FSM to control when type signature changes
-   may occur. The HDFFSMDirector may be used to compose HDF with
-   hierarchical FSMs according to the *charts [1] semantics.
-   <p>
-   Since an HDF actor has a finite number of possible type
-   signatures, the number of possible schedules is also finite.
-   As a result of this finite state space, deadlock and bounded
-   channel lengths are decidable in HDF. In principle, all possible
-   schedules could be computed at compile time. However, the number
-   of schedules can be exponential in the number of actors, so this
-   may not be practical.
-   <p>
-   This director makes use of an HDF scheduler that computes the
-   schedules dynamically, and caches them. The size of the cache
-   can be set by the <i>scheduleCacheSize</i> parameter. The default
-   value of this parameter is 100.
+   This director recomputes the schedules dynamically, and caches them.
+   The size of the cache can be set by the <i>scheduleCacheSize</i>
+   parameter. The default value of this parameter is 100.
    <p>
    <b>References</b>
    <p>

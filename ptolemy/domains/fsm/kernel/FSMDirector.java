@@ -101,11 +101,8 @@ import ptolemy.kernel.util.Workspace;
    <p>
    At the end of one firing, the modal model transfer its outputs to outside
    domain. The mode controller does not change state during successive firings
-   in one iteration in order to support outside domains that iterate to a fixed
-   point.
-
-   FIXME: this is not content with what was imiplemented.... in particular,
-   refinements can not be postfired during firing!
+   in one iteration of the top level in order to support upper level domains
+   that iterate to a fixed point.
    <p>
    When the modal model is postfired, the chosen transition of the latest
    firing is committed. The commit actions contained by the transition are

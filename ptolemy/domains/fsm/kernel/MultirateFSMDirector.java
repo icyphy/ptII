@@ -1,4 +1,5 @@
-/* A MultirateFSMDirector governs the execution of a modal model.
+/* A MultirateFSM director that extends FSMDirector by supporting production
+   and consumption of multiple tokens on a port in a firing.
 
 Copyright (c) 1999-2005 The Regents of the University of California.
 All rights reserved.
@@ -56,12 +57,35 @@ import ptolemy.kernel.util.Workspace;
 
 
 /**
-   This class is very preliminary. The purpose of this director is to allow
-   modal models to consume 0 or more tokens for each input port and send 0
-   or more tokens to each output port.
-   FIXME: fix class comment.
-   FIXME: fix all the comments of the methods.
-   
+   This director extends FSMDirector by supporting production and consumption
+   of multiple tokens on a port in a firing. This director assumes that every
+   state has exactly one refinement, with one exception. A state may have no
+   refinement if upon being entered, it has an outgoing transition with a guard
+   that is true. This will be treated as a "transient state." Transient states
+   can have preemptive and non-preemptive transitions, while non-transient
+   states are assumed to have only non-preemptive transitions. When a modal
+   model reaches a transient state, it will progress through that state to the
+   next state until it encounters a state with a refinement. This procedure is
+   done in preinitialize() method and postfire() method. Hence each time when
+   a modal model is fired, the current state always has a state refinement.
+   <p>
+   The number of tokens to be transferred from an input port of the modal model
+   is at most the token consumption rate inferred by the inside port of the
+   current state refinement. The number of tokens to be transferred from an
+   output port of the state refinement is exactly the token production rate
+   inferred by the state refinement. If not enough tokens are available from
+   the refinement, an exception is thrown. The default token consumption and
+   production rate of a port is 1.
+   <p>
+   A state transition may happen in the postfire() method of this director.
+   When a state transition occurs, the modal model compares the port rates of
+   the destination state refinement with that of the current state refinement.
+   If the rates are different, then invalidate the schedule of the executive
+   director of the modal model. Update the port rates of the modal model to be
+   the port rates of the destination state refinement.
+   <p>
+   This director does not support transition refinements.
+
    @author Rachel Zhou
    @version $Id$
    @since Ptolemy II 5.0
@@ -76,7 +100,8 @@ public class MultirateFSMDirector extends FSMDirector {
      *  the workspace. Increment the version number of the workspace.
      */
     public MultirateFSMDirector() {
-        super();    }
+        super();    
+    }
 
     /** Construct a director in the  workspace with an empty name.
      *  The director is added to the list of objects in the workspace.
@@ -266,8 +291,8 @@ public class MultirateFSMDirector extends FSMDirector {
     /** If this method is called immediately after preinitialize(),
      *  initialize the mode controller and all the refinements.
      *  If this is a reinitialization, it typically means this
-     *  is a sub-layer HDFFSMDirector and a "reset" has been called
-     *  at the upper-level HDFFSMDirector. This method will then
+     *  is a sub-layer MultirateFSMDirector and a "reset" has been called
+     *  at the upper-level MultirateFSMDirector. This method will then
      *  reinitialize all the refinements in the sub-layer. Notify updates
      *  of port rates to the upper level director.
      *  @exception IllegalActionException If the refinement has no or more
@@ -292,9 +317,9 @@ public class MultirateFSMDirector extends FSMDirector {
                 _currentLocalReceiverMap = (Map) _localReceiverMaps.get(currentState);
             }
         } else {
-            // This is a sub-layer HDFFSMDirector.
+            // This is a sub-layer MultirateFSMDirector.
             // Reinitialize all the refinements in the sub-layer
-            // HDFFSMDirector and recompute the schedule.
+            // MultirateFSMDirector and recompute the schedule.
             super.initialize();
 
             // NOTE: The following will throw an exception if
@@ -315,12 +340,12 @@ public class MultirateFSMDirector extends FSMDirector {
 
             if (refinementDir instanceof MultirateFSMDirector) {
                 refinementDir.initialize();
-            } else if (refinementDir instanceof StaticSchedulingDirector) {
+            } /*else if (refinementDir instanceof StaticSchedulingDirector) {
                 // Recompute the schedule if the refinement domain has a schedule.
-                refinementDir.invalidateSchedule();
-                ((StaticSchedulingDirector) refinementDir).getScheduler()
-                    .getSchedule();
-            }
+                //refinementDir.invalidateSchedule();
+                //((StaticSchedulingDirector) refinementDir).getScheduler()
+                  //  .getSchedule();
+            }*/
 
             boolean inputRateChanged
                     = _updateInputTokenConsumptionRates(curRefinement);
@@ -395,8 +420,8 @@ public class MultirateFSMDirector extends FSMDirector {
         }
 
         // Even when the finite state machine remains in the
-        // current state, the schedule may change. This occurs
-        // in cases of multi-level HDFFSM model. The sup-mode
+        // current state, rate signatures may change. This occurs
+        // in cases of multi-level MultirateFSM model. The sup-mode
         // remains the same but the sub-mode has changed.
         boolean inputRateChanged = _updateInputTokenConsumptionRates(actor);
         boolean outputRateChanged = _updateOutputTokenProductionRates(actor);
@@ -531,7 +556,9 @@ public class MultirateFSMDirector extends FSMDirector {
                         // Since we only transfer number of tokens declared by
                         // the port rate, we should be safe to clear the receivers.
                         // Maybe we should move this step to prefire() or postfire(),
-                        // as in FSMDirector.
+                        // as in FSMDirector. But if the port consumes more tokens
+                        // than the refinement actually consumes (The SDF sneaky trick),
+                        // then perhaps we are in great trouble.
                         insideReceivers[i][j].clear();
 
                         /*
@@ -581,7 +608,7 @@ public class MultirateFSMDirector extends FSMDirector {
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "HDFFSMDirector: transferOutputs():"
+                    "MultirateFSMDirector: transferOutputs():"
                     + "  port argument is not an opaque output port.");
         }
 
@@ -686,20 +713,20 @@ public class MultirateFSMDirector extends FSMDirector {
         }
     }
 
-    /** If the container of this director does not have an HDFFSMDirector
+    /** If the container of this director does not have an MultirateFSMDirector
      *  as its executive director, then return the container. Otherwise,
      *  move up the hierarchy until we reach a container actor that does
-     *  not have an HDFFSMDirector director for its executive director,
+     *  not have an MultirateFSMDirector director for its executive director,
      *  and return that container.
      *  @exception IllegalActionException If the top-level director is an
-     *   HDFFSMDirector. This director is intended for use only inside some
-     *   other domain.
+     *   MultirateFSMDirector. This director is intended for use only inside
+     *   some other domain.
      */
     protected CompositeActor _getEnclosingDomainActor()
             throws IllegalActionException {
-        // Keep moving up towards the toplevel of the hierarchy until
-        // we find either an SDF or HDF executive director or we reach
-        // the toplevel composite actor.
+        // Keep moving up towards the toplevel of the hierarchy until 
+        // we find an executive director that is not an instance of
+        // MultirateFSMDirector or until we reach the toplevel composite actor.
         CompositeActor container = (CompositeActor) getContainer();
         Director director = container.getExecutiveDirector();
 
@@ -742,8 +769,8 @@ public class MultirateFSMDirector extends FSMDirector {
     }
     
     /** Extract the token consumption rates from the input ports of the current
-     *  refinement and update the rates of the input ports of the HDF opaque
-     *  composite actor containing the refinement.
+     *  refinement and update the rates of the input ports of the modal model
+     *  containing the refinement.
      *  @param actor The current refinement.
      *  @return True if any input token consumption rate is changed from its
      *   previous value.
@@ -802,7 +829,7 @@ public class MultirateFSMDirector extends FSMDirector {
 
     /** Extract the token production rates from the output ports of the current
      *  refinement and update the production and initial production rates of the
-     *  output ports of the HDF opaque composite actor containing the refinment.
+     *  output ports of the modal model containing the refinment.
      *  @param actor The current refinement.
      *  @return True if any of the output token production rate is changed from
      *   its previous value.

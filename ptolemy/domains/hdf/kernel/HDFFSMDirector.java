@@ -1,5 +1,5 @@
-/* A HDFFSMDirector governs the execution of the finite state
-   machine in heterochronous dataflow model.
+/* An HDFFSM director extends MultirateFSMDirector by restricting that state
+   transitions could only occur on each global iteration.
 
    Copyright (c) 1999-2005 The Regents of the University of California.
    All rights reserved.
@@ -49,66 +49,18 @@ import ptolemy.kernel.util.Workspace;
 //// HDFFSMDirector
 
 /**
-   This director extends MultirateFSMDirector by supporting production and
-   consumption of multiple tokens on a port in a firing and by restricting
-   that state transitions could only occur on each global iteration.
-   
-   FIXME: Refactor into two directors, with the base class
-   MultirateFSMDirector supporting multirate.
-   FIXME: fix all the comments of the method.
-
-   An HDFFSMDirector governs the execution of a finite state machine
-   (FSM) in a heterochronous dataflow (HDF) or synchronous dataflow
-   (SDF) model according to the *charts [1] semantics. *charts is a
-   family of models of computation that specifies an operational
-   semantics for composing hierarchical FSMs with various concurrency
-   models.
+   This director extends MultirateFSMDirector by restricting that state
+   transitions could only occur between global iterations.
+   The choice and commitment of the transition is deferred by sending
+   a change request to the manager.
    <p>
-   This director is used with a modal model that consumes and produces
-   any number of tokens on its ports. The number of tokens consumed
-   and produced is determined by the refinement of the current state.
-   FIXME: Figure out what it actually does and what it should do.
-
-   The subset of *charts that this class supports is HDF inside FSM
-   inside HDF, SDF inside FSM inside HDF, and SDF inside FSM inside SDF.
-   This class must be used as the director of an FSM or ModalModel
-   when the FSM refines
-   an HDF or SDF composite actor, unless all the ports rates are always 1,
-   in which case, the base class FSMDirector can be used. This director
-   can also be used in an FSM or ModalModel in DDF.
-   <p>
-   This director assumes that every state has exactly one refinement, with one
-   exception. A state may have no refinement if upon being entered, it has
-   an outgoing transition with a guard that is true. This will be treated as a
-   "transient state," in that the FSM will progress through that state
-   to the next state until it encounters a state with a refinement.
-   <p>
-   <b>Usage</b>
-   <p>
-   Hierarchical compositions of HDF with FSMs can be quite complex to
-   represent textually, even for simple models. It is therefore
-   recommended that a graphical model editor like Vergil be used to
-   construct the model.
-   <p>
-   The executive director must be HDF, SDF, or HDFFSMDirector.
-   Otherwise an exception will occur. An HDF or SDF composite actor that
-   refines to an FSM will use this class as the FSM's local director.
-   All states in the FSM must refine to either another FSM, an HDF model
-   or a SDF model. That is, all refinement actors must be opaque and must
-   externally have HDF or SDF semantics. There is no constraint on
-   the number of levels in the hierarchy.
-   <p>
-   To use this director, create a ModalModel and specify this director
-   as its director.  Then look inside to populate the controller
-   with states. Create one TypedComposite actor as a refinement
-   for each state in the FSM.
-   <p>
-   You must explicitly specify the initial state of the controller FSM.
-   The guard expression on each transition is evaluated only after a
-   "Type B firing" [1], which is the last firing of the HDF actor
-   in the current global iteration of the current HDF schedule. A state
-   transition will occur if the guard expression evaluates to true
-   after a "Type B firing."
+   An HDFFSMDirector is often used in heterochronous dataflow (HDF) models.
+   The HDF model of computation is a generalization of synchronous dataflow
+   (SDF). In SDF, the set of port rates of an actor (called the rate
+   signatures) are constant. In HDF, however, rate signatures are allowed
+   to change between iterations of the HDF schedule. Rate signature changes
+   can be modeled by state transitions of a modal model, in which each state
+   refinement infers a set of rate signatures.
    <p>
    <b>References</b>
    <p>
@@ -124,6 +76,7 @@ import ptolemy.kernel.util.Workspace;
    @version $Id$
    @Pt.ProposedRating Red (zhouye)
    @Pt.AcceptedRating Red (cxh)
+   @see MultirateFSMDirector
    @see HDFDirector
 */
 public class HDFFSMDirector extends MultirateFSMDirector {
