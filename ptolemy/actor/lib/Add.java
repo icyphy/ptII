@@ -47,7 +47,8 @@ The types on the ports are undeclared and will be resolved by
 the type resolution mechanism.<p>
 
 This adder is not strict. That is, it does not require all the input
-channels to have a token upon firing.
+channels to have a token upon firing. It will add up the available
+tokens at the input and ignore the channels that do not have tokens.
 
 @author Yuhong Xiong
 @version $Id$
@@ -68,10 +69,16 @@ public class Add extends TypedAtomicActor {
     public Add(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	input = new TypedIOPort(this, "Input", true, false);
+	input = new TypedIOPort(this, "input", true, false);
 	input.setMultiport(true);
-	output = new TypedIOPort(this, "Output", false, true);
+	output = new TypedIOPort(this, "output", false, true);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public  variables                 ////
+
+    public TypedIOPort input = null;
+    public TypedIOPort output = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -84,14 +91,10 @@ public class Add extends TypedAtomicActor {
     public Object clone(Workspace ws) {
         try {
             Add newobj = (Add)super.clone(ws);
-            newobj.input = new TypedIOPort(this, "input", true, false);
+            newobj.input = (TypedIOPort)newobj.getPort("input");
             newobj.input.setMultiport(true);
-            newobj.output = new TypedIOPort(this, "output", false, true);
+            newobj.output = (TypedIOPort)newobj.getPort("output");
             return newobj;
-        } catch (KernelException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Internal error: " + ex.getMessage());
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
             throw new InternalErrorException(
@@ -137,11 +140,5 @@ public class Add extends TypedAtomicActor {
 
 	return result.elements();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public  variables                 ////
-
-    public TypedIOPort input = null;
-    public TypedIOPort output = null;
 }
 
