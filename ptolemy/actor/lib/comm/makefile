@@ -56,6 +56,7 @@ JSRCS = \
         HammingDecoder.java \
         Scrambler.java \
 	Slicer.java \
+	TrellisDecoder.java \
         ViterbiDecoder.java
 
 OTHER_FILES_TO_BE_JARED = \
