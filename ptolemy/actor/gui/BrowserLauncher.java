@@ -442,16 +442,18 @@ public class BrowserLauncher {
     /**
      * Called by a static initializer to load any classes, fields, and
      * methods required at runtime to locate the user's web browser.
-     * @return <code>true</code> if all intialization succeeded
+     * @return <code>true</code> if all initialization succeeded
      * <code>false</code> if any portion of the initialization failed
      */
     private static boolean loadClasses() {
 	switch (jvm) {
 	case MRJ_2_0:
 	    try {
-		Class aeTargetClass = Class.forName("com.apple.MacOS.AETarget");
+		Class aeTargetClass =
+                    Class.forName("com.apple.MacOS.AETarget");
 		Class osUtilsClass = Class.forName("com.apple.MacOS.OSUtils");
-		Class appleEventClass = Class.forName("com.apple.MacOS.AppleEvent");
+		Class appleEventClass =
+                    Class.forName("com.apple.MacOS.AppleEvent");
 		Class aeClass = Class.forName("com.apple.MacOS.ae");
 		aeDescClass = Class.forName("com.apple.MacOS.AEDesc");
 
