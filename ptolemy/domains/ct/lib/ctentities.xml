@@ -1,9 +1,12 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model SYSTEM "../../../moml/moml.dtd">
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
-<class name="ct" extends="ptolemy.actor.TypedCompositeActor">
-<doc>CT actors</doc>
-
+<entity name="continuous time" class="ptolemy.moml.TypedActorLibrary">
+  <doc>Continuous-time actors</doc>
+  <configure>
+    <?moml
+      <group>
 <entity name="CTButtonEvent" class="ptolemy.domains.ct.lib.CTButtonEvent">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
@@ -51,5 +54,7 @@
 </rendition>
 </entity>
 
-</class>
-
+      </group>
+    ?>
+  </configure>
+</entity>

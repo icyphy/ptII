@@ -6,14 +6,20 @@
   <configure>
     <?moml
       <group>
-        <input source="../../actor/lib/genericentities.xml"/>
+        <input source="../../actor/lib/sources.xml"/>
+        <input source="../../actor/lib/sinks.xml"/>
+        <input source="../../actor/lib/math.xml"/>
+        <input source="../../actor/lib/flowcontrol.xml"/>
+        <input source="../../actor/lib/conversions/conversions.xml"/>
+        <input source="../../actor/lib/signalprocessing.xml"/>
         <input source="../../domains/sdf/lib/sdfentities.xml"/>
-        <input source="../../domains/sdf/lib/vq/sdfvqentities.xml"/>
         <input source="../../domains/ct/lib/ctentities.xml"/>
         <input source="../../domains/de/lib/deentities.xml"/>
+<!--
         <input source="../../domains/fsm/lib/fsmentities.xml"/>
         <input source="../../apps/lego/legoentities.xml"/>
         <input source="../../apps/agilent/agilententities.xml"/>
+-->
       </group>
     ?>
   </configure>

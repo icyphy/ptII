@@ -1,0 +1,25 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="audio" class="ptolemy.moml.TypedActorLibrary">
+  <doc>Audio actors</doc>
+  <configure>
+    <?moml
+      <group>
+
+<entity name="AudioSource" class="ptolemy.domains.sdf.lib.javasound.AudioSource">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.source</configure>
+</rendition>
+</entity>
+
+<entity name="AudioSink" class="ptolemy.domains.sdf.lib.javasound.AudioSink">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.sink</configure>
+</rendition>
+</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>

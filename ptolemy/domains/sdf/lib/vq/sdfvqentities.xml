@@ -1,8 +1,12 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model SYSTEM "../../../../moml/moml.dtd">
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
-<class name="sdfvq" extends="ptolemy.actor.TypedCompositeActor">
-<doc>SDF actors</doc>
+<entity name="image processing" class="ptolemy.moml.TypedActorLibrary">
+  <doc>Image processing actors</doc>
+  <configure>
+    <?moml
+      <group>
 
 <entity name="HTVQEncode" class="ptolemy.domains.sdf.lib.vq.HTVQEncode">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
@@ -52,5 +56,7 @@
 </rendition>
 </entity>
 
-</class>
-
+      </group>
+    ?>
+  </configure>
+</entity>

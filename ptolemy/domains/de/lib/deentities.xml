@@ -1,8 +1,12 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model SYSTEM "../../../moml/moml.dtd">
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 
-<class name="de" extends="ptolemy.actor.TypedCompositeActor">
-<doc>DE actors</doc>
+<entity name="discrete event" class="ptolemy.moml.TypedActorLibrary">
+  <doc>Discrete-event actors</doc>
+  <configure>
+    <?moml
+      <group>
 
 <entity name="Delay" class="ptolemy.domains.de.lib.Delay">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
@@ -18,7 +22,7 @@
 
 <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.integral</configure>
+<configure>generic.transformer</configure>
 </rendition>
 </entity>
 
@@ -40,5 +44,7 @@
 </rendition>
 </entity>
 
-</class>
-
+      </group>
+    ?>
+  </configure>
+</entity>

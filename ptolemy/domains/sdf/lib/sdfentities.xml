@@ -1,108 +1,20 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model SYSTEM "../../../moml/moml.dtd">
-
-<class name="sdf" extends="ptolemy.actor.TypedCompositeActor">
-<doc>SDF actors</doc>
-
-<entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
-</entity>
-
-<entity name="BitsToInt" class="ptolemy.domains.sdf.lib.BitsToInt">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
-</entity>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="sdf" class="ptolemy.moml.TypedActorLibrary">
+  <doc>Synchronous dataflow actors</doc>
+  <configure>
+    <?moml
+      <group>
 
 <entity name="Delay" class="ptolemy.domains.sdf.lib.Delay">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
-<doc>The sdf delay actor</doc>
+<doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
 </entity>
 
-<entity name="FIR" class="ptolemy.domains.sdf.lib.FIR">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
-<doc>FIR filter</doc>
+      </group>
+    ?>
+  </configure>
 </entity>
-
-<entity name="IntToBits" class="ptolemy.domains.sdf.lib.IntToBits">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
-</entity>
-
-<entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
-</entity>
-
-<entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
-</entity>
-
-<entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
-</entity>
-
-<entity name="SDFSine" class="ptolemy.domains.sdf.lib.SDFSine">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
-</entity>
-
-<entity name="SineFM" class="ptolemy.domains.sdf.lib.SineFM">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
-</entity>
-
-<entity name="SDFMultiply" class="ptolemy.domains.sdf.lib.SDFMultiply">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
-</entity>
-
-<entity name="SDFAdd" class="ptolemy.domains.sdf.lib.SDFAdd">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
-</entity>
-
-<entity name="SDFRamp" class="ptolemy.domains.sdf.lib.SDFRamp">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
-</entity>
-
-<entity name="SDFConst" class="ptolemy.domains.sdf.lib.SDFConst">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
-</entity>
-
-<!--
-<entity name="AudioSource" class="ptolemy.domains.sdf.lib.javasound.AudioSource">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.source</configure>
-</rendition>
-</entity>
-
-<entity name="AudioSink" class="ptolemy.domains.sdf.lib.javasound.AudioSink">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.sink</configure>
-</rendition>
-</entity>
--->
-
-</class>
-
