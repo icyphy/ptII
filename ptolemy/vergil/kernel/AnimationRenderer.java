@@ -128,11 +128,13 @@ public class AnimationRenderer implements SelectionRenderer {
                         if ( !_decorators.containsKey(figure)) {
                             return;
                         }
-                        // Rather than just get the parent of the figure, we must
-                        // get the decorator out of the hashtable, since other
-                        // wrappers may have been inserted between the figure and
+                        // Rather than just get the parent of the
+                        // figure, we must get the decorator out of
+                        // the hashtable, since other wrappers may
+                        // have been inserted between the figure and
                         // its decorator
-                        FigureDecorator d = (FigureDecorator)_decorators.get(figure);
+                        FigureDecorator d = (FigureDecorator)
+                            _decorators.get(figure);
                         if (d.getParent() != null) {
                             figure.repaint();
                             ((FigureContainer) d.getParent()).undecorate(d);
