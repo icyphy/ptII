@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/lib
 
-DIRS = 		conversions test 
+DIRS = 		conversions test logic
 
 # Root of the Java directory
 ROOT =		../../..
@@ -85,7 +85,15 @@ JSRCS = \
 	VariableClock.java \
 	Writer.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	'AbsoluteValue$$1.class' \
+	'AbsoluteValue$$FunctionTerm.class' \
+	genericentities.xml \
+	genericicons.xml \
+	modulation.xml \
+	sinks.xml \
+	sources.xml \
+	transformers.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
