@@ -182,11 +182,18 @@ public class PtParser {
         ASTPtRootNode rootNode;
         try {
             // Parse the expression to obtain the parse tree
+            // start() can generate a TokenMgrError if we parse a "\0"
             rootNode = start();
-            if (debug) rootNode.displayParseTree(" ");
-        } catch (ParseException x) {
+            if (debug) {
+                rootNode.displayParseTree(" ");
+            }
+        } catch (TokenMgrError ex) {
+            throw new IllegalActionException(null, ex,
+                    "Error parsing expression \""
+                    + stringIn + "\"");
+        } catch (ParseException ex2) {
             throw new IllegalActionException("Error parsing expression \""
-                    + stringIn + "\":\n" + x.getMessage());
+                    + stringIn + "\":\n" + ex2.getMessage());
         }
         ASTPtRootNode primary = (ASTPtRootNode)rootNode.jjtGetChild(0);
         primary.jjtSetParent(null);
@@ -211,6 +218,10 @@ public class PtParser {
             // Parse the expression to obtain the parse tree
             rootNode = startSimpleAssignment();
             if (debug) rootNode.displayParseTree(" ");
+        } catch (TokenMgrError ex) {
+            throw new IllegalActionException(null, ex,
+                    "Error parsing expression \""
+                    + stringIn + "\"");
         } catch (ParseException x) {
             throw new IllegalActionException("Error parsing expression \""
                     + stringIn + "\":\n" + x.getMessage());
@@ -238,8 +249,15 @@ public class PtParser {
         try {
             // Parse the expression to obtain the parse tree
             token_source.SwitchTo(StringMode);
+            // startString() can generate a TokenMgrError
             rootNode = startString();
-            if (debug) rootNode.displayParseTree(" ");
+            if (debug) {
+                rootNode.displayParseTree(" ");
+            }
+        } catch (TokenMgrError ex) {
+            throw new IllegalActionException(null, ex,
+                    "Error parsing expression \""
+                    + stringIn + "\"");
         } catch (ParseException x) {
             throw new IllegalActionException("Error parsing string \""
                     + stringIn + "\":\n" + x.getMessage());
@@ -269,6 +287,10 @@ public class PtParser {
         try {
             // Parse the expression to obtain the parse tree.
             map = startAssignmentList();
+        } catch (TokenMgrError ex) {
+            throw new IllegalActionException(null, ex,
+                    "Error parsing expression \""
+                    + stringIn + "\"");
         } catch (ParseException x) {
             throw new IllegalActionException("Error parsing expression \""
                     + stringIn + "\":\n" + x.getMessage());
