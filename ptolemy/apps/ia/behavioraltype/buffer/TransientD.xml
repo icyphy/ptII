@@ -1,0 +1,47 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="TransientD" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, -16, 815, 466}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 350]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 175.0}">
+    </property>
+    <property name="a" class="ptolemy.data.expr.Parameter">
+    </property>
+    <entity name="0t_0" class="ptolemy.domains.fsm.kernel.State">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 140.0">
+        </property>
+        <property name="_centerName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </entity>
+    <entity name="1_1" class="ptolemy.domains.fsm.kernel.State">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 140.0">
+        </property>
+        <property name="_centerName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="a=true">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.004334564778666394">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0012384392443460623">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="a;">
+        </property>
+    </relation>
+    <link port="0t_0.outgoingPort" relation="relation"/>
+    <link port="1_1.incomingPort" relation="relation"/>
+</entity>
