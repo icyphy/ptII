@@ -62,7 +62,7 @@ public class WatchDog {
         TimerTask doTimeToDie = new TimerTask() {
                 public void run() {
                     try {
-                        System.err.println("*** util.test.WatchDog went "
+                        System.err.println("*** util.testsuite.WatchDog went "
                                 + "off after " + timeToDie + "ms.");
 
                         // Get the root ThreadGroup
@@ -90,14 +90,17 @@ public class WatchDog {
                         System.err.println(e);
                     } finally {
                         System.out.println("util.testsuite.WatchDog went off");
-                        System.out.println("The string below is so that the "
-                                + "nightly build will notice");
-                        System.out.println("Failed: 666  Total Tests: 0 "
+                        watchDogWentOff = true;
+                        if (_exitOnTimeOut) {
+                            System.out.println("The string below is so that "
+                                + "the nightly build will notice");
+                            System.out.println("Failed: 666  Total Tests: 0 "
                                 + "((Passed: 0, Newly Passed: 0)  "
                                 + "Known Failed: 0) "
                                 + "util.testsuite.WatchDog went off");
-                        // Do not pass go, do not collect $200
-                        System.exit(4);
+                            // Do not pass go, do not collect $200
+                            System.exit(4);
+                        }
                     }
                 }
             };
@@ -121,6 +124,23 @@ public class WatchDog {
         }
     }
 
+
+    /** Determine whether the JVM will exit when the time interval
+     *  has passed.  This method is used for testing this class.
+     */
+    public void setExitOnTimeOut(boolean exitOnTimeOut) {
+        _exitOnTimeOut = exitOnTimeOut;
+    }
+
+    /** Set to true if the watch time timer interval has passed.
+     *  Used primarily for testing.
+     */
+    public boolean watchDogWentOff = false;
+
+
     private Timer _timer = null;
+
+    // If true, then exit if the interval passes
+    private boolean _exitOnTimeOut = true;
 }
 
