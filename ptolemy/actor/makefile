@@ -67,7 +67,7 @@ JSRCS = \
 	AtomicActor.java \
 	CalendarQueue.java \
 	CQLink.java \
-	CQComparator.java
+	CQComparator.java \
 	CompositeActor.java \
 	DataComputingInit.java \
 	Director.java \
