@@ -929,7 +929,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     ////                         protected variables               ////
 
     /** A boolean value indicating whether the current iteration is the first
-     *  iteration of a simulation.
+     *  iteration after a breakpoint in a simulation.
      */
     protected boolean _firstIteration = false;
 

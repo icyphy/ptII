@@ -153,77 +153,102 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
         Transition transition;
 
-        //////////////////////////////////////////////////////////////////////
-        // Handle preemptive transitions
-        
-        // Only EXECUTE enabled transitions during a discrete-phase execution.
-        // Check enabled transitions at the end of a continuous phase execution 
-        // where the accuracy of the current step size is checked.
-        if ((getExecutionPhase() ==
-            CTExecutionPhase.GENERATING_EVENTS_PHASE) ||
-            (getExecutionPhase() ==
-            CTExecutionPhase.ITERATING_PURELY_DISCRETE_ACTORS_PHASE)) {
-            transition = _ctrl._chooseTransition(
-                    _currentState.preemptiveTransitionList());
-            _transitionHasEvent = false;
-        } else {
-            transition = null;
-        }
-
-        // NOTE: The refinements of a transition can not and must not
-        // advance time. However, this requirement is not checked here.
-        if (transition != null) {
-            // record the enabled preemptive transition 
-            // for the postfire() method.
-            _enabledTransition = transition;
-            Actor[] actors = transition.getRefinement();
-            if (actors != null && actors.length > 0) {
-                for (int i = 0; i < actors.length; ++i) {
-                    if (_stopRequested) break;
-                    if (actors[i].prefire()) {
-                        actors[i].fire();
-                        actors[i].postfire();
-                    }
-                }
-                _ctrl._readOutputsFromRefinement();
-            }
-            // An enabled preemptive transition preempts the
-            // firing of the enabled refienements.
-            return;
-        } 
-
-        // Check whether a preemptive transition is enabled. 
-        // If so, we need to skip the firing of refinements and return 
-        // immediately.
-        Transition enabledPreemptiveTransition = 
-            _ctrl._checkTransition(_currentState.preemptiveTransitionList());
-        if (enabledPreemptiveTransition != null) {
-            return;
-        }
-
-        // There is no enabled preemptive transition.
-        Iterator actors = _enabledRefinements.iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
-            if (_debugging && _verbose) {
-                _debug(getName(), " fire refinement", 
-                        ((NamedObj)actor).getName());
-            }
-            actor.fire();
-        }
-
-        _ctrl._readOutputsFromRefinement();
-
-        //////////////////////////////////////////////////////////////////////
-        // Handle nonpreemptive transitions
-        
         // NOTE: If an enabled transition is already found, 
         // do not try to find another enabled transition.
         // This guarantees that each firing of a modal model produces at most
         // one discrete event.
+        
+        // Also, the refinements are not fired to prevent the output from the
+        // enabled transitions being overwritten by the outputs from the
+        // refinements. 
+        // This guarantees that only one event is produced at one discrete 
+        // phase of execution.
+        
         if (_enabledTransition == null) {
-            // Only EXECUTE enabled transitions during a discrete phase of 
-            // execution. Check enabled transitions at the end of a continuous 
+
+            ///////////////////////////////////////////////////////////////////
+            // Handle preemptive transitions
+            
+            // Only EXECUTE enabled transitions at the generating-event phase 
+            // and iterating-purely-discrete-actors phase during a 
+            // discrete-phase execution. In fact, if this director is used 
+            // inside CT models only, we can further constraint the enabled 
+            // transitions to be executed only in generating-event phase. 
+            // However, to support the backwards compatibility such that 
+            // HSDirector can be also used inside DE models, we also allow the 
+            // enabled transitions to be executed at the 
+            // iterating-purely-discrete-actors phase.
+            // Check enabled transitions at the end of a continuous phase 
+            // execution where the accuracy of the current step size is checked.
+            if ((getExecutionPhase() ==
+                CTExecutionPhase.GENERATING_EVENTS_PHASE) ||
+                (getExecutionPhase() ==
+                    CTExecutionPhase.ITERATING_PURELY_DISCRETE_ACTORS_PHASE)) {
+                transition = _ctrl._chooseTransition(
+                        _currentState.preemptiveTransitionList());
+                _transitionHasEvent = false;
+            } else {
+                transition = null;
+            }
+            
+            // NOTE: The refinements of a transition can not and must not
+            // advance time. However, this requirement is not checked here.
+            if (transition != null) {
+                // record the enabled preemptive transition 
+                // for the postfire() method.
+                _enabledTransition = transition;
+                Actor[] actors = transition.getRefinement();
+                if (actors != null && actors.length > 0) {
+                    for (int i = 0; i < actors.length; ++i) {
+                        if (_stopRequested) break;
+                        if (actors[i].prefire()) {
+                            actors[i].fire();
+                            actors[i].postfire();
+                        }
+                    }
+                    _ctrl._readOutputsFromRefinement();
+                }
+                // An enabled preemptive transition preempts the
+                // firing of the enabled refienements.
+                return;
+            } 
+            
+            // Check whether a preemptive transition is enabled. 
+            // If so, we need to skip the firing of refinements and return 
+            // immediately.
+            Transition enabledPreemptiveTransition = 
+                _ctrl._checkTransition(
+                        _currentState.preemptiveTransitionList());
+            if (enabledPreemptiveTransition != null) {
+                return;
+            }
+            
+            // Fire the refinements of the current state.
+            Iterator actors = _enabledRefinements.iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor)actors.next();
+                if (_debugging && _verbose) {
+                    _debug(getName(), " fire refinement", 
+                            ((NamedObj)actor).getName());
+                }
+                actor.fire();
+            }
+
+            _ctrl._readOutputsFromRefinement();
+
+            //////////////////////////////////////////////////////////////////
+            // Handle nonpreemptive transitions
+            
+            // Only EXECUTE enabled transitions at the generating-event phase 
+            // and iterating-purely-discrete-actors phase during a 
+            // discrete-phase execution. In fact, if this director is used 
+            // inside CT models only, we can further constraint the enabled 
+            // transitions to be executed only in generating-event phase. 
+            // However, to support the backwards
+            // compatibility such that HSDirector can be also used inside DE
+            // models, we also allow the enabled transitions to be executed at
+            // the iterating-purely-discrete-actors phase.
+            // Check enabled transitions at the end of a continuous 
             // phase of execution to verify the accuracy of current step size. 
             if ((getExecutionPhase() ==
                 CTExecutionPhase.GENERATING_EVENTS_PHASE) ||
@@ -727,17 +752,22 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 // state has some outgoing transition enabled.
                 executiveDirector.fireAt(container, getModelTime());
             }
-            // If this iteration is the end of a complete iteration of the 
-            // enclosing CT director, or the enclosing director is not a CT
-            // director, reset the _enabledTransition to null.
+            // If this iteration will not generate more events, (the 
+            // current phase of execution is neithter generating-event nor
+            // iterating-purely-discrete-actors), or the enclosing director 
+            // is not a CT director, reset the _enabledTransition to null.
+            // Here we reset the cached enabled transition at the 
+            // updating-continuous-states phase, indicating the end of a 
+            // complete iteration of the enclosing CT director.
+            // This guarantees that at most one transition is taken in an 
+            // iteration of discrete phase of execution. 
+            // To be more specific, for each (t, n), there is at most 
+            // one event.
             if ((getExecutionPhase() == 
                     CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE) 
                     || getEnclosingCTGeneralDirector() == null)  {
-                // Only clear the cached enabled transition at the 
-                // updating continuous states phase. This guarantees that
-                // only one transition is taken in an iteration of discrete
-                // phase of execution. To be more specific, for each (t, n), 
-                // there is at most one event.
+                // Only clear the cached enabled transition when no more events
+                // will be generated at the current discrete phase of execution. 
                 _enabledTransition = null;
             }
         } else {

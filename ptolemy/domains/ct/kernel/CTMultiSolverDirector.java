@@ -805,17 +805,6 @@ public class CTMultiSolverDirector extends CTDirector {
 
         prefireClear();
 
-        // Continuous signals must have values at the very beginning of
-        // simulation. The following block of code is just for this purpose.
-        if (_firstIteration) {
-            // propagate the initial states with a breakpoint solver
-            _propagateResolvedStates();
-            // Restore the solver to normal solver to make the CTIntegrator
-            // tests pass.
-            _setCurrentODESolver(_normalSolver);
-            _firstIteration = false;
-        }
-
         if (_debugging) {
             _debug("\n\n !!! discrete phase execution at " + getModelTime());
         }
@@ -851,33 +840,52 @@ public class CTMultiSolverDirector extends CTDirector {
 
             if (_debugging) {
                 _debug("  ---> " + getName(),
-                        ": generating more events (if any) (continuous -> discrete)");
+                    ": propagating the resolved states through " +
+                    "continuous actors");
+            }
+            // Establish the initial states for discrete phase of execution. 
+            _propagateResolvedStates();
+
+            if (_debugging) {
+                _debug("  ---> " + getName(),
+                    ": generating events (if any) (continuous -> discrete)");
             }
             _iterateEventGenerators(schedule);
 
             if (_debugging) {
                 _debug("  ---> " + getName(),
-                        ": iterating pure discrete actors (discrete -> discrete)");
+                    ": iterating pure discrete actors (discrete -> discrete)");
             }
             _iteratePurelyDiscreteActors(schedule);
 
             if (_debugging) {
                 _debug("  ---> " + getName(),
-                        ": iterating waveform generators (discrete -> continuous)");
+                    ": iterating waveform generators (discrete -> continuous)");
             }
             _iterateWaveformGenerators(schedule);
 
             if (_debugging) {
                 _debug("  ---> " + getName(),
-                        ": propagating the resolved states through continuous actors");
+                    ": propagating the resolved states through " +
+                    "continuous actors");
             }
+            // Update continuous actors. Two subtleties are:
+            // 1. If there is a modal model that generates an event at the 
+            // current sub-iteration (within the loop), the enabled transition 
+            // is reset. See the postfire() method of the HSDirector for the 
+            // reason.
+            // 2. Because the modal model produces nothing when an enabled
+            // transition is found in this sub-iteration, the output from the
+            // enabled transition can be caught by the poltters (such as 
+            // the TimedPlotter) that only change the display at its postfire()
+            // method.
             _propagateResolvedStates();
-
-            // At the end of the _propagateResolvedStates() method,
-            // the final states at the current model time, or
-            // the starting states for the immediately following continuous
-            // phase of execution are created.
         }
+
+        // When we jump out of the previous loop, the _propagateResolvedStates() 
+        // method already created the final states at the current model time, or
+        // the starting states for the immediately following continuous
+        // phase of execution.
 
         if (_debugging) {
             _debug(" >>> The next breakpoint is at "
