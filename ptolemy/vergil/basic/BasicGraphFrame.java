@@ -86,6 +86,7 @@ import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -1417,7 +1418,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             Parameter zoom = (Parameter)getModel().getAttribute(
                     "_vergilZoomFactor", Parameter.class);
             if (zoom == null) {
-                zoom = new Parameter(getModel(), "_vergilZoomFactor");
+                // NOTE: This will not propagate.
+                zoom = new ExpertParameter(getModel(), "_vergilZoomFactor");
             }
             zoom.setToken(new DoubleToken(scale));
             // Make sure the visibility is only expert.
@@ -1428,7 +1430,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             Parameter pan = (Parameter)getModel().getAttribute(
                     "_vergilCenter", Parameter.class);
             if (pan == null) {
-                pan = new Parameter(getModel(), "_vergilCenter");
+                // NOTE: This will not propagate.
+                pan = new ExpertParameter(getModel(), "_vergilCenter");
             }
             Token[] centerArray = new Token[2];
             centerArray[0] = new DoubleToken(center.getX());
