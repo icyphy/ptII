@@ -42,9 +42,9 @@
 PTJAVA_DIR = 	@PTJAVA_DIR@
 
 # Java CLASSPATH separator
-CLASSPATHSEPARATOR = :
-# For NT
-#CLASSPATHSEPARATOR = ;
+# For Unix, this would be : 
+# For Cygwin, this would be ;
+CLASSPATHSEPARATOR = @CLASSPATHSEPARATOR@
 
 # Location of the Java html documentation.
 # The file java.lang.Object.html should
