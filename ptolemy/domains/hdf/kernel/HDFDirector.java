@@ -50,6 +50,7 @@ import ptolemy.kernel.util.Workspace;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -269,14 +270,14 @@ public class HDFDirector extends SDFDirector {
      */
     // Called by getFiringCount(Actor) in HDFDirector
     public Schedule getSchedule() throws IllegalActionException{
-        Scheduler scheduler =
-            getScheduler();
+        //System.out.println("get HDF schedule " + this.getFullName());
+        Scheduler scheduler = getScheduler();
         Schedule schedule;
         //return scheduler.getSchedule();
         if (isScheduleValid()) {
             // This will return a the current schedule.
             //System.out.println("called in HDF getSchedule return new scheduler");
-            schedule = scheduler.getSchedule();
+            schedule = ((SDFScheduler)scheduler).getSchedule();
         } else {
             // The schedule is no longer valid, so check the schedule
             // cache.
@@ -312,6 +313,8 @@ public class HDFDirector extends SDFDirector {
                 _scheduleCache = new HashMap();
                 _scheduleKeyList = new ArrayList(cacheSize);
                 _cacheSize = cacheSize;
+                
+                _externalRatesCache = new TreeMap();
             }
             if (_scheduleCache.containsKey(rateKey)) {
                 // cache hit.
@@ -326,8 +329,10 @@ public class HDFDirector extends SDFDirector {
                     // and add the key to head of list.
                     _scheduleKeyList.add(0, rateKey);
                 }
-                //schedule = (Schedule)_scheduleCache.get(rateKey);
-                schedule = scheduler.getSchedule();
+                schedule = (Schedule)_scheduleCache.get(rateKey);
+                Map externalRates = (Map)_externalRatesCache.get(rateKey); 
+                ((SDFScheduler)scheduler).setContainerRates(externalRates);
+                //schedule = ((SDFScheduler)scheduler).getSchedule();
             } else {
                 // cache miss.
                 if (_debug_info) {
@@ -346,7 +351,10 @@ public class HDFDirector extends SDFDirector {
                     _scheduleKeyList.add(0, rateKey);
                 }
                 // Add key/schedule to the schedule map.
-                schedule = scheduler.getSchedule();
+                schedule = ((SDFScheduler)scheduler).getSchedule();
+                Map externalRates = 
+                    ((SDFScheduler)scheduler).getExternalRates();
+                _externalRatesCache.put(rateKey, externalRates);
                 _scheduleCache.put(rateKey, schedule);
             }
         }
@@ -459,6 +467,13 @@ public class HDFDirector extends SDFDirector {
         CompositeActor container = (CompositeActor)getContainer();
         //Director director = container.getDirector();
         Director exeDirector = container.getExecutiveDirector();
+        //if ( exeDirector != null
+        //    || (! (exeDirector instanceof HDFFSMDirector))
+        //    || (! (exeDirector instanceof HDFDirector))
+        //    || (! (exeDirector instanceof SDFDirector))) {
+        //        System.out.println(container.getFullName());
+        //        //+ "'s exeDirector is" + exeDirector.getFullName());
+        //}
         if (exeDirector == null
             //|| (! (exeDirector instanceof SDFDirector))
             //|| (! (exeDirector instanceof HDFFSMDirector))
@@ -524,9 +539,9 @@ public class HDFDirector extends SDFDirector {
                     firingCount = firingCount * directorFiringCount;
                     ((HDFFSMDirector)director)
                         .setFiringsPerScheduleIteration(firingCount);
-                    //System.out.println(director.getName() + 
-                     //     " firingPerScheduleIteration set by top HDF = "
-                     //      + firingCount);
+                    //System.out.println(director.getFullName() + 
+                    //      " firingPerScheduleIteration set by top HDF = "
+                    //       + firingCount);
                     ((HDFFSMDirector)director).updateFiringCount(firingCount, preinitialize);  
                 } else if (director instanceof HDFDirector) {
                     firingCount = firingCount * directorFiringCount;
@@ -564,6 +579,7 @@ public class HDFDirector extends SDFDirector {
                 = new Parameter(this,"scheduleCacheSize",new IntToken(cacheSize));
 
             _scheduleCache = new HashMap();
+            _externalRatesCache = new TreeMap();
             _scheduleKeyList = new ArrayList(cacheSize);
         }
         catch (Exception e) {
@@ -639,6 +655,8 @@ public class HDFDirector extends SDFDirector {
     private List _inputPortList;
     private List _outputPortList;
     private int _cacheSize = 100;
+
+    private Map _externalRatesCache;
 
     private int _directorFiringCount = 1;
     // Set to true to enable debugging.

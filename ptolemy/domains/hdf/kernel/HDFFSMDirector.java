@@ -298,13 +298,15 @@ public class HDFFSMDirector extends FSMDirector {
                 ((StaticSchedulingDirector)refinementDir).getScheduler();
                 refinmentSched.setValid(false);
                 //System.out.println("compute the SDF schedule");
-                refinmentSched.getSchedule();
+                ((SDFScheduler)refinmentSched).getSchedule();
             } else {
                 // Invalid director.
                 throw new IllegalActionException(this,
                   "The current refinement has an invalid director. " +
                   "Allowed directors are SDF, HDF, or HDFFSMDirector.");
             }
+            //System.out.println("update port rate in HDFFSM intialize "
+            //    + this.getFullName());
             _updateInputTokenConsumptionRates(curRefinement);
             _updateOutputTokenProductionRates(curRefinement);
             //_firingsPerScheduleIteration =
@@ -428,6 +430,8 @@ public class HDFFSMDirector extends FSMDirector {
                 //    + " refinmentDir = " + refinementDir.getFullName());
                 
                 //Director director = actor.getDirector();
+                //System.out.println("update port rate in HDFFSM postfire "
+                //    + this.getFullName());
                 _updateInputTokenConsumptionRates(actor);
                 _updateOutputTokenProductionRates(actor);
                 CompositeActor hdfActor = _getHighestFSM();
@@ -499,13 +503,15 @@ public class HDFFSMDirector extends FSMDirector {
                     Scheduler refinmentSched =
                         ((StaticSchedulingDirector)refinementDir).getScheduler();
                     refinmentSched.setValid(false);
-                    refinmentSched.getSchedule();
+                    ((SDFScheduler)refinmentSched).getSchedule();
                 } else {
                     //System.out.println("no, it's neither SDF nor HDF");
                 }
                 // Extract the token consumption/production rates from the
                 // ports of the new refinement and update the
                 // rates of the ports of the FSM actor.
+                //System.out.println("update port rate in HDFFSM postfire "
+                //    + this.getFullName());
                 _updateInputTokenConsumptionRates(actor);
                 _updateOutputTokenProductionRates(actor);
                 CompositeActor hdfActor = _getHighestFSM();
@@ -618,13 +624,15 @@ public class HDFFSMDirector extends FSMDirector {
                 ((StaticSchedulingDirector)refinementDir).getScheduler();
                 refinmentSched.setValid(false);
                 //System.out.println("compute the SDF schedule");
-                refinmentSched.getSchedule();
+                ((SDFScheduler)refinmentSched).getSchedule();
             } else {
                 // Invalid director.
                 throw new IllegalActionException(this,
                   "The current refinement has an invalid director. " +
                   "Allowed directors are SDF, HDF, or HDFFSMDirector.");
             }
+            //System.out.println("update port rate in HDFFSM preinitialize "
+            //    + this.getFullName());
             _updateInputTokenConsumptionRates(curRefinement);
             _updateOutputTokenProductionRates(curRefinement);
             //_firingsPerScheduleIteration =
