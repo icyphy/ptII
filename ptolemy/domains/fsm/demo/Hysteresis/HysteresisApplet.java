@@ -141,18 +141,18 @@ public class HysteresisApplet extends SDFApplet {
 		(HDFFSMTransition)ctrl.createTransition(ctrls0, ctrls1);
 	    // Note: TriggerEvent occurs when a token is available on
 	    // the specified input port.
-            ctrlTrs0Tos1.setTriggerEvent("TheGuard");
+            ctrlTrs0Tos1.setTriggerEvent("dataIn$0");
 	    // Note: setTriggerCondition sets the guard.
-            ctrlTrs0Tos1.setTriggerCondition("TheGuard < -0.3");
+            ctrlTrs0Tos1.setTriggerCondition("dataIn$0 < -0.3");
 	    
 
 	    HDFFSMTransition ctrlTrs0Tos0 =
 	    (HDFFSMTransition)ctrl.createTransition(ctrls0, ctrls0);
 	    // Note: TriggerEvent occurs when a token is available on
 	    // the specified input port.
-	    ctrlTrs0Tos0.setTriggerEvent("TheGuard");
+	    ctrlTrs0Tos0.setTriggerEvent("dataIn$0");
 	    // Note: setTriggerCondition sets the guard.
-	    ctrlTrs0Tos0.setTriggerCondition("TheGuard > -0.3");
+	    ctrlTrs0Tos0.setTriggerCondition("dataIn$0 > -0.3");
 	    
 	    
 
@@ -160,18 +160,18 @@ public class HysteresisApplet extends SDFApplet {
 		(HDFFSMTransition)ctrl.createTransition(ctrls1, ctrls0);
 	    // Note: TriggerEvent occurs when a token is available on
 	    // the specified input port.
-	    ctrlTrs1Tos0.setTriggerEvent("TheGuard");
+	    ctrlTrs1Tos0.setTriggerEvent("dataIn$0");
 	    // Note: setTriggerCondition sets the guard.
-            ctrlTrs1Tos0.setTriggerCondition("TheGuard > 0.3");
+            ctrlTrs1Tos0.setTriggerCondition("dataIn$0 > 0.3");
 
 
 	    HDFFSMTransition ctrlTrs1Tos1 =
 		(HDFFSMTransition)ctrl.createTransition(ctrls1, ctrls1);
 	    // Note: TriggerEvent occurs when a token is available on
 	    // the specified input port.
-	    ctrlTrs1Tos1.setTriggerEvent("TheGuard");
+	    ctrlTrs1Tos1.setTriggerEvent("dataIn$0");
 	    // Note: setTriggerCondition sets the guard.
-            ctrlTrs1Tos1.setTriggerCondition("TheGuard < 0.3");
+            ctrlTrs1Tos1.setTriggerCondition("dataIn$0 < 0.3");
 
 
 	    // Controller's director
