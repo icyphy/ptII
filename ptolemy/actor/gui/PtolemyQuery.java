@@ -190,34 +190,33 @@ public class PtolemyQuery extends Query
 	}
     }
 
-    /** Set the variable to the value of the Query entry. This
-     *  method is called whenever an entry changes. If the 
-     *  variable has a director, then queue a change request with
+    /** Set the variable to the value of the Query entry that
+     *  changed. This  method is called whenever an entry changes.
+     *  If the variable has a director, then queue a change request with
      *  the director. If the variable does not have a director,
      *  then set the variable imediately, without queuing
-     *  a change request. It is assumed that the variable only
-     *  has a director if its container is an Actor, although
-     *  the director may be several levels up. If a director
-     *  cannot be obtained from the variable, then this method
-     *  sets the variable directly.
+     *  a change request. This method attemps to get a director
+     *  from a variable as follows: First check if the variable's
+     *  container is an actor or a director. If it is an actor,
+     *  call getDirector() and check that the director is not null.
+     *  If this fails, than repeat on the container's container, until
+     *  we reach the toplevel container.
      *  @param name The name of the entry that has changed.
      */
     // FIXME: This only works with a Parameter, not a Variable.
     // See note below.
-    // FIXME: It is stupid to assume the every variable that has
-    // a director will be contained by an actor.
     public void changed(String name) {
 	//System.out.println("PtolemyQuery: changed(): invoked");
-	
+	//
 	//System.out.println("PtolemyQuery: changed(): name=" + name + ".");
 	//System.out.println("PtolemyQuery: changed(): stringValue(name) " +
-	//	   stringValue(name));
+	//   stringValue(name));
 	// Check if the entry that changed is in the mapping.
 	if (_parameters.containsKey(name)) {
 	    //System.out.println("PtolemyQuery: changed(): containsKey");
 	    Variable var = (Variable)(_parameters.get(name));
 	    //System.out.println("PtolemyQuery: changed(): getFullName of var" +
-	    //	   var.getFullName() + ".");
+	    //   var.getFullName() + ".");
 	    // Check if we should ignore 
             if (((Boolean)_ignoreEntryChange.get(name)).booleanValue() == false) {
 		// Don't ignore.
@@ -247,23 +246,23 @@ public class PtolemyQuery extends Query
 
 		    Nameable container = var.getContainer();
 		    while (container != null) {
-			//System.out.println("PtolemyQuery: changed: while." + var.getFullName());
 			// Reason for casting to Actor: Actor has getDirector(),
 			// NamedObj dos not.
 			Director director;
 			if (container instanceof Actor) {
-			    //System.out.println("PtolemyQuery: changed: intance of Actor");
 			   director = ((Actor)container).getDirector();
-			} else {
-			    director = null;
-			}
-
-			if (director != null) {
-			    //System.out.println("PtolemyQuery: changed: queueing mutation");
+			   if (director != null) {
+			       director.requestChange(new SetParameter((Parameter)var, (Parameter)var, stringValue(name)));
+			       break;
+			   } else {
+			       container = container.getContainer();
+			   }
+			} else if (container instanceof Director) {
+			    director = (Director)container;
 			    director.requestChange(new SetParameter((Parameter)var, (Parameter)var, stringValue(name)));
 			    break;
 			} else {
-			    container = container.getContainer();
+			     container = container.getContainer();
 			}
 		    }
 		    
@@ -272,7 +271,6 @@ public class PtolemyQuery extends Query
 		    // So just set the variable here, since there is no
 		    // director to queue a mutation request with.
 		    if (container == null) {
-			//System.out.println("PtolemyQuery: changed: conainer null, setting variable without queueing");
 			var.setExpression(stringValue(name));
 		    }
 		} 
