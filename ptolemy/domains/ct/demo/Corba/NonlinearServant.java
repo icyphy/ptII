@@ -82,19 +82,19 @@ public class NonlinearServant extends _CorbaActorImplBase {
 
     /** Throws CorbaUnknowParamException always, since there's
      *  no parameter defined in this actor. Implement
-       <p>
-       Operation: <b>::util::CorbaActor::getParameter</b>.
-       <pre>
-       #pragma prefix "util/CorbaActor"
-       string getParameter(
-       in string paramName
-       )
-       raises(
-       ::util::CorbaIllegalActionException,
-       ::util::CorbaUnknownParamException
-       );
-       </pre>
-       </p>
+     <p>
+     Operation: <b>::util::CorbaActor::getParameter</b>.
+     <pre>
+     #pragma prefix "util/CorbaActor"
+     string getParameter(
+     in string paramName
+     )
+     raises(
+     ::util::CorbaIllegalActionException,
+     ::util::CorbaUnknownParamException
+     );
+     </pre>
+     </p>
     */
     public java.lang.String getParameter(
             java.lang.String paramName
@@ -105,41 +105,41 @@ public class NonlinearServant extends _CorbaActorImplBase {
     }
 
     /** Do nothing.
-       <p>
-       Operation: <b>::util::CorbaActor::initialize</b>.
-       <pre>
-       #pragma prefix "util/CorbaActor"
-       void initialize(
-       )
-       raises(
-       ::util::CorbaIllegalActionException
-       );
-       </pre>
-       </p>
+        <p>
+        Operation: <b>::util::CorbaActor::initialize</b>.
+        <pre>
+        #pragma prefix "util/CorbaActor"
+        void initialize(
+        )
+        raises(
+        ::util::CorbaIllegalActionException
+        );
+        </pre>
+        </p>
     */
     public void initialize() throws
             CorbaIllegalActionException {
     }
 
     /** Return true if there's new data in the output port. Implement
-       <p>
-       Operation: <b>::util::CorbaActor::hasData</b>.
-       <pre>
-       #pragma prefix "util/CorbaActor"
-       boolean hasData(
-       in string portName,
-       in short portIndex
-       )
-       raises(
-       ::util::CorbaIllegalActionException,
-       ::util::CorbaIndexOutofBoundException,
-       ::util::CorbaUnknownPortException
-       );
-       </pre>
-       </p>
-       @exception CorbaIllegalActionException If port name is "input".
-       @exception CorbaIndexOutofBoundException If index is not 0.
-       @exception CorbaUnknownPortException If port name is not known.
+        <p>
+        Operation: <b>::util::CorbaActor::hasData</b>.
+        <pre>
+        #pragma prefix "util/CorbaActor"
+        boolean hasData(
+        in string portName,
+        in short portIndex
+        )
+        raises(
+        ::util::CorbaIllegalActionException,
+        ::util::CorbaIndexOutofBoundException,
+        ::util::CorbaUnknownPortException
+        );
+        </pre>
+        </p>
+        @exception CorbaIllegalActionException If port name is "input".
+        @exception CorbaIndexOutofBoundException If index is not 0.
+        @exception CorbaUnknownPortException If port name is not known.
     */
     public boolean hasData(
             java.lang.String portName,

@@ -730,7 +730,7 @@ public class SDFScheduler extends Scheduler {
      */
     private LinkedList _scheduleConnectedActors(
             LinkedList actorList)
-	throws NotSchedulableException {
+            throws NotSchedulableException {
 
         // A linked list containing all the actors that have no inputs
         LinkedList readyToScheduleActorList = new LinkedList();
@@ -777,10 +777,10 @@ public class SDFScheduler extends Scheduler {
                             + " tokens created on " + aOutputPort);
 		    if(count > 0) {
 			_simulateTokensCreated(aOutputPort,
-					       count,
-					       actorList,
-					       readyToScheduleActorList,
-					       waitingTokens);
+                                count,
+                                actorList,
+                                readyToScheduleActorList,
+                                waitingTokens);
 		    }
 		}
             }
@@ -815,7 +815,7 @@ public class SDFScheduler extends Scheduler {
 			channel < tokencount.length;
 			channel++)
 			if (_debugging) _debug("Channel " + channel + " has " +
-			       tokencount[channel] + " tokens.");
+                                tokencount[channel] + " tokens.");
 		}
 
 		if (_debugging) _debug("Actors that can be scheduled:");
@@ -857,10 +857,10 @@ public class SDFScheduler extends Scheduler {
 			_getTokenProductionRate(aOutputPort);
 
 		    _simulateTokensCreated(aOutputPort,
-					   count,
-					   unscheduledActorList,
-					   readyToScheduleActorList,
-					   waitingTokens);
+                            count,
+                            unscheduledActorList,
+                            readyToScheduleActorList,
+                            waitingTokens);
 		}
 
 		// Update the firingRemainingVector for this actor.
@@ -923,7 +923,7 @@ public class SDFScheduler extends Scheduler {
 			// then put it
 			// at the END of readyToScheduleActorList.
 			if(inputCount < 1 &&
-			   unscheduledActorList.contains(currentActor))
+                                unscheduledActorList.contains(currentActor))
 			    readyToScheduleActorList.addLast(currentActor);
 		    }
 		}
@@ -1199,10 +1199,10 @@ public class SDFScheduler extends Scheduler {
         }
 	int sourcechannel;
 	for(sourcechannel = 0;
-	        sourcechannel < creceivers.length;
-	        sourcechannel++) {
+            sourcechannel < creceivers.length;
+            sourcechannel++) {
 	    if (_debugging) _debug("destination receivers = " +
-		   creceivers[sourcechannel].length);
+                    creceivers[sourcechannel].length);
 	    int destinationreceiver;
 	    for(destinationreceiver = 0;
 		destinationreceiver < creceivers[sourcechannel].length;
@@ -1219,8 +1219,8 @@ public class SDFScheduler extends Scheduler {
 		if(actorList.contains(connectedActor)) {
 		    int destinationchannel =
 			_getChannel(connectedPort,
-				    creceivers[sourcechannel]
-				    [destinationreceiver]
+                                creceivers[sourcechannel]
+                                [destinationreceiver]
 				    );
 		    int[] tokens = (int[]) waitingTokens.get(connectedPort);
 		    tokens[destinationchannel] += createdTokens;
@@ -1231,8 +1231,8 @@ public class SDFScheduler extends Scheduler {
 		    // Check and see if the connectedActor can be scheduled
 		    int ival =
 			_countUnfulfilledInputs((Actor)connectedActor,
-						actorList,
-						waitingTokens);
+                                actorList,
+                                waitingTokens);
 		    int firingsRemaining = _getFiringCount(connectedActor);
 		    // If so, then add it to the proper list.  Note that the
 		    // actor may appear more than once.  This is OK, since we
@@ -1361,7 +1361,7 @@ public class SDFScheduler extends Scheduler {
      *  throw an InternalErrorException.
      */
     private int _getChannel(IOPort port, Receiver receiver)
-	throws IllegalActionException {
+            throws IllegalActionException {
 	int width = port.getWidth();
 	Receiver[][] receivers = port.getReceivers();
 	int channel;
@@ -1386,7 +1386,7 @@ public class SDFScheduler extends Scheduler {
 	    int receivernumber;
 	    if (_debugging) {
                 _debug("number of insidereceivers = "
-                       + receivers[channel].length);
+                        + receivers[channel].length);
             }
 	    for(receivernumber = 0;
 		receivernumber < receivers[channel].length;
@@ -1395,7 +1395,7 @@ public class SDFScheduler extends Scheduler {
 	}
 
 	throw new InternalErrorException("Receiver not found in the port " +
-					 port.getName() + " receivers.");
+                port.getName() + " receivers.");
     }
 
     /** A comparator for Named Objects.  This is currently SLOW because

@@ -130,7 +130,7 @@ public class IntToBits extends SDFAtomicActor {
                 bits[i] = new BooleanToken(true);
         }
 
-       output.sendArray(0, bits);
+        output.sendArray(0, bits);
     }
 }
 

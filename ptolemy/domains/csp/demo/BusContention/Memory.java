@@ -131,7 +131,7 @@ public class Memory extends CSPActor {
 
             int numBranches = _numInChannels + _numOutChannels;
             ConditionalBranch[] branches =
-            	    new ConditionalBranch[numBranches];
+                new ConditionalBranch[numBranches];
 
             // Receive Branches
             for( int i = 0; i < _numInChannels; i++ ) {
@@ -143,7 +143,7 @@ public class Memory extends CSPActor {
             for( int i = 0; i < _numOutChannels; i++ ) {
                 branches[i+_numInChannels] = new
                     ConditionalSend(true, output, i,
-                    i+_numInChannels, token);
+                            i+_numInChannels, token);
             }
 
             int br = chooseBranch( branches );

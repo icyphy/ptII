@@ -140,10 +140,10 @@ public class FIR extends SDFAtomicActor {
     ////                         public methods                    ////
 
     /** If the argument is the meanTime parameter, check that it is
-      *  positive.
-      * @exception IllegalActionException If the
-      *  meanTime value is not positive.
-      */
+     *  positive.
+     * @exception IllegalActionException If the
+     *  meanTime value is not positive.
+     */
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == taps) {
@@ -151,7 +151,7 @@ public class FIR extends SDFAtomicActor {
 	    // Get the first token from the Matrix
 	    // Used this tokne to extract its type.
 	    Token tmpToken =
-		    ((MatrixToken)taps.getToken()).getElementAsToken(0, 0);
+                ((MatrixToken)taps.getToken()).getElementAsToken(0, 0);
 
 	    // Get a token representing zero in the requested type.
 	    // _zero = tmpToken.zero();

@@ -74,8 +74,8 @@ public class FIRDouble extends FIR {
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
-            FIRDouble newobj = (FIRDouble)(super.clone(ws));
-            return newobj;
+        FIRDouble newobj = (FIRDouble)(super.clone(ws));
+        return newobj;
     }
 
     /** Consume the inputs and produce the outputs of the FIR filter.

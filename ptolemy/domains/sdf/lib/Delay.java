@@ -102,9 +102,9 @@ public class Delay extends Transformer {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Delay newobj = (Delay)(super.clone(ws));
         newobj.initialOutputs =
-                (Parameter)newobj.getAttribute("initialOutputs");
+            (Parameter)newobj.getAttribute("initialOutputs");
         newobj._dummy =
-                (Variable)newobj.getAttribute("_dummy");
+            (Variable)newobj.getAttribute("_dummy");
 	newobj.output.setTypeAtLeast(newobj._dummy);
         newobj.output.setTypeAtLeast(newobj.input);
         return newobj;
@@ -149,17 +149,17 @@ public class Delay extends Transformer {
         Token contents = initialOutputs.getToken();
         if (!(contents instanceof MatrixToken)) {
             throw new IllegalActionException(this,
-            "Cannot set initialOutputs parameter to a non-matrix.");
+                    "Cannot set initialOutputs parameter to a non-matrix.");
         }
         _outputsArray = (MatrixToken)contents;
         int rowCount = _outputsArray.getRowCount();
         if (rowCount != 1) {
             throw new IllegalActionException(this,
-            "Cannot set initialOutputs parameter to a non-row vector.");
+                    "Cannot set initialOutputs parameter to a non-row vector.");
         }
         _columnCount = _outputsArray.getColumnCount();
         Parameter production =
-                (Parameter)output.getAttribute("TokenInitProduction");
+            (Parameter)output.getAttribute("TokenInitProduction");
         production.setToken(new IntToken(_columnCount));
 
         // Set _dummy so that type constraints work properly.
@@ -168,7 +168,7 @@ public class Delay extends Transformer {
             _dummy.setToken(prototype);
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException(this,
-            "Cannot set initialOutputs to an empty array.");
+                    "Cannot set initialOutputs to an empty array.");
         }
     }
 
@@ -180,7 +180,7 @@ public class Delay extends Transformer {
 
     // Default initial outputs as a matrix token.
     private MatrixToken _defaultInitialOutputs =
-            new IntMatrixToken(defaultValues);
+    new IntMatrixToken(defaultValues);
 
     // The outputs to be produced in the initialize method.
     private MatrixToken _outputsArray;

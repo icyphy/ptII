@@ -143,7 +143,7 @@ public class BusContentionApplet extends CSPApplet {
         }
 
         StateListener listener =
-	        new StateListener((GraphPane)_jgraph.getCanvasPane());
+            new StateListener((GraphPane)_jgraph.getCanvasPane());
 	_processActor1.addListeners(listener);
 	_processActor2.addListeners(listener);
 	_processActor3.addListeners(listener);
@@ -411,9 +411,9 @@ public class BusContentionApplet extends CSPApplet {
 	    // Create and set up the selection dragger
 	    _selectionDragger = new SelectionDragger(pane);
 	    _selectionDragger.addSelectionInteractor(
-		(SelectionInteractor)getEdgeController().getEdgeInteractor());
+                    (SelectionInteractor)getEdgeController().getEdgeInteractor());
 	    _selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)getNodeController().getNodeInteractor());
+                    (SelectionInteractor)getNodeController().getNodeInteractor());
 	}
     }
 

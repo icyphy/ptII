@@ -230,7 +230,7 @@ public class DiningApplet extends Applet
         // Now create the panel that controls the applet
         Panel controlPanel = new Panel();
 	/*
-	add( _createRunControls(3), "West" );
+          add( _createRunControls(3), "West" );
 	*/
 
         add(controlPanel, "West");
@@ -264,9 +264,9 @@ public class DiningApplet extends Applet
             // repaint the table for the current state
             _table.repaint();
             /* To slow down the model, uncomment this...
-            try {
-                Thread.currentThread().sleep(100);
-            } catch (InterruptedException e) {}
+               try {
+               Thread.currentThread().sleep(100);
+               } catch (InterruptedException e) {}
             */
         }
     }
