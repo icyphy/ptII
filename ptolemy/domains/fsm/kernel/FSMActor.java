@@ -361,21 +361,33 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         return true;
     }
 
-    /** Throw an exception, since FSMActor has no use for this
-     *  method.
+    /** Invoke a specified number of iterations of the actor. An
+     *  iteration is equivalant to invoking prefire(), fire(), and 
+     *  postfire(), in that order. In an iteration, if prefire() 
+     *  returns true, then fire() will be called once, followed by 
+     *  postfire(). Otherwise, if prefire() returns false, fire() 
+     *  and postfire() are not invoked, and this method returns
+     *  NOT_READY. If postfire() returns false, then no more
+     *  iterations are invoked, and this method returns STOP_ITERATING.
+     *  Otherwise, it returns COMPLETED.
      *  
      *  @param count The number of iterations to perform.
-     *  @return True if the actor was successfully iterated the
-     *   specified number of times. Otherwise, return false.
-     *  @exception IllegalActionException If one of the Executable
-     *   methods throws it.
+     *  @return NOT_READY, STOP_ITERATING, or COMPLETED.
+     *  @exception IllegalActionException If iterating is not
+     *   permitted, or if prefire(), fire(), or postfire() throw it.
      */
-    public boolean iterate(int count) throws IllegalActionException {
-	throw new IllegalActionException (this,
-                    "iterate() should not be invoked on an " +
-		    "FSMActor.");
+    public int iterate(int count) throws IllegalActionException {
+	int n = 0;
+	while (n++ < count) {
+	    if (prefire()) {
+		fire();
+		if(!postfire()) return STOP_ITERATING;
+	    } else {
+                return NOT_READY;
+	    }
+	}
+	return COMPLETED;
     }
-
 
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
