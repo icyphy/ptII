@@ -359,6 +359,7 @@ Yylex
 Zamora
 Zeno
 acos
+acosh
 alink
 amp;&amp
 anytype
@@ -370,7 +371,10 @@ arial
 arithmatic
 arraycopy
 asin
+asinh
+atan
 atan2
+atanh
 autoconf
 awt
 basename
