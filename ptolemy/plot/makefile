@@ -282,6 +282,7 @@ fixtmpdist:
 	@echo "Fixing $(PTTMPDIR)/$(PTDIST)"
 	echo "all makefiles sources install docs depend checkjunk sccsinfo sccsclean test extraclean clean: mk/ptII.mk" > $(PTTMPDIR)/$(PTDIST)/makefile
 	echo '	cd ptolemy/plot; make $$@' >>$(PTTMPDIR)/$(PTDIST)/makefile
+	echo '	cd bin; make $$@' >>$(PTTMPDIR)/$(PTDIST)/makefile
 	echo '# Generate ptII.mk by running configure' >> \
 		$(PTTMPDIR)/$(PTDIST)/makefile
 	echo 'mk/ptII.mk: configure mk/ptII.mk.in' >> \
@@ -312,6 +313,18 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/README
 	echo " because of limitations in the InstallShield tool." >> \
 		$(PTTMPDIR)/$(PTDIST)/README
+	echo "" >> \
+		$(PTTMPDIR)/$(PTDIST)/README
+	echo "To install under Solaris:" >> \
+		$(PTTMPDIR)/$(PTDIST)/README
+	echo "set the PTII variable to this directory " >> \
+		$(PTTMPDIR)/$(PTDIST)/README
+	echo "run ./configure" >> \
+		$(PTTMPDIR)/$(PTDIST)/README
+	echo "run make" >> \
+		$(PTTMPDIR)/$(PTDIST)/README
+	echo "run bin/ptplot" >> \
+		$(PTTMPDIR)/$(PTDIST)/README
 	#mv /tmp/ptplotfix $(PTTMPME)/makefile
 	@echo "JShield needs the ico file to be in the top level directory"
 	cp $(PTTMPME)/doc/img/ptplot.ico \
@@ -330,9 +343,9 @@ fixtmpdist:
 	@echo "Create bin/makefile"
 	echo "ME =		bin" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "ROOT =		.." >> 	$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "CONFIG =	$(ROOT)/mk/ptII.mk" >> \
+	echo 'CONFIG =	$(ROOT)/mk/ptII.mk' >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "include $(CONFIG)" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "include '$(CONFIG)'" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "SHELL_FILES = \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	histogram \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	ptplot \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
@@ -343,9 +356,9 @@ fixtmpdist:
 	echo "	ptplot.bat \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	pxgraph.bat " >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	EXTRA_SRCS = \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "EXTRA_SRCS = \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	ptinvoke.in \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	$(BAT_FILES)" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo '	$(BAT_FILES)' >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "all: ptinvoke" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	-chmod a+x ptinvoke" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "	rm -f histogram" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
@@ -357,8 +370,8 @@ fixtmpdist:
 	echo "	ln -s ptinvoke pxgraph" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	install: all" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "	-chmod a+x $(SHELL_FILES) $(BAT_FILES)" >> \
+	echo "install: all" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo '	-chmod a+x $(SHELL_FILES) $(BAT_FILES)' >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "ptinvoke: ptinvoke.in ../config.status" >> \
@@ -373,7 +386,7 @@ fixtmpdist:
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "# Get the rest of the rules" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "include $(ROOT)/mk/ptcommon.mk" >> \
+	echo 'include $(ROOT)/mk/ptcommon.mk' >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	@echo "Copy over gui stuff"
 	cp -r "$(PTII)/ptolemy/gui" $(PTTMPDIR)/$(PTDIST)/ptolemy
