@@ -65,7 +65,7 @@ public class GUIStringUtilities {
      *  characters.
      *  If the <i>longName</i> argument is null, then the string
      *  "<Unnamed>" is returned.
-     *  @see #split
+     *  @see #split(String longName)
      *  @return The name.
      */
     public static String abbreviate(String longName) {
