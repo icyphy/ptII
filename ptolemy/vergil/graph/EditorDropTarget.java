@@ -146,32 +146,32 @@ public class EditorDropTarget extends DropTarget {
                 // displaying the classname in the icon.
                 final String name = container.uniqueName(data.getName());
                 String moml = data.exportMoML(name);
-               
+
                 ChangeRequest request = new MoMLChangeRequest(this,
                         container, moml) {
                     protected void _execute() throws Exception {
-                        super._execute();
-                        // Set the location of the icon.
-                        // Note that this really needs to be done after
-                        // the change request has succeeded, which is why
-                        // it is done here.  When the graph controller
+			super._execute();
+			// Set the location of the icon.
+			// Note that this really needs to be done after
+			// the change request has succeeded, which is why
+			// it is done here.  When the graph controller
 			// gets around to handling this, it will draw 
 			// the icon at this location.
-
-                        // FIXME: Have to know whether this is an entity,
-                        // port, etc. For now, assuming it is an entity.
-                        NamedObj newObject = container.getEntity(name);
-                        Icon icon = (Icon) newObject.getAttribute("_icon");
-                        // If there is no icon, then manufacture one.
-                        if(icon == null) {
-                            icon = new EditorIcon(newObject, "_icon");
-                        }
-                      
+			
+			// FIXME: Have to know whether this is an entity,
+			// port, etc. For now, assuming it is an entity.
+			NamedObj newObject = container.getEntity(name);
+			Icon icon = (Icon) newObject.getAttribute("_icon");
+			// If there is no icon, then manufacture one.
+			if(icon == null) {
+			    icon = new EditorIcon(newObject, "_icon");
+			}
+			
 			double location[] = new double[2];
 			location[0] = ((int)point.x);
 			location[1] = ((int)point.y);
 			icon.setLocation(location);
-                    }
+		    }
                 };
 
                 container.requestChange(request);

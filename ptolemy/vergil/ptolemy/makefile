@@ -60,6 +60,7 @@ JSRCS = \
 	DirectorService.java \
 	FrameAttribute.java \
 	PtolemyDocument.java \
+	PtolemyGraphView.java \
 	PtolemyNotation.java \
 	PtolemyModule.java
 

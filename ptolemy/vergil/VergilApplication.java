@@ -105,18 +105,21 @@ public class VergilApplication extends MDIApplication {
      * for this application and open a starting document using the default
      * document factory.
      */
-    protected VergilApplication(AppContext frame) {
-        super();
+    protected VergilApplication(DesktopContext context) {
+        super(context);
 
 	JPanel palettePane = new JPanel();
 	palettePane.setBorder(null);
         palettePane.setLayout(new BoxLayout(palettePane, BoxLayout.Y_AXIS));
 	    
-	// Initialize behavioral objects for superclass
-        final DesktopContext context = new DesktopContext(frame, palettePane);
-        setAppContext(context);
-        MessageHandler.setContext(frame.makeComponent());
+	// Initialize the context.
+	context.setPalettePane(palettePane);
 
+	// Messages from the message handler get centered in the 
+	// toplevel frame.
+	MessageHandler.setContext(context.makeComponent());
+
+	// Use the system clipboard, if possible.
 	Clipboard clipboard;
 	try {
 	    clipboard = 
@@ -131,6 +134,9 @@ public class VergilApplication extends MDIApplication {
         // features of Java, and features that will fail for applets.
         // We need to be systematically handling errors using
         // the MessageHandler class.  EAL
+	// Actually it is using the documented unsupported way of doing this,
+	// which is really the only way to catch all exceptions that happen
+	// in the swing thread, since we don't create it.  SAN
 	// ApplicationExceptionHandler.setApplication(this);
 
         // Create and initialize the storage policy
@@ -174,7 +180,7 @@ public class VergilApplication extends MDIApplication {
 	context.setIconImage(iconImage);
 	context.setTitle(getTitle());
 
-        setCurrentDocument(null);
+        setCurrentView(null);
 
 	// Generic services.
 	classReloadingService = new ClassReloadingService(this);
@@ -240,7 +246,14 @@ public class VergilApplication extends MDIApplication {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    
+    public void addDocument(Document d) {
+	super.addDocument(d);
+	// Update the title of the frame when the title of the document
+	// changes.
+	d.addPropertyChangeListener(_titleChanger);
+    }
+	
     /**
      * Add the factory that creates new documents.  Also create a new
      * action and add it to the
@@ -254,8 +267,9 @@ public class VergilApplication extends MDIApplication {
             public void actionPerformed(ActionEvent e) {
                 Document doc = f.createDocument(app);
                 addDocument(doc);
-                displayDocument(doc);
-                setCurrentDocument(doc);
+                View v = app.createView(doc);
+                app.addView(v);
+                app.setCurrentView(v);
             }
         };
         // NOTE: The first character of the action name is used as a mnemonic,
@@ -292,30 +306,14 @@ public class VergilApplication extends MDIApplication {
      * VergilDocument.
      * @see #VergilDocument
      */
-    public JComponent createView(Document document) {
+    public View createView(Document document) {
 	if(!(document instanceof VergilDocument)) {
 	    throw new RuntimeException("Can only create views " +
 				       "on VergilDocuments.");
 	}
-	JComponent view = ((VergilDocument)document).createView();
-	return view;
+	return ((VergilDocument)document).createDefaultView();
     }
-
-    /** 
-     * Display the given document. This calls the base class and
-     * adds a listener that keeps the title of the internal frame
-     * representing the document the same as the title of the
-     * document.
-     */
-    public void displayDocument (Document d) {
-	super.displayDocument(d);
-
- 	// Update the title of the frame when the title of the document
-	// changes.
-	d.addPropertyChangeListener(_titleChanger);
-    }
-
-        
+           
     /** 
      * Return the list of factories that create new documents.
      * @return An unmodifiable list of instances of DocumentFactory.
@@ -371,8 +369,7 @@ public class VergilApplication extends MDIApplication {
      * interface which will remain after this method returns.
      */
     public static void main(String argv[]) {
- 	AppContext context = new ApplicationContext();
-	_instance = new VergilApplication(context);
+	_instance = new VergilApplication(new DesktopContext(new ApplicationContext()));
     }
 
    /** 
@@ -448,18 +445,18 @@ public class VergilApplication extends MDIApplication {
      * @param document The document to set as the current document, or
      * null to set that there is no current document.
      */
-    public void setCurrentDocument(Document document) {
-        super.setCurrentDocument(document);
+    public void setCurrentView(View view) {
+        super.setCurrentView(view);
 
-        if(document == null) {
+        if(view == null) {
             Action saveAction = getAction(DefaultActions.SAVE);
             saveAction.setEnabled(false);
             Action saveAsAction = getAction(DefaultActions.SAVE_AS);
             saveAsAction.setEnabled(false);
         } else {
-	    JComponent view = getView(document);
-	    if (!view.hasFocus()) {
-		view.requestFocus();
+	    JComponent component = view.getComponent();
+	    if (!component.hasFocus()) {
+		component.requestFocus();
 	    }
             Action saveAction = getAction(DefaultActions.SAVE);
             saveAction.setEnabled(true);
@@ -642,10 +639,14 @@ public class VergilApplication extends MDIApplication {
             if (name.equals("file") || 
 		    name.equals("url")) {
                 // the title has changed.
-                Document d = (Document)e.getSource();
-                JInternalFrame frame = 
-                    getDesktopContext().getInternalFrame(getView(d));
-                frame.setTitle(d.getTitle());
+		Document d = (Document)e.getSource();
+		Iterator i = viewList(d).iterator();
+		while(i.hasNext()) {
+		    View v = (View)i.next();
+		    JInternalFrame frame = 
+		      getDesktopContext().getInternalFrame(v.getComponent());
+		    frame.setTitle(d.getTitle());
+		}
             }
         }
     }
@@ -708,7 +709,6 @@ public class VergilApplication extends MDIApplication {
 		while(paths.hasMoreTokens()) {
 		    String path = paths.nextToken();
 		    urls[count] = getClass().getResource(path);
-		    System.out.println("URL = " + urls[count]);
 		    count++;
 		}
 		_classLoader =

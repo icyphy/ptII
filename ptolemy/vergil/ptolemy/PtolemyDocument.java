@@ -55,10 +55,6 @@ import java.awt.Component;
 import java.awt.datatransfer.*;
 import java.awt.Dimension;
 import java.awt.event.*;
-import java.awt.print.Printable;
-import java.awt.print.PrinterJob;
-import java.awt.print.PrinterException;
-import java.awt.print.PageFormat;
 import java.util.*;
 
 import java.io.*;
@@ -81,7 +77,7 @@ import javax.swing.KeyStroke;
  * @version $Id$
  */
 public class PtolemyDocument extends AbstractDocument
-    implements VergilDocument, ClipboardOwner, Printable {
+    implements VergilDocument {
 
     /** Construct a Ptolemy document that is owned by the given
      *  application.
@@ -93,6 +89,7 @@ public class PtolemyDocument extends AbstractDocument
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    
     /** Close the document. In this class, kill the model if it is being
      *  executed.
      */
@@ -124,108 +121,12 @@ public class PtolemyDocument extends AbstractDocument
 	}
     }
 
-    /** Get the currently selected objects from this document, if any,
-     * and place them on the given clipboard. 
-     */
-    public void copy (Clipboard c) {
-	JGraph jgraph = getView();
-	GraphPane graphPane = jgraph.getGraphPane();
-	GraphController controller =
-	    (GraphController)graphPane.getGraphController();
-	SelectionModel model = controller.getSelectionModel();
-	GraphModel graphModel = controller.getGraphModel();
-	Object selection[] = model.getSelectionAsArray();
-	HashSet objectSet = new HashSet();
-	for(int i = 0; i < selection.length; i++) {
-	    if(selection[i] instanceof Figure) {
-		Object userObject = ((Figure)selection[i]).getUserObject();
-		NamedObj object = (NamedObj)userObject;
-		NamedObj actual = 
-		    (NamedObj)graphModel.getSemanticObject(object);
-		if(objectSet.contains(actual)) continue;
-		objectSet.add(actual);
-	    }
-	}
-	
-	StringWriter buffer = new StringWriter();	   
-	try {
-	    buffer.write("<group>\n");
-	    Iterator elements = objectSet.iterator();
-	    while(elements.hasNext()) {
-		NamedObj element = (NamedObj) elements.next();
-		// first level to avoid obnoxiousness with 
-		// toplevel translations.
-		element.exportMoML(buffer, 1);
-	    }
-	    CompositeEntity container = (CompositeEntity)graphModel.getRoot();
-	    buffer.write(container.exportLinks(1, objectSet));
-	    buffer.write("</group>\n");
-	 
-	    // The code below does not use a PtolemyTransferable, 
-	    // to work around
-	    // a bug in the JDK that should be fixed as of jdk1.3.1.  The bug
-	    // is that cut and paste through the system clipboard to native
-	    // applications doesn't work unless you use string selection. 
-	    c.setContents(new StringSelection(buffer.toString()), this);
-	}
-	catch (Exception ex) {
-	    ex.printStackTrace();
-	}
-
-    }
- 
-    /** Remove the currently selected objects from this document, if any,
-     * and place them on the given clipboard.  If the document does not
-     * support such an operation, then do nothing.
-     */
-    public void cut (Clipboard c) {
-	System.out.println("cut");
-	// First copy everyrhing onto the clipboard.
-	copy(c);
-
-	/* FIXME
-	JGraph jgraph = getView();
-	GraphPane graphPane = jgraph.getGraphPane();
-	GraphController controller =
-	    (GraphController)graphPane.getGraphController();
-	GraphImpl impl = controller.getGraphImpl();
-	SelectionModel model = controller.getSelectionModel();
-	Object selection[] = model.getSelectionAsArray();
-	*/
-    }
-
-    /** Construct a view on this document.  In this class, return an instance
-     *  of JGraph that represents the document.   Future calls to getView() 
+    /** Construct a view on this document.  In this class, return 
+     *  a ptolemy graph view.   Future calls to getView() 
      *  will return the same view until createView is called again.
      */
-    public JComponent createView() {
-	VisualNotation notation = _getVisualNotation(getModel());
-	GraphPane pane = notation.createView(this);
-	JGraph jgraph = new JGraph(pane);
-	GraphController controller =
-	    jgraph.getGraphPane().getGraphController();
-
-	new EditorDropTarget(jgraph);
-       
-	ActionListener deletionListener = new DeletionListener();
-        jgraph.registerKeyboardAction(deletionListener, "Delete",
-                KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
-                JComponent.WHEN_IN_FOCUSED_WINDOW);
-        jgraph.setRequestFocusEnabled(true);
-	jgraph.addMouseListener(new FocusMouseListener());
-	jgraph.setAlignmentX(1);
-	jgraph.setAlignmentY(1);
-	jgraph.setBackground(PtolemyModule.BACKGROUND_COLOR);
-	_view = jgraph;
-	// Ugh..  I hate setting the size like this.
-	jgraph.setPreferredSize(new Dimension(600, 450));
-	jgraph.setSize(600, 450);
-	
-	// Ugh, I hate having to add scrollbars manually.
-	JScrollPane scrollPane = new JScrollPane(jgraph);
-	scrollPane.setVerticalScrollBarPolicy(scrollPane.VERTICAL_SCROLLBAR_NEVER);
-	scrollPane.setHorizontalScrollBarPolicy(scrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        return scrollPane;
+    public View createDefaultView() {
+	return new PtolemyGraphView(this);
     }
 
     /** Return the toplevel composite entity of the
@@ -233,19 +134,6 @@ public class PtolemyDocument extends AbstractDocument
      */
     public CompositeEntity getModel() {
 	return _model;
-    }
-
-    /** Return the current view on this document.  This is updated every time
-     *  a new view is created.
-     */
-    public JGraph getView() {
-	return _view;
-    }
-
-    /** Do nothing.
-     */
-    public void lostOwnership(Clipboard clipboard, 
-			      Transferable transferable) {
     }
 
     /** 
@@ -263,7 +151,6 @@ public class PtolemyDocument extends AbstractDocument
 	VergilApplication.ClassReloadingService service = 
 	    VergilApplication.getInstance().classReloadingService;
 	service.resetClassLoader();
-	System.out.println(service.getClassLoader());
 	MoMLParser parser = new MoMLParser(new Workspace(), null, 
 					   service.getClassLoader());
 	CompositeEntity toplevel =
@@ -271,62 +158,6 @@ public class PtolemyDocument extends AbstractDocument
                     new FileInputStream(getFile()));
 	setModel(toplevel);
     }
-
-    /** Clone the objects currently on the clipboard, if any,
-     * and place them in the given document.  If the document does not
-     * support such an operation, then do nothing.  This method is responsible
-     * for copying the data.
-     */
-    public void paste (Clipboard c) {
-	Transferable transferable = c.getContents(this);
-	JGraph jgraph = getView();
-	GraphPane graphPane = jgraph.getGraphPane();
-	GraphController controller =
-	    (GraphController)graphPane.getGraphController();
-	MutableGraphModel model = controller.getGraphModel();
-	Workspace workspace = ((NamedObj) model.getRoot()).workspace();
-	if(transferable == null) 
-	    return;
-	try {
-	    String string = (String)
-		transferable.getTransferData(DataFlavor.stringFlavor);
-	    CompositeEntity toplevel = (CompositeEntity)model.getRoot();
-	    MoMLParser parser = new MoMLParser(workspace);
-	    parser.setContext(toplevel);
-	    toplevel.requestChange(
-                new MoMLChangeRequest(this, parser, string));
-	} catch (UnsupportedFlavorException ex) {
-	    System.out.println("Transferable object didn't " + 
-			       "support stringFlavor: " +
-			       ex.getMessage());
-	} catch (IOException ex) {
-	    System.out.println("IOException when pasting: " + 
-			       ex.getMessage());
-	} catch (Exception ex) {
-	    ex.printStackTrace();
-	    throw new RuntimeException(ex.getMessage());
-	} 
-    }
-
-    /** Print the document to a printer, represented by the specified graphics
-     *  object.  This method assumes that a view exists of the this document
-     *  in the application.
-     *  @param graphics The context into which the page is drawn.
-     *  @param format The size and orientation of the page being drawn.
-     *  @param index The zero based index of the page to be drawn.
-     *  @returns PAGE_EXISTS if the page is rendered successfully, or
-     *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
-     *  @exception PrinterException If the print job is terminated.
-     */
-    public int print(Graphics graphics, PageFormat format,
-            int index) throws PrinterException {
-        JGraph graph = getView();
-        if(graph != null) {
-            return graph.print(graphics, format, index);
-        }
-        else return NO_SUCH_PAGE;
-    }
-        
 
     /** Save the document to the current file.
      *
@@ -489,23 +320,4 @@ public class PtolemyDocument extends AbstractDocument
 
     // The document's model.
     private CompositeEntity _model;
-    
-    // The document's view.
-    private JGraph _view;
-
-    // Return a visual notation that can create a view on this document.
-    // In this class, we search the toplevel entity in the model for a
-    // Ptolemy notation attribute and return the first one found.
-    //
-    private VisualNotation _getVisualNotation(CompositeEntity model) {
-	List notationList = model.attributeList(VisualNotation.class);
-	Iterator notations = notationList.iterator();
-	VisualNotation notation = null;
-        if(notations.hasNext()) {
-	    notation = (VisualNotation) notations.next();
-	} else {
-	    notation = new PtolemyNotation();
-	}
-	return notation;
-    }
 }

@@ -143,7 +143,7 @@ public class DirectorService extends AbstractService {
 		    // director of the model in the current document.
 		    final Director director = (Director) e.getItem();
 		    PtolemyDocument d = (PtolemyDocument)
-			getApplication().getCurrentDocument();
+			getApplication().getCurrentView().getDocument();
 		    if(d == null) return;
 		    CompositeEntity entity = d.getModel();
 		    if(entity instanceof CompositeActor) {
@@ -171,12 +171,13 @@ public class DirectorService extends AbstractService {
 		// When the current document is changed, set the 
 		// director menu to whatever director is currently associated
 		// with the model in the document.
-		PtolemyDocument d = 
-		(PtolemyDocument)getApplication().getCurrentDocument();
-		if(d == null) {
+		View v = getApplication().getCurrentView();
+		
+		if(v == null) {
 		    _directorModel.setSelectedItem(null);
 		    return;
 		}
+		PtolemyDocument d = (PtolemyDocument)v.getDocument();
                 CompositeEntity entity = d.getModel();
                 if(!(entity instanceof CompositeActor)) {
                     _directorModel.setSelectedItem(null);
@@ -205,7 +206,7 @@ public class DirectorService extends AbstractService {
 		contentsChanged(event);
 	    }
 	};
-	application.addDocumentListener(ldl);
+	application.addViewListener(ldl);
     }
 
     /**

@@ -134,7 +134,8 @@ public class PtolemyModule implements Module {
 
         action = new AbstractAction ("Description") {
             public void actionPerformed(ActionEvent e) {
-                Document doc = _application.getCurrentDocument();
+		View v = _application.getCurrentView();
+                Document doc = v.getDocument();
                 if (doc == null) {
                     try {
                         MessageHandler.warning("No current document");
@@ -169,8 +170,8 @@ public class PtolemyModule implements Module {
 	
         action = new AbstractAction ("Listen to Manager") {
             public void actionPerformed(ActionEvent e) {
-                PtolemyDocument doc =
-                        (PtolemyDocument)_application.getCurrentDocument();
+		View v = _application.getCurrentView();
+                PtolemyDocument doc = (PtolemyDocument)v.getDocument();
                 if (doc == null) {
                     try {
                         MessageHandler.warning("No current document");
@@ -199,9 +200,9 @@ public class PtolemyModule implements Module {
 
         action = new AbstractAction ("Listen to Director") {
             public void actionPerformed(ActionEvent e) {
-                PtolemyDocument doc =
-                        (PtolemyDocument)_application.getCurrentDocument();
-                if (doc == null) {
+		View v = _application.getCurrentView();
+                PtolemyDocument doc = (PtolemyDocument)v.getDocument();
+		if (doc == null) {
                     try {
                         MessageHandler.warning("No current document");
                     } catch (CancelException ex) {
@@ -404,9 +405,9 @@ public class PtolemyModule implements Module {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-	    PtolemyDocument doc =
-		(PtolemyDocument) _application.getCurrentDocument();
-	    if (doc == null) {
+	    View v = _application.getCurrentView();
+	    PtolemyDocument doc = (PtolemyDocument)v.getDocument();
+            if (doc == null) {
                 try {
                     MessageHandler.warning("No current document");
                 } catch (CancelException ex) {
@@ -539,16 +540,16 @@ public class PtolemyModule implements Module {
 	    super("Automatic Layout");
 	}
 	public void actionPerformed(ActionEvent e) {
-            PtolemyDocument doc =
-                    (PtolemyDocument)_application.getCurrentDocument();
-            if (doc == null) {
+	    View v = _application.getCurrentView();
+	    PtolemyDocument doc = (PtolemyDocument)v.getDocument();
+             if (doc == null) {
                 try {
                     MessageHandler.warning("No current document");
                 } catch (CancelException ex) {
                     // Ignore, since there is nothing happening anyway.
                 }
             } else {
-                JGraph jg = doc.getView();
+                JGraph jg = (JGraph)v.getComponent();
                 _redoLayout(jg);
             }
 	}
@@ -561,6 +562,7 @@ public class PtolemyModule implements Module {
 	}
 	public void actionPerformed(ActionEvent e) {
 	    // Figure out what entity.
+	    /** FIXME
 	    super.actionPerformed(e);		
 	    NamedObj object = getTarget();
 	    if(!(object instanceof CompositeEntity)) return;
@@ -571,6 +573,7 @@ public class PtolemyModule implements Module {
 	    app.addDocument(doc);
 	    app.displayDocument(doc);
 	    app.setCurrentDocument(doc);
+	    **/
 	}
     }
    
@@ -582,13 +585,15 @@ public class PtolemyModule implements Module {
 
 	public void actionPerformed(ActionEvent e) {
 	    super.actionPerformed(e);
-	    Document doc = getApplication().getCurrentDocument();
+	    View view = _application.getCurrentView();
+            Document doc = view.getDocument();
 	    // Only create ports for ptolemy documents.
 	    if(!(doc instanceof PtolemyDocument)) return;
 	    PtolemyDocument ptolemyDocument = (PtolemyDocument)doc;
-	    JGraph jgraph = ptolemyDocument.getView();
-	    GraphPane pane = jgraph.getGraphPane();
+	    
 	    // Get the location
+	    JGraph jgraph = (JGraph)view.getComponent();
+	    GraphPane pane = jgraph.getGraphPane();
 	    double x;
 	    double y;
 	    if(getSourceType() == TOOLBAR_TYPE ||
@@ -604,11 +609,8 @@ public class PtolemyModule implements Module {
 	    
 	    final double finalX = x;
 	    final double finalY = y;
-	    final EditorGraphController controller = 
-		(EditorGraphController)pane.getGraphController();
-	    GraphModel model = controller.getGraphModel();
 	    final CompositeEntity toplevel =
-		(CompositeEntity)model.getRoot();
+		(CompositeEntity)ptolemyDocument.getModel();
 	    toplevel.requestChange(new ChangeRequest(this,
 		    "Creating new Port in " + toplevel.getFullName()) {
 		protected void _execute() throws Exception {
@@ -634,13 +636,15 @@ public class PtolemyModule implements Module {
 
 	public void actionPerformed(ActionEvent e) {
 	    super.actionPerformed(e);
-	    Document doc = getApplication().getCurrentDocument();
+	    View view = _application.getCurrentView();
+            Document doc = view.getDocument();
 	    // Only create ports for ptolemy documents.
 	    if(!(doc instanceof PtolemyDocument)) return;
 	    PtolemyDocument ptolemyDocument = (PtolemyDocument)doc;
-	    JGraph jgraph = ptolemyDocument.getView();
-	    GraphPane pane = jgraph.getGraphPane();
+	    
 	    // Get the location
+	    JGraph jgraph = (JGraph)view.getComponent();
+	    GraphPane pane = jgraph.getGraphPane();
 	    double x;
 	    double y;
 	    if(getSourceType() == TOOLBAR_TYPE ||
@@ -657,11 +661,8 @@ public class PtolemyModule implements Module {
 	    
 	    final double finalX = x;
 	    final double finalY = y;
-	    final EditorGraphController controller = 
-		(EditorGraphController)pane.getGraphController();
-	    final GraphModel model = controller.getGraphModel();
 	    final CompositeEntity toplevel =
-		(CompositeEntity)model.getRoot();
+		(CompositeEntity)ptolemyDocument.getModel();
 
 	    // FIXME use MoML.  If no class is specifed in MoML, it should
 	    // use the newRelation method.

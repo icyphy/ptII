@@ -31,13 +31,14 @@
 package ptolemy.vergil;
 
 import diva.gui.AppletContext;
+import diva.gui.DesktopContext;
 
 /**
  * Vergil running in an applet. Let's see you get Vem to do THIS.
  */
 public class VergilApplet extends AppletContext {
     public VergilApplet() {
-       VergilApplication.setInstance(new VergilApplication(this));
+       VergilApplication.setInstance(new VergilApplication(new DesktopContext(this)));
     }
 }
 

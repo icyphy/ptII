@@ -589,8 +589,9 @@ public class DebuggerUI extends JFrame
     private NamedObj getSelectedActor() {
 	NamedObj selectedActor = null;
 	try {
-	    PtolemyDocument d = (PtolemyDocument) VergilApplication.getInstance().getCurrentDocument();
-	    JGraph g = (JGraph) VergilApplication.getInstance().getView(d);
+	    View v = VergilApplication.getInstance().getCurrentView();
+	    PtolemyDocument d = (PtolemyDocument) v.getDocument();
+	    JGraph g = (JGraph) v.getComponent();
 	    GraphPane graphPane = g.getGraphPane();
 	    GraphController controller = 
 		(GraphController) graphPane.getGraphController();

@@ -31,8 +31,7 @@
 package ptolemy.vergil;
 
 import diva.gui.Document;
-
-import javax.swing.*;
+import diva.gui.View;
 
 /**
  * A document for Vergil.  All documents in Vergil are capable of creating
@@ -43,7 +42,7 @@ import javax.swing.*;
  */
 public interface VergilDocument extends Document {
     /** Create a view on this document.
-     */
-    public JComponent createView();
+    */
+    public View createDefaultView();
 
 }

@@ -13,7 +13,7 @@
  THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF SUPELEC HAS BEEN ADVISED
  OF THE POSSIBILITY OF SUCH DAMAGE.
 
- SUPELECSPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED
+ SUPELEC SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED
  TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND
  SUPELEC HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
@@ -79,9 +79,8 @@ public class DebuggerModule implements Module {
 		    _application.getAction("Execute System");
 		    executeAction.actionPerformed(e);
 		    
-		    System.out.println("debug");
 		    PtolemyDocument d =
-		    (PtolemyDocument) _application.getCurrentDocument();
+		    (PtolemyDocument) _application.getCurrentView().getDocument();
 		    if (d == null) {
 			System.out.println("current doc is null");
 			return;
