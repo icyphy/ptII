@@ -85,6 +85,7 @@ public class LocalZenoApplet extends DDEApplet {
 	// Panel for controls and plotter
 	JPanel topPanel = new JPanel();
 	topPanel.setSize( new Dimension(600, 200) );
+        getContentPane().setBackground(getBackground());
         topPanel.setBackground(getBackground());
 
 	// The '3' argument specifies a 'go', 'stop' and
@@ -94,6 +95,7 @@ public class LocalZenoApplet extends DDEApplet {
 
 	_plotPanel = new JPanel();
 	_plotPanel.setSize( new Dimension(600, 200) );
+        _plotPanel.setBackground(getBackground());
 	topPanel.add( _plotPanel, BorderLayout.CENTER );
 
 	getContentPane().add( topPanel, BorderLayout.NORTH );
@@ -359,7 +361,6 @@ public class LocalZenoApplet extends DDEApplet {
             controlPanel.add(layout);
             layout.addActionListener(new LayoutListener());
         }
-
         return controlPanel;
     }
 
