@@ -82,7 +82,7 @@ MISC_FILES = 	$(DIRS)
 OPTIONAL_FILES = \
 	'KeyInput3D$$1.class' \
 	'KeyInput3D$$_React.class' \
-	'MouseInput3D$1.class' \
+	'MouseInput3D$$1.class' \
 	'MouseInput3D$$_React.class' \
 	doc \
 	index.xml
