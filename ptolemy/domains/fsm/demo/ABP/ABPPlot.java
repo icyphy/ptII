@@ -129,7 +129,7 @@ public class ABPPlot extends DEActor {
 	for (int i = 0; i < input.getWidth(); i++) {
             if (_legends != null &&
                     i < _legends.length &&
-                    legends[i].length() != 0) {
+                    _legends[i].length() != 0) {
                 _plot.addLegend(i, _legends[i]);
             } else {
                 _plot.addLegend(i, "Data " + i);

@@ -54,6 +54,7 @@ JSRCS = \
         ABPApplet.java \
 	ABPPlot.java \
 	DEChannel.java \
+	DEFSMActor.java \
 	DEMessageSource.java \
 	DETimer.java
 
