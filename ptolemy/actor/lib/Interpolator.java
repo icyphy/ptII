@@ -180,7 +180,8 @@ public class Interpolator extends SequenceSource {
                     ((IntMatrixToken)indexes.getToken()).intMatrix();
 	    	if (indexMatrix.length != 1 || indexMatrix[0].length == 0) {
 		    throw new IllegalActionException(
-                            "Interpolator.attributeChanged: The index parameter " +
+                            "Interpolator.attributeChanged: The " +
+                            "index parameter " +
                             "does not contain an one dimensional array.");
 	        }
 	        _interpolation.setIndexes(indexMatrix[0]);
