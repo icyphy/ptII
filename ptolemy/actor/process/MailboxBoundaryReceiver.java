@@ -268,7 +268,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      */
     public synchronized void prepareToBlock(Branch branch) {
         if( branch != null ) {
-            branch.registerRcvrBlocked(this);
+            branch.registerReceiverBlocked(this);
             _otherBranch = branch;
         } else {
             ProcessDirector director = ((ProcessDirector)((Actor)
@@ -352,7 +352,7 @@ public class MailboxBoundaryReceiver extends Mailbox
      */
     public synchronized void wakeUpBlockedPartner() {
         if( _otherBranch != null ) {
-            _otherBranch.registerRcvrUnBlocked(this);
+            _otherBranch.registerReceiverUnBlocked(this);
         } else {
             ProcessDirector director = ((ProcessDirector)((Actor)
         	    (getContainer().getContainer())).getDirector());

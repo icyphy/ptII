@@ -334,7 +334,7 @@ public class ProcessDirector extends Director {
             Iterator actors = ((CompositeActor)container)
                 .deepEntityList().iterator();
             Iterator actorPorts;
-            ProcessReceiver nextRec;
+            ProcessReceiver nextReceiver;
             LinkedList receiversList = new LinkedList();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
@@ -345,9 +345,9 @@ public class ProcessDirector extends Director {
                     Receiver[][] receivers = port.getReceivers();
                     for (int i = 0; i < receivers.length; i++) {
                         for (int j = 0; j < receivers[i].length; j++) {
-                            nextRec = (ProcessReceiver)receivers[i][j];
-                            nextRec.requestFinish();
-                            receiversList.addFirst(nextRec);
+                            nextReceiver = (ProcessReceiver)receivers[i][j];
+                            nextReceiver.requestFinish();
+                            receiversList.addFirst(nextReceiver);
                         }
                     }
                 }

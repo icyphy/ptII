@@ -91,7 +91,8 @@ public class Branch implements Runnable {
      *  @exception IllegalActionException If the receivers assigned to
      *   this branch are null or improperly configured.
      */
-    public Branch(ProcessReceiver producerReceiver, ProcessReceiver consumerReceiver,
+    public Branch(ProcessReceiver producerReceiver,
+            ProcessReceiver consumerReceiver,
 	    BranchController controller) throws IllegalActionException {
         _controller = controller;
 
@@ -151,7 +152,7 @@ public class Branch implements Runnable {
      *  @param receiver The receiver assigned to this branch that
      *   is blocked.
      */
-    public void registerRcvrBlocked(ProcessReceiver receiver) {
+    public void registerReceiverBlocked(ProcessReceiver receiver) {
     	if( !_receiverBlocked ) {
     	    _receiverBlocked = true;
             _controller._branchBlocked(receiver);
@@ -164,7 +165,7 @@ public class Branch implements Runnable {
      *  @param receiver The receiver assigned to this branch for
      *   which a block is being removed.
      */
-    public void registerRcvrUnBlocked(ProcessReceiver receiver) {
+    public void registerReceiverUnBlocked(ProcessReceiver receiver) {
     	if( _receiverBlocked ) {
     	    _receiverBlocked = false;
             _controller._branchUnBlocked(receiver);

@@ -150,14 +150,14 @@ test Branch-3.1 {Check blocking methods} {
     	set val 0
     }
     
-    set rcvr [java::new ptolemy.actor.process.MailboxBoundaryReceiver]
+    set receiver [java::new ptolemy.actor.process.MailboxBoundaryReceiver]
     
-    $branch registerRcvrBlocked $rcvr
+    $branch registerReceiverBlocked $receiver
     if { [$cntlrIn isBlocked] != 1 } {
     	set val 0
     }
     
-    $branch registerRcvrUnBlocked $rcvr
+    $branch registerReceiverUnBlocked $receiver
     if { [$cntlrIn isBlocked] != 0 } {
     	set val 0
     }

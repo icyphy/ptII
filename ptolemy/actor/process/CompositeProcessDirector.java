@@ -482,10 +482,10 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   blocked; return false otherwise.
      */
     protected boolean _areActorsExternallyBlocked() {
-    	Iterator blockedReceiverIter = _blockedReceivers.iterator();
-        while( blockedReceiverIter.hasNext() ) {
+    	Iterator blockedReceivers = _blockedReceivers.iterator();
+        while( blockedReceivers.hasNext() ) {
             ProcessReceiver receiver =
-                    (ProcessReceiver)blockedReceiverIter.next();
+                    (ProcessReceiver)blockedReceivers.next();
             if( receiver.isConnectedToBoundaryInside() ) {
                 return true;
             }
@@ -503,7 +503,8 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @param controller The controller for which registration of a
      *   blocked state will occur.
      */
-    protected synchronized void _controllerBlocked(BranchController controller) {
+    protected synchronized void _controllerBlocked(
+            BranchController controller) {
         if( controller == _inputBranchController ) {
             _inputControllerIsBlocked = controller.isBlocked();
         }
@@ -562,7 +563,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   receivers with the executive director and waiting on the
      *   executive director to respond.
      */
-    protected boolean _registerBlockedRcvrsWithExecutive() {
+    protected boolean _registerBlockedReceiversWithExecutive() {
 	Workspace workspace = workspace();
 	LinkedList blockedReceivers = new LinkedList();
 	blockedReceivers.addAll(
@@ -629,7 +630,7 @@ public class CompositeProcessDirector extends ProcessDirector {
 			    "deadlocked.");
 		} else if( execDir instanceof CompositeProcessDirector ) {
 		    // This is contained by a process-oriented MoC
-		    return _registerBlockedRcvrsWithExecutive();
+		    return _registerBlockedReceiversWithExecutive();
 		} else {
 		    // This is contained by a schedule-oriented MoC
 		    return true;
@@ -645,7 +646,7 @@ public class CompositeProcessDirector extends ProcessDirector {
 			    "deadlocked.");
 		} else if( execDir instanceof CompositeProcessDirector ) {
 		    // This is contained by a process-oriented MoC
-		    return _registerBlockedRcvrsWithExecutive();
+		    return _registerBlockedReceiversWithExecutive();
 		} else {
 		    // This is contained by a schedule-oriented MoC
 		    return true;
