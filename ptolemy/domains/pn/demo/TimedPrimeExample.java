@@ -29,12 +29,12 @@ package ptolemy.domains.pn.demo;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.domains.pn.lib.*;
 import java.util.Enumeration;
 
-//import gui.DynamicGraphView;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimedPrimeExample
@@ -52,15 +52,14 @@ public class TimedPrimeExample {
         CompositeActor myUniverse = new CompositeActor();
         myUniverse.setName("Prime_example");
 	Manager exec = new Manager("exec");
-        // FIXME FIXME FIXME
 	myUniverse.setManager(exec);
 	TimedPNDirector local = new TimedPNDirector("Local");
 	myUniverse.setDirector(local);
-        //myUniverse.setCycles(Integer.parseInt(args[0]));
         TimedRamp ramp = new TimedRamp(myUniverse, "ramp");
         ramp.setParam("Initial Value", "2");
         PNSieve sieve = new PNSieve(myUniverse, "2_sieve");
-        sieve.setParam("prime", "2");
+        Parameter param = (Parameter)sieve.getAttribute("prime");
+        param.setToken(new IntToken(2));
         IOPort portin = (IOPort)sieve.getPort("input");
         IOPort portout = (IOPort)ramp.getPort("output");
         myUniverse.connect(portin, portout, "2_queue");
@@ -69,24 +68,6 @@ public class TimedPrimeExample {
 	portout = (IOPort)sieve.getPort("output");
         portin = (IOPort)sink.getPort("input");
 	myUniverse.connect(portin, portout, "plot_queue");
-
-        //PNPlot plot = new PNPlot(myUniverse, "plotter");
-        //portout = (PNOutPort)sieve.getPort("output");
-        //portin = (PNInPort)plot.getPort("input");
-        //myUniverse.connect(portin, portout, "plot_queue");
-        //portin.getQueue(portout).setCapacity(1);
-
-        //System.out.println(myUniverse.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
-
-        //DynamicGraphView view = DynamicGraphView.makeView(
-	//       "Sieve of Eratosthenes", 800, 600);
-
-        //view.loadPtolemyGraph(myUniverse);
-
-        // DebugMutationListener d = new DebugMutationListener();
-        // myUniverse.getDirector().addMutationListener(d);
-        //myUniverse.getDirector().addMutationListener(view);
-
         exec.run();
         System.out.println("Bye World\n");
         return;
