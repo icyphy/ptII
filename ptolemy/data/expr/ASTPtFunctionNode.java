@@ -90,7 +90,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     }
 
     protected ptolemy.data.Token _resolveNode()
-            throws IllegalArgumentException {
+            throws IllegalActionException {
         int args = jjtGetNumChildren();
         if (_isArrayRef) {
             int row = 0;
@@ -98,15 +98,16 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             if (args == 3) {
                 // referencing a matrix
                 if (!(childTokens[1] instanceof IntToken)) {
-                    throw new IllegalExpressionException("The row index to "
+                    throw new IllegalActionException("The row index to "
                             + _funcName + " is not an integer.");
                 } else {
                     row = ((IntToken)childTokens[1]).intValue();
                 }
             }
-            ptolemy.data.Token colTok = (args == 2) ? childTokens[1] : childTokens[2];
+            ptolemy.data.Token colTok =
+                    (args == 2) ? childTokens[1] : childTokens[2];
             if (!(colTok instanceof IntToken)) {
-                throw new IllegalExpressionException("The column index to "
+                throw new IllegalActionException("The column index to "
                         + _funcName + " is not an integer.");
             } else {
                 col = ((IntToken)colTok).intValue();
@@ -128,31 +129,21 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 Complex val = ((ComplexMatrixToken)tok).getElementAt(row, col);
                 return new ComplexToken(val);
             } else {
-                throw new IllegalExpressionException("The value of " + _funcName
+                throw new IllegalActionException("The value of " + _funcName
                         + " is not a supported matrix token.");
             }
         }
         if (_funcName.compareTo("eval") == 0) {
             // Have a recursive call to the parser.
             String exp = "";
-            try {
-                if (_parser == null) {
-                    throw new InvalidStateException("ASTPtFunctionNode: " +
-                            " recursive call to null parser.");
-                }
-                NamedList scope = _parser.getScope();
-                exp = childTokens[0].stringValue();
-                ASTPtRootNode tree = _parser.generateParseTree(exp, scope);
-                return tree.evaluateParseTree();
-            } catch (IllegalActionException ex) {
-                throw new IllegalArgumentException("ASTPtFunctionNode: " +
-                        "could not parse and evaluate expression " + exp +
-                        ", " + ex.getMessage());
-            } catch (IllegalArgumentException ex) {
-                throw new IllegalArgumentException("ASTPtFunctionNode: " +
-                        "could not parse and evaluate expression " + exp +
-                        ", " + ex.getMessage());
+            if (_parser == null) {
+                throw new InvalidStateException("ASTPtFunctionNode: " +
+                        " recursive call to null parser.");
             }
+            NamedList scope = _parser.getScope();
+            exp = childTokens[0].stringValue();
+            ASTPtRootNode tree = _parser.generateParseTree(exp, scope);
+            return tree.evaluateParseTree();
         }
 
         // Do not have a recursive invocation of the parser.
@@ -182,7 +173,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 argValues[i] = ((ComplexToken)child).complexValue();
                 argTypes[i] = argValues[i].getClass();;
             } else {
-                throw new IllegalArgumentException("FunctionNode: "+
+                throw new IllegalActionException("FunctionNode: "+
                         "Invalid argument  type, valid types are: " +
                         "boolean, complex, double, int, long  and String");
             }
@@ -205,8 +196,6 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 //  nextClass.getName());
             }
             if (foundMethod) {
-                //System.out.println("Method " + _funcName + " found in " +
-                //    nextClass.getName());
                 if (result instanceof ptolemy.data.Token) {
                     return (ptolemy.data.Token)result;
                 } else if (result instanceof Double) {
@@ -224,7 +213,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 } else if (result instanceof Complex) {
                     return new ComplexToken((Complex)result);
                 } else  {
-                    throw new IllegalArgumentException("FunctionNode: "+
+                    throw new IllegalActionException("FunctionNode: "+
                             "result of function " + _funcName +
                             " not a valid type: boolean, complex, " +
                             " double, int, long  and String, or a Token.");
@@ -241,7 +230,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 sb.append(", " + argValues[i].toString());
             }
         }
-        throw new IllegalArgumentException("Function " + _funcName + "(" + sb +
+        throw new IllegalActionException("Function " + _funcName + "(" + sb +
                 ") cannot be executed with given arguments.");
     }
 

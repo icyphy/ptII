@@ -1,4 +1,4 @@
-/* ASTPtUnaryNode represent the unary operator(!,-) nodes in the parse tree
+/* ASTPtUnaryNode represent the unary operator(!, -) nodes in the parse tree
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -31,12 +31,13 @@
 package ptolemy.data.expr;
 
 import ptolemy.data.*;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtUnaryNode
 /**
 The parse tree created from the expression string consists of a
-hierarchy of node objects. This class represents unary operator(!,-, ~)
+hierarchy of node objects. This class represents unary operator(!, -, ~)
 nodes in the parse tree.
 
 @author Neil Smyth
@@ -69,42 +70,35 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
     ////                         protected methods                 ////
 
     protected ptolemy.data.Token _resolveNode()
-            throws IllegalArgumentException {
+            throws IllegalActionException {
         if (jjtGetNumChildren() != 1) {
-            throw new IllegalArgumentException(
+            throw new InternalErrorException(
                     "More than one child of a Unary node");
         }
         ptolemy.data.Token result = childTokens[0];
-        try {
-            if (_isMinus == true) {
-                // Need to chose the type at the bottom of the hierarch
-                // so as to not do any upcasting. For now IntToken will do.
-                result = result.multiply(new ptolemy.data.IntToken(-1));
-            } else if (_isNot == true) {
-                if (!(result instanceof BooleanToken)) {
-                    throw new IllegalArgumentException(
-                            "Cannot negate a nonBoolean type: " +
-                            result.toString());
-                }
-                result = ((BooleanToken)result).negate();
-            } else if (_isBitwiseNot == true) {
-                if (result instanceof IntToken) {
-                    int tmp = ~(((IntToken)result).intValue());
-                    return new IntToken(tmp);
-                    // } else if (result instanceof LongToken) {
-                    //        long tmp = ~(((LongToken)result).longValue());
-                    // return new LongToken(tmp);
-                } else {
-                    throw new IllegalArgumentException(
-                            "Cannot apply bitwise NOT \"~\" to  " +
-                            "non-Integer type: " + result.toString());
-                }
+        if (_isMinus == true) {
+            // Need to chose the type at the bottom of the hierarch
+            // so as to not do any upcasting. For now IntToken will do.
+            result = result.multiply(new ptolemy.data.IntToken(-1));
+        } else if (_isNot == true) {
+            if (!(result instanceof BooleanToken)) {
+                throw new IllegalActionException(
+                        "Cannot negate a non-boolean token: " +
+                        result.toString());
             }
-        } catch (Exception ex) {
-            throw new IllegalArgumentException(
-                    "Invalid negation operation(!, ~, -) on " +
-                    childTokens[0].getClass().getName());
-
+            result = ((BooleanToken)result).negate();
+        } else if (_isBitwiseNot == true) {
+            if (result instanceof IntToken) {
+                int tmp = ~(((IntToken)result).intValue());
+                return new IntToken(tmp);
+            } else if (result instanceof LongToken) {
+                long tmp = ~(((LongToken)result).longValue());
+                return new LongToken(tmp);
+            } else {
+                throw new IllegalActionException(
+                        "Cannot apply bitwise NOT \"~\" to  " +
+                        "non-integer type: " + result.toString());
+            }
         }
         return result;
     }

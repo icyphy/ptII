@@ -59,7 +59,7 @@ public class UtilityFunctions {
      *   environment variable.
      */
     public static StringToken env(String envName) {
-        return new StringToken("Hello world!");
+        return new StringToken(System.getProperty(envName));
     }
 
     /** Get the string text contained in the specified file. For

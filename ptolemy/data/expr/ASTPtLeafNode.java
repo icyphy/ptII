@@ -33,6 +33,7 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
+import ptolemy.kernel.util.IllegalActionException;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
@@ -64,16 +65,16 @@ protected Variable _var;
      *  PtToken contained in that parameter. Otherwise return the PtToken
      *  object stored in this node.
      *  @return The PtToken stored/referenced by this node
-     *  @exception IllegalArgumentException Thrown when an error occurs
+     *  @exception IllegalActionException Thrown when an error occurs
      *  trying to evaluate the PtToken type and/or value to be stored in
      *  node in the tree.
      */
     public ptolemy.data.Token evaluateParseTree()
-            throws IllegalArgumentException {
+            throws IllegalActionException {
         if (_var != null) {
             _ptToken = _var.getToken();
         } else if (_ptToken == null) {
-            throw new IllegalArgumentException(
+            throw new IllegalActionException(
                     "In a leaf node, either _ptToken or _param " +
                     "must be non-null");
         }

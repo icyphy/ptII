@@ -35,6 +35,7 @@ Created : May 1998
 package ptolemy.data.expr;
 
 import ptolemy.data.*;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtRelationalNode
@@ -55,50 +56,45 @@ is a BooleanToken.
 public class ASTPtRelationalNode extends ASTPtRootNode {
 
     protected ptolemy.data.Token  _resolveNode()
-            throws IllegalArgumentException {
+            throws IllegalActionException {
         int num =  jjtGetNumChildren();
         if ( (num != 2) ||  (_lexicalTokens.size() != 1) ) {
-            throw new IllegalArgumentException(
-                    "A relational node needs two children and " +
-                    "one operator.");
+            throw new InternalErrorException(
+                    "A relational node should have two children and " +
+                    "one operator, check PtParser.");
         }
+        boolean res = false;
         ptolemy.data.Token result = childTokens[0];
         Token x = (Token)_lexicalTokens.take();
         // need to insert at end if want to reparse tree
         _lexicalTokens.insertLast(x);
-        try {
-            if (x.image.compareTo("==") == 0) {
-                result = result.isEqualTo(childTokens[1]);
-                return result;
-            } else  if (x.image.compareTo("!=") == 0) {
-                result = result.isEqualTo(childTokens[1]);
-                return ((ptolemy.data.BooleanToken)result).negate();
-            } else  {
-                // relational operators only make sense on types below double
-                double a = ((ScalarToken)childTokens[0]).doubleValue();
-                double b = ((ScalarToken)childTokens[1]).doubleValue();
-                boolean res = false;
-                if (x.image.compareTo(">=") == 0) {
-                    if (a >= b) res = true;
-                } else if  (x.image.compareTo(">") == 0) {
-                    if (a>b) res = true;
-                } else if (x.image.compareTo("<=") == 0) {
-                    if (a <= b) res = true;
-                } else if (x.image.compareTo("<") == 0) {
-                    if (a < b) res = true;
-                } else {
-                    throw new IllegalArgumentException("invalid operator " +
-                            x.image + " in relational node");
-                }
-                return new ptolemy.data.BooleanToken(res);
+
+        if (x.image.compareTo("==") == 0) {
+            result = result.isEqualTo(childTokens[1]);
+            return result;
+        } else  if (x.image.compareTo("!=") == 0) {
+            result = result.isEqualTo(childTokens[1]);
+            return ((ptolemy.data.BooleanToken)result).negate();
+        } else  {
+            // relational operators only make sense on types below double
+            double a = ((ScalarToken)childTokens[0]).doubleValue();
+            double b = ((ScalarToken)childTokens[1]).doubleValue();
+            if (x.image.compareTo(">=") == 0) {
+                if (a >= b) res = true;
+            } else if  (x.image.compareTo(">") == 0) {
+                if (a>b) res = true;
+            } else if (x.image.compareTo("<=") == 0) {
+                if (a <= b) res = true;
+            } else if (x.image.compareTo("<") == 0) {
+                if (a < b) res = true;
+            } else {
+                throw new IllegalActionException(
+                        "Invalid operation " + x.image + " between " +
+                        childTokens[0].getClass().getName() + " and " +
+                        childTokens[1].getClass().getName());
             }
-        } catch (Exception ex) {
-            throw new IllegalArgumentException(
-                    "Invalid operation " + x.image + " between " +
-                    childTokens[0].getClass().getName() + " and " +
-                    childTokens[1].getClass().getName() +
-                    ": " + ex.getMessage());
         }
+        return new BooleanToken(res);
     }
 
     public ASTPtRelationalNode(int id) {

@@ -33,6 +33,9 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.data.*;
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtLogicalNode
 /**
@@ -49,25 +52,20 @@ nodes in the parse tree.
 public class ASTPtLogicalNode extends ASTPtRootNode {
 
     protected ptolemy.data.Token _resolveNode()
-            throws IllegalArgumentException {
+            throws IllegalActionException {
         int num = jjtGetNumChildren();
         if (num == 1) {
             return childTokens[0];
         }
-        if (jjtGetNumChildren() != ( _lexicalTokens.size() +1) ) {
-            throw new IllegalArgumentException(
-                    "Not enough/too many operators for number of children");
-        }
         boolean values[] = new boolean[num];
         int i = 0;
-        try {
-            for ( i = 0; i < num; i++ ) {
-                values[i] =
-                    ((ptolemy.data.BooleanToken)childTokens[i]).booleanValue();
+        for ( i = 0; i < num; i++ ) {
+            if (!(childTokens[i] instanceof BooleanToken)) {
+                throw new IllegalActionException("Cannot perform logical "
+                        + "operation on " + childTokens[i].getClass());
             }
-        } catch (Exception ex) {
-            throw new IllegalArgumentException("Could not convert " +
-                    childTokens[i].toString() + "to a Boolean");
+            values[i] =
+                    ((ptolemy.data.BooleanToken)childTokens[i]).booleanValue();
         }
         boolean result = values[0];
         for (i = 0; i < _lexicalTokens.size(); i++) {
@@ -79,7 +77,7 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
             } else if ( x.image.equalsIgnoreCase("||") ) {
                 result = (result || values[i+1]);
             } else {
-                throw new IllegalArgumentException("operator on booleans: " +
+                throw new IllegalActionException("operator on booleans: " +
                         x.image + " are illegal, check parse tree");
             }
         }

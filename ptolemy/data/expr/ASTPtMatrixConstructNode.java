@@ -54,142 +54,164 @@ Matlab like expressions.
 */
 public class ASTPtMatrixConstructNode extends ASTPtRootNode {
 
-    // FIXME: the exception messages need more work.
+    public ASTPtMatrixConstructNode(int id) {
+        super(id);
+    }
 
-    protected ptolemy.data.Token _resolveNode() {
+    public ASTPtMatrixConstructNode(PtParser p, int id) {
+        super(p, id);
+    }
+
+    public static Node jjtCreate(int id) {
+        return new ASTPtMatrixConstructNode(id);
+    }
+
+    public static Node jjtCreate(PtParser p, int id) {
+        return new ASTPtMatrixConstructNode(p, id);
+    }
+
+    protected ptolemy.data.Token _resolveNode() throws IllegalActionException {
         /* first find the type of the matrix token */
         int nChildren = jjtGetNumChildren();
         int i;
         ptolemy.data.Token tok = null;
         Class mtype = _elementType();
-        try {
-            if (_form == 1) {
-                if (mtype == BooleanToken.class) {
-                    boolean[][] val = new boolean[_nRows][_nColumns];
-                    for (i = 0; i < nChildren; ++i) {
-                        tok = BooleanToken.convert(childTokens[i]);
-                        val[i/_nColumns][i%_nColumns] =
+        if (_form == 1) {
+            if (mtype == BooleanToken.class) {
+                boolean[][] val = new boolean[_nRows][_nColumns];
+                for (i = 0; i < nChildren; ++i) {
+                    tok = BooleanToken.convert(childTokens[i]);
+                    val[i/_nColumns][i%_nColumns] =
                             ((BooleanToken)tok).booleanValue();
-                    }
-                    _ptToken = new BooleanMatrixToken(val);
-                } else if (mtype == IntToken.class) {
-                    int[][] val = new int[_nRows][_nColumns];
-                    for (i = 0; i < nChildren; ++i) {
-                        tok = IntToken.convert(childTokens[i]);
-                        val[i/_nColumns][i%_nColumns] =
+                }
+                _ptToken = new BooleanMatrixToken(val);
+            } else if (mtype == IntToken.class) {
+                int[][] val = new int[_nRows][_nColumns];
+                for (i = 0; i < nChildren; ++i) {
+                    tok = IntToken.convert(childTokens[i]);
+                    val[i/_nColumns][i%_nColumns] =
                             ((IntToken)tok).intValue();
-                    }
-                    _ptToken = new IntMatrixToken(val);
-                } else if (mtype == LongToken.class) {
-                    long[][] val = new long[_nRows][_nColumns];
-                    for (i = 0; i < nChildren; ++i) {
-                        tok = LongToken.convert(childTokens[i]);
-                        val[i/_nColumns][i%_nColumns] =
+                }
+                _ptToken = new IntMatrixToken(val);
+            } else if (mtype == LongToken.class) {
+                long[][] val = new long[_nRows][_nColumns];
+                for (i = 0; i < nChildren; ++i) {
+                    tok = LongToken.convert(childTokens[i]);
+                    val[i/_nColumns][i%_nColumns] =
                             ((LongToken)tok).longValue();
-                    }
-                    _ptToken = new LongMatrixToken(val);
-                } else if (mtype == DoubleToken.class) {
-                    double[][] val = new double[_nRows][_nColumns];
-                    for (i = 0; i < nChildren; ++i) {
-                        tok = DoubleToken.convert(childTokens[i]);
-                        val[i/_nColumns][i%_nColumns] =
+                }
+                _ptToken = new LongMatrixToken(val);
+            } else if (mtype == DoubleToken.class) {
+                double[][] val = new double[_nRows][_nColumns];
+                for (i = 0; i < nChildren; ++i) {
+                    tok = DoubleToken.convert(childTokens[i]);
+                    val[i/_nColumns][i%_nColumns] =
                             ((DoubleToken)tok).doubleValue();
-                    }
-                    _ptToken = new DoubleMatrixToken(val);
-                } else if (mtype == ComplexToken.class) {
-                    Complex[][] val = new Complex[_nRows][_nColumns];
-                    for (i = 0; i < nChildren; ++i) {
-                        tok = ComplexToken.convert(childTokens[i]);
-                        val[i/_nColumns][i%_nColumns] =
+                }
+                _ptToken = new DoubleMatrixToken(val);
+            } else if (mtype == ComplexToken.class) {
+                Complex[][] val = new Complex[_nRows][_nColumns];
+                for (i = 0; i < nChildren; ++i) {
+                    tok = ComplexToken.convert(childTokens[i]);
+                    val[i/_nColumns][i%_nColumns] =
                             ((ComplexToken)tok).complexValue();
-                    }
-                    _ptToken = new ComplexMatrixToken(val);
-                } else {
-                    /* The resolved type does not have a corresponding
-                       matrix type. */
-                    throw new IllegalExpressionException("The LUB of the types "
-                            + "of the terms of matrix construction does not "
-                            + "have a corresponding matrix type.");
                 }
-            } else if (_form == 2) {
-                if (mtype == IntToken.class) {
-                    _nColumns = _numIntColumns(childTokens[0], childTokens[1],
-                            childTokens[2]);
-                    // Make sure that all following rows have the same number
-                    // of columns.
-                    for (i = 1; i < _nRows; ++i) {
-                        if (_nColumns != _numIntColumns(childTokens[3*i],
-                                childTokens[3*i+1], childTokens[3*i+2])) {
-                            throw new IllegalExpressionException("Matrix "
-                                    + "should have the same number of columns "
-                                    + "for all rows.");
-                        }
-                    }
-                    int[][] val = new int[_nRows][];
-                    for (i = 0; i < _nRows; ++i) {
-                        val[i] = _createIntRow(childTokens[3*i],
-                                childTokens[3*i+1]);
-                    }
-                    _ptToken = new IntMatrixToken(val);
-                } else if (mtype == LongToken.class) {
-                    _nColumns = _numLongColumns(childTokens[0], childTokens[1],
-                            childTokens[2]);
-                    // Make sure that all following rows have the same number
-                    // of columns.
-                    for (i = 1; i < _nRows; ++i) {
-                        if (_nColumns != _numLongColumns(childTokens[3*i],
-                                childTokens[3*i+1], childTokens[3*i+2])) {
-                            throw new IllegalExpressionException("Matrix "
-                                    + "should have the same number of columns "
-                                    + "for all rows.");
-                        }
-                    }
-                    long[][] val = new long[_nRows][];
-                    for (i = 0; i < _nRows; ++i) {
-                        val[i] = _createLongRow(childTokens[3*i],
-                                childTokens[3*i+1]);
-                    }
-                    _ptToken = new LongMatrixToken(val);
-                } else if (mtype == DoubleToken.class) {
-                    _nColumns = _numDoubleColumns(childTokens[0], childTokens[1],
-                            childTokens[2]);
-                    // Make sure that all following rows have the same number
-                    // of columns.
-                    for (i = 1; i < _nRows; ++i) {
-                        if (_nColumns != _numDoubleColumns(childTokens[3*i],
-                                childTokens[3*i+1], childTokens[3*i+2])) {
-                            throw new IllegalExpressionException("Matrix "
-                                    + "should have the same number of columns "
-                                    + "for all rows.");
-                        }
-                    }
-                    double[][] val = new double[_nRows][];
-                    for (i = 0; i < _nRows; ++i) {
-                        val[i] = _createDoubleRow(childTokens[3*i],
-                                childTokens[3*i+1]);
-                    }
-                    _ptToken = new DoubleMatrixToken(val);
-                } else {
-                    /* The resolved type does not have a corresponding
-                       matrix type. */
-                    throw new IllegalExpressionException("The LUB of the types "
-                            + "of the terms of a regularly-spaced-vector matrix "
-                            + "construction is not supported: " + mtype);
-                }
+                _ptToken = new ComplexMatrixToken(val);
+            } else {
+                /* The resolved type does not have a corresponding
+                   matrix type. */
+                throw new IllegalActionException("The LUB of the types "
+                        + "of the terms of matrix construction does not "
+                        + "have a corresponding matrix type.");
             }
-        } catch (IllegalActionException ex) {
-            /* This is thrown by convert(), but should not be thrown since we
-               are converting to a LUB. */
-            throw new InternalErrorException("PtParser: error when converting "
-                    + "term to the type determined by LUB: " + ex.getMessage());
+        } else if (_form == 2) {
+            if (mtype == IntToken.class) {
+                _nColumns = _numIntColumns(childTokens[0], childTokens[1],
+                        childTokens[2]);
+                // Make sure that all following rows have the same number
+                // of columns.
+                for (i = 1; i < _nRows; ++i) {
+                    if (_nColumns != _numIntColumns(childTokens[3*i],
+                            childTokens[3*i+1], childTokens[3*i+2])) {
+                        throw new IllegalActionException("Matrix "
+                                + "should have the same number of columns "
+                                + "for all rows.");
+                    }
+                }
+                int[][] val = new int[_nRows][];
+                for (i = 0; i < _nRows; ++i) {
+                    val[i] = _createIntRow(childTokens[3*i],
+                            childTokens[3*i+1]);
+                }
+                _ptToken = new IntMatrixToken(val);
+            } else if (mtype == LongToken.class) {
+                _nColumns = _numLongColumns(childTokens[0], childTokens[1],
+                        childTokens[2]);
+                // Make sure that all following rows have the same number
+                // of columns.
+                for (i = 1; i < _nRows; ++i) {
+                    if (_nColumns != _numLongColumns(childTokens[3*i],
+                            childTokens[3*i+1], childTokens[3*i+2])) {
+                        throw new IllegalActionException("Matrix "
+                                + "should have the same number of columns "
+                                + "for all rows.");
+                    }
+                }
+                long[][] val = new long[_nRows][];
+                for (i = 0; i < _nRows; ++i) {
+                    val[i] = _createLongRow(childTokens[3*i],
+                            childTokens[3*i+1]);
+                }
+                _ptToken = new LongMatrixToken(val);
+            } else if (mtype == DoubleToken.class) {
+                _nColumns = _numDoubleColumns(childTokens[0], childTokens[1],
+                        childTokens[2]);
+            // Make sure that all following rows have the same number
+            // of columns.
+            for (i = 1; i < _nRows; ++i) {
+                    if (_nColumns != _numDoubleColumns(childTokens[3*i],
+                            childTokens[3*i+1], childTokens[3*i+2])) {
+                        throw new IllegalActionException("Matrix "
+                                + "should have the same number of columns "
+                                + "for all rows.");
+                    }
+                }
+                double[][] val = new double[_nRows][];
+                for (i = 0; i < _nRows; ++i) {
+                    val[i] = _createDoubleRow(childTokens[3*i],
+                            childTokens[3*i+1]);
+                }
+                _ptToken = new DoubleMatrixToken(val);
+            } else {
+                /* The resolved type does not have a corresponding
+                   matrix type. */
+                throw new IllegalActionException("The LUB of the types "
+                        + "of the terms of a regularly-spaced-vector matrix "
+                        + "construction is not supported: " + mtype);
+            }
         }
         return _ptToken;
     }
 
+    /** The number of rows of the matrix construction.
+     */
+    protected int _nRows;
+
+    /** The number of columns of the matrix construction.
+     */
+    protected int _nColumns;
+
+    /** The form of the matrix construction.
+     *  _form is 1 when the matrix construction gives all elements.
+     *  _form is 2 when using regularly spaced vector construction.
+     */
+    protected int _form;
+
     /* Create a row of a matrix using matlab-style regularly-spaced-vector
      * construction when the elements are integers.
      */
-    private int[] _createIntRow(ptolemy.data.Token lb, ptolemy.data.Token incr) {
+    private int[] _createIntRow(ptolemy.data.Token lb,
+            ptolemy.data.Token incr) {
         int[] result = new int[_nColumns];
         try {
             int lbv = ((IntToken)IntToken.convert(lb)).intValue();
@@ -209,7 +231,8 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
     /* Create a row of a matrix using matlab-style regularly-spaced-vector
      * construction when the elements are long integers.
      */
-    private long[] _createLongRow(ptolemy.data.Token lb, ptolemy.data.Token incr) {
+    private long[] _createLongRow(ptolemy.data.Token lb,
+            ptolemy.data.Token incr) {
         long[] result = new long[_nColumns];
         try {
             long lbv = ((LongToken)LongToken.convert(lb)).longValue();
@@ -229,11 +252,13 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
     /* Create a row of a matrix using matlab-style regularly-spaced-vector
      * construction when the elements are doubles.
      */
-    private double[] _createDoubleRow(ptolemy.data.Token lb, ptolemy.data.Token incr) {
+    private double[] _createDoubleRow(ptolemy.data.Token lb,
+            ptolemy.data.Token incr) {
         double[] result = new double[_nColumns];
         try {
             double lbv = ((DoubleToken)DoubleToken.convert(lb)).doubleValue();
-            double incrv = ((DoubleToken)DoubleToken.convert(incr)).doubleValue();
+            double incrv =
+                    ((DoubleToken)DoubleToken.convert(incr)).doubleValue();
 
             for (int i = 0; i < _nColumns; ++i) {
                 result[i] = lbv + i*incrv;
@@ -248,8 +273,10 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
 
     /* Determine the element type of the matrix, which is the LUB of the term
      * types.
+     * @exception IllegalActionException If the element type of the matrix
+     *  cannot be resolved.
      */
-    private Class _elementType() {
+    private Class _elementType() throws IllegalActionException {
         int nChildren = jjtGetNumChildren();
         int i;
         Object[] termTypes = new Object[nChildren];
@@ -258,9 +285,8 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
         }
         Class mtype = (Class)TypeLattice.lattice().leastUpperBound(termTypes);
         if (mtype == null || mtype == Void.TYPE) {
-            throw new IllegalExpressionException("Cannot resolve type for "
+            throw new IllegalActionException("Cannot resolve type for "
                     + "matrix construction: ");
-            // FIXME: should give subexpression here
         }
         return mtype;
     }
@@ -269,9 +295,6 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
      * construction [lb:incr:ub], when lb, incr, and ub are compatible with
      * IntTokens.
      */
-    // FIXME: note that subtle numerical exceptions may occur in the following
-    // three methods when values of lb, incr, and ub are ill-conditioned. The
-    // current implementation does nothing about these.
     private int _numIntColumns(ptolemy.data.Token lb, ptolemy.data.Token incr,
             ptolemy.data.Token ub) {
         int result = 0;
@@ -328,12 +351,13 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
      * construction [lb:incr:ub], when lb, incr, and ub are compatible with
      * DoubleTokens.
      */
-    private int _numDoubleColumns(ptolemy.data.Token lb, ptolemy.data.Token incr,
-            ptolemy.data.Token ub) {
+    private int _numDoubleColumns(ptolemy.data.Token lb,
+            ptolemy.data.Token incr, ptolemy.data.Token ub) {
         int result = 0;
         try {
             double lbv = ((DoubleToken)DoubleToken.convert(lb)).doubleValue();
-            double incrv = ((DoubleToken)DoubleToken.convert(incr)).doubleValue();
+            double incrv =
+                    ((DoubleToken)DoubleToken.convert(incr)).doubleValue();
             double ubv = ((DoubleToken)DoubleToken.convert(ub)).doubleValue();
             if (incrv == 0) {
                 result = 0;
@@ -351,25 +375,5 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
         }
         return result;
     }
-
-    public ASTPtMatrixConstructNode(int id) {
-        super(id);
-    }
-
-    public ASTPtMatrixConstructNode(PtParser p, int id) {
-        super(p, id);
-    }
-
-    public static Node jjtCreate(int id) {
-        return new ASTPtMatrixConstructNode(id);
-    }
-
-    public static Node jjtCreate(PtParser p, int id) {
-        return new ASTPtMatrixConstructNode(p, id);
-    }
-
-    protected int _nRows;
-    protected int _nColumns;
-    protected int _form;
 
 }

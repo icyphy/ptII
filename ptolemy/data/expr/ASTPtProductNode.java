@@ -33,6 +33,8 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
+import ptolemy.kernel.util.*;
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtProductNode
 /**
@@ -49,43 +51,31 @@ the parse tree.
 public class ASTPtProductNode extends ASTPtRootNode {
 
     protected ptolemy.data.Token _resolveNode()
-            throws IllegalArgumentException {
+            throws IllegalActionException {
         int num = jjtGetNumChildren();
         if (num == 1) {
             return childTokens[0];
         }
-        if (jjtGetNumChildren() != ( _lexicalTokens.size() +1) ) {
-            throw new IllegalArgumentException(
-                    "Invalid state in product node, number of children is " +
-                    "not equal to number of operators +1");
-        }
         ptolemy.data.Token result = childTokens[0];
         String op = "";
         int i = 1;
-        try {
-            for (i = 1; i < num; i++) {
-                // When start using 1.2 will change this
-                // remove from the front, add to the back
-                Token x = (Token)_lexicalTokens.take();
-                _lexicalTokens.insertLast(x); // so that tree can be reparsed
-                op = x.image;
-                if (op.compareTo("*") == 0) {
-                    result = result.multiply(childTokens[i]);
-                } else if (op.compareTo("/") == 0) {
-                    result = result.divide(childTokens[i]);
-                } else if (op.compareTo("%") == 0) {
-                    result = result.modulo(childTokens[i]);
-                } else {
-                    throw new IllegalArgumentException(
-                            "Invalid concatenator in term() production, " +
-                            "check parser");
-                }
+        for (i = 1; i < num; i++) {
+            // When start using 1.2 will change this
+            // remove from the front, add to the back
+            Token x = (Token)_lexicalTokens.take();
+            _lexicalTokens.insertLast(x); // so that tree can be reparsed
+            op = x.image;
+            if (op.compareTo("*") == 0) {
+                result = result.multiply(childTokens[i]);
+            } else if (op.compareTo("/") == 0) {
+                result = result.divide(childTokens[i]);
+            } else if (op.compareTo("%") == 0) {
+                result = result.modulo(childTokens[i]);
+            } else {
+                throw new InternalErrorException(
+                        "Invalid concatenator in term() production, " +
+                        "check parser");
             }
-        } catch (Exception ex) {
-            throw new IllegalArgumentException(
-                    "Invalid operation " + op + " between " +
-                    result.getClass().getName() + " and " +
-                    childTokens[i].getClass().getName());
         }
         return result;
     }

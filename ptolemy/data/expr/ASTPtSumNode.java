@@ -33,6 +33,9 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtSumNode
 /**
@@ -49,42 +52,35 @@ the parse tree.
 public class ASTPtSumNode extends ASTPtRootNode {
 
     protected ptolemy.data.Token _resolveNode()
-            throws IllegalArgumentException {
+            throws IllegalActionException {
         int num =  jjtGetNumChildren();
         if (num == 1) {
             return childTokens[0];
         }
         if (jjtGetNumChildren() != ( _lexicalTokens.size() +1) ) {
-            throw new IllegalArgumentException(
+            throw new InternalErrorException(
                     "Invalid state in sum node, number of children is " +
-                    "not equal to number of operators plus one");
+                    "not equal to number of operators plus one, " +
+                    "check PtParser.");
         }
         ptolemy.data.Token result = childTokens[0];
         String op = "";
-        int i = 1;
-        try {
-            for (i = 1; i < num; i++) {
-                // When start using 1.2 will change this
-                // take from the front, put back at the end
-                Token x = (Token)_lexicalTokens.take();
-                // here so that tree can be reparsed
-                _lexicalTokens.insertLast(x);
-                op = x.image;
-                if (op.compareTo("+") == 0) {
-                    result = result.add(childTokens[i]);
-                } else if (op.compareTo("-") == 0) {
-                    result = result.subtract(childTokens[i]);
-                } else {
-                    throw new IllegalArgumentException(
-                            "Invalid concatenator in sum() production, " +
-                            "check parser");
-                }
+        for (int i = 1; i < num; i++) {
+            // When start using 1.2 will change this
+            // take from the front, put back at the end
+            Token x = (Token)_lexicalTokens.take();
+            // here so that tree can be reparsed
+            _lexicalTokens.insertLast(x);
+            op = x.image;
+            if (op.compareTo("+") == 0) {
+                result = result.add(childTokens[i]);
+            } else if (op.compareTo("-") == 0) {
+                result = result.subtract(childTokens[i]);
+            } else {
+                throw new InternalErrorException(
+                        "Invalid concatenator in sum() production, " +
+                        "check parser.");
             }
-        } catch (Exception ex) {
-            throw new IllegalArgumentException(
-                    "Invalid operation " + op + " between " +
-                    result.getClass().getName() + " and " +
-                    childTokens[i].getClass().getName());
         }
         return result;
     }

@@ -36,6 +36,7 @@ package ptolemy.data.expr;
 
 import ptolemy.data.Token;
 import ptolemy.data.BooleanToken;
+import ptolemy.kernel.util.*;
 import java.lang.reflect.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -62,12 +63,28 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
      */
     protected String _methodName;
 
+    public ASTPtMethodCallNode(int id) {
+        super(id);
+    }
+
+    public ASTPtMethodCallNode(PtParser p, int id) {
+        super(p, id);
+    }
+
     public void jjtClose() {
         if (_children != null) {
             _children.trimToSize();
         }
         // We cannot assume anything about a method call.
         _isConstant = false;
+    }
+
+    public static Node jjtCreate(int id) {
+        return new ASTPtMethodCallNode(id);
+    }
+
+    public static Node jjtCreate(PtParser p, int id) {
+        return new ASTPtMethodCallNode(p, id);
     }
 
     /** Resolves the Token to be stored in the node. When this
@@ -79,78 +96,64 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
      *  trying to evaluate the PtToken type and/or value to be stored.
      */
     protected ptolemy.data.Token _resolveNode()
-            throws IllegalArgumentException {
+            throws IllegalActionException {
         int num = jjtGetNumChildren();
         // if only one child, then must be an enclosing parenthesis
         // i.e. actually no method call.
         if (num == 1) return childTokens[0];
 
+        // The first child is the token on which to invoke the method.
+        // Note that all the arguments to the method call must be
+        // ptTokens. Also the argument types used in reflection must
+        // correspond EXACTLY to those in the method declaration.
+        // thus cannot just do arg.getClass() as this would
+        // e.g. return ptolemy.data.DoubleToken, not ptolemy.data.Token
+        Class[] argTypes = new Class[num - 1];
+        Object[] argValues = new Object[num - 1];
         try {
-            if (_methodName == null) {
-                throw new IllegalArgumentException("Invalid method call: " +
-                        _methodName);
+            for (int i = 1; i < num; i++) {
+                argValues[i-1] = (ptolemy.data.Token)childTokens[i];
+                argTypes[i-1] = Class.forName("ptolemy.data.Token");
             }
-            // we have a valid method call!!
-            // The first child is the token on which to invoke the method
-            // Note that all the arguments to the method call must be
-            // ptTokens. Also the argument types used in reflection must
-            // correspond EXACTLY to those in the method declaration.
-            // thus cannot just do arg.getClass() as this would
-            // eg return ptolemy.data.DoubleToken, not ptolemy.data.Token
-            Class[] argTypes = new Class[num - 1];
-            Object[] argValues = new Object[num - 1];
-            try {
-                for (int i = 1; i < num; i++) {
-                    argValues[i-1] = (ptolemy.data.Token)childTokens[i];
-                    if ( !(argValues[i-1] instanceof ptolemy.data.Token) ) {
-                        throw new Exception();
-                    }
-                    argTypes[i-1] = Class.forName("ptolemy.data.Token");
-                }
-                Class destTokenClass = childTokens[0].getClass();
-                Method m = destTokenClass.getMethod(_methodName, argTypes);
-                Object result = m.invoke(childTokens[0], argValues);
-                // Method call can only return ptolemy.data.Token, we want?
-                if (result instanceof ptolemy.data.Token) {
-                    return (ptolemy.data.Token)result;
-                } else {
-                    throw new IllegalArgumentException(
-                            "Method calls on Token must return a Token");
-                }
-            } catch (Exception ex) {
-                StringBuffer sb = new StringBuffer();
-                for (int i = 0; i < (num-1); i++) {
-                    if (i == 0) {
-                        sb.append(argValues[i].toString());
-                    } else {
-                        sb.append(", " + argValues[i].toString());
-                    }
-                }
-                throw new IllegalArgumentException(
-                        "Function " + _methodName + "(" + sb + ") cannot" +
-                        " be executed with given arguments, on ptTokens of " +
-                        "type " + childTokens[0].getClass().getName() + ": " +
-                        ex.getMessage());
+            Class destTokenClass = childTokens[0].getClass();
+            Method m = destTokenClass.getMethod(_methodName, argTypes);
+            Object result = m.invoke(childTokens[0], argValues);
+            // Method call can only return ptolemy.data.Token, we want?
+            if (result instanceof ptolemy.data.Token) {
+                return (ptolemy.data.Token)result;
+            } else {
+                throw new IllegalActionException(
+                        "Method calls on Token must return a Token");
             }
-        } catch (Exception ex) {
-            throw new IllegalArgumentException(ex.getMessage());
+        } catch (java.lang.NoSuchMethodException ex) {
+            // The detailed message of the caught exception is included in
+            // the generated exception message.
+            throw new IllegalActionException(_generateExceptionMessage(ex));
+        } catch (java.lang.IllegalAccessException ex) {
+            throw new IllegalActionException(_generateExceptionMessage(ex));
+        } catch (java.lang.reflect.InvocationTargetException ex) {
+            throw new IllegalActionException(_generateExceptionMessage(ex));
+        } catch (java.lang.ClassNotFoundException ex) {
+            throw new IllegalActionException(_generateExceptionMessage(ex));
         }
     }
 
-
-    public ASTPtMethodCallNode(int id) {
-        super(id);
+    /* Create a new exception message based on the caught argument exception.
+     */
+    private String _generateExceptionMessage(Exception ex) {
+        StringBuffer sb = new StringBuffer();
+        int num = jjtGetNumChildren();
+        for (int i = 0; i < (num-1); i++) {
+            if (i == 0) {
+                sb.append(childTokens[i].toString());
+            } else {
+                sb.append(", " + childTokens[i].toString());
+            }
+        }
+        return  "Function " + _methodName + "(" + sb + ") cannot" +
+                " be executed with given arguments, on ptTokens of " +
+                "type " + childTokens[0].getClass().getName() + ": " +
+                ex.getMessage();
     }
 
-    public ASTPtMethodCallNode(PtParser p, int id) {
-        super(p, id);
-    }
-
-    public static Node jjtCreate(int id) {
-        return new ASTPtMethodCallNode(id);
-    }
-
-    public static Node jjtCreate(PtParser p, int id) {
-        return new ASTPtMethodCallNode(p, id);
-    }
 }

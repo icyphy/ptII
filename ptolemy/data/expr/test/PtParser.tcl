@@ -481,8 +481,7 @@ test PtParser-10.2 {Test for reasonable error messages on type problems} {
     $v1 setExpression "cos(1)"
     catch {$v1 getToken} msg
     list $msg
-} {{java.lang.IllegalArgumentException: Error evaluating expression.
-java.lang.IllegalArgumentException: Function cos(1) cannot be executed with given arguments.}}
+} {{ptolemy.kernel.util.IllegalActionException: Function cos(1) cannot be executed with given arguments.}}
 
 ######################################################################
 ####
@@ -593,8 +592,7 @@ test PtParser-12.8 {Test matrix construction.} {
     catch {$root1 evaluateParseTree} msg
 
     list $msg
-} {{java.lang.IllegalArgumentException: Error evaluating expression.
-ptolemy.data.expr.IllegalExpressionException: The LUB of the types of the terms of a regularly-spaced-vector matrix construction is not supported: class ptolemy.data.ComplexToken}}
+} {{ptolemy.kernel.util.IllegalActionException: The LUB of the types of the terms of a regularly-spaced-vector matrix construction is not supported: class ptolemy.data.ComplexToken}}
 ######################################################################
 ####
 # Test array reference.

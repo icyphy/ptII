@@ -35,6 +35,8 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import java.util.Vector;
 import collections.LinkedList;
 
@@ -75,35 +77,29 @@ public class ASTPtRootNode implements Node {
      *  When all the children of a node have returned (type & value resolved),
      *  the type & value of the current node may be resolved by a call to
      *  _resolveNode() method.
-     *  @exception IllegalArgumentException Thrown when an error occurs
+     *  @exception IllegalActionException Thrown when an error occurs
      *  trying to evaluate the PtToken type and/or value to be stored in
      *  node in the tree.
      *  @return The token contained by the root node for the parse tree.
      */
     public ptolemy.data.Token evaluateParseTree()
-            throws IllegalArgumentException {
+            throws IllegalActionException {
         if (_isConstant && _ptToken != null) {
             return _ptToken;
         }
         int numChildren = jjtGetNumChildren();
         if (numChildren == 0) {
             // leaf node, should not be here
-            throw new IllegalArgumentException(
+            throw new InternalErrorException(
                     "Encountered a node with no children that is " +
-                    "not a leaf node");
+                    "not a leaf node, check PtParser.");
         } else {
             childTokens = new ptolemy.data.Token[numChildren];
             for (int i = 0; i < numChildren; i++) {
                 ASTPtRootNode child = (ASTPtRootNode)jjtGetChild(i);
                 childTokens[i] = child.evaluateParseTree();
             }
-            try {
-                _ptToken = _resolveNode();
-            } catch (Exception ex) {
-                throw new IllegalArgumentException(
-                        "Error evaluating expression.\n" +
-                        ex.toString());
-            }
+            _ptToken = _resolveNode();
             return _ptToken;
         }
     }
@@ -207,20 +203,20 @@ public class ASTPtRootNode implements Node {
      *  children have been resolved. Thus this method is concerned with
      *  evaluating both the value and type of the ptToken to be stored.
      *  This method should be overridden in all subclasses which have children.
-     *  @exception IllegalArgumentException Thrown when an error occurs
+     *  @exception IllegalActionException Thrown when an error occurs
      *   trying to evaluate the PtToken type and/or value to be stored in
      *   the current node.
      *  @return The ptolemy.data.Token stored in this node.
      */
     protected ptolemy.data.Token _resolveNode()
-            throws IllegalArgumentException {
+            throws IllegalActionException {
         int num = jjtGetNumChildren();
         if (num > 1) {
-            throw new IllegalArgumentException(
+            throw new IllegalActionException(
                     "Node has several children, this method " +
                     "should be overridden!");
         } else if (num == 0) {
-            throw new IllegalArgumentException(
+            throw new IllegalActionException(
                     "Node has no children, this method " +
                     "should be overridden!");
         }

@@ -225,23 +225,6 @@ public class Variable extends Attribute implements Typeable {
         }
     }
 
-    /** Add the variables listed in the argument to the scope of this
-     *  variable. If any of the variables bears the same name as one
-     *  already in the scope, then it will shadow the one in the scope.
-     *  Items in the list that are not instances of the class Variable (or a
-     *  derived class) are ignored.
-     *  @deprecated
-     *  @param varList A list of variables to be added to scope.
-     */
-    public void addToScope(VariableList varList) {
-        // FIXME: Remove this method when fsm no longer depends on it.
-        if (varList == null) {
-            return;
-        }
-        addToScope(varList.getVariables());
-	varList._addDependent(this);
-    }
-
     /** Add the variable specified by the argument to the scope of this
      *  variable. If the variable bears the same name as one already in
      *  the scope, then it will shadow the one in the scope.
@@ -322,13 +305,11 @@ public class Variable extends Attribute implements Typeable {
      *  this expression can result in an exception being thrown.
      *  @return The token contained by this variable, or null if there
      *   is none.
-     *  @exception IllegalExpressionException If the expression cannot
-     *   be parsed or cannot be evaluated.  This is a runtime exception
-     *   so it need not be declared explicitly.
+     *  @exception IllegalActionException If the expression cannot
+     *   be parsed or cannot be evaluated.
      */
-    // FIXME: This should not throw a runtime exception!
     public ptolemy.data.Token getContainedToken()
-            throws IllegalExpressionException {
+            throws IllegalActionException {
         _evaluate();
         return _token;
     }
@@ -435,12 +416,10 @@ public class Variable extends Attribute implements Typeable {
      *  an exception if the expression is not valid.
      *  @return The token contained by this variable converted to the
      *   type of this variable, or null if there is none.
-     *  @exception IllegalExpressionException If the expression cannot
-     *   be parsed or cannot be evaluated.  This is a runtime exception
-     *   so it need not be declared explicitly.
+     *  @exception IllegalActionException If the expression cannot
+     *   be parsed or cannot be evaluated. 
      */
-    // FIXME: This should not be a runtime exception.
-    public ptolemy.data.Token getToken() throws IllegalExpressionException {
+    public ptolemy.data.Token getToken() throws IllegalActionException {
         _evaluate();
         if (_token == null) {
             return null;
@@ -489,15 +468,17 @@ public class Variable extends Attribute implements Typeable {
      *  by setTypeEquals(), no token has been set by setToken(), and no
      *  expression has been set by setExpression().  If an expression has
      *  been set, then calling this method causes this expression to be
-     *  evaluated, which can cause an exception to be thrown.
+     *  evaluated, and the type of this variable is derived from the 
+     *  resulting token. If the evaluation fails, then this method returns
+     *  null, i.e., the type is undefined.
      *  @return The type of this variable.
-     *  @exception IllegalExpressionException If the expression cannot
-     *   be parsed or cannot be evaluated.  This is a runtime exception
-     *   so it need not be declared explicitly.
      */
-    // FIXME: This should not be a runtime exception.
-    public Class getType() throws IllegalExpressionException {
-        _evaluate();
+    public Class getType() {
+        try {
+            _evaluate();
+        } catch (IllegalActionException ex) {
+            return null;
+        }
         return _varType;
     }
 
@@ -545,16 +526,6 @@ public class Variable extends Attribute implements Typeable {
         }
         _scopeVersion = -1;
         _destroyParseTree();
-    }
-
-    /** Remove the variables in the argument from the scope of this variable.
-     *  @deprecated
-     *  @param varList A list of variables to be removed from scope.
-     */
-    public void removeFromScope(VariableList varList) {
-        // FIXME: Remove this when sc (fsm) no longer depends on it.
-        removeFromScope(varList.getVariables());
-	varList._removeDependent(this);
     }
 
     /** Reset the variable to its initial value. If the variable was
@@ -770,7 +741,14 @@ public class Variable extends Attribute implements Typeable {
      *  @return A string representing the class and the current token.
      */
     public String toString() {
-        return super.toString() + " " + getToken();
+        ptolemy.data.Token val = null;
+        try {
+            val = getToken();
+        } catch (IllegalActionException ex) {
+            // The value of this variable is undefined.
+        }
+        return super.toString() + " " + 
+                ((val == null) ? "value undefined" : val.toString());
     }
 
     /** Return the type constraints of this variable.
@@ -891,18 +869,13 @@ public class Variable extends Attribute implements Typeable {
      *  <p>
      *  Part of this method is read-synchronized on the workspace.
      *
-     *  @exception IllegalExpressionException If the expression cannot
-     *   be parsed or cannot be evaluated.  This is a runtime exception
-     *   so it need not be declared explicitly.
+     *  @exception IllegalActionException If the expression cannot
+     *   be parsed or cannot be evaluated. 
      */
-    protected void _evaluate() throws IllegalExpressionException {
+    protected void _evaluate() throws IllegalActionException {
         if (!_needsEvaluation) return;
         if (_currentExpression == null || _currentExpression.equals("")) {
-            try {
-                _setToken(null);
-            } catch (IllegalActionException ex) {
-                throw new IllegalExpressionException(ex.getMessage());
-            }
+            _setToken(null);
             return;
         }
         // If _dependencyLoop is true, then this call to evaluate() must
@@ -911,7 +884,7 @@ public class Variable extends Attribute implements Typeable {
         // to itself.
 	if (_dependencyLoop) {
             _dependencyLoop = false;
-            throw new IllegalExpressionException("Found dependency loop "
+            throw new IllegalActionException("Found dependency loop "
                     + "when evaluating " + getFullName()
                     + ": " + _currentExpression);
         }
@@ -925,7 +898,7 @@ public class Variable extends Attribute implements Typeable {
             _setTokenAndNotify(result);
         } catch (IllegalActionException ex) {
             _needsEvaluation = true;
-            throw new IllegalExpressionException(ex.getMessage());
+            throw ex;
         } finally {
 	    _dependencyLoop = false;
 	    workspace().doneReading();

@@ -33,6 +33,8 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.data.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -51,13 +53,13 @@ nodes in the parse tree.
 public class ASTPtBitwiseNode extends ASTPtRootNode {
 
     protected ptolemy.data.Token _resolveNode()
-            throws IllegalArgumentException {
+            throws IllegalActionException {
         int num = jjtGetNumChildren();
         if (num == 1) {
             return childTokens[0];
         }
         if (jjtGetNumChildren() != ( _lexicalTokens.size() +1) ) {
-            throw new IllegalArgumentException(
+            throw new IllegalActionException(
                     "Not enough/too many operators for number of children");
         }
         ptolemy.data.Token result = childTokens[0];
@@ -67,81 +69,73 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
         }
         String op = "";
         int i = 1;
-        try {
-            for ( i = 1; i < num; i++ ) {
-                // need to take the top object, AND put it back at the
-                // end so that the tree can be reparsed
-                Object x = _lexicalTokens.take();
-                _lexicalTokens.insertLast(x);
-                op = ((Token)x).image;
-                if (isBoolean) {
-                    if ( !(childTokens[i] instanceof BooleanToken) ) {
-                        // FIXME: Should this really throw just an exception
-                        // without any detail?
-                        throw new Exception();
-                    }
-                    boolean arg1 = ((BooleanToken)result).booleanValue();
-                    boolean arg2 =
+        for ( i = 1; i < num; i++ ) {
+            // need to take the top object, AND put it back at the
+            // end so that the tree can be reparsed
+            Object x = _lexicalTokens.take();
+            _lexicalTokens.insertLast(x);
+            op = ((Token)x).image;
+            if (isBoolean) {
+                if ( !(childTokens[i] instanceof BooleanToken) ) {
+                    throw new IllegalActionException("Operation " + op +
+                            " not defined between a BooleanToken and a "
+                            + childTokens[i].getClass());
+                }
+                boolean arg1 = ((BooleanToken)result).booleanValue();
+                boolean arg2 =
                         ((BooleanToken)childTokens[i]).booleanValue();
+                if (op.equals("&")) {
+                    result = new BooleanToken(arg1 & arg2);
+                } else if (op.equals("|")) {
+                    result = new BooleanToken(arg1 | arg2);
+                } else {
+                    throw new IllegalActionException("Operation " + op +
+                            " not supported between BooleanTokens.");
+                }
+            } else {
+                // must be applying bitwise operation between integer types
+                // integer types are long and int
+                if ( !((result instanceof IntToken) ||
+                        (childTokens[i] instanceof LongToken)) ) {
+                    throw new IllegalActionException("Bitwise operation "
+                            + op + " is not supported between " +
+                            result.getClass() + " and " +
+                            childTokens[i].getClass());
+                }
+                if ( (result instanceof LongToken) ||
+                        (childTokens[i] instanceof LongToken) ) {
+                    long arg1 = ((ScalarToken)result).longValue();
+                    long arg2 = ((ScalarToken)childTokens[i]).longValue();
                     if (op.equals("&")) {
-                        result = new BooleanToken(arg1 & arg2);
+                        result = new LongToken(arg1 & arg2);
                     } else if (op.equals("|")) {
-                        result = new BooleanToken(arg1 | arg2);
+                        result = new LongToken(arg1 | arg2);
+                    } else if (op.equals("^")) {
+                        result = new LongToken(arg1 ^ arg2);
                     } else {
-                        // FIXME: Should this really throw just an exception
-                        // without any detail?
-                        throw new Exception();
+                        throw new IllegalActionException(
+                                "Bitwise operation " + op + " not supported"
+                                + " between LongTokens.");
                     }
                 } else {
-                    // must be applying bitwise operation between integer types
-                    // integer types are long and int
-                    if ( !((result instanceof IntToken) ||
-                            (childTokens[i] instanceof LongToken)) ) {
-                        // FIXME: Should this really throw just an exception
-                        // without any detail?
-                        throw new IllegalArgumentException();
-                    }
-                    if ( (result instanceof LongToken) ||
-                            (childTokens[i] instanceof LongToken) ) {
-                        long arg1 = ((ScalarToken)result).longValue();
-                        long arg2 = ((ScalarToken)childTokens[i]).longValue();
-                        if (op.equals("&")) {
-                            result = new LongToken(arg1 & arg2);
-                        } else if (op.equals("|")) {
-                            result = new LongToken(arg1 | arg2);
-                        } else if (op.equals("^")) {
-                            result = new LongToken(arg1 ^ arg2);
-                        } else {
-                            // FIXME: Should this really throw just an
-                            // exception without any detail?
-                            throw new IllegalArgumentException();
-                        }
+                    int arg1 = ((ScalarToken)result).intValue();
+                    int arg2 = ((ScalarToken)childTokens[i]).intValue();
+                    if (op.equals("&")) {
+                        result = new IntToken(arg1 & arg2);
+                    } else if (op.equals("|")) {
+                        result = new IntToken(arg1 | arg2);
+                    } else if (op.equals("^")) {
+                        result = new IntToken(arg1 ^ arg2);
                     } else {
-                        int arg1 = ((ScalarToken)result).intValue();
-                        int arg2 = ((ScalarToken)childTokens[i]).intValue();
-                        if (op.equals("&")) {
-                            result = new IntToken(arg1 & arg2);
-                        } else if (op.equals("|")) {
-                            result = new IntToken(arg1 | arg2);
-                        } else if (op.equals("^")) {
-                            result = new IntToken(arg1 ^ arg2);
-                        } else {
-                            // FIXME: Should this really throw just an
-                            // exception without any detail?
-                            throw new Exception();
-                        }
+                        throw new IllegalActionException(
+                                "Bitwise operation " + op + " not supported"
+                                + " between IntTokens.");
                     }
                 }
             }
-            return result;
-        } catch (Exception ex) {
-            throw new IllegalArgumentException(
-                    "Invalid operation " + op + " between " +
-                    result.getClass().getName() + " and " +
-                    childTokens[i].getClass().getName());
         }
+        return result;
     }
-
 
     public ASTPtBitwiseNode(int id) {
         super(id);
