@@ -1,4 +1,4 @@
-# Makefile for the Continuous Time domain actor library
+# Makefile for the Discrete Event domain actor library
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
