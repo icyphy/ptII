@@ -167,8 +167,9 @@ public class MouseFilter {
         int m = event.getModifiers();
         boolean val = (m & _buttonMask) != 0 &&
             (_modifierFlags == (m & _modifierMask));
-        //System.out.println("FILTER = " + this);
-        //System.out.println("ACCEPT? = " + val);
+//         System.out.println("event = " + event);
+//         System.out.println("FILTER = " + this);
+//         System.out.println("ACCEPT? = " + val);
         return val;
     }
 
@@ -180,7 +181,7 @@ public class MouseFilter {
                 + "; Button " + LayerEvent.toString(_buttonMask)
                 + "; Modifiers " + LayerEvent.toString(_modifierFlags)
                 + "; Modifier mask " + LayerEvent.toString(_modifierMask)
-                + "; Press Number " + LayerEvent.toString(_pressNumber));
+                + "; Press Number " + _pressNumber);
         return result.toString();
     }
 }
