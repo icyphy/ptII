@@ -673,6 +673,20 @@ remote1distnonjsall:
 	@echo "# ~ptII/adm/gen-latest/makefile"
 	@echo "#"
 	@echo "$@ `date`"
+	@echo "# Run make in the non javascope core directories"
+	@echo "# that need to be built before we build the other non javascope"
+	@-if [ "x$(NONJSALLCOREDIRS)" != "x" ]; then \
+		set $(NONJSALLCOREDIRS); \
+		for x do \
+		    if [ -w $(PTIIHOME)/$$x ] ; then \
+			( cd $(PTIIHOME)/$$x ; \
+			echo making all  in $(PTIIHOME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) \
+				all \
+			);  \
+		    fi ; \
+		done ; \
+	fi
 	@-if [ "x$(NONJSALLDIRS)" != "x" ]; then \
 		set $(NONJSALLDIRS); \
 		for x do \
