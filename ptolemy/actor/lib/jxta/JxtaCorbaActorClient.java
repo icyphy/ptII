@@ -106,13 +106,19 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
                 i++;
             }
 
-        	PropertyConfigurator.configure(System.getProperties());
-            String Dir = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta";
+	    PropertyConfigurator.configure(System.getProperties());
+		
+		//String Dir = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta";
             //String _actorListFileName = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/actors.xml";
             _properties = new Properties(System.getProperties());
-            try
+	    _configDir = System.getProperty(_CONFIG_DIR);
+	    if (_configDir == null) {
+			_configDir = System.getProperty("user.dir");
+			System.setProperty(_CONFIG_DIR, _configDir);
+	    }
+	     try
             {
-               InputStream configProperties = new FileInputStream(_CONFIG_FILE);
+               InputStream configProperties = new FileInputStream(_configDir + "/" + _CONFIG_FILE);
                _properties.load(configProperties);
                configProperties.close();
             }
@@ -139,7 +145,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
 			groupAdv = (PeerGroupAdvertisement)
 					AdvertisementFactory.newAdvertisement(
 							XML_MIME_TYPE,
-							new FileInputStream(Dir + "/" + groupAdvFileName));
+							new FileInputStream(_configDir + "/" + groupAdvFileName));
 		} catch (FileNotFoundException ex) {
 			System.out.println("Error: cannot find group adv file.\n"
 					+ ex.getMessage());
@@ -530,7 +536,9 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
 	private Credential _credential;
 	private ResolverQueryMsg _actorQueryMessage;
 	private ResolverResponseMsg _actorQueryResponse;
-	private String _CONFIG_FILE = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/Peer.properties";
+        private String _configDir;
+        private static String _CONFIG_DIR = "pae.config.dir";
+	private String _CONFIG_FILE = "Peer.properties";
         private String _actorListFileName;
 	private String _ACTOR_QUERY_HANDLER_NAME = "ActorQueryHandler";
 	private MimeMediaType XML_MIME_TYPE = new MimeMediaType("text/xml");

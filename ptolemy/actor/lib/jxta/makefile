@@ -50,8 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	Peer.java \
-	MoMLSimpleApplication.java
+	JxtaCorbaActorClient.java
 
 EXTRA_SRCS =	$(JSRCS)
 
