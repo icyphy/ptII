@@ -89,7 +89,7 @@ public class DirectedGraph extends Graph {
     public void add(Object o) {
         super.add(o);
 
-        _inDegree.add(new Integer(0));
+        _inDegree.add(_getNodeId(o), new Integer(0));
 	_transitiveClosure = null;
     }
 
@@ -170,11 +170,14 @@ public class DirectedGraph extends Graph {
 	ArrayList nodes = new ArrayList(_transitiveClosure.length);
         // Or the corresponding rows.
 	for (int i = 0; i < _transitiveClosure.length; i++) {
-            boolean orthem = false;
+            boolean reachable = false;
             for (int j = 0;  j < N; j++) {
-                orthem = orthem || _transitiveClosure[i][ids[j]];
+                if (_transitiveClosure[i][ids[j]]) {
+		    reachable = true;
+		    break;
+		}
             }
-	    if (orthem) {
+	    if (reachable) {
 		nodes.add(_getNodeObject(i));
 	    }
 	}
@@ -250,11 +253,14 @@ public class DirectedGraph extends Graph {
 	ArrayList nodes = new ArrayList(_transitiveClosure.length);
         // Or the corresponding rows.
 	for (int i = 0; i < _transitiveClosure.length; i++) {
-            boolean orthem = false;
-            for (int j = 0;  j < N; j++) {
-                orthem = orthem || _transitiveClosure[ids[j]][i];
+            boolean reachable = false;
+            for (int j = 0; j < N; j++) {
+		if (_transitiveClosure[ids[j]][i]) {
+		    reachable = true;
+		    break;
+		}
             }
-	    if (orthem) {
+	    if (reachable) {
 		nodes.add(_getNodeObject(i));
 	    }
 	}
@@ -271,9 +277,9 @@ public class DirectedGraph extends Graph {
      *  found in chapter 6 of "Discrete Mathematics and Its
      *  Applications", 3rd Ed., by Kenneth H. Rosen.  The complexity
      *  of this algorithm is O(|N|^3), where N for nodes.
+     *  This method also checks if the graph is cyclic and stores
+     *  the result in an internal flag.
      */
-    // This method also checks if the graph is acyclic and set
-    // _isAcyclic.
     protected void _computeTransitiveClosure() {
         if (_transitiveClosure != null) {
             return;
@@ -319,7 +325,7 @@ public class DirectedGraph extends Graph {
     ////                         protected variables               ////
 
     /** The in-degree of each node.
-     *  This vector is indexed by node ID with each entry an
+     *  This ArrayList is indexed by node ID with each entry an
      *  <code>Integer</code> containing the in-degree of the
      *  corresponding node.
      */

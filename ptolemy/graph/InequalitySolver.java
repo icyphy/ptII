@@ -91,11 +91,11 @@ public class InequalitySolver {
 	_addToClist(ineq.getGreaterTerm().getVariables(), indexWrap);
     }
 
-    /** Return an <code>Enumeration</code> of the variables whose current
+    /** Return an <code>Iterator</code> of the variables whose current
      *  values are the bottom of the underlying CPO. If none of the
      *  variables have its current value set to the bottom, an empty
-     *  <code>Enumeration</code> is returned.
-     *  @return an Enumeration of InequalityTerms
+     *  <code>Iterator</code> is returned.
+     *  @return an Iterator of InequalityTerms
      *  @exception InvalidStateException If the underlying CPO does not
      *   have a bottom element.
      */
@@ -107,14 +107,7 @@ public class InequalitySolver {
                     + " element.");
 	}
 
-	LinkedList result = new LinkedList();
-	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
-	    InequalityTerm variable = (InequalityTerm)e.nextElement();
-	    if (variable.getValue().equals(bottom)) {
-		result.addLast(variable);
-	    }
-	}
-	return result.iterator();
+	return _filterVariables(bottom);
     }
 
     /** Solve the set of inequalities for the least solution.
@@ -183,11 +176,11 @@ public class InequalitySolver {
 	return _solve(false);
     }
 
-    /** Return an <code>Enumeration</code> of the variables whose current
+    /** Return an <code>Iterator</code> of the variables whose current
      *  values are the top of the underlying CPO. If none of the
      *  variables have the current value set to the top, an empty
-     *  <code>Enumeration</code> is returned.
-     *  @return an Enumeration of InequalityTerms
+     *  <code>Iterator</code> is returned.
+     *  @return an Iterator of InequalityTerms
      *  @exception InvalidStateException If the underlying CPO does not
      *   have a top element.
      */
@@ -198,21 +191,14 @@ public class InequalitySolver {
                     + " The underlying CPO does not have a top element.");
 	}
 
-	LinkedList result = new LinkedList();
-	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
-	    InequalityTerm variable = (InequalityTerm)e.nextElement();
-	    if (variable.getValue().equals(top)) {
-		result.addLast(variable);
-	    }
-	}
-	return result.iterator();
+	return _filterVariables(top);
     }
 
-    /** Return an <code>Enumeration</code> of <code>Inequalities</code>
+    /** Return an <code>Iterator</code> of <code>Inequalities</code>
      *  that are not satisfied with the current value of variables.
      *  If all the inequalities are satisfied, an empty
-     *  <code>Enumeration</code> is returned.
-     *  @return an Enumeration of Inequalities
+     *  <code>Iterator</code> is returned.
+     *  @return an Iterator of Inequalities
      */
     public Iterator unsatisfiedInequalities() {
 	LinkedList result = new LinkedList();
@@ -226,33 +212,33 @@ public class InequalitySolver {
 	return result.iterator();
     }
 
-    /** Return an <code>Enumeration</code> of all the variables in the
+    /** Return an <code>Iterator</code> of all the variables in the
      *  inequality constraints.
-     *  @return an Enumeration of InequalityTerms
+     *  @return an Iterator of InequalityTerms
      */
-    public Enumeration variables() {
-	return _Clist.keys();
+    public Iterator variables() {
+	return _filterVariables(null);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
     // Each instance of this class is an entry in _Ilist.
-    /*private*/ class Info {
-        /*private*/ Info(Inequality ineq) {
+    private class Info {
+        private Info(Inequality ineq) {
             _ineq = ineq;
         }
 
-        /*private*/ Inequality _ineq;
+        private Inequality _ineq;
 
 	// True if this ineq. is in the "Cvar" set of the Rehof paper,
 	// i.e., if looking for the least solution and the greaterTerm
 	// is settable, or looking for the greatest solution and the
 	// lesserTerm is settable.
-	/*private*/ boolean _inCvar = false;
+	private boolean _inCvar = false;
 
 	// If this ineq. is in _NS
-        /*private*/ boolean _inserted = false;
+        private boolean _inserted = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -262,7 +248,7 @@ public class InequalitySolver {
     // index as value to _Clist.  The InequalityTerms are variables
     // and the index is the index of the Inequality in _Ilist that
     // contains the variables.
-    /*private*/ void _addToClist(InequalityTerm[] variables,
+    private void _addToClist(InequalityTerm[] variables,
             Integer indexWrap) {
         for (int i = 0; i < variables.length; i++) {
 	    if ( !variables[i].isSettable()) {
@@ -281,10 +267,28 @@ public class InequalitySolver {
         }
     }
 
+    // filter out the variables with a certain value. If the given value
+    // is null, return all variables. This method is used by,
+    // bottomVariables(), topVariables(), and variables(). For variables(),
+    // this method effectively converts an Enumeration to an Iterator.
+    // This is necessary for interface consistency since other methods
+    // in this package return Iterators.
+    private Iterator _filterVariables(Object value) {
+
+	LinkedList result = new LinkedList();
+	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
+	    InequalityTerm variable = (InequalityTerm)e.nextElement();
+	    if (value == null || variable.getValue().equals(value)) {
+		result.addLast(variable);
+	    }
+	}
+	return result.iterator();
+    }
+
     // The solver used by solveLeast() and solveGreatest().
     // If the argument is true, solve for the least solution;
     // otherwise, solve for the greatest solution.
-    /*private*/ boolean _solve(boolean least) {
+    private boolean _solve(boolean least) {
 
         // initialize all variables
 	Object init = least ? _cpo.bottom() : _cpo.top();
@@ -298,8 +302,8 @@ public class InequalitySolver {
 	    try {
 	        variable.setValue(init);
 	    } catch (IllegalActionException ex) {
-		throw new RuntimeException("InequalitySolver.solve: " +
-			"Cannot set variable value(when Initialize variable). "
+		throw new InvalidStateException("InequalitySolver.solve: " +
+			"Cannot initialize variable. "
 			+ ex.getMessage());
 	    }
 	}
@@ -357,8 +361,8 @@ public class InequalitySolver {
 	    try {
 		updateTerm.setValue(value);
 	    } catch (IllegalActionException ex) {
-		throw new RuntimeException("InequalitySolver.solve: " +
-			"Can't set variable value(when update variable). " +
+		throw new InvalidStateException("InequalitySolver.solve: " +
+			"Can't update variable. " +
 			ex.getMessage());
 	    }
 
@@ -399,18 +403,16 @@ public class InequalitySolver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // FIXME: I changed this because of a Netscape applet bug (lmuliadi)
-    // with inner class accessing private field of the outer class
-    /*private*/ CPO _cpo = null;
+    private CPO _cpo = null;
 
     // ArrayList representation of Ilist. Each entry is an instance of the
     // inner class Info. This vector effectively gives each inequality an
     // index, _Clist and _NS use that index.
-    /*private*/ ArrayList _Ilist = new ArrayList();
+    private ArrayList _Ilist = new ArrayList();
 
     // Mapping from variable to the Inequalities containing them.
     // Each entry in _Clist is a vector of Integers containing the
     // index of inequalities in _Ilist.
-    /*private*/ Hashtable _Clist = new Hashtable();
+    private Hashtable _Clist = new Hashtable();
 }
 

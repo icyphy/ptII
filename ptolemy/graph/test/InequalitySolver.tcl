@@ -48,41 +48,6 @@ if {[string compare test [info procs test]] == 1} then {
 #
 
 ######################################################################
-#### enumToInfo
-# Convert an Enumeration to a list. If the Enumeration contains
-# InequalityTerms, the list contains the information returned by
-# getInfo() of the terms; if the Enumeration contains Inequalities,
-# the list contains pairs of information for the lesser and greater
-# terms of the Inequality.
-#
-proc enumToInfo {enum} {
-    set result {}
-    if {$enum != [java::null]} {
-        while {[$enum hasMoreElements] == 1} {
-            set elem [$enum nextElement]
-	    if [ java::instanceof $elem ptolemy.graph.InequalityTerm] {
-#		lappend result [$elem getInfo]
-		lappend result [termToInfo $elem]
-	    } else {
-		if [ java::instanceof $elem ptolemy.graph.Inequality] {
-		    set ineqelem [java::cast ptolemy.graph.Inequality $elem]
-		    set lesser [$ineqelem getLesserTerm]
-		    set greater [$ineqelem getGreaterTerm]
-		    set ineq {}
-#		    lappend ineq [$lesser getInfo]
-#		    lappend ineq [$greater getInfo]
-		    lappend ineq [termToInfo $lesser]
-		    lappend ineq [termToInfo $greater]
-		    lappend result $ineq
-		}
-	    }
-
-        }
-    }
-    return $result
-}
-
-######################################################################
 #### iterToInfo
 # Convert an Iterator to a list. If the Iterator contains
 # InequalityTerms, the list contains the information returned by
@@ -187,7 +152,7 @@ test InequalitySolver-2.3 {solver for the least solution} {
     list $sat [$ta getValue] [$tb getValue] \
 	 [lsort [iterToInfo [$s bottomVariables]]] \
 	 [iterToInfo [$s topVariables]] \
-	 [lsort [enumToInfo [$s variables]]] \
+	 [lsort [iterToInfo [$s variables]]] \
 	 [iterToInfo [$s unsatisfiedInequalities]]
 } {1 z z {A(variable)_z B(variable)_z} {} {A(variable)_z B(variable)_z} {}}
 
@@ -198,7 +163,7 @@ test InequalitySolver-2.4 {solver for the greatest solution} {
     set sat [$s solveGreatest]
     list $sat [$ta getValue] [$tb getValue] \
 	 [iterToInfo [$s bottomVariables]] [iterToInfo [$s topVariables]] \
-         [lsort [enumToInfo [$s variables]]] \
+         [lsort [iterToInfo [$s variables]]] \
 	 [iterToInfo [$s unsatisfiedInequalities]]
 } {1 x x {} {} {A(variable)_x B(variable)_x} {}}
 

@@ -40,13 +40,13 @@ import java.util.*;
 A directed acyclic graph (DAG).
 
 The graphs constructed by this class cannot have cycles. For performance
-reasons, this requirement is not checked during the construction of the
-graph (calls to <code>add</code> and <code>addEdge</code>), but is checked
-when any of the other methods is called for the first time after the
-addition of nodes or edges. If the graph is cyclic, an
-InvalidStateException is thrown. The check for cycles is done by computing
-the transitive closure, so the first operation after graph changes
-is slower.
+reasons, this requirement is not checked (except for self-loops) during
+the construction of the graph (calls to <code>add</code> and
+<code>addEdge</code>), but is checked when any of the other methods is
+called for the first time after the addition of nodes or edges. If the
+graph is cyclic, an InvalidStateException is thrown. The check for cycles
+is done by computing the transitive closure, so the first operation after
+graph changes is slower.
 
 This class implements the CPO interface since the Hasse diagram of a CPO
 can be viewed as a DAG.  Therefore, this class can be viewed as both a DAG
@@ -333,7 +333,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  The implementation uses the method of A.B. Kahn: "Topological
      *  Sorting of Large Networks", Communications of the ACM,
      *  Vol. 5, 558-562, 1962.
-     *  It has complexity O(|N|+|E|), where N for nodes and E for edges.
+     *  It has complexity O(|N|+|E|), where N for nodes and E for edges,
      *
      *  @return an array of Objects representing the nodes sorted
      *   according to the topology.
@@ -390,7 +390,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // call sequence:
+    // call sequence (the lower methods are called by the higher ones):
     //
     // leastUpperBound     leastUpperBound([])     leastElement
     // greatestLowerBound  greatestLowerBound([])  greatestElement

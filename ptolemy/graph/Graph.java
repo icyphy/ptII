@@ -53,7 +53,7 @@ public class Graph {
      */
     public Graph() {
         _graph = new ArrayList();
-        _nodeObject = new ArrayList();
+        _nodeObjects = new ArrayList();
         _nodeIdTable = new Hashtable();
     }
 
@@ -65,7 +65,7 @@ public class Graph {
      */
     public Graph(int nodeCount) {
         _graph = new ArrayList(nodeCount);
-        _nodeObject = new ArrayList(nodeCount);
+        _nodeObjects = new ArrayList(nodeCount);
         _nodeIdTable = new Hashtable(nodeCount);
     }
 
@@ -94,7 +94,7 @@ public class Graph {
             throw new IllegalArgumentException("Graph.add: Object is " +
                     "already in the graph.");
         }
-        _nodeObject.add(o);
+        _nodeObjects.add(o);
         _graph.add(new ArrayList());
         _nodeIdTable.put(o, new Integer(_graph.size() - 1));
     }
@@ -114,7 +114,8 @@ public class Graph {
         int id1 = _getNodeId(o1);
         int id2 = _getNodeId(o2);
 
-        ((ArrayList)(_graph.get(id1))).add(new Integer(id2));
+        ArrayList sinkIds = (ArrayList)(_graph.get(id1));
+	sinkIds.add(new Integer(id2));
 	_edgeCount++;
     }
 
@@ -150,10 +151,9 @@ public class Graph {
             Object elem = _getNodeObject(i);
             result = result.concat("  {" + elem.toString());
 
-            ArrayList re = (ArrayList)(_graph.get(i));
-	    Iterator iter = re.iterator();
-            while (iter.hasNext()) {
-                int i2 = ((Integer)iter.next()).intValue();
+            ArrayList sinkIds = (ArrayList)(_graph.get(i));
+	    for (int j = 0; j < sinkIds.size(); j++) {
+                int i2 = ((Integer)sinkIds.get(j)).intValue();
                 result = result.concat(" " +
                         _getNodeObject(i2).toString());
             }
@@ -202,7 +202,7 @@ public class Graph {
      *  @return the total number of nodes in this graph.
      */
     public int getNodeCount() {
-        return _nodeObject.size();
+        return _nodeObjects.size();
     }
 
     /** Return all the nodes in this graph in the form of an Objects array.
@@ -211,7 +211,7 @@ public class Graph {
      *  @return an Object array
      */
     public Object[] getNodes() {
-        return _nodeObject.toArray();
+        return _nodeObjects.toArray();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -243,7 +243,7 @@ public class Graph {
      */
     protected Object _getNodeObject(int nodeId) {
 	try {
-	    return _nodeObject.get(nodeId);
+	    return _nodeObjects.get(nodeId);
 	} catch (ArrayIndexOutOfBoundsException ex) {
 	    throw new IllegalArgumentException("Graph._getNodeObject: " +
                     "node ID is negative or is not less than the total " +
@@ -258,11 +258,11 @@ public class Graph {
     ////                         protected variables               ////
 
     /** The data structure storing the topology of this graph.
-     *  This vector is indexed by the node IDs, each entry is a vector
-     *  of <code>Integers</code> containing node IDs. Every successful
-     *  call of <code>addEdge</code> adds the node ID of the second
-     *  argument to the ArrayList at the entry of _graph indexed by
-     *  the node ID of the first argument.
+     *  This ArrayList is indexed by the node IDs, each entry is as
+     *  ArrayList of <code>Integers</code> containing node IDs. Every
+     *  successful call of <code>addEdge</code> adds the node ID of
+     *  the second argument to the ArrayList at the entry of _graph
+     *  indexed by the node ID of the first argument.
      */
     protected ArrayList _graph;
 
@@ -275,12 +275,12 @@ public class Graph {
     // Translation from node to node ID. The keys of this Hashtable
     // are the Objects representing graph nodes, and the values are
     // the corresponding node IDs.  This translation can also be
-    // done with _nodeObject.indexOf(), but Hashtable is faster.
+    // done with _nodeObjects.indexOf(), but Hashtable is faster.
     private Hashtable _nodeIdTable;
 
     // Translation from node Id to node.
-    // This vector is indexed by node ID. The entries are the Objects
+    // This ArrayList is indexed by node ID. The entries are the Objects
     // representing the graph nodes with the corresponding node IDs.
-    private ArrayList _nodeObject;
+    private ArrayList _nodeObjects;
 }
 
