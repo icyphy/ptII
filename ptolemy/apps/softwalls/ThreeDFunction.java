@@ -1,6 +1,6 @@
-/* One line description of file.
+/* 
 
- Copyright (c) 1999-2003 The Regents of the University of California.
+ Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,10 +39,6 @@ import java.util.NoSuchElementException;
 
 import ptolemy.kernel.util.IllegalActionException;
 
-
-
-
-
 //////////////////////////////////////////////////////////////////////////
 //// ThreeDFunction
 /**
@@ -57,39 +53,38 @@ subset of R^3 for which the dataset is defined.
 @since Ptolemy II 2.0.1
 */
 public class ThreeDFunction {
-    /** ThreeDFunction
-     *
+    /** 
      *  Constructs the functional representation of the 3D dataset.
-     *
+     *  
      *  @param fileName name of file storing the dataset.
      *  @exception IllegalActionException If any exception is
-     *     is generated during file i/o.
+     *     is generated during file I/O.
      */
     public ThreeDFunction(String fileName) throws IllegalActionException {
         int xPoints, yPoints, thetaPoints;
         double xSpan, ySpan, thetaSpan;
         double dimension;
 
+        BufferedReader in = null;
+            
         try {
-            BufferedReader in =
-                new BufferedReader(new FileReader(fileName));
+            in = new BufferedReader(new FileReader(fileName));
 
-            /** Read the dimension of the state space and ignore it,
-             * since we know it's value is 3.
-             */
+            // Read the dimension of the state space and ignore it,
+            // since we know it's value is 3.
             dimension = _readDouble(in);
 
-            //Read x grid information.
+            // Read x grid information.
             _xLowerBound = _readDouble(in);
             _xStepSize = _readDouble(in);
             _xUpperBound = _readDouble(in);
 
-            //Read y grid information.
+            // Read y grid information.
             _yLowerBound = _readDouble(in);
             _yStepSize = _readDouble(in);
             _yUpperBound = _readDouble(in);
 
-            //Read theta grid information.
+            // Read theta grid information.
             _thetaLowerBound = _readDouble(in);
             _thetaStepSize = _readDouble(in);
             _thetaUpperBound = _readDouble(in);
@@ -99,7 +94,7 @@ public class ThreeDFunction {
 //                 throw new IllegalActionException("Bad bounds on theta");
 //             }
 
-            //Initialize the values array;
+            // Initialize the values array;
             xSpan = _xUpperBound - _xLowerBound;
             ySpan = _yUpperBound - _yLowerBound;
             thetaSpan = _thetaUpperBound - _thetaLowerBound;
@@ -108,9 +103,8 @@ public class ThreeDFunction {
             thetaPoints = (int)Math.round(thetaSpan / _thetaStepSize) + 1;
             _values = new double[xPoints][yPoints][thetaPoints];
 
-            /** Fill in the values array with values, sorted in
-             * reverse lexicographical order.
-             */
+            // Fill in the values array with values, sorted in
+            // reverse lexicographical order.
             for (int t = 0; t < thetaPoints; t = t + 1) {
                 for (int y = 0; y < yPoints; y = y + 1) {
                     for (int x = 0; x < xPoints; x = x + 1) {
@@ -119,29 +113,26 @@ public class ThreeDFunction {
                 }
             }
 
-            //Close the file.
-            in.close();
-        }
-        catch (FileNotFoundException f) {
-            throw new IllegalActionException(f.getMessage());
-        }
-        catch (IOException i) {
-            throw new IllegalActionException(i.getMessage());
-        }
-        catch (NumberFormatException n) {
-            throw new IllegalActionException(n.getMessage());
-        }
-        catch (NoSuchElementException e) {
-            throw new IllegalActionException(e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(null, ex,
+                    "Failed to parse '" + fileName + "'");
+        } finally {
+            if (in != null) {
+                try {
+                in.close();
+                } catch (IOException ex) {
+                    throw new IllegalActionException(null, ex,
+                            "Failed to close '" + fileName + "'");
+                }
+            }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                      public mehtods                       ////
 
-    /** getValue
-     *
-     *  Returns the approximate value of f(x, y, theta) using trilinear
+    /**
+     *  Return the approximate value of f(x, y, theta) using trilinear
      *  interpolation.  If x < _xLowerBound, or x >= _xUpperBound, or
      *  y < _yLowerBound, or y >= _yUpperBound, this returns Infinity.
      *
@@ -166,11 +157,10 @@ public class ThreeDFunction {
 
         if (_inRange(x, y)) {
 
-            /** Get the indices for the neighboring points.  x0Index
-             * is the x index of the nearest gridpoint less than x,
-             * and x1Index is the x index of the nearest gridpoint
-             * greater than x.
-             */
+            // Get the indices for the neighboring points.  x0Index
+            // is the x index of the nearest gridpoint less than x,
+            // and x1Index is the x index of the nearest gridpoint
+            // greater than x.
             x0Index = (int)((x - _xLowerBound) / _xStepSize);
             x1Index = x0Index + 1;
             y0Index = (int)((y - _yLowerBound) / _yStepSize);
@@ -178,39 +168,36 @@ public class ThreeDFunction {
             theta0Index =
                 (int)((theta - _thetaLowerBound) / _thetaStepSize);
 
-            /** theta1Index will be 0 if the nearest gridpoint greater
-             * than theta is 2*pi
-             */
+            // theta1Index will be 0 if the nearest gridpoint greater
+            // than theta is 2*pi
 //             double thetaSpan = _thetaUpperBound - _thetaLowerBound;
 //             int maxThetaIndex = (int)Math.round(thetaSpan / _thetaStepSize);
 //             if (theta0Index == maxThetaIndex) {
 //                 theta1Index = 0;
 //             }
-/*  When the proper dataset is loaded, use the previous method.  This will
- *  be more error prone.
- */
+
+            //  When the proper dataset is loaded, use the previous
+            //  method.  This will be more error prone.
+
             if ((2 * Math.PI - theta) < _thetaStepSize) {
                 theta1Index = 0;
-            }
-            else {
+            } else {
                 theta1Index = theta0Index + 1;
             }
 
-            /** Get the normalized distance of x, y, and theta from
-             *  the point corresponding to x0Index, y0Index, and
-             *  theta0Index.  The distance is scaled by the step size
-             *  in each dimension, so these numbers will be between 0
-             *  and 1.
-             */
+            // Get the normalized distance of x, y, and theta from
+            //  the point corresponding to x0Index, y0Index, and
+            //  theta0Index.  The distance is scaled by the step size
+            //  in each dimension, so these numbers will be between 0
+            //  and 1.
             xDis = (x - _xLowerBound) / _xStepSize - x0Index;
             yDis = (y - _yLowerBound) / _yStepSize - y0Index;
             thetaDis =
                 (theta - _thetaLowerBound) / _thetaStepSize - theta0Index;
 
-            /** Through a for loop, compute the value.  At each step
-             * of the for loop, add the contribution from one of the
-             * gridpoints.
-             */
+            // Through a for loop, compute the value.  At each step
+            // of the for loop, add the contribution from one of the
+            // gridpoints.
             value = 0;
             for (int i = 0; i <= 1; i = i + 1) {
                 for (int j = 0; j <= 1; j = j + 1) {
@@ -218,24 +205,19 @@ public class ThreeDFunction {
                         if (i == 0) {
                             xWeight = 1 - xDis;
                             xIndex = x0Index;
-                        }
-                        else {
+                        } else {
                             xWeight = xDis;
                             xIndex = x1Index;
-                        }
-                        if (j == 0) {
+                        } if (j == 0) {
                             yWeight = 1 - yDis;
                             yIndex = y0Index;
-                        }
-                        else {
+                        } else {
                             yWeight = yDis;
                             yIndex = y1Index;
-                        }
-                        if (k == 0) {
+                        } if (k == 0) {
                             thetaWeight = 1 - thetaDis;
                             thetaIndex = theta0Index;
-                        }
-                        else {
+                        } else {
                             thetaWeight = thetaDis;
                             thetaIndex = theta1Index;
                         }
@@ -247,8 +229,7 @@ public class ThreeDFunction {
             }
 
             return value;
-        }
-        else {
+        } else {
             // The value is out of range, return Infinity.
             return Double.POSITIVE_INFINITY;
         }
@@ -275,8 +256,7 @@ public class ThreeDFunction {
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
 
-    /** _angleWrap
-     *
+    /** 
      *  Takes in an angular value and returns the equivalant value in
      *  the range [0, 2*Pi).
      *
@@ -294,8 +274,7 @@ public class ThreeDFunction {
         return angle;
     }
 
-    /** _inRange
-     *
+    /**
      *  Returns true if the input is in the range stored by the array.
      *  That is, it returns true if x in [_xLowerBound, _xUpperBound),
      *  y in [_yLowerBound, _yUpperBound), and theta in Reals.
@@ -317,8 +296,7 @@ public class ThreeDFunction {
         return (xOK && yOK);
     }
 
-    /** _readDouble
-     *
+    /**
      *  If a line has no data, it tries to return the next line.
      *  If no next line exists, it returns null,
      *
@@ -331,15 +309,9 @@ public class ThreeDFunction {
         String token;
         if (_tokenizer.hasMoreTokens()) {
             return (new Double(_tokenizer.nextToken())).doubleValue();
-        }
-        else {
-            try {
-                _tokenizer = new StringTokenizer(reader.readLine());
-                return _readDouble(reader);
-            }
-            catch (IOException i) {
-                throw i;
-            }
+        } else {
+            _tokenizer = new StringTokenizer(reader.readLine());
+            return _readDouble(reader);
         }
     }
 }

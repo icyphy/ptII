@@ -91,24 +91,26 @@ public class AngleProcessor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input angle. FIXME: radians or degrees?. 
-     *  This port is of type Double */
+    /** The input angle in radians. This port is of type Double
+     */
     public TypedIOPort inputAngle;
 
-    /** The output angle. FIXME: radians or degrees?
-     *  This port is of type Double */
+    /** The output angle in radians. This port is of type Double
+     */
     public TypedIOPort outputAngle;
 
-    /** The minimum angle.  The initial value is 0.0. */
+    /** The minimum angle.  The initial value is a double of value 0.0.
+     */
     public PortParameter minAngle;
 
-    /** The maximum angle.  The initial value is 2 * PI. */
+    /** The maximum angle.  The initial value is a double of value 2 * PI.
+     */
     public PortParameter maxAngle;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Overrides the base class to update the minAngle and maxAngle values.
+    /** Update the minAngle and maxAngle values.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If an exception is thrown
      *  from reading an attribute.
@@ -124,7 +126,7 @@ public class AngleProcessor extends TypedAtomicActor {
         }
     }
 
-    /** Overrides the base class to output the correct angle.
+    /** Output the correct angle.
      *  @exception IllegalActionException If an exception is
      *  thrown from the input port, or if the minimum angle is
      *  greater than the maximum angle.
@@ -157,17 +159,17 @@ public class AngleProcessor extends TypedAtomicActor {
         outputAngle.send(0, new DoubleToken(angle));
     }
 
-    /** Overrides the base class to initialize the minAngle and
-     *  maxAngle values.
+    /** Initialize the minAngle and maxAngle values.
      *  @exception IllegalActionException If an exception is thrown
-     *  from reading the parameters.
+     *  from reading the minAngle or maxAngle parameters.
      */
     public void initialize() throws IllegalActionException {
         _minAngle = ((DoubleToken)(minAngle.getToken())).doubleValue();
         _maxAngle = ((DoubleToken)(maxAngle.getToken())).doubleValue();
     }
 
-    /** Overrides the base class to ensure input is available before firing.
+    /** Return true of the inputAngle port has a token, otherwise return
+     *  false.   
      *  @exception IllegalActionException If the hasToken() method
      *  throws exception.
      */

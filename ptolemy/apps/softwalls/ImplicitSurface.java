@@ -33,6 +33,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -73,58 +74,81 @@ public class ImplicitSurface extends TypedAtomicActor {
      */
     public ImplicitSurface(CompositeEntity container, String name)
         throws IllegalActionException, NameDuplicationException {
-
         super(container, name);
 
         // Create and configure ports
         x = new TypedIOPort(this, "x", true, false);
+        x.setTypeEquals(BaseType.DOUBLE);
+
         y = new TypedIOPort(this, "y", true, false);
+        y.setTypeEquals(BaseType.DOUBLE);
+
         heading = new TypedIOPort(this, "heading", true, false);
+        heading.setTypeEquals(BaseType.DOUBLE);
+
         functionValue = new TypedIOPort(this, "functionValue", false, true);
+        functionValue.setTypeEquals(BaseType.DOUBLE);
+
         dx = new TypedIOPort(this, "dx", false, true);
+        dx.setTypeEquals(BaseType.DOUBLE);
+
         dy = new TypedIOPort(this, "dy", false, true);
+        dy.setTypeEquals(BaseType.DOUBLE);
+
         dtheta = new TypedIOPort(this, "dz", false, true);
+        dtheta.setTypeEquals(BaseType.DOUBLE);
 
         // Create and configure FileParameters
-        functionFile =
-            new FileParameter(this, "functionFile");
-        dxFile =
-            new FileParameter(this, "dxFile");
-        dyFile =
-            new FileParameter(this, "dyFile");
-        dthetaFile =
-            new FileParameter(this , "dthetaFile");
+        functionFile = new FileParameter(this, "functionFile");
+        dxFile = new FileParameter(this, "dxFile");
+        dyFile = new FileParameter(this, "dyFile");
+        dthetaFile = new FileParameter(this , "dthetaFile");
 
-        /** This flag will become true after initialize() is first
-         * called, to avoid reloading the surface function.
-         */
+        // This flag will become true after initialize() is first
+        // called, to avoid reloading the surface function.
         _alreadyInitialized = false;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and FileParameters                  ////
 
-    /** File name for implicit surface functions and gradients*/
+    /** The location of the function file. */
     public FileParameter functionFile;
+
+    /** The location of the dx file. */
     public FileParameter dxFile;
+
+    /** The location of the dy file. */
     public FileParameter dyFile;
+
+    /** The location of the dtheta file. */
     public FileParameter dthetaFile;
 
-    /** Current x position */
+    /** Input x position.  The type of this port is double. */
     public TypedIOPort x;
 
-    /** Current y position */
+    /** Current y position.  The type of this port is double. */
     public TypedIOPort y;
 
-    /** Current heading angle */
+    /** Input heading angle. The type of this port is double. */
     public TypedIOPort heading;
 
-    /** Output functionValue */
+    /** Output functionValue of type double. */
     public TypedIOPort functionValue;
 
-    /** Output gradiant values */
+    /** Output gradiant value for the x coordinate.  The type of this
+     *  port is double.
+     */   
     public TypedIOPort dx;
+
+    /** Output gradiant value for the y coordinate.  The type of this
+     *  port is double.
+     */   
     public TypedIOPort dy;
+
+    /** Output gradiant value theta.  The type of this
+     *  port is double.
+     */   
     public TypedIOPort dtheta;
 
     ///////////////////////////////////////////////////////////////////
@@ -134,13 +158,11 @@ public class ImplicitSurface extends TypedAtomicActor {
      *  function value.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-
     public void fire() throws IllegalActionException {
         double x1, x2, x3;
         double f, xGrad, yGrad, thetaGrad;
 
-        /** Get current function and gradient information.
-         */
+        // Get current function and gradient information.
         x1 = ((DoubleToken)x.get(0)).doubleValue();
         x2 = ((DoubleToken)y.get(0)).doubleValue();
         x3 = ((DoubleToken)heading.get(0)).doubleValue();
@@ -149,9 +171,8 @@ public class ImplicitSurface extends TypedAtomicActor {
         yGrad = _yGradientFunction.getValue(x1, x2, x3);
         thetaGrad = _thetaGradientFunction.getValue(x1, x2, x3);
 
-        /** Send values out of ports.
-         */
-         functionValue.send(0, new DoubleToken(f));
+        // Send values out of ports.
+        functionValue.send(0, new DoubleToken(f));
         dx.send(0, new DoubleToken(xGrad));
         dy.send(0, new DoubleToken(yGrad));
         dtheta.send(0, new DoubleToken(thetaGrad));
@@ -165,35 +186,26 @@ public class ImplicitSurface extends TypedAtomicActor {
 
     public void initialize() throws IllegalActionException {
         super.initialize();
-        /** Prevent reinitialization.
-         */
+        // Prevent reinitialization.
         if (_alreadyInitialized) {
             return;
-        }
-        else {
+        } else {
             _alreadyInitialized = true;
         }
 
         String ptII, functionName, dxName, dyName, dthetaName;
 
-        /** Make the file names relative to the correct path.
-         */
+        // Make the file names relative to the correct path.
         functionName = functionFile.asFile().getAbsolutePath();
         dxName = dxFile.asFile().getAbsolutePath();
         dyName = dyFile.asFile().getAbsolutePath();
         dthetaName = dthetaFile.asFile().getAbsolutePath();
 
-        try {
-            // FIXME: The above code doesn't work... Hardwire in the names.
-            _surfaceFunction = new ThreeDFunction(functionName);
-            _xGradientFunction = new ThreeDFunction(dxName);
-            _yGradientFunction = new ThreeDFunction(dyName);
-            _thetaGradientFunction = new ThreeDFunction(dthetaName);
-        }
-        catch (IllegalActionException a) {
-            throw a;
-        }
-
+        // FIXME: The above code doesn't work... Hardwire in the names.
+        _surfaceFunction = new ThreeDFunction(functionName);
+        _xGradientFunction = new ThreeDFunction(dxName);
+        _yGradientFunction = new ThreeDFunction(dyName);
+        _thetaGradientFunction = new ThreeDFunction(dthetaName);
     }
 
 //     /** Clears the the implicit surface function and gradient function.
@@ -210,19 +222,14 @@ public class ImplicitSurface extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
 
-    /* Implicit Surface Function and it's gradient functions*/
-    ThreeDFunction _surfaceFunction;
-    ThreeDFunction _xGradientFunction;
-    ThreeDFunction _yGradientFunction;
-    ThreeDFunction _thetaGradientFunction;
+    // Implicit Surface Function and its gradient functions
+    private ThreeDFunction _surfaceFunction;
+    private ThreeDFunction _xGradientFunction;
+    private ThreeDFunction _yGradientFunction;
+    private ThreeDFunction _thetaGradientFunction;
 
-    /** Used to stop actor from reloading each time.
-     */
-    boolean _alreadyInitialized;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
-
+    // Used to stop actor from reloading each time.
+    private boolean _alreadyInitialized;
 
 }
 
