@@ -23,6 +23,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
+
+@ProposedRating Red
+@AcceptedRating Red
 */
 package ptolemy.domains.sdf.lib;
 
@@ -48,8 +51,6 @@ import ptolemy.domains.sdf.kernel.*;
  *
  * @author Steve Neuendorffer
  * @version $Id$
- * @proposedrating red (neuendor@eecs.berkeley.edu)
- * @acceptedrating red (neuendor@eecs.berkeley.edu)
  */
 public class SDFDelay extends SDFAtomicActor {
     /*
@@ -136,27 +137,42 @@ public class SDFDelay extends SDFAtomicActor {
         IOPort inputport = (IOPort)getPort("input");
         IOPort outputport = (IOPort)getPort("output");
 
-        /* now that we have the port, we can get a token from it.
-         * The argument to get is known as the channel.  The channel must be
-         * zero, since there can only be one IORelation connected to this
-         * inputport.  Multiple channels are useful with Multiports, which
-         * allow more than one relation to be connected to a port.
+        /* Figure out how many tokens should be copied from the input to the
+         * output.
          */
-        message = (IntToken)inputport.get(0);
+        int tokens = getTokenConsumptionRate(inputport);
+        if(getTokenProductionRate(outputport) != tokens)
+            throw new IllegalActionException(
+                    "SDFDelay: Rates on input port and output port " +
+                    "must match!");
 
-        /* System.out.print and System.out.println are calls to the operating
-         * system to print characters (and possibly a linefeed) to the console.
-         */
-        System.out.print("Delay - ");
+        int i;
+        for(i = 0; i < tokens; i++) {
+            /* now that we have the port, we can get a token from it.
+             * The argument to get is known as the channel.
+             * The channel must be
+             * zero, since there can only be one IORelation connected to this
+             * inputport.  Multiple channels are useful with Multiports, which
+             * allow more than one relation to be connected to a port.
+             */
+            message = (IntToken)inputport.get(0);
 
-        /* IntToken.intValue returns the value stored in an IntToken as an
-         * integer.
-         */
-        System.out.println(message.intValue());
+            /* System.out.print and System.out.println
+             * are calls to the operating
+             * system to print characters (and possibly a linefeed)
+             * to the console.
+             */
+            System.out.print("Delay - ");
 
-        /* After looking at the token, pass it along to the next actor
-         */
-        outputport.send(0, message);
+            /* IntToken.intValue returns the value stored in an IntToken as an
+             * integer.
+             */
+            System.out.println(message.intValue());
+
+            /* After looking at the token, pass it along to the next actor
+             */
+            outputport.send(0, message);
+        }
     }
 
     /* Initialization is the first step in executing a model.   This happens
