@@ -67,7 +67,7 @@ import javax.swing.SwingUtilities;
  * as a fraction of the bin width.  It usually has a value less than
  * or equal to one,
  * and defaults to 0.5.  The <i>offset</i> is a real number
- * specifying how much the bar of the <i>i < /i><sup>th</sup> data set
+ * specifying how much the bar of the <i>i </i><sup>th</sup> data set
  * is offset from the previous one.  This allows bars to "peek out"
  * from behind the ones in front.  It defaults to 0.15.
  * Note that the frontmost data set will be the first one.
