@@ -97,7 +97,7 @@ PTDIST_EX =	$(PTTMPDIR)/$(PTDIST_EX_BASE)
 GNUTAR =	gtar
 
 # Minimal path for testing.  The path should not include GNU make.
-TESTPATH = 	/opt/jdk1.2latest/bin:/bin:/usr/ccs/bin:.
+TESTPATH = 	/opt/local/j2sdk1.4.2_02/bin/:/bin:/usr/ccs/bin:.
 
 # InstallShield Java executable
 # See http://www.installshield.com/java
@@ -129,6 +129,8 @@ pttmpdist: $(PTTMPDIR) $(PTDIST_EX)
 	 	$(GNUTAR) -cf - -X $(ME)/$(PTDIST_EX) \
 			$(ME) $(TOPFILES)) | \
 	(cd $(PTTMPDIR)/$(PTDIST); $(GNUTAR) -xf -)
+	# Remove .classpath and bin/comm.policy from configure
+	(cd $(PTTMPDIR)/$(PTDIST); sed 's@ .classpath bin/comm.policy@@' configure.in > configure.in.new; mv configure.in.new configure.in; autoconf)
 
 $(PTTMPDIR):
 	@if [ ! -d $@ ]; then echo "Creating $@"; mkdir -p $@; fi
