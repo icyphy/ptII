@@ -46,7 +46,7 @@ defineClass() method can be called.
 */
 public class JXTAClassLoader extends ClassLoader {
     // FIXME: the name of this method needs to be changed
-    public Class myDefineClass (String name, byte[] b, int off, int len) {
+    public Class myDefineClass(String name, byte[] b, int off, int len) {
         Class myClass = null;
         try {
             // try to turn them into a class
@@ -60,7 +60,7 @@ public class JXTAClassLoader extends ClassLoader {
     }
 
     // FIXME: the name of this method needs to be changed
-    public void myResolveClass (Class c) {
+    public void myResolveClass(Class c) {
         resolveClass( c );
     }
 }
