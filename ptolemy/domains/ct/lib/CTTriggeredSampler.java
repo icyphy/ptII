@@ -45,7 +45,7 @@ import ptolemy.actor.lib.Transformer;
 /**
 This actor samples the continuous input signal when there is a discrete
 event presents at the "trigger" input.
-The actor has a multi-inputport and a multi-outputport. Singals in
+The actor has a multi-input port and a multi-output port. Signals in
 each input channel are sampled and produced to corresponding output
 channel.
 @author Jie Liu

@@ -143,8 +143,8 @@ public class DifferentialSystem extends TypedCompositeActor {
 
     /** If the argument is the <i>initialState</i>
      *  parameters, check that it is a row vector;
-     *  Other sanity checks, like whether a differential euqation matches
-     *  a state variable name, are done in preintialize() and run time. 
+     *  Other sanity checks, like whether a differential equation matches
+     *  a state variable name, are done in preinitialize() and run time. 
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the numerator and the
      *   denominator matrix is not a row vector.
@@ -213,7 +213,7 @@ public class DifferentialSystem extends TypedCompositeActor {
                     stringValue().trim();
                 integrators[i] = new Integrator(this, states[i]);
                 integrators[i].initialState.setToken(
-                        initial.getElementAsToken(0,i));
+                        initial.getElementAsToken(0, i));
                 stateRelations[i] = new TypedIORelation(this,
                         "relation_" + states[i]);
                 
@@ -277,7 +277,7 @@ public class DifferentialSystem extends TypedCompositeActor {
             // Connect output expressions.
             // FIXME: If an output map does not relie on an input,
             // the port and corresponding relations should not be
-            // created. Otherwise, there could be unnecessary algebric
+            // created. Otherwise, there could be unnecessary algebraic
             // loops.
             for(int l = 0; l < r; l++) {
                 // One port for each state variable.
@@ -357,7 +357,7 @@ public class DifferentialSystem extends TypedCompositeActor {
             if(getAttribute(equation) == null) {
                  throw new IllegalActionException(this, "Please add a "
                          + "parameter with name \""
-                         + equation + "\" to specify the state euqation.");
+                         + equation + "\" to specify the state equation.");
             }
         }
 

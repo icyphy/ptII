@@ -59,7 +59,7 @@ form as the following equation:
 where m and n are the number of numerator and denominator coefficients,
 respectively. This actors has two parameters -- numerator and denominator --
 containing the coefficients of the numerator and denominator in
-descending powers of s. These coefficents are double numbers.
+descending powers of s. These coefficients are double numbers.
 The order of the denominator (n) must be greater
 than or equal to the order of the numerator (m).
 <p>
@@ -67,14 +67,12 @@ This actor extends TypedCompositeActor and works as a higher-order function.
 Whenever the parameters are changed, the actor will build a transparent
 subsystem inside it using integrators, adders, and scales. This is called
 a realization of the transfer function. Notice that there are infinite
-number of realizations of a transfter function, and they are equivalent if and
+number of realizations of a transfer function, and they are equivalent if and
 only if the initial conditions are all zero. Here we choose the controllable
 canonical form and preset all initial states of the integrators to zero.
-These initial states should not be changed.
-If you need to specify initial conditions, you have to build the system
-from scratch using individual integrators. We will later suport state-
-space representation of continuous system, and setting arbitrary initial
-conditions is not a problem with the state-space representation.
+If you need to set arbitrary initial
+conditions you have to use the state-space representation, for example,
+use the LinearStateSpace actor.
 
 @author Jie Liu
 @version $Id$
@@ -316,7 +314,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
     }
 
     /** Set the opaqueness to true and wrapup.
-     *  @exception IllgalActionException If there is no director.
+     *  @exception IllegalActionException If there is no director.
      */
     public void wrapup() throws IllegalActionException {
         _opaque = true;

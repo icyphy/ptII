@@ -46,7 +46,7 @@ import ptolemy.actor.lib.Transformer;
 This actor periodically sample the input signal and generate events
 which has the value of the input signal. The sampling rate is given by
 parameter "samplePeriod", which has default value 0.1.
-The actor has a multi-inputport and a multi-outputport. Singals in
+The actor has a multi-input port and a multi-output port. Signals in
 each input channel are sampled and produced to corresponding output
 channel.
 @author Jie Liu
@@ -95,7 +95,7 @@ public class CTPeriodicSampler extends Transformer
     ////                         public methods                    ////
 
     /** Update the local cache of the sampling period if it has been changed.
-     *  @exception IllegalActionException If the sampling peroid is
+     *  @exception IllegalActionException If the sampling period is
      *  less than or equal to 0.
      */
     public void attributeChanged(Attribute attribute) throws IllegalActionException{
@@ -114,7 +114,7 @@ public class CTPeriodicSampler extends Transformer
 
     /** Emit the current event if there is one. The value of the event
      *  is the sample of the input signal.
-     *  @exception IllgalActionException If the transfer of tokens failed.
+     *  @exception IllegalActionException If the transfer of tokens failed.
      */
     public void emitCurrentEvents() {
         if(_hasCurrentEvent) {
@@ -138,13 +138,13 @@ public class CTPeriodicSampler extends Transformer
 
     /** Check the current time of the director and determine
      *  whether there is an event to be emitted.
-     *  @exception IllgalActionException Never thrown.
+     *  @exception IllegalActionException Never thrown.
      */
     public void fire() throws IllegalActionException {
         CTDirector dir = (CTDirector)getDirector();
-        double tnow = dir.getCurrentTime();
+        double now = dir.getCurrentTime();
         _hasCurrentEvent = false;
-        if(Math.abs(tnow - _nextSamplingTime)<dir.getTimeResolution()) {
+        if(Math.abs(now - _nextSamplingTime)<dir.getTimeResolution()) {
             _hasCurrentEvent = true;
         }
     }

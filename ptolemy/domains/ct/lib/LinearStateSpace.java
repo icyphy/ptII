@@ -48,7 +48,7 @@ import java.io.Writer;
 import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
-//// LienarStateSpace
+//// LinearStateSpace
 /**
 The State-Space model implements a system whose behavior is defined by:
 <pre>
@@ -198,7 +198,7 @@ public class LinearStateSpace extends TypedCompositeActor {
             if(token.getRowCount() == 0 || token.getColumnCount() == 0 ||
                     token.getRowCount() != token.getColumnCount()) {
                 throw new IllegalActionException(this,
-                        "The A matrix must be a nonempty sequre matrix.");
+                        "The A matrix must be a nonempty square matrix.");
             }
             _requestInitialization();
         } else if(attribute == B) {
@@ -330,7 +330,7 @@ public class LinearStateSpace extends TypedCompositeActor {
             for(int l = 0; l < r; l++) {
                 outputAdders[l] = new AddSubtract(this, "outputAdder" + l);
                 connect(outputAdders[l].output, output);
-                // Create the output scales only if the corresponsing
+                // Create the output scales only if the corresponding
                 // 'c' element is not 0.
                 for(int i = 0; i < n; i++) {
                     Token tokenLI = c.getElementAsToken(l, i);
