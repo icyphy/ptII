@@ -48,7 +48,6 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	event/event.jar \
 	gui/gui.jar \
 	lib/lib.jar \
 	process/process.jar \
