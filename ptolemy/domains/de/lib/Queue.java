@@ -128,6 +128,14 @@ public class Queue extends DETransformer {
         }
     }
 
+    /** Clear the cached input tokens.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public void initialize() throws IllegalActionException {
+        _queue.clear();
+        super.initialize();
+    }
+
     /** If there is no input on the <i>trigger</i> port, return
      *  false, indicating that this actor does not want to fire.
      *  This has the effect of leaving input values in the input
@@ -145,14 +153,6 @@ public class Queue extends DETransformer {
             hasTrigger = (trigger.hasToken(0));
         }
         return hasInput || hasTrigger;
-    }
-
-    /** Clear the cached input tokens.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public void initialize() throws IllegalActionException {
-        _queue.clear();
-        super.initialize();
     }
 
     ///////////////////////////////////////////////////////////////////
