@@ -253,7 +253,7 @@ public class PropertyClassChanges implements MoMLFilter {
         HashMap expressionClassChanges = new HashMap();
         // Key = property name, Value = new class name
         expressionClassChanges.put("expression",
-                "ptolemy.data.expr.StringParameter");
+                "ptolemy.kernel.util.StringAttribute");
 
         _actorsWithPropertyClassChanges
             .put("ptolemy.actor.lib.Expression",
