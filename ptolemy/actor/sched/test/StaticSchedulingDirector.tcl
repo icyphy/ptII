@@ -80,7 +80,7 @@ test StaticSchedulingDirector-4.1 {Test setScheduler and getScheduler} {
     $d1 setScheduler $s0
     set s1 [$d1 getScheduler]
     list [$s0 getFullName] [$s1 getFullName]
-} {.D1.Basic_Scheduler .D1.Basic_Scheduler}
+} {.D1.Scheduler .D1.Scheduler}
 
 ######################################################################
 ####

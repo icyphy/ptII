@@ -1,4 +1,4 @@
-/* A director that uses static scheduling.
+/* A director that uses a static schedule.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -46,7 +46,7 @@ method on the scheduler, the director can get an Enumeration of the
 actors in the firing order. Then the director can use this Enumeration
 to fire the actors in that order.
 <p>
-"Static" means that the firing sequence, once constructed, can be
+"Static" means that the schedule, once constructed, can be
 used during the execution repeatedly.
 So the schedule is locally cached in the scheduler, and can be reused
 when needed. A schedule is called "valid" if is can be used to correctly
@@ -62,7 +62,7 @@ or invalidate the schedule when needed.
 @see ptolemy.actor.Director
 @see ptolemy.actor.Scheduler
 */
-public class StaticSchedulingDirector extends Director{
+public class StaticSchedulingDirector extends Director {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -164,13 +164,13 @@ public class StaticSchedulingDirector extends Director{
      *  invoke the scheduler again for a new schedule. This calls the
      *  setValid() method of Scheduler.
      *  @param true to set the schedule to be valid.
-     *  @exception IllegalActionException IF there's no scheduler.
+     *  @exception IllegalActionException If there's no scheduler.
      */
     public void setScheduleValid(boolean valid)
             throws IllegalActionException {
         if(_scheduler == null) {
             throw new IllegalActionException(this,
-                    " has no scheduler.");
+                    "has no scheduler.");
         }
         _scheduler.setValid(valid);
     }
@@ -178,14 +178,14 @@ public class StaticSchedulingDirector extends Director{
     /** Return true if the current (cached) schedule is valid.
      *  This calls the valid() method of Scheduler.
      *  @return true if the schedule is valid.
-     *  @exception IllegalActionException IF there's no scheduler.
+     *  @exception IllegalActionException If there's no scheduler.
      */
-    public boolean scheduleValid() throws IllegalActionException {
+    public boolean isScheduleValid() throws IllegalActionException {
         if(_scheduler == null) {
             throw new IllegalActionException(this,
-                    " has no scheduler.");
+                    "has no scheduler.");
         }
-        return _scheduler.valid();
+        return _scheduler.isValid();
     }
 
     ///////////////////////////////////////////////////////////////////

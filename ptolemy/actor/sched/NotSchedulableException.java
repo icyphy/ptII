@@ -37,11 +37,12 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// NotSchedulableException
 /**
-This is a special case of InvalidStateException that a CompositeActor
-is not schedulable by a certain scheduler. The exception has an
-Enumeration that contains the possibly unschedulable actors in the
-CompositeActor. The enumeration can be used by other algorithms
-to do further scheduling, or by the UI to present to the users.
+This is a special case of the InvalidStateException such that a 
+CompositeActor is not schedulable by a certain scheduler. 
+This class has the same constructors as its supper class, but it also
+has an Enumeration that contains the unschedulable
+actors in the CompositeActor. The enumeration can be used by other
+algorithms to do further scheduling, or by the UI to present to the users.
 @author Jie Liu
 @version $Id$
 @see ptolemy.kernel.util.InvalidStateException
@@ -49,23 +50,28 @@ to do further scheduling, or by the UI to present to the users.
 public class NotSchedulableException extends InvalidStateException {
 
     /** Constructs an Exception with only a detail message.
+     *  The unschedulable actors are set to null.
      *  @param detail The message.
      */
     public NotSchedulableException(String detail) {
         super(detail);
+        _unschedulableActors = null;
     }
 
     /** Constructs an Exception with a detail message that includes the
      *  name of the first argument and the second argument string.
+     *  The unschedulable actors are set to null.
      *  @param obj The object.
      *  @param detail The message.
      */
     public NotSchedulableException(Nameable obj, String detail) {
         super(obj, detail);
+        _unschedulableActors = null;
     }
 
     /** Constructs an Exception with a detail message that includes the
      *  names of the first two arguments plus the third argument string.
+     *  The unschedulable actors are set to null.
      *  @param obj1 The first object.
      *  @param obj2 The second object.
      *  @param detail The message.
@@ -73,19 +79,22 @@ public class NotSchedulableException extends InvalidStateException {
     public NotSchedulableException(Nameable obj1, Nameable obj2,
             String detail) {
         super(obj1, obj2, detail);
+        _unschedulableActors = null;
     }
 
     /** Constructs an Exception with a detail message that includes the
-     *  name of the first argument, the second argument string, and
-     *  an Enumeration of unschedulable actors.
+     *  names of an enumeration of nameable plus the an argument string. An 
+     *  addition Enumeration of unschedulable actors is also set. This
+     *  enumeration may be used by the UI to illustrate the unschedulable
+     *  actors, or by the directors to perform some actions to correct
+     *  the error.
      *  @param obj The object.
      *  @param detail The message.
      *  @param actors The unschedulable actors.
      */
-    public NotSchedulableException(Nameable obj, String detail,
-            Enumeration actors) {
-        super(obj, detail);
-        _actors = actors;
+    public NotSchedulableException(Enumeration actors, String detail) {
+        super(actors, detail);
+        _unschedulableActors = actors;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,13 +103,20 @@ public class NotSchedulableException extends InvalidStateException {
     /** Return the unschedulable actors enumeration.
      *  @return the unschedulable actors enumeration.
      */
-    public Enumeration problematicActors() {
-        return _actors;
+    public Enumeration getUnschedulableActors() {
+        return _unschedulableActors;
+    }
+
+    /** Return true if the unschedulable actors has been set.
+     *  @return True if the unschedulable actors has been set.
+     */
+    public boolean hasUnschedulableActors() {
+        return _unschedulableActors != null;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The Enumeration of actors that are not schedulable.
-    private Enumeration _actors = null;
+    private Enumeration _unschedulableActors = null;
 }
