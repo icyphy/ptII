@@ -321,9 +321,16 @@ public class DoubleToken extends ScalarToken {
 	 */
     protected BooleanToken _isCloseTo(
             ScalarToken rightArgument, double epsilon) {
-        return BooleanToken.getInstance(
-                Math.abs(doubleValue() - ((DoubleToken)rightArgument).doubleValue())
-                <= epsilon);
+        // NOTE: Used to compare against epsilon the following expression:
+        // Math.abs(doubleValue() - ((DoubleToken)rightArgument).doubleValue()))
+        // However, because of quantization errors, this did not work well.
+        double right = ((DoubleToken)rightArgument).doubleValue();
+        double left = doubleValue();
+        if (right > left + epsilon || right < left - epsilon) {
+        	return BooleanToken.FALSE;
+        } else {
+        	return BooleanToken.TRUE;
+        }
     }
 
     /** Test for ordering of the values of this Token and the argument
