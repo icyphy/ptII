@@ -51,7 +51,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ChoiceAttribute.java \
 	FileAttribute.java \
 	RequireVersion.java \
 	URIAttribute.java \
