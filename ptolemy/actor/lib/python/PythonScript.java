@@ -41,12 +41,14 @@ import ptolemy.util.StringUtilities;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.python.core.PyClass;
 import org.python.core.PyJavaInstance;
 import org.python.core.PyMethod;
 import org.python.core.PyObject;
 import org.python.core.PyString;
+import org.python.core.PySystemState;
 import org.python.util.PythonInterpreter;
 
 //////////////////////////////////////////////////////////////////////////
@@ -120,6 +122,7 @@ public class PythonScript extends TypedAtomicActor {
     public PythonScript(CompositeEntity container, String name)
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        System.out.println("DEBUG: PythonScript(): " + container + " " + name);
         script = new StringAttribute(this, "script");
         // Set the visibility to expert, as casual users should
         // not see the script.  This is particularly true if one
@@ -492,9 +495,39 @@ public class PythonScript extends TypedAtomicActor {
     private PyClass _class;
 
     // The python interpreter.
-    private static PythonInterpreter _interpreter = new PythonInterpreter();
+    //private static PythonInterpreter _interpreter = new PythonInterpreter();
+    private static PythonInterpreter _interpreter;
 
     static {
+        try {
+            _interpreter = new PythonInterpreter();
+        } catch (java.security.AccessControlException ex) {
+            // In an applet, instantiating a PythonInterpreter
+            // causes PySystemState.initialize() to call
+            // System.getProperties(), which throws an exception
+            // The solution is to pass our own custom Properties
+        
+            // Properties that are accessible via an applet.
+            String[] propertyNames = {"file.separator",
+                              "line.separator",
+                              "path.separator",
+                              "java.class.version",
+                              "java.vendor",
+                              "java.vendor.url",
+                              "java.version",
+                              "os.name",
+                              "os.arch",
+                              "os.version"};
+            Properties preProperties = new Properties();
+            for (int i = 0; i < propertyNames.length; i++) {    
+                     preProperties.setProperty(propertyNames[i], 
+                             System.getProperty(propertyNames[i]));
+            }
+
+            PySystemState.initialize(preProperties, null, new String[] {""});
+            _interpreter = new PythonInterpreter();
+        }
+
         try {
             String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
             _interpreter.exec("import sys\n");
