@@ -31,19 +31,15 @@ package ptolemy.actor.gui;
 
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.CancelException;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.*;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import javax.swing.JFrame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -56,6 +52,12 @@ It also contains a string attribute named "identifier" with a value that
 uniquely identifies the model. A typical choice (which depend on
 the configuration) is the canonical URL for a MoML file that
 describes the model.
+<p>
+An effigy may contain other effigies.  The top effigy
+in such a containment hierarchy is associated with a URL or file.
+Contained effigies are associated with the same file, and represent
+structured data within the top-level representation in the file.
+The topEffigy() method returns that top effigy.
 <p>
 NOTE: It might seem more natural for the identifier
 to be the name of the effigy rather than the value of a string attribute.
@@ -79,6 +81,7 @@ public class Effigy extends CompositeEntity {
         try {
             identifier = new StringAttribute(this, "identifier");
             identifier.setExpression("Unnamed");
+            url = new URLAttribute(this, "url");
         } catch (Exception ex) {
             throw new InternalErrorException("Can't create identifier!");
         }
@@ -97,6 +100,7 @@ public class Effigy extends CompositeEntity {
 	super(container, name);
         identifier = new StringAttribute(this, "identifier");
         identifier.setExpression("Unnamed");
+        url = new URLAttribute(this, "url");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -105,8 +109,28 @@ public class Effigy extends CompositeEntity {
     /** The identifier for the effigy.  The default value is "Unnamed". */
     public StringAttribute identifier;
 
+    /** The URL for the effigy.  The default value is null. */
+    public URLAttribute url;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the argument is the <i>identifier</i> parameter, then set
+     *  the title of all contained Tableaux to the value of the parameter.
+     *  @exception IllegalActionException If the base class throws it.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == identifier) {
+            Iterator tableaux = entityList(Tableau.class).iterator();
+            while (tableaux.hasNext()) {
+                Tableau tableau = (Tableau)tableaux.next();
+                tableau.setTitle(identifier.getExpression());
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Clone the object into the specified workspace. This calls the
      *  base class and then sets the <code>identifier</code>
@@ -119,6 +143,7 @@ public class Effigy extends CompositeEntity {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Effigy newobj = (Effigy)super.clone(ws);
         newobj.identifier = (StringAttribute)newobj.getAttribute("identifier");
+        newobj.url = (URLAttribute)newobj.getAttribute("url");
         return newobj;
     }
 
@@ -129,6 +154,20 @@ public class Effigy extends CompositeEntity {
      */
     public TableauFactory getTableauFactory() {
         return _factory;
+    }
+
+    /** Return the value set by setModified(), or false if setModified()
+     *  has not been called on this effigy or any effigy contained by
+     *  the same top effigy (returned by topEffigy()).
+     *  This method is intended to be used to
+     *  keep track of whether the data in the file or URL associated
+     *  with this data has been modified.  The method is called by
+     *  an instance of TableauFrame to determine whether it is safe
+     *  to close.
+     *  @return True if the data has been modified.
+     */
+    public boolean isModified() {
+        return topEffigy()._modified;
     }
 
     /** Override the base class so that tableaux contained by this object
@@ -149,15 +188,21 @@ public class Effigy extends CompositeEntity {
 	    while (tableaux.hasNext()) {
 		ComponentEntity tableau = (ComponentEntity)tableaux.next();
 		tableau.setContainer(null);
-	    }  
-	    super.setContainer(container);
-	} else if(container instanceof ModelDirectory) {
-	    super.setContainer(container);
-	} else {
-	    throw new IllegalActionException(this, container, 
-		"The container can only be set to an " + 
-		"instance of ModelDirectory");
-	}
+	    }
+        }
+        super.setContainer(container);
+    }
+
+    /** Record whether the data associated with this effigy has been
+     *  modified since it was first read or last saved.  If you call
+     *  this with a true argument, then subsequent calls to isModified()
+     *  will return true.  This is used by instances of TableauFrame.
+     *  This is recorded in the entity returned by topEntity(), which
+     *  is the one associated with a file.
+     *  @param modified Indicator of whether the data has been modified.
+     */
+    public void setModified(boolean modified) {
+        topEffigy()._modified = modified;
     }
 
     /** Specify a tableau factory that offers multiple views of this effigy.
@@ -192,8 +237,51 @@ public class Effigy extends CompositeEntity {
         }
     }
 
+    /** If this effigy is contained by another effigy, then return
+     *  the result of calling this method on that other effigy;
+     *  otherwise, return this effigy.
+     *  @return The top-level effigy that (deeply) contains this one.
+     */
+    public Effigy topEffigy() {
+        Nameable container = getContainer();
+        if (container instanceof Effigy) {
+            return ((Effigy)container).topEffigy();
+        } else {
+            return this;
+        }
+    }
+
+    /** Write the model associated with this effigy
+     *  to the specified file.  This base class throws
+     *  an exception, since it does not know how to write model data.
+     *  Derived classes should override this method to write model
+     *  data.
+     *  @param file The file to write to.
+     *  @exception IOException If the write fails.
+     */
+    public void writeFile(File file) throws IOException {
+        throw new IOException("I do not know how to write this model data.");
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Check that the specified container is of a suitable class for
+     *  this entity, i.e., ModelDirectory or Effigy.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the container is not of
+     *   an acceptable class.
+     */
+    protected void _checkContainer(CompositeEntity container)
+             throws IllegalActionException {
+	if(container != null
+                && !(container instanceof ModelDirectory)
+                && !(container instanceof Effigy)) {
+	    throw new IllegalActionException(this, container, 
+		    "The container can only be set to an " + 
+                    "instance of ModelDirectory or Effigy.");
+	}
+    }
 
     /** Remove the specified entity, and if there are no more tableaux
      *  contained, then remove this object from its container.
@@ -205,6 +293,7 @@ public class Effigy extends CompositeEntity {
 	    try {
 		setContainer(null);
 	    } catch (Exception ex) {
+                ex.printStackTrace();
 		throw new InternalErrorException("Cannot remove effigy!");
 	    }
 	}
@@ -215,5 +304,8 @@ public class Effigy extends CompositeEntity {
 
     // A tableau factory affering multiple views.
     private TableauFactory _factory = null;
+
+    // Indicator that the data represented in the window has been modified.
+    private boolean _modified = false;
 }
 
