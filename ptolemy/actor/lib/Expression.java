@@ -49,7 +49,6 @@ import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParseTreeFreeVariableCollector;
 import ptolemy.data.expr.ParseTreeTypeInference;
 import ptolemy.data.expr.PtParser;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
@@ -59,6 +58,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -141,7 +141,7 @@ public class Expression extends TypedAtomicActor {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
-        expression = new StringParameter(this, "expression");
+        expression = new StringAttribute(this, "expression");
         expression.setExpression("");
 
         _setOutputTypeConstraint();
@@ -155,7 +155,7 @@ public class Expression extends TypedAtomicActor {
 
     /** The expression that is evaluated to produce the output.
      */
-    public StringParameter expression;
+    public StringAttribute expression;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -222,7 +222,7 @@ public class Expression extends TypedAtomicActor {
                 // requires a large amount of memory.
                 PtParser parser = new PtParser();
                 _parseTree = parser.generateParseTree(
-                        expression.stringValue());
+                        expression.getExpression());
             }
             if (_parseTreeEvaluator == null) {
                 _parseTreeEvaluator = new ParseTreeEvaluator();
@@ -240,7 +240,7 @@ public class Expression extends TypedAtomicActor {
         if (result == null) {
             throw new IllegalActionException(this,
                     "Expression yields a null result: " +
-                    expression.stringValue());
+                    expression.getExpression());
         }
         output.send(0, result);
     }
@@ -391,7 +391,7 @@ public class Expression extends TypedAtomicActor {
                     // requires a large amount of memory.
                     PtParser parser = new PtParser();
                     _parseTree = parser.generateParseTree(
-                            expression.stringValue());
+                            expression.getExpression());
                 }
                 
                 if (_scope == null) {
@@ -419,7 +419,7 @@ public class Expression extends TypedAtomicActor {
                 if (_parseTree == null) {
                     PtParser parser = new PtParser();
                     _parseTree = parser.generateParseTree(
-                            expression.stringValue());
+                            expression.getExpression());
                 }
 
                 if (_scope == null) {
