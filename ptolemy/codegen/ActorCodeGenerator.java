@@ -279,7 +279,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         LinkedList importFilteredList = new LinkedList();
          
         while (nameIterator.hasNext()) {
-            unitNode = StaticResolution.load(
+            unitNode = StaticResolution.loadFileName(
              _makeOutputFilename((String) nameIterator.next()), 2);
              
             // a new visitor must be created for each CompileUnitNode
@@ -372,7 +372,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         LinkedList nodeList = new LinkedList();
 
         CompileUnitNode unitNode =
-            (CompileUnitNode) StaticResolution.load(fileName, 2).clone();
+            (CompileUnitNode) StaticResolution.loadFileName(fileName, 2).clone();
 
         nodeList.addFirst(unitNode);
 
@@ -414,7 +414,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
                 File file = SearchPath.NAMED_PATH.openSource(fileName);
 
                 unitNode =
-                    (CompileUnitNode) StaticResolution.load(file, 2).clone();
+                    (CompileUnitNode) StaticResolution.loadFile(file,
+                            2).clone();
 
                 nodeList.addFirst(unitNode);
 
