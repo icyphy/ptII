@@ -1,4 +1,4 @@
-/* A default implementation of the ExecutionListener interface.
+/* An ExecutionListener that copies events to a given stream.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -24,30 +24,39 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
 
 import java.util.Enumeration;
-
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 //////////////////////////////////////////////////////////////////////////
-//// DefaultExecutionListener
+//// StreamExecutionListener
 /**
 A default implementation of the ExecutionListener interface.
-This implementation prints information about each event to the standard
-output.
+This implementation prints information about each event to a stream.
 
 @author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee
 @version $Id$
 */
-public class DefaultExecutionListener implements ExecutionListener {
+public class StreamExecutionListener implements ExecutionListener {
 
-    /** Constructor.
+    /** Create an execution listener that sends
+     *  messages to the standard output.
      */
-    public DefaultExecutionListener() {
+    public StreamExecutionListener() {
+        _output = System.out;
+    }
+
+    /** Create an execution listener that sends
+     *  messages to the given output stream.
+     */
+    public StreamExecutionListener(OutputStream out) {
+        _output = new PrintStream(out);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -56,9 +65,9 @@ public class DefaultExecutionListener implements ExecutionListener {
     /** Report an execution failure.
      */
     public void executionError(Manager manager, Exception ex) {
-        System.out.println("Execution error.");
-	System.out.println(ex.getMessage());
-        ex.printStackTrace();
+        _output.println("Execution error.");
+	_output.println(ex.getMessage());
+        ex.printStackTrace(_output);
     }
 
     /** Report that the current execution finished.
@@ -66,7 +75,7 @@ public class DefaultExecutionListener implements ExecutionListener {
      *  @param manager The manager controlling the execution.
      */
     public void executionFinished(Manager manager) {
-        System.out.println("Completed execution with "
+        _output.println("Completed execution with "
                 + manager.getIterationCount() + " iterations");
     }
 
@@ -83,6 +92,11 @@ public class DefaultExecutionListener implements ExecutionListener {
         } else {
             msg = state.getDescription();
         }
-        System.out.println(msg);
+        _output.println(msg);
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private PrintStream _output;
 }

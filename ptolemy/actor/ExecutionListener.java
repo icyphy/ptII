@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -40,10 +40,12 @@ as an applet, a GUI, or a command-line interpreter,
 or an object that is communicating with a front end. Most of the
 events that are reported are state changes in the manager.
 <p>
-Events are issued only when they actually occurs, not when it is
-requested. For example, when the pause() method of a manager is called,
-no event is issued.  An event is issued when the request is actually
-processed and the execution thread has been suspended.
+Some execution events happen in response to an asynchronous request.
+For example, when the pause() method of a manager is called a flag is set, and
+at the end of the next toplevel iteration, the manager will notice the flag
+and pause execution. In such cases, the execution listeners are not notified
+when the request occurs, but only when the execution thread has actually
+been suspended.
 
 @author Steve Neuendorffer, Edward A. Lee
 @version $Id$
@@ -52,7 +54,7 @@ processed and the execution thread has been suspended.
 
 public interface ExecutionListener {
 
-    /** Called to report an execution failure.   This method will be called
+    /** Report an execution failure.   This method will be called
      *  when an exception is caught at the top level of execution.
      *  Exceptions are reported this way when the run() or startRun()
      *  methods of the manager are used to perform the execution.
@@ -64,7 +66,7 @@ public interface ExecutionListener {
      */
     public void executionError(Manager manager, Exception exception);
 
-    /** Called to report that the current execution finished and
+    /** Report that the current execution finished and
      *  the wrapup sequence completed normally. The number of successfully
      *  completed iterations can be obtained by calling getIterationCount()
      *  on the manager.
@@ -73,7 +75,7 @@ public interface ExecutionListener {
      */
     public void executionFinished(Manager manager);
 
-    /** Called to report that the manager has changed state.
+    /** Report that the manager has changed state.
      *  To access the new state, use the getState() method of Manager.
      *
      *  @param manager The manager controlling the execution.

@@ -295,13 +295,16 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
         return stream.toString();
     }
 
-    /** Execute the model.
+    /** Execute the model, if the manager is not currently executing.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _go() throws IllegalActionException {
         // If an exception occurred during init, do not execute.
         if (!_setupOK) return;
-        _manager.startRun();
+        // Only try to start if there is no execution currently running.
+        if(_manager.getState() == _manager.IDLE)
+            _manager.startRun();
+            
     }
 
     /** Stop the execution.

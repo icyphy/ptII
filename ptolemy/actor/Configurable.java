@@ -24,29 +24,31 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
 
 import java.io.InputStream;
-import java.io.IOException;
 import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// Configurable
 /**
 Objects that can be configured by reading a file, typically an
-XML file, should implement this interface.  This enables the
-UI to recognize that such file-based configuration is possible.
+XML file, should implement this interface.  This enables a
+user interface to recognize that such file-based configuration is possible.
 For example, a plotter actor implements this interface to
-allow the visual appearance of the plot to be set from a PlotML
-file.  A filter actor implements this interface to allow
-the filter specification to be given by a FilterML file.
+allow the visual appearance of the plot to be set using PlotML.  
 An icon for an actor implements this interface to allow
 the actor-specific visual features of the icon to be
-specified in a PTML file.
+specified using graphics markup. 
+Additionally, a filter actor could implement this interface to allow
+the filter specification to be given using markup.
+<p>
+This interface can also be used for actors which load configuration
+information from non-XML formats, such as GIF images or binary lookup tables.
 
 @author Edward A. Lee
 @version $Id$
@@ -63,10 +65,9 @@ public interface Configurable {
      *  classes that implement the interface to use whatever exceptions
      *  are appropriate.
      *  @param base The base relative to which references within the input
-     *   stream are found, or null if this is not known.
-     *  @param in InputStream
-     *  @exception Exception If the stream cannot be read or its syntax
-     *   is incorrect.
+     *   stream are found, or null if this is not known, or there is none.
+     *  @param in The input stream.
+     *  @exception Exception If something goes wrong.
      */
     public void configure(URL base, InputStream in) throws Exception;
 }

@@ -179,11 +179,13 @@ public class PtolemyApplication implements ExecutionListener {
     }
 
 
-    /** Execute the model.
+    /** Execute the model, if the manager is not currently executing.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _go() throws IllegalActionException {
-        _manager.startRun();
+        // Only try to start if there is no execution currently running.
+        if(_manager.getState() == _manager.IDLE)
+            _manager.startRun();
     }
 
     /** Stop the execution.

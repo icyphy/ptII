@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -50,11 +50,33 @@ import java.util.Date;			// For timing measurements
 //// Manager
 /**
 A Manager governs the execution of a model in a domain-independent way.
-Its methods are designed to be called by a GUI, an applet, an command-line
+Its methods are designed to be called by a GUI, an applet, a command-line
 interface, or the top-level code of an application.  The manager can
 execute the model in the calling thread or in a separate thread.
 The latter is useful when the caller wishes to remain live during
 the execution of the model.
+<p>
+There are three methods that can be used to start execution of a system
+attached to the manager.  The execute() method is the most basic way to
+execute a model.  The model will be executed <i>synchronously</i>,
+meaning that the execute()
+method will return when execution has completed.  Any exceptions that 
+occur will be thrown by the execute method to the calling thread, and will 
+not be reported to any execution listeners.  The run() method also 
+initiates synchronous execution of a model, but additionally catches all
+exceptions and passes them to the notifyListenersOfException method
+<i>without throwing them to the calling thread</i>.  
+The startRun() method, unlike the previous two
+techniques, begins <i>asynchronous</i> execution of a model.   This method
+starts a new thread for execution of the model and then returns immediately.
+Exceptions are reported using the notifyListenersOfException method.
+<p>
+In addition, execution can be manually driven, one phase at a time, using the 
+methods initialize(), iterate() and wrapup().  This is most useful for
+testing purposes.  For example, a type system check only needs to get the
+resolved types, which are found during initialize, so the test can avoid
+actually executing the system.  Also, when testing mutations, the model can
+be examined after each toplevel iteration to ensure the proper behavior.
 <p>
 A manager provides services for cleanly handling changes to the
 topology.  These include such changes as adding or removing an entity,
@@ -62,7 +84,7 @@ port, or relation, creating or destroying a link, and changing the value
 or type of a parameter.  Collectively, such changes are called
 <i>mutations</i>. Usually, mutations
 cannot safely occur at arbitrary points in the execution of
-a model.  Models can queue changes with the director or
+a model.  Models can queue mutations with the director or
 the manager using the requestChange() method.  The director simply delegates
 the request to the manager, which performs the change at the earliest
 opportunity.  In this implementation of Manager, the changes are
@@ -70,7 +92,7 @@ executed between iterations.
 <p>
 A service is also provided whereby an object can be registered with the
 director as a change listener.  A change listener is informed when
-changes that are requested via requestChange() are executed.
+mutations that are requested via requestChange() are executed.
 <p>
 Manager can optimize the performance of an execution by making
 the workspace <i>write protected</i> during an iteration, if all
@@ -79,15 +101,15 @@ of obtaining read and write permission on the workspace.
 By default, directors do not permit this, but
 many directors explicitly relinquish write access to allow faster execution.
 Such directors are declaring that they will not make changes to the
-topology during execution.  Instead, any desired changes are delegated
-to the director via the requestChange() method.
+topology during execution.  Instead, any desired mutations are delegated
+to the manager via the requestChange() method.
 
 @author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee
 // Contributors: Mudit Goel, John S. Davis II
 @version $Id$
 */
 
-public final class Manager extends NamedObj implements Runnable {
+public class Manager extends NamedObj implements Runnable {
 
     /** Construct a manager in the default workspace with an empty string
      *  as its name. The manager is added to the list of objects in
@@ -151,9 +173,9 @@ public final class Manager extends NamedObj implements Runnable {
      */
     public final State PAUSED = new State("pausing execution");
 
-    /** Indicator that the execution is in the initialize phase.
+    /** Indicator that the execution is in the preinitialize phase.
      */
-    public final State PREINITIALIZING = new State("prenitializing");
+    public final State PREINITIALIZING = new State("preinitializing");
 
     /** Indicator that type resolution is being done.
      */
@@ -310,7 +332,9 @@ public final class Manager extends NamedObj implements Runnable {
     }
 
     /** Initialize the model.  This calls the preinitialize() method of
-     *  the container, followed by the initialize() method.
+     *  the container, followed by the resolveTypes() and initialize() methods.
+     *  Set the Manager's state to PREINITIALIZING and INITIALIZING as
+     *  appropriate.
      *  This method is read synchronized on the workspace.
      *  @exception KernelException If the model throws it.
      *  @exception IllegalActionException If the model is already running, or
@@ -370,6 +394,7 @@ public final class Manager extends NamedObj implements Runnable {
      *  If you wish to use finish() or pause() to control the execution,
      *  then you should execute the model using execute(), run(), or
      *  startRun().
+     *  Set the state of the manager to ITERATING.
      *  This method is read synchronized on the workspace.
      *
      *  @return True if postfire() returns true.
@@ -437,9 +462,10 @@ public final class Manager extends NamedObj implements Runnable {
 
     /** Notify all the execution listeners of an exception.
      *  If there are no listeners, then print the exception information
-     *  to standard error stream. This is intended to be used by threads
-     *  that are involved an execution as a mechanism for reporting
-     *  errors.
+     *  to the standard error stream. This is intended to be used by threads
+     *  that are involved in an execution as a mechanism for reporting
+     *  errors.  As an example, in a threaded domain, each thread 
+     *  should catch all exceptions and report them using this method.
      *  @param ex The exception.
      */
     public void notifyListenersOfException(Exception ex) {
@@ -462,9 +488,12 @@ public final class Manager extends NamedObj implements Runnable {
     /** Set a flag requesting that execution pause at the next opportunity
      *  (between iterations).  Call stopFire() on the toplevel composite
      *  actor to ensure that the manager's execution thread becomes active
-     *  again.   The thread controlling the execution will be
+     *  again.   This is necessary in the case of PN, where an iteration
+     *  only ends if deadlock occurs, which may never happen.
+     *  The thread controlling the execution will be
      *  suspended the next time through the iteration loop.  To resume
      *  execution, call resume() from another thread.
+     *  @see Executable#stopFire
      */
     public void pause() {
         _pauseRequested = true;
@@ -497,8 +526,8 @@ public final class Manager extends NamedObj implements Runnable {
     }
 
     /** Queue a change request.
-     *  The indicated change will be executed at the next opportunity,
-     *  typically between top-level iterations of the model. For the
+     *  The indicated change will be executed at the next opportunity
+     *  between top-level iterations of the model. For the
      *  benefit of process-oriented domains, which may not have finite
      *  iterations, this method also calls stopFire() on the top-level
      *  composite actor, requesting that directors in such domains
@@ -518,7 +547,9 @@ public final class Manager extends NamedObj implements Runnable {
     /** Queue an initialization request.
      *  The specified actor will be initialized at an appropriate time,
      *  in the iterate() method, by calling its preinitialize()
-     *  and initialize() methods.
+     *  and initialize() methods.  This method should be called when an
+     *  actor is added to a model through a mutation in order to properly
+     *  initialize the actor.
      *  @param actor The actor to initialize.
      */
     public void requestInitialization(Actor actor) {
@@ -528,8 +559,9 @@ public final class Manager extends NamedObj implements Runnable {
     /** Check types on all the connections and resolve undeclared types.
      *  If the container is not an instance of TypedCompositeActor,
      *  do nothing.
+     *  Set the Manager's state to RESOLVING_TYPES.
      *  This method is write-synchronized on the workspace.
-     *  @exception TypeConflictException If type conflict is detected.
+     *  @exception TypeConflictException If a type conflict is detected.
      */
     public void resolveTypes() throws TypeConflictException {
         if ( !(_container instanceof TypedCompositeActor)) {
@@ -618,9 +650,8 @@ public final class Manager extends NamedObj implements Runnable {
 
     /** Execute the model, catching all exceptions. Use this method to
      *  execute the model within the calling thread, but to not throw
-     *  exceptions.  Instead, any registered listeners are notified of
-     *  the exceptions, or if there are no registered listeners, then
-     *  the exception is printed to standard output.  Except for its
+     *  exceptions.  Instead, the exception is handled using the
+     *  <code>notifyListenersOfException</code> method.  Except for its
      *  exception handling, this method has exactly the same behavior
      *  as execute().
      */
@@ -637,10 +668,9 @@ public final class Manager extends NamedObj implements Runnable {
 
     /** Start an execution in another thread and return.  Any exceptions
      *  that occur during the execution of the model are handled by
-     *  reporting them to any registered execution listeners.  If there
-     *  are no registered execution listeners, then the exceptions are
-     *  printed to standard output together with a stack trace.
-     *  @exception IllegalActionException If the model is already running.
+     *  the <code>notifyListenersOfException</code> method.  
+     *  @exception IllegalActionException If the model is already running,
+     *  e.g. the state is not IDLE.
      */
     public void startRun() throws IllegalActionException {
         if (_state != IDLE) {
@@ -667,7 +697,7 @@ public final class Manager extends NamedObj implements Runnable {
      *  This method also calls terminate on the toplevel composite actor.
      *  <p>
      *  This method is not synchronized because we want it to
-     *  happen as soon as possible, no matter what.
+     *  happen as soon as possible.
      *  @deprecated
      */
     public void terminate() {
@@ -693,7 +723,9 @@ public final class Manager extends NamedObj implements Runnable {
         _setState(CORRUPTED);
     }
 
-    /** Wrap up the model.
+    /** Wrap up the model by invoking the wrapup method of the toplevel
+     *  composite actor.  The state of the manager will be set to 
+     *  WRAPPING_UP.
      *  @exception KernelException If the model throws it.
      *  @exception IllegalActionException If the model is idle or already
      *   wrapping up, or if there is no container.
@@ -737,23 +769,9 @@ public final class Manager extends NamedObj implements Runnable {
         _container = ca;
     }
 
-    /** Set the state of execution and notify listeners if the state
-     *  actually changes.
-     *  @param newstate The new state.
+    /** Notify listeners that execution has completed successfully.
      */
-    protected void _setState(State newstate) {
-        if (_state != newstate) {
-            _state = newstate;
-            _notifyListenersOfStateChange();
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /*  Notify listeners that execution has completed successfully.
-     */
-    private void _notifyListenersOfCompletion() {
+    protected void _notifyListenersOfCompletion() {
         if (_debugging) {
             _debug("Completed execution with "
             + _iterationCount + " iterations");
@@ -768,9 +786,9 @@ public final class Manager extends NamedObj implements Runnable {
         }
     }
 
-    /*  Propagate the state change event to all the execution listeners.
+    /** Propagate the state change event to all the execution listeners.
      */
-    private void _notifyListenersOfStateChange() {
+    protected void _notifyListenersOfStateChange() {
         if (_debugging) {
             _debug(_state.getDescription());
         }
@@ -785,13 +803,13 @@ public final class Manager extends NamedObj implements Runnable {
         }
     }
 
-    /*  Check whether write access is needed during an
+    /** Check whether write access is needed during an
      *  iteration. This is done by asking the directors.
      *  This method calls the needWriteAccess() method of
      *  the top level director, which will in turn query any inside
      *  directors.
      */
-    private boolean _needWriteAccess() {
+    protected boolean _needWriteAccess() {
         if (_writeAccessVersion == _workspace.getVersion()) {
             return _writeAccessNeeded;
         }
@@ -848,6 +866,17 @@ public final class Manager extends NamedObj implements Runnable {
                 }
             }
         }
+    }
+     
+   /** Set the state of execution and notify listeners if the state
+    *  actually changes.
+    *  @param newstate The new state.
+    */
+    protected void _setState(State newstate) {
+        if (_state != newstate) {
+            _state = newstate;
+            _notifyListenersOfStateChange();
+        }     
     }
 
     ///////////////////////////////////////////////////////////////////

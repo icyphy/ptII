@@ -73,7 +73,6 @@ JSRCS = \
 	AtomicActor.java \
 	CompositeActor.java \
 	Configurable.java \
-	DefaultExecutionListener.java \
 	Director.java \
 	Executable.java \
 	ExecutionListener.java \
@@ -86,6 +85,7 @@ JSRCS = \
 	QueueReceiver.java \
 	Receiver.java \
 	RemoteCompositeActor.java \
+	StreamExecutionListener.java \
 	TypedActor.java \
 	TypedAtomicActor.java \
 	TypedCompositeActor.java \
