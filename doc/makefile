@@ -82,10 +82,8 @@ ALLJSRCS =		ptolemy.plot \
 			ptolemy.plot.plotml \
 			ptolemy.plot.compat \
 			ptolemy.kernel \
-			ptolemy.kernel.event \
 			ptolemy.kernel.util \
 			ptolemy.actor \
-			ptolemy.actor.event \
 			ptolemy.actor.gui \
 			ptolemy.actor.lib \
 			ptolemy.actor.lib.gui \
@@ -135,10 +133,8 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/plot/compat/*.java \
 			../ptolemy/plot/plotml/*.java \
 			../ptolemy/kernel/*.java \
-			../ptolemy/kernel/event/*.java \
 			../ptolemy/kernel/util/*.java \
 			../ptolemy/actor/*.java \
-			../ptolemy/actor/event/*.java \
 			../ptolemy/actor/gui/*.java \
 			../ptolemy/actor/lib/*.java \
 			../ptolemy/actor/lib/gui/*.java \
