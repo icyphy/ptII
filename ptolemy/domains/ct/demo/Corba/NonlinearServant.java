@@ -226,7 +226,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  );
      *  </pre>
      *  </p>
-     *  @exception CorbaIllegalActionException Always.
+     *  @exception CorbaIllegalActionException Always thrown.
      */
     public void setPortWidth(
             java.lang.String portName,
@@ -253,7 +253,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  );
      *  </pre>
      *  </p>
-     *  @exception CorbaIllegalActionException Never thrown.
+     *  @exception CorbaIllegalActionException Not thrown in this base class.
      */
     public boolean postfire( ) throws
             CorbaIllegalActionException {
