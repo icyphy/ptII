@@ -29,23 +29,40 @@
 */
 package ptolemy.domains.ct.kernel.solver;
 
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.actor.Actor;
+import ptolemy.data.DoubleToken;
 import ptolemy.domains.ct.kernel.*;
-//import java.util.Enumeration;
-import java.util.Iterator;
 
-import ptolemy.data.*;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// TrapezoidalRuleSolver
 /**
-This class is under significant rework. Please don't use it!!!
+NOTE: This class is under significant rework. Please don't use it!
+
+This is a second order variable step size ODE solver that uses the
+trapezoidal rule algorithm. For an ODE
+<pre>
+    x' = f(x, t)
+    x(0) = x0
+</pre>
+the solver iterates:
+<pre>
+x(t+h) = x(t) + (h/2)*(x'(t) + x'(t+h))
+</pre>
+This is the most accurate second order multi-step ODE solver.
+It is an implicit algorithm, which involves a fixed-point iteration
+to find x(t+h) and x'(t+h).
+
 @author Jie Liu
 @version $Id$
 */
 public class TrapezoidalRuleSolver extends ODESolver{
-
 
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
@@ -57,7 +74,7 @@ public class TrapezoidalRuleSolver extends ODESolver{
             setName(_DEFAULT_NAME);
         } catch (KernelException e) {
             // this should never happen.
-            throw new InternalErrorException(e.toString());
+            throw new InternalErrorException(e.getMessage());
         }
     }
 
@@ -76,22 +93,121 @@ public class TrapezoidalRuleSolver extends ODESolver{
             setName(_DEFAULT_NAME);
         } catch (KernelException e) {
             // this should never happen.
-            throw new InternalErrorException(e.toString());
+            throw new InternalErrorException(e.getMessage());
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Vote if a fixed point has reached. The final result is the
-     *  <i>and</i> of all votes.
-     *  @param converge True if vote for converge.
+    /** Integrator's auxiliary variable number needed when solving the ODE.
+     *  @return 2.
      */
-    public void voteForConverge(boolean converge) {
-        _converge = _converge && converge;
+    public int getIntegratorAuxVariableCount() {
+        return 2;
     }
 
-    /** Return true if the vote result is true.
+    /** Return the number of history points needed.
+     *  @return 2.
+     */
+    public int getHistoryCapacityRequirement() {
+        return 2;
+    }   
+
+    /** The fire() method for integrators under this solver. It performs
+     *  the ODE solving algorithm.
+     *
+     *  @param integrator The integrator of that calls this method.
+     *  @exception IllegalActionException Not thrown in this
+     *  class. May be needed by the derived class.
+     */
+    public void integratorFire(CTBaseIntegrator integrator)
+            throws IllegalActionException {
+        CTDirector dir = (CTDirector)getContainer();
+        if (dir == null) {
+            throw new IllegalActionException( this,
+                    " must have a CT director.");
+        }
+        double f1 = (integrator.getHistory(0))[1];;
+        double h = dir.getCurrentStepSize();
+        double pstate;
+        if (getRound() == 0) {
+            // prediction
+            pstate = integrator.getState() + f1*h;
+            // for error control
+            integrator.setAuxVariables(0, pstate);
+        } else {
+            //correction
+            double f2 = ((DoubleToken)integrator.input.get(0)).doubleValue();
+            pstate = integrator.getState() + (h*(f1+f2))/(double)2.0;
+            double cerror = Math.abs(pstate-integrator.getTentativeState());
+            if( !(cerror < dir.getValueResolution())) {
+                voteForConverge(false);
+            }
+            integrator.setTentativeDerivative(f2);
+        }
+        integrator.setTentativeState(pstate);
+        integrator.output.broadcast(new DoubleToken(pstate));
+    }
+
+    /** Perform the isSuccessful() test for integrators under this solver.
+     *  It calculates the tentative state and test for local
+     *  truncation error.
+     *  @param integrator The integrator of that calls this method.
+     *  @return True if the intergrator report a success on the this step.
+     */
+    public boolean integratorIsSuccessful(CTBaseIntegrator integrator) {
+        try {
+            CTDirector dir = (CTDirector)getContainer();
+            double errtol = dir.getErrorTolerance();
+            double[] k = integrator.getAuxVariables();
+            double lte = 0.5*Math.abs(integrator.getTentativeState() - k[0]);
+            integrator.setAuxVariables(1, lte);
+            _debug("Integrator: "+ integrator.getName() +
+                    " local truncation error = " + lte);
+            if(lte<errtol) {
+                _debug("Integrator: " + integrator.getName() +
+                        " report a success.");
+                return true;
+            } else {
+                _debug("Integrator: " + integrator.getName() +
+                        " reports a failure.");
+                return false;
+            }
+        } catch (IllegalActionException e) {
+            //should never happen.
+            throw new InternalErrorException(integrator.getName() +
+                    " No input token available." + e.getMessage());
+        }
+    }
+
+    /** Provide the suggestedNextStepSize() method for integrators under
+     *  this solver. If this step (with step size 'h') is successful, 
+     *  the local truncation error is 'lte', and the local truncation
+     *  error tolerance is 'errtol', then the suggested next step size is:
+     *  <pre>
+     *     h* max(0.5, power((3.0*errtol/lte), 1.0/3.0))
+     *  </pre>
+     *  @param integrator The integrator of that calls this method.
+     *  @return The suggested next step by the given integrator.
+     */
+    public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
+        CTDirector dir = (CTDirector)getContainer();
+        double lte = (integrator.getAuxVariables())[1];
+        double h = dir.getCurrentStepSize();
+        double errtol = dir.getErrorTolerance();
+        double newh = 5.0*h;
+        if(lte>dir.getValueResolution()) {
+            newh = h* Math.max(0.5, Math.pow((3.0*errtol/lte), 1.0/3.0));
+        }
+        _debug("integrator: " + integrator.getName() +
+                " suggests next step size = " + newh);
+        return newh;
+    }
+
+    /** Return true if the fixed point iteration is converged. This is 
+     *  the result of all voteForConverge() in the current integration
+     *  step.
      *  @return True if all the votes are true.
      */
     public boolean isConverged() {
@@ -100,7 +216,8 @@ public class TrapezoidalRuleSolver extends ODESolver{
 
     /** Resolve the state of the integrators at time
      *  CurrentTime+CurrentStepSize. It gets the state transition
-     *  schedule from the scheduler and fire until the fixed point.
+     *  schedule from the scheduler and fire until the fixed point
+     *  is reached.
      *
      * @exception IllegalActionException Not thrown in this base
      *  class. May be needed by the derived class.
@@ -170,109 +287,18 @@ public class TrapezoidalRuleSolver extends ODESolver{
         return true;
     }
 
-    /**  fire() method for integrators.
-     *
-     *  @param integrator The integrator of that calls this method.
-     * @exception IllegalActionException Not thrown in this base
-     *  class. May be needed by the derived class.
+    /** To Vote for whether a fixed point has reached. The final result 
+     *  is the <i>and</i> of all votes.
+     *  @param converge True if vote for converge.
      */
-    public void integratorFire(CTBaseIntegrator integrator)
-            throws IllegalActionException {
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        double f1 = (integrator.getHistory(0))[1];;
-        double h = dir.getCurrentStepSize();
-        double pstate;
-        if (getRound() == 0) {
-            // prediction
-            pstate = integrator.getState() + f1*h;
-            // for error control
-            integrator.setAuxVariables(0, pstate);
-        } else {
-            //correction
-            double f2 = ((DoubleToken)integrator.input.get(0)).doubleValue();
-            pstate = integrator.getState() + (h*(f1+f2))/(double)2.0;
-            double cerror = Math.abs(pstate-integrator.getTentativeState());
-            if( !(cerror < dir.getValueResolution())) {
-                voteForConverge(false);
-            }
-            integrator.setTentativeDerivative(f2);
-        }
-        integrator.setTentativeState(pstate);
-        integrator.output.broadcast(new DoubleToken(pstate));
+    public void voteForConverge(boolean converge) {
+        _converge = _converge && converge;
     }
-
-    /** Integrator calculate potential state and test for local
-     *  truncation error.
-     *  @param integrator The integrator of that calls this method.
-     *  @return True if the intergrator report a success on the last step.
-     */
-    public boolean integratorIsSuccessful(CTBaseIntegrator integrator) {
-        try {
-            CTDirector dir = (CTDirector)getContainer();
-            double errtol = dir.getErrorTolerance();
-            double[] k = integrator.getAuxVariables();
-            double lte = 0.5*Math.abs(integrator.getTentativeState() - k[0]);
-            integrator.setAuxVariables(1, lte);
-            _debug("Integrator: "+ integrator.getName() +
-                    " local truncation error = " + lte);
-            if(lte<errtol) {
-                _debug("Integrator: " + integrator.getName() +
-                        " report a success.");
-                return true;
-            } else {
-                _debug("Integrator: " + integrator.getName() +
-                        " reports a failure.");
-                return false;
-            }
-        } catch (IllegalActionException e) {
-            //should never happen.
-            throw new InternalErrorException(integrator.getName() +
-                    " can't read input." + e.getMessage());
-        }
-    }
-
-    /** Hook method for suggestedNextStepSize() method of
-     *  integrators.
-     *  @param integrator The integrator of that calls this method.
-     *  @return The suggested next step by the given integrator.
-     */
-    public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
-        CTDirector dir = (CTDirector)getContainer();
-        double lte = (integrator.getAuxVariables())[1];
-        double h = dir.getCurrentStepSize();
-        double errtol = dir.getErrorTolerance();
-        double newh = 5.0*h;
-        if(lte>dir.getValueResolution()) {
-            newh = h* Math.max(0.5, Math.pow((3.0*errtol/lte), 1.0/3.0));
-        }
-        _debug("integrator: " + integrator.getName() +
-                " suggests next step size = " + newh);
-        return newh;
-    }
-
-    /** Integrator's aux variable number needed when solving the ODE.
-     *  @return The number of auxiliary variables for the solver in each
-     *       integrator.
-     */
-    public final int getIntegratorAuxVariableCount() {
-        return 2;
-    }
-
-    /** Return 2 always. It needs two history points to do prediction.
-     *  @return 2.
-     */
-    public final int getHistoryCapacityRequirement() {
-        return 2;
-    }
-
 
     ////////////////////////////////////////////////////////////////////////
     ////                       protected methods                        ////
-    /** Set the convergence flag.
+    /** Set the convergence flag. Usually called to reset the flag to false
+     *  at the beginning of an integration step.
      *  @param converge The flag setting.
      */
     protected void _setConverge(boolean converge) {
