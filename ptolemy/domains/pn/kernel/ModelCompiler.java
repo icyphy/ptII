@@ -132,7 +132,9 @@ public class ModelCompiler extends Attribute {
                 // cloned composite actor.
                 compileTypedCompositeActor(containedCompositeActor);
             }
-            
+            Attribute attribute = compositeActor.getAttribute("Atomic");
+            // FIXME: If the current level is "Atomic" and is an
+            // intemediate level, wrap up the inside.
             ///////////////////////////////////////////////////////////
             // The condition the recursion ends and generates results.
             
@@ -161,8 +163,17 @@ public class ModelCompiler extends Attribute {
             
             // FIXME: if the composite actor is at top level, group actors 
             // by introducing a new layer of hierarchy.
-            if (container == null) {
-                //wrap up and return;
+            if (container == null || attribute != null) {
+                //wrap up and return.
+                // If we reach here, the subgraphs.size() > 1,
+                // we MUST wrap up.
+                for (int i = 0; i < listOfSubgraphs.size(); i ++) {
+                    //TypedCompositeActor subCluster =
+                      //  (TypedCompositeActor)compositeActor.clone();
+                    //subCluster.setName("subCluster"
+                      //      + compositeActor.getName() + "_" + i);
+                    //subCluster.setContainer(compositeActor);
+                }
                 return;
             }
             
@@ -272,9 +283,9 @@ public class ModelCompiler extends Attribute {
             //remove this composite actor 
             compositeActor.setContainer(null);
             // Construct function dependency graph for the new model.
-            functionDependency = (FunctionDependencyOfCompositeActor)
-                ((CompositeActor)container).getFunctionDependency();
-            functionDependency.getDetailedDependencyGraph();
+            //functionDependency = (FunctionDependencyOfCompositeActor)
+              //  ((CompositeActor)container).getFunctionDependency();
+            //functionDependency.getDetailedDependencyGraph();
             //System.out.println(container.exportMoML());
         } catch (KernelException ex) {
             System.out.println(ex.getMessage());
@@ -356,9 +367,9 @@ public class ModelCompiler extends Attribute {
                 // FIXME: This does not handle class definition.
                 // && !((InstantiableNamedObj) actor).isClassDefinition()) {
                 Attribute attribute = ((NamedObj) actor).getAttribute("Atomic");
-                if (attribute == null) {
+                //if (attribute == null) {
                     opaqueCompositeActors.add(actor);
-                }
+                //}
             }
         }
         return opaqueCompositeActors;
