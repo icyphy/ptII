@@ -61,14 +61,18 @@ proc enumToInfo {enum} {
         while {[$enum hasMoreElements] == 1} {
             set elem [$enum nextElement]
 	    if [ java::instanceof $elem ptolemy.graph.InequalityTerm] {
-		lappend result [$elem getInfo]
+#		lappend result [$elem getInfo]
+		lappend result [termToInfo $elem]
 	    } else {
 		if [ java::instanceof $elem ptolemy.graph.Inequality] {
-		    set lesser [$elem getLesserTerm]
-		    set greater [$elem getGreaterTerm]
+		    set ineqelem [java::cast ptolemy.graph.Inequality $elem]
+		    set lesser [$ineqelem getLesserTerm]
+		    set greater [$ineqelem getGreaterTerm]
 		    set ineq {}
-		    lappend ineq [$lesser getInfo]
-		    lappend ineq [$greater getInfo]
+#		    lappend ineq [$lesser getInfo]
+#		    lappend ineq [$greater getInfo]
+		    lappend ineq [termToInfo $lesser]
+		    lappend ineq [termToInfo $greater]
 		    lappend result $ineq
 		}
 	    }
@@ -77,6 +81,16 @@ proc enumToInfo {enum} {
     }
     return $result
 }
+
+proc termToInfo {term} {
+    if [ java::instanceof $term ptolemy.graph.test.TestConstant] {
+	set cterm [java::cast ptolemy.graph.test.TestConstant $term]
+    } else { 
+	set cterm [java::cast ptolemy.graph.test.TestVariable $term]
+    }
+    return [$cterm getInfo]
+}
+
 
 ######################################################################
 ####
