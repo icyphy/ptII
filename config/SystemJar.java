@@ -23,8 +23,8 @@
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
 
-  @@ProposedRating Green (cxh@@eecs.berkeley.edu)
-  @@AcceptedRating Red
+  @ProposedRating Green (cxh@@eecs.berkeley.edu)
+  @AcceptedRating Red
 */
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,8 +32,8 @@ import java.io.IOException;
 
 /** Print the location of the system jar file, usually rt.jar
     @author Christopher Hylands
-    @@version $Id$
-    @@since Ptolemy II 2.0
+    @version $Id$
+    @since Ptolemy II 2.0
 */
 public class SystemJar {
     public static void main(String args[]) {
