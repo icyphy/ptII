@@ -40,11 +40,8 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-set PI [java::field java.lang.Math PI]
-
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
-
 
 # Double array of length 0
 set a0 [java::new {double[]} 0]
@@ -372,6 +369,18 @@ test DoubleArrayMath-12.3 {subtract with two empty arrays} {
     set ar [java::call ptolemy.math.DoubleArrayMath subtract $a0 $b0]
     jdkPrintArray $ar
 } {}
+
+####################################################################
+test DoubleArrayMath-13.1 {toString with two empty array} {
+    set s [java::call ptolemy.math.DoubleArrayMath toString $a0]
+    list $s
+} {{{}}}
+
+####################################################################
+test DoubleArrayMath-13.2 {toString with non-empty array} {
+    set s [java::call ptolemy.math.DoubleArrayMath toString $a1]
+    list $s
+} {{{3.7, -6.6, 3.0E-4, -3829.0, -3.261}}}
 
 ####################################################################
 test DoubleArrayMath-13.1 {within true} {
