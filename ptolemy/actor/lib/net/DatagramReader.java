@@ -803,7 +803,7 @@ public class DatagramReader extends TypedAtomicActor {
 		}
 		if (_debugging) _debug(this + "portNumber = " + portNumber);
 		
-		if (_multiCast = true) {
+		if (_multiCast == true) {
 	        
 	        // Allocate a new multicast socket.
 	        try {
