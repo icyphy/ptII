@@ -1422,33 +1422,6 @@ public class SootUtilities {
         return returned;
     }
 
-    /** Sanitize a String so that it can be used as a Java identifier.
-     *  Section 3.8 of the Java language spec says:
-     *  <blockquote>
-     *  "An identifier is an unlimited-length sequence of Java letters
-     *  and Java digits, the first of which must be a Java letter. An
-     *  identifier cannot have the same spelling (Unicode character
-     *  sequence) as a keyword (3.9), boolean literal (3.10.3), or
-     *  the null literal (3.10.7).  "
-     *  </blockquote>
-     *  Java characters are A-Z, a-z, $ and _.
-     *  <p> Characters that are not permitted in a Java identifier are changed
-     *  to an underscores.
-     *  This method does not check that the returned string is a
-     *  keyword or literal.
-     *  Note that two different strings can sanitize to the same
-     *  string.
-     *  @param name A string with spaces and other characters that
-     *  cannot be in a Java name.
-     *  @returns A String that follows the Java identifier rules
-     *  with the same length as the initial input String.
-     *  @deprecated Use ptolemy.kernel.util.StringUtilities.sanitizeName
-     *  instead.
-     */
-    public static String sanitizeName(String name) {
-        return ptolemy.kernel.util.StringUtilities.sanitizeName(name);
-    }
-
     /** Get the method with the given name in the given class
      *  (or one of its super classes).
      */
