@@ -1,4 +1,4 @@
-/* A modular package for vergil.
+/* A module for extending Vergil.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -30,13 +30,22 @@
 
 package ptolemy.vergil;
 
+import diva.resource.RelativeBundle;
+
 /**
- * A modular package that can be plugged into Vergil.  Usually the package
+ * A module that can be plugged into Vergil.  This allows a simple mechanism
+ * to extend the functionality of Vergil.  Usually the module
  * will take a reference to the application in its constructor and use the
  * reference to add toolbars and menubars to the application.
  *
  * @author Steve Neuendorffer
  * @version $Id$
  */
-public interface Package {
+public interface Module {
+    /** 
+     * Return the resources for this module.
+     */
+    public RelativeBundle getModuleResources();
 }
+
+
