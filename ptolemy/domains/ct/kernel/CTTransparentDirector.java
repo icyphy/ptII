@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ct.kernel;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 //////////////////////////////////////////////////////////////////////////
 //// CTTransparentDirector
 /**
@@ -47,12 +49,27 @@ package ptolemy.domains.ct.kernel;
    @Pt.AcceptedRating Yellow (chf)
 
 */
-public interface CTTransparentDirector {
+public interface CTTransparentDirector extends CTGeneralDirector {
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**
+     * 
+     */
+    public void markState();
+
+    /**
+     * 
+     */
+    public void emitTentativeOutputs()  throws IllegalActionException;
+
+    /**
+     * 
+     */
+    public void goToMarkedState() throws IllegalActionException;
+    
     /** Implementations of this method should return
      *  true if there is an event at current time.
      *  @return True if there is an event at current time.
@@ -65,6 +82,9 @@ public interface CTTransparentDirector {
      *  @return True if the current step is accurate.
      */
     public boolean isThisStepAccurate();
+    
+    public boolean isStateAccurate();
+    public boolean isOutputAccurate();
 
     /** Implementations of this method should return
      *  the predicted next step size if this step is accurate.
@@ -77,6 +97,5 @@ public interface CTTransparentDirector {
      *  @return The refined step size.
      */
     public double refinedStepSize();
-
 }
 
