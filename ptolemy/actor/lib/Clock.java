@@ -252,7 +252,7 @@ public class Clock extends TimedSource {
 
         // Use Double.NEGATIVE_INFINITY to indicate that no refire
         // event should be scheduled because we aren't at a phase boundary.
-        _tentativeNextFiringTime = new Time(this, Double.NEGATIVE_INFINITY);
+        _tentativeNextFiringTime = getDirector().timeConstants.NEGATIVE_INFINITY;
 
         // By default, the cycle count will not be incremented.
         _tentativeCycleCountIncrement = 0;
