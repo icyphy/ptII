@@ -56,6 +56,7 @@ JSIMPLE_TESTS = \
 	CompositeEntity.tcl \
 	CrossRefList.tcl \
 	Entity.tcl \
+	FIFOQueue.tcl \
 	IllegalActionException.tcl \
 	InvalidStateException.tcl \
 	KernelException.tcl \
@@ -63,8 +64,10 @@ JSIMPLE_TESTS = \
 	NamedList.tcl \
 	NamedObj.tcl \
 	NoSuchItemException.tcl \
+	ObjectToken.tcl \
 	Port.tcl \
-	Relation.tcl
+	Relation.tcl \
+	StringToken.tcl
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
