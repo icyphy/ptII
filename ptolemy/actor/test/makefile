@@ -62,6 +62,7 @@ JSIMPLE_TESTS = \
 	NoTokenException.tcl \
 	IOPort.tcl \
 	IORelation.tcl \
+	TypeConflictException.tcl \
 	TypedIOPort.tcl \
 	TypedIORelation.tcl \
 	TypeEvent.tcl
