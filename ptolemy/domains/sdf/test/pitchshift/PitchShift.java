@@ -45,7 +45,7 @@ public class PitchShift {
     private static int sampleRate;
     // Delay of the pitch detector, in samples.
     // FIXME: this should be public, and set in constructor.
-    private static final int pitchDetectorDelay = 2048;
+    private static int pitchDetectorDelay;
 
     // The input ring buffer:
     private double[] inputRingBuf;
@@ -112,6 +112,8 @@ public class PitchShift {
     // Constructor
     public PitchShift(float sampleRate) {
 	this.sampleRate = (int)sampleRate;
+	this.pitchDetectorDelay = (int)(2048*(float)sampleRate/44100);
+	
 	OUTPUT_BUFFER_DELAY = (int)(1000*(float)sampleRate/44100);
 	this.outputDelay = OUTPUT_BUFFER_DELAY;
 	this.ringBufSize = RING_BUFFER_SIZE;

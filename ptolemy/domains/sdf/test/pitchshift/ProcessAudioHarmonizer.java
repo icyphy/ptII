@@ -137,7 +137,7 @@ public class ProcessAudioHarmonizer implements Runnable {
 	// The number of samples frames to attempt to read/write from the
 	// target/source data line is given by (readWriteDataSizeInFrames*
 	// jsBufferSizeOverReadWriteSize).
-	int readWriteDataSizeInFrames = 750;
+	int readWriteDataSizeInFrames = (int)(512*sampleRate/44100);
 	int jsBufferSizeOverReadWriteSize = 8;
 
 	TargetDataLine targetLine;
@@ -232,7 +232,8 @@ public class ProcessAudioHarmonizer implements Runnable {
 	
 	
 	// Initialize the pitch detector.
-	PitchDetector pd = new PitchDetector(readWriteDataSizeInFrames);
+	PitchDetector pd = new PitchDetector(readWriteDataSizeInFrames,
+					     (int)sampleRate);
 	// Initialize the pitch shifter.
 	PitchShift ps = new PitchShift((float)sampleRate);
 	// Initialize the 2nd pitch shifter.
@@ -273,8 +274,7 @@ public class ProcessAudioHarmonizer implements Runnable {
 		///////////////////////////////////////////////////////////
 		//////   Do processing on audioInDoubleArray here     /////
 		
-		currPitchArray = pd.performPitchDetect(audioInDoubleArray,
-						       (int)sampleRate);
+		currPitchArray = pd.performPitchDetect(audioInDoubleArray);
 
 		psArray1 = ps.performPitchShift(audioInDoubleArray,
 			    currPitchArray, pitchScaleIn1);

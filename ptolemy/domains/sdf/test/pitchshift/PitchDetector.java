@@ -50,7 +50,10 @@ import ptolemy.math.SignalProcessing;
 	// 2048 samples (for 44100 sampling rate) is enough to
 	// resolve pitches down to about 60 Hz, provide that
 	// the input signal has several harmonics.
-	private final int recentInputArraySize = 2048;
+	private int recentInputArraySize;
+
+	// The sampling rate, in Hz. Should be one of 11025, 22050, 44100.
+	private static int sampleRate;
 
 	// Cutoff value in cepstrum for voiced/unvoiced. If largest peak
 	// in the high-time part is greater than cepstralCutoff, then
@@ -91,7 +94,11 @@ import ptolemy.math.SignalProcessing;
 	    Initialize the pitch detector.
 	    Parameter <i>vectorSize</i> sets the vector size to be used by <i>performPitchDetect()</i>. <i>vectorSize</i> may be any length.
 	*/
-	public PitchDetector(int vectorSize) {
+	public PitchDetector(int vectorSize,int sampleRate) {
+	    this.sampleRate = sampleRate;
+	    // FIXME: Should force recentInputArraySize to be a power of 2.
+	    this.recentInputArraySize = (int)(2048*(float)sampleRate/44100);
+
 	     this.outPitchArray = new double[vectorSize];
 	     this.windowedInput = new double[recentInputArraySize];
 	     this.logMagDFTWinInputArray = new double[recentInputArraySize];
@@ -115,7 +122,7 @@ import ptolemy.math.SignalProcessing;
 	   <i>inputArray[]</i> and the corresponding element of the returned
 	   vector of pitch estimates.
 	*/
-	public double[] performPitchDetect(double [] inputArray,int sampleRate) {
+	public double[] performPitchDetect(double [] inputArray) {
 	   
 	    //System.out.println("in");
 	    //for (int i=0; i < outArray.length; i++) {

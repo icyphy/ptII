@@ -128,8 +128,10 @@ public class ProcessAudio implements Runnable {
 	// the size of the queues used by JavaSound.
 	// The number of samples frames to attempt to read/write from the
 	// target/source data line is given by (readWriteDataSizeInFrames*
-	// jsBufferSizeOverReadWriteSize).
-	int readWriteDataSizeInFrames = 750;
+	// jsBufferSizeOverReadWriteSize). The sampleRate is in there
+	// to force the delay (in seconds) to be be independent of the
+	// sample rate.
+	int readWriteDataSizeInFrames = (int)(512*sampleRate/44100);
 	int jsBufferSizeOverReadWriteSize = 8;
 	TargetDataLine targetLine;
         
@@ -230,7 +232,8 @@ public class ProcessAudio implements Runnable {
 	
 	
 	// Initialize the pitch detector.
-	PitchDetector pd = new PitchDetector(readWriteDataSizeInFrames);
+	PitchDetector pd = new PitchDetector(readWriteDataSizeInFrames,
+					     (int)sampleRate);
 	// Initialize the pitch shifter.
 	PitchShift ps = new PitchShift((float)sampleRate);
 	
@@ -258,7 +261,7 @@ public class ProcessAudio implements Runnable {
 		///////////////////////////////////////////////////////////
 		//////   Do processing on audioInDoubleArray here     /////
 		
-		currPitchArray = pd.performPitchDetect(audioInDoubleArray, (int)sampleRate);
+		currPitchArray = pd.performPitchDetect(audioInDoubleArray);
 
 		audioInDoubleArray = ps.performPitchShift(audioInDoubleArray,
 		             currPitchArray, pitchScaleIn1);
