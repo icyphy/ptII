@@ -50,9 +50,11 @@ import ptolemy.kernel.util.StringAttribute;
 //////////////////////////////////////////////////////////////////////////
 //// EventButton
 /**
-   Output a Token in response to a click of a button.
+   Output a Token in response to a click of a button. This class is closely
+   related to the {@link ptolemy.domains.sr.lib.ButtonTime} class in SR 
+   domain by Paul Whitaker.
 
-   @author  Winthrop Williams, closely follows EventButton.java by Paul Whitaker
+   @author  Winthrop Williams 
    @version $Id$
    @since Ptolemy II 2.0
    @Pt.ProposedRating Red (winthrop)
