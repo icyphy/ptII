@@ -37,7 +37,7 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.wireless.kernel.PropertyTransformer;
@@ -48,6 +48,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -110,17 +111,20 @@ public class TransmitPropertyTransformer extends LifeCycleManager
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeSameAs(input);
         // Create and configure the variables.
-        senderLocation = new Variable(this, "senderLocation");
+        senderLocation = new Parameter(this, "senderLocation");
         senderLocation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         senderLocation.setExpression("{0.0, 0.0}");
+        senderLocation.setVisibility(Settable.EXPERT);
 
-        receiverLocation = new Variable(this, "receiverLocation");
+        receiverLocation = new Parameter(this, "receiverLocation");
         receiverLocation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         receiverLocation.setExpression("{0.0, 0.0}");
+        receiverLocation.setVisibility(Settable.EXPERT);
 
-        properties = new Variable(this, "properties");
+        properties = new Parameter(this, "properties");
         // FIXME: properties type should be at least an empty record.
         properties.setExpression("{power = 0.0, range = 0.0}");
+        properties.setVisibility(Settable.EXPERT);
 
         // Create the icon.
         _attachText("_iconDescription", "<svg>\n" +
@@ -149,17 +153,17 @@ public class TransmitPropertyTransformer extends LifeCycleManager
     /** The location of the sender. This is a double array with default
      *  value {0.0, 0.0}.
      */
-    public Variable senderLocation;
+    public Parameter senderLocation;
 
     /** The location of the receiver. This is a double array with default
      *  value {0.0, 0.0}.
      */
-    public Variable receiverLocation;
+    public Parameter receiverLocation;
 
     /** The properties to be transformed. This is a
      *  record token with value {power = 0.0, range = 0.0}.
      */
-    public Variable properties;
+    public Parameter properties;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -272,14 +276,14 @@ public class TransmitPropertyTransformer extends LifeCycleManager
     /** Set the <i>senderLocation</i>, <i>receiverLocation</i>, and
      *  <i>properties</i> variables and execute the contained model.
      *  Return the final value of the <i>properties</i> variable.
-     *  @param properties The initial value of the properties.
+     *  @param initialProperties The initial value of the properties.
      *  @param sender The sending port.
      *  @param destination The receiving port.
      *  @return The modified transform properties.
      *  @exception IllegalActionException If executing the model
      *   throws it.
      */
-    public RecordToken transformProperties(RecordToken properties,
+    public RecordToken transformProperties(RecordToken initialProperties,
             WirelessIOPort sender, WirelessIOPort destination)
             throws IllegalActionException {
         double[] p1 = _locationOf(sender);
@@ -295,7 +299,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager
         }
         senderLocation.setToken(new ArrayToken(t1));
         receiverLocation.setToken(new ArrayToken(t2));
-        (this.properties).setToken(properties);
+        properties.setToken(initialProperties);
 
         if (_debugging) {
             _debug("----transformProperties is called; "
@@ -305,7 +309,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager
         // FIXME: Should use return value to determine what postfire() returns?
         _executeInsideModel();
 
-        RecordToken result = (RecordToken)(this.properties).getToken();
+        RecordToken result = (RecordToken)properties.getToken();
         if (_debugging) {
             _debug("---- the modified properties value is. "
                     + result.toString());
