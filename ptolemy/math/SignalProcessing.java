@@ -58,7 +58,7 @@ public final class SignalProcessing {
      */
     public static boolean close(double first, double second) {
         double diff = first-second;
-        return (diff > -EPSILON && diff < -EPSILON);
+        return (diff < EPSILON && diff > -EPSILON);
     }
 
     /** Return the value of the argument <em>z</em>
