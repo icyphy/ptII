@@ -652,7 +652,7 @@ public class DDFDirector extends Director {
     }
 
     /** Override the base class method to transfer enough tokens manually
-     *  specified in the tokenConsumptionRate parameter of the port (the
+     *  specified in the <i>tokenConsumptionRate</i> parameter of the port (the
      *  default is 1) to complete an internal iteration.  If there are not
      *  enough tokens, then throw an exception. It then updates enabling
      *  status for all inside opaque actors that receive data from this port.
@@ -950,12 +950,12 @@ public class DDFDirector extends Director {
     }
 
 
-    /** Check each remote receiver to see whether the number of tokens in 
-     *  the receiver is greater than or equal to the tokenConsumptionRate 
-     *  of the containing port. The actor is deferrable if the above test 
-     *  is true for any receiver. At the same time, find the maximum number
-     *  of tokens in all receivers, which is used to find minimax actors
-     *  later on.
+    /** Check each remote receiver to see whether the number of tokens
+     *  in the receiver is greater than or equal to the
+     *  <i>tokenConsumptionRate</i> of the containing port. The actor
+     *  is deferrable if the above test is true for any receiver. At
+     *  the same time, find the maximum number of tokens in all
+     *  receivers, which is used to find minimax actors later on.
      *  @param actor The actor to be checked.
      *  @return true if the actor is deferrable, false if not.
      *  @exception IllegalActionException If any called method throws
