@@ -143,11 +143,11 @@ public class NonlinearClient extends CTApplet{
             sqwv.values.setToken(new DoubleMatrixToken(values));
 
 
-            gain1.gain.setToken(new DoubleToken(500.0));
+            gain1.factor.setToken(new DoubleToken(500.0));
 
-            gain2.gain.setToken(new DoubleToken(-10.0));
+            gain2.factor.setToken(new DoubleToken(-10.0));
 
-            gain3.gain.setToken(new DoubleToken(-1000.0));
+            gain3.factor.setToken(new DoubleToken(-1000.0));
 
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException("NameDuplication");
