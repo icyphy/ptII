@@ -211,15 +211,29 @@ public class Test extends Sink {
                         + "Empty input on channel " + i);
 	    }
 	    Token token = input.get(i);
-	    if (token.isCloseTo(reference[i], _tolerance).booleanValue()
-                    == false)
+            boolean isClose;
+            try {
+                isClose =
+                    token.isCloseTo(reference[i], _tolerance).booleanValue();
+            } catch (IllegalActionException ex) {
+                // Chain the exceptions together so we know which test
+                // actor failed if there was more than one...
+                throw new IllegalActionException(this, ex,  
+                        "Test fails in iteration " + _numberOfInputTokensSeen
+                        + ".\n"
+                        + "Value was: " + token
+                        + ". Should have been: " + reference[i]);
+            }
+            
+	    if (!isClose) {
 		throw new IllegalActionException(this,
                         "Test fails in iteration " + _numberOfInputTokensSeen
                         + ".\n"
                         + "Value was: " + token
                         + ". Should have been: " + reference[i]);
-	}
-	_numberOfInputTokensSeen++;
+            }
+        }
+        _numberOfInputTokensSeen++;
         return true;
     }
 
