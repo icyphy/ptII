@@ -264,10 +264,13 @@ public class DirectedGraph extends Graph {
      */
     protected Vector _inDegree;
 
-    /** A boolean matrix representing the adjacency matrix of the
+    /** A 2D boolean array representing the adjacency matrix of the
      *  transitive closure. <code>_tranClosure[i][j] = true</code>
      *  if there is a path from node i to node j, where i and j are
      *  node IDs.
+     *  This array is computed by the _compTranClosure method. After
+     *  graph mutation, that method should be called before using 
+     *  this array. Otherwise, the array is not valid.
      */
     protected boolean[][] _tranClosure;
 
