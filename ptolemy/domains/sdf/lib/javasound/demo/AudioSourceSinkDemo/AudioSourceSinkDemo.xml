@@ -1,46 +1,77 @@
-<!-- $Id$-->
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="AudioSourceSinkDemo" class="ptolemy.actor.TypedCompositeActor">
-<doc>A simple model demonstrating the use of the AudioSource and 
+    <director name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+    </director>
+    <doc>A simple model demonstrating the use of the AudioSource and 
 AudioSink actors. The model consists of an AudioSource connected
 to an AudioSink.</doc>
-<!---@author Brian K. Vogel-->
-    
-    <director class="ptolemy.domains.sdf.kernel.SDFDirector">
-      <property name="iterations" value="0">
-        <doc>Number of iterations in an execution.</doc>
-      </property>
-    </director>
-
-    <!-- Define toplevel parameters -->
-    <property name="sampleRate" value = "44100"
-                     class="ptolemy.data.expr.Parameter">
-       <doc>Sampling Rate in Hz</doc>
+    <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="44100">
+        <doc>Sampling Rate in Hz</doc>
     </property>
-
     <entity name="soundSource" class="ptolemy.domains.sdf.lib.javasound.AudioSource">
-      <property name="tokenProductionRate" value="256"></property>
-      <property name="sampleRate" value="sampleRate"></property>
-      <property name="source" value="&quot;mic&quot;"></property>
-      <property name="channels" value="1"></property>
-      <property name="bufferSize" value="4096"></property>
-      <port name="output"></port>
+        <property name="pathName" class="ptolemy.data.expr.Parameter" value="&quot;soundFile.wav&quot;">
+        </property>
+        <property name="source" class="ptolemy.data.expr.Parameter" value="&quot;mic&quot;">
+        </property>
+        <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="sampleRate">
+        </property>
+        <property name="sampleSizeInBits" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="channels" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="4096">
+        </property>
+        <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="256">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="100.25, 134.75"/>
+        </rendition>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="256">
+            </property>
+        </port>
     </entity>
-
     <entity name="soundSink" class="ptolemy.domains.sdf.lib.javasound.AudioSink">
-      <property name="tokenConsumptionRate" value="256"></property>
-      <property name="sampleRate" value="sampleRate"></property>
-      <property name="sink" value="&quot;speaker&quot;"></property>
-      <property name="channels" value="1"></property>
-      <property name="bufferSize" value="4096"></property>
-      <port name="input"></port>
+        <property name="pathName" class="ptolemy.data.expr.Parameter" value="&quot;soundFile.wav&quot;">
+        </property>
+        <property name="sink" class="ptolemy.data.expr.Parameter" value="&quot;speaker&quot;">
+        </property>
+        <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="sampleRate">
+        </property>
+        <property name="sampleSizeInBits" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="channels" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="4096">
+        </property>
+        <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="256">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="302.5, 134.75"/>
+        </rendition>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="256">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
     </entity>
-
-    <!-- Make the connections -->
-    <relation name="r1" class="ptolemy.actor.TypedIORelation"></relation>
+    <relation name="r1" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="soundSource.output" relation="r1"/>
     <link port="soundSink.input" relation="r1"/>
-
 </model>
