@@ -144,7 +144,7 @@ awk '
 				print f[i]
 			    }
 			    print error
-			    printf("\n")
+			    printf("\n\n")
 			}
                        }' $1 >> $mailmsg
 }
