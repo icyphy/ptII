@@ -79,7 +79,13 @@ mkdir $reviewdir
 #
 # Generate PostScript of the code
 cd $PTII/$packagename
-# Remove the directories from the filenames
+# Remove the directories from the filenames.
+
+# We only handle classes in one directory at a time so that each review
+# is for only the classes in that package.  If you are combining
+# classes from two packages into one review, then create two review pages
+# and add hyperlinks between the two
+
 shortfiles=""
 for file in $files
 do
@@ -97,7 +103,7 @@ echo "   Generating PDF using distill . . ."
 distill javafiles2up.ps
 
 date=`date +"%h %e, %Y "`
-
+title="$date: Review of `echo $files | sed 's/.java//g'`"
 ####################################
 echo "    Generating an html file with the appropriate links . . ."
 cat >$reviewfile <<EoF
@@ -112,12 +118,12 @@ Links are relative, not absolute.
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
  <!-- Be sure to fix the date to the date of the review itself -->
-<title>$date: Review of $files<title>
+<title>$title</title>
 </head>
 <body>
  <!-- Replace all the italic text, including the <I></I> directives -->
- <!-- Be sure to fix the date to the date of the review itself
-<h1>$date: Review of $files</h1>
+ <!-- Be sure to fix the date to the date of the review itself -->
+<h1>$title</h1>
 
 <p>
 <ul>
@@ -215,12 +221,15 @@ do
 done
 
 
-echo "Add the following to the top of the list of reviews in"
+echo "Fix the date and add the following to the top of the list of reviews in"
 echo "$reviewdir/index.htm"
 echo ""
-echo "<li><a href=\"$reviewname.htm\">$date: Review of `echo $files | sed 's/.java//g'`</a>"
+echo "<li><a href=\"$reviewname.htm\">$title</a>"
 echo ""
 
+echo "After reviewing "
+echo "   $reviewname.htm and"
+echo "   $reviewname/javafiles2up.pdf"
 echo "The commands to run are:"
 echo "   cd $reviewtopdir/$packagename"
 echo "   cvs add $reviewname.htm $reviewname"
