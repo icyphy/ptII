@@ -121,6 +121,9 @@ public class BackwardEulerSolver extends FixedStepSolver
         _setConverge(false);
         int iterations = 0;
         while(!isConverged()) {
+            if(dir.STAT) {
+                dir.NFUNC ++;
+            }
             _setConverge(true);
             actors = sch.stateTransitionSchedule();
             while(actors.hasMoreElements()) {

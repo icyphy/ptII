@@ -105,7 +105,9 @@ public abstract class VariableStepSolver extends ODESolver{
                     dir.getCurrentTime() + " with step size: " +
                     dir.getCurrentStepSize());
                 } else {
-                    dir.NFAIL ++;
+                    if(dir.STAT) {
+                        dir.NFAIL ++;
+                    }
                     System.out.println("Fail step at time: " +
                     dir.getCurrentTime() + " with step size: " +
                     dir.getCurrentStepSize());

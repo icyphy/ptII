@@ -96,6 +96,9 @@ public class ExplicitRK23Solver extends VariableStepSolver{
         resetRound();
         Enumeration actors;
         for (int i = 0; i < _timeInc.length; i++) {
+            if(dir.STAT) {
+                dir.NFUNC ++;
+            }
             actors = sch.dynamicActorSchedule();
             while(actors.hasMoreElements()) {
                 Actor next = (Actor)actors.nextElement();
@@ -116,6 +119,10 @@ public class ExplicitRK23Solver extends VariableStepSolver{
             dir.setCurrentTime(dir.getCurrentTime()+
                     dir.getCurrentStepSize()*_timeInc[i]);
             incrRound();
+        }
+        if(dir.STAT) {
+            // for error control.
+            dir.NFUNC ++;
         }
     }
 
@@ -145,22 +152,13 @@ public class ExplicitRK23Solver extends VariableStepSolver{
             switch (r) {
                 case 1:
                     outvalue = xn + h * k[0]*_B[0][0];
-                    if(DEBUG) {
-                        dir.NFUNC ++;
-                    }
                     break;
                 case 2:
                     outvalue = xn + h * (k[0]*_B[1][0] + k[1]*_B[1][1]);
-                    if(DEBUG) {
-                        dir.NFUNC ++;
-                    }
                     break;
                 case 3:
                     outvalue = xn + h * (k[0]*_B[2][0] + k[1]*_B[2][1]
                             + k[2]*_B[2][2]);
-                    if(DEBUG) {
-                        dir.NFUNC ++;
-                    }
                     integrator.setPotentialState(outvalue);
                     break;
                 default:
@@ -189,9 +187,6 @@ public class ExplicitRK23Solver extends VariableStepSolver{
             CTDirector dir = (CTDirector)getContainer();
             double errtol = dir.getLTETolerant();
             double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
-            if(DEBUG) {
-                dir.NFUNC ++;
-            }
             double[] k = integrator.getAuxVariables(); 
             double lte = Math.abs(k[0]*_E[0] + k[1]*_E[1]
                                 + k[2]*_E[2] + f* _E[3]);

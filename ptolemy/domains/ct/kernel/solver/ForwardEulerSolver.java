@@ -23,8 +23,7 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Green (yourname@eecs.berkeley.edu)
-@AcceptedRating Green (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Red (liuj@eecs.berkeley.edu)
 
 */
 
@@ -100,6 +99,9 @@ public class ForwardEulerSolver extends FixedStepSolver{
                     " must have a director to fire.");
         }
         resetRound();
+        if(dir.STAT) {
+            dir.NFUNC++;
+        }
         Enumeration actors = sch.stateTransitionSchedule();
         while(actors.hasMoreElements()) {
             Actor next = (Actor)actors.nextElement();
