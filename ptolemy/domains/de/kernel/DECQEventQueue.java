@@ -74,7 +74,7 @@ public class DECQEventQueue implements DEEventQueue {
      *  @param isAdaptive If the queue changes its number of bins at run time.
      */
     public DECQEventQueue(Director director, int minBinCount,
-        int binCountFactor, boolean isAdaptive) {
+            int binCountFactor, boolean isAdaptive) {
         _director = director;
         // Construct a calendar queue _cQueue with the given parameters.
         _cQueue = new CalendarQueue(new DECQComparator(),
@@ -204,10 +204,10 @@ public class DECQEventQueue implements DEEventQueue {
          */
         public final long getVirtualBinNumber(Object event) {
             long value = (long)(
-                (((DEEvent)event).timeStamp()
-                    .subtract(_zeroReference.timeStamp())).getDoubleValue()
-                / _binWidth.timeStamp().getDoubleValue()
-            );
+                    (((DEEvent)event).timeStamp()
+                            .subtract(_zeroReference.timeStamp())).getDoubleValue()
+                    / _binWidth.timeStamp().getDoubleValue()
+                    );
             if (value != Long.MAX_VALUE) {
                 return value;
             } else {
@@ -241,13 +241,13 @@ public class DECQEventQueue implements DEEventQueue {
             double[] diff = new double[entryArray.length - 1];
             double average =
                 (((DEEvent)entryArray[entryArray.length - 1]).timeStamp()
-                    .subtract(((DEEvent)entryArray[0]).timeStamp()))
-                    .getDoubleValue() / (entryArray.length-1);
+                        .subtract(((DEEvent)entryArray[0]).timeStamp()))
+                .getDoubleValue() / (entryArray.length-1);
             double effectiveAverage = 0.0;
             int effectiveSamples = 0;
             for (int i = 0; i < entryArray.length - 1; ++i) {
                 diff[i] = ((DEEvent)entryArray[i+1]).timeStamp().subtract(
-                    ((DEEvent)entryArray[i]).timeStamp()).getDoubleValue();
+                        ((DEEvent)entryArray[i]).timeStamp()).getDoubleValue();
                 if (diff[i] < 2.0 * average) {
                     effectiveSamples++;
                     effectiveAverage += diff[i];
@@ -262,7 +262,7 @@ public class DECQEventQueue implements DEEventQueue {
             effectiveAverage /= (double)effectiveSamples;
             _binWidth =
                 new DEEvent((Actor)null, new Time(_director, 3.0 * effectiveAverage),
-                0, 0);
+                        0, 0);
         }
 
         /** Set the zero reference, to be used in calculating the virtual
@@ -280,11 +280,11 @@ public class DECQEventQueue implements DEEventQueue {
 
         // The bin width.
         private DEEvent _binWidth
-            = new DEEvent((Actor)null, new Time(_director, 1.0), 0, 0);
+        = new DEEvent((Actor)null, new Time(_director, 1.0), 0, 0);
 
         // The zero reference.
         private DEEvent _zeroReference
-            = new DEEvent((Actor)null, new Time(_director, 0.0), 0, 0);
+        = new DEEvent((Actor)null, new Time(_director, 0.0), 0, 0);
     }
 
 
