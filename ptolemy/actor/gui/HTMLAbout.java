@@ -81,7 +81,9 @@ public class HTMLAbout {
      *  _applicationName attribute in
      */
     public static String about(Configuration configuration) {
-        String version = VersionAttribute.CURRENT_VERSION.getExpression();
+        // Use an explicit version here - the name of the whatsNew file
+        // does not changes as quickly as the version.
+        String version = "4.0";
 
         String applicationName = "Ptolemy II";
         try {
