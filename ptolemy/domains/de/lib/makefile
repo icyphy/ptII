@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	Delay.java \
 	DETransformer.java \
+	Merge.java \
 	Sampler.java \
 	Server.java \
 	WaitingTime.java
