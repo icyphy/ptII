@@ -138,14 +138,17 @@ public class CalInterpreter extends TypedAtomicActor {
             String s = calCode.getExpression();
             try {
                 _actor = _stringToActor(s);
-                if (_actor != null)
+                if (_actor != null) {
                     _setupActor();
-            } catch (Throwable e) {
-                throw  new IllegalActionException("Error in CAL code: " + e.getMessage());
+                }
+            } catch (Throwable ex) {
+                throw  new IllegalActionException(this, ex,
+                        "Failed to set up actor.");
             }
 
-        } else
+        } else {
             super.attributeChanged(attribute);
+        }
     }
 
     /**
@@ -171,9 +174,10 @@ public class CalInterpreter extends TypedAtomicActor {
                     + _actor.getName());
         }
         _ddi = _getPlugin(env);
-        if (!_ddi.isLegalActor())
+        if (!_ddi.isLegalActor()) {
             throw new IllegalActionException(_actor.getName()
                     + " is not a valid " + _ddi.getName() + " actor.");
+        }
         _ddi.setupActor();
     }
 
@@ -335,25 +339,20 @@ public class CalInterpreter extends TypedAtomicActor {
         }
     }
 
-    private void _setupActor() {
+    private void _setupActor() throws Exception {
         assert _actor != null;
-        try {
-            _env = _extendEnvWithImports(_actor.getImports());
-            _refreshTypedIOPorts(_actor.getInputPorts(), true, false);
-            _refreshTypedIOPorts(_actor.getOutputPorts(), false, true);
-            _refreshParameters();
+        _env = _extendEnvWithImports(_actor.getImports());
+        _refreshTypedIOPorts(_actor.getInputPorts(), true, false);
+        _refreshTypedIOPorts(_actor.getOutputPorts(), false, true);
+        _refreshParameters();
 
-            CompositeEntity container = (CompositeEntity)getContainer();
-            if (container != null && container.getEntity(_actor.getName())
-                    != this) {
-                this.setName(((CompositeEntity) this.getContainer())
-                        + uniqueName(_actor.getName()));
-            }
-            _attachActorIcon(_actor.getName());
-        } catch (Exception ex) {
-            throw new RuntimeException("Cannot set up actor '"
-                    + _actor.getName() + "'.", ex);
+        CompositeEntity container = (CompositeEntity)getContainer();
+        if (container != null
+                && container.getEntity(_actor.getName()) != this) {
+            this.setName(((CompositeEntity) this.getContainer())
+                    + uniqueName(_actor.getName()));
         }
+        _attachActorIcon(_actor.getName());
     }
 
     private void _attachActorIcon(String name) {
@@ -372,7 +371,8 @@ public class CalInterpreter extends TypedAtomicActor {
                 + "</svg>\n");
     }
 
-    private Environment _extendEnvWithImports(Import[] imports) {
+    private Environment _extendEnvWithImports(Import[] imports) 
+            throws IllegalActionException {
         Environment lastEnv = _globalEnv;
 
         for (int i = 0; i < imports.length; i++) {
@@ -394,9 +394,12 @@ public class CalInterpreter extends TypedAtomicActor {
                             this.getClass().getClassLoader(),
                             _theContext, packagePrefix, className, alias);
                 }
-            } else throw new RuntimeException(
-                    "Unknown import type encountered in '"
+            } else {
+                throw new IllegalActionException(
+                    "Unknown import type '" + anImport
+                    + "' encountered in '"
                     + _actor.getName() + "'.");
+            }
         }
         return lastEnv;
     }
