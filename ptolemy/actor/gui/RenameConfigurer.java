@@ -158,15 +158,6 @@ public class RenameConfigurer extends Query
         }
     }
 
-    /** Called to notify that one of the entries has changed.
-     *  This simply sets a flag that enables application of the change
-     *  when the apply() method is called.
-     *  @param name The name of the entry that changed.
-     */
-    public void changed(String name) {
-        _changed = true;
-    }
-
     /** React to the fact that the change has been successfully executed
      *  by doing nothing.
      *  @param change The change that has been executed.
@@ -186,6 +177,15 @@ public class RenameConfigurer extends Query
             change.setErrorReported(true);
             MessageHandler.error("Rename failed: ", exception);
         }
+    }
+
+    /** Called to notify that one of the entries has changed.
+     *  This simply sets a flag that enables application of the change
+     *  when the apply() method is called.
+     *  @param name The name of the entry that changed.
+     */
+    public void changed(String name) {
+        _changed = true;
     }
 
     ///////////////////////////////////////////////////////////////////

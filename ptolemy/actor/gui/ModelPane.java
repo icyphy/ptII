@@ -217,6 +217,26 @@ public class ModelPane extends JPanel implements CloseListener {
         return _model;
     }
 
+    /** If the model has a manager and is executing, then
+     *  pause execution by calling the pause() method of the manager.
+     *  If there is no manager, do nothing.
+     */
+    public void pauseRun() {
+        if (_manager != null) {
+            _manager.pause();
+        }
+    }
+
+    /** If the model has a manager and is executing, then
+     *  resume execution by calling the resume() method of the manager.
+     *  If there is no manager, do nothing.
+     */
+    public void resumeRun() {
+        if (_manager != null) {
+            _manager.resume();
+        }
+    }
+
     /** Make the Go button the default button for the root pane.
      *  You should call this after placing this pane in a container with
      *  a root pane.
@@ -371,26 +391,6 @@ public class ModelPane extends JPanel implements CloseListener {
     public void stopRun() {
         if (_manager != null) {
             _manager.stop();
-        }
-    }
-
-    /** If the model has a manager and is executing, then
-     *  pause execution by calling the pause() method of the manager.
-     *  If there is no manager, do nothing.
-     */
-    public void pauseRun() {
-        if (_manager != null) {
-            _manager.pause();
-        }
-    }
-
-    /** If the model has a manager and is executing, then
-     *  resume execution by calling the resume() method of the manager.
-     *  If there is no manager, do nothing.
-     */
-    public void resumeRun() {
-        if (_manager != null) {
-            _manager.resume();
         }
     }
 

@@ -192,7 +192,8 @@ public class BrowserLauncher {
                             // FIXME: we should probably cache this
                             // copy somehow.
                             String old = url;
-                            String temporaryURL = JNLPUtilities.saveJarURLInClassPath(url);
+                            String temporaryURL =
+                                JNLPUtilities.saveJarURLInClassPath(url);
                             if (temporaryURL != null) {
                                 url = temporaryURL;
                             } else {
@@ -562,6 +563,18 @@ public class BrowserLauncher {
     private BrowserLauncher() { }
 
     /**
+     * Methods required for Mac OS X.  The presence of native methods
+     * does not cause any problems on other platforms.
+     */
+    private native static int ICStart(int[] instance, int signature);
+    private native static int ICStop(int[] instance);
+
+    private native static int ICLaunchURL(int instance, byte[] hint,
+            byte[] data, int len,
+            int[] selectionStart,
+            int[] selectionEnd);
+
+    /**
      * Called by a static initializer to load any classes, fields, and
      * methods required at runtime to locate the user's web browser.
      * @return <code>true</code> if all initialization succeeded
@@ -840,18 +853,4 @@ public class BrowserLauncher {
         }
         return browser;
     }
-
-
-
-    /**
-     * Methods required for Mac OS X.  The presence of native methods
-     * does not cause any problems on other platforms.
-     */
-    private native static int ICStart(int[] instance, int signature);
-    private native static int ICStop(int[] instance);
-
-    private native static int ICLaunchURL(int instance, byte[] hint,
-            byte[] data, int len,
-            int[] selectionStart,
-            int[] selectionEnd);
 }

@@ -308,118 +308,6 @@ public class PtolemyQuery extends Query
         }
     }
 
-    /** Queue a change request to alter the value of the attribute
-     *  attached to the specified entry, if there is one. This method is
-     *  called whenever an entry has been changed.
-     *  If no attribute is attached to the specified entry, then
-     *  do nothing.
-     *  @param name The name of the entry that has changed.
-     */
-    public void changed(final String name) {
-        // Check if the entry that changed is in the mapping.
-        if (_attributes.containsKey(name)) {
-            final Settable attribute
-                = (Settable)(_attributes.get(name));
-            if ( attribute == null ) {
-                // No associated attribute.
-                return;
-            }
-
-            ChangeRequest request;
-
-            // NOTE: We must use a MoMLChangeRequest so that changes
-            // propagate to any objects that have been instantiating
-            // using this one as a class.  This is only an issue if
-            // attribute is a NamedObj, so we first check.
-            if (attribute instanceof NamedObj) {
-                NamedObj castAttribute = (NamedObj)attribute;
-
-                // The context for the MoML should be the first container
-                // above this attribute in the hierarchy that defers its
-                // MoML definition, or the immediate parent if there is none.
-                NamedObj parent = MoMLChangeRequest.getDeferredToParent(
-                        castAttribute);
-                if (parent == null) {
-                    parent = (NamedObj)castAttribute.getContainer();
-                }
-                String moml = "<property name=\""
-                        + castAttribute.getName(parent)
-                        + "\" value=\""
-                        + StringUtilities.escapeForXML(getStringValue(name))
-                        + "\"/>";
-                request = new MoMLChangeRequest(
-                        this,         // originator
-                        parent,       // context
-                        moml,         // MoML code
-                        null) {       // base
-                   protected void _execute() throws Exception {
-                       synchronized (PtolemyQuery.this) {
-                           try {
-                               _ignoreChangeNotifications = true;
-                               super._execute();
-                           } finally {
-                               _ignoreChangeNotifications = false;
-                           }
-                       }
-                   }
-               };
-            } else {
-                // If the attribute is not a NamedObj, then we
-                // set its value directly.
-                request = new ChangeRequest(this, name) {
-                        protected void _execute()
-                            throws IllegalActionException {
-                            attribute.setExpression(getStringValue(name));
-
-                            attribute.validate();
-                            /* NOTE: Earlier version:
-                               // Here, we need to handle instances of Variable
-                               // specially.  This is too bad...
-                               if (attribute instanceof Variable) {
-
-                               // Will this ever happen?  A
-                               // Variable that is not a NamedObj???
-                               // Retrieve the token to force
-                               // evaluation, so as to check the
-                               // validity of the new value.
-
-                               ((Variable)attribute).getToken();
-                               }
-                            */
-                        }
-                    };
-            }
-            // NOTE: This object is never removed as a listener from
-            // the change request.  This is OK because this query will
-            // be closed at some point, and all references to it will
-            // disappear, and thus both it and the change request should
-            // become accessible to the garbage collector.  However, I
-            // don't quite trust Java to do this right, since it's not
-            // completely clear that it releases resources when windows
-            // are closed.  It would be better if this listener were
-            // a weak reference.
-            // NOTE: This appears to be unnecessary, since we register
-            // as a change listener on the handler.  This results in
-            // two notifications.  EAL 9/15/02.
-            if (_handler == null) {
-                request.addChangeListener(this);
-                request.execute();
-            } else {
-                if (request instanceof MoMLChangeRequest) {
-                    ((MoMLChangeRequest)request).setUndoable(true);
-                }
-
-                // Remove the error handler so that this class handles
-                // the error through the notification.  Save the previous
-                // error handler to restore after this request has been
-                // processes.
-                _savedErrorHandler = MoMLParser.getErrorHandler();
-                MoMLParser.setErrorHandler(null);
-                _handler.requestChange(request);
-            }
-        }
-    }
-
     /** Notify this class that a change has been successfully executed
      *  by the change handler.
      *  @param change The change that has been executed.
@@ -563,6 +451,118 @@ public class PtolemyQuery extends Query
                         }
                     }
                 });
+        }
+    }
+
+    /** Queue a change request to alter the value of the attribute
+     *  attached to the specified entry, if there is one. This method is
+     *  called whenever an entry has been changed.
+     *  If no attribute is attached to the specified entry, then
+     *  do nothing.
+     *  @param name The name of the entry that has changed.
+     */
+    public void changed(final String name) {
+        // Check if the entry that changed is in the mapping.
+        if (_attributes.containsKey(name)) {
+            final Settable attribute
+                = (Settable)(_attributes.get(name));
+            if ( attribute == null ) {
+                // No associated attribute.
+                return;
+            }
+
+            ChangeRequest request;
+
+            // NOTE: We must use a MoMLChangeRequest so that changes
+            // propagate to any objects that have been instantiating
+            // using this one as a class.  This is only an issue if
+            // attribute is a NamedObj, so we first check.
+            if (attribute instanceof NamedObj) {
+                NamedObj castAttribute = (NamedObj)attribute;
+
+                // The context for the MoML should be the first container
+                // above this attribute in the hierarchy that defers its
+                // MoML definition, or the immediate parent if there is none.
+                NamedObj parent = MoMLChangeRequest.getDeferredToParent(
+                        castAttribute);
+                if (parent == null) {
+                    parent = (NamedObj)castAttribute.getContainer();
+                }
+                String moml = "<property name=\""
+                        + castAttribute.getName(parent)
+                        + "\" value=\""
+                        + StringUtilities.escapeForXML(getStringValue(name))
+                        + "\"/>";
+                request = new MoMLChangeRequest(
+                        this,         // originator
+                        parent,       // context
+                        moml,         // MoML code
+                        null) {       // base
+                   protected void _execute() throws Exception {
+                       synchronized (PtolemyQuery.this) {
+                           try {
+                               _ignoreChangeNotifications = true;
+                               super._execute();
+                           } finally {
+                               _ignoreChangeNotifications = false;
+                           }
+                       }
+                   }
+               };
+            } else {
+                // If the attribute is not a NamedObj, then we
+                // set its value directly.
+                request = new ChangeRequest(this, name) {
+                        protected void _execute()
+                            throws IllegalActionException {
+                            attribute.setExpression(getStringValue(name));
+
+                            attribute.validate();
+                            /* NOTE: Earlier version:
+                               // Here, we need to handle instances of Variable
+                               // specially.  This is too bad...
+                               if (attribute instanceof Variable) {
+
+                               // Will this ever happen?  A
+                               // Variable that is not a NamedObj???
+                               // Retrieve the token to force
+                               // evaluation, so as to check the
+                               // validity of the new value.
+
+                               ((Variable)attribute).getToken();
+                               }
+                            */
+                        }
+                    };
+            }
+            // NOTE: This object is never removed as a listener from
+            // the change request.  This is OK because this query will
+            // be closed at some point, and all references to it will
+            // disappear, and thus both it and the change request should
+            // become accessible to the garbage collector.  However, I
+            // don't quite trust Java to do this right, since it's not
+            // completely clear that it releases resources when windows
+            // are closed.  It would be better if this listener were
+            // a weak reference.
+            // NOTE: This appears to be unnecessary, since we register
+            // as a change listener on the handler.  This results in
+            // two notifications.  EAL 9/15/02.
+            if (_handler == null) {
+                request.addChangeListener(this);
+                request.execute();
+            } else {
+                if (request instanceof MoMLChangeRequest) {
+                    ((MoMLChangeRequest)request).setUndoable(true);
+                }
+
+                // Remove the error handler so that this class handles
+                // the error through the notification.  Save the previous
+                // error handler to restore after this request has been
+                // processes.
+                _savedErrorHandler = MoMLParser.getErrorHandler();
+                MoMLParser.setErrorHandler(null);
+                _handler.requestChange(request);
+            }
         }
     }
 
