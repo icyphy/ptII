@@ -44,7 +44,7 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// CSPDirector
 /**
-CSPDirector governs the execution of a CompositeActor with the semantics
+CSPDirector governs the execution of a composite actor with the semantics
 of the Communicating Sequential Processes (CSP) domain.
 <p>
 In the CSP domain, the director creates a thread for executing each
@@ -60,7 +60,7 @@ time to advance, or if it is waiting for a deadlock to occur.
 <p>
 The director is responsible for handling deadlocks, both real
 and timed.  It is also responsible for carrying out any requests for
-changes to the topology, that have been made when a deadlock occurs.
+changes to the topology that have been made when a deadlock occurs.
 It maintains counts of the number of active
 processes, the number of blocked processes, and the number of
 delayed processes. <i>Deadlock</i> occurs when the number of blocked processes
@@ -103,7 +103,7 @@ may also be terminated abruptly by calling the terminate() method directly.
 This may lead to inconsistent state so any results generated after
 it should be ignored.
 <p>
-Changes to the topology can occur each occasion deadlock, real or time, is
+Changes to the topology can occur when deadlock, real or timed, is
 reached. The director carries out any changes that have been queued
 with it. Note that the result of the topology changes may remove the
 deadlock that caused the changes to be carried out.
@@ -245,31 +245,6 @@ public class CSPDirector extends ProcessDirector {
         _currentTime = newTime;
     }
 
-    /** Finish executing the model. A flag is set in all the receivers and
-     *  in the director, which causes each process to terminate the
-     *  next occasion it tries to communicate or delay itself.
-     *  <p>
-     *  The model finishes executing when real deadlock occurs and this
-     *  director is controlling the top-level composite actor. It can
-     *  also happen when the desired number of iterations have passed
-     *  one level up or when the user decides to finish executing the model.
-     *  <p>
-     *  Note that the wrapup() methods are not directly invoked on the actors
-     *  under control of this director as each actor is executed by a
-     *  separate thread.
-     *  <p>
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
-     *  @exception IllegalActionException If a method accessing the topology
-     *   throws it.
-     */
-    public void wrapup() throws IllegalActionException {
-        if ((_actorsDelayed != 0 ) || _topologyChangesPending ||
-                (_getPausedActorsCount() != 0)) {
-        }
-        super.wrapup();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -356,7 +331,6 @@ public class CSPDirector extends ProcessDirector {
                 Enumeration newActors = _newActors();
                 while (newActors.hasMoreElements()) {
                     Actor actor = (Actor)newActors.nextElement();
-                    actor.createReceivers();
                     actor.initialize();
                     ProcessThread pnt = new ProcessThread(actor, this);
                     newThreads.insertFirst(pnt);
