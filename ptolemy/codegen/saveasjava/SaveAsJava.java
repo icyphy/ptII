@@ -46,7 +46,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
-
+import java.util.StringTokenizer;
 //////////////////////////////////////////////////////////////////////////
 //// SaveAsJava
 /**
@@ -92,7 +92,7 @@ class SaveAsJava {
         compositeModel = (CompositeEntity)toplevel;
 
         // Generate class header output
-        String sanitizedName = _name(compositeModel);
+        String sanitizedName = sanitizeName(compositeModel);
         if (sanitizedName.length() == 0 ) {
             throw new IllegalActionException("Name of the toplevel entity is "
                     + "empty, so we don't know what file to build in.");
@@ -161,6 +161,65 @@ class SaveAsJava {
         return code;
     }
 
+    // Sanitize the name of the specified object so that it is a
+    // proper Java identifier. In particular, dots are replaced with
+    // underscore, spaces are replaced with underscore, and any non
+    // alphanumeric is replaced with X.  This method ensures that
+    // returned name is always unique by appending a numeric if
+    // necessary.
+    public String sanitizeName(Nameable object) {
+        String name = (String)_nameMap.get(object);
+        if(name == null) {
+            NamedObj toplevel = ((NamedObj)object).toplevel();
+            String nameToSanitize;
+            if (object == toplevel) {
+                nameToSanitize = toplevel.getName();
+            } else {
+                nameToSanitize = ((NamedObj)object).getName(toplevel);
+            }
+            // FIXME: Only replacing dots, spaces and colons for now.
+            name = nameToSanitize.replace('.', '_');
+            name = name.replace(' ', '_');
+            name = name.replace(':', '_');
+
+            // If the name begins with a number, add a leading _
+            switch (name.charAt(0)) {
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                name = "_" + name;
+                break;
+            default:
+                break;
+            }
+	    // Replace "=" with "Equals"
+	    if (name.indexOf('=') != -1) {
+		StringTokenizer tokenizer =
+		    new StringTokenizer(name, "=", true);
+		StringBuffer nameBuffer = new StringBuffer();
+		while (tokenizer.hasMoreTokens()) {
+		    String token = tokenizer.nextToken();
+		    if (token.equals("=")) {
+			nameBuffer.append("Equals");
+		    } else {
+			nameBuffer.append(token);
+		    }
+		}
+		name = nameBuffer.toString();
+	    } 
+            _nameMap.put(object, name);
+        }
+        return name;
+    }
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -188,7 +247,7 @@ class SaveAsJava {
         // of an attribute in the generated code.
         String nameAsContainer;
         if (object.getContainer() == null) nameAsContainer = "this";
-        else nameAsContainer = _name(object);
+        else nameAsContainer = sanitizeName(object);
 
         while (attributes.hasNext()) {
             Attribute attribute = (Attribute)attributes.next();
@@ -201,7 +260,7 @@ class SaveAsJava {
             if (moml.length() > 0) {
                 if (!_isPublicMember(attribute, object)) {
                     String attributeClass = _getClassName(attribute);
-                    String attributeName = _name(attribute);
+                    String attributeName = sanitizeName(attribute);
                     result.append(_indent(3));
                     result.append(attributeClass);
                     result.append(" ");
@@ -220,7 +279,7 @@ class SaveAsJava {
                     String expression = ((Settable)attribute).getExpression();
                     if (expression != null) {
                         result.append(_indent(3));
-                        result.append(_name(attribute));
+                        result.append(sanitizeName(attribute));
                         result.append(".setExpression(\"");
                         result.append(_escapeQuotes(expression));
                         result.append("\");\n");
@@ -246,7 +305,7 @@ class SaveAsJava {
         // FIXME: Use StringBuffer, not String.
         String code = new String();
         String className = _getClassName(model);
-        String sanitizedName = _name(model);
+        String sanitizedName = sanitizeName(model);
         CompositeEntity container;
         String containerName;
 
@@ -258,7 +317,7 @@ class SaveAsJava {
             if (container.getContainer() == null) {
                 containerName = "this";
             } else {
-                containerName = _name(container);
+                containerName = sanitizeName(container);
             }
             nameAsContainer = sanitizedName;
             code += _indent(3)
@@ -309,9 +368,9 @@ class SaveAsJava {
                         code += sanitizedName + ".";
                     }
                     code += "connect ("
-                        + _name(port1)
+                        + sanitizeName(port1)
                         + ", "
-                        + _name(port2)
+                        + sanitizeName(port2)
                         + ");\n";
                 }
                 // Explicitly instantiate the relation,
@@ -323,21 +382,21 @@ class SaveAsJava {
                     code += _indent(3)
                         + relationClassName
                         + " "
-                        + _name(relation);
+                        + sanitizeName(relation);
                     code += " = new "
                         + relationClassName
                         + "("
                         + nameAsContainer;
                     code += ", \""
-                        + _name(relation)
+                        + sanitizeName(relation)
                         + "\");\n";
                     code += relationAttributes;
                     while (ports.hasNext()) {
                         Port p = (Port)ports.next();
                         code += _indent(3)
-                            + _name(p)
+                            + sanitizeName(p)
                             + ".link("
-                            + _name(relation)
+                            + sanitizeName(relation)
                             + ");\n";
                     }
                 }
@@ -365,7 +424,7 @@ class SaveAsJava {
         String nameAsContainer;
 
         if (component.getContainer() == null) nameAsContainer = "this";
-        else nameAsContainer = _name(component);
+        else nameAsContainer = sanitizeName(component);
 
         while (ports.hasNext()) {
             Port port = (Port)ports.next();
@@ -374,7 +433,7 @@ class SaveAsJava {
             if (!_isPublicMember(port, component)) {
                 // Port does not appear as a public member.
                 String portClass = _getClassName(port);
-                String portName = _name(port);
+                String portName = sanitizeName(port);
                 result.append(_indent(3));
                 result.append(portClass);
                 result.append(" ");
@@ -463,56 +522,14 @@ class SaveAsJava {
             container.getClass().getField(obj.getName());
             // Henceforth, refer to this object as
             // containerName.objectName.
-            _nameTable.put(obj,
-                    _name(container)
+            _nameMap.put(obj,
+                    sanitizeName(container)
                     + "."
                     + obj.getName());
         } catch (NoSuchFieldException ex) {
             return false;
         }
         return true;
-    }
-
-    // Sanitize the name of the specified object so that it is a
-    // proper Java identifier. In particular, dots are replaced with
-    // underscore, spaces are replaced with underscore, and any non
-    // alphanumeric is replaced with X.  This method ensures that
-    // returned name is always unique by appending a numeric if
-    // necessary.
-    private String _name(Nameable object) {
-        String name = (String)_nameTable.get(object);
-        if(name == null) {
-            NamedObj toplevel = ((NamedObj)object).toplevel();
-            String nameToSanitize;
-            if (object == toplevel) {
-                nameToSanitize = toplevel.getName();
-            } else {
-                nameToSanitize = ((NamedObj)object).getName(toplevel);
-            }
-            // FIXME: Only replacing dots, spaces and colons for now.
-            name = nameToSanitize.replace('.', '_');
-            name = name.replace(' ', '_');
-            name = name.replace(':', '_');
-            // If the name begins with a number, add a leading _
-            switch (name.charAt(0)) {
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                name = "_" + name;
-                break;
-            default:
-                break;
-            }
-            _nameTable.put(object, name);
-        }
-        return name;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -522,5 +539,5 @@ class SaveAsJava {
     LinkedList _importList;
 
     // A table of names of objects.
-    Map _nameTable = new HashMap();
+    Map _nameMap = new HashMap();
 }
