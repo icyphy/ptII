@@ -181,6 +181,8 @@ public class Constants {
                             StringUtilities.getProperty("ptolemy.ptII.dir")));
             // See also the ptolemy.ptII.dirAsURL property in StringUtilities.
 
+            // Note that TMPDIR almost always ends with a \ or /
+            // so usually we refer to it as ${TMPDIR}.
             _table.put("TMPDIR",
                     new StringToken(
                             StringUtilities.getProperty("java.io.tmpdir")));
