@@ -232,6 +232,34 @@ public class GraphicalMessageHandler extends MessageHandler {
         }
     }
 
+    /** Ask the user a yes/no question, and return true if the answer
+     *  is yes.  In this base class, this prints the question on standard
+     *  output and looks for the reply on standard input.
+     *  @return True if the answer is yes.
+     */
+    protected boolean _yesNoQuestion(String question) {
+        Object[] message = new Object[1];
+        message[0] = question;
+        Object[] options = {"Yes", "No"};
+
+        // Show the MODAL dialog
+        int selected = JOptionPane.showOptionDialog(
+                _context,
+                message,
+                "Warning",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE,
+                null,
+                options,
+                options[0]);
+
+        if (selected == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

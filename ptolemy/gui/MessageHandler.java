@@ -29,6 +29,10 @@
 
 package ptolemy.gui;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+
 //////////////////////////////////////////////////////////////////////////
 //// MessageHandler
 /**
@@ -139,6 +143,14 @@ public class MessageHandler {
         _handler._warning(info + ": " + exception.getMessage(), exception);
     }
 
+    /** Ask the user a yes/no question, and return true if the answer
+     *  is yes.
+     *  @return True if the answer is yes.
+     */
+    public static boolean yesNoQuestion(String question) {
+        return _handler._yesNoQuestion(question);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -199,6 +211,25 @@ public class MessageHandler {
     protected void _warning(String info, Exception exception)
             throws CancelException {
         _error(info, exception);
+    }
+
+    /** Ask the user a yes/no question, and return true if the answer
+     *  is yes.  In this base class, this prints the question on standard
+     *  output and looks for the reply on standard input.
+     *  @return True if the answer is yes.
+     */
+    protected boolean _yesNoQuestion(String question) {
+        System.out.print(question);
+        System.out.print(" (yes or no) ");
+        BufferedReader stdIn = new BufferedReader(
+                new InputStreamReader(System.in));
+        try {
+            String reply = stdIn.readLine();
+            if (reply.trim().toLowerCase().equals("yes")) {
+                return true;
+            }
+        } catch (IOException ex) {}
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////
