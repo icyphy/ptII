@@ -43,6 +43,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -82,13 +83,15 @@ import ptolemy.kernel.util.Workspace;
    fires, then one deferrable actor which has the smallest maximum number of
    tokens on its output arcs is fired. A user can treat several such basic
    iterations as a single iteration by specifying the number of times a
-   particular actor must be fired in a single iteration.
+   particular actor must be fired in a single iteration. If the value of 
+   the parameter runUntilDeadlock is a BooleanToken with value true, the 
+   scheduler will repeat the basic iteration until deadlock in <i>one 
+   iteration</i>.
    <p>
    The algorithm implementing one basic iteration goes like this:
    <pre>
    E = set of enabled actors
    D = set of deferrable enabled actors
-   F = set of actors that have fired once already in this one iteration
    </pre>
 
    One default iteration consists of:
@@ -161,6 +164,13 @@ public class DDFDirector extends Director {
      *  The default value is an IntToken with the value zero.
      */
     public Parameter iterations;
+    
+    /** A parameter representing whether one iteration consists of 
+     *  repeated basic iteration until deadlock. If this parameter is 
+     *  true, the model will be executed until deadlock in one iteration.
+     *  The default value is a BooleanToken with the value false.
+     */
+    public Parameter runUntilDeadlock;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -205,14 +215,14 @@ public class DDFDirector extends Director {
                 // deferrable actors.
                 Actor actor = (Actor)actors.next();
                 int[] flags = (int[])_actorsFlags.get(actor);
-                int canFire = flags[_enablingStatus];
+                int canFire = flags[_ENABLING_STATUS];
                 if (canFire == _ENABLED_NOT_DEFERRABLE) {
                     toBeFiredActors.add(actor);
                 }
 
                 // Find set of minimax actors.
                 if (canFire == _ENABLED_DEFERRABLE) {
-                    int newSize = flags[_maxNumberOfTokens];
+                    int newSize = flags[_MAX_NUMBER_OF_TOKENS];
                     if (newSize < minimaxSize) {
                         minimaxActors.clear();
                         minimaxActors.add(actor);
@@ -243,8 +253,9 @@ public class DDFDirector extends Director {
                 }
             }
 
-            // If still no actor has been fired, declare deadlock.
-            if(!_firedOne) {
+            // If still no actor has been fired, declare deadlock unless
+            // the parameter runUntilDeadlock is true.
+            if(!_firedOne && !_runUntilDeadlock ) {
                 _postfireReturns = false;
                 if (_debugging) {
                     _debug("deadlock detected");
@@ -258,12 +269,17 @@ public class DDFDirector extends Director {
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 int[] flags = (int[])_actorsFlags.get(actor);
-                int requiredFirings = flags[_requiredFiringsPerIteration];
-                int firingsDone = flags[_numberOfFirings];
+                int requiredFirings = flags[_REQUIRED_FIRINGS_PER_ITERATION];
+                int firingsDone = flags[_NUMBER_OF_FIRINGS];
                 if (firingsDone < requiredFirings) {
                     repeatBasicIteration = true;
                     break;
                 }
+            }
+            
+            // Repeat 
+            if (_runUntilDeadlock) {
+                repeatBasicIteration = _firedOne;
             }
         }
     }
@@ -279,6 +295,8 @@ public class DDFDirector extends Director {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        _runUntilDeadlock = ((BooleanToken)
+                runUntilDeadlock.getToken()).booleanValue();
         _postfireReturns = true;
         _iterationCount = 0;
         _actorsToCheckNumberOfFirings.clear();
@@ -300,11 +318,11 @@ public class DDFDirector extends Director {
             }
 
             // Determine actor enabling status.
-            flags[_enablingStatus] = _actorStatus(actor);
+            flags[_ENABLING_STATUS] = _actorStatus(actor);
 
             // Determine required requiredFiringsPerIteration for each actor.
             // The default vaule 0 means no requirement on this actor.
-            flags[_requiredFiringsPerIteration] = 0;
+            flags[_REQUIRED_FIRINGS_PER_ITERATION] = 0;
             Variable requiredFiringsPerIteration = (Variable)((Entity)actor).
                 getAttribute("requiredFiringsPerIteration");
             if (requiredFiringsPerIteration != null) {
@@ -312,7 +330,7 @@ public class DDFDirector extends Director {
                 if(token instanceof IntToken) {
                     int value = ((IntToken)token).intValue();
                     if (value > 0)
-                        flags[_requiredFiringsPerIteration] = value;
+                        flags[_REQUIRED_FIRINGS_PER_ITERATION] = value;
                     _actorsToCheckNumberOfFirings.add(actor);
                 } else
                     throw new IllegalActionException(this,
@@ -413,7 +431,7 @@ public class DDFDirector extends Director {
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             int[] flags = (int[])_actorsFlags.get(actor);
-            flags[_numberOfFirings] = 0;
+            flags[_NUMBER_OF_FIRINGS] = 0;
         }
 
         return true;
@@ -477,7 +495,7 @@ public class DDFDirector extends Director {
             // of any inside actors.
             if (getContainer() != actor) {
                 int[] flags = (int[])_actorsFlags.get(actor);
-                flags[_enablingStatus] = _actorStatus(actor);
+                flags[_ENABLING_STATUS] = _actorStatus(actor);
             }
         }
         return wasTransferred;
@@ -583,7 +601,7 @@ public class DDFDirector extends Director {
 
         // Increment the firing number.
         int[] flags = (int[])_actorsFlags.get(actor);
-        flags[_numberOfFirings]++;
+        flags[_NUMBER_OF_FIRINGS]++;
 
         // Update enabling status for each connected actor.
         Iterator ports = ((Entity)actor).portList().iterator();
@@ -599,14 +617,14 @@ public class DDFDirector extends Director {
                 if (getContainer() != connectedActor) {
                     int[] containerFlags =
                         (int[])_actorsFlags.get(connectedActor);
-                    containerFlags[_enablingStatus] =
+                    containerFlags[_ENABLING_STATUS] =
                         _actorStatus(connectedActor);
                 }
             }
         }
 
         // Update enabling status for this actor.
-        flags[_enablingStatus] = _actorStatus(actor);
+        flags[_ENABLING_STATUS] = _actorStatus(actor);
 
         return returnValue;
     }
@@ -702,7 +720,7 @@ public class DDFDirector extends Director {
 
         if (deferrable) {
             int[] flags = (int[])_actorsFlags.get(actor);
-            flags[_maxNumberOfTokens] = maxSize;
+            flags[_MAX_NUMBER_OF_TOKENS] = maxSize;
         }
 
         return deferrable;
@@ -830,12 +848,17 @@ public class DDFDirector extends Director {
     }
 
     /** Initialize the object. In this case, we give the DDFDirector
-     *  an iterations parameter.
+     *  an iterations parameter with default value zero and a 
+     *  runUntilDeadlock parameter with default value false.
      */
     private void _init()
             throws IllegalActionException, NameDuplicationException {
         iterations = new Parameter(this, "iterations", new IntToken(0));
         iterations.setTypeEquals(BaseType.INT);
+        
+        runUntilDeadlock = new Parameter(this, "runUntilDeadlock");
+        runUntilDeadlock.setTypeEquals(BaseType.BOOLEAN);
+        runUntilDeadlock.setToken(new BooleanToken(false));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -857,6 +880,9 @@ public class DDFDirector extends Director {
 
     // The list of active actors.
     private LinkedList _activeActors;
+    
+    //  A boolean initialized with value in the parameter runUntilDeadlock.
+    private boolean _runUntilDeadlock;
 
     // To store those actors for which positive requiredFiringsPerIteration
     // has been defined.
@@ -875,8 +901,8 @@ public class DDFDirector extends Director {
     private static final int _NOT_ENABLED = 0;
 
     // Indexes into an array of actor flags contained by a HashMap.
-    private static final int _enablingStatus = 0;
-    private static final int _numberOfFirings = 1;
-    private static final int _maxNumberOfTokens = 2;
-    private static final int _requiredFiringsPerIteration = 3;
+    private static final int _ENABLING_STATUS = 0;
+    private static final int _NUMBER_OF_FIRINGS = 1;
+    private static final int _MAX_NUMBER_OF_TOKENS = 2;
+    private static final int _REQUIRED_FIRINGS_PER_ITERATION = 3;
 }
