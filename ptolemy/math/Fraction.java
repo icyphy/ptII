@@ -26,10 +26,6 @@ COPYRIGHTENDKEY
 
 */
 
-// do we want to make this a token class?
-// upside: consistent interface, might be useful for domains.
-// downside: work
-
 package ptolemy.math;
 
 
