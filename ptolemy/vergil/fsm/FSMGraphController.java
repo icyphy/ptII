@@ -355,7 +355,8 @@ public class FSMGraphController extends FSMViewerGraphController {
         public NewStateAction() {
             super("New State");
             putValue("tooltip", "New State");
-            NodeRenderer renderer = new StateController.StateRenderer();
+            NodeRenderer renderer
+                    = new StateController.StateRenderer(getGraphModel());
             Figure figure = renderer.render(_prototypeState);
             // Standard toolbar icons are 25x25 pixels.
             FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);

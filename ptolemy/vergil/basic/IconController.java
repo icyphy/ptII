@@ -77,6 +77,14 @@ public class IconController extends ParameterizedNodeController {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Map used to keep track of icons that have been created
+     *  but not yet assigned to a container.
+     */
+    private static Map _iconsPendingContainer = new HashMap();
+
+    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** An icon renderer. */
@@ -197,8 +205,4 @@ public class IconController extends ParameterizedNodeController {
             return result;
         }
     }
-
-    // Map used to keep track of icons that have been created
-    // but not yet assigned to a container.
-    private static Map _iconsPendingContainer = new HashMap();
 }

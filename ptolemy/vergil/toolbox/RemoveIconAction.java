@@ -29,11 +29,11 @@ COPYRIGHTENDKEY
 package ptolemy.vergil.toolbox;
 
 import java.awt.event.ActionEvent;
+import java.util.Iterator;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.util.MessageHandler;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 
@@ -64,21 +64,20 @@ public class RemoveIconAction extends FigureAction {
         super.actionPerformed(e);
         NamedObj object = getTarget();
 
-        try {
-            EditorIcon icon = (EditorIcon)object
-                .getAttribute("_icon", EditorIcon.class);
+        // In theory, there should be only one.
+        // But just in case, we remove all.
+        Iterator icons = object.attributeList(EditorIcon.class).iterator();
+        while (icons.hasNext()) {
+            EditorIcon icon = (EditorIcon)icons.next();
             // An XMLIcon is not a custom icon, so don't remove it.
             if (!(icon instanceof XMLIcon)) {
-                String moml;
-                moml = "<deleteProperty name=\""
-                    + icon.getName()
-                    + "\"/>";
+                String moml = "<deleteProperty name=\""
+                        + icon.getName()
+                        + "\"/>";
                 MoMLChangeRequest request
                     = new MoMLChangeRequest(this, object, moml);
                 object.requestChange(request);
             }
-        } catch (Exception ex) {
-            MessageHandler.error("Remove custom Icon failed.", ex);
         }
     }
 
