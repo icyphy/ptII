@@ -30,6 +30,8 @@
 package ptolemy.gui;
 
 // Java imports
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.KeyStroke;
 import javax.swing.JPanel;
 import javax.swing.JFileChooser;
@@ -56,8 +58,49 @@ line like:
 <pre>
     getContentPane().add(component, BorderLayout.CENTER);
 </pre>
+Derived classes may wish to modify the menus.  The File
+and Help menus are exposed as protected members.
+The File menu items in the _fileMenuItems protected array are,
+in order, Open, New, Save, SaveAs, Print, and Close.
+The Help menu items in the _helpMenuItems protected array are,
+in order, About and Help.
+<p>
+A derived class can use the insert() methods of JMenu
+to insert a menu item defined by an Action or a JMenuItem
+into a specified position in the menu.
+Derived classes can also insert separators using the
+insertSeparator() method of JMenu.
+In principle, derived classes can also remove menu items
+using the remove() methods of JMenu; however, we discourage this.
+A basic principle of user interface design is habituation, where
+there is considerable value in having menus that have consistent
+contents and layout throughout the application (Microsoft, for
+example, violates this principle with adaptive menus).
+<p>
+Instead of removing items from the menu, they can be disabled.
+For example, to disable the "Save" item in the File menu, do
+<pre>
+    _fileMenuItems[2].setEnabled(false);
+</pre>
+<p>
+Some menu items are provided, but are disabled by default.
+The "New" item, for example, can be enabled with
+<pre>
+    _fileMenuItems[1].setEnabled(true);
+</pre>
+A derived class that enables this menu item should implement
+the _new() method to do something more interesting than what it
+does in this base class.
+<p>
+A derived class can add an entirely new menu (many do that).
+However, at this time, the JMenuBar interface does not support
+putting a new menu into an arbitrary position.  For this reason,
+derived classes should insert new menus into the menu bar only
+in the _addMenus() protected method.  This ensures that the File
+menu is always the rightmost menu, and the Help menu is always
+the leftmost menu.
 
-@author Edward A. Lee
+@author Edward A. Lee and Steve Neuendorffer
 @version $Id$
 */
 public abstract class Top extends JFrame {
@@ -76,52 +119,57 @@ public abstract class Top extends JFrame {
         _fileMenu.setMnemonic(KeyEvent.VK_F);
         _helpMenu.setMnemonic(KeyEvent.VK_H);
 
-        // File menu
-        JMenuItem[] fileMenuItems = {
-            new JMenuItem("Open", KeyEvent.VK_O),
-            new JMenuItem("Save", KeyEvent.VK_S),
-            new JMenuItem("SaveAs", KeyEvent.VK_A),
-            new JMenuItem("Print", KeyEvent.VK_P),
-            new JMenuItem("Close", KeyEvent.VK_C),
-        };
         // Open button = ctrl-o.
-        fileMenuItems[0].setAccelerator(
+        _fileMenuItems[0].setAccelerator(
                 KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
 
+        // New button = ctrl-n.
+        _fileMenuItems[1].setAccelerator(
+                KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK));
+        // New button disabled by default.
+        _fileMenuItems[1].setEnabled(false);
+
         // Save button = ctrl-s.
-        fileMenuItems[1].setAccelerator(
+        _fileMenuItems[2].setAccelerator(
                 KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
 
         // Print button = ctrl-p.
-        fileMenuItems[3].setAccelerator(
+        _fileMenuItems[4].setAccelerator(
                 KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
+        // Print button disabled by default.
+        _fileMenuItems[4].setEnabled(false);
 
         // Close button = ctrl-w.
-        fileMenuItems[4].setAccelerator(
+        _fileMenuItems[5].setAccelerator(
                 KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
 
         FileMenuListener fml = new FileMenuListener();
         // Set the action command and listener for each menu item.
-        for(int i = 0; i < fileMenuItems.length; i++) {
-            fileMenuItems[i].setActionCommand(fileMenuItems[i].getText());
-            fileMenuItems[i].addActionListener(fml);
-            _fileMenu.add(fileMenuItems[i]);
+        for(int i = 0; i < _fileMenuItems.length; i++) {
+            _fileMenuItems[i].setActionCommand(_fileMenuItems[i].getText());
+            _fileMenuItems[i].addActionListener(fml);
+            _fileMenu.add(_fileMenuItems[i]);
         }
         _menubar.add(_fileMenu);
 
-        // Help menu
-        JMenuItem[] helpMenuItems = {
-            new JMenuItem("About", KeyEvent.VK_A),
-            new JMenuItem("Help", KeyEvent.VK_H),
-        };
         HelpMenuListener sml = new HelpMenuListener();
         // Set the action command and listener for each menu item.
-        for(int i = 0; i < helpMenuItems.length; i++) {
-            helpMenuItems[i].setActionCommand(
-                    helpMenuItems[i].getText());
-            helpMenuItems[i].addActionListener(sml);
-            _helpMenu.add(helpMenuItems[i]);
+        for(int i = 0; i < _helpMenuItems.length; i++) {
+            _helpMenuItems[i].setActionCommand(
+                    _helpMenuItems[i].getText());
+            _helpMenuItems[i].addActionListener(sml);
+            _helpMenu.add(_helpMenuItems[i]);
         }
+
+        // Unfortunately, at this time, Java provides no mechanism for
+        // derived classes to insert menus at arbitrary points in the
+        // menu bar.  Also, the menubar ignores the alignment property
+        // of the JMenu.  By convention, however, we want the help menu to
+        // be the rightmost menu.  Thus, we use a strategy pattern here,
+        // and call a protected method that derived classes can use to
+        // add menus.
+        _addMenus();
+
         _menubar.add(_helpMenu);
 
         setJMenuBar(_menubar);
@@ -182,19 +230,35 @@ public abstract class Top extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** @serial Directory that contains the input file. */
+    /** Directory that contains the input file. */
     protected File _directory = null;
 
-    /** @serial The input file. */
+    /** The input file. */
     protected File _file = null;
 
-    /** @serial File menu for this frame. */
+    /** File menu for this frame. */
     protected JMenu _fileMenu = new JMenu("File");
 
-    /** @serial Help menu for this frame. */
+    /** Items in the file menu. */
+    protected JMenuItem[] _fileMenuItems = {
+        new JMenuItem("Open", KeyEvent.VK_O),
+        new JMenuItem("New", KeyEvent.VK_N),
+        new JMenuItem("Save", KeyEvent.VK_S),
+        new JMenuItem("SaveAs", KeyEvent.VK_A),
+        new JMenuItem("Print", KeyEvent.VK_P),
+        new JMenuItem("Close", KeyEvent.VK_C),
+    };
+
+    /** Help menu for this frame. */
     protected JMenu _helpMenu = new JMenu("Help");
 
-    /** @serial Menubar for this frame. */
+    /** Help menu items. */
+    protected JMenuItem[] _helpMenuItems = {
+        new JMenuItem("About", KeyEvent.VK_A),
+        new JMenuItem("Help", KeyEvent.VK_H),
+    };
+
+    /** Menubar for this frame. */
     protected JMenuBar _menubar = new JMenuBar();
 
     /** The status bar. */
@@ -214,6 +278,27 @@ public abstract class Top extends JFrame {
                 "Copyright (c) 1997-2000, " +
                 "The Regents of the University of California.",
                 "About Ptolemy II", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /** Add menus to the menu bar.  In this base class, this does nothing.
+     *  In derived classes, however, it will add items with commands like
+     *  <pre>
+     *      JMenu newMenu = new JMenu("My Menu");
+     *      _menubar.add(newMenu);
+     *  </pre>
+     *  The reason for doing this in a protected method rather than
+     *  doing it directly in the constructor of the base class is subtle.
+     *  Unfortunately, at this time, Java provides no mechanism for
+     *  derived classes to insert menus at arbitrary points in the
+     *  menu bar.  Also, the menubar ignores the alignment property
+     *  of the JMenu.  By convention, however, we want the help menu to
+     *  be the rightmost menu.  Thus, we use a strategy pattern here,
+     *  and call a protected method that derived classes can use to
+     *  add menus.  Thus, this method is called before the Help menu
+     *  is added, and hence menus added in this method will appear to
+     *  the left of the Help menu.
+     */
+    protected void _addMenus() {
     }
 
     /** Clear the current contents.  This base class checks to see whether
@@ -242,6 +327,13 @@ public abstract class Top extends JFrame {
      */
     protected void _help() {
         _about();
+    }
+
+    /** Open a new window or model.  In this base class, this does
+     *  nothing, and the corresponding menu item is disabled.
+     *  To enable it, FIXME: instructions.
+     */
+    protected void _new() {
     }
 
     /** Read the specified URL.
@@ -351,12 +443,13 @@ public abstract class Top extends JFrame {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
             if (actionCommand.equals("Open")) _open();
+            else if (actionCommand.equals("New")) _new();
             else if (actionCommand.equals("Save")) _save();
             else if (actionCommand.equals("SaveAs")) _saveAs();
             else if (actionCommand.equals("Print")) _print();
             else if (actionCommand.equals("Close")) _close();
 
-            // NOTE: The following should not be needed, but there jdk1.3beta
+            // NOTE: The following should not be needed, but jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
             repaint();
@@ -368,11 +461,8 @@ public abstract class Top extends JFrame {
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
-            if (actionCommand.equals("About")) {
-                _about();
-            } else if (actionCommand.equals("Help")) {
-                _help();
-            }
+            if (actionCommand.equals("About")) _about();
+            else if (actionCommand.equals("Help")) _help();
 
             // NOTE: The following should not be needed, but there jdk1.3beta
             // appears to have a bug in swing where repainting doesn't

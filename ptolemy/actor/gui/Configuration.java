@@ -112,6 +112,9 @@ public class Configuration extends CompositeEntity {
             TableauFactory factory = (TableauFactory)getEntity("factory");
             if (factory != null) {
                 Tableau tableau = factory.createTableau(effigy);
+                if (tableau == null) {
+                    throw new Exception("Unable to create a Tableau.");
+                }
                 tableau.setName(effigy.uniqueName("tableau"));
                 tableau.setContainer(effigy);
                 // The first tableau is a master.

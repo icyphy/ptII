@@ -40,9 +40,7 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.Director;
 import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
-import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.KernelException;
 
 // Java imports
@@ -61,7 +59,7 @@ import javax.swing.JMenuItem;
 //// ModelFrame
 /**
 ModelFrame is a top-level window containing a Ptolemy II model.
-If contains a ModelPane, but adds a menu bar and a status bar for
+If contains a ModelPane, and has a menu bar and a status bar for
 message reporting.
 
 @author Edward A. Lee
@@ -81,6 +79,7 @@ public class ModelFrame extends PtolemyTop implements ExecutionListener {
         // Create first with no model to avoid duplicating work when
         // we next call setModel().
         _pane = new ModelPane(null);
+
         setModel(model);
 
         getContentPane().add(_pane, BorderLayout.CENTER);
@@ -137,11 +136,12 @@ public class ModelFrame extends PtolemyTop implements ExecutionListener {
     }
 
     /** Set background color.  This overrides the base class to set the
-     *  background of contained ModelPane.
+     *  background of the contained ModelPane.
      *  @param background The background color.
      */
     public void setBackground(Color background) {
         super.setBackground(background);
+        getContentPane().setBackground(background);
         // This seems to be called in a base class constructor, before
         // this variable has been set. Hence the test against null.
         if (_pane != null) _pane.setBackground(background);
@@ -205,13 +205,6 @@ public class ModelFrame extends PtolemyTop implements ExecutionListener {
         }
         JOptionPane.showMessageDialog(this, message,
                 "About " + getTitle(), JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    /** Print the contents.
-     */
-    protected void _print() {
-        // FIXME: What should we print?  Plots?  How?
-        super._print();
     }
 
     /** Write the model to the specified file.

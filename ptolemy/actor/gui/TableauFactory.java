@@ -83,8 +83,11 @@ public class TableauFactory extends CompositeEntity {
      *  tableau for the specified effigy.  Subclasses of this class will
      *  usually be inner classes of a Tableau, and will create the Tableau.
      *  @param effigy The model effigy.
+     *  @return A tableau for the effigy, or null if one cannot be created.
+     *  @exception Exception If the factory should be able to create a
+     *   Tableau for the effigy, but something goes wrong.
      */
-    public Tableau createTableau(Effigy effigy) {
+    public Tableau createTableau(Effigy effigy) throws Exception {
 	Tableau tableau = null;
 	Iterator factories = entityList(TableauFactory.class).iterator();
 	while(factories.hasNext() && tableau == null) {

@@ -169,7 +169,20 @@ public class ModelPane extends JPanel {
         if (_buttonPanel != null) _buttonPanel.setBackground(background);
         if (_paramQuery != null) _paramQuery.setBackground(background);
         if (_directorQuery != null) _directorQuery.setBackground(background);
+
+        // FIXME: Setting the background of this JPanel has no effect!
         if (_displays != null) _displays.setBackground(background);
+        /* FIXME: Attempting to do the job that Java fails to do here
+         * yields truly bizzare behavior, where the constructor returns null!
+         *
+        java.awt.Component[] children = _displays.getComponents();
+        if (children != null) {
+            for (int i = 0; i < children.length; i++) {
+                children[i].setBackground(background);
+            }
+        }
+        */
+
         if (_paramQuery != null) _paramQuery.setBackground(background);
         if (_directorQuery != null) _directorQuery.setBackground(background);
     }
@@ -287,9 +300,9 @@ public class ModelPane extends JPanel {
 	    // place the placeable objects in the model
 	    _displays = new JPanel();
 	    _displays.setBackground(getBackground());
+
 	    add(_displays);
-	    _displays.setLayout(new BoxLayout(_displays,
-					      BoxLayout.Y_AXIS));
+	    _displays.setLayout(new BoxLayout(_displays, BoxLayout.Y_AXIS));
     
 	    // Put placeable objects in a reasonable place
 	    for(Iterator i = _model.deepEntityList().iterator();
@@ -299,6 +312,7 @@ public class ModelPane extends JPanel {
 		    ((Placeable) o).place(_displays);
 		}
 	    }
+	    _displays.setBackground(getBackground());
 
             // Why they call this glue is beyond me, but what it does
             // is make extra space to fill in the bottom.
