@@ -56,8 +56,8 @@ do
 	echo "     which means that the sizes in the .jnlp file will be wrong"
     fi	
     # Use ls -lg because Cygwin ls -l includes the group and
-    # Solaris 8 ls -l does not
-    otherjarssizes="$otherjarssizes `ls -lg $basedirectory/$file | awk '{print $5}' - `"
+    # Solaris 8 /usr/ucb/ls -l does not
+    otherjarssizes="$otherjarssizes `/bin/ls -l $basedirectory/$file | awk '{print $5}' - `"
 done
 
 # Read in the jar files and generate jar and package lines for them
