@@ -128,7 +128,9 @@ public class RaisedCosine extends FIR {
         symbolInterval =
             new Parameter(this, "symbolInterval", new IntToken(16));
 
-        // FIXME: Need a way to hide taps and interpolation from UI.
+        // Hide taps and interpolation from UI.
+        taps.setVisibility(Settable.NONE);
+        interpolation.setVisibility(Settable.NONE);
     }
 
     ///////////////////////////////////////////////////////////////////
