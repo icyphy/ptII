@@ -34,7 +34,6 @@ import pt.kernel.*;
 import pt.data.*;
 import collections.LinkedList;
 import collections.CollectionEnumeration;
-import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// FlowFifoQ
@@ -73,7 +72,7 @@ public class FlowFifoQ extends NamedObj implements Receptionist {
      *  @exception NoSuchElementException The offset is out of range.
      */	
     public Token get() 
-            throws NoSuchElementException {
+            throws NoSuchItemException {
         synchronized (workspace()) {
 	    return (Token)_queue.take();
 	}
@@ -81,7 +80,7 @@ public class FlowFifoQ extends NamedObj implements Receptionist {
 
     /** Does not remove the element */
     public Token get(int offset) 
-            throws NoSuchElementException {
+            throws NoSuchItemException {
 	synchronized (workspace()) {
 	    return (Token)_queue.get(offset);
 	}
