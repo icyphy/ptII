@@ -152,8 +152,7 @@ public abstract class PtolemyFrame extends TableauFrame {
         }
     }
 
-
-    /** Close the window.  Look for any Dialogs that are open and close thos
+    /** Close the window.  Look for any Dialogs that are open and close those
      *  first. If a DialogTableau returns false then it means that the user
      *  has cacelled the close operation.
      *  @return False if the user cancels on a save query.
@@ -162,14 +161,18 @@ public abstract class PtolemyFrame extends TableauFrame {
 
         PtolemyEffigy ptolemyEffigy = (PtolemyEffigy) getEffigy();
 
-        List tableaux = ptolemyEffigy.entityList(Tableau.class);
-        Iterator tableauxIterator = tableaux.iterator();
-        while (tableauxIterator.hasNext()) {
-            Tableau tableau = (Tableau) tableauxIterator.next();
-            if (tableau instanceof DialogTableau) {
-                DialogTableau dialogTableau = (DialogTableau) tableau;
-                if (!(dialogTableau.close()))
-                    return false;
+        // The effigy should not be null, but if the window has
+        // already been closed somehow, then it will be.
+        if (ptolemyEffigy != null) {
+            List tableaux = ptolemyEffigy.entityList(Tableau.class);
+            Iterator tableauxIterator = tableaux.iterator();
+            while (tableauxIterator.hasNext()) {
+                Tableau tableau = (Tableau) tableauxIterator.next();
+                if (tableau instanceof DialogTableau) {
+                    DialogTableau dialogTableau = (DialogTableau) tableau;
+                    if (!(dialogTableau.close()))
+                        return false;
+                }
             }
         }
         return super._close();
