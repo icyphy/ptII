@@ -185,15 +185,15 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         while (true) {
                             if (getParent().amIFirst(getID())) {
                                 // I am the branch that succeeds
-                                String s = getParent().getName();
-                                s +=  ": conditionalReceive succeeded: ";
-                                //System.out.println(s + getID());
+                                String ss = getParent().getName();
+                                ss +=  ": conditionalReceive succeeded: ";
+                                //System.out.println(ss + getID());
                                 res = getReceiver().get();
                                 getParent().branchSucceeded(getID(), res);
                                 return;
                             } else {
-                                String s = "not first, but still alive:";
-                                //System.out.println(s + getID());
+                                String ss = "not first, but still alive:";
+                                //System.out.println(ss + getID());
                                 getReceiver()._checkAndWait();
                                 //System.out.println("loop again");
                             }
