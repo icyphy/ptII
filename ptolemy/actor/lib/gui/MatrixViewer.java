@@ -376,7 +376,7 @@ public class MatrixViewer extends Sink implements Placeable {
     /** Width of the matrix viewer in pixels. */
     private int _width;
 
-    // A specification for the window properties of the frame.
+    /** A specification for the window properties of the frame. */
     private WindowPropertiesAttribute _windowProperties;
 
     /** Height of the matrix viewer in pixels. */
