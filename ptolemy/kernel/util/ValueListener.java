@@ -38,7 +38,7 @@ of an object implementing Settable changes.
 
 @author  Edward A. Lee
 @version $Id$
-@see Variable
+@see ptolemy.data.expr.Variable
 */
 public interface ValueListener {
 

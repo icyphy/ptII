@@ -48,7 +48,7 @@ import ptolemy.actor.lib.TimedActor;
  *
  *  @author Jie Liu
  *  @version $Id$
- *  @see Actor
+ *  @see ptolemy.actor.Actor
  */
 public abstract class DEActor extends TypedAtomicActor
     implements SequenceActor, TimedActor {
