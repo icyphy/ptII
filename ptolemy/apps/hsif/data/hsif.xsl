@@ -452,8 +452,10 @@
                     <xsl:with-param name="stateName" select="$dstState"/>
                 </xsl:call-template>
 
+                <!-- It turns out that exit actions of current state 
+                can be regarded as the entry actions of next state. -->
                 <xsl:apply-templates select="key('nid', $stateID)/Action[@__child_as='exitAction']">
-                    <xsl:with-param name="stateName" select="$srcState"/>
+                    <xsl:with-param name="stateName" select="$dstState"/>
                 </xsl:apply-templates>
                     
                 <xsl:apply-templates select="Action|key('nid', $nextStateID)/Action[@__child_as='entryAction']"> 
@@ -584,11 +586,24 @@
         </xsl:for-each>
 
         <!-- Finish the internal links in state. -->
+
+        <!-- Construct and link the relations based on I/O ports -->
+        <xsl:for-each select="../IntegerVariable|../RealVariable|../BooleanVariable|../triggerInput|../triggerOutput">
+            <xsl:element name="relation">
+                <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
+                <xsl:attribute name="class">ptolemy.actor.TypedIORelation</xsl:attribute>
+            </xsl:element>
+            <xsl:element name="link">
+                <xsl:attribute name="port"><xsl:value-of select="@name"/></xsl:attribute>
+                <xsl:attribute name="relation"><xsl:value-of select="@name"/></xsl:attribute>
+            </xsl:element>
+        </xsl:for-each>
+        
+        <!-- If some inputs of expression are outputs of other integrators in the same location, -->
+        <!-- they should be wired. [/descendant::VarRef/@var=$varID] -->
         <xsl:for-each select="DiffEquation/VarRef">
             <xsl:variable name="varName"><xsl:value-of select="key('nid',@var)/@name"/></xsl:variable>
             <xsl:variable name="varID"><xsl:value-of select="@var"/></xsl:variable>
-            <!-- If some inputs of expression are outputs of other integrators in the same location, -->
-            <!-- they should be wired. [/descendant::VarRef/@var=$varID] -->
             <!--
             <xsl:value-of select="concat('This state contains ', count(../../DiffEquation[descendant::VarRef/@var=$varID]), ' ', $varID)"/> 
             -->
@@ -602,16 +617,19 @@
             </xsl:for-each>
         </xsl:for-each>
 
-        <!-- Construct and link the relations based on I/O ports -->
-        <xsl:for-each select="../IntegerVariable|../RealVariable|../BooleanVariable|../triggerInput|../triggerOutput">
-            <xsl:element name="relation">
-                <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
-                <xsl:attribute name="class">ptolemy.actor.TypedIORelation</xsl:attribute>
-            </xsl:element>
-            <xsl:element name="link">
-                <xsl:attribute name="port"><xsl:value-of select="@name"/></xsl:attribute>
-                <xsl:attribute name="relation"><xsl:value-of select="@name"/></xsl:attribute>
-            </xsl:element>
+        <!-- Link the relations to the input ports of Differential Equations -->
+        <xsl:for-each select="DiffEquation">
+            <xsl:variable name="prefix"><xsl:value-of select="key('nid',VarRef/@var)/@name"/></xsl:variable>
+            <xsl:for-each select="AExpr/descendant::VarRef">
+                <xsl:variable name="varName" select="key('nid',@var)/@name"/>
+                <xsl:variable name="counts" select="count(//DNHA/HybridAutomaton/IntegerVariable[@name=$varName]|//DNHA/HybridAutomaton/RealVariable[@name=$varName]|//DNHA/HybridAutomaton/BooleanVariable[@name=$varName])"/>
+                <xsl:if test="$counts!=0">
+                    <xsl:element name="link">
+                        <xsl:attribute name="port"><xsl:value-of select="concat($prefix, 'FlowEquation.', $varName)"/></xsl:attribute>
+                        <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
+                    </xsl:element>              
+                </xsl:if>
+            </xsl:for-each>
         </xsl:for-each>
 
         <!-- Link the relations and the input ports of Invariants-->
@@ -646,21 +664,6 @@
                     <xsl:attribute name="relation"><xsl:value-of select='expressionToTME'/></xsl:attribute>
                 </xsl:element>              
                 
-            </xsl:for-each>
-        </xsl:for-each>
-
-        <!-- Link the relations and the input ports of block diagram of Differential Equations -->
-        <xsl:for-each select="DiffEquation">
-            <xsl:variable name="prefix"><xsl:value-of select="key('nid',VarRef/@var)/@name"/></xsl:variable>
-            <xsl:for-each select="RExpr/descendant::VarRef">
-                <xsl:variable name="varName" select="key('nid',@var)/@name"/>
-                <xsl:variable name="counts" select="count(//DNHA/HybridAutomaton/IntegerVariable[@name=$varName]|//DNHA/HybridAutomaton/RealVariable[@name=$varName]|//DNHA/HybridAutomaton/BooleanVariable[@name=$varName])"/>
-                <xsl:if test="$counts!=0">
-                    <xsl:element name="link">
-                        <xsl:attribute name="port"><xsl:value-of select="concat($prefix, 'FlowEquation.', @name)"/></xsl:attribute>
-                        <xsl:attribute name="relation"><xsl:value-of select="@name"/></xsl:attribute>
-                    </xsl:element>              
-                </xsl:if>
             </xsl:for-each>
         </xsl:for-each>
 
@@ -863,7 +866,7 @@
     <xsl:apply-templates select="MExpr"/>
     <xsl:for-each select="AExprR">
         <xsl:value-of disable-output-escaping="yes" select="@addOp"/>
-        <xsl:apply-templates select="AExpr|MExpr"/>
+        <xsl:apply-templates select="AExpr"/>
     </xsl:for-each>
 </xsl:template>
 
@@ -971,7 +974,7 @@
 </xsl:template>
 
 <!-- Default setActions to ensure the continuity of integrator states. -->
-<!-- While the states of integrators could be modified by other actions later. -->
+<!-- While the states of integrators could be modified by other following actions. -->
 
 <xsl:template name="defaultSetAction">
     <xsl:param name="stateName" select="'Default StateName'"/>
@@ -1044,7 +1047,7 @@
             <xsl:element name="property">
                 <xsl:attribute name="name">expression</xsl:attribute>
                 <!--xsl:attribute name="class">ptolemy.data.expr.Parameter</xsl:attribute-->
-                <xsl:attribute name="value"><xsl:apply-templates select="MExpr"/></xsl:attribute>
+                <xsl:attribute name="value"><xsl:apply-templates select="."/></xsl:attribute>
             </xsl:element>
             <xsl:element name="port">
                 <xsl:attribute name="name">output</xsl:attribute>
@@ -1108,4 +1111,4 @@
 
 </xsl:template>
 
-</xsl:transform>	
+</xsl:transform>
