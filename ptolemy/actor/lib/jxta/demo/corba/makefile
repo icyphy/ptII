@@ -78,7 +78,8 @@ all: jclass $(PTCLASSJAR)
 
 install: all
 
-
+server:
+	$(JAVA) -classpath "$(CLASSPATH)" -Dpae.config.dir=../../ ptolemy.actor.lib.jxta.demo.corba.ModelServer
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
