@@ -47,7 +47,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	WirelessSoundDetection.xml
+	WirelessSoundDetection.xml \
+	WirelessSoundDetectionCT.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
