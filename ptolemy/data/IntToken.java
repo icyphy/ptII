@@ -34,6 +34,8 @@ package ptolemy.data;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,17 +61,16 @@ public class IntToken extends ScalarToken {
     }
 
     /** Construct an IntToken from the specified string.
-     *  @exception IllegalActionException If the Token could not
+     *  @exception IllegalActionException If the token could not
      *   be created with the given String.
      */
     public IntToken(String init) throws IllegalActionException {
-        try {
+	try {
             _value = (Integer.valueOf(init)).intValue();
         } catch (NumberFormatException e) {
             throw new IllegalActionException(e.getMessage());
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -79,55 +80,70 @@ public class IntToken extends ScalarToken {
      *  @return An IntToken.
      */
     public ScalarToken absolute() {
-        return _value >= 0 ? this : new IntToken(-_value);
+        IntToken result;
+        if (_value >= 0) {
+            result = new IntToken(_value);
+        } else {
+            result = new IntToken(-_value);
+        }
+
+        result._unitCategoryExponents = this._copyOfCategoryExponents();
+        return result;
     }
 
     /** Return a new token whose value is the sum of this token
      *  and the argument. Type resolution also occurs here, with
-     *  the returned Token type chosen to achieve a lossless conversion.
-     *  @param rightArgument The token to add to this Token.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be added to this Tokens value.
-     *  @return A new Token containing the result.
+     *  the returned token type chosen to achieve a lossless conversion.
+     *  @param rightArgument The token to add to this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can be added to this token, or
+     *   the units of this token and the argument token are not the same.
      */
     public Token add(ptolemy.data.Token rightArgument)
             throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, rightArgument);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return rightArgument.addReverse(this);
-            } else if (rightArgument instanceof IntToken) {
-                int result = _value + ((IntToken)rightArgument).intValue();
-                return new IntToken(result);
-            } else if (typeInfo == CPO.HIGHER) {
-                IntToken tmp = (IntToken)this.convert(rightArgument);
-                int result = _value + tmp.intValue();
-                return new IntToken(result);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            IntToken intToken;
+            if (typeInfo == CPO.HIGHER) {
+               intToken = (IntToken)IntToken.convert(rightArgument);
             } else {
-                throw new Exception();
+               intToken = (IntToken)rightArgument;
             }
-        } catch (Exception ex) {
-            String str = "add method not supported between ";
-            str = str + this.getClass().getName() + " and ";
-            str = str + rightArgument.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+            int sum = _value + intToken.intValue();
+            IntToken result = new IntToken(sum);
+            if ( !_isUnitEqual(intToken)) {
+                throw new IllegalActionException("IntToken.add: "
+                        + "The units of this token: " + _unitString()
+                        + " are not the same as those of the argument: "
+                        + intToken._unitString());
+            }
+            result._unitCategoryExponents = this._copyOfCategoryExponents();
+            return result;
+        } else if (typeInfo == CPO.LOWER) {
+            return rightArgument.addReverse(this);
+        } else {
+            throw new IllegalActionException("IntToken.add: Cannot add "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " and "
+                    + rightArgument.getClass().getName() + " "
+                    + rightArgument.toString());
         }
     }
 
     /** Return a new token whose value is the sum of this token
      *  and the argument. Type resolution also occurs here, with
-     *  the returned Token type chosen to achieve
+     *  the returned token type chosen to achieve
      *  a lossless conversion.
-     *  @param leftArgument The token to add this Token to.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be added to this Tokens value.
-     *  @return A new Token containing the result.
+     *  @param leftArgument The token to add this token to.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can be added to this token, or
+     *   the units of this token and the argument token are not the same.
      */
     public Token addReverse(ptolemy.data.Token leftArgument)
             throws IllegalActionException {
-        IntToken tmp = (IntToken)this.convert(leftArgument);
-        int result = tmp.intValue() + _value;
-        return new IntToken(result);
+        return this.add(leftArgument);
     }
 
     /** Return the value of this token as a Complex. The real part
@@ -152,9 +168,7 @@ public class IntToken extends ScalarToken {
      *  @exception IllegalActionException If the conversion
      *   cannot be carried out.
      */
-    public static Token convert(Token token)
-            throws IllegalActionException {
-
+    public static Token convert(Token token) throws IllegalActionException {
         int compare = TypeLattice.compare(BaseType.INT, token);
         if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("IntToken.convert: " +
@@ -167,53 +181,63 @@ public class IntToken extends ScalarToken {
             return token;
         }
         throw new IllegalActionException("cannot convert from token " +
-                "type: " + token.getClass().getName() + " to a DoubleToken");
+                "type: " + token.getClass().getName() + " to an IntToken");
     }
 
-    /** Return a new Token whose value is the value of this token
+    /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token.
-     *  Type resolution also occurs here, with the returned Token type
+     *  Type resolution also occurs here, with the returned token type
      *  chosen to achieve a lossless conversion. If two integers are divided,
      *  the result will be an integer which is the quotient.
-     *  @param divisor The token to divide this Token by
-     *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be divide this Tokens value by.
-     *  @return A new Token containing the result.
+     *  @param divisor The token to divide this token by
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *  not of a type that can be divide this token by.
      */
     public Token divide(Token divisor) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, divisor);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return divisor.divideReverse(this);
-            } else if (divisor instanceof IntToken) {
-                return new IntToken(_value / ((IntToken)divisor).intValue());
-            } else if (typeInfo == CPO.HIGHER) {
-                IntToken tmp = (IntToken)this.convert(divisor);
-                return new IntToken(_value / (tmp.intValue()));
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            IntToken intToken;
+            if (typeInfo == CPO.HIGHER) {
+               intToken = (IntToken)IntToken.convert(divisor);
             } else {
-                throw new Exception();
+               intToken = (IntToken)divisor;
             }
-        } catch (Exception ex) {
-            String str = "divide method not supported between ";
-            str = str + this.getClass().getName() + " and ";
-            str = str + divisor.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+            int quotient = _value / intToken.intValue();
+            IntToken result = new IntToken(quotient);
+            // compute units
+            result._unitCategoryExponents =
+                            _subtractCategoryExponents(intToken);
+            return result;
+        } else if (typeInfo == CPO.LOWER) {
+            return divisor.divideReverse(this);
+        } else {
+            throw new IllegalActionException(
+                    "IntToken.divide: Cannot divide "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " by "
+                    + divisor.getClass().getName() + " " + divisor.toString());
         }
     }
 
-    /** Return a new Token whose value is the value of the argument token
+    /** Return a new token whose value is the value of the argument token
      *  divided by the value of this token. Type resolution
-     *  also occurs here, with the returned Token type chosen to achieve
+     *  also occurs here, with the returned token type chosen to achieve
      *  a lossless conversion.
-     *  @param dividend The token to be divided by the value of this Token.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be divided by this Tokens value.
-     *  @return A new Token containing the result.
+     *  @param dividend The token to be divided by the value of this token.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can be divided by this tokens value.
+     *  @return A new token containing the result.
      */
-    public Token divideReverse(Token dividend)
-            throws IllegalActionException {
-        IntToken tmp = (IntToken)this.convert(dividend);
-        return new IntToken(tmp.intValue() / _value);
+    public Token divideReverse(Token dividend) throws IllegalActionException {
+        IntToken intToken = (IntToken)IntToken.convert(dividend);
+        int quotient = intToken.intValue() / _value;
+        IntToken result = new IntToken(quotient);
+
+        // compute units
+        result._unitCategoryExponents =
+                        intToken._subtractCategoryExponents(this);
+        return result;
     }
 
     /** Return the value in the token as a double.
@@ -230,188 +254,223 @@ public class IntToken extends ScalarToken {
         return BaseType.INT;
     }
 
-    /** Test the value of this Token and the argument Token for equality.
-     *  Type resolution also occurs here, with the returned Token type
+    /** Test the value and units of this token and the argument token
+     *  for equality.
+     *  Type resolution also occurs here, with the returned token type
      *  chosen to achieve a lossless conversion.
      *  @param token The token with which to test equality.
-     *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be compared with this Tokens value.
-     *  @return A new Token containing the result.
+     *  @return a boolean token that contains the value true if the
+     *   value and units of this token are equal to those of the argument
+     *   token.
+     *  @exception IllegalActionException If the argument token is
+     *  not of a type that can be compared with this token.
      */
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, token);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return token.isEqualTo(this);
-            } else if (token instanceof IntToken) {
-                if ( _value == ((IntToken)token).intValue()) {
-                    return new BooleanToken(true);
-                }
-                return new BooleanToken(false);
-            } else if (typeInfo == CPO.HIGHER) {
-                IntToken tmp = (IntToken)this.convert(token);
-                if ( _value == tmp.intValue()) {
-                    return new BooleanToken(true);
-                }
-                return new BooleanToken(false);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            IntToken intToken;
+            if (typeInfo == CPO.HIGHER) {
+               intToken = (IntToken)IntToken.convert(token);
             } else {
-                throw new Exception();
+               intToken = (IntToken)token;
             }
-        } catch (Exception ex) {
-            String str = "isEqualTo method not supported between ";
-            str = str + this.getClass().getName() + " and ";
-            str = str + token.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+
+            if (_value == intToken.intValue()
+                && _isUnitEqual(intToken)) {
+                return new BooleanToken(true);
+            } else {
+                return new BooleanToken(false);
+            }
+
+        } else if (typeInfo == CPO.LOWER) {
+            return token.isEqualTo(this);
+        } else {
+            throw new IllegalActionException("IntToken.isEqualTo: "
+                    + "Cannot compare "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " and "
+                    + token.getClass().getName() + " " + token.toString()
+                    + " for equality.");
         }
     }
 
     /** Check if the value of this token is strictly less than that of the
      *  argument token.
-     *  @param arg A ScalarToken.
+     *  @param token A ScalarToken.
      *  @return A BooleanToken with value true if this token is strictly
      *   less than the argument.
      *  @exception IllegalActionException If the type of the argument token
-     *   is incomparable with the type of this token.
+     *   is incomparable with the type of this token, or the units of this
+     *   token and the argument are not the same.
      */
-    public BooleanToken isLessThan(ScalarToken arg)
+    public BooleanToken isLessThan(ScalarToken token)
             throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(this, arg);
-        if (typeInfo == CPO.INCOMPARABLE) {
-            throw new IllegalActionException("IntToken.isLessThan: The type" +
-                    " of the argument token is incomparable with the type of " +
-                    "this token. argType: " + arg.getType());
+        int typeInfo = TypeLattice.compare(this, token);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            IntToken intToken;
+            if (typeInfo == CPO.HIGHER) {
+               intToken = (IntToken)IntToken.convert(token);
+            } else {
+               intToken = (IntToken)token;
+            }
+            if ( !_isUnitEqual(intToken)) {
+                throw new IllegalActionException("IntToken.isLessThan: "
+                        + "The units of this token: " + _unitString()
+                        + " are not the same as those of the argument: "
+                        + intToken._unitString());
+            }
+            if (_value < intToken.intValue()) {
+                return new BooleanToken(true);
+            } else {
+                return new BooleanToken(false);
+            }
+        } else if (typeInfo == CPO.LOWER) {
+            if (token.isEqualTo(this).booleanValue()) {
+                return new BooleanToken(false);
+            } else {
+                return token.isLessThan(this).not();
+            }
+        } else {
+            throw new IllegalActionException("IntToken.isLessThan: "
+                    + "Cannot check whether "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " is less than "
+                    + token.getClass().getName() + " " + token.toString());
         }
-
-        if (typeInfo == CPO.LOWER) {
-	    if (arg.isEqualTo(this).booleanValue()) {
-	        return new BooleanToken(false);
-	    } else {
-                return arg.isLessThan(this).not();
-	    }
-        }
-
-        // Argument type is lower or equal to this token.
-        ScalarToken intArg = arg;
-        if (typeInfo == CPO.HIGHER) {
-            intArg = (ScalarToken)convert(arg);
-        }
-
-        if (_value < intArg.intValue()) {
-            return new BooleanToken(true);
-        }
-        return new BooleanToken(false);
     }
 
-    /** Return the value in the token as a int.
+    /** Return the value in the token as an int.
      *  @return The int value contained in this token.
      */
     public int intValue() {
         return _value;
     }
 
-    /** Return the value in the token as a int.
+    /** Return the value in the token as a long.
      *  @return The int  value contained in this token as a long.
      */
     public long longValue() {
         return (long)_value;
     }
 
-    /** Return a new Token whose value is the value of this token
+    /** Return a new token whose value is the value of this token
      *  modulo the value of the argument token.
-     *  Type resolution also occurs here, with the returned Token type
+     *  Type resolution also occurs here, with the returned token type
      *  chosen to achieve a lossless conversion.
-     *  @param rightArgument The token to modulo this Token by.
-     *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be  used with modulo.
-     *  @return A new Token containing the result.
+     *  @param rightArgument The token to modulo this token by.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *  not of a type that can be  used with modulo, or the units of
+     *   this token and the argument token are not the same.
      */
     public Token modulo(Token rightArgument) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, rightArgument);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return rightArgument.moduloReverse(this);
-            } else if (rightArgument instanceof IntToken) {
-                int result = _value % ((IntToken)rightArgument).intValue();
-                return new IntToken(result);
-            } else if (typeInfo == CPO.HIGHER) {
-                IntToken tmp = (IntToken)this.convert(rightArgument);
-                int result = _value % tmp.intValue();
-                return new IntToken(result);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            IntToken intToken;
+            if (typeInfo == CPO.HIGHER) {
+               intToken = (IntToken)IntToken.convert(rightArgument);
             } else {
-                throw new Exception();
+               intToken = (IntToken)rightArgument;
             }
-        } catch (Exception ex) {
-            String str = "modulo method not supported between ";
-            str = str + this.getClass().getName() + " and ";
-            str = str + rightArgument.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+            int remainder = _value % intToken.intValue();
+            IntToken result = new IntToken(remainder);
+            if ( !_isUnitEqual(intToken)) {
+                throw new IllegalActionException("IntToken.modulo: "
+                        + "The units of this token: " + _unitString()
+                        + " are not the same as those of the argument: "
+                        + intToken._unitString());
+            }
+            result._unitCategoryExponents = this._copyOfCategoryExponents();
+            return result;
+        } else if (typeInfo == CPO.LOWER) {
+            return rightArgument.moduloReverse(this);
+        } else {
+            throw new IllegalActionException("IntToken.modulo: "
+                    + "Cannot compute the modulo of "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " and "
+                    + rightArgument.getClass().getName() + " "
+                    + rightArgument.toString());
         }
     }
 
-    /** Return a new Token whose value is the value of the argument token
+    /** Return a new token whose value is the value of the argument token
      *  modulo the value of this token.
-     *  Type resolution also occurs here, with the returned Token
+     *  Type resolution also occurs here, with the returned token
      *  type chosen to achieve a lossless conversion.
      *  @param leftArgument The token to apply modulo to by the value of
-     *   this Token.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can apply modulo by this Tokens value.
-     *  @return A new Token containing the result.
+     *   this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can apply modulo by this token, or
+     *   if the units of this token are not the same as those of the
+     *   argument.
      */
     public Token moduloReverse(Token leftArgument)
             throws IllegalActionException {
-        IntToken tmp = (IntToken)this.convert(leftArgument);
-        int result = tmp.intValue() %  _value;
-        return new IntToken(result);
+        IntToken intToken =
+                (IntToken)IntToken.convert(leftArgument);
+
+        int remainder = intToken.intValue() % _value;
+        IntToken result = new IntToken(remainder);
+        if ( !_isUnitEqual(intToken)) {
+            throw new IllegalActionException("IntToken.moduloReverse: "
+                    + "The units of this token: " + _unitString()
+                    + " are not the same as those of the argument: "
+                    + intToken._unitString());
+        }
+        result._unitCategoryExponents = this._copyOfCategoryExponents();
+        return result;
     }
 
-    /** Return a new Token whose value is the value of this Token
-     *  multiplied by the value of the argument Token.
-     *  Type resolution also occurs here, with the returned Token type
+    /** Return a new token whose value is the value of this token
+     *  multiplied by the value of the argument token.
+     *  Type resolution also occurs here, with the returned token type
      *  chosen to achieve a lossless conversion.
-     *  @param rightFactor The token to multiply this Token by.
-     *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be multiplied to this Tokens value.
-     *  @return A new Token containing the result.
+     *  @param rightFactor The token to multiply this token by.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *  not of a type that can be multiplied to this token.
      */
     public Token multiply(Token rightFactor) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, rightFactor);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return rightFactor.multiplyReverse(this);
-            } else if (rightFactor instanceof IntToken) {
-                int result = _value * ((IntToken)rightFactor).intValue();
-                return new IntToken(result);
-            } else if (typeInfo == CPO.HIGHER){
-                IntToken tmp = (IntToken)this.convert(rightFactor);
-                int result = _value * tmp.intValue();
-                return new IntToken(result);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            IntToken intToken;
+            if (typeInfo == CPO.HIGHER) {
+               intToken = (IntToken)IntToken.convert(rightFactor);
             } else {
-                throw new Exception();
+               intToken = (IntToken)rightFactor;
             }
-        } catch (Exception ex) {
-            String str = "multiply method not supported between ";
-            str = str + this.getClass().getName() + " and ";
-            str = str + rightFactor.getClass().getName();
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+            int product = _value * intToken.intValue();
+            IntToken result = new IntToken(product);
+            // compute units
+            result._unitCategoryExponents = _addCategoryExponents(intToken);
+            return result;
+        } else if (typeInfo == CPO.LOWER) {
+            return rightFactor.multiplyReverse(this);
+        } else {
+            throw new IllegalActionException(
+                    "IntToken.multiply: Cannot multiply "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " with "
+                    + rightFactor.getClass().getName() + " "
+                    + rightFactor.toString());
         }
     }
 
-    /** Return a new Token whose value is the value of the argument Token
-     *  multiplied by the value of this Token.
-     *  Type resolution also occurs here, with the returned Token
+    /** Return a new token whose value is the value of the argument token
+     *  multiplied by the value of this token.
+     *  Type resolution also occurs here, with the returned token
      *  type chosen to achieve a lossless conversion.
      *  @param leftFactor The token to be multiplied by the value of
-     *   this Token.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be multiplied by this Tokens value.
-     *  @return A new Token containing the result.
+     *   this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can be multiplied by this token.
      */
     public Token multiplyReverse(Token leftFactor)
             throws IllegalActionException {
-        IntToken tmp = (IntToken)this.convert(leftFactor);
-        int result = tmp.intValue() * _value;
-        return new IntToken(result);
+        return this.multiply(leftFactor);
     }
 
     /** Returns a new IntToken with value 1.
@@ -421,60 +480,83 @@ public class IntToken extends ScalarToken {
         return new IntToken(1);
     }
 
-    /** Return a new Token whose value is the value of the argument Token
-     *  subtracted from the value of this Token.
-     *  Type resolution also occurs here, with the returned Token type
+    /** Return a new token whose value is the value of the argument token
+     *  subtracted from the value of this token.
+     *  Type resolution also occurs here, with the returned token type
      *  chosen to achieve a lossless conversion.
-     *  @param rightArgument The token to subtract from this Token.
-     *  @exception IllegalActionException If the passed token is
-     *   not of a type that can be subtracted from this Tokens value.
-     *  @return A new Token containing the result.
+     *  @param rightArgument The token to subtract from this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be subtracted from this token, or the units
+     *   of this token and the argument token are not the same.
      */
     public Token subtract(Token rightArgument) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, rightArgument);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return rightArgument.subtractReverse(this);
-            } else if (rightArgument instanceof IntToken) {
-                int result = _value -  ((IntToken)rightArgument).intValue();
-                return new IntToken(result);
-            } else if (typeInfo == CPO.HIGHER){
-                IntToken tmp = (IntToken)this.convert(rightArgument);
-                int result = _value - tmp.intValue();
-                return new IntToken(result);
+        if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
+            IntToken intToken;
+            if (typeInfo == CPO.HIGHER) {
+               intToken = (IntToken)IntToken.convert(rightArgument);
             } else {
-                throw new Exception();
+               intToken = (IntToken)rightArgument;
             }
-        } catch (Exception ex) {
-            throw new IllegalActionException("IntToken: subtract method not"
-                    + " supported between: " + getClass().getName() + " and "
-		    + rightArgument.getClass().getName() + ",: "
-		    + ex.getMessage());
+            int difference = _value - intToken.intValue();
+            IntToken result = new IntToken(difference);
+            if ( !_isUnitEqual(intToken)) {
+                throw new IllegalActionException("IntToken.subtract: "
+                        + "The units of this token: " + _unitString()
+                        + " are not the same as those of the argument: "
+                        + intToken._unitString());
+            }
+            result._unitCategoryExponents = this._copyOfCategoryExponents();
+            return result;
+        } else if (typeInfo == CPO.LOWER) {
+            return rightArgument.subtractReverse(this);
+        } else {
+            throw new IllegalActionException("IntToken.subtract: "
+                    + "Cannot subtract "
+                    + this.getClass().getName() + " " + this.toString()
+                    + " by "
+                    + rightArgument.getClass().getName() + " "
+                    + rightArgument.toString());
         }
     }
 
-    /** Return a new Token whose value is the value of this Token
-     *  subtracted from the value of the argument Token.
-     *  Type resolution also occurs here, with the returned Token type
+    /** Return a new token whose value is the value of this token
+     *  subtracted from the value of the argument token.
+     *  Type resolution also occurs here, with the returned token type
      *  chosen to achieve a lossless conversion.
-     *  @param leftArgument The token to add this Token to.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be added to this Tokens value.
-     *  @return A new Token containing the result.
+     *  @param leftArgument The token to add this token to.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can be added to this token, or the units
+     *   of this token and the argument token are not the same.
      */
     public Token subtractReverse(Token leftArgument)
             throws IllegalActionException {
-        IntToken tmp = (IntToken)this.convert(leftArgument);
-        int result = tmp.intValue() - _value;
-        return new IntToken(result);
+        IntToken intToken = (IntToken)IntToken.convert(leftArgument);
+        int difference = intToken.intValue() - _value;
+        IntToken result = new IntToken(difference);
+        if ( !_isUnitEqual(intToken)) {
+            throw new IllegalActionException("IntToken.subtractReverse: "
+                    + "The units of this token: " + _unitString()
+                    + " are not the same as those of the argument: "
+                    + intToken._unitString());
+        }
+        result._unitCategoryExponents = this._copyOfCategoryExponents();
+        return result;
     }
 
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
-     *  @return A String formed using java.lang.Integer.toString().
+     *  If this token has a unit, the return string also includes a unit
+     *  string produced by the _unitString() method in the super class.
+     *  @return A String representing the int value and the units (if
+     *   any) of this token.
+     *  @see ptolemy.data.ScalarToken#_unitString
      */
     public String toString() {
-        return Integer.toString(_value);
+	String unitString = _unitString();
+        return Integer.toString(_value) + unitString;
     }
 
     /** Returns a new IntToken with value 0.

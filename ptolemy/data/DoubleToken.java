@@ -35,6 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
 import ptolemy.data.type.*;
+
 import java.text.DecimalFormat;
 
 //////////////////////////////////////////////////////////////////////////
@@ -70,7 +71,7 @@ public class DoubleToken extends ScalarToken {
      *   be created with the given String.
      */
     public DoubleToken(String init) throws IllegalActionException {
-        try {
+	        try {
             _value = (Double.valueOf(init)).doubleValue();
         } catch (NumberFormatException e) {
             throw new IllegalActionException(e.getMessage());
@@ -119,7 +120,7 @@ public class DoubleToken extends ScalarToken {
             if ( !_isUnitEqual(doubleToken)) {
                 throw new IllegalActionException("DoubleToken.add: "
                         + "The units of this token: " + _unitString()
-                        + " are not the same as that of the argument: "
+                        + " are not the same as those of the argument: "
                         + doubleToken._unitString());
             }
             result._unitCategoryExponents = this._copyOfCategoryExponents();
@@ -272,11 +273,11 @@ public class DoubleToken extends ScalarToken {
      *  Type resolution also occurs here, with the returned token type
      *  chosen to achieve a lossless conversion.
      *  @param token The token to test equality of this token with.
-     *  @exception IllegalActionException If the argument token is
-     *   not of a type that can be compared with this token.
      *  @return a boolean token that contains the value true if the
      *   value and units of this token are equal to those of the argument
      *   token.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be compared with this token.
      */
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, token);
@@ -314,7 +315,7 @@ public class DoubleToken extends ScalarToken {
      *   less than the argument.
      *  @exception IllegalActionException If the type of the argument token
      *   is incomparable with the type of this token, or the units of this
-     *   token is not the same as those of the argument.
+     *   token and the argument are not the same.
      */
     public BooleanToken isLessThan(ScalarToken token)
             throws IllegalActionException {
@@ -329,7 +330,7 @@ public class DoubleToken extends ScalarToken {
             if ( !_isUnitEqual(doubleToken)) {
                 throw new IllegalActionException("DoubleToken.isLessThan: "
                         + "The units of this token: " + _unitString()
-                        + " are not the same as that of the argument: "
+                        + " are not the same as those of the argument: "
                         + doubleToken._unitString());
             }
             if (_value < doubleToken.doubleValue()) {
@@ -360,7 +361,7 @@ public class DoubleToken extends ScalarToken {
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token is
      *   not of a type that can be  used with modulo, or the units of
-     *   this token are not the same as those of the argument.
+     *   this token and the argument token are not the same.
      */
     public Token modulo(Token rightArgument) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, rightArgument);
@@ -376,7 +377,7 @@ public class DoubleToken extends ScalarToken {
             if ( !_isUnitEqual(doubleToken)) {
                 throw new IllegalActionException("DoubleToken.modulo: "
                         + "The units of this token: " + _unitString()
-                        + " are not the same as that of the argument: "
+                        + " are not the same as those of the argument: "
                         + doubleToken._unitString());
             }
             result._unitCategoryExponents = this._copyOfCategoryExponents();
@@ -401,7 +402,7 @@ public class DoubleToken extends ScalarToken {
      *   token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token
-     *   is not of a type that can apply modulo by this tokens, or
+     *   is not of a type that can apply modulo by this token, or
      *   if the units of this token are not the same as those of the
      *   argument.
      */
@@ -415,7 +416,7 @@ public class DoubleToken extends ScalarToken {
         if ( !_isUnitEqual(doubleToken)) {
             throw new IllegalActionException("DoubleToken.moduloReverse: "
                     + "The units of this token: " + _unitString()
-                    + " are not the same as that of the argument: "
+                    + " are not the same as those of the argument: "
                     + doubleToken._unitString());
         }
         result._unitCategoryExponents = this._copyOfCategoryExponents();
@@ -443,8 +444,7 @@ public class DoubleToken extends ScalarToken {
             double product = _value * doubleToken.doubleValue();
             DoubleToken result = new DoubleToken(product);
             // compute units
-            result._unitCategoryExponents =
-                            _addCategoryExponents(doubleToken);
+            result._unitCategoryExponents = _addCategoryExponents(doubleToken);
             return result;
         } else if (typeInfo == CPO.LOWER) {
             return rightFactor.multiplyReverse(this);
@@ -486,9 +486,9 @@ public class DoubleToken extends ScalarToken {
      *  chosen to achieve a lossless conversion.
      *  @param rightArgument The token to subtract to this token.
      *  @return A new token containing the result.
-     *  @exception IllegalActionException If the passed token is
+     *  @exception IllegalActionException If the argument token is
      *   not of a type that can be subtracted from this token, or the units
-     *   of this token are not the same as those of the argument.
+     *   of this token and the argument token are not the same.
      */
     public Token subtract(Token rightArgument) throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, rightArgument);
@@ -504,7 +504,7 @@ public class DoubleToken extends ScalarToken {
             if ( !_isUnitEqual(doubleToken)) {
                 throw new IllegalActionException("DoubleToken.subtract: "
                         + "The units of this token: " + _unitString()
-                        + " are not the same as that of the argument: "
+                        + " are not the same as those of the argument: "
                         + doubleToken._unitString());
             }
             result._unitCategoryExponents = this._copyOfCategoryExponents();
@@ -529,7 +529,7 @@ public class DoubleToken extends ScalarToken {
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token
      *   is not of a type that can be added to this token, or the units
-     *   of this token are not the same as those of the argument.
+     *   of this token and the argument token are not the same.
      */
     public Token subtractReverse(Token leftArgument)
             throws IllegalActionException {
@@ -540,7 +540,7 @@ public class DoubleToken extends ScalarToken {
         if ( !_isUnitEqual(doubleToken)) {
             throw new IllegalActionException("DoubleToken.subtractReverse: "
                     + "The units of this token: " + _unitString()
-                    + " are not the same as that of the argument: "
+                    + " are not the same as those of the argument: "
                     + doubleToken._unitString());
         }
         result._unitCategoryExponents = this._copyOfCategoryExponents();
