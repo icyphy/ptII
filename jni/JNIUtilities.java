@@ -82,7 +82,7 @@ double meaningOfLife() {
 extern "C" double meaningOfLife();
 </pre>
 
-<li> Compile and create the shared library.  Under Windows, we 
+<li> Compile and create the shared library.  Under Windows, we
 create a <code>.dll</code>
 <pre>
 gcc -shared -o meaningOfLife.dll meaningOfLife.c
@@ -138,7 +138,7 @@ cp jni/jnimeaningOfLife/JnijnimeaningOfLife.dll $PTII/bin
 <li> Save the model.
 <br>FIXME: Because of an apparent bug, it is necessary
 to save the model for the port we just created to appear
-<li> Add a Display actor from the Sink folder in the 
+<li> Add a Display actor from the Sink folder in the
 Actor Library and connect the input of the Display actor
 to the output of the meaningOfLife Actor
 <li> FIXME: Because of a bug in the Ptolemy interface to the JNI
@@ -160,10 +160,10 @@ Then see
 <br>You might need to edit jni_md.h, the above URL says
 <blockquote>
 GCC doesn't have a __int64 built-in, and this patch basically uses
-"long long" instead. 
+"long long" instead.
 
 <ol>
-<li> Edit the file <jdk_root>/include/win32/jni_md.h, Where <jdk_root> 
+<li> Edit the file <jdk_root>/include/win32/jni_md.h, Where <jdk_root>
    is the installation root (eg., c:/jdk1.1.7A).
 
 <li> Replace the segment:
@@ -204,7 +204,7 @@ public class JNIUtilities {
     }
 
     /** Given a model, generate JNI files for all GenericJNIActors.
-     *  @param model The model to generate JNI files for any 
+     *  @param model The model to generate JNI files for any
      *  contained GenericJNIActors.
      *  @return true if a GenericJNIActor was found.
      *  @exception If there was a problem creating the JNI files.
@@ -218,7 +218,7 @@ public class JNIUtilities {
             Iterator actors = actorsList.iterator();
             while (actors.hasNext()) {
                 Object actor = actors.next();
-                
+
                 if (actor instanceof GenericJNIActor) {
                     JNIUtilities.generateJNI(model,
                                              (GenericJNIActor) actor);
@@ -269,7 +269,7 @@ public class JNIUtilities {
 
 
         // Vincent responded with:
-        // 
+        //
         // The "_" is used by JNI to construct the name of the native
         // interface function :
         // "Java_packageName_subPackagesNames_ClassName_nativeFunctionName"
@@ -288,10 +288,10 @@ public class JNIUtilities {
             try {
                 actor.setName(newName);
             } catch (NameDuplicationException ex) {
-                throw new IllegalActionException(actor, ex, 
+                throw new IllegalActionException(actor, ex,
                                                  "Unable to rename GenericJNIActor '"
                                                  + actor.getName()
-                                                 + "' to '"    
+                                                 + "' to '"
                                                  + newName
                                                  + "': \n"
                                                  + "An JNI Actor already exists!\n");
@@ -329,7 +329,7 @@ public class JNIUtilities {
         List execCommands = new LinkedList();
 
         // Create the .class file.
-        execCommands.add("javac -classpath \"" 
+        execCommands.add("javac -classpath \""
                 + StringUtilities.getProperty("ptolemy.ptII.dir")
                 + "\" jni/" + nativeLibrary
                 + "/Jni"
@@ -342,7 +342,7 @@ public class JNIUtilities {
                 + actor.getName());
 
         // Create the shared library.
-        execCommands.add("make -C jni/" + nativeLibrary + " -f " 
+        execCommands.add("make -C jni/" + nativeLibrary + " -f "
                 + "Jni" + interNativeLibrary + ".mk");
 
 
@@ -429,7 +429,7 @@ public class JNIUtilities {
                     _getArgumentsInWithJType(actor, ",")+
                     _getArgumentsInOutWithJType(actor, ","),
                     _getArgumentsOutWithJType(actor, ","))
-                       + "/*foo*/"                       
+                       + "/*foo*/"
             + _getArgumentsOutWithJType(actor, ",")
             + ") throws SecurityException;\n\n"
             + _indent1 + "/** Send the result of the native library.\n"
@@ -507,7 +507,7 @@ public class JNIUtilities {
                     + "\n }\n");
         }
 
-        results.append("\n" 
+        results.append("\n"
                        + _indent1 + "///////////// public fields\n" + "\n");
 
         //out
@@ -647,7 +647,7 @@ public class JNIUtilities {
             + "_"
             + interNativeFunction
             + "(\nJNIEnv *env, jobject jobj "
-            + _virgule(_getArgumentsInWithJNIType(actor, ",")) 
+            + _virgule(_getArgumentsInWithJNIType(actor, ","))
             + _getArgumentsInWithJNIType(actor, ",")
             + _virgule(_getArgumentsInWithJNIType(actor, ","),
                     _getArgumentsInOutWithCType(actor, ","))
@@ -1052,10 +1052,10 @@ public class JNIUtilities {
         libraryPath = "../..";
         results
             .append("# Makefile automatically generated for JNI\n"
-                    + "ROOT =\t\t" 
+                    + "ROOT =\t\t"
                     + StringUtilities.getProperty("ptolemy.ptII.dir") + "\n\n"
                     + "# Get configuration info\n"
-                    + "CONFIG =\t$(ROOT)/mk/ptII.mk\n" 
+                    + "CONFIG =\t$(ROOT)/mk/ptII.mk\n"
                     + "include $(CONFIG)\n\n"
                     + "SHAREDLIBRARY ="
                     + "$(PTJNI_SHAREDLIBRARY_PREFIX)Jni"
@@ -1433,7 +1433,7 @@ public class JNIUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         private method                    ////
 
-    public static String _getInterNativeFunction(GenericJNIActor actor) 
+    public static String _getInterNativeFunction(GenericJNIActor actor)
         throws IllegalActionException {
         //return "jni" + _getNativeFunction(actor);
         return "jni" + actor.getName();

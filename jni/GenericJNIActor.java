@@ -66,7 +66,7 @@ Use the Java Native Interface to execute a native mathod.
 To use this actor, first configure the arguments of the native method
 by right clicking on the actor and selecting 'Configure Arguments', then
 configure the library name and location, then create the JNI
-files. 
+files.
 
 <p>Note that under Windows, your path needs to include the directory
 named by the libraryDirectory Parameter.
@@ -144,7 +144,7 @@ public class GenericJNIActor extends TypedAtomicActor {
 
     /** The directory that contains the native library, which under
      *  Windows should include a dll, an h file and a lib file.
-     *  The default value of thie parameter is the string 
+     *  The default value of thie parameter is the string
      *  "jni" + File.separator + "lib"
      */
     public Parameter libraryDirectory;
@@ -424,7 +424,7 @@ public class GenericJNIActor extends TypedAtomicActor {
             throw new IllegalActionException(this, ex, "Could not create URL "
                                              + "from user.dir ("
                                              + StringUtilities
-                                             .getProperty("user.dir") + ")"); 
+                                             .getProperty("user.dir") + ")");
         }
         try {
             ClassLoader cl = new URLClassLoader(tab);
@@ -433,7 +433,7 @@ public class GenericJNIActor extends TypedAtomicActor {
             throw new IllegalActionException(this, ex,
                                              "Could not load JNI C class '"
                                              + className + "' relative to "
-                                             + tab[0]); 
+                                             + tab[0]);
 
         }
 
@@ -480,7 +480,7 @@ public class GenericJNIActor extends TypedAtomicActor {
         try {
             _methods = _class.getMethods();
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, 
+            throw new IllegalActionException(this, ex,
                                              "Interface C _methods not found "
                                              + "class was: " + _class);
         }
@@ -605,7 +605,7 @@ public class GenericJNIActor extends TypedAtomicActor {
         } catch (Throwable ex) {
             StringBuffer argumentsDescription = new StringBuffer("");
             try {
-                if (args.size() >= 1 ) { 
+                if (args.size() >= 1 ) {
                     argumentsDescription.append(args.elementAt(0)
                                                 .toString());
                     for (int i = 1; i < args.size(); i++) {
@@ -727,7 +727,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                         int[] tab = (int[])field.get(obj);
                         Token[] toks =  new Token[((int[])field.get(obj))
                                 .length];
-                        for(int j = 0; j<((int[])field.get(obj)).length ; j++) 
+                        for(int j = 0; j<((int[])field.get(obj)).length ; j++)
                             toks[j] = new IntToken(((int[])field.get(obj))[j]);
                         port.send(0, new ArrayToken(toks));
                     } catch (IllegalAccessException ex) {

@@ -99,7 +99,7 @@ public class Argument extends Attribute implements Settable {
 
 
     /** Get the C2 Type Array, but if we are under SunOS, and
-     *  getC2Type returns long, then return int *.  On other platforms, 
+     *  getC2Type returns long, then return int *.  On other platforms,
      *  just return the value of getC2Type().  FIXME: This platform
      *  dependent change is necessary under Solaris 8 for some reason.
      *  @return the _cType attribute in pointer
