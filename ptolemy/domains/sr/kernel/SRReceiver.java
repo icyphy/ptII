@@ -42,7 +42,6 @@ import ptolemy.kernel.util.InvalidStateException;
 //////////////////////////////////////////////////////////////////////////
 //// SRReceiver
 /**
-
 The receiver for the synchronous reactive domain.  This receiver is a mailbox
 with capacity one.  The status of this receiver can be known (either known to
 contain a token or known not to contain a token) or unknown.  The isKnown() 
