@@ -62,7 +62,7 @@ public class CSPMultiSource extends CSPActor {
      *  empty string as its name. The actor is created with a single
      *  input port named "input". The number of tokens produced by this
      *  actor is specified by the tokenLimit parameter. The actor will
-     *  produce N=tokenLimit tokens unless tokenLimit < 0 in which case
+     *  produce N = tokenLimit tokens unless tokenLimit < 0 in which case
      *  this actor will produce tokens indefinitely.
      *  @exception IllegalActionException If the tokenLimit parameter
      *   cannot be contained by this actor.
@@ -83,7 +83,7 @@ public class CSPMultiSource extends CSPActor {
      *  container argument must not be null, or a NullPointerException
      *  will be thrown. The number of tokens produced by this actor is
      *  specified by the tokenLimit parameter. The actor will produce
-     *  N=tokenLimit tokens unless tokenLimit < 0 in which case this
+     *  N = tokenLimit tokens unless tokenLimit < 0 in which case this
      *  actor will produce tokens indefinitely.
      *  @param cont The container of this actor.
      *  @param name The name of this actor.
