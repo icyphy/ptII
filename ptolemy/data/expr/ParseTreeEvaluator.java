@@ -31,7 +31,8 @@ package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
 
-import ptolemy.matlab.Engine;
+import ptolemy.matlab.MatlabEngineFactory;
+import ptolemy.matlab.MatlabEngineInterface;
 import java.lang.reflect.Method;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
@@ -359,11 +360,12 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 // Invoke the matlab engine to evaluate this function
                 String expression = ((StringToken)token).stringValue();
                 // NamedList scope = node.getParser().getScope();
-                Engine matlabEngine = new Engine();
+                MatlabEngineInterface matlabEngine =
+                    MatlabEngineFactory.createEngine();
                 ptolemy.data.Token result = null;
                 long[] engine = matlabEngine.open();
                 try {
-                    synchronized (Engine.semaphore) {
+                    synchronized (matlabEngine.getSemaphore()) {
                         String addPathCommand = null;         // Assume none
                         ptolemy.data.Token previousPath = null;
                         ptolemy.data.Token packageDirectories = null;
