@@ -167,11 +167,14 @@ public class FileUtilities {
     /** Given a file or URL name, return as a URL.  If the file name
      *  is relative, then it is interpreted as being relative to the
      *  specified base directory. If the name begins with
-     *  "xxxxxxCLASSPATHxxxxxx",
-     *  then search for the file relative to the classpath.
-     *  Note that this is the value of the globally defined constant
-     *  $CLASSPATH available in the Ptolemy II expression language.
-     *  If no file is found, then throw an exception.
+     *  "xxxxxxCLASSPATHxxxxxx" or "$CLASSPATH" then search for the
+     *  file relative to the classpath.
+     *
+     *  <p>Note that "xxxxxxCLASSPATHxxxxxx" the value of the globally
+     *  defined constant $CLASSPATH available in the Ptolemy II
+     *  expression language.  If no file is found, then throw an
+     *  exception.
+     *
      *  @param name The name of a file or URL.
      *  @param baseDirectory The base directory for relative file names,
      *   or null to specify none.
@@ -192,10 +195,18 @@ public class FileUtilities {
         // If the name begins with "$CLASSPATH", then attempt to
         // open the file relative to the classpath.
         // NOTE: Use the dummy variable constant set up in the constructor.
-        if (name.startsWith(_CLASSPATH_VALUE)) {
+        if (name.startsWith(_CLASSPATH_VALUE)
+                || name.startsWith("$CLASSPATH") ) {
             // Try relative to classpath.
-            // The +1 is to skip over the delimiter after $CLASSPATH.
-            String trimmedName = name.substring(_CLASSPATH_VALUE.length() + 1);
+
+            String classpathKey;
+            if (name.startsWith(_CLASSPATH_VALUE)) {
+                classpathKey = _CLASSPATH_VALUE;
+            } else { 
+                classpathKey = "$CLASSPATH";
+            }
+
+            String trimmedName= name.substring(classpathKey.length() + 1);
 
             if (classLoader == null) {
                 try {
@@ -241,7 +252,8 @@ public class FileUtilities {
                 if (!file.canRead()) {
                     throw new IOException("Cannot read file '" + name
                             + "' or '"
-                            + StringUtilities.substitute(name, "%20", " ") + "'");
+                            + StringUtilities.substitute(name, "%20", " ")
+                            + "'");
                 }
             }
 
@@ -260,7 +272,8 @@ public class FileUtilities {
                     // demos that have actors that have defaults FileParameters
                     // like "$PTII/doc/img/PtolemyII.jpg", then resolve()
                     // bombs.
-                    String name2 = StringUtilities.substitute(name, "%20", " ");
+                    String name2 = StringUtilities.substitute(name,
+                            "%20", " ");
 
                     try {
                         newURI = baseDirectory.resolve(name2);
