@@ -98,10 +98,13 @@ public class WirelessChannel extends TypedAtomicActor
         super(container, name);
         
         defaultProperties = new Parameter(this, "defaultProperties");
-        // NOTE: It would be nice to force this to be a RecordToken type,
-        // but I'm not sure that's possible.
-        // It's checked in attributeChanged().
-        
+        // Force this to be a record type without specifying the fields.
+        // NOTE: This doesn't actually work because the type remains
+        // unknown, which triggers an error message. Instead, we check
+        // the type in attributeChanged().
+        // defaultProperties.setTypeAtMost(
+        //      new RecordType(new String[0], new Type[0]));
+                
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-25,0 8,-8 2,2 25,0 -8,8 -2,-2 -25,0\" " +
                 "style=\"fill:red\"/>\n" +
