@@ -1,4 +1,4 @@
-# Makefile for PtolemyII SDF Domain
+# Makefile for PtolemyII DT Domain
 #
 # @Version: $Id$
 # @Author: Christopher Hylands
