@@ -1,0 +1,151 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="karplusStrong" class="ptolemy.actor.TypedCompositeActor">
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="32000">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="68.0, 34.0">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    </property>
+    <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="394.0, 42.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model implements the Karplus-Strong algorithm
+for generating a plucked string sound.  Executing it
+requires that you use Java 1.3, which includes the
+javasound package.</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+    <entity name="Delay" class="ptolemy.domains.sdf.lib.Delay">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="gaussian(0.0, 0.6, 1, 35)">
+        </property>
+        <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="85.0, 113.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="35">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="0.999999999">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="379.0, 140.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="AudioSink" class="ptolemy.actor.lib.javasound.AudioSink">
+        <property name="pathName" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+        </property>
+        <property name="sampleRate" class="ptolemy.data.expr.Parameter" value="8000">
+        </property>
+        <property name="sampleSizeInBits" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="channels" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="4096">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="94.0, 231.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Lowpass Filter" class="ptolemy.domains.sdf.lib.FIR">
+        <property name="decimation" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="decimationPhase" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="[0.5, 0.5]">
+        </property>
+        <doc name="tooltip">FIR filter</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="184.0, 120.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <entity name="Allpass Filter" class="ptolemy.actor.lib.IIR">
+        <property name="numerator" class="ptolemy.data.expr.Parameter" value="[0.07317, 1.0]">
+        </property>
+        <property name="denominator" class="ptolemy.data.expr.Parameter" value="[1.0, -0.07317]">
+        </property>
+        <doc>IIR filter</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="282.0, 128.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="26.0, 185.0">
+        </vertex>
+    </relation>
+    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Delay.input" relation="relation5"/>
+    <link port="Delay.output" relation="relation1"/>
+    <link port="Scale.input" relation="relation4"/>
+    <link port="Scale.output" relation="relation5"/>
+    <link port="AudioSink.input" relation="relation5"/>
+    <link port="Lowpass Filter.input" relation="relation1"/>
+    <link port="Lowpass Filter.output" relation="relation3"/>
+    <link port="Allpass Filter.input" relation="relation3"/>
+    <link port="Allpass Filter.output" relation="relation4"/>
+</entity>
