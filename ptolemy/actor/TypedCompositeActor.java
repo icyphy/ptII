@@ -108,6 +108,65 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** If this composite actor is opaque, perform static type checking.
+     *  Specifically, this method scans all the connections within this
+     *  composite between opaque TypedIOPorts, if the ports on both ends
+     *  of the connection have declared types, the types of both ports
+     *  are examined to see if the the type of the port at the source end
+     *  of the connection is less than or equal to the type at the
+     *  destination port. If not, the two ports have a type conflict.
+     *  If the ports on one or both ends of a connection have an undeclared
+     *  type, the connection is skipped by this method and left to the
+     *  type resolution mechanism.
+     *  This method returns an Enumeration of TypedIOPorts that have
+     *  type conflicts. If no type conflict is detected, an empty
+     *  Enumeration is returned.
+     *  If this TypedCompositeActor contains other opaque
+     *  TypedCompositeActors, the checkType() methods of the contained
+     *  TypedCompositeActors are called to check types further down the
+     *  hierarchy.
+     *  @return An Enumeration of TypedIOPort where type conflicts occur.
+     *  @exception IllegalActionException If this composite actor is not
+     *   opaque.
+     */
+    public Enumeration checkTypes()
+	    throws IllegalActionException {
+	try {
+	    workspace().getReadAccess();
+
+	    if (!isOpaque()) {
+                throw new IllegalActionException(this,
+                        "Cannot check types on a non-opaque actor.");
+            }
+
+	    LinkedList result = new LinkedList();
+
+	    Enumeration e = deepGetEntities();
+	    while (e.hasMoreElements()) {
+	        // check types on contained actors
+	        TypedActor actor = (TypedActor)e.nextElement();
+		if (actor instanceof TypedCompositeActor) {
+		    result.appendElements(
+			((TypedCompositeActor)actor).checkTypes());
+		}
+
+	        // type check on all output connections
+	        // NOTE: this can also be done on all input connections.
+		Enumeration outports = actor.outputPorts();
+		result.appendElements(_checkTypesFrom(outports));
+	    }
+
+	    // also need to check connection from the input ports on
+	    // this composite actor to input ports of contained actors.
+	    Enumeration boundaryInPorts = inputPorts();
+	    result.appendElements(_checkTypesFrom(boundaryInPorts));
+
+	    return result.elements();
+	} finally {
+	    workspace().doneReading();
+	}
+    }
+
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.
@@ -178,75 +237,55 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         super.setContainer(container);
     }
 
-    /** Return the type constraints of this typed composite actor.
+    /** Return the type constraints of this typed composite actor, if it
+     *  is opaque.
      *  The constraints have the form of an enumeration of inequalities.
      *  The constraints come from two sources, the topology and the
      *  contained actors. To generate the constraints based on the
-     *  topology, this method scans all the connections from an output
-     *  port to an input. If one or both of the input and output
-     *  ports are undeclared, this method forms a type constraint that
-     *  requires the output type to be less than or equal to the input.
+     *  topology, this method scans all the connections within this
+     *  composite between opaque TypedIOPorts. If the ports on one or both
+     *  ends of a connection have an undeclared type, a type constraint is
+     *  formed that requires the the type of the port at the source end
+     *  of the connection to be less than or equal to the type at the
+     *  destination port.
      *  To collect the type constraints from the contained actors,
      *  This method recursively calls the typeConstaints() method of the
      *  deeply contained actors and combine all the constraints together.
      *  <p>
-     *  In addition to collecting type constraints, This method also
-     *  does static type checking.  This is done while scanning all the
-     *  connection from an output port to an input. If both the input
-     *  and output ports have declared types, this method checks if the
-     *  output type is less than or equal to the input. If not, it
-     *  throws a TypeConflictException.
-     *  <p>
      *  This method is read-synchronized on the workspace.
      *  @return an Enumerations of Inequality.
-     *  @exception TypeConflictException If type conflict is detected
-     *   during static type checking.
+     *  @exception IllegalActionException If this composite actor is not
+     *   opaque.
      *  @see ptolemy.graph.Inequality
      */
     public Enumeration typeConstraints()
-	    throws TypeConflictException {
+	    throws IllegalActionException {
 	try {
 	    workspace().getReadAccess();
-	    LinkedList result = new LinkedList();
 
+	    if (!isOpaque()) {
+                throw new IllegalActionException(this,
+                        "Cannot check types on a non-opaque actor.");
+            }
+
+	    LinkedList result = new LinkedList();
 	    Enumeration e = deepGetEntities();
 	    while (e.hasMoreElements()) {
 	        // collect type constraints from contained actors
 	        TypedActor actor = (TypedActor)e.nextElement();
 	        result.appendElements(actor.typeConstraints());
 
-	        // type check on all output connections
+	        // collect constraints from topology
 	        // NOTE: this can also be done on all input connections.
 		Enumeration outports = actor.outputPorts();
-	        while (outports.hasMoreElements()) {
-		    TypedIOPort outport = (TypedIOPort)outports.nextElement();
-
-		    Enumeration inports = outport.deepConnectedInPorts();
-		    while (inports.hasMoreElements()) {
-		        TypedIOPort inport = (TypedIOPort)inports.nextElement();
-
-		        Class outDeclared = outport.getDeclaredType();
-		        Class inDeclared = inport.getDeclaredType();
-		        if (outDeclared != null && inDeclared != null) {
-			    // both in/out ports are declared, type check
-			    int compare = TypeCPO.compare(outDeclared,
-                                    inDeclared);
-			    if (compare == CPO.HIGHER ||
-                                compare == CPO.INCOMPARABLE) {
-			        throw new TypeConflictException(outport,
-				    inport, "Output port type is not less " +
-				    "than or equal to the connected inpurt.");
-			    }
-		        } else {
-			    // at least one of the in/out ports does not have
-			    // declared type, form type constraint.
-			    Inequality ineq = new Inequality(
-				outport.getTypeTerm(), inport.getTypeTerm());
-			    result.insertLast(ineq);
-		        }
-		    }
-	        }
+		result.appendElements(_typeConstraintsFrom(outports));
 	    }
+
+	    // also need to check connection from the input ports on
+            // this composite actor to input ports of contained actors.
+	    Enumeration boundaryInPorts = inputPorts();
+	    result.appendElements(_typeConstraintsFrom(boundaryInPorts));
+
 	    return result.elements();
 	} finally {
 	    workspace().doneReading();
@@ -335,7 +374,62 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     // so we do not override it.
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                          private methods                  ////
 
+    // The argument is an Enumeration of TypedIOPorts. This method
+    // does static type checking on all connections starting from the
+    // ports in the specified Enumeration. Return an Enumeration of
+    // TypedIOPorts that have type conflicts.
+    private Enumeration _checkTypesFrom(Enumeration sources) {
+	LinkedList result = new LinkedList();
+
+	while (sources.hasMoreElements()) {
+            TypedIOPort outport = (TypedIOPort)sources.nextElement();
+
+	    Enumeration inports = outport.deepConnectedInPorts();
+	    while (inports.hasMoreElements()) {
+	    	TypedIOPort inport = (TypedIOPort)inports.nextElement();
+
+	    	Class outDeclared = outport.getDeclaredType();
+	    	Class inDeclared = inport.getDeclaredType();
+	    	if (outDeclared != null && inDeclared != null) {
+		    // both in/out ports are declared, check type
+		    int compare = TypeCPO.compare(outDeclared, inDeclared);
+		    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
+		    	result.insertLast(outport);
+		    	result.insertLast(inport);
+		    }
+	    	}
+	    }
+        }
+	return result.elements();
+    }
+
+    // Return the type constraints on all connections starting from the
+    // specified source port.
+    private Enumeration _typeConstraintsFrom(Enumeration sources) {
+	LinkedList result = new LinkedList();
+
+	while (sources.hasMoreElements()) {
+	    TypedIOPort outport = (TypedIOPort)sources.nextElement();
+
+	    Enumeration inports = outport.deepConnectedInPorts();
+	    while (inports.hasMoreElements()) {
+	    	TypedIOPort inport = (TypedIOPort)inports.nextElement();
+
+	    	Class outDeclared = outport.getDeclaredType();
+	    	Class inDeclared = inport.getDeclaredType();
+	    	if (outDeclared == null || inDeclared == null) {
+	    	    // at least one of the in/out ports does not have
+		    // declared type, form type constraint.
+		    Inequality ineq = new Inequality(outport.getTypeTerm(),
+						     inport.getTypeTerm());
+		    result.insertLast(ineq);
+	        }
+	    }
+	}
+
+	return result.elements();
+    }
 }
 
