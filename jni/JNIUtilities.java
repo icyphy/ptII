@@ -238,29 +238,9 @@ public class JNIUtilities {
         actor.createPorts();
 
         //Nommage de l'acteur en fonction de ses parameters
-        String nativeFunction = "";
-        String nativeLibrary = "";
-        try {
-            nativeFunction =
-                (((StringToken) ((Parameter) actor
-                        .getAttribute("nativeFunction"))
-                        .getToken())
-                        .toString());
-            nativeLibrary =
-                ((StringToken) ((Parameter) actor
-                        .getAttribute("nativeLibrary"))
-                        .getToken())
-                .toString();
 
-        } catch (Exception ex) {
-	    throw new IllegalActionException(actor, ex, 
-					 "no library or function name !");
-
-        }
-        nativeLibrary =
-            nativeLibrary.substring(1, nativeLibrary.length() - 1);
-        nativeFunction =
-            nativeFunction.substring(1, nativeFunction.length() - 1);
+        String nativeFunction = _getNativeFunction(actor);
+        String nativeLibrary = _getNativeLibrary(actor);
 
         try {
             actor.setName(nativeLibrary + "I" + nativeFunction);
@@ -330,29 +310,6 @@ public class JNIUtilities {
 //                  System.out.println("JNIUtilities: done with");
 //              }
 //          }
-
-
-// //              }
-// //          }
-
-// 	execCommands = new LinkedList();
-
-//         // Use a separate StreamExec here because if we don't we
-//         // end up setting _process to null and stopping the execution
-//         // of the previous exec
-//         StreamExec makeExec = new StreamExec();
-// 	makeExec.setCommands(execCommands);
-//         makeExec.start();
-
-//         Thread.sleep(2000);
-
-// //          synchronized(makeExec) {
-// //              Process process= makeExec.getProcess();
-// //              if (process != null) {
-// //                  process.waitFor();
-// //              }
-// //          }
-
     }
 
     /** Create the interface Java File.
@@ -368,29 +325,11 @@ public class JNIUtilities {
         String interFuncName = "";
         String returnJType2 = "";
 
-        String nativeFunction = "";
-        String nativeLibrary = "";
-        try {
-            nativeFunction =
-                (((StringToken) ((Parameter) actor
-                        .getAttribute("nativeFunction"))
-                        .getToken())
-                        .toString());
-            nativeLibrary =
-                ((StringToken) ((Parameter) actor
-                        .getAttribute("nativeLibrary"))
-                        .getToken())
-                .toString();
-        } catch (IllegalActionException ex) {
-	    throw new IllegalActionException(actor, ex, 
-					 "no library or function name !");
-        }
+        String nativeFunction = _getNativeFunction(actor);
+        String nativeLibrary = _getNativeLibrary(actor);
 
-        internativeLibrary = "jni" + nativeLibrary.substring(
-                1, nativeLibrary.length() - 1);
-        interFuncName =
-            "jni" + nativeFunction.substring(
-                    1, nativeFunction.length() - 1);
+        internativeLibrary = "jni" + nativeLibrary;
+        interFuncName = "jni" + nativeFunction;
 
         List argumentsList = actor.argumentsList();
         Iterator arguments = argumentsList.iterator();
@@ -587,35 +526,13 @@ public class JNIUtilities {
         String returnType = "";
         String returnName = "";
 
-        String libraryDirectory = "";
-        String nativeFunction = "";
-        String nativeLibrary = "";
-        try {
-            libraryDirectory =
-                ((StringToken) ((Parameter) actor
-                        .getAttribute("libraryDirectory"))
-                        .getToken())
-                .toString();
-            nativeFunction =
-                (((StringToken) ((Parameter) actor
-                          .getAttribute("nativeFunction"))
-                        .getToken())
-                        .toString());
-            nativeLibrary =
-                ((StringToken) ((Parameter) actor
-                        .getAttribute("nativeLibrary"))
-                        .getToken())
-                .toString();
+        String libraryDirectory = _getLibraryDirectory(actor);
+	String nativeFunction = _getNativeFunction(actor);
+        String nativeLibrary = _getNativeLibrary(actor);
 
-        } catch (Exception ex) {
-	    throw new IllegalActionException(actor, ex, 
-					 "no library or function name !");
-        }
-        String internativeLibrary =
-            "jni" + nativeLibrary.substring(1, nativeLibrary.length() - 1);
-        String interFuncName =
-            "jni" + nativeFunction.substring(1,
-                    nativeFunction.length() - 1);
+        String internativeLibrary = "jni" + nativeLibrary;
+        String interFuncName = "jni" + nativeFunction;
+
         List argumentsList = actor.argumentsList();
         Iterator arguments = argumentsList.iterator();
         while (arguments.hasNext()) {
@@ -646,9 +563,8 @@ public class JNIUtilities {
 	    // gcc with cygwin
             +"/* #include <iostream> */\n "
             + "#include \"" + System.getProperty("user.dir")
-            + "/" + libraryDirectory.substring(1,
-                    libraryDirectory.length()-1) + "/"
-            + nativeLibrary.substring(1, nativeLibrary.length() - 1)
+            + "/" + libraryDirectory + "/"
+            + nativeLibrary
             + ".h\"\n"
             // le fichier entete g‰n‰r‰ par javah
             +"#include \"jni_"
@@ -667,7 +583,7 @@ public class JNIUtilities {
             + "//extern \"C\" "
             + returnType
             + " "
-            + nativeFunction.substring(1, nativeFunction.length() - 1)
+            + nativeFunction
             + "("
             + _getArgsInWithCType(actor, ",")
             + _virgule( _getArgsInWithCType(actor, ","),
@@ -758,7 +674,7 @@ public class JNIUtilities {
         //native function call
 
 	results.append(
-		       nativeFunction.substring(1, nativeFunction.length() - 1)
+		       nativeFunction
 		       + "("
 		       + _getArgsWithCTypeCast(actor, true, false, false, ",")
 		       + _virgule( _getArgsInWithCType(actor, ","), _getArgsInOut(actor, ","))
@@ -869,24 +785,9 @@ public class JNIUtilities {
 	throws IllegalActionException, IOException {
         StringBuffer results = new StringBuffer();
 
-        String libraryDirectory = "";
-        String nativeLibrary = "";
-        try {
-            libraryDirectory =
-                ((StringToken) ((Parameter) actor
-			.getAttribute("libraryDirectory"))
-                        .getToken())
-                .toString();
-            nativeLibrary =
-                ((StringToken) ((Parameter) actor
-                        .getAttribute("nativeLibrary"))
-                        .getToken())
-                .toString();
-        } catch (Exception ex) {
-	    throw new IllegalActionException(actor, ex, 
-					 "no library or function name !");
-        }
-        nativeLibrary = nativeLibrary.substring(1, nativeLibrary.length() - 1);
+        String libraryDirectory = _getLibraryDirectory(actor);
+        String nativeLibrary = _getNativeLibrary(actor);
+
         String internativeLibrary = "jni" + nativeLibrary;
         results.append(
             "# Microsoft Developer Studio Project File - Name=\""
@@ -943,7 +844,7 @@ public class JNIUtilities {
             + "# PROP Use_MFC 0\r\n"
             + "# PROP Use_Debug_Libraries 0\r\n"
             + "# PROP Output_Dir \"" + System.getProperty("user.dir")
-            + "\\" + libraryDirectory.substring(1, libraryDirectory.length())
+            + "\\" + libraryDirectory
             + "\r\n"
             + "# PROP Intermediate_Dir \"Release\"\r\n"
             + "# PROP Target_Dir \"\" \r\n"
@@ -985,7 +886,7 @@ public class JNIUtilities {
             + "# PROP Use_MFC 0\r\n"
             + "# PROP Use_Debug_Libraries 1\r\n"
             + "# PROP Output_Dir \"" + System.getProperty("user.dir")
-            + "\\" + libraryDirectory.substring(1, libraryDirectory.length())
+            + "\\" + libraryDirectory
             + "\r\n"
             + "# PROP Intermediate_Dir \"Debug\"\r\n"
             + "# PROP Ignore_Export_Lib 0\r\n"
@@ -1045,7 +946,7 @@ public class JNIUtilities {
             + "# End Source File\r\n"
             + "# Begin Source File\r\n\r\n"
             + "SOURCE=\"" + System.getProperty("user.dir")
-            + "\\" + libraryDirectory.substring(1, libraryDirectory.length()-1) + "\\"
+            + "\\" + libraryDirectory + "\\"
             + nativeLibrary
             + ".h\"\r\n"
             + "# End Source File\r\n"
@@ -1054,13 +955,13 @@ public class JNIUtilities {
             + "# PROP Default_Filter \"ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe\"\r\n"
             + "# Begin Source File\r\n\r\n"
             + "SOURCE=\"" + System.getProperty("user.dir")
-            + "\\" + libraryDirectory.substring(1, libraryDirectory.length()-1) + "\\"
+            + "\\" + libraryDirectory + "\\"
             + nativeLibrary
             + ".dll\"\r\n"
             + "# End Source File\r\n"
             + "# Begin Source File\r\n\r\n"
             + "SOURCE=\"" + System.getProperty("user.dir")
-            + "\\" + libraryDirectory.substring(1, libraryDirectory.length()-1) + "\\"
+            + "\\" + libraryDirectory + "\\"
             + nativeLibrary
             + ".lib\"\r\n"
             + "# End Source File\r\n"
@@ -1085,25 +986,9 @@ public class JNIUtilities {
 	throws IllegalActionException, IOException {
         StringBuffer results = new StringBuffer();
 
-        String libraryDirectory = "";
-        String nativeLibrary = "";
-        try {
-            libraryDirectory =
-                ((StringToken) ((Parameter) actor
-			.getAttribute("libraryDirectory"))
-                        .getToken())
-                .toString();
-            nativeLibrary =
-                ((StringToken) ((Parameter) actor
-                        .getAttribute("nativeLibrary"))
-                        .getToken())
-                .toString();
+        String libraryDirectory = _getLibraryDirectory(actor);
+        String nativeLibrary = _getNativeLibrary(actor);
 
-        } catch (Exception ex) {
-	    throw new IllegalActionException(actor, ex, 
-					 "no library or function name !");
-        }
-        nativeLibrary = nativeLibrary.substring(1, nativeLibrary.length() - 1);
         String internativeLibrary = "jni" + nativeLibrary;
 	String libraryPath = libraryDirectory;
 	if (libraryPath.equals("\"\"")) {
@@ -1384,7 +1269,8 @@ public class JNIUtilities {
     /** Get the args In name belonging to this entity.
      *  @return the name of the out arguments, excluding the in arguments.
      */
-    protected static String _getArgsIn(GenericJNIActor actor, String separator) {
+    protected static String _getArgsIn(GenericJNIActor actor,
+				       String separator) {
         return _getArgs(actor, true, false, false, separator);
     }
 
@@ -1477,6 +1363,41 @@ public class JNIUtilities {
         else if (typ.equals("Object")||typ.startsWith("Object"))
             ret = ret + "L";
         return ret;
+    }
+
+    // Return the value of the libraryDirectory argument with the double
+    // quotes stripped off
+    private static String _getLibraryDirectory(GenericJNIActor actor)
+	throws IllegalActionException {
+	String libraryDirectory = (((StringToken) ((Parameter) actor
+				.getAttribute("libraryDirectory"))
+				    .getToken())
+				   .toString());
+	return libraryDirectory.substring(1, libraryDirectory.length() - 1);
+    }
+
+    // Return the value of the nativeFunction argument with the double
+    // quotes stripped off.
+    private static String _getNativeFunction(GenericJNIActor actor)
+	throws IllegalActionException {
+	String nativeFunction =
+	    (((StringToken) ((Parameter) actor
+                        .getAttribute("nativeFunction"))
+                        .getToken())
+                        .toString());
+	return nativeFunction.substring(1, nativeFunction.length() - 1);
+    }
+
+    // Return the value of the nativeLibrary argument with the double
+    // quotes stripped off.
+    private static String _getNativeLibrary(GenericJNIActor actor)
+	throws IllegalActionException {
+	String nativeLibrary =
+	    (((StringToken) ((Parameter) actor
+                        .getAttribute("nativeLibrary"))
+                        .getToken())
+                        .toString());
+	return nativeLibrary.substring(1, nativeLibrary.length() - 1);
     }
 
     /** Test the given string to know if a comma is needed
