@@ -107,7 +107,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
             // Inline all token methods, until we run out of things to inline
             boolean doneSomething = true;
             int count = 0;
-            while(doneSomething && (count < 10)) {
+            while(doneSomething && (count < 20)) {
                 doneSomething = false;
                 System.out.println("inlining methods iteration " + count++);
                 // First split local variables that are redefined...  
@@ -257,7 +257,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
         boolean doneSomething = true;
         int count = 0;
-        while(doneSomething && (count < 10)) {
+        while(doneSomething && (count < 20)) {
             doneSomething = false;
             System.out.println("inlining field iteration " + count++);
                 
