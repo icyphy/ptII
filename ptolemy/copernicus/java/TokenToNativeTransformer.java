@@ -133,7 +133,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
         // FIXME: Compute max depth.
         int depth = 4;
-        while (depth > 2) {
+        while (depth > 0) {
             
             // Inline all methods on types that have the given depth.
             for (Iterator classes = Scene.v().getApplicationClasses().iterator();
@@ -721,10 +721,18 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                                     PtolemyUtilities.getTypeValue(method, 
                                                             (Local)r.getArg(0), unit, localDefs, localUses);
                                                 //      typeAnalysis.getSpecializedType((Local)r.getBase());
+                                             //    if(baseTokenType.isInstantiable()) {
+//                                                     continue;
+//                                                 }
+                                               
                                                 if(baseTokenType.equals(argumentTokenType)) {
+                                                    if(debug) System.out.println("replacing with true: type = "
+                                                            + baseTokenType);
                                                     box.setValue(IntConstant.v(1));
                                                     doneSomething = true;
                                                 } else {
+                                                    if(debug) System.out.println("replacing with false: type1 = "
+                                                            + baseTokenType + ", type2 = " + argumentTokenType);
                                                     box.setValue(IntConstant.v(0));
                                                     doneSomething = true;
                                                 }

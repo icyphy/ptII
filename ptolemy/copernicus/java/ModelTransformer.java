@@ -32,6 +32,8 @@ package ptolemy.copernicus.java;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gui.SizeAttribute;
+import ptolemy.actor.gui.LocationAttribute;
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
@@ -350,6 +352,11 @@ public class ModelTransformer extends SceneTransformer {
             // persistence?
             if (attribute instanceof Variable &&
                     !(attribute instanceof Parameter)) {
+                continue;
+            }
+
+            if (attribute instanceof SizeAttribute ||
+                attribute instanceof LocationAttribute) {
                 continue;
             }
 

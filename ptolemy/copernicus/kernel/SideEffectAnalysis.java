@@ -66,7 +66,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
     }
 
     /** Return true if the given method has any side effects.
-     *  i.e. it assigns to any fields.
+     *  i.e. it assigns to any fields or arrays.
      */
     public boolean hasSideEffects(SootMethod method) {
         EffectFlow flow = (EffectFlow)getFlowBefore(method);
@@ -141,6 +141,13 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
                     if (_debug) System.out.println(
                             "SideEffectAnalysis: assigns to field");
                     out.addSideEffect(((FieldRef)value).getField());
+                }
+                if (value instanceof ArrayRef) {
+                    if (_debug) System.out.println(
+                            "SideEffectAnalysis: assigns to array.");
+                    // Escape analysis might help in this case.
+                    out.setUnknownSideEffects();
+                    return;
                 }
             }
 

@@ -1025,7 +1025,8 @@ public class SootUtilities {
             SootMethod newMethod = new SootMethod(oldMethod.getName(),
                     oldMethod.getParameterTypes(),
                     oldMethod.getReturnType(),
-                    oldMethod.getModifiers());
+                    oldMethod.getModifiers(),
+                    oldMethod.getExceptions());
             theClass.addMethod(newMethod);
             JimpleBody newBody = Jimple.v().newBody(newMethod);
             newMethod.setActiveBody(newBody);

@@ -355,10 +355,11 @@ public class Main extends KernelMain {
  
      //    Scene.v().getPack("wjtp").add(new Transform("wjtp.ts",
 //                                               TypeSpecializer.v(_toplevel)));
+    
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ttn",
                         TokenToNativeTransformer.v(_toplevel)));
- 
+        
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
         
         Scene.v().getPack("wjtp").add(
@@ -373,7 +374,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.doe",
                         new TransformerAdapter(
                                 DeadObjectEliminator.v())));
-        
+         
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
         
         // This snapshot should be last...

@@ -68,6 +68,7 @@ JSRCS = \
 	SideEffectFreeInvocationRemover.java \
 	SootUtilities.java \
 	TransformerAdapter.java \
+	UnusedFieldRemover.java \
 	WatchDogTimer.java 
 
 OTHER_FILES_TO_BE_JARED = \
