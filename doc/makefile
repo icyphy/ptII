@@ -239,8 +239,11 @@ $(VERGIL_DOCS): javahtml.awk
 
 # Version of main.htm without links
 # Convert <a href="foobar" target="body">bif</a> -> bif
+# and the convert Ptolemy Project web page to
+#     <a href="http://ptolemy.eecs.berkeley.edu/#in_browser">Ptolemy Project web page</a>
 mainVergil.htm: main.htm
-	sed 's@<a href="[^"]*" target="[^"]*">\([^<]*\)</a>@\1@' main.htm > $@
+	sed -e 's@<a href="[^"]*" target="[^"]*">\([^<]*\)</a>@\1@' \
+		-e 's@Ptolemy Project web page@<a href="http://ptolemy.eecs.berkeley.edu/#in_browser">Ptolemy Project web page</a>@' main.htm > $@
 
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
