@@ -493,6 +493,23 @@ class SaveAsJava {
             name = nameToSanitize.replace('.', '_');
             name = name.replace(' ', '_');
             name = name.replace(':', '_');
+            // If the name begins with a number, add a leading _
+            switch (name.charAt(0)) {
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                name = "_" + name;
+                break;
+            default:
+                break;
+            }
             _nameTable.put(object, name);
         }
         return name;
