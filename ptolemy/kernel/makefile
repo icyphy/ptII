@@ -50,6 +50,8 @@ JSRCS = \
 	PortHole.java \
 	Star.java
 
+EXTRA_SRCS =	$(JSRCS)
+
 MISC_FILES =
 
 OPTIONAL_FILES =
