@@ -48,7 +48,7 @@ public class Query extends Panel {
 
     /** Construct a panel with no queries in it.
      */
-    public Query () {
+    public Query() {
         // FIXME: Setting the number of rows to a large number.
         setLayout(new GridLayout(1,2));
     }
