@@ -137,7 +137,7 @@ public class DirectedGraph extends Graph {
 	Vector nodes = new Vector(_tranClosure.length);
 	for (int i = 0; i < _tranClosure.length; i++) {
 	    if (_tranClosure[id][i]) {
-		nodes.addElement(_backRef.elementAt(i));
+		nodes.addElement(_getBackRef(i));
 	    }
 	}
 
@@ -183,7 +183,7 @@ public class DirectedGraph extends Graph {
                 }
                 if(indeg[id] == 0) {
                     finished = false;
-                    result[nextResultIndex++] = _backRef.elementAt(id);
+                    result[nextResultIndex++] = _getBackRef(id);
                     indeg[id]--;
                     Vector arcs = (Vector)(_graph.elementAt(id));
                     for(int i = 0; i < arcs.size(); i++) {

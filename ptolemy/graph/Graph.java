@@ -222,6 +222,24 @@ public class Graph {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Returns the Object representing the node in this graph with
+     *  the specified node ID.
+     *  @param nodeId a node ID.
+     *  @return an Object representing a node.
+     *  @exception IllegalArgumentException if the node id argument
+     *   is negative or not less than the total number of nodes in
+     *   this graph.
+     */
+    protected Object _getBackRef(int nodeId) {
+	try {
+	    return _backRef.elementAt(nodeId);
+	} catch (ArrayIndexOutOfBoundsException ex) {
+	    throw new IllegalArgumentException("Graph._getBackRef: " +
+		"node ID is negative or is not less than the total " +
+		"number of nodes in this graph.");
+	}
+    }
+
     /** Returns the node id of the node associated with the specified Object.
      *  @param o an object associated with a graph node.
      *  @return the node id.
@@ -251,15 +269,14 @@ public class Graph {
      */ 
     protected Vector _graph;
     
-    /** Tranlation from nodeId to associated Object.
-     *  This vector is indexed by node id and stores the object associated
-     *  with each node id.
-     */
-    protected Vector _backRef;
-    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    // Tranlation from nodeId to node.
+    // This vector is indexed by node id and the entry is an Object
+    // representing a node with that id.
+    private Vector _backRef;
+    
     // Translation from Object to nodeId.  This can be down with
     // _backRef.indexOf(), but Hashtable is faster.
     private Hashtable _nodeIdTable;
