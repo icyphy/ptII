@@ -217,7 +217,7 @@ public class VergilGraphImpl extends BasicGraphImpl {
 		    Port port2 = (Port)links.nextElement();
 		    Node node1 = _findNode(g, port1);
 		    Node node2 = _findNode(g, port2);
-		    Edge newEdge = createEdge(null);
+		    Edge newEdge = createEdge(relation);
 		    super.setEdgeHead(newEdge, node1);
                     super.setEdgeTail(newEdge, node2);
 		} else {		  

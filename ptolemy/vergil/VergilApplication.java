@@ -52,6 +52,7 @@ import java.awt.Image;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -111,7 +112,6 @@ public class VergilApplication extends MDIApplication {
         fc.addChoosableFileFilter(ff);
         fc.setFileFilter(ff);
 
-        addDocumentFactory(new PtolemyDocument.Factory());
         // _incrementalLayout = new LevelLayout();
 
         // Initialize the menubar, toolbar, and palettes
@@ -147,16 +147,27 @@ public class VergilApplication extends MDIApplication {
 	new PtolemyPackage(this);
     }
 
-    /** Add a factory that creates new documents.  The factory will appear
-     *  in the list of factories with the given name.
+    /** Add the factory that creates new documents.  Also add create a new
+     * action and add it to the
+     * file->new menu that will create documents with the given factory.
      */
     protected void addDocumentFactory(VergilDocumentFactory df) {
-        _documentFactoryList.add(df);
-	_fileNewMenu.add(df.getName());
+	final VergilDocumentFactory factory = df;
+	final VergilApplication app = this;
+        _documentFactoryList.add(factory);
+	Action action = new AbstractAction (factory.getName()) {
+            public void actionPerformed(ActionEvent e) {
+                Document doc = factory.createDocument(app);
+                addDocument(doc);
+                displayDocument(doc);
+                setCurrentDocument(doc);
+            }
+        };
+	_fileNewMenu.add(action);
     }
 
     /**
-     * Add a menu to the menu bar of this application.
+     * Add the menu to the menu bar of this application.
      */
     public void addMenu(JMenu menu) {
 	JFrame frame = getApplicationFrame();
@@ -165,6 +176,12 @@ public class VergilApplication extends MDIApplication {
 	menuBar.add(menu);
     }
 
+    /** Populate the tree pane with icons for each entity in the given
+     * composite entity.
+     * @param pane The tree pane.
+     * @param parent The name of the node in the tree to add the icons to.
+     * @param library The composite entity to add icons for.
+     */
     public void createTreeNodes(JTreePane pane,
             String parent, CompositeEntity library) {
         Iterator entities = library.entityList().iterator();
@@ -217,12 +234,6 @@ public class VergilApplication extends MDIApplication {
 	return (DocumentFactory)_documentFactoryList.get(0);
     }
 
-    /** Return the document factory with the given name.
-     
-    public DocumentFactory getDocumentFactory(name) { 
-	return (DocumentFactory)_documentFactoryList.get(name);
-    }
-
     /** Return the entity library for this application.
      */
     public CompositeEntity getEntityLibrary() {
@@ -235,13 +246,13 @@ public class VergilApplication extends MDIApplication {
         return _guiResources;
     }
 
-    /** Return the icon library associated with this Vergil
+    /** Return the icon library associated with this Vergil.
      */
     public CompositeEntity getIconLibrary() {
 	return _iconLibrary;
     }
 
-    /** Get the title of this application
+    /** Get the title of this application.  Return the string "Vergil".
      */
     public String getTitle() {
         return "Vergil";
@@ -260,18 +271,6 @@ public class VergilApplication extends MDIApplication {
         menuFile.setMnemonic('F');
         mb.add(menuFile);
 
-	/*
-        action = new AbstractAction (NEW) {
-            public void actionPerformed(ActionEvent e) {
-                Document doc = getDocumentFactory().createDocument(app);
-                addDocument(doc);
-                displayDocument(doc);
-                setCurrentDocument(doc);
-            }
-        };
-        addAction(action);
-        addMenuItem(menuFile, action, 'N', "Create a new graph document");
-	*/
 	menuFile.add(_fileNewMenu);
 
         action = DefaultActions.openAction(this);
@@ -322,14 +321,15 @@ public class VergilApplication extends MDIApplication {
         //tb.addSeparator();
     }
 
-    /** Create and run a new graph application
+    /** Create and run a new graph application.
      */
     public static void main(String argv[]) {
         VergilApplication ge = new VergilApplication();
         ge.setVisible(true);
     }
 
-    /** Parse the xml libraries
+    /** Parse the entity and icon xml libraries.  Set the entity and icon
+     * libraries for this application.
      */
     public void parseLibraries() {
         URL iconlibURL = null;
@@ -356,18 +356,16 @@ public class VergilApplication extends MDIApplication {
         }
     }
 
-   /** Redisplay a document after it appears on the screen. This method
-     * should be overridden by applications that need to perform some
-     * form of update when the component appears on the screen.
-     * This class executes a graph layout algorithm on the document
-     */
+   /** Redisplay a document after it appears on the screen. In this class,
+    * do nothing.
+    */
     public void redisplay(Document d, JComponent c) {
         JGraph jgraph = (JGraph) c;
-        //       redoLayout(jgraph, (String) _layoutComboBox.getSelectedItem());
+        // redoLayout(jgraph, (String) _layoutComboBox.getSelectedItem());
     }
 
-    /** Remove a factory that creates new documents for use by subclasses
-     * constructors only.
+    /** Remove the given factory that creates new documents from
+     * this application.  Remove its entry in the file->new menu.
      */
     protected void removeDocumentFactory(VergilDocumentFactory df) {
 	int index = _documentFactoryList.indexOf(df);
@@ -376,7 +374,7 @@ public class VergilApplication extends MDIApplication {
     }
 
     /**
-     * Remove the menu to the menu bar of this application.
+     * Remove the given menu from the menu bar of this application.
      */
     public void removeMenu(JMenu menu) {
 	JFrame frame = getApplicationFrame();
@@ -387,8 +385,8 @@ public class VergilApplication extends MDIApplication {
 
     /** Set the given document to be the current document, and raise
      * the internal window that corresponds to that component.
-     * In this class, there are some things that we want to enable and
-     * disable if there are no documents present.
+     * If there are no documents present, then disable the appropriate 
+     * menu entries.
      */
     public void setCurrentDocument(Document d) {
         super.setCurrentDocument(d);
@@ -416,11 +414,10 @@ public class VergilApplication extends MDIApplication {
 
     /**
      * Grab the keyboard focus when the component that this listener is
-     *  attached to is clicked on.
+     * attached to is clicked on.
      */
     public class Focuser implements ListDataListener {
 	public void contentsChanged(ListDataEvent e) {
-	    System.out.println("Focusing");
 	    VergilDocument document = (VergilDocument)getCurrentDocument();
 	    if(document == null) return;
 	    JComponent component = getView(document);
@@ -437,7 +434,8 @@ public class VergilApplication extends MDIApplication {
 	}
     }
 
-    /** Initialize the palette in the.
+    /** Initialize the application palette.  This is done in a separate
+     * thread, because loading the libraries can take quite a while.
      */
     public class PaletteInitializer implements Runnable {
 	public void run() {
@@ -476,24 +474,24 @@ public class VergilApplication extends MDIApplication {
 	}
     }
 
-    /** The director selection combobox
+    /** The director selection combobox.
      */
     private JComboBox _directorComboBox;
 
-    /** The layout selection combobox
+    /** The layout selection combobox.
      */
     private JComboBox _layoutComboBox;
 
-    /** The application specific resources
+    /** The application specific resources.
      */
     private RelativeBundle _guiResources =
 	new RelativeBundle("ptolemy.vergil.Library", getClass(), null);
 
-    /** The Icon Library
+    /** The Icon Library.
      */
     private CompositeEntity _iconLibrary;
 
-    /** The Entity Library
+    /** The Entity Library.
      */
     private CompositeEntity _entityLibrary;
 

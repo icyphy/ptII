@@ -40,7 +40,8 @@ import diva.gui.DocumentFactory;
  * @version $Id$
  */
 public interface VergilDocumentFactory extends DocumentFactory {
-    /** Return the name of this Factory
+    /** Return a string which is the name associated with this document
+     * factory.
      */
     public String getName();
 }

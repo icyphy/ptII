@@ -262,7 +262,8 @@ public class PtolemyDocument extends AbstractDocument
             return d;
         }
 
-	/** Return the name of this document factory.
+	/** Return a string which is the name associated with this document
+	 * factory.
 	 */
 	public String getName() {
 	    return "Ptolemy II";

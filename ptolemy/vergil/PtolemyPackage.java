@@ -197,8 +197,9 @@ public class PtolemyPackage implements Package {
         _layoutComboBox = new JComboBox();
         dflt = "Random layout";
         _layoutComboBox.addItem(dflt);
-        _layoutComboBox.addItem("Levelized layout");
         _layoutComboBox.setSelectedItem(dflt);
+        _layoutComboBox.addItem("Levelized layout");
+        _layoutComboBox.addItem("Grid layout");
         _layoutComboBox.setMaximumSize(_layoutComboBox.getMinimumSize());
         _layoutComboBox.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
@@ -245,6 +246,7 @@ public class PtolemyPackage implements Package {
         });
         tb.add(_directorComboBox);
 	
+        application.addDocumentFactory(new PtolemyDocument.Factory());
     }
 
     /**
