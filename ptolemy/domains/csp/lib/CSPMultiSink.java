@@ -31,13 +31,18 @@ its input.
 
 package ptolemy.domains.csp.lib;
 
-import ptolemy.domains.csp.kernel.*;
-import ptolemy.actor.*;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.process.TerminateProcessException;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.domains.csp.kernel.CSPActor;
+import ptolemy.domains.csp.kernel.ConditionalBranch;
+import ptolemy.domains.csp.kernel.ConditionalReceive;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPMultiSink
@@ -72,9 +77,9 @@ public class CSPMultiSink extends CSPActor {
      *  @exception NameDuplicationException If the port name coincides
      *   with a port already in this actor.
      */
-    public CSPMultiSink(TypedCompositeActor cont, String name)
+    public CSPMultiSink(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(cont, name);
+        super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
 	input.setTypeEquals(BaseType.GENERAL);
@@ -166,6 +171,6 @@ public class CSPMultiSink extends CSPActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Array storing the number of times each brach rendezvoused.
+    // Array storing the number of times each branch rendezvoused.
     private int[] _branchCount;
 }

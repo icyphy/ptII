@@ -30,15 +30,21 @@
 
 package ptolemy.domains.csp.lib;
 
-import ptolemy.domains.csp.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.actor.process.TerminateProcessException;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.NoTokenException;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.domains.csp.kernel.ConditionalBranch;
+import ptolemy.domains.csp.kernel.ConditionalReceive;
+import ptolemy.domains.csp.kernel.ConditionalSend;
+import ptolemy.domains.csp.kernel.CSPActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.Token;
-import ptolemy.data.IntToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPBuffer
@@ -99,9 +105,9 @@ public class CSPBuffer extends CSPActor {
      *  @exception NameDuplicationException If the name argument
      *   coincides with an entity already in the container.
      */
-    public CSPBuffer(TypedCompositeActor cont, String name)
+    public CSPBuffer(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
-        this(cont, name, 1);
+        this(container, name, 1);
     }
 
     /** Construct a CSPBuffer in the specified container with the
@@ -122,9 +128,9 @@ public class CSPBuffer extends CSPActor {
      *  @exception NameDuplicationException If the name argument coincides
      *   with an entity already in the container.
      */
-    public CSPBuffer(TypedCompositeActor cont, String name, int theDepth)
+    public CSPBuffer(TypedCompositeActor container, String name, int theDepth)
             throws IllegalActionException, NameDuplicationException {
-        super(cont, name);
+        super(container, name);
 	depth = new Parameter(this, "depth", (new IntToken(theDepth)) );
 	output = new TypedIOPort(this, "output", false, true);
 	input = new TypedIOPort(this, "input", true, false);

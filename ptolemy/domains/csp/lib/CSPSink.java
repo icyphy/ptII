@@ -30,13 +30,15 @@
 
 package ptolemy.domains.csp.lib;
 
-import ptolemy.domains.csp.kernel.*;
-import ptolemy.actor.*;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.NoTokenException;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.Token;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPSink
@@ -49,8 +51,7 @@ method defaults to false.
 
 @author Neil Smyth
 @version $Id$
-
- */
+*/
 public class CSPSink extends AtomicActor {
 
     /** Construct a CSPSink in the default workspace with an
@@ -71,7 +72,7 @@ public class CSPSink extends AtomicActor {
      *  specified name. The name must be unique within the container
      *  or an exception is thrown. The container argument must not be
      *  null, or a NullPointerException will be thrown.
-     *  @param cont The container of this actor.
+     *  @param container The container of this actor.
      *  @param name The name of this actor.
      *  @param limit The number of tokens that this actor will produce.
      *  @exception IllegalActionException If the superclass throws it
@@ -81,9 +82,9 @@ public class CSPSink extends AtomicActor {
      *   or the tokenLimit parameter is not unique within the
      *   container.
      */
-    public CSPSink(CompositeActor cont, String name, int limit)
+    public CSPSink(CompositeActor container, String name, int limit)
             throws IllegalActionException, NameDuplicationException {
-        super(cont, name);
+        super(container, name);
         input = new IOPort(this, "input", true, false);
         tokenLimit = new Parameter( this, "tokenLimit",
         	(new IntToken(limit)) );

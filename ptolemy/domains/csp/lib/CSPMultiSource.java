@@ -31,15 +31,20 @@ continuous do (CDO) construct.
 
 package ptolemy.domains.csp.lib;
 
-import ptolemy.domains.csp.kernel.*;
-import ptolemy.actor.*;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.process.TerminateProcessException;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.Token;
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.domains.csp.kernel.CSPActor;
+import ptolemy.domains.csp.kernel.ConditionalBranch;
+import ptolemy.domains.csp.kernel.ConditionalSend;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPMultiSource
@@ -85,7 +90,7 @@ public class CSPMultiSource extends CSPActor {
      *  specified by the tokenLimit parameter. The actor will produce
      *  N = tokenLimit tokens unless tokenLimit < 0 in which case this
      *  actor will produce tokens indefinitely.
-     *  @param cont The container of this actor.
+     *  @param container The container of this actor.
      *  @param name The name of this actor.
      *  @param limit The number of tokens produced by this actor.
      *  @exception IllegalActionException If the port or tokenLimit
@@ -94,10 +99,10 @@ public class CSPMultiSource extends CSPActor {
      *   parameter name coincides with a port or parameter already
      *   in this actor.
      */
-    public CSPMultiSource(TypedCompositeActor cont, String name,
+    public CSPMultiSource(TypedCompositeActor container, String name,
     	    int limit) throws IllegalActionException,
             NameDuplicationException {
-        super(cont, name);
+        super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
 	output.setTypeEquals(BaseType.INT);

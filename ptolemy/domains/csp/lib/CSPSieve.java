@@ -31,13 +31,16 @@ the Sieve of Eratosthenes.
 
 package ptolemy.domains.csp.lib;
 
-import ptolemy.domains.csp.kernel.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.data.*;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import java.util.Enumeration;
+import ptolemy.data.type.Type;
+import ptolemy.domains.csp.kernel.CSPActor;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPSieve
@@ -96,7 +99,7 @@ public class CSPSieve extends CSPActor {
      */
     public void fire() throws IllegalActionException {
         Token data;
-        boolean islargestprime = true;
+        boolean isLargestPrime = true;
         int lastSeen = 0;
         int limit = 100;
 	while (true) {
@@ -106,7 +109,7 @@ public class CSPSieve extends CSPActor {
 	    //System.out.println("Sieve got data:" + data.toString());
 	    if (lastSeen % _prime != 0) {
 		// is it the next prime?
-		if (islargestprime) {
+		if (isLargestPrime) {
                     // yes - make and queue the topologyChange
 		    /* JFIXME
                        TopologyChangeRequest t = _makeChangeRequest(lastSeen);
@@ -116,7 +119,7 @@ public class CSPSieve extends CSPActor {
 		    */
 		    _waitForDeadlock();
                     //System.out.println(getName() +": change succeeded?");
-		    islargestprime = false;
+		    isLargestPrime = false;
 		}
 		else {
 		    output.send(0, data);
@@ -141,7 +144,7 @@ public class CSPSieve extends CSPActor {
      CSPSieve newSieve = null;
      ComponentRelation newRel = null;
      try {
-     newSieve = new CSPSieve(container,value + "_sieve", value);
+     newSieve = new CSPSieve(container, value + "_sieve", value);
      // If we use a 1-1 relation this needs to change.
      newRel = new IORelation(container, "R" + value);
      } catch (NameDuplicationException ex) {

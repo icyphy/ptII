@@ -30,15 +30,15 @@
 
 package ptolemy.domains.csp.lib;
 
-import ptolemy.domains.csp.kernel.*;
-import ptolemy.actor.*;
+import java.util.Random;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.Token;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
-import java.util.Random;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPSource
@@ -75,7 +75,7 @@ public class CSPSource extends AtomicActor {
      *  specified name. The name must be unique within the container
      *  or an exception is thrown. The container argument must not be
      *  null, or a NullPointerException will be thrown.
-     *  @param cont The container of this actor.
+     *  @param container The container of this actor.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the superclass throws it
      *   or if there is an error with instantiation of the tokenLimit
@@ -84,9 +84,9 @@ public class CSPSource extends AtomicActor {
      *   or the tokenLimit parameter is not unique within the
      *   container.
      */
-    public CSPSource(CompositeActor cont, String name)
+    public CSPSource(CompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
-        this(cont, name, -1, 0);
+        this(container, name, -1, 0);
     }
 
     /** Construct a CSPSource with the specified container and the
@@ -98,7 +98,7 @@ public class CSPSource extends AtomicActor {
      *  to -1, then tokens will be produced indefinitely. The initValue
      *  argument specifies the initial integer value of the output
      *  tokens.
-     *  @param cont The container of this actor.
+     *  @param container The container of this actor.
      *  @param name The name of this actor.
      *  @param limit The number of tokens that this actor will produce.
      *  @param initValue The initial integer value of the produced
@@ -109,10 +109,10 @@ public class CSPSource extends AtomicActor {
      *  @exception NameDuplicationException If the name of this actor
      *   or the tokenLimit parameter is not unique within the container.
      */
-    public CSPSource(CompositeActor cont, String name, int limit,
+    public CSPSource(CompositeActor container, String name, int limit,
     	    int initValue) throws IllegalActionException,
             NameDuplicationException {
-        super(cont, name);
+        super(container, name);
         _value = initValue;
         tokenLimit = new Parameter( this, "tokenLimit",
         	(new IntToken(limit)) );
@@ -145,7 +145,7 @@ public class CSPSource extends AtomicActor {
             int limit =
                 ((IntToken)tokenLimit.getToken()).intValue();
             // FIXME: Why is Random called here???
-            Random rand = new Random();            
+            Random random = new Random();
             while ( (_value < limit) || (limit < 0) ) {
                 Token t = new IntToken(_value);
                 output.send(0, t);
