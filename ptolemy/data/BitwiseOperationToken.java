@@ -32,7 +32,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //////////////////////////////////////////////////////////////////////////
 //// BitwiseOperationToken
 
-/*
+/**
   The operations that can be performed on tokens that have bitwise operations.
 
   @author Steve Neuendorffer
@@ -47,6 +47,7 @@ public interface BitwiseOperationToken {
 
     /** Returns a token representing the bitwise AND of this token and
      *  the given token.
+     *  @param rightArgument  The token that is ANDed with this token.
      *  @return The bitwise AND.
      *  @exception IllegalActionException If the given token is not
      *  compatible for this operation, or the operation does not make
@@ -65,6 +66,7 @@ public interface BitwiseOperationToken {
 
     /** Returns a token representing the bitwise OR of this token and
      *  the given token.
+     *  @param rightArgument  The token that is OR'd with this token.
      *  @return The bitwise OR.
      *  @exception IllegalActionException If the given token is not
      *  compatible for this operation, or the operation does not make
@@ -75,6 +77,7 @@ public interface BitwiseOperationToken {
 
     /** Returns a token representing the bitwise XOR of this token and
      *  the given token.
+     *  @param rightArgument  The token that is XOR'd with this token.
      *  @return The bitwise XOR.
      *  @exception IllegalActionException If the given token is not
      *  compatible for this operation, or the operation does not make

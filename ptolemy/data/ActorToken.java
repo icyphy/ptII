@@ -51,6 +51,9 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ActorToken extends Token {
+    /** Construct an ActorToken.
+     *  @param entity The entity that this Token contains.
+     *  @exception IllegalActionException If cloning the entity fails.
     public ActorToken(Entity entity) throws IllegalActionException {
         super();
 
@@ -66,6 +69,7 @@ public class ActorToken extends Token {
     ////                         public methods                    ////
 
     /** Return a clone of the entity contained by this token.
+     *  @return The clone of the entity.
      */
     public Entity getEntity() {
         try {
@@ -113,6 +117,7 @@ public class ActorToken extends Token {
         return "ActorToken(" + _entity + ")";
     }
 
+    /** The type of the ActorToken. */ 
     public static class ActorType implements Type, Serializable {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
@@ -208,6 +213,7 @@ public class ActorToken extends Token {
         }
     }
 
+    /** Singleton reference to this type. */
     public static final Type TYPE = new ActorType();
 
     ///////////////////////////////////////////////////////////////////
