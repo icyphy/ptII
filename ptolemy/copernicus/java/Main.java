@@ -359,10 +359,11 @@ public class Main extends KernelMain {
                    LibraryUsageReporter.v(),
                    "outFile:" + _outputDirectory + "/jimple4/jarClassList.txt");
        }
-
+       
        addTransform(pack, "wjtp.ttn",
                         TokenToNativeTransformer.v(toplevel));
-        
+       addStandardOptimizations(pack, 4);
+       
        addTransform(pack, "wjtp.ufr",
                UnusedFieldRemover.v());
        

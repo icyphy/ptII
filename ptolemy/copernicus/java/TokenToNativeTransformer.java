@@ -315,6 +315,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                         body, _phaseName + ".cpf");
                 ConditionalBranchFolder.v().transform(
                         body, _phaseName + ".cbf");
+                ConstantPropagatorAndFolder.v().transform(
+                        body, _phaseName + ".cpf");
                 DeadAssignmentEliminator.v().transform(
                         body, _phaseName + ".dae");
                 UnusedLocalEliminator.v().transform(
@@ -600,14 +602,20 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 // Then inline its code
                 SootMethod inlinee = (SootMethod)methodList.get(0);
                 if (inlinee.getName().equals("getClass")) {
-                    // FIXME: do something better here.
-                    SootMethod newGetClassMethod = Scene.v().getMethod(
-                            "<java.lang.Class: java.lang.Class "
-                            + "forName(java.lang.String)>");
-                    box.setValue(Jimple.v().newStaticInvokeExpr(
-                            newGetClassMethod,
-                            StringConstant.v("java.lang.Object")));
-
+                    SootClass typeClass = type.getSootClass();
+                    int subclasses =
+                        hierarchy.getSubclassesOf(typeClass).size();
+                    if(subclasses == 0) {
+                        // FIXME: do something better here.
+                        SootMethod newGetClassMethod = Scene.v().getMethod(
+                                "<java.lang.Class: java.lang.Class "
+                                + "forName(java.lang.String)>");
+                        box.setValue(Jimple.v().newStaticInvokeExpr(
+                                             newGetClassMethod,
+                                             StringConstant.v(
+                                                     typeClass.getName())));
+                        doneSomething = true;
+                    }
                 } else {
                     SootClass declaringClass = inlinee.getDeclaringClass();
                     if(!declaringClass.isApplicationClass()) {
