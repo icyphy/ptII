@@ -105,7 +105,6 @@ ALLJSRCS = 		collections \
 			ptolemy.domains.de.kernel \
 			ptolemy.domains.de.lib \
 			ptolemy.domains.fsm.kernel \
-			ptolemy.domains.fsm.lib \
 			ptolemy.domains.pn.gui \
 			ptolemy.domains.pn.kernel \
 			ptolemy.domains.sdf.gui \
@@ -154,7 +153,6 @@ codeDoc/tree.html: 	../collections/*.java \
 			../ptolemy/domains/de/kernel/*.java \
 			../ptolemy/domains/de/lib/*.java \
 			../ptolemy/domains/fsm/kernel/*.java \
-			../ptolemy/domains/fsm/lib/*.java \
 			../ptolemy/domains/pn/gui/*.java \
 			../ptolemy/domains/pn/kernel/*.java \
 			../ptolemy/domains/sdf/gui/*.java \
