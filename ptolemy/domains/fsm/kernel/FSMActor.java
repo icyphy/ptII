@@ -881,7 +881,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     }
 
     /** Return the enabled transition among the given list of transitions.
-     *  Throw an exception if there is more than one transition enabled.
+     *  In case there are multiple enabled transitions, if all of them are
+     *  nondeterministic, return the first one found; if any of them is not
+     *  nondeterministic, throw an exception if there is more than one 
+     *  transition enabled. 
+     *  <p> See {@link Transition} for explanation of "nondeterministic".
      *  @param transitionList A list of transitions.
      *  @return An enabled transition, or null if none is enabled.
      *  @exception IllegalActionException If there is more than one
@@ -890,6 +894,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     protected Transition _checkTransition(List transitionList)
             throws IllegalActionException {
         Transition result = null;
+        List enabledTransitions = new LinkedList();
+        boolean firstEnabledTransitionIsNondeterministic = false;
+        
         Iterator transitionRelations = transitionList.iterator();
 
         while (transitionRelations.hasNext() && !_stopRequested) {
@@ -899,15 +906,29 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 continue;
             }
 
-            if (result != null) {
-                throw new MultipleEnabledTransitionsException(currentState(),
-                        "Multiple enabled transitions: " + result.getName()
-                        + " and " + transition.getName() + ".");
-            } else {
+            if (enabledTransitions.size() == 0) {
+                // the first found enabled transition.
+                firstEnabledTransitionIsNondeterministic = 
+                    transition.isNondeterministic();
                 result = transition;
+            } else {
+                // not the first found enabled transition.
+                if (!firstEnabledTransitionIsNondeterministic || 
+                        !transition.isNondeterministic()) {
+                    throw new MultipleEnabledTransitionsException(
+                            currentState(),
+                            "Multiple enabled transitions: " 
+                            + result.getName()
+                            + " and " + transition.getName() + ".");
+                }
             }
+            enabledTransitions.add(transition);
         }
 
+        //FIXME: the current design always return the first enabled transition.
+        // A more sophisticated model will utilize the probability values to
+        // decide which enabled transition to choose if multiple transitions 
+        // are enabled.
         return result;
     }
 

@@ -34,6 +34,7 @@ import java.util.StringTokenizer;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
@@ -129,6 +130,17 @@ import ptolemy.kernel.util.Workspace;
    state is reset when the transition is taken. There is no reset() method in the
    Actor interface, so the initialize() method of the refinement is called. Please
    note that this feature is still under development.
+   <p>
+   The <i>nondeterministic</i> parameter specifies whether this transition is 
+   nondeterministic. Here nondeterministic means that this transition may not 
+   be the only enabled transition at a time. The default value is a boolean 
+   token with value as false, meaning that if this transition is enabled, it
+   must be the only enabled transition.
+   <p>
+   The <i>probability</i> parameter specifies the probability that this 
+   transition will be taken if there exist multiple enabled transitions. The 
+   default value is a double token with value 1.0, meaning the transition is 
+   always taken.
 
    @author Xiaojun Liu, Edward A. Lee, Haiyang Zheng
    @version $Id$
@@ -200,6 +212,14 @@ public class Transition extends ComponentRelation {
      */
     public StringAttribute guardExpression = null;
 
+    /** Parameter specifying whether this transition is nondeterministic.
+     *  Here nondeterministic means that this transition may not be the only
+     *  enabled transition at a time. The default value is a boolean token 
+     *  with value as false, meaning that if this transition is enabled, it
+     *  must be the only enabled transition. 
+     */
+    public Parameter nondeterministic = null;
+
     /** The action commands that produce outputs when the transition is taken.
      */
     public OutputActionsAttribute outputActions;
@@ -207,6 +227,13 @@ public class Transition extends ComponentRelation {
     /** Parameter specifying whether this transition is preemptive.
      */
     public Parameter preemptive = null;
+
+    /** Parameter specifying the probability that this transition will be 
+     *  taken if there exist multiple enabled transitions. The default value
+     *  is a double token with value 1.0, meaning the transition is always 
+     *  taken.
+     */
+    public Parameter probability = null;
 
     /** Parameter specifying whether the refinement of the destination
      *  state is reset when the transition is taken.
@@ -249,43 +276,42 @@ public class Transition extends ComponentRelation {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        super.attributeChanged(attribute);
-
         if (attribute == preemptive) {
             // evaluate the parameter to make sure it is given a valid
             // expression
             preemptive.getToken();
             workspace().incrVersion();
-        }
-
-        // The guard and trigger expressions can only be evaluated at run
-        // time, because the input variables they can reference are created
-        // at run time. guardExpression and triggerExpression are string
-        // attributes used to convey expressions without being evaluated.
-        // _guard and _trigger are the variables that do the evaluation.
-        if (attribute == guardExpression) {
+        } else if (attribute == nondeterministic) {
+            _nondeterministic = 
+                ((BooleanToken) nondeterministic.getToken()).booleanValue();
+        } else if (attribute == probability) {
+            _probability = 
+                ((DoubleToken) probability.getToken()).doubleValue();
+        } else if (attribute == guardExpression) {
+            // The guard and trigger expressions can only be evaluated at run
+            // time, because the input variables they can reference are created
+            // at run time. guardExpression and triggerExpression are string
+            // attributes used to convey expressions without being evaluated.
+            // _guard and _trigger are the variables that do the evaluation.
             _guardParseTree = null;
             _guardVersion = -1;
-        }
-
-        if (attribute == triggerExpression) {
+        } else if (attribute == triggerExpression) {
+            // The guard and trigger expressions can only be evaluated at run
+            // time, because the input variables they can reference are created
+            // at run time. guardExpression and triggerExpression are string
+            // attributes used to convey expressions without being evaluated.
+            // _guard and _trigger are the variables that do the evaluation.
             _triggerParseTree = null;
-        }
-
-        if (attribute == refinementName) {
+        } else if (attribute == refinementName) {
             _refinementVersion = -1;
-        }
-
-        if ((attribute == outputActions) || (attribute == setActions)) {
+        } else if ((attribute == outputActions) || (attribute == setActions)) {
             _actionListsVersion = -1;
-        }
-
-        if ((attribute == outputActions) && _debugging) {
+        } else if ((attribute == outputActions) && _debugging) {
             outputActions.addDebugListener(new StreamListener());
-        }
-
-        if ((attribute == setActions) && _debugging) {
+        } else if ((attribute == setActions) && _debugging) {
             setActions.addDebugListener(new StreamListener());
+        } else {
+            super.attributeChanged(attribute);
         }
     }
 
@@ -405,6 +431,15 @@ public class Transition extends ComponentRelation {
         } else {
             return "";
         }
+    }
+
+    /** Return the probability that this transition will be taken if this 
+     *  transition is enabled. 
+     *  @return The probability that this transition will be taken if this 
+     *  transition is enabled. 
+     */
+    public double getProbability() {
+        return _probability;
     }
 
     /** Return the refinements of this transition. The names of the refinements
@@ -536,6 +571,14 @@ public class Transition extends ComponentRelation {
             throw new IllegalActionException(this, ex,
                     "Error evaluating guard expression: " + getGuardExpression());
         }
+    }
+
+    /** Return true if this transition is nondeterministic. Return false 
+     *  otherwise.
+     *  @return True if this transition is nondeterministic.
+     */
+    public boolean isNondeterministic() {
+        return _nondeterministic;
     }
 
     /** Return true if this transition is preemptive. Whether this transition
@@ -763,6 +806,15 @@ public class Transition extends ComponentRelation {
         triggerExpression = new StringAttribute(this, "triggerExpression");
         triggerExpression.setVisibility(Settable.NONE);
 
+        // Nondeterministic attributes.
+        nondeterministic = new Parameter(this, "nondeterministic");
+        nondeterministic.setTypeEquals(BaseType.BOOLEAN);
+        nondeterministic.setToken(BooleanToken.FALSE);
+        
+        probability = new Parameter(this, "probability");
+        probability.setTypeEquals(BaseType.DOUBLE);
+        probability.setExpression("1.0");
+
         _exeDirectorIsHSDirector = false;
 
         CompositeEntity container = (CompositeEntity) getContainer();
@@ -875,9 +927,15 @@ public class Transition extends ComponentRelation {
     // Version of the cached list of relations of a guard expression
     private long _guardVersion = -1;
 
+    // Cached nondeterministic attribute value.
+    private boolean _nondeterministic = false;
+    
     // Set to true when the transition is preemptive.
     private boolean _preemptive = false;
 
+    // Cached probability value.
+    private double _probability = 1.0;
+    
     // Cached source state of this transition.
     private State _sourceState = null;
 
