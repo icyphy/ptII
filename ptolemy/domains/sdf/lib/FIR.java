@@ -70,7 +70,8 @@ If the interpolation ratio is <i>i < /i>, then <i>f</i>/2 is a fraction
 1/2<i>i < /i> of the sample rate at which you must design your filter.
 <p>
 The <i>decimationPhase</i> parameter is somewhat subtle.
-It is exactly equivalent the phase parameter of the DownSample star.Its interpretation is as follows; when decimating,
+It is exactly equivalent the phase parameter of the DownSample
+star.Its interpretation is as follows; when decimating,
 samples are conceptually discarded (although a polyphase structure
 does not actually compute the discarded samples).
 If you are decimating by a factor of three, then you will select
@@ -188,7 +189,7 @@ public class FIR extends SDFAtomicActor {
     }
 
     /** Consume the inputs and produce the outputs of the FIR filter.
-     *  @exception IllegalActionException Not Thrown.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
 
@@ -254,10 +255,10 @@ public class FIR extends SDFAtomicActor {
         }
 
 	// Get the taps now to allows for type resolution before initialize
-        tapstoken = (MatrixToken)(taps.getToken());
+        _tapsToken = (MatrixToken)(taps.getToken());
 
         // Get a token representing zero in the appropriate type.
-	_zero = tapstoken.getElementAsToken(0,0).zero();
+	_zero = _tapsToken.getElementAsToken(0, 0).zero();
     }
 
     /** Initialize the taps of the FIR filter.
@@ -266,9 +267,9 @@ public class FIR extends SDFAtomicActor {
     public void initialize() throws  IllegalActionException {
 	super.initialize();
 
-        _taps = new Token[tapstoken.getColumnCount()];
+        _taps = new Token[_tapsToken.getColumnCount()];
         for (int i = 0; i < _taps.length; i++) {
-            _taps[i] = tapstoken.getElementAsToken(0, i);
+            _taps[i] = _tapsToken.getElementAsToken(0, i);
         }
 
         _phaseLength = (int)(_taps.length / _interp);
@@ -278,7 +279,7 @@ public class FIR extends SDFAtomicActor {
         int datalength = _taps.length/_interp;
         if (_taps.length%_interp != 0) datalength++;
         _data = new Token[datalength];
-        for(int i=0; i<datalength; i++ ) {
+        for(int i = 0; i < datalength; i++ ) {
             _data[i] = _zero;
         }
         _mostRecent = datalength;
@@ -297,7 +298,7 @@ public class FIR extends SDFAtomicActor {
     protected int _dec, _interp, _decPhase;
 
     /** The MatrixToken containing the taps of the FIR. */
-    protected MatrixToken tapstoken;
+    protected MatrixToken _tapsToken;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
