@@ -1278,3 +1278,97 @@ test SDFScheduler-13.3 {_debugging code coverage} {
     set sched2 [_testEnums schedule $s5]
     list $sched1 $sched2
 } {{{Ramp Cont Consumer}} Delay}
+
+
+
+
+
+######################################################################
+####
+#
+# Tests 14.* test 0-rate ports
+# Test the case where a zero-rate input port is connected to
+# a chain of three actors connected in sequence. None of
+# these three actors should fire.
+test SDFScheduler-14.1 {Multirate Scheduling tests} {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    $toplevel setDirector $director
+    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
+    $director setScheduler $scheduler
+
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Delay1]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Delay2]
+    set a4 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Delay3]
+    set a5 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Delay4]
+    set a6 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Delay5]
+    set a7 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]
+    $toplevel connect [java::field $a1 output] [java::field $a2 input] R1
+    $toplevel connect [java::field $a2 output] [java::field $a3 input] R2
+    set r3 [$toplevel connect [java::field $a3 output] [java::field $a4 input] R3]
+    $toplevel connect [java::field $a4 output] [java::field $a5 input] R4
+    $toplevel connect [java::field $a5 output] [java::field $a6 input] R5
+    $toplevel connect [java::field $a6 output] [java::field $a7 input] R6
+    
+    [java::field $a4 output] setTokenProductionRate 0
+
+
+    $scheduler setValid false
+
+    set sched1 [_getSchedule $toplevel $scheduler]
+    list $sched1
+} {{{Ramp Delay1 Delay2 Delay3}}}
+
+# Test zero-rate ports.
+# Test the case where a zero-rate output port is connected to
+# a chain of three sequentially connected actors. None of
+# these three actors should fire.
+test SDFScheduler-14.2 {Multirate Scheduling tests} {
+
+    [java::field $a4 input] setTokenConsumptionRate 0
+    [java::field $a4 output] setTokenProductionRate 1
+
+    $scheduler setValid false
+
+    set sched1 [_getSchedule $toplevel $scheduler]
+    list $sched1
+} {{{Delay3 Delay4 Delay5 Consumer}}}
+
+# Test zero-rate ports.
+# Test the case where a zero-rate input port is connected to
+# a chain of three actors connected in sequence
+# and where a zero-rate output port is connected to
+# a chain of three sequentially connected actors.
+# Only the actor with the zero-rate ports should fire.
+test SDFScheduler-14.3 {Multirate Scheduling tests} {
+
+    [java::field $a4 input] setTokenConsumptionRate 0
+    [java::field $a4 output] setTokenProductionRate 0
+
+    $scheduler setValid false
+
+    set sched1 [_getSchedule $toplevel $scheduler]
+    list $sched1
+} {Delay3}
+
+# Test zero-rate ports.
+# Test the case where an zero-rate input port is connected to more
+# than one actor. None of the connected actors should fire.
+test SDFScheduler-14.4 {Multirate Scheduling tests} {
+
+    [java::field $a4 input] setTokenConsumptionRate 0
+    [java::field $a4 output] setTokenProductionRate 1
+    [java::field $a4 input] setMultiport true
+    set b1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp2]
+    $toplevel connect [java::field $b1 output] [java::field $a4 input] R7
+
+    $scheduler setValid false
+
+    set sched1 [_getSchedule $toplevel $scheduler]
+    [java::field $a4 input] setMultiport false
+    list $sched1
+} {{{Delay3 Delay4 Delay5 Consumer}}}
