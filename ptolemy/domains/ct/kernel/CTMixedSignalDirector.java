@@ -35,6 +35,7 @@ import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.actor.sched.*;
 import ptolemy.data.expr.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.*;
 import java.util.Iterator;
 
@@ -445,6 +446,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             _runAheadLength = 1.0;
             RunAheadLength = new Parameter(this,
                     "RunAheadLength", new DoubleToken(_runAheadLength));
+            RunAheadLength.setTypeEquals(BaseType.DOUBLE);
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");
