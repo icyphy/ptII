@@ -47,6 +47,7 @@ import ptolemy.actor.sched.Scheduler;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeRequest;
@@ -716,6 +717,15 @@ public class CTScheduler extends Scheduler {
         continuousActors.removeAll(ctSubsystems);
         continuousActors.addAll(ctSubsystems);
 
+        // NOTE: There is a situation that the signal types of all the input 
+        // and output ports of a CT composite actor are derived as "CONTINUOUS". 
+        // In such case, we need to also include this actor into the set of 
+        // discrete actors, because there may be some discrete actors 
+        // hidden inside that CT composite actor. 
+        // To avoid introducing duplication:
+        discreteActors.removeAll(ctSubsystems);
+        discreteActors.addAll(ctSubsystems);
+        
         // At this point, since all actors have their ports' signal types 
         // resolved, the type of a nonCTSubsystem will be clarified based on 
         // the signal types of its input and output ports. 
@@ -757,13 +767,12 @@ public class CTScheduler extends Scheduler {
                     // We add CT composite actors into the list of discrete
                     // actors because a CTComposite actor can be anything.
                     discreteActorSchedule.add(new Firing(actor));
-                    continue;
                 } else {
                     // the following code removes event generators
                     // and waveform generators from the list continuous actors.
                     continuousActors.remove(actor);
-                    continue;
                 }
+                continue;
             }
             // We add purely discrete actors (discrete -> discrete) into list.
             discreteActorSchedule.add(new Firing(actor));
