@@ -253,6 +253,7 @@ public class ColorFinder extends TypedAtomicActor {
     private byte[] VArray = new byte[frameWidth/2 * frameHeight/2];
 
     //FIXME the histSize should be static and private I think
+    //FIXME the inCount, sumX, and sumY should be private
     public int histSize = 256;
     public int inCount = 0;
     public int sumX = 0;
@@ -265,6 +266,7 @@ public class ColorFinder extends TypedAtomicActor {
     private int _vLow;
     private int _vHigh;
 
+    //FIXME these should be private as well.
     int[] yClass = new int[histSize];
     int[] uClass = new int[histSize];
     int[] vClass = new int[histSize];
