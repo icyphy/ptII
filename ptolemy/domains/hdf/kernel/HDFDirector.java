@@ -148,6 +148,76 @@ public class HDFDirector extends SDFDirector {
      */
     public Parameter scheduleCacheSize;
 
+    /** Calculate the current schedule, if necessary, and iterate the 
+     *  contained actors in the order given by the schedule. This 
+     *  method differes from the fire() method of SDFDirector in that 
+     *  this method uses cached schedules when possible. This leads to 
+     *  more efficient execution. The cache size to use is set by the
+     *  scheduleCacheSize parameter.  
+     *  <p>
+     *  Iterating an actor involves calling the actor's iterate() method,
+     *  which is equivalent to calling the actor's  prefire(), fire() and
+     *  postfire() methods in succession.  If iterate() returns NOT_READY,
+     *  indicating that the actor is not ready to execute, then an
+     *  IllegalActionException will be thrown. The values returned from
+     *  iterate() are recorded and are used to determine the value that
+     *  postfire() will return at the end of the director's iteration.
+     *  @exception IllegalActionException If any actor executed by this
+     *  actor return false in prefire.
+     *  @exception InvalidStateException If this director does not have a
+     *  container.
+     */
+    public void fire() throws IllegalActionException {
+        TypedCompositeActor container = ((TypedCompositeActor)getContainer());
+
+        if (container == null) {
+            throw new InvalidStateException("HDFDirector " + getName() +
+                    " fired, but it has no container!");
+        } else {
+	    Schedule sched = getSchedule();
+	    Iterator firings = sched.firingIterator();
+            while (firings.hasNext()) {
+		Firing firing = (Firing)firings.next();
+		Actor actor = (Actor)firing.getActor();
+		int iterationCount = firing.getIterationCount();
+
+		if(_debugging) {
+                    _debug(new FiringEvent(this, actor, FiringEvent.ITERATE));
+		}
+
+		// FIXME: This is a hack. It does not even check if the
+		// SDF graph contains loops, and may be far from optimal when
+		// the SDF graph contains non-homogeneous actors. However,
+		// the default value of vectorizationFactor = 1,
+		// which should be completely safe for all models.
+		// TODO: I need to modify the scheduler to generate an
+		// optimum vectorized schedule. I.e., first try to
+		// obtain a single appearance schedule. Then, try
+		// to minimize the number of actor activations.
+		int factor =
+                    ((IntToken) (vectorizationFactor.getToken())).intValue();
+		if (factor < 1) {
+		    throw new IllegalActionException(this,
+                            "The supplied vectorization factor is invalid " +
+                            "Valid values consist of positive integers. " +
+                            "The supplied value was: " + factor);
+		}
+		int returnVal =
+                    actor.iterate(factor*iterationCount);
+		if (returnVal == COMPLETED) {
+		    _postfirereturns = _postfirereturns && true;
+		} else if (returnVal == NOT_READY) {
+		    throw new IllegalActionException(this,
+                            (ComponentEntity) actor, "Actor " +
+                            "is not ready to fire.");
+		} else if (returnVal == STOP_ITERATING) {
+		    _postfirereturns = false;
+		}
+            }
+        }
+    }
+
+
     /** Return the scheduling sequence as an instance of Schedule.
      *  For efficiency, this method maintains a schedule cache and
      *  will attempt to return a cached version of the schedule.
@@ -202,6 +272,12 @@ public class HDFDirector extends SDFDirector {
 	    String rateKey = rates;
 	    int cacheSize = 
 		    ((IntToken)(scheduleCacheSize.getToken())).intValue();
+	    if (cacheSize != _cacheSize) {
+		// cache size has changed. reset the cache.
+		_scheduleCache = new HashMap();
+		_scheduleKeyList = new ArrayList(cacheSize);
+		_cacheSize = cacheSize;
+	    }
 	    if (_scheduleCache.containsKey(rateKey)) {
 		// cache hit.
 		if (_debug_info) { 
@@ -321,6 +397,7 @@ public class HDFDirector extends SDFDirector {
         }
         try {
 	    int cacheSize = 100;
+	    _cacheSize = cacheSize;
 	    scheduleCacheSize
                 = new Parameter(this,"scheduleCacheSize",new IntToken(cacheSize));
 
@@ -389,6 +466,7 @@ public class HDFDirector extends SDFDirector {
     private List _scheduleKeyList;
     private List _inputPortList;
     private List _outputPortList;
+    private int _cacheSize = 100;
 
     // Set to true to enable debugging.
     //private boolean _debug_info = true;
