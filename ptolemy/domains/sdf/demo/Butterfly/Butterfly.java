@@ -96,7 +96,7 @@ public class Butterfly extends TypedCompositeActor {
 	Expression cos1 = new Expression(this, "cos1");
 	TypedIOPort cos1Input = new TypedIOPort(cos1, "cos1Input",
                 true, false);
-	cos1.expression.setExpression("cos(cos1Input))");
+	cos1.expression.setExpression("cos(cos1Input)");
 
 	// Here, we collapse two actors into one expression actor.
 	Expression cos2 = new Expression(this, "cos2");
