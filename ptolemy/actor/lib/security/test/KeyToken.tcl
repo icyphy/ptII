@@ -93,6 +93,15 @@ test KeyToken-4.1 {equals} {
     $boolean toString
 } {true}
 
+######################################################################
+####
+# 
+test KeyToken-4.1.1 {isEqualTo} {
+    # uses 1.1 above
+    set  boolean [$secretKeyToken isEqualTo [java::null]
+    $boolean toString
+} {false}
+
 
 ######################################################################
 ####
