@@ -32,6 +32,7 @@ language.
 
 package ptolemy.data.expr;
 
+import ptolemy.data.Token;      // This should not be necessary, but it is.
 import ptolemy.data.*;
 import ptolemy.math.*;
 import ptolemy.data.FixToken;   // For javadoc
