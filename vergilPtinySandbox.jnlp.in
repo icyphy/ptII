@@ -40,8 +40,7 @@
 	<!-- End Jars -->
   </resources>
   <application-desc main-class="ptolemy.actor.gui.jnlp.PtinySandboxApplication">
-	<argument>ptolemy/configs/ptiny/configuration.xml</argument>
-	<argument>ptolemy/configs/ptiny/intro.htm</argument>
+	<argument>-ptiny</argument>
   </application-desc>
   <!-- Need to deal with Java 3D -->
 </jnlp>

@@ -41,8 +41,7 @@
 	<!-- End Jars -->
   </resources>
   <application-desc main-class="ptolemy.actor.gui.jnlp.DSPApplication">
-	<argument>ptolemy/configs/dsp/configuration.xml</argument>
-	<argument>ptolemy/configs/dsp/intro.htm</argument>
+	<argument>-dsp</argument>
   </application-desc>
   <!-- Need to deal with Java 3D -->
 </jnlp>
