@@ -43,7 +43,8 @@ if {[info procs enumToObjects] == "" } then {
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
-set manager [java::new ptolemy.actor.Manager]
+set w [java::new ptolemy.kernel.util.Workspace W]
+set manager [java::new ptolemy.actor.Manager $w Manager]
 
 
 ######################################################################
@@ -53,7 +54,6 @@ test SDFDirector-2.1 {Constructor tests} {
     set d1 [java::new ptolemy.domains.sdf.kernel.SDFDirector]
     $d1 setName D1
     set d2 [java::new ptolemy.domains.sdf.kernel.SDFDirector D2]
-    set w [java::new ptolemy.kernel.util.Workspace W]
     set d3 [java::new ptolemy.domains.sdf.kernel.SDFDirector $w D3]
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
 } {.D1 .D2 W.D3}
@@ -66,7 +66,7 @@ test SDFDirector-3.1 {Test clone} {
     set d4 [java::cast ptolemy.domains.sdf.kernel.SDFDirector [$d2 clone $w]]
     $d4 setName D4
     enumToFullNames [$w directory]
-} {W.D3}
+} {W.Manager W.D3}
 
 ######################################################################
 ####
@@ -101,7 +101,6 @@ ptolemy.data.IntToken(5)
 }}
 
 test SDFDirector-5.2 {Test action methods} {
-    set w [java::new ptolemy.kernel.util.Workspace W]
     set d3 [java::new ptolemy.domains.sdf.kernel.SDFDirector $w D3]
     set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
     $e0 setName E0
@@ -125,7 +124,6 @@ ptolemy.data.IntToken(5)
 }}
 
 test SDFDirector-5.3 {Test action methods} {
-    set w [java::new ptolemy.kernel.util.Workspace W]
     set d3 [java::new ptolemy.domains.sdf.kernel.SDFDirector $w D3]
     set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
     $e0 setName E0
@@ -157,7 +155,6 @@ ptolemy.data.IntToken(11)
 }}
 
 test SDFDirector-5.4 {Test action methods} {
-    set w [java::new ptolemy.kernel.util.Workspace W]
     set d3 [java::new ptolemy.domains.sdf.kernel.SDFDirector $w D3]
     set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
     $e0 setName E0
@@ -193,7 +190,6 @@ ptolemy.data.IntToken(11)
 ####
 #
 test SDFDirector-6.1 {Test wormhole activation} {
-    set w [java::new ptolemy.kernel.util.Workspace W]
     set d3 [java::new ptolemy.domains.sdf.kernel.SDFDirector $w D3]
     set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
     $e0 setName E0
@@ -234,7 +230,6 @@ ptolemy.data.IntToken(5)
 ####
 #
 test SDFDirector-7.1 {Test mutations (adding an actor} {
-    set w [java::new ptolemy.kernel.util.Workspace W]
     set d3 [java::new ptolemy.domains.sdf.kernel.SDFDirector $w D3]
     set e0 [java::new ptolemy.actor.TypedCompositeActor $w]
     $e0 setName E0

@@ -40,7 +40,7 @@ import ptolemy.math.Fraction;
 
 import java.util.*;
 import collections.CircularList;
-import collections.HashedMap;
+import collections.LLMap;
 import collections.HashedSet;
 
 //////////////////////////////////////////////////////////////////////////
@@ -65,7 +65,7 @@ to Java collection when update to JDK1.2
 @author Stephen Neuendorffer
 @version $Id$
 */
-public class SDFScheduler extends Scheduler{
+public class SDFScheduler extends Scheduler {
     /** Construct a scheduler with no container(director)
      *  in the default workspace, the name of the scheduler is
      *  "SDFScheduler".
@@ -74,13 +74,7 @@ public class SDFScheduler extends Scheduler{
      */
     public SDFScheduler() {
         super();
-        try {
-            setName(_DEFAULT_SCHEDULER_NAME);
-        } catch (NameDuplicationException ex) {
-            throw new InternalErrorException(
-                    "Object already exists with name " +
-                    _DEFAULT_SCHEDULER_NAME);
-        }
+        //        setName(_DEFAULT_SCHEDULER_NAME);
         _localMemberInitialize();
     }
 
@@ -96,13 +90,7 @@ public class SDFScheduler extends Scheduler{
      */
     public SDFScheduler(Workspace ws) {
         super(ws);
-        try {
-            setName(_DEFAULT_SCHEDULER_NAME);
-        } catch (NameDuplicationException ex) {
-            throw new InternalErrorException(
-                    "Object already exists with name " +
-                    _DEFAULT_SCHEDULER_NAME);
-        }
+        // setName(_DEFAULT_SCHEDULER_NAME);
         _localMemberInitialize();
     }
 
@@ -110,26 +98,26 @@ public class SDFScheduler extends Scheduler{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the firing vector, which is a HashedMap associating an Actor
+    /** Return the firing vector, which is a LLMap associating an Actor
      *  with the number of times that it will fire during an SDF iteration.
      *  The firing vector is only guaraunteed to be valid if the schedule 
      *  is valid.
      *
-     *  @return A HashedMap from ComponentEntity to Integer.
+     *  @return A LLMap from ComponentEntity to Integer.
      */
-    public HashedMap getFiringVector() {
+    public LLMap getFiringVector() {
         return _firingvector;
     }
 
-    /** Set the firing vector, which is a HashedMap associating an Actor
+    /** Set the firing vector, which is a LLMap associating an Actor
      *  with the number of times that it will fire during an SDF iteration.
      *  Every object that this Scheduler is responsible for should have an
      *  entry, even if it is zero indicating that the Actor has not yet had
      *  its firings determined.
      *
-     *  @param newfiringvector A HashedMap from ComponentEntity to Integer.
+     *  @param newfiringvector A LLMap from ComponentEntity to Integer.
      */
-    public void setFiringVector(HashedMap newfiringvector) {
+    public void setFiringVector(LLMap newfiringvector) {
         _firingvector = newfiringvector;
         _firingvectorvalid = true;
     }
@@ -148,7 +136,7 @@ public class SDFScheduler extends Scheduler{
      *  with the entity to have a value count.
      */
     public void setFiringCount(Entity entity, int count) {
-        _firingvector = (HashedMap)
+        _firingvector = (LLMap)
             _firingvector.puttingAt(entity, new Integer(count));
     }
 
@@ -175,7 +163,7 @@ public class SDFScheduler extends Scheduler{
      *  @exception IllegalActionException if any called method throws it.
      */
     protected int _countUnfulfilledInputs(Actor a,
-            HashedSet unscheduledactors, HashedMap waitingTokens)
+            CircularList unscheduledactors, LLMap waitingTokens)
             throws IllegalActionException {
                Enumeration ainputPorts = a.inputPorts();
 
@@ -257,7 +245,7 @@ public class SDFScheduler extends Scheduler{
     /** Initialize the local data members of this object.
      */
     protected void _localMemberInitialize() {
-        HashedMap _firingvector = new HashedMap();
+        LLMap _firingvector = new LLMap();
         _firingvectorvalid = true;
     }
 
@@ -265,12 +253,12 @@ public class SDFScheduler extends Scheduler{
      *  corresponds to a single SDF iteration.   Multiplies all of the
      *  fractions by the GCD of their denominators.
      *
-     *  @param Firings HashedMap of firing ratios to be normalized
+     *  @param Firings LLMap of firing ratios to be normalized
      *  @return The normalized firing vector.
      *  @exception ArithmeticException If the calculated GCD does not
      *  normalize all of the fractions.
      */
-    protected HashedMap _normalizeFirings(HashedMap Firings) {
+    protected LLMap _normalizeFirings(LLMap Firings) {
         Enumeration unnormalizedFirings = Firings.elements();
         int lcm = 1;
 
@@ -298,7 +286,7 @@ public class SDFScheduler extends Scheduler{
             if(reps.getDenominator() != 1)
                 throw new ArithmeticException("Failed to properly perform " +
                         "fraction normalization");
-            Firings = (HashedMap) 
+            Firings = (LLMap) 
                 Firings.puttingAt(actor, new Integer(reps.getNumerator()));
         }
         return Firings;
@@ -311,7 +299,7 @@ public class SDFScheduler extends Scheduler{
      *  are moved from RemainingActors to PendingActors.
      *
      *  @param currentPort The port that we are propagating from.
-     *  @param Firings The current HashedMap of fractional firings for each
+     *  @param Firings The current LLMap of fractional firings for each
      *  Actor
      *  @param RemainingActors The set of actors that have not had their
      *  fractional firing set.
@@ -321,9 +309,9 @@ public class SDFScheduler extends Scheduler{
      *  schedulable. 
      */
     protected void _propagateInputPort(IOPort currentPort,
-            HashedMap Firings,
-            HashedSet RemainingActors,
-            HashedSet PendingActors)
+            LLMap Firings,
+            CircularList RemainingActors,
+            CircularList PendingActors)
         throws NotSchedulableException {
 
             ComponentEntity currentActor =
@@ -373,10 +361,10 @@ public class SDFScheduler extends Scheduler{
                             Firings.putAt(connectedActor, desiredFiring);
 
                             // Remove them from RemainingActors
-                            RemainingActors.exclude(connectedActor);
+                            RemainingActors.removeOneOf(connectedActor);
 
                             // and add them to the PendingActors.
-                            PendingActors.include(connectedActor);
+                            PendingActors.insertLast(connectedActor);
                         }
 
                         else if(!presentFiring.equals(desiredFiring))
@@ -387,7 +375,7 @@ public class SDFScheduler extends Scheduler{
                         throw new InvalidStateException("SDFScheduler: " +
                                 "connectedActor " +
                                 ((ComponentEntity) connectedActor).getName() +
-                                "does not appear in the Firings hashedmap");
+                                "does not appear in the Firings LLMap");
                     }
 
                     Debug.print("New Firing: ");
@@ -403,7 +391,7 @@ public class SDFScheduler extends Scheduler{
      *  are moved from RemainingActors to PendingActors.
      *
      *  @param currentPort The port that we are propagating from.
-     *  @param Firings The current HashedMap of fractional firings for each
+     *  @param Firings The current LLMap of fractional firings for each
      *  Actor
      *  @param RemainingActors The set of actors that have not had their
      *  fractional firing set.
@@ -413,9 +401,9 @@ public class SDFScheduler extends Scheduler{
      *  schedulable. 
      */
     protected void _propagateOutputPort(IOPort currentPort,
-            HashedMap Firings,
-            HashedSet RemainingActors,
-            HashedSet PendingActors)
+            LLMap Firings,
+            CircularList RemainingActors,
+            CircularList PendingActors)
         throws NotSchedulableException {
 
             ComponentEntity currentActor =
@@ -463,10 +451,10 @@ public class SDFScheduler extends Scheduler{
                             Firings.putAt(connectedActor, desiredFiring);
 
                             // Remove them from RemainingActors
-                            RemainingActors.exclude(connectedActor);
+                            RemainingActors.removeOneOf(connectedActor);
 
                             // and add them to the PendingActors.
-                            PendingActors.include(connectedActor);
+                            PendingActors.insertLast(connectedActor);
                         }
                         else if(!presentFiring.equals(desiredFiring))
                             throw new NotSchedulableException("Graph is not" +
@@ -476,11 +464,11 @@ public class SDFScheduler extends Scheduler{
                         throw new InvalidStateException("SDFScheduler: " +
                                 "connectedActor " +
                                 ((ComponentEntity) connectedActor).getName() +
-                                "does not appear in the Firings hashedmap");
+                                "does not appear in the Firings LLMap");
                     }
 
                    // Remove them from RemainingActors
-                    RemainingActors.exclude(connectedActor);
+                    RemainingActors.removeOneOf(connectedActor);
                 }
             }
     }
@@ -499,20 +487,35 @@ public class SDFScheduler extends Scheduler{
         CompositeActor ca = (CompositeActor)(dir.getContainer());
 
         // A linked list containing all the actors
-        HashedSet AllActors = new HashedSet();
+        CircularList AllActors = new CircularList();
         Enumeration Entities = ca.deepGetEntities();
 
 
         while(Entities.hasMoreElements()) {
             ComponentEntity a = (ComponentEntity)Entities.nextElement();
 
+            if(a instanceof CompositeActor) {
+                Director containeddir = ((CompositeActor) a).getDirector();
+                if(containeddir instanceof StaticSchedulingDirector) {
+                    Scheduler containedscheduler = 
+                        ((StaticSchedulingDirector) containeddir)
+                        .getScheduler();
+                    try {
+                        containedscheduler.schedule();
+                    } catch (IllegalActionException e) {
+                        // This should never happen.
+                        throw new InternalErrorException(e.getMessage());
+                    }
+                }
+            }
+                
             // Fill AllActors with the list of things that we can schedule
             // CHECKME: What if other things can be scheduled than actors?
-            if(a instanceof Actor) AllActors.include(a);
+            if(a instanceof Actor) AllActors.insertLast(a);
         }
 
         // First solve the balance equations
-        HashedMap Firings = _solveBalanceEquations(AllActors.elements());
+        LLMap Firings = _solveBalanceEquations(AllActors.elements());
         Firings = _normalizeFirings(Firings);
 
         setFiringVector(Firings);
@@ -552,7 +555,7 @@ public class SDFScheduler extends Scheduler{
      */
 
     protected CircularList _scheduleConnectedActors(
-            HashedSet UnscheduledActors) {
+            CircularList UnscheduledActors) {
         
         // A linked list containing all the actors that have no inputs
         CircularList ReadyToScheduleActors = new CircularList();
@@ -564,12 +567,12 @@ public class SDFScheduler extends Scheduler{
         // an association between AllActors and the number of unfulfilledInputs
         // that that actor contains.   when this number goes to zero, then the
         // actor is ready to fire.
-        HashedMap unfulfilledInputs = new HashedMap();
+        LLMap unfulfilledInputs = new LLMap();
 
         // an association between All the input ports in a simulation and the
         // number of tokens waiting on that port
         // FIXME: What if there are delays and we start with some tokens?
-        HashedMap waitingTokens = new HashedMap();
+        LLMap waitingTokens = new LLMap();
 
         Enumeration SchedulableEntities = UnscheduledActors.elements();
 
@@ -747,7 +750,7 @@ public class SDFScheduler extends Scheduler{
             }
         }
 
-        // This will get thrown by the removeFirst
+        // This will get thrown by the removeOneOf
         // call if we've run out of things to schedule.
         // FIXME: This should probably throw another exception if
         // unscheduledActors still contains elements.
@@ -1015,7 +1018,7 @@ public class SDFScheduler extends Scheduler{
     }   
 
     /** Simulate the consumption of tokens by the actor during an execution.
-     *  The entries in HashedMap will be modified to reflect the number of
+     *  The entries in LLMap will be modified to reflect the number of
      *  tokens still waiting after the actor has consumed tokens for a firing.
      *  Also determine if enough tokens still remain at the inputs of the actor
      *  for it to fire again immediately.
@@ -1028,7 +1031,7 @@ public class SDFScheduler extends Scheduler{
      *  @exception IllegalActionException if any called method throws it.
      */
     protected boolean _simulateInputConsumption(ComponentEntity currentActor,
-            HashedMap waitingTokens)
+            LLMap waitingTokens)
         throws IllegalActionException {
 
         boolean stillReadyToSchedule = true;
@@ -1060,33 +1063,33 @@ public class SDFScheduler extends Scheduler{
      *  fractional firing of the actor.
      *
      *  @param Actors The actors that we are interested in
-     *  @return A HashedMap that associates each actor with its fractional
+     *  @return A LLMap that associates each actor with its fractional
      *  firing.
      *  @exception NotSchedulableException If the graph is not consistant
      *  under the synchronous dataflow model.
      *  @exception NotSchedulableException If the graph is not connected.
      */
-    protected HashedMap _solveBalanceEquations(Enumeration Actors)
+    protected LLMap _solveBalanceEquations(Enumeration Actors)
             throws NotSchedulableException {
 
-        // Firings contains the HashedMap that we will return.
+        // Firings contains the LLMap that we will return.
         // It gets populated with the fraction firing ratios for
         // each actor
-        HashedMap Firings = new HashedMap();
+        LLMap Firings = new LLMap();
 
         // RemainingActors contains the pool of Actors that have not been
         // touched yet. (i.e. all their firings are still set to Fraction.ZERO)
-        HashedSet RemainingActors = new HashedSet();
+        CircularList RemainingActors = new CircularList();
 
         // PendingActors have their Firings set, but have not had their
         // ports explored yet.
-        HashedSet PendingActors = new HashedSet();
+        CircularList PendingActors = new CircularList();
 
         // Are we done?  (Is PendingActors Empty?)
         boolean Done = false;
 
         // Initialize RemainingActors to contain all the actors we were given
-        RemainingActors.includeElements(Actors);
+        RemainingActors.appendElements(Actors);
 
         // Initialize Firings for everybody to Zero
         Enumeration enumActors = RemainingActors.elements();
@@ -1101,11 +1104,11 @@ public class SDFScheduler extends Scheduler{
             // And set it's rate to one per iteration
             Firings.putAt(a, new Fraction(1));
             // And start the list to recurse over.
-            PendingActors.include(a);
+            PendingActors.insertLast(a);
         }
         catch (NoSuchElementException e) {
             // if RemainingActors.take() fails, then we've been given
-            // no actors to do anything with, so return an empty HashedMap
+            // no actors to do anything with, so return an empty LLMap
             return Firings;
         }
 
@@ -1154,7 +1157,7 @@ public class SDFScheduler extends Scheduler{
         return Firings;
     }
 
-    protected HashedMap _firingvector;
+    protected LLMap _firingvector;
     protected boolean _firingvectorvalid;
 
 }

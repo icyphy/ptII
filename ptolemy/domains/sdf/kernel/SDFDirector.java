@@ -196,7 +196,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     private void _init() {
         try {
-            SDFScheduler scheduler = new SDFScheduler();
+            SDFScheduler scheduler = new SDFScheduler(workspace());
             setScheduler(scheduler);
         }
         catch (IllegalActionException e) {

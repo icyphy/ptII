@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/sdf/kernel
 
-DIRS = 		#test  #doc
+DIRS = 		test  #doc
 
 # Root of the Java directory
 ROOT =		../../../..
