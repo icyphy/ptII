@@ -59,6 +59,7 @@ JSIMPLE_TESTS = \
 	Director.tcl \
 	Manager.tcl \
 	NoRoomException.tcl \
+	NoTokenException.tcl \
 	IOPort.tcl \
 	IORelation.tcl \
 	TypedIOPort.tcl \
