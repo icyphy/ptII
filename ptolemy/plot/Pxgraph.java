@@ -31,6 +31,9 @@ import java.awt.Button;
 import java.awt.Event;
 import java.awt.FlowLayout;
 import java.awt.Frame;
+import java.awt.Dialog;
+import java.awt.Panel;
+import java.awt.TextArea;
 
 import java.io.DataInputStream;
 import java.io.File;
@@ -46,6 +49,7 @@ import java.lang.InterruptedException;
 
 import java.net.URL;
 import java.net.MalformedURLException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Pxgraph
@@ -399,6 +403,8 @@ This is the width of the zero grid line in pixels.
 </DL>
 
 <H2> Compatibility Issues </H2>
+Various compatibility issues are documented above in <b>bold</b>.
+Below are some other issues:
 <li>The original <code>xgraph</code> program allowed many formatting
 directives inside the file.  This version only supports
 <code>draw</code> and <code>move</code>.
@@ -413,22 +419,28 @@ public class Pxgraph extends Frame {
 
     /** Constructor
      */	
-    public Pxgraph() {
-	//        setLayout(new FlowLayout(FlowLayout.RIGHT));
-	//	_exitButton = new Button();
-	//	_exitButton.setLabel("Exit");
-	//	add(_exitButton);
-    }
-
-    //    public boolean action(Event e, Object arg) {
-    //	Object target = e.target;
-    //	if (target == _exitButton) {
-    //	    System.exit(1);
-    //	    return true;
-    //	} else {
-    //            return super.action (e, arg);
-    //	}
+    //    public Pxgraph() {
     //    }
+
+    public boolean action(Event e, Object arg) {
+	Object target = e.target;
+	if (_debug > 20) System.out.println("Pxgraph: action: "+e+" "+target);
+    	if (target == _exitButton) {
+	    System.exit(1);
+	    return true;
+	} else if (target == _browserButton) {
+	    _browser();
+	    return true;
+	} else if (target == _aboutButton) {
+	    _about();
+	    return true;
+    	} else if (target == _aboutCloseButton) {
+	    System.exit(1);
+	    return true;
+	} else {
+	    return super.action (e, arg);
+	}
+    }
 
     /** handle an event.
      * @deprecated As of JDK1.1 in java.awt.component 
@@ -462,6 +474,8 @@ public class Pxgraph extends Frame {
 	Plot plotApplet = new Plot();
 	Pxgraph pxgraph = new Pxgraph();
 
+	pxgraph.makeButtons();
+
 	pxgraph.pack();
 	pxgraph.add(plotApplet);
 
@@ -478,6 +492,7 @@ public class Pxgraph extends Frame {
 
         pxgraph.show();
 	plotApplet.init();
+
 	plotApplet.start();
 
 	if (_test) {
@@ -492,6 +507,26 @@ public class Pxgraph extends Frame {
     }
 
 
+    /** Create buttons.
+      */
+    public void makeButtons() {
+        //setLayout(new FlowLayout(FlowLayout.LEFT));
+        Panel panel = new Panel();
+	panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+	_exitButton = new Button("Exit");
+        panel.add(_exitButton);
+
+	_browserButton = new Button("Browser");
+        panel.add(_browserButton);
+
+	_aboutButton = new Button("About");
+        panel.add(_aboutButton);
+
+        add("South", panel);
+
+    }
+
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
 
@@ -500,6 +535,7 @@ public class Pxgraph extends Frame {
      */	
     private void _help () {
 	// FIXME: we should bring up a dialog box or something.
+
 	// We use a table here to keep things neat.
 	// If we have:
 	//  {"-bd",  "<color>", "Border",  "White", "(Unsupported)"},
@@ -609,7 +645,7 @@ public class Pxgraph extends Frame {
 		    continue;
 		} else if (arg.equals("-v") || arg.equals("-version")) {
 		    // -version is not in the original X11 pxgraph.
-		    _version();
+		    _about();
 		    continue;
 		}
 	    } else if (arg.startsWith("=")) {
@@ -651,21 +687,67 @@ public class Pxgraph extends Frame {
         return argsread;
     }
 
-    /* version - print out version info
+    /* Bring up a dialog box with version information.
      */	
-    private void _version () {
-	// FIXME: we should bring up a dialog box or something.
-	System.out.println("Pxgraph - (Java implementation) by\n" +
-			   "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
-			   "Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-			   "($Id$)");
-	System.exit(0);
+    private void _about () {
+	Message message = new Message(
+ 			   "Pxgraph - (Java implementation) by\n" +
+ 			   "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
+ 			   "Christopher Hylands, cxh@eecs.berkeley.edu\n" +
+ 			   "($Id$)\n\n"+
+ 			   "For help, type 'pxgraph -help', or see \n" +
+ 			   "the Pxgraph class documentation.\n" +
+ 			   "For more information, see\n" +
+ 			   "http://ptolemy.eecs.berkeley.edu/java/plot\n");
+
+	message.setTitle("About Pxgraph");
+	message.pack();
+	message.show();
+
+// 	Frame aboutframe = new Frame();
+// 	Dialog aboutdialog = new Dialog(aboutframe,"About Pxgraph",true);
+// 	aboutdialog.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10)); 
+// 	TextArea abouttext = new TextArea(
+// 			   "Pxgraph - (Java implementation) by\n" +
+// 			   "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
+// 			   "Christopher Hylands, cxh@eecs.berkeley.edu\n" +
+// 			   "($Id$)\n\n"+
+// 			   "For help, type 'pxgraph -help', or see \n" +
+// 			   "the Pxgraph class documentation.\n" +
+// 			   "For more information, see\n" +
+// 			   "http://ptolemy.eecs.berkeley.edu/java/plot\n",
+// 			   9,40,TextArea.SCROLLBARS_NONE);
+// 	aboutdialog.add(abouttext);
+// 	_aboutCloseButton = new Button("Close");
+// 	aboutdialog.add(_aboutCloseButton);
+
+// 	aboutdialog.pack();
+// 	aboutdialog.show();
+// 	aboutframe.dispose();
+
+
+//  	if (_debug > 4) System.out.println("Sleeping for 4 seconds");
+// 	try {
+// 	    Thread.currentThread().sleep(4000);
+// 	}
+//	catch (InterruptedException e) {
+//	System.exit(0);
+//	} 
+
     }
+
+    /* Spawn a browser so that the user can print
+     */	
+
+    private void _browser () {
+    }
+
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    private Button _exitButton;
+    private Button _exitButton, _browserButton, _aboutButton,
+	_aboutCloseButton;
 
     // For debugging, call with -db or -debug.
     private static int _debug = 0;
