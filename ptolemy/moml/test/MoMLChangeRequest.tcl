@@ -197,6 +197,10 @@ test MoMLChangeRequest-1.5b {Test deleting an entity} {
         </port>
     </entity>
     <relation name="r" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <link port="rec.input" relation="r"/>
 </entity>
