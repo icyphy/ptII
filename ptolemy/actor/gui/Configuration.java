@@ -420,9 +420,24 @@ public class Configuration extends CompositeEntity {
 
                     // Set the identifier of the effigy to be that
                     // of the parent with the model name appended.
-                    effigy.identifier.setExpression(
-                            parentEffigy.identifier.getExpression()
-                            + "#" + entity.getName());
+
+		    // Note that we add a # the first time, and
+		    // then add . after that.  So
+		    // file:/c:/foo.xml#bar.bif is ok, but
+		    // file:/c:/foo.xml#bar#bif is not
+		    // If the title does not contain a legitimate 
+		    // way to reference the submodel, then the user
+		    // is likely to look at the title and use the wrong
+		    // value if they xml edit files by hand. (cxh-4/02)
+		    String entityName = parentEffigy.identifier
+			.getExpression();
+		    String separator = "#";
+		    if (entityName.indexOf("#") > 0) {
+			separator = ".";
+		    }
+		    effigy.identifier.setExpression(entityName
+						    + separator
+						    + entity.getName());
 
                     // Set the url of the effigy to that of
                     // the parent.
