@@ -52,20 +52,21 @@ public class Delay extends SDFAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
-            TypedIOPort input = (TypedIOPort)newPort("input");
+            input = (TypedIOPort)newPort("input");
             input.setInput(true);
             setTokenConsumptionRate(input, 1);
             input.setTypeEquals(Token.class);
 
-            TypedIOPort output = (TypedIOPort)newPort("output");
+            output = (TypedIOPort)newPort("output");
             output.setOutput(true);
             setTokenProductionRate(output, 1);
             output.setTypeEquals(Token.class);
             setTokenInitProduction(output, 1);
         }
         catch (IllegalActionException e1) {
-            System.out.println("SDFDelay: constructor error");
+            System.out.println("Delay: constructor error");
             e1.printStackTrace();
+	    throw e1;
         }
     }
 
