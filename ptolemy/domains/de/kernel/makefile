@@ -51,7 +51,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = DEActor.java \
 	DECQEventQueue.java \
 	DEDirector.java \
-	DEEDirector.java \
 	DEEvent.java \
 	DEEventQueue.java \
 	DEIOPort.java \
