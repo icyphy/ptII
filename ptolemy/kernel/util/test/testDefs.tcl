@@ -52,6 +52,18 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 ######################################################################
+#### 
+# Split a string into shorter lines separated by newlines.
+#
+proc _splitline {str} {
+    set results ""
+    for {set i 0} {$i < [string length $str] } {incr i 55} {
+	append results "[string range $str $i [expr {$i + 54}]]\n    "
+    }
+    return $results
+}
+
+######################################################################
 ####
 # Return a string that contains all of the information for an object
 # that we can retrieve with java::info
@@ -59,11 +71,11 @@ if {[string compare test [info procs test]] == 1} then {
 proc getJavaInfo {obj} {
     return "\n \
     class:         [java::info class $obj]\n \
-    fields:        [java::info fields $obj]\n \
-    methods:       [java::info methods $obj]\n \
-    constructors:  [java::info constructors $obj]\n \
-    properties:    [java::info properties $obj]\n \
-    superclass:    [java::info superclass $obj]\n"
+    fields:        [_splitline [lsort [java::info fields $obj]]]\n \
+    methods:       [_splitline [lsort [java::info methods $obj]]]\n \
+    constructors:  [_splitline [lsort [java::info constructors $obj]]]\n \
+    properties:    [_splitline [lsort [java::info properties $obj]]]\n \
+    superclass:    [_splitline [java::info superclass $obj]]\n"
 }
 
 if { $tcl_platform(os) == "SunOS"} {
