@@ -1,6 +1,6 @@
 # Tests for the RecordToken class
 #
-# @Author: Yuhong Xiong
+# @Author: Yuhong Xiong and Elaine Cheong
 #
 # @Version $Id$
 #
