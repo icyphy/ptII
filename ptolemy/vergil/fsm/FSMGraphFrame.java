@@ -115,6 +115,9 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
     protected void _addMenus() {
         super._addMenus();
 
+        _graphMenu = new JMenu("Graph");
+        _graphMenu.setMnemonic(KeyEvent.VK_G);
+        _menubar.add(_graphMenu);
         // Add any commands to graph menu and toolbar that the controller
         // wants in the graph menu and toolbar.
         _graphMenu.addSeparator();
@@ -177,6 +180,9 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
 
     /** Debug menu for this frame. */
     protected JMenu _debugMenu;
+    
+    /** The graph menu. */
+    protected JMenu _graphMenu;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

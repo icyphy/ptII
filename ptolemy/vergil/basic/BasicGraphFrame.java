@@ -53,7 +53,6 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
@@ -66,7 +65,6 @@ import javax.swing.Action;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -90,8 +88,6 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.Query;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -104,7 +100,6 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
@@ -115,7 +110,6 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLUndoEntry;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 import ptolemy.vergil.tree.EntityTreeModel;
 import ptolemy.vergil.tree.PTree;
 import ptolemy.vergil.tree.VisibleTreeModel;
@@ -357,11 +351,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         _cutAction = new CutAction();
         _copyAction = new CopyAction();
         _pasteAction = new PasteAction();
-        _createHierarchyAction = new CreateHierarchyAction();
-        _layoutAction = new LayoutAction();
-        _saveInLibraryAction = new SaveInLibraryAction();
-        _importLibraryAction = new ImportLibraryAction();
-        _instantiateEntityAction = new InstantiateEntityAction();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1290,21 +1279,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         GUIUtilities.addMenuItem(_viewMenu, _zoomFitAction);
         GUIUtilities.addHotKey(_jgraph, _zoomOutAction);
         GUIUtilities.addMenuItem(_viewMenu, _zoomOutAction);
-
-        _graphMenu = new JMenu("Graph");
-        _graphMenu.setMnemonic(KeyEvent.VK_G);
-        _menubar.add(_graphMenu);
-        GUIUtilities.addHotKey(_jgraph, _layoutAction);
-        GUIUtilities.addMenuItem(_graphMenu, _layoutAction);
-        GUIUtilities.addHotKey(_jgraph, _saveInLibraryAction);
-        GUIUtilities.addMenuItem(_graphMenu, _saveInLibraryAction);
-        GUIUtilities.addHotKey(_jgraph, _importLibraryAction);
-        GUIUtilities.addMenuItem(_graphMenu, _importLibraryAction);
-        GUIUtilities.addMenuItem(_graphMenu, _instantiateEntityAction);
-        GUIUtilities.addHotKey(_jgraph, _instantiateEntityAction);
-        _graphMenu.addSeparator();
-        diva.gui.GUIUtilities.addHotKey(_jgraph, _createHierarchyAction);
-        diva.gui.GUIUtilities.addMenuItem(_graphMenu, _createHierarchyAction);
     }
 
     /** Override the base class to remove the listeners we have
@@ -1527,13 +1501,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     protected Action _cutAction;
     protected Action _copyAction;
     protected Action _pasteAction;
-    /** action for creating a level of hierarchy. */
-    protected Action _createHierarchyAction;
-    protected JMenu _graphMenu;
-    protected Action _layoutAction;
-    protected Action _saveInLibraryAction;
-    protected Action _importLibraryAction;
-    protected Action _instantiateEntityAction;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1590,9 +1557,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    /** The most recent class name for instantiating a class. */
-    private String _lastClassName = "ptolemy.actor.lib.Ramp";
-
     /** Action to redo the last undone MoML change. */
     private Action _redoAction = new RedoAction();
 
@@ -1638,33 +1602,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         /** Copy the current selection. */
         public void actionPerformed(ActionEvent e) {
             copy();
-        }
-    }
-
-    /////////////////////////////////////////////////////////////////////
-    //// CreateHierarchy
-
-    /** Action to create a typed composite actor that contains the
-     *  the selected actors.
-     */
-    private class CreateHierarchyAction extends AbstractAction {
-
-        /**  Create a new action to introduce a level of hierarchy.
-         */
-        public CreateHierarchyAction() {
-            super("CreateHierarchy");
-            putValue("tooltip",
-                    "Create a TypedCompositeActor that contains the"
-                    + " selected actors.");
-            //putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
-            //        KeyStroke.getKeyStroke(KeyEvent.VK_H,
-            //                java.awt.Event.CTRL_MASK));
-            //putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-            //        new Integer(KeyEvent.VK_H));
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            createHierarchy();
         }
     }
 
@@ -1755,164 +1692,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 new RunTableau(effigy, effigy.uniqueName("tableau"));
             } catch (Exception ex) {
                 MessageHandler.error("Execution Failed", ex);
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// ImportLibraryAction
-
-    /** An action to import a library of components. */
-    private class ImportLibraryAction extends AbstractAction {
-
-        /** Create a new action to import a library of components. */
-        public ImportLibraryAction() {
-            super("Import Library");
-            putValue("tooltip", "Import a library into the Palette");
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_M));
-        }
-
-        /** Import a library by first opening a file chooser dialog and
-         *  then importing the specified library.
-         */
-        public void actionPerformed(ActionEvent e) {
-            // NOTE: this code is mostly copied from Top.
-            JFileChooser chooser = new JFileChooser();
-            chooser.setDialogTitle("Select a library");
-
-            if (_getDirectory() != null) {
-                chooser.setCurrentDirectory(_getDirectory());
-            } else {
-                // The default on Windows is to open at user.home, which is
-                // typically an absurd directory inside the O/S installation.
-                // So we use the current directory instead.
-                // FIXME: This will throw a security exception in an applet?
-                String cwd = StringUtilities.getProperty("user.dir");
-                if (cwd != null) {
-                    chooser.setCurrentDirectory(new File(cwd));
-                }
-            }
-            int result = chooser.showOpenDialog(BasicGraphFrame.this);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                try {
-                    File file = chooser.getSelectedFile();
-                    // FIXME it would be nice if MoMLChangeRequest had the
-                    // ability to read from a URL
-                    StringBuffer buffer = new StringBuffer();
-                    FileReader reader = new FileReader(file);
-                    char[] chars = new char[50];
-                    while (reader.ready()) {
-                        int count = reader.read(chars, 0, 50);
-                        buffer.append(chars, 0, count);
-                    }
-                    PtolemyEffigy effigy =
-                        (PtolemyEffigy)getTableau().getContainer();
-                    Configuration configuration =
-                        (Configuration)effigy.toplevel();
-                    NamedObj library =
-                        configuration.getEntity("actor library");
-                    if (library == null) return;
-                    MoMLChangeRequest request =
-                        new MoMLChangeRequest(this, library,
-                                buffer.toString(),
-                                file.toURL());
-                    // No need to propagate this library to instances
-                    // that defer to this one.
-                    request.enablePropagation(false);
-                    library.requestChange(request);
-                    _setDirectory(chooser.getCurrentDirectory());
-                } catch (Exception ex) {
-                    MessageHandler.error("Library import failed.", ex);
-                }
-            }
-        }
-    };
-
-    ///////////////////////////////////////////////////////////////////
-    //// InstantiateEntityAction
-
-    /** An action to import a library of components. */
-    private class InstantiateEntityAction extends AbstractAction {
-
-        /** Create a new action to import a library of components. */
-        public InstantiateEntityAction() {
-            super("Instantiate Entity");
-            putValue("tooltip", "Instantiate an entity by class name");
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_E));
-        }
-
-        /** Instantiate a class by first opening a dialog to get
-         *  a class name and then issuing a change request.
-         */
-        public void actionPerformed(ActionEvent e) {
-            Query query = new Query();
-            query.setTextWidth(60);
-            query.addLine("class", "Class name", _lastClassName);
-            ComponentDialog dialog = new ComponentDialog(BasicGraphFrame.this, "Open URL", query);
-            if (dialog.buttonPressed().equals("OK")) {
-                // Get the associated Ptolemy model.
-                GraphController controller =
-                        _jgraph.getGraphPane().getGraphController();
-                AbstractBasicGraphModel model =
-                        (AbstractBasicGraphModel)controller.getGraphModel();
-                NamedObj context = model.getPtolemyModel();
-
-                _lastClassName = query.getStringValue("class");
-                
-                // Find the root for the instance name.
-                String rootName = _lastClassName;
-                int period = rootName.lastIndexOf(".");
-                if (period >= 0 && (rootName.length() > period + 1)) {
-                    rootName = rootName.substring(period + 1);
-                }
-                
-                // Use the center of the screen as a location.
-                Rectangle2D bounds = getVisibleCanvasRectangle();
-                double x = bounds.getWidth()/2.0;
-                double y = bounds.getHeight()/2.0;
-                
-                // Use the "auto" namespace group so that name collisions
-                // are automatically avoided by appending a suffix to the name.
-                String moml = "<group name=\"auto\"><entity name=\""
-                       + rootName
-                       + "\" class=\""
-                       + _lastClassName
-                       + "\"><property name=\"_location\" "
-                       + "class=\"ptolemy.kernel.util.Location\" value=\""
-                       + x
-                       + ", "
-                       + y
-                       + "\"></property></entity></group>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this, context, moml);
-                context.requestChange(request);
-            }
-        }
-    };
-
-    ///////////////////////////////////////////////////////////////////
-    //// LayoutAction
-
-    /** Action to automatically lay out the graph. */
-    private class LayoutAction extends AbstractAction {
-
-        /** Create a new action to automatically lay out the graph. */
-        public LayoutAction() {
-            super("Automatic Layout");
-            putValue("tooltip", "Layout the Graph (Ctrl+T)");
-            putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_T, Event.CTRL_MASK));
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_L));
-        }
-
-        /** Lay out the graph. */
-        public void actionPerformed(ActionEvent e) {
-            try {
-                layoutGraph();
-            } catch (Exception ex) {
-                MessageHandler.error("Layout failed", ex);
             }
         }
     }
@@ -2164,43 +1943,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame
          */
         public void actionPerformed(ActionEvent e) {
             redo();
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// SaveInLibraryAction
-
-    // FIXME: The following needs quite a bit of work.
-    // Changes to the library are not persistent.
-    /** An action to save the current model in a library. */
-    private class SaveInLibraryAction extends AbstractAction {
-
-        /** Create a new action to save a model in a library. */
-        public SaveInLibraryAction() {
-            super("Save In Library");
-            putValue("tooltip", "Save as a Component in Library");
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_S));
-        }
-
-        /** Create a new instance of the current model in the
-         *  actor library of the configuration.
-         */
-        public void actionPerformed(ActionEvent e) {
-            PtolemyEffigy effigy =
-                (PtolemyEffigy)getTableau().getContainer();
-            NamedObj object = effigy.getModel();
-            if (object == null) {
-                return;
-            }
-            if (!(object instanceof Entity)) {
-                throw new KernelRuntimeException("Could not save in "
-                        + "library, '" + object + "' is not an Entity");
-            }
-
-            Entity entity = (Entity) object;
-            Configuration configuration = (Configuration)effigy.toplevel();
-            saveComponentInLibrary(configuration, entity);
         }
     }
 

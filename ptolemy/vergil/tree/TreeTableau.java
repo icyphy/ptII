@@ -37,6 +37,7 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -45,6 +46,7 @@ import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
 //////////////////////////////////////////////////////////////////////////
@@ -68,17 +70,54 @@ public class TreeTableau extends Tableau {
                     "Cannot have a tree view of a model that is "
                     + "not a CompositeEntity.");
         }
-        CompositeEntity entity = (CompositeEntity)model;
+    }
 
-        TreeFrame frame = new TreeFrame(entity);
-        frame.setBackground(BACKGROUND_COLOR);
-        setFrame(frame);
-        // Give a reasonable default size.
-        size.setExpression("300x500");
-        frame.setTableau(this);
-        frame.pack();
-        frame.centerOnScreen();
-        frame.setVisible(true);
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Set the top-level window associated with this tableau.
+     *  @param frame The top-level window associated with the tableau.
+     *  @throws IllegalActionException If the frame is not an instance
+     *   of PlotTableauFrame.
+     */
+    public void setFrame(JFrame frame) throws IllegalActionException {
+        if (!(frame instanceof TreeFrame)) {
+            throw new IllegalActionException(this,
+                    "Frame for PlotTableau must be an instance of "
+                    + "PlotTableauFrame.");
+        }
+        super.setFrame(frame);
+        ((TreeFrame)frame).setTableau(this);
+    }
+
+    /** Make this tableau visible by calling setVisible(true), and
+     *  raising or deiconifying its window.
+     *  If no frame has been set, then create one, an instance of
+     *  PlotTableauFrame.  If a URL has been specified but not yet
+     *  processed, then process it.
+     */
+    public void show() {
+        JFrame frame = getFrame();
+        if (frame == null) {
+            PtolemyEffigy container = (PtolemyEffigy)getContainer();
+            CompositeEntity model = (CompositeEntity)container.getModel();
+
+            frame = new TreeFrame(model);
+            frame.setBackground(BACKGROUND_COLOR);
+            // Give a reasonable default size.
+            size.setExpression("300x500");
+            ((TreeFrame)frame).setTableau(this);
+            frame.pack();
+            ((TreeFrame)frame).centerOnScreen();
+            frame.setVisible(true);
+
+            try {
+                setFrame(frame);
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(ex);
+            }
+        }
+        super.show();
     }
 
     ///////////////////////////////////////////////////////////////////

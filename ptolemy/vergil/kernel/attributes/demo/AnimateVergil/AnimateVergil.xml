@@ -5,13 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 95.0">
         </property>
@@ -33,46 +27,30 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 200.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={62, 160, 901, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={62, 160, 901, 516}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[686, 400]">
     </property>
     <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
-        </property>
-        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="radius*2.0">
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="radius*2.0">
         </property>
-        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
         <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.4,0.4,0.25}">
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 185.0">
         </property>
     </property>
     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
-        </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
-        </property>
-        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="483.0">
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="47.0">
         </property>
-        <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.4,1.0}">
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
         </property>
         <property name="rounding" class="ptolemy.data.expr.Parameter" value="10.0">
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -82,14 +60,6 @@
         </property>
     </property>
     <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
-        </property>
-        <property name="source" class="ptolemy.kernel.attributes.FileAttribute" value="$CLASSPATH/doc/img/ptIIplanetIcon.gif">
-        </property>
-        <property name="scale" class="ptolemy.data.expr.Parameter" value="100.0">
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 10.0">
         </property>
     </property>
@@ -229,9 +199,11 @@ library, including, for example, this annotation and the enclosing rectangle.</t
         <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 10.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{343.0, 200.0}">
+    </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="3.0">
@@ -239,16 +211,6 @@ library, including, for example, this annotation and the enclosing rectangle.</t
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 185.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="radius">
@@ -261,9 +223,6 @@ library, including, for example, this annotation and the enclosing rectangle.</t
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 200.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
         <property name="sleepTime" class="ptolemy.data.expr.Parameter" value="100L">
@@ -276,14 +235,6 @@ library, including, for example, this annotation and the enclosing rectangle.</t
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 255.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="275.0, 200.0">

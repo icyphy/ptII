@@ -49,11 +49,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
 	Up.gif \
-	fullScreen.gif \
-	zoomfit.gif \
-	zoomin.gif \
-	zoomout.gif \
-	zoomreset.gif
+	fullScreen.gif
 
 EXTRA_SRCS =	$(OTHER_FILES_TO_BE_JARED)
 

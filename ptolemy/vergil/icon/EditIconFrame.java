@@ -31,34 +31,17 @@
 package ptolemy.vergil.icon;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.net.URL;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-
-import ptolemy.actor.Actor;
-import ptolemy.actor.Director;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.DebugListenerTableau;
-import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.TextEffigy;
-import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLParser;
-import ptolemy.util.CancelException;
-import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.basic.BasicGraphFrame;
@@ -78,8 +61,6 @@ onto an instance of NamedObj, that instance of NamedObj becomes the container
 of the new object.  This feature is not useful for icon editing, and results
 in visual elements mysteriously disappearing when they are dropped.
 
-FIXME: More information.
-
 @author  Edward A. Lee
 @version $Id$
 */
@@ -92,7 +73,6 @@ public class EditIconFrame extends BasicGraphFrame {
      *  This constructor results in a frame that obtains its library
      *  either from the model (if it has one) or the default library defined
      *  in the configuration.
-     *  FIXME: Check whether the above is right.
      *  @see Tableau#show()
      *  @param icon The icon to put in this frame.
      *  @param tableau The tableau responsible for this frame.
@@ -157,33 +137,6 @@ public class EditIconFrame extends BasicGraphFrame {
      */
     protected void _addMenus() {
         super._addMenus();
-
-        // Add any commands to graph menu and toolbar that the controller
-        // wants in the graph menu and toolbar.
-        _graphMenu.addSeparator();
-        _controller.addToMenuAndToolbar(_graphMenu, _toolbar);
-
-        // Add debug menu.
-        JMenuItem[] debugMenuItems = {
-            // FIXME: Wrong menu items.
-            new JMenuItem("Listen to Director", KeyEvent.VK_L),
-            new JMenuItem("Animate Execution", KeyEvent.VK_A),
-            new JMenuItem("Stop Animating", KeyEvent.VK_S),
-        };
-        // NOTE: This has to be initialized here rather than
-        // statically because this method is called by the constructor
-        // of the base class, and static initializers have not yet
-        // been run.
-        _debugMenu = new JMenu("Debug");
-        _debugMenu.setMnemonic(KeyEvent.VK_D);
-        DebugMenuListener debugMenuListener = new DebugMenuListener();
-        // Set the action command and listener for each menu item.
-        for (int i = 0; i < debugMenuItems.length; i++) {
-            debugMenuItems[i].setActionCommand(debugMenuItems[i].getText());
-            debugMenuItems[i].addActionListener(debugMenuListener);
-            _debugMenu.add(debugMenuItems[i]);
-        }
-        _menubar.add(_debugMenu);
     }
 
     /** Create the default library to use if an entity has no
@@ -250,12 +203,6 @@ public class EditIconFrame extends BasicGraphFrame {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** Debug menu for this frame. */
-    protected JMenu _debugMenu;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private ActorEditorGraphController _controller;
@@ -265,113 +212,4 @@ public class EditIconFrame extends BasicGraphFrame {
     
     // The default zoom scale.
     private double _ZOOM_SCALE = 4.0;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     public inner classes                  ////
-
-    // NOTE: The following class is very similar to the inner class
-    // in FSMGraphFrame.  Is there some way to merge these?
-    // There seem to be enough differences that this may be hard.
-
-    /** Listener for debug menu commands. */
-    public class DebugMenuListener implements ActionListener {
-
-        /** React to a menu command. */
-        public void actionPerformed(ActionEvent e) {
-            JMenuItem target = (JMenuItem)e.getSource();
-            String actionCommand = target.getActionCommand();
-            try {
-                if (actionCommand.equals("Listen to Director")) {
-                    NamedObj model = getModel();
-                    boolean success = false;
-                    if (model instanceof Actor) {
-                        Director director = ((Actor)model).getDirector();
-                        if (director != null) {
-                            Effigy effigy = (Effigy)getTableau().getContainer();
-                            // Create a new text effigy inside this one.
-                            Effigy textEffigy = new TextEffigy(effigy,
-                                    effigy.uniqueName("debug listener"));
-                            DebugListenerTableau tableau =
-                                new DebugListenerTableau(textEffigy,
-                                        textEffigy.uniqueName("debugListener"));
-                            tableau.setDebuggable(director);
-                            success = true;
-                        }
-                    }
-                    if (!success) {
-                        MessageHandler.error("No director to listen to!");
-                    }
-                } else if (actionCommand.equals("Animate Execution")) {
-                    // To support animation, add a listener to the
-                    // first director found above in the hierarchy.
-                    // NOTE: This doesn't properly support all
-                    // hierarchy.  Insides of transparent composite
-                    // actors do not get animated if they are classes
-                    // rather than instances.
-                    NamedObj model = getModel();
-                    if (model instanceof Actor) {
-                        // Dialog to ask for a delay time.
-                        Query query = new Query();
-                        query.addLine("delay",
-                                "Time (in ms) to hold highlight",
-                                Long.toString(_lastDelayTime));
-                        ComponentDialog dialog = new ComponentDialog(
-                                EditIconFrame.this,
-                                "Delay for Animation",
-                                query);
-                        if (dialog.buttonPressed().equals("OK")) {
-                            try {
-                                _lastDelayTime = Long.parseLong(
-                                        query.getStringValue("delay"));
-                                _controller.setAnimationDelay(_lastDelayTime);
-                                Director director
-                                    = ((Actor)model).getDirector();
-                                while (director == null
-                                        && model instanceof Actor) {
-                                    model = (NamedObj)model.getContainer();
-                                    if (model instanceof Actor) {
-                                        director = ((Actor)model).getDirector();
-                                    }
-                                }
-                                if (director != null
-                                        && _listeningTo != director) {
-                                    if (_listeningTo != null) {
-                                        _listeningTo.removeDebugListener(
-                                                _controller);
-                                    }
-                                    director.addDebugListener(_controller);
-                                    _listeningTo = director;
-                                }
-                            } catch (NumberFormatException ex) {
-                                MessageHandler.error(
-                                        "Invalid time, which is required "
-                                        + "to be an integer", ex);
-                            }
-                        } else {
-                            MessageHandler.error(
-                                    "Cannot find the director. Possibly this "
-                                    + "is because this is a class, not an "
-                                    + "instance.");
-                        }
-                    } else {
-                        MessageHandler.error(
-                                "Model is not an actor. Cannot animate.");
-                    }
-                } else if (actionCommand.equals("Stop Animating")) {
-                    if (_listeningTo != null) {
-                        _listeningTo.removeDebugListener(_controller);
-                        _controller.clearAnimation();
-                        _listeningTo = null;
-                    }
-                }
-            } catch (KernelException ex) {
-                try {
-                    MessageHandler.warning(
-                            "Failed to create debug listener: " + ex);
-                } catch (CancelException exception) {}
-            }
-        }
-
-        private Director _listeningTo;
-    }
 }
