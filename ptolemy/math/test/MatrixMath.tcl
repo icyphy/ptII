@@ -1635,8 +1635,10 @@ testArrayMathArrayArrayScalar within $types
 ####
 ##  *MatrixMath Test out boolean within(xxx[][], xxx[][], xxx)
 
-# FIXME: no boolean within(Complex[][], Complex[][], Complex)
+# FIXED (FIXME): no boolean within(Complex[][], Complex[][], Complex)
+
 set types [list \
+	[list Complex ptolemy.math.Complex complex {1}] \
 	[list Double double double {1}] \
 	[list Float float float {1}] \
 	[list Integer int int {1}] \
