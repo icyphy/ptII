@@ -206,6 +206,7 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.data \
 			ptolemy.data.expr \
 			ptolemy.data.type \
+			ptolemy.data.unit \
 			ptolemy.graph \
 			ptolemy.gui \
 			ptolemy.math \
@@ -293,6 +294,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/data/*.java \
 			../ptolemy/data/expr/*.java \
 			../ptolemy/data/type/*.java \
+			../ptolemy/data/unit/*.java \
 			../ptolemy/graph/*.java \
 			../ptolemy/gui/*.java \
 			../ptolemy/math/*.java \
