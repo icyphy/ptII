@@ -316,7 +316,7 @@ Execution error.
 This exception is testing the execution listener
 ptolemy.actor.NoRoomException: This exception is testing the execution listener
 	at java.lang.reflect.Constructor.newInstance(Native Method)
-.........................................................}
+.........................................................}}
 
 ######################################################################
 ####
