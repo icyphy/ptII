@@ -31,6 +31,7 @@
 package pt.actors;
 
 import pt.kernel.*;
+import pt.data.*;
 import collections.LinkedList;
 import collections.CollectionEnumeration;
 import java.util.NoSuchElementException;
@@ -51,33 +52,14 @@ capacity is zero.
 @author Edward A. Lee
 @version $Id$
 */
-public class FlowFifoQ extends FIFOQueue implements Receptionist {
-
-    /** Construct an empty queue with no container.
-     */	
-    public FlowFifoQ() {
-        super();
-    }
+public class FlowFifoQ extends NamedObj implements Receptionist {
 
     /** Construct an empty queue with the specified container.
      */	
-    public FlowFifoQ(Nameable container) {
-        super(container);
-    }
-
-    /** Copy constructor.  Create a copy of the specified queue, but
-     *  with no container.  This is useful to permit enumerations over
-     *  a queue while the queue continues to be modified.
-     */	
-    public FlowFifoQ(FIFOQueue model) {
-        super(model);
-    }
-
-    /** Copy constructor.  Create a copy of the specified queue, but
-     *  with the specified container.
-     */	
-    public FlowFifoQ(FIFOQueue model, Nameable container) {
-        super(model, container);
+    public FlowFifoQ(AtomicIOPort container) {
+        super();
+	_container = container;
+	_queue = new FIFOQueue(this);
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -90,16 +72,33 @@ public class FlowFifoQ extends FIFOQueue implements Receptionist {
      *  than or equal to the size, or is negative), throw an exception.
      *  @exception NoSuchElementException The offset is out of range.
      */	
+    public Token get() 
+            throws NoSuchElementException {
+        synchronized (workspace()) {
+	    return (Token)_queue.take();
+	}
+    }
+
+    /** Does not remove the element */
     public Token get(int offset) 
             throws NoSuchElementException {
-	return (Token)super.get(offset);
+	synchronized (workspace()) {
+	    return (Token)_queue.get(offset);
+	}
     }
+      
 
     /** Return the container of the queue, or null if there is none.
      */	
     public Nameable getContainer() {
-        return super.getContainer();
+        return _container;
     }
+
+    /** Returns the FIFOQueue */
+    public FIFOQueue getQueue() {
+        return _queue;
+    }
+
 
     /** Put an object on the queue and return true if this will not
      *  cause the capacity to be exceeded.  Otherwise, do not put
@@ -107,7 +106,23 @@ public class FlowFifoQ extends FIFOQueue implements Receptionist {
      *  @param element An object to put on the queue.
      *  @return A boolean indicating success.
      */	
-    public boolean put(Object element) {
-        return super.put(element);
+    public void put(Token element) throws TokenHolderFullException {
+        synchronized (workspace()){
+	    if (_queue.size() >= _queue.capacity()) {
+	        throw new TokenHolderFullException();
+	    }
+	    _queue.put(element);
+	}
+
     }
+
+
+
+    private FIFOQueue _queue;
+    private AtomicIOPort _container;
 }
+
+
+
+
+
