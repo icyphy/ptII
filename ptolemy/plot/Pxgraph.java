@@ -384,7 +384,7 @@ script instead of the X11 <CODE>pxgraph</CODE> binary within Ptolemy.
 <LI> Obtain and install a Java Development Kit (JDK) for your
 platform from
 <A HREF="http://www.javasoft.com"><CODE>www.javasoft.com</CODE></A>.
-Pxgraph works best under JDK1.1.4.  Under JDK1.0.2,
+Pxgraph works best under JDK1.1.6.  Under JDK1.0.2,
 the <CODE>Print</CODE> and <CODE>About</CODE> buttons will not work.
 
 <li> Obtain the Ptplot tar file from
@@ -404,10 +404,10 @@ the location of the Ptplot <CODE>.class</CODE> files.
 <MENU>
 <LI> If the <CODE>JAVAHOME</CODE> environment variable is set, then
 it is read and <CODE>$JAVAHOME/lib/classes.zip</CODE> is used in the
-classpath.  For example, if your JDK was at <CODE>/optolemy/jdk1.1.4</CODE>,
+classpath.  For example, if your JDK was at <CODE>/opt/jdk1.1.6</CODE>,
 then you would add the following to your <CODE>.cshrc</CODE>:
 <PRE>
-setenv JAVAHOME /optolemy/jdk1.1.4
+setenv JAVAHOME /optolemy/jdk1.1.6
 </PRE>
  <BR>If <CODE>JAVAHOME</CODE> is not set, then the script searches
 the path and looks for the <CODE>java</CODE> binary.  If the
