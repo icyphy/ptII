@@ -788,17 +788,16 @@ public class NamedObj implements Nameable, Debuggable,
      *  But derived classes might erroneously permit recursive structures,
      *  so this error is caught here.
      *  If the given container is not actually a container of this object,
-     *  or is null, then IllegalActionException is thrown.
+     *  or is null, then the full name of the object is returned.
      *  This method is read-synchronized on the workspace.
      *  @param parent An object that deeply contains this object.
      *  @return A string of the form "name2...nameN".
      *  @exception IllegalActionException If the specified parent does not
      *   deeply contain this object.
      */
-    public String getName(NamedObj parent) throws IllegalActionException {
+    public String getName(NamedObj parent) {
 	if(parent == null) {
-	    throw new IllegalActionException(this,
-            "Cannot get the name with respect to a null parent.");
+	    return getFullName();
 	}
         try {
             _workspace.getReadAccess();
@@ -824,9 +823,7 @@ public class NamedObj implements Nameable, Debuggable,
                 container = container.getContainer();
             }
 	    if(container == null) {
-		throw new IllegalActionException(this, parent, 
-                       "Cannot get the name" +
-                       " with respect to an object that is not a parent.");
+		return getFullName();
 	    }
 	    return name;
         } finally {
