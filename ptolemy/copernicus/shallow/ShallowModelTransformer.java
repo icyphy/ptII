@@ -83,6 +83,11 @@ import soot.util.Chain;
 //////////////////////////////////////////////////////////////////////////
 //// ShallowModelTransformer
 /**
+Read in a MoML model and generate a Java class that creates the
+same model.  (i.e. shallow code generation)
+No attempt is made to analyze actor code.  This is primarily
+useful for using the Java compiler to find bugs, and removing
+MoML from shipped code.
 
 @author Stephen Neuendorffer, Christopher Hylands
 @version $Id$
@@ -90,9 +95,10 @@ import soot.util.Chain;
 @Pt.ProposedRating Red (cxh)
 @Pt.AcceptedRating Red (cxh)
 */
+public class ShallowModelTransformer extends SceneTransformer implements HasPhaseOptions {
 
-public class ShallowModelTransformer extends SceneTransformer  implements HasPhaseOptions {
-    /** Construct a new transformer
+    /** Construct a new shallow model transformer.
+     * @param model The model that this class will operate on.
      */
     private ShallowModelTransformer(CompositeActor model) {
         _model = model;
@@ -102,13 +108,24 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
      * the given model. The model is assumed to already have been
      * properly initialized so that resolved types and other static
      * properties of the model can be inspected.
+     * @param model The model that this class will operate on.
+     * @return An instance of ShallowModelTransformer that operates
+     * on the model.
      */
-
     public static ShallowModelTransformer v(CompositeActor model) {
         return new ShallowModelTransformer(model);
     }
 
-    // Create and set attributes.
+    /** Create and set attributes.
+     *  @param body The Jimple body.
+     *  @param context The context.
+     *  @param contextLocal The context for locals
+     *  @param namedObj The NamedObj that contains the attributes.
+     *  @param namedObjLocal The NamedObj where we create locals.
+     *  @param theClass The soot class.
+     *  @param createdSet A set that contains the full names of created
+     *  objects.
+     */
     public static void createFieldsForAttributes(JimpleBody body,
             NamedObj context,
             Local contextLocal, NamedObj namedObj, Local namedObjLocal,
@@ -197,6 +214,10 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
     /** Return the name of the field that is created to
      *  represent the given channel of the given type of the
      *  given relation.
+     *  @param relation  The relation
+     *  @param channel   The channel number
+     *  @param type      The type
+     *  @return the name of the buffer field.
      */
     public static String getBufferFieldName(TypedIORelation relation,
             int channel, ptolemy.data.type.Type type) {
@@ -205,16 +226,25 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
             + "_" + StringUtilities.sanitizeName(type.toString());
     }
 
+    /** Return the default options.
+     *  @return the empty string.
+     */
     public String getDefaultOptions() {
         return "";
     }
 
+    /** Return the declared options.
+     *  @return The string "targetpackage", which is the only declared option.
+     */
     public String getDeclaredOptions() {
         return "targetPackage";
     }
 
     /** Return the name of the field that is created for the
      *  given entity.
+     *  @param entity The entity
+     *  @param context The context of the entity
+     *  @return The name of the field that is created for the given entity.
      */
     public static String getFieldNameForEntity(Entity entity,
             NamedObj context) {
@@ -222,7 +252,10 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
     }
 
     /** Return the name of the field that is created for the
-     *  given entity.
+     *  given port.
+     *  @param port The port
+     *  @param context The context of the port
+     *  @return The name of the field that is created for the given port.
      */
     public static String getFieldNameForPort(
             Port port, NamedObj context) {
@@ -230,7 +263,10 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
     }
 
     /** Return the name of the field that is created for the
-     *  given entity.
+     *  given attribute.
+     *  @param attribute The attribute
+     *  @param context The context of the attribute
+     *  @return The name of the field that is created for the given attribute.
      */
     public static String getFieldNameForAttribute(Attribute attribute,
             NamedObj context) {
@@ -239,12 +275,18 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
 
     /** Return the name of the field that is created for the
      *  given entity.
+     *  @param relation The relation
+     *  @param context The context of the relation
+     *  @return The name of the field that is created for the given relation.
      */
     public static String getFieldNameForRelation(Relation relation,
             NamedObj context) {
         return "R" + StringUtilities.sanitizeName(relation.getName(context));
     }
 
+    /** Return the phase name.
+     *  @return the empty string.
+     */
     public String getPhaseName() {
         return "";
     }
@@ -252,6 +294,10 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Perform the shallow model transformation.
+     *  @param phaseName The name of the phase.
+     *  @param options A map of options
+     */
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("ShallowModelTransformer.internalTransform("
                 + phaseName + ", " + options + ")");

@@ -219,6 +219,7 @@ public class Display extends Sink implements Placeable {
 
     /** Get the background color.
      *  @return The background color of the text area.
+     *  @see #setBackground(Color)
      */
     public Color getBackground() {
         return textArea.getBackground();
@@ -389,7 +390,10 @@ public class Display extends Sink implements Placeable {
         return super.postfire();
     }
 
-    /** Set the background */
+    /** Set the background.
+     *  @param background The background color.
+     *  @see #getBackground()
+     */
     public void setBackground(Color background) {
         if (_frame != null) {
             _frame.setBackground(background);

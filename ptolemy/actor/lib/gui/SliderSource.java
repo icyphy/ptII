@@ -155,7 +155,10 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
         return newObject;
     }
 
-    /** Return the background. */
+    /** Return the background.
+     *  @return The background color.
+     *  @see #setBackground(Color)
+     */
     public Color getBackground() {
         return _panel.getBackground();
     }
@@ -251,7 +254,10 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
         return super.prefire();
     }
 
-    /** Set the background color. */
+    /** Set the background color of the panel that contains the slider.
+     *  @param background The background color.
+     *  @see #getBackground()
+     */
     public void setBackground(Color background) {
         _panel.setBackground(background);
     }
@@ -278,6 +284,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                       protected members                   ////
 
+    /** The JPanel that contains the slider. */
     protected JPanel _panel;
 
     ///////////////////////////////////////////////////////////////////

@@ -215,6 +215,7 @@ public class InteractiveShell extends TypedAtomicActor
     /** Get the output string to be sent. This does not
      *  return until a value is entered on the shell by the user.
      *  @return The output string to be sent.
+     *  @see #setOutput(String)
      */
     public synchronized String getOutput() {
         while (_outputValues.size() < 1 && !_stopRequested) {
@@ -354,8 +355,8 @@ public class InteractiveShell extends TypedAtomicActor
     /** Specify an output string to be sent. This method
      *  appends the specified string to a queue. Strings
      *  are retrieved from the queue by getOutput().
-     *  @see #getOutput()
      *  @param value An output string to be sent.
+     *  @see #getOutput()
      */
     public synchronized void setOutput(String value) {
         _outputValues.add(value);

@@ -514,7 +514,7 @@ public class PlotterBase extends TypedAtomicActor
     /** The base specified in configure(). */
     protected URL _base;
     
-    /** Container into which this plot should be placed */
+    /** Container into which this plot should be placed. */
     protected Container _container;
 
     /** Frame into which plot is placed, if any. */
@@ -621,6 +621,7 @@ public class PlotterBase extends TypedAtomicActor
             setFrame(frame);
         }
 
+        /** The frame. */
         public PlotterPlotFrame frame;
     }
 }
