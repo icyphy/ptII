@@ -50,7 +50,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	BaseUnit.java \
 	UnitCategory.java \
-	UnitSystem.java
+	UnitSystem.java \
+	UnitUtilities.java
 
 OTHER_FILES_TO_BE_JARED = \
 	unitSystems.xml \
