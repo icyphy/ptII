@@ -28,10 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.copernicus.java;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
@@ -92,7 +89,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
         entityInstanceClass.setApplicationClass();
 
         // Record everything that the class creates.
-        HashSet tempCreatedSet = new HashSet();
+        HashMap tempCreatedMap = new HashMap();
 
         // Populate the method to initialize this instance.
         // We need to put something here before folding so that
@@ -138,7 +135,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
 
         ModelTransformer.updateCreatedSet(
                 entity.getFullName(),
-                classEntity, classEntity, tempCreatedSet);
+                classEntity, classEntity, tempCreatedMap);
 
         // Create methods that will compute and set the values of the
         // parameters of this actor.
@@ -156,11 +153,11 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
 
             // create attributes for those in the class
             ModelTransformer.createAttributes(body, entity, thisLocal,
-                    entity, thisLocal, entityInstanceClass, tempCreatedSet);
+                    entity, thisLocal, entityInstanceClass, tempCreatedMap);
 
             // Create and initialize ports
             ModelTransformer.createPorts(body, thisLocal, entity,
-                    thisLocal, entity, entityInstanceClass, tempCreatedSet);
+                    thisLocal, entity, entityInstanceClass, tempCreatedMap);
 
             // Extra initialization necessary?
             Stmt insertPoint = Jimple.v().newNopStmt();

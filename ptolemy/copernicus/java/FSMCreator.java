@@ -114,7 +114,7 @@ public class FSMCreator implements AtomicActorCreator {
                 entity, entity, entityInstanceClass, constAnalysis);
 
         // Record everything that the class creates.
-        HashSet tempCreatedSet = new HashSet();
+        HashMap tempCreatedMap = new HashMap();
 
         SootMethod initMethod = entityInstanceClass.getInitMethod();
         {
@@ -130,12 +130,12 @@ public class FSMCreator implements AtomicActorCreator {
             // Initialize attributes that already exist in the class.
             //  System.out.println("initializing attributes");
             ModelTransformer.createAttributes(body, entity, thisLocal,
-                    entity, thisLocal, entityInstanceClass, tempCreatedSet);
+                    entity, thisLocal, entityInstanceClass, tempCreatedMap);
 
             // Create and initialize ports
             // System.out.println("initializing ports");
             ModelTransformer.createPorts(body, thisLocal, entity,
-                    thisLocal, entity, entityInstanceClass, tempCreatedSet);
+                    thisLocal, entity, entityInstanceClass, tempCreatedMap);
 
             // return void
             units.add(Jimple.v().newReturnVoidStmt());

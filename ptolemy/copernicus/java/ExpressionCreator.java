@@ -98,7 +98,7 @@ public class ExpressionCreator implements AtomicActorCreator {
                 entity, entity, entityInstanceClass, constAnalysis);
 
         // Record everything that the class creates.
-        HashSet tempCreatedSet = new HashSet();
+        HashMap tempCreatedMap = new HashMap();
 
         SootMethod initMethod = entityInstanceClass.getInitMethod();
         {
@@ -112,11 +112,11 @@ public class ExpressionCreator implements AtomicActorCreator {
             // Populate...
             // Initialize attributes that already exist in the class.
             ModelTransformer.createAttributes(body, entity, thisLocal,
-                    entity, thisLocal, entityInstanceClass, tempCreatedSet);
+                    entity, thisLocal, entityInstanceClass, tempCreatedMap);
 
             // Create and initialize ports
             ModelTransformer.createPorts(body, thisLocal, entity,
-                    thisLocal, entity, entityInstanceClass, tempCreatedSet);
+                    thisLocal, entity, entityInstanceClass, tempCreatedMap);
 
             // return void
             units.add(Jimple.v().newReturnVoidStmt());

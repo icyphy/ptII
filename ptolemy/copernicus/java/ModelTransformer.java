@@ -247,9 +247,10 @@ public class ModelTransformer extends SceneTransformer
     /** Generate code in the given body of the given class to create
      *  attributes contained by the given named object.  The given
      *  class is assumed to be associated with the given context.
-     *  Attributes whose full names are already in createdSet are not
-     *  created.  The given createdSet is update with the full names
-     *  of all the created attributes.
+     *  Attributes whose full names are already keys in
+     *  objectNameToCreatorName are not created.  The given
+     *  objectNameToCreatorName map is updated with the full names of
+     *  all the created attributes.
      *  @param body The body to generate code in.
      *  @param context The named object corresponding to the class in which
      *  code is being generated.
@@ -259,12 +260,14 @@ public class ModelTransformer extends SceneTransformer
      *  @param namedObjLocal A local in the given body.  Attributes will be
      *  created using this local as the container.
      *  @param theClass The soot class being modified.
-     *  @param createdSet A set of the full names of ptolemy objects.
+     *  @param objectNameToCreatorName A map from full names of
+     *  objects to the full name of the object that created that
+     *  object.
      */
     public static void createAttributes(JimpleBody body,
             NamedObj context, Local contextLocal,
             NamedObj namedObj, Local namedObjLocal,
-            SootClass theClass, HashSet createdSet) {
+            SootClass theClass, HashMap objectNameToCreatorName) {
 
         //   System.out.println("initializing attributes in " + namedObj);
 
@@ -305,7 +308,8 @@ public class ModelTransformer extends SceneTransformer
                     attribute, context);
 
             Local local;
-            if (createdSet.contains(attribute.getFullName())) {
+            if (objectNameToCreatorName.keySet().contains(
+                        attribute.getFullName())) {
                 //     System.out.println("already has " + attributeName);
                 // If the class for the object already creates the
                 // attribute, then get a reference to the existing attribute.
@@ -335,10 +339,12 @@ public class ModelTransformer extends SceneTransformer
                         (Attribute)_findDeferredInstance(attribute);
                     updateCreatedSet(namedObj.getFullName() + "."
                             + attribute.getName(),
-                            classAttribute, classAttribute, createdSet);
+                            classAttribute, classAttribute, 
+                            objectNameToCreatorName);
                 } catch (Exception ex) {
-                    createdSet.add(namedObj.getFullName() + "."
-                            + attribute.getName());
+                    String name = namedObj.getFullName() + "."
+                        + attribute.getName();
+                    objectNameToCreatorName.put(name, name);
                 }
             }
 
@@ -351,16 +357,17 @@ public class ModelTransformer extends SceneTransformer
             field.addTag(new ValueTag(attribute));
 
             createAttributes(body, context, contextLocal,
-                    attribute, local, theClass, createdSet);
+                    attribute, local, theClass, objectNameToCreatorName);
         }
     }
 
     /** Generate code in the given body of the given class to create
      *  ports contained by the given entity.  The given
      *  class is assumed to be associated with the given context.
-     *  Ports whose full names are already in createdSet are not
-     *  created.  The given createdSet is updated with the full names
-     *  of all the created ports.
+     *  Ports  whose full names are already keys in
+     *  objectNameToCreatorName are not created.  The given
+     *  objectNameToCreatorName map is updated with the full names of
+     *  all the created ports.
      *  @param body The body to generate code in.
      *  @param context The named object corresponding to the class in which
      *  code is being generated.
@@ -370,11 +377,14 @@ public class ModelTransformer extends SceneTransformer
      *  @param entityLocal A local in the given body.  Ports will be
      *  created using this local as the container.
      *  @param theClass The soot class being modified.
-     *  @param createdSet A set of the full names of ptolemy objects.
+     *  @param objectNameToCreatorName A map from full names of
+     *  objects to the full name of the object that created that
+     *  object.
      */
     public static void createPorts(JimpleBody body, Local contextLocal,
             Entity context, Local entityLocal,
-            Entity entity, EntitySootClass theClass, HashSet createdSet) {
+            Entity entity, EntitySootClass theClass, 
+            HashMap objectNameToCreatorName) {
         Entity classObject = (Entity)_findDeferredInstance(entity);
 
         // This local is used to store the return from the getPort
@@ -403,7 +413,7 @@ public class ModelTransformer extends SceneTransformer
             if (port instanceof ParameterPort) {
                 updateCreatedSet(entity.getFullName() + "."
                         + port.getName(),
-                        port, port, createdSet);
+                        port, port, objectNameToCreatorName);
                 PortParameter parameter = ((ParameterPort)port).getParameter();
                 Local parameterLocal = Jimple.v().newLocal("parameter",
                         RefType.v(PtolemyUtilities.portParameterClass));
@@ -422,7 +432,8 @@ public class ModelTransformer extends SceneTransformer
                                 Jimple.v().newVirtualInvokeExpr(
                                         parameterLocal,
                                         PtolemyUtilities.portParameterGetPortMethod)));
-            } else if (createdSet.contains(port.getFullName())) {
+            } else if (objectNameToCreatorName.keySet().contains(
+                               port.getFullName())) {
                 //       System.out.println("already created!");
                 // If the class for the object already creates the
                 // port, then get a reference to the existing port.
@@ -453,9 +464,10 @@ public class ModelTransformer extends SceneTransformer
                 //                     (Port)_findDeferredInstance(port);
                 //      updateCreatedSet(entity.getFullName() + "."
                 //                         + port.getName(),
-                //                         classPort, classPort, createdSet);
-                createdSet.add(entity.getFullName() + "."
-                        + port.getName());
+                //                         classPort, classPort, objectNameToCreatorName);
+                String name = entity.getFullName() + "."
+                    + port.getName();
+                objectNameToCreatorName.put(name, name);
                 // Then assign to portLocal.
                 body.getUnits().add(
                         Jimple.v().newAssignStmt(portLocal,
@@ -489,6 +501,8 @@ public class ModelTransformer extends SceneTransformer
                     body.getUnits().add(
                             Jimple.v().newInvokeStmt(
                                     Jimple.v().newVirtualInvokeExpr(ioportLocal,
+
+
                                             PtolemyUtilities.setMultiportMethod,
                                             IntConstant.v(1))));
                 }
@@ -512,7 +526,7 @@ public class ModelTransformer extends SceneTransformer
                 field.addTag(new ValueTag(port));
             }
             createAttributes(body, context, contextLocal,
-                    port, portLocal, theClass, createdSet);
+                    port, portLocal, theClass, objectNameToCreatorName);
         }
     }
 
@@ -532,8 +546,8 @@ public class ModelTransformer extends SceneTransformer
             NamedObj context, NamedObj namedObj, SootClass theClass,
             ConstVariableModelAnalysis constAnalysis) {
 
-        System.out.println("creatingParameterComputationFunctions for " 
-                + namedObj);
+//         System.out.println("creatingParameterComputationFunctions for " 
+//                 + namedObj);
 
         // Check to see if we have anything to do.
         if (namedObj.attributeList().size() == 0) return;
@@ -1261,34 +1275,40 @@ public class ModelTransformer extends SceneTransformer
         }
     }
 
-    /** Add the full names of all named objects contained in the given object
-     *  to the given set, assuming that the object is contained within the
-     *  given context.
+    /** Add the full names of all named objects contained in the given
+     *  object to the given set, assuming that the object is contained
+     *  within the given context.  Additionally, record the name of
+     *  the object that created the given object in the given map.
+     *  @param prefix The full name of the context in the model.
      *  @param context The context.
      *  @param object The object being recorded.
-     *  @param set A set of full names of ptolemy objects.
+     *  @param objectNameToCreatorName A map from full names of
+     *  objects to the full name of the object that created that
+     *  object.
      */
-    public static void updateCreatedSet(String prefix,
-            NamedObj context, NamedObj object, HashSet set) {
+    public static void updateCreatedSet(String prefix, NamedObj context,
+            NamedObj object, HashMap objectNameToCreatorName) {
         if (object == context) {
             System.out.println("creating " + prefix);
-            set.add(prefix);
+            objectNameToCreatorName.put(prefix, prefix);
         } else {
             String name = prefix + "." + object.getName(context);
             System.out.println("creating " + name);
-            set.add(name);
+            objectNameToCreatorName.put(name, prefix);
         }
         if (object instanceof CompositeActor) {
             CompositeActor composite = (CompositeActor) object;
             for (Iterator entities = composite.deepEntityList().iterator();
                  entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
-                updateCreatedSet(prefix, context, entity, set);
+                updateCreatedSet(prefix, context, entity, 
+                        objectNameToCreatorName);
             }
             for (Iterator relations = composite.relationList().iterator();
                  relations.hasNext();) {
                 Relation relation = (Relation) relations.next();
-                updateCreatedSet(prefix, context, relation, set);
+                updateCreatedSet(prefix, context, relation, 
+                        objectNameToCreatorName);
             }
         }
         if (object instanceof Entity) {
@@ -1296,13 +1316,15 @@ public class ModelTransformer extends SceneTransformer
             for (Iterator ports = entity.portList().iterator();
                  ports.hasNext();) {
                 Port port = (Port)ports.next();
-                updateCreatedSet(prefix, context, port, set);
+                updateCreatedSet(prefix, context, port, 
+                        objectNameToCreatorName);
             }
         }
         for (Iterator attributes = object.attributeList().iterator();
              attributes.hasNext();) {
             Attribute attribute = (Attribute)attributes.next();
-            updateCreatedSet(prefix, context, attribute, set);
+            updateCreatedSet(prefix, context, attribute, 
+                    objectNameToCreatorName);
         }
     }
 
@@ -1339,9 +1361,6 @@ public class ModelTransformer extends SceneTransformer
         _modelClass = _createCompositeActor(
                 _model, modelClassName, options);
         addActorForClass(_modelClass, _model);
-
-        // Create static instance fields for each actor.
-        //        _createEntityInstanceFields(_modelClass, _model, options);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1352,7 +1371,7 @@ public class ModelTransformer extends SceneTransformer
             Local containerLocal, CompositeActor container,
             Local thisLocal, CompositeActor composite,
             EntitySootClass modelClass,
-            HashSet createdSet, Map options) {
+            HashMap objectNameToCreatorName, Map options) {
         CompositeActor classObject = (CompositeActor)
             _findDeferredInstance(composite);
         // A local that we will use to get existing entities
@@ -1374,7 +1393,8 @@ public class ModelTransformer extends SceneTransformer
                 getFieldNameForEntity(entity, container);
             Local local;
 
-            if (createdSet.contains(entity.getFullName())) {
+            if (objectNameToCreatorName.keySet().contains(
+                        entity.getFullName())) {
                 //     System.out.println("already created!");
                 local = Jimple.v().newLocal("entity",
                         PtolemyUtilities.componentEntityType);
@@ -1397,7 +1417,8 @@ public class ModelTransformer extends SceneTransformer
                 field.addTag(new ValueTag(entity));
 
                 _ports(body, thisLocal, composite,
-                        local, entity, modelClass, createdSet, false);
+                        local, entity, modelClass,
+                        objectNameToCreatorName, false);
             } else {
                 //  System.out.println("Creating new!");
 
@@ -1415,7 +1436,7 @@ public class ModelTransformer extends SceneTransformer
                 // all stuff inside it.
                 updateCreatedSet(
                         composite.getFullName() + "." + entity.getName(),
-                        entity, entity, createdSet);
+                        entity, entity, objectNameToCreatorName);
 
                 SootField field = SootUtilities.createAndSetFieldFromLocal(
                         body, local, modelClass,
@@ -1423,7 +1444,8 @@ public class ModelTransformer extends SceneTransformer
                 field.addTag(new ValueTag(entity));
 
                 _ports(body, containerLocal, container,
-                        local, entity, modelClass, createdSet, false);
+                        local, entity, modelClass, 
+                        objectNameToCreatorName, false);
                 //   }
             }
 
@@ -1434,7 +1456,8 @@ public class ModelTransformer extends SceneTransformer
     // Create and set external ports.
     private static void _ports(JimpleBody body, Local contextLocal,
             Entity context, Local entityLocal,
-            Entity entity, EntitySootClass modelClass, HashSet createdSet,
+            Entity entity, EntitySootClass modelClass,
+            HashMap objectNameToCreatorName,
             boolean createFieldsInClass) {
         Entity classObject = (Entity)_findDeferredInstance(entity);
 
@@ -1464,7 +1487,7 @@ public class ModelTransformer extends SceneTransformer
             if (port instanceof ParameterPort) {
                 updateCreatedSet(entity.getFullName() + "."
                         + port.getName(),
-                        port, port, createdSet);
+                        port, port, objectNameToCreatorName);
                 PortParameter parameter = ((ParameterPort)port).getParameter();
                 Local parameterLocal = Jimple.v().newLocal("parameter",
                         RefType.v(PtolemyUtilities.portParameterClass));
@@ -1483,7 +1506,8 @@ public class ModelTransformer extends SceneTransformer
                                 Jimple.v().newVirtualInvokeExpr(
                                         parameterLocal,
                                         PtolemyUtilities.portParameterGetPortMethod)));
-            } else if (createdSet.contains(port.getFullName())) {
+            } else if (objectNameToCreatorName.keySet().contains(
+                               port.getFullName())) {
                 //    System.out.println("already created!");
                 // If the class for the object already creates the
                 // port, then get a reference to the existing port.
@@ -1509,9 +1533,11 @@ public class ModelTransformer extends SceneTransformer
                         entityLocal, port.getName());
                 //                 updateCreatedSet(entity.getFullName() + "."
                 //                         + port.getName(),
-                //                         port, port, createdSet);
-                createdSet.add(entity.getFullName() + "."
-                        + port.getName());
+                //                         port, port, objectNameToCreatorName);
+                String name = entity.getFullName() + "."
+                    + port.getName();
+                objectNameToCreatorName.put(name, name);
+
                 // Then assign to portLocal.
                 body.getUnits().add(
                         Jimple.v().newAssignStmt(portLocal,
@@ -1561,7 +1587,7 @@ public class ModelTransformer extends SceneTransformer
                 portLocal = local;
                 // Create attributes for the port.
                 createAttributes(body, context, contextLocal,
-                        port, portLocal, modelClass, createdSet);
+                        port, portLocal, modelClass, objectNameToCreatorName);
             }
 
             _portLocalMap.put(port, portLocal);
@@ -1859,7 +1885,8 @@ public class ModelTransformer extends SceneTransformer
     }
 
     private static void _createActorsIn(
-            CompositeActor model, HashSet createdSet, String phaseName,
+            CompositeActor model, HashMap objectNameToCreatorName, 
+            String phaseName,
             ConstVariableModelAnalysis constAnalysis, Map options) {
         // Create an instance class for every actor.
         for (Iterator i = model.deepEntityList().iterator();
@@ -1913,7 +1940,7 @@ public class ModelTransformer extends SceneTransformer
                         "some record actors not supported, since "
                         + "they iterate over ports.");
             } else if (entity.getClass().getName().equals(
-                               "ptolemy.actor.lib.ExpressionToToken") ||
+                               "ptolemy.actor.lib.conversions.ExpressionToToken") ||
                     entity.getClass().getName().equals(
                             "ptolemy.actor.lib.io.ExpressionReader")) {
                 throw new RuntimeException("Code Generation for " +
@@ -1957,7 +1984,7 @@ public class ModelTransformer extends SceneTransformer
         entityInstanceClass.setApplicationClass();
 
         // Record everything that the class creates.
-        HashSet tempCreatedSet = new HashSet();
+        HashMap tempCreatedMap = new HashMap();
 
         // Create methods that will compute and set the values of the
         // parameters of this actor.
@@ -1974,16 +2001,16 @@ public class ModelTransformer extends SceneTransformer
             Local thisLocal = body.getThisLocal();
 
             // Create a new class for each actor in the model.
-            _createActorsIn(entity, tempCreatedSet,
+            _createActorsIn(entity, tempCreatedMap,
                     "modelTransformer", _constAnalysis, options);
 
             // Create code in the model class to instantiate the ports
             // and parameters of the model.
             createAttributes(body, entity, thisLocal,
-                    entity, thisLocal, entityInstanceClass, tempCreatedSet);
+                    entity, thisLocal, entityInstanceClass, tempCreatedMap);
 
             _ports(body, thisLocal, entity, thisLocal, entity,
-                    entityInstanceClass, tempCreatedSet, true);
+                    entityInstanceClass, tempCreatedMap, true);
 
             // Excess initialization, but necessary for -actor???
             Stmt insertPoint = Jimple.v().newNopStmt();
@@ -1998,7 +2025,7 @@ public class ModelTransformer extends SceneTransformer
             // actors and relations, and connect the relations
             // to the ports.
             _entities(body, thisLocal, entity, thisLocal, entity,
-                    entityInstanceClass, tempCreatedSet, options);
+                    entityInstanceClass, tempCreatedMap, options);
             _relations(body, thisLocal, entity, entityInstanceClass);
             _links(body, entity);
             _linksOnPortsContainedByContainedEntities(body, entity);
@@ -2037,15 +2064,14 @@ public class ModelTransformer extends SceneTransformer
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
-            System.out.println("locallyModifiedAttributeList of " + entity 
-                    + " = " + locallyModifiedAttributeList);
+//             System.out.println("locallyModifiedAttributeList of " + entity 
+//                     + " = " + locallyModifiedAttributeList);
             // Add code to the beginning of the prefire method that
             // computes the attribute values of anything that is not a
             // constant.
             SootMethod method = entityInstanceClass.getMethodByName("prefire");
             JimpleBody body = (JimpleBody)method.getActiveBody();
             Stmt insertPoint = body.getFirstNonIdentityStmt();
-            System.out.println("insertPoint = " + insertPoint);
             Local containerLocal = Jimple.v().newLocal("entity",
                     PtolemyUtilities.componentEntityType);
             body.getLocals().add(containerLocal);
@@ -2059,10 +2085,6 @@ public class ModelTransformer extends SceneTransformer
                             attribute);           
                 SootClass containerClass = 
                     (SootClass)_objectToClassMap.get(attributeContainer);
-                System.out.println("containerClass = " + containerClass);
-                System.out.println(
-                        "function = " + getAttributeComputationFunctionName(
-                                attribute, attributeContainer));
                 SootMethod computeMethod = containerClass.getMethodByName(
                         getAttributeComputationFunctionName(
                                 attribute, attributeContainer));
@@ -2105,6 +2127,7 @@ public class ModelTransformer extends SceneTransformer
         entityInstanceClass.removeMethod(
                 entityInstanceClass.getInitMethod());
 
+        System.out.println("createdMap = " + tempCreatedMap);
         return entityInstanceClass;
     }
 

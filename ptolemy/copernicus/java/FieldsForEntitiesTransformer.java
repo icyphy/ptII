@@ -273,8 +273,8 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
         NamedObj correspondingObject =
             ModelTransformer.getObjectForClass(theClass);
         // Create a field referencing the container, for all but the top level.
-        //     System.out.println("theClass = " + theClass);
-        //         System.out.println("object = " + correspondingObject);
+        System.out.println("theClass = " + theClass);
+        System.out.println("object = " + correspondingObject);
         if (!correspondingObject.equals(_model)) {
             NamedObj container = (NamedObj)correspondingObject.getContainer();
             SootClass containerClass =
