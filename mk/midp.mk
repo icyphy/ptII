@@ -75,6 +75,12 @@
 #JAVA_VERBOSE =	-verbose:class
 #MAKEPALMAPP_VERBOSE = -v -v
 
+MIDP_DIR = 	$(ROOT)/vendors/sun/WTK104
+MIDP_CLASSES = 	$(MIDP_DIR)/lib/midpapi.zip
+
+CONVERTER_DIR =		$(ROOT)/vendors/sun/midp4palm1.0/Converter
+CONVERTER_CLASSES =	$(CONVERTER_DIR)/Converter.jar 
+
 # Run the demo via the usual method without any codegen.
 demo_interpreted: $(PTCLASSJAR)
 	CLASSPATH="$(CLASSPATH)" \
@@ -106,35 +112,36 @@ $(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class: \
 	@echo "###################################"
 	(cd $(ROOT)/$(OUTPKG_DIR); \
 	$(JAVAC) -g:none -O $(JAVAC_VERBOSE) \
-		-bootclasspath $(KVM_CLASSES)  \
+		-bootclasspath $(MIDP_CLASSES)  \
 		-classpath $(OUTPKG_ROOT) \
 		$(OUTPKG_MAIN_CLASS).java)
 
 # Compile the non-codegen kvm code in $(PTII)/$(OUTPKG)
 # Note that we compile without debug as the default
-compile_kvm:
+compile_midp:
 	@echo "###################################"
 	@echo "# Compiling non-codegen kvm *.java files in $(PTII)/$(OUTPKG)"
 	@echo "###################################"
 	(cd $(ROOT)/$(OUTPKG_DIR); \
-	$(JAVAC) -g:none -O $(JAVAC_VERBOSE) \
-		-bootclasspath $(KVM_CLASSES)  \
+	"$(JAVAC)" -g:none -O $(JAVAC_VERBOSE) \
+		-bootclasspath $(MIDP_CLASSES)  \
 		-classpath $(OUTPKG_ROOT) \
 		$(OUTPKG_MAIN_CLASS).java)
 
 
 # Run the kvm preverify tool in $(PTII)/$(OUTPKG)
 # and generate .class files in $(PTII)/$(OUTPKG)/output/$(OUTPKG_DIR)
-preverify:
+preverify: output/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class
+output/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class: jclass
 	@echo "###################################"
 	@echo "# preverifying in $(PTII)/$(OUTPKG_DIR), creating new .class files"
 	@echo "###################################"
 	(cd $(ROOT)/$(OUTPKG_DIR); \
 	for class in *.class; do \
 		echo $$class ; \
-		$(KVM_DIR)/bin/preverify \
+		$(MIDP_DIR)/bin/preverify \
 			-classpath \
-			"$(KVM_CLASSES)$(CLASSPATHSEPARATOR)$(OUTPKG_ROOT)" \
+			"$(MIDP_CLASSES)$(CLASSPATHSEPARATOR)$(OUTPKG_ROOT)" \
 			$(OUTPKG).`basename $$class .class`; \
 	done)
 
@@ -145,24 +152,33 @@ preverify:
 #   and then use the .class files from the output directory that are
 #   created by the preverifier.  If you use the class files that were
 #   created by javac directly, then you may get verifier errors.
-build_prc: $(KVM_DIR)/tools/palm/src/palm/database/MakePalmApp.class
+
+$(OUTPKG_MAIN_CLASS).jad:
+	echo "MIDlet-Name: $(OUTPKG_MAIN_CLASS)" > $@
+	echo "MIDlet-Version: 1.0" >> $@
+	echo "MIDlet-Vendor: `whoami`" >> $@
+	echo "MIDlet-Description: Test midlet" >> $@
+	echo "MicroEdition-Profile: MIDP-1.0" >> $@
+	echo "MicroEdition-Configuration: CLDC-1.0" >> $@
+	echo "MIDlet-1: $(OUTPKG).$(OUTPKG_MAIN_CLASS), $(OUTPKG_MAIN_CLASS).png, $(OUTPKG).$(OUTPKG_MAIN_CLASS)" >> $@
+	echo "MIDlet-Jar-URL: $(OUTPKG_MAIN_CLASS).jar" >> $@
+
+$(OUTPKG_MAIN_CLASS).jar: $(OUTPKG_MAIN_CLASS).jad \
+		output/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class
+	(cd output; "$(JAR)" -cfm ../$(OUTPKG_MAIN_CLASS).jar ../$(OUTPKG_MAIN_CLASS).jad .)
+
+build_prc: $(OUTPKG_MAIN_CLASS).prc
+$(OUTPKG_MAIN_CLASS).prc: $(OUTPKG_MAIN_CLASS).jar
 	@echo "###################################"
 	@echo "# Creating Palm executable from classes in"
-	@echo "# $(PTII)/$(OUTPKG_DIR)"
+	@echo "# $(OUTPKG_MAIN_CLASS).jar"
 	@echo "###################################"
-	(cd $(ROOT)/$(OUTPKG_DIR); \
-	$(JAVA) -classpath $(KVM_DIR)/tools/palm/src \
-		 palm.database.MakePalmApp \
-		$(MAKEPALMAPP_VERBOSE) \
-		-version "1.0" \
-		-bootclasspath $(KVM_CLASSES)  \
-		-classpath output \
-		$(OUTPKG).$(OUTPKG_MAIN_CLASS))
+	"$(JAVA)" -cp $(CONVERTER_CLASSES) \
+		com.sun.midp.palm.database.MakeMIDPApp \
+		-verbose \
+		-creator PTOL \
+		$(OUTPKG_MAIN_CLASS).jar
 
-# Build the MakePalmApp tool if necessary
-$(KVM_DIR)/tools/palm/src/palm/database/MakePalmApp.class: \
-		$(KVM_DIR)/tools/palm/src/palm/database/MakePalmApp.java
-	(cd $(KVM_DIR)/tools/palm/src/palm/database; $(JAVAC) *.java)
 
 # Run the java profiler (javap) on all the classes
 javap:
@@ -184,19 +200,19 @@ run_codegen:
 			$(OUTPKG).$(OUTPKG_MAIN_CLASS))
 
 # FIXME: what about Solaris?
-KVM_BINARY = $(KVM_DIR)/kvm/VmWin/build/kvm.exe
+MIDP_BINARY = $(MIDP_DIR)/kvm/VmWin/build/kvm.exe
 # Run a Java simulator of the Palm
 # kvm.exe needs to be built by hand, see the kvm instructions.
 kvm:
-	if [ ! -f "$(KVM_BINARY)" ]; then \
-		echo "$(KVM_BINARY) is not found."; \
-		echo "This binary simulates the Palm/KVM environment"; \
+	if [ ! -f "$(MIDP_BINARY)" ]; then \
+		echo "$(MIDP_BINARY) is not found."; \
+		echo "This binary simulates the Palm/MIDP environment"; \
 		echo "It is not required but it is useful for debugging"; \
 		echo "To build it, see the kvm instructions."; \
 	else \
 		(cd $(ROOT)/$(OUTPKG_DIR); \
-			$(KVM_BINARY) -classpath \
-			"$(KVM_CLASSES)$(CLASSPATHSEPARATOR)output" \
+			$(MIDP_BINARY) -classpath \
+			"$(MIDP_CLASSES)$(CLASSPATHSEPARATOR)output" \
 			$(OUTPKG).$(OUTPKG_MAIN_CLASS)); \
 	fi
 
