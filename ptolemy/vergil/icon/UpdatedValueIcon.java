@@ -38,6 +38,7 @@ import ptolemy.data.IntToken;
 import ptolemy.kernel.util.*;
 
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
@@ -129,12 +130,19 @@ public class UpdatedValueIcon extends AttributeValueIcon {
      */
     public void valueChanged(Settable settable) {
         if (settable == _associatedAttribute) {
-            if (_label != null) {
-                _label.setString(_displayString());
-            }
-            if (_background != null) {
-                _background.repaint();
-            }
+            // Invoke in the swing thread.
+            // FIXME: These requests should be consolidated, so that
+            // if there is a string of them pending, only one gets
+            // executed.
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    if (_label != null) {
+                        _label.setString(_displayString());
+                    }
+                    if (_background != null) {
+                        _background.repaint();
+                    }
+                }});
         } else {
             super.valueChanged(settable);
         }
