@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="lorenz" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Lorenz" class="ptolemy.actor.TypedCompositeActor">
     <property name="sigma" class="ptolemy.data.expr.Parameter" value="10.0">
     </property>
     <property name="lambda" class="ptolemy.data.expr.Parameter" value="25.0">
@@ -113,7 +113,7 @@ right click on the actor and select
     <entity name="Integrator 1" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="227.0, 214.0">
+        <property name="_location" class="ptolemy.moml.Location" value="213.0, 213.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -144,7 +144,7 @@ right click on the actor and select
     <entity name="Integrator 2" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="240.0, 293.0">
+        <property name="_location" class="ptolemy.moml.Location" value="224.0, 293.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -160,7 +160,7 @@ right click on the actor and select
     <entity name="Integrator 3" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="252.0, 370.0">
+        <property name="_location" class="ptolemy.moml.Location" value="234.0, 353.5">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -176,7 +176,7 @@ right click on the actor and select
     <entity name="Expression 2" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="(lambda-x3)*x1-x2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="130.0, 293.0">
+        <property name="_location" class="ptolemy.moml.Location" value="133.0, 293.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -194,7 +194,7 @@ right click on the actor and select
     <entity name="Expression 3" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="x1*x2-b*x3">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="136.0, 370.0">
+        <property name="_location" class="ptolemy.moml.Location" value="133.0, 368.5">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -236,19 +236,19 @@ right click on the actor and select
 <yRange min="-20.0" max="25.0"/>
 <noGrid/>
 </plot>?>
-                                        </configure>    </entity>
+                                                </configure>    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="26.0, 145.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="31.0, 150.0">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="39.0, 160.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="44.0, 165.0">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="54.0, 173.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="54.0, 178.0">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
