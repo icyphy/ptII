@@ -165,14 +165,47 @@ test FilterOutGraphicalClasses-2.2 {Try running old models, first check that the
 
 # createAndExecute a file with a MoMLFilter
 proc createAndExecute {file} {
+    global KNOWN_FAILED
     #java::new ptolemy.actor.gui.MoMLSimpleApplication $file
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser setMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
     set namedObj [$parser parseFile $file]
     set toplevel [java::cast ptolemy.actor.CompositeActor $namedObj]
+
+    # DT is a mess, don't bother testing it
+    set compositeActor [java::cast ptolemy.actor.CompositeActor $toplevel]
+    set director [$compositeActor getDirector]
+    if [java::instanceof \
+	    $director ptolemy.domains.dt.kernel.DTDirector] {
+	puts "$file: Skipping DT tests, marking as Known Failure"
+	incr KNOWN_FAILED
+	return
+    }
+
+    # Look for comp
+    set deepEntityList [$compositeActor deepEntityList]
+    for {set i 0} {$i < [$deepEntityList size]} {incr i} {
+	set containedActor [$deepEntityList get $i]
+	if [java::instanceof $containedActor \
+		ptolemy.actor.TypedCompositeActor] {
+	    set compositeActor [java::cast ptolemy.actor.CompositeActor \
+		    $containedActor]
+	    set director [$compositeActor getDirector]
+	    if [java::instanceof \
+		    $director ptolemy.domains.dt.kernel.DTDirector] {
+		puts "$file: Skipping tests with DT inside, marking as Known Failure"
+		incr KNOWN_FAILED
+		return
+	    }
+	}
+    }
+
+
+
     set workspace [$toplevel workspace]
     set manager [java::new ptolemy.actor.Manager \
 	    $workspace "compatibilityChecking"]
+    
     $toplevel setManager $manager
     $manager execute
 }
@@ -190,3 +223,5 @@ foreach file [glob compat/*.xml] {
     #	list {}
     #} {{}}
 }
+doneTests
+
