@@ -504,6 +504,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *   parse.
      */
     public void endDocument() throws Exception {
+        // If link or delete requests are issued at the top level,
+        // then they must be processed here.
+        _processPendingRequests();
+        
         if (_handler != null) {
             _handler.enableErrorSkipping(false);
         }
@@ -778,11 +782,28 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 _currentDocName = null;
 
             } else if (elementName.equals("group")) {
+                // Process link requests that have accumulated in
+                // this element.
+                _processPendingRequests();
+
                 try {
                     _namespace = (String)_namespaces.pop();
-                }
-                catch (EmptyStackException ex) {
+                    _namespaceTranslationTable
+                            = (Map)_namespaceTranslations.pop();
+                } catch (EmptyStackException ex) {
                     _namespace = _DEFAULT_NAMESPACE;
+                }
+                try {
+                    _linkRequests = (List)_linkRequestStack.pop();
+                } catch (EmptyStackException ex) {
+                    // We are back at the top level.
+                    _linkRequests = null;
+                }
+                try {
+                    _deleteRequests = (List)_deleteRequestStack.pop();
+                } catch (EmptyStackException ex) {
+                    // We are back at the top level.
+                    _deleteRequests = null;
                 }
 
             } else if (
@@ -791,82 +812,21 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     || elementName.equals("model")) {
                 // Process link requests that have accumulated in
                 // this element.
-                if (_linkRequests != null) {
-                    Iterator requests = _linkRequests.iterator();
-                    while (requests.hasNext()) {
-                        LinkRequest request = (LinkRequest)requests.next();
-                        // Be sure to use the handler if these fail so that
-                        // we continue to the next link requests.
-                        try {
-                            request.execute();
-                        } catch (Exception ex) {
-                            if (_handler != null) {
-                                int reply = _handler.handleError(
-                                        request.toString(), _current, ex);
-                                if (reply == ErrorHandler.CONTINUE) {
-                                    continue;
-                                } else if (reply == ErrorHandler.CANCEL) {
-                                    // NOTE: Since we have to throw an XmlException for
-                                    // the exception to be properly handled, we communicate
-                                    // that it is a user cancellation with the special
-                                    // string pattern "*** Canceled." in the message.
-                                    throw new XmlException(
-                                            "*** Canceled.",
-                                            _currentExternalEntity(),
-                                            _parser.getLineNumber(),
-                                            _parser.getColumnNumber());
-                                }
-                            } else {
-                                // No handler.  Throw the original exception.
-                                throw ex;
-                            }
-                        }
-                    }
-                }
-                // Process delete requests that have accumulated in
-                // this element.
-                if (_deleteRequests != null) {
-                    Iterator requests = _deleteRequests.iterator();
-                    while (requests.hasNext()) {
-                        DeleteRequest request = (DeleteRequest)requests.next();
-                        // Be sure to use the handler if these fail so that
-                        // we continue to the next link requests.
-                        try {
-                            request.execute();
-                        } catch (Exception ex) {
-                            if (_handler != null) {
-                                int reply = _handler.handleError(
-                                        request.toString(), _current, ex);
-                                if (reply == ErrorHandler.CONTINUE) {
-                                    continue;
-                                } else if (reply == ErrorHandler.CANCEL) {
-                                    // NOTE: Since we have to throw an XmlException for
-                                    // the exception to be properly handled, we communicate
-                                    // that it is a user cancellation with the special
-                                    // string pattern "*** Canceled." in the message.
-                                    throw new XmlException(
-                                            "*** Canceled.",
-                                            _currentExternalEntity(),
-                                            _parser.getLineNumber(),
-                                            _parser.getColumnNumber());
-                                }
-                            } else {
-                                // No handler.  Throw the original exception.
-                                throw ex;
-                            }
-                        }
-                    }
-                }
+                _processPendingRequests();
+
                 try {
                     _current = (NamedObj)_containers.pop();
-                    _namespace = (String)_namespaces.pop();
                 } catch (EmptyStackException ex) {
                     // We are back at the top level.
                     _current = null;
+                }
+                try {
+                    _namespace = (String)_namespaces.pop();
+                    _namespaceTranslationTable
+                            = (Map)_namespaceTranslations.pop();
+                } catch (EmptyStackException ex) {
                     _namespace = _DEFAULT_NAMESPACE;
                 }
-                // Use a separate try-catch for more robustness
-                // against malformed XML.
                 try {
                     _linkRequests = (List)_linkRequestStack.pop();
                 } catch (EmptyStackException ex) {
@@ -888,10 +848,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     || elementName.equals("vertex")) {
                 try {
                     _current = (NamedObj)_containers.pop();
-                    _namespace = (String)_namespaces.pop();
                 } catch (EmptyStackException ex) {
                     // We are back at the top level.
                     _current = null;
+                }
+                try {
+                    _namespace = (String)_namespaces.pop();
+                    _namespaceTranslationTable
+                            = (Map)_namespaceTranslations.pop();
+                } catch (EmptyStackException ex) {
                     _namespace = _DEFAULT_NAMESPACE;
                 }
             }
@@ -917,11 +882,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // Push the child's undo MoML on the stack of child
                 // undo entries.
                 _undoContext.pushUndoEntry(undoMoML);
-            }
-            catch (EmptyStackException ex) {
-                // If get here typically means that we are back at the top
-                // level, and the current _undoContext has the undo MoML
-                // we want. Do nothing.
+            } catch (EmptyStackException ex) {
+                // At the top level. The current _undoContext has the undo
+                // that we want to preserve.
                 if (_undoDebug) {
                     System.out.println("Reached top level of undo " +
                             "context stack");
@@ -955,7 +918,19 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Error message methods should be very careful to handle
             // exceptions while trying to provide the user with information
             currentExternalEntity = _currentExternalEntity();
-        } catch (java.util.EmptyStackException emptyStack) {
+            
+            // Restore the status of change requests.
+            // Execute any change requests that might have been queued
+            // as a consequence of this change request.
+            if (_toplevel != null) {
+                // Set the top level back to the default
+                // found in startDocument.
+                _toplevel.setDeferringChangeRequests(_previousDeferStatus);
+                _toplevel.executeChangeRequests();
+            }
+
+        } catch (Exception emptyStack) {
+            // Ignore any exceptions here.
         }
 
         throw new XmlException(message, currentExternalEntity, line, column);
@@ -1430,7 +1405,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         _attributes = new HashMap();
         _configureNesting = 0;
         _containers = new Stack();
+        _linkRequests = null;
         _linkRequestStack = new Stack();
+        _deleteRequests = null;
         _deleteRequestStack = new Stack();
         _current = null;
         _docNesting = 0;
@@ -1639,6 +1616,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Make sure a default is provided.
             _previousDeferStatus = false;
         }
+        _linkRequests = null;
+        _deleteRequests = null;
+        _linkRequestStack.clear();
+        _deleteRequestStack.clear();
     }
 
     /** Start an element.
@@ -1651,6 +1632,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *   in constructing the model.
      */
     public void startElement(String elementName) throws XmlException {
+        boolean pushedLinkRequests = false;
+        boolean pushedDeleteRequests = false;
+        boolean pushedUndoContexts = false;
+        boolean exceptionThrown = false;
+        _namespacesPushed = false;
         try {
             if (_skipElement <= 0) {
                 // If we are not skipping an element, then adjust the
@@ -1688,6 +1674,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 boolean childNodesUndoable = true;
                 if (_undoContext != null) {
                     _undoContexts.push(_undoContext);
+                    pushedUndoContexts = true;
                     childNodesUndoable = _undoContext.hasUndoableChildren();
                 }
                 // Create a new current context
@@ -1759,6 +1746,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // which case _deleteRequests is null.
                 if (_deleteRequests != null) {
                     _deleteRequestStack.push(_deleteRequests);
+                    pushedDeleteRequests = true;
                 }
                 _deleteRequests = new LinkedList();
 
@@ -1766,6 +1754,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // which case _linkRequests is null.
                 if (_linkRequests != null) {
                     _linkRequestStack.push(_linkRequests);
+                    pushedLinkRequests = true;
                 }
                 _linkRequests = new LinkedList();
                 
@@ -1999,6 +1988,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 arguments[1] = dirName;
                 // NamedObj container = _current;
                 _pushContext();
+                
                 Class newClass = Class.forName(className, true, _classLoader);
                 // NOTE: No propagation occurs here... Hopefully, deprecated
                 // elements are not used with class structures.
@@ -2055,6 +2045,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // which case _deleteRequests is null.
                 if (_deleteRequests != null) {
                     _deleteRequestStack.push(_deleteRequests);
+                    pushedDeleteRequests = true;
                 }
                 _deleteRequests = new LinkedList();
 
@@ -2062,6 +2053,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // which case _linkRequests is null.
                 if (_linkRequests != null) {
                     _linkRequestStack.push(_linkRequests);
+                    pushedLinkRequests = true;
                 }
                 _linkRequests = new LinkedList();
 
@@ -2129,6 +2121,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // Defining a namespace.
                     _namespaces.push(_namespace);
                     _namespaceTranslations.push(_namespaceTranslationTable);
+                    _namespacesPushed = true; 
                     if (groupName.equals("auto")) {
                         _namespace = _AUTO_NAMESPACE;
                         _namespaceTranslationTable = new HashMap();
@@ -2138,8 +2131,28 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 } else {
                     _namespaces.push(_DEFAULT_NAMESPACE);
                     _namespaceTranslations.push(_namespaceTranslationTable);
+                    _namespacesPushed = true; 
                     _namespace = _DEFAULT_NAMESPACE;
+                    _namespaceTranslationTable = new HashMap();
                 }
+
+                // Link and unlink requests are processed when the
+                // group closes.
+                // NOTE: The entity may be at the top level, in
+                // which case _deleteRequests is null.
+                if (_deleteRequests != null) {
+                    _deleteRequestStack.push(_deleteRequests);
+                    pushedDeleteRequests = true;
+                }
+                _deleteRequests = new LinkedList();
+
+                // NOTE: The entity may be at the top level, in
+                // which case _linkRequests is null.
+                if (_linkRequests != null) {
+                    _linkRequestStack.push(_linkRequests);
+                    pushedLinkRequests = true;
+                }
+                _linkRequests = new LinkedList();
 
                 // Handle the undo aspect.
                 if (undoEnabled && _undoContext.isUndoable()) {
@@ -2432,6 +2445,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 + className);
                     }
                     _pushContext();
+                    
                     _current = relation;
                     _namespace = _DEFAULT_NAMESPACE;
                 }
@@ -2701,6 +2715,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
 
                 _pushContext();
+                
                 _current = vertex;
                 _namespace = _DEFAULT_NAMESPACE;
 
@@ -2729,6 +2744,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             //// failure
 
         } catch (InvocationTargetException ex) {
+            exceptionThrown = true;
+            
             // A constructor or method invoked via reflection has
             // triggered an exception.
             if (_handler != null) {
@@ -2763,6 +2780,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     _parser.getColumnNumber(), ex.getTargetException());
 
         } catch (Exception ex) {
+            exceptionThrown = true;
+
             if (_handler != null) {
                 int reply = _handler.handleError(
                         _getCurrentElement(elementName), _current, ex);
@@ -2773,6 +2792,16 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     _skipElementName = elementName;
                     return;
                 } else if (reply == ErrorHandler.CANCEL) {
+                    // Restore the status of change requests.
+                    // Execute any change requests that might have been queued
+                    // as a consequence of this change request.
+                    if (_toplevel != null) {
+                        // Set the top level back to the default
+                        // found in startDocument.
+                        _toplevel.setDeferringChangeRequests(_previousDeferStatus);
+                        _toplevel.executeChangeRequests();
+                    }
+
                     // NOTE: Since we have to throw an XmlException for
                     // the exception to be properly handled, we communicate
                     // that it is a user cancellation with the special
@@ -2784,6 +2813,18 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             _parser.getColumnNumber());
                 }
             }
+            // There is no handler.
+            
+            // Restore the status of change requests.
+            // Execute any change requests that might have been queued
+            // as a consequence of this change request.
+            if (_toplevel != null) {
+                // Set the top level back to the default
+                // found in startDocument.
+                _toplevel.setDeferringChangeRequests(_previousDeferStatus);
+                _toplevel.executeChangeRequests();
+            }
+
             if (ex instanceof XmlException) {
                 throw (XmlException)ex;
             } else {
@@ -2794,9 +2835,50 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         _parser.getLineNumber(),
                         _parser.getColumnNumber(), ex);
             }
+        } finally {
+            _attributes.clear();
+            _attributeNameList.clear();
+            
+            // If an exception was thrown, then restore all stacks
+            // by popping off them anything that was pushed.
+            if (exceptionThrown) {
+                if (pushedDeleteRequests) {
+                    try {
+                        _deleteRequests = (List)_deleteRequestStack.pop();
+                    } catch (EmptyStackException ex) {
+                        // We are back at the top level.
+                        _deleteRequests = null;
+                    }
+                }
+                if (pushedLinkRequests) {
+                    try {
+                        _linkRequests = (List)_linkRequestStack.pop();
+                    } catch (EmptyStackException ex) {
+                        // We are back at the top level.
+                        _linkRequests = null;
+                    }
+                }
+                if (_namespacesPushed) {
+                    try {
+                        _namespace = (String)_namespaces.pop();
+                        _namespaceTranslationTable
+                                = (Map)_namespaceTranslations.pop();
+                    } catch (EmptyStackException ex) {
+                        _namespace = _DEFAULT_NAMESPACE;
+                    }
+                }
+                if (pushedUndoContexts) {
+                    try {
+                        _undoContext = (UndoContext)_undoContexts.pop();
+                    } catch (EmptyStackException ex) {
+                        // This should not occur, but if it does,
+                        // we don't want _undoContext set to null.
+                        // Leave it as it is so we don't lose undo
+                        // information.
+                    }
+                }
+            } 
         }
-        _attributes.clear();
-        _attributeNameList.clear();
     }
 
     /** Handle the start of an external entity.  This pushes the stack so
@@ -2846,7 +2928,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *   or null if none.
      */
     protected String _currentExternalEntity() {
-        return (String)_externalEntities.peek();
+        try {
+            return (String)_externalEntities.peek();
+        } catch (EmptyStackException ex) {
+            return null;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -4064,8 +4150,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
 
             _pushContext();
+            
             _current =  (Attribute)
-                _current.getAttribute(propertyName);
+                    _current.getAttribute(propertyName);
             _namespace = _DEFAULT_NAMESPACE;
 
             // Handle undo
@@ -4762,6 +4849,78 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
     }
 
+    /** Process pending link and delete requests, if any.
+     *  @throws Exception If something goes wrong.
+     */
+    private void _processPendingRequests() throws Exception {
+        if (_linkRequests != null) {
+            Iterator requests = _linkRequests.iterator();
+            while (requests.hasNext()) {
+                LinkRequest request = (LinkRequest)requests.next();
+                // Be sure to use the handler if these fail so that
+                // we continue to the next link requests.
+                try {
+                    request.execute();
+                } catch (Exception ex) {
+                    if (_handler != null) {
+                        int reply = _handler.handleError(
+                                request.toString(), _current, ex);
+                        if (reply == ErrorHandler.CONTINUE) {
+                            continue;
+                        } else if (reply == ErrorHandler.CANCEL) {
+                            // NOTE: Since we have to throw an XmlException for
+                            // the exception to be properly handled, we communicate
+                            // that it is a user cancellation with the special
+                            // string pattern "*** Canceled." in the message.
+                            throw new XmlException(
+                                    "*** Canceled.",
+                                    _currentExternalEntity(),
+                                    _parser.getLineNumber(),
+                                    _parser.getColumnNumber());
+                        }
+                    } else {
+                        // No handler.  Throw the original exception.
+                        throw ex;
+                    }
+                }
+            }
+        }
+        // Process delete requests that have accumulated in
+        // this element.
+        if (_deleteRequests != null) {
+            Iterator requests = _deleteRequests.iterator();
+            while (requests.hasNext()) {
+                DeleteRequest request = (DeleteRequest)requests.next();
+                // Be sure to use the handler if these fail so that
+                // we continue to the next link requests.
+                try {
+                    request.execute();
+                } catch (Exception ex) {
+                    if (_handler != null) {
+                        int reply = _handler.handleError(
+                                request.toString(), _current, ex);
+                        if (reply == ErrorHandler.CONTINUE) {
+                            continue;
+                        } else if (reply == ErrorHandler.CANCEL) {
+                            // NOTE: Since we have to throw an XmlException for
+                            // the exception to be properly handled, we communicate
+                            // that it is a user cancellation with the special
+                            // string pattern "*** Canceled." in the message.
+                            throw new XmlException(
+                                    "*** Canceled.",
+                                    _currentExternalEntity(),
+                                    _parser.getLineNumber(),
+                                    _parser.getColumnNumber());
+                        }
+                    } else {
+                        // No handler.  Throw the original exception.
+                        throw ex;
+                    }
+                }
+            }
+        }
+    }
+
     /** Process an unlink request.
      *  @param portName The port name.
      *  @param relationName The relation name.
@@ -4960,7 +5119,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     private void _pushContext() {
         _containers.push(_current);
         _namespaces.push(_namespace);
+        _namespace = _DEFAULT_NAMESPACE;
         _namespaceTranslations.push(_namespaceTranslationTable);
+        _namespaceTranslationTable = new HashMap();
+        _namespacesPushed = true; 
     }
 
     /** Reset the undo information to give a fresh setup for the next
@@ -5324,6 +5486,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // The stack of name spaces.
     private Stack _namespaces = new Stack();
+    
+    // Indicator that namespaces have been pushed on the stack.
+    private boolean _namespacesPushed = false;
 
     // The current translation table for names.
     private Map _namespaceTranslationTable = null;
