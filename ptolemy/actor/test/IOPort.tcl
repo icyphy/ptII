@@ -612,3 +612,98 @@ test IOPort-11.5 {Check liberalLink *-relation from both inside and outside } {
 } {{}}
 
 
+######################################################################
+####
+# Example similar to figure of design document.
+test IOPOrt-12.1 {deepConnectedIn(out)Ports} {
+    # Create objects
+    set e0 [java::new pt.actor.CompositeActor $director $director]
+    $e0 setName E0
+    set e1 [java::new pt.actor.Actor $e0 "E1"]
+    set e2 [java::new pt.actor.CompositeActor $e0 "E2" [java::null]]
+    set e3 [java::new pt.actor.Actor $e2 "E3"]
+    set e4 [java::new pt.actor.Actor $e0 "E4"]
+    set p1 [java::new pt.actor.IOPort $e1 "P1"]
+    set p2 [java::new pt.actor.IOPort $e2 "P2"]
+    set p3 [java::new pt.actor.IOPort $e3 "P3"]
+    set p4 [java::new pt.actor.IOPort $e2 "P4"]
+    set p5 [java::new pt.actor.IOPort $e4 "P5"]
+    set r1 [java::new pt.actor.IORelation $e0 "R1"]
+    set r2 [java::new pt.actor.IORelation $e2 "R2"]
+    set r3 [java::new pt.actor.IORelation $e0 "R3"]
+
+    # Connect
+    $p1 link $r1
+    $p2 link $r1
+    $p2 link $r2
+    $p3 link $r2
+    $p4 link $r2
+    $p4 link $r3
+    $p5 link $r3
+
+    # make P1, P3 output, P5 input
+    $p1 makeInput false
+    $p1 makeOutput true
+    $p3 makeInput false
+    $p3 makeOutput true
+    $p5 makeInput true
+    $p5 makeOutput false
+
+    list [enumToNames [$p1 deepConnectedInPorts]] \
+            [enumToNames [$p1 deepConnectedOutPorts]] \
+            [enumToNames [$p2 deepConnectedInPorts]] \
+            [enumToNames [$p2 deepConnectedOutPorts]] \
+            [enumToNames [$p3 deepConnectedInPorts]] \
+            [enumToNames [$p3 deepConnectedOutPorts]] \
+            [enumToNames [$p4 deepConnectedInPorts]] \
+            [enumToNames [$p4 deepConnectedOutPorts]] \
+            [enumToNames [$p5 deepConnectedInPorts]] \
+            [enumToNames [$p5 deepConnectedOutPorts]]
+} {P5 P3 {} P1 P5 P1 P5 {} {} {P1 P3}}
+
+# NOTE: Uses topology built in 12.1
+test IOPort-12.2 {deepConnectedIn(Out)Ports} {
+
+    # make P1 output, P3, P5 input
+    $p1 makeInput false
+    $p1 makeOutput true
+    $p3 makeInput true
+    $p3 makeOutput false
+    $p5 makeInput true
+    $p5 makeOutput false
+
+    list [enumToNames [$p1 deepConnectedInPorts]] \
+            [enumToNames [$p1 deepConnectedOutPorts]] \
+            [enumToNames [$p2 deepConnectedInPorts]] \
+            [enumToNames [$p2 deepConnectedOutPorts]] \
+            [enumToNames [$p3 deepConnectedInPorts]] \
+            [enumToNames [$p3 deepConnectedOutPorts]] \
+            [enumToNames [$p4 deepConnectedInPorts]] \
+            [enumToNames [$p4 deepConnectedOutPorts]] \
+            [enumToNames [$p5 deepConnectedInPorts]] \
+            [enumToNames [$p5 deepConnectedOutPorts]]
+} {{P3 P5} {} {} P1 P5 P1 P5 {} P3 P1}
+
+# NOTE: Uses topology built in 12.1
+test IOPort-12.3 {deepConnectedIn(Out)Ports} {
+
+    # make P3 output, P1, P5 input
+    $p1 makeInput true
+    $p1 makeOutput false
+    $p3 makeInput false
+    $p3 makeOutput true
+    $p5 makeInput true
+    $p5 makeOutput false
+
+    list [enumToNames [$p1 deepConnectedInPorts]] \
+            [enumToNames [$p1 deepConnectedOutPorts]] \
+            [enumToNames [$p2 deepConnectedInPorts]] \
+            [enumToNames [$p2 deepConnectedOutPorts]] \
+            [enumToNames [$p3 deepConnectedInPorts]] \
+            [enumToNames [$p3 deepConnectedOutPorts]] \
+            [enumToNames [$p4 deepConnectedInPorts]] \
+            [enumToNames [$p4 deepConnectedOutPorts]] \
+            [enumToNames [$p5 deepConnectedInPorts]] \
+            [enumToNames [$p5 deepConnectedOutPorts]]
+} {P5 P3 P1 {} {P1 P5} {} P5 {} P1 P3}
+
