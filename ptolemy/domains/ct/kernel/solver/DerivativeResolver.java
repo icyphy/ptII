@@ -164,8 +164,8 @@ public class DerivativeResolver extends ODESolver
      *  current time. It gets the state transition
      *  schedule from the scheduler and fire for one iteration.
      *
-     * @exception IllegalActionException Not thrown in this base
-     *  class. May be needed by the derived class.
+     * @exception IllegalActionException Not thrown in this base class
+     *  May be needed by the derived class.
      */
     public boolean resolveStates() throws IllegalActionException {
         _debug(getFullName() + ": resolveState().");
