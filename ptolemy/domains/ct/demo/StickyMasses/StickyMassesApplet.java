@@ -33,8 +33,7 @@ package ptolemy.domains.ct.demo.StickyMasses;
 import java.awt.BorderLayout;
 import java.awt.event.*;
 
-import ptolemy.domains.fsm.kernel.*;
-import ptolemy.domains.fsm.lib.*;
+import ptolemy.domains.hs.kernel.*;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.gui.CTApplet;
 import ptolemy.domains.ct.lib.*;
@@ -187,8 +186,8 @@ public class StickyMassesApplet extends CTApplet {
             ctIncE2.expression.setExpression("2.0*2.0 + In - 2.0*P2");
 
             AddSubtract ctIncE3 = new AddSubtract(ctInc, "E3");
-            ZeroCrossingDetector ctIncD =
-                new ZeroCrossingDetector(ctInc, "ZD");
+            CTZeroCrossingDetector ctIncD =
+                new CTZeroCrossingDetector(ctInc, "ZD");
 
             // the ports
             // Force on ball 1
