@@ -49,7 +49,8 @@ public class BusContentionDemo {
 
     /**
      */
-    public BusContentionDemo() throws IllegalActionException, NameDuplicationException {
+    public BusContentionDemo()
+            throws IllegalActionException, NameDuplicationException {
 
         // Set up Manager, Director and top level CompositeActor
         _workSpc = new Workspace();

@@ -56,7 +56,8 @@ import java.awt.event.ActionListener;
 public class BusContentionGraphic extends Frame {
 
     /*
-      public BusContentionGraphic() throws IllegalActionException, NameDuplicationException {
+      public BusContentionGraphic()
+      throws IllegalActionException, NameDuplicationException {
       _demo = new BusContentionDemo(this);
       }
     */
