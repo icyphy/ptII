@@ -332,7 +332,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         int outputLength = endLag - startLag + 1;
         double[] returnValue = new double[outputLength];
 
-        for (int lag = startLag; lag < endLag; lag++) {
+        for (int lag = startLag; lag <= endLag; lag++) {
 
             // Find the most efficient and correct place to start the summation
             int start = Math.max(0, -lag);
@@ -371,7 +371,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         int outputLength = endLag - startLag + 1;
         double[] returnValue = new double[outputLength];
 
-        for (int lag = startLag; lag < endLag; lag++) {
+        for (int lag = startLag; lag <= endLag; lag++) {
 
             // Find the most efficient and correct place to start the summation
             int start = Math.max(0, -lag);
