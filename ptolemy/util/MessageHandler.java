@@ -151,7 +151,7 @@ public class MessageHandler {
      *  execution, something that is particularly useful if continuing
      *  execution will result in repeated warnings.
      *  By default, only the message of the throwable
-     *  is thrown.  The stack trace information is only shown if the
+     *  is shown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
      *  @param info The message.
      *  @exception CancelException If the user clicks on the "Cancel" button.
