@@ -115,18 +115,18 @@ MISC_FILES =	$(DIRS)
 # javadoc generates html for files in $(OPTIONAL_JSRCS)
 #	ASCII_CharStream.java 
 OPTIONAL_JSRCS = \
-	JJTPtParserState.java \
-	ParseException.java \
-	Node.java \
-	PtParserConstants.java \
-	PtParserTokenManager.java \
-	PtParserTreeConstants.java \
 	JJTMatrixParserState.java \
+	JJTPtParserState.java \
 	MatrixParserConstants.java \
 	MatrixParserTokenManager.java \
 	MatrixParserTreeConstants.java \
-	SimpleNode.java \
+	Node.java \
+	ParseException.java \
+	PtParserConstants.java \
+	PtParserTokenManager.java \
+	PtParserTreeConstants.java \
 	SimpleCharStream.java \
+	SimpleNode.java \
 	Token.java \
 	TokenMgrError.java
 
