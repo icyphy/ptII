@@ -50,9 +50,6 @@ public class SimpleDelay extends TypedAtomicActor {
         output = new DEIOPort(this, "output", false, true);
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
         delay.setTypeEquals(BaseType.DOUBLE);
-
-        IODependence ioDependence = new IODependence(this, "_IODependence");
-        ioDependence.removeDependence(input, output);  
     }
 
     public Parameter delay;
@@ -62,6 +59,19 @@ public class SimpleDelay extends TypedAtomicActor {
 
     public void fire() throws IllegalActionException {
         _currentInput = input.get(0);
+    }
+
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        try {
+            IODependence ioDependence = new IODependence(this, "_IODependence");
+            ioDependence.removeDependence(input, output);
+        } catch (NameDuplicationException e) {
+            // because the IODependence attribute is not persistent,
+            // and it is only created once in the preinitialize method,
+            // there should be no NameDuplicationException thrown.
+        }
+
     }
 
     public boolean postfire() throws IllegalActionException {
