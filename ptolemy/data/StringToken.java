@@ -45,7 +45,7 @@ one of the strings will be changed.
 @author Edward A. Lee, Neil Smyth
 @version $Id$
 */
-public class StringToken extends ObjectToken {
+public class StringToken extends Token {
 
     /** Construct a token with an empty string.
      */
