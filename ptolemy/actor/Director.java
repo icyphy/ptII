@@ -359,7 +359,7 @@ public class Director extends Attribute implements Executable {
      *  asynchronous threads should used the fireAtCurrentTime()
      *  method to schedule firings.
      *
-     *  This method calls {@link #fireAt(Actor,Time)} method.
+     *  This method calls {@link #fireAt(Actor, Time)} method.
      *
      *  @param actor The actor scheduled to be fired.
      *  @param time The scheduled time.
@@ -367,7 +367,7 @@ public class Director extends Attribute implements Executable {
      *    permissible (e.g. the given time is in the past).
      *  @deprecated Instead of using double as time argument, use a
      *  time object instead. As of Ptolemy 4.1, replaced by
-     *  {@link #fireAt(Actor,Time)}
+     *  {@link #fireAt(Actor, Time)}
      */
     public void fireAt(Actor actor, double time) throws IllegalActionException {
         fireAt(actor, new Time(this, time));
