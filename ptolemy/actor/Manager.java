@@ -437,7 +437,7 @@ public class Manager extends NamedObj implements Runnable {
             _iterationCount++;
             _setState(ITERATING);
 
-            // Perform domain-specific initialization on the actor. 
+            // Perform domain-specific initialization on the actor.
             if (_actorsToInitialize.size() > 0) {
                 Iterator actors = _actorsToInitialize.iterator();
                 while (actors.hasNext()) {
@@ -605,8 +605,8 @@ public class Manager extends NamedObj implements Runnable {
                 _resumeNotifyWaiting = false;
             }
         }
-            
-        // Avoid the case when the director is not actually paused causing the 
+
+        // Avoid the case when the director is not actually paused causing the
         // swing thread to block.
         if (_state == PAUSED) {
             synchronized(this) {
@@ -744,7 +744,7 @@ public class Manager extends NamedObj implements Runnable {
                 _setState(new State("pausing on breakpoint: "
                                   + breakpointMessage
                                   + ".  Select Resume to continue."));
-                
+
                 _resumeNotifyWaiting = true;
 
                 // Wait until resume() is called.
