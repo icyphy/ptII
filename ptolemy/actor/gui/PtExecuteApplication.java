@@ -63,6 +63,11 @@ does nothing.
 public class PtExecuteApplication extends MoMLApplication
         implements ExecutionListener {
 
+    public PtExecuteApplication() throws Exception {
+	super(null);
+        System.out.println("PtExecuteApplication()");
+    }
+
     /** Parse the specified command-line arguments, creating models
      *  and running them.
      *  @param args The command-line arguments.
@@ -70,6 +75,7 @@ public class PtExecuteApplication extends MoMLApplication
      */
     public PtExecuteApplication(String args[]) throws Exception {
 	super(args);
+        System.out.println("PtExecuteApplication(args)");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -243,7 +249,9 @@ public class PtExecuteApplication extends MoMLApplication
                         _activeCount + "\n" + this + 
                         util.testsuite.PrintThreads.allThreads());
                 // Run the model in a new thread.
+                System.out.println("_parseArgs: before startRun()");
                 manager.startRun();
+                System.out.println("_parseArgs: after startRun()");
             }
         }
     }
@@ -255,5 +263,5 @@ public class PtExecuteApplication extends MoMLApplication
     private Configuration _configuration;
 
     // The count of currently executing runs.
-    private static int _activeCount = 0;
+    private int _activeCount = 0;
 }
