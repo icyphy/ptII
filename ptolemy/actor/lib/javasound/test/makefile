@@ -32,7 +32,7 @@
 # Location of this directory, relative to the Ptolemy II directory
 ME =		ptolemy/actor/lib/javasound/test
 
-DIRS =		pitchshift
+DIRS =
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -66,7 +66,6 @@ EXTRA_SRCS =	$(TCL_SRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 # want make checkjunk to barf on them.
 MISC_FILES = \
 	auto \
-	pitchshift \
 	voice.au \
 	voice.wav
 
