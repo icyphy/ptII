@@ -1,7 +1,4 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="hello" class="ptolemy.actor.TypedCompositeActor">
+<?xml version="1.0" encoding="UTF-8"?><entity name="hello" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="HDF Director" class="ptolemy.domains.hdf.kernel.HDFDirector">
@@ -97,8 +94,7 @@ A and B cannot send messages to each other at the same time.
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
-            <property name="_library" class="ptolemy.moml.LibraryAttribute">
-            </property>
+            <property name="_library" class="ptolemy.moml.LibraryAttribute"><configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"/><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"/></entity></entity></configure></property>
             <port name="sendMSG" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 20.0">
@@ -372,8 +368,7 @@ A and B cannot send messages to each other at the same time.
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
-            <property name="_library" class="ptolemy.moml.LibraryAttribute">
-            </property>
+            <property name="_library" class="ptolemy.moml.LibraryAttribute"><configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"/><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"/></entity></entity></configure></property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
@@ -616,7 +611,7 @@ to another. Then delete this annotation.</text>
         <link port="send2.send" relation="sendRelation"/>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Hello B!&quot;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&#34;Hello B!&#34;">
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -636,7 +631,7 @@ to another. Then delete this annotation.</text>
         </port>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Hello A!&quot;">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&#34;Hello A!&#34;">
         </property>
         <doc>Create a constant sequence</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
