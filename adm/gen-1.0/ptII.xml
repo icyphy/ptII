@@ -682,7 +682,7 @@ Berkeley, CA 94706</property>
                         <arrayItem>bean30</arrayItem>
                     </property>
                     <property name="description">Custom - minimal documentation</property>
-                    <property name="id">Custom</property>
+                    <property name="id">custom</property>
                 </arrayItem>
             </property>
             <property name="selectedSetupTypeId">Full</property>
@@ -690,7 +690,7 @@ Berkeley, CA 94706</property>
         <wizardBean class="com.installshield.product.wizardbeans.SetupTypeSequence" id="customize">
             <property name="displayName">Customize Sequence</property>
             <property name="setupTypePanel">setupTypes</property>
-            <property name="setupType">Custom</property>
+            <property name="setupType">custom</property>
             <wizardBean class="com.installshield.product.wizardbeans.FeaturePanel" id="features">
                 <property name="displayName">Features</property>
                 <property name="active">True</property>

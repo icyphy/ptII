@@ -64,8 +64,6 @@ GNU_DEST =	$(FTP_DEST)/pub/gnu/$(PTOLEMY_SRC)$(VERSION)
 # For release, use ptolemy
 #USER =		ptolemy
 # For use under Windows
-# make USER=cxh PTIIHOME=//c/users/cxh/ptII TAR=tar 
-# make USER=cxh PTIIHOME=//c/users/cxh/ptII/adm/trees/ptII1.0beta TAR=tar 
 # make USER=cxh PTIIHOME=//c/users/cxh/ptII/adm/trees/ptII1.0beta COMPRESS=gzip TAR=tar PTIIADM=//c/users/cxh/ptII/adm 
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII1.0beta PTIIADM=/home/eecs/cxh/ptII/adm
 USER =		ptII
@@ -140,6 +138,7 @@ $(PTIIDIST):
 		(cd $@; $(TAR) -xpf -)
 	@echo "Removing codeDoc directories and other documentation"
 	-find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
+	-find $(PTIIDIST) -name CVS -exec rm -rf {} \;
 	@echo "Regenerate the documentation"
 	(cd $(PTIIDIST)/doc; make JDOCFLAGS="-author -version -J-Xmx132m")
 	#@echo "Do make realclean to clean up any trash"
@@ -1057,6 +1056,23 @@ unixPtiny.xml: ptiny.xml
 		 $< > $@
 
 build_unixPtiny: unixPtiny.xml
+	java -classpath $(ISPMP_CLASSPATH) \
+		-Dis.debug=12 \
+		com.installshield.isje.ISJE $< \
+		-build
+
+# Run this on doppler with:
+# rm unixPtII.xml; make PTIIHOME=/home/eecs/cxh/ptII build_unixPtII
+unixPtII.xml: ptII.xml
+	sed -e 's@[cC]:\\users\\cxh\\ptII\\adm\\gen-1.0\\installshield\\@$(GENDIR)/installshield/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\win32\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/win32/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\solaris\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/solaris/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\images\\InstallShield Images\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/images/InstallShield Images/@' \
+	    -e 's@<property name="outputDirectory">default</property>@<property name="outputDirectory">$(GENDIR)/installshield</property>@' \
+	    -e 's@ptiny\\copyright@ptiny/copyright@' \
+		 $< > $@
+
+build_unixPtII: unixPtII.xml
 	java -classpath $(ISPMP_CLASSPATH) \
 		-Dis.debug=12 \
 		com.installshield.isje.ISJE $< \
