@@ -376,8 +376,8 @@ public class InvokeGraphPruner {
     }
 
     /** Performs the appropriate operations for the discovery of a new
-     * class.
-     * @param source The class.
+     *  class.
+     *  @param node The class.
      */
     protected void _processClass(SootClass node) {
         if (_reachableClasses.contains(node)) {
