@@ -1,4 +1,5 @@
-/* Read ArrayTokens and send their elements to the output.
+/* Read a specified number of input tokens and send only one of them to
+   the output.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -30,16 +31,20 @@
 
 package ptolemy.domains.sdf.lib;
 
+import ptolemy.actor.Director;
+import ptolemy.data.Token;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.ArrayType;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.graph.InequalityTerm;
-import ptolemy.data.Token;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.ArrayType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -48,20 +53,22 @@ import java.util.List;
 //// DownSample
 /**
 This actor downsamples an input stream by an integer factor by
-removing tokens.  The downsample factor is given by the
-<i>tokenConsumptionRate</i> parameter of the input port.
-On each firing, this actor reads a number of tokens from the input
-and copies only the first token to the output.
-The number of tokens consumed during the firing is the same as the
-<i>tokenConsumptionRate</i> parameter of the input port.
-By default, this actor sets the value of this parameter to be two,
+removing tokens.  The downsample factor is given by the <i>factor</i>
+parameter. On each firing, this actor <i>factor</i> tokens from the
+input and send only one of them to the output.  Which one is sent
+depends on the <i>phase</i> parameter.  If <i>phase</i> is 0, then
+the most recent one (the last one consumed) is sent.  If <i>phase</i>
+is 1, then the next most recent one is sent. The value of <i>phase</i>
+can range up to <i>factor</i>-1, in which case the first one consumed
+is sent. By default, the <i>factor</i> parameter is 2,
 so the input sample rate is twice that of the output.
+The default value for <i>phase</i> is 0. 
 <p>
 This actor is data polymorphic. It can accept any token
 type on the input.
-<p>
 
-@author Steve Neuendorffer
+@see UpSample
+@author Steve Neuendorffer, Edward A. Lee
 @version $Id$
 */
 
@@ -79,48 +86,90 @@ public class DownSample extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-     	// Set tokenConsumptionRate to default 2.
-	input.setTokenConsumptionRate(2);
-
-	// tokenProductionRate is 1.
-	output.setTokenProductionRate(1);
-
-        output.setTypeAtLeast(input);
+        // Set parameters.
+        factor = new Parameter(this, "factor");
+        factor.setExpression("2");
+        phase = new Parameter(this, "phase");
+        phase.setExpression("0");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The number of input tokens to read per output token produced.
+     *  This is an integer that defaults to 2 and must be greater than
+     *  zero.
+     */
+    public Parameter factor;
+
+    /** The phase of the output with respect to the input.
+     *  This is an integer that defaults to 0 and must be between 0
+     *  and <i>factor</i>-1. If <i>phase</i> = 0, the most recent
+     *  sample is the output, while if <i>phase</i> = <i>factor</i>-1
+     *  the oldest sample is the output.
+     */
+    public Parameter phase;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume the first input Token and produce the same token on the output.
-     *  Then consume a number of tokens from the input port
-     *  so that input.tokenConsumptionRate tokens are consumed in total.
-     *  All tokens after the first are discarded. If there is not
-     *  enough tokens on the input,
-     *  then this method throws a NoTokenException (which is a runtime
-     *  exception).  This exception should not be thrown because the
-     *  prefire() method checks token availability.
-     *  @exception IllegalActionException If there is no director.
+    /** If the argument is the <i>factor</i> parameter, then
+     *  set the consumption rate of the input port, and invalidate
+     *  the schedule of the director.
+     *  @param attribute The attribute that has changed.
+     *  @exception IllegalActionException If the parameters are out of range.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if(attribute == factor) {
+            int factorValue = ((IntToken)factor.getToken()).intValue();
+            if (factorValue <= 0) {
+                throw new IllegalActionException(this,
+                "Invalid factor: " + factorValue);
+            }
+            input.setTokenConsumptionRate(factorValue);
+            Director dir = getDirector();
+            if (dir != null) {
+                dir.invalidateSchedule();
+            }
+        } else if(attribute == phase) {
+            int phaseValue = ((IntToken)phase.getToken()).intValue();
+            if (phaseValue < 0) {
+                throw new IllegalActionException(this,
+                "Invalid phase: " + phaseValue);
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+
+    /** Consume <i>factor</i> tokens from the input, and select one of
+     *  them to send to the output based on the <i>phase</i>.
+     *  @exception IllegalActionException If there is no director, or
+     *   if the <i>phase</i> value is out of range.
      */
     public void fire() throws IllegalActionException {
-	Token token = input.get(0);
-        // Send the first token.
-        output.send(0, token);
+        int factorValue = ((IntToken)factor.getToken()).intValue();
+	Token[] valueArray = input.get(0, factorValue);
 
-        // count is the number of zero tokens to create.
-        int count = input.getTokenConsumptionRate() - 1;
-        Token array[] = input.get(0, count);
-        // ignore the other consumed tokens.
+        int phaseValue = ((IntToken)phase.getToken()).intValue();
+        if (phaseValue >= factorValue) {
+            throw new IllegalActionException(this,
+            "Phase is out of range: " + phaseValue);
+        }
+        // Send the token.
+        output.send(0, valueArray[factorValue - phaseValue - 1]);
     }
 
     /** Return false if the number of tokens available on the input
-     *  is less than the <i>tokenConsumptionRate</i> parameter of the input
-     *  port.  Otherwise, return whatever the superclass returns.
+     *  is less than the <i>factor</i> value.
+     *  Otherwise, return whatever the superclass returns.
      *  @return False if there are not enough input tokens to fire.
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
-        int count = input.getTokenConsumptionRate();
-        if (!input.hasToken(0, count)) return false;
+        int factorValue = ((IntToken)factor.getToken()).intValue();
+        if (!input.hasToken(0, factorValue)) return false;
         else return super.prefire();
     }
 }
