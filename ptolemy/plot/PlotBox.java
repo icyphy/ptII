@@ -1,9 +1,5 @@
 /* A labeled box for signal plots.
 
-@Author: Edward A. Lee and Christopher Hylands
-
-@Contributors:  William Wu, Robert Kroeger
-
 @Copyright (c) 1997-2002 The Regents of the University of California.
 All rights reserved.
 
@@ -202,8 +198,8 @@ the corresponding public methods from some Java procedure.
 This class uses features of JDK 1.2, and hence if used in an applet,
 it can only be viewed by a browser that supports JDK 1.2, or a plugin.
 
-@author Edward A. Lee, Christopher Hylands
-@contributor Jun Wu (jwu@inin.com.au)
+@author Edward A. Lee, Christopher Hylands, Contributors: Jun Wu (jwu@inin.com.au), William Wu, Robert Kroeger
+
 @version $Id$
 @since Ptolemy II 0.2
  */
