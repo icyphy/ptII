@@ -57,7 +57,6 @@ JSRCS = \
 	Query.java \
 	QueryListener.java \
 	StatusBar.java \
-	TextEditor.java \
 	Top.java
 
 EXTRA_SRCS =	$(JSRCS)
