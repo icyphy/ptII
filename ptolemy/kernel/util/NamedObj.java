@@ -32,12 +32,17 @@ package ptolemy.kernel.util;
 
 import ptolemy.kernel.CompositeEntity;		/* Needed by javadoc */
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
-import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// NamedObj
@@ -154,7 +159,6 @@ public class NamedObj implements Nameable, Debuggable,
         }
     }
 
-
     /** Construct an object in the given workspace with the given name.
      *  If the workspace argument is null, use the default workspace.
      *  The object is added to the list of objects in the workspace.
@@ -223,6 +227,49 @@ public class NamedObj implements Nameable, Debuggable,
     public void attributeChanged(Attribute attribute)
            throws IllegalActionException {}
 
+    /** Return a list of the attributes contained by this object.
+     *  This method is read-synchronized on the workspace.
+     *  @return An unmodifiable list of instances of Attribute.
+     */
+    public List attributeList() {
+        try {
+            _workspace.getReadAccess();
+            if (_attributes == null) {
+                _attributes = new NamedList();
+            }
+            return _attributes.elementList();
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
+    /** Return a list of the attributes contained by this object that
+     *  are instances of the specified class.  If there are no such
+     *  instances, then return an empty list.
+     *  This method is read-synchronized on the workspace.
+     *  @param filter The class of attribute of interest.
+     *  @return A list of instances of specified class.
+     */
+    public List attributeList(Class filter) {
+        try {
+            _workspace.getReadAccess();
+            if (_attributes == null) {
+                _attributes = new NamedList();
+            }
+            List result = new LinkedList();
+            Iterator attributes = _attributes.elementList().iterator();
+            while (attributes.hasNext()) {
+                Object attribute = attributes.next();
+                if (filter.isInstance(attribute)) {
+                    result.add(attribute);
+                }
+            }
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
     /** React to a change in the type of an attribute.  This method is
      *  called by a contained attribute when its type changes.
      *  In this base class, the method does nothing.
@@ -273,9 +320,9 @@ public class NamedObj implements Nameable, Debuggable,
             // to access the directory are synchronized.
             newobj._attributes = null;
             newobj._workspace = ws;
-            Enumeration params = getAttributes();
-            while (params.hasMoreElements()) {
-                Attribute p = (Attribute)params.nextElement();
+            Iterator params = attributeList().iterator();
+            while (params.hasNext()) {
+                Attribute p = (Attribute)params.next();
                 Attribute np = (Attribute)p.clone(ws);
                 try {
                     np.setContainer(newobj);
@@ -334,6 +381,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  by calling the description method with an argument for full detail.
      *  This method read-synchronizes on the workspace.
      *  @return A description of the object.
+     *  @see exportMoML
      */
     public String description() {
         return description(COMPLETE);
@@ -346,9 +394,88 @@ public class NamedObj implements Nameable, Debuggable,
      *  It read-synchronizes on the workspace.
      *  @param detail The level of detail.
      *  @return A description of the object.
+     *  @see exportMoML
      */
     public String description(int detail) {
         return _description(detail, 0, 0);
+    }
+
+    /** Get a MoML description of this object.  This might be an empty string
+     *  if there is no MoML description of the object.
+     *  MoML is an XML modeling markup language.  This uses the two
+     *  argument version of this method, so it is sufficient for derived
+     *  classes to override that method to change the MoML description.
+     *  @return A MoML description, or null if there is none.
+     */
+    public String exportMoML() {
+        try {
+            StringWriter buffer = new StringWriter();
+            exportMoML(buffer, 0);
+            return buffer.toString();
+        } catch (IOException ex) {
+            // This should not occur.
+            throw new InternalErrorException(ex.toString());
+        }
+    }
+
+    /** Write a MoML description of this object using the specified
+     *  Writer.  If there is no MoML description, then nothing is written.
+     *  MoML is an XML modeling markup language.  To write to standard
+     *  out, do
+     *  <pre>
+     *      exportMoML(new OutputStreamWriter(System.out))
+     *  </pre>
+     *  To write to a string, do
+     *  <pre>
+     *      StringWriter buffer = new StringWriter();
+     *      exportMoML(buffer);
+     *      String result = buffer.toString();
+     *  </pre>
+     *  This method uses the two
+     *  argument version of this method, so it is sufficient for derived
+     *  classes to override that method to change the MoML description.
+     *  @exception IOException If an I/O error occurs.
+     *  @param output The stream to write to.
+     */
+    public void exportMoML(Writer output) throws IOException {
+        exportMoML(output, 0);
+    }
+
+    /** Write a MoML description of this object with the specified 
+     *  indentation depth. MoML is an XML modeling markup language.
+     *  The element name is given by the getMoMLElementName(), and it has
+     *  "name" and "class" (XML) attributes.
+     *  The "entity" element is used because in MoML, this can generically
+     *  refer to any nameable, instantiable object.  It need not refer
+     *  to a Ptolemy II Entity.  The body of the element,
+     *  between the "&lt;entity&gt;" and "&lt;/entity&gt;", is written using
+     *  the _exportMoMLContents() protected method, so that derived classes
+     *  can override that method alone to alter only how the contents
+     *  of this object are described.
+     *  The text that is written is indented according to the specified
+     *  depth, with each line (including the last one)
+     *  terminated with a newline.
+     *  Derived classes should override this method to change the MoML
+     *  description of an object.  They should override the protected
+     *  method _exportMoMLContents() if they need to change which
+     *  contents are described.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @throws IOException If an I/O error occurs.
+     *  @see _exportMoMLContents
+     */
+    public void exportMoML(Writer output, int depth) throws IOException {
+        output.write(_getIndentPrefix(depth)
+               + "<"
+               + getMoMLElementName()
+               + " name=\""
+               + _name
+               + "\" class=\""
+               + getClass().getName()
+               + "\">\n");
+        _exportMoMLContents(output, depth + 1);
+        output.write(_getIndentPrefix(depth) + "</"
+                + getMoMLElementName() + ">\n");
     }
 
     /** Get the attribute with the given name. The name may be compound,
@@ -384,19 +511,11 @@ public class NamedObj implements Nameable, Debuggable,
 
     /** Return an enumeration of the attributes attached to this object.
      *  This method is read-synchronized on the workspace.
+     *  @deprecated Use attributeList() instead.
      *  @return An enumeration of instances of Attribute.
      */
     public Enumeration getAttributes() {
-        try {
-            _workspace.getReadAccess();
-            if  (_attributes == null) {
-                return (new NamedList()).elements();
-            } else {
-                return _attributes.elements();
-            }
-        } finally {
-            _workspace.doneReading();
-        }
+        return Collections.enumeration(attributeList());
     }
 
     /** Get the container.  Always return null in this base class.
@@ -452,6 +571,14 @@ public class NamedObj implements Nameable, Debuggable,
         }
     }
 
+    /** Get the name of the MoML element used to describe this object.
+     *  This defaults to "element", unless it is set by setMoMLElementName().
+     *  @return A MoML element name.
+     */
+    public String getMoMLElementName() {
+        return _MoMLElement;
+    }
+
     /** Get the name. If no name has been given, or null has been given,
      *  then return an empty string, "".
      *  @return The name of the object.
@@ -474,6 +601,14 @@ public class NamedObj implements Nameable, Debuggable,
             _debugging = false;
         }
         return;
+    }
+
+    /** Set the name of the MoML element used to describe this object.
+     *  This defaults to "element" if this method is not called.
+     *  @param name A MoML element name.
+     */
+    public void setMoMLElementName(String name) {
+        _MoMLElement = name;
     }
 
     /** Set or change the name.  If a null argument is given the
@@ -513,6 +648,21 @@ public class NamedObj implements Nameable, Debuggable,
      *  @return The class name and the full name. */
     public String toString() {
         return getClass().getName() + " {" + getFullName()+ "}";
+    }
+
+    /** Return a name that is guaranteed to not be the name of
+     *  any contained attribute.  In derived classes, this is overridden
+     *  so that the returned name is guaranteed to not conflict with
+     *  any contained object.
+     *  @param prefix A prefix for the name.
+     *  @return A unique name.
+     */
+    public String uniqueName(String prefix) {
+        String candidate = prefix + _uniqueNameIndex++;
+        while(getAttribute(candidate) != null) {
+            candidate = prefix + _uniqueNameIndex++;
+        }
+        return candidate;
     }
 
     /** Get the workspace. This method never returns null, since there
@@ -706,9 +856,9 @@ public class NamedObj implements Nameable, Debuggable,
                 if ((detail & DEEP) == 0) {
                     detail &= ~ATTRIBUTES;
                 }
-                Enumeration params = getAttributes();
-                while (params.hasMoreElements()) {
-                    Attribute p = (Attribute)params.nextElement();
+                Iterator params = attributeList().iterator();
+                while (params.hasNext()) {
+                    Attribute p = (Attribute)params.next();
                     result += p._description(detail, indent+1, 2) + "\n";
                 }
                 result += _getIndentPrefix(indent) + "}";
@@ -717,6 +867,26 @@ public class NamedObj implements Nameable, Debuggable,
             return result;
         } finally {
             _workspace.doneReading();
+        }
+    }
+
+    /** Write a MoML description of the contents of this object, which
+     *  in this base class is the attributes.  This method is called
+     *  by _exportMoML().  If there are attributes, then
+     *  each attribute description is indented according to the specified
+     *  depth and terminated with a newline character.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @throws IOException If an I/O error occurs.
+     *  @see exportMoML
+     *  @see _exportMoML
+     */
+    protected void _exportMoMLContents(Writer output, int depth)
+            throws IOException {
+        Iterator attributes = attributeList().iterator();
+        while (attributes.hasNext()) {
+            Attribute attribute = (Attribute)attributes.next();
+            attribute.exportMoML(output, depth);
         }
     }
 
@@ -777,6 +947,11 @@ public class NamedObj implements Nameable, Debuggable,
     /** @serial Flag that is true if there are debug listeners. */
     protected boolean _debugging = false;
 
+    /** An index that is incremented to expedite the search for a unique
+     *  name by the uniqueName() method.
+     */
+    protected int _uniqueNameIndex = 0;
+
     /** @serial The workspace for this object.
      * This should be set by the constructor and never changed.
      */
@@ -792,6 +967,11 @@ public class NamedObj implements Nameable, Debuggable,
      *  is specified.
      */
     private static Workspace _DEFAULT_WORKSPACE = new Workspace();
+
+    /** The element name used to write a MoML description.
+     *  This defaults to "entity".
+     */
+    private String _MoMLElement = "entity";
 
     /** @serial The name */
     private String _name;
