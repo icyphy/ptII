@@ -121,8 +121,8 @@ public class ConversionUtilities {
             returnValue = (ptolemy.data.Token)object;
         } else if (object instanceof ptolemy.data.Token[]) {
             returnValue = new ArrayToken((ptolemy.data.Token[])object);
-        } else if (object instanceof Double) {
-            returnValue = new DoubleToken(((Double)object).doubleValue());
+        } else if (object instanceof Boolean) {
+            returnValue = new BooleanToken(((Boolean)object).booleanValue());
         } else if (object instanceof Byte) {
             // Note: This is technically not quite right, because of
             // the sign involved...  In lieu of a signed byte token,
@@ -133,22 +133,27 @@ public class ConversionUtilities {
             returnValue = new IntToken(((Integer)object).intValue());
         } else if (object instanceof Long) {
             returnValue = new LongToken(((Long)object).longValue());
-        } else if (object instanceof String) {
-            returnValue = new StringToken((String)object);
-        } else if (object instanceof Boolean) {
-            returnValue = new BooleanToken(((Boolean)object).booleanValue());
+        } else if (object instanceof Double) {
+            returnValue = new DoubleToken(((Double)object).doubleValue());
+        } else if (object instanceof Float) {
+            // Note that we lose some information here..  oh well.
+            returnValue = new DoubleToken(((Float)object).floatValue());
         } else if (object instanceof Complex) {
             returnValue = new ComplexToken((Complex)object);
         } else if (object instanceof FixPoint) {
             returnValue = new FixToken((FixPoint)object);
+        } else if (object instanceof String) {
+            returnValue = new StringToken((String)object);
+        } else if (object instanceof boolean[][]) {
+            returnValue = new BooleanMatrixToken((boolean[][])object);
         } else if (object instanceof int[][]) {
             returnValue = new IntMatrixToken((int[][])object);
+        } else if (object instanceof long[][]) {
+            returnValue = new LongMatrixToken((long[][])object);
         } else if (object instanceof double[][]) {
             returnValue = new DoubleMatrixToken((double[][])object);
         } else if (object instanceof Complex[][]) {
             returnValue = new ComplexMatrixToken((Complex[][])object);
-        } else if (object instanceof long[][]) {
-            returnValue = new LongMatrixToken((long[][])object);
         } else if (object instanceof FixPoint[][]) {
             returnValue = new FixMatrixToken((FixPoint[][])object);
         } else if (object instanceof double[]) {
