@@ -52,7 +52,7 @@ if [ -z "$PTII" ]; then
 fi
 
 # Default JDK Home
-PTJAVA_DIR=@PTJAVA_DIR@
+PTJAVA_DIR="@PTJAVA_DIR@"
 
 # Java CLASSPATH separator
 # For Unix, this would be : 
@@ -296,9 +296,8 @@ else
     PTII_DIR=$PTII
 fi
 
-str="$JAVAHOME/bin/java $javaflag $JAVAFLAGS -classpath $PTII_DIR$CLASSPATHSEPARATOR$jarfile $javastartupclass ${1+"$@"}"
+# If JAVAHOME has spaces in it, we need to jump through hoops
+str="\"$JAVAHOME/bin/java\" $javaflag $JAVAFLAGS -classpath \"$PTII_DIR$CLASSPATHSEPARATOR$jarfile\" $javastartupclass ${1+"$@"}"
 
 echo $str
-exec $str
-
-
+eval exec $str
