@@ -619,18 +619,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     public void endElement(String elementName) throws Exception {
 
         // Apply MoMLFilters here.
+        // FIXME: Why is this done first?  Perhaps it should be
+        // done last?
         if (_filterList != null) {
             Iterator filters = _filterList.iterator();
-            String filteredElementName = elementName;
             while (filters.hasNext()) {
                 MoMLFilter filter = (MoMLFilter)filters.next();
-                filteredElementName =
-                    filter.filterEndElement(_current, filteredElementName);
-            }
-
-            elementName = filteredElementName;
-            if (elementName == null) {
-                return;
+                filter.filterEndElement(_current, elementName);
             }
         }
 

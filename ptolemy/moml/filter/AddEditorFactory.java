@@ -121,18 +121,15 @@ public class AddEditorFactory implements MoMLFilter {
         return attributeValue;
     }
 
-    /** Given the elementName, perform any filter operations
-     *  that are appropriate for the MOMLParser.endElement() method.
-     *  @param container  The container for this attribute.
-     *  in this method.
-     *  @param elementName The element type name.
-     *  @return the filtered element name, or null if
-     *  MoMLParser.endElement() should immediately return.
+    /** Make modifications to the specified container, which is
+     *  defined in a MoML element with the specified name.
+     *  @param container The object created by this element.
+     *  @param elementName The element name.
      */
-    public String filterEndElement(NamedObj container, String elementName)
+    public void filterEndElement(NamedObj container, String elementName)
             throws Exception {
         if (!_currentlyProcessingActorThatMayNeedAnEditorFactory) {
-            return elementName;
+            return;
         } else if ( _currentAttributeHasLocation
                 && elementName != null
                 && elementName.equals("property")
@@ -169,7 +166,6 @@ public class AddEditorFactory implements MoMLFilter {
                         + moml);
             }
         }
-        return elementName;
     }
 
     /** Return a string that describes what the filter does.

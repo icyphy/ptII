@@ -87,8 +87,8 @@ import ptolemy.moml.MoMLParser;
 */
 public class ParameterNameChanges implements MoMLFilter {
 
-    /**  If the attributeName is "class" and attributeValue names a
-     *        class that has had a Parameter names changed between releases,
+    /** If the attributeName is "class" and attributeValue names a
+     *  class that has had a Parameter names changed between releases,
      *  then substitute in the new Parameter names.
      *
      *  @param container  The container for this attribute.
@@ -113,7 +113,7 @@ public class ParameterNameChanges implements MoMLFilter {
 
 
         if (attributeName.equals("name")) {
-            // Saveig the name of the for later use if we see a "class"
+            // Save the name for later use if we see a "class"
             _lastNameSeen = attributeValue;
             if (_currentlyProcessingActorWithParameterNameChanges) {
                 if (_propertyMap.containsKey(attributeValue)) {
@@ -174,18 +174,12 @@ public class ParameterNameChanges implements MoMLFilter {
         return attributeValue;
     }
 
-    /** Given the elementName, perform any filter operations
-     *  that are appropriate for the MOMLParser.endElement() method.
-     *  @param container  The container for this attribute.
-     *  in this method.
-     *  @param elementName The element type name.
-     *  @return the filtered element name, or null if
-     *  MoMLParser.endElement() should immediately return.
+    /** Do nothing.
+     *  @param container The object created by this element.
+     *  @param elementName The element name.
      */
-    public String filterEndElement(NamedObj container, String elementName)
-            throws Exception {
-        return elementName;
-    }
+    public void filterEndElement(NamedObj container, String elementName)
+            throws Exception {}
 
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
@@ -241,29 +235,28 @@ public class ParameterNameChanges implements MoMLFilter {
     static {
         ///////////////////////////////////////////////////////////
         // Actors that have properties that have changed class.
+        
         _classesWithParameterNameChanges = new HashMap();
 
         // PNDirectory: After 2.2, 'Initial_queue_capacity'
         // property is now 'initialQueueCapacity'
-
         HashMap pnDirectorChanges = new HashMap();
         // Key = property name, Value = new class name
-        pnDirectorChanges.put("Initial_queue_capacity",
+        pnDirectorChanges.put(
+                "Initial_queue_capacity",
                 "initialQueueCapacity");
-
-        _classesWithParameterNameChanges
-            .put("ptolemy.domains.pn.kernel.PNDirector",
-                    pnDirectorChanges);
+        _classesWithParameterNameChanges.put(
+                "ptolemy.domains.pn.kernel.PNDirector",
+                 pnDirectorChanges);
 
         // VariableDelay: After 4.0, 'defaultDelay'
         // property is now 'delay'
-
         HashMap variableDelayChanges = new HashMap();
-        variableDelayChanges.put("defaultDelay",
+        variableDelayChanges.put(
+                "defaultDelay",
                 "delay");
-
-        _classesWithParameterNameChanges
-            .put("ptolemy.domains.de.lib.VariableDelay",
-                    variableDelayChanges);
+        _classesWithParameterNameChanges.put(
+                "ptolemy.domains.de.lib.VariableDelay",
+                variableDelayChanges);
     }
 }

@@ -93,18 +93,12 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         return attributeValue;
     }
 
-    /** Given the elementName, perform any filter operations
-     *  that are appropriate for the MOMLParser.endElement() method.
-     *  @param container  The container for this attribute.
-     *  in this method.
-     *  @param elementName The element type name.
-     *  @return the filtered element name, or null if
-     *  MoMLParser.endElement() should immediately return.
+    /** Do nothing.
+     *  @param container The object created by this element.
+     *  @param elementName The element name.
      */
-    public String filterEndElement(NamedObj container, String elementName)
-            throws Exception {
-        return elementName;
-    }
+    public void filterEndElement(NamedObj container, String elementName)
+            throws Exception {}
 
     /** Remove a class to be filtered
      *  @param className The name of the class to be filtered

@@ -109,18 +109,15 @@ public class HideAnnotationNames implements MoMLFilter {
         return attributeValue;
     }
 
-    /** Given the elementName, perform any filter operations
-     *  that are appropriate for the MOMLParser.endElement() method.
-     *  @param container  The container for this attribute.
-     *  in this method.
-     *  @param elementName The element type name.
-     *  @return the filtered element name, or null if
-     *  MoMLParser.endElement() should immediately return.
+    /** Make modifications to the specified container, which is
+     *  defined in a MoML element with the specified name.
+     *  @param container The object created by this element.
+     *  @param elementName The element name.
      */
-    public String filterEndElement(NamedObj container, String elementName)
+    public void filterEndElement(NamedObj container, String elementName)
             throws Exception {
         if (!elementName.equals("property")) {
-            return elementName;
+            return;
         }
         if ( _currentlyProcessingAnnotation
                 && container != null
@@ -139,7 +136,6 @@ public class HideAnnotationNames implements MoMLFilter {
                 // The Network model has this problem.
             }
         }
-        return elementName;
     }
 
 

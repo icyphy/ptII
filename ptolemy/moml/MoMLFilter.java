@@ -46,49 +46,72 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (cxh)
 */
 public interface MoMLFilter {
-    /** Given the container, attribute name and attribute value,
-     *  return a new attribute value.
-     *  Usually, the attribute value returned is the same as
-     *  the attribute value passed in.  However, it is possible to
-     *  return a different attribute value, which results in renaming
-     *  the attribute; or it is possible to return null, which will
-     *  cause MoMLParser.attribute() to skip the rest of the current element.
-     *
-     *  <p>If this method is going to return a different attribute name, then
-     *  it should call MoMLParser.setModified(true) which indicates
+    
+    /** Given a container, attribute name and attribute value,
+     *  return a new attribute value.  Note that "attribute"
+     *  means XML attribute, not Ptolemy II attribute. Also,
+     *  the container is the context of the current of XML
+     *  element.  So, for example, if you have:
+     *  <pre>
+     *    &lt;entity name="foo" class="..."&gt;
+     *       &lt;attribute name="x" value="10"/&gt;
+     *    &lt;/entity&gt;
+     *  </pre>
+     *  then this method will be called twice with the container
+     *  being the instance "foo". On the first call, the
+     *  <i>attributeName</i> will be "name" and the
+     *  <i>attributeValue</i> will be "x".  On the second call,
+     *  <i>attributeName</i> will be "value" and the
+     *  <i>attributeValue</i> will be "10".
+     *  To make no change to the attribute value, an implementer
+     *  should simply return the same attributeValue.
+     *  To cause the MoMLParser to ignore the current element
+     *  altogether, an implementer should return null. For
+     *  example, to skip a graphical class, create a filter that
+     *  looks for <i>attributeName</i> equal to "class" and
+     *  <i>attributeValue</i> equal to the class name to skip.
+     *  Note that if the <i>attributeValue</i> argument is null,
+     *  then returning null is interpreted as no change, rather than
+     *  as an indication to skip the element.
+     *  To change the value of the attribute, simply return a
+     *  a new value for the attribute.
+     *  <p>
+     *  If modifies the attribute value, then it should call
+     *  the static method MoMLParser.setModified(true), which indicates
      *  that the model was modified so that the user can optionally
      *  save the modified model.
      *
-     *  @param container  The container for this attribute, ignored
-     *  in this method.
-     *  @param attributeName The name of the attribute, ignored
-     *  in this method.
+     *  @param container  The container for XML element.
+     *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
-     *  @return the filtered attributeValue or null if we are to
-     *  skip the current attribute.
+     *  @return A new value for the attribute, or the same value
+     *   to leave it unchanged, or null to cause the current element
+     *   to be ignored (unless the attributeValue argument is null).
      */
     public String filterAttributeValue(NamedObj container,
             String attributeName, String attributeValue);
 
-    /** Given the elementName, perform any filter operations
-     *  that are appropriate for the MOMLParser.endElement() method.
-     *
-     *  <p>If this method is going to return a different attribute name, then
-     *  it should call MoMLParser.setModified(true) which indicates
+    /** Make modifications to the specified container, which is
+     *  defined in a MoML element with the specified name.
+     *  This method is called when an end element in MoML is
+     *  encountered. A typical use of this method is to make
+     *  some modification to the object (the container) that
+     *  was constructed.
+     *  <p>
+     *  If an implementor makes changes to the specified container,
+     *  then it should call MoMLParser.setModified(true) which indicates
      *  that the model was modified so that the user can optionally
      *  save the modified model.
      *
-     *  @param container  The container for this attribute.
-     *  in this method.
-     *  @param elementName The element type name.
-     *  @return the filtered element name, or null if
-     *  MoMLParser.endElement() should immediately return.
+     *  @param container The object defined by the element that this
+     *   is the end of.
+     *  @param elementName The element name.
      */
-    public String filterEndElement(NamedObj container, String elementName)
+    public void filterEndElement(NamedObj container, String elementName)
             throws Exception;
 
     /** Return a string that describes what the filter does.
-     *  @return the description of the filter that ends with a new line.
+     *  @return A description of the filter (ending with a newline).
      */
     public String toString();
 }
