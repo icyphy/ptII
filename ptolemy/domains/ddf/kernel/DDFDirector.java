@@ -175,6 +175,13 @@ public class DDFDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Set the flag indicating whether type resolution is disabled. 
+     *  @param flag The flag to be set.
+     */
+    public void flagTypeResolution(boolean flag) {
+        _disableTypeResolution = flag;
+    }
+    
     /** Prior to each basic iteration, scan all active actors to put all
      *  enabled and not deferrable actors in a list and find the minimax
      *  actor. Fire all actors in the list. If no actor has been fired,
@@ -338,6 +345,16 @@ public class DDFDirector extends Director {
                             "requiredFiringsPerIteration must contain " +
                             "an IntToken.");
             }
+        }
+    }
+    
+    /** Call base class method to invalidate resolved types if the flag to
+     *  disable type resolution is set to false. If the flag is true, 
+     *  override the base class method to skip invalidating resolved types.
+     */
+    public void invalidateResolvedTypes() {
+        if(!_disableTypeResolution) { 
+            super.invalidateResolvedTypes();
         }
     }
 
@@ -863,6 +880,9 @@ public class DDFDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    // A flag indicating whether type resolution is disabled.
+    private boolean _disableTypeResolution = false;
 
     // A flag indicating whether at least one actor has been fired so far.
     private boolean _firedOne = false;
@@ -872,17 +892,14 @@ public class DDFDirector extends Director {
 
     // The value that the postfire method will return.
     private boolean _postfireReturns;
+    
+    //  A boolean initialized with value in the parameter runUntilDeadlock.
+    private boolean _runUntilDeadlock;
 
     // HashMap containing actor flags. Each actor maps to an array of
     // four integers, representing enablingStatus, numberOfFirings,
     // maxNumberOfTokens and requiredFiringsPerIteration.
     private HashMap _actorsFlags = new HashMap();
-
-    // The list of active actors.
-    private LinkedList _activeActors;
-    
-    //  A boolean initialized with value in the parameter runUntilDeadlock.
-    private boolean _runUntilDeadlock;
 
     // To store those actors for which positive requiredFiringsPerIteration
     // has been defined.
@@ -890,7 +907,10 @@ public class DDFDirector extends Director {
     // requiredFiringsPerIterationa and numberOfFirings in this
     // variable instead of in _actorsFlags.
     private LinkedList _actorsToCheckNumberOfFirings = new LinkedList();
-
+    
+    // The list of active actors.
+    private LinkedList _activeActors;
+    
     // An indicator that the actor is enabled and deferrable.
     private static final int _ENABLED_DEFERRABLE = 2;
 
