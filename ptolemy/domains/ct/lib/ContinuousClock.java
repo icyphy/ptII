@@ -51,14 +51,14 @@ import ptolemy.kernel.util.*;
 //// ContinuousClock
 /**
 This is a clock source used in continuous time domain.
-This actor produces a periodic signal, a generalized square wave
-that sequences through <i>N</i> output values with arbitrary duty cycles
-and period.  It has various uses.  It can be used to generate a square wave.
-It can also generate more intricate waveforms that cycle through a set of values.
-The set of values may be finite by specifying a finite <i>numberOfCycles</i>.
-Once the specified number of cycles has been completed, then this actor
-will output zeros with the same type as the values in the <i>values</i>
-parameter.
+This actor produces a periodic signal, a generalized square wave that
+sequences through <i>N</i> output values with arbitrary duty cycles
+and period.  It has various uses.  It can be used to generate a square
+wave.  It can also generate more intricate waveforms that cycle
+through a set of values.  The set of values may be finite by
+specifying a finite <i>numberOfCycles</i>.  Once the specified number
+of cycles has been completed, then this actor will output zeros with
+the same type as the values in the <i>values</i> parameter.
 <p>
 At the beginning of each time interval of length given by <i>period</i>,
 this actor initiates a sequence of output events with values given by
@@ -292,16 +292,19 @@ public class ContinuousClock extends TimedSource {
 
             // Adjust the phase if time has moved beyond the current phase.
             // FIXME: why using while but not if?
-            //while (currentTime >= _tentativeCycleStartTime + _offsets[_tentativePhase]) {
+
+            //while (currentTime >= _tentativeCycleStartTime
+            //    + _offsets[_tentativePhase]) {
 
             // Note that in CTDirector, the time resolution causes troubles.
-            // For example, if currentTime is slightly smaller than the expected
-            // break point, it should be treated as a break point as what the director
-            // does in processBreakPoints method.
+            // For example, if currentTime is slightly smaller than the
+            // expected break point, it should be treated as a break point
+            // as what the director does in processBreakPoints method.
+
             // FIXME: do we need a general method to deal with time resolution
             // for every actor/director?
-            if (currentTime + ((CTDirector)getDirector()).getTimeResolution() >=
-                    _tentativeCycleStartTime + _offsets[_tentativePhase]) {
+            if (currentTime + ((CTDirector)getDirector()).getTimeResolution()
+                    >= _tentativeCycleStartTime + _offsets[_tentativePhase]) {
                 if (_tPlus) {
                     if (_debugging)_debug("phase is: tPlus");
 
@@ -346,17 +349,20 @@ public class ContinuousClock extends TimedSource {
                 // missed a deadline.  As a consequence, the clock will stop.
                 _tentativeNextFiringTime
                     = _tentativeCycleStartTime + _offsets[_tentativePhase];
-                if (_debugging) _debug("next firing is at " + _tentativeNextFiringTime);
+                if (_debugging) {
+                    _debug("next firing is at " + _tentativeNextFiringTime);
+                }
             }
         }
 
         // If we are beyond the number of cycles requested, then
         // change the output value to zero.
 
-        // FIXME: If the current time is bigger than the stop time, the super class of
-        // clock, the TimedSource will return false at its postfire mathod. And the
-        // model will stop firing all its components. So, the following code does not
-        // get called.
+        // FIXME: If the current time is bigger than the stop time,
+        // the super class of clock, the TimedSource will return false
+        // at its postfire mathod. And the model will stop firing all
+        // its components. So, the following code does not get called.
+
         int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
         if (cycleLimit > 0
                 && currentTime

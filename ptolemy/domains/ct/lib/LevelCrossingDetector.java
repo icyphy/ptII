@@ -199,9 +199,10 @@ public class LevelCrossingDetector extends Transformer
 
         //consume the input.
         _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
-        if (_debugging)
+        if (_debugging) {
             _debug(getFullName() + " consuming trigger Token" +
                     _thisTrigger);
+        }
         if ((input.getWidth() != 0) && input.hasToken(0)) {
             _inputToken = input.get(0);
         } else {
@@ -214,7 +215,8 @@ public class LevelCrossingDetector extends Transformer
                 if (((BooleanToken)useEventValue.getToken()).booleanValue()) {
                     output.send(0, defaultEventValue.getToken());
                     if (_debugging) {
-                        _debug(getFullName() + " Emitting event: " + defaultEventValue.getToken());
+                        _debug(getFullName() + " Emitting event: "
+                                + defaultEventValue.getToken());
                     }
                 } else {
                     output.send(0, new DoubleToken(_level));
@@ -249,7 +251,9 @@ public class LevelCrossingDetector extends Transformer
             _level = ((DoubleToken)level.getToken()).doubleValue();
             _levelChanged = false;
         }
-        if (_debugging) _debug(getFullName() + "initialize");
+        if (_debugging) {
+            _debug(getFullName() + "initialize");
+        }
     }
 
     /** Return true if this step does not cross the threshold.
@@ -271,8 +275,10 @@ public class LevelCrossingDetector extends Transformer
         if (_first) {
             if (_debugging) {
                 _debug(this.getFullName() + " has _first as true.");
-                _debug(this.getFullName() + " has last trigger " + _lastTrigger);
-                _debug(this.getFullName() + " has current trigger " + _thisTrigger);
+                _debug(this.getFullName() + " has last trigger "
+                        + _lastTrigger);
+                _debug(this.getFullName() + " has current trigger "
+                        + _thisTrigger);
             }
             _first = false;
             _eventNow = false;
@@ -284,8 +290,10 @@ public class LevelCrossingDetector extends Transformer
         if (((CTDirector)getDirector()).isBreakpointIteration()) {
             if (_debugging) {
                 _debug(this.getFullName() + " is in breakpoint iteration.");
-                _debug(this.getFullName() + " has last trigger " + _lastTrigger);
-                _debug(this.getFullName() + " has current trigger " + _thisTrigger);
+                _debug(this.getFullName() + " has last trigger "
+                        + _lastTrigger);
+                _debug(this.getFullName() + " has current trigger "
+                        + _thisTrigger);
             }
             // Check if the discontinuity generates events.
             if ((_lastTrigger - _level) * (_thisTrigger - _level)
