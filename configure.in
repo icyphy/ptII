@@ -855,6 +855,9 @@ fi
 # $PTII/ptolemy/actor/lib/makefile if jmf was found
 PTJMF_DIR=
 
+# Used in ptolemy/actor/lib/jmf/makefile
+JMF_JARS=
+
 # We only need to look for jmf if $PTII/ptolemy/actor/lib exists
 JMF_USER_DIR="$PTII/ptolemy/actor/lib/jmf"
 if test ! -d "$JMF_USER_DIR"; then
@@ -885,6 +888,7 @@ else
 	       ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
 	           <classpathentry kind=\"lib\" path=\"$JMF_JAR\"/> \
 	           <classpathentry kind=\"lib\" path=\"$JMF_JARS_DIR/sound.jar\"/>"
+		   JMF_JARS="$JMF_JAR$CLASSPATHSEPARATOR$JMF_JARS_DIR/sound.jar"
 	    else 
        	       AC_MSG_WARN([Could not find javax.media.CaptureDeviceInfo
     class: $JMF_JAR
@@ -2201,6 +2205,9 @@ AC_SUBST(JTREE)
 
 # JDK Version determined by running confTest.class and getting java.version
 AC_SUBST(JVERSION)
+
+# Jar files for Java Media Framework (JMF) used by ptolemy/actor/lib/makefile
+AC_SUBST(JMF_JARS)
 
 # jode.jar used in bin/ptinvoke to start up Jode, the .class disassembler
 AC_SUBST(JODE_CLASSES)
