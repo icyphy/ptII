@@ -331,6 +331,7 @@ bldmastrcoverage:
 		JSDATABASE=/home/bldmastr/ptII/js \
 		JSOUTDIR=/home/www/cvswww/ptolemy/nightly \
 		JSCLASSPATH=/usr/local/JavaScope/JavaScope.zip \
+		remote1distclean \
 		remote1configure \
 		remote1distjsall \
 		remote1distjsrestore \
