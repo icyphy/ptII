@@ -53,6 +53,7 @@ JSIMPLE_TESTS = \
 	FSMActor.tcl \
 	FSMDirector.tcl \
 	HSDirector.tcl \
+	InterfaceAutomaton.tcl \
 	State.tcl \
 	Transition.tcl
 
