@@ -46,9 +46,10 @@ import ptolemy.data.expr.Parameter;
 Produce an output token on each firing with a value that is
 equal to the specified math function of the input.
 The input and output types are DoubleToken.  The functions
-are exactly those in the java.lang.Math class.  They are:
+are a subset of those in the java.lang.Math class.  They are:
 <ul>
-<li> <b>exp</b>: The exponential function.
+<li> <b>exp</b>: The exponential function. 
+This is the default function for this actor
 If the argument is NaN, then the result is NaN.
 <li> <b>log</b>: The natural logarithm function.
 If the argument is NaN, then the result is NaN.
@@ -85,12 +86,12 @@ public class MathFunction extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        // parameters
+        // Parameters
         function = new StringAttribute(this, "function");
         function.setExpression("exp");
         _function = EXP;
         
-        // ports
+        // Ports
         firstOperand = new TypedIOPort(this, "firstOperand", true, false);
 	    output = new TypedIOPort(this, "output", false, true);
         firstOperand.setTypeEquals(BaseType.DOUBLE);
@@ -105,15 +106,18 @@ public class MathFunction extends TypedAtomicActor {
      */
     public StringAttribute function;
 
-    /** The port for the first operand.
+    /** The port for the first operand. 
+     *  The port has type BaseType.DOUBLE
      */
     public TypedIOPort firstOperand = null;
 
     /** The port for the second operand, if it is needed.
+     *  The port has type BaseType.DOUBLE
      */
     public TypedIOPort secondOperand = null;
 
-    /** Output port.  The type is inferred from the connections.
+    /** Output port
+     *  The port has type BaseType.DOUBLE
      */
     public TypedIOPort output = null;
 
@@ -141,6 +145,9 @@ public class MathFunction extends TypedAtomicActor {
                     if (secondOperand != null) {
                         secondOperand.setContainer(null);
                     }
+                } else if (spec.equals("remainder")) {
+                    _function = REMAINDER;
+                    _createSecondPort();
                 } else if (spec.equals("square")) {
                     _function = SQUARE;
                     if (secondOperand != null) {
@@ -151,9 +158,6 @@ public class MathFunction extends TypedAtomicActor {
                     if (secondOperand != null) {
                         secondOperand.setContainer(null);
                     }
-                } else if (spec.equals("remainder")) {
-                    _function = REMAINDER;
-                    _createSecondPort();
                 } else {
                     throw new IllegalActionException(this,
                         "Unrecognized math function: " + spec);
@@ -166,7 +170,8 @@ public class MathFunction extends TypedAtomicActor {
         }
     }
 
-    /** Compute the specified math function of the input.
+    /** Compute the specified math function of the input. Consumes at most one
+     *  token on each input port during firing.
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
@@ -197,8 +202,7 @@ public class MathFunction extends TypedAtomicActor {
      *  @return COMPLETED if the actor was successfully iterated the
      *   specified number of times. Otherwise, return NOT_READY, and do
      *   not consume any input tokens.
-     *  @exception IllegalActionException If iterating cannot be
-     *  performed.
+     *  @exception IllegalActionException Should not be thrown
      */
     public int iterate(int count) throws IllegalActionException {
 	// Check whether we need to reallocate the output token array.
