@@ -66,7 +66,6 @@ public interface ErrorHandler {
 
     /** Handle an error.
      *  @param element The XML element that triggered the error.
-     *  @param attributes The attributes of the element as a Map.
      *  @param context The container object for the element.
      *  @param exception The exception that was thrown.
      *  @return CONTINUE to skip this element, CANCEL to abort processing
