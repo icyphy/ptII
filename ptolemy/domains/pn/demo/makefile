@@ -31,7 +31,7 @@
 
 ME = 		ptolemy/domains/pn/demo
 
-DIRS = Prime Interleave RunLength TicTacToe 
+DIRS = Prime Interleave RunLength TicTacToe Wavepacket
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -48,7 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	#$(PTPACKAGE).jar
 
 JSRCS = \
-	PNWavepacket.java
+
 
 EXTRA_SRCS =	$(JSRCS)
 
