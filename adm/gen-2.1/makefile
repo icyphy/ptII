@@ -546,6 +546,7 @@ i	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/graph \
 	$(REMOTE1PTIIDIST)/ptolemy/graph/analysis \
+	$(REMOTE1PTIIDIST)/ptolemy/hsif \
 	$(REMOTE1PTIIDIST)/ptolemy/media \
 	$(REMOTE1PTIIDIST)/ptolemy/media/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
