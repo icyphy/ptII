@@ -167,7 +167,7 @@ public class Exec extends TypedAtomicActor {
      *  corresponds with the value of the Java virtual machine
      *  user.dir property which is the user' current working
      *  directory.  Note that if we are running inside a menu launched
-     *  application, then {@link ptolemy.actor.gui.jnlp.MenuApplication} 
+     *  application, then ptolemy.actor.gui.jnlp.MenuApplication 
      *  will change user.dir
      *  to be the value of user.home, which is the name of the user's
      *  home directory.
