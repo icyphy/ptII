@@ -155,6 +155,14 @@ public interface ProcessReceiver extends Receiver {
      *  @see BoundaryDetector
      */
     public boolean isOutsideBoundary();
+    
+    /** Determine if this receiver is read blocked.
+     */
+    public boolean isReadBlocked();
+    
+    /** Determine if this receiver is write blocked.
+     */
+    public boolean isWriteBlocked();
 
     /** Reset the local flags of this receiver. Use this method when
      *  restarting execution.
@@ -164,13 +172,5 @@ public interface ProcessReceiver extends Receiver {
     /** Set a local flag requesting that the simulation be finished.
      */
     public void requestFinish();
-    
-    /** Determine if this receiver is read blocked.
-     */
-    public boolean isReadBlocked();
-    
-    /** Determine if this receiver is write blocked.
-     */
-    public boolean isWriteBlocked();
     
 }

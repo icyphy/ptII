@@ -137,11 +137,6 @@ public class Branch implements Runnable {
         return _active;
     }
 
-    /** FIXME
-     */
-    public void wrapup() throws IllegalActionException {
-    }
-    
     /** Register that the receiver controlled by this branch
      *  is blocked.
      */
@@ -184,6 +179,13 @@ public class Branch implements Runnable {
         }
     }
     
+    /** Set a flag indicating this branch should fail.
+     *  @param value Boolean indicating whether this branch is still alive.
+     */
+    public void setActive(boolean value) {
+        _active = value;
+    }
+
     /**
      */
     public void transferToken() {
@@ -196,15 +198,13 @@ public class Branch implements Runnable {
         _consRcvr.put(token, this);
     }
     
+    /** FIXME
+    public void wrapup() throws IllegalActionException {
+    }
+     */
+    
     //////////////////////////////////////////////////////////////////
     ////                       protected methods                  ////
-
-    /** Set a flag indicating this branch should fail.
-     *  @param value Boolean indicating whether this branch is still alive.
-     */
-    public void setActive(boolean value) {
-        _active = value;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

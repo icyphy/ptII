@@ -126,6 +126,31 @@ public class CompositeProcessDirector extends ProcessDirector {
         return newObj;
     }
 
+    /**
+     *  @param port The port to transfer tokens from.
+     *  @return True if data are transferred.
+     */
+    public void createBranchController(Iterator ports) 
+    	    throws IllegalActionException {
+            
+        // Create Branches in the BranchController
+        IOPort port = null;
+        while( ports.hasNext() ) {
+            port = (IOPort)ports.next();
+            if (!port.isOpaque()) {
+                    throw new IllegalActionException(this, port,
+                    "port argument is not an opaque" +
+                    "input port.");
+            }
+	    if( port.isInput() ) {
+		_inputBranchController.addBranches(port);
+	    }
+	    if( port.isOutput() ) {
+		_outputBranchController.addBranches(port);
+	    }
+        }
+    }
+
     /** Return the input branch controller of this director. If
      *  this method is called prior to the invocation of 
      *  initialize(), then this method will return null.
@@ -251,46 +276,21 @@ public class CompositeProcessDirector extends ProcessDirector {
     /**
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
-     */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         // Do nothing
         return true;
     }
+     */
     
     /**
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
-     */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         // Do nothing
         return true;
     }
-    
-    /**
-     *  @param port The port to transfer tokens from.
-     *  @return True if data are transferred.
      */
-    public void createBranchController(Iterator ports) 
-    	    throws IllegalActionException {
-            
-        // Create Branches in the BranchController
-        IOPort port = null;
-        while( ports.hasNext() ) {
-            port = (IOPort)ports.next();
-            if (!port.isOpaque()) {
-                    throw new IllegalActionException(this, port,
-                    "port argument is not an opaque" +
-                    "input port.");
-            }
-	    if( port.isInput() ) {
-		_inputBranchController.addBranches(port);
-	    }
-	    if( port.isOutput() ) {
-		_outputBranchController.addBranches(port);
-	    }
-        }
-    }
-
+    
     /** Stop the input branch controller of this director by 
      *  ending the current iteration of the controller. This
      *  method will block until the output branch controller
@@ -382,6 +382,91 @@ public class CompositeProcessDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Create a new ProcessThread for controlling the actor that
+     *  is passed as a parameter of this method. Subclasses are
+     *  encouraged to override this method as necessary for domain
+     *  specific functionality.
+     * @param actor The actor that the created ProcessThread will
+     *  control.
+     * @param director The director that manages the model that the
+     *  created thread is associated with.
+     * @return Return a new ProcessThread that will control the
+     *  actor passed as a parameter for this method.
+    protected ProcessThread _getProcessThread(Actor actor,
+	    ProcessDirector director) throws IllegalActionException {
+	return new ProcessThread(actor, director);
+    }
+     */
+
+    /** Return true.
+     *  In derived classes, override this method to obtain domain
+     *  specific handling of deadlocks. It should return true if a
+     *  real deadlock has occurred and the simulation can be ended.
+     *  It should return false if the simulation has data to proceed and
+     *  need not be terminated.
+     * @return True.
+     * @exception IllegalActionException Not thrown in this base class.
+    protected boolean _handleDeadlock() throws IllegalActionException {
+	return true;
+    }
+     */
+
+    /** Implementations of this method must be synchronized.
+     * @param internal True if internal read block.
+     */
+    protected synchronized void _actorBlocked(ProcessReceiver rcvr) {
+        _blockedRcvrs.add(rcvr);
+        _blockedActorCount++;
+        notifyAll();
+    }
+
+    /** Implementations of this method must be synchronized.
+     * @param internal True if internal read block.
+     */
+    protected synchronized void _actorBlocked(LinkedList rcvrs) {
+        if( rcvrs == _blockedRcvrs ) {
+            return;
+        }
+        _blockedRcvrs.addAll(rcvrs);
+        _blockedActorCount++;
+        notifyAll();
+    }
+
+    /** Implementations of this method must be synchronized.
+     * @param internal True if internal read block.
+     */
+    protected synchronized void _actorUnBlocked(ProcessReceiver rcvr) {
+        Thread thread = Thread.currentThread();
+        ProcessThread pThread = null;
+        if( thread instanceof ProcessThread ) {
+            pThread = (ProcessThread)thread;
+            Actor actor = pThread.getActor();
+            String name = ((Nameable)actor).getName();
+            if( _blockedRcvrs == null ) {
+                System.out.println("WARNING: " + name + " called _actorUnBlocked with null _blockedRcvrs");
+            }
+        } else {
+            System.out.println("WARNING: Unknown object called _actorUnBlocked with null _blockedRcvrs");
+        }
+        
+        _blockedRcvrs.remove(rcvr); 
+        _blockedActorCount--;
+        notifyAll();
+    }
+
+    /** Implementations of this method must be synchronized.
+     * @param internal True if internal read block.
+     */
+    protected synchronized void _actorUnBlocked(LinkedList rcvrs) {
+        Iterator rcvrIterator = rcvrs.iterator();
+        while( rcvrIterator.hasNext() ) {
+            ProcessReceiver rcvr = (ProcessReceiver)rcvrIterator.next();
+            _blockedRcvrs.remove(rcvr);
+        }
+        _blockedActorCount--;
+        notifyAll();
+    }
+
     /** Return true if the count of active processes in the container is 0.
      *  Otherwise return true. Derived classes must override this method to
      *  return true to any other forms of deadlocks that they might introduce.
@@ -394,39 +479,134 @@ public class CompositeProcessDirector extends ProcessDirector {
 	return false;
     }
 
+    /** 
+     */
+    protected boolean _areActorsExternallyBlocked() {
+    	Iterator blockedRcvrIter = _blockedRcvrs.iterator();
+        while( blockedRcvrIter.hasNext() ) {
+            ProcessReceiver rcvr = (ProcessReceiver)blockedRcvrIter.next();
+            if( rcvr.isConnectedToBoundaryInside() ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** 
+     */
+    protected synchronized void _controllerBlocked(BranchController cntlr) {
+        /*
+        if( cntlr.isBlocked() ) {
+            // Determine which controller
+            // Set appropriate flag
+            notifyAll();
+        }
+        */
+        
+        if( cntlr == _inputBranchController ) {
+            _inputControllerIsBlocked = cntlr.isBlocked();
+        }
+        if( cntlr == _outputBranchController ) {
+            _outputControllerIsBlocked = cntlr.isBlocked();
+        }
+        notifyAll();
+    }
+
+    /** 
+     */
+    protected void _controllerUnBlocked(BranchController cntlr) {
+        synchronized(_branchCntlrLock) {
+            if( cntlr == _inputBranchController ) {
+                _inputControllerIsBlocked = cntlr.isBlocked();
+            }
+            if( cntlr == _outputBranchController ) {
+                _outputControllerIsBlocked = cntlr.isBlocked();
+            }
+	    Thread wakeDirThread = new PtolemyThread( new Runnable() {
+                public void run() {
+                    System.out.println(_name + ": calling wakeUpDirector()");
+                    // wakeUpDirector();
+                    System.out.println(_name + ": finished calling wakeUpDirector()");
+                }
+            });
+            wakeDirThread.start();
+            _debug(_name + ": finished calling wakeDirThread.start()");
+        }
+    }
+
     /**
      */
     protected synchronized int _getBlockedActorsCount() {
 	return _blockedActorCount;
     }
 
-    /** Create a new ProcessThread for controlling the actor that
-     *  is passed as a parameter of this method. Subclasses are
-     *  encouraged to override this method as necessary for domain
-     *  specific functionality.
-     * @param actor The actor that the created ProcessThread will
-     *  control.
-     * @param director The director that manages the model that the
-     *  created thread is associated with.
-     * @return Return a new ProcessThread that will control the
-     *  actor passed as a parameter for this method.
+    /** JFIXME: This method can lead to deadlock
      */
-    protected ProcessThread _getProcessThread(Actor actor,
-	    ProcessDirector director) throws IllegalActionException {
-	return new ProcessThread(actor, director);
+    protected synchronized boolean _isInputControllerBlocked() {
+        return _inputControllerIsBlocked;
+    }
+        
+    /** 
+     */
+    protected synchronized boolean _isOutputControllerBlocked() {
+        return _outputControllerIsBlocked;
     }
 
-    /** Return true.
-     *  In derived classes, override this method to obtain domain
-     *  specific handling of deadlocks. It should return true if a
-     *  real deadlock has occurred and the simulation can be ended.
-     *  It should return false if the simulation has data to proceed and
-     *  need not be terminated.
-     * @return True.
-     * @exception IllegalActionException Not thrown in this base class.
+    /**
      */
-    protected boolean _handleDeadlock() throws IllegalActionException {
-	return true;
+    protected void _registerBlockedRcvrsWithContainer() {
+    }
+
+    /** 
+     */
+    public synchronized boolean registerBlockedBranchReceiversWithExecutive() {
+        /*
+    	Director execDir = ((Actor)getContainer()).getExecutiveDirector();
+        if( execDir == this ) {
+            return false;
+        } else if( !(execDir instanceof ProcessDirector) ) {
+            if(_debugging) _debug(_name+": Blocked branch registration didn't work; director not ProcessDirector");
+            return false;
+        } else if( !_inputBranchController.hasBranches() ) {
+            return false;
+        }
+    
+	if( _debugging ) _debug(_name+": registering blocked branches to executive director");
+        
+        if( _inputBranchController.isBlocked() ) {
+            Iterator branches = 
+                    _inputBranchController.getEngagedBranchList().iterator();
+            Branch branch = null;
+            ProcessReceiver rcvr = null;
+            LinkedList blockedRcvrs = new LinkedList();
+            while ( branches.hasNext() ) {
+                branch = (Branch) branches.next();
+                rcvr = branch.getProdReceiver();
+                if( !rcvr.isReadBlocked() ) {
+                    // FIXME: Throw Exception???
+                } else {
+                    blockedRcvrs.add(rcvr);
+                }
+            }
+            
+            if( blockedRcvrs.size() > 0 ) { 
+                if(_debugging) _debug(_name+": ProcessDirector blocking due to branches");
+                ((ProcessDirector)execDir)._actorBlocked(blockedRcvrs);
+                Director dir = ((Actor)getContainer()).getDirector();
+                if( dir instanceof ProcessDirector ) {
+                    if(_debugging) _debug(_name+": ProcessDirector blocking due to branches");
+                    ProcessDirector pDir = (ProcessDirector)dir;
+                    pDir._actorBlocked(blockedRcvrs);
+                } else {
+                    if(_debugging) _debug(_name+": Blocked branch registration didn't work; director not ProcessDirector");
+                    // FIXME: Do something; Set _notDone = false???
+                }
+                notifyAll();
+                return true;
+            }
+        }
+        */
+        return false;
     }
 
     /** Return false.
@@ -490,191 +670,11 @@ public class CompositeProcessDirector extends ProcessDirector {
     }
 
     /** 
-     */
-    protected boolean _areActorsExternallyBlocked() {
-    	Iterator blockedRcvrIter = _blockedRcvrs.iterator();
-        while( blockedRcvrIter.hasNext() ) {
-            ProcessReceiver rcvr = (ProcessReceiver)blockedRcvrIter.next();
-            if( rcvr.isConnectedToBoundaryInside() ) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /** Implementations of this method must be synchronized.
-     * @param internal True if internal read block.
-     */
-    protected synchronized void _actorBlocked(ProcessReceiver rcvr) {
-        _blockedRcvrs.add(rcvr);
-        _blockedActorCount++;
-        notifyAll();
-    }
-
-    /** Implementations of this method must be synchronized.
-     * @param internal True if internal read block.
-     */
-    protected synchronized void _actorBlocked(LinkedList rcvrs) {
-        if( rcvrs == _blockedRcvrs ) {
-            return;
-        }
-        _blockedRcvrs.addAll(rcvrs);
-        _blockedActorCount++;
-        notifyAll();
-    }
-
-    /** Implementations of this method must be synchronized.
-     * @param internal True if internal read block.
-     */
-    protected synchronized void _actorUnBlocked(ProcessReceiver rcvr) {
-        Thread thread = Thread.currentThread();
-        ProcessThread pThread = null;
-        if( thread instanceof ProcessThread ) {
-            pThread = (ProcessThread)thread;
-            Actor actor = pThread.getActor();
-            String name = ((Nameable)actor).getName();
-            if( _blockedRcvrs == null ) {
-                System.out.println("WARNING: " + name + " called _actorUnBlocked with null _blockedRcvrs");
-            }
-        } else {
-            System.out.println("WARNING: Unknown object called _actorUnBlocked with null _blockedRcvrs");
-        }
-        
-        _blockedRcvrs.remove(rcvr); 
-        _blockedActorCount--;
-        notifyAll();
-    }
-
-    /** Implementations of this method must be synchronized.
-     * @param internal True if internal read block.
-     */
-    protected synchronized void _actorUnBlocked(LinkedList rcvrs) {
-        Iterator rcvrIterator = rcvrs.iterator();
-        while( rcvrIterator.hasNext() ) {
-            ProcessReceiver rcvr = (ProcessReceiver)rcvrIterator.next();
-            _blockedRcvrs.remove(rcvr);
-        }
-        _blockedActorCount--;
-        notifyAll();
-    }
-
-    /** 
-     */
-    protected synchronized void _controllerBlocked(BranchController cntlr) {
-        /*
-        if( cntlr.isBlocked() ) {
-            // Determine which controller
-            // Set appropriate flag
-            notifyAll();
-        }
-        */
-        
-        if( cntlr == _inputBranchController ) {
-            _inputControllerIsBlocked = cntlr.isBlocked();
-        }
-        if( cntlr == _outputBranchController ) {
-            _outputControllerIsBlocked = cntlr.isBlocked();
-        }
-        notifyAll();
-    }
-
-    /** 
-     */
     protected synchronized void wakeUpDirector() {
     	notifyAll();
     }
+     */
     
-    /** 
-     */
-    protected void _controllerUnBlocked(BranchController cntlr) {
-        synchronized(_branchCntlrLock) {
-            if( cntlr == _inputBranchController ) {
-                _inputControllerIsBlocked = cntlr.isBlocked();
-            }
-            if( cntlr == _outputBranchController ) {
-                _outputControllerIsBlocked = cntlr.isBlocked();
-            }
-	    Thread wakeDirThread = new PtolemyThread( new Runnable() {
-                public void run() {
-                    System.out.println(_name + ": calling wakeUpDirector()");
-                    wakeUpDirector();
-                    System.out.println(_name + ": finished calling wakeUpDirector()");
-                }
-            });
-            wakeDirThread.start();
-            _debug(_name + ": finished calling wakeDirThread.start()");
-        }
-    }
-
-    /** JFIXME: This method can lead to deadlock
-     */
-    protected synchronized boolean _isInputControllerBlocked() {
-        return _inputControllerIsBlocked;
-    }
-        
-    /**
-     */
-    protected void _registerBlockedRcvrsWithContainer() {
-    }
-
-    /** 
-     */
-    public synchronized boolean registerBlockedBranchReceiversWithExecutive() {
-        /*
-    	Director execDir = ((Actor)getContainer()).getExecutiveDirector();
-        if( execDir == this ) {
-            return false;
-        } else if( !(execDir instanceof ProcessDirector) ) {
-            if(_debugging) _debug(_name+": Blocked branch registration didn't work; director not ProcessDirector");
-            return false;
-        } else if( !_inputBranchController.hasBranches() ) {
-            return false;
-        }
-    
-	if( _debugging ) _debug(_name+": registering blocked branches to executive director");
-        
-        if( _inputBranchController.isBlocked() ) {
-            Iterator branches = 
-                    _inputBranchController.getEngagedBranchList().iterator();
-            Branch branch = null;
-            ProcessReceiver rcvr = null;
-            LinkedList blockedRcvrs = new LinkedList();
-            while ( branches.hasNext() ) {
-                branch = (Branch) branches.next();
-                rcvr = branch.getProdReceiver();
-                if( !rcvr.isReadBlocked() ) {
-                    // FIXME: Throw Exception???
-                } else {
-                    blockedRcvrs.add(rcvr);
-                }
-            }
-            
-            if( blockedRcvrs.size() > 0 ) { 
-                if(_debugging) _debug(_name+": ProcessDirector blocking due to branches");
-                ((ProcessDirector)execDir)._actorBlocked(blockedRcvrs);
-                Director dir = ((Actor)getContainer()).getDirector();
-                if( dir instanceof ProcessDirector ) {
-                    if(_debugging) _debug(_name+": ProcessDirector blocking due to branches");
-                    ProcessDirector pDir = (ProcessDirector)dir;
-                    pDir._actorBlocked(blockedRcvrs);
-                } else {
-                    if(_debugging) _debug(_name+": Blocked branch registration didn't work; director not ProcessDirector");
-                    // FIXME: Do something; Set _notDone = false???
-                }
-                notifyAll();
-                return true;
-            }
-        }
-        */
-        return false;
-    }
-
-    /** 
-     */
-    protected synchronized boolean _isOutputControllerBlocked() {
-        return _outputControllerIsBlocked;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
