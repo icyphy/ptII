@@ -49,7 +49,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	DDEInPunctuation.java \
 	DDEPrinter.java \
 	DDEStringMerge.java \
 	DDEStringSource.java \
