@@ -292,7 +292,7 @@ public class RelationList extends Attribute {
         /** Return true, if the relation node has its type changed, and if the
          *  current type is equal/inequal or the current type changes from
          *  less_than to bigger_than or bigger_than to less_than. This is used
-         *  to detect whether a continuous variable cross a level.
+         *  to detect whether a continuous variable crosses a level.
          *  @return True If event has been detected.
          */
         public boolean hasEvent() {
