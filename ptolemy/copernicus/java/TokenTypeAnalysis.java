@@ -67,30 +67,31 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
         _localDefs = null;
         _localUses = null;
     }
+
     /** Return the set of other fields and locals that must reference
      *  the same object as the given field, at a point before
-     *  the given unit.
+     *  the given unit.  If no information is available about the local,
+     *  then return ptolemy.data.type.BaseType.GENERAL
      */
     public ptolemy.data.type.Type getTypeOfAfter(Local local, Unit unit) {
         Map map = (Map)getFlowAfter(unit);
         Object object = map.get(local);
         if(object == null) {
-            throw new RuntimeException("Unknown token type for object: " 
-                    + local);
+            return ptolemy.data.type.BaseType.GENERAL;
         }
         return (ptolemy.data.type.Type)object;
     }
     
     /** Return the set of other fields and locals that must reference
      *  the same object as the given field, at a point before
-     *  the given unit.
+     *  the given unit.   If no information is available about the local,
+     *  then return ptolemy.data.type.BaseType.GENERAL
      */
     public ptolemy.data.type.Type getTypeOfBefore(Local local, Unit unit) {
         Map map = (Map)getFlowBefore(unit);
         Object object = map.get(local);
         if(object == null) {
-            throw new RuntimeException("Unknown token type for unit: " 
-                    + local + " in " + unit);
+            return ptolemy.data.type.BaseType.GENERAL;
         }
         return (ptolemy.data.type.Type)object;
     }
