@@ -42,7 +42,7 @@ import ptolemy.data.*;
 An DDEActor that can produce and send out tokens by self invocation without
 requiring provocation by other actors. To invoke activity which may involve
 the future production of tokens, the reinvokeAfterDelay(int delay) method
-is used. This method causes invokation of activity to occur at time equal
+is used. This method causes invocation of activity to occur at time equal
 to the current time of the actor plus the specified delay.
 
 
