@@ -693,7 +693,7 @@ $(REMOTE2PTIIDIST): $(PTII_FULL)
 	@echo "# Now untaring on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE2HOME); $(TAR) -xf $(GENDIR)/`basename $(PTII_FULL) .gz`)
+	(cd $(REMOTE2HOME); $(TAR) -xf $(PTII_FULL))
 
 
 # clean the remote tree
@@ -935,7 +935,7 @@ $(REMOTE4PTIIDIST): $(PTII_FULL)
 	@echo "# Now untaring on `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE4HOME); $(TAR) -zxf $(PTII_FULL)`)
+	(cd $(REMOTE4HOME); $(TAR) -zxf $(PTII_FULL))
 
 remote4configure:
 	@echo "#"
