@@ -72,19 +72,11 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 demo: $(PTCLASSJAR)
-	CLASSPATH="$(CLASSPATH)" appletviewer NonlinearClient.htm	
-
-corba_demo:
-	# We need a way to figure out if the name server is already running
 	$(PTJAVA_DIR)/bin/tnameserv -ORBInitialPort 1050 &
-	TPID=$$!; \
 	CLASSPATH="$(CLASSPATH)" \
 		$(JAVA) ptolemy.domains.ct.demo.Corba.ModelServer \
-				-ORBInitialPort 1050 &; \
-	APID=$$!; \
-	CLASSPATH="$(CLASSPATH)" appletviewer NonlinearClient.htm ;
-	kill $TPID $APID
-
+				-ORBInitialPort 1050 &
+	CLASSPATH="$(CLASSPATH)" appletviewer SimpleCorbaDemo.htm
 
 depend:
 	@echo "no dependencies in this directory"
