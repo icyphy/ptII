@@ -542,7 +542,8 @@ proc diffText {texta textb} {
     return $results
 }
 
-# Set a property that signifies we are running the tests so
+# Set a property that signifies we are running the tests in the
+# nightly build
 # that classes like actor.lib.NonStrictTest will check to see if
 # the training flag is set
-java::call System setProperty ptolemy.ptII.isRunningTestSuite true
+java::call System setProperty ptolemy.ptII.isRunningNightlyBuild true
