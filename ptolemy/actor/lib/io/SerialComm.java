@@ -1,6 +1,4 @@
 /* An actor that operates a serial port.
-123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_1
-123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -49,18 +47,35 @@ import java.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// TxDatagram
 /**
-This actor sends and receives integer arrays via the serial port.
-Each integer represents a byte, and is truncated to 8 bits prior 
-to transmission.
-
-This actor contains a nested class which implements the 
-SerialPortEventListener to recieve from the serial port and calls
-the director's fireAt method to broadcast the bytes received as 
-an array of integers.
-
-This actor has a parameter 'serialPortName' for the serial port.
-
-This actor has a parameter 'baudRate' for the serial baud rate.
+Sends and receive bytes via the serial port.  Which serial port and 
+baud rate to use are set by parameters.  If the specified serial port 
+is not successfully opened, then another one will automatically be 
+chosen if available.
+<p>
+Bytes to be sent must enter the actor as an array of integers.
+The lowest order byte from each integer is used.  (Negative numbers
+are treated as though 256 has been added enough times to make them 
+non-negative.)  Likewise, bytes received are broadcast out of the actor 
+<p>
+This actor is a class which implements SerialPortEventListener.
+This means that when serial events (such as DATA_AVAILABLE) occurr, 
+this actor's serialEvent() method gets called.  the serialEvent() 
+method calls the directors fireAt() method, triggering a call to fire().
+<p>
+By the time fire() executes, there may be several bytes of available 
+data.  These are packaged by fire() into an array of integers (one int 
+per byte) and broadcast.
+<p>
+This approach assumes that the DATA_AVAILABLE event is defined so that 
+it will occurr only once until the available data has been consumed.  
+It also assumes that if additional bytes come in between the call to 
+.available() (which says how many bytes are available) and the call to 
+.read() (which retrieves them) that the DATA_AVAILABLE event DOES occur
+again, even though the serial buffer was never really empty.
+<p>
+@param baudRate the baud rate (integer such as 19200) to use 
+        (applies to both input and output)
+@param serialPortName the name (string such as COM1) of the serial port
 
 @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
 (Based on my RxDatagram, and on the IRLink class writen by Xiaojun Liu)
@@ -69,6 +84,17 @@ This actor has a parameter 'baudRate' for the serial baud rate.
 public class SerialComm extends TypedAtomicActor 
         implements SerialPortEventListener {
 
+    /** Construct a SerialComm actor with the given container and name.
+     *  Construct the serialPortName and baudRate parameters.  Initialize
+     *  baudRate to 19200.  Initialize serialPortName to one element of 
+     *  the enumeration given by a .getPortIdentifiers() call.  
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained 
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an 
+     *   actor with this name.
+     */
     public SerialComm(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container,name);
@@ -103,21 +129,22 @@ public class SerialComm extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** This port inputs the data to be sent to the serial port.
-        Value of each integer is masked to the range 0 .. 255.
+    /** Data to be sent via the serial port.  One byte will be sent 
+     *  per integer in the integer array.  Only the low order byte 
+     *  of each integer is used.
      */
     public TypedIOPort dataToSend;
 
-    /** This port outputs the data received, one byte per integer in
-     * the array.
+    /** The data bytes received via the serial port.
+     *  Data comes out one-byte-per-integer in an integer array.
      */
     public TypedIOPort dataReceived;
 
-    /** The name, such as COM2, of the serial port used.
+    /** The name, such as "COM2", of the serial port used.
      */
     public Parameter serialPortName;
 
-    /** The baud rate for the serial port.
+    /** The baud rate, such as 115200, for the serial port.
      */
     public Parameter baudRate;
 
@@ -125,26 +152,42 @@ public class SerialComm extends TypedAtomicActor
     ////                     public methods                        ////
 
     /** If the parameter changed is <i>serialPortName</i>, then hope 
-     * the model is not running and do nothing.  Likewise if baudRate.
+     *  the model is not running and do nothing.  Likewise for baudRate.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException Maybe thrown (?)
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == serialPortName || attribute == baudRate) {
             /* Do nothing */
-            // Desired behavior would be to use new serial port 
+            // One desired behavior would be to use new serial port 
             // and/or new baud rate with next transmission and 
             // to set to receive on new port and/or at new baud rate.
             // The latter may be tricky since this actor (which is a 
             // java class) implements 'SerialPortEventListener'.
             // I'm not sure what happens when baud rate is altered 
             // while it is listening.
+
+            // Another possible desired behavior is to alter the baud 
+            // rate at the end of the current transmission.  This is 
+            // useful (though not vital) for some hardware.  For example,
+            // when a request is issued to the hardware for it to change 
+            // its baud rate, then it is desirable to be able to quickly 
+            // change one's own baud rate so as to catch the reply at the 
+            // new rate.  
         } else {
             super.attributeChanged(attribute);
         }
     }
 
-    /** Broadcasts the data if received.
-        Sends serial output if token is present with data to send.
+    /** Transfers data between the Ptolemy model and the built in 
+     *  buffers associated with the serial port.  Actual serial 
+     *  input and output occur right before or right after fire().
+     *  <p>
+     *  If at least 1 byte is available, broadcast it.
+     *  If an integer-array token is available, take a byte out 
+     *  of each integer and send the byte stream to the serial port.
+     *  @exception IllegalActionException Thrown if try fails.
      */
     public void fire() throws IllegalActionException {      
         if (_debugging) _debug("Actor is fired");
@@ -167,7 +210,8 @@ public class SerialComm extends TypedAtomicActor
                 ArrayToken dataIntArrayToken = (ArrayToken) dataToSend.get(0);
                 OutputStream out = serialPort.getOutputStream();
                 for (int j = 0; j < dataIntArrayToken.length(); j++) {
-                    IntToken dataIntOneToken = (IntToken) dataIntArrayToken.getElement(j);
+                    IntToken dataIntOneToken = 
+                            (IntToken)dataIntArrayToken.getElement(j);
                     out.write((byte)dataIntOneToken.intValue());
                 }
                 out.flush();
@@ -175,12 +219,21 @@ public class SerialComm extends TypedAtomicActor
 
         } catch (Exception ex) {
             if (_debugging) _debug("Win0" + ex.getMessage());
-            throw new IllegalActionException(this, "I/O error " + ex.getMessage());
+            throw new IllegalActionException(this, "I/O error " + 
+                    ex.getMessage());
         }
 
     }
 
-    /** Preinitialize
+    /** Preinitialize does the resource allocation for this actor.
+     *  Specifically, it opens the serial port (setting the baud rate 
+     *  and other communication settings) and then activates the 
+     *  serial port's event listening resource, directing events to the 
+     *  serialEvent() method of this actor.  (serialEvent() is the 
+     *  default name for such a method, it is not explicitly named in 
+     *  the calls to .addEventListener() and .notifyOnDataAvailable() 
+     *  below.)
+     *  @exception IllegalActionException if the try fails.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -209,8 +262,11 @@ public class SerialComm extends TypedAtomicActor
     }
 
 
-    /** serialEvent - The one and only method 
-     *  required to implement SerialPortEventListener
+    /** serialEvent - 
+     *  The one and only method required to implement SerialPortEventListener
+     *  <p>
+     *  Call the directors fireAt() method when new data is available.
+     *  @exception IllegalActionException If try fails.
      */
     public void serialEvent(SerialPortEvent e) {
         try {
@@ -222,23 +278,31 @@ public class SerialComm extends TypedAtomicActor
         }
     }
 
-    /** Wrap up
+    /** Wrap up deallocates resources, specifically the serial port.
      */
     public void wrapup() throws IllegalActionException {
         if (serialPort != null) {
             serialPort.close();
+            serialPort = null;  //FIXME Is this necessary?
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Variables
+    // pointer/handle thingy for the serial port.
     private SerialPort serialPort;
 
 
+    // Weirdo thing required for accessing the serial port.
+    // This is a very strange animal because the identifier 
+    // 'driver' is given here but nowhere else.  Thus, one 
+    // would think, it cannot do anything.  However, removing 
+    // it makes things fail.  Specifically, it makes the try 
+    // block in fire() have an exception whose message is the 
+    // word "null".
     static {
-        CommDriver driver = new com.sun.comm.Win32Driver();
-        driver.initialize();
+        CommDriver weirdoDriver = new com.sun.comm.Win32Driver();
+        weirdoDriver.initialize();
     }
 }
