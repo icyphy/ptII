@@ -140,15 +140,36 @@ public class Director implements ActorCodeGenerator {
             helperObject.generateWrapupCode(code);
         }
     }
-    
-    /** Get the buffer size of a given port. This base class method always
-     *  returns 1. In subclasses, buffer size of a port may be dependent
-     *  on the director.
+
+    /** Return the buffer size of a given port, which is the maximum of
+     *  the bufferSizes of each channel of the given port.
      *  @param port The given port.
-     *  @return The buffer size of the given port
-     *  @throws IllegalActionException Subclass may throw an exception.
+     *  @return The buffer size of the given port.
+     *  @exception IllegalActionException If the getBufferSize(IOPort, int)
+     *   method throws it.
      */
-    public int getBufferSize(IOPort port) throws IllegalActionException {
+    public int getBufferSize(IOPort port) 
+            throws IllegalActionException {
+        int bufferSize = 1;
+        for (int i = 0; i < port.getWidth(); i ++) {
+            int channelBufferSize = getBufferSize(port, i);
+            if (channelBufferSize > bufferSize) {
+                bufferSize = channelBufferSize;
+            }
+        }
+        return bufferSize;
+    }
+    
+    /** Return the buffer size of a given channel (i.e, a given port
+     *  and a given channel number). In this base class, this method
+     *  always returns 1.
+     *  @param port The given port.
+     *  @param channelNumber The given channel number.
+     *  @return The buffer size of the given channel.
+     *  @exception IllegalActionException Subclasses may throw it.
+     */
+    public int getBufferSize(IOPort port, int channelNumber)
+            throws IllegalActionException {
         return 1;
     }
 

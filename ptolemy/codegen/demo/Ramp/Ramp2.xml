@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Ramp2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 72, 815, 518}, maximized=false}">
     </property>
@@ -141,7 +141,7 @@
         </property>
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="C:\ptII\ptolemy\codegen\demo\test3\generatedCode.txt">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 70.0]">
         </property>

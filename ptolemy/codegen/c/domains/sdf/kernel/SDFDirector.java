@@ -30,6 +30,7 @@ package ptolemy.codegen.c.domains.sdf.kernel;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -48,7 +49,6 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.sdf.lib.SampleDelay;
-import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -141,8 +141,9 @@ public class SDFDirector extends Director {
         }
     }
 
-    /** (non-Javadoc)
-     * 
+    /** Generate the initialize code for the associated SDF director.
+     *  @return The generated initialize code.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public String generateInitializeCode() throws IllegalActionException {
         
@@ -170,25 +171,32 @@ public class SDFDirector extends Director {
         return initializeCode;
     }
 
-    /** Return the buffer size of a given port.
+    /** Return the buffer size of a given channel (i.e, a given port
+     *  and a given channel number).
      *  @param port The given port.
-     *  @return The buffer size of the given port.
-     *  @exception IllegalActionException if te firingsPerIteration variable
+     *  @param channelNumber The given channel number.
+     *  @return The buffer size of the given channel.
+     *  @exception IllegalActionException if more than one relation is
+     *   connected to the given channel, or if the bufferSize variable
      *   does not contain a token.
      */
-    public int getBufferSize(IOPort port) 
+    public int getBufferSize(IOPort port, int channelNumber)
             throws IllegalActionException {
         int bufferSize = 1;
-        List relations = port.linkedRelationList();
-        if (relations.size() > 0) {
-            // In SDF, all links linking to the same port
-            // have the same buffer size.
-            Relation relation = (Relation) relations.get(0);
-            Attribute buffer = relation.getAttribute("bufferSize");
-            if (buffer != null) {
-                bufferSize
-                    = ((IntToken) ((Variable)buffer).getToken()).intValue();
-            }
+        List connectedRelations = getConnectedRelations(port, channelNumber);
+        if (connectedRelations.size() > 1) {
+            throw new IllegalActionException(super.getComponent(),
+                    "more than one relation is connected to " 
+                    + port.getFullName() + ", " + channelNumber);
+        }
+        if (connectedRelations.size() == 0) {
+            return bufferSize;
+        }
+        IORelation relation = (IORelation) connectedRelations.get(0);
+        Attribute buffer = relation.getAttribute("bufferSize");
+        if (buffer != null) {
+            bufferSize
+                = ((IntToken) ((Variable) buffer).getToken()).intValue();
         }
         return bufferSize;
     }
@@ -200,8 +208,8 @@ public class SDFDirector extends Director {
      *  @param channelNumber The given channel number.
      *  @return The set of relations that connect to the given channel.
      */
-    public Set getConnectedRelations(IOPort port, int channelNumber) {
-        Set connectedRelations = new HashSet();
+    public List getConnectedRelations(IOPort port, int channelNumber) {
+        List connectedRelations = new LinkedList();
         Iterator relations = port.linkedRelationList().iterator();
         int channel = 0;
         while (relations.hasNext()) {
