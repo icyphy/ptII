@@ -1,4 +1,4 @@
-/* An actor that converts cartesian components to polar components.
+/* An actor that converts Cartesian components to polar components.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.*;
 /// CartesianToPolar
 
 /**
-Convert a cartesian pair, which is represented by two double tokens (x and y),
+Convert a Cartesian pair, which is represented by two double tokens (x and y),
 to a polar form, which is also represented by two double tokens (magnitude
 and angle).  The angle is in radians.
 <p>
@@ -104,7 +104,7 @@ public class CartesianToPolar extends TypedAtomicActor {
     /** Consume one double token from each of the two input ports (x and y),
      *  and output one new double token on each of the two output ports
      *  (magnitude and angle). The output is a polar form representation of
-     *  the cartesian pair given at the inputs. The angle is in radians.
+     *  the Cartesian pair given at the inputs. The angle is in radians.
      *  If either input has no token, then do nothing.
      *
      *  @exception IllegalActionException If there is no director.

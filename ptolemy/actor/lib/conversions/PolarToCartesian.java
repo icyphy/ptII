@@ -1,4 +1,4 @@
-/* An actor that converts polar components to cartesian components.
+/* An actor that converts polar components to Cartesian components.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.*;
 /**
 
 This actor reads two double tokens (magnitude and angle) and outputs
-two new double tokens (x and y). The outputs are a cartesian representation
+two new double tokens (x and y). The outputs are a Cartesian representation
 of the pair given at the inputs in polar form. The angle input is assumed
 to be in radians. If either input is NaN or infinity, then the outputs are
 NaN or infinity.
@@ -103,7 +103,7 @@ public class PolarToCartesian extends TypedAtomicActor {
 
     /** Consume a double token from each of the two input ports (magnitude
      *  and angle) and output a double token on each of the two output ports
-     *  (x and y). The output is a cartesian representation of the components
+     *  (x and y). The output is a Cartesian representation of the components
      *  given at the inputs in polar form. The angle is in radians.
      *  If either input has no token, then do nothing.
      *

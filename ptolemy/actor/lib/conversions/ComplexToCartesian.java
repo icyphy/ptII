@@ -1,4 +1,4 @@
-/* An actor that converts a complex token to cartesian components.
+/* An actor that converts a complex token to Cartesian components.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
