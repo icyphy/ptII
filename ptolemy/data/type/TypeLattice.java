@@ -451,6 +451,7 @@ public class TypeLattice {
 
 	    _basicLattice.add(BaseType.BOOLEAN);
 	    _basicLattice.add(BaseType.BOOLEAN_MATRIX);
+	    _basicLattice.add(BaseType.BYTE);
 	    _basicLattice.add(BaseType.COMPLEX);
 	    _basicLattice.add(BaseType.COMPLEX_MATRIX);
 	    _basicLattice.add(BaseType.DOUBLE);
@@ -508,6 +509,7 @@ public class TypeLattice {
 
 	    _basicLattice.addEdge(BaseType.DOUBLE, BaseType.COMPLEX);
 	    _basicLattice.addEdge(BaseType.INT, BaseType.DOUBLE);
+	    _basicLattice.addEdge(BaseType.BYTE, BaseType.INT);
 
 	    _basicLattice.addEdge(arrayRep, BaseType.GENERAL);
 	    _basicLattice.addEdge(BaseType.UNKNOWN, arrayRep);
