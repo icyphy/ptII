@@ -68,7 +68,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -612,11 +611,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
             //Director director = getDirector();
             Transition tr = new Transition(this, name);
-
-            if (_HDFFSMActor) {
-                (tr.preemptive).setVisibility(Settable.NONE);
-            }
-
             return tr;
         } finally {
             workspace().doneWriting();
@@ -732,14 +726,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
 
         _setCurrentConnectionMap();
-    }
-
-    /** Set the HDFFSMActor flag.
-     *  @param flag Indicator that whether the FSMActor is under a
-     *  HDFFSMDirector.
-     */
-    public void setHDFFSMActor(boolean flag) {
-        _HDFFSMActor = flag;
     }
 
     /** Set the flag indicating whether we are at the start of
@@ -1509,10 +1495,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     // True if the current state is a final state.
     private boolean _reachedFinalState;
-
-    // A flag indicating whether the controller
-    // is under an HDFFSMDirector.
-    private boolean _HDFFSMActor = false;
 
     // A flag indicating whether this is at the beginning
     // of one iteration (firing). Normally it is set to true.
