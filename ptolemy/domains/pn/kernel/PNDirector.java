@@ -1,5 +1,4 @@
-/* Governs the execution of a CompositeActor with extended Kahn process
-network semantics supporting non-deterministic mutations.
+/* Director for Kahn-MacQueen process network semantics.
 
  Copyright (c) 1998-2002 The Regents of the University of California.
  All rights reserved.
@@ -31,9 +30,26 @@ network semantics supporting non-deterministic mutations.
 
 package ptolemy.domains.pn.kernel;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.QueueReceiver;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.process.BoundaryDetector;
+import ptolemy.actor.process.CompositeProcessDirector;
 import ptolemy.actor.process.ProcessDirector;
+import ptolemy.actor.process.ProcessReceiver;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.domains.pn.kernel.event.PNProcessListener;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -79,14 +95,12 @@ process is blocked on a write. In this case the director increases the
 capacity of the receiver with the smallest capacity amongst all the
 receivers on which a process is blocked on a write.
 This breaks the deadlock and the execution can resume.
-<p>
-Currently this director does not properly deal with topology mutations.
 
 @author Mudit Goel
 @version $Id$
 @since Ptolemy II 0.2
 */
-public class PNDirector extends BasePNDirector {
+public class PNDirector extends CompositeProcessDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -95,9 +109,12 @@ public class PNDirector extends BasePNDirector {
      *  value 1. This sets the initial capacities of the queues in all
      *  the receivers created in the PN domain.
      */
-    public PNDirector()
-           throws IllegalActionException, NameDuplicationException {
+    public PNDirector() 
+            throws IllegalActionException, NameDuplicationException {
         super();
+        Initial_queue_capacity = new Parameter(this, "Initial_queue_capacity",
+                    new IntToken(1));
+        Initial_queue_capacity.setTypeEquals(BaseType.INT);
     }
 
     /** Construct a director in the  workspace with an empty name.
@@ -108,12 +125,15 @@ public class PNDirector extends BasePNDirector {
      *  the receivers created in the PN domain.
      *  @param workspace The workspace of this object.
      */
-    public PNDirector(Workspace workspace)
-           throws IllegalActionException, NameDuplicationException {
-         super(workspace);
+    public PNDirector(Workspace workspace) 
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);
+        Initial_queue_capacity = new Parameter(this, "Initial_queue_capacity",
+                    new IntToken(1));
+        Initial_queue_capacity.setTypeEquals(BaseType.INT);
     }
 
-    /**  Construct a director in the given container with the given name.
+    /** Construct a director in the given container with the given name.
      *  If the container argument must not be null, or a
      *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
@@ -125,18 +145,36 @@ public class PNDirector extends BasePNDirector {
      *  @param container Container of the director.
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
-     *   with the specified container.  May be thrown in derived classes.
+     *   with the specified container.  Thrown in derived classes.
      *  @exception NameDuplicationException If the container not a
      *   CompositeActor and the name collides with an entity in the container.
      */
     public PNDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        Initial_queue_capacity = new Parameter(this, "Initial_queue_capacity",
+                new IntToken(1));
+        Initial_queue_capacity.setTypeEquals(BaseType.INT);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The initial size of the queues for each communication channel.  The
+     *  type must be integer
+     */
+    public Parameter Initial_queue_capacity;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a process state change listener to this director. The listener
+     *  will be notified of each change to the state of a process.
+     *  @param listener The PNProcessListener to add.
+     */
+    public void addProcessListener(PNProcessListener listener) {
+        _processListeners.add(listener);
+    }
 
     /** Clone the director into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (It must be added
@@ -154,78 +192,236 @@ public class PNDirector extends BasePNDirector {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         PNDirector newObject = (PNDirector)super.clone(workspace);
-	// newObject._mutationsRequested = false;
+        newObject._readBlockCount = 0;
+	newObject._writeBlockCount = 0;
+        newObject._writeBlockedQueues = new LinkedList();
         return newObject;
     }
 
-    /** Suspend the calling thread until a deadlock or request for topology
-     *  changes is detected. On resuming, process the requests for topology
-     *  changes if any, or handle the various deadlocks appropriately.
+    /** Invoke the initialize() method of ProcessDirector. Also set all the
+     *  state variables to the their initial values. The list of process
+     *  listeners is not reset as the developer might want to reuse the
+     *  list of listeners.
+     *  @exception IllegalActionException If the initialize() method of one
+     *  of the deeply contained actors throws it.
+     */
+    public void initialize() throws IllegalActionException {
+	super.initialize();
+        _readBlockCount = 0;
+	_writeBlockCount = 0;
+	_writeBlockedQueues = new LinkedList();
+        //processListeners is not initialized as we might want to continue
+        //with the same listeners.
+    }
+
+    /** Return a new receiver compatible with this director. The receiver
+     *  is an instance of PNQueueReceiver. Set the initial capacity
+     *  of the FIFO queue in the receiver to the value specified by the
+     *  director parameter "Initial_queue_capacity". The default value
+     *  of the parameter is 1.
+     *  @return A new PNQueueReceiver.
+     */
+    public Receiver newReceiver() {
+        PNQueueReceiver receiver =  new PNQueueReceiver();
+        try {
+	    Parameter parameter =
+                (Parameter)getAttribute("Initial_queue_capacity");
+	    int capacity = ((IntToken)parameter.getToken()).intValue();
+	    receiver.setCapacity(capacity);
+        } catch (IllegalActionException ex) {
+	    throw new InternalErrorException(this, ex,
+                    "Size of queue should be 0, and capacity should be a "
+                    + "non-negative number");
+	}
+        return receiver;
+    }
+
+    /** Return true if the containing composite actor contains active
+     *  processes and the composite actor has input ports and if stop()
+     *  has not been called. Return false otherwise. This method is
+     *  normally called only after detecting a real deadlock, or if
+     *  stopFire() is called. True is returned to indicate that the
+     *  composite actor can start its execution again if it
+     *  receives data on any of its input ports.
+     *  @return true to indicate that the composite actor can continue
+     *  executing on receiving additional input on its input ports.
+     *  @exception IllegalActionException Not thrown in this base class. May be
+     *  thrown by derived classes.
+     */
+    public boolean postfire() throws IllegalActionException {
+        _notDone = _notDone && !_stopRequested;
+	//If the container has input ports and there are active processes
+	//in the container, then the execution might restart on receiving
+	// additional data.
+	if (!((((CompositeActor)getContainer()).
+		inputPortList()).isEmpty())
+		&& _getActiveActorsCount() != 0 ){
+            // System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone);
+	    return _notDone;
+	} else {
+            //System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone
+	    //	    + " again.");
+	    return _notDone;
+	}
+    }
+
+    /** Remove a process listener from this director.
+     *  If the listener is not attached to this director, do nothing.
      *
-     *  If requested, process the queued topology change requests. Registered
-     *  topology listeners are informed of each change in a series of calls
-     *  after successful completion of each request. If any queued
-     *  request fails, the request is undone, and no further requests
-     *  are processed. Note that change requests processed successfully
-     *  prior to the failed request are <i>not</i> undone.
-     *  Initialize any new actors created, create receivers for them,
-     *  initialize the receivers and create new threads for the new actors
-     *  created. After all threads
-     *  are created, resume the execution and start the threads for the
-     *  newly created actors.
-     *
-     *  If the resumption was on detection of a deadlock, break the deadlock
-     *  if possible. If the deadlock is an artificial deadlock, then select the
+     *  @param listener The PNProcessListener to be removed.
+     */
+    public void removeProcessListener(PNProcessListener listener) {
+        _processListeners.remove(listener);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Double the capacity of one of the queues with the smallest
+     *  capacity belonging to a receiver on which a process is blocked
+     *  while attempting to write. <p>Traverse through the list of receivers
+     *  on which a process is blocked on a write and choose the one containing
+     *  the queue with the smallest capacity. Double the capacity
+     *  if the capacity is non-negative. In case the capacity is
+     *  negative, set the capacity to 1.
+     *  Unblock the process blocked on a write to the receiver containing this
+     *  queue.
+     *  Notify the thread corresponding to the blocked process to resume
+     *  its execution and return.
+     */
+    protected void _incrementLowestWriteCapacityPort() {
+        PNQueueReceiver smallestCapacityQueue = null;
+        int smallestCapacity = -1;
+	Iterator receivers = _writeBlockedQueues.iterator();
+        if ( !receivers.hasNext() ) {
+            return;
+        }
+	while (receivers.hasNext()) {
+	    PNQueueReceiver queue = (PNQueueReceiver)receivers.next();
+	    if (smallestCapacity == -1) {
+	        smallestCapacityQueue = queue;
+		smallestCapacity = queue.getCapacity();
+	    } else if (smallestCapacity > queue.getCapacity()) {
+	        smallestCapacityQueue = queue;
+	        smallestCapacity = queue.getCapacity();
+	    }
+	}
+        try {
+            if (smallestCapacityQueue.getCapacity() <= 0) {
+                smallestCapacityQueue.setCapacity(1);
+            } else {
+	        smallestCapacityQueue.setCapacity(
+			smallestCapacityQueue.getCapacity()*2);
+            }
+	    _actorUnBlocked(smallestCapacityQueue);
+	    smallestCapacityQueue.setWritePending(false);
+            synchronized(smallestCapacityQueue) {
+                smallestCapacityQueue.notifyAll();
+            }
+        } catch (IllegalActionException ex) {
+	    // Should not be thrown as this exception is thrown
+            // only if port is not an input port, checked above.
+            throw new InternalErrorException(this, ex, "Perhaps port was not "
+                    + "an input port");
+        }
+        return;
+    }
+
+    /** Increment by 1 the count of processes blocked while reading from a
+     *  receiver and notify all process listeners of the blocking of the
+     *  process. Check for a deadlock or pausing of the execution as a result
+     *  of the process blocking on a read. If either of them is detected,
+     *  then notify the directing thread of the same.
+     */
+    protected synchronized void _actorBlocked(ProcessReceiver receiver) {
+        if ( receiver.isReadBlocked() ) {
+	    _readBlockCount++;
+        }
+        if ( receiver.isWriteBlocked() ) {
+	    _writeBlockedQueues.add(receiver);
+	    _writeBlockCount++;
+        }
+        super._actorBlocked(receiver);
+        notifyAll();
+    }
+
+
+    /** Decrease by 1 the count of processes blocked on a read and inform all
+     *  the process listeners that the relevant process has resumed its
+     *  execution.
+     */
+    protected synchronized void _actorUnBlocked(PNQueueReceiver receiver) {
+        if ( receiver.isReadBlocked() ) {
+	    _readBlockCount--;
+        }
+        if ( receiver.isWriteBlocked() ) {
+	    _writeBlockCount--;
+	    _writeBlockedQueues.remove(receiver);
+        }
+        super._actorUnBlocked(receiver);
+	return;
+    }
+
+    /** Resolve an artificial deadlock and return true. If the
+     *  deadlock is not an artificial deadlock (it is a real deadlock),
+     *  then return false.
+     *  If it is an artificial deadlock, select the
      *  receiver with the smallest queue capacity on which any process is
      *  blocked on a write and increment the capacity of the contained queue.
      *  If the capacity is non-negative, then increment the capacity by 1.
      *  Otherwise set the capacity to 1. Unblock the process blocked on
      *  this receiver. Notify the thread corresponding to the blocked
-     *  process. If the deadlock detected is a real deadlock, then do nothing.
-     *
-     *  This method is synchronized on the director. This method is normally
-     *  called by the directing thread.
-     *  @exception IllegalActionException If any of the called methods throw
-     *  it.
-     public void fire() throws IllegalActionException {
-     Workspace workspace = workspace();
-     synchronized (this) { //Reset this as mutations must be done by now
-     if ( _getActiveActorsCount() == 0 ) {
-     _notDone = false;
-     return;
-     }
-     _mutationsRequested = false;
-     //Loop until a deadlock other than an artificial deadlock is
-     //detected.
-     while ( _readBlockCount != _getActiveActorsCount() ) {
-     //Sleep until a deadlock is detected or mutations are requested
-     while ( !_areActorsDeadlocked() ) {
-     workspace.wait(this);
-     }
-     _notDone = _resolveDeadlock();
-     }
-     }
-     return;
-     }
-    */
+     *  process and return true.
+     *  <pP
+     *  If derived classes introduce new forms of deadlocks, they should
+     *  override this method to introduce mechanisms of handling those
+     *  deadlocks. This method is called from the fire() method of the director
+     *  alone.
+     *  @return True after handling an artificial deadlock. Otherwise return
+     *  false.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  This might be thrown by derived classes.
+     */
+    protected boolean _resolveInternalDeadlock() throws IllegalActionException {
+        if (_writeBlockCount == 0 && _readBlockCount > 0 ) {
+            //            System.out.println("Real Deadlock");
+	    // There is a real deadlock.
+	    return false;
+        } else if ( _getActiveActorsCount() == 0 ) {
+	    // There is a real deadlock as no processes are active.
+            if (_debugging) {
+                _debug("Detected Deadlock");
+            }
+	    return false;
+        } else {
+            //This is an artificial deadlock. Hence find the input port with
+	    //lowest capacity queue that is blocked on a write and increment
+	    //its capacity;
+            if (_debugging) {
+                _debug("Artificial Deadlock - increasing queue capacity.");
+            }
+            _incrementLowestWriteCapacityPort();
+	    return true;
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         protected variables               ////
 
-    /** Return true if a deadlock is detected. Return false otherwise.
-     *  A detected deadlock is when all the active processes in the container
-     *  are either blocked on a read, write or are waiting after requesting
-     *  a mutation.
-     *  @return true if a deadlock is detected.
-     */
-    /*  protected synchronized boolean _areActorsDeadlocked() {
-	return (_readBlockCount + _writeBlockCount
-                == _getActiveActorsCount());
-        }*/
+    //The variables are initialized at declaration, despite having an
+    //initialize() method so that the tests can be run.
+
+    /** The count of processes blocked on a read from a receiver. */
+    protected int _readBlockCount = 0;
+
+    /** The count of processes blocked on a write to a receiver. */
+    protected int _writeBlockCount = 0;
+
+    /** The list of receivers blocked on a write to a receiver. */
+    protected LinkedList _writeBlockedQueues = new LinkedList();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // This flag is set to true when mutations are pending
-    // private boolean _mutationsRequested = false;
+    private LinkedList _processListeners = new LinkedList();
 }

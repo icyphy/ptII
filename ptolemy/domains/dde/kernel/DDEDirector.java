@@ -38,7 +38,6 @@ import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.pn.kernel.BasePNDirector; // For Javadoc
 
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -102,7 +101,7 @@ not included in this director.
 @author John S. Davis II, Mudit Goel
 @version $Id$
 @since Ptolemy II 0.3
-@see ptolemy.domains.pn.kernel.BasePNDirector
+@see ptolemy.domains.pn.kernel.PNDirector
 @see ptolemy.domains.dde.kernel.FeedBackDelay
 @see ptolemy.domains.dde.kernel.NullToken
 */
@@ -239,8 +238,10 @@ public class DDEDirector extends CompositeProcessDirector {
 
         TimeKeeper timeKeeper = ddeThread.getTimeKeeper();
         try {
-            //    System.out.println("fireAt " + actor + " time " + time);
-            // System.out.println("current time was " + timeKeeper.getCurrentTime());            
+            if (_debugging) {
+                _debug("fireAt " + actor + " time " + time);
+                _debug("current time was " + timeKeeper.getCurrentTime()); 
+            }
             timeKeeper.setCurrentTime(time);
         } catch (IllegalArgumentException e) {
 	    throw new IllegalActionException(
@@ -296,10 +297,11 @@ public class DDEDirector extends CompositeProcessDirector {
     }
 
     /** Return true if the actors governed by this director can
-     *  continue execution; return false otherwise. Continuation
+     *  continue execution, and false otherwise. Continuation
      *  of execution is dependent upon whether the system is
      *  deadlocked in a manner that can not be resolved even if
-     *  external communication occurs.
+     *  external communication occurs.  If stop() has been called,
+     *  then return false.
      * @return True if execution can continue; false otherwise.
      * @exception IllegalActionException Not thrown in this base class.
      *  May be thrown in derived classes.
@@ -307,11 +309,10 @@ public class DDEDirector extends CompositeProcessDirector {
     public boolean postfire() throws IllegalActionException {
 	Thread thread = Thread.currentThread();
 	if (thread instanceof DDEThread) {
-	    TimeKeeper timeKeeper =
-                ((DDEThread)thread).getTimeKeeper();
+	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
 	    timeKeeper.removeAllIgnoreTokens();
 	}
-	return _notDone;
+	return _notDone && !_stopRequested;
     }
 
     ///////////////////////////////////////////////////////////////////

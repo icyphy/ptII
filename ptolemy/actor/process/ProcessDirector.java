@@ -258,8 +258,27 @@ public class ProcessDirector extends Director {
         return true;
     }
 
+    /** Request that the director cease execution altogether.
+     *  This causes a call to stop() on all actors contained by
+     *  the container of this director, and a call to stopThread()
+     *  on each of the process threads that contain actors
+     *  controlled by this director. This also sets a flag
+     *  so that the next call to postfire() returns false.
+     */
+    public void stop() {
+ 	Iterator threads = _actorThreadList.iterator();
+ 	while ( threads.hasNext() ) {
+ 	    ProcessThread thread = (ProcessThread)threads.next();
+
+	    // Call stopThread() on the threads first
+ 	    thread.stopThread();
+	    thread.getActor().stop();
+ 	}
+        _stopRequested = true;
+    }
+
     /** Request that execution stop at the conclusion of the current
-     *  iteration. Call stopThread on each of the process threads that
+     *  iteration. Call stopThread() on each of the process threads that
      *  contain actors controlled by this director and call stopFire() on
      *  the actors that are contained by these threads. This method is
      *  non-blocking.

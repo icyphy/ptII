@@ -41,19 +41,9 @@ import ptolemy.kernel.util.*;
 //// Stop
 /**
 An actor that stops a model executing when it receives a true token
-on any input channel. This is accomplished by calling stop() on the
-director, which for some directors causes the director to return
-<i>false</i> when its postfire() method is called, and by returning
-<i>false</i> from the postfire() method of this actor, which for
-some other directors causes execution to stop.  A return value
-of <i>false</i> from postfire() indicates to the
-enclosing context that an actor should not be invoked again.
-<p>
-This actor reads inputs in its postfire() method, and if a true-valued
-input is found, then the director's stop() method is called.
-For most directors, this results in a call to stopFire() for each
-actor, followed by the setting of a flag that indicates that the
-next call to postfire() should return false.
+on any input channel. This is accomplished by calling finish() on the
+manager, which requests that the current iteration be completed and
+then the model execution be halted.
 <p>
 When exactly this stops the execution depends on the domain.
 For example, in DE, if an event with time stamp <i>T</i> and
@@ -65,19 +55,14 @@ for actors to be invoked after this one is invoked with a <i>true</i>
 input.
 <p>
 In SDF, if this actor receives <i>true</i>, then the current
-iteration is concluded and then execution is stopped.  The
-SDF director reacts to this actor returning <i>false</i> from
-postfire(), which indicates that this actor does not wish to
-be fired again.  In SDF, if any single actor does not wish to
-be fired again, then none of the actors are fired again.
-Because of the static scheduling, it would not make sense to
-continue execution with only some of the actors being active.
+iteration is concluded and then execution is stopped.
 <p>
-In PN, where each actor has its own thread, the actors continue
-executing until their next attempt to read an input or write an
-output, at which point the thread is stopped. When all actor threads
-have stopped, the PN director concludes, returns from fire(),
-and returns <i>false</i> in postfire(). <b>NOTE</b>:
+In PN, where each actor has its own thread, there is no well-defined
+notion of an iteration. The finish() method of the manager calls
+stopFire() on all actors, which for threaded actors results in them
+halting upon their next attempt to read an input or write an
+output. When all actor threads have stopped, the iteration
+concludes and the model halts. <b>NOTE</b>:
 <i>This is not the best way to stop a PN model!</i> 
 This mechanism is nondeterministic in the sense that there is
 no way to control exactly what data is produced or consumed on

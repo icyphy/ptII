@@ -1,4 +1,4 @@
-/* For testing the various methods of BasePNDirector.
+/* For testing the various methods of PNDirector.
 
  Copyright (c) 1997-2002 The Regents of the University of California.
  All rights reserved.
@@ -90,7 +90,7 @@ public class TestDirector extends AtomicActor {
 	}
 	try {
 	    ((CompositeActor)getContainer()).workspace().getReadAccess();
-	    ((BasePNDirector)getDirector()).wrapup();
+	    ((PNDirector)getDirector()).wrapup();
 	} finally {
 	    ((CompositeActor)getContainer()).workspace().doneReading();
 	}

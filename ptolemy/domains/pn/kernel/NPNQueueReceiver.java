@@ -126,7 +126,7 @@ public class NPNQueueReceiver extends PNQueueReceiver
      */
     public void put(Token token, Branch branch) {
 	Workspace workspace = getContainer().workspace();
-	BasePNDirector director = (BasePNDirector)
+	PNDirector director = (PNDirector)
             ((Actor)(getContainer().getContainer())).getExecutiveDirector();
         synchronized(this) {
             // if (!super.hasRoom()) {

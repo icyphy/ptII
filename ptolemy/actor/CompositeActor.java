@@ -243,14 +243,16 @@ public class CompositeActor extends CompositeEntity implements Actor {
             }
             // Use the local director to transfer inputs.
             Iterator inputPorts = inputPortList().iterator();
-            while (inputPorts.hasNext()) {
+            while (inputPorts.hasNext() && !_stopRequested) {
                 IOPort p = (IOPort)inputPorts.next();
                 _director.transferInputs(p);
             }
+            if (_stopRequested) return;
             _director.fire();
+            if (_stopRequested) return;
             // Use the local director to transfer outputs.
             Iterator outports = outputPortList().iterator();
-            while (outports.hasNext()) {
+            while (outports.hasNext() && !_stopRequested) {
                 IOPort p = (IOPort)outports.next();
                 _director.transferOutputs(p);
             }
@@ -393,7 +395,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  and postfire() are not invoked, and this method returns
      *  NOT_READY. If postfire() returns false, then no more
      *  iterations are invoked, and this method returns STOP_ITERATING.
-     *  Otherwise, it returns COMPLETED.
+     *  Otherwise, it returns COMPLETED.  If stop() is called during
+     *  this iteration, then cease iterating and return STOP_ITERATING.
      *  <p>
      *  This base class method actually invokes prefire(), fire(),
      *  and postfire(), as described above, but a derived class
@@ -406,7 +409,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public int iterate(int count) throws IllegalActionException {
 	int n = 0;
-	while (n++ < count) {
+	while (n++ < count && !_stopRequested) {
 	    if (prefire()) {
 		fire();
 		if (!postfire()) return Executable.STOP_ITERATING;
@@ -414,7 +417,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
                 return Executable.NOT_READY;
 	    }
 	}
-	return Executable.COMPLETED;
+        if (_stopRequested) {
+            return Executable.STOP_ITERATING;
+        } else {
+            return Executable.COMPLETED;
+        }
     }
 
     /** Return a new receiver of a type compatible with the local director.
@@ -565,7 +572,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
                 throw new IllegalActionException(this,
                         "Cannot invoke prefire a non-opaque actor.");
             }
-
             return getDirector().prefire();
         } finally {
             _workspace.doneReading();
@@ -575,7 +581,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
     /** Create Receivers and validate the attributes contained by this
      *  actor and the ports contained by this actor.  Also invoke the
      *  preinitialize() method of its local director. If this actor is
-     *  not opaque, throw an exception.  This method is
+     *  not opaque, throw an exception.  This method also resets
+     *  the protected variable _stopRequested
+     *  to false, so if a derived class overrides this method, then it
+     *  should also do that.  This method is
      *  read-synchronized on the workspace, so the preinitialize()
      *  method of the director need not be, assuming it is only called
      *  from here.
@@ -585,6 +594,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   is not opaque.
      */
     public void preinitialize() throws IllegalActionException {
+        _stopRequested = false;
         try {
             _workspace.getReadAccess();
             _createReceivers();
@@ -610,17 +620,19 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
         // Validate the attributes of this actor.
         for (Iterator attributes = attributeList(Settable.class).iterator();
-             attributes.hasNext();) {
+                attributes.hasNext();) {
+            if (_stopRequested) break;
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
         }
         // Validate the attributes of the ports of this actor.
-        for (Iterator ports = portList().iterator();
-             ports.hasNext();) {
+        for (Iterator ports = portList().iterator(); ports.hasNext();) {
+            if (_stopRequested) break;
             IOPort port = (IOPort)ports.next();
             for (Iterator attributes =
-                     port.attributeList(Settable.class).iterator();
-                 attributes.hasNext();) {
+                    port.attributeList(Settable.class).iterator();
+                    attributes.hasNext();) {
+                if (_stopRequested) break;
                 Settable attribute = (Settable)attributes.next();
                 attribute.validate();
             }
@@ -749,14 +761,17 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** Request that execution of the current iteration stop as soon
-     *  as possible.  If this actor is opaque, then invoke the
-     *  stopFire() method of the local director. Otherwise, do
-     *  nothing.  This method is read-synchronized on the workspace.
+    /** Request that execution stop as soon as possible.
+     *  This sets a flag indicating that this request has been made
+     *  (the protected variable _stopRequested).
+     *  If this actor is opaque, then invoke the
+     *  stop() method of the local director.
+     *  This method is read-synchronized on the workspace.
      */
     public void stop() {
         try {
             _workspace.getReadAccess();
+            _stopRequested = true;
             if (!isOpaque()) {
 		return;
             }
@@ -922,6 +937,12 @@ public class CompositeActor extends CompositeEntity implements Actor {
             director.invalidateResolvedTypes();
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Indicator that a stop has been requested by a call to stop(). */
+    protected boolean _stopRequested = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

@@ -48,6 +48,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.actor.Director;
+import ptolemy.actor.Executable;
 import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.IOPort;
@@ -305,11 +306,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 	}
     }
 
-    /** Initialize this actor.  Derived classes override this method
-     *  to perform actions that should occur once at the beginning of
-     *  an execution, but after type resolution.  Derived classes can
-     *  produce output data and schedule events.
-     *
+    /** Initialize this actor.  This does nothing.
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -356,7 +353,8 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  and postfire() are not invoked, and this method returns
      *  NOT_READY. If postfire() returns false, then no more
      *  iterations are invoked, and this method returns STOP_ITERATING.
-     *  Otherwise, it returns COMPLETED.
+     *  Otherwise, it returns COMPLETED. If stop() is called while
+     *  this is executing, then cease executing and return STOP_ITERATING.
      *
      *  @param count The number of iterations to perform.
      *  @return NOT_READY, STOP_ITERATING, or COMPLETED.
@@ -365,7 +363,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     public int iterate(int count) throws IllegalActionException {
 	int n = 0;
-	while (n++ < count) {
+	while (n++ < count && !_stopRequested) {
 	    if (prefire()) {
 		fire();
 		if (!postfire()) return STOP_ITERATING;
@@ -373,7 +371,11 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                 return NOT_READY;
 	    }
 	}
-	return COMPLETED;
+        if (_stopRequested) {
+            return Executable.STOP_ITERATING;
+        } else {
+            return Executable.COMPLETED;
+        }
     }
 
     /** Create a new TypedIOPort with the specified name.
@@ -461,13 +463,12 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     /** Execute actions on the last chosen transition. Change state
      *  to the destination state of the last chosen transition.
-     *
-     *  @return True.
+     *  @return True, unless stop() has been called, in which case, false.
      *  @exception IllegalActionException If any action throws it.
      */
     public boolean postfire() throws IllegalActionException {
         _commitLastChosenTransition();
-        return true;
+        return !_stopRequested;
     }
 
     /** Return true.
@@ -489,7 +490,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *   state with name specified by the <i>initialStateName</i> attribute.
      */
     public void preinitialize() throws IllegalActionException {
-
+        _stopRequested = false;
         _createReceivers();
         Iterator inputPorts = inputPortList().iterator();
         while (inputPorts.hasNext()) {
@@ -528,20 +529,24 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         _gotoInitialState();
     }
 
+    /** Request that execution of the current iteration stop as soon
+     *  as possible.  In this class, we set a flag indicating that
+     *  this request has been made (the protected variable _stopRequested).
+     *  This will result in postfire() returning false.
+     */
+    public void stop() {
+        _stopRequested = true;
+    }
+
     /** Do nothing.
      */
     public void stopFire() {
     }
 
-    /** Try wrap up.
+    /** Call stop().
      */
     public void terminate() {
-        try {
-            wrapup();
-        }
-        catch (IllegalActionException e) {
-            // Just ignore everything and terminate.
-        }
+        stop();
     }
 
     /** Return the type constraints of this actor. The constraints
@@ -686,7 +691,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             throws IllegalActionException {
         Transition result = null;
         Iterator transitionRelations = transitionList.iterator();
-        while (transitionRelations.hasNext()) {
+        while (transitionRelations.hasNext() && !_stopRequested) {
             Transition transition = (Transition)transitionRelations.next();
             if (!transition.isEnabled()) {
                 continue;
@@ -730,7 +735,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
 
         Iterator actions = _lastChosenTransition.commitActionList().iterator();
-        while (actions.hasNext()) {
+        while (actions.hasNext() && !_stopRequested) {
             Action action = (Action)actions.next();
             action.execute();
         }
@@ -801,6 +806,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         Variable[][] pVars = new Variable[width][2];
         boolean addChIndex = (width > 1);
         for (int chIndex = 0; chIndex < width; ++chIndex) {
+            if (_stopRequested) break;
             String vName = null;
             if (addChIndex) {
                 vName = port.getName() + "_" + chIndex + "_isPresent";
@@ -916,7 +922,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     protected void _setInputsFromRefinement()
             throws IllegalActionException {
         Iterator inPorts = inputPortList().iterator();
-        while (inPorts.hasNext()) {
+        while (inPorts.hasNext() && !_stopRequested) {
             TypedIOPort p = (TypedIOPort)inPorts.next();
             int width = p.getWidth();
             for (int channel = 0; channel < width; ++channel) {
@@ -933,7 +939,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     protected void _setInputVariables() throws IllegalActionException {
         Iterator inPorts = inputPortList().iterator();
-        while (inPorts.hasNext()) {
+        while (inPorts.hasNext() && !_stopRequested) {
             TypedIOPort p = (TypedIOPort)inPorts.next();
             int width = p.getWidth();
             for (int channel = 0; channel < width; ++channel) {
@@ -1003,6 +1009,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     // The last chosen transition.
     protected Transition _lastChosenTransition = null;
+
+    /** Indicator that a stop has been requested by a call to stop(). */
+    protected boolean _stopRequested = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

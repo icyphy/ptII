@@ -122,7 +122,6 @@ public class StaticSchedulingDirector extends Director {
      *  internal state of the director is updated during fire, so it
      *  may be used with domains that require this property, such as
      *  CT. <p>
-     *
      *  Iterating an actor involves calling the actor's iterate() method,
      *  which is equivalent to calling the actor's prefire(), fire() and
      *  postfire() methods in succession.  If iterate() returns NOT_READY,
@@ -150,7 +149,7 @@ public class StaticSchedulingDirector extends Director {
         // does not have a container.
         Schedule schedule = scheduler.getSchedule();
         Iterator firings = schedule.firingIterator();
-        while (firings.hasNext()) {
+        while (firings.hasNext() && !_stopRequested) {
             Firing firing = (Firing)firings.next();
             Actor actor = (Actor)firing.getActor();
             int iterationCount = firing.getIterationCount();
@@ -162,14 +161,12 @@ public class StaticSchedulingDirector extends Director {
 
             int returnValue =
                 actor.iterate(iterationCount);
-            if (returnValue == COMPLETED) {
-                _postfireReturns = _postfireReturns && true;
+            if (returnValue == STOP_ITERATING) {
+                _postfireReturns = false;
             } else if (returnValue == NOT_READY) {
                 throw new IllegalActionException(this,
                         (ComponentEntity) actor, "Actor " +
                         "is not ready to fire.");
-            } else if (returnValue == STOP_ITERATING) {
-                _postfireReturns = false;
             }
             if (_debugging) {
                 _debug(new FiringEvent(this, actor,
@@ -210,20 +207,17 @@ public class StaticSchedulingDirector extends Director {
     }
 
     /** Return true if the director wishes to be scheduled for another
-     *  iteration.  This method is called by the container of this
-     *  director to see whether the director wishes to execute
-     *  anymore.  <p>
-     *
-     *  This base class returns true if all of the actors iterated since
-     *  the last call to prefire returned true.  Subclasses of this
-     *  director may override this method to perform additional
+     *  iteration. This base class returns true if all of the actors
+     *  iterated since the last call to prefire returned true from their
+     *  postfire() method and if stop() has not been called. Subclasses
+     *  may override this method to perform additional
      *  domain-specific behavior.
      *  @return True if the Director wants to be fired again in the
      *  future.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        return _postfireReturns;
+        return _postfireReturns && !_stopRequested;
     }
 
     /** Return true if the director is ready to fire. This method is

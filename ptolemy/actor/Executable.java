@@ -141,19 +141,17 @@ public interface Executable {
      */
     public void preinitialize() throws IllegalActionException;
 
-    /** Request that execution of the current iteration stop as soon
-     *  as possible.  If an iteration is always a finite computation
-     *  (the usual case), i.e.  the fire() method always returns in
-     *  finite time, then nothing needs to be done in this method,
-     *  except possibly to pass on the request to any contained
-     *  executable objects.  This method is used to request that an
-     *  unbounded computation suspend, returning control to the
-     *  caller.  Thus, if the fire() method does not normally return
-     *  in finite time, then this method is used to request that it
-     *  return.  It need not suspend execution in such a way that if
-     *  the fire() method is called again, execution will resume at
-     *  the point where it was suspended.  After this method is
-     *  called, the executable object will not be fired again.
+    /** Request that execution of this Executable stop as soon
+     *  as possible.  An implementation of this method should
+     *  pass on the request to any contained executable objects.
+     *  An implementation should also return false from postfire()
+     *  to indicate to the caller that no further execution of
+     *  this Executable is appropriate.  After this method is
+     *  called, the executable object should not be fired again.
+     *  The stopFire() method, by contrast, requests that the
+     *  current iteration be completed, but not that the entire
+     *  execution be stopped.  I.e., the Executable may be fired
+     *  again after stopFire() is called.
      */
     public void stop();
 

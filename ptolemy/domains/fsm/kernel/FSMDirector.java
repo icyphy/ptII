@@ -215,6 +215,7 @@ public class FSMDirector extends Director {
 	    Actor[] actors = tr.destinationState().getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
+                    if (_stopRequested) break;
                     if (actors[i].prefire()) {
                         actors[i].fire();
 			actors[i].postfire();
@@ -227,6 +228,7 @@ public class FSMDirector extends Director {
 	Actor[] actors = st.getRefinement();
 	if (actors != null) {
 	    for (int i = 0; i < actors.length; ++i) {
+                if (_stopRequested) break;
 		if (actors[i].prefire()) {
 		    actors[i].fire();
 		    actors[i].postfire();
@@ -252,10 +254,10 @@ public class FSMDirector extends Director {
      *  @exception IllegalActionException If thrown in scheduling
      *   a firing of the container of this director at the given
      *   time with the executive director.
-     *  FIXME: Changed by liuj, not yet reviewed.
      */
     public void fireAt(Actor actor, double time)
             throws IllegalActionException {
+        // FIXME: Changed by liuj, not yet reviewed.
         Nameable container = getContainer();
         if (container instanceof Actor) {
             Actor cont = (Actor)container;
@@ -381,31 +383,14 @@ public class FSMDirector extends Director {
      *   another iteration.
      *  @exception IllegalActionException If thrown by any commit action
      *   or there is no controller.
-     *  FIXME: Changed by liuj, not yet reviewed.
      */
     public boolean postfire() throws IllegalActionException {
-        FSMActor ctrl = getController();
-	Nameable container = getContainer();
-	Director executiveDirector = null;
-	if (container instanceof CompositeActor) {
-	    executiveDirector =
-                ((CompositeActor)container).getExecutiveDirector();
-	}
-        boolean result = true;
-	Transition tr = ctrl._lastChosenTransition;
-	/*if (tr == null || !tr.isPreemptive()) {
-          Iterator actors = _enabledRefinements.iterator();
-          while (actors.hasNext()) {
-          TypedActor actor = (TypedActor)actors.next();
-          actor.postfire();
-          }
-          }*/
-
-	boolean ctrlPostfire = ctrl.postfire();
-        result = result && ctrlPostfire;
+        // FIXME: Changed by liuj, not yet reviewed.
+        FSMActor controller = getController();
+        boolean result = controller.postfire();
         _currentLocalReceiverMap =
-            (Map)_localReceiverMaps.get(ctrl.currentState());
-        return result;
+                (Map)_localReceiverMaps.get(controller.currentState());
+        return result && !_stopRequested;
     }
 
     /** Return true if the mode controller is ready to fire.
@@ -440,10 +425,7 @@ public class FSMDirector extends Director {
         }
         // Set the current time based on the enclosing class.
         super.prefire();
-
         _firstFire = true;
-
-        FSMActor ctrl = getController();
         return getController().prefire();
     }
 
@@ -566,11 +548,11 @@ public class FSMDirector extends Director {
             throws IllegalActionException {
         try {
             workspace().getReadAccess();
-            FSMActor ctrl = getController();
+            FSMActor controller = getController();
             // Remove any existing maps.
             _localReceiverMaps.clear();
             // Create a map for each state of the mode controller.
-            Iterator states = ctrl.entityList().iterator();
+            Iterator states = controller.entityList().iterator();
             State state = null;
             while (states.hasNext()) {
                 state = (State)states.next();
@@ -582,18 +564,19 @@ public class FSMDirector extends Director {
             while (inPorts.hasNext()) {
                 IOPort port = (IOPort)inPorts.next();
                 Receiver[][] allReceivers = port.deepGetReceivers();
-                states = ctrl.entityList().iterator();
+                states = controller.entityList().iterator();
                 while (states.hasNext()) {
                     state = (State)states.next();
                     TypedActor[] actors = state.getRefinement();
-                    Receiver[][] allReceiversArray = new Receiver[allReceivers.length][0];
+                    Receiver[][] allReceiversArray 
+                            = new Receiver[allReceivers.length][0];
                     for (int i = 0; i < allReceivers.length; ++i) {
                         resultsList.clear();
                         for (int j = 0; j < allReceivers[i].length; ++j) {
                             Receiver receiver = allReceivers[i][j];
                             Nameable cont = receiver.getContainer()
                                 .getContainer();
-                            if (cont == ctrl) {
+                            if (cont == controller) {
 				resultsList.add(receiver);
 			    } else {
 				List stateList = new LinkedList();
@@ -640,7 +623,7 @@ public class FSMDirector extends Director {
             }
             _localReceiverMapsVersion = workspace().getVersion();
             _currentLocalReceiverMap =
-                (Map)_localReceiverMaps.get(ctrl.currentState());
+                (Map)_localReceiverMaps.get(controller.currentState());
         } finally {
             workspace().doneReading();
         }

@@ -116,7 +116,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             branch.registerReceiverBlocked(this);
             _otherBranch = branch;
         } else {
-            BasePNDirector director = ((BasePNDirector)((Actor)
+            PNDirector director = ((PNDirector)((Actor)
         	    (getContainer().getContainer())).getExecutiveDirector());
             director._actorBlocked(this);
             _otherBranch = branch;
@@ -133,7 +133,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         if ( _otherBranch != null ) {
             _otherBranch.registerReceiverUnBlocked(this);
         } else {
-            BasePNDirector director = ((BasePNDirector)((Actor)
+            PNDirector director = ((PNDirector)((Actor)
         	    (getContainer().getContainer())).getExecutiveDirector());
             director._actorUnBlocked(this);
 
@@ -170,7 +170,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public Token get(Branch branch) {
 	Workspace workspace = getContainer().workspace();
-	BasePNDirector director = ((BasePNDirector)
+	PNDirector director = ((PNDirector)
                 ((Actor)(getContainer().getContainer()))
                 .getExecutiveDirector());
         Token result = null;
@@ -375,7 +375,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public void put(Token token, Branch branch) {
 	Workspace workspace = getContainer().workspace();
-	BasePNDirector director = (BasePNDirector)
+	PNDirector director = (PNDirector)
             ((Actor)(getContainer().getContainer())).getExecutiveDirector();
         synchronized(this) {
             // if (!super.hasRoom()) {

@@ -252,11 +252,15 @@ public class CompositeProcessDirector extends ProcessDirector {
             CompositeActor containersContainer =
                 (CompositeActor)container.getContainer();
             if ( containersContainer == null ) {
-                setCurrentTime(0.0);
+                // Can't use setCurrentTime() here because it forbids
+                // setting time backwards.
+                _currentTime = 0.0;
             } else {
                 double time =
                     containersContainer.getDirector().getCurrentTime();
-                setCurrentTime(time);
+                // Can't use setCurrentTime() here because it forbids
+                // setting time backwards.
+                _currentTime = time;
             }
         }
 

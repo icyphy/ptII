@@ -337,9 +337,7 @@ public class DEDirector extends Director {
      *  @exception IllegalActionException If the firing actor throws it.
      */
     public void fire() throws IllegalActionException {
-        _stopRequested = false;
         while (true) {
-
             Actor actorToFire = _dequeueEvents();
             if (actorToFire == null) {
                 // There is nothing more to do.
@@ -469,9 +467,6 @@ public class DEDirector extends Director {
             // Set the depth equal to the depth of the actor.
             _enqueueEvent(actor, time);
             _eventQueue.notifyAll();
-            if (_debugging) {
-                _debug("Notify was done in fireAt (winthrop).");
-            }
         }
     }
 
@@ -496,9 +491,6 @@ public class DEDirector extends Director {
             // Set the depth equal to the depth of the actor.
             _enqueueEvent(actor, getCurrentTime());
             _eventQueue.notifyAll();
-            if (_debugging) {
-                _debug("Notify was done in fireAtCurrentTime (winthrop).");
-            }
         }
     }
 
@@ -523,9 +515,6 @@ public class DEDirector extends Director {
             // Set the depth equal to the depth of the actor.
             _enqueueEvent(actor, time + getCurrentTime());
             _eventQueue.notifyAll();
-            if (_debugging) {
-                _debug("Notify was done in fireAtRelativeTime (winthrop).");
-            }
         }
     }
 
@@ -970,9 +959,6 @@ public class DEDirector extends Director {
                         _debug("Queue is empty. Waiting for input events.");
                     }
                     Thread.currentThread().yield();
-                    if (_debugging) {
-                        _debug("Yield was completed (winthrop).");
-                    }
                     synchronized(_eventQueue) {
                         if (_eventQueue.isEmpty()) {
                             try {
@@ -982,24 +968,14 @@ public class DEDirector extends Director {
                                 // wait.  This can lead to deadlock if the UI
                                 // waits for the change request to complete
                                 // (which it typically does).
-                                if (_debugging) {
-                                    _debug("Wait will be called (winthrop).");
-                                }
                                 _eventQueue.wait();
-                                if (_debugging) {
-                                    _debug("Wait was completed (winthrop).");
-                                }
                             } catch (InterruptedException e) {
-                                if (_debugging) {
-                                    _debug("Wait InterruptException"
-                                            + " (winthrop).");
-                                }
                                 // If the wait is interrupted,
 				// then stop waiting.
                                 break;
                             } catch (Exception e) {
                                 if (_debugging) {
-                                    _debug("Wait Q!-Exception-!Q (winthrop).");
+                                    _debug(e.toString());
                                 }
                             }
                         }
@@ -1293,9 +1269,6 @@ public class DEDirector extends Director {
 
     /** Set to true when it is time to end the execution. */
     protected boolean _noMoreActorsToFire = false;
-
-    /** Flag that indicates that a stop has been requested. */
-    protected boolean _stopRequested = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

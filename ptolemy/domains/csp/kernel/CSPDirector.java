@@ -189,20 +189,17 @@ public class CSPDirector extends CompositeProcessDirector {
         return new CSPReceiver();
     }
 
-    /** Return false to indicate that the iteration is over. Real
-     *   deadlock must have occurred.
+    /** Return false if deadlock has occurred and there are no
+     *  input ports, or if stop() has been called, and true otherwise.
      *  <P>
-     *  NOTE: when considering composing CSP with other domains, this method
-     *  will need to be changed, together with prefire.
-     *  <P>
-     *  @return false indicating the iteration is over.
+     *  @return False if no more execution is possible, and true otherwise.
      */
     public boolean postfire() {
         List ports = ((CompositeActor)getContainer()).inputPortList();
         if ( ports.iterator().hasNext() ) {
-            return true;
+            return !_stopRequested;
         } else {
-            return _notDone;
+            return _notDone && !_stopRequested;
         }
     }
 

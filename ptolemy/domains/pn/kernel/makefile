@@ -53,8 +53,7 @@ PTCLASSALLJARS = \
 
 PTCLASSALLJAR = kernel.jar
 
-JSRCS = BasePNDirector.java \
-	PNDirector.java \
+JSRCS = PNDirector.java \
 	NPNQueueReceiver.java \
 	PNQueueReceiver.java \
 	TimedPNDirector.java

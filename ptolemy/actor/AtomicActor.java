@@ -237,7 +237,8 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  and postfire() are not invoked, and this method returns
      *  NOT_READY. If postfire() returns false, then no more
      *  iterations are invoked, and this method returns STOP_ITERATING.
-     *  Otherwise, it returns COMPLETED.
+     *  Otherwise, it returns COMPLETED. If stop() is called while
+     *  this is executing, then cease executing and return STOP_ITERATING.
      *  <p>
      *  This base class method actually invokes prefire(), fire(),
      *  and postfire(), as described above, but a derived class
@@ -250,7 +251,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      */
     public int iterate(int count) throws IllegalActionException {
 	int n = 0;
-	while (n++ < count) {
+	while (n++ < count && !_stopRequested) {
 	    if (prefire()) {
 		fire();
 		if (!postfire()) return Executable.STOP_ITERATING;
@@ -258,7 +259,11 @@ public class AtomicActor extends ComponentEntity implements Actor {
                 return Executable.NOT_READY;
 	    }
 	}
-	return Executable.COMPLETED;
+        if (_stopRequested) {
+            return Executable.STOP_ITERATING;
+        } else {
+            return Executable.COMPLETED;
+        }
     }
 
     /** Create a new IOPort with the specified name.
@@ -327,7 +332,8 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return _cachedOutputPorts;
     }
 
-    /** Return true.  Derived classes override this method to define
+    /** Return true, unless stop() has been called, in which case,
+     *  return false.  Derived classes override this method to define
      *  operations to be performed at the end of every iteration of
      *  its execution, after one invocation of the prefire() method
      *  and any number of invocations of the fire() method.
@@ -340,7 +346,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        return true;
+        return !_stopRequested;
     }
 
     /** Return true. Derived classes override this method to define
@@ -371,6 +377,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void preinitialize() throws IllegalActionException {
+        _stopRequested = false;
         _createReceivers();
         // Validate the attributes of this actor.
         for (Iterator attributes = attributeList(Settable.class).iterator();
@@ -379,12 +386,13 @@ public class AtomicActor extends ComponentEntity implements Actor {
             attribute.validate();
         }
         // Validate the attributes of the ports of this actor.
-        for (Iterator ports = portList().iterator();
-             ports.hasNext();) {
+        for (Iterator ports = portList().iterator(); ports.hasNext();) {
+            if (_stopRequested) break;
             IOPort port = (IOPort)ports.next();
             for (Iterator attributes =
-                     port.attributeList(Settable.class).iterator();
-                 attributes.hasNext();) {
+                    port.attributeList(Settable.class).iterator();
+                    attributes.hasNext();) {
+                if (_stopRequested) break;
                 Settable attribute = (Settable)attributes.next();
                 attribute.validate();
             }
@@ -420,13 +428,16 @@ public class AtomicActor extends ComponentEntity implements Actor {
     }
 
     /** Request that execution of the current iteration stop as soon
-     *  as possible.  Most atomic actors have bounded fire() methods,
+     *  as possible.  In this base class, we set a flag indicating that
+     *  this request has been made (the protected variable _stopRequested).
+     *  Most atomic actors have bounded fire() methods,
      *  so they can simply ignore this.  Atomic actors with unbounded
-     *  fire() methods should override this method to save their state
-     *  and return from the fire() method at the next convenient
-     *  point.  In this base class, do nothing.
+     *  fire() methods should react by saving their state
+     *  and returning from the fire() method at the next convenient
+     *  point.
      */
     public void stop() {
+        _stopRequested = true;
     }
 
     /** Request that execution of the current iteration complete.
@@ -439,17 +450,12 @@ public class AtomicActor extends ComponentEntity implements Actor {
     public void stopFire() {
     }
 
-    /** By default, an AtomicActor does nothing incredible in its
-     *  terminate, it just wraps up.
+    /** Terminate execution immediately.  In this base class, call stop().
+     *  Derived classes may wish to do something more aggressive, such
+     *  as terminating any threads they have started.
      */
     public void terminate() {
-        try {
-            wrapup();
-        }
-        catch (IllegalActionException e) {
-            // Do not pass go, do not collect $200.  Most importantly,
-            // just ignore everything and terminate.
-        }
+        stop();
     }
 
     /** Do nothing.  Derived classes override this method to define
@@ -492,6 +498,12 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     // NOTE: There is nothing new to report in the _description() method,
     // so we do not override it.
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Indicator that a stop has been requested by a call to stop(). */
+    protected boolean _stopRequested = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

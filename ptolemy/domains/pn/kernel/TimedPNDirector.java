@@ -102,7 +102,7 @@ the first timed-blocked process can be awakened.
 @version $Id$
 @since Ptolemy II 0.2
 */
-public class TimedPNDirector extends BasePNDirector {
+public class TimedPNDirector extends PNDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -172,57 +172,6 @@ public class TimedPNDirector extends BasePNDirector {
 	newObject._delayBlockCount = 0;
         return newObject;
     }
-    /** Suspend the calling thread until a deadlock
-     *  is detected. On resuming, handle the various deadlocks appropriately.
-     *  Break the deadlock if possible. If the deadlock is an artificial
-     *  deadlock, then select the receiver with the smallest queue capacity on
-     *  which any process is blocked on a write and increment the capacity of
-     *  the contained queue.
-     *  If the capacity is non-negative, then increment the capacity by 1.
-     *  Otherwise set the capacity to 1. Unblock the process blocked on
-     *  this receiver. Notify the thread corresponding to the blocked
-     *  process.
-     *  If the deadlock is a timed deadlock, process any pending topology
-     *  change requests. If there are no pending requests, then advance the
-     *  time to the earliest value when a time-blocked process can be
-     *  awakened. If the deadlock detected is a real deadlock, then do
-     *  nothing.
-     *
-     *  If processing the queued topology change requests, then inform the
-     *  registered topology listeners of each change in a series of calls
-     *  after successful completion of each request. If any queued
-     *  request fails, the request is undone, and no further requests
-     *  are processed. Note that change requests processed successfully
-     *  prior to the failed request are <i>not</i> undone.
-     *  Create receivers for any new actors created, initialize the new actors,
-     *  and create new threads for these actors. After all threads
-     *  are created, resume the execution and start the threads for the
-     *  newly created actors. This method returns only on occurrence of a real
-     *  deadlock.
-     *
-     *  <b>This method is synchronized on the director. This method is normally
-     *  called by the directing thread. </b>
-     *  @exception IllegalActionException If any of the called methods throw
-     *  it.
-     public void fire() throws IllegalActionException {
-     boolean timedMutation;
-     Workspace workspace = workspace();
-     synchronized (this) {
-     if ( _getActiveActorsCount() == 0 ) {
-     _notDone = false;
-     return;
-     }
-     // Loop until a real deadlock is detected.
-     while ( _readBlockCount != _getActiveActorsCount() ) {
-     while ( !_areActorsDeadlocked() ) {
-     workspace.wait(this);
-     }
-     _notDone = _resolveDeadlock();
-     }
-     }
-     return;
-     }
-    */
 
     /** Suspend the calling process until the time has advanced to at least the
      *  time specified by the method argument.
@@ -251,7 +200,6 @@ public class TimedPNDirector extends BasePNDirector {
 	    System.err.println(e.toString());
 	}
     }
-
 
     /** Set the current time of the model under this director.
      *  @exception IllegalActionException If an attempt is made to change the

@@ -152,7 +152,8 @@ public class Director extends Attribute implements Executable {
      *  than once in the same iteration of the director's container.
      *  An iteration is defined as multiple invocations of prefire(), until
      *  it returns true, any number of invocations of fire(),
-     *  followed by one invocation of postfire().
+     *  followed by one invocation of postfire().  If stop() is called
+     *  during this execution, the stop iterating actors immediately.
      *  <p>
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
@@ -172,7 +173,7 @@ public class Director extends Attribute implements Executable {
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
                 .deepEntityList().iterator();
-            while (actors.hasNext()) {
+            while (actors.hasNext() && !_stopRequested) {
                 Actor actor = (Actor)actors.next();
                 if (actor.prefire()) {
                     actor.fire();
@@ -283,7 +284,9 @@ public class Director extends Attribute implements Executable {
      *  invoked in the middle of an execution, if reinitialization is
      *  desired.  Since type resolution has been completed and the
      *  current time is set, the initialize() method of a contained
-     *  actor may produce output or schedule events.  This method is
+     *  actor may produce output or schedule events.  If stop() is
+     *  called during this methods execution, then stop initializing
+     *  actors immediately.  This method is
      *  <i>not</i> synchronized on the workspace, so the caller should
      *  be.
      *
@@ -303,7 +306,7 @@ public class Director extends Attribute implements Executable {
 	    }
             Iterator actors = ((CompositeActor)container)
                 .deepEntityList().iterator();
-            while (actors.hasNext()) {
+            while (actors.hasNext() && !_stopRequested) {
                 Actor actor = (Actor)actors.next();
                 if (_debugging) _debug("Invoking initialize(): ",
                         ((NamedObj)actor).getFullName());
@@ -358,7 +361,7 @@ public class Director extends Attribute implements Executable {
     public void invalidateSchedule() {
     }
 
-    /** Invoke a specified number of iterations of the actor. An
+    /** Invoke a specified number of iterations of this director. An
      *  iteration is equivalent to invoking prefire(), fire(), and
      *  postfire(), in that order. In an iteration, if prefire()
      *  returns true, then fire() will be called once, followed by
@@ -366,7 +369,9 @@ public class Director extends Attribute implements Executable {
      *  and postfire() are not invoked, and this method returns
      *  NOT_READY. If postfire() returns false, then no more
      *  iterations are invoked, and this method returns STOP_ITERATING.
-     *  Otherwise, it returns COMPLETED.
+     *  Otherwise, it returns COMPLETED.  Also, if the stop() is
+     *  called during this execution, then immediately stop iterating
+     *  and return STOP_ITERATING.
      *  <p>
      *  This base class method actually invokes prefire(), fire(),
      *  and postfire(), as described above, but a derived class
@@ -379,7 +384,7 @@ public class Director extends Attribute implements Executable {
      */
     public int iterate(int count) throws IllegalActionException {
 	int n = 0;
-	while (n++ < count) {
+	while (n++ < count && !_stopRequested) {
 	    if (prefire()) {
 		fire();
 		if (!postfire()) return Executable.STOP_ITERATING;
@@ -387,7 +392,11 @@ public class Director extends Attribute implements Executable {
                 return Executable.NOT_READY;
 	    }
 	}
-	return Executable.COMPLETED;
+        if (_stopRequested) {
+            return Executable.STOP_ITERATING;
+        } else {
+            return Executable.COMPLETED;
+        }
     }
 
     /** Return true if this director, or any of its contained directors
@@ -637,11 +646,20 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Request that the director cease execution altogether.
-     *  This causes a call to stopFire() and sets a flag
+     *  This causes a call to stop() on all actors contained by
+     *  the container of this director, and sets a flag
      *  so that the next call to postfire() returns false.
      */
     public void stop() {
-        stopFire();
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            Iterator actors = ((CompositeActor)container)
+                    .deepEntityList().iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor)actors.next();
+                actor.stop();
+            }
+        }
         _stopRequested = true;
     }
 
@@ -666,7 +684,7 @@ public class Director extends Attribute implements Executable {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
-                .deepEntityList().iterator();
+                    .deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 actor.stopFire();

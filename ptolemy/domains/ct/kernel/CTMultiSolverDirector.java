@@ -131,7 +131,6 @@ public class CTMultiSolverDirector extends CTDirector {
     public CTMultiSolverDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        //addDebugListener(new ptolemy.kernel.util.StreamListener());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -256,11 +255,11 @@ public class CTMultiSolverDirector extends CTDirector {
         // Clear the list after that.
         if (_refireActors != null && !_refireActors.isEmpty()) {
             Iterator iterator = ((List)_refireActors.clone()).iterator();
-            while (iterator.hasNext()) {
+            while (iterator.hasNext() && !_stopRequested) {
                 Actor actor = (Actor)iterator.next();
                 if (actor.prefire()) {
                     actor.fire();
-                    actor.postfire();
+                    _postfireReturns = _postfireReturns && actor.postfire();
                 }
             }
             _refireActors.clear();
@@ -338,10 +337,8 @@ public class CTMultiSolverDirector extends CTDirector {
 
     }
 
-    /** Return false if the stop time is reached.
-     *  Check if the current time is
-     *  the stop time. If so, return false ( for stop further simulation).
-     *  Otherwise, returns true.
+    /** Return false if the stop time is reached or if any actor returned
+     *  false to postfire().  Otherwise, returns true.
      *  @return false If the simulation is finished.
      *  @exception IllegalActionException If thrown by registering
      *  breakpoint
@@ -356,7 +353,7 @@ public class CTMultiSolverDirector extends CTDirector {
         }
         if (_debugging) _debug(getFullName() + " postfire returns true at: " +
                 getCurrentTime());
-        return true;
+        return _postfireReturns && !_stopRequested;
     }
 
     /**  Return true always, indicating that the system is always ready
@@ -368,6 +365,7 @@ public class CTMultiSolverDirector extends CTDirector {
      */
     public boolean prefire() throws IllegalActionException {
         if (_debugging) _debug(this.getFullName(), "prefire returns true.");
+        _postfireReturns = true;
         return true;
     }
 
@@ -728,7 +726,7 @@ public class CTMultiSolverDirector extends CTDirector {
                 CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS).actorIterator();
         while (actors.hasNext()) {
             CTStepSizeControlActor actor =
-                (CTStepSizeControlActor)actors.next();
+                 (CTStepSizeControlActor)actors.next();
             refinedStep = Math.min(refinedStep, actor.refinedStepSize());
         }
         if (refinedStep < 0.5*getMinStepSize()) {
@@ -764,4 +762,6 @@ public class CTMultiSolverDirector extends CTDirector {
     // The default solver.
     private ODESolver _breakpointSolver = null;
 
+    // Flag for postfire.
+    private boolean _postfireReturns = true;
 }

@@ -526,7 +526,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
     }
 
-
     /** Initialization after type resolution.
      *  In addition to calling the initialize() method of its super class,
      *  this method record the current system time as the "real" starting
