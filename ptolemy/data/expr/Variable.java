@@ -704,17 +704,9 @@ public class Variable extends Attribute implements Typeable {
     /** Set a type constraint that the type of this object be at most
      *  the specified value.
      *  @exception IllegalActionException If the type of this object
-     *   already violates this constraint. Also
-     *   thrown if the argument is not an instantiable type
-     *   in the type lattice.
+     *   already violates this constraint.
      */
     public void setTypeAtMost(Class type) throws IllegalActionException {
-        if (!TypeLattice.isInstantiableType(type)) {
-            throw new IllegalActionException(this, "setTypeAtMost(): "
-                    + "the argument " + type
-                    + " is not an instantiable type in the type lattice.");
-        }
-
         if (_token != null) {
             int typeInfo = TypeLattice.compare(_token.getClass(), type);
             if ((typeInfo == CPO.HIGHER) || (typeInfo == CPO.INCOMPARABLE)) {
