@@ -1,0 +1,128 @@
+/* Interface for defining how an CORBA actor can be invoked remotely.
+
+ Copyright (c) 1997-2001 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+@ProposedRating Red (liuj@eecs.berkeley.edu)
+@AcceptedRating Red (moderator@eecs.berkeley.edu)
+*/
+
+module RemoteManagerUtil {
+	/* Exception for generic illegal actions on the server side.
+	 */
+	exception CorbaIllegalActionException{
+		string message;
+	};
+
+	/* Exception for unknow parameter name when passing a parameter.
+	 */
+	exception CorbaUnknownParamException {
+		string paramName;
+		string message;
+	};
+
+	/* Exception for illegal value when passing data.
+	 */
+	exception CorbaIllegalValueException{
+		string message;
+	};
+
+	/* Exception for unknow port when accessing a remote port/
+	 */
+	exception CorbaUnknownPortException{
+		string portName;
+		string message;
+	};
+
+	/* Exception for channel indeces.
+	 */
+	exception CorbaIndexOutofBoundException{
+		short index;
+	};
+
+	/* A CORBA compatible interface that implements the execution
+	 * methods of Ptolemy II.
+	 */
+	interface RemoteManager {
+		/* Mirror the execute() method of Ptolemy II
+		 * manager interface.
+		 * @exception CorbaIllegalActionException If the
+		 *   method is an illegal action of the actor.
+		 */
+		void execute() raises (CorbaIllegalActionException);
+
+        /* Mirror the initialize() method of Ptolemy II
+		 * manager interface.
+		 * @exception CorbaIllegalActionException If the
+		 *   method is an illegal action of the actor.
+		 */
+        void initialize() raises (CorbaIllegalActionException);
+
+        /* Mirror the pause() method of Ptolemy II
+		 * manager interface.
+		 * @exception CorbaIllegalActionException If the
+		 *   method is an illegal action of the actor.
+		 */
+        void pause() raises (CorbaIllegalActionException);
+
+        /* Mirror the resume() method of Ptolemy II
+		 * manager interface.
+		 * @exception CorbaIllegalActionException If the
+		 *   method is an illegal action of the actor.
+		 */
+        void resume() raises (CorbaIllegalActionException);
+
+        /* Mirror the startRun() method of Ptolemy II
+		 * manager interface.
+		 * @exception CorbaIllegalActionException If the
+		 *   method is an illegal action of the actor.
+		 */
+        void startRun() raises (CorbaIllegalActionException);
+
+        /* Mirror the stop() method of Ptolemy II
+		 * manager interface.
+		 * @exception CorbaIllegalActionException If the
+		 *   method is an illegal action of the actor.
+		 */
+        void stop() raises (CorbaIllegalActionException);
+
+        /* Mirror the terminate() method of Ptolemy II
+		 * manager interface.
+		 * @exception CorbaIllegalActionException If the
+		 *   method is an illegal action of the actor.
+		 */
+        void terminate() raises (CorbaIllegalActionException);
+
+		/* Mirror the terminate() method of Ptolemy II
+		 * remoteManager interface.
+		 * @exception CorbaIllegalActionException If the
+		 *  query of parameter is not supported by the actor.
+		 * @exception CorbaUnknowParamException If the parameter
+		 *  name is not known by the actor.
+		 */
+		void changeModel(in string model)
+			raises (CorbaIllegalActionException,
+				CorbaUnknownParamException);
+
+    };
+};
