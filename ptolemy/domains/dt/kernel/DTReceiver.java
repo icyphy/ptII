@@ -26,7 +26,6 @@
 
 @ProposedRating Red (chf@eecs.berkeley.edu)
 @AcceptedRating Red (chf@eecs.berkeley.edu)
-
 */
 
 package ptolemy.domains.dt.kernel;
@@ -91,7 +90,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
 
     /** Construct an empty receiver with the specified container and size.
      *  @param container The container of the receiver.
-     *  @size size  The size of the buffer for the receiver.
+     *  @param size  The size of the buffer for the receiver.
      */
     public DTReceiver(IOPort container, int size) {
         super(container,size);
@@ -102,6 +101,11 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     /** Remove the first token (the oldest one) from the receiver and
      *  return it. If there is no token in the receiver, throw an
      *  exception.  Increment the time of the local director by
+     *  the value period/(rate * repeats) where:
+     *  - period is the time needed by the director per iteration 
+     *  - rate   is the rate of the port that holds this receiver
+     *  - repeats is the firing count per iteration the actor 
+     *            that holds this receiver
      *  @return The oldest token in the receiver.
      *  @exception IllegalActionException If current time cannot be modified.
      */
@@ -114,14 +118,13 @@ public class DTReceiver extends SDFReceiver implements Receiver {
         // FIXME: may need to consider different cases for TypedComposositeActor ports
         director.setCurrentTime(_localGetTime);
 
-        if (true) {
-            String sourceName = ((Nameable) to).getName();
-            String destinationName = ((Nameable) from).getName();
-            print("   == get call by "+sourceName+" from "+destinationName+" time:"+_localGetTime);
-            if (currentPort.getWidth()>1) {
-                println(" _multiport_");
-            } else println(" ");
-        }
+        String sourceName = ((Nameable) to).getName();
+        String destinationName = ((Nameable) from).getName();
+        debug.print("   == get call by "+sourceName+" from "+destinationName+" time:"+_localGetTime);
+        if (currentPort.getWidth()>1) {
+            debug.println(" _multiport_");
+        } else debug.println(" ");
+        
         
         // FIXME: timing does not work for DT inside DT
         _localGetTime = _localGetTime + _deltaT;
@@ -140,6 +143,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
 
         Actor actor = (Actor) super.getContainer().getContainer();
         DTDirector director = (DTDirector) (actor.getDirector());
+        
         _localGetTime = _localGetTime + t.length * _deltaT;
     }
 
@@ -147,20 +151,24 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     public void initialPut(MatrixToken outputsArray) {
     }
     
+    
     public void put(Token token) {
 
     	Actor actor = (Actor) super.getContainer().getContainer();
         IOPort currentPort = (IOPort) super.getContainer();
         DTDirector director = (DTDirector) (actor.getDirector());
+        String fromName = ((Nameable)from).getName();
+        String toName = ((Nameable)to).getName();
 
         // FIXME: may need to consider different cases for TypedComposositeActor ports
-        director.setCurrentTime(_localPutTime);
-             
-        print("   --put token from "+((Nameable)from).getName()+" to "+((Nameable)to).getName()+" with divider "+_periodDivider+" // time is:"+_localPutTime);
-        if (fromPort == null) MB("null fromPort");
+        //director.setCurrentTime(_localPutTime);
+        
+        
+        debug.print("   --put token from "+fromName+" to "+toName+" with divider "+_periodDivider+" // time is:"+_localPutTime);
+        if (fromPort == null) debug.prompt("null fromPort");     
         if (fromPort.getWidth()>1) {
-            println(" _multiport_");
-        } else println(" ");
+            debug.println(" _multiport_");
+        } else debug.println(" ");
         _localPutTime = _localPutTime + _deltaT;
         super.put(token);        
     }
@@ -183,7 +191,11 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     }
     
     
-    
+    /** Determine the source and destination ports that use this
+     *  receiver in their communications.  The source and destination
+     *  ports are unique  
+     *  @param dtDirector 
+     */
     public void determineEnds(DTDirector dtDirector) {
         toPort = this.getContainer();
     	to = (Actor) toPort.getContainer();
@@ -202,19 +214,31 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     	    
     	Iterator portListIterator = listOfConnectedPorts.iterator();
     	
+    	debug.println("determine ends "+this+" of "+toPort);
     	foundReceiver:
     	while (portListIterator.hasNext()) {
     	    connectedPort = (IOPort) portListIterator.next();
+      	    debug.println("portListIterator listing "+connectedPort+" connected to "+toPort);
     	
     	    if (connectedPort.isOutput() == true) {
+    	        debug.println("is output "+connectedPort);
     		    Receiver[][] remoteReceivers = connectedPort.getRemoteReceivers();
+    		    
     		    for(int i=0;i<connectedPort.getWidth();i++) {
+    		        debug.println("width of "+connectedPort+" :"+connectedPort.getWidth());
     			    for(int j=0;j<remoteReceivers[i].length;j++) {
+    			        debug.println("length of receiver "+remoteReceivers[i].length);
+    			        debug.println(remoteReceivers[i][j]);
+    			        debug.println(this);
+    			        //debug.prompt(remoteReceivers[i][j] +" "+ this);
     			        if (remoteReceivers[i][j] == this) {
                             from = (Actor) connectedPort.getContainer();
                             fromPort = connectedPort;
-                            if (fromPort == null) MB("fromport is null");
+                            debug.println("fromPort "+connectedPort);
+                            if (fromPort == null) debug.prompt("fromport is null");
                             break foundReceiver;
+    			        } else {
+    			            debug.println("not equal receivers");
     			        }
     			    }
     		    }
@@ -223,25 +247,31 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     	    // FIXME: code body 
     	        from = (Actor) connectedPort.getContainer();
     	        fromPort = connectedPort;
+    	        if (fromPort == null) debug.prompt("fromport is null");
     	        break foundReceiver;
+    	    } else if (connectedPort.isInput() == true) {
+    	    // This case occurs when the destination port and the queried connected
+    	    // port are both inputs. This case should be ignored
     	    } else {
-    	        MB("third case: exception");
+    	    // should throw exception
+    	        debug.prompt("internal bug: unexpected case");
     	    }
     	}
     	
-    	
-    	
     	if (fromPort == null) {
-    	    MB(" container to actor " + ((ComponentEntity)to).getContainer());
+    	    debug.prompt(" container to actor " + ((ComponentEntity)to).getContainer());
+    	    debug.println("to   "+toPort);
+    	    debug.println("from "+fromPort);
     	}
     }
+    
     
     public void calculateArcSamplingRate() throws IllegalActionException {
         int repeats;
         boolean isCompositeContainer = !((ComponentEntity) to).isAtomic();
     	
     	if ((from == null)/*||to instanceof TypedCompositeActor*/)  {
-    	    MB("illegal from==null in calculateArcSamplingRate");
+    	    debug.prompt("illegal from==null in calculateArcSamplingRate");
     	} else {
     	    
     	    Parameter param = (Parameter) fromPort.getAttribute("tokenProductionRate");
@@ -259,24 +289,27 @@ public class DTReceiver extends SDFReceiver implements Receiver {
                     inrate = 1;
                 } else {
                     inrate = ((IntToken)param.getToken()).intValue();
-                    if (inrate==0) MB("alright found bad seed "+to);
+                    if (inrate==0) debug.prompt("alright found bad seed "+to);
                 }
             }       		
         	
             repeats = _localDirector.getRepeats(to);
         	_periodDivider = repeats * inrate; 
         	
-        	double period = ((DoubleToken) _localDirector.period.getToken()).doubleValue();
+        	double period = _localDirector.getPeriod();
+        	
         	_deltaT = period/_periodDivider;
-        	System.out.println(" rep inr "+repeats+" "+inrate);
-        	System.out.println("_periodDiv deltaT "+_periodDivider+" "+_deltaT);
         }
 
     }
     
+    /** This function is to be used in hierarchical DT where an inside director
+     *  may need to resync with an outside director.
+     */ 
     public void resyncLocalTime(double time) {
       
     }
+    
     
     private void _init() {
         from = null;
@@ -286,6 +319,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
         _localGetTime = 0.0; 
         _periodDivider = 0; 
         _deltaT = 0.0;
+        debug = new DTDebug(false);
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -304,28 +338,5 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     Actor to;
     IOPort fromPort;
     IOPort toPort;
-    
-
-    
-    
-    private boolean _debugOn = false;
-    private void println(Object obj) {
-        if (_debugOn) {
-            System.out.println(obj.toString());
-        }
-    }
-    
-    private void print(Object obj) {
-        if (_debugOn) {
-            System.out.print(obj.toString());
-        }
-    }
-    
-    private void MB(String str) {
-        if (_debugOn) {
-            JOptionPane.showMessageDialog(null,str,"MessageDialog",JOptionPane.ERROR_MESSAGE);
-        }
-    }
-    
-   
+    private DTDebug debug;
 }
