@@ -44,6 +44,7 @@ include $(CONFIG)
 CLASSPATH = ../..
 
 JSRCS = \
+	AliasPair.java \
 	Entity.java \
 	FlowStar.java \
 	Galaxy.java \
