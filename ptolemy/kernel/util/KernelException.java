@@ -37,32 +37,7 @@ import java.io.PrintWriter;
 //////////////////////////////////////////////////////////////////////////
 //// KernelException
 /**
-Base class for exceptions that report the names of Nameable objects.
-This exception should not be thrown directly, since it provides very
-little information about what objects were involved when the exception was
-thrown.
-This exception is not abstract so that we can easily test it.
-If any or all of the arguments to the constructor are null, then the
-detail message is adjusted accordingly.
-Derived classes can provide multiple constructors that take 0, 1 or 2
-Nameable references, a Throwable cause and a detail String.
 
-<p>The cause argument to the constructor is a Throwable that
-caused the exception.  The cause argument is used when code catches
-an exception and we want to rethrow the exception but print
-the stacktrace where the first exception occurred.  This is called
-exception chaining.
-
-<p>An example of exception chaining is where we catch an Exception and
-rethrow it as a KernelException:
-
-<pre>
-      try {
-          // Do something that will cause an Exception.
-      } catch (Exception ex) {
-          throw new KernelException(null, null, ex, null);
-      }
-</pre>
 (Note however, that it is better to use a class derived from
 KernelException than it is to throw a KernelException directly.)
 
@@ -76,9 +51,9 @@ the JDK1.4 exception chaining implementation:
 <li>In this implementation, the detail message includes the detail
 message from the cause argument.
 <li>In this implementation, we implement a protected _setCause()
-method, but not the public initCause() method that JDK1.4
-implements.
+method, but not the public initCause() method that JDK1.4 has
 </menu>
+
 
 @see KernelRuntimeException
 @author John S. Davis, II, Edward A. Lee, Christopher Hylands

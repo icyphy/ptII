@@ -42,7 +42,7 @@ import java.lang.Comparable;
 //// DEEvent
 
 /**
-This class implements the structure of events in Ptolemy II DE domain.
+This class defines the structure of events in Ptolemy II DE domain.
 Conceptually, an event in the Ptolemy II DE domain contains
 a token and a tag.  In addition, the event has a destination,
 which is an actor and possibly a receiver (for non-pure events).
@@ -57,9 +57,8 @@ The depth is the index of the destination actor in a topological
 sort.  A larger value of depth represents a lower priority when
 processing events.
 <p>
-This class implements the Comparable interface.  The time stamp,
-microstep, and depth are compared in that order by the compareTo()
-method.
+The time stamp, microstep, and depth are compared in that order by the
+compareTo() method from the Comparable interface.
 <p>
 @author Lukito Muliadi, Edward A. Lee
 @version $Id$
