@@ -206,53 +206,12 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
      *  @return If the class can be found as a resource, return the
      *  directory or jar file where the necessary class can be found.
      *  otherwise, return null.
+     *  @deprecated Call ptolemy.util.ClassUtilities.lookupClassAsResource()
+     *  instead;
      */
     public static String lookupClassAsResource(String necessaryClass) {
-        String necessaryResource =
-            StringUtilities.substitute(necessaryClass, ".", "/")
-            + ".class";
-
-        URL necessaryURL = Thread.currentThread()
-            .getContextClassLoader().getResource(necessaryResource);
-
-        if (necessaryURL != null) {
-            String resourceResults = necessaryURL.getFile();
-
-            // Strip off the file:/ and the necessaryResource.
-            if (resourceResults.startsWith("file:/")) {
-                resourceResults = resourceResults.substring(6);
-            }
-
-            // Strip off the name of the resource we were looking for
-            // so that we are left with the directory or jar file
-            // it is in
-            resourceResults =
-                resourceResults.substring(0,resourceResults.length()-
-                        necessaryResource.length());
-            // Strip off the file:/
-            if (resourceResults.startsWith("file:/")) {
-                resourceResults = resourceResults.substring(6);
-            }
-
-            // Strip off the trailing !/
-            if (resourceResults.endsWith("!/")) {
-                resourceResults =
-                    resourceResults.substring(0,
-                            resourceResults.length()-2);
-            }
-
-            // Unfortunately, under Windows, URL.getFile() may
-            // return things like /c:/ptII, so we create a new
-            // File and get its path, which will return c:\ptII
-            File resourceFile = new File(resourceResults);
-
-            // Convert backslashes
-            String sanitizedResourceName =
-                StringUtilities.substitute(resourceFile.getPath(),
-                        "\\", "/");
-            return sanitizedResourceName;
-        }
-        return null;
+        return ptolemy.util
+            .ClassUtilities.lookupClassAsResource(necessaryClass);
     }
 
     /** If necessary, initialize this GeneratorAttribute and then
@@ -572,8 +531,8 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
                 ((StringToken)necessaryClassesToken.getElement(i))
                 .stringValue();
 
-            String sanitizedResourceName =
-                lookupClassAsResource(necessaryClass);
+            String sanitizedResourceName = ptolemy.util
+                .ClassUtilities.lookupClassAsResource(necessaryClass);
 
             if (sanitizedResourceName != null
                     && !classPathList.contains(sanitizedResourceName)) {
