@@ -69,11 +69,11 @@ Deadlock due to feedback loops is dealt with via NullTokens. When an
 actor in an DDE model receivers a NullToken, it may advance its local
 time value even though it does not consume the NullToken.
 <P>
-The DDE model of computation assumes that valid time stamps have non-negative
-values. A time stamp value of -1.0 is reserved to indicate the termination of
-a receiver. A time stamp value of -5.0 is reserved to indicate that a
-receiver has not begun to participate in a model's execution.
-
+The DDE model of computation assumes that valid time stamps have 
+non-negative values. The value of TimedQueueReceiver.INACTIVE is 
+reserved to indicate the termination of a receiver. The value of 
+TimedQueueReceiver.NOTSTARTED is reserved to indicate that a receiver 
+has not begun to participate in a model's execution.
 
 @author John S. Davis II, Mudit Goel
 @version $Id$
