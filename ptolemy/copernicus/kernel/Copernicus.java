@@ -29,7 +29,6 @@
 
 package ptolemy.copernicus.kernel;
 
-import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.kernel.util.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
@@ -37,7 +36,6 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.gui.MessageHandler;
-import ptolemy.moml.MoMLParser;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -50,6 +48,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.io.StreamTokenizer;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -131,9 +131,13 @@ public class Copernicus {
 	// Make sure that the modelPath is a URL
 	Parameter modelPath =
 	    (Parameter)_generatorAttribute.getAttribute("modelPath");
+	if (modelPath == null) {
+	    throw new IllegalActionException("modelPath attribute not found"
+					     + _generatorAttribute);
+	}
 	String modelPathValue =
 	    ((StringToken)(modelPath.getToken())).stringValue();
-        updateModelPathAndModel(_generatorAttribute, modelPathValue);
+        _generatorAttribute.updateModelPathAndModel(modelPathValue);
 
 	if (_verbose) {
 	    System.out.println(_generatorAttribute.toString());
@@ -226,17 +230,106 @@ public class Copernicus {
     }
 
     /** Execute a command in a subshell, and print out the results
-     *  in standard error and standard out. 
+     *  in standard error and standard out.  Lines that begin with 
+     *  an octothorpe '#' are ignored/
+     *
+     *  <p>The java.lang.Runtime.exec(String command) call uses
+     *  java.util.StringTokenizer() to parse the command string.
+     *  Unfortunately, this means that double quotes are not handled
+     *  in the same way that the shell handles them in that 'ls "foo
+     *  bar"' will interpreted as three tokens 'ls', '"foo' and
+     *  'bar"'.  In the shell, the string would be two tokens 'ls' and
+     *  '"foo bar"'.  What is worse is that the exec() behaviour is
+     *  slightly different under Windows and Unix.  To solve this
+     *  problem, we preprocess the command argument using
+     *  java.io.StreamTokenizer, which converts quoted substrings into
+     *  single tokens.  We then call java.lang.Runtime.exec(String []
+     *  commands);
+     *
      *  @param commmand The command to execute.
      *  @return the exit status of the process, which is usually
      *  0 if the process executed normally.
      */
     public static int executeCommand(String command) throws Exception {
-	System.out.println("About to execute:\n" + command);
+
+	// Parse the command into tokens
+	List commandList = new LinkedList();
+
+
+	StreamTokenizer streamTokenizer =
+	    new StreamTokenizer(new StringReader(command));
+
+	streamTokenizer.wordChars(33, 127);
+
+	streamTokenizer.commentChar('#');
+
+	// We can't use quoteChar here because it does backslash
+	// substitution, so "c:\ptII" ends up as "c:ptII"
+	// Substituting forward slashes for backward slashes seems like
+	// overkill.
+	// streamTokenizer.quoteChar('"');
+	streamTokenizer.ordinaryChar('"');
+
+	// Current token
+	String token = "";
+
+	// Single character token, usually a -
+	String singleToken = "";
+
+	// Set to true if we are inside a double quoted String
+	boolean inDoubleQuotedString = false; 
+
+	while (streamTokenizer.nextToken()
+	       != StreamTokenizer.TT_EOF) {
+	    switch (streamTokenizer.ttype) {
+	    case StreamTokenizer.TT_WORD:
+		if (inDoubleQuotedString) {
+		    if( token.length() > 0 ) {
+			token += " ";
+		    }
+		    token += singleToken + streamTokenizer.sval;
+		} else {
+		    token = singleToken + streamTokenizer.sval;
+		    commandList.add(token);
+		}
+		singleToken = "";
+		break;
+	    case StreamTokenizer.TT_NUMBER:
+		token = Double.toString(streamTokenizer.nval);
+		commandList.add(token);
+		break;
+	    case StreamTokenizer.TT_EOL:
+		break;
+	    case StreamTokenizer.TT_EOF:
+		break;
+	    default:
+		singleToken =
+		    (new Character((char)streamTokenizer.ttype)).toString();
+		if (singleToken.equals("\"")) {
+		    if (inDoubleQuotedString) {
+			commandList.add(token);
+		    }
+		    inDoubleQuotedString = ! inDoubleQuotedString;
+		    singleToken = "";
+		    token = "";
+		}
+		break;
+	    }
+
+	}
+
+	String [] commands =
+	    (String [])commandList.toArray(new String[commandList.size()]);
+
+        System.out.println("About to execute:\n");
+	for (int i = 0; i < commands.length; i++) {
+	    System.out.println("	" + commands[i]);
+	}
+
 	// 0 indicates normal execution
 	int processReturnCode = 1;
 	try {
-	    Process process = Runtime.getRuntime().exec(command);
+	    Process process = Runtime.getRuntime().exec(commands);
 
 	    // Set up a Thread to read in any error messages
 	    _StreamReaderThread errorGobbler = new
@@ -312,7 +405,7 @@ public class Copernicus {
 	while (keys.hasNext()) {
 	    String key = (String)keys.next();
 	    input = StringUtilities.substitute(input, key,
-                    (String)substituteMap.get(key));
+					       (String)substituteMap.get(key));
 	}
 	return input;
     }
@@ -402,40 +495,6 @@ public class Copernicus {
 	outputFile.close();
     }
 
-    /** Update the modelPath and model parameters in the GeneratorAttribute.
-     *  @param generatorAttribute The GeneratorAttribute to update.
-     *  @param modelPathOrURL The file pathname or URL to the model.
-     */
-    public static void updateModelPathAndModel(GeneratorAttribute 
-					       generatorAttribute,
-					       String modelPathOrURL)
-    throws IOException {
-	URL modelURL = MoMLApplication.specToURL(modelPathOrURL);
-	Parameter modelPath =
-	    (Parameter)generatorAttribute.getAttribute("modelPath");
-	modelPath.setExpression("\"" + modelURL.toExternalForm() + "\"");
-
-	modelPathOrURL = modelURL.toExternalForm();
-
-	// Parse the model and get the name of the model.
-	MoMLParser parser = new MoMLParser();
-	try {
-	    // FIXME: 1st arg of parse() could be $PTII as a URL.
-	    NamedObj topLevel = parser.parse(null, modelURL);
-
-	    // Strip off the leading '.' and then sanitize.
-	    String modelName = 
-	    StringUtilities.sanitizeName(topLevel.getFullName().substring(1));
-
-	    Parameter model =
-		(Parameter)generatorAttribute.getAttribute("model");
-	    model.setExpression("\"" + modelName + "\"");
-	} catch (Exception ex) {
-	    throw new IOException("Failed to parse '" + modelPathOrURL + "': "
-				  + ex);
-	}
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -461,7 +520,7 @@ public class Copernicus {
             // Ignore blank argument.
         } else if (!arg.startsWith("-")) {
 	    // Assume the argument is a file name or URL.
-	    updateModelPathAndModel(_generatorAttribute, arg);
+	    _generatorAttribute.updateModelPathAndModel(arg);
 	} else {
 	    // Argument not recognized.
 	    return false;
