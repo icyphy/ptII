@@ -154,12 +154,14 @@ public class Exec extends TypedAtomicActor {
      */
     public FileParameter directory;
 
-    // FIXME: need a test here
     /** The environment to execute the command in.  This parameter is read
      *  each time the subprocess is executed. This parameter
      *  is an array of strings of the format { {"name=value"} }.  If the
      *  length of the array is zero (the default), then the environment
      *  from the current process is used in the new command.
+     *  This parameter is an Expert mode parameter, so it is usually hidden.
+     *  To edit it, right click on the actor, select 'Configure', then
+     *  hit the 'Preferences' button and select 'Expert Mode'.
      */
     public Parameter environment;
 
