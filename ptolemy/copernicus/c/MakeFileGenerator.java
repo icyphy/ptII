@@ -78,6 +78,7 @@ public class MakeFileGenerator {
 
         code.append("#Standard variables\n");
         code.append("PTII = ../../../..\n");
+        
         code.append("THIS = " + className + ".make\n");
         code.append("RUNTIME = ../runtime\n");
         code.append("NATIVE_BODIES ="
@@ -93,15 +94,16 @@ public class MakeFileGenerator {
         // Garbage collector
         if (gc) {
             code.append("\n# Garbage Collector.\n");
-            code.append("GC_DIR = $(PTII)/vendors/gc/gc6.1\n");
-            code.append("GC_LIB = $(PTII)/lib/libgc.a\n\n");
+            code.append("GC_LIB = $(PTII)/lib/libgc.a\n");
+            code.append("GC_DIR = $(PTII)/vendors/gc/gc\n\n");
         }
 
         // The -g flag is for gdb debugging.
         //code.append("CFLAGS = -g -Wall -pedantic\n");
         code.append("CFLAGS = -g -Wall -pedantic -Wno-trigraphs\n");
         code.append("DEPEND = gcc -Wno-trigraphs -MM -I $(RUNTIME) -I $(LIB) "
-                + "-I $(NATIVE_BODIES) -I $(OVER_BODIES) -I $(GC_DIR) \n\n");
+                + "-I $(NATIVE_BODIES) -I $(OVER_BODIES) " 
+                + "-I $(GC_DIR) \n\n");
 
         // Get names of all .c files in the transitive closure.
         code.append("SOURCES = $(RUNTIME)/pccg_runtime.c "

@@ -110,6 +110,8 @@ public class CWriter extends SceneTransformer {
 
             // Determine the base of the source code file names.
             String fileName;
+            /* FIXME: Changed this to enable code generation in correct
+             * directory.
             if (!outDir.equals("")) {
                 File outDirFile = new File(outDir);
                 if (!outDirFile.isDirectory()) {
@@ -119,8 +121,9 @@ public class CWriter extends SceneTransformer {
             } else {
                 fileName = "";
             }
-            fileName += sootClass.getName();
-            //fileName = sootClass.getName();
+            */
+            fileName = CNames.classNameToFileName(sootClass.getName());
+            //fileName += sootClass.getName();
 
             // FIXME: move these out of the loop?
             HeaderFileGenerator hGenerator = new HeaderFileGenerator();

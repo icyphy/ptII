@@ -63,7 +63,7 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
     
     set outputDir testOutput/FIRSingle.out
     set runtimeDir ../../../runtime
-    set gcDir $PTII/vendors/gc/gc6.1/
+    set gcDir $PTII/vendors/gc/gc/
     
     # Remove the .out directory if it exists.
     if {[file isdirectory $outputDir]} {

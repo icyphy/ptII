@@ -95,7 +95,7 @@ public class CNames {
                     + "/" + _sanitize(className).replace('.', '/'));
         }
         else {
-            return(_sanitize(className));
+            return(_sanitize(className).replace('.', '/'));
         }
     }
 
