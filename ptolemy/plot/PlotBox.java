@@ -132,7 +132,7 @@ public class PlotBox extends Applet {
      */
     public boolean action (Event evt, Object arg) {
         if (evt.target == _fillButton) {
-            fillPlot();
+            fillPlot(_graphics);
             return true;
         } else {
             return super.action (evt, arg); // action() is deprecated in 1.1
@@ -190,7 +190,7 @@ public class PlotBox extends Applet {
       * Draw the axes using the current range, label, and title information.
       * If the argument is true, clear the display before redrawing.
       */
-    public synchronized void drawPlot(boolean clearfirst) {
+    public synchronized void drawPlot(Graphics graphics, boolean clearfirst) {
 	if (graphics == null) {
 	    System.out.println("Attempt to draw axes without a Graphics object.");
 	    return;
@@ -368,7 +368,8 @@ public class PlotBox extends Applet {
         } else {     
             _ulx = drawRect.x + widesty + _leftPadding;
         }
-        int legendwidth = _drawLegend(drawRect.width-_rightPadding, _uly);
+        int legendwidth = _drawLegend(graphics,
+				      drawRect.width-_rightPadding, _uly);
         _lrx = drawRect.width-legendwidth-_rightPadding;
         int width = _lrx-_ulx;
         _xscale = width/(_xMax - _xMin);
@@ -560,7 +561,7 @@ public class PlotBox extends Applet {
     /**
      * Rescales so that the data that is currently plotted just fits.
      */
-    public synchronized void fillPlot () {
+    public synchronized void fillPlot (Graphics graphics) {
         setXRange(_xBottom, _xTop);
         setYRange(_yBottom, _yTop);
         paint(graphics);
@@ -709,11 +710,11 @@ public class PlotBox extends Applet {
         _yticks = null;
         _yticklabels = null;
 
-        graphics = getGraphics();
+        _graphics = getGraphics();
 
-	if (graphics == null) {
+	if (_graphics == null) {
 	    System.out.println("PlotBox::init(): Internal error: " +
-			       "Graphic was null");
+			       "_graphic was null");
 	    return;
 	}
 
@@ -802,21 +803,21 @@ public class PlotBox extends Applet {
                 if (y < _zoomy) {
                     _zoomout = true;
                     // Draw reference box.
-                    graphics.drawRect(_zoomx-15, _zoomy-15, 30, 30);
+                    _graphics.drawRect(_zoomx-15, _zoomy-15, 30, 30);
                 } else if (y > _zoomy) {
                     _zoomin = true; 
                 }
             }
 
             if (_zoomin == true){   
-                graphics.setXORMode(_background);
+                _graphics.setXORMode(_background);
                 // Erase the previous box if necessary.
                 if ((_zoomxn != -1 || _zoomyn != -1) && (_drawn == true)) {
                     int minx = Math.min(_zoomx, _zoomxn);
                     int maxx = Math.max(_zoomx, _zoomxn);
                     int miny = Math.min(_zoomy, _zoomyn);
                     int maxy = Math.max(_zoomy, _zoomyn);
-                    graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
+                    _graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
                 }
                 // Draw a new box if necessary.
                 if (y > _zoomy) {
@@ -826,18 +827,18 @@ public class PlotBox extends Applet {
                     int maxx = Math.max(_zoomx, _zoomxn);
                     int miny = Math.min(_zoomy, _zoomyn);
                     int maxy = Math.max(_zoomy, _zoomyn);
-                    graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
-                    graphics.setPaintMode();
+                    _graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
+                    _graphics.setPaintMode();
                     _drawn = true;
                     return true;
                 } else _drawn = false;
             } else if (_zoomout == true){
-                graphics.setXORMode(_background);
+                _graphics.setXORMode(_background);
                 // Erase previous box if necessary.
                 if ((_zoomxn != -1 || _zoomyn != -1) && (_drawn == true)) {
                     int x_diff = Math.abs(_zoomx-_zoomxn);
                     int y_diff = Math.abs(_zoomy-_zoomyn);
-                    graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
+                    _graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
                            30+x_diff*2, 30+y_diff*2);
                 }
                 if (y < _zoomy){
@@ -845,15 +846,15 @@ public class PlotBox extends Applet {
                     _zoomyn = y;     
                     int x_diff = Math.abs(_zoomx-_zoomxn);
                     int y_diff = Math.abs(_zoomy-_zoomyn);
-                    graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
+                    _graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
                             30+x_diff*2, 30+y_diff*2);
-                    graphics.setPaintMode();
+                    _graphics.setPaintMode();
                     _drawn = true;
                     return true;
                 } else _drawn = false;
             }
         }
-        graphics.setPaintMode();
+        _graphics.setPaintMode();
         return false;
     }
 
@@ -874,9 +875,9 @@ public class PlotBox extends Applet {
                 int maxx = Math.max(_zoomx, _zoomxn);
                 int miny = Math.min(_zoomy, _zoomyn);
                 int maxy = Math.max(_zoomy, _zoomyn);
-                graphics.setXORMode(_background);
-                graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
-                graphics.setPaintMode();
+                _graphics.setXORMode(_background);
+                _graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
+                _graphics.setPaintMode();
                 // if in range, zoom
                 if ((pointinside) && (Math.abs(_zoomx-x) > 5) 
                                   && (Math.abs(_zoomy-y) > 5)) {
@@ -889,17 +890,17 @@ public class PlotBox extends Applet {
                     if (a < b) setYRange(a, b);
                     else setYRange(b, a);
                 }
-                drawPlot(true);
+                drawPlot(_graphics, true);
                 handled = true;
             }
         } else if ((_zoomout == true) && (_drawn == true)){
             // Erase previous rectangle.
-            graphics.setXORMode(_background);
+            _graphics.setXORMode(_background);
             int x_diff = Math.abs(_zoomx-_zoomxn);
             int y_diff = Math.abs(_zoomy-_zoomyn);
-            graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
+            _graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
                     30+x_diff*2, 30+y_diff*2);
-            graphics.setPaintMode();
+            _graphics.setPaintMode();
             if (pointinside) {
                 // Calculate zoom factor.
                 double a = (double)(Math.abs(_zoomx - x)) / 30.0;
@@ -914,11 +915,11 @@ public class PlotBox extends Applet {
                 if (newy2 < _yBottom) newy2 = _yBottom; 
                 setXRange(newx2, newx1);
                 setYRange(newy2, newy1);
-                drawPlot(true);
+                drawPlot(_graphics, true);
             } 
             handled = true;
         } else if (_drawn == false){
-            drawPlot(true);
+            drawPlot(_graphics, true);
             handled = true;
         }
         _drawn = false;
@@ -931,9 +932,9 @@ public class PlotBox extends Applet {
       * Paint the applet contents, which in this base class is
       * only the axes.
       */
-    public void paint(Graphics g) {
-	super.paint(g);
-	drawPlot(true);
+    public void paint(Graphics graphics) {
+	super.paint(graphics);
+	drawPlot(graphics, true);
     }
 
      /**
@@ -1042,15 +1043,6 @@ public class PlotBox extends Applet {
     }
 
     /**
-     * Set the graphics context.
-     */
-    public void setGraphics (Graphics g) {
-	// We need to be able to set the graphics so that we can
-	// substitute in another graphics for printing.
-	graphics = g;
-    }
-
-    /**
      * Control whether the grid is drawn.
      */
     public void setGrid (boolean grid) {
@@ -1142,8 +1134,9 @@ public class PlotBox extends Applet {
      * it is out of range.  The return value indicates whether the
      * point is drawn.
      */
-    protected boolean _drawPoint(int dataset, int xpos, int ypos,
-				boolean connected, boolean clip) {
+    protected boolean _drawPoint(Graphics graphics,
+				 int dataset, int xpos, int ypos,
+				 boolean connected, boolean clip) {
         boolean pointinside = ypos <= _lry && ypos >= _uly && 
 	    xpos <= _lrx && xpos >= _ulx;
         if (!pointinside && clip) {return false;}
@@ -1283,7 +1276,7 @@ public class PlotBox extends Applet {
     //////////////////////////////////////////////////////////////////////////
     ////                           protected variables                    ////
     
-    Graphics graphics;
+    Graphics _graphics;
 
     // The range of the plot.
     protected double _yMax, _yMin, _xMax, _xMin;
@@ -1339,7 +1332,7 @@ public class PlotBox extends Applet {
      * (in pixels)  used up.  The arguments give the upper right corner
      * of the region where the legend should be placed.
      */
-    private int _drawLegend(int urx, int ury) {
+    private int _drawLegend(Graphics graphics, int urx, int ury) {
         // FIXME: consolidate all these for efficiency
         graphics.setFont(_labelfont);
         FontMetrics lfm = graphics.getFontMetrics();
@@ -1354,7 +1347,7 @@ public class PlotBox extends Applet {
             // NOTE: relies on _legendDatasets having the same num. of entries.
             int dataset = ((Integer) i.nextElement()).intValue();
             // NOTE: 6 pixel width of point assumed.
-            if (!_drawPoint(dataset, urx-3, ypos-3, false, false)) {
+            if (!_drawPoint(graphics, dataset, urx-3, ypos-3, false, false)) {
                 // Point was not drawn, perhaps because there is no mark.
                 // Draw a colored rectangle.
                 if (_usecolor) {

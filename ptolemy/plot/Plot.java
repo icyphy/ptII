@@ -158,27 +158,7 @@ public class Plot extends PlotBox {
      */
     public synchronized void addPoint(int dataset, double x, double y,
 				      boolean connected) {
-	if (_debug > 100) System.out.println("Plot: addPoint " + dataset + " "
-					     +x+" "+y+" "+connected);
-        if (dataset >= _numsets || dataset < 0) return;
-        
-        // For auto-ranging, keep track of min and max.
-        if (x < _xBottom) _xBottom = x;
-        if (x > _xTop) _xTop = x;
-        if (y < _yBottom) _yBottom = y;
-        if (y > _yTop) _yTop = y;
-
-        // FIXME: Ignoring sweeps for now.
-        PlotPoint pt = new PlotPoint();
-        pt.x = x;
-        pt.y = y;
-        pt.connected = connected;
-        Vector pts = _points[dataset];
-        pts.addElement(pt);
-        if (_pointsPersistence > 0) {
-            if (pts.size() > _pointsPersistence) erasePoint(dataset,0);
-        }
-        _drawPlotPoint(dataset, pt);
+	_addPoint(_graphics, dataset, x, y, connected);
     }
     
     /**
@@ -189,14 +169,16 @@ public class Plot extends PlotBox {
      * points before the axes have been first drawn.  If the argument
      * is true, clear the display first.
      */
-	public synchronized void drawPlot(boolean clearfirst) {
+	public synchronized void drawPlot(Graphics graphics,
+					  boolean clearfirst) {
     	// Draw the axes
-    	super.drawPlot(clearfirst);
+    	super.drawPlot(graphics, clearfirst);
     	// Plot the points
     	for (int dataset = 0; dataset < _numsets; dataset++) {
     	    Vector data = _points[dataset];
     	    for (int pointnum = 0; pointnum < data.size(); pointnum++) {
-    	        _drawPlotPoint(dataset, (PlotPoint)data.elementAt(pointnum));
+    	        _drawPlotPoint(graphics, dataset,
+			       (PlotPoint)data.elementAt(pointnum));
     	    }
     	}
     	notify();
@@ -210,23 +192,7 @@ public class Plot extends PlotBox {
      * to ensure that it is.
      */
     public synchronized void erasePoint(int dataset, int index) {
-        Vector pts = _points[dataset];
-        // Erase the line to the next point rather than the previous point.
-        int saveprevx = _prevx[dataset];
-        int saveprevy = _prevy[dataset];
-        PlotPoint pp = (PlotPoint)pts.elementAt(index);
-        if (index < pts.size() - 1) {
-            PlotPoint nextp = (PlotPoint)pts.elementAt(index+1);
-            pp.connected = nextp.connected;
-            _prevx[dataset] = _ulx + (int) ((nextp.x - _xMin) * _xscale);
-            _prevy[dataset] = _lry - (int) ((nextp.y - _yMin) * _yscale);
-        }
-        _drawPlotPoint(dataset, pp);
-        _prevx[dataset] = saveprevx;
-        _prevy[dataset] = saveprevy;
-        pts.removeElementAt(index);
-        pp = (PlotPoint)pts.elementAt(index);
-        pp.connected = false;
+	_erasePoint(_graphics, dataset, index);  
     }
 
     /**
@@ -284,8 +250,8 @@ public class Plot extends PlotBox {
     /**
      * Draw the axes and the accumulated points.
      */
-    public void paint(Graphics g) {
-	drawPlot(true);
+    public void paint(Graphics graphics) {
+	drawPlot(graphics,true);
     }
 
     /** Parse pxgraph style command line arguments.
@@ -668,8 +634,9 @@ public class Plot extends PlotBox {
      * point is actually drawn.  It is not drawn if either it is out
      * of range or there is no mark requested.
      */
-    protected boolean _drawPoint(int dataset, int xpos, int ypos,
-				boolean connected, boolean clip) {
+    protected boolean _drawPoint(Graphics graphics,
+				 int dataset, int xpos, int ypos,
+				 boolean connected, boolean clip) {
 	if (_debug > 20)
 	    System.out.println("Plot:_drawPoint "+dataset+" "+xpos+
 			        " "+ypos+" "+connected+" "+clip);
@@ -835,10 +802,12 @@ public class Plot extends PlotBox {
                     // prev point to boundary.
                     if (xpos != prevx) {
                         if (prevx < _ulx) {
-                            prevy = prevy + ((ypos - prevy) * (_ulx - prevx))/(xpos - prevx);
+                            prevy = prevy + ((ypos - prevy) *
+					     (_ulx - prevx))/(xpos - prevx);
                             prevx = _ulx;
                         } else if (prevx > _lrx) {
-                            prevy = prevy + ((ypos - prevy) * (_lrx - prevx))/(xpos - prevx);
+                            prevy = prevy + ((ypos - prevy) *
+					     (_lrx - prevx))/(xpos - prevx);
                             prevx = _lrx;
                         }
                     }
@@ -847,10 +816,12 @@ public class Plot extends PlotBox {
                     // Note that y increases downward
                     if (ypos != prevy) {
                         if (prevy < _uly) {
-                            prevx = prevx + ((xpos - prevx) * (_uly - prevy))/(ypos - prevy);
+                            prevx = prevx + ((xpos - prevx) *
+					     (_uly - prevy))/(ypos - prevy);
                             prevy = _uly;
                         } else if (prevy > _lry) {
-                            prevx = prevx + ((xpos - prevx) * (_lry - prevy))/(ypos - prevy);
+                            prevx = prevx + ((xpos - prevx) *
+					     (_lry - prevy))/(ypos - prevy);
                             prevy = _lry;
                         }
                     }
@@ -858,19 +829,23 @@ public class Plot extends PlotBox {
                     // Adjust current point to lie on the boundary.
                     if (xpos != prevx) {
                         if (xpos < _ulx) {
-                            ypos = ypos + ((prevy - ypos) * (_ulx - xpos))/(prevx - xpos);
+                            ypos = ypos + ((prevy - ypos) *
+					   (_ulx - xpos))/(prevx - xpos);
                             xpos = _ulx;
                         } else if (xpos > _lrx) {
-                            ypos = ypos + ((prevy - ypos) * (_lrx - xpos))/(prevx - xpos);
+                            ypos = ypos + ((prevy - ypos) *
+					   (_lrx - xpos))/(prevx - xpos);
                             xpos = _lrx;
                         }
                     }
                     if (ypos != prevy) {
                         if (ypos < _uly) {
-                            xpos = xpos + ((prevx - xpos) * (_uly - ypos))/(prevy - ypos);
+                            xpos = xpos + ((prevx - xpos) *
+					   (_uly - ypos))/(prevy - ypos);
                             ypos = _uly;
                         } else if (ypos > _lry) {
-                            xpos = xpos + ((prevx - xpos) * (_lry - ypos))/(prevy - ypos);
+                            xpos = xpos + ((prevx - xpos) *
+					   (_lry - ypos))/(prevy - ypos);
                             ypos = _lry;
                         }
                     }
@@ -1143,15 +1118,75 @@ public class Plot extends PlotBox {
         return connected;
     }
     
-    /**
-     * Draw the specified point. If the point is out of range, do nothing.
+    /* Draw the specified point. If the point is out of range, do nothing.
      */
-    private void _drawPlotPoint(int dataset, PlotPoint pt) {
+    private void _drawPlotPoint(Graphics graphics, int dataset, PlotPoint pt) {
         int ypos = _lry - (int) ((pt.y - _yMin) * _yscale);
         int xpos = _ulx + (int) ((pt.x - _xMin) * _xscale);
-        _drawPoint(dataset, xpos, ypos, pt.connected, true);
+        _drawPoint(graphics, dataset, xpos, ypos, pt.connected, true);
     }
     
+    /* In the specified data set, add the specified x,y point to the
+     * plot.  Data set indices begin with zero.  If the dataset
+     * argument is out of range, ignore.  The number of data sets is
+     * given by calling *setNumSets()*.  The fourth argument indicates
+     * whether the point should be connected by a line to the previous
+     * point.
+     */
+    public synchronized void _addPoint(Graphics graphics,
+				      int dataset, double x, double y,
+				      boolean connected) {
+	if (_debug > 100) System.out.println("Plot: addPoint " + dataset + " "
+					     +x+" "+y+" "+connected);
+        if (dataset >= _numsets || dataset < 0) return;
+        
+        // For auto-ranging, keep track of min and max.
+        if (x < _xBottom) _xBottom = x;
+        if (x > _xTop) _xTop = x;
+        if (y < _yBottom) _yBottom = y;
+        if (y > _yTop) _yTop = y;
+
+        // FIXME: Ignoring sweeps for now.
+        PlotPoint pt = new PlotPoint();
+        pt.x = x;
+        pt.y = y;
+        pt.connected = connected;
+        Vector pts = _points[dataset];
+        pts.addElement(pt);
+        if (_pointsPersistence > 0) {
+            if (pts.size() > _pointsPersistence) erasePoint(dataset,0);
+        }
+        _drawPlotPoint(graphics, dataset, pt);
+    }
+
+    /** 
+     * Erase the point at the given index in the given dataset.  If
+     * lines are being drawn, also erase the line to the next points
+     * (note: not to the previous point).  The point is not checked to
+     * see whether it is in range, so care must be taken by the caller
+     * to ensure that it is.
+     */
+    private synchronized void _erasePoint(Graphics graphics,
+					  int dataset, int index) {
+        Vector pts = _points[dataset];
+        // Erase the line to the next point rather than the previous point.
+        int saveprevx = _prevx[dataset];
+        int saveprevy = _prevy[dataset];
+        PlotPoint pp = (PlotPoint)pts.elementAt(index);
+        if (index < pts.size() - 1) {
+            PlotPoint nextp = (PlotPoint)pts.elementAt(index+1);
+            pp.connected = nextp.connected;
+            _prevx[dataset] = _ulx + (int) ((nextp.x - _xMin) * _xscale);
+            _prevy[dataset] = _lry - (int) ((nextp.y - _yMin) * _yscale);
+        }
+        _drawPlotPoint(graphics, dataset, pp);
+        _prevx[dataset] = saveprevx;
+        _prevy[dataset] = saveprevy;
+        pts.removeElementAt(index);
+        pp = (PlotPoint)pts.elementAt(index);
+        pp.connected = false;
+    }
+
     /* Split pxgraphargs up into an array and call _parseArgs
      */       
     private int _parsePxgraphargs(String pxgraphargs) 
