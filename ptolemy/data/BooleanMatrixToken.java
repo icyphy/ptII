@@ -105,6 +105,20 @@ public class BooleanMatrixToken extends MatrixToken {
         }
     }
 
+    /** Return a copy of the contained 2-D array.
+     *  It is safe for the caller to modify the returned array.
+     *  @return A 2-D boolean array.
+     */
+    public boolean[][] booleanMatrix() {
+        boolean[][] result = new boolean[_rowCount][_columnCount];
+        for (int i = 0; i < _rowCount; i++) {
+            for (int j = 0; j < _columnCount; j++) {
+                result[i][j] = _value[i][j];
+            }
+        }
+        return result;
+    }
+
     /** Convert the specified token into an instance of BooleanMatrixToken.
      *  This method does lossless conversion.
      *  If the argument is already an instance of BooleanMatrixToken,
@@ -138,7 +152,7 @@ public class BooleanMatrixToken extends MatrixToken {
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
 	    BooleanToken tem = (BooleanToken)BooleanToken.convert(token);
 	    boolean[][] result = new boolean[1][1];
-	    result[0][0] = tem.getValue();
+	    result[0][0] = tem.booleanValue();
 	    return new BooleanMatrixToken(result);
 	}
 
@@ -183,7 +197,7 @@ public class BooleanMatrixToken extends MatrixToken {
 	    } else {
 		tem = (BooleanMatrixToken)convert(t);
 	    }
-	    boolean[][] array = tem.getWritableCopy();
+	    boolean[][] array = tem.booleanMatrix();
 
 	    for (int i = 0; i < _rowCount; i++) {
 		for (int j = 0; j < _columnCount; j++) {
@@ -207,20 +221,6 @@ public class BooleanMatrixToken extends MatrixToken {
      */
     public boolean getElementAt(int row, int column) {
         return _value[row][column];
-    }
-
-    /** Return a copy of the contained 2-D array.
-     *  It is safe for the caller to modify the returned array.
-     *  @return A 2-D integer array.
-     */
-    public boolean[][] getWritableCopy() {
-        boolean[][] result = new boolean[_rowCount][_columnCount];
-        for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                result[i][j] = _value[i][j];
-            }
-        }
-        return result;
     }
 
     /** Return the number of columns in the matrix.

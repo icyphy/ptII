@@ -290,14 +290,6 @@ public class ComplexMatrixToken extends MatrixToken {
         return _value[row][column];
     }
 
-    /** Return a copy of the contained 2-D array.
-     *  It is safe for the caller to modify the returned array.
-     *  @return A 2-D integer array.
-     */
-    public Complex[][] getWritableCopy() {
-        return complexMatrix();
-    }
-
     /** Return the number of columns in the matrix.
      *  @return An integer.
      */

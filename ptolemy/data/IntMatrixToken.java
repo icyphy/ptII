@@ -294,14 +294,6 @@ public class IntMatrixToken extends MatrixToken {
 	return _value[row][column];
     }
 
-    /** Return a copy of the contained 2-D array.
-     *  It is safe for the caller to modify the returned array.
-     *  @return A 2-D integer array.
-     */
-    public int[][] getWritableCopy() {
-	return intMatrix();
-    }
-
     /** Return the content of this token as a 2-D integer array.
      *  The returned array is a copy so the caller is free to
      *  modify it.

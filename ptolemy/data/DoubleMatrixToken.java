@@ -300,14 +300,6 @@ public class DoubleMatrixToken extends MatrixToken {
         return _value[row][column];
     }
 
-    /** Return a copy of the contained 2-D array.
-     *  It is safe for the caller to modify the returned array.
-     *  @return A 2-D integer array.
-     */
-    public double[][] getWritableCopy() {
-	return doubleMatrix();
-    }
-
     /** Return the number of columns in the matrix.
      *  @return An integer.
      */
