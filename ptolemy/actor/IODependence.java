@@ -110,11 +110,12 @@ public class IODependence extends Attribute {
         if (_dgValid != workspace().getVersion()){
             // construct a directed graph
             _dg = _constructDirectedGraph();
+            System.out.println(_dg.toString());
             // FIXME: how to show the following debugging information
             // when listening to director?
             if (_debugging){ 
                 _debug(getContainer().getName() +
-                    " has a dataflow directed graph based on input and" +
+                    " has a directed graph based on input and" +
                     " output ports: ");
                 _debug(_dg.toString());
             }
@@ -197,6 +198,33 @@ public class IODependence extends Attribute {
             if (edge.sink().equals(_dg.node(outputPort))) {
                 _dg.removeEdge(edge);
             }
+        }
+    }
+
+    /** Specify the container, adding this attribute to the
+     *  list of attributes in the container. 
+     *  <p>
+     *  This method is write-synchronized
+     *  to the workspace and increments its version number.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the super class throws it.
+     *  @exception NameDuplicationException If the super class throws it.
+     */
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
+        try {
+            _workspace.getWriteAccess();
+
+            super.setContainer(container);
+
+            if (container instanceof CompositeActor) {
+                // Set cached value in composite actor.
+                ((CompositeActor)container)._setIODependence(this);
+            } else if (container instanceof AtomicActor) {
+                ((AtomicActor)container)._setIODependence(this);
+            }
+        } finally {
+            _workspace.doneWriting();
         }
     }
 

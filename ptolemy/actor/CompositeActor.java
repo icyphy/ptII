@@ -346,10 +346,16 @@ public class CompositeActor extends CompositeEntity implements Actor {
     }
 
     /** Return the IODependence if there is one. 
+     *  This method is read-synchronized on the workspace.
      *  return The IODependence attribute.
      */
     public IODependence getIODependence() {
-        return (IODependence) getAttribute("_IODependence");
+        try {
+            _workspace.getReadAccess();
+            return _IODependence;
+        } finally {
+            _workspace.doneReading();
+        }
     }
     
     /** Get the manager responsible for execution of this composite actor.
@@ -1078,6 +1084,15 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
+    /** Set the local ioDependence attribute.
+     *  This should not be called be directly.  Instead, call setContainer()
+     *  on the ioDependence attribute.  
+     *  @param ioDependence The IO dependence information.
+     */
+    protected void _setIODependence(IODependence ioDependence){
+        _IODependence = ioDependence;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -1104,6 +1119,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
     // Indicator that we are in the connectionsChanged method.
     private boolean _inConnectionsChanged = false;
     
+    // the IODependence attribute for this composite actor.
+    private IODependence _IODependence;
+
     // The manager for this composite actor.
     private Manager _manager;
 
