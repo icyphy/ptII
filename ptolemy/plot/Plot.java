@@ -489,7 +489,7 @@ public class Plot extends PlotBox {
         setDataurl(dataurl); // Set the dataurl in PlotBox
         setTitle(title);
         if (_debug > 9) 
-            System.out.println("Plot: resize()"+_width+" "+_height);
+            System.out.println("Plot: parseArgs: resize()"+_width+" "+_height);
         resize(_width,_height);
 
         if (_debug > 0) {
@@ -1262,6 +1262,12 @@ public class Plot extends PlotBox {
             // To allow erasing to work by just redrawing the points.
             graphics.setXORMode(_background);
         }
+        if (_graphics == null) {
+            System.out.println("Plot::_drawPlotPoint(): Internal error: " +
+                    "_graphic was null, be sure to call show()\n"+
+                    "before calling init()");
+        }
+
         if (_usecolor) {
             int color = dataset % _colors.length;
             graphics.setColor(_colors[color]);
