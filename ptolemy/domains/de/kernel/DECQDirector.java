@@ -115,7 +115,7 @@ import java.util.Enumeration;
 // currently supported.
 public class DECQDirector extends DEDirector {
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     /** Construct a director with empty string as name in the
      *  default workspace.
@@ -149,8 +149,6 @@ public class DECQDirector extends DEDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-
 
     /** Fire the one actor identified by the prefire() method as ready to fire.
      *  If there are multiple simultaneous events destined to this actor,
@@ -420,7 +418,9 @@ public class DECQDirector extends DEDirector {
         // FIXME: Should this check that the depth is not negative?
         if (time < _currentTime) { 
             throw new IllegalActionException(getContainer(),
-                    "Attempt to queue a token with a past time stamp.");
+                    "Attempt to queue a token with a past time stamp = " + 
+                    time + ", while current time " + 
+                    "is equal to " + _currentTime + " .");
         }
 
         // FIXME: Provide a mechanism for listening for events.
@@ -511,8 +511,8 @@ public class DECQDirector extends DEDirector {
             }
 
             if (_actorToFire == null) {
-                // This is first time we're in the loop, therefore always
-                // accept the event.
+                // This is first time we're in the loop, therefore
+                // always accept the event.
                 _actorToFire = currentEvent.actor;
 
                 // Advance current time.
@@ -780,7 +780,7 @@ public class DECQDirector extends DEDirector {
 
         if (DEBUG) {
             System.out.println(getFullName() + " requests firing from " +
-                               ((CompositeActor)getContainer()).getExecutiveDirector().getFullName());
+                    ((CompositeActor)getContainer()).getExecutiveDirector().getFullName());
         }
 
         DESortKey sortkey = null;

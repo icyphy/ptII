@@ -143,6 +143,28 @@ public abstract class DEDirector extends Director {
             return;
         }
 
+        fireAt(actor, getCurrentTime() + delay);
+    }
+    
+    /** Schedule an actor to be fired at the specified time.
+     *  @param actor The scheduled actor to fire.
+     *  @param time The scheduled time to fire.
+     *  @exception IllegalActionException If the specified time is in the past.
+     */
+    public void fireAt(Actor actor, double time) 
+            throws IllegalActionException {
+        
+        // FIXME: Check if the actor is in the composite actor containing this
+        // director. I.e. the specified actor is under this director
+        // responsibility. This could however be an expensive operation. So,
+        // leave it out for now, and see if this will turn out to be an issue.
+        
+        // Check the special case, when the delay is equal to zero
+        if (time == getCurrentTime() && _isInitialized) {
+            this._enqueueEvent(actor, getCurrentTime(), Long.MAX_VALUE);
+            return;
+        }
+
         // If this actor has input ports, then the depth is set to be
         // one higher than the max depth of the input ports.
         // If this actor has no input ports, then the depth is set to
@@ -158,16 +180,7 @@ public abstract class DEDirector extends Director {
                 maxdepth = rr._depth;
             }
         }
-        this._enqueueEvent(actor, getCurrentTime() + delay, maxdepth+1);
-    }
-    
-    /** Schedule an actor to be fired at the specified time.
-     *  @param actor The scheduled actor to fire.
-     *  @param time The scheduled time to fire.
-     *  @exception IllegalActionException If the specified time is in the past.
-     */
-    public void fireAt(Actor actor, double time) throws IllegalActionException {
-        fireAfterDelay(actor, time - getCurrentTime());
+        this._enqueueEvent(actor, time, maxdepth+1);
     }
 
     /** Return the current time of the simulation. Firing actors that need to
