@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model SYSTEM "../../../moml/moml.dtd">
+
+<class name="rtp" extends="ptolemy.actor.TypedCompositeActor">
+<doc>RTP actors</doc>
+
+<entity name="PeriodicTrigger" class="ptolemy.domains.rtp.lib.PeriodicTrigger">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.transformer</configure>
+</rendition>
+</entity>
+
+</class>
+

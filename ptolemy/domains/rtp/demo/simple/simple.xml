@@ -1,0 +1,51 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="" class="ptolemy.actor.TypedCompositeActor">
+    <director name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector">
+        <property name="executionDuration" class="ptolemy.data.expr.Parameter" value="10000">
+        </property>
+    </director>
+    <entity name="Clock0" class="ptolemy.actor.lib.Clock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1000.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="[250.0,750.0]">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="[1,0]">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="59.0, 60.0"/>
+            <configure>generic.source</configure>
+        </rendition>
+        <doc>Create a generalized square wave</doc>
+        <property name="editorFactory1" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="TimedPlotter1" class="ptolemy.actor.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="263.0, 154.0"/>
+            <configure>generic.sink</configure>
+        </rendition>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Clock0.output" relation="relation3"/>
+    <link port="TimedPlotter1.input" relation="relation3"/>
+</model>
