@@ -48,8 +48,6 @@ behavior each time the input R occurs.
 */
 public class DEABRO extends DEThreadActor {
 
-    private static boolean DEBUG = true;
-
     /** Construct a DEANDGate actor with the specified delay.
      *  @param container The composite actor that this actor belongs too.
      *  @param name The name of this actor.
@@ -160,4 +158,5 @@ public class DEABRO extends DEThreadActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    private static boolean DEBUG = true;
 }
