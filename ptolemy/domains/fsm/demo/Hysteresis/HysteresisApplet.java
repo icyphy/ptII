@@ -179,7 +179,7 @@ public class HysteresisApplet extends SDFApplet {
 
 	    // Add an output port.
 	    TypedIOPort hdfActorState0OutPort =
-		 (TypedIOPort)hdfActorState0.newPort("dataOut");
+                (TypedIOPort)hdfActorState0.newPort("dataOut");
             hdfActorState0OutPort.setOutput(true);
             hdfActorState0OutPort.setTypeEquals(BaseType.DOUBLE);
 
@@ -205,76 +205,76 @@ public class HysteresisApplet extends SDFApplet {
 	    hdfActorState0.connect(const0.output, hdfActorState0OutPort);
 	    ///////////// End of hdfActorState0 config.
 
-	    // Now config state1.
-	    // submachine refining hdfActor's s1 state
-            TypedCompositeActor hdfActorState1 =
-		new TypedCompositeActor(hdfActor, "state1");
-	    // Set "state1" to be the submachine refining hdfActor's "ctrls1" state
-	    ctrls1.refinementName.setExpression("state1");
+                // Now config state1.
+                // submachine refining hdfActor's s1 state
+                TypedCompositeActor hdfActorState1 =
+                    new TypedCompositeActor(hdfActor, "state1");
+                // Set "state1" to be the submachine refining hdfActor's "ctrls1" state
+                ctrls1.refinementName.setExpression("state1");
 
-	    // Add ports to state1.
-	    TypedIOPort hdfActorState1InPort =
-		(TypedIOPort)hdfActorState1.newPort("dataIn");
-            hdfActorState1InPort.setInput(true);
-            hdfActorState1InPort.setTypeEquals(BaseType.DOUBLE);
+                // Add ports to state1.
+                TypedIOPort hdfActorState1InPort =
+                    (TypedIOPort)hdfActorState1.newPort("dataIn");
+                hdfActorState1InPort.setInput(true);
+                hdfActorState1InPort.setTypeEquals(BaseType.DOUBLE);
 
-	    TypedIOPort hdfActorState1OutPort =
-	    (TypedIOPort)hdfActorState1.newPort("dataOut");
-            hdfActorState1OutPort.setOutput(true);
-            hdfActorState1OutPort.setTypeEquals(BaseType.DOUBLE);
+                TypedIOPort hdfActorState1OutPort =
+                    (TypedIOPort)hdfActorState1.newPort("dataOut");
+                hdfActorState1OutPort.setOutput(true);
+                hdfActorState1OutPort.setTypeEquals(BaseType.DOUBLE);
 
-	    // Set up hdfActorState1 to contain an SDFDirector and an SDF diagram.
-	    try {
-		// Initialization
-		SDFDirector _director1 =
-		    new SDFDirector(hdfActorState1, "SDFDirector1");
-		SDFScheduler scheduler1 = new SDFScheduler(_workspace);
-		_director1.setScheduler(scheduler1);
-		_director1.setScheduleValid(false);
-	    } catch (Exception ex) {
-		report("Failed to setup SDF director 1 and scheduler:\n", ex);
-	    }
+                // Set up hdfActorState1 to contain an SDFDirector and an SDF diagram.
+                try {
+                    // Initialization
+                    SDFDirector _director1 =
+                        new SDFDirector(hdfActorState1, "SDFDirector1");
+                    SDFScheduler scheduler1 = new SDFScheduler(_workspace);
+                    _director1.setScheduler(scheduler1);
+                    _director1.setScheduleValid(false);
+                } catch (Exception ex) {
+                    report("Failed to setup SDF director 1 and scheduler:\n", ex);
+                }
 
-	    // Add an SDF Actor to state1 and connect up ports.
-	    Const const1 = new Const(hdfActorState1, "Const1");
-	    const1.value.setToken(new DoubleToken(1));
+                // Add an SDF Actor to state1 and connect up ports.
+                Const const1 = new Const(hdfActorState1, "Const1");
+                const1.value.setToken(new DoubleToken(1));
 
-	    // For Const actor, no input port is required.
-	    hdfActorState1.connect(hdfActorState1InPort, const1.trigger);
+                // For Const actor, no input port is required.
+                hdfActorState1.connect(hdfActorState1InPort, const1.trigger);
 
-	    hdfActorState1.connect(const1.output, hdfActorState1OutPort);
+                hdfActorState1.connect(const1.output, hdfActorState1OutPort);
 
-	    TypedIORelation rel3 =
-		(TypedIORelation)hdfActor.newRelation("rel3");
-	    (hdfActorState0OutPort).link(rel3);
-	    (hdfActorState1OutPort).link(rel3);
-	    (hdfActorOutPort).link(rel3);
+                TypedIORelation rel3 =
+                    (TypedIORelation)hdfActor.newRelation("rel3");
+                (hdfActorState0OutPort).link(rel3);
+                (hdfActorState1OutPort).link(rel3);
+                (hdfActorOutPort).link(rel3);
 
-	    TypedIORelation rel2 =
-		(TypedIORelation)hdfActor.newRelation("rel2");
-	    (hdfActorState0InPort).link(rel2);
-	    (hdfActorState1InPort).link(rel2);
-	    (hdfActorInPort).link(rel2);
-	    (ctrlActInPort).link(rel2);
+                TypedIORelation rel2 =
+                    (TypedIORelation)hdfActor.newRelation("rel2");
+                (hdfActorState0InPort).link(rel2);
+                (hdfActorState1InPort).link(rel2);
+                (hdfActorInPort).link(rel2);
+                (ctrlActInPort).link(rel2);
 
-	    // Conect the actors.
-	    _toplevel.connect(rampSig.output, sineSig.input);
-	    _toplevel.connect(sineSig.output, add.plus);
-	    _toplevel.connect(noise.output, add.plus);
+                // Conect the actors.
+                _toplevel.connect(rampSig.output, sineSig.input);
+                _toplevel.connect(sineSig.output, add.plus);
+                _toplevel.connect(noise.output, add.plus);
 
-	    _toplevel.connect(hdfActorOutPort, hystplotter.input);
+                _toplevel.connect(hdfActorOutPort, hystplotter.input);
 
-	    TypedIORelation noisyRel =
-		(TypedIORelation)_toplevel.newRelation("noisyRel");
-	    (add.output).link(noisyRel);
-	    (hdfActorInPort).link(noisyRel);
-	    (hystplotter.input).link(noisyRel);
+                TypedIORelation noisyRel =
+                    (TypedIORelation)_toplevel.newRelation("noisyRel");
+                (add.output).link(noisyRel);
+                (hdfActorInPort).link(noisyRel);
+                (hystplotter.input).link(noisyRel);
 
-            // We are now allowed to run the model.
-            _initCompleted = true;
+                // We are now allowed to run the model.
+                _initCompleted = true;
 
-            // The 2 argument requests a go and stop button.
-            //getContentPane().add(_createRunControls(2));
+                // The 2 argument requests a go and stop button.
+                //getContentPane().add(_createRunControls(2));
 
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());

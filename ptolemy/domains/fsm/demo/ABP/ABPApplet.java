@@ -128,7 +128,7 @@ public class ABPApplet extends DEApplet implements QueryListener {
 
             // sender - a hierarchical FSM
             TypedCompositeActor sender =
-                    new TypedCompositeActor(_toplevel, "Sender");
+                new TypedCompositeActor(_toplevel, "Sender");
             // create ports
             TypedIOPort sdrRequest = (TypedIOPort)sender.newPort("request");
             sdrRequest.setInput(true);
@@ -220,15 +220,15 @@ public class ABPApplet extends DEApplet implements QueryListener {
             conWait.incomingPort.link(conTr1);
             conTr1.setGuardExpression("request_S");
             BroadcastOutput conTr1Act1 =
-                    new BroadcastOutput(conTr1, "conTr1Act1");
+                new BroadcastOutput(conTr1, "conTr1Act1");
             conTr1Act1.portName.setExpression("pktOut");
             conTr1Act1.expression.setExpression("-1");
             BroadcastOutput conTr1Act2 =
-                    new BroadcastOutput(conTr1, "conTr1Act2");
+                new BroadcastOutput(conTr1, "conTr1Act2");
             conTr1Act2.portName.setExpression("setTimer");
             conTr1Act2.expression.setExpression(TIME_OUT);
             SetVariable conTr1Act3 =
-                    new SetVariable(conTr1, "conTr1Act3");
+                new SetVariable(conTr1, "conTr1Act3");
             conTr1Act3.variableName.setExpression("count");
             conTr1Act3.expression.setExpression("5");
             Transition conTr2 = new Transition(connect, "conTr2");
@@ -236,11 +236,11 @@ public class ABPApplet extends DEApplet implements QueryListener {
             conSucc.incomingPort.link(conTr2);
             conTr2.setGuardExpression("(ack_S ? ack_V : 0) == -1");
             BroadcastOutput conTr2Act1 =
-                    new BroadcastOutput(conTr2, "conTr2Act1");
+                new BroadcastOutput(conTr2, "conTr2Act1");
             conTr2Act1.portName.setExpression("next");
             conTr2Act1.expression.setExpression("true");
             BroadcastOutput conTr2Act2 =
-                    new BroadcastOutput(conTr2, "conTr2Act2");
+                new BroadcastOutput(conTr2, "conTr2Act2");
             conTr2Act2.portName.setExpression("setTimer");
             conTr2Act2.expression.setExpression(RESET);
             Transition conTr3 = new Transition(connect, "conTr3");
@@ -248,7 +248,7 @@ public class ABPApplet extends DEApplet implements QueryListener {
             conFail.incomingPort.link(conTr3);
             conTr3.setGuardExpression("!ack_S && expired_S && count == 0");
             BroadcastOutput conTr3Act1 =
-                    new BroadcastOutput(conTr3, "conTr3Act1");
+                new BroadcastOutput(conTr3, "conTr3Act1");
             conTr3Act1.portName.setExpression("error");
             conTr3Act1.expression.setExpression("true");
             Transition conTr4 = new Transition(connect, "conTr4");
@@ -257,7 +257,7 @@ public class ABPApplet extends DEApplet implements QueryListener {
             conTr4.setGuardExpression("(ack_S ? ack_V : -1) != -1 && "
                     + "expired_S && count == 0");
             BroadcastOutput conTr4Act1 =
-                    new BroadcastOutput(conTr4, "conTr4Act1");
+                new BroadcastOutput(conTr4, "conTr4Act1");
             conTr4Act1.portName.setExpression("error");
             conTr4Act1.expression.setExpression("true");
             Transition conTr5 = new Transition(connect, "conTr5");
@@ -265,15 +265,15 @@ public class ABPApplet extends DEApplet implements QueryListener {
             conWait.incomingPort.link(conTr5);
             conTr5.setGuardExpression("!ack_S && expired_S && count != 0");
             BroadcastOutput conTr5Act1 =
-                    new BroadcastOutput(conTr5, "conTr5Act1");
+                new BroadcastOutput(conTr5, "conTr5Act1");
             conTr5Act1.portName.setExpression("pktOut");
             conTr5Act1.expression.setExpression("-1");
             BroadcastOutput conTr5Act2 =
-                    new BroadcastOutput(conTr5, "conTr5Act2");
+                new BroadcastOutput(conTr5, "conTr5Act2");
             conTr5Act2.portName.setExpression("setTimer");
             conTr5Act2.expression.setExpression(TIME_OUT);
             SetVariable conTr5Act3 =
-                    new SetVariable(conTr5, "conTr5Act3");
+                new SetVariable(conTr5, "conTr5Act3");
             conTr5Act3.variableName.setExpression("count");
             conTr5Act3.expression.setExpression("count - 1");
             Transition conTr6 = new Transition(connect, "conTr6");
@@ -282,15 +282,15 @@ public class ABPApplet extends DEApplet implements QueryListener {
             conTr6.setGuardExpression("(ack_S ? ack_V : -1) != -1 "
                     + "&& expired_S && count != 0");
             BroadcastOutput conTr6Act1 =
-                    new BroadcastOutput(conTr6, "conTr6Act1");
+                new BroadcastOutput(conTr6, "conTr6Act1");
             conTr6Act1.portName.setExpression("pktOut");
             conTr6Act1.expression.setExpression("-1");
             BroadcastOutput conTr6Act2 =
-                    new BroadcastOutput(conTr6, "conTr6Act2");
+                new BroadcastOutput(conTr6, "conTr6Act2");
             conTr6Act2.portName.setExpression("setTimer");
             conTr6Act2.expression.setExpression(TIME_OUT);
             SetVariable conTr6Act3 =
-                    new SetVariable(conTr6, "conTr6Act3");
+                new SetVariable(conTr6, "conTr6Act3");
             conTr6Act3.variableName.setExpression("count");
             conTr6Act3.expression.setExpression("count - 1");
             // create the local variable
@@ -333,23 +333,23 @@ public class ABPApplet extends DEApplet implements QueryListener {
             s0.incomingPort.link(sendTr1);
             sendTr1.setGuardExpression("msgIn_S");
             BroadcastOutput sendTr1Act1 =
-                    new BroadcastOutput(sendTr1, "sendTr1Act1");
+                new BroadcastOutput(sendTr1, "sendTr1Act1");
             sendTr1Act1.portName.setExpression("pktOut");
             sendTr1Act1.expression.setExpression("msgIn_V*2");
             BroadcastOutput sendTr1Act2 =
-                    new BroadcastOutput(sendTr1, "sendTr1Act2");
+                new BroadcastOutput(sendTr1, "sendTr1Act2");
             sendTr1Act2.portName.setExpression("monitor");
             sendTr1Act2.expression.setExpression("0");
             BroadcastOutput sendTr1Act3 =
-                    new BroadcastOutput(sendTr1, "sendTr1Act3");
+                new BroadcastOutput(sendTr1, "sendTr1Act3");
             sendTr1Act3.portName.setExpression("setTimer");
             sendTr1Act3.expression.setExpression(TIME_OUT);
             SetVariable sendTr1Act4 =
-                    new SetVariable(sendTr1, "sendTr1Act4");
+                new SetVariable(sendTr1, "sendTr1Act4");
             sendTr1Act4.variableName.setExpression("trying");
             sendTr1Act4.expression.setExpression("true");
             SetVariable sendTr1Act5 =
-                    new SetVariable(sendTr1, "sendTr1Act5");
+                new SetVariable(sendTr1, "sendTr1Act5");
             sendTr1Act5.variableName.setExpression("msg");
             sendTr1Act5.expression.setExpression("msgIn_V");
             Transition sendTr2 = new Transition(send, "sendTr2");
@@ -357,15 +357,15 @@ public class ABPApplet extends DEApplet implements QueryListener {
             s0.incomingPort.link(sendTr2);
             sendTr2.setGuardExpression("!ack_S && expired_S && trying");
             BroadcastOutput sendTr2Act1 =
-                    new BroadcastOutput(sendTr2, "sendTr2Act1");
+                new BroadcastOutput(sendTr2, "sendTr2Act1");
             sendTr2Act1.portName.setExpression("pktOut");
             sendTr2Act1.expression.setExpression("msgIn_V*2");
             BroadcastOutput sendTr2Act2 =
-                    new BroadcastOutput(sendTr2, "sendTr2Act2");
+                new BroadcastOutput(sendTr2, "sendTr2Act2");
             sendTr2Act2.portName.setExpression("monitor");
             sendTr2Act2.expression.setExpression("0");
             BroadcastOutput sendTr2Act3 =
-                    new BroadcastOutput(sendTr2, "sendTr2Act3");
+                new BroadcastOutput(sendTr2, "sendTr2Act3");
             sendTr2Act3.portName.setExpression("setTimer");
             sendTr2Act3.expression.setExpression(TIME_OUT);
             Transition sendTr3 = new Transition(send, "sendTr3");
@@ -374,15 +374,15 @@ public class ABPApplet extends DEApplet implements QueryListener {
             sendTr3.setGuardExpression("(ack_S ? ack_V : 0) != 0 "
                     + "&& expired_S && trying");
             BroadcastOutput sendTr3Act1 =
-                    new BroadcastOutput(sendTr3, "sendTr3Act1");
+                new BroadcastOutput(sendTr3, "sendTr3Act1");
             sendTr3Act1.portName.setExpression("pktOut");
             sendTr3Act1.expression.setExpression("msgIn_V*2");
             BroadcastOutput sendTr3Act2 =
-                    new BroadcastOutput(sendTr3, "sendTr3Act2");
+                new BroadcastOutput(sendTr3, "sendTr3Act2");
             sendTr3Act2.portName.setExpression("monitor");
             sendTr3Act2.expression.setExpression("0");
             BroadcastOutput sendTr3Act3 =
-                    new BroadcastOutput(sendTr3, "sendTr3Act3");
+                new BroadcastOutput(sendTr3, "sendTr3Act3");
             sendTr3Act3.portName.setExpression("setTimer");
             sendTr3Act3.expression.setExpression(TIME_OUT);
             Transition sendTr4 = new Transition(send, "sendTr4");
@@ -391,15 +391,15 @@ public class ABPApplet extends DEApplet implements QueryListener {
             sendTr4.setGuardExpression("(ack_S ? ack_V : -1) == 0 "
                     + "&& trying");
             BroadcastOutput sendTr4Act1 =
-                    new BroadcastOutput(sendTr4, "sendTr4Act1");
+                new BroadcastOutput(sendTr4, "sendTr4Act1");
             sendTr4Act1.portName.setExpression("setTimer");
             sendTr4Act1.expression.setExpression(RESET);
             BroadcastOutput sendTr4Act2 =
-                    new BroadcastOutput(sendTr4, "sendTr4Act2");
+                new BroadcastOutput(sendTr4, "sendTr4Act2");
             sendTr4Act2.portName.setExpression("next");
             sendTr4Act2.expression.setExpression("true");
             SetVariable sendTr4Act3 =
-                    new SetVariable(sendTr4, "sendTr4Act3");
+                new SetVariable(sendTr4, "sendTr4Act3");
             sendTr4Act3.variableName.setExpression("trying");
             sendTr4Act3.expression.setExpression("false");
             Transition sendTr5 = new Transition(send, "sendTr5");
@@ -407,23 +407,23 @@ public class ABPApplet extends DEApplet implements QueryListener {
             s1.incomingPort.link(sendTr5);
             sendTr5.setGuardExpression("msgIn_S");
             BroadcastOutput sendTr5Act1 =
-                    new BroadcastOutput(sendTr5, "sendTr5Act1");
+                new BroadcastOutput(sendTr5, "sendTr5Act1");
             sendTr5Act1.portName.setExpression("pktOut");
             sendTr5Act1.expression.setExpression("msgIn_V*2+1");
             BroadcastOutput sendTr5Act2 =
-                    new BroadcastOutput(sendTr5, "sendTr5Act2");
+                new BroadcastOutput(sendTr5, "sendTr5Act2");
             sendTr5Act2.portName.setExpression("monitor");
             sendTr5Act2.expression.setExpression("1");
             BroadcastOutput sendTr5Act3 =
-                    new BroadcastOutput(sendTr5, "sendTr5Act3");
+                new BroadcastOutput(sendTr5, "sendTr5Act3");
             sendTr5Act3.portName.setExpression("setTimer");
             sendTr5Act3.expression.setExpression(TIME_OUT);
             SetVariable sendTr5Act4 =
-                    new SetVariable(sendTr5, "sendTr5Act4");
+                new SetVariable(sendTr5, "sendTr5Act4");
             sendTr5Act4.variableName.setExpression("trying");
             sendTr5Act4.expression.setExpression("true");
             SetVariable sendTr5Act5 =
-                    new SetVariable(sendTr5, "sendTr5Act5");
+                new SetVariable(sendTr5, "sendTr5Act5");
             sendTr5Act5.variableName.setExpression("msg");
             sendTr5Act5.expression.setExpression("msgIn_V");
             Transition sendTr6 = new Transition(send, "sendTr6");
@@ -431,15 +431,15 @@ public class ABPApplet extends DEApplet implements QueryListener {
             s1.incomingPort.link(sendTr6);
             sendTr6.setGuardExpression("!ack_S && expired_S && trying");
             BroadcastOutput sendTr6Act1 =
-                    new BroadcastOutput(sendTr6, "sendTr6Act1");
+                new BroadcastOutput(sendTr6, "sendTr6Act1");
             sendTr6Act1.portName.setExpression("pktOut");
             sendTr6Act1.expression.setExpression("msgIn_V*2+1");
             BroadcastOutput sendTr6Act2 =
-                    new BroadcastOutput(sendTr6, "sendTr6Act2");
+                new BroadcastOutput(sendTr6, "sendTr6Act2");
             sendTr6Act2.portName.setExpression("monitor");
             sendTr6Act2.expression.setExpression("1");
             BroadcastOutput sendTr6Act3 =
-                    new BroadcastOutput(sendTr6, "sendTr6Act3");
+                new BroadcastOutput(sendTr6, "sendTr6Act3");
             sendTr6Act3.portName.setExpression("setTimer");
             sendTr6Act3.expression.setExpression(TIME_OUT);
             Transition sendTr7 = new Transition(send, "sendTr7");
@@ -448,15 +448,15 @@ public class ABPApplet extends DEApplet implements QueryListener {
             sendTr7.setGuardExpression("(ack_S ? ack_V : 1) != 1 "
                     + "&& expired_S && trying");
             BroadcastOutput sendTr7Act1 =
-                    new BroadcastOutput(sendTr7, "sendTr7Act1");
+                new BroadcastOutput(sendTr7, "sendTr7Act1");
             sendTr7Act1.portName.setExpression("pktOut");
             sendTr7Act1.expression.setExpression("msgIn_V*2+1");
             BroadcastOutput sendTr7Act2 =
-                    new BroadcastOutput(sendTr7, "sendTr7Act2");
+                new BroadcastOutput(sendTr7, "sendTr7Act2");
             sendTr7Act2.portName.setExpression("monitor");
             sendTr7Act2.expression.setExpression("1");
             BroadcastOutput sendTr7Act3 =
-                    new BroadcastOutput(sendTr7, "sendTr7Act3");
+                new BroadcastOutput(sendTr7, "sendTr7Act3");
             sendTr7Act3.portName.setExpression("setTimer");
             sendTr7Act3.expression.setExpression(TIME_OUT);
             Transition sendTr8 = new Transition(send, "sendTr8");
@@ -465,15 +465,15 @@ public class ABPApplet extends DEApplet implements QueryListener {
             sendTr8.setGuardExpression("(ack_S ? ack_V : -1) == 1 "
                     + "&& trying");
             BroadcastOutput sendTr8Act1 =
-                    new BroadcastOutput(sendTr8, "sendTr8Act1");
+                new BroadcastOutput(sendTr8, "sendTr8Act1");
             sendTr8Act1.portName.setExpression("setTimer");
             sendTr8Act1.expression.setExpression(RESET);
             BroadcastOutput sendTr8Act2 =
-                    new BroadcastOutput(sendTr8, "sendTr8Act2");
+                new BroadcastOutput(sendTr8, "sendTr8Act2");
             sendTr8Act2.portName.setExpression("next");
             sendTr8Act2.expression.setExpression("true");
             SetVariable sendTr8Act3 =
-                    new SetVariable(sendTr8, "sendTr8Act3");
+                new SetVariable(sendTr8, "sendTr8Act3");
             sendTr8Act3.variableName.setExpression("trying");
             sendTr8Act3.expression.setExpression("false");
             // create the local variables
@@ -552,7 +552,7 @@ public class ABPApplet extends DEApplet implements QueryListener {
             recInit.incomingPort.link(recTr1);
             recTr1.setGuardExpression("(pktIn_S ? pktIn_V : 0) == -1");
             BroadcastOutput recTr1Act1 =
-                    new BroadcastOutput(recTr1, "recTr1Act1");
+                new BroadcastOutput(recTr1, "recTr1Act1");
             recTr1Act1.portName.setExpression("ack");
             recTr1Act1.expression.setExpression("-1");
             Transition recTr2 = new Transition(receiver, "recTr2");
@@ -560,11 +560,11 @@ public class ABPApplet extends DEApplet implements QueryListener {
             recS1.incomingPort.link(recTr2);
             recTr2.setGuardExpression("(pktIn_S ? pktIn_V%2 : 1) == 0");
             BroadcastOutput recTr2Act1 =
-                    new BroadcastOutput(recTr2, "recTr2Act1");
+                new BroadcastOutput(recTr2, "recTr2Act1");
             recTr2Act1.portName.setExpression("ack");
             recTr2Act1.expression.setExpression("0");
             BroadcastOutput recTr2Act2 =
-                    new BroadcastOutput(recTr2, "recTr2Act2");
+                new BroadcastOutput(recTr2, "recTr2Act2");
             recTr2Act2.portName.setExpression("msgOut");
             recTr2Act2.expression.setExpression("pktIn_V/2");
             Transition recTr3 = new Transition(receiver, "recTr3");
@@ -572,7 +572,7 @@ public class ABPApplet extends DEApplet implements QueryListener {
             recS1.incomingPort.link(recTr3);
             recTr3.setGuardExpression("(pktIn_S ? pktIn_V%2 : 1) == 0");
             BroadcastOutput recTr3Act1 =
-                    new BroadcastOutput(recTr3, "recTr3Act1");
+                new BroadcastOutput(recTr3, "recTr3Act1");
             recTr3Act1.portName.setExpression("ack");
             recTr3Act1.expression.setExpression("0");
             Transition recTr4 = new Transition(receiver, "recTr4");
@@ -580,11 +580,11 @@ public class ABPApplet extends DEApplet implements QueryListener {
             recS0.incomingPort.link(recTr4);
             recTr4.setGuardExpression("(pktIn_S ? pktIn_V%2 : 0) == 1");
             BroadcastOutput recTr4Act1 =
-                    new BroadcastOutput(recTr4, "recTr4Act1");
+                new BroadcastOutput(recTr4, "recTr4Act1");
             recTr4Act1.portName.setExpression("ack");
             recTr4Act1.expression.setExpression("1");
             BroadcastOutput recTr4Act2 =
-                    new BroadcastOutput(recTr4, "recTr4Act2");
+                new BroadcastOutput(recTr4, "recTr4Act2");
             recTr4Act2.portName.setExpression("msgOut");
             recTr4Act2.expression.setExpression("pktIn_V/2");
             Transition recTr5 = new Transition(receiver, "recTr5");
@@ -592,7 +592,7 @@ public class ABPApplet extends DEApplet implements QueryListener {
             recS0.incomingPort.link(recTr5);
             recTr5.setGuardExpression("(pktIn_S ? pktIn_V%2 : 0) == 1");
             BroadcastOutput recTr5Act1 =
-                    new BroadcastOutput(recTr5, "recTr5Act1");
+                new BroadcastOutput(recTr5, "recTr5Act1");
             recTr5Act1.portName.setExpression("ack");
             recTr5Act1.expression.setExpression("1");
             Transition recTr6 = new Transition(receiver, "recTr6");
@@ -600,11 +600,11 @@ public class ABPApplet extends DEApplet implements QueryListener {
             recS1.incomingPort.link(recTr6);
             recTr6.setGuardExpression("(pktIn_S ? pktIn_V%2 : 1) == 0");
             BroadcastOutput recTr6Act1 =
-                    new BroadcastOutput(recTr6, "recTr6Act1");
+                new BroadcastOutput(recTr6, "recTr6Act1");
             recTr6Act1.portName.setExpression("ack");
             recTr6Act1.expression.setExpression("0");
             BroadcastOutput recTr6Act2 =
-                    new BroadcastOutput(recTr6, "recTr6Act2");
+                new BroadcastOutput(recTr6, "recTr6Act2");
             recTr6Act2.portName.setExpression("msgOut");
             recTr6Act2.expression.setExpression("pktIn_V/2");
 

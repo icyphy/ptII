@@ -118,9 +118,9 @@ public class Cylinder3D extends GRShadedShape {
      *   be obtained
      */
     protected void _createModel() throws IllegalActionException {
-       super._createModel();
-       containedNode = new Cylinder((float) _getRadius(),(float) _getHeight(),
-                                    Cylinder.GENERATE_NORMALS,_appearance);
+        super._createModel();
+        containedNode = new Cylinder((float) _getRadius(),(float) _getHeight(),
+                Cylinder.GENERATE_NORMALS,_appearance);
     }
 
 

@@ -136,9 +136,9 @@ public class BroadcastOutput extends Action implements ChoiceAction {
             throws CloneNotSupportedException {
         BroadcastOutput newObject = (BroadcastOutput)super.clone(workspace);
         newObject.expression =
-	        (StringAttribute)newObject.getAttribute("expression");
+            (StringAttribute)newObject.getAttribute("expression");
         newObject.portName =
-	        (StringAttribute)newObject.getAttribute("portName");
+            (StringAttribute)newObject.getAttribute("portName");
         newObject._portVersion = -1;
         return newObject;
     }

@@ -74,9 +74,9 @@ public class Torus3D extends GRShadedShape {
         angleSpan = new Parameter(this, "span of revolution", new DoubleToken(2*Math.PI));
         slices = new Parameter(this, "slices", new IntToken(28));
         crossSectionRadius
-              = new Parameter(this,"cross-section radius", new DoubleToken(0.15));
+            = new Parameter(this,"cross-section radius", new DoubleToken(0.15));
         hullRadius
-              = new Parameter(this,"hull radius",new DoubleToken(0.75));
+            = new Parameter(this,"hull radius",new DoubleToken(0.75));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -159,7 +159,7 @@ public class Torus3D extends GRShadedShape {
         for(i=0; i < numberOfSlices ; i++) {
             double theta = Math.PI - 2 * Math.PI * i / (numberOfSlices - 1);
             data[j++] = outerRadius +
-                        innerRadius * (float) Math.cos(theta);
+                innerRadius * (float) Math.cos(theta);
             data[j++] = innerRadius * (float) Math.sin(theta);
         }
 
@@ -225,7 +225,7 @@ public class Torus3D extends GRShadedShape {
      *   be obtained
      */
     private float _getCrossSectionRadius() throws IllegalActionException {
-       return (float) ((DoubleToken) crossSectionRadius.getToken()).doubleValue();
+        return (float) ((DoubleToken) crossSectionRadius.getToken()).doubleValue();
     }
 
     /** Return the radius of the outer hull
@@ -234,7 +234,7 @@ public class Torus3D extends GRShadedShape {
      *   be obtained
      */
     private float _getHullRadius() throws IllegalActionException {
-       return (float) ((DoubleToken) hullRadius.getToken()).doubleValue();
+        return (float) ((DoubleToken) hullRadius.getToken()).doubleValue();
     }
 
     /** Return the number of slices
@@ -243,7 +243,7 @@ public class Torus3D extends GRShadedShape {
      *   be obtained
      */
     private int _getSlices() throws IllegalActionException {
-       return ((IntToken) slices.getToken()).intValue();
+        return ((IntToken) slices.getToken()).intValue();
     }
 
     /** Return the angle span of the sweep

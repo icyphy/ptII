@@ -107,7 +107,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
         // assume exactly one model on the command line
 
         _compositeActor = (TypedCompositeActor)
-                _models.iterator().next();
+            _models.iterator().next();
 
         try {
             // initialize the model to ensure type resolution and scheduling
@@ -171,8 +171,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
         System.out.println("SDFCodeGenerator: Starting to accumulate " +
                 "class info ---" +
                 (System.currentTimeMillis() - startTime) + " ms " +
-			   " totalMemory: " + runtime.totalMemory() +
-			   " freeMemory: " + runtime.freeMemory());
+                " totalMemory: " + runtime.totalMemory() +
+                " freeMemory: " + runtime.freeMemory());
 
 
         ActorCodeGenerator actorCodeGen =
@@ -181,16 +181,16 @@ public class SDFCodeGenerator extends CompositeActorApplication
         System.out.println("\nSDFCodeGenerator: " +
                 "Done accumulating class info ---" +
                 (System.currentTimeMillis() - startTime) + " ms" +
-			   " totalMemory: " + runtime.totalMemory() +
-			   " freeMemory: " + runtime.freeMemory());
+                " totalMemory: " + runtime.totalMemory() +
+                " freeMemory: " + runtime.freeMemory());
 
         System.out.println("SDFCodeGenerator: calling System.gc()");
 	System.gc();
 
         System.out.println("SDFCodeGenerator: pass1 ---" +
                 (System.currentTimeMillis() - startTime) + " ms" +
-			   " totalMemory: " + runtime.totalMemory() +
-			   " freeMemory: " + runtime.freeMemory());
+                " totalMemory: " + runtime.totalMemory() +
+                " freeMemory: " + runtime.freeMemory());
 
 
         LinkedList renamedSourceList = new LinkedList();
@@ -208,8 +208,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         System.out.println("\nSDFCodeGenerator: pass2 ---" +
                 (System.currentTimeMillis() - startTime) + " ms" +
-			   " totalMemory: " + runtime.totalMemory() +
-			   " freeMemory: " + runtime.freeMemory());
+                " totalMemory: " + runtime.totalMemory() +
+                " freeMemory: " + runtime.freeMemory());
 
         actorItr = _actorSet.iterator();
         Iterator renamedSourceItr = renamedSourceList.iterator();
@@ -228,8 +228,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         System.out.println("\nSDFCodeGenerator: pass3 ---" +
                 (System.currentTimeMillis() - startTime) + " ms" +
-			   " totalMemory: " + runtime.totalMemory() +
-			   " freeMemory: " + runtime.freeMemory());
+                " totalMemory: " + runtime.totalMemory() +
+                " freeMemory: " + runtime.freeMemory());
 
         renamedSourceItr = renamedSourceList.iterator();
 
@@ -240,8 +240,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
         }
         System.out.println("\nSDFCodeGenerator: done " +
                 (System.currentTimeMillis() - startTime) + " ms" +
-			   " totalMemory: " + runtime.totalMemory() +
-			   " freeMemory: " + runtime.freeMemory());
+                " totalMemory: " + runtime.totalMemory() +
+                " freeMemory: " + runtime.freeMemory());
     }
 
     /** The top-level main() method. Create an SDF code generator using the
@@ -333,9 +333,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
 	if (_generateStatistics) {
 	    // For timing measurements.
 	    importList.add(new ImportNode((NameNode)
-  		   StaticResolution.makeNameNode("java.util.Date")));
+                    StaticResolution.makeNameNode("java.util.Date")));
 	    importList.add(new ImportNode((NameNode)
-		   StaticResolution.makeNameNode("java.io.PrintStream")));
+                    StaticResolution.makeNameNode("java.io.PrintStream")));
 	}
 
         CompileUnitNode unitNode = new CompileUnitNode(
@@ -400,30 +400,30 @@ public class SDFCodeGenerator extends CompositeActorApplication
 	    // that will then generate the parse tree for us?
 	    NameNode startTimeVarNameNode =
 		new NameNode(AbsentTreeNode.instance,
-			     "startTime");
+                        "startTime");
 
 	    TypeNode startTimeTypeNode = LongTypeNode.instance;
 
 	    TypeNameNode dateTypeNode =
 		new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-					      "Date"));
+                        "Date"));
 
 	    AllocateNode allocateStartTimeNode =
 		new AllocateNode(dateTypeNode,
-				 new LinkedList(),
-				 AbsentTreeNode.instance);
+                        new LinkedList(),
+                        AbsentTreeNode.instance);
 
 	    MethodCallNode getTimeMethodCallNode =
 		new MethodCallNode(new ObjectFieldAccessNode(
-				     new NameNode(AbsentTreeNode.instance,
-						  "getTime"),
-				     allocateStartTimeNode),
-				   new LinkedList());
+                        new NameNode(AbsentTreeNode.instance,
+                                "getTime"),
+                        allocateStartTimeNode),
+                        new LinkedList());
 
 	    stmtList.addLast(new LocalVarDeclNode(NO_MOD,
-						  startTimeTypeNode,
-						  startTimeVarNameNode,
-						  getTimeMethodCallNode));
+                    startTimeTypeNode,
+                    startTimeVarNameNode,
+                    getTimeMethodCallNode));
 	}
 
 
@@ -627,23 +627,23 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
 	    TypeNameNode dateTypeNode =
 		new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-					      "Date"));
+                        "Date"));
 
 	    AllocateNode allocateEndTimeNode =
 		new AllocateNode(dateTypeNode,
-				 new LinkedList(),
-				 AbsentTreeNode.instance);
+                        new LinkedList(),
+                        AbsentTreeNode.instance);
 
 	    MethodCallNode getTimeMethodCallNode =
 		new MethodCallNode(new ObjectFieldAccessNode(
-				     new NameNode(AbsentTreeNode.instance, "getTime"),
-				     allocateEndTimeNode),
-				   new LinkedList());
+                        new NameNode(AbsentTreeNode.instance, "getTime"),
+                        allocateEndTimeNode),
+                        new LinkedList());
 
 	    stmtList.addLast(
-			     new LocalVarDeclNode(NO_MOD, endTimeTypeNode,
-						  endTimeVarNameNode,
-						  getTimeMethodCallNode));
+                    new LocalVarDeclNode(NO_MOD, endTimeTypeNode,
+                            endTimeVarNameNode,
+                            getTimeMethodCallNode));
 
 	    // Generate "PrintStream _stdOut = System.out;"
 	    NameNode stdOutVarNameNode =
@@ -651,46 +651,46 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
 	    TypeNameNode stdOutTypeNameNode =
 		new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-					      "PrintStream"));
+                        "PrintStream"));
 
 	    TypeNameNode systemTypeNameNode =
 		new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-					      "System"));
+                        "System"));
 
 	    TypeFieldAccessNode outTypeFieldAccessNode =
 		new TypeFieldAccessNode(new NameNode(AbsentTreeNode.instance,
-						     "out"),
-					systemTypeNameNode);
+                        "out"),
+                        systemTypeNameNode);
 
 	    stmtList.addLast(new LocalVarDeclNode(NO_MOD,
-						  stdOutTypeNameNode,
-						  stdOutVarNameNode,
-						  outTypeFieldAccessNode));
+                    stdOutTypeNameNode,
+                    stdOutVarNameNode,
+                    outTypeFieldAccessNode));
 
 	    // Generate
 	    // _stdOut.println("elapsed time: " + (endTime - startTime)+ "ms");
 	    ObjectNode stdOutObjectNode =
 		new ObjectNode(new NameNode(AbsentTreeNode.instance,
-					    "stdOut"));
+                        "stdOut"));
 
 	    LinkedList timingList = new LinkedList();
 	    timingList.add(new PlusNode(
-				      new PlusNode(
-					 new StringLitNode("elapsed time:"),
-					 new MinusNode(
-						new ObjectNode(new NameNode(AbsentTreeNode.instance,
+                    new PlusNode(
+                            new StringLitNode("elapsed time:"),
+                            new MinusNode(
+                                    new ObjectNode(new NameNode(AbsentTreeNode.instance,
 					    "endTime")),
-						new ObjectNode(new NameNode(AbsentTreeNode.instance,
+                                    new ObjectNode(new NameNode(AbsentTreeNode.instance,
 					    "startTime")))
-				      ),
-				      new StringLitNode("ms")));
+                            ),
+                    new StringLitNode("ms")));
 
 	    MethodCallNode printlnMethodCallNode =
 		new MethodCallNode(new ObjectFieldAccessNode(
-				     new NameNode(AbsentTreeNode.instance,
-						  "println"),
-				     stdOutObjectNode),
-				   timingList);
+                        new NameNode(AbsentTreeNode.instance,
+                                "println"),
+                        stdOutObjectNode),
+                        timingList);
             stmtList.addLast(new ExprStmtNode(printlnMethodCallNode));
 	}
 

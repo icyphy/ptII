@@ -74,17 +74,17 @@ public class Scale3D extends GRTransform {
         scaleInput.setInput(true);
 
         scaleFactor = new Parameter(this, "scaleFactor",new DoubleToken(1.0));
-	    scaleFactor.setTypeEquals(BaseType.DOUBLE);
-	    xScale = new Parameter(this, "xScale", new DoubleToken(1.0));
-  	    yScale = new Parameter(this, "yScale", new DoubleToken(1.0));
-  	    zScale = new Parameter(this, "zScale", new DoubleToken(1.0));
+        scaleFactor.setTypeEquals(BaseType.DOUBLE);
+        xScale = new Parameter(this, "xScale", new DoubleToken(1.0));
+        yScale = new Parameter(this, "yScale", new DoubleToken(1.0));
+        zScale = new Parameter(this, "zScale", new DoubleToken(1.0));
     }
 
     public Node getNodeObject() {
         return (Node) transformNode;
     }
 
-     /** Add a scene graph child node to this actor
+    /** Add a scene graph child node to this actor
      */
     public void addChild(Node node) {
         transformNode.addChild(node);
@@ -132,8 +132,8 @@ public class Scale3D extends GRTransform {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-   	    transformNode = new TransformGroup();
-	    transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        transformNode = new TransformGroup();
+        transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         Transform3D scaleTransform = new Transform3D();
         scaleTransform.setScale(new Vector3d(_getScaleX(),_getScaleY(),_getScaleZ()));
         transformNode.setTransform(scaleTransform);

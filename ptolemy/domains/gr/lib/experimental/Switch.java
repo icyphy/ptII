@@ -71,9 +71,9 @@ public class Switch extends Transformer {
 
     	output.setMultiport(true);
 
-	    select = new TypedIOPort(this, "select");
-	    select.setInput(true);
-	    select.setTypeEquals(BaseType.DOUBLE);
+        select = new TypedIOPort(this, "select");
+        select.setInput(true);
+        select.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -107,7 +107,7 @@ public class Switch extends Transformer {
      */
     public void fire() throws IllegalActionException {
 
-	    if (select.getWidth() != 0) {
+        if (select.getWidth() != 0) {
             if (select.hasToken(0)) {
                 int index = (int) ((DoubleToken) select.get(0)).doubleValue();
 
@@ -115,11 +115,11 @@ public class Switch extends Transformer {
                 if (index < width) {
                     if (input.hasToken(0)) {
                         Token token = input.get(0);
-	                    output.send(index, token);
-	                }
-	            }
-	        }
-	    }
+                        output.send(index, token);
+                    }
+                }
+            }
+        }
     }
 }
 

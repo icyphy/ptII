@@ -74,13 +74,13 @@ public class Select extends TypedAtomicActor {
         input.setInput(true);
     	input.setMultiport(true);
 
-	    select = new TypedIOPort(this, "select");
-	    select.setInput(true);
-	    select.setTypeEquals(BaseType.DOUBLE);
+        select = new TypedIOPort(this, "select");
+        select.setInput(true);
+        select.setTypeEquals(BaseType.DOUBLE);
 
-	    output = new TypedIOPort(this, "output");
-	    output.setOutput(true);
-	    output.setTypeSameAs(input);
+        output = new TypedIOPort(this, "output");
+        output.setOutput(true);
+        output.setTypeSameAs(input);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -142,14 +142,14 @@ public class Select extends TypedAtomicActor {
                     for (int i = 0; i < width; i++) {
                         if (input.hasToken(i)) {
                             Token token = input.get(i);
-	                        if (i == index) {
-	                            output.send(0, token);
-	                        }
-	                    }
-	                }
-	            }
-	        }
-	    }
+                            if (i == index) {
+                                output.send(0, token);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

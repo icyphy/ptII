@@ -183,7 +183,7 @@ public class GRReceiver extends AbstractReceiver {
 	}
 	if(tokens < 1)
 	    throw new IllegalActionException("The number of " +
-					     "tokens must be greater than 0");
+                    "tokens must be greater than 0");
 	return (_queue.size() + tokens) < _queue.getCapacity();
     }
 
@@ -218,25 +218,25 @@ public class GRReceiver extends AbstractReceiver {
     	}
 
     	Iterator portListIterator = listOfConnectedPorts.iterator();
-    	foundReceiver:
+    foundReceiver:
     	while (portListIterator.hasNext()) {
     	    connectedPort = (IOPort) portListIterator.next();
     	    if (connectedPort.isOutput()) {
-    		    Receiver[][] remoteReceivers = connectedPort.getRemoteReceivers();
+                Receiver[][] remoteReceivers = connectedPort.getRemoteReceivers();
 
-    		    for(int i=0;i<connectedPort.getWidth();i++) {
-    			    for(int j=0;j<remoteReceivers[i].length;j++) {
-    			        if (remoteReceivers[i][j] == this) {
+                for(int i=0;i<connectedPort.getWidth();i++) {
+                    for(int j=0;j<remoteReceivers[i].length;j++) {
+                        if (remoteReceivers[i][j] == this) {
                             _from = (Actor) connectedPort.getContainer();
                             _fromPort = connectedPort;
                             if (_fromPort == null) {
                                 throw new InternalErrorException(
-                                    "internal GR error: Receiver with null source");
+                                        "internal GR error: Receiver with null source");
                             }
                             break foundReceiver;
-    			        }
-    			    }
-    		    }
+                        }
+                    }
+                }
     	    } else if (connectedPort.getContainer() instanceof TypedCompositeActor) {
     	        // This case is for input ports to a nontoplevel CompositeActor
     	        // FIXME: use at isAtomic() insteadof instanceof?
@@ -244,16 +244,16 @@ public class GRReceiver extends AbstractReceiver {
     	        _fromPort = connectedPort;
     	        if (_fromPort == null) {
     	            throw new InternalErrorException(
-                        "internal GR error: Receiver with null source");
+                            "internal GR error: Receiver with null source");
     	        }
     	        break foundReceiver;
     	    } else if (connectedPort.isInput()) {
-    	       // This case occurs when the destination port and
-    	       // the queried connected port are both input ports;
-    	       // and both of them are not input ports of
-    	       // opaque nontoplevel TypeCompositeActors.
-    	       // This case should be ignored.
-    	       // The search for the source Actor will proceed
+                // This case occurs when the destination port and
+                // the queried connected port are both input ports;
+                // and both of them are not input ports of
+                // opaque nontoplevel TypeCompositeActors.
+                // This case should be ignored.
+                // The search for the source Actor will proceed
     	    }
     	}
 
@@ -271,10 +271,10 @@ public class GRReceiver extends AbstractReceiver {
             //           ----------------------
             ComponentEntity origin = (ComponentEntity) _from;
             boolean illegalSituation = destination.isOpaque() &&
-                                       !destination.isAtomic();
+                !destination.isAtomic();
             if (illegalSituation) {
                 throw new InternalErrorException(
-    	        "internal GR error: Receiver with null source");
+                        "internal GR error: Receiver with null source");
     	    } else {
     	        // this case is illustrated above
     	    }
@@ -300,7 +300,7 @@ public class GRReceiver extends AbstractReceiver {
     public void put(Token token) {
         if (_fromPort == null) {
             throw new InternalErrorException(
-                      "internal GR error: Receiver with null source");
+                    "internal GR error: Receiver with null source");
         }
         // FIXME: maybe use t.getType() instead?
         if ((token instanceof ObjectToken) && (detachableGroup != null)) {
@@ -308,7 +308,7 @@ public class GRReceiver extends AbstractReceiver {
             if (value instanceof Node) {
                 addChild((Node) value);
                 try {
-                token = new ObjectToken(getNodeObject());
+                    token = new ObjectToken(getNodeObject());
                 } catch (Exception e) {
                     // FIXME: handle this
                 }
@@ -338,7 +338,7 @@ public class GRReceiver extends AbstractReceiver {
     public boolean hasToken(int tokens) throws IllegalActionException {
 	if(tokens < 1)
 	    throw new IllegalActionException("The number of " +
-					     "tokens must be greater than 0");
+                    "tokens must be greater than 0");
         return _queue.size() >= tokens;
     }
 

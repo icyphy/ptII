@@ -250,7 +250,7 @@ public class CircularSweep3D extends GRShadedShape {
      *   be obtained
      */
     private int _getSlices() throws IllegalActionException {
-       return ((IntToken) slices.getToken()).intValue();
+        return ((IntToken) slices.getToken()).intValue();
     }
 
     /** Return the angle span of the sweep

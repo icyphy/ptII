@@ -85,9 +85,9 @@ public class Loader3D extends GRShadedShape {
 
 
 
-   public Node getNodeObject() {
-       return (Node) obj.getSceneGroup();
-   }
+    public Node getNodeObject() {
+        return (Node) obj.getSceneGroup();
+    }
 
     protected void _createModel() throws IllegalActionException {
         String fileName = (String) ((StringToken) filename.getToken()).stringValue();
@@ -97,26 +97,26 @@ public class Loader3D extends GRShadedShape {
 
     	int flags = ObjectFile.RESIZE;
     	//if (!noTriangulate) flags |= ObjectFile.TRIANGULATE;
-	    //if (!noStripify) flags |= ObjectFile.STRIPIFY;
+        //if (!noStripify) flags |= ObjectFile.STRIPIFY;
     	ObjectFile f = new ObjectFile(flags,(float)(creaseAngle * Math.PI / 180.0));
     	Scene s = null;
     	try {
-	      s = f.load(fileName);
+            s = f.load(fileName);
     	}
-	    catch (FileNotFoundException e) {
-    	  System.err.println(e);
-    	  throw new IllegalActionException("File not found!");
-	    }
+        catch (FileNotFoundException e) {
+            System.err.println(e);
+            throw new IllegalActionException("File not found!");
+        }
     	catch (ParsingErrorException e) {
-	      System.err.println(e);
-    	  throw new IllegalActionException("File is not a valid 3D OBJ file");
-	    }
+            System.err.println(e);
+            throw new IllegalActionException("File is not a valid 3D OBJ file");
+        }
     	catch (IncorrectFormatException e) {
-	      System.err.println(e);
-          throw new IllegalActionException("File is not a valid 3D OBJ file");
-	    }
+            System.err.println(e);
+            throw new IllegalActionException("File is not a valid 3D OBJ file");
+        }
     	obj = s;
-   }
+    }
 
     private boolean spin = false;
     private boolean noTriangulate = false;

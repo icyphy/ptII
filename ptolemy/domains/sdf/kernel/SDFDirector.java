@@ -211,7 +211,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 		int iterationCount = firing.getIterationCount();
 
 		if(_debugging) {
-		  _debug(new FiringEvent(this, actor, FiringEvent.ITERATE));
+                    _debug(new FiringEvent(this, actor, FiringEvent.ITERATE));
 		}
 
 		// FIXME: This is a hack. It does not even check if the
@@ -227,18 +227,18 @@ public class SDFDirector extends StaticSchedulingDirector {
                     ((IntToken) (vectorizationFactor.getToken())).intValue();
 		if (factor < 1) {
 		    throw new IllegalActionException(this,
-			 "The supplied vectorization factor is invalid " +
-			 "Valid values consist of positive integers. " +
-                         "The supplied value was: " + factor);
+                            "The supplied vectorization factor is invalid " +
+                            "Valid values consist of positive integers. " +
+                            "The supplied value was: " + factor);
 		}
 		int returnVal =
-		  actor.iterate(factor*iterationCount);
+                    actor.iterate(factor*iterationCount);
 		if (returnVal == COMPLETED) {
 		    _postfirereturns = _postfirereturns && true;
 		} else if (returnVal == NOT_READY) {
 		    throw new IllegalActionException(this,
-		          (ComponentEntity) actor, "Actor " +
-		          "is not ready to fire.");
+                            (ComponentEntity) actor, "Actor " +
+                            "is not ready to fire.");
 		} else if (returnVal == STOP_ITERATING) {
 		    _postfirereturns = false;
 		}
@@ -301,16 +301,16 @@ public class SDFDirector extends StaticSchedulingDirector {
 		if(!receivers[channel][0].hasToken(threshold)) {
 		    if(_debugging) {
                         _debug("Channel " + channel +
-                               " does not have enough tokens." +
-                               " Prefire returns false on " +
-                               container.getFullName());
+                                " does not have enough tokens." +
+                                " Prefire returns false on " +
+                                container.getFullName());
                     }
                     return false;
 		}
 	    }
 	}
 	if(_debugging) _debug("Prefire returns true on " +
-			      container.getFullName());
+                container.getFullName());
 	return true;
     }
 

@@ -174,10 +174,10 @@ public class Transition extends ComponentRelation {
             throws CloneNotSupportedException {
         Transition newObject = (Transition)super.clone(workspace);
         newObject.guardExpression =
-                (StringAttribute)newObject.getAttribute("guardExpression");
+            (StringAttribute)newObject.getAttribute("guardExpression");
         newObject.preemptive = (Parameter)newObject.getAttribute("preemptive");
         newObject.triggerExpression =
-                (StringAttribute)newObject.getAttribute("triggerExpression");
+            (StringAttribute)newObject.getAttribute("triggerExpression");
         newObject._guard = (Variable)newObject.getAttribute("_guard");
         newObject._trigger = (Variable)newObject.getAttribute("_trigger");
         newObject._actionListsVersion = -1;

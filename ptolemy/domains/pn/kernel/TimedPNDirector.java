@@ -198,25 +198,25 @@ public class TimedPNDirector extends BasePNDirector {
      *  called by the directing thread. </b>
      *  @exception IllegalActionException If any of the called methods throw
      *  it.
-    public void fire() throws IllegalActionException {
-        boolean timedmut;
-        Workspace worksp = workspace();
-        synchronized (this) {
-            if( _getActiveActorsCount() == 0 ) {
-                _notDone = false;
-                return;
-            }
-            // Loop until a real deadlock is detected.
-            while( _readBlockCount != _getActiveActorsCount() ) {
-		while( !_areActorsDeadlocked() ) {
-		    worksp.wait(this);
-		}
-                _notDone = _resolveDeadlock();
-	    }
-	}
-	return;
-    }
-     */
+     public void fire() throws IllegalActionException {
+     boolean timedmut;
+     Workspace worksp = workspace();
+     synchronized (this) {
+     if( _getActiveActorsCount() == 0 ) {
+     _notDone = false;
+     return;
+     }
+     // Loop until a real deadlock is detected.
+     while( _readBlockCount != _getActiveActorsCount() ) {
+     while( !_areActorsDeadlocked() ) {
+     worksp.wait(this);
+     }
+     _notDone = _resolveDeadlock();
+     }
+     }
+     return;
+     }
+    */
 
     /** Suspend the calling process until the time has advanced to at least the
      *  time specified by the method argument.
@@ -339,21 +339,21 @@ public class TimedPNDirector extends BasePNDirector {
 		    //time of the next process.
 		    if (!_eventQueue.isEmpty()) {
                         //Remove the first process from the queue.
-                            TimedEvent event = (TimedEvent)_eventQueue.take();
-			    Actor actor = (Actor)event.contents;
-			    //Get the resumption time of the newly removed
-			    //process.
-			    double newtime = event.timeStamp;
-			    //If the resumption time of the newly removed
-			    //process is the same as the newly advanced time
-			    //then unblock it. Else put the newly removed
-			    //process back on the event queue.
-			    if (newtime == getCurrentTime()) {
-				_informOfDelayUnblock();
-			    } else {
-				_eventQueue.put(new TimedEvent(newtime, actor));
-				sameTime = false;
-			    }
+                        TimedEvent event = (TimedEvent)_eventQueue.take();
+                        Actor actor = (Actor)event.contents;
+                        //Get the resumption time of the newly removed
+                        //process.
+                        double newtime = event.timeStamp;
+                        //If the resumption time of the newly removed
+                        //process is the same as the newly advanced time
+                        //then unblock it. Else put the newly removed
+                        //process back on the event queue.
+                        if (newtime == getCurrentTime()) {
+                            _informOfDelayUnblock();
+                        } else {
+                            _eventQueue.put(new TimedEvent(newtime, actor));
+                            sameTime = false;
+                        }
 		    } else {
 			sameTime = false;
 		    }

@@ -45,14 +45,14 @@ public class ArmController extends TypedAtomicActor {
     }
 
     public void initialize() throws IllegalActionException {
-       baseValue = 165;
-     shoulderValue = 128;
-     elbowValue = 128;
-     wristValue = 115;
-     gripperValue = 128;
-     servo6Value = 128;
-     currentValue = 128;
-     delta = 1;
+        baseValue = 165;
+        shoulderValue = 128;
+        elbowValue = 128;
+        wristValue = 115;
+        gripperValue = 128;
+        servo6Value = 128;
+        currentValue = 128;
+        delta = 1;
     }
 
 
@@ -83,150 +83,150 @@ public class ArmController extends TypedAtomicActor {
         char chValue = (char) value;
         int stepsize = ((IntToken) stepSize.getToken()).intValue();
         switch (chValue) {
-            case 'q': {
-                        currentControl = base;
-                        delta = stepsize;
-                        baseValue = baseValue + delta;
-                        if (baseValue >= baseUpperLimit) {
-                            baseValue = baseUpperLimit;
-                        }
-                        currentValue = baseValue;
-                        //System.out.println(currentValue);
-                        sendsignal = true;
-                        break;
-                      }
-            case 'a': {
-                        currentControl = base;
-                        delta = -stepsize;
-                        baseValue = baseValue + delta;
-                        if (baseValue <= baseLowerLimit) {
-                            baseValue = baseLowerLimit;
-                        }
-                        currentValue = baseValue;
-                        //System.out.println(currentValue);
-                        sendsignal = true;
-                        break;
-                      }
-            case 'w': {
-                        currentControl = shoulder;
-                        delta = stepsize;
-                        shoulderValue = shoulderValue + delta;
-                        if (shoulderValue >= shoulderUpperLimit) {
-                            shoulderValue = shoulderUpperLimit;
-                        }
-                        currentValue = shoulderValue;
-                        //System.out.println(currentValue);
-                        sendsignal = true;
-                        break;
-                      }
-            case 's': {
-                        currentControl = shoulder;
-                        delta = -stepsize;
-                        shoulderValue = shoulderValue + delta;
-                        if (shoulderValue <= shoulderLowerLimit) {
-                            shoulderValue = shoulderLowerLimit;
-                        }
-                        currentValue = shoulderValue;
-                        //System.out.println(currentValue);
-                        sendsignal = true;
-                        break;
-                      }
-            case 'e': {
-                        currentControl = elbow;
-                        delta = stepsize;
-                        elbowValue = elbowValue + delta;
-                        if (elbowValue >= elbowUpperLimit) {
-                            elbowValue = elbowUpperLimit;
-                        }
-                        currentValue = elbowValue;
-                        //System.out.println(currentValue);
-                        sendsignal = true;
-                        break;
-                      }
-            case 'd': {
-                        currentControl = elbow;
-                        delta = -stepsize;
-                        elbowValue = elbowValue + delta;
-                        if (elbowValue <= elbowLowerLimit) {
-                            elbowValue = elbowLowerLimit;
-                        }
-                        currentValue = elbowValue;
-                        //System.out.println(currentValue);
-                        sendsignal = true;
-                        break;
-                      }
-            case 'r': {
-                        currentControl = wrist;
-                        delta = stepsize;
-                        wristValue = wristValue + delta;
-                        if (wristValue >= wristUpperLimit) {
-                            wristValue = wristUpperLimit;
-                        }
-                        currentValue = wristValue;
-                        //System.out.println(currentValue);
-                        sendsignal = true;
-                        break;
-                      }
-            case 'f': {
-                        currentControl = wrist;
-                        delta = -stepsize;
-                        wristValue = wristValue + delta;
-                        if (wristValue <= wristLowerLimit) {
-                            wristValue = wristLowerLimit;
-                        }
-                        currentValue = wristValue;
-                        //System.out.println(currentValue);
-                        sendsignal = true;
-                        break;
-                      }
-            case 't': {
-                        currentControl = gripper;
-                        delta = stepsize;
-                        gripperValue = gripperValue + delta;
-                        if (gripperValue >= gripperUpperLimit) {
-                            gripperValue = gripperUpperLimit;
-                        }
-                        currentValue = gripperValue;
-                        //System.out.println(currentValue);
-                        sendsignal = true;
-                        break;
-                      }
-            case 'g': {
-                        currentControl = gripper;
-                        delta = -stepsize;
-                        gripperValue = gripperValue + delta;
-                        if (gripperValue <= gripperLowerLimit) {
-                            gripperValue = gripperLowerLimit;
-                        }
-                        currentValue = gripperValue;
-                        //System.out.println(currentValue);
-                        sendsignal = true;
-                        break;
-                      }
-            case 'y': {
-                        currentControl = servo6;
-                        delta = stepsize;
-                        servo6Value = servo6Value + delta;
-                        if (servo6Value >= servo6UpperLimit) {
-                            servo6Value = servo6UpperLimit;
-                        }
-                        currentValue = servo6Value;
-                        System.out.println("servo 6:"+currentValue);
-                        sendsignal = true;
-                        break;
-                      }
-            case 'h': {
-                        currentControl = servo6;
-                        delta = -stepsize;
-                        servo6Value = servo6Value + delta;
-                        if (servo6Value <= servo6LowerLimit) {
-                            servo6Value = servo6LowerLimit;
-                        }
-                        currentValue = servo6Value;
-                        System.out.println("servo 6:"+currentValue);
-                        sendsignal = true;
-                        break;
-                      }
+        case 'q': {
+            currentControl = base;
+            delta = stepsize;
+            baseValue = baseValue + delta;
+            if (baseValue >= baseUpperLimit) {
+                baseValue = baseUpperLimit;
+            }
+            currentValue = baseValue;
+            //System.out.println(currentValue);
+            sendsignal = true;
+            break;
+        }
+        case 'a': {
+            currentControl = base;
+            delta = -stepsize;
+            baseValue = baseValue + delta;
+            if (baseValue <= baseLowerLimit) {
+                baseValue = baseLowerLimit;
+            }
+            currentValue = baseValue;
+            //System.out.println(currentValue);
+            sendsignal = true;
+            break;
+        }
+        case 'w': {
+            currentControl = shoulder;
+            delta = stepsize;
+            shoulderValue = shoulderValue + delta;
+            if (shoulderValue >= shoulderUpperLimit) {
+                shoulderValue = shoulderUpperLimit;
+            }
+            currentValue = shoulderValue;
+            //System.out.println(currentValue);
+            sendsignal = true;
+            break;
+        }
+        case 's': {
+            currentControl = shoulder;
+            delta = -stepsize;
+            shoulderValue = shoulderValue + delta;
+            if (shoulderValue <= shoulderLowerLimit) {
+                shoulderValue = shoulderLowerLimit;
+            }
+            currentValue = shoulderValue;
+            //System.out.println(currentValue);
+            sendsignal = true;
+            break;
+        }
+        case 'e': {
+            currentControl = elbow;
+            delta = stepsize;
+            elbowValue = elbowValue + delta;
+            if (elbowValue >= elbowUpperLimit) {
+                elbowValue = elbowUpperLimit;
+            }
+            currentValue = elbowValue;
+            //System.out.println(currentValue);
+            sendsignal = true;
+            break;
+        }
+        case 'd': {
+            currentControl = elbow;
+            delta = -stepsize;
+            elbowValue = elbowValue + delta;
+            if (elbowValue <= elbowLowerLimit) {
+                elbowValue = elbowLowerLimit;
+            }
+            currentValue = elbowValue;
+            //System.out.println(currentValue);
+            sendsignal = true;
+            break;
+        }
+        case 'r': {
+            currentControl = wrist;
+            delta = stepsize;
+            wristValue = wristValue + delta;
+            if (wristValue >= wristUpperLimit) {
+                wristValue = wristUpperLimit;
+            }
+            currentValue = wristValue;
+            //System.out.println(currentValue);
+            sendsignal = true;
+            break;
+        }
+        case 'f': {
+            currentControl = wrist;
+            delta = -stepsize;
+            wristValue = wristValue + delta;
+            if (wristValue <= wristLowerLimit) {
+                wristValue = wristLowerLimit;
+            }
+            currentValue = wristValue;
+            //System.out.println(currentValue);
+            sendsignal = true;
+            break;
+        }
+        case 't': {
+            currentControl = gripper;
+            delta = stepsize;
+            gripperValue = gripperValue + delta;
+            if (gripperValue >= gripperUpperLimit) {
+                gripperValue = gripperUpperLimit;
+            }
+            currentValue = gripperValue;
+            //System.out.println(currentValue);
+            sendsignal = true;
+            break;
+        }
+        case 'g': {
+            currentControl = gripper;
+            delta = -stepsize;
+            gripperValue = gripperValue + delta;
+            if (gripperValue <= gripperLowerLimit) {
+                gripperValue = gripperLowerLimit;
+            }
+            currentValue = gripperValue;
+            //System.out.println(currentValue);
+            sendsignal = true;
+            break;
+        }
+        case 'y': {
+            currentControl = servo6;
+            delta = stepsize;
+            servo6Value = servo6Value + delta;
+            if (servo6Value >= servo6UpperLimit) {
+                servo6Value = servo6UpperLimit;
+            }
+            currentValue = servo6Value;
+            System.out.println("servo 6:"+currentValue);
+            sendsignal = true;
+            break;
+        }
+        case 'h': {
+            currentControl = servo6;
+            delta = -stepsize;
+            servo6Value = servo6Value + delta;
+            if (servo6Value <= servo6LowerLimit) {
+                servo6Value = servo6LowerLimit;
+            }
+            currentValue = servo6Value;
+            System.out.println("servo 6:"+currentValue);
+            sendsignal = true;
+            break;
+        }
         }
     }
 

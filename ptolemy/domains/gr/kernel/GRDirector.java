@@ -109,7 +109,7 @@ public class GRDirector extends StaticSchedulingDirector {
         GRDirector newobj = (GRDirector)(super.clone(ws));
         newobj.iterations = (Parameter) newobj.getAttribute("iterations");
         newobj.iterationTimeUpperBound = (Parameter)
-                          newobj.getAttribute("iteration time upper bound");
+            newobj.getAttribute("iteration time upper bound");
         return newobj;
     }
 
@@ -155,7 +155,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  director return false in its prefire().
      */
     public void fire() throws IllegalActionException {
-    // -fire-
+        // -fire-
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
         Director outsideDirector = _getOutsideDirector();
 
@@ -193,13 +193,13 @@ public class GRDirector extends StaticSchedulingDirector {
             }
 
             if (actor instanceof CompositeActor) {
-		        CompositeActor compositeActor = (CompositeActor) actor;
-		        Director  insideDirector = compositeActor.getDirector();
+                CompositeActor compositeActor = (CompositeActor) actor;
+                Director  insideDirector = compositeActor.getDirector();
 
-		        _insideDirector = insideDirector;
-   		        _pseudoTimeEnabled = true;
-		        actor.fire();
-		        _pseudoTimeEnabled = false;
+                _insideDirector = insideDirector;
+                _pseudoTimeEnabled = true;
+                actor.fire();
+                _pseudoTimeEnabled = false;
 
             } else {
                 if ((actor instanceof GRActor) && !_isSceneGraphInitialized) {
@@ -222,10 +222,10 @@ public class GRDirector extends StaticSchedulingDirector {
      *  one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-    //  -initialize-
+        //  -initialize-
         super.initialize();
         _buildActorTable();
-           // CASE#2 for TypedCompositeActor to AtomicActor connection
+        // CASE#2 for TypedCompositeActor to AtomicActor connection
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
         if (container.isOpaque()) {
             List list = container.outputPortList();
@@ -242,7 +242,7 @@ public class GRDirector extends StaticSchedulingDirector {
                     receiver.createGroupNode();
                 }
             }
-       }
+        }
     }
 
 
@@ -259,7 +259,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *    </UL></p>
      */
     public void invalidateSchedule() {
-    //  -invalidateSchedule-
+        //  -invalidateSchedule-
         _reset();
         super.invalidateSchedule();
     }
@@ -289,29 +289,29 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @return True.
      */
     public boolean prefire() throws IllegalActionException {
-    // -prefire-
+        // -prefire-
         _postfirereturns = true;
 
         TypedCompositeActor container = ((TypedCompositeActor)getContainer());
-	    Iterator inputPorts = container.inputPortList().iterator();
-	    int inputCount = 0;
-	    while(inputPorts.hasNext()) {
-	        IOPort inputPort = (IOPort) inputPorts.next();
-	        int threshold = GRScheduler.getTokenConsumptionRate(inputPort);
-	        Receiver receivers[][] = inputPort.getReceivers();
+        Iterator inputPorts = container.inputPortList().iterator();
+        int inputCount = 0;
+        while(inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+            int threshold = GRScheduler.getTokenConsumptionRate(inputPort);
+            Receiver receivers[][] = inputPort.getReceivers();
 
-	        int channel;
-	        for(channel = 0; channel < inputPort.getWidth(); channel++) {
-		        /*if(!receivers[channel][0].hasToken(threshold)) {
-                    System.out.println("Channel " + channel +
-                               " does not have enough tokens." +
-                               " Prefire returns false on " +
-                               container.getFullName());
-                    return false;
-		        }*/
-	        }
-	    }
-	    return true;
+            int channel;
+            for(channel = 0; channel < inputPort.getWidth(); channel++) {
+                /*if(!receivers[channel][0].hasToken(threshold)) {
+                  System.out.println("Channel " + channel +
+                  " does not have enough tokens." +
+                  " Prefire returns false on " +
+                  container.getFullName());
+                  return false;
+                  }*/
+            }
+        }
+        return true;
     }
 
 
@@ -326,7 +326,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *   of the container or one of the deeply contained actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
-    //  -preinitialize-
+        //  -preinitialize-
         super.preinitialize();
         _iteration = 0;
     }
@@ -341,7 +341,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  it.
      */
     public boolean postfire() throws IllegalActionException {
-    //  -postfire-
+        //  -postfire-
 
         boolean returnValue = super.postfire();
         int totalIterations = ((IntToken) (iterations.getToken())).intValue();
@@ -407,7 +407,7 @@ public class GRDirector extends StaticSchedulingDirector {
      */
     public boolean transferOutputs(IOPort port)
             throws IllegalActionException {
-    //  -transferOutputs-
+        //  -transferOutputs-
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferOutputs: port argument is not " +
@@ -421,7 +421,7 @@ public class GRDirector extends StaticSchedulingDirector {
             for (int i = 0; i < portReceivers.length; i++) {
                 if (portReceivers[i] != null) {
                     for (int j = 0; j < portReceivers[i].length; j++) {
-            			while (portReceivers[i][j].hasToken()) {
+                        while (portReceivers[i][j].hasToken()) {
                             try {
                                 ptolemy.data.Token t = portReceivers[i][j].get();
                                 port.send(i, t);
@@ -442,12 +442,12 @@ public class GRDirector extends StaticSchedulingDirector {
 
 
 
-   /** Reset this director to an uninitialized state.
-    *  @exception IllegalActionException If the parent class
-    *  throws it
-    */
+    /** Reset this director to an uninitialized state.
+     *  @exception IllegalActionException If the parent class
+     *  throws it
+     */
     public void wrapup() throws IllegalActionException {
-    //  -wrapup-
+        //  -wrapup-
         super.wrapup();
         _reset();
     }
@@ -488,9 +488,9 @@ public class GRDirector extends StaticSchedulingDirector {
             String name = ((Nameable)actor).getFullName();
             _GRActor grActor = (_GRActor) _allActorsTable.get(actor);
             if (grActor==null) {
-              _allActorsTable.put(actor, new _GRActor(actor));
-              grActor = (_GRActor) _allActorsTable.get(actor);
-              _actorTable.add(grActor);
+                _allActorsTable.put(actor, new _GRActor(actor));
+                grActor = (_GRActor) _allActorsTable.get(actor);
+                _actorTable.add(grActor);
             }
             actorsInSchedule++;
         }
@@ -539,10 +539,10 @@ public class GRDirector extends StaticSchedulingDirector {
      *   obtaining the number of initial token for delay actors
      */
     private void _displayActorTable() throws IllegalActionException {
-         debug.println("\nACTOR TABLE with "+_actorTable.size()+" unique actors");
-         debug.println("---------------------------------------");
-         ListIterator actorIterator = _actorTable.listIterator();
-         while(actorIterator.hasNext()) {
+        debug.println("\nACTOR TABLE with "+_actorTable.size()+" unique actors");
+        debug.println("---------------------------------------");
+        ListIterator actorIterator = _actorTable.listIterator();
+        while(actorIterator.hasNext()) {
             _GRActor currentActor = (_GRActor) actorIterator.next();
             String actorName = ((Nameable) currentActor._actor).getName();
 
@@ -550,14 +550,14 @@ public class GRDirector extends StaticSchedulingDirector {
                 debug.print(" **COMPOSITE** ");
             }
             debug.println(" ");
-         }
+        }
     }
 
     /** For debugging purposes.  Display the list of contained receivers
      *  and other pertinent information about them.
      */
     private void _displayReceiverTable() {
-    //  -displayReceiverTable-
+        //  -displayReceiverTable-
         debug.print("\nARC RECEIVER table with "+_receiverTable.size());
         debug.println(" unique receivers");
 
@@ -570,21 +570,21 @@ public class GRDirector extends StaticSchedulingDirector {
         debug.println("\n");
     }
 
-   /** For debugging purposes.  Display the list of attributes
+    /** For debugging purposes.  Display the list of attributes
      *  inside a given named object
      *  @param obj The named object that has a list of attributes
      */
     private void _displayAttributesList(NamedObj obj)
-    {
-    	List list = obj.attributeList();
-    	Iterator listIterator = list.iterator();
+        {
+            List list = obj.attributeList();
+            Iterator listIterator = list.iterator();
 
-    	debug.println("attribute List:");
-    	while(listIterator.hasNext()) {
-    	    Attribute attribute = (Attribute) listIterator.next();
-    	    debug.println(attribute);
-    	}
-    }
+            debug.println("attribute List:");
+            while(listIterator.hasNext()) {
+                Attribute attribute = (Attribute) listIterator.next();
+                debug.println(attribute);
+            }
+        }
 
 
     /** For debugging purposes.  Display the list of contained entities
@@ -733,7 +733,7 @@ public class GRDirector extends StaticSchedulingDirector {
         try {
             iterations = new Parameter(this,"iterations",new IntToken(0));
             iterationTimeUpperBound = new Parameter(this,
-                                      "iteration time upper bound",new IntToken(33));
+                    "iteration time upper bound",new IntToken(33));
         } catch (Exception e) {
             throw new InternalErrorException(
                     "Cannot create default iterations parameter:\n" +
@@ -814,7 +814,7 @@ public class GRDirector extends StaticSchedulingDirector {
     	 * @param a The actor
     	 */
     	public _GRActor(Actor actor) {
-    		_actor = actor;
+            _actor = actor;
     	}
     }
 

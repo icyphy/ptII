@@ -72,12 +72,12 @@ public class GRShadedShape extends GRActor {
         sceneGraphOut.setOutput(true);
         sceneGraphOut.setTypeEquals(BaseType.OBJECT);
         rgbColor = new Parameter(this,"RGB color",
-                    new DoubleMatrixToken(new double[][] {{ 0.7, 0.7, 0.7}} ));
+                new DoubleMatrixToken(new double[][] {{ 0.7, 0.7, 0.7}} ));
 
         shininess = new Parameter(this,"shininess",new DoubleToken(0.0));
 
         pose = new Parameter(this,"pose",
-               new DoubleMatrixToken(_pose));
+                new DoubleMatrixToken(_pose));
 
         _color = new Color3f(1.0f,1.0f,1.0f);
     }
@@ -171,9 +171,9 @@ public class GRShadedShape extends GRActor {
     protected Material _material;
     protected float _shine;
     protected double[][] _pose = new double[][] {{1.0, 0.0, 0.0, 0.0},
-                                                 {0.0, 1.0, 0.0, 0.0},
-                                                 {0.0, 0.0, 1.0, 0.0},
-                                                 {0.0, 0.0, 0.0, 1.0}};
+        {0.0, 1.0, 0.0, 0.0},
+            {0.0, 0.0, 1.0, 0.0},
+                {0.0, 0.0, 0.0, 1.0}};
 
     protected static final Color3f whiteColor = new Color3f(1.0f,1.0f,1.0f);
     protected static final Color3f blueColor = new Color3f(0.0f,0.0f,1.0f);

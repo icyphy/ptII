@@ -65,16 +65,16 @@ public class Translate3D extends GRTransform {
         super(container, name);
 
         xTranslate = new TypedIOPort(this, "xtranslate",true,false);
-	    xTranslate.setTypeEquals(BaseType.DOUBLE);
-	    yTranslate = new TypedIOPort(this, "ytranslate",true,false);
-	    yTranslate.setTypeEquals(BaseType.DOUBLE);
-	    zTranslate = new TypedIOPort(this, "ztranslate",true,false);
-	    zTranslate.setTypeEquals(BaseType.DOUBLE);
+        xTranslate.setTypeEquals(BaseType.DOUBLE);
+        yTranslate = new TypedIOPort(this, "ytranslate",true,false);
+        yTranslate.setTypeEquals(BaseType.DOUBLE);
+        zTranslate = new TypedIOPort(this, "ztranslate",true,false);
+        zTranslate.setTypeEquals(BaseType.DOUBLE);
 
 
-	    initialXTranslation = new Parameter(this, "xTranslation", new DoubleToken(0.0));
-  	    initialYTranslation = new Parameter(this, "yTranslation", new DoubleToken(0.0));
-  	    initialZTranslation = new Parameter(this, "zTranslation", new DoubleToken(0.0));
+        initialXTranslation = new Parameter(this, "xTranslation", new DoubleToken(0.0));
+        initialYTranslation = new Parameter(this, "yTranslation", new DoubleToken(0.0));
+        initialZTranslation = new Parameter(this, "zTranslation", new DoubleToken(0.0));
 
     }
 
@@ -200,16 +200,16 @@ public class Translate3D extends GRTransform {
         _initialYTranslation = ((DoubleToken) initialYTranslation.getToken()).doubleValue();
         _initialZTranslation = ((DoubleToken) initialZTranslation.getToken()).doubleValue();
 
-   	    transformNode = new TransformGroup();
-	    transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        transformNode = new TransformGroup();
+        transformNode.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
         Transform3D transform = new Transform3D();
-	    transform.setTranslation(new Vector3d(_initialXTranslation,_initialYTranslation,_initialZTranslation));
+        transform.setTranslation(new Vector3d(_initialXTranslation,_initialYTranslation,_initialZTranslation));
         transformNode.setTransform(transform);
 
-   	    _accumulatedX = 0.0;
-  	    _accumulatedY = 0.0;
-  	    _accumulatedZ = 0.0;
+        _accumulatedX = 0.0;
+        _accumulatedY = 0.0;
+        _accumulatedZ = 0.0;
     }
 
     public Node getNodeObject() {

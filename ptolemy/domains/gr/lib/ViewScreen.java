@@ -65,25 +65,25 @@ public class ViewScreen extends GRActor implements Placeable {
 
     public ViewScreen(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-       super(container, name);
+        super(container, name);
 
-       sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
-       sceneGraphIn.setInput(true);
-       sceneGraphIn.setTypeEquals(BaseType.OBJECT);
-       sceneGraphIn.setMultiport(true);
+        sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
+        sceneGraphIn.setInput(true);
+        sceneGraphIn.setTypeEquals(BaseType.OBJECT);
+        sceneGraphIn.setMultiport(true);
 
-       horizontalResolution = new Parameter(this,"horizontal resolution",new IntToken(400));
-       verticalResolution = new Parameter(this,"vertical resolution",new IntToken(400));
-       scale = new Parameter(this, "scale", new DoubleToken(1.0));
-       rotatable = new Parameter(this, "allow model rotation",new BooleanToken(true));
-       scalable = new Parameter(this, "allow model zooming",new BooleanToken(false));
-       translatable = new Parameter(this, "allow model translation",new BooleanToken(false));
-       showAxes = new Parameter(this,"show axes",new BooleanToken(false));
+        horizontalResolution = new Parameter(this,"horizontal resolution",new IntToken(400));
+        verticalResolution = new Parameter(this,"vertical resolution",new IntToken(400));
+        scale = new Parameter(this, "scale", new DoubleToken(1.0));
+        rotatable = new Parameter(this, "allow model rotation",new BooleanToken(true));
+        scalable = new Parameter(this, "allow model zooming",new BooleanToken(false));
+        translatable = new Parameter(this, "allow model translation",new BooleanToken(false));
+        showAxes = new Parameter(this,"show axes",new BooleanToken(false));
 
-       _lastTransform = new Transform3D();
-       //_userTransformation = new TransformGroup();
-       //_userTransformation.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-       //_userTransformation.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+        _lastTransform = new Transform3D();
+        //_userTransformation = new TransformGroup();
+        //_userTransformation.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        //_userTransformation.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
     }
 
     public TypedIOPort sceneGraphIn;
@@ -111,7 +111,7 @@ public class ViewScreen extends GRActor implements Placeable {
 
     public void place(Container container) {
         GraphicsConfiguration config =
-           SimpleUniverse.getPreferredConfiguration();
+            SimpleUniverse.getPreferredConfiguration();
 
         int horizontalDimension = 400;
         int verticalDimension = 400;
@@ -189,16 +189,16 @@ public class ViewScreen extends GRActor implements Placeable {
 
         if (_isScalable()) {
             MouseZoom mouseZoom = new MouseZoom();
-	        mouseZoom.setTransformGroup(_userTransformation);
-	        mouseZoom.setSchedulingBounds(bounds);
-	        branchRoot.addChild(mouseZoom);
-	    }
+            mouseZoom.setTransformGroup(_userTransformation);
+            mouseZoom.setSchedulingBounds(bounds);
+            branchRoot.addChild(mouseZoom);
+        }
 
         if (_isTranslatable()) {
     	    MouseTranslate mouseTranslate = new MouseTranslate();
-	        mouseTranslate.setTransformGroup(_userTransformation);
+            mouseTranslate.setTransformGroup(_userTransformation);
     	    _userTransformation.addChild(mouseTranslate);
-	        mouseTranslate.setSchedulingBounds(bounds);
+            mouseTranslate.setSchedulingBounds(bounds);
         }
 
         if (_shouldShowAxes()) {
@@ -209,7 +209,7 @@ public class ViewScreen extends GRActor implements Placeable {
 
             Cylinder xAxis = new Cylinder((float)0.01,(float) 6.0);
             Transform3D rotation = new Transform3D();
-           	Quat4d quat = new Quat4d();
+            Quat4d quat = new Quat4d();
             quat.set(new AxisAngle4d(0.0,0.0,1.0,Math.PI/2.0));
             rotation.set(quat);
             TransformGroup xAxisGroup = new TransformGroup(rotation);
@@ -218,7 +218,7 @@ public class ViewScreen extends GRActor implements Placeable {
 
             Cylinder zAxis = new Cylinder((float)0.01,(float) 6.0);
             Transform3D rotation2 = new Transform3D();
-           	Quat4d quat2 = new Quat4d();
+            Quat4d quat2 = new Quat4d();
             quat2.set(new AxisAngle4d(1.0,0.0,0.0,Math.PI/2.0));
             rotation2.set(quat2);
             TransformGroup zAxisGroup = new TransformGroup(rotation2);

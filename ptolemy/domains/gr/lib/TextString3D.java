@@ -75,7 +75,7 @@ public class TextString3D extends GRShadedShape {
     protected void _createModel() throws IllegalActionException {
         super._createModel();
         Font3D font3D = new Font3D(new Font("Helvetica", Font.PLAIN, 1),
-                                    new FontExtrusion());
+                new FontExtrusion());
         Text3D textGeom = new Text3D(font3D, new String(_getText()));
         textGeom.setAlignment(Text3D.ALIGN_CENTER);
         containedNode = new Shape3D();

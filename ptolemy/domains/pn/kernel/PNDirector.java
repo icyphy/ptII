@@ -185,27 +185,27 @@ public class PNDirector extends BasePNDirector {
      *  called by the directing thread.
      *  @exception IllegalActionException If any of the called methods throw
      *  it.
-    public void fire() throws IllegalActionException {
-        Workspace worksp = workspace();
-        synchronized (this) { //Reset this as mutations must be done by now
-            if( _getActiveActorsCount() == 0 ) {
-                _notDone = false;
-                return;
-            }
-	    _mutationsRequested = false;
-            //Loop until a deadlock other than an artificial deadlock is
-            //detected.
-            while( _readBlockCount != _getActiveActorsCount() ) {
-                //Sleep until a deadlock is detected or mutations are requested
-		while( !_areActorsDeadlocked() ) {
-		    worksp.wait(this);
-		}
-                _notDone = _resolveDeadlock();
-	    }
-	}
-	return;
-    }
-     */
+     public void fire() throws IllegalActionException {
+     Workspace worksp = workspace();
+     synchronized (this) { //Reset this as mutations must be done by now
+     if( _getActiveActorsCount() == 0 ) {
+     _notDone = false;
+     return;
+     }
+     _mutationsRequested = false;
+     //Loop until a deadlock other than an artificial deadlock is
+     //detected.
+     while( _readBlockCount != _getActiveActorsCount() ) {
+     //Sleep until a deadlock is detected or mutations are requested
+     while( !_areActorsDeadlocked() ) {
+     worksp.wait(this);
+     }
+     _notDone = _resolveDeadlock();
+     }
+     }
+     return;
+     }
+    */
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

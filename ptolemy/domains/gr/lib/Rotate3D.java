@@ -70,16 +70,16 @@ public class Rotate3D extends GRTransform {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	    angle = new TypedIOPort(this, "angle",true,false);
+        angle = new TypedIOPort(this, "angle",true,false);
 
-   	    angle.setTypeEquals(BaseType.DOUBLE);
-	    initialAngle = new Parameter(this, "initialAngle", new DoubleToken(0.0));
+        angle.setTypeEquals(BaseType.DOUBLE);
+        initialAngle = new Parameter(this, "initialAngle", new DoubleToken(0.0));
 
-	    axisDirection = new Parameter(this, "axis direction",
-                    new DoubleMatrixToken(new double[][] {{ 0.0, 1.0, 0.0}} ));
+        axisDirection = new Parameter(this, "axis direction",
+                new DoubleMatrixToken(new double[][] {{ 0.0, 1.0, 0.0}} ));
 
-  	    pivotLocation  = new Parameter(this, "pivot location",
-  	                new DoubleMatrixToken(new double[][] {{ 0.0, 0.0, 0.0}} ));
+        pivotLocation  = new Parameter(this, "pivot location",
+                new DoubleMatrixToken(new double[][] {{ 0.0, 0.0, 0.0}} ));
 
     }
 
@@ -198,9 +198,9 @@ public class Rotate3D extends GRTransform {
 
         double originalAngle = ((DoubleToken) initialAngle.getToken()).doubleValue();
 
-   	    _accumulatedAngle = originalAngle;
+        _accumulatedAngle = originalAngle;
 
-   	    _rotation = new Transform3D();
+        _rotation = new Transform3D();
 
 
         _topTranslate = new TransformGroup();
@@ -209,8 +209,8 @@ public class Rotate3D extends GRTransform {
         _middleRotate.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         _bottomTranslate = new TransformGroup();
         _bottomTranslate.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-	    _bottomTranslate.setCapability(Group.ALLOW_CHILDREN_WRITE);
-	    _bottomTranslate.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+        _bottomTranslate.setCapability(Group.ALLOW_CHILDREN_WRITE);
+        _bottomTranslate.setCapability(Group.ALLOW_CHILDREN_EXTEND);
 
 
 

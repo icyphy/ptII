@@ -69,13 +69,13 @@ public class GRTransform extends GRActor {
         super(container, name);
         sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
         sceneGraphIn.setInput(true);
-	    sceneGraphIn.setMultiport(true);
+        sceneGraphIn.setMultiport(true);
 
-	    sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
-	    sceneGraphOut.setOutput(true);
-	    sceneGraphOut.setTypeEquals(BaseType.OBJECT);
+        sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
+        sceneGraphOut.setOutput(true);
+        sceneGraphOut.setTypeEquals(BaseType.OBJECT);
 
-	    accumulate = new Parameter(this, "accumulate", new BooleanToken(false));
+        accumulate = new Parameter(this, "accumulate", new BooleanToken(false));
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -210,7 +210,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             throws CloneNotSupportedException {
         FSMActor newObject = (FSMActor)super.clone(workspace);
         newObject.initialStateName =
-                (StringAttribute)newObject.getAttribute("initialStateName");
+            (StringAttribute)newObject.getAttribute("initialStateName");
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
         newObject._connectionMapsVersion = -1;
@@ -550,7 +550,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     Iterator outPorts = outputPortList().iterator();
                     while (outPorts.hasNext()) {
                         TypedIOPort outport =
-                                (TypedIOPort)outPorts.next();
+                            (TypedIOPort)outPorts.next();
 
                         isUndeclared = outport.getTypeTerm().isSettable();
                         if (isUndeclared && inport != outport) {

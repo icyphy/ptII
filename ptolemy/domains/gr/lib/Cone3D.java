@@ -120,7 +120,7 @@ public class Cone3D extends GRShadedShape {
     protected void _createModel() throws IllegalActionException {
         super._createModel();
         containedNode = new Cone((float)_getRadius(),(float) _getHeight(),
-                               Cone.GENERATE_NORMALS,_appearance);
+                Cone.GENERATE_NORMALS,_appearance);
     }
 
     /**  Return the value of the radius parameter

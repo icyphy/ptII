@@ -67,11 +67,11 @@ public class SerialWriter extends TypedAtomicActor {
         if (input.getWidth() != 0) {
             if (input.hasToken(0)) {
                 for(int i=0;i<3;i++) {
-                byte serialData = (byte) ((IntToken) input.get(0)).intValue();
-                //System.out.println((int) serialData);
-                try {
-                    outputStream.write(serialData);
-                } catch (Exception e) {}
+                    byte serialData = (byte) ((IntToken) input.get(0)).intValue();
+                    //System.out.println((int) serialData);
+                    try {
+                        outputStream.write(serialData);
+                    } catch (Exception e) {}
                 }
             }
         }
@@ -88,31 +88,31 @@ public class SerialWriter extends TypedAtomicActor {
         while (portList.hasMoreElements()) {
             portId = (CommPortIdentifier) portList.nextElement();
             if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-		        System.out.println(portId.getName());
+                System.out.println(portId.getName());
                 if (portId.getName().equals("COM2")) {
 
                     try {
                         serialPort = (SerialPort) portId.open("SimpleWriteApp", 2000);
-				        System.out.println("Serial Port open "+serialPort);
+                        System.out.println("Serial Port open "+serialPort);
                     } catch (PortInUseException e) {
-				        System.out.println("Port already in use");
-			        }
+                        System.out.println("Port already in use");
+                    }
 
                     try {
                         outputStream = serialPort.getOutputStream();
                     } catch (IOException e) {
-				        System.out.println("setup of Streams failed");
-		            }
+                        System.out.println("setup of Streams failed");
+                    }
 
                     try {
                         serialPort.setSerialPortParams(9600,
-                            SerialPort.DATABITS_8,
-                            SerialPort.STOPBITS_1,
-                            SerialPort.PARITY_NONE);
+                                SerialPort.DATABITS_8,
+                                SerialPort.STOPBITS_1,
+                                SerialPort.PARITY_NONE);
                         serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
                     } catch (UnsupportedCommOperationException e) {
-				        System.out.println("setup failed");
-			        }
+                        System.out.println("setup failed");
+                    }
                 }
             }
         }

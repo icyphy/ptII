@@ -132,7 +132,7 @@ public class Box3D extends GRShadedShape {
     protected void _createModel() throws IllegalActionException {
         super._createModel();
         containedNode = new Box((float)_getLength(),(float) _getWidth(),
-                   (float) _getHeight(), Box.GENERATE_NORMALS,_appearance);
+                (float) _getHeight(), Box.GENERATE_NORMALS,_appearance);
     }
 
 

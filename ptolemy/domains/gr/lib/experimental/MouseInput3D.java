@@ -80,11 +80,11 @@ public class MouseInput3D extends GRActor {
 
     public void initialize() throws IllegalActionException {
         super.initialize();
-  	    obj = new BranchGroup();
-  	    _react = new _React();
-  	    _react.setSchedulingBounds(new BoundingSphere());
-  	    obj.addChild(_react);
-  	    _hasData = false;
+        obj = new BranchGroup();
+        _react = new _React();
+        _react.setSchedulingBounds(new BoundingSphere());
+        obj.addChild(_react);
+        _hasData = false;
     }
 
     public Node getNodeObject() {
@@ -120,13 +120,13 @@ public class MouseInput3D extends GRActor {
                 wakeup = (WakeupCriterion) criteria.nextElement();
                 event = ((WakeupOnAWTEvent)wakeup).getAWTEvent();
               	for (int i=0; i<event.length; i++) {
-	                eventId = event[i].getID();
-	                if (eventId == MouseEvent.MOUSE_PRESSED) {
+                    eventId = event[i].getID();
+                    if (eventId == MouseEvent.MOUSE_PRESSED) {
             	        _xClicked = ((MouseEvent)event[i]).getX();
-                	    _yClicked = ((MouseEvent)event[i]).getY();
-                	    _hasData = true;
-                	    System.out.println(" "+_xClicked+" "+_yClicked);
-                	}
+                        _yClicked = ((MouseEvent)event[i]).getY();
+                        _hasData = true;
+                        System.out.println(" "+_xClicked+" "+_yClicked);
+                    }
                 }
             }
             this.wakeupOn(new WakeupOnAWTEvent(MouseEvent.MOUSE_PRESSED));

@@ -67,38 +67,38 @@ public class ND_4 extends TypedAtomicActor {
     public ND_4(TypedCompositeActor aContainer, String aName)
             throws IllegalActionException, NameDuplicationException   {
 
-                super(aContainer, aName);
+        super(aContainer, aName);
 
-                RP_5 = new TypedIOPort(this, "RP_5", true, false);
-                RP_6 = new TypedIOPort(this, "RP_6", true, false);
-                RP_7 = new TypedIOPort(this, "RP_7", true, false);
-                RP_8 = new TypedIOPort(this, "RP_8", true, false);
-                RP_9 = new TypedIOPort(this, "RP_9", true, false);
-                RP_10 = new TypedIOPort(this, "RP_10", true, false);
+        RP_5 = new TypedIOPort(this, "RP_5", true, false);
+        RP_6 = new TypedIOPort(this, "RP_6", true, false);
+        RP_7 = new TypedIOPort(this, "RP_7", true, false);
+        RP_8 = new TypedIOPort(this, "RP_8", true, false);
+        RP_9 = new TypedIOPort(this, "RP_9", true, false);
+        RP_10 = new TypedIOPort(this, "RP_10", true, false);
 
-                WP_5 = new TypedIOPort(this, "WP_5", false, true);
-                WP_12 = new TypedIOPort(this, "WP_12", false, true);
-                WP_3 = new TypedIOPort(this, "WP_3", false, true);
-                WP_7 = new TypedIOPort(this, "WP_7", false, true);
-                WP_9 = new TypedIOPort(this, "WP_9", false, true);
+        WP_5 = new TypedIOPort(this, "WP_5", false, true);
+        WP_12 = new TypedIOPort(this, "WP_12", false, true);
+        WP_3 = new TypedIOPort(this, "WP_3", false, true);
+        WP_7 = new TypedIOPort(this, "WP_7", false, true);
+        WP_9 = new TypedIOPort(this, "WP_9", false, true);
 
-                RP_5.setTypeEquals(BaseType.DOUBLE);
-                RP_6.setTypeEquals(BaseType.DOUBLE);
-                RP_7.setTypeEquals(BaseType.DOUBLE);
-                RP_8.setTypeEquals(BaseType.DOUBLE);
-                RP_9.setTypeEquals(BaseType.DOUBLE);
-                RP_10.setTypeEquals(BaseType.DOUBLE);
+        RP_5.setTypeEquals(BaseType.DOUBLE);
+        RP_6.setTypeEquals(BaseType.DOUBLE);
+        RP_7.setTypeEquals(BaseType.DOUBLE);
+        RP_8.setTypeEquals(BaseType.DOUBLE);
+        RP_9.setTypeEquals(BaseType.DOUBLE);
+        RP_10.setTypeEquals(BaseType.DOUBLE);
 
-                WP_5.setTypeEquals(BaseType.DOUBLE);
-                WP_12.setTypeEquals(BaseType.DOUBLE);
-                WP_3.setTypeEquals(BaseType.DOUBLE);
-                WP_7.setTypeEquals(BaseType.DOUBLE);
-                WP_9.setTypeEquals(BaseType.DOUBLE);
+        WP_5.setTypeEquals(BaseType.DOUBLE);
+        WP_12.setTypeEquals(BaseType.DOUBLE);
+        WP_3.setTypeEquals(BaseType.DOUBLE);
+        WP_7.setTypeEquals(BaseType.DOUBLE);
+        WP_9.setTypeEquals(BaseType.DOUBLE);
 
-                // The Type of these Parameters is set by the First
-                // Token placed in the parameters when created.
-                parameter_N = new Parameter(this, "N" , new IntToken(6));
-                parameter_K = new Parameter(this, "K" , new IntToken(6));
+        // The Type of these Parameters is set by the First
+        // Token placed in the parameters when created.
+        parameter_N = new Parameter(this, "N" , new IntToken(6));
+        parameter_K = new Parameter(this, "K" , new IntToken(6));
     }
 
     ///////////////////////////////////////////////////////////////////

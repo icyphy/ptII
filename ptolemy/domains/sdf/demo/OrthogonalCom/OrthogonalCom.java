@@ -62,87 +62,87 @@ public class OrthogonalCom extends TypedCompositeActor {
         try {
             setDirector(new SDFDirector(this, "director"));
 
-           // Bit source
-           DiscreteRandomSource bitSource =
-	       new DiscreteRandomSource(this, "bitSource");
+            // Bit source
+            DiscreteRandomSource bitSource =
+                new DiscreteRandomSource(this, "bitSource");
 
-           // Signals
-           Const signal1 = new Const(this, "signal1");
-           signal1.value.setToken(new DoubleMatrixToken(
-             new double[][] {{ 1, 1, 1, 1, 1, 1, 1, 1 }}));
+            // Signals
+            Const signal1 = new Const(this, "signal1");
+            signal1.value.setToken(new DoubleMatrixToken(
+                    new double[][] {{ 1, 1, 1, 1, 1, 1, 1, 1 }}));
 
-           Const signal2 = new Const(this, "signal2");
-           signal2.value.setToken(new DoubleMatrixToken(
-             new double[][] {{ 1, 1, 1, 1, -1, -1, -1, -1 }}));
+            Const signal2 = new Const(this, "signal2");
+            signal2.value.setToken(new DoubleMatrixToken(
+                    new double[][] {{ 1, 1, 1, 1, -1, -1, -1, -1 }}));
 
-           // Signal selector
-           Multiplexor mux = new Multiplexor(this, "mux");
+            // Signal selector
+            Multiplexor mux = new Multiplexor(this, "mux");
 
-           // Adder
-           AddSubtract adder = new AddSubtract(this, "adder");
+            // Adder
+            AddSubtract adder = new AddSubtract(this, "adder");
 
-           // Gaussian noise
-           Gaussian noise = new Gaussian(this, "noise");
-           noise.standardDeviation.setToken(new DoubleToken(2.0));
+            // Gaussian noise
+            Gaussian noise = new Gaussian(this, "noise");
+            noise.standardDeviation.setToken(new DoubleToken(2.0));
 
-           // Convert noise samples into matrix.
-           SequenceToDoubleMatrix noisePacker =
-            new SequenceToDoubleMatrix(this, "noisePacker");
+            // Convert noise samples into matrix.
+            SequenceToDoubleMatrix noisePacker =
+                new SequenceToDoubleMatrix(this, "noisePacker");
 
-           // Pack 8 samples into each matrix.
-           noisePacker.columns.setToken(new IntToken(8));
+            // Pack 8 samples into each matrix.
+            noisePacker.columns.setToken(new IntToken(8));
 
-           // Correlators
-           DotProduct correlator1 = new DotProduct(this, "correlator1");
-           DotProduct correlator2 = new DotProduct(this, "correlator2");
+            // Correlators
+            DotProduct correlator1 = new DotProduct(this, "correlator1");
+            DotProduct correlator2 = new DotProduct(this, "correlator2");
 
-           // Decision
-           MaxIndex decision = new MaxIndex(this, "decision");
+            // Decision
+            MaxIndex decision = new MaxIndex(this, "decision");
 
-           // Displays
-           FileWriter outputBitDisplay =
-	       new FileWriter(this, "outputBitDisplay");
+            // Displays
+            FileWriter outputBitDisplay =
+                new FileWriter(this, "outputBitDisplay");
 
-           AddSubtract diff = new AddSubtract(this, "diff");
+            AddSubtract diff = new AddSubtract(this, "diff");
 
-           // Connect everything up.
-           TypedIORelation r0 = (TypedIORelation) newRelation("r0");
-           bitSource.output.link(r0);
-           mux.select.link(r0);
-           diff.plus.link(r0);
+            // Connect everything up.
+            TypedIORelation r0 = (TypedIORelation) newRelation("r0");
+            bitSource.output.link(r0);
+            mux.select.link(r0);
+            diff.plus.link(r0);
 
-           TypedIORelation r1 = (TypedIORelation) newRelation("r1");
-           signal1.output.link(r1);
-           mux.input.link(r1);
-           correlator1.input1.link(r1);
+            TypedIORelation r1 = (TypedIORelation) newRelation("r1");
+            signal1.output.link(r1);
+            mux.input.link(r1);
+            correlator1.input1.link(r1);
 
-           TypedIORelation r2 = (TypedIORelation) newRelation("r2");
-           signal2.output.link(r2);
-           mux.input.link(r2);
-           correlator2.input1.link(r2);
+            TypedIORelation r2 = (TypedIORelation) newRelation("r2");
+            signal2.output.link(r2);
+            mux.input.link(r2);
+            correlator2.input1.link(r2);
 
-           TypedIORelation r3 = (TypedIORelation) newRelation("r3");
-           adder.output.link(r3);
-           correlator1.input2.link(r3);
-           correlator2.input2.link(r3);
+            TypedIORelation r3 = (TypedIORelation) newRelation("r3");
+            adder.output.link(r3);
+            correlator1.input2.link(r3);
+            correlator2.input2.link(r3);
 
-           connect(noise.output, noisePacker.input);
+            connect(noise.output, noisePacker.input);
 
-           connect(mux.output, adder.plus);
-           connect(noisePacker.output, adder.plus);
+            connect(mux.output, adder.plus);
+            connect(noisePacker.output, adder.plus);
 
-           connect(correlator1.output, decision.input);
-           connect(correlator2.output, decision.input);
+            connect(correlator1.output, decision.input);
+            connect(correlator2.output, decision.input);
 
-           connect(decision.output, diff.minus);
+            connect(decision.output, diff.minus);
 
-           connect(diff.output, outputBitDisplay.input);
+            connect(diff.output, outputBitDisplay.input);
 
-           // A hack to get code generation to work.
-           outputBitDisplay.input.setTypeEquals(BaseType.INT);
+            // A hack to get code generation to work.
+            outputBitDisplay.input.setTypeEquals(BaseType.INT);
 
         } catch (NameDuplicationException nde) {
-           throw new RuntimeException(nde.toString());
+            throw new RuntimeException(nde.toString());
         }
     }
 }

@@ -94,38 +94,38 @@ public class LookUpTable extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	    _interpolation = new Interpolation();
+        _interpolation = new Interpolation();
 
-	    // Initialize the parameters with the default settings of the
-	    // Interpolation class. This is not required for this class to
-	    // function. But since these parameters are public, other objects
-	    // in the system may use them.
+        // Initialize the parameters with the default settings of the
+        // Interpolation class. This is not required for this class to
+        // function. But since these parameters are public, other objects
+        // in the system may use them.
 
-	    int[][] defIndexes = new int[1][];
-	    defIndexes[0] = _interpolation.getIndexes();
-	    IntMatrixToken defIndexToken = new IntMatrixToken(defIndexes);
+        int[][] defIndexes = new int[1][];
+        defIndexes[0] = _interpolation.getIndexes();
+        IntMatrixToken defIndexToken = new IntMatrixToken(defIndexes);
         indexes = new Parameter(this, "indexes", defIndexToken);
         indexes.setTypeEquals(BaseType.INT_MATRIX);
 
         System.out.println("row col "+defIndexToken.getRowCount()+" "+defIndexToken.getColumnCount());
 
-	    double[][] defValues = new double[1][];
-	    defValues[0] = _interpolation.getValues();
-	    DoubleMatrixToken defValueToken = new DoubleMatrixToken(defValues);
+        double[][] defValues = new double[1][];
+        defValues[0] = _interpolation.getValues();
+        DoubleMatrixToken defValueToken = new DoubleMatrixToken(defValues);
         values = new Parameter(this, "values", defValueToken);
         values.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-	    int defOrder = _interpolation.getOrder();
-	    IntToken defOrderToken = new IntToken(defOrder);
+        int defOrder = _interpolation.getOrder();
+        IntToken defOrderToken = new IntToken(defOrder);
         order = new Parameter(this, "order", defOrderToken);
         order.setTypeEquals(BaseType.INT);
 
-	    int defPeriod = _interpolation.getPeriod();
-	    int columnCount = defIndexToken.getColumnCount();
+        int defPeriod = _interpolation.getPeriod();
+        int columnCount = defIndexToken.getColumnCount();
 
-	    int requiredPeriod = defIndexToken.getElementAt(0,columnCount-1) + 1;//0,columnCount);
-	    System.out.println("req per"+requiredPeriod);
-	    _interpolation.setPeriod(requiredPeriod);
+        int requiredPeriod = defIndexToken.getElementAt(0,columnCount-1) + 1;//0,columnCount);
+        System.out.println("req per"+requiredPeriod);
+        _interpolation.setPeriod(requiredPeriod);
 
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
@@ -168,46 +168,46 @@ public class LookUpTable extends Transformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	    try {
-	        if (attribute == values) {
-	            double[][] valueMatrix =
+        try {
+            if (attribute == values) {
+                double[][] valueMatrix =
                     ((DoubleMatrixToken)values.getToken()).doubleMatrix();
-	            if (valueMatrix.length != 1 || valueMatrix[0].length == 0) {
-		            throw new IllegalActionException(
+                if (valueMatrix.length != 1 || valueMatrix[0].length == 0) {
+                    throw new IllegalActionException(
                             "Interpolator.attributeChanged: The values " +
                             "parameter does not contain an one dimensional " +
                             "array.");
-	    	    }
-	    	    _interpolation.setValues(valueMatrix[0]);
-	        } else if (attribute == indexes) {
-	            IntMatrixToken index = (IntMatrixToken)indexes.getToken();
+                }
+                _interpolation.setValues(valueMatrix[0]);
+            } else if (attribute == indexes) {
+                IntMatrixToken index = (IntMatrixToken)indexes.getToken();
 
-	            int[][] indexMatrix = index.intMatrix();
-	            int columnCount = index.getColumnCount();
-	            int requiredPeriod = index.getElementAt(0,columnCount-1)+1;
-        	    System.out.println("req per"+requiredPeriod);
-	            _interpolation.setPeriod(requiredPeriod);
+                int[][] indexMatrix = index.intMatrix();
+                int columnCount = index.getColumnCount();
+                int requiredPeriod = index.getElementAt(0,columnCount-1)+1;
+                System.out.println("req per"+requiredPeriod);
+                _interpolation.setPeriod(requiredPeriod);
 
-	    	    if (indexMatrix.length != 1 || indexMatrix[0].length == 0) {
-		            throw new IllegalActionException(
+                if (indexMatrix.length != 1 || indexMatrix[0].length == 0) {
+                    throw new IllegalActionException(
                             "Interpolator.attributeChanged: The " +
                             "index parameter " +
                             "does not contain an one dimensional array.");
-	            }
-	            _interpolation.setIndexes(indexMatrix[0]);
+                }
+                _interpolation.setIndexes(indexMatrix[0]);
 	        //} else if (attribute == period) {
 	    	//    int newPeriod = ((IntToken)period.getToken()).intValue();
-		    //    _interpolation.setPeriod(newPeriod);
-	        } else if (attribute == order) {
-		        int newOrder = ((IntToken)order.getToken()).intValue();
-		        _interpolation.setOrder(newOrder);
-	        } else {
-		        super.attributeChanged(attribute);
-	        }
-	    } catch (IllegalArgumentException ex) {
-	        throw new IllegalActionException("Interpolation.attributeChanged: "
+                //    _interpolation.setPeriod(newPeriod);
+            } else if (attribute == order) {
+                int newOrder = ((IntToken)order.getToken()).intValue();
+                _interpolation.setOrder(newOrder);
+            } else {
+                super.attributeChanged(attribute);
+            }
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalActionException("Interpolation.attributeChanged: "
                     + ex.getMessage());
-	    }
+        }
     }
 
     /** Clone the actor into the specified workspace. This calls the
@@ -235,27 +235,27 @@ public class LookUpTable extends Transformer {
      *   or the period is not 0 and not greater than the largest index.
      */
     public void fire() throws IllegalActionException {
-	    try {
-	        // If some parameters are changed by setExpression(), they are not
-	        // evaluated. Force evaluation. This will cause attributeChanged()
-	        // to be called if any parameter is changed.
+        try {
+            // If some parameters are changed by setExpression(), they are not
+            // evaluated. Force evaluation. This will cause attributeChanged()
+            // to be called if any parameter is changed.
 
-	        Token token = values.getToken();
-	        token = indexes.getToken();
-	        //token = period.getToken();
-	        token = order.getToken();
+            Token token = values.getToken();
+            token = indexes.getToken();
+            //token = period.getToken();
+            token = order.getToken();
 
-	        if (input.getWidth() != 0) {
+            if (input.getWidth() != 0) {
                 if (input.hasToken(0)) {
                     double inputValue = ((DoubleToken) input.get(0)).doubleValue();
-	                double result = _interpolation.interpolate((int)inputValue);
+                    double result = _interpolation.interpolate((int)inputValue);
                     output.send(0, new DoubleToken(result));
                 }
             }
-	    } catch (IllegalStateException ex) {
-	        throw new IllegalActionException("Interpolator.fire: " +
+        } catch (IllegalStateException ex) {
+            throw new IllegalActionException("Interpolator.fire: " +
                     ex.getMessage());
-	    }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

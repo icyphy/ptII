@@ -65,9 +65,9 @@ public class Switch3D extends GRTransform {
 
     	sceneGraphOut.setMultiport(true);
 
-	    select = new TypedIOPort(this, "select");
-	    select.setInput(true);
-	    select.setTypeEquals(BaseType.DOUBLE);
+        select = new TypedIOPort(this, "select");
+        select.setInput(true);
+        select.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -101,7 +101,7 @@ public class Switch3D extends GRTransform {
      */
     public void fire() throws IllegalActionException {
 
-	    if (select.getWidth() != 0) {
+        if (select.getWidth() != 0) {
             if (select.hasToken(0)) {
                 int index = (int) ((DoubleToken) select.get(0)).doubleValue();
                 if (index != _previousIndex) {
@@ -110,10 +110,10 @@ public class Switch3D extends GRTransform {
                         detachableGroup.detach();
                         attachmentGroup[index].addChild(detachableGroup);
                         _previousIndex = index;
-	                }
-	            }
-	        }
-	    }
+                    }
+                }
+            }
+        }
     }
 
     /** Setup the transform object

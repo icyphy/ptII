@@ -176,7 +176,7 @@ public class FSMDirector extends Director {
             throws CloneNotSupportedException {
         FSMDirector newObject = (FSMDirector)super.clone(workspace);
         newObject.controllerName =
-                (StringAttribute)newObject.getAttribute("controllerName");
+            (StringAttribute)newObject.getAttribute("controllerName");
         newObject._controllerVersion = -1;
         newObject._localReceiverMaps = new HashMap();
         newObject._localReceiverMapsVersion = -1;
@@ -333,7 +333,7 @@ public class FSMDirector extends Director {
             result = ctrl.currentState().getRefinement().postfire();
             Nameable container = getContainer();
             if (container instanceof CompositeActor &&
-                   ((CompositeActor)container).getExecutiveDirector() != null) {
+                    ((CompositeActor)container).getExecutiveDirector() != null) {
                 // Not at the top level, ignore the return value from
                 // the current refinement.
                 result = true;
@@ -343,7 +343,7 @@ public class FSMDirector extends Director {
         }
         result = result && ctrl.postfire();
         _currentLocalReceiverMap =
-                (Map)_localReceiverMaps.get(ctrl.currentState());
+            (Map)_localReceiverMaps.get(ctrl.currentState());
         return result;
     }
 
@@ -528,7 +528,7 @@ public class FSMDirector extends Director {
             }
             _localReceiverMapsVersion = workspace().getVersion();
             _currentLocalReceiverMap =
-                    (Map)_localReceiverMaps.get(ctrl.currentState());
+                (Map)_localReceiverMaps.get(ctrl.currentState());
         } finally {
             workspace().doneReading();
         }

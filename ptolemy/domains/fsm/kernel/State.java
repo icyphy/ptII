@@ -143,11 +143,11 @@ public class State extends ComponentEntity {
             throws CloneNotSupportedException {
         State newObject = (State)super.clone(workspace);
         newObject.incomingPort =
-	        (ComponentPort)newObject.getPort("incomingPort");
+            (ComponentPort)newObject.getPort("incomingPort");
         newObject.outgoingPort =
-	        (ComponentPort)newObject.getPort("outgoingPort");
+            (ComponentPort)newObject.getPort("outgoingPort");
         newObject.refinementName =
-                (StringAttribute)newObject.getAttribute("refinementName");
+            (StringAttribute)newObject.getAttribute("refinementName");
         newObject._refinementVersion = -1;
         newObject._transitionListVersion = -1;
         newObject._nonpreemptiveTransitionList = new LinkedList();
@@ -174,7 +174,7 @@ public class State extends ComponentEntity {
             if (name != null && name != "") {
                 FSMActor cont = (FSMActor)getContainer();
                 TypedCompositeActor contContainer =
-                        (TypedCompositeActor)cont.getContainer();
+                    (TypedCompositeActor)cont.getContainer();
                 _refinement = (TypedActor)contContainer.getEntity(name);
                 if (_refinement == null) {
                     throw new IllegalActionException(this, "Cannot find "

@@ -76,11 +76,11 @@ public class KeyInput extends GRActor {
 
     public void initialize() throws IllegalActionException {
         super.initialize();
-  	    userInputNode = new BranchGroup();
-  	    _react = new _React();
-  	    _react.setSchedulingBounds(new BoundingSphere());
-  	    userInputNode.addChild(_react);
-  	    _hasData = false;
+        userInputNode = new BranchGroup();
+        _react = new _React();
+        _react.setSchedulingBounds(new BoundingSphere());
+        userInputNode.addChild(_react);
+        _hasData = false;
     }
 
     public Node getNodeObject() {
@@ -110,18 +110,18 @@ public class KeyInput extends GRActor {
                 wakeup = (WakeupCriterion) criteria.nextElement();
                 event = ((WakeupOnAWTEvent)wakeup).getAWTEvent();
               	for (int i=0; i<event.length; i++) {
-	                eventId = event[i].getID();
-	                if (eventId == KeyEvent.KEY_PRESSED) {
-	                    _keycode = ((KeyEvent) event[i]).getKeyChar();
-	                    _hasData = true;
-	                }
-	                /*
-	                if (eventId == MouseEvent.MOUSE_CLICKED) {
-            	        _xClicked = ((MouseEvent)event[i]).getX();
-                	    _yClicked = ((MouseEvent)event[i]).getY();
-                	    _hasData = true;
-                	    System.out.println(" "+_xClicked+" "+_yClicked);
-                	}*/
+                    eventId = event[i].getID();
+                    if (eventId == KeyEvent.KEY_PRESSED) {
+                        _keycode = ((KeyEvent) event[i]).getKeyChar();
+                        _hasData = true;
+                    }
+                    /*
+                      if (eventId == MouseEvent.MOUSE_CLICKED) {
+                      _xClicked = ((MouseEvent)event[i]).getX();
+                      _yClicked = ((MouseEvent)event[i]).getY();
+                      _hasData = true;
+                      System.out.println(" "+_xClicked+" "+_yClicked);
+                      }*/
                 }
             }
             this.wakeupOn(new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED));

@@ -59,7 +59,7 @@ public class GRScheduler extends Scheduler {
      */
     public GRScheduler() {
         super();
-	    _localMemberInitialize();
+        _localMemberInitialize();
     }
 
     /** Construct a scheduler in the given workspace with the name
@@ -72,7 +72,7 @@ public class GRScheduler extends Scheduler {
      */
     public GRScheduler(Workspace ws) {
         super(ws);
-	    _localMemberInitialize();
+        _localMemberInitialize();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,11 +123,11 @@ public class GRScheduler extends Scheduler {
      */
     public static int getTokenProductionRate(IOPort port)
             throws IllegalActionException {
-            if (port.isOutput()) {
-                return 1;
-            } else {
-                return 0;
-            }
+        if (port.isOutput()) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     /** Initialize the local data members of this object.  */
@@ -165,7 +165,7 @@ public class GRScheduler extends Scheduler {
             ComponentEntity a = (ComponentEntity)entities.next();
 
             if(a instanceof CompositeActor) {
-        		if (_debugging) _debug("Scheduling contained system");
+                if (_debugging) _debug("Scheduling contained system");
                 Director containedDirector =
                     ((CompositeActor) a).getDirector();
                 if(containedDirector instanceof StaticSchedulingDirector) {
@@ -189,7 +189,7 @@ public class GRScheduler extends Scheduler {
         // First solve the balance equations
         Map firings = null;
         try {
-           firings = _solveBalanceEquations(AllActors);
+            firings = _solveBalanceEquations(AllActors);
         } catch (IllegalActionException ex) {
             throw new NotSchedulableException(this, "Check expression of "
                     + "rate and initial production parameters.");
@@ -542,26 +542,26 @@ public class GRScheduler extends Scheduler {
         Map firingsRemainingVector = new TreeMap(new _NamedObjComparator());
         firingsRemainingVector.putAll(_firingvector);
 
-	    LinkedList unscheduledActorList = new LinkedList();
-	    unscheduledActorList.addAll(actorList);
+        LinkedList unscheduledActorList = new LinkedList();
+        unscheduledActorList.addAll(actorList);
 
         try {
 	    // Initialize the waitingTokens at all the
 	    // input ports to zero
-	        Iterator schedulableEntities = actorList.iterator();
-	        while(schedulableEntities.hasNext()) {
-		        Actor a = (Actor)schedulableEntities.next();
+            Iterator schedulableEntities = actorList.iterator();
+            while(schedulableEntities.hasNext()) {
+                Actor a = (Actor)schedulableEntities.next();
 
-		        Iterator ainputports = a.inputPortList().iterator();
-		        while(ainputports.hasNext()) {
-		            IOPort ainputport = (IOPort) ainputports.next();
-		            int[] tokencount = new int[ainputport.getWidth()];
-		            for(int channel = 0; channel < tokencount.length;
-			        channel++)
-			            tokencount[channel] = 0;
-		            waitingTokens.put(ainputport, tokencount);
-		        }
-	        }
+                Iterator ainputports = a.inputPortList().iterator();
+                while(ainputports.hasNext()) {
+                    IOPort ainputport = (IOPort) ainputports.next();
+                    int[] tokencount = new int[ainputport.getWidth()];
+                    for(int channel = 0; channel < tokencount.length;
+                        channel++)
+                        tokencount[channel] = 0;
+                    waitingTokens.put(ainputport, tokencount);
+                }
+            }
 
 
 	    // Fill readyToScheduleActorList with all the actors that have
@@ -919,7 +919,7 @@ public class GRScheduler extends Scheduler {
             sourcechannel++) {
 	    if (_debugging) {
                 _debug("destination receivers for channel "
-                + sourcechannel + ": " + creceivers[sourcechannel].length);
+                        + sourcechannel + ": " + creceivers[sourcechannel].length);
             }
 	    int destinationreceiver;
 	    for(destinationreceiver = 0;
@@ -957,7 +957,7 @@ public class GRScheduler extends Scheduler {
 		    // remove all of the appearances from the list when the
 		    // actor is actually scheduled.
 		    if((ival <= 0) && (firingsRemaining > 0)) {
-			    readyToScheduleActorList.addLast(connectedActor);
+                        readyToScheduleActorList.addLast(connectedActor);
 		    }
 		}
 	    }
@@ -1078,7 +1078,7 @@ public class GRScheduler extends Scheduler {
      *  given receiver.  If the receiver is not contained within the port,
      *  throw an InternalErrorException.
      */
-// FIXME: Move this functionality to the kernel.
+    // FIXME: Move this functionality to the kernel.
     private int _getChannel(IOPort port, Receiver receiver)
             throws IllegalActionException {
 	int width = port.getWidth();
@@ -1093,7 +1093,7 @@ public class GRScheduler extends Scheduler {
 	    int receivernumber;
 	    if (_debugging) {
                 _debug("number of receivers in channel " + channel
-                + " = " + receivers[channel].length);
+                        + " = " + receivers[channel].length);
             }
 	    for(receivernumber = 0;
 		receivernumber < receivers[channel].length;
