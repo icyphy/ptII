@@ -71,6 +71,7 @@ public class PNDirector extends Director {
                 Thread temp = new Thread(_processGroup, star);
                 //System.out.println("Starting star "+star.getName());
                 star.setThread(temp);
+                star.initialize();
                 temp.start();
                 //System.out.println("Started star "+star.getName());
             }
