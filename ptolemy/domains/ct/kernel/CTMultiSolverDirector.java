@@ -351,7 +351,7 @@ public class CTMultiSolverDirector extends CTDirector {
         return true;
     }
 
-    /** After preforming super.preinitialize(),
+    /** After performing super.preinitialize(),
      *  instantiate all the solvers.
      *  @exception IllegalActionException If thrown by one
      *  of the actors.
@@ -568,8 +568,9 @@ public class CTMultiSolverDirector extends CTDirector {
                 // Adjust step size so that the first breakpoint is 
                 // not in the middle of this step.
                 point = ((Double)breakPoints.first()).doubleValue();
-                double iterEndTime = getCurrentTime() + getCurrentStepSize();
-                if (iterEndTime > point) {
+                double iterationEndTime = 
+                    getCurrentTime() + getCurrentStepSize();
+                if (iterationEndTime > point) {
                     setCurrentStepSize(point-getCurrentTime());
                 }
             }
@@ -620,7 +621,8 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @exception IllegalActionException If the scheduler throws it.
      */
     protected double _refinedStepWRTState() throws IllegalActionException {
-        if(_debugging) _debug(getFullName() + "refine step wrt state.");
+        if(_debugging) 
+            _debug(getFullName(), "refine step with respect to states.");
         double refinedStep = getCurrentStepSize();
         CTScheduler scheduler = (CTScheduler)getScheduler();
         Iterator actors = scheduler.stateTransitionSSCActorList().iterator();
@@ -644,6 +646,8 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @exception IllegalActionException If the scheduler throws it.
      */
     protected double _refinedStepWRTOutput() throws IllegalActionException {
+        if(_debugging) 
+            _debug(getFullName(), "refine step with respect to output.");
         double refinedStep = getCurrentStepSize();
         CTScheduler scheduler = (CTScheduler)getScheduler();
         Iterator actors = scheduler.outputSSCActorList().iterator();

@@ -58,7 +58,7 @@ An integer called "round" is used to indicate the number of firing rounds
 within one iteration. For some integration methods, (i.e. the so called
 explicit methods) the round of firings are fixed.
 For some others (i.e. implicit methods), the round could be an arbitrary
-possitive integer.
+positive integer.
 <P>
 A round counter is a counter
 for the number of fire() rounds in one iteration to help the actors that

@@ -47,7 +47,7 @@ import java.util.Iterator;
 /**
 A CTDirector that uses real time. This director can only be the top level
 director. When initializing, it set the start time to be the computer
-time. At the postfire statge of each iteration, it waits until the
+time. At the postfire statage of each iteration, it waits until the
 computer time has progressed to the director time.
 FIXME: still under development.
 @author  Jie Liu
@@ -106,12 +106,12 @@ public class CTRealTimeDirector extends CTMultiSolverDirector {
      *  container.
      *
      *  @exception IllegalActionException If the instantiation of the solvers
-     *  are not succeded or one of the directed actors throw it.
+     *  are not succeeded or one of the directed actors throw it.
      */
     public void initialize() throws IllegalActionException {
-        System.out.println("_timebase = " +  System.currentTimeMillis());
         super.initialize();
-        _timebase = System.currentTimeMillis();
+        _timeBase = System.currentTimeMillis();
+        if(_debugging) _debug(getName(), "_timeBase = " +  _timeBase);
     }
 
     /** Call postfire() on all actors. For a correct CT simulation,
@@ -121,7 +121,7 @@ public class CTRealTimeDirector extends CTMultiSolverDirector {
      *      throws it.
      */
     public void updateStates() throws IllegalActionException {
-        long realTime = System.currentTimeMillis()-_timebase;
+        long realTime = System.currentTimeMillis()-_timeBase;
         if(_debugging) _debug("real time " + realTime);
         long simulationTime = (long)((getCurrentTime()-getStartTime())*1000);
         if(_debugging) _debug("simulation time " + simulationTime);
@@ -131,7 +131,7 @@ public class CTRealTimeDirector extends CTMultiSolverDirector {
                 Thread.sleep(timeDifference - 20);
             }  catch (Exception e) {
                 throw new IllegalActionException(this,
-                        "Sleep Interruptted" + e.getMessage());
+                        "Sleep Interrupted" + e.getMessage());
             }
         } else {
             if(_debugging) _debug("Warning: " + getFullName() +
@@ -139,10 +139,10 @@ public class CTRealTimeDirector extends CTMultiSolverDirector {
                     " at simulation time " + getCurrentTime());
         }
         CompositeActor container = (CompositeActor) getContainer();
-        Iterator allactors = container.deepEntityList().iterator();
-        while(allactors.hasNext()) {
-            Actor nextactor = (Actor)allactors.next();
-            nextactor.postfire();
+        Iterator actors = container.deepEntityList().iterator();
+        while(actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            actor.postfire();
         }
     }
 
@@ -151,5 +151,5 @@ public class CTRealTimeDirector extends CTMultiSolverDirector {
     ////                         private variables                 ////
 
     // The classname of the ODE solver.
-    private long _timebase;
+    private long _timeBase;
 }

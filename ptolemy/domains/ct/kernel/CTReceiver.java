@@ -40,7 +40,7 @@ import ptolemy.data.Token;
 /**
 The receiver for the continuous time domain. This is a mailbox with
 capacity one, and any token put in the receiver overwrites
-any token previously present in the reciever. As a consquence,
+any token previously present in the receiver. As a consequence,
 hasRoom() method always returns true. The get() method will consume
 the token if there exists one. After the consumption, the hasToken()
 method will return false, until a token is put into this receiver.
