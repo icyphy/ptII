@@ -24,6 +24,8 @@
 	</entity>
 	<entity name="JAIInvert" class="ptolemy.actor.lib.jai.JAIInvert">
 	</entity>
+	<entity name="JAIJPEGWriter" class="ptolemy.actor.lib.jai.JAIJPEGWriter">
+	</entity>
       </group>
     ?>
   </configure>
