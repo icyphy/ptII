@@ -67,8 +67,8 @@ test IODependence-2.1 {Constructor tests before preinitialization} {
 
     list [expr {[$e1 getDirector] == $d1}]  \
             [expr {[$e2 getDirector] == $d2}] \
-            [expr {[$e1 getIODependence] == [java::null]}] \
-            [expr {[$e2 getIODependence] == [java::null]}] 
+	    [expr {[[java::cast ptolemy.kernel.util.NamedObj $e1] getAttribute "_IODependence"] == [java::null]}] \
+            [expr {[[java::cast ptolemy.kernel.util.NamedObj $e2] getAttribute "_IODependence"] == [java::null]}] 
 } {1 1 1 1}
 
 ######################################################################
@@ -78,9 +78,12 @@ test IODependence-2.2 {Constructor tests after preinitialization} {
     # NOTE: Uses the setup above
 
 	$e1 preinitialize 
+	$e1 initialize
+	$e1 prefire
+	$e1 fire
 	
-    list    [expr {[$e1 getIODependence] == [java::null]}] \
-            [expr {[$e2 getIODependence] == [java::null]}] 
+	list    [expr {[[java::cast ptolemy.kernel.util.NamedObj $e1] getAttribute "_IODependence"] == [java::null]}] \
+            [expr {[[java::cast ptolemy.kernel.util.NamedObj $e2] getAttribute "_IODependence"] == [java::null]}] 
 } {1 1}
 
 ######################################################################
