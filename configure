@@ -682,7 +682,7 @@ fi
 #
 echo $ac_n "checking for the java runtime in $PTJAVA_DIR/bin""... $ac_c" 1>&6
 echo "configure:685: checking for the java runtime in $PTJAVA_DIR/bin" >&5
-if test -f $PTJAVA_DIR/bin/java -o -f $PTJAVA_DIR/bin/java.exe; then
+if test -f "$PTJAVA_DIR/bin/java" -o -f "$PTJAVA_DIR/bin/java.exe"; then
     echo "$ac_t""$PTJAVA_DIR/bin/java" 1>&6
     echo $ac_n "checking that you have the right java in your path.""... $ac_c" 1>&6
 echo "configure:689: checking that you have the right java in your path." >&5
@@ -738,7 +738,7 @@ fi
 #
 echo $ac_n "checking for the java compiler in $PTJAVA_DIR/bin""... $ac_c" 1>&6
 echo "configure:741: checking for the java compiler in $PTJAVA_DIR/bin" >&5
-if test -f $PTJAVA_DIR/bin/javac; then
+if test -f "$PTJAVA_DIR/bin/javac"; then
     echo "$ac_t""$PTJAVA_DIR/bin/javac" 1>&6
     echo $ac_n "checking that you have the right javac in your path.""... $ac_c" 1>&6
 echo "configure:745: checking that you have the right javac in your path." >&5
@@ -780,7 +780,7 @@ fi
     Perhaps $JAVAC is in your path before $PTJAVA_DIR/bin/javac?
     If you have problems later, be sure that you don't have a mismatch
     in JDK versions." 1>&2
-	JAVAC=$PTJAVA_DIR/bin/javac
+	JAVAC="$PTJAVA_DIR/bin/javac"
     fi
 else
     { echo "configure: error: 
@@ -1148,9 +1148,9 @@ if $JAVAC javasoundTest.java ; then
     echo "$ac_t""ok" 1>&6
     PTJAVASOUND=javasound	
 else
-   echo "configure: warning: '$JAVAC javasoundTest.java' failed.  Perhaps you are running
-    under JDK1.2?  javasound is used in actor.lib, but you can probably
-    get away without it." 1>&2
+   echo "configure: warning: '$JAVAC javasoundTest.java' failed.
+    Perhaps you are running under JDK1.2?
+    javasound is used in actor.lib, but you can probably get away without it." 1>&2
 fi
 cd $startdir
 
