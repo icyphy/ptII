@@ -56,7 +56,7 @@ class TablePanel extends Panel {
 
         synchronized (this) {
 
-            Dimension d = this.size();
+            Dimension d = this.getSize();
             newOrigin = new Coordinate (d.width / 2, d.height / 2);
 
             /*
