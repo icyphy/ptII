@@ -40,6 +40,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Director;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Receiver;
 
 import java.util.Iterator;
 
@@ -129,6 +130,13 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         CompositeActor cont = (CompositeActor)getContainer();
         Director execDir = (Director)cont.getExecutiveDirector();
         return execDir.getNextIterationTime();
+    }
+
+    /** Return a CTReceiver.
+     *  @return a new CTReceiver.
+     */
+    public Receiver newReceiver() {
+        return new ptolemy.domains.ct.kernel.CTReceiver();
     }
 
     /** Return the predicted next step size if this step is successful.
