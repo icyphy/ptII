@@ -148,7 +148,7 @@ create refinements for the states.</text></svg></configure></property>
           <entity name="ThrowException"
                   class="ptolemy.actor.lib.ThrowException"/>
           <entity name="Assertion"
-                  class="ptolemy.domains.ct.lib.CTAssertion"/>
+                  class="ptolemy.actor.lib.assertion"/>
   </entity>
 </entity>
 
