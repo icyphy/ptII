@@ -108,10 +108,10 @@ public class FixPointQuantization extends Quantization {
         _precision = new Precision(st.nextToken());
 
         if (st.hasMoreTokens()) {
-            Overflow.getName(st.nextToken());
+            _overflow = Overflow.getName(st.nextToken());
         }
         if (st.hasMoreTokens()) {
-            Rounding.getName(st.nextToken());
+            _rounding = Rounding.getName(st.nextToken());
         }
         if (st.hasMoreTokens())
             throw new IllegalArgumentException("FixPointQuantization "
@@ -204,5 +204,5 @@ public class FixPointQuantization extends Quantization {
     ////                         private variables                 ////
 
     /** The precision. */
-    private Precision _precision = null;
+    protected Precision _precision = null;
 }

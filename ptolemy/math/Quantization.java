@@ -297,8 +297,8 @@ public abstract class Quantization implements Cloneable, Serializable {
     ////                       private variables                 ////
 
     /** The overflow strategy. */
-    private Overflow _overflow = Overflow.GENERAL;
+    protected Overflow _overflow = Overflow.GENERAL;
 
     /** The rounding strategy. */
-    private Rounding _rounding = Rounding.GENERAL;
+    protected Rounding _rounding = Rounding.GENERAL;
 }
