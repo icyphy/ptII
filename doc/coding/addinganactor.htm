@@ -47,8 +47,13 @@ bash-2.04$ make &gt;&amp; make.out
 	<CODE>Ramp2.java</CODE>
 	<pre>
 	cd "$PTII/ptolemy/actor/lib"	
-	cp Ramp.java Ramp2.java
+	cp -p Ramp.java Ramp2.java
 	</pre>
+	Note that if we had copied our java code from a <i>different
+	directory</i>, we would also have to change the package
+	statement (usually near line 31) in the java code.
+	This is good to keep in mind since
+	there is no error message to clue you in to this case.<p>
 	
 	<li> Edit <CODE>Ramp2.java</CODE> and change:
 	<menu>
@@ -107,8 +112,8 @@ line:
 </pre>
 This step is not strictly necessary, but it is good programming
 practice to put all source files in the makefile.
-Also, we update the makefile is so that our new actor
-will be included in the <CODE>lib.jar</CODE> file
+Another reason we add it to the makefile is so that our new actor
+will be included in the <CODE>lib.jar</CODE> file<p>
 
 <li> Run <CODE>make</CODE> in the <CODE>$PTII/ptolemy/actor/lib</CODE>
 directory (which is where you should already be).  <CODE>make</CODE>
@@ -118,8 +123,7 @@ and eventually run
 rm -f `basename Ramp2.java .java`.class
 CLASSPATH="../../.." "/cygdrive/c/jdk1.3/bin/javac" -g -O Ramp2.java
 </pre>
-and <CODE>Ramp2.class</CODE> will be produced
-
+and <CODE>Ramp2.class</CODE> will be produced.<p>
 
 <li> Edit <CODE>$PTII/ptolemy/actor/lib/sources.xml</CODE>
 and add Ramp2 just after the lines for Ramp
@@ -207,8 +211,43 @@ and it contains one actor, <CODE>Ramp2</CODE>:
 
 </pre>
 
- <p>The palette and menus are determined by a configuration file.
-Usually, the configuration file is <CODE>$PTII/ptolemy/configs/vergilConfiguration.xml</CODE>.  
+ <p>The palette and menus are determined by configuration files.
+There are one or more configuration files for each pallet.
+Their filemames, as of May 2002, are shown below.  For the latest
+information, check the configuration file one level above these,
+which is usually named 
+<CODE>$PTII/ptolemy/configs/vergilConfiguration.xml</CODE>
+<pre>
+<u>pallet</u>            <u>configuration file(s)</u>
+
+utilities         $PTII/ptolemy/configs/utilitiesLibrary.xml
+
+director library  $PTII/ptolemy/configs/ptinyDirectors.xml
+                  $PTII/ptolemy/configs/experimentalDirectors.xml
+
+actor library     $PTII/ptolemy/configs/ptinyActors.xml
+
+more libraries    $PTII/ptolemy/domains/domains.xml
+                  $PTII/ptolemy/configs/automataLibrary.xml
+                  $PTII/ptolemy/actor/lib/comm/comm.xml
+                  $PTII/ptolemy/actor/lib/esoteric.xml
+                  $PTII/ptolemy/copernicus/copernicus.xml
+                  $PTII/ptolemy/matlab/matlab.xml
+                  $PTII/ptolemy/actor/lib/matrix.xml
+                  $PTII/ptolemy/actor/lib/test.xml
+	          $PTII/ptolemy/apps/apps.xml"/>
+</pre>
+
+We want to add our new pallet, myactors.xml, to the actor library pallet
+so we will add it's filename to 
+<CODE>$PTII/ptolemy/configs/ptinyActors.xml</CODE>.
+Note that we want our new pallet to be a sub 
+pallet of the actor library pallet,
+just as the sources pallet is.  The <CODE>input</CODE> statements 
+below do not cause the inputted pallet to be a sub pallet.  
+Sub-palleting is caused by the <CODE>entity</CODE>
+statement in the 4th line of your myactors.xml file.
+
  <p>We change
 <pre>
             &lt;doc&gt;default entity library&lt;/doc&gt;
@@ -221,7 +260,7 @@ to:
             &lt;input source="../actor/lib/sources.xml"/&gt;
 </pre>
 
-The restart vergil, and your myactors subpalette will appear under
+Then restart vergil, and your myactors subpalette will appear under
 'actor library'.
 
 </body>
