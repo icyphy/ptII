@@ -134,7 +134,8 @@ public class AddEditorFactory implements MoMLFilter {
             throws Exception {
         if (!_currentlyProcessingActorThatMayNeedAnEditorFactory) {
             return elementName;
-        } else         if ( _currentAttributeHasLocation
+        } else if ( _currentAttributeHasLocation
+		&& elementName != null    
                 && elementName.equals("property")
                 && container != null
                 && container.getFullName()
