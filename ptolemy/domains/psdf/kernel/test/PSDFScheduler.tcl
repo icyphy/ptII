@@ -135,9 +135,8 @@ test PSDFScheduler-5.1 {Scheduling tests} {
     $schedule toString
 } {Execute Symbolic Schedule{
 Execute Symbolic Schedule{
-Fire Actor ptolemy.actor.lib.Ramp {.Toplevel.Ramp}[(UpSample::input::tokenConsumptionRate) / (gcd(Ramp::output::tokenProductionRate, UpSample::input::tokenConsumptionRate))] times
-Fire Actor ptolemy.domains.sdf.lib.UpSample {.Toplevel.UpSample}[(Ramp::output::tokenProductionRate) / (gcd(Ramp::output::tokenProductionRate, UpSample::input::tokenConsumptionRate))] times
-}[(Discard::input::tokenConsumptionRate) / (gcd(((Ramp::output::tokenProductionRate) * (UpSample::output::tokenProductionRate)) / gcd(Ramp::output::tokenProductionRate, UpSample::input::tokenConsumptionRate), Discard::input::tokenConsumptionRate))] times
-Fire Actor ptolemy.actor.lib.Discard {.Toplevel.Discard}[(((Ramp::output::tokenProductionRate) * (UpSample::output::tokenProductionRate)) / gcd(Ramp::output::tokenProductionRate, UpSample::input::tokenConsumptionRate)) / (gcd(((Ramp::output::tokenProductionRate) * (UpSample::output::tokenProductionRate)) / gcd(Ramp::output::tokenProductionRate, UpSample::input::tokenConsumptionRate), Discard::input::tokenConsumptionRate))] times
+Fire Actor ptolemy.actor.lib.Ramp {.Toplevel.Ramp}[(UpSample::input::tokenConsumptionRate) / (gcd(1, UpSample::input::tokenConsumptionRate))] times
+Fire Actor ptolemy.domains.sdf.lib.UpSample {.Toplevel.UpSample}[(1) / (gcd(1, UpSample::input::tokenConsumptionRate))] times
+}[(1) / (gcd(((1) * (UpSample::output::tokenProductionRate)) / gcd(1, UpSample::input::tokenConsumptionRate), 1))] times
+Fire Actor ptolemy.actor.lib.Discard {.Toplevel.Discard}[(((1) * (UpSample::output::tokenProductionRate)) / gcd(1, UpSample::input::tokenConsumptionRate)) / (gcd(((1) * (UpSample::output::tokenProductionRate)) / gcd(1, UpSample::input::tokenConsumptionRate), 1))] times
 }[1] times}
-
