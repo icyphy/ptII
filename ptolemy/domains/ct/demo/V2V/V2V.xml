@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="V2V" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -78,7 +78,7 @@ of following the LeadingPlatoon.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 245.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={68, 16, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -574,7 +574,7 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
             <property name="vMin" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={111, 139, 661, 430}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={111, 139, 661, 468}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -1192,7 +1192,9 @@ of following the LeadingPlatoon.</text></svg></configure>
     <entity name="Velocities" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 356, 508, 355}, maximized=false}">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="leader, follower">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 412, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -1205,8 +1207,8 @@ of following the LeadingPlatoon.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Velocities</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
+<xLabel>time</xLabel>
+<yLabel>velocity</yLabel>
 <xRange min="0.0" max="25.0"/>
 <yRange min="16.817008441138878" max="30.0"/>
 </plot>?>
@@ -1279,12 +1281,12 @@ of following the LeadingPlatoon.</text></svg></configure>
             </property>
             <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 20.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 245.0}">
                 </property>
             </port>
             <port name="phase" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 60.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 285.0}">
                 </property>
             </port>
         </entity>
@@ -1306,7 +1308,7 @@ of following the LeadingPlatoon.</text></svg></configure>
         <link port="ContinuousSinewave.output" relation="relation2"/>
     </entity>
     <entity name="Distance" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={518, 356, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 412, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -1317,7 +1319,7 @@ of following the LeadingPlatoon.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Distance</title>
-<xLabel></xLabel>
+<xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="25.0"/>
 <yRange min="29.440233214058463" max="100.0"/>
