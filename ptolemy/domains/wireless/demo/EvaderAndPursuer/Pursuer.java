@@ -201,7 +201,7 @@ public class Pursuer extends TypedAtomicActor {
         }
     }
     
-    /** Initialize the private varialbles of the sensor node.
+    /** Initialize the private varialbles of the pursuer.
      *  @exception IllegalActionException If thrown by the base class.
      */
     public void initialize() throws IllegalActionException {
