@@ -177,13 +177,20 @@ public class Test extends Sink {
      *   or if its value does not match the required value.
      */
     public boolean postfire() throws IllegalActionException {
+        int width = input.getWidth();
         if (_count >= ((ArrayToken)(correctValues.getToken())).length()) {
+            // Consume and discard input values.  We are beyond the end
+            // of the correctValues array.
+            for (int i = 0; i < width; i++) {
+                if (input.hasToken(i)) {
+                    input.get(i);
+                }
+            }
             return true;
         }
         Token referenceToken
                 = ((ArrayToken)(correctValues.getToken())).getElement(_count);
         Token[] reference;
-        int width = input.getWidth();
         if (width == 1 && !(referenceToken instanceof ArrayToken)) {
             reference = new Token[1];
             reference[0] = referenceToken;
