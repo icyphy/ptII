@@ -1217,12 +1217,25 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                         PtolemyUtilities.intMatrixTokenArrayConstructor,
                         args);
             } else if (type == BaseType.LONG_MATRIX) {
+                _createMatrix(resultLocal, 
+                        PtolemyUtilities.longMatrixTokenClass,
+                        PtolemyUtilities.longMatrixTokenArrayConstructor,
+                        args);
             } else if (type == BaseType.DOUBLE_MATRIX) {
-         
+                _createMatrix(resultLocal, 
+                        PtolemyUtilities.doubleMatrixTokenClass,
+                        PtolemyUtilities.doubleMatrixTokenArrayConstructor,
+                        args);         
             } else if (type == BaseType.COMPLEX_MATRIX) {
-         
+                _createMatrix(resultLocal, 
+                        PtolemyUtilities.complexMatrixTokenClass,
+                        PtolemyUtilities.complexMatrixTokenArrayConstructor,
+                        args);
             } else if (type == BaseType.FIX_MATRIX) {
-                
+                _createMatrix(resultLocal, 
+                        PtolemyUtilities.fixMatrixTokenClass,
+                        PtolemyUtilities.fixMatrixTokenArrayConstructor,
+                        args);
             } else {
                 throw new IllegalActionException("Unrecognized type " + type +
                         " for matrix creation.");
