@@ -29,21 +29,20 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.data.IntMatrixToken;
-import ptolemy.gui.MessageHandler;
 import ptolemy.gui.CancelException;
-import ptolemy.util.StringUtilities;
-import ptolemy.gui.Top;
-import ptolemy.kernel.ComponentEntity;
+import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.util.StringUtilities;
 
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Iterator;
-import java.util.List;
+
 import javax.swing.JFrame;
 
 //////////////////////////////////////////////////////////////////////////

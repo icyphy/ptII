@@ -31,7 +31,7 @@ DDE topologies.
 
 package ptolemy.domains.dde.kernel;
 
-import ptolemy.data.*;
+import ptolemy.data.Token;
 
 //////////////////////////////////////////////////////////////////////////
 //// NullToken

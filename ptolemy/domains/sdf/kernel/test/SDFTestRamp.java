@@ -28,14 +28,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.domains.sdf.kernel.test;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.actor.*;
-import java.util.Enumeration;
-import ptolemy.domains.sdf.kernel.*;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 /** Create an increasing sequence of integer tokens,
 starting with value zero, and incrementing by one.

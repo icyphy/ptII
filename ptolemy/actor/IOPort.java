@@ -51,8 +51,6 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-
-
 import ptolemy.kernel.util.Workspace;
 
 import java.io.IOException;

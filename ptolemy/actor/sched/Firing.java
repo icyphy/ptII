@@ -31,13 +31,12 @@
 package ptolemy.actor.sched;
 
 import ptolemy.actor.Actor;
-import ptolemy.kernel.util.*;
 
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Firing

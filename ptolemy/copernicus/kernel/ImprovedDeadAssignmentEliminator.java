@@ -33,12 +33,39 @@
 
 package ptolemy.copernicus.kernel;
 
-import soot.*;
-import soot.jimple.*;
-import soot.toolkits.scalar.*;
-import soot.util.*;
-import soot.toolkits.graph.*;
-import java.util.*;
+import soot.Body;
+import soot.BodyTransformer;
+import soot.IntType;
+import soot.Local;
+import soot.LongType;
+import soot.Main;
+import soot.Options;
+import soot.Value;
+import soot.ValueBox;
+import soot.jimple.ArrayRef;
+import soot.jimple.AssignStmt;
+import soot.jimple.BinopExpr;
+import soot.jimple.DivExpr;
+import soot.jimple.InstanceFieldRef;
+import soot.jimple.InvokeExpr;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.NopStmt;
+import soot.jimple.RemExpr;
+import soot.jimple.Stmt;
+import soot.toolkits.graph.CompleteUnitGraph;
+import soot.toolkits.scalar.LocalDefs;
+import soot.toolkits.scalar.LocalUses;
+import soot.toolkits.scalar.SimpleLocalDefs;
+import soot.toolkits.scalar.SimpleLocalUses;
+import soot.toolkits.scalar.UnitValueBoxPair;
+import soot.util.Chain;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
 
 public class ImprovedDeadAssignmentEliminator extends BodyTransformer
 {

@@ -30,33 +30,22 @@
 
 package ptolemy.domains.tm.lib;
 
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.Actor;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.InvalidStateException;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.PtolemyThread;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.Entity;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.tm.kernel.TMActor;
-
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.PtolemyThread;
 
 import java.util.Iterator;
-import java.lang.reflect.Constructor;
 
 //////////////////////////////////////////////////////////////////////////
 //// TMCompositeFacade

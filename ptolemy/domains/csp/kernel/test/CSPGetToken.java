@@ -30,12 +30,10 @@
 
 package ptolemy.domains.csp.kernel.test;
 
-import ptolemy.domains.csp.kernel.*;
-import ptolemy.actor.*;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.Token;
-import ptolemy.data.StringToken;
 
 
 //////////////////////////////////////////////////////////////////////////

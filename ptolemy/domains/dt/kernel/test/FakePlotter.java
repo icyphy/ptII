@@ -30,19 +30,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.dt.kernel.test;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.*;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import ptolemy.actor.lib.gui.*;
-import ptolemy.actor.lib.TimedActor;
-import ptolemy.plot.*;
-
-import java.awt.Container;
-import java.awt.Panel;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 public class FakePlotter extends TypedAtomicActor {
 

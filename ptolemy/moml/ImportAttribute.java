@@ -30,11 +30,13 @@
 
 package ptolemy.moml;
 
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImportAttribute

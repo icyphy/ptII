@@ -30,8 +30,9 @@
 
 package ptolemy.vergil.tree;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.NamedObj;
 
 import java.util.LinkedList;
 import java.util.List;

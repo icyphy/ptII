@@ -30,13 +30,10 @@
 
 package ptolemy.domains.ct.lib;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.Director;
 import ptolemy.actor.lib.TimedActor;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTEventGenerator;

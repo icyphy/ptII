@@ -31,9 +31,9 @@
 
 package ptolemy.actor.test;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
+import ptolemy.actor.TypedIORelation;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.IllegalActionException;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -33,9 +33,7 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
-import ptolemy.kernel.util.*;
-
-import java.util.*;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtPowerNode

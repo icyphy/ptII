@@ -29,9 +29,11 @@
 */
 
 package ptolemy.domains.ct.kernel.test;
-import ptolemy.domains.ct.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.domains.ct.kernel.CTBaseIntegrator;
+import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Integrator

@@ -36,12 +36,14 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.Top;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Rectangle;
-import javax.swing.JComponent;
 
 //////////////////////////////////////////////////////////////////////////
 //// WindowPropertiesAttribute

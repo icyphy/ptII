@@ -36,13 +36,13 @@ of the current interface.
 
 package ptolemy.kernel.util;
 
+import java.io.Serializable;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.List;
 import java.util.LinkedList;
-import java.util.Collections;
+import java.util.List;
 import java.util.NoSuchElementException;
-import java.io.Serializable;
 
 //////////////////////////////////////////////////////////////////////////
 //// NamedList

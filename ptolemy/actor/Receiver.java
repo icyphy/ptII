@@ -31,8 +31,8 @@
 
 package ptolemy.actor;
 
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Receiver

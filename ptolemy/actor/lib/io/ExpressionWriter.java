@@ -32,11 +32,9 @@ package ptolemy.actor.lib.io;
 
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.kernel.attributes.FileAttribute; // For javadoc
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-
-import java.io.IOException;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionWriter

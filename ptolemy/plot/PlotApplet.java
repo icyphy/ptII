@@ -35,12 +35,13 @@ package ptolemy.plot;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import javax.swing.JApplet;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.swing.JApplet;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotApplet

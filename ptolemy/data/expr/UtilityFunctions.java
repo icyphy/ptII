@@ -31,8 +31,22 @@
 
 package ptolemy.data.expr;
 
-import ptolemy.data.*;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.ComplexMatrixToken;
+import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.FunctionToken;
+import ptolemy.data.IntMatrixToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.LongMatrixToken;
+import ptolemy.data.LongToken;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.ScalarToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FunctionType;
@@ -41,7 +55,6 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.math.Complex;
 import ptolemy.math.ComplexMatrixMath;
 import ptolemy.util.StringUtilities;
 
@@ -49,9 +62,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Iterator;

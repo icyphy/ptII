@@ -30,16 +30,16 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ci.kernel;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.data.Token;
 import ptolemy.actor.AbstractReceiver;
-import ptolemy.actor.NoTokenException;
-import ptolemy.actor.NoRoomException;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.NoRoomException;
+import ptolemy.actor.NoTokenException;
+import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
 
-import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// CIReceiver

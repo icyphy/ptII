@@ -30,27 +30,24 @@
 
 package ptolemy.vergil.tree;
 
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.toolbox.PtolemyTransferable;
 
-import javax.swing.JTree;
-import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreePath;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Point;
-import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
-import java.awt.dnd.DragGestureRecognizer;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DragSourceContext;
 import java.awt.dnd.DragSourceDragEvent;
 import java.awt.dnd.DragSourceDropEvent;
 import java.awt.dnd.DragSourceEvent;
 import java.awt.dnd.DragSourceListener;
+
+import javax.swing.JTree;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 
 /**
 This class provides a tree view of a ptolemy model, showing only the

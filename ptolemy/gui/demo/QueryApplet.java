@@ -30,11 +30,11 @@
 
 package ptolemy.gui.demo;
 
-import javax.swing.UIManager;
-
 import ptolemy.gui.BasicJApplet;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
+
+import javax.swing.UIManager;
 
 //////////////////////////////////////////////////////////////////////////
 //// QueryApplet

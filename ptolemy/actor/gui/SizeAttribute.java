@@ -30,13 +30,18 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.kernel.util.*;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+
 import javax.swing.JComponent;
 
 //////////////////////////////////////////////////////////////////////////

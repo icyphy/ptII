@@ -35,7 +35,9 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import java.util.List;
 

@@ -26,12 +26,15 @@
 /* Reference Version: $SootVersion: 1.2.2.dev.6 $ */
 
 package ptolemy.copernicus.kernel;
-import soot.toolkits.scalar.*;
+import soot.Main;
+import soot.toolkits.graph.DirectedGraph;
+import soot.toolkits.scalar.FlowAnalysis;
 
-import soot.*;
-import soot.toolkits.graph.*;
-import soot.util.*;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.TreeSet;
 
 /**
  *   Abstract class that provides the fixed point iteration functionality

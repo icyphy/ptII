@@ -29,45 +29,39 @@
 
 package ptolemy.copernicus.java;
 
-import soot.*;
-import soot.jimple.*;
-import soot.jimple.toolkits.invoke.MethodCallGraph;
-import soot.jimple.toolkits.invoke.SiteInliner;
-import soot.jimple.toolkits.invoke.StaticInliner;
-import soot.jimple.toolkits.invoke.InvokeGraph;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
-import soot.jimple.toolkits.invoke.VariableTypeAnalysis;
-import soot.jimple.toolkits.invoke.VTATypeGraph;
-import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
-
-import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
-import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
-import soot.jimple.toolkits.scalar.CopyPropagator;
-import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
-import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
-import soot.jimple.toolkits.scalar.Evaluator;
-import soot.jimple.toolkits.scalar.LocalNameStandardizer;
-import soot.jimple.toolkits.typing.TypeAssigner;
-import soot.toolkits.graph.*;
-import soot.toolkits.scalar.*;
-import soot.dava.*;
-import soot.util.*;
-import java.io.*;
-import java.util.*;
-
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.moml.*;
-import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.data.*;
-import ptolemy.data.type.TypeLattice;
-
-import ptolemy.data.expr.Variable;
-import ptolemy.graph.*;
+import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.copernicus.kernel.MustAliasAnalysis;
+import ptolemy.kernel.Entity;
+
+import soot.Body;
+import soot.FastHierarchy;
+import soot.Hierarchy;
+import soot.Local;
+import soot.Options;
+import soot.RefType;
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+import soot.SootField;
+import soot.SootMethod;
+import soot.Type;
+import soot.Unit;
+import soot.Value;
+import soot.ValueBox;
+import soot.jimple.AssignStmt;
+import soot.jimple.FieldRef;
+import soot.jimple.Jimple;
+import soot.jimple.NewArrayExpr;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.jimple.toolkits.typing.TypeAssigner;
+import soot.toolkits.scalar.LocalSplitter;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeSpecializer

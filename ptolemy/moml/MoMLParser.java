@@ -33,45 +33,53 @@ package ptolemy.moml;
 // Ptolemy imports.
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.kernel.*;
-import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.*;
 import ptolemy.gui.CancelException;
-import ptolemy.util.StringUtilities;
 import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Configurable;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.util.StringUtilities;
 
-// Java imports.
-import java.awt.Container;
-import java.util.Collections;
-import java.util.EmptyStackException;
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Iterator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Stack;
-import java.util.StringTokenizer;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.InstantiationException;
-import java.lang.IllegalAccessException;
-import java.lang.SecurityException;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.EmptyStackException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
 
-// XML imports.
-import com.microstar.xml.*;
+import com.microstar.xml.HandlerBase;
+import com.microstar.xml.XmlException;
+import com.microstar.xml.XmlParser;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -31,15 +31,16 @@
 
 package ptolemy.domains.dde.kernel;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.actor.*;
-import ptolemy.actor.process.*;
+import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Collections;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimeKeeper

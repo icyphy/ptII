@@ -30,38 +30,38 @@
 
 package ptolemy.copernicus.java;
 
-import soot.*;
-import soot.jimple.*;
-import soot.jimple.toolkits.invoke.SiteInliner;
-import soot.jimple.toolkits.invoke.StaticInliner;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
-import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
-import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
-import soot.jimple.toolkits.scalar.CopyPropagator;
-import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
-import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
-import soot.jimple.toolkits.scalar.Evaluator;
-import soot.jimple.toolkits.scalar.LocalNameStandardizer;
-
-import soot.toolkits.graph.*;
-import soot.toolkits.scalar.*;
-import soot.dava.*;
-import soot.util.*;
-import java.io.*;
-import java.util.*;
-
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.util.StringUtilities;
-import ptolemy.actor.*;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Expression;
-import ptolemy.moml.*;
-import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.data.*;
-import ptolemy.data.type.Typeable;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
-import ptolemy.copernicus.kernel.*;
+import ptolemy.copernicus.kernel.EntitySootClass;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.StringUtilities;
+
+import soot.BooleanType;
+import soot.FastHierarchy;
+import soot.Hierarchy;
+import soot.Local;
+import soot.Modifier;
+import soot.Scene;
+import soot.SootClass;
+import soot.SootField;
+import soot.SootMethod;
+import soot.Type;
+import soot.VoidType;
+import soot.jimple.IntConstant;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.Stmt;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.toolkits.scalar.LocalSplitter;
+import soot.util.Chain;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 
 
 

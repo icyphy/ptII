@@ -33,7 +33,8 @@ package ptolemy.domains.de.lib;
 import ptolemy.domains.de.kernel.DEActor;
 import ptolemy.domains.de.kernel.DEIOPort;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DETransformer

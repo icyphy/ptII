@@ -29,13 +29,15 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.util.StringUtilities;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.StatusBar;
 import ptolemy.gui.Top;
 import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
 
 import java.awt.Image;
 import java.awt.Toolkit;

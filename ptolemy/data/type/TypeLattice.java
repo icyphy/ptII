@@ -30,10 +30,10 @@
 
 package ptolemy.data.type;
 
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.data.Token;
 import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeLattice

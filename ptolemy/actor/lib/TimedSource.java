@@ -30,17 +30,14 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
-import ptolemy.actor.Manager;
-import ptolemy.actor.Manager.State;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimedSource

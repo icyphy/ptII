@@ -30,16 +30,20 @@
 
 package ptolemy.data.type;
 
-import java.lang.reflect.Modifier;
-import java.util.Hashtable;
-import java.util.HashMap;
-import java.util.Map;
-import java.io.Serializable;
-
+import ptolemy.data.BooleanMatrixToken;
+import ptolemy.data.ComplexMatrixToken;
+import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.FixMatrixToken;
+import ptolemy.data.IntMatrixToken;
+import ptolemy.data.LongMatrixToken;
+import ptolemy.data.MatrixToken;
+import ptolemy.data.ScalarToken;
+import ptolemy.data.Token;
+import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.graph.CPO;
-import ptolemy.data.*;
+
+import java.io.Serializable;
 
 //////////////////////////////////////////////////////////////////////////
 //// MatrixType

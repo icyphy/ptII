@@ -29,18 +29,18 @@
 
 package ptolemy.actor.parameters;
 
+import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.NoTokenException;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.*;
-
-import java.io.IOException;
-import java.io.Writer;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParameterPort

@@ -29,10 +29,16 @@
 
 package ptolemy.copernicus.kernel;
 
-import soot.*;
-import soot.jimple.*;
-import soot.util.*;
-
+import soot.Local;
+import soot.Modifier;
+import soot.RefType;
+import soot.SootClass;
+import soot.SootMethod;
+import soot.Type;
+import soot.VoidType;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.util.Chain;
 
 import java.util.ArrayList;
 import java.util.Iterator;

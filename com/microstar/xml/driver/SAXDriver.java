@@ -10,38 +10,27 @@ package com.microstar.xml.driver;
 
 
 //import org.xml.sax.Parser;
-import org.xml.sax.XMLReader;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Locale;
+import java.util.Stack;
+import java.util.Vector;
 
+import org.xml.sax.Attributes;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.DTDHandler;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
-
-//import org.xml.sax.AttributeList;
-import org.xml.sax.Attributes;
-
-import org.xml.sax.EntityResolver;
-import org.xml.sax.DTDHandler;
-
-//import org.xml.sax.DocumentHandler;
-import org.xml.sax.ContentHandler;
-
-import org.xml.sax.ErrorHandler;
-
-//import org.xml.sax.HandlerBase;
-import org.xml.sax.helpers.DefaultHandler;
-
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
 
-import com.microstar.xml.XmlParser;
 import com.microstar.xml.XmlHandler;
-
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Enumeration;
-import java.util.Stack;
-import java.util.Locale;
-import java.util.Vector;
-import java.util.Hashtable;
+import com.microstar.xml.XmlParser;
 
 /**
   * A SAX driver for Microstar's &AElig;lfred XML parser.

@@ -29,36 +29,32 @@
 
 package ptolemy.actor.lib.io.comm;
 
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Enumeration;
-import javax.comm.CommPort;
-import javax.comm.CommPortIdentifier;
-import javax.comm.SerialPort;
-import javax.comm.SerialPortEvent;
-import javax.comm.SerialPortEventListener;
-import ptolemy.actor.Actor;
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Enumeration;
+
+import javax.comm.CommPortIdentifier;
+import javax.comm.SerialPort;
+import javax.comm.SerialPortEvent;
+import javax.comm.SerialPortEventListener;
 
 //////////////////////////////////////////////////////////////////////////
 //// SerialComm

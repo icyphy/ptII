@@ -34,13 +34,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.copernicus.c;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.HashMap;
-
+import soot.Scene;
 import soot.SootClass;
 import soot.SootMethod;
-import soot.Scene;
+
+import java.util.Iterator;
+import java.util.List;
 
 
 /** A C code generator for generating "code files" (.c files) that implement

@@ -35,10 +35,9 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
-import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
 
 import java.io.File;
 

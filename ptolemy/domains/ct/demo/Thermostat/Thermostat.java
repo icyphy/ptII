@@ -30,21 +30,31 @@
 
 package ptolemy.domains.ct.demo.Thermostat;
 
-import java.awt.BorderLayout;
-import java.awt.event.*;
-
-import ptolemy.domains.fsm.kernel.*;
-import ptolemy.domains.ct.kernel.*;
-import ptolemy.domains.ct.lib.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.util.*;
-import ptolemy.actor.lib.*;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedIORelation;
+import ptolemy.actor.lib.Const;
+import ptolemy.actor.lib.Expression;
+import ptolemy.actor.lib.Scale;
 import ptolemy.actor.lib.gui.TimedPlotter;
-import ptolemy.actor.*;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.domains.ct.kernel.CTCompositeActor;
+import ptolemy.domains.ct.kernel.CTEmbeddedDirector;
+import ptolemy.domains.ct.kernel.CTMultiSolverDirector;
+import ptolemy.domains.ct.lib.Integrator;
+import ptolemy.domains.ct.lib.ZeroCrossingDetector;
+import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.HSDirector;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.Plot;
 
 //////////////////////////////////////////////////////////////////////////

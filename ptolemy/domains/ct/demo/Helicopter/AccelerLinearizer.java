@@ -30,16 +30,19 @@
 
 package ptolemy.domains.ct.demo.Helicopter;
 
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.TimedActor;
-import ptolemy.data.*;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.*;
-import ptolemy.domains.ct.kernel.*;
-import ptolemy.domains.ct.lib.*;
-import java.util.*;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
+import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// AccelerLinearizer

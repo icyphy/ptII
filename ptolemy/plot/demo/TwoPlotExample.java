@@ -33,16 +33,15 @@ package ptolemy.plot.demo;
 // more realistic example.
 import ptolemy.plot.Plot;
 
-import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-
-// The java.io imports are only necessary for the right hand plot.
+import java.awt.GridBagLayout;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// TwoPlotExample

@@ -30,18 +30,14 @@
 
 package ptolemy.domains.ci.lib;
 
-import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.LongToken;
-import ptolemy.data.Token;
 import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.domains.ci.kernel.CIDirector;
 import ptolemy.domains.ci.kernel.CIActor;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import java.util.LinkedList;
 

@@ -32,18 +32,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.image;
 
 import ptolemy.actor.lib.Source;
+import ptolemy.data.AWTImageToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.*;
-import ptolemy.data.Token;
-import ptolemy.data.AWTImageToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.type.BaseType;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 
 import javax.swing.ImageIcon;

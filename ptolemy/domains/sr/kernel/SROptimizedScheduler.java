@@ -40,7 +40,6 @@ import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.graph.DirectedGraph;
-import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

@@ -30,13 +30,7 @@
 
 package ptolemy.moml;
 
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-
-import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLUndoEntry

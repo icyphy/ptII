@@ -31,7 +31,6 @@
 package ptolemy.domains.sr.lib;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.Transformer;
-import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

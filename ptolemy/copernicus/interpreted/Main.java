@@ -34,13 +34,9 @@ import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 
-import soot.*;
-import soot.jimple.*;
-import soot.toolkits.scalar.*;
-import soot.util.*;
-import soot.toolkits.graph.*;
+import soot.Scene;
+import soot.Transform;
 
 //////////////////////////////////////////////////////////////////////////
 //// Main

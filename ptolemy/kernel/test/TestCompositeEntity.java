@@ -29,7 +29,7 @@
 
 package ptolemy.kernel.test;
 
-import ptolemy.kernel.*;
+import ptolemy.kernel.CompositeEntity;
 
 //////////////////////////////////////////////////////////////////////////
 //// TestCompositeEntity

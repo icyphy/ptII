@@ -29,9 +29,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.data.expr;
 
-import ptolemy.data.*;
-import ptolemy.kernel.util.*;
-
+import ptolemy.data.StringToken;
+import ptolemy.kernel.util.IllegalActionException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

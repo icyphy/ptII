@@ -30,18 +30,16 @@
 
 package ptolemy.domains.gr.lib;
 
-import ptolemy.actor.IOPort;
+import diva.canvas.Figure;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
-import diva.canvas.*;
-import diva.canvas.toolbox.*;
 import java.awt.geom.Point2D;
 
 //////////////////////////////////////////////////////////////////////////

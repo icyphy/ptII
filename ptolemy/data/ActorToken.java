@@ -30,13 +30,11 @@
 */
 package ptolemy.data;
 
-import java.io.Serializable;
-
-import ptolemy.kernel.Entity;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
 import ptolemy.data.type.Type;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
+
+import java.io.Serializable;
 
 
 //////////////////////////////////////////////////////////////////////////

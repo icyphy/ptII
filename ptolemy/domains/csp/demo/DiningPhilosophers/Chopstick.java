@@ -30,15 +30,17 @@
 
 package ptolemy.domains.csp.demo.DiningPhilosophers;
 
-import ptolemy.domains.csp.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.actor.process.TerminateProcessException;
+import ptolemy.actor.NoTokenException;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+import ptolemy.domains.csp.kernel.CSPActor;
+import ptolemy.domains.csp.kernel.ConditionalBranch;
+import ptolemy.domains.csp.kernel.ConditionalSend;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.Token;
-import ptolemy.data.IntToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// Chopstick

@@ -36,11 +36,14 @@ import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.attributes.VersionAttribute;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.StreamErrorHandler;
 
-import java.io.File;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.Iterator;

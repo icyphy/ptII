@@ -31,15 +31,14 @@
 package ptolemy.domains.de.lib.test;
 
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.domains.de.kernel.DEIOPort;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-import ptolemy.actor.TypedCompositeActor;
+import ptolemy.data.type.BaseType;
+import ptolemy.domains.de.kernel.DEIOPort;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 public class SimpleDelay extends TypedAtomicActor {
 

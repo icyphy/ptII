@@ -28,32 +28,28 @@
 
 package ptolemy.copernicus.c;
 
+import soot.RefType;
 import soot.Scene;
 import soot.SootClass;
-import soot.SootMethod;
 import soot.SootField;
+import soot.SootMethod;
 import soot.Trap;
+import soot.Type;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
-import soot.RefType;
-import soot.Type;
-
-import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
-import soot.jimple.toolkits.invoke.VariableTypeAnalysis;
-import soot.jimple.toolkits.invoke.InvokeGraph;
-
-import soot.jimple.Stmt;
 import soot.jimple.FieldRef;
-import soot.jimple.InvokeExpr;
 import soot.jimple.InstanceOfExpr;
-import soot.jimple.AssignStmt;
+import soot.jimple.InvokeExpr;
+import soot.jimple.Stmt;
+import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
+import soot.jimple.toolkits.invoke.InvokeGraph;
+import soot.jimple.toolkits.invoke.VariableTypeAnalysis;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.HashSet;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -29,10 +29,15 @@
 
 package ptolemy.kernel.test;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 
 //////////////////////////////////////////////////////////////////////////
 //// TestSerializable

@@ -29,21 +29,22 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.gui.MessageHandler;
-import ptolemy.gui.CancelException;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
-import javax.swing.JFrame;
 
 //////////////////////////////////////////////////////////////////////////
 //// Effigy

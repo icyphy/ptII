@@ -30,16 +30,21 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.data.Token;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.RecordToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
 import ptolemy.actor.TypedIOPort;
-import java.util.*;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeTest

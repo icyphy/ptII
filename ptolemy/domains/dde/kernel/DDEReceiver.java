@@ -31,14 +31,16 @@
 
 package ptolemy.domains.dde.kernel;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.actor.*;
-import ptolemy.actor.process.*;
-import ptolemy.actor.util.*;
-
-import java.util.NoSuchElementException;
+import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.NoTokenException;
+import ptolemy.actor.process.BoundaryDetector;
+import ptolemy.actor.process.Branch;
+import ptolemy.actor.process.ProcessReceiver;
+import ptolemy.actor.process.TerminateProcessException;
+import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEReceiver

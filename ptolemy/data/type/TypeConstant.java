@@ -30,9 +30,8 @@
 */
 
 package ptolemy.data.type;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.data.type.Type;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeConstant

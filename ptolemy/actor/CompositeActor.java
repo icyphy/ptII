@@ -37,9 +37,9 @@ moved invalidation code from _addEntity to _finishedAddEntity
 package ptolemy.actor;
 
 //import ptolemy.kernel.*;
-import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -50,9 +50,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+
 import java.util.Iterator;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 
 

@@ -34,7 +34,6 @@ package ptolemy.graph;
 import ptolemy.graph.analysis.AcyclicAnalysis;
 import ptolemy.graph.analysis.SinkNodeAnalysis;
 import ptolemy.graph.analysis.SourceNodeAnalysis;
-import ptolemy.graph.analysis.TransitiveClosureAnalysis;
 
 import java.util.ArrayList;
 import java.util.Arrays;

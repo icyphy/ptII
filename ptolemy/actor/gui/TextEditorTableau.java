@@ -29,7 +29,6 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -39,8 +38,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Iterator;
-import java.util.List;
-import javax.swing.JTextArea;
 
 //////////////////////////////////////////////////////////////////////////
 //// TextEditorTableau

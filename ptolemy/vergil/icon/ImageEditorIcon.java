@@ -30,6 +30,13 @@
 
 package ptolemy.vergil.icon;
 
+import diva.canvas.Figure;
+import diva.canvas.toolbox.ImageFigure;
+
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.ImageObserver;
@@ -40,12 +47,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.SwingUtilities;
-
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.ImageFigure;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageEditorIcon

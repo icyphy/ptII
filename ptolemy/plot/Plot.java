@@ -56,8 +56,8 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Vector;
+
 import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Plot

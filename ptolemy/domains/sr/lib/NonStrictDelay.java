@@ -31,8 +31,8 @@
 package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.lib.Transformer;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;

@@ -30,7 +30,6 @@
 
 package ptolemy.domains.csp.lib;
 
-import java.util.Random;
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;

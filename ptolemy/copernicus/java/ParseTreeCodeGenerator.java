@@ -29,20 +29,57 @@
 */
 package ptolemy.copernicus.java;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.data.expr.*;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.data.expr.ASTPtArrayConstructNode;
+import ptolemy.data.expr.ASTPtBitwiseNode;
+import ptolemy.data.expr.ASTPtFunctionApplicationNode;
+import ptolemy.data.expr.ASTPtFunctionDefinitionNode;
+import ptolemy.data.expr.ASTPtFunctionalIfNode;
+import ptolemy.data.expr.ASTPtLeafNode;
+import ptolemy.data.expr.ASTPtLogicalNode;
+import ptolemy.data.expr.ASTPtMatrixConstructNode;
+import ptolemy.data.expr.ASTPtMethodCallNode;
+import ptolemy.data.expr.ASTPtPowerNode;
+import ptolemy.data.expr.ASTPtProductNode;
+import ptolemy.data.expr.ASTPtRecordConstructNode;
+import ptolemy.data.expr.ASTPtRelationalNode;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ASTPtShiftNode;
+import ptolemy.data.expr.ASTPtSumNode;
+import ptolemy.data.expr.ASTPtUnaryNode;
+import ptolemy.data.expr.AbstractParseTreeVisitor;
+import ptolemy.data.expr.CachedMethod;
+import ptolemy.data.expr.ParseTreeTypeInference;
+import ptolemy.data.expr.PtParserConstants;
+import ptolemy.data.expr.Token;
 import ptolemy.data.type.RecordType;
-import ptolemy.copernicus.kernel.*;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+
+import soot.ArrayType;
+import soot.BooleanType;
+import soot.ByteType;
+import soot.DoubleType;
+import soot.IntType;
+import soot.Local;
+import soot.LongType;
+import soot.RefType;
+import soot.SootClass;
+import soot.SootMethod;
+import soot.Type;
+import soot.jimple.Constant;
+import soot.jimple.IntConstant;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.Stmt;
+import soot.jimple.StringConstant;
+import soot.util.Chain;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-
-import soot.*;
-import soot.util.*;
-import soot.jimple.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeCodeGenerator

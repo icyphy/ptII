@@ -34,7 +34,11 @@ import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
-import ptolemy.kernel.util.*;
+
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 

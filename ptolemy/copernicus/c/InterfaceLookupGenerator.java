@@ -31,11 +31,8 @@ package ptolemy.copernicus.c;
 import soot.SootClass;
 import soot.SootMethod;
 
-import soot.Hierarchy;
-
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// InterfaceLookupGenerator

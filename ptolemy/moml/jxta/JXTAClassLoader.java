@@ -30,8 +30,6 @@
 
 package ptolemy.moml.jxta;
 
-import java.lang.ClassLoader;
-import java.io.IOException;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -31,11 +31,13 @@
 
 package ptolemy.domains.dde.kernel;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.actor.*;
-import ptolemy.actor.process.*;
+import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.process.ProcessDirector;
+import ptolemy.actor.process.ProcessThread;
+import ptolemy.actor.process.TerminateProcessException;
+import ptolemy.kernel.util.IllegalActionException;
 
 import java.util.Hashtable;
 import java.util.Iterator;

@@ -32,12 +32,10 @@ getDelay() method that approximates a Zeno condition.
 
 package ptolemy.domains.dde.demo.LocalZeno;
 
-import ptolemy.domains.dde.kernel.*;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.gui.*;
-import ptolemy.domains.dde.kernel.NullToken; // For Javadoc
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ZenoDelay

@@ -30,7 +30,8 @@
 package ptolemy.vergil.basic;
 
 import diva.graph.modular.NodeModel;
-import ptolemy.kernel.util.*;
+
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 
 //////////////////////////////////////////////////////////////////////////

@@ -29,12 +29,19 @@
 
 package ptolemy.copernicus.kernel;
 
+import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.UnsignedByteToken;
+import ptolemy.data.type.Typeable;
+
 import soot.ArrayType;
 import soot.BaseType;
 import soot.Body;
-import soot.Hierarchy;
 import soot.Local;
-import soot.Modifier;
 import soot.RefType;
 import soot.Scene;
 import soot.SootClass;
@@ -44,84 +51,29 @@ import soot.Type;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
-import soot.VoidType;
-import soot.Hierarchy;
-import soot.Local;
-import soot.Modifier;
-import soot.NullType;
-import soot.Options;
-import soot.RefType;
-import soot.Scene;
-import soot.SceneTransformer;
-
-import soot.jimple.IntConstant;
-import soot.jimple.LongConstant;
-import soot.jimple.StringConstant;
-import soot.jimple.DoubleConstant;
-import soot.jimple.NullConstant;
-import soot.jimple.Constant;
 import soot.jimple.CastExpr;
 import soot.jimple.DefinitionStmt;
+import soot.jimple.DoubleConstant;
 import soot.jimple.FieldRef;
-import soot.jimple.IdentityStmt;
-import soot.jimple.InterfaceInvokeExpr;
-import soot.jimple.InstanceFieldRef;
 import soot.jimple.InstanceInvokeExpr;
-import soot.jimple.InvokeExpr;
+import soot.jimple.IntConstant;
 import soot.jimple.InvokeStmt;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
-import soot.jimple.MonitorStmt;
 import soot.jimple.NewExpr;
-import soot.jimple.ParameterRef;
+import soot.jimple.NullConstant;
 import soot.jimple.SpecialInvokeExpr;
-import soot.jimple.StaticFieldRef;
-import soot.jimple.StaticInvokeExpr;
 import soot.jimple.Stmt;
-import soot.jimple.ThisRef;
-import soot.jimple.toolkits.invoke.SiteInliner;
-import soot.jimple.toolkits.invoke.SynchronizerManager;
-import soot.jimple.toolkits.scalar.Evaluator;
-
-import soot.toolkits.graph.Block;
-import soot.toolkits.graph.BlockGraph;
-import soot.toolkits.graph.CompleteBlockGraph;
-import soot.toolkits.graph.CompleteUnitGraph;
-import soot.toolkits.scalar.UnitValueBoxPair;
-import soot.toolkits.scalar.SimpleLocalDefs;
-import soot.toolkits.scalar.SimpleLocalUses;
+import soot.jimple.StringConstant;
 import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.LocalUses;
-
+import soot.toolkits.scalar.UnitValueBoxPair;
 import soot.util.Chain;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
-import java.lang.reflect.Method;
-
-import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.LongToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.RecordToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
-import ptolemy.data.UnsignedByteToken;
-import ptolemy.data.type.Typeable;
-import ptolemy.data.type.TypeLattice;
-import ptolemy.data.expr.Variable;
-
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.moml.*;
-import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.copernicus.kernel.SootUtilities;
 
 /*
 import soot.jimple.toolkits.invoke.StaticInliner;

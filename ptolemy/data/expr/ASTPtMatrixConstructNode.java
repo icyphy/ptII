@@ -33,13 +33,7 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
-import ptolemy.data.*;
-import ptolemy.data.type.*;
-import ptolemy.math.Complex;
-import ptolemy.math.FixPoint;
-import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtMatrixConstructNode

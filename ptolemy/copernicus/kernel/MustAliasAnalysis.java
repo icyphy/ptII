@@ -29,14 +29,30 @@
 
 package ptolemy.copernicus.kernel;
 
-import soot.*;
-import soot.jimple.*;
-import soot.toolkits.graph.CompleteUnitGraph;
-import soot.toolkits.graph.UnitGraph;
-import soot.toolkits.scalar.ForwardFlowAnalysis;
+import soot.ArrayType;
+import soot.Local;
+import soot.RefType;
+import soot.SootField;
+import soot.SootMethod;
+import soot.Unit;
+import soot.Value;
+import soot.jimple.AssignStmt;
+import soot.jimple.CastExpr;
+import soot.jimple.FieldRef;
+import soot.jimple.InvokeExpr;
+import soot.jimple.NewArrayExpr;
+import soot.jimple.NewExpr;
+import soot.jimple.Stmt;
 import soot.jimple.toolkits.invoke.InvokeGraph;
+import soot.toolkits.graph.UnitGraph;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
 An analysis that maps each local or field to the set of objects or

@@ -5,8 +5,6 @@
 
 package com.microstar.xml.demo;
 
-import com.microstar.xml.XmlHandler;
-import com.microstar.xml.XmlParser;
 import java.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.Button;
@@ -14,10 +12,11 @@ import java.awt.Event;
 import java.awt.FlowLayout;
 import java.awt.Panel;
 import java.awt.TextArea;
-import java.io.InputStream;
-import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import com.microstar.xml.XmlHandler;
+import com.microstar.xml.XmlParser;
 
 
 /**

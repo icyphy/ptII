@@ -29,7 +29,8 @@
 */
 package ptolemy.actor.lib.javasound.test.pitchshift;
 
-import ptolemy.media.javasound.*;
+import ptolemy.media.javasound.SoundCapture;
+import ptolemy.media.javasound.SoundPlayback;
 
 //////////////////////////////////////////////////////////////////////////
 //// ProcessAudio

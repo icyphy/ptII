@@ -30,9 +30,8 @@
 
 package ptolemy.kernel.util.test;
 
-import java.io.Serializable;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.PtolemyThread;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtestWorkspace

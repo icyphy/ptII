@@ -30,23 +30,23 @@
 
 package ptolemy.actor.corba;
 
-import ptolemy.data.LongToken;
+import ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException;
+import ptolemy.actor.corba.CorbaIOUtil.pushConsumer;
+import ptolemy.actor.lib.Sink;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.StringToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.lib.Sink;
-import ptolemy.actor.corba.CorbaIOUtil.*;
-
-import org.omg.CORBA.*;
-import org.omg.CosNaming.*;
 
 import java.util.StringTokenizer;
-import java.util.Iterator;
+
+import org.omg.CORBA.ORB;
+import org.omg.CORBA.UserException;
+import org.omg.CosNaming.NameComponent;
+import org.omg.CosNaming.NamingContext;
+import org.omg.CosNaming.NamingContextHelper;
 
 //////////////////////////////////////////////////////////////////////////
 //// PushSupplier

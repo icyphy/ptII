@@ -29,15 +29,14 @@
 
 package ptolemy.domains.fsm.kernel.test;
 
-import ptolemy.actor.lib.SequenceSource;
-
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.data.Token;
+import ptolemy.actor.lib.SequenceSource;
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ZeroOneSource

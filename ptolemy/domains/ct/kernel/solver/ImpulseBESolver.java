@@ -30,13 +30,16 @@
 
 package ptolemy.domains.ct.kernel.solver;
 
-import ptolemy.kernel.util.KernelException;
+import ptolemy.actor.Actor;
+import ptolemy.domains.ct.kernel.BreakpointODESolver;
+import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTSchedule;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.actor.Actor;
-import ptolemy.domains.ct.kernel.*;
+import ptolemy.kernel.util.Workspace;
+
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////

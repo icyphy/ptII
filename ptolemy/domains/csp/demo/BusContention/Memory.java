@@ -31,16 +31,18 @@ an alternating fashion with its input and output ports.
 
 package ptolemy.domains.csp.demo.BusContention;
 
-import ptolemy.domains.csp.lib.*;
-import ptolemy.domains.csp.kernel.*;
-import ptolemy.actor.*;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.process.TerminateProcessException;
+import ptolemy.data.StringToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.domains.csp.kernel.CSPActor;
+import ptolemy.domains.csp.kernel.ConditionalBranch;
+import ptolemy.domains.csp.kernel.ConditionalReceive;
+import ptolemy.domains.csp.kernel.ConditionalSend;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.Token;
-import ptolemy.data.StringToken;
-import ptolemy.data.type.BaseType;
 
 
 //////////////////////////////////////////////////////////////////////////

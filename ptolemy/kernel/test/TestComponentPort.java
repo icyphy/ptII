@@ -29,8 +29,10 @@
 
 package ptolemy.kernel.test;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import java.util.Enumeration;
 import java.util.LinkedList;

@@ -35,14 +35,16 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
-import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.io.StringWriter;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLSimpleApplication

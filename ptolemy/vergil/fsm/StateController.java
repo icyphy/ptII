@@ -39,19 +39,20 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-import ptolemy.vergil.toolbox.MenuItemFactory;
 
 import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.Action;
 import javax.swing.KeyStroke;
 
 //////////////////////////////////////////////////////////////////////////

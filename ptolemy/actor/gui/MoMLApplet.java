@@ -31,30 +31,20 @@
 package ptolemy.actor.gui;
 
 // Java imports.
-import java.net.URL;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.util.Iterator;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-
-// XML imports
-import com.microstar.xml.XmlException;
-
-// Ptolemy imports
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.moml.Documentation;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
-import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
+
+import java.net.URL;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -31,11 +31,6 @@ package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.io.PrintStream;
 
 //////////////////////////////////////////////////////////////////////////

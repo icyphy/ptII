@@ -32,9 +32,7 @@
 package ptolemy.domains.csp.kernel;
 
 import ptolemy.actor.IOPort;
-import ptolemy.actor.process.BoundaryDetector;
 import ptolemy.data.Token;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 

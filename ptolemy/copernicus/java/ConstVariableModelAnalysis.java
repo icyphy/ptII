@@ -29,30 +29,27 @@
 
 package ptolemy.copernicus.java;
 
-import soot.*;
-import soot.jimple.*;
-import soot.toolkits.graph.CompleteUnitGraph;
-import soot.toolkits.graph.UnitGraph;
-import soot.toolkits.scalar.ForwardFlowAnalysis;
-import soot.toolkits.scalar.LocalDefs;
-import soot.toolkits.scalar.SimpleLocalDefs;
-import soot.toolkits.scalar.SimpleLocalUses;
-import soot.toolkits.scalar.LocalUses;
+import ptolemy.actor.CompositeActor;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ModelScope;
+import ptolemy.data.expr.ParseTreeFreeVariableCollector;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.Variable;
+import ptolemy.domains.fsm.kernel.AbstractActionsAttribute;
+import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.TypeLattice;
-import ptolemy.domains.fsm.kernel.*;
-import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-import ptolemy.copernicus.kernel.FastForwardFlowAnalysis;
-
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConstVariableModelAnalysis

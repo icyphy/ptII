@@ -31,13 +31,16 @@ DDE feedforward topologies.
 
 package ptolemy.domains.dde.demo.HelloWorld;
 
-import ptolemy.domains.dde.kernel.*;
-import ptolemy.domains.dde.lib.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import ptolemy.data.*;
+import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.Clock;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.dde.kernel.DDEDirector;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////////////
 //// HelloWorld

@@ -28,20 +28,18 @@
 
 package ptolemy.copernicus.c;
 
-import soot.SootClass;
-import soot.SootMethod;
-import soot.SootField;
-import soot.Scene;
-import soot.Modifier;
-
 import soot.ArrayType;
+import soot.Modifier;
+import soot.Scene;
+import soot.SootClass;
+import soot.SootField;
+import soot.SootMethod;
 import soot.Type;
 
-
-import java.util.List;
-import java.util.Iterator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// ClassStructureGenerator

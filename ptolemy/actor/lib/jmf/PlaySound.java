@@ -30,7 +30,19 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jmf;
 
-import java.io.File;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.IntRangeParameter;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.FileAttribute;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 import java.io.IOException;
 
 import javax.media.Controller;
@@ -41,17 +53,6 @@ import javax.media.Manager;
 import javax.media.MediaException;
 import javax.media.Player;
 import javax.media.Time;
-
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.actor.parameters.IntRangeParameter;
-import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlaySound

@@ -30,13 +30,11 @@
 package ptolemy.copernicus.shallow;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedIORelation;
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.ComponentEntity;
@@ -46,37 +44,42 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
 
-import soot.*;
-import soot.jimple.*;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
-import soot.jimple.toolkits.invoke.SiteInliner;
-import soot.jimple.toolkits.invoke.StaticInliner;
-import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
-import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
-import soot.jimple.toolkits.scalar.CopyPropagator;
-import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
-import soot.jimple.toolkits.scalar.Evaluator;
+import soot.Body;
+import soot.Hierarchy;
+import soot.Local;
+import soot.Modifier;
+import soot.Options;
+import soot.RefType;
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+import soot.SootMethod;
+import soot.Type;
+import soot.Unit;
+import soot.Value;
+import soot.ValueBox;
+import soot.jimple.IntConstant;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.SpecialInvokeExpr;
+import soot.jimple.StringConstant;
 import soot.jimple.toolkits.scalar.LocalNameStandardizer;
-import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
 import soot.toolkits.scalar.LocalSplitter;
-
-import soot.dava.*;
-import soot.toolkits.graph.*;
-import soot.util.*;
+import soot.util.Chain;
 
 import java.lang.reflect.Constructor;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 
 //////////////////////////////////////////////////////////////////////////

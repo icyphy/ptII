@@ -31,12 +31,10 @@
 package ptolemy.domains.sr.kernel;
 
 import ptolemy.actor.AbstractReceiver;
-import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
 //// SRReceiver

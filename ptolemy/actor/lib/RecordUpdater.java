@@ -30,7 +30,6 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.actor.AtomicActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
@@ -44,9 +43,9 @@ import ptolemy.data.type.Type;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -54,7 +53,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 
 //////////////////////////////////////////////////////////////////////////
 //// RecordUpdater

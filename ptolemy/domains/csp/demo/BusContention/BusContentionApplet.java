@@ -30,31 +30,46 @@
 
 package ptolemy.domains.csp.demo.BusContention;
 
-import diva.graph.*;
-import diva.graph.basic.*;
-import diva.graph.layout.*;
-import diva.canvas.*;
-import diva.canvas.toolbox.*;
-import diva.canvas.connector.*;
-import diva.canvas.interactor.*;
+import diva.canvas.Figure;
+import diva.canvas.Site;
+import diva.canvas.connector.Arrowhead;
+import diva.canvas.connector.Connector;
+import diva.canvas.connector.StraightConnector;
+import diva.canvas.interactor.SelectionDragger;
+import diva.canvas.interactor.SelectionInteractor;
+import diva.canvas.toolbox.BasicEllipse;
+import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.BasicRectangle;
+import diva.canvas.toolbox.LabelWrapper;
+import diva.graph.BasicEdgeController;
+import diva.graph.BasicNodeController;
+import diva.graph.EdgeRenderer;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
+import diva.graph.JGraph;
+import diva.graph.NodeRenderer;
+import diva.graph.basic.BasicGraphController;
+import diva.graph.basic.BasicGraphModel;
+import diva.graph.basic.BasicLayoutTarget;
+import diva.graph.layout.LayoutTarget;
+import diva.graph.layout.LevelLayout;
 
-import ptolemy.actor.*;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.PtolemyApplet;
-import ptolemy.actor.process.*;
-import ptolemy.data.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.domains.csp.lib.*;
-import ptolemy.domains.csp.kernel.*;
+import ptolemy.domains.csp.kernel.CSPDirector;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.util.DebugEvent;
+import ptolemy.kernel.util.DebugListener;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
+import java.util.HashMap;
+
 import javax.swing.JPanel;
-import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;

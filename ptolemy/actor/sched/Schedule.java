@@ -31,14 +31,13 @@
 package ptolemy.actor.sched;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.AtomicActor;
 import ptolemy.kernel.util.InternalErrorException;
 
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Schedule

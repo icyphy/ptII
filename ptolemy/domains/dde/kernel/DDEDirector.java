@@ -32,18 +32,26 @@ to the DDE model of computation.
 
 package ptolemy.domains.dde.kernel;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.process.*;
-import ptolemy.data.*;
+import ptolemy.actor.Actor;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.process.CompositeProcessDirector;
+import ptolemy.actor.process.ProcessDirector;
+import ptolemy.actor.process.ProcessReceiver;
+import ptolemy.actor.process.ProcessThread;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
-import java.util.Hashtable;
-import java.util.LinkedList;
-import java.util.Comparator;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEDirector

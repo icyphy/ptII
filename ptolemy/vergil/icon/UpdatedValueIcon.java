@@ -35,13 +35,18 @@ import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.LabelFigure;
 
 import ptolemy.data.IntToken;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+
+import java.awt.Color;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.geom.Rectangle2D;
 
 //////////////////////////////////////////////////////////////////////////
 //// UpdatedValueIcon

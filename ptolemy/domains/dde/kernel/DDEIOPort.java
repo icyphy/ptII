@@ -31,10 +31,13 @@
 
 package ptolemy.domains.dde.kernel;
 
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.data.*;
+import ptolemy.actor.NoRoomException;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.Token;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEIOPort

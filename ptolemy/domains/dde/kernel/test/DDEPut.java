@@ -30,12 +30,12 @@
 
 package ptolemy.domains.dde.kernel.test;
 
-import ptolemy.domains.dde.kernel.*;
-import ptolemy.actor.*;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -32,13 +32,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.copernicus.c;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Collection;
 import java.util.HashSet;
-
-import soot.Scene;
-import soot.SootClass;
+import java.util.Iterator;
 
 /** A class that generates the makefile for the given class. The generated file
     has the name (class).make.

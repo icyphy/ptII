@@ -37,23 +37,13 @@ package ptolemy.actor.gui;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
-import ptolemy.actor.Director;
-import ptolemy.gui.CancelException;
-import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Documentation;
 
-// Java imports
-import javax.swing.JOptionPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.net.URL;
-import java.util.Vector;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModelFrame

@@ -32,7 +32,8 @@ package ptolemy.actor.lib.conversions;
 
 import ptolemy.actor.lib.Transformer;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Converter

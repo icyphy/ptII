@@ -31,10 +31,9 @@
 package ptolemy.actor.lib.logic;
 
 import ptolemy.actor.lib.Transformer;
-import ptolemy.data.Token;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;

@@ -32,25 +32,35 @@ in expressions.
 
 package ptolemy.data.expr;
 
-import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
-import ptolemy.data.type.*;
-import ptolemy.graph.Inequality; // For javadoc
-import ptolemy.graph.*;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.StructuredType;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeConstant;
+import ptolemy.data.type.TypeLattice;
+import ptolemy.data.type.Typeable;
+import ptolemy.graph.CPO;
+import ptolemy.graph.Inequality;
+import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedList;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.ValueListener;
+import ptolemy.kernel.util.Workspace;
 
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Map;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-import java.io.Writer;
-import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Variable

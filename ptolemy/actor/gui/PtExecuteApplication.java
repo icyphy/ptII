@@ -37,10 +37,8 @@ import ptolemy.actor.Manager;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 
-// Java imports
 import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;

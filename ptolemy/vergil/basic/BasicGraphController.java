@@ -31,11 +31,7 @@
 package ptolemy.vergil.basic;
 
 import diva.canvas.Figure;
-import diva.canvas.JCanvas;
-import diva.canvas.TransformContext;
 import diva.canvas.connector.Connector;
-import diva.canvas.event.EventLayer;
-import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionRenderer;
 import diva.graph.AbstractGraphController;
 import diva.graph.GraphController;
@@ -48,22 +44,25 @@ import diva.graph.NodeRenderer;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.FigureIcon;
 import diva.gui.toolbox.MenuCreator;
-import diva.gui.toolbox.MenuFactory;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.DebugEvent;
+import ptolemy.kernel.util.DebugListener;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.ValueListener;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.actor.ExternalIOPortController;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import ptolemy.vergil.toolbox.SnapConstraint;
-import ptolemy.vergil.toolbox.FigureAction.SourceType;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;

@@ -30,13 +30,16 @@
 
 package ptolemy.kernel.util.test;
 
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.ComponentRelation;
-import ptolemy.actor.*;
-import ptolemy.domains.de.kernel.*;
+import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.lib.Clock;
+import ptolemy.actor.lib.Recorder;
+import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.lib.Merge;
-import ptolemy.actor.lib.*;
-import ptolemy.data.*;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import java.util.Collections;
 import java.util.Enumeration;

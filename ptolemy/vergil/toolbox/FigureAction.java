@@ -42,16 +42,15 @@ import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.gui.toolbox.JContextMenu;
 
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.NamedObj;
+
+import java.awt.Component;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
-
-import java.awt.Component;
-import java.awt.Frame;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
 
 //////////////////////////////////////////////////////////////////////////
 //// FigureAction

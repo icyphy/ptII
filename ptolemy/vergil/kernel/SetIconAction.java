@@ -30,18 +30,18 @@
 
 package ptolemy.vergil.kernel;
 
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.toolbox.FigureAction;
 
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 

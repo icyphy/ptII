@@ -28,26 +28,23 @@
 
 package ptolemy.copernicus.c;
 
+import soot.ArrayType;
+import soot.Local;
+import soot.RefType;
 import soot.SootClass;
 import soot.SootMethod;
-import soot.Type;
-import soot.ArrayType;
-import soot.RefType;
-import soot.Local;
-import soot.Scene;
-import soot.Unit;
 import soot.Trap;
-
-
+import soot.Type;
+import soot.Unit;
 import soot.jimple.GotoStmt;
 import soot.jimple.IfStmt;
 import soot.jimple.JimpleBody;
-import soot.jimple.TableSwitchStmt;
 import soot.jimple.LookupSwitchStmt;
+import soot.jimple.TableSwitchStmt;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.HashMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// MethodCodeGenerator

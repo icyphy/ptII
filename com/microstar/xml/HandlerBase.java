@@ -4,9 +4,6 @@
 
 package com.microstar.xml;
 
-import com.microstar.xml.XmlHandler;
-import com.microstar.xml.XmlException;
-import java.io.Reader;
 
 
 /**

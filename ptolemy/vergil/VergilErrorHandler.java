@@ -31,15 +31,17 @@
 package ptolemy.vergil;
 
 import ptolemy.gui.GraphicalMessageHandler;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.ErrorHandler;
 import ptolemy.util.StringUtilities;
+
+import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import java.awt.Component;
-import java.awt.Dimension;
 
 //////////////////////////////////////////////////////////////////////////
 //// VergilErrorHandler

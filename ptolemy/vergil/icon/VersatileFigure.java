@@ -7,32 +7,22 @@
  */
 package ptolemy.vergil.icon;
 
-import diva.canvas.Figure;
 import diva.canvas.AbstractFigure;
 import diva.canvas.interactor.ShapedFigure;
+import diva.util.java2d.PaintedObject;
+import diva.util.java2d.PaintedPath;
+import diva.util.java2d.PaintedShape;
+import diva.util.java2d.PaintedString;
+import diva.util.java2d.ShapeUtilities;
 
 import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Shape;
-
-import java.awt.geom.PathIterator;
-import java.awt.geom.GeneralPath;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.RectangularShape;
 import java.awt.geom.Rectangle2D;
-
-import diva.util.java2d.AbstractPaintedGraphic;
-import diva.util.java2d.PaintedGraphic;
-import diva.util.java2d.PaintedShape;
-import diva.util.java2d.PaintedPath;
-import diva.util.java2d.PaintedObject;
-import diva.util.java2d.PaintedString;
-import diva.util.java2d.ShapeUtilities;
 
 /** A VersatileFigure is one that contains a single instance of
  *  Shape.  The figure can have a fill with optional compositing (for

@@ -5,8 +5,9 @@
 
 package com.microstar.xml.demo;
 
-import com.microstar.xml.XmlParser;
 import java.util.Enumeration;
+
+import com.microstar.xml.XmlParser;
 
 
 /**

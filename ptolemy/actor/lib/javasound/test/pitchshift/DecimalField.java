@@ -29,10 +29,11 @@
 */
 package ptolemy.actor.lib.javasound.test.pitchshift;
 
-import javax.swing.*;
-import javax.swing.text.*;
 import java.awt.Toolkit;
-import java.text.*;
+import java.text.NumberFormat;
+import java.text.ParseException;
+
+import javax.swing.JTextField;
 
 //////////////////////////////////////////////////////////////////////////
 //// DecimalField

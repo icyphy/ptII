@@ -32,11 +32,9 @@ Don't use to represent pure events.
 
 package ptolemy.data;
 
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.data.type.TypeLattice;
-import ptolemy.graph.CPO;
+import ptolemy.kernel.util.IllegalActionException;
 
 import java.io.Serializable;
 

@@ -31,7 +31,6 @@
 
 package ptolemy.math;
 
-import java.math.BigInteger;
 import java.util.StringTokenizer;
 
 /**

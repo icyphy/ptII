@@ -30,7 +30,6 @@
 package ptolemy.copernicus.gui;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Manager;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.Effigy;
@@ -40,59 +39,37 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.copernicus.kernel.GeneratorAttribute;
-//import ptolemy.copernicus.c.Main;
-//import ptolemy.copernicus.java.Main;
-//import ptolemy.copernicus.jhdl.Main;
-
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.expr.Variable;
 import ptolemy.gui.JTextAreaExec;
 import ptolemy.gui.MessageHandler;
-import ptolemy.gui.SwingWorker;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.StringUtilities;
 
-import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
-import java.util.Iterator;
-import java.util.List;
-import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// GeneratorTableau

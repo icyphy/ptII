@@ -31,20 +31,18 @@
 package ptolemy.domains.csp.demo.DiningPhilosophers;
 
 // Ptolemy imports.
-import ptolemy.domains.csp.kernel.*;
-import ptolemy.domains.csp.demo.DiningPhilosophers.*;
-import ptolemy.actor.*;
-import ptolemy.actor.process.TerminateProcessException;
+import ptolemy.actor.NoTokenException;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.domains.csp.kernel.CSPActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.Token;
-import ptolemy.data.IntToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
 
-// Java imports.
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;

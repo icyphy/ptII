@@ -30,12 +30,12 @@
 
 package ptolemy.actor.gui;
 
-import java.awt.Color;
-
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
+
+import java.awt.Color;
 
 //////////////////////////////////////////////////////////////////////////
 //// ColorAttribute

@@ -31,7 +31,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.gui;
 
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.plot.Plot;
 
 //////////////////////////////////////////////////////////////////////////

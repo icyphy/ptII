@@ -31,15 +31,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jai;
 
+import ptolemy.actor.lib.Transformer;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 import java.awt.image.renderable.ParameterBlock;
 
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
-
-import ptolemy.actor.lib.Transformer;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// JAIIDCT

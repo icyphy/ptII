@@ -30,13 +30,12 @@
 package ptolemy.actor.gui;
 
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 import java.net.URL;
 import java.net.URLConnection;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.Document;
 
 //////////////////////////////////////////////////////////////////////////
 //// HTMLEffigyFactory

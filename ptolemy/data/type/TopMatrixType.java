@@ -30,12 +30,13 @@
 
 package ptolemy.data.type;
 
-import java.io.Serializable;
-
+import ptolemy.data.MatrixToken;
+import ptolemy.data.Token;
+import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.graph.CPO;
-import ptolemy.data.*;
+
+import java.io.Serializable;
 
 //////////////////////////////////////////////////////////////////////////
 //// TopMatrixType

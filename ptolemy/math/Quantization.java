@@ -33,7 +33,6 @@ package ptolemy.math;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.StringTokenizer;
 
 /**
 The Quantization class defines the mapping of numeric values with unlimited

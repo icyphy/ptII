@@ -33,23 +33,17 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.TableauFrame;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.gui.MessageHandler;
 import ptolemy.gui.ShellInterpreter;
 import ptolemy.gui.ShellTextArea;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
-import java.awt.Panel;
 import java.net.URL;
+
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-
-import java.util.Enumeration;
 
 import org.python.core.PyObject;
 import org.python.util.PythonInterpreter;

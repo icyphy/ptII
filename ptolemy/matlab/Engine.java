@@ -32,23 +32,22 @@
 */
 
 package ptolemy.matlab;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.data.Token;
-import ptolemy.data.ScalarToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.ComplexToken;
-import ptolemy.data.MatrixToken;
-import ptolemy.data.ComplexMatrixToken;
-import ptolemy.data.DoubleMatrixToken;
-import ptolemy.data.IntMatrixToken;
-import ptolemy.data.RecordToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.ComplexMatrixToken;
+import ptolemy.data.ComplexToken;
+import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntMatrixToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.MatrixToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.ScalarToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.UtilityFunctions;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Complex;
-import ptolemy.math.ComplexMatrixMath;
 
 //////////////////////////////////////////////////////////////////////////
 //// Engine

@@ -33,8 +33,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.plot.compat;
 
-import ptolemy.plot.Plot;
 import ptolemy.plot.CmdLineArgException;
+import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 
 import java.io.BufferedInputStream;
@@ -46,9 +46,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
-import java.util.Vector;
-import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Vector;
 
 //////////////////////////////////////////////////////////////////////////
 //// PxgraphParser

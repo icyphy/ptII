@@ -32,7 +32,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jai;
 
-import com.sun.media.jai.codec.FileSeekableStream;
+import ptolemy.actor.lib.Source;
+import ptolemy.data.StringToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.FileAttribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,14 +46,7 @@ import java.net.URL;
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
 
-import ptolemy.actor.lib.Source;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.*;
+import com.sun.media.jai.codec.FileSeekableStream;
 
 //////////////////////////////////////////////////////////////////////////
 //// JAIImageReader

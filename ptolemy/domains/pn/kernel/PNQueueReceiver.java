@@ -32,16 +32,13 @@
 package ptolemy.domains.pn.kernel;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.QueueReceiver;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.process.BoundaryDetector;
 import ptolemy.actor.process.Branch;
 import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Workspace;
 

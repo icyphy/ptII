@@ -29,23 +29,15 @@
 */
 package ptolemy.data.expr;
 
+import ptolemy.data.FunctionToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
 import java.util.HashMap;
-import java.util.StringTokenizer;
-
-import ptolemy.data.*;
-import ptolemy.data.type.*;
-import ptolemy.kernel.util.*;
+import java.util.List;
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionFunction

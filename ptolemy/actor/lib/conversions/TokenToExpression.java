@@ -31,10 +31,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// TokenToExpression

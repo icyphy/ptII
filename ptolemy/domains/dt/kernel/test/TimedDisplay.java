@@ -29,28 +29,18 @@
 
 package ptolemy.domains.dt.kernel.test;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
+import ptolemy.actor.Director;
+import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.lib.SequenceActor;
+import ptolemy.actor.lib.gui.Display;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.actor.*;
-import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.lib.gui.*;
-import ptolemy.actor.lib.SequenceActor;
-import ptolemy.actor.lib.Sink;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import java.awt.Container;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import javax.swing.JTextArea;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JScrollBar;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
+
 import javax.swing.text.BadLocationException;
 
 

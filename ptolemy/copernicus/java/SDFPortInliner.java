@@ -30,39 +30,51 @@
 
 package ptolemy.copernicus.java;
 
-import soot.*;
-import soot.jimple.*;
-import soot.jimple.toolkits.invoke.SiteInliner;
-import soot.jimple.toolkits.invoke.StaticInliner;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
-import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
-import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
-import soot.jimple.toolkits.scalar.CopyPropagator;
-import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
-import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
-import soot.jimple.toolkits.scalar.Evaluator;
-import soot.jimple.toolkits.scalar.LocalNameStandardizer;
-
-import soot.toolkits.graph.*;
-import soot.toolkits.scalar.*;
-import soot.dava.*;
-import soot.util.*;
-import java.io.*;
-import java.util.*;
-
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.moml.*;
-import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.data.*;
-import ptolemy.data.type.Typeable;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
-
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedIORelation;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Variable;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Relation;
 import ptolemy.util.StringUtilities;
+
+import soot.ArrayType;
+import soot.BaseType;
+import soot.Body;
+import soot.IntType;
+import soot.Local;
+import soot.Modifier;
+import soot.Scene;
+import soot.SootClass;
+import soot.SootField;
+import soot.SootMethod;
+import soot.Type;
+import soot.Unit;
+import soot.Value;
+import soot.ValueBox;
+import soot.VoidType;
+import soot.jimple.DefinitionStmt;
+import soot.jimple.Expr;
+import soot.jimple.IntConstant;
+import soot.jimple.InvokeExpr;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.Stmt;
+import soot.jimple.toolkits.scalar.Evaluator;
+import soot.util.Chain;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFPortInliner

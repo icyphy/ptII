@@ -31,8 +31,10 @@
 
 package ptolemy.actor;
 
-import ptolemy.kernel.CompositeEntity;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
@@ -42,16 +44,13 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
 
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Collections;
-
-import java.util.Enumeration;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// IORelation

@@ -30,14 +30,14 @@
 */
 package ptolemy.domains.gr.kernel;
 
-import java.io.Serializable;
+import diva.canvas.Figure;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
-import ptolemy.data.type.*;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
-import diva.canvas.Figure;
+import java.io.Serializable;
 
 //////////////////////////////////////////////////////////////////////////
 //// Scene2DToken

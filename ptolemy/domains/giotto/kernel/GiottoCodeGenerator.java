@@ -32,39 +32,19 @@ package ptolemy.domains.giotto.kernel;
 
 // Ptolemy imports.
 import ptolemy.actor.Actor;
-import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.EditorFactory;
-import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.TableauFrame;
-import ptolemy.actor.gui.TextEditor;
-import ptolemy.actor.gui.TextEffigy;
-import ptolemy.actor.Manager;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Manager;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.sched.Scheduler;
-import ptolemy.actor.NoTokenException;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.EditorFactory;
+import ptolemy.actor.gui.TableauFrame;
+import ptolemy.actor.gui.TextEffigy;
 import ptolemy.data.IntToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.ct.kernel.CTDirector;
-import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.kernel.FSMDirector;
-import ptolemy.domains.fsm.kernel.State;
-import ptolemy.domains.fsm.kernel.Transition;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -73,15 +53,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
-import ptolemy.kernel.util.StreamListener;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.StringUtilities;
-import ptolemy.kernel.util.Workspace;
 
-// Java imports.
 import java.awt.Frame;
-import java.io.IOException;
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// GiottoCodeGenerator

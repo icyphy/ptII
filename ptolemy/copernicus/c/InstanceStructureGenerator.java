@@ -28,11 +28,10 @@
 
 package ptolemy.copernicus.c;
 
+import soot.ArrayType;
+import soot.Modifier;
 import soot.SootClass;
 import soot.SootField;
-import soot.Modifier;
-
-import soot.ArrayType;
 
 import java.util.HashMap;
 import java.util.HashSet;

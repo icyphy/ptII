@@ -30,28 +30,22 @@
 
 package ptolemy.domains.pn.kernel;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.QueueReceiver;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.process.BoundaryDetector;
 import ptolemy.actor.process.CompositeProcessDirector;
-import ptolemy.actor.process.ProcessDirector;
 import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.pn.kernel.event.PNProcessListener;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
+import java.util.Iterator;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNDirector

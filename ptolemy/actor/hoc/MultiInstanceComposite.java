@@ -36,6 +36,8 @@ package ptolemy.actor.hoc;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ScopeExtendingAttribute;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
@@ -43,12 +45,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.moml.MoMLChangeRequest;
 
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 // Note: the (at least) single-space is needed in the javadoc below to
 // protect emacs' comment text formatting from a "{@link..." appearing

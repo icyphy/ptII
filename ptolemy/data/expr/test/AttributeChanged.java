@@ -29,10 +29,12 @@
 */
 
 package ptolemy.data.expr.test;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// AttributeChanged

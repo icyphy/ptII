@@ -29,28 +29,15 @@
 
 package ptolemy.domains.sdf.demo.HTVQ;
 
-import java.applet.Applet;
-import java.awt.BorderLayout;
-import java.awt.event.*;
-import java.util.Enumeration;
-import java.lang.Math;
-import java.net.URL;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import ptolemy.actor.*;
-import ptolemy.actor.gui.*;
-import ptolemy.actor.lib.*;
+import ptolemy.actor.gui.MoMLApplet;
 import ptolemy.actor.lib.gui.Display;
-import ptolemy.domains.sdf.demo.*;
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.domains.sdf.lib.*;
-import ptolemy.domains.sdf.lib.vq.*;
-import ptolemy.plot.*;
+import ptolemy.domains.sdf.lib.vq.ImageDisplay;
+import ptolemy.kernel.CompositeEntity;
+
+import java.awt.BorderLayout;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
 //// HTVQApplet

@@ -29,8 +29,10 @@
 */
 package ptolemy.actor.lib.javasound.test.pitchshift;
 
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.BoundedRangeModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.EventListenerList;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConverterRangeModel

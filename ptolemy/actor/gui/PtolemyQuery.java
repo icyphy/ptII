@@ -31,17 +31,6 @@
 
 package ptolemy.actor.gui;
 
-import java.awt.Window;
-import java.io.File;
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.SwingUtilities;
-
 import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.actor.parameters.IntRangeParameter;
 import ptolemy.data.BooleanToken;
@@ -68,6 +57,17 @@ import ptolemy.moml.ErrorHandler;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
+
+import java.awt.Window;
+import java.io.File;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyQuery

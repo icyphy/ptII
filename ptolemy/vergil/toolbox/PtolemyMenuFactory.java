@@ -32,10 +32,10 @@ package ptolemy.vergil.toolbox;
 
 import diva.canvas.Figure;
 import diva.graph.GraphController;
-import diva.graph.GraphModel;
 import diva.gui.toolbox.JContextMenu;
 import diva.gui.toolbox.MenuFactory;
-import ptolemy.kernel.util.*;
+
+import ptolemy.kernel.util.NamedObj;
 
 import java.util.Collections;
 import java.util.Iterator;

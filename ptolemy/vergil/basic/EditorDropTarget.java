@@ -30,27 +30,27 @@
 
 package ptolemy.vergil.basic;
 
-import diva.canvas.TransformContext;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
+
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.util.NamedObj.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.ImportAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.toolbox.PtolemyTransferable;
 import ptolemy.vergil.toolbox.SnapConstraint;
 
-import java.awt.Component;
-import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDragEvent;
@@ -58,9 +58,7 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.util.Iterator;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorDropTarget

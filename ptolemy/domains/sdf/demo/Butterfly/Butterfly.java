@@ -42,7 +42,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.Plot;
-import ptolemy.plot.PlotFrame;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -34,15 +34,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.copernicus.c;
 
+import soot.SootClass;
+import soot.SootMethod;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.HashSet;
-import java.lang.reflect.Method;
-
-import soot.SootClass;
-import soot.SootMethod;
-import soot.Scene;
 
 /** A class that extracts ordered lists of method declarations
    with an ordering convention that facilitates translation

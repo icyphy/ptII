@@ -33,7 +33,6 @@ package ptolemy.vergil.toolbox;
 import diva.canvas.interactor.PointConstraint;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 
 /**
 This constraint ensures that a point is a multiple of a constant

@@ -30,12 +30,12 @@
 
 package ptolemy.domains.pn.kernel.test;
 
-import java.io.Serializable;
-
-import ptolemy.actor.*;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
 import ptolemy.data.IntToken;
-import ptolemy.kernel.util.*;
-import ptolemy.domains.pn.kernel.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// TestDirector

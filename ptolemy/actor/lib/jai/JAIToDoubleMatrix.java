@@ -31,16 +31,17 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jai;
 
-import java.awt.image.DataBuffer;
-import java.awt.image.Raster;
-
-import javax.media.jai.RenderedOp;
-
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
+import java.awt.image.DataBuffer;
+import java.awt.image.Raster;
+
+import javax.media.jai.RenderedOp;
 
 //////////////////////////////////////////////////////////////////////////
 //// JAIToDoubleMatrix

@@ -30,13 +30,20 @@
 
 package ptolemy.vergil.basic;
 
+import diva.gui.GUIUtilities;
+
 import ptolemy.actor.gui.Tableau;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
 import ptolemy.moml.LibraryAttribute;
 
-import diva.gui.GUIUtilities;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.net.URL;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -44,21 +51,7 @@ import javax.swing.ActionMap;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExtendedGraphFrame

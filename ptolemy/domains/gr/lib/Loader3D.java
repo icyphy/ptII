@@ -29,18 +29,20 @@
 
 package ptolemy.domains.gr.lib;
 
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
+import java.io.FileNotFoundException;
+
+import javax.media.j3d.Node;
+
 import com.sun.j3d.loaders.IncorrectFormatException;
 import com.sun.j3d.loaders.ParsingErrorException;
 import com.sun.j3d.loaders.Scene;
 import com.sun.j3d.loaders.objectfile.ObjectFile;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-
-import javax.media.j3d.Node;
-import java.io.FileNotFoundException;
 
 /**
 @author C. Fong

@@ -32,8 +32,6 @@
 package ptolemy.data.type;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.data.expr.Variable;
 
 //////////////////////////////////////////////////////////////////////////
 //// StructuredType

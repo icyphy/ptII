@@ -31,18 +31,16 @@
 */
 
 package ptolemy.matlab.test;
-import ptolemy.matlab.Engine;
-import ptolemy.math.Complex;
-import ptolemy.data.Token;
-import ptolemy.data.IntToken;
-import ptolemy.data.ComplexToken;
-import ptolemy.data.DoubleToken;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.ComplexMatrixToken;
 import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.math.Complex;
+import ptolemy.matlab.Engine;
 
 ///////////////////////////////////////////////////////////////////////////
 //// TestEngine

@@ -30,11 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.gui;
 
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.gui.PlotEffigy;
 import ptolemy.actor.gui.PlotTableau;
@@ -43,23 +39,23 @@ import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Configurable;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
-import ptolemy.plot.PlotFrame;
 import ptolemy.plot.plotml.PlotMLParser;
 
-import javax.swing.SwingUtilities;
 import java.awt.Container;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -68,6 +64,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotterBase

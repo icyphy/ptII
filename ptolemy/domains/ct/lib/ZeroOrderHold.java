@@ -30,7 +30,6 @@
 
 package ptolemy.domains.ct.lib;
 
-import ptolemy.actor.Director;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;

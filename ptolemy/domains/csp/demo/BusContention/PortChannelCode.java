@@ -31,12 +31,7 @@ associated with contenders in a resource contention scheme.
 
 package ptolemy.domains.csp.demo.BusContention;
 
-import ptolemy.domains.csp.lib.*;
-import ptolemy.domains.csp.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.IllegalActionException;
-import java.util.Hashtable;
+import ptolemy.actor.IOPort;
 
 
 //////////////////////////////////////////////////////////////////////////

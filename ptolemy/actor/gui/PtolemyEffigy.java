@@ -29,25 +29,25 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.*;
 import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.ParserAttribute;
 import ptolemy.util.StringUtilities;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.List;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyEffigy

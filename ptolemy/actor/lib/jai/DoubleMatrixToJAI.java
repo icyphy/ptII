@@ -31,12 +31,19 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jai;
 
+import ptolemy.actor.lib.Transformer;
+import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 import java.awt.Point;
 import java.awt.color.ColorSpace;
 import java.awt.color.ICC_ColorSpace;
 import java.awt.color.ICC_ProfileGray;
-import java.awt.image.DataBuffer;
 import java.awt.image.ComponentColorModel;
+import java.awt.image.DataBuffer;
 import java.awt.image.Raster;
 import java.awt.image.renderable.ParameterBlock;
 
@@ -45,12 +52,6 @@ import javax.media.jai.DataBufferDouble;
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.TiledImage;
-
-import ptolemy.actor.lib.Transformer;
-import ptolemy.data.DoubleMatrixToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleMatrixToJAI

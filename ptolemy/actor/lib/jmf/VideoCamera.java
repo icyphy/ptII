@@ -65,36 +65,34 @@ package ptolemy.actor.lib.jmf;
 // FIXME: Replace with per-class imports.
 //import java.awt.*;
 //import javax.media.*;
-import javax.media.ControllerListener;
-import javax.media.ControllerEvent;
-import javax.media.Buffer;
-import javax.media.Processor;
-import javax.media.Codec;
-import javax.media.CaptureDeviceManager;
-import javax.media.CaptureDeviceInfo;
-import javax.media.MediaLocator;
-import javax.media.Manager;
-import javax.media.UnsupportedPlugInException;
-import javax.media.ConfigureCompleteEvent;
-import javax.media.RealizeCompleteEvent;
-import javax.media.PrefetchCompleteEvent;
-import javax.media.ResourceUnavailableEvent;
-import javax.media.EndOfMediaEvent;
-
-import javax.media.control.TrackControl;
-import javax.media.Format;
-import javax.media.format.VideoFormat;
-import javax.media.format.YUVFormat;
-
 import ptolemy.actor.lib.Source;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import java.util.Iterator;
 import java.util.Vector;
+
+import javax.media.Buffer;
+import javax.media.CaptureDeviceInfo;
+import javax.media.CaptureDeviceManager;
+import javax.media.Codec;
+import javax.media.ConfigureCompleteEvent;
+import javax.media.ControllerEvent;
+import javax.media.ControllerListener;
+import javax.media.EndOfMediaEvent;
+import javax.media.Format;
+import javax.media.Manager;
+import javax.media.MediaLocator;
+import javax.media.PrefetchCompleteEvent;
+import javax.media.Processor;
+import javax.media.RealizeCompleteEvent;
+import javax.media.ResourceUnavailableEvent;
+import javax.media.UnsupportedPlugInException;
+import javax.media.control.TrackControl;
+import javax.media.format.VideoFormat;
+import javax.media.format.YUVFormat;
 
 
 //////////////////////////////////////////////////////////////////////////

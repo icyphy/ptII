@@ -33,31 +33,22 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.TableauFrame;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.gui.MessageHandler;
 import ptolemy.gui.ShellInterpreter;
 import ptolemy.gui.ShellTextArea;
-import ptolemy.gui.StreamExec;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
-import java.awt.Panel;
-import java.net.URL;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
+
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-
-import java.util.Enumeration;
-import java.util.List;
-import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExecShellTableau

@@ -29,12 +29,15 @@
 */
 
 package ptolemy.data;
-import ptolemy.kernel.util.*;
-import ptolemy.graph.CPO;
-import ptolemy.math.LongMatrixMath;
-import ptolemy.data.type.*;
-import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeLattice;
+import ptolemy.graph.CPO;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.math.LongMatrixMath;
 
 //////////////////////////////////////////////////////////////////////////
 //// LongMatrixToken

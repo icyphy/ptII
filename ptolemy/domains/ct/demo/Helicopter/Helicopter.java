@@ -30,20 +30,34 @@
 
 package ptolemy.domains.ct.demo.Helicopter;
 
-import ptolemy.domains.ct.kernel.*;
-import ptolemy.domains.ct.kernel.util.*;
-import ptolemy.domains.ct.lib.*;
-import ptolemy.domains.fsm.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.actor.gui.*;
-import ptolemy.gui.*;
-import ptolemy.actor.lib.*;
-import ptolemy.actor.lib.gui.*;
-import ptolemy.actor.util.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedIORelation;
+import ptolemy.actor.lib.Clock;
+import ptolemy.actor.lib.Scale;
+import ptolemy.actor.lib.gui.TimedPlotter;
+import ptolemy.actor.lib.gui.XYPlotter;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.ct.kernel.CTCompositeActor;
+import ptolemy.domains.ct.kernel.CTEmbeddedDirector;
+import ptolemy.domains.ct.kernel.CTMultiSolverDirector;
+import ptolemy.domains.ct.lib.Integrator;
+import ptolemy.domains.ct.lib.ThresholdMonitor;
+import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.HSDirector;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.Plot;
 
 import java.util.Iterator;

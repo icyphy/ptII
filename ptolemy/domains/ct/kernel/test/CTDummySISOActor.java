@@ -28,12 +28,12 @@
 
 */
 package ptolemy.domains.ct.kernel.test;
-import ptolemy.domains.ct.kernel.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.data.*;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTDummyActor

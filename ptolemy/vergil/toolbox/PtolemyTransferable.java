@@ -38,7 +38,6 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;

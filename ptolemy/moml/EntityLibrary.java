@@ -30,21 +30,24 @@
 
 package ptolemy.moml;
 
-import ptolemy.actor.Director;
-import ptolemy.actor.TypedCompositeActor;
+import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.gui.MessageHandler;
-import java.io.InputStream;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Configurable;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
+
 import java.io.IOException;
-import java.io.Writer;
+import java.io.InputStream;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.net.URL;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 

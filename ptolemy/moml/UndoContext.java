@@ -36,10 +36,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Stack;
-import java.util.EmptyStackException;
 
 //////////////////////////////////////////////////////////////////////////
 //// UndoContext

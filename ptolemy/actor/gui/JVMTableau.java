@@ -34,17 +34,17 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.BorderLayout;
-import javax.swing.BorderFactory;
+import java.util.Enumeration;
+import java.util.Properties;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import java.util.Enumeration;
-import java.util.Properties;
 
 //////////////////////////////////////////////////////////////////////////
 //// JVMTableau

@@ -28,13 +28,9 @@
 package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.data.type.*;
-import ptolemy.kernel.util.*;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeFreeVariableCollector

@@ -29,29 +29,27 @@
 
 package ptolemy.copernicus.java;
 
-import soot.*;
-import soot.jimple.*;
+import ptolemy.copernicus.kernel.MustAliasAnalysis;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.copernicus.kernel.SootUtilities;
+
+import soot.Local;
+import soot.RefType;
+import soot.SootMethod;
+import soot.Unit;
+import soot.Value;
+import soot.jimple.InstanceInvokeExpr;
+import soot.jimple.JimpleBody;
+import soot.jimple.NewExpr;
+import soot.jimple.Stmt;
+import soot.jimple.StringConstant;
 import soot.jimple.toolkits.scalar.Evaluator;
 import soot.toolkits.graph.CompleteUnitGraph;
-import soot.toolkits.graph.UnitGraph;
-import soot.toolkits.scalar.ForwardFlowAnalysis;
-import soot.toolkits.scalar.LocalDefs;
-import soot.toolkits.scalar.SimpleLocalDefs;
-import soot.toolkits.scalar.SimpleLocalUses;
 
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.TypeLattice;
-import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-import ptolemy.copernicus.kernel.MustAliasAnalysis;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// NamedObjConstructorAnalysis

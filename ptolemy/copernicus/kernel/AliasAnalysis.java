@@ -29,13 +29,11 @@
 
 package ptolemy.copernicus.kernel;
 
-import soot.*;
-import soot.jimple.*;
-import soot.toolkits.graph.CompleteUnitGraph;
-import soot.toolkits.graph.UnitGraph;
-import soot.toolkits.scalar.ForwardFlowAnalysis;
+import soot.Local;
+import soot.SootField;
+import soot.Unit;
 
-import java.util.*;
+import java.util.Set;
 
 /**
 An analysis that maps each local and field to the set of locals and

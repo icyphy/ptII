@@ -29,20 +29,10 @@
 */
 
 package ptolemy.domains.hde.kernel;
-import  ptolemy.domains.de.kernel.DEReceiver;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Workspace;
-
-import ptolemy.data.Token;
-import ptolemy.actor.AbstractReceiver;
-import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.NoTokenException;
-import ptolemy.actor.Director;
-
-import java.util.LinkedList;
+import ptolemy.data.Token;
+import ptolemy.domains.de.kernel.DEReceiver;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// HDEReceiver

@@ -29,20 +29,16 @@
 
 package ptolemy.actor.lib.io;
 
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.lib.Source;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.StringToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
+import ptolemy.kernel.util.Workspace;
 
-import java.io.IOException;
 import java.io.BufferedReader;
 
 //////////////////////////////////////////////////////////////////////////

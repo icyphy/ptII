@@ -31,12 +31,15 @@ production AND consumption.
 
 package ptolemy.domains.dde.kernel.test;
 
-import ptolemy.domains.dde.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.dde.kernel.DDEReceiver;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -31,12 +31,11 @@
 
 package ptolemy.data.type;
 
+import ptolemy.data.ArrayToken;
+import ptolemy.data.Token;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.graph.InequalityTerm;
-import ptolemy.data.Token;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.expr.Variable;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayType

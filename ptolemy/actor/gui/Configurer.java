@@ -31,23 +31,19 @@
 package ptolemy.actor.gui;
 
 // Ptolemy imports.
-import ptolemy.data.expr.Variable;
 import ptolemy.gui.CloseListener;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 
-// Java imports.
 import java.awt.Component;
 import java.awt.Window;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.LinkedList;
-import java.util.Map;
+import java.util.List;
+
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 

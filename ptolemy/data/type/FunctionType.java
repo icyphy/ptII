@@ -31,18 +31,12 @@
 
 package ptolemy.data.type;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.data.FunctionToken;
+import ptolemy.data.Token;
 import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
-import ptolemy.data.Token;
-import ptolemy.data.FunctionToken;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionType

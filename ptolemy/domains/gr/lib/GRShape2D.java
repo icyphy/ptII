@@ -29,22 +29,22 @@
 */
 package ptolemy.domains.gr.lib;
 
-import ptolemy.actor.IOPort;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
+import ptolemy.domains.gr.kernel.GRActor2D;
+import ptolemy.domains.gr.kernel.GRUtilities2D;
+import ptolemy.domains.gr.kernel.Scene2DToken;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.domains.gr.kernel.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
-import diva.canvas.*;
-import diva.canvas.toolbox.*;
-import java.awt.*;
+import java.awt.Paint;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRShape2D

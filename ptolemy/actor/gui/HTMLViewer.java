@@ -40,11 +40,11 @@ import java.awt.geom.AffineTransform;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
-import java.io.IOException;
 import java.io.File;
 import java.io.FileWriter;
-import java.net.URI;
+import java.io.IOException;
 import java.net.URL;
+
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkEvent;

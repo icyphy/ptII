@@ -37,12 +37,11 @@ package ptolemy.actor.gui;
 // Java imports
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.Point;
-import java.net.URL;
+import java.awt.Rectangle;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JOptionPane;
 import javax.swing.text.Document;
 
 //////////////////////////////////////////////////////////////////////////

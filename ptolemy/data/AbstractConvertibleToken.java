@@ -30,9 +30,9 @@
 
 package ptolemy.data;
 
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
+import ptolemy.kernel.util.IllegalActionException;
 
 import java.io.Serializable;
 

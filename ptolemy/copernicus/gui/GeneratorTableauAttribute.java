@@ -30,22 +30,18 @@
 
 package ptolemy.copernicus.gui;
 
-import ptolemy.actor.gui.style.CheckBoxStyle;
-import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.TableauFrame;
-import ptolemy.actor.gui.TextEditor;
-import ptolemy.actor.gui.TextEffigy;
 import ptolemy.actor.gui.EditorFactory;
+import ptolemy.actor.gui.TableauFrame;
+import ptolemy.actor.gui.TextEffigy;
 import ptolemy.copernicus.kernel.GeneratorAttribute;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.util.*;
-import ptolemy.moml.Documentation;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.SingletonAttribute;
 
 import java.awt.Frame;
-import java.io.File;
-import java.lang.reflect.Field;
 
 //////////////////////////////////////////////////////////////////////////
 //// GeneratorTableauAttribute

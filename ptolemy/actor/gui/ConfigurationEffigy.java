@@ -29,16 +29,10 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import java.awt.Dimension;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConfigurationEffigy

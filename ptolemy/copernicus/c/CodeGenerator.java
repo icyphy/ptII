@@ -33,15 +33,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.copernicus.c;
 
+import soot.ArrayType;
+import soot.RefType;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.Type;
-import soot.ArrayType;
-import soot.RefType;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 
 /** A base class for C code generators in Ptolemy II.

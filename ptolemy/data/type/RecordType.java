@@ -31,12 +31,12 @@
 
 package ptolemy.data.type;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.data.RecordToken;
+import ptolemy.data.Token;
 import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
-import ptolemy.data.Token;
-import ptolemy.data.RecordToken;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 import java.util.HashMap;
 import java.util.HashSet;

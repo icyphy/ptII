@@ -30,13 +30,14 @@
 package ptolemy.actor.sched;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.FiringEvent;
 import ptolemy.actor.Director;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.kernel.CompositeEntity;
+import ptolemy.actor.FiringEvent;
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.util.*;
-
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.DebugListener;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 import java.util.Iterator;
 

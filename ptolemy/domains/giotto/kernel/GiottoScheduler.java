@@ -37,18 +37,15 @@ import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.ListIterator;
 import java.util.Comparator;
+import java.util.List;
+import java.util.ListIterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// GiottoScheduler

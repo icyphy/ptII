@@ -30,16 +30,13 @@
 
 package ptolemy.data.type;
 
-import java.lang.reflect.Modifier;
-import java.util.Hashtable;
-import java.util.HashMap;
-import java.util.Map;
-import java.io.Serializable;
-
+import ptolemy.data.FixToken;
+import ptolemy.data.Token;
+import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.graph.CPO;
-import ptolemy.data.*;
+
+import java.io.Serializable;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixType

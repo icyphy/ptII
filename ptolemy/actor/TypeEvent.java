@@ -30,10 +30,10 @@
 
 package ptolemy.actor;
 
-import ptolemy.kernel.util.DebugEvent;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.Typeable;
+import ptolemy.kernel.util.DebugEvent;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeEvent

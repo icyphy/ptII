@@ -28,11 +28,11 @@
 
 package ptolemy.domains.gr.kernel;
 
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
 import ptolemy.domains.gr.lib.ViewScreen;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 import javax.media.j3d.Node;
 
 //////////////////////////////////////////////////////////////////////////

@@ -30,9 +30,9 @@
 package ptolemy.domains.fsm.kernel.test;
 
 import ptolemy.actor.gui.MoMLApplication;
-import ptolemy.moml.MoMLParser;
 import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
 import ptolemy.domains.fsm.kernel.State;
+import ptolemy.moml.MoMLParser;
 
 import java.net.URL;
 import java.util.Iterator;

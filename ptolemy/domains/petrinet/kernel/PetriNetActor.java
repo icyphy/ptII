@@ -31,54 +31,15 @@
 package ptolemy.domains.petrinet.kernel;
 
 
-import ptolemy.actor.TypedActor;
-import ptolemy.actor.lib.Transformer;
-import ptolemy.actor.Director;
-import ptolemy.actor.Manager;
-import ptolemy.actor.Receiver;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.IORelation;
-import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.TypedIORelation;
-import ptolemy.data.Token;
-import ptolemy.data.ScalarToken;
-import ptolemy.data.Token;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.Typeable;
-import ptolemy.data.type.BaseType;
-import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.ComponentPort;
-import ptolemy.kernel.ComponentRelation;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.InvalidStateException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// PetrinetActor

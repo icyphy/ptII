@@ -29,39 +29,31 @@
 */
 package ptolemy.actor.lib.jxta.demo.corba;
 
-import org.omg.CORBA.*;
-import org.omg.CosNaming.*;
-import org.omg.CosNaming.NamingContextPackage.*;
-import org.apache.log4j.PropertyConfigurator;
-
-import java.util.Properties;
-import java.util.Timer;
-import java.util.Enumeration;
-import java.io.InputStream;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
+import net.jxta.credential.AuthenticationCredential;
+import net.jxta.credential.Credential;
+import net.jxta.document.AdvertisementFactory;
+import net.jxta.document.MimeMediaType;
+import net.jxta.document.StructuredDocument;
+import net.jxta.exception.DiscardQueryException;
+import net.jxta.exception.NoResponseException;
+import net.jxta.exception.PeerGroupException;
+import net.jxta.exception.ResendQueryException;
+import net.jxta.impl.protocol.ResolverResponse;
+import net.jxta.membership.Authenticator;
+import net.jxta.membership.MembershipService;
 import net.jxta.peergroup.PeerGroup;
 import net.jxta.peergroup.PeerGroupFactory;
-import net.jxta.exception.PeerGroupException;
-import net.jxta.exception.NoResponseException;
-import net.jxta.exception.ResendQueryException;
-import net.jxta.exception.DiscardQueryException;
 import net.jxta.protocol.PeerGroupAdvertisement;
 import net.jxta.protocol.ResolverQueryMsg;
 import net.jxta.protocol.ResolverResponseMsg;
-import net.jxta.document.*;
-import net.jxta.credential.AuthenticationCredential;
-import net.jxta.credential.Credential;
-import net.jxta.membership.MembershipService;
-import net.jxta.membership.Authenticator;
-import net.jxta.discovery.DiscoveryService;
-import net.jxta.resolver.ResolverService;
 import net.jxta.resolver.QueryHandler;
-import net.jxta.impl.protocol.ResolverQuery;
-import net.jxta.impl.protocol.ResolverResponse;
-import ptolemy.actor.corba.util.CorbaActor;
+import net.jxta.resolver.ResolverService;
 
 //import ptolemy.domains.ct.demo.Corba.NonlinearServant;
 

@@ -29,13 +29,13 @@
 
 package ptolemy.actor;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.Token;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
+
 import java.util.LinkedList;
 
 

@@ -30,12 +30,14 @@
 
 package ptolemy.domains.sdf.lib.test;
 
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import ptolemy.actor.gui.*;
+import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.lib.Ramp;
+import ptolemy.actor.lib.Recorder;
+import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Time

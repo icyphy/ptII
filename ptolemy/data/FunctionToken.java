@@ -30,15 +30,13 @@
 
 package ptolemy.data;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.data.expr.*;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ParseTreeTypeInference;
+import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.Type;
-import ptolemy.data.type.TypeLattice;
-import ptolemy.graph.CPO;
+import ptolemy.kernel.util.IllegalActionException;
 
-import java.io.Serializable;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////

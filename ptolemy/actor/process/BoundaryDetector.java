@@ -34,9 +34,7 @@ package ptolemy.actor.process;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
-import ptolemy.kernel.util.*;
 import ptolemy.kernel.ComponentEntity;
-
 
 import java.util.Iterator;
 

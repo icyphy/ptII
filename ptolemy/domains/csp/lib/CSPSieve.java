@@ -31,13 +31,11 @@ the Sieve of Eratosthenes.
 
 package ptolemy.domains.csp.lib;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.domains.csp.kernel.CSPActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

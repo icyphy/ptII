@@ -30,7 +30,6 @@
 
 package ptolemy.kernel.util.test;
 
-import java.io.Serializable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////

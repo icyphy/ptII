@@ -31,8 +31,6 @@
 
 package ptolemy.data.expr;
 
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.NamedList;
 import ptolemy.kernel.util.IllegalActionException;
 
 import java.util.HashSet;

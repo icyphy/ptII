@@ -32,11 +32,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.vergil.tree;
 
-import javax.swing.JFrame;
-import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+
+import javax.swing.JFrame;
 
 //////////////////////////////////////////////////////////////////////////
 //// TreeEditor

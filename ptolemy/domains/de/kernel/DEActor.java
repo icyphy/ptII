@@ -29,15 +29,14 @@
 
 package ptolemy.domains.de.kernel;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.TimedActor;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 
 //////////////////////////////////////////////////////////////////////////

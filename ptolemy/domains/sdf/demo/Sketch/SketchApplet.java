@@ -30,22 +30,15 @@
 
 package ptolemy.domains.sdf.demo.Sketch;
 
-import java.awt.event.*;
-
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.MoMLApplet;
-import ptolemy.actor.lib.*;
-import ptolemy.actor.lib.gui.SequencePlotter;
 import ptolemy.actor.lib.gui.SketchedSource;
-import ptolemy.actor.util.*;
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.domains.sdf.lib.*;
-
-import ptolemy.plot.*;
+import ptolemy.data.IntToken;
+import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.plot.EditListener;
+import ptolemy.plot.EditablePlot;
 
 //////////////////////////////////////////////////////////////////////////
 //// SketchApplet

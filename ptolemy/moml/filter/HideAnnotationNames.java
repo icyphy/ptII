@@ -31,13 +31,10 @@
 package ptolemy.moml.filter;
 
 import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
-
-import java.util.HashMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// HideAnnotationNames

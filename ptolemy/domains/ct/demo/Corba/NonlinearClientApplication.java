@@ -30,18 +30,23 @@
 
 package ptolemy.domains.ct.demo.Corba;
 
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.gui.Query;
-import ptolemy.actor.gui.*;
-import ptolemy.actor.lib.*;
+import ptolemy.actor.IORelation;
+import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.corba.CorbaActorClient;
+import ptolemy.actor.lib.AddSubtract;
+import ptolemy.actor.lib.Clock;
+import ptolemy.actor.lib.Scale;
 import ptolemy.actor.lib.gui.TimedPlotter;
-import ptolemy.actor.corba.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import ptolemy.domains.ct.kernel.*;
-import ptolemy.domains.ct.kernel.solver.*;
-import ptolemy.domains.ct.lib.*;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
+import ptolemy.domains.ct.kernel.CTMultiSolverDirector;
+import ptolemy.domains.ct.lib.Integrator;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 
 //////////////////////////////////////////////////////////////////////////

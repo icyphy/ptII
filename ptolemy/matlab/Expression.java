@@ -33,39 +33,29 @@
 */
 
 package ptolemy.matlab;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.TransientSingletonConfigurableAttribute;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.style.CheckBoxStyle;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.Token;
-import ptolemy.data.ScalarToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.ComplexToken;
-import ptolemy.data.MatrixToken;
-import ptolemy.data.ComplexMatrixToken;
-import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.UtilityFunctions;
-import ptolemy.math.Complex;
-import ptolemy.matlab.Engine;
+import ptolemy.data.expr.Variable;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.matlab.Engine.ConversionParameters;
 
-import java.util.StringTokenizer;
 import java.util.Iterator;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// Expression

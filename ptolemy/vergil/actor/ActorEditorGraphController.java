@@ -36,8 +36,6 @@ import diva.canvas.Site;
 import diva.canvas.connector.AutonomousSite;
 import diva.canvas.connector.Connector;
 import diva.canvas.connector.ConnectorManipulator;
-import diva.canvas.connector.ConnectorTarget;
-import diva.canvas.event.EventLayer;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.event.MouseFilter;
 import diva.canvas.interactor.AbstractInteractor;
@@ -45,25 +43,21 @@ import diva.canvas.interactor.ActionInteractor;
 import diva.canvas.interactor.CompositeInteractor;
 import diva.canvas.interactor.GrabHandle;
 import diva.canvas.interactor.Interactor;
-import diva.canvas.interactor.SelectionModel;
-import diva.graph.EdgeController;
-import diva.graph.GraphController;
 import diva.graph.GraphException;
-import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
 import diva.gui.toolbox.FigureIcon;
 import diva.gui.toolbox.JContextMenu;
-import ptolemy.actor.IOPort;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Debuggable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.NamedObjController;
-import ptolemy.vergil.basic.BasicGraphController.NewPortAction;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.kernel.PortDialogFactory;
@@ -71,18 +65,18 @@ import ptolemy.vergil.kernel.RelationController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.SnapConstraint;
-import ptolemy.vergil.toolbox.FigureAction.SourceType;
 
-import javax.swing.Action;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JToolBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
+
+import javax.swing.Action;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JToolBar;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorEditorGraphController

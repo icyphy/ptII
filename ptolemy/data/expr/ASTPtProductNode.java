@@ -33,9 +33,12 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtProductNode

@@ -30,16 +30,15 @@
 
 package ptolemy.domains.de.lib.test;
 
-import ptolemy.domains.de.kernel.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import ptolemy.actor.gui.*;
-import ptolemy.data.Token;
+import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.lib.Recorder;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
+import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.Workspace;
 
-import java.util.List;
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////

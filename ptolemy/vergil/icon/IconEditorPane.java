@@ -31,8 +31,6 @@
 package ptolemy.vergil.icon;
 
 // Diva imports.
-import diva.canvas.CanvasPane;
-import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
 import diva.canvas.GraphicsPane;
 import diva.canvas.JCanvas;
@@ -40,23 +38,14 @@ import diva.canvas.interactor.BasicSelectionModel;
 import diva.canvas.interactor.BoundsManipulator;
 import diva.canvas.interactor.CircleManipulator;
 import diva.canvas.interactor.DragInteractor;
-import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.PathManipulator;
 import diva.canvas.interactor.SelectionDragger;
 import diva.canvas.interactor.SelectionInteractor;
-import diva.canvas.interactor.SelectionModel;
 import diva.util.java2d.PaintedObject;
 import diva.util.java2d.Polygon2D;
 
-import javax.swing.JColorChooser;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import java.awt.Color;
 import java.awt.Paint;
 import java.awt.Shape;
-import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -66,11 +55,13 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.QuadCurve2D;
 import java.awt.geom.RectangularShape;
-import java.awt.print.Printable;
 import java.awt.print.PrinterJob;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
+
+import javax.swing.JColorChooser;
+import javax.swing.JOptionPane;
 
 // Java imports.
 

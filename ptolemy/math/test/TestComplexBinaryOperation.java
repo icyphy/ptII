@@ -32,8 +32,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math.test;
 
-import ptolemy.math.ComplexBinaryOperation;
 import ptolemy.math.Complex;
+import ptolemy.math.ComplexBinaryOperation;
 
 /** A operation taking one argument of type Complex, and producing a value of
 type Complex. This interface attempts to mimic a first-class function of

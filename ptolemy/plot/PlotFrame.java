@@ -30,19 +30,16 @@
 package ptolemy.plot;
 
 import ptolemy.util.StringUtilities;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.Event;
-import java.awt.Graphics;
-import java.awt.PrintJob;
-import java.awt.print.PageFormat;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterJob;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -50,22 +47,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.StringTokenizer;
-import java.util.Vector;
 
-// Used for cross platform printing
-import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.HashPrintRequestAttributeSet;
-
-import javax.swing.AbstractAction;
-import javax.swing.KeyStroke;
-import javax.swing.JPanel;
+import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
 // TO DO:

@@ -34,16 +34,17 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.plot.plotml;
 
 import ptolemy.plot.Plot;
-import ptolemy.plot.PlotBox;
 import ptolemy.plot.PlotApplication;
+import ptolemy.plot.PlotBox;
 
-import com.microstar.xml.XmlException;
-
-import java.io.IOException;
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
 import javax.swing.JOptionPane;
+
+import com.microstar.xml.XmlException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotMLApplication

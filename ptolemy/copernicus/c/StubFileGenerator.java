@@ -33,18 +33,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.copernicus.c;
 
-import soot.Modifier;
-import soot.RefType;
-import soot.Scene;
 import soot.SootClass;
-import soot.SootField;
-import soot.SootMethod;
-import soot.Type;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 
 /** A C code generator for generating "stub header files"

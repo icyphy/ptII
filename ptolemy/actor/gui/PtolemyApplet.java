@@ -35,21 +35,17 @@ import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.gui.BasicJApplet;
 import ptolemy.kernel.attributes.VersionAttribute;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.Color;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
-import java.lang.System;
 import java.lang.reflect.Constructor;
-import java.util.Iterator;
 import java.util.StringTokenizer;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JButton;
-import javax.swing.JApplet;
+import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyApplet

@@ -34,15 +34,19 @@ import diva.canvas.toolbox.SVGParser;
 import diva.util.xml.XmlDocument;
 import diva.util.xml.XmlElement;
 import diva.util.xml.XmlReader;
+
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.ConfigurableAttribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.SingletonConfigurableAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -51,8 +55,11 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.StringTokenizer;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 //////////////////////////////////////////////////////////////////////////
 //// AnnotationEditorFactory

@@ -33,12 +33,13 @@ package ptolemy.actor.lib.conversions;
 
 import ptolemy.data.FixToken;
 import ptolemy.data.IntMatrixToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.math.FixPoint;
 import ptolemy.math.FixPointQuantization;
 import ptolemy.math.Overflow;

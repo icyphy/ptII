@@ -31,13 +31,11 @@ its input.
 
 package ptolemy.domains.csp.lib;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.domains.csp.kernel.CSPActor;
 import ptolemy.domains.csp.kernel.ConditionalBranch;
 import ptolemy.domains.csp.kernel.ConditionalReceive;

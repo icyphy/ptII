@@ -29,15 +29,11 @@
 
 package ptolemy.copernicus.kernel;
 
-import soot.*;
-import soot.jimple.*;
-import soot.toolkits.graph.CompleteUnitGraph;
+import soot.Local;
+import soot.Unit;
+import soot.jimple.toolkits.annotation.nullcheck.BranchedRefVarsAnalysis;
 import soot.toolkits.graph.UnitGraph;
 import soot.toolkits.scalar.FlowSet;
-import soot.toolkits.scalar.ForwardFlowAnalysis;
-import soot.jimple.toolkits.annotation.nullcheck.BranchedRefVarsAnalysis;
-
-import java.util.*;
 
 /**
 An analysis that can determine, at any point in the code, if

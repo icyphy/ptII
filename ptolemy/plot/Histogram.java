@@ -30,7 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.plot;
 
 import java.awt.Graphics;
-import java.awt.EventQueue;
 import java.io.BufferedWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -38,8 +37,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Random;
 import java.util.Vector;
-
-import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Histogram

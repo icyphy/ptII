@@ -31,7 +31,7 @@
 
 package ptolemy.media.javasound.demo.Sines;
 
-import ptolemy.media.javasound.*;
+import ptolemy.media.javasound.SoundPlayback;
 
 ////////////////////////////////////////////////////
 /** A simple application that demonstrates the use of SoundPlayback.

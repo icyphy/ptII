@@ -31,12 +31,11 @@
 
 package ptolemy.data.expr;
 
-import ptolemy.kernel.util.IllegalActionException;
-
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConcreteScalarToken

@@ -1,18 +1,14 @@
 package ptolemy.actor.lib.jxta;
 
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -24,9 +20,6 @@ import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Timer;
-import java.util.TimerTask;
-
-import org.apache.log4j.PropertyConfigurator;
 
 import net.jxta.credential.AuthenticationCredential;
 import net.jxta.credential.Credential;
@@ -53,6 +46,8 @@ import net.jxta.protocol.ResolverQueryMsg;
 import net.jxta.protocol.ResolverResponseMsg;
 import net.jxta.resolver.QueryHandler;
 import net.jxta.resolver.ResolverService;
+
+import org.apache.log4j.PropertyConfigurator;
 
 /**
  * @author liuxj, Yang

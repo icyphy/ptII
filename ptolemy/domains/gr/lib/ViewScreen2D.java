@@ -29,35 +29,30 @@
 */
 package ptolemy.domains.gr.lib;
 
-import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
-import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
-import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
-import com.sun.j3d.utils.geometry.Cylinder;
-import com.sun.j3d.utils.geometry.Sphere;
-import com.sun.j3d.utils.universe.SimpleUniverse;
-import com.sun.j3d.utils.universe.Viewer;
-import com.sun.j3d.utils.universe.ViewingPlatform;
-import ptolemy.actor.IOPort;
+import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
+import diva.canvas.GraphicsPane;
+import diva.canvas.JCanvas;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-import ptolemy.domains.gr.kernel.*;
+import ptolemy.domains.gr.kernel.GRActor2D;
+import ptolemy.domains.gr.kernel.GRUtilities2D;
+import ptolemy.domains.gr.kernel.Scene2DToken;
+import ptolemy.domains.gr.kernel.ViewScreenInterface;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
-import diva.canvas.*;
-import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.GraphicsConfiguration;
-import java.util.Enumeration;
+
 import javax.swing.JFrame;
 
 //////////////////////////////////////////////////////////////////////////

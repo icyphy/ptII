@@ -31,22 +31,17 @@
 
 package ptolemy.actor.lib.javasound;
 
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.*;
-import ptolemy.media.javasound.SoundReader; // For javadoc
-import ptolemy.media.javasound.SoundPlayback; // For javadoc
-import ptolemy.media.javasound.SoundWriter; // For javadoc
-
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.media.javasound.SoundReader;
 
 import java.io.IOException;
-import java.net.URL;
 
 
 /////////////////////////////////////////////////////////////////

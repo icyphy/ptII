@@ -32,19 +32,18 @@ package ptolemy.domains.sdf.lib.vq;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.IntMatrixToken;
-import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.media.Picture;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Graphics;
+
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageDisplay

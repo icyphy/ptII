@@ -31,7 +31,8 @@ and SoundWriter by performing soft clipping on an input sound file.
 
 package ptolemy.media.javasound.demo.ReaderProcessWriter;
 
-import ptolemy.media.javasound.*;
+import ptolemy.media.javasound.SoundReader;
+import ptolemy.media.javasound.SoundWriter;
 
 ////////////////////////////////////////////////////
 /** This is a simple application that demonstrates the use of SoundReader

@@ -32,32 +32,12 @@
 package ptolemy.copernicus.java;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
-import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
-import ptolemy.actor.gui.ModelFrame;
-import ptolemy.actor.gui.ModelPane;
-import ptolemy.actor.gui.Placeable;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLParser;
 
-import java.awt.Color;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.lang.System;
-import java.lang.reflect.Constructor;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.HashSet;
-import java.util.Set;
 
 
 /////////////////////////////////////////////////////////////////

@@ -30,13 +30,9 @@
 
 package ptolemy.domains.de.kernel;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.Actor;
 import ptolemy.data.Token;
-
-import java.lang.Comparable;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEEvent

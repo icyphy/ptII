@@ -34,8 +34,8 @@ package ptolemy.gui;
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
+
 import javax.swing.JApplet;
-import javax.swing.JOptionPane;
 
 //////////////////////////////////////////////////////////////////////////
 //// BasicJApplet

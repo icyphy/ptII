@@ -33,29 +33,21 @@ package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.lib.SequenceActor;
-import ptolemy.actor.lib.Source;
 import ptolemy.actor.lib.WallClockTime;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.IntToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
-import java.awt.Container;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
+
 import javax.swing.JButton;
-import javax.swing.JTextArea;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import javax.swing.text.BadLocationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ButtonTime

@@ -30,7 +30,7 @@
 
 package ptolemy.actor.process;
 
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Nameable;
 
 //////////////////////////////////////////////////////////////////////////
 //// TerminateProcessException

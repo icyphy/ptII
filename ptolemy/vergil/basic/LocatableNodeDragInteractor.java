@@ -32,14 +32,14 @@ package ptolemy.vergil.basic;
 
 import diva.canvas.Figure;
 import diva.canvas.event.LayerEvent;
-import diva.canvas.interactor.DragInteractor;
 import diva.canvas.interactor.SelectionModel;
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
 import diva.graph.NodeDragInteractor;
+
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLUndoEntry;
 import ptolemy.moml.UndoInfoAttribute;
 import ptolemy.vergil.toolbox.SnapConstraint;

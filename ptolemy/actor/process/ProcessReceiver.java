@@ -33,7 +33,6 @@ package ptolemy.actor.process;
 
 import ptolemy.actor.Receiver;
 import ptolemy.data.Token;
-import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ProcessReceiver

@@ -38,6 +38,7 @@ import diva.canvas.toolbox.BasicHighlighter;
 
 import java.awt.Color;
 import java.util.Hashtable;
+
 import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////

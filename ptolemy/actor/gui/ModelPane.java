@@ -33,36 +33,30 @@ package ptolemy.actor.gui;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
-import ptolemy.actor.Actor;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.CloseListener;
 import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
-// Java imports
-import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Event;
+import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
-import java.util.LinkedList;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JFrame;
 import javax.swing.JRootPane;
 
 //////////////////////////////////////////////////////////////////////////

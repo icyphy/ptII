@@ -30,28 +30,28 @@
 
 package ptolemy.actor.corba;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.StringToken;
+import ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException;
+import ptolemy.actor.corba.CorbaIOUtil._pushConsumerImplBase;
+import ptolemy.actor.lib.Source;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.actor.lib.Source;
-import ptolemy.actor.corba.CorbaIOUtil.pushConsumer;
-import ptolemy.actor.corba.CorbaIOUtil._pushConsumerImplBase;
-import ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException;
-import ptolemy.actor.IOPort;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import java.util.StringTokenizer;
-import java.util.Iterator;
-import java.lang.Object;
-import org.omg.CORBA.*;
-import org.omg.CosNaming.*;
+
+import org.omg.CORBA.ORB;
+import org.omg.CORBA.UserException;
+import org.omg.CosNaming.NameComponent;
+import org.omg.CosNaming.NamingContext;
+import org.omg.CosNaming.NamingContextHelper;
 
 //////////////////////////////////////////////////////////////////////////
 //// PushConsumer

@@ -29,36 +29,32 @@
 
 package ptolemy.domains.fsm.kernel;
 
-import ptolemy.actor.Director;
 import ptolemy.actor.Actor;
-import ptolemy.actor.TypedActor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.Receiver;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Mailbox;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedActor;
+import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.ModelErrorHandler;
-import ptolemy.data.Token;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.LinkedList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 

@@ -30,7 +30,6 @@
 
 package ptolemy.domains.csp.kernel;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.process.TerminateProcessException;

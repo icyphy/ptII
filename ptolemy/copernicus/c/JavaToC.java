@@ -34,11 +34,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.copernicus.c;
 
-import java.io.IOException;
-
 import soot.Scene;
 import soot.SootClass;
-import soot.SootMethod;
+
+import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
 //// JavaToC

@@ -29,16 +29,19 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.dt.kernel.test;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
+import ptolemy.actor.Director;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntMatrixToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.dt.kernel.*;
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.actor.lib.*;
-import ptolemy.math.Complex;
+import ptolemy.data.type.BaseType;
+import ptolemy.domains.sdf.kernel.SDFIOPort;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 
 public class OnePort extends TypedAtomicActor {

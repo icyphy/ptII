@@ -34,16 +34,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.copernicus.c;
 
+import soot.ArrayType;
+import soot.BaseType;
+import soot.RefType;
+import soot.SootClass;
+import soot.SootMethod;
+import soot.Type;
+
 import java.util.HashSet;
 import java.util.Iterator;
-
-import soot.SootMethod;
-import soot.SootClass;
-import soot.Type;
-import soot.VoidType;
-import soot.BaseType;
-import soot.ArrayType;
-import soot.RefType;
 
 
 /**

@@ -33,18 +33,23 @@ package ptolemy.vergil.icon;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.LabelFigure;
+
 import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
 
-import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.Writer;
+
+import javax.swing.SwingConstants;
 
 //////////////////////////////////////////////////////////////////////////
 //// AttributeValueIcon

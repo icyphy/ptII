@@ -30,25 +30,21 @@
 package ptolemy.domains.fsm.lib;
 
 //FIXME: replace * with individual classes.
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import ptolemy.data.type.*;
-import ptolemy.domains.fsm.lib.RelationList;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.ScalarToken;
+import ptolemy.data.expr.ASTPtLeafNode;
+import ptolemy.data.expr.ASTPtLogicalNode;
+import ptolemy.data.expr.ASTPtRelationalNode;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.ParseTreeFreeVariableCollector;
+import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.PtParserConstants;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.*;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
 import java.util.Set;
-import java.util.HashMap;
-import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeEvaluatorForGuardExpression

@@ -29,19 +29,18 @@
 
 package ptolemy.domains.fsm.kernel;
 
-import ptolemy.kernel.CompositeEntity;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.expr.Parameter;
 
 import java.util.HashMap;
 import java.util.HashSet;

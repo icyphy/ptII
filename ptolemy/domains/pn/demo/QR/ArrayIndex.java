@@ -30,7 +30,8 @@
 
 package ptolemy.domains.pn.demo.QR;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
 

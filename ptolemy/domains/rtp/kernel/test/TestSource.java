@@ -30,18 +30,15 @@
 
 package ptolemy.domains.rtp.kernel.test;
 
-import ptolemy.actor.lib.Source;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.Director;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.lib.Source;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.Attribute;
 
 /**
 This actor produces a ramp at 2Hz.

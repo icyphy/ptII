@@ -38,13 +38,13 @@ import ptolemy.plot.Plot;
 import ptolemy.plot.PlotApplication;
 import ptolemy.plot.PlotBox;
 
+import java.awt.Point;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.net.URL;
 import java.util.StringTokenizer;
-import java.awt.Point;
+
 import javax.swing.JOptionPane;
 
 //////////////////////////////////////////////////////////////////////////

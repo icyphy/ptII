@@ -31,16 +31,12 @@
 package ptolemy.actor.gui;
 
 // Ptolemy imports.
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
-// Java imports.
-import java.awt.Component;
 import java.awt.Frame;
-import java.util.Iterator;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorFactory

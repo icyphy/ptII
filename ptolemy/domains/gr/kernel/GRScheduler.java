@@ -34,16 +34,22 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.NotSchedulableException;
+import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.Scheduler;
 import ptolemy.graph.DirectedAcyclicGraph;
-import ptolemy.graph.DirectedGraph;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Workspace;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /////////////////////////////////////////////////////////////////////
 //// GRScheduler

@@ -30,7 +30,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.dde.demo.LocalZeno;
 
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.DebugEvent;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExecEvent

@@ -32,18 +32,7 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
-import ptolemy.data.*;
-import ptolemy.data.type.*;
-import ptolemy.kernel.util.*;
-import ptolemy.math.Complex;
-import ptolemy.math.FixPoint;
-import ptolemy.math.IntegerMatrixMath;
-import ptolemy.math.DoubleMatrixMath;
-import ptolemy.math.ComplexMatrixMath;
-import ptolemy.matlab.Engine;
-import java.lang.Math;                /* Needed for javadoc */
-import java.util.Iterator;
-import java.util.StringTokenizer;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtFunctionApplicationNode

@@ -29,13 +29,13 @@
 
 package ptolemy.actor.gui.test;
 
-import java.util.List;
-
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.lib.Ramp;
+import ptolemy.actor.lib.Recorder;
 import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.kernel.util.Workspace;
+
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// TestModel

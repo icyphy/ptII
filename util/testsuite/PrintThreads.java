@@ -43,7 +43,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package util.testsuite;
 
-import javax.swing.SwingUtilities; // for isEventDispatchThread()
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PrintThreads

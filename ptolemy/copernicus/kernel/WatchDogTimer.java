@@ -32,11 +32,8 @@ package ptolemy.copernicus.kernel;
 
 import ptolemy.actor.Manager;
 
-import soot.*;
-import soot.jimple.*;
-import soot.toolkits.scalar.*;
-import soot.util.*;
-import soot.toolkits.graph.*;
+import soot.Options;
+import soot.SceneTransformer;
 
 import java.util.Date;
 import java.util.Map;

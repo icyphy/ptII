@@ -28,8 +28,6 @@ package ptolemy.data;
 
 import java.awt.Image;
 
-import ptolemy.kernel.util.IllegalActionException;
-
 //////////////////////////////////////////////////////////////////////////
 //// ImageToken
 /**

@@ -27,24 +27,17 @@
 
 package ptolemy.copernicus.c;
 
+import soot.ArrayType;
+import soot.Local;
+import soot.RefType;
 import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
-
 import soot.Type;
-import soot.RefType;
-import soot.ArrayType;
 
-import soot.Unit;
-import soot.Local;
-
-import soot.jimple.Stmt;
-import soot.jimple.FieldRef;
-import soot.jimple.InvokeExpr;
-
-import java.util.LinkedList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// AnalysisUtilities

@@ -31,15 +31,10 @@
 
 package ptolemy.domains.dde.demo.LocalZeno;
 
-import ptolemy.domains.dde.lib.*;
-import ptolemy.actor.*;
-import ptolemy.actor.gui.*;
+import ptolemy.domains.dde.lib.Wire;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.util.Iterator;
-import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////

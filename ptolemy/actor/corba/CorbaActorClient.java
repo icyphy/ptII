@@ -30,20 +30,33 @@
 
 package ptolemy.actor.corba;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.Port;
-import ptolemy.data.*;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.corba.util.CorbaActor;
+import ptolemy.actor.corba.util.CorbaIllegalActionException;
+import ptolemy.actor.corba.util.CorbaIllegalValueException;
+import ptolemy.actor.corba.util.CorbaIndexOutofBoundException;
+import ptolemy.actor.corba.util.CorbaUnknownPortException;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import org.omg.CORBA.*;
-import org.omg.CosNaming.*;
-import ptolemy.actor.corba.util.*;
+import org.omg.CORBA.ORB;
+import org.omg.CORBA.SystemException;
+import org.omg.CORBA.UserException;
+import org.omg.CosNaming.NameComponent;
+import org.omg.CosNaming.NamingContext;
+import org.omg.CosNaming.NamingContextHelper;
 
 //////////////////////////////////////////////////////////////////////////
 //// CorbaActorClient

@@ -31,30 +31,18 @@
 package ptolemy.copernicus.interpreted;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
-import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.StringUtilities;
 
-import soot.*;
-import soot.jimple.*;
-import soot.toolkits.scalar.*;
-import soot.util.*;
-import soot.toolkits.graph.*;
+import soot.Options;
+import soot.SceneTransformer;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.Iterator;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

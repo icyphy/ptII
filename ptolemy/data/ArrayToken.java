@@ -30,12 +30,12 @@
 
 package ptolemy.data;
 
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
-import ptolemy.data.type.Type;
 import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayToken

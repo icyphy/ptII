@@ -5,9 +5,10 @@
 
 package com.microstar.xml.demo;
 
-import com.microstar.xml.XmlParser;
-import java.io.StringReader;
 import java.io.Reader;
+import java.io.StringReader;
+
+import com.microstar.xml.XmlParser;
 
 
 /**

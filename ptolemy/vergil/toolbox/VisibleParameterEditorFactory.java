@@ -30,19 +30,21 @@
 
 package ptolemy.vergil.toolbox;
 
-import ptolemy.kernel.util.*;
 import ptolemy.actor.gui.EditorFactory;
-import ptolemy.gui.ComponentDialog;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.gui.EditorPaneFactory;
 import ptolemy.actor.gui.PtolemyQuery;
+import ptolemy.gui.ComponentDialog;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
 import java.awt.Component;
 import java.awt.Frame;
+
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// VisibleParameterEditorFactory

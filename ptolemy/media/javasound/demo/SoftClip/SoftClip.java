@@ -31,7 +31,7 @@ and SoundPlayback by performing soft clipping in real-time.
 
 package ptolemy.media.javasound.demo.SoftClip;
 
-import ptolemy.media.javasound.*;
+import ptolemy.media.javasound.LiveSound;
 
 ////////////////////////////////////////////////////
 /**

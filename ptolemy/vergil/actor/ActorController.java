@@ -68,7 +68,6 @@ import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PortSite;
 
-
 import java.awt.Event;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -78,11 +77,9 @@ import java.awt.geom.Rectangle2D;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.Action;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 

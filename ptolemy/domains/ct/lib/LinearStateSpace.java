@@ -30,12 +30,8 @@
 
 package ptolemy.domains.ct.lib;
 
-import java.util.Iterator;
-import java.util.List;
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -43,16 +39,15 @@ import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.lib.AddSubtract;
 import ptolemy.actor.lib.Scale;
 import ptolemy.data.DoubleMatrixToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj.MoMLInfo;
+
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// LinearStateSpace

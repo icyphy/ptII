@@ -30,12 +30,22 @@
 
 package ptolemy.copernicus.kernel;
 
-import soot.*;
-import soot.jimple.*;
-import soot.toolkits.scalar.*;
-import soot.util.*;
-import soot.toolkits.graph.*;
-import java.util.*;
+import soot.Body;
+import soot.BodyTransformer;
+import soot.Local;
+import soot.Options;
+import soot.RefType;
+import soot.SootField;
+import soot.Unit;
+import soot.Value;
+import soot.jimple.DefinitionStmt;
+import soot.jimple.FieldRef;
+import soot.jimple.JimpleBody;
+import soot.toolkits.graph.CompleteUnitGraph;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
 A transformer that removes unnecessary reference assignments.

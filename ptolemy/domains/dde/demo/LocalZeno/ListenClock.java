@@ -30,16 +30,11 @@
 
 package ptolemy.domains.dde.demo.LocalZeno;
 
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import ptolemy.actor.gui.*;
+import ptolemy.actor.lib.Clock;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Iterator;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ListenClock

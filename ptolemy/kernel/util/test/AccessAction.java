@@ -30,8 +30,8 @@
 
 package ptolemy.kernel.util.test;
 
-import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Workspace;
 
 import java.util.List;
 

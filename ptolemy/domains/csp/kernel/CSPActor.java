@@ -31,9 +31,6 @@
 
 package ptolemy.domains.csp.kernel;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.kernel.CompositeEntity;

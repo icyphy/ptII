@@ -32,8 +32,8 @@ used anywhere so I pulled out that code.
 
 package ptolemy.actor.sched;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.Nameable;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -30,13 +30,13 @@
 
 package ptolemy.actor.util;
 
-import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.DebugListener;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Debuggable;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
 
-import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 ///////////////////////////////////////////////////////////////////
 //// CalendarQueue

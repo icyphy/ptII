@@ -34,9 +34,9 @@ Created: September 2002
 
 package ptolemy.data.expr;
 
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.data.type.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;

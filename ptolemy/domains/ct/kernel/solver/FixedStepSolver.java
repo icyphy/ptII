@@ -30,11 +30,10 @@
 
 package ptolemy.domains.ct.kernel.solver;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTBaseIntegrator;
+import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.ODESolver;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixedStepSolver

@@ -31,7 +31,6 @@
 package ptolemy.domains.de.kernel;
 
 import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;

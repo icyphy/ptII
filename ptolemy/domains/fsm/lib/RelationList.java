@@ -34,8 +34,8 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-import java.util.ListIterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// RelationList

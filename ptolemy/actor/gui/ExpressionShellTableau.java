@@ -30,11 +30,20 @@
 package ptolemy.actor.gui;
 
 import ptolemy.data.Token;
+import ptolemy.data.expr.ASTPtAssignmentNode;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.*;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.Variable;
 import ptolemy.gui.ShellInterpreter;
 import ptolemy.gui.ShellTextArea;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 import java.util.Set;
 

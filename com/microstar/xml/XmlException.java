@@ -32,9 +32,9 @@
 
 package com.microstar.xml;
 
-import java.io.StringWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
 Convenience exception class for reporting XML parsing errors.

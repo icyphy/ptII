@@ -29,10 +29,10 @@
 
 package ptolemy.actor.process.test;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.test.*;
-import ptolemy.actor.*;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.test.TestActor;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// TestProcessActor

@@ -32,14 +32,16 @@
 package ptolemy.copernicus.c;
 
 // FIXME: cleanup imports
-import soot.*;
-import soot.jimple.*;
-import soot.toolkits.scalar.*;
-import soot.util.*;
-import soot.toolkits.graph.*;
-import java.util.*;
-import java.io.*;
 import ptolemy.copernicus.kernel.MakefileWriter;
+
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
 /** A transformer that writes C source code.
     @author Shuvra S. Bhattacharyya

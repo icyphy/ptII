@@ -30,10 +30,9 @@
 
 package ptolemy.domains.de.kernel;
 
-import ptolemy.kernel.util.DebugListener;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.actor.util.CQComparator;
 import ptolemy.actor.util.CalendarQueue;
+import ptolemy.kernel.util.DebugListener;
 
 //////////////////////////////////////////////////////////////////////////
 //// DECQEventQueue

@@ -31,14 +31,16 @@ and check relevant parameters.
 
 package ptolemy.domains.dde.kernel.test;
 
-import ptolemy.actor.*;
-import ptolemy.domains.dde.kernel.*;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.dde.kernel.DDEReceiver;
+import ptolemy.domains.dde.kernel.DDEThread;
+import ptolemy.domains.dde.kernel.TimeKeeper;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -31,13 +31,13 @@ FIXME: setUnitCategory seems to violate immutability.
 
 package ptolemy.data;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.math.Complex;
-import ptolemy.math.FixPoint;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.data.unit.UnitUtilities;
 import ptolemy.graph.CPO;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.math.Complex;
+import ptolemy.math.FixPoint;
 
 import java.util.Arrays;
 

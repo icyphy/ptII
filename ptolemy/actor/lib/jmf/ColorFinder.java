@@ -29,19 +29,19 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.actor.lib.jmf;
 
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 import javax.media.Buffer;
 import javax.media.format.VideoFormat;
 import javax.media.format.YUVFormat;
-
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ColorFinder

@@ -32,17 +32,30 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
-import ptolemy.data.*;
-import ptolemy.data.type.*;
-import ptolemy.kernel.util.*;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanMatrixToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.ComplexMatrixToken;
+import ptolemy.data.ComplexToken;
+import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.FixMatrixToken;
+import ptolemy.data.FixToken;
+import ptolemy.data.IntMatrixToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.LongMatrixToken;
+import ptolemy.data.LongToken;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.UnsignedByteToken;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.RecordType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Complex;
 import ptolemy.math.FixPoint;
-import ptolemy.math.IntegerMatrixMath;
-import ptolemy.math.DoubleMatrixMath;
-import ptolemy.math.ComplexMatrixMath;
-import java.lang.Math;                /* Needed for javadoc */
-import java.util.Iterator;
-import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConversionUtilities

@@ -30,22 +30,18 @@
 
 package ptolemy.moml;
 
-import java.util.List;
-import java.util.LinkedList;
-
-import ptolemy.kernel.Relation;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
-import ptolemy.kernel.util.NamedObj; // for javadoc
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.util.StringUtilities;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Vertex

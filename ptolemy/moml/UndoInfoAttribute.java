@@ -29,13 +29,17 @@
 
 package ptolemy.moml;
 
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.NotPersistent;
+import ptolemy.kernel.util.SingletonAttribute;
 
-import java.io.IOException;
 import java.io.Writer;
+import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
-import java.util.EmptyStackException;
 
 //////////////////////////////////////////////////////////////////////////
 //// UndoInfoAttribute

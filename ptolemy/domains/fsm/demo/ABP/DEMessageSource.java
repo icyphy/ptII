@@ -30,14 +30,17 @@
 
 package ptolemy.domains.fsm.demo.ABP;
 
-import ptolemy.actor.*;
-import ptolemy.domains.de.kernel.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import java.util.Enumeration;
+import ptolemy.data.type.BaseType;
+import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.domains.de.kernel.DEIOPort;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEMessageSource

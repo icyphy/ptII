@@ -32,7 +32,6 @@
 package ptolemy.actor.util.test;
 
 import ptolemy.actor.util.CQComparator;
-import ptolemy.actor.util.CalendarQueue;  // for javadoc
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleCQComparator

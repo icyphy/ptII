@@ -33,11 +33,8 @@
 package ptolemy.domains.csp.kernel;
 
 // Ptolemy imports.
-import java.util.Iterator;
-import java.util.LinkedList;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.process.NotifyThread;
 import ptolemy.actor.process.TerminateProcessException;
@@ -45,6 +42,9 @@ import ptolemy.data.Token;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.Nameable;
+
+import java.util.Iterator;
+import java.util.LinkedList;
 
 // Java imports
 

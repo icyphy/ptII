@@ -31,7 +31,6 @@
 package ptolemy.actor.gui.jnlp;
 
 import ptolemy.util.StringUtilities;
-import ptolemy.vergil.VergilApplication;
 
 
 

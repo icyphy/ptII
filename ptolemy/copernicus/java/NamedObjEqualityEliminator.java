@@ -29,37 +29,43 @@
 
 package ptolemy.copernicus.java;
 
-import soot.*;
-import soot.jimple.*;
-import soot.jimple.toolkits.invoke.SiteInliner;
-import soot.jimple.toolkits.invoke.StaticInliner;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
-import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
-import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
-import soot.jimple.toolkits.scalar.CopyPropagator;
-import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
-import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
-import soot.jimple.toolkits.scalar.Evaluator;
-import soot.jimple.toolkits.scalar.LocalNameStandardizer;
-
-import soot.toolkits.graph.*;
-import soot.toolkits.scalar.*;
-import soot.dava.*;
-import soot.util.*;
-import java.io.*;
-import java.util.*;
-
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.moml.*;
-import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.data.*;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.type.Typeable;
-
+import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.NamedObj;
+
+import soot.Local;
+import soot.NullType;
+import soot.Options;
+import soot.RefType;
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+import soot.SootField;
+import soot.SootMethod;
+import soot.Unit;
+import soot.Value;
+import soot.ValueBox;
+import soot.jimple.BinopExpr;
+import soot.jimple.CastExpr;
+import soot.jimple.DefinitionStmt;
+import soot.jimple.FieldRef;
+import soot.jimple.IntConstant;
+import soot.jimple.JimpleBody;
+import soot.jimple.NewExpr;
+import soot.jimple.NullConstant;
+import soot.jimple.Stmt;
+import soot.toolkits.graph.CompleteUnitGraph;
+import soot.toolkits.scalar.LocalDefs;
+import soot.toolkits.scalar.LocalUses;
+import soot.toolkits.scalar.SimpleLocalDefs;
+import soot.toolkits.scalar.SimpleLocalUses;
+import soot.toolkits.scalar.UnitValueBoxPair;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

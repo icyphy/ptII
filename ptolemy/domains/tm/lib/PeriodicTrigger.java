@@ -30,23 +30,21 @@
 
 package ptolemy.domains.tm.lib;
 
-import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.Actor;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.actor.Director;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.LongToken;
 import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.Actor;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// PeriodicTrigger

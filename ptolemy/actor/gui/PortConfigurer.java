@@ -31,19 +31,19 @@
 package ptolemy.actor.gui;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.*;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 
-import java.awt.Component;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.StringTokenizer;
+
 import javax.swing.BoxLayout;
 
 //////////////////////////////////////////////////////////////////////////

@@ -30,12 +30,15 @@
 
 package ptolemy.domains.de.lib.test;
 
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import ptolemy.domains.de.kernel.*;
-import ptolemy.domains.de.lib.*;
+import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.lib.Clock;
+import ptolemy.actor.lib.Recorder;
+import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.domains.de.lib.Merge;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 public class Mutate {
 

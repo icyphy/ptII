@@ -30,18 +30,18 @@
 package ptolemy.vergil;
 
 import ptolemy.actor.Manager;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypeEvent;
 import ptolemy.actor.TypeListener;
-import ptolemy.actor.Manager.State;
-import ptolemy.data.type.Type;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Configurable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 
 import java.util.Iterator;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeAnimatorApplet

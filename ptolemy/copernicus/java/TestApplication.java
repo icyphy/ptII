@@ -31,18 +31,15 @@
 
 package ptolemy.copernicus.java;
 
-import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.IntToken;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
+import ptolemy.data.expr.Parameter;
+import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
-import ptolemy.moml.StreamErrorHandler;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
 
 import java.io.File;
 import java.net.URL;

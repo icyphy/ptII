@@ -32,52 +32,11 @@ package ptolemy.copernicus.c;
 
 // FIXME: clean up import list.
 import ptolemy.actor.CompositeActor;
-import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
-import ptolemy.copernicus.kernel.KernelMain;
-import ptolemy.copernicus.kernel.ImprovedDeadAssignmentEliminator;
-import ptolemy.copernicus.kernel.InvocationBinder;
-import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.copernicus.kernel.ClassWriter;
-import ptolemy.copernicus.kernel.JimpleWriter;
-import ptolemy.copernicus.kernel.MakefileWriter;
-import ptolemy.copernicus.kernel.SideEffectFreeInvocationRemover;
-import ptolemy.copernicus.kernel.TransformerAdapter;
-import ptolemy.copernicus.kernel.UnusedFieldRemover;
 import ptolemy.copernicus.kernel.WatchDogTimer;
-import ptolemy.copernicus.java.CommandLineTransformer;
-//FIXME
-import ptolemy.copernicus.java.*;
-import ptolemy.copernicus.java.InlineDirectorTransformer;
-import ptolemy.copernicus.java.ModelTransformer;
+import ptolemy.kernel.util.IllegalActionException;
 
-
-
-import soot.*;
-import soot.jimple.*;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
-import soot.jimple.toolkits.invoke.SiteInliner;
-import soot.jimple.toolkits.invoke.StaticInliner;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
-import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
-import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
-import soot.jimple.toolkits.scalar.CopyPropagator;
-import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
-import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
-import soot.jimple.toolkits.scalar.Evaluator;
-import soot.jimple.toolkits.typing.TypeAssigner;
-import soot.jimple.toolkits.scalar.*;
-import soot.toolkits.scalar.LocalSplitter;
-import soot.toolkits.scalar.UnusedLocalEliminator;
-import soot.toolkits.graph.*;
-import soot.dava.*;
-import soot.util.*;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Map;
+import soot.Scene;
+import soot.Transform;
 
 //////////////////////////////////////////////////////////////////////////
 //// Main

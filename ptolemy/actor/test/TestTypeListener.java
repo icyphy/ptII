@@ -28,9 +28,9 @@
 
 package ptolemy.actor.test;
 
-import ptolemy.data.type.Type;
 import ptolemy.actor.TypeEvent;
 import ptolemy.actor.TypeListener;
+import ptolemy.data.type.Type;
 
 //////////////////////////////////////////////////////////////////////////
 //// TestTypeListener

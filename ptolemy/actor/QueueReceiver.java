@@ -36,10 +36,10 @@ import ptolemy.actor.util.FIFOQueue;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
-import java.util.NoSuchElementException;
-import java.util.Enumeration;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// QueueReceiver

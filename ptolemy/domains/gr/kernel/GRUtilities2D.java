@@ -30,30 +30,8 @@
 
 package ptolemy.domains.gr.kernel;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
-import ptolemy.actor.FiringEvent;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.sched.Scheduler;
-import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.data.*;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.*;
-import ptolemy.domains.gr.lib.ViewScreen;
+import ptolemy.data.DoubleMatrixToken;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 import java.awt.Color;
 
 //////////////////////////////////////////////////////////////////////////

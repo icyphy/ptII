@@ -34,7 +34,6 @@ import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 
 import java.util.HashSet;

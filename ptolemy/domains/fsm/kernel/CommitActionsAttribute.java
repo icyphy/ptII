@@ -33,16 +33,17 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.UnknownResultException;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
 
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// CommitActionsAttribute

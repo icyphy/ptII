@@ -30,17 +30,20 @@
 
 package ptolemy.vergil.actor.lib;
 
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.net.URL;
-
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.icon.ImageAttributeControllerFactory;
 import ptolemy.vergil.icon.ImageEditorIcon;
+
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageAttribute

@@ -32,7 +32,6 @@ that operate exclusively on the fixed point data type.
 
 package ptolemy.data.expr;
 
-import ptolemy.kernel.util.*;
 import ptolemy.math.FixPoint;
 import ptolemy.math.Precision;
 import ptolemy.math.Quantizer;

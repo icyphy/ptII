@@ -29,17 +29,24 @@
 */
 package ptolemy.data.expr;
 
+import ptolemy.data.ArrayToken;
+import ptolemy.data.BitwiseOperationToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.FunctionToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.MatrixToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.ScalarToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.type.FunctionType;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
-import ptolemy.data.*;
-import ptolemy.data.type.*;
-import ptolemy.kernel.util.*;
-
-import java.util.Iterator;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 
 //////////////////////////////////////////////////////////////////////////

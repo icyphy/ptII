@@ -26,14 +26,34 @@
 /* Reference Version: $SootVersion: 1.2.3.dev.4 $ */
 package ptolemy.copernicus.kernel;
 
-import soot.*;
-import soot.jimple.*;
-import soot.jimple.toolkits.scalar.*;
-import soot.jimple.toolkits.invoke.*;
-import soot.toolkits.scalar.*;
-import soot.toolkits.graph.*;
-import java.util.*;
-import soot.util.*;
+import soot.Hierarchy;
+import soot.Local;
+import soot.Main;
+import soot.Options;
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+import soot.SootMethod;
+import soot.ValueBox;
+import soot.jimple.InstanceInvokeExpr;
+import soot.jimple.InvokeExpr;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.SpecialInvokeExpr;
+import soot.jimple.StaticInvokeExpr;
+import soot.jimple.Stmt;
+import soot.jimple.toolkits.invoke.AccessManager;
+import soot.jimple.toolkits.invoke.InvokeGraph;
+import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
+import soot.jimple.toolkits.invoke.VariableTypeAnalysis;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /** Uses the Scene's currently-active InvokeGraph to statically bind monomorphic call sites. */
 public class InvocationBinder extends SceneTransformer

@@ -26,12 +26,13 @@
 */
 
 package ptolemy.domains.pn.kernel.test;
-import ptolemy.domains.pn.kernel.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.actor.*;
-import java.util.Enumeration;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNSink

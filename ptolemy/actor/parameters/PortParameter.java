@@ -31,17 +31,19 @@
 package ptolemy.actor.parameters;
 
 import ptolemy.actor.TypedActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.*;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.expr.Parameter;
-
-import java.util.Iterator;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// PortParameter

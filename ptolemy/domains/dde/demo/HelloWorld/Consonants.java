@@ -31,8 +31,9 @@ that it consumes.
 
 package ptolemy.domains.dde.demo.HelloWorld;
 
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import java.util.LinkedList;
 

@@ -32,25 +32,25 @@ package ptolemy.domains.tm.kernel;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PlotEffigy;
-import ptolemy.actor.gui.PlotTableau;
-import ptolemy.actor.gui.PlotTableauFrame;
 import ptolemy.actor.gui.TableauFrame;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.plot.Plot;
 
-import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -35,10 +35,11 @@ import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.ImageToken;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.media.Picture;
 
 import java.awt.BorderLayout;
@@ -46,6 +47,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Image;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 

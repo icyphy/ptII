@@ -31,6 +31,13 @@
 
 package ptolemy.data;
 
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeLattice;
+import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.FixPoint;
 import ptolemy.math.FixPointQuantization;
@@ -38,11 +45,6 @@ import ptolemy.math.Overflow;
 import ptolemy.math.Precision;
 import ptolemy.math.Quantization;
 import ptolemy.math.Rounding;
-import ptolemy.graph.CPO;
-import ptolemy.data.type.*;
-import ptolemy.data.expr.ParseTreeEvaluator;
-import ptolemy.data.expr.PtParser;
-import ptolemy.data.expr.ASTPtRootNode;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixToken

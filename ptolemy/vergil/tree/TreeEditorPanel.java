@@ -33,13 +33,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.vergil.tree;
 
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreeModel;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,6 +44,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.tree.TreeCellRenderer;
 
 //////////////////////////////////////////////////////////////////////////
 //// TreeEditorPanel

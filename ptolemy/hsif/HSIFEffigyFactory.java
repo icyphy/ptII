@@ -35,29 +35,18 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.EffigyFactory;
 import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.actor.gui.MoMLApplication;
-import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLParser;
-import ptolemy.util.XSLTUtilities;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.IOException;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.w3c.dom.Document;
 
 //////////////////////////////////////////////////////////////////////////
 //// EffigyFactory

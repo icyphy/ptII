@@ -29,12 +29,13 @@
 */
 package ptolemy.actor.lib.javasound.test.pitchshift;
 
-import javax.swing.*;
-import javax.swing.text.*;
-
 import java.awt.Toolkit;
-import java.text.*;
-import java.util.Locale;
+import java.text.Format;
+import java.text.ParseException;
+
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 //////////////////////////////////////////////////////////////////////////
 //// FormattedDocument

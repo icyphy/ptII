@@ -4,7 +4,6 @@
 
 package com.microstar.xml.demo;
 
-import com.microstar.xml.XmlParser;
 
 /**
   * Demonstration application showing Ælfred's event stream.

@@ -32,11 +32,10 @@ package ptolemy.vergil.toolbox;
 
 import diva.canvas.AbstractSite;
 import diva.canvas.Figure;
+
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.util.StringAttribute;
 
-import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
 /**

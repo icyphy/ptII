@@ -34,9 +34,8 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
-import ptolemy.data.*;
-import ptolemy.kernel.util.*;
-import java.util.Iterator;
+import ptolemy.kernel.util.IllegalActionException;
+
 import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////

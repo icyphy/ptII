@@ -30,14 +30,17 @@
 
 package ptolemy.domains.ct.kernel.solver;
 
+import ptolemy.actor.Actor;
+import ptolemy.data.DoubleToken;
+import ptolemy.domains.ct.kernel.CTBaseIntegrator;
+import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTSchedule;
+import ptolemy.domains.ct.kernel.CTScheduler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.actor.Actor;
-import ptolemy.data.DoubleToken;
-import ptolemy.domains.ct.kernel.*;
 
 import java.util.Iterator;
 

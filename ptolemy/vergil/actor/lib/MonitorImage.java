@@ -34,7 +34,8 @@ import ptolemy.actor.lib.Sink;
 import ptolemy.data.ImageToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.ImageEditorIcon;
 
 import java.awt.Image;

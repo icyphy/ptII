@@ -29,15 +29,17 @@
 
 package ptolemy.copernicus.kernel;
 
-import ptolemy.kernel.attributes.VersionAttribute;
-import ptolemy.kernel.util.*;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.Token;
-import ptolemy.util.StringUtilities;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.attributes.VersionAttribute;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.util.StringUtilities;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

@@ -30,11 +30,15 @@
 */
 
 package ptolemy.data.expr;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.util.StringUtilities;
 
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
 
 //////////////////////////////////////////////////////////////////////////
 //// Parameter

@@ -30,8 +30,8 @@
 
 package ptolemy.data.expr;
 
-import ptolemy.data.*;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+
 import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////

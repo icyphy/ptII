@@ -30,14 +30,16 @@
 
 package ptolemy.domains.de.lib.test;
 
-import ptolemy.domains.de.kernel.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import ptolemy.actor.gui.*;
-import ptolemy.domains.de.lib.Merge;
+import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.lib.Clock;
+import ptolemy.actor.lib.Recorder;
 import ptolemy.data.DoubleToken;
+import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.domains.de.lib.Merge;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Time

@@ -30,10 +30,8 @@
 
 package ptolemy.vergil.fsm.ia;
 
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
 import diva.graph.GraphPane;
-import ptolemy.actor.gui.Configuration;
+
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.moml.LibraryAttribute;

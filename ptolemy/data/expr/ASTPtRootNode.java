@@ -36,12 +36,9 @@ Created : May 1998
 package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.LinkedList;
 import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////

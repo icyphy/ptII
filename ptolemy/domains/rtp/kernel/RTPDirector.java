@@ -31,22 +31,14 @@ package ptolemy.domains.rtp.kernel;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.process.ProcessDirector;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.LongToken;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// RTPDirector

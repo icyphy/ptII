@@ -1,6 +1,5 @@
 package doc.tutorial;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.gui.PtolemyApplet;
 import ptolemy.actor.lib.Clock;
 import ptolemy.actor.lib.gui.TimedPlotter;
 import ptolemy.data.expr.Parameter;

@@ -33,33 +33,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.copernicus.c;
 
-import java.util.Iterator;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Collection;
-
-import soot.Unit;
+import soot.RefType;
 import soot.Scene;
 import soot.SootClass;
-import soot.SootMethod;
 import soot.SootField;
-import soot.Value;
-import soot.Trap;
+import soot.SootMethod;
 import soot.Type;
-import soot.RefType;
 
-import soot.jimple.InvokeStmt;
-import soot.jimple.AssignStmt;
-import soot.jimple.IdentityStmt;
-import soot.jimple.InvokeExpr;
-import soot.jimple.DefinitionStmt;
-import soot.jimple.Stmt;
-import soot.jimple.FieldRef;
-import soot.jimple.JimpleBody;
-
-import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 
 /** A class that generates the other required files in the
     transitive closure.

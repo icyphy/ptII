@@ -30,7 +30,6 @@
 
 package ptolemy.kernel.util.test;
 
-import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.InvalidStateException;
 
 import java.util.List;

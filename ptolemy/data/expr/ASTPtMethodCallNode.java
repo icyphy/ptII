@@ -34,29 +34,7 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
-import ptolemy.data.Token;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.DoubleMatrixToken;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.FixToken;
-import ptolemy.data.FixMatrixToken;
-import ptolemy.data.ComplexToken;
-import ptolemy.data.ComplexMatrixToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.IntMatrixToken;
-import ptolemy.data.LongToken;
-import ptolemy.data.LongMatrixToken;
-import ptolemy.data.StringToken;
-
-import ptolemy.data.BooleanToken;
-import ptolemy.math.Complex;
-import ptolemy.math.ComplexMatrixMath;
-import ptolemy.math.DoubleMatrixMath;
-import ptolemy.math.IntegerMatrixMath;
-import ptolemy.math.FixPoint;
-
-import ptolemy.kernel.util.*;
-import java.lang.reflect.*;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtMethodCallNode

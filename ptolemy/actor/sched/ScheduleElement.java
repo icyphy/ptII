@@ -30,7 +30,6 @@
 
 package ptolemy.actor.sched;
 
-import java.util.LinkedList;
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////

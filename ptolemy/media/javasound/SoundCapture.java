@@ -31,11 +31,16 @@ from the computer's audio input port.
 
 package ptolemy.media.javasound;
 
-import java.io.*;
-import java.net.*;
-import java.util.Enumeration;
+import java.io.IOException;
+import java.net.URL;
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.TargetDataLine;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 //////////////////////////////////////////////////////////////////////////
 //// SoundCapture

@@ -30,14 +30,12 @@
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.NamedObj.MoMLInfo;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTCompositeActor

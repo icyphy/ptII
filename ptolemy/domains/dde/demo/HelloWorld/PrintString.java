@@ -31,10 +31,12 @@ that it consumes.
 
 package ptolemy.domains.dde.demo.HelloWorld;
 
-import ptolemy.domains.dde.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.data.*;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.StringToken;
+import ptolemy.domains.dde.kernel.DDEActor;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PrintString

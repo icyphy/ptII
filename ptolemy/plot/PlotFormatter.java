@@ -33,12 +33,12 @@ import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Frame;
 import java.util.Vector;
+
+import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotFormatter

@@ -35,14 +35,19 @@ import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.LabelFigure;
 import diva.gui.toolbox.FigureIcon;
-import ptolemy.kernel.util.*;
 
-import javax.swing.SwingConstants;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.Writer;
+
+import javax.swing.SwingConstants;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorIcon

@@ -32,14 +32,9 @@ constants.
 
 package ptolemy.data.expr;
 
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.NamedList;
-import ptolemy.kernel.util.IllegalActionException;
-
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// NamedConstantsScope

@@ -32,42 +32,40 @@
 
 package ptolemy.domains.hdf.kernel;
 
-import ptolemy.domains.fsm.kernel.*;
-import ptolemy.actor.Director;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.sched.*;
-import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.Actor;
-import ptolemy.actor.TypedActor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.Receiver;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedActor;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.NotSchedulableException;
+import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.Scheduler;
+import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.domains.fsm.kernel.FSMDirector;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.domains.sdf.kernel.SDFReceiver;
+import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.Port;
-import ptolemy.data.Token;
-import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Workspace;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.LinkedList;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// HDFFSMDirector

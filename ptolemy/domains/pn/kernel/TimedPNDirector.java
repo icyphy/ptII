@@ -32,11 +32,8 @@ network semantics.
 package ptolemy.domains.pn.kernel;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.Director;
-import ptolemy.actor.process.ProcessDirector;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.TimedEvent;
-import ptolemy.actor.util.TimedEvent.TimeComparator;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;

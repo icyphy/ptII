@@ -31,11 +31,20 @@
 
 package ptolemy.data.expr;
 
-import ptolemy.data.*;
-import ptolemy.util.StringUtilities;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.ComplexToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.FixToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.LongToken;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.UnsignedByteToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Complex;
+import ptolemy.util.StringUtilities;
 
 import java.util.Hashtable;
 import java.util.Iterator;

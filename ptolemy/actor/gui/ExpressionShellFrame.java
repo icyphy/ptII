@@ -30,10 +30,12 @@
 package ptolemy.actor.gui;
 
 import ptolemy.gui.ShellTextArea;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import java.awt.BorderLayout;
 import java.net.URL;
+
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 

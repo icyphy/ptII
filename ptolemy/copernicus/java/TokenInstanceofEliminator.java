@@ -30,15 +30,26 @@
 
 package ptolemy.copernicus.java;
 
-import soot.*;
-import soot.jimple.*;
-import soot.toolkits.scalar.*;
-import soot.util.*;
-import soot.toolkits.graph.*;
-import java.util.*;
-
 import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
+
+import soot.Body;
+import soot.BodyTransformer;
+import soot.Local;
+import soot.Options;
+import soot.Scene;
+import soot.Type;
+import soot.Unit;
+import soot.Value;
+import soot.ValueBox;
+import soot.jimple.InstanceOfExpr;
+import soot.jimple.JimpleBody;
+import soot.toolkits.graph.CompleteUnitGraph;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// FieldsForAttributesTransformer

@@ -32,14 +32,16 @@ storing tokens with time stamps.
 
 package ptolemy.domains.dde.kernel;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.actor.*;
-import ptolemy.actor.util.*;
-
-import java.util.List;
-import java.util.Iterator;
+import ptolemy.actor.AbstractReceiver;
+import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.NoRoomException;
+import ptolemy.actor.NoTokenException;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.util.FIFOQueue;
+import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// PrioritizedTimedQueue

@@ -32,10 +32,8 @@
 package ptolemy.data.type;
 
 import ptolemy.graph.InequalityTerm;
-import ptolemy.graph.Inequality;        /* Needed for javadoc */
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.data.type.Type;
-import java.util.Enumeration;
+
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////

@@ -41,11 +41,8 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Settable.Visibility;
 import ptolemy.math.DoubleUnaryOperation;
 import ptolemy.math.SignalProcessing;
-import ptolemy.math.SignalProcessing.RaisedCosineSampleGenerator;
-import ptolemy.math.SignalProcessing.SqrtRaisedCosineSampleGenerator;
 
 //////////////////////////////////////////////////////////////////////////
 //// RaisedCosine

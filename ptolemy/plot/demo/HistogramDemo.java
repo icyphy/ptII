@@ -31,7 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.plot.demo;
 
-import ptolemy.plot.*;
+import ptolemy.plot.HistogramApplet;
 
 //////////////////////////////////////////////////////////////////////////
 //// HistogramDemo

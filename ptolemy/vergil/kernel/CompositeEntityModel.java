@@ -31,14 +31,17 @@
 package ptolemy.vergil.kernel;
 
 import diva.graph.modular.CompositeModel;
+
 import ptolemy.actor.Director;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Vertex;
 
 import java.util.Iterator;

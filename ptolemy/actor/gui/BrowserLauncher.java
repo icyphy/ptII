@@ -32,11 +32,11 @@ package ptolemy.actor.gui;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
 
 /**
 BrowserLauncher is a class that provides one static method, openURL,

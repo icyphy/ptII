@@ -30,17 +30,15 @@
 
 package ptolemy.domains.de.kernel;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Workspace;
-
-import ptolemy.data.Token;
 import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.Actor;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.NoTokenException;
+import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 import java.util.LinkedList;
 

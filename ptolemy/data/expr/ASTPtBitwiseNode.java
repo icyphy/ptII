@@ -34,8 +34,7 @@ Created : May 1998
 package ptolemy.data.expr;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.data.*;
+
 import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////

@@ -42,23 +42,26 @@ import diva.canvas.toolbox.LabelFigure;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
-import diva.util.java2d.Polygon2D.Double;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.Location;
 import ptolemy.vergil.kernel.AttributeController;
 
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExternalIOPortController

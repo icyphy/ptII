@@ -30,14 +30,15 @@
 
 package ptolemy.actor.lib.comm;
 
-import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.lib.Source;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.ArrayType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// HadamardCode

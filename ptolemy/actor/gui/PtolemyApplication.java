@@ -32,11 +32,7 @@ package ptolemy.actor.gui;
 
 // Ptolemy imports
 import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLParser;
 
-// Java imports
 import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////

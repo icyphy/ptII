@@ -34,12 +34,9 @@ import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 
 import java.awt.Frame;

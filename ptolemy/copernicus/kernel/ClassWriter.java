@@ -30,13 +30,14 @@
 
 package ptolemy.copernicus.kernel;
 
-import soot.*;
-import soot.jimple.*;
-import soot.toolkits.scalar.*;
-import soot.util.*;
-import soot.toolkits.graph.*;
-import java.util.*;
-import java.io.*;
+import soot.Options;
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+
+import java.io.File;
+import java.util.Iterator;
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// ClassWriter

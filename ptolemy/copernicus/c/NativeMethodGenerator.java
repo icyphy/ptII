@@ -33,15 +33,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.copernicus.c;
 
-import java.util.Iterator;
-import java.io.File;
-
+import soot.ArrayType;
+import soot.BaseType;
+import soot.RefType;
 import soot.SootMethod;
 import soot.Type;
-import soot.VoidType;
-import soot.BaseType;
-import soot.ArrayType;
-import soot.RefType;
+
+import java.io.File;
+import java.util.Iterator;
 
 
 /** A class that handles generation and management of native methods. It

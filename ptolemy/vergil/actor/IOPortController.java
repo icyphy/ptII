@@ -37,13 +37,10 @@ import diva.canvas.connector.FixedNormalSite;
 import diva.canvas.connector.PerimeterSite;
 import diva.canvas.connector.TerminalFigure;
 import diva.canvas.interactor.CompositeInteractor;
-import diva.canvas.interactor.Interactor;
 import diva.canvas.toolbox.BasicFigure;
 import diva.graph.GraphController;
-import diva.graph.GraphModel;
 import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
-import diva.util.java2d.Polygon2D.Double;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.DebugListenerTableau;
@@ -51,11 +48,13 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.data.type.Type;
 import ptolemy.data.type.Typeable;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.kernel.AttributeController;
@@ -63,8 +62,9 @@ import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 
 import java.awt.Color;
-import java.awt.geom.AffineTransform;
 import java.awt.event.ActionEvent;
+import java.awt.geom.AffineTransform;
+
 import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////

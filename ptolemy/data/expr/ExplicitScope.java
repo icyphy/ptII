@@ -31,12 +31,12 @@
 
 package ptolemy.data.expr;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedList;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.NamedList;
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExplicitScope

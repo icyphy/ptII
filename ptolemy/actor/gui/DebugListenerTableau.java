@@ -29,23 +29,15 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.gui.CancelException;
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
+import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
 //// DebugListenerTableau

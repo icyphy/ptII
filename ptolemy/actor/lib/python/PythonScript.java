@@ -30,23 +30,23 @@
 package ptolemy.actor.lib.python;
 
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.StringUtilities;
-
-import org.python.core.PyObject;
-import org.python.core.PyJavaInstance;
-import org.python.core.PyString;
-import org.python.core.PyMethod;
-import org.python.core.PyClass;
-import org.python.util.PythonInterpreter;
 
 import java.util.HashMap;
 import java.util.Iterator;
+
+import org.python.core.PyClass;
+import org.python.core.PyJavaInstance;
+import org.python.core.PyMethod;
+import org.python.core.PyObject;
+import org.python.core.PyString;
+import org.python.util.PythonInterpreter;
 
 //////////////////////////////////////////////////////////////////////////
 //// PythonScript

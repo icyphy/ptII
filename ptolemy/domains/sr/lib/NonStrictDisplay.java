@@ -31,11 +31,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.lib.gui.Display;
+import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.Token;
 
 import javax.swing.text.BadLocationException;
 

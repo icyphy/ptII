@@ -32,10 +32,9 @@
 package ptolemy.copernicus.java;
 
 import ptolemy.data.expr.ParserScope;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.NamedList;
 import ptolemy.kernel.util.IllegalActionException;
-import soot.*;
+
+import soot.Local;
 
 //////////////////////////////////////////////////////////////////////////
 //// CodeGenerationScope

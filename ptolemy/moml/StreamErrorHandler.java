@@ -30,8 +30,8 @@
 
 package ptolemy.moml;
 
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NamedObj;
 
 import java.io.OutputStream;
 import java.io.PrintStream;

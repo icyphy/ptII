@@ -30,16 +30,14 @@
 package ptolemy.domains.ct.demo.Helicopter;
 
 // Ptolemy imports
-import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.ModelPane;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.actor.gui.Placeable;
 
 import java.awt.GridLayout;
-import javax.swing.JPanel;
 import java.util.Iterator;
+
+import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
 //// HelicopterModelPane

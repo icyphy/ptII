@@ -30,7 +30,7 @@
 
 package ptolemy.actor.lib.javasound.test.pitchshift;
 
-import ptolemy.math.*;
+import ptolemy.math.Complex;
 import ptolemy.math.SignalProcessing;
 
 //////////////////////////////////////////////////////////////////////////

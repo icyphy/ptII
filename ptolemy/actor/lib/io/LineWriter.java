@@ -39,10 +39,12 @@ import ptolemy.data.type.BaseType;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 //////////////////////////////////////////////////////////////////////////

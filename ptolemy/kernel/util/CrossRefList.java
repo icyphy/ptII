@@ -30,9 +30,9 @@
 
 package ptolemy.kernel.util;
 
+import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
-import java.io.Serializable;
 
 //////////////////////////////////////////////////////////////////////////
 //// CrossRefList

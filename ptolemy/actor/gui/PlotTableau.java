@@ -31,7 +31,11 @@ package ptolemy.actor.gui;
 
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.plotml.PlotMLParser;

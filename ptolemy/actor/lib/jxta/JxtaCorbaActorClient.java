@@ -1,56 +1,56 @@
 package ptolemy.actor.lib.jxta;
 
-import ptolemy.actor.*;
-import ptolemy.actor.corba.util.*;
-import ptolemy.data.IntToken;
-import ptolemy.data.Token;
-import ptolemy.data.StringToken;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.corba.util.CorbaActor;
+import ptolemy.actor.corba.util.CorbaActorHelper;
+import ptolemy.actor.corba.util.CorbaIllegalActionException;
+import ptolemy.actor.corba.util.CorbaIllegalValueException;
+import ptolemy.actor.corba.util.CorbaIndexOutofBoundException;
+import ptolemy.actor.corba.util.CorbaUnknownPortException;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.NameDuplicationException;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
-
-import org.apache.log4j.PropertyConfigurator;
-import org.omg.CORBA.ORB;
-import org.omg.CORBA.UserException;
-import org.omg.CORBA.SystemException;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 import net.jxta.credential.AuthenticationCredential;
 import net.jxta.credential.Credential;
-import net.jxta.discovery.DiscoveryEvent;
-import net.jxta.discovery.DiscoveryListener;
-import net.jxta.discovery.DiscoveryService;
-import net.jxta.document.*;
+import net.jxta.document.AdvertisementFactory;
+import net.jxta.document.MimeMediaType;
+import net.jxta.document.StructuredDocument;
 import net.jxta.exception.DiscardQueryException;
 import net.jxta.exception.NoResponseException;
 import net.jxta.exception.PeerGroupException;
 import net.jxta.exception.ResendQueryException;
 import net.jxta.impl.protocol.ResolverQuery;
-import net.jxta.impl.protocol.ResolverResponse;
 import net.jxta.membership.Authenticator;
 import net.jxta.membership.MembershipService;
 import net.jxta.peergroup.PeerGroup;
 import net.jxta.peergroup.PeerGroupFactory;
-import net.jxta.protocol.DiscoveryResponseMsg;
-import net.jxta.protocol.PeerAdvertisement;
 import net.jxta.protocol.PeerGroupAdvertisement;
 import net.jxta.protocol.ResolverQueryMsg;
 import net.jxta.protocol.ResolverResponseMsg;
 import net.jxta.resolver.QueryHandler;
 import net.jxta.resolver.ResolverService;
+
+import org.apache.log4j.PropertyConfigurator;
+import org.omg.CORBA.ORB;
+import org.omg.CORBA.SystemException;
+import org.omg.CORBA.UserException;
 
 /**
  * @author liuxj, Yang

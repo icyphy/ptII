@@ -31,8 +31,8 @@
 
 package ptolemy.data.type;
 
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Type

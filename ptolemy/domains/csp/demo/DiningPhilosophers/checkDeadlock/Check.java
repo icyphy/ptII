@@ -29,13 +29,13 @@
 
 package ptolemy.domains.csp.demo.DiningPhilosophers.checkDeadlock;
 
+import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
+import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.moml.MoMLParser;
-import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
-import ptolemy.domains.fsm.kernel.State;
 
 import java.net.URL;
 import java.util.HashMap;

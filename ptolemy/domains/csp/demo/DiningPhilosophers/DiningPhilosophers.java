@@ -30,11 +30,12 @@
 
 package ptolemy.domains.csp.demo.DiningPhilosophers;
 
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.domains.csp.kernel.*;
-import ptolemy.domains.csp.lib.*;
+import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.csp.kernel.CSPDirector;
+import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Implementation of the Dining Philosophers problem.

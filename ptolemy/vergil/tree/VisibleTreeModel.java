@@ -32,7 +32,9 @@ package ptolemy.vergil.tree;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.vergil.icon.EditorIcon;
 

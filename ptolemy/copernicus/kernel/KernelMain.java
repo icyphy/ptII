@@ -30,31 +30,28 @@ to be used by various backends.
 
 package ptolemy.copernicus.kernel;
 
-import soot.ConsoleCompilationListener;
-import soot.Main;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Manager;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelRuntimeException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.util.StringUtilities;
+
 import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
 import soot.Transform;
-
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Manager;
-import ptolemy.kernel.attributes.VersionAttribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelRuntimeException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.util.StringUtilities;
-import ptolemy.moml.MoMLParser;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
-import ptolemy.moml.filter.BackwardCompatibility;
-
-import com.microstar.xml.XmlException;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
+
+import com.microstar.xml.XmlException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Main

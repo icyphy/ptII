@@ -30,34 +30,56 @@
 
 package ptolemy.domains.dde.demo.LocalZeno;
 
-import diva.graph.*;
-import diva.graph.basic.*;
-import diva.graph.layout.*;
-import diva.canvas.*;
-import diva.canvas.toolbox.*;
-import diva.canvas.connector.*;
-import diva.canvas.interactor.*;
+import diva.canvas.Figure;
+import diva.canvas.Site;
+import diva.canvas.connector.Arrowhead;
+import diva.canvas.connector.Connector;
+import diva.canvas.connector.StraightConnector;
+import diva.canvas.interactor.SelectionDragger;
+import diva.canvas.interactor.SelectionInteractor;
+import diva.canvas.toolbox.BasicEllipse;
+import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.BasicRectangle;
+import diva.canvas.toolbox.LabelWrapper;
+import diva.graph.BasicEdgeController;
+import diva.graph.BasicNodeController;
+import diva.graph.EdgeRenderer;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
+import diva.graph.JGraph;
+import diva.graph.MutableGraphModel;
+import diva.graph.NodeRenderer;
+import diva.graph.basic.BasicGraphController;
+import diva.graph.basic.BasicGraphModel;
+import diva.graph.basic.BasicLayoutTarget;
+import diva.graph.layout.LayoutTarget;
+import diva.graph.layout.LevelLayout;
 
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.gui.*;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.gui.PtolemyApplet;
 import ptolemy.actor.lib.gui.TimedPlotter;
-import ptolemy.domains.dde.lib.*;
-import ptolemy.domains.dde.kernel.*;
-import ptolemy.domains.dde.kernel.test.*;
+import ptolemy.data.DoubleToken;
+import ptolemy.domains.dde.kernel.DDEDirector;
+import ptolemy.domains.dde.lib.TimeAdvance;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.DebugEvent;
+import ptolemy.kernel.util.DebugListener;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.JButton;
 
 //////////////////////////////////////////////////////////////////////////
 //// LocalZenoApplet

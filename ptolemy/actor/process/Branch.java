@@ -34,7 +34,8 @@ package ptolemy.actor.process;
 
 
 import ptolemy.data.Token;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Nameable;
 
 //////////////////////////////////////////////////////////////////////////
 //// Branch

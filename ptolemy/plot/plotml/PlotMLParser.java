@@ -33,7 +33,6 @@ package ptolemy.plot.plotml;
 // Ptolemy imports.
 import ptolemy.plot.Plot;
 
-// XML imports.
 import com.microstar.xml.XmlException;
 
 

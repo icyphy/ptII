@@ -30,10 +30,11 @@
 
 package ptolemy.actor.process.test;
 
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-import ptolemy.kernel.util.*;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.lib.Sink;
 import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ProcessSink

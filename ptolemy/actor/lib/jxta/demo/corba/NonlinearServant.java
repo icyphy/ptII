@@ -29,7 +29,12 @@
 */
 package ptolemy.actor.lib.jxta.demo.corba;
 
-import ptolemy.domains.ct.demo.Corba.util.*;
+import ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException;
+import ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException;
+import ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException;
+import ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamException;
+import ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException;
+import ptolemy.domains.ct.demo.Corba.util._CorbaActorImplBase;
 
 //////////////////////////////////////////////////////////////////////////
 //// NonlinearServant

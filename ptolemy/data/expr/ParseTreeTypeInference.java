@@ -27,14 +27,19 @@
 */
 package ptolemy.data.expr;
 
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.FunctionType;
+import ptolemy.data.type.RecordType;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeLattice;
+import ptolemy.data.type.UnsizedMatrixType;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.data.type.*;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.InternalErrorException;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeTypeInference

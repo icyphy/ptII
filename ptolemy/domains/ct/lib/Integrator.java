@@ -31,7 +31,6 @@
 package ptolemy.domains.ct.lib;
 
 import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.ct.kernel.CTBaseIntegrator;
 import ptolemy.kernel.CompositeEntity;

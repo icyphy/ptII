@@ -32,10 +32,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.copernicus.c;
 
+import soot.Body;
 import soot.Trap;
 import soot.Unit;
-import soot.Body;
-
 import soot.util.Chain;
 
 import java.util.Iterator;

@@ -30,21 +30,21 @@
 
 package ptolemy.vergil;
 
-import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
+
 import ptolemy.actor.gui.MoMLApplet;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.actor.ActorViewerGraphController;
 import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.fsm.FSMGraphModel;
 
-import java.applet.Applet;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 

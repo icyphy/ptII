@@ -30,7 +30,6 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.actor.AtomicActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.BooleanToken;
@@ -43,9 +42,9 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.math.Complex;
 import ptolemy.math.FixPoint;
 
@@ -55,7 +54,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// ClassWrapper

@@ -29,15 +29,16 @@
 
 package ptolemy.domains.fsm.kernel;
 
-import ptolemy.actor.NoRoomException;
 import ptolemy.data.expr.ASTPtAssignmentNode;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ModelScope;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParseTreeWriter;
 import ptolemy.data.expr.PtParser;
-import ptolemy.kernel.util.*;
+import ptolemy.data.expr.Variable;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -45,7 +46,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// AbstractActionsAttribute

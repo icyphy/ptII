@@ -30,19 +30,19 @@
 
 package ptolemy.domains.de.kernel;
 
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.Token;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.data.Token;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEIOPort

@@ -28,15 +28,14 @@
 package ptolemy.copernicus.c;
 
 import soot.Scene;
-import soot.SootMethod;
 import soot.SootClass;
-
+import soot.SootMethod;
 import soot.jimple.toolkits.invoke.InvokeGraph;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Iterator;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////

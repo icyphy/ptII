@@ -39,9 +39,9 @@
 
 package ptolemy.domains.csp.demo.DiningPhilosophers;
 
-import java.awt.*;
-import java.util.Random;
-import ptolemy.domains.csp.demo.DiningPhilosophers.Philosopher;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Panel;
 
 class TablePanel extends Panel {
 

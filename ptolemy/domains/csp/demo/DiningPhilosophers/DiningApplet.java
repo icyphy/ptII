@@ -30,17 +30,24 @@
 
 package ptolemy.domains.csp.demo.DiningPhilosophers;
 
-import java.applet.Applet;
-import java.awt.*;
-import java.awt.event.*;
-import ptolemy.domains.csp.kernel.CSPDirector;
-import ptolemy.domains.csp.lib.*;
-import ptolemy.actor.*;
+import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.plot.*;
+import ptolemy.domains.csp.kernel.CSPDirector;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+
+import java.applet.Applet;
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.Label;
+import java.awt.Panel;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 
 ///////////////////////////////////////////////////////////////

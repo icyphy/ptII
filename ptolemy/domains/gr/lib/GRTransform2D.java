@@ -30,20 +30,17 @@
 
 package ptolemy.domains.gr.lib;
 
-import ptolemy.actor.IOPort;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-import ptolemy.domains.gr.kernel.*;
+import ptolemy.domains.gr.kernel.GRActor2D;
+import ptolemy.domains.gr.kernel.Scene2DToken;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-
-import diva.canvas.*;
-import diva.canvas.toolbox.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 
 //////////////////////////////////////////////////////////////////////////

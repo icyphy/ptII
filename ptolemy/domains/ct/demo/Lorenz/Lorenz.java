@@ -30,16 +30,23 @@
 
 package ptolemy.domains.ct.demo.Lorenz;
 
-import ptolemy.domains.ct.kernel.*;
-import ptolemy.domains.ct.lib.*;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
+import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIORelation;
+import ptolemy.actor.lib.AddSubtract;
+import ptolemy.actor.lib.Const;
+import ptolemy.actor.lib.MultiplyDivide;
+import ptolemy.actor.lib.Scale;
 import ptolemy.actor.lib.gui.XYPlotter;
-import ptolemy.actor.gui.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTMultiSolverDirector;
+import ptolemy.domains.ct.lib.Integrator;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.Plot;
 
 

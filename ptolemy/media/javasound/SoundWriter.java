@@ -30,18 +30,17 @@
 
 package ptolemy.media.javasound;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
-import javax.sound.sampled.AudioFileFormat.Type;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 /////////////////////////////////////////////////////////////
 //// SoundWriter

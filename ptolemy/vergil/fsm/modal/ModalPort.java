@@ -30,17 +30,16 @@
 
 package ptolemy.vergil.fsm.modal;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import java.util.Iterator;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModalPort

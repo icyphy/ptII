@@ -30,13 +30,20 @@
 
 package ptolemy.kernel.util.test;
 
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.ComponentRelation;
-import ptolemy.actor.*;
-import ptolemy.domains.sdf.kernel.*;
+import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.lib.AddSubtract;
+import ptolemy.actor.lib.Const;
+import ptolemy.actor.lib.Recorder;
+import ptolemy.data.DoubleToken;
+import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.lib.SampleDelay;
-import ptolemy.actor.lib.*;
-import ptolemy.data.*;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import java.util.Collections;
 import java.util.Enumeration;

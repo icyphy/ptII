@@ -33,36 +33,35 @@ Review fireAtCurrentTime()'s use of the time Double.NEGATIVE_INFINITY
 
 package ptolemy.domains.de.kernel;
 
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.FiringEvent;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.graph.DirectedAcyclicGraph;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.FiringEvent;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.Director;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.Receiver;
-import ptolemy.data.Token;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
-import ptolemy.graph.DirectedAcyclicGraph;
 
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Set;
-import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Set;
 
 
 //////////////////////////////////////////////////////////////////////////

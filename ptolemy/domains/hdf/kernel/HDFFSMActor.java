@@ -30,51 +30,28 @@
 
 package ptolemy.domains.hdf.kernel;
 
-import ptolemy.domains.fsm.kernel.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.actor.Actor;
 import ptolemy.actor.TypedActor;
-import ptolemy.actor.sched.Scheduler;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.ComponentPort;
-import ptolemy.kernel.ComponentRelation;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.InvalidStateException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.actor.Director;
-import ptolemy.actor.Manager;
-import ptolemy.actor.Receiver;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.IORelation;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.data.Token;
-import ptolemy.data.IntToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Variable;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.Typeable;
-import ptolemy.data.type.BaseType;
-import ptolemy.graph.Inequality;
-import ptolemy.domains.sdf.kernel.*;
+import ptolemy.data.expr.Variable;
+import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.domains.sdf.kernel.SDFScheduler;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// HDFFSMActor

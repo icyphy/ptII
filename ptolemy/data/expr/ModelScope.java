@@ -31,14 +31,13 @@
 
 package ptolemy.data.expr;
 
-import java.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.NamedObj;
+
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Iterator;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.NamedList;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModelScope

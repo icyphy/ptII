@@ -32,18 +32,9 @@ package ptolemy.hsif.test;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
-import ptolemy.gui.Top;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-import javax.swing.JTextArea;
 
 //////////////////////////////////////////////////////////////////////////
 //// StandardOutTableau

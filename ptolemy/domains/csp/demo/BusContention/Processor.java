@@ -31,25 +31,18 @@
 package ptolemy.domains.csp.demo.BusContention;
 
 // Ptolemy imports.
-import ptolemy.actor.*;
-import ptolemy.actor.gui.*;
-import ptolemy.actor.process.*;
-import ptolemy.domains.csp.lib.*;
-import ptolemy.domains.csp.kernel.*;
-import ptolemy.data.Token;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.process.TerminateProcessException;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.csp.kernel.CSPActor;
+import ptolemy.domains.csp.kernel.CSPDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-// Java imports.
-import java.awt.event.*;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

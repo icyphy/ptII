@@ -29,15 +29,39 @@
 
 package ptolemy.copernicus.kernel;
 
-import soot.*;
-import soot.jimple.*;
-import soot.toolkits.graph.CompleteUnitGraph;
-import soot.toolkits.graph.UnitGraph;
-import soot.toolkits.graph.HashMutableDirectedGraph;
-import soot.toolkits.scalar.ForwardFlowAnalysis;
+import soot.ArrayType;
+import soot.Local;
+import soot.Modifier;
+import soot.NullType;
+import soot.RefType;
+import soot.Scene;
+import soot.SootField;
+import soot.Type;
+import soot.Unit;
+import soot.Value;
+import soot.jimple.ArrayRef;
+import soot.jimple.CastExpr;
+import soot.jimple.Constant;
+import soot.jimple.DefinitionStmt;
+import soot.jimple.FieldRef;
+import soot.jimple.IdentityRef;
+import soot.jimple.NewArrayExpr;
+import soot.jimple.NewExpr;
+import soot.jimple.NullConstant;
+import soot.jimple.Stmt;
 import soot.jimple.toolkits.invoke.InvokeGraph;
+import soot.toolkits.graph.HashMutableDirectedGraph;
+import soot.toolkits.graph.UnitGraph;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
 An analysis that maps each local and field to the set of locals and

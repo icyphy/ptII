@@ -92,20 +92,15 @@ package com.JLex; // ctsay
 /***************************************************************
   Imported Packages
   **************************************************************/
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.DataOutputStream;
-import java.io.BufferedOutputStream;
-
-import java.lang.System;
-import java.lang.Integer;
-import java.lang.Character;
-
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Enumeration;
-import java.util.Stack;
 import java.util.Hashtable;
+import java.util.Stack;
 import java.util.Vector;
 
 /******************************

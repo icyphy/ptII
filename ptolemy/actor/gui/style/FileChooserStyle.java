@@ -32,7 +32,12 @@ package ptolemy.actor.gui.style;
 
 import ptolemy.actor.gui.PtolemyQuery;
 import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 import java.io.File;
 import java.net.URI;

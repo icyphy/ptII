@@ -32,16 +32,15 @@ Upper Triangular Matrix.
 package ptolemy.domains.pn.demo.QR;
 
 import ptolemy.actor.lib.Transformer;
-
-import ptolemy.domains.pn.kernel.*;
+import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.type.*;
-import ptolemy.data.expr.*;
-import ptolemy.actor.*;
-import java.io.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// StreamToMatrix

@@ -30,15 +30,26 @@
 
 package ptolemy.copernicus.kernel;
 
-import soot.*;
-import soot.jimple.*;
-import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
+import soot.Local;
+import soot.NullType;
+import soot.Options;
+import soot.RefType;
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+import soot.SootMethod;
+import soot.Unit;
+import soot.Value;
+import soot.ValueBox;
+import soot.jimple.BinopExpr;
+import soot.jimple.IntConstant;
+import soot.jimple.JimpleBody;
 import soot.jimple.toolkits.invoke.InvokeGraph;
-import soot.jimple.toolkits.invoke.MethodCallGraph;
-import soot.toolkits.scalar.*;
-import soot.util.*;
-import soot.toolkits.graph.*;
-import java.util.*;
+import soot.toolkits.graph.CompleteUnitGraph;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
 A transformer that removes instance equality checks.

@@ -32,9 +32,9 @@ package ptolemy.vergil.toolbox;
 
 import diva.gui.GUIUtilities;
 
-import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.EditParametersDialog;
-import ptolemy.kernel.util.*;
+import ptolemy.actor.gui.EditorFactory;
+import ptolemy.kernel.util.NamedObj;
 
 import java.awt.Event;
 import java.awt.Frame;

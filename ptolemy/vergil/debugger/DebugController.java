@@ -32,20 +32,21 @@ package ptolemy.vergil.debugger;
 import diva.canvas.Figure;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.Manager;
 import ptolemy.actor.Executable;
 import ptolemy.actor.FiringEvent;
+import ptolemy.actor.Manager;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.TransientSingletonConfigurableAttribute;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.kernel.DebugRenderer;
 
 import java.util.Hashtable;
+
 import javax.swing.SwingUtilities;
 
 ////////////////////////////////////////////////////////////////////////

@@ -30,26 +30,26 @@
 package ptolemy.actor;
 
 import ptolemy.actor.lib.Const;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
-
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.domains.de.kernel.DEDirector;
-import java.util.Iterator;
+
 import java.io.IOException;
-import java.io.Writer;
 import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// MobileModel

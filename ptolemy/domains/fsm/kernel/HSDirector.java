@@ -30,24 +30,20 @@
 
 package ptolemy.domains.fsm.kernel;
 
-import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.ParseTreeEvaluator;
-import ptolemy.data.expr.Variable;
-import ptolemy.domains.ct.kernel.CTTransparentDirector;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTReceiver;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
-import ptolemy.domains.ct.lib.Integrator;
+import ptolemy.domains.ct.kernel.CTTransparentDirector;
 import ptolemy.domains.fsm.lib.RelationList;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.actor.Actor;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.Director;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Receiver;
+import ptolemy.kernel.util.Workspace;
 
 import java.util.Iterator;
 import java.util.LinkedList;

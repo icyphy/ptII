@@ -34,10 +34,9 @@ package ptolemy.data;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.data.type.UnsizedMatrixType;
 import ptolemy.data.type.TypeLattice;
+import ptolemy.data.type.UnsizedMatrixType;
 import ptolemy.graph.CPO;
-
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Complex;

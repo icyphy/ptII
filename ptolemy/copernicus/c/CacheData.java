@@ -27,10 +27,9 @@
 
 package ptolemy.copernicus.c;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
-
-import java.io.Serializable;
 
 //////////////////////////////////////////////////////////////////////////
 //// CacheData

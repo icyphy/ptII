@@ -30,11 +30,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.plot.plotml;
 
-import ptolemy.plot.PlotBox;
 import ptolemy.plot.Histogram;
-
-// XML imports.
-import com.microstar.xml.XmlException;
+import ptolemy.plot.PlotBox;
 
 //////////////////////////////////////////////////////////////////////////
 //// HistogramMLApplet
