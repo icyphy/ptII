@@ -356,11 +356,11 @@ public class Manager extends NamedObj implements Runnable {
             _workspace.getReadAccess();
             if (_state != IDLE) {
                 throw new IllegalActionException(this,
-                "The model is already running.");
+                        "The model is already running.");
             }
             if (_container == null) {
                 throw new IllegalActionException(this,
-                "No model to run!");
+                        "No model to run!");
             }
             _setState(PREINITIALIZING);
 
@@ -583,11 +583,11 @@ public class Manager extends NamedObj implements Runnable {
 
 	    List conflicts = new LinkedList();
             List typeConflicts =
-                    ((TypedCompositeActor)_container).checkTypes();
+                ((TypedCompositeActor)_container).checkTypes();
             conflicts.addAll(typeConflicts);
 
             List constraintList =
-            		((TypedCompositeActor)_container).typeConstraintList();
+                ((TypedCompositeActor)_container).typeConstraintList();
 	    if (constraintList.size() > 0) {
                 InequalitySolver solver = new InequalitySolver(
                         TypeLattice.lattice());
@@ -633,8 +633,8 @@ public class Manager extends NamedObj implements Runnable {
 
 	    if (conflicts.size() > 0) {
 		throw new TypeConflictException(conflicts,
-                      "Type conflicts occurred in " + _container.getFullName()
-		      + " on the following Typeables:");
+                        "Type conflicts occurred in " + _container.getFullName()
+                        + " on the following Typeables:");
 	    }
 	} catch (IllegalActionException iae) {
 	    // this should not happen.
@@ -786,7 +786,7 @@ public class Manager extends NamedObj implements Runnable {
     protected void _notifyListenersOfCompletion() {
         if (_debugging) {
             _debug("Completed execution with "
-            + _iterationCount + " iterations");
+                    + _iterationCount + " iterations");
         }
         if (_executionListeners != null) {
             Iterator listeners = _executionListeners.iterator();
@@ -880,10 +880,10 @@ public class Manager extends NamedObj implements Runnable {
         }
     }
 
-   /** Set the state of execution and notify listeners if the state
-    *  actually changes.
-    *  @param newstate The new state.
-    */
+    /** Set the state of execution and notify listeners if the state
+     *  actually changes.
+     *  @param newstate The new state.
+     */
     protected void _setState(State newstate) {
         if (_state != newstate) {
             _state = newstate;

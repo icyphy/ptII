@@ -458,7 +458,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	    	    // both source/destination ports are declared, check type
 	    	    Type destDeclared = destport.getType();
 		    int compare = TypeLattice.compare(srcDeclared,
-                            			      destDeclared);
+                            destDeclared);
 		    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
 		    	result.add(srcport);
 		    	result.add(destport);
@@ -488,7 +488,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     // specified source port to all the ports in a group of destination
     // ports.
     private List _typeConstraintsFromTo(TypedIOPort srcport,
-       				        List destPortList) {
+            List destPortList) {
 	List result = new LinkedList();
 
 	boolean srcUndeclared = srcport.getTypeTerm().isSettable();

@@ -151,9 +151,9 @@ public class TypedIOPort extends IOPort implements Typeable {
         TypedIOPort newobj = (TypedIOPort)super.clone(ws);
 	// set _declaredType and _resolvedType
 	if (_declaredType instanceof StructuredType &&
-					!_declaredType.isConstant()) {
+                !_declaredType.isConstant()) {
 	    newobj._declaredType =
-				 (Type)((StructuredType)_declaredType).clone();
+                (Type)((StructuredType)_declaredType).clone();
 	    newobj._resolvedType = newobj._declaredType;
 	}
 
@@ -246,9 +246,9 @@ public class TypedIOPort extends IOPort implements Typeable {
                         _resolvedType);
                 if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
                     throw new IllegalArgumentException(
-                    "Run-time type checking failed. token type: "
-                    + token.getType().toString() + ", port: "
-                    + getFullName() + ", port type: " + getType().toString());
+                            "Run-time type checking failed. token type: "
+                            + token.getType().toString() + ", port: "
+                            + getFullName() + ", port type: " + getType().toString());
                 }
 
                 // Note that the getRemoteReceivers() method doesn't throw
@@ -263,7 +263,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 
             for (int j = 0; j < farRec[channelindex].length; j++) {
                 TypedIOPort port =
-                        (TypedIOPort)farRec[channelindex][j].getContainer();
+                    (TypedIOPort)farRec[channelindex][j].getContainer();
                 Type farType = port.getType();
 
                 if (farType.isEqualTo(token.getType())) {
@@ -345,12 +345,12 @@ public class TypedIOPort extends IOPort implements Typeable {
 
 	} catch (InstantiationException ie) {
 	    throw new IllegalArgumentException(
-		"TypedIOPort.setTypeEquals(Class): Cannot create a " +
-		"token from the specified Class object. " + ie.getMessage());
+                    "TypedIOPort.setTypeEquals(Class): Cannot create a " +
+                    "token from the specified Class object. " + ie.getMessage());
 	} catch (IllegalAccessException iae) {
 	    throw new IllegalArgumentException(
-		"TypedIOPort.setTypeEquals(Class): Cannot create a " +
-		"token from the specified Class object. " + iae.getMessage());
+                    "TypedIOPort.setTypeEquals(Class): Cannot create a " +
+                    "token from the specified Class object. " + iae.getMessage());
 	}
     }
 
@@ -388,7 +388,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 		    } catch (IllegalActionException ex) {
 			// since the user was null, this should never happen.
 			throw new InternalErrorException(
-			    "TypedIOPort.setTypeEquals: " + ex.getMessage());
+                                "TypedIOPort.setTypeEquals: " + ex.getMessage());
 		    }
 		}
 	    }
@@ -637,12 +637,12 @@ public class TypedIOPort extends IOPort implements Typeable {
 		throws IllegalActionException {
 	    if ( !isSettable()) {
 	    	throw new IllegalActionException("TypeTerm.initialize: " +
-		    "Cannot initialize a constant type.");
+                        "Cannot initialize a constant type.");
 	    }
 
 	    if ( !(e instanceof Type)) {
 		throw new IllegalActionException("TypeTerm.initialize: " +
-		    "The argument is not a Type.");
+                        "The argument is not a Type.");
 	    }
 
 	    Type oldType = _resolvedType;
@@ -696,17 +696,17 @@ public class TypedIOPort extends IOPort implements Typeable {
         public void setValue(Object e) throws IllegalActionException {
 	    if ( !isSettable()) {
 		throw new IllegalActionException(
-		    "TypedIOPort$TypeTerm.setValue: The type is not " +
-		    "settable.");
+                        "TypedIOPort$TypeTerm.setValue: The type is not " +
+                        "settable.");
 	    }
 
 	    if ( !_declaredType.isSubstitutionInstance((Type)e)) {
 		// FIXME: should throw TypeConflictException.
 	        throw new IllegalActionException(
-		    "TypedIOPort$TypeTerm.setValue: The new type is not a " +
-		    "substitution instance of the type of this port. " +
-		    "port: " + _port.getFullName() + " portType: " +
-		    getValue() + " newType: " + e.toString());
+                        "TypedIOPort$TypeTerm.setValue: The new type is not a " +
+                        "substitution instance of the type of this port. " +
+                        "port: " + _port.getFullName() + " portType: " +
+                        getValue() + " newType: " + e.toString());
 	    }
 
 	    Type oldType = _resolvedType;

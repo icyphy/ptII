@@ -171,7 +171,7 @@ public class IORelation extends ComponentRelation {
             _workspace.getReadAccess();
             Receiver[][] result = new Receiver[0][0];
             Iterator inputs =
-                    linkedDestinationPortList(except).iterator();
+                linkedDestinationPortList(except).iterator();
             Receiver[][] recvrs = new Receiver[0][0];
             while(inputs.hasNext()) {
                 IOPort p = (IOPort) inputs.next();

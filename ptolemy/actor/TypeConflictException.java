@@ -129,8 +129,8 @@ public class TypeConflictException extends KernelException {
 	    return result;
         } catch (IllegalActionException ex) {
 	    throw new InternalErrorException("TypeConflictException." +
-	        "_getTypeablesAndTypes(): Cannot get type of Typeable. " +
-		ex.getMessage());
+                    "_getTypeablesAndTypes(): Cannot get type of Typeable. " +
+                    ex.getMessage());
 	}
     }
 

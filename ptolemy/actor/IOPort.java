@@ -448,7 +448,7 @@ public class IOPort extends ComponentPort {
                 localRec = getReceivers();
                 if (localRec[channelindex] == null) {
                     throw new NoTokenException(this,
-                    "get: no receiver at index: " + channelindex + ".");
+                            "get: no receiver at index: " + channelindex + ".");
                 }
             } finally {
                 _workspace.doneReading();
@@ -465,7 +465,7 @@ public class IOPort extends ComponentPort {
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This may be thrown if the port is not an input port.
             throw new IllegalActionException(this,
-            "get: channel index is out of range.");
+                    "get: channel index is out of range.");
         }
     }
 
@@ -867,7 +867,7 @@ public class IOPort extends ComponentPort {
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This might be thrown if the port is not an input port.
             throw new IllegalActionException(this,
-            "hasRoom: channel index is out of range.");
+                    "hasRoom: channel index is out of range.");
         }
         return true;
     }
@@ -900,7 +900,7 @@ public class IOPort extends ComponentPort {
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This might be thrown if the port is not an input port.
             throw new IllegalActionException(this,
-            "hasToken: channel index is out of range.");
+                    "hasToken: channel index is out of range.");
         }
         return false;
     }
@@ -1315,15 +1315,15 @@ public class IOPort extends ComponentPort {
             throws IOException {
         if (_isinput) {
             output.write(_getIndentPrefix(depth)
-                   + "<property name=\"input\"/>\n");
+                    + "<property name=\"input\"/>\n");
         }
         if (_isoutput) {
             output.write(_getIndentPrefix(depth)
-                   + "<property name=\"output\"/>\n");
+                    + "<property name=\"output\"/>\n");
         }
         if (_ismultiport) {
             output.write(_getIndentPrefix(depth)
-                   + "<property name=\"multiport\"/>\n");
+                    + "<property name=\"multiport\"/>\n");
         }
         super._exportMoMLContents(output, depth);
     }
@@ -1401,7 +1401,7 @@ public class IOPort extends ComponentPort {
                 Iterator relations = linkedRelationList().iterator();
                 while (relations.hasNext()) {
                     IORelation theRelation =
-                            (IORelation)relations.next();
+                        (IORelation)relations.next();
                     if (!theRelation.isWidthFixed()) {
                         throw new IllegalActionException(this, rel,
                                 "Attempt to link a second bus relation " +
@@ -1531,7 +1531,7 @@ public class IOPort extends ComponentPort {
 
     // To avoid creating this repeatedly, we use a single version.
     private static final Receiver[][]
-             _EMPTY_RECEIVER_ARRAY = new Receiver[0][0];
+    _EMPTY_RECEIVER_ARRAY = new Receiver[0][0];
 
     // Indicate whether the port is an input, an output, or both.
     // The value may be overridden in transparent ports, in that if
