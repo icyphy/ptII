@@ -129,7 +129,7 @@ public class LocalZenoApplication implements ActionListener {
      * This is sort of bogus because it's totally hird-wired,
      * but it will do for now...
      */
-    public GraphModel constructDivaGraph () {
+    public GraphModel constructDivaGraph() {
         GraphModel model = new GraphModel();
 
         // Nodes, with user object set to the actor
@@ -168,24 +168,24 @@ public class LocalZenoApplication implements ActionListener {
         _nodeMap.put(_rcvr2, n9);
 
         // Edges
-        model.createEdge(n1,n2);
-        model.createEdge(n2,n3);
-        model.createEdge(n3,n4);
-        model.createEdge(n3,n5);
-        model.createEdge(n4,n2);
+        model.createEdge(n1, n2);
+        model.createEdge(n2, n3);
+        model.createEdge(n3, n4);
+        model.createEdge(n3, n5);
+        model.createEdge(n4, n2);
 
-        model.createEdge(n1,n6);
-        model.createEdge(n6,n7);
-        model.createEdge(n7,n8);
-        model.createEdge(n7,n9);
-        model.createEdge(n8,n6);
+        model.createEdge(n1, n6);
+        model.createEdge(n6, n7);
+        model.createEdge(n7, n8);
+        model.createEdge(n7, n9);
+        model.createEdge(n8, n6);
 
         return model;
     }
 
     /** Construct the Ptolemy system
      */
-    public void constructPtolemyModel () {
+    public void constructPtolemyModel() {
         try {
 	    // Instantiate Director
 	    DDEDirector director = new DDEDirector(_topLevel, "Director");
@@ -297,7 +297,7 @@ public class LocalZenoApplication implements ActionListener {
         // Display the model in the _window
         try {
 	    SwingUtilities.invokeAndWait(new Runnable (){
-		public void run () {
+		public void run() {
 		    displayGraph(_jgraph, _model);
 		}
 	    });
@@ -419,7 +419,7 @@ public class LocalZenoApplication implements ActionListener {
 
         /** Create a listener on the given graph pane
          */
-        public StateListener (GraphPane pane) {
+        public StateListener(GraphPane pane) {
             _graphPane = pane;
         }
 
@@ -441,7 +441,7 @@ public class LocalZenoApplication implements ActionListener {
             // Color the graph
             try {
                 SwingUtilities.invokeAndWait(new Runnable () {
-                    public void run () {
+                    public void run() {
                         switch (state) {
                         case 1:
 			    figure.setFillPaint(Color.yellow);
@@ -481,7 +481,7 @@ public class LocalZenoApplication implements ActionListener {
         /**
          * Return the rendered visual representation of this node.
          */
-        public Figure render (Node n) {
+        public Figure render(Node n) {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
             boolean isEllipse =
@@ -519,7 +519,7 @@ public class LocalZenoApplication implements ActionListener {
         /**
          * Render the edge
          */
-        public Connector render (Edge edge, Site tailSite, Site headSite) {
+        public Connector render(Edge edge, Site tailSite, Site headSite) {
             StraightConnector c = new StraightConnector(tailSite, headSite);
 
             // Create an arrow at the head
@@ -527,14 +527,6 @@ public class LocalZenoApplication implements ActionListener {
                     headSite.getX(), headSite.getY(),
                     headSite.getNormal());
             c.setHeadEnd(headArrow);
-
-            /*
-              // Create an arrow at the tail
-              Arrowhead tailArrow = new Arrowhead(
-              tailSite.getX(), tailSite.getY(),
-              tailSite.getNormal());
-              c.setTailEnd(tailArrow);
-            */
 
             c.setUserObject(edge);
             return c;
