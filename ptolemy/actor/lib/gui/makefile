@@ -57,7 +57,6 @@ JSRCS = \
 	Display.java \
 	HistogramPlotter.java \
 	KeystrokeSensor.java \
-	MatrixViewer.java \
 	MatrixVisualizer.java \
 	Plotter.java \
 	PlotterBase.java \
