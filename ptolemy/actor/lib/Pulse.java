@@ -58,7 +58,7 @@ For now, it outputs a zero (of the same type as the values) whenever
 the iteration count does not match an index in <i>indexes</i>.
 <p>
 The default for the <i>values</i> parameter is
-an integer vector of form [1, 0].
+an integer vector of form {1, 0}.
 The default indexes matrix is [0, 1].
 Thus, the default output sequence will be 1, 0, 0, ...
 <p>
