@@ -309,7 +309,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA PTCC CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP JJTREE MATLAB CAL_DIR CHIC_DIR CLASSPATHSEPARATOR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PTCAL_DIR PTCOPERNICUS_DIR PTCM_DIR PTCOMM_DIR PTCHIC_DIR PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAVA_DIR PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJNI_ARCHITECTURE PTJNI_DIR PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMESCAL_DIR PTQUICKTIME_DIR PTTINI_DIR PTGIOTTO_DIR PTWABA_DIR PTX10_DIR PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA PTCC CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB CAL_DIR CHIC_DIR CLASSPATHSEPARATOR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PTBOOST_INCLUDE PTCAL_DIR PTCOPERNICUS_DIR PTCM_DIR PTCOMM_DIR PTCHIC_DIR PTGMP_INCLUDE PTGMP_LIB PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAVA_DIR PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJNI_ARCHITECTURE PTJNI_DIR PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMESCAL_DIR PTQUICKTIME_DIR PTTINI_DIR PTGIOTTO_DIR PTWABA_DIR PTX10_DIR PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -770,6 +770,14 @@ ac_env_CPP_set=${CPP+set}
 ac_env_CPP_value=$CPP
 ac_cv_env_CPP_set=${CPP+set}
 ac_cv_env_CPP_value=$CPP
+ac_env_CXX_set=${CXX+set}
+ac_env_CXX_value=$CXX
+ac_cv_env_CXX_set=${CXX+set}
+ac_cv_env_CXX_value=$CXX
+ac_env_CXXFLAGS_set=${CXXFLAGS+set}
+ac_env_CXXFLAGS_value=$CXXFLAGS
+ac_cv_env_CXXFLAGS_set=${CXXFLAGS+set}
+ac_cv_env_CXXFLAGS_value=$CXXFLAGS
 
 #
 # Report the --help message.
@@ -894,6 +902,8 @@ Some influential environment variables:
   CPPFLAGS    C/C++ preprocessor flags, e.g. -I<include dir> if you have
               headers in a nonstandard directory <include dir>
   CPP         C preprocessor
+  CXX         C++ compiler command
+  CXXFLAGS    C++ compiler flags
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -1928,6 +1938,7 @@ See $PTII/doc/install.htm for details.'" >&2;}
 
 fi
 
+cd "$startdir"
 
 #--------------------------------------------------------------------
 #	We require JDK1.4 or later
@@ -1982,7 +1993,9 @@ if test -f "$PTJAVA_DIR/bin/jar"; then
 echo "${ECHO_T}$PTJAVA_DIR/bin/jar" >&6
     echo "$as_me:$LINENO: checking that $PTJAVA_DIR/bin/jar can handle -i" >&5
 echo $ECHO_N "checking that $PTJAVA_DIR/bin/jar can handle -i... $ECHO_C" >&6
+
     cd "$srcdir/config"
+
     "$PTJAVA_DIR/bin/jar" -cf jarTest.jar confTest.class
     if "$PTJAVA_DIR/bin/jar" -i jarTest.jar; then
         echo "$as_me:$LINENO: result: $PTJAVA_DIR/bin/jar -i worked" >&5
@@ -1996,13 +2009,16 @@ echo "$as_me: error: $PTJAVA_DIR/bin/jar -i jarTest.jar failed,
    { (exit 1); exit 1; }; }
 	JAR_INDEX=""
     fi
+
+    cd "$startdir"
+
 else
     { echo "$as_me:$LINENO: WARNING: Cannot find '$PTJAVA_DIR/bin/jar'.
     This is usually only a problem if you run 'make install'" >&5
 echo "$as_me: WARNING: Cannot find '$PTJAVA_DIR/bin/jar'.
     This is usually only a problem if you run 'make install'" >&2;}
 fi
-cd "$startdir"
+
 
 #--------------------------------------------------------------------
 #	Figure out which separator to use for CLASSPATH
@@ -2044,6 +2060,74 @@ ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
 #       Please try to keep the packages vaguely alphabetical
 #####################################################################
 #####################################################################
+
+#--------------------------------------------------------------------
+#       Boost is used by Mescal, which is not shipped with
+#       the standard Ptolemy II download
+#	See http://www.boost.org
+#--------------------------------------------------------------------
+
+# Set to -Ixxx if we found boost/static_assert.hpp
+PTBOOST_INCLUDE=
+
+# Set to yes if we found boost
+PTBOOST=no
+
+# We only need to look for Boost if mescal is present
+MESCAL_USER_DIR=$PTII/mescal/views/simulation/model/UINT.H
+
+if test ! -f "$MESCAL_USER_DIR"; then
+    echo "$as_me:$LINENO: result: $MESCAL_USER_DIR is not present,
+	so we need not find Boost." >&5
+echo "${ECHO_T}$MESCAL_USER_DIR is not present,
+	so we need not find Boost." >&6
+else
+    if test "$PTBOOST" = "no"; then
+        echo "$as_me:$LINENO: checking for Boost in \$PTII/mescal/include/boost/static_assert.hpp" >&5
+echo $ECHO_N "checking for Boost in \$PTII/mescal/include/boost/static_assert.hpp... $ECHO_C" >&6
+	if test -f "$PTII/mescal/include/boost/static_assert.hpp"; then
+	    echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
+	    PTBOOST_INCLUDE="-I$PTII/mescal/include"
+	    PTBOOST=yes
+        else
+	    echo "$as_me:$LINENO: result: not found, keep looking" >&5
+echo "${ECHO_T}not found, keep looking" >&6
+	fi
+    fi
+
+
+    if test "$PTBOOST" = "no"; then
+        echo "$as_me:$LINENO: checking for Boost in /usr/local/include/boost/static_assert.hpp" >&5
+echo $ECHO_N "checking for Boost in /usr/local/include/boost/static_assert.hpp... $ECHO_C" >&6
+	if test -f "/usr/local/include/boost/static_assert.hpp"; then
+	    echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
+	    PTBOOST_INCLUDE="-I/usr/local/include"
+	    PTBOOST=yes
+        else
+	    echo "$as_me:$LINENO: result: not found, keep looking" >&5
+echo "${ECHO_T}not found, keep looking" >&6
+	fi
+    fi
+
+    if test "$PTBOOST" = "no"; then
+            { echo "$as_me:$LINENO: WARNING: Failed to find boost/static_assert.hpp, which is only
+    needed to compile files that include $MESCAL_USER_DIR
+    boost can be found at http://www.boost.org
+    To install boost, download the source and then do
+        cd boost-1.30.2
+        mkdir $PTII/mescal/include
+        cp -r boost $PTII/mescal/include" >&5
+echo "$as_me: WARNING: Failed to find boost/static_assert.hpp, which is only
+    needed to compile files that include $MESCAL_USER_DIR
+    boost can be found at http://www.boost.org
+    To install boost, download the source and then do
+        cd boost-1.30.2
+        mkdir $PTII/mescal/include
+        cp -r boost $PTII/mescal/include" >&2;}
+    fi
+fi
 
 #--------------------------------------------------------------------
 #       The CaffeineMark Kit is a Java benchmark kit
@@ -3462,15 +3546,47 @@ fi
 # We only need to look for GMP if mescal/relsat is present
 MESCAL_RELSAT_USER_DIR="$PTII/mescal/relsat"
 
+PTGMP=no
 if test ! -d "$MESCAL_RELSAT_USER_DIR"; then
     echo "$as_me:$LINENO: result: $MESCAL_RELSAT_USER_DIR is not present,
 	so we need not find GMP." >&5
 echo "${ECHO_T}$MESCAL_RELSAT_USER_DIR is not present,
 	so we need not find GMP." >&6
 else
-    echo "$as_me:$LINENO: checking for GMP" >&5
+    if test "$PTGMP" = "no"; then
+        echo "$as_me:$LINENO: checking for GMP in \$PTII/mescal/include/gmp.h" >&5
+echo $ECHO_N "checking for GMP in \$PTII/mescal/include/gmp.h... $ECHO_C" >&6
+	if test -f "$PTII/mescal/include/gmp.h"; then
+	    echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
+	    PTGMP_INCLUDE="-I$PTII/mescal/include"
+	    PTGMP_LIB="-L$PTII/mescal/lib"
+	    PTGMP=yes
+        else
+	    echo "$as_me:$LINENO: result: not found, keep looking" >&5
+echo "${ECHO_T}not found, keep looking" >&6
+	fi
+    fi
+
+    if test "$PTGMP" = "no"; then
+        echo "$as_me:$LINENO: checking for GMP in /usr/local/include/gmp.h" >&5
+echo $ECHO_N "checking for GMP in /usr/local/include/gmp.h... $ECHO_C" >&6
+        if test -f "/usr/local/include/gmp.h"; then
+            echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
+	    PTGMP_INCLUDE=-I/usr/local/include
+	    PTGMP_LIB=-L/usr/local/lib
+	    PTGMP=yes
+        else
+	    echo "$as_me:$LINENO: result: not found, keep looking" >&5
+echo "${ECHO_T}not found, keep looking" >&6
+        fi
+    fi
+
+    if test "$PTGMP" = "no"; then
+        echo "$as_me:$LINENO: checking for GMP" >&5
 echo $ECHO_N "checking for GMP... $ECHO_C" >&6
-    ac_ext=c
+        ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
@@ -4080,14 +4196,16 @@ if test `eval echo '${'$as_ac_Header'}'` = yes; then
   cat >>confdefs.h <<_ACEOF
 #define `echo "HAVE_$ac_header" | $as_tr_cpp` 1
 _ACEOF
- PT_GMP=yes
+ PTGMP=yes
 else
-  PT_GMP=no
+  PTGMP=no
 fi
 
 done
 
-    if test "$PT_GMP" = "yes"; then
+    fi
+
+    if test "$PTGMP" = "yes"; then
         echo "$as_me:$LINENO: checking for gcc" >&5
 echo $ECHO_N "checking for gcc... $ECHO_C" >&6
         # Extract the first word of "gcc", so it can be a program name with args.
@@ -4179,37 +4297,385 @@ echo "$as_me: WARNING: Failed to find gcc or cc, so we will
             fi
 	fi
 
-	PT_GMP_OK=no
+	PTGMP_OK=no
 	startdir=`pwd`
         cd "$srcdir/config"
-        echo "$as_me:$LINENO: checking gmp by compiling a small program" >&5
-echo $ECHO_N "checking gmp by compiling a small program... $ECHO_C" >&6
-	if "$PTCC" gmpTest.c -o gmpTest -L/usr/local/lib -lgmp ; then
+        echo "$as_me:$LINENO: checking gmp by compiling a C small program" >&5
+echo $ECHO_N "checking gmp by compiling a C small program... $ECHO_C" >&6
+	if "$PTCC" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LIB -lgmp ; then
 	    ./gmpTest
 	    echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6
 	else
-	    RESULTS=`"$PTCC" gmpTest.c -o gmpTest -L/usr/local/lib -lgmp`
+	    RESULTS=`"$PTCC" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LIB -lgmp`
 	    { echo "$as_me:$LINENO: WARNING: Failed to compile config/gmpTest.c,
-    \"$PTCC\" gmpTest.c -o gmpTest -L/usr/local/lib -lgmp
+    \"$PTCC\" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LIB -lgmp
     $RESULTS" >&5
 echo "$as_me: WARNING: Failed to compile config/gmpTest.c,
-    \"$PTCC\" gmpTest.c -o gmpTest -L/usr/local/lib -lgmp
+    \"$PTCC\" gmpTest.c $PTGMP_INCLUDE -o gmpTest $PTGMP_LIB -lgmp
     $RESULTS" >&2;}
 	fi
+
+        echo "$as_me:$LINENO: checking gmp by compiling a C++ small program" >&5
+echo $ECHO_N "checking gmp by compiling a C++ small program... $ECHO_C" >&6
+	ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+if test -n "$ac_tool_prefix"; then
+  for ac_prog in $CCC g++ c++ gpp aCC CC cxx cc++ cl FCC KCC RCC xlC_r xlC
+  do
+    # Extract the first word of "$ac_tool_prefix$ac_prog", so it can be a program name with args.
+set dummy $ac_tool_prefix$ac_prog; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_prog_CXX+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  if test -n "$CXX"; then
+  ac_cv_prog_CXX="$CXX" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_prog_CXX="$ac_tool_prefix$ac_prog"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+fi
+fi
+CXX=$ac_cv_prog_CXX
+if test -n "$CXX"; then
+  echo "$as_me:$LINENO: result: $CXX" >&5
+echo "${ECHO_T}$CXX" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+    test -n "$CXX" && break
+  done
+fi
+if test -z "$CXX"; then
+  ac_ct_CXX=$CXX
+  for ac_prog in $CCC g++ c++ gpp aCC CC cxx cc++ cl FCC KCC RCC xlC_r xlC
+do
+  # Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_prog_ac_ct_CXX+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  if test -n "$ac_ct_CXX"; then
+  ac_cv_prog_ac_ct_CXX="$ac_ct_CXX" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_prog_ac_ct_CXX="$ac_prog"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+fi
+fi
+ac_ct_CXX=$ac_cv_prog_ac_ct_CXX
+if test -n "$ac_ct_CXX"; then
+  echo "$as_me:$LINENO: result: $ac_ct_CXX" >&5
+echo "${ECHO_T}$ac_ct_CXX" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+  test -n "$ac_ct_CXX" && break
+done
+test -n "$ac_ct_CXX" || ac_ct_CXX="g++"
+
+  CXX=$ac_ct_CXX
+fi
+
+
+# Provide some information about the compiler.
+echo "$as_me:$LINENO:" \
+     "checking for C++ compiler version" >&5
+ac_compiler=`set X $ac_compile; echo $2`
+{ (eval echo "$as_me:$LINENO: \"$ac_compiler --version </dev/null >&5\"") >&5
+  (eval $ac_compiler --version </dev/null >&5) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }
+{ (eval echo "$as_me:$LINENO: \"$ac_compiler -v </dev/null >&5\"") >&5
+  (eval $ac_compiler -v </dev/null >&5) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }
+{ (eval echo "$as_me:$LINENO: \"$ac_compiler -V </dev/null >&5\"") >&5
+  (eval $ac_compiler -V </dev/null >&5) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }
+
+echo "$as_me:$LINENO: checking whether we are using the GNU C++ compiler" >&5
+echo $ECHO_N "checking whether we are using the GNU C++ compiler... $ECHO_C" >&6
+if test "${ac_cv_cxx_compiler_gnu+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+#ifndef __GNUC__
+       choke me
+#endif
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_compiler_gnu=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_compiler_gnu=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+ac_cv_cxx_compiler_gnu=$ac_compiler_gnu
+
+fi
+echo "$as_me:$LINENO: result: $ac_cv_cxx_compiler_gnu" >&5
+echo "${ECHO_T}$ac_cv_cxx_compiler_gnu" >&6
+GXX=`test $ac_compiler_gnu = yes && echo yes`
+ac_test_CXXFLAGS=${CXXFLAGS+set}
+ac_save_CXXFLAGS=$CXXFLAGS
+CXXFLAGS="-g"
+echo "$as_me:$LINENO: checking whether $CXX accepts -g" >&5
+echo $ECHO_N "checking whether $CXX accepts -g... $ECHO_C" >&6
+if test "${ac_cv_prog_cxx_g+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_prog_cxx_g=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_cv_prog_cxx_g=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+fi
+echo "$as_me:$LINENO: result: $ac_cv_prog_cxx_g" >&5
+echo "${ECHO_T}$ac_cv_prog_cxx_g" >&6
+if test "$ac_test_CXXFLAGS" = set; then
+  CXXFLAGS=$ac_save_CXXFLAGS
+elif test $ac_cv_prog_cxx_g = yes; then
+  if test "$GXX" = yes; then
+    CXXFLAGS="-g -O2"
+  else
+    CXXFLAGS="-g"
+  fi
+else
+  if test "$GXX" = yes; then
+    CXXFLAGS="-O2"
+  else
+    CXXFLAGS=
+  fi
+fi
+for ac_declaration in \
+   ''\
+   '#include <stdlib.h>' \
+   'extern "C" void std::exit (int) throw (); using std::exit;' \
+   'extern "C" void std::exit (int); using std::exit;' \
+   'extern "C" void exit (int) throw ();' \
+   'extern "C" void exit (int);' \
+   'void exit (int);'
+do
+  cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <stdlib.h>
+$ac_declaration
+int
+main ()
+{
+exit (42);
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  :
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+continue
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+  cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_declaration
+int
+main ()
+{
+exit (42);
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  break
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+done
+rm -f conftest*
+if test -n "$ac_declaration"; then
+  echo '#ifdef __cplusplus' >>confdefs.h
+  echo $ac_declaration      >>confdefs.h
+  echo '#endif'             >>confdefs.h
+fi
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+	if "$CXX" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LIB -lgmpxx -lgmp ; then
+	    ./gmpTest2
+	    echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
+	else
+	    RESULTS=`"$CXX" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LIB -lgmpcxx -lgmp`
+	    { echo "$as_me:$LINENO: WARNING: Failed to compile config/gmpTest2.cc,
+    \"$CXX\" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LIB -lgmpxx -lgmp
+    $RESULTS
+    Under Cygwin, perhaps you need to add $PTII/bin/mescal to your PATH,
+    Under Linux, perhaps you need to add $PTII/bin/mescal to
+    your LD_LIBRARY_PATH" >&5
+echo "$as_me: WARNING: Failed to compile config/gmpTest2.cc,
+    \"$CXX\" gmpTest2.cc $PTGMP_INCLUDE -o gmpTest2 $PTGMP_LIB -lgmpxx -lgmp
+    $RESULTS
+    Under Cygwin, perhaps you need to add $PTII/bin/mescal to your PATH,
+    Under Linux, perhaps you need to add $PTII/bin/mescal to
+    your LD_LIBRARY_PATH" >&2;}
+	fi
+
         cd "$startdir"
-    else
-        # FIXME: We could look for gmp.h in vendors/misc
-        { echo "$as_me:$LINENO: WARNING: Failed to find gmp.h, which is only
+    fi
+
+    if test "$PTGMP" = "no"; then
+            { echo "$as_me:$LINENO: WARNING: Failed to find gmp.h, which is only
     needed to compile $MESCAL_RELSAT_USER_DIR
     gmp can be found at http://www.swox.com/gmp/
-    Under cygwin, you should configure with
-       ./configure --disable-static --enable-shared" >&5
+    Mescal uses c++, and configure will look in /usr/local
+    and $PTII/mescal/include and $PTII/mescal/lib for gmp,
+    so gmp should be configured with
+       ./configure --enable-cxx --prefix=$PTII/mescal" >&5
 echo "$as_me: WARNING: Failed to find gmp.h, which is only
     needed to compile $MESCAL_RELSAT_USER_DIR
     gmp can be found at http://www.swox.com/gmp/
-    Under cygwin, you should configure with
-       ./configure --disable-static --enable-shared" >&2;}
+    Mescal uses c++, and configure will look in /usr/local
+    and $PTII/mescal/include and $PTII/mescal/lib for gmp,
+    so gmp should be configured with
+       ./configure --enable-cxx --prefix=$PTII/mescal" >&2;}
     fi
 fi
 
@@ -6345,6 +6811,10 @@ fi
 # Set the location of Matlab's engine libraries
 
 
+# Set to -I$PTII/mescal/include or -I/usr/local/include
+# if we found boost/static_assert.hpp (mescal)
+
+
 # Set to cal and used in $PTII/ptoelmy/makefile if Cal was found.
 
 
@@ -6364,6 +6834,14 @@ fi
 
 
 # Set to chic and used in $PTII/ptolemy/makefile if chic was found.
+
+
+# Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
+# and used in $PTII/mescal/relsat
+
+
+# Set to -L$PTII/lib or -L/usr/local/lib if the gmp libraries are found
+# and used in $PTII/mescal/relsat
 
 
 # Location of the the PTII directory
@@ -7165,6 +7643,9 @@ s,@EXEEXT@,$EXEEXT,;t t
 s,@OBJEXT@,$OBJEXT,;t t
 s,@CPP@,$CPP,;t t
 s,@EGREP@,$EGREP,;t t
+s,@CXX@,$CXX,;t t
+s,@CXXFLAGS@,$CXXFLAGS,;t t
+s,@ac_ct_CXX@,$ac_ct_CXX,;t t
 s,@JJTREE@,$JJTREE,;t t
 s,@MATLAB@,$MATLAB,;t t
 s,@CAL_DIR@,$CAL_DIR,;t t
@@ -7199,11 +7680,14 @@ s,@LEJOS_DIR@,$LEJOS_DIR,;t t
 s,@MAJOR_OS_NAME@,$MAJOR_OS_NAME,;t t
 s,@MATLAB_DIR@,$MATLAB_DIR,;t t
 s,@MATLAB_LIBDIR@,$MATLAB_LIBDIR,;t t
+s,@PTBOOST_INCLUDE@,$PTBOOST_INCLUDE,;t t
 s,@PTCAL_DIR@,$PTCAL_DIR,;t t
 s,@PTCOPERNICUS_DIR@,$PTCOPERNICUS_DIR,;t t
 s,@PTCM_DIR@,$PTCM_DIR,;t t
 s,@PTCOMM_DIR@,$PTCOMM_DIR,;t t
 s,@PTCHIC_DIR@,$PTCHIC_DIR,;t t
+s,@PTGMP_INCLUDE@,$PTGMP_INCLUDE,;t t
+s,@PTGMP_LIB@,$PTGMP_LIB,;t t
 s,@PTII@,$PTII,;t t
 s,@PTJACL_DIR@,$PTJACL_DIR,;t t
 s,@PTJACL_JAR@,$PTJACL_JAR,;t t
