@@ -90,7 +90,7 @@ test Entity-2.3 {Construct Entities, call numberOfConnectedEntities} {
     set e1 [java::new pt.kernel.test.EntityTest]
     set e2 [java::new pt.kernel.test.EntityTest "My Entity"]
     list [$e1 numberOfConnectedEntities] [$e2 numberOfConnectedEntities] 
-} {}
+} {0 0}
 
 ######################################################################
 ####
@@ -100,7 +100,7 @@ test Entity-2.4 {Test numberOfConnectedEntities(portname)} {
     set e2 [java::new pt.kernel.test.EntityTest "My Entity"]
     list [$e1 numberOfConnectedEntities "Not a PortName"] \
 	    [$e2 numberOfConnectedEntities "Not a PortName"] 
-} {}
+} {0 0}
 	 
 
 ######################################################################
@@ -112,7 +112,7 @@ test Entity-3.1 {Test enumEntities. Note that since Entity is abstract,
     set enum [$e1 enumEntities]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
-} {}
+} {{java.util.NoSuchElementException: exhausted enumeration} 0}
 
 ######################################################################
 ####
@@ -122,7 +122,7 @@ test Entity-3.2 {Test enumEntities(portName)} {
     set enum [$e1 enumEntities "Not a Port"]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
-} {}
+} {{java.util.NoSuchElementException: exhausted enumeration} 0}
 
 ######################################################################
 ####
@@ -132,7 +132,7 @@ test Entity-3.3 {Test enumRelations()} {
     set enum [$e1 enumRelations]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
-} {}
+} {{java.util.NoSuchElementException: exhausted enumeration} 0}
 
 ######################################################################
 ####
@@ -142,4 +142,4 @@ test Entity-3.4 {Test enumRelations()} {
     set enum [$e1 enumRelations "Not a PortName"]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
-} {}
+} {{java.util.NoSuchElementException: exhausted enumeration} 0}
