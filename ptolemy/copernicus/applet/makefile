@@ -70,11 +70,15 @@ all: jclass
 
 install: all $(PTPACKAGE).jar
 
-demo: compileDemo runOrthoCommDemo timeOrthoCommDemo
+demo: compileDemo runDemo
 
 # OrthogonalCom - There is no .xml file for this model
 MODEL =			OrthogonalCom
 SOURCECLASS =		ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom
+
+# 
+MODEL =			modulation
+SOURCECLASS = 		../../../ptolemy/moml/demo/modulation.xml
 
 # Usually, we run code gen on OrthogonalCom, to run on the IIR model, use:
 #   make MODEL=IIR SOURCECLASS=../../../ptolemy/actor/lib/test/auto/IIR.xml compileDemo runDemo 
@@ -121,7 +125,7 @@ TIMEORTHOCOMM_ITERATIONS = 50000
 timeOrthoCommDemo:
 	@echo "No need to time anything in the applet directory"
 
-APPLETTARGETDIRECTORY = $(TARGETPACKAGE).$(MODEL)
+APPLETTARGETDIRECTORY = $(TARGETPATH)/$(MODEL)
 runDemo:
 	@echo "Run the model"
 	cd $(ROOT)/$(APPLETTARGETDIRECTORY); appletviewer $(MODEL).htm

@@ -210,7 +210,24 @@ public class AppletWriter extends SceneTransformer {
 	System.out.println("AppletWriter: _model: " + _model);
 	Director director = _model.getDirector();
 	System.out.println("AppletWriter: director: " + director);
-	_domainJar = "ptolemy/domains/sdf/sdf.jar";
+	String directorPackage = director.getClass().getPackage().getName();
+	if (!directorPackage.endsWith(".kernel")) {
+	    System.out.println("Warning: the directorPackage does not end "
+			       + "with '.kernel', it is :" + directorPackage);
+	}
+
+	String directorPackageDomain = 
+		directorPackage.substring(0, 
+					  directorPackage.lastIndexOf(".")
+					  );
+
+	String directorDomain = 
+		directorPackageDomain.substring(directorPackageDomain
+						.lastIndexOf(".") + 1);
+	
+	_domainJar =
+	    StringUtilities.substitute(directorPackageDomain, ".", "/") 
+	    + "/" + directorDomain + ".jar";
 
 	_sanitizedModelName = SootUtilities.sanitizeName(_model.getName());
 

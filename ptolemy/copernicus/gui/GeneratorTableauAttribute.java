@@ -31,6 +31,7 @@
 package ptolemy.copernicus.gui;
 
 import ptolemy.actor.gui.style.CheckBoxStyle;
+import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.*;
@@ -71,38 +72,26 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
         // Create parameters, and populate them with style hints to
         // use a checkbox on screen.
 
-	// Start of code generators.
-	// sootShallow first, then alphabetical.
-	sootShallow = new Parameter(this, "sootShallow",
-			     new BooleanToken(true));
-	new CheckBoxStyle(sootShallow, "style");
-        Documentation doc = new Documentation(sootShallow, "tooltip");
-        doc.setValue("Shallow code generation using Soot");
+        codeGenerator = new StringAttribute(this, "codeGenerator");
+        Documentation doc = new Documentation(codeGenerator, "tooltip");
+        doc.setValue("Type of code generator to run.");
+	ChoiceStyle choiceStyle = new ChoiceStyle(codeGenerator, "style");
 
-	sootApplet = new Parameter(this, "sootApplet",
-			     new BooleanToken(false));
-	new CheckBoxStyle(sootApplet, "style");
-        doc = new Documentation(sootApplet, "tooltip");
-        doc.setValue("Applet code generation using Soot");
+	// Deep first, then alphabetical
+	sootDeep = new StringAttribute(choiceStyle, "sootDeep");
+	sootDeep.setExpression("deep");
 
-	sootDeep = new Parameter(this, "sootDeep",
-			     new BooleanToken(false));
-	new CheckBoxStyle(sootDeep, "style");
-        doc = new Documentation(sootDeep, "tooltip");
-        doc.setValue("Deep code generation using Soot");
+	sootApplet = new StringAttribute(choiceStyle, "sootApplet");
+	sootApplet.setExpression("applet");
 
-	generateC = new Parameter(this, "generateC",
-			     new BooleanToken(false));
-	new CheckBoxStyle(generateC, "style");
-        doc = new Documentation(generateC, "tooltip");
-        doc.setValue("Generate C");
+	sootC = new StringAttribute(choiceStyle, "sootC");
+	sootC.setExpression("c");
 
-	jhdl = new Parameter(this, "jhdl",
-			     new BooleanToken(false));
-	new CheckBoxStyle(jhdl, "style");
-        doc = new Documentation(jhdl, "tooltip");
-        doc.setValue("Generate JHDL using Michael Wirthlin's code");
+	sootJHDL = new StringAttribute(choiceStyle, "sootJHDL");
+	sootJHDL.setExpression("jhdl");
 
+	sootShallow = new StringAttribute(choiceStyle, "sootShallow");
+	sootShallow.setExpression("shallow");
 
 	// End of Code Generators.
 
@@ -200,6 +189,9 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
+    /** Code generator to run */
+    public StringAttribute codeGenerator;
+
     /** If true, compile the generated code. This has type boolean, and
      *  defaults to true.
      */
@@ -210,16 +202,6 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 
     /** The directory into which to put the generated code.*/
     public StringAttribute directory;
-
-    /** If true, generate C code using Soot.
-     *  This has type boolean and defaults to false;
-     */
-    public Parameter generateC;
-
-    /** If true, generate Java code using Michael Wirthlin's code
-     *  This has type boolean and defaults to false;
-     */
-    public Parameter jhdl;
 
     /** Options issued to the java command to run the generated code.*/
     public StringAttribute packageName;
@@ -237,20 +219,26 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
      */
     public Parameter show;
 
-    /** If true, generate an applet using Soot. This has type boolean and
-     *  defaults to false.
+    /** The name of the applet code generator.  The default value is "applet".
      */
-    public Parameter sootApplet;
+    public StringAttribute sootApplet;
 
-    /** If true, generate deep Java code using Soot. This has type boolean and
-     *  defaults to false.
+    /** The name of the C code generator.  The default value is "c".
      */
-    public Parameter sootDeep;
+    public StringAttribute sootC;
 
-    /** If true, generate shallow Java code using Soot. This has type
-     *  boolean and defaults to true.
+    /** The name of the deep code generator.  The default value is "deep".
      */
-    public Parameter sootShallow;
+    public StringAttribute sootDeep;
+
+    /** The name of the deep code generator.  The default value is "jhdl".
+     */
+    public StringAttribute sootJHDL;
+
+    /** The name of the shallow code generator.
+     *	The default value is "shallow".
+     */
+    public StringAttribute sootShallow;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -300,10 +288,6 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
             newObject.getAttribute("compileOptions");
         newObject.directory = (StringAttribute)
             newObject.getAttribute("directory");
-        newObject.generateC = (Parameter)
-            newObject.getAttribute("generateC");
-        newObject.jhdl = (Parameter)
-            newObject.getAttribute("jhdl");
         newObject.packageName = (StringAttribute)
             newObject.getAttribute("packageName");
         newObject.run = (Parameter)
@@ -312,11 +296,15 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
             newObject.getAttribute("runOptions");
         newObject.show = (Parameter)
             newObject.getAttribute("show");
-        newObject.sootApplet = (Parameter)
+        newObject.sootApplet = (StringAttribute)
             newObject.getAttribute("sootApplet");
-        newObject.sootDeep = (Parameter)
+        newObject.sootC = (StringAttribute)
+            newObject.getAttribute("sootC");
+        newObject.sootDeep = (StringAttribute)
             newObject.getAttribute("sootDeep");
-        newObject.sootShallow = (Parameter)
+        newObject.sootJHDL = (StringAttribute)
+            newObject.getAttribute("sootJHDL");
+        newObject.sootShallow = (StringAttribute)
             newObject.getAttribute("sootShallow");
 
         return newObject;

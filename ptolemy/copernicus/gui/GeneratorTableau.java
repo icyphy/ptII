@@ -293,9 +293,79 @@ public class GeneratorTableau extends Tableau {
 
 			    String packageNameString =
 				options.packageName.getExpression();
-			    if (((BooleanToken)options
-				 .sootShallow.getToken())
-				.booleanValue()) {
+			    String codeGenerator =
+				options.codeGenerator.getExpression();
+
+			    if (codeGenerator.equals(options
+						     .sootApplet.
+						     getExpression())){
+				// Soot is a memory pig, so we run
+				// it in a separate process.
+				try {
+				    execCommands
+					.add(_generateSootJavaCommand(model,
+								      directoryName,
+								      packageNameString,
+								      "applet" /* Generate applet code. */));
+
+				} catch (Exception exception) {
+				    throw new IllegalActionException(exception
+								     .toString());
+				}
+				runAsApplet = true;
+			    } else if (codeGenerator.equals(options
+							    .sootC.
+							    getExpression())){
+
+				// FIXME: we should disable the compile
+				// button.
+				exec.updateStatusBar("Starting c "
+						     + "code generation");
+				// FIXME: How come the status bar
+				// does not get updated?
+				ptolemy.copernicus.c
+				    .Main.generate((CompositeActor)model,
+						   directoryName);
+				exec.updateStatusBar("C Code generation "
+						     + "complete.");
+				disassemble = true;
+
+			    } else if (codeGenerator.equals(options
+							    .sootDeep.
+							    getExpression())){
+
+				// Soot is a memory pig, so we run
+				// it in a separate process.
+				try {
+				    execCommands
+					.add(_generateSootJavaCommand(model,
+								      directoryName,
+								      packageNameString,
+								      "java"
+								      /* Generate deep code. */));
+
+				disassemble = true;
+				} catch (Exception exception) {
+				    throw new IllegalActionException(exception
+								     .toString());
+				}
+			    } else if (codeGenerator.equals(options
+							    .sootJHDL.
+							    getExpression())){
+				// FIXME: we should disable the compile
+				// button.
+
+				exec.updateStatusBar("Starting jhdl "
+						     + "code generation");
+				ptolemy.copernicus.jhdl
+				    .Main.generate((CompositeActor)model,
+						   directoryName);
+				exec.updateStatusBar("Code generation "
+						     + "complete.");
+
+			    } else if (codeGenerator.equals(options
+							    .sootShallow.
+							    getExpression())){
 				// FIXME: we should disable the compile
 				// button.
 
@@ -317,70 +387,8 @@ public class GeneratorTableau extends Tableau {
 				//		   directoryName);
 
 				disassemble = true;
-			    } else if (((BooleanToken)options
-				 .sootApplet.getToken())
-				.booleanValue()) {
-				// Soot is a memory pig, so we run
-				// it in a separate process.
-				try {
-				    execCommands
-					.add(_generateSootJavaCommand(model,
-								      directoryName,
-								      packageNameString,
-								      "applet" /* Generate applet code. */));
 
-				} catch (Exception exception) {
-				    throw new IllegalActionException(exception
-								     .toString());
-				}
-				runAsApplet = true;
-			    } else if (((BooleanToken)options
-				 .sootDeep.getToken())
-				.booleanValue()) {
 
-				// Soot is a memory pig, so we run
-				// it in a separate process.
-				try {
-				    execCommands
-					.add(_generateSootJavaCommand(model,
-								      directoryName,
-								      packageNameString,
-								      "java"
-								      /* Generate deep code. */));
-
-				disassemble = true;
-				} catch (Exception exception) {
-				    throw new IllegalActionException(exception
-								     .toString());
-				}
-			    } else if (((BooleanToken)options
-				 .generateC.getToken())
-				.booleanValue()) {
-				// FIXME: we should disable the compile
-				// button.
-				exec.updateStatusBar("Starting c "
-						     + "code generation");
-				// FIXME: How come the status bar
-				// does not get updated?
-				ptolemy.copernicus.c
-				    .Main.generate((CompositeActor)model,
-						   directoryName);
-				exec.updateStatusBar("C Code generation "
-						     + "complete.");
-				disassemble = true;
-			    } else if (((BooleanToken)options
-				   .jhdl.getToken())
-				       .booleanValue()) {
-				// FIXME: we should disable the compile
-				// button.
-
-				exec.updateStatusBar("Starting jhdl "
-						     + "code generation");
-				ptolemy.copernicus.jhdl
-				    .Main.generate((CompositeActor)model,
-						   directoryName);
-				exec.updateStatusBar("Code generation "
-						     + "complete.");
 			    }
 
 
@@ -407,20 +415,17 @@ public class GeneratorTableau extends Tableau {
 			    }
                             if (run) {
 				if (runAsApplet) {
-				    String appletFileName =
-					StringUtilities.substitute(
-								   packageNameString,
-								   ".", "/")
-					+ "/" + model.getName() 
-					+ "/" + model.getName();
+				    String appletDirectoryName =
+					_getPtolemyPtIIDir() + "/"
+					+ StringUtilities.substitute(
+								     packageNameString,
+								     ".", "/")
+					+ "/" + model.getName() ;
 
-				    execCommands.add("appletviewer "
-						     + appletFileName
-						     + ".htm"
-						     );
-				    execCommands.add("appletviewer "
-						     + appletFileName
-						     + "Vergil.htm"
+
+				    execCommands.add("make -C "
+						     + appletDirectoryName
+						     + " demo"
 						     );
 				} else {
 				    execCommands.add("java "
@@ -509,30 +514,10 @@ public class GeneratorTableau extends Tableau {
 					    String copernicusSubdirectory) 
 	throws IllegalArgumentException, InternalErrorException
     {
-	// This method is only called in one place, but the method
-	// it gets called from is rather large, so we place this
-	// code in its own method
-
-	// Determine where $PTII is so that we can find the right directory
-	String home = null;
-        try {
-            // NOTE: getProperty() will probably fail in applets, which
-            // is why this is in a try block.
-	    // NOTE: This property is set by the vergil startup script.
-	    home = System.getProperty("ptolemy.ptII.dir");
-        } catch (SecurityException security) {
-            throw new InternalErrorException("Could not find "
-                                           + "'ptolemy.ptII.dir'"
-					   + " property.  Vergil should be "
-					   + "invoked with -Dptolemy.ptII.dir"
-					   + "=\"$PTII\":\n"
-					   + KernelException
-                                             .stackTraceToString(security));
-        }
-
 	// Make sure the directory exists.
-	String makefileDirectory = home + File.separatorChar + "ptolemy"
-	    + File.separatorChar + "copernicus" + File.separatorChar
+	String makefileDirectory = _getPtolemyPtIIDir() + File.separatorChar
+	    + "ptolemy" + File.separatorChar
+	    + "copernicus" + File.separatorChar
 	    + copernicusSubdirectory;
 	File makefileDirectoryFile = new File(makefileDirectory);
 	if (!makefileDirectoryFile.isDirectory()) {
@@ -593,6 +578,26 @@ public class GeneratorTableau extends Tableau {
 		+ "\" TARGETPACKAGE=\"" + targetPackage
 		+ "\" compileDemo";
 
+    }
+
+    private String _getPtolemyPtIIDir() {
+	// Determine where $PTII is so that we can find the right directory
+	String home = null;
+        try {
+            // NOTE: getProperty() will probably fail in applets, which
+            // is why this is in a try block.
+	    // NOTE: This property is set by the vergil startup script.
+	    home = System.getProperty("ptolemy.ptII.dir");
+        } catch (SecurityException security) {
+            throw new InternalErrorException("Could not find "
+                                           + "'ptolemy.ptII.dir'"
+					   + " property.  Vergil should be "
+					   + "invoked with -Dptolemy.ptII.dir"
+					   + "=\"$PTII\":\n"
+					   + KernelException
+                                             .stackTraceToString(security));
+        }
+	return home;
     }
 }
 
