@@ -173,7 +173,7 @@ public class VariableLattice extends Lattice {
             ArrayToken coefToken = (ArrayToken)(newCoefficients.get(0));
             reflectionCoefficients.setToken(coefToken);
         }
-        for (int i=0; i < _blockSizeValue; i++) {
+        for (int i = 0; i < _blockSizeValue; i++) {
             super.fire();
         }
     }
