@@ -65,7 +65,7 @@ public abstract class Token {
      */
     public Token add(Token leftArg) throws IllegalActionException {
         String str = "Add method not supported on ";
-        str = str + this.getClass().getName() + " objects";
+        str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
 
@@ -81,7 +81,7 @@ public abstract class Token {
      */
     public Token addR(Token rightArg) throws IllegalActionException {
         String str = "Addr method not supported on ";
-        str = str + this.getClass().getName() + " objects";
+        str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
 
@@ -97,7 +97,7 @@ public abstract class Token {
      */
     public Token divide(Token divisor) throws  IllegalActionException {
         String str = "Divide method not supported on ";
-        str = str + this.getClass().getName() + "objects";
+        str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
 
@@ -113,7 +113,7 @@ public abstract class Token {
      */
     public Token divideR(Token dividend) throws  IllegalActionException {
         String str = "DivideR method not supported on ";
-        str = str + this.getClass().getName() + "objects";
+        str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
 
@@ -127,7 +127,7 @@ public abstract class Token {
      */
     public BooleanToken equals(Token token) throws IllegalActionException {
         String str = "Equality method not supported on ";
-        str = str + this.getClass().getName() + "objects";
+        str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
 
@@ -157,7 +157,7 @@ public abstract class Token {
      */
     public Token moduloR(Token leftArg) throws IllegalActionException {
         String str = "ModuloR method not supported on ";
-        str = str + this.getClass().getName() + "objects";
+        str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
 
@@ -173,7 +173,7 @@ public abstract class Token {
      */
     public Token multiply(Token rightFactor) throws  IllegalActionException {
         String str = "Multiply method not supported on ";
-        str = str + this.getClass().getName() + "objects";
+        str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
 
@@ -189,7 +189,7 @@ public abstract class Token {
      */
     public Token multiplyR(Token leftFactor) throws  IllegalActionException {
         String str = "MultiplyR method not supported on ";
-        str = str + this.getClass().getName() + "objects";
+        str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
 
@@ -201,7 +201,7 @@ public abstract class Token {
      */
     public Token one() throws IllegalActionException {
         String str = "Multiplicative identity not supported on ";
-        str = str + this.getClass().getName() + "objects";
+        str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
 
@@ -228,7 +228,7 @@ public abstract class Token {
      */
     public Token subtract(Token rightArg) throws  IllegalActionException {
         String str = "Subtract method not supported on ";
-        str = str + this.getClass().getName() + "objects";
+        str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
 
@@ -243,7 +243,7 @@ public abstract class Token {
      */
     public Token subtractR(Token leftArg) throws  IllegalActionException {
         String str = "Subtract method not supported on ";
-        str = str + this.getClass().getName() + "objects";
+        str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
 
@@ -263,7 +263,7 @@ public abstract class Token {
      */
     public Token zero() throws IllegalActionException {
         String str = "Additive identity not supported on ";
-        str = str + this.getClass().getName() + "objects";
+        str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
 }
