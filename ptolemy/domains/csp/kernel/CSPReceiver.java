@@ -302,12 +302,12 @@ public class CSPReceiver implements Receiver {
 	_otherParent = par;
     }
 
-    /** The simulation has terminated, so set a flag so that the
+    /** The simulation has finished, so set a flag so that the
      *  next time an actor tries to get or put it gets a
      *  TerminateProcessException which will cause it to finish.
      */
-    public void setSimulationTerminated() {
-        _simulationTerminated = true;
+    public void setSimulationFinished() {
+        _simulationFinished = true;
     }
 
     /** Returns a String description of this CSPReceiver.
@@ -339,12 +339,14 @@ public class CSPReceiver implements Receiver {
      */
     protected synchronized void _checkAndWait() throws
               TerminateProcessException, InterruptedException {
-        if (_simulationTerminated) {
-            throw new TerminateProcessException(getContainer().getName() + ": 1simulation terminated");
+        if (_simulationFinished) {
+            throw new TerminateProcessException(getContainer().getName() + 
+                    ": terminated");
         }
         wait();
-	if (_simulationTerminated) {
-            throw new TerminateProcessException(getContainer().getName() + ": 2simulation terminated");
+	if (_simulationFinished) {
+            throw new TerminateProcessException(getContainer().getName() + 
+                    ": terminated");
         }
     }
 
@@ -446,7 +448,7 @@ public class CSPReceiver implements Receiver {
 
     // Flag indicating that the director controlling the actor this
     //receiver is contained by has terminated the simulation.
-    private boolean _simulationTerminated = false;
+    private boolean _simulationFinished = false;
 
     // The token being transferred during the rendezvous.
     private Token _token;
