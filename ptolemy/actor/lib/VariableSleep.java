@@ -52,7 +52,7 @@ inside vergil is to turn on animation.
 <p>If the width of the output port is less than that of the input port,
 the tokens in the extra channels are lost.
 
-@author Yang Zhao, bused on Sleep by Jie Liu, Christopher Hylands
+@author Yang Zhao, based on Sleep by Jie Liu, Christopher Hylands
 @version $Id$
 @since Ptolemy II 1.0
 */
