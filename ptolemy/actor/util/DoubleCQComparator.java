@@ -60,9 +60,9 @@ public class DoubleCQComparator implements CQComparator{
         Double a = (Double) object1;
         Double b = (Double) object2;
 
-        if ( a.t() < b.t() )  {
+        if ( a.doubleValue() < b.doubleValue() )  {
             return -1;
-        } else if ( a.t() > b.t() ) {
+        } else if ( a.doubleValue() > b.doubleValue() ) {
             return 1;
         } else {
             return 0;
@@ -83,10 +83,10 @@ public class DoubleCQComparator implements CQComparator{
      */
     public int getBinIndex(Object key, Object zeroReference, Object binWidth) {
         Double a = (Double) key;
-        Double w = (Object) binWidth;
+        Double w = (Double) binWidth;
         Double zero = (Double) zeroReference;
 
-        return (int)((a.t() - zero.t())/w.doubleValue());
+        return (int)((a.doubleValue() - zero.doubleValue())/w.doubleValue());
     }
 
 
@@ -113,8 +113,8 @@ public class DoubleCQComparator implements CQComparator{
 
         double average = 0;
         for (int i = 1; i < keyArray.length; ++i) {
-             diff[i-1] = ((Double)keyArray[i]).t() - 
-                 ((Double)keyArray[i-1]).t();
+             diff[i-1] = ((Double)keyArray[i]).doubleValue() - 
+                 ((Double)keyArray[i-1]).doubleValue();
             average = average + diff[i-1];
         }
         average = average / diff.length;

@@ -81,6 +81,7 @@ public class CalendarQueue {
      */
     public CalendarQueue(CQComparator comparator) {
         _cqComparator = comparator;
+        _entryComparator = new EntryComparator(comparator);
         // initialization is already done using
         // field initialiation during the
         // declaration of variables
@@ -137,7 +138,7 @@ public class CalendarQueue {
         // if _minKey equal to null (happens when there are no entries
         // in the queue) or the new entry has lower key than the current
         // lowest key) then update.
-        if (_minKey == null || key.compare(_minKey) < 0) {
+        if (_minKey == null || _cqComparator.compare(key, _minKey) < 0) {
             _minKey = key;
             _minVirtualBucket = _cqComparator.getBinIndex(_minKey, _zeroRef, _width);
             _minBucket = _minVirtualBucket % _nBuckets;
@@ -246,7 +247,7 @@ public class CalendarQueue {
                     startComparing = true;
                 } else {
                     Object maybeMinKey = _bucket[i].peekKey();
-                    if (maybeMinKey.compare(minKey) < 0) {
+                    if (_cqComparator.compare(maybeMinKey, minKey) < 0) {
                         minKey = maybeMinKey;
                         minVirtualBucket = _cqComparator.getBinIndex(minKey, _zeroRef, _width);
                         minBucket = i;
@@ -366,7 +367,7 @@ public class CalendarQueue {
                     startComparing = true;
                 } else {
                     Object maybeMinKey = _bucket[i].peekKey();
-                    if (maybeMinKey.compare(minKey) < 0) {
+                    if (_cqComparator.compare(maybeMinKey, minKey) < 0) {
                         minKey = maybeMinKey;
                         minVirtualBucket = _cqComparator.getBinIndex(minKey, _zeroRef, _width);
                         minBucket = i;
@@ -396,7 +397,7 @@ public class CalendarQueue {
      * @param key the sort-key corresponding to that object
      * @return true is succeed, false otherwise
      */
-    public boolean removesEntry(Object obj, Object key) {
+    public boolean removesEntry(Object key, Object obj) {
         // if the queue is empty then return false
         if (_qSize == 0) {
             return false;
@@ -431,7 +432,7 @@ public class CalendarQueue {
      *
      * @return boolean
      */
-    public boolean includesEntry(Object obj, Object key) {
+    public boolean includesEntry(Object key, Object obj) {
         // if the queue is empty then return false
         if (_qSize == 0) return false;
 
@@ -456,35 +457,9 @@ public class CalendarQueue {
         return _qSize;
     }
 
-     /** Return SETMODE if the queue is in set mode,
-      *  return BAGMODE if the queue is in bag mode (default).
-      *  In SETMODE, the number of occurences of any entries is at most one,
-      *  while in Bag Mode, it may contain multiple occurences of any entries.
-     * @return boolean true if Set, false if Bag
-     */
-    public boolean getMode() {
-        return _mode;
-    }
-    /** set the queue to operate either in Set Mode in Bag Mode.
-     *
-     * @param newmode the desired mode of operation (SETMODE or BAGMODE)
-     */
-    public void setMode(boolean newmode) {
-        _mode = newmode;
-    }
-
     /////////////////////////////////////////////////////////////////////////
     ////                         public variables                        ////
 
-    /** Indicate that on subsequent invocations to the put() method, an entry
-     *  will be added even if it already exist in the queue.
-     */
-    public static final boolean BAGMODE = false;
-
-    /** Indicate that on subsequent invocations to the put() method, an entry
-     *  will not be added if it already exist in the queue.
-     */
-    public static final boolean SETMODE = true;
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
@@ -498,7 +473,7 @@ public class CalendarQueue {
     // startprio: starting date of the new calendar
     private void _localInit(
             int nbuckets,
-            SortBinWidth bwidth,
+            Object bwidth,
             Object startkey) {
 
         _width = bwidth;
@@ -510,7 +485,7 @@ public class CalendarQueue {
         for (int i = 0; i < _nBuckets; ++i) {
             // intialize each bucket with an empty SortedLinkedList
             // that uses _cqComparator for sorting.
-            _bucket[i] = new SortedLinkedList(_cqComparator);
+            _bucket[i] = new SortedLinkedList(_entryComparator);
         }
 
 
@@ -538,10 +513,9 @@ public class CalendarQueue {
     // 3. Create the new queue and initialize it
     // 4. Do transfer of all elements in the old queue into the new queue
     private void _resize(int newsize) {
-        SortBinWidth new_width;
+        Object new_width;
         int i;
         int old_nbuckets;
-        boolean oldmode;
         SortedLinkedList[] old_bucket;
 
         if (!_resizeEnabled) return;
@@ -553,8 +527,6 @@ public class CalendarQueue {
         // for use when copying calendar
         old_bucket = _bucket;
         old_nbuckets = _nBuckets;
-        oldmode = _mode;
-        _mode = false;
 
         // Initialize new calendar
         _localInit(newsize, new_width, _minKey);
@@ -565,10 +537,9 @@ public class CalendarQueue {
             CollectionEnumeration enum = old_bucket[i].elements();
             while (enum.hasMoreElements()) {
                 CQEntry cqEntry = (CQEntry)(enum.nextElement());
-                put(cqEntry.object(), cqEntry.key());
+                put(cqEntry.key(), cqEntry.object());
             }
         }
-        _mode = oldmode;
     }
 
     // This function calculates the width to use for buckets
@@ -580,7 +551,7 @@ public class CalendarQueue {
     // e. Pass the array containing the data into the priority class
     //    to let it calculate the width object.
 
-    private SortBinWidth _computeNewWidth() {
+    private Object _computeNewWidth() {
         int nSamples;
         Object[] sampledData;
         Object[] sampledKey;
@@ -617,12 +588,9 @@ public class CalendarQueue {
             sampledKey[i] = getPreviousKey();
         }
         // Restore the sampled events to the queue using put
-        boolean oldmode = _mode;
-        _mode = false;
         for (int i = nSamples-1; i >= 0; --i) {
-            put(sampledData[i], sampledKey[i]);
+            put(sampledKey[i], sampledData[i]);
         }
-        _mode = oldmode;
 
         // Done sampling data and putting them back in
         // therefore, we can reenable resize
@@ -644,7 +612,7 @@ public class CalendarQueue {
     // _qSize: current queue size
     private int _qSize = 0;
     // _width: Object representing width of each bucket
-    private SortBinWidth _width;
+    private Object _width;
     // _topThreshold: largest queue size before number of buckets get doubled
     private int _topThreshold;
     // _botThreshold: smallest queue size before number of buckets get halfed
@@ -656,11 +624,6 @@ public class CalendarQueue {
 
     // _resizeEnabled: enable/disable resize() invocation
     private boolean _resizeEnabled = true;
-    // _singleOccurence: only affect put() method. If the entry being put
-    // into the queue is equal to one of the entry already in the queue then
-    // it's not added into the queue.By 'equal' we mean that both
-    // obj1.equal(obj2) and key1.equal(key2) return true
-    private boolean _mode = BAGMODE;
 
     // FIXME: I want a static member but compiler complains like this:
     //SortedQueue.java:674: No enclosing instance of class 
@@ -668,8 +631,11 @@ public class CalendarQueue {
     //provided when creating inner class pt.actor.util.SortedQueue. 
     //CQComparator, as in "outer. new Inner()" or "outer. super()".
 
-    // _cqComparator: static member to initialize the SortedLinkedList
+    // _cqComparator: Comparator to determine how entries are put into bins.
     private CQComparator _cqComparator;
+
+    // _entryComparator: static member to initialize the SortedLinkedList
+    private EntryComparator _entryComparator;
 
     // _minKey: all elements in the queue is of lower or equal
     //    priority from this _minKey, hence the name.
@@ -794,4 +760,28 @@ public class CalendarQueue {
         // sorting the Queue
         private Comparator _comp;
     }
+    private class EntryComparator implements Comparator {
+        public EntryComparator(CQComparator cqComparator) {
+            _cqComparator = cqComparator;
+        }
+
+        // this compare method implements compare method
+        // defined in Sortable interface. It is used by
+        // SortedLinkedList to mantain the entry sorted increasingly
+        // with the smallest element (with respect to this compare method)
+        // at head of the list.
+        // Note that this method returns negative number if fst is of
+        // smaller than snd, and correspondingly for positive number.
+        public int compare(Object fst, Object snd) {
+            Object fstKey = ((CQEntry)fst).key();
+            Object sndKey = ((CQEntry)snd).key();
+
+            return _cqComparator.compare(fstKey, sndKey);
+        }
+    }
 }
+
+
+
+
+

@@ -78,10 +78,9 @@ MISC_FILES =	$(DIRS) doc
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'SortedQueue$$CQComparator.class' \
-	'SortedQueue$$CQEntry.class' \
-	'SortedQueue$$SortedLinkedList.class' \
-	'TimeStamp$$DoubleWidth.class' \
+	'CalendarQueue$$CQEntry.class' \
+	'CalendarQueue$$EntryComparator.class' \
+	'CalendarQueue$$SortedLinkedList.class' \
 	#codeDoc
 
 JCLASS = $(JSRCS:%.java=%.class)
