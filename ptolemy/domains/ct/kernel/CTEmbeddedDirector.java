@@ -62,6 +62,9 @@ import ptolemy.kernel.util.Workspace;
 */
 public class CTEmbeddedDirector extends CTMultiSolverDirector
     implements CTTransparentDirector {
+    
+    // FIXME: constraint that this director inherit the parameters of
+    // the top-level CT director.
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
