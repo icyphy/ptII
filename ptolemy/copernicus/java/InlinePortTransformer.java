@@ -145,8 +145,8 @@ public class InlinePortTransformer extends SceneTransformer {
             relations.hasNext();) {
             TypedIORelation relation = (TypedIORelation)relations.next();
 
-            Parameter bufferSizeParameter = 
-                (Parameter)relation.getAttribute("bufferSize");
+            Variable bufferSizeParameter = 
+                (Variable)relation.getAttribute("bufferSize");
             int bufferSize;
             try {
                 bufferSize = 
