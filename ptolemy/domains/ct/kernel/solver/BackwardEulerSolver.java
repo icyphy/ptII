@@ -47,7 +47,7 @@ import java.util.Iterator;
 /**
 The backward Euler ODE solver. For an ODE
 <pre>
-    x'=f(x, t), x(0)=x0
+    x' = f(x, t), x(0) = x0
 </pre>
 This solver uses the following formula to solve it:
 <pre>

@@ -48,7 +48,7 @@ in a CT system. The first backward Euler process use the minimum step size
 h, and the second backward Euler process use the negative step
 size, -h. That is, for ODE
 <pre>
-    x'=f(x, t), x(0)=x0
+    x' = f(x, t), x(0) = x0
 </pre>
 This solver performs the following two steps
 <pre>
