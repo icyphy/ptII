@@ -87,7 +87,8 @@ public class GraphicalMessageHandler extends MessageHandler {
     protected void _error(String info) {
         Object[] message = new Object[1];
         String string = info;
-        message[0] = _ellipsis(string, 400);
+        message[0] = StringUtilities.ellipsis(string,
+                StringUtilities.ELLIPSIS_LENGTH_SHORT);
 
         Object[] options = {"Dismiss"};
 
@@ -128,7 +129,8 @@ public class GraphicalMessageHandler extends MessageHandler {
         } else {
             string = throwable.getMessage();
         }
-        message[0] = _ellipsis(string, 400);
+        message[0] = StringUtilities.ellipsis(string,
+                StringUtilities.ELLIPSIS_LENGTH_SHORT);
 
         Object[] options = {"Dismiss", "Display Stack Trace"};
 
@@ -153,7 +155,9 @@ public class GraphicalMessageHandler extends MessageHandler {
      */
     protected void _message(String info) {
         Object[] message = new Object[1];
-        message[0] = _ellipsis(info, 4000);
+        message[0] = StringUtilities.ellipsis(info,
+                StringUtilities.ELLIPSIS_LENGTH_LONG);
+
         Object[] options = {"OK"};
 
         // Show the MODAL dialog
@@ -182,7 +186,9 @@ public class GraphicalMessageHandler extends MessageHandler {
         // into shorter new line separated strings.
         // Running vergil on a HSIF .xml file will create a line longer
         // than 80 characters
-        message[0] = _ellipsis(info, 4000);
+        message[0] = StringUtilities.ellipsis(info,
+                StringUtilities.ELLIPSIS_LENGTH_LONG);
+
         Object[] options = {"OK", "Cancel"};
 
         // Show the MODAL dialog
@@ -217,7 +223,8 @@ public class GraphicalMessageHandler extends MessageHandler {
     protected void _warning(String info, Throwable throwable)
             throws CancelException {
         Object[] message = new Object[1];
-        message[0] = _ellipsis(info, 4000);
+        message[0] = StringUtilities.ellipsis(info,
+                StringUtilities.ELLIPSIS_LENGTH_LONG);
         Object[] options = {"OK", "Display Stack Trace", "Cancel"};
 
         // Show the MODAL dialog
@@ -245,7 +252,8 @@ public class GraphicalMessageHandler extends MessageHandler {
      */
     protected boolean _yesNoQuestion(String question) {
         Object[] message = new Object[1];
-        message[0] = _ellipsis(question, 4000);
+        message[0] = StringUtilities.ellipsis(question,
+                StringUtilities.ELLIPSIS_LENGTH_LONG);
         Object[] options = {"Yes", "No"};
 
         // Show the MODAL dialog
@@ -275,21 +283,6 @@ public class GraphicalMessageHandler extends MessageHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Return a string with a maximum line length of 80 characters, limited
-     *  to the given number of characters.
-     *  If the string is truncated, an ellipsis will be appended to the end
-     *  of the string.
-     *  @param string The string to truncate.
-     *  @param length The length to which to truncate the string.
-     */
-    private String _ellipsis(String string, int length) {
-        string = StringUtilities.split(string);
-        if (string.length() > length) {
-            return string.substring(0, length-3) + "...";
-        }
-        return string;
-    }
-
     /** Display a stack trace dialog. The "info" argument is a
      *  string printed at the top of the dialog instead of the Throwable
      *  message.
@@ -317,7 +310,8 @@ public class GraphicalMessageHandler extends MessageHandler {
         } else {
             string = throwable.getMessage();
         }
-        message[0] = _ellipsis(string, 4000);
+        message[0] = StringUtilities.ellipsis(string,
+                StringUtilities.ELLIPSIS_LENGTH_LONG);
         message[1] = stext;
 
         // Show the MODAL dialog
