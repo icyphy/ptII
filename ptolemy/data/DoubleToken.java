@@ -35,8 +35,10 @@ import java.text.NumberFormat;
 //////////////////////////////////////////////////////////////////////////
 //// DoubleToken
 /**
-A token that contains a double precision number.
-FIXME: what do do about long in the operator overloading methods?*
+A token that contains a double precision number. 
+<p>
+Note that a double cannot be losslessly onverted to a long, and vice 
+versa, as both have 64 bit representations in Java.
 <p>
 @author Neil Smyth, Yuhong Xiong
 @see ptolemy.data.Token
@@ -61,7 +63,7 @@ public class DoubleToken extends ScalarToken {
     /** Construct a DoubleToken from the specified string.
      *  @exception IllegalArgumentException If the Token could not
      *   be created with the given String.
-
+     */
     public DoubleToken(String init) throws IllegalArgumentException {
 	try {
 	    _value = (Double.valueOf(init)).doubleValue();
@@ -69,7 +71,7 @@ public class DoubleToken extends ScalarToken {
 	    throw new IllegalArgumentException(e.getMessage());
 	}
     }
-    */
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -164,8 +166,6 @@ public class DoubleToken extends ScalarToken {
 	    IntToken inttoken = (IntToken)IntToken.convert(token);
 	    return new DoubleToken(inttoken.doubleValue());
 	}
-
-	// FIXME: token must be user defined. what to do?
 	throw new IllegalActionException("cannot convert from token " +
 		"type: " + token.getClass().getName() + " to a DoubleToken");
     }

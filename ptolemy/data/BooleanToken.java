@@ -65,7 +65,7 @@ public class BooleanToken extends Token {
     ////                         public methods                    ////
 
     /** Return a new token whose value is the sum of this token
-     *  and the argument. A BooleanToken can only have a StringToken
+     *  and the argument. A BooleanToken can only have a StringToken 
      *  added to it. Note that this means adding two BooleanTokens
      *  will trigger an exception.
      *  @exception IllegalActionException If the passed token
@@ -82,7 +82,7 @@ public class BooleanToken extends Token {
             }
         } catch (Exception ex) {
             throw new IllegalActionException("BooleanToken: Add method not " +
-                    "supported between " + getClass().getName() + " and " +
+                    "supported between " + getClass().getName() + " and " + 
                     tok.getClass().getName() + ": " + ex.getMessage());
         }
     }
@@ -115,7 +115,6 @@ public class BooleanToken extends Token {
 	    return token;
 	}
 
-	// FIXME: token must be user defined. what to do?
 	throw new IllegalActionException("cannot convert from token " +
 		"type: " + token.getClass().getName() + " to a BooleanToken");
     }

@@ -153,8 +153,6 @@ public class IntToken extends ScalarToken {
 	if (token instanceof IntToken) {
 	    return token;
 	}
-
-	// FIXME: token must be user defined. what to do?
 	throw new IllegalActionException("cannot convert from token " +
 		"type: " + token.getClass().getName() + " to a DoubleToken");
     }

@@ -145,8 +145,6 @@ public class StringToken extends Token {
 	    String str = token.stringValue();
 	    return new StringToken(str);
 	}
-
-	// FIXME: token must be user defined. what to do?
         throw new IllegalActionException("cannot convert from token " +
                 "type: " + token.getClass().getName() + " to a " +
 		"StringToken.");
