@@ -91,19 +91,19 @@ public class CopyCatIcon extends XMLIcon {
             while (entities.hasNext()) {
                 entity = (ComponentEntity)entities.next();
             }
-            if (entity != null) {
-                // Look for an icon within the entity.
-                EditorIcon icon = null;
-                Iterator icons = entity.attributeList(EditorIcon.class).iterator();
-                while (icons.hasNext()) {
-                    icon = (EditorIcon)icons.next();
-                }
-                if (icon != null) {
-                    result = icon.createBackgroundFigure();
-                } else {
-                    // If there is no icon, then maybe there is an
-                    // _iconDescription attribute.
-                    try {
+            try {
+                if (entity != null) {
+                    // Look for an icon within the entity.
+                    EditorIcon icon = null;
+                    Iterator icons = entity.attributeList(EditorIcon.class).iterator();
+                    while (icons.hasNext()) {
+                        icon = (EditorIcon)icons.next();
+                    }
+                    if (icon != null) {
+                        result = icon.createBackgroundFigure();
+                    } else {
+                        // If there is no icon, then maybe there is an
+                        // _iconDescription attribute.
                         SingletonConfigurableAttribute description
                                 = (SingletonConfigurableAttribute)
                                 entity.getAttribute("_iconDescription",
@@ -115,16 +115,38 @@ public class CopyCatIcon extends XMLIcon {
                                     myContainer.getAttribute("_iconDescription",
                                     SingletonConfigurableAttribute.class);
                             if (myDescription != null) {
+                                // Save my original description, in case I go
+                                // back to having nothing inside.
+                                if (_originalDescription == null) {
+                                    _originalDescription = myDescription.getText();
+                                }
                                 myDescription.configure(
                                         null,
                                         null,
                                         description.getText());
                             }
                         }
-                    } catch (Exception e) {
-                        // Ignore and use default icon.
+                    }
+                } else {
+                    // Restore the original description if we don't have
+                    // one now.
+                    if (result == null && _originalDescription != null) {
+                        // Restore the original icon description.
+                        // Look for an icon description in my container.
+                        SingletonConfigurableAttribute myDescription
+                                = (SingletonConfigurableAttribute)
+                                myContainer.getAttribute("_iconDescription",
+                                SingletonConfigurableAttribute.class);
+                        if (myDescription != null) {
+                            myDescription.configure(
+                                    null,
+                                    null,
+                                    _originalDescription);
+                        }
                     }
                 }
+            } catch (Exception e) {
+                // Ignore and use default icon.
             }
         }
         // If all else fails, behave like the superclass.
@@ -160,4 +182,10 @@ public class CopyCatIcon extends XMLIcon {
         composite.add(result);
         return composite;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Original description of the icon.
+    private String _originalDescription = null;
 }
