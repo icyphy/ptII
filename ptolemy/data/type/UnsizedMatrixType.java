@@ -44,14 +44,14 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// MatrixType
 /**
-The base type of matrix token classes. 
+The base type of matrix token classes.
 
 @author Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 2.0
 */
 
-public abstract class UnsizedMatrixType extends StructuredType 
+public abstract class UnsizedMatrixType extends StructuredType
     implements Serializable {
 
     /** Construct a new matrix type that represents matrix tokens of the
@@ -94,7 +94,7 @@ public abstract class UnsizedMatrixType extends StructuredType
         if(matrixType.getTokenClass() != _tokenClass) return false;
         return true;
     }
-    
+
     /** Return the class for tokens that this type represents.
      *  @return A class that represents a matrix token.
      */
@@ -139,7 +139,7 @@ public abstract class UnsizedMatrixType extends StructuredType
     }
 
     /** Test if this type corresponds to an instantiable token
-     *  classes. 
+     *  classes.
      *  @return True.
      */
     public boolean isInstantiable() {
@@ -279,7 +279,7 @@ public abstract class UnsizedMatrixType extends StructuredType
         }
     }
 
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -302,7 +302,7 @@ public abstract class UnsizedMatrixType extends StructuredType
 //             return CPO.SAME;
 //         } else {
 //             return CPO.LOWER;
-//         } 
+//         }
     }
 
     /** Return a static instance of this structured type. The return
@@ -323,7 +323,7 @@ public abstract class UnsizedMatrixType extends StructuredType
      */
     protected StructuredType _greatestLowerBound(StructuredType type) {
         return this;
-    }        
+    }
 
     /** Return the least upper bound of this type with the specified
      *  type. The specified type must be of the same structured type,
@@ -341,7 +341,7 @@ public abstract class UnsizedMatrixType extends StructuredType
 //             return type;
 //         }
     }
-                
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

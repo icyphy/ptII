@@ -44,14 +44,14 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// MatrixType
 /**
-The base type of matrix token classes. 
+The base type of matrix token classes.
 
 @author Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 2.0
 */
 
-public abstract class SizedMatrixType extends StructuredType 
+public abstract class SizedMatrixType extends StructuredType
     implements Serializable {
 
     /** Construct a new matrix type that represents matrix tokens of the
@@ -105,14 +105,14 @@ public abstract class SizedMatrixType extends StructuredType
     public int getColumnCount() {
         return _columns;
     }
-   
+
     /** Return the number of rows in matrix tokens represented by this
      *  type.
      */
     public int getRowCount() {
         return _rows;
     }
-    
+
     /** Return the class for tokens that this basetype represents.
      *  @return A class that represents a matrix token.
      */
@@ -157,7 +157,7 @@ public abstract class SizedMatrixType extends StructuredType
     }
 
     /** Test if this type corresponds to an instantiable token
-     *  classes. 
+     *  classes.
      *  @return True.
      */
     public boolean isInstantiable() {
@@ -266,8 +266,8 @@ public abstract class SizedMatrixType extends StructuredType
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof MatrixToken) {
                 return IntMatrixToken.convert((MatrixToken)token);
-            } else if(getRowCount() == getColumnCount() && 
-                    token instanceof ScalarToken) { 
+            } else if(getRowCount() == getColumnCount() &&
+                    token instanceof ScalarToken) {
                 return IntMatrixToken.convert(
                         (ScalarToken)token, getRowCount());
             } else {
@@ -377,7 +377,7 @@ public abstract class SizedMatrixType extends StructuredType
 //         } else {
 //             return _getRepresentative();
 //         }
-    }        
+    }
 
     /** Return the least upper bound of this type with the specified
      *  type. The specified type must be of the same structured type,
@@ -402,7 +402,7 @@ public abstract class SizedMatrixType extends StructuredType
 //             //     return BaseType.MATRIX;
 //         }
     }
-                
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -290,7 +290,7 @@ public abstract class BaseType implements Type, Serializable {
     }
     public static final LongType LONG = new LongType();
 
-    public static final UnsizedMatrixType.LongMatrixType LONG_MATRIX = 
+    public static final UnsizedMatrixType.LongMatrixType LONG_MATRIX =
     new UnsizedMatrixType.LongMatrixType();
 
     /** The matrix data type: The least upper bound of all the matrix types. */
@@ -302,7 +302,7 @@ public abstract class BaseType implements Type, Serializable {
             super(Numerical.class, "numerical");
         }
         public Token convert(Token t) throws IllegalActionException {
-            throw new IllegalActionException("Cannot convert token " + t + 
+            throw new IllegalActionException("Cannot convert token " + t +
               " to type numerical, because numerical is not a concrete type.");
         }
     }
@@ -325,7 +325,7 @@ public abstract class BaseType implements Type, Serializable {
             super(ScalarToken.class, "scalar");
         }
         public Token convert(Token t) throws IllegalActionException {
-            throw new IllegalActionException("Cannot convert token " + t + 
+            throw new IllegalActionException("Cannot convert token " + t +
                  " to type scalar, because scalar is not a concrete type.");
         }
     }
@@ -350,7 +350,7 @@ public abstract class BaseType implements Type, Serializable {
         public Token convert(Token t) throws IllegalActionException {
             // FIXME: what does converting to general MEAN?
             return t;
-            //     throw new IllegalActionException("Cannot convert token " + t + 
+            //     throw new IllegalActionException("Cannot convert token " + t +
             //         " to type general, because general is not a concrete type.");
         }
     }

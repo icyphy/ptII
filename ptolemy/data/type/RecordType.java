@@ -127,7 +127,7 @@ public class RecordType extends StructuredType {
                     Token.notSupportedConversionMessage(
                             token, this.toString()));
         }
-        
+
         RecordToken recordToken = (RecordToken)token;
 	// The converted token has the same set of labels as the argument.
 	// That is, fields not in this type are not cut off.
@@ -139,11 +139,11 @@ public class RecordType extends StructuredType {
 
         for (int i = 0; i < labelArray.length; i++) {
             String label = (String)labelArray[i];
-            
+
             // Convert each field of the record.
             Token fieldToken = recordToken.get(label);
 	    Type newFieldType = get(label);
-            
+
             // If the type of the field is specified, then convert it.
 	    if (newFieldType != null) {
 	        values[i] = newFieldType.convert(fieldToken);
@@ -241,7 +241,7 @@ public class RecordType extends StructuredType {
         Iterator iterator = _fields.keySet().iterator();
         while (iterator.hasNext()) {
             String label = (String)iterator.next();
-            
+
             // The given type cannot be losslessly converted to this type
             // if it does not contain one of the fields of this type.
 	    Type argumentFieldType = argumentRecordType.get(label);
@@ -249,7 +249,7 @@ public class RecordType extends StructuredType {
                 // argument token does not contain this label
                 return false;
             }
-   
+
             // The given type cannot be losslessly converted to this type
             // if the individual fields are not compatible.
             Type thisFieldType = this.get(label);
@@ -300,7 +300,7 @@ public class RecordType extends StructuredType {
 
     /** Test if the specified type is a substitution instance of this
      *  type.  One record is a substitution instance of another if they
-     *  have fields with the same names and each field of the given type is 
+     *  have fields with the same names and each field of the given type is
      *  a substitution instance of the correpsonding field in this type.
      *  @param type A Type.
      *  @return True if the argument is a substitution instance of this type.
@@ -329,7 +329,7 @@ public class RecordType extends StructuredType {
             FieldType fieldType = (FieldType)_fields.get(label);
             Type myDeclaredType = fieldType._declaredType;
             Type argType = recordType.get(label);
-            
+
             if (!myDeclaredType.isSubstitutionInstance(argType)) {
                 return false;
             }

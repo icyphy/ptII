@@ -51,7 +51,7 @@ The least upper bound for all matrix types.
 @since Ptolemy II 2.0
 */
 
-public class TopMatrixType extends StructuredType 
+public class TopMatrixType extends StructuredType
     implements Serializable {
 
     /** Construct a new matrix type that represents the top element of all
@@ -79,7 +79,7 @@ public class TopMatrixType extends StructuredType
      */
     public Token convert(Token token)
 	    throws IllegalActionException {
-        throw new IllegalActionException("Cannot convert " + token + 
+        throw new IllegalActionException("Cannot convert " + token +
                 " to TopMatrixType");
     }
 
@@ -92,13 +92,13 @@ public class TopMatrixType extends StructuredType
     public boolean equals(Object object) {
         return object == getInstance();
     }
- 
+
     /** Return the singleton instance of this class.
      */
     public static TopMatrixType getInstance() {
         return _instance;
     }
-   
+
     /** Return a hash code value for this object.
      *  @return The hash code for the TopMatrixType class.
      */
@@ -138,7 +138,7 @@ public class TopMatrixType extends StructuredType
     }
 
     /** Test if this type corresponds to an instantiable token
-     *  classes. 
+     *  classes.
      *  @return False.
      */
     public boolean isInstantiable() {
@@ -220,8 +220,8 @@ public class TopMatrixType extends StructuredType
              return this;
         } else {
             return type;
-        } 
-    }        
+        }
+    }
 
     /** Return the least upper bound of this type with the specified
      *  type. The specified type must be of the same structured type,
@@ -234,7 +234,7 @@ public class TopMatrixType extends StructuredType
     protected StructuredType _leastUpperBound(StructuredType type) {
         return this;
     }
-                
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
