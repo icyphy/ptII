@@ -269,6 +269,7 @@ proc manyScales {numberOfScaleActors {factor 1.1} } {
     set e0 [sdfModel 5]
     puts "$numberOfScaleActors actors"
     puts "[time {set rec [createManyScales $e0 $numberOfScaleActors $factor]}] to create"
+    puts [$e0 exportMoML]
     [$e0 getManager] execute
     [$e0 getManager] execute
     [$e0 getManager] execute
@@ -284,9 +285,9 @@ test Ramp-4.2 {Test with 50 actors} {
     manyScales 50
 } {0.0 106.7189571633598 213.4379143267195 320.1568714900794 426.875828653439}
 
-# test Ramp-4.3 {Test with 500 actors} {
-#     manyScales 500
-# } {0.0 4.5180381521022E20 9.0360763042045E20 1.3554114456307E21 1.8072152608409E21}
+ test Ramp-4.3 {Test with 500 actors} {
+     manyScales 500
+ } {0.0 4.5180381521022E20 9.0360763042045E20 1.3554114456307E21 1.8072152608409E21}
 
 
 # test Ramp-4.5 {Test with 750 actors} {
