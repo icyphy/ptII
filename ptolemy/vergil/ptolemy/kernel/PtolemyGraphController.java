@@ -62,6 +62,7 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
     /** Create a new basic controller.
      */
     public PtolemyGraphController() {
+        super();
     }
 
     ///////////////////////////////////////////////////////////////////

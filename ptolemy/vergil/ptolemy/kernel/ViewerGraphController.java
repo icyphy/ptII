@@ -72,6 +72,8 @@ public class ViewerGraphController extends PtolemyGraphController {
      *  terminal and edge interactors and default context menus.
      */
     public ViewerGraphController() {
+        // FIXME: Need read-only versions of these, and then need
+        // to override this in EditorGraphController.
 	_attributeController = new AttributeController(this);
 	_entityPortController = new EntityPortController(this);
 	_entityController = new EntityController(this);
@@ -204,22 +206,22 @@ public class ViewerGraphController extends PtolemyGraphController {
     ////                        protected variables                ////
 
     /** The attribute controller. */
-    protected AttributeController _attributeController;
+    protected PtolemyNodeController _attributeController;
 
     /** The entity controller. */
-    protected EntityController _entityController;
+    protected PtolemyNodeController _entityController;
 
     /** The entity port controller. */
-    protected EntityPortController _entityPortController;
+    protected PtolemyNodeController _entityPortController;
 
     /** The link controller. */
     protected LinkController _linkController;
 
     /** The port controller. */
-    protected PortController _portController;
+    protected PtolemyNodeController _portController;
 
     /** The relation controller. */
-    protected RelationController _relationController;
+    protected PtolemyNodeController _relationController;
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////

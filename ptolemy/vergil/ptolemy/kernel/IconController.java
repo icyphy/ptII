@@ -48,7 +48,9 @@ This class provides interaction with nodes that represent Ptolemy II
 objects that are represented on screen as icons, such as attributes
 and entities.   It provides a double click binding to edit the parameters
 of the node, and a context menu containing a command to edit parameters
-("Configure").
+("Configure"). This adds to the base class the ability to render an
+icon for the object being controlled, where the icon is specified
+by a contained attribute of class EditorIcon named "_icon".
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$

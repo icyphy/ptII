@@ -30,6 +30,7 @@
 
 package ptolemy.vergil;
 
+// FIXME: Trim this.
 import java.net.URL;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -173,8 +174,6 @@ public class MoMLViewerApplet extends MoMLApplet {
             GraphModel model = new PtolemyGraphModel(
                     (CompositeEntity)_toplevel);
 
-            _getDocumentationAction = new GetDocumentationAction();
-
             pane = new GraphPane(controller, model);
         }
         JGraph modelViewer = new JGraph(pane);
@@ -213,123 +212,9 @@ public class MoMLViewerApplet extends MoMLApplet {
         String panelFlag = getParameter("includeRunPanel");
         if (panelFlag != null
                 && panelFlag.trim().toLowerCase().equals("true")) {
-            // FIXME: Create a separator?
+            // NOTE: We could create a separator between the schematic
+            // and the control panel here.
             super._createView();
         }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-
-    private Action _getDocumentationAction;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    public class GetDocumentationAction extends FigureAction {
-	public GetDocumentationAction() {
-	    super("Get Documentation");
-	}
-	public void actionPerformed(ActionEvent e) {
-	    // Create a dialog for configuring the object.
-	    super.actionPerformed(e);
-            NamedObj target = getTarget();
-	    String className = target.getClass().getName();
-            String docName = "doc.codeDoc." + className;
-            URL docURL = getClass().getClassLoader().getResource(
-                    docName.replace('.', '/') + ".html");
-            try {
-                HTMLViewer viewer = new HTMLViewer();
-                viewer.setPage(docURL);
-                viewer.pack();
-                viewer.show();
-            } catch (IOException ex) {
-                try {
-                    MessageHandler.warning(
-                            "Could not find any documentation for\n" +
-                            className);
-                } catch (CancelException exception) {}
-            }
-	}
-    };
-
-   /** The factory for creating context menus on visible attributes
-     */
-    private class ObjectContextMenuFactory extends PtolemyMenuFactory {
-	public ObjectContextMenuFactory(GraphController controller) {
-	    super(controller);
-	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
-        }
-    }
-
-    /** The factory for creating context menus on ports.
-     */
-    public class PortContextMenuFactory extends PtolemyMenuFactory {
-	public PortContextMenuFactory(GraphController controller) {
-	    super(controller);
-	    addMenuItemFactory(new PortDescriptionFactory());
-	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
-	}
-
-        // FIXME: This is silly... this should be a tooltip, not a menu
-        // item.  It describes the port, and has no action associated with it.
-	public class PortDescriptionFactory implements MenuItemFactory {
-	    /**
-	     * Add an item to the given context menu that will configure the
-	     * parameters on the given target.
-	     */
-	    public JMenuItem create(JContextMenu menu, NamedObj target) {
-                // Removed this method since it was never used. EAL
-                // target = _getItemTargetFromMenuTarget(target);
-		if(target instanceof IOPort) {
-		    IOPort port = (IOPort)target;
-		    String string = "";
-		    int count = 0;
-		    if(port.isInput()) {
-			string += "Input";
-			count++;
-		    }
-		    if(port.isOutput()) {
-			if(count > 0) {
-			    string += ", ";
-			}
-			string += "Output";
-			count++;
-		    }
-		    if(port.isMultiport()) {
-			if(count > 0) {
-			    string += ", ";
-			}
-			string += "Multiport";
-			count++;
-		    }
-		    if(count > 0) {
-			return menu.add(new JMenuItem("   " + string));
-		    }
-		}
-		return null;
-	    }
-	}
-    }
-
-    /** The factory for creating context menus on states.
-     */
-    private class StateContextMenuFactory extends PtolemyMenuFactory {
-	public StateContextMenuFactory(GraphController controller) {
-	    super(controller);
-	    addMenuItemFactory(new EditParametersFactory());
-	}
-    }
-
-    /** The factory for creating context menus on transitions between states.
-     */
-    private class TransitionContextMenuFactory
-	extends PtolemyMenuFactory {
-	public TransitionContextMenuFactory(GraphController controller) {
-	    super(controller);
-	    addMenuItemFactory(new EditParametersFactory());
-	}
     }
 }

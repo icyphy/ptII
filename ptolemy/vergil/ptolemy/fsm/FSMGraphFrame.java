@@ -194,22 +194,6 @@ public class FSMGraphFrame extends GraphFrame {
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
 
-    /**
-     * The factory for creating context menus on states.
-     */
-    private class StateContextMenuFactory extends PtolemyMenuFactory {
-	public StateContextMenuFactory(GraphController controller) {
-	    super(controller);
-	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new RenameDialogFactory());
-	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
-	    //addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
-            /** FIXME: removed temporarily until edit icon works.
-	    addMenuItemFactory(new MenuActionFactory(_editIconAction));
-            */
-	}
-    }
-
     // An action to look inside a composite.
     private class LookInsideAction extends FigureAction {
 	public LookInsideAction() {
