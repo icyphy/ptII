@@ -1,6 +1,6 @@
-# Makefile for the Java classes used to implement the Ptolemy gui
+# Makefile for gui/demo directory
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -29,12 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/gui
-
-DIRS = 		#test doc demo
+ME =		ptolemy/gui/doc
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -42,32 +40,33 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+TCL_SRCS = \
 
-# Used to build jar files
-PTPACKAGE = 	gui
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	#$(PTPACKAGE).jar
 
 JSRCS = \
-	Query.java \
-	QueryListener.java
+	QueryApplet.java
 
-EXTRA_SRCS =	$(JSRCS)
+
+
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	# doc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: $(JCLASS)
+	@echo "To run the demo, point an applet viewer at index.html"
 
-all: jclass
-install: jclass $(PTCLASSJAR)
+install: all
+
 
 
 depend:
@@ -75,3 +74,6 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+
+

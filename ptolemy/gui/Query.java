@@ -28,9 +28,7 @@
 
 */
 
-// FIXME: This is not the right package for this.
-
-package ptolemy.actor.util;
+package ptolemy.gui;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -44,7 +42,7 @@ import collections.LinkedList;
 /**
 Create a query with various types of entry boxes and controls.
 
-@author  Edward A. Lee
+@author  Edward A. Lee, Manda Sutijono
 @version $Id$
 */
 public class Query extends Panel {
@@ -84,18 +82,17 @@ public class Query extends Panel {
      *   need not be declared explicitly.
      *
      *
-     *  Changed Checkbox to JRadioButton, and getState() to isSelected()
+     *  FIXME: Changed Checkbox to JRadioButton, and getState() to isSelected()
      */
     public boolean booleanValue(String name)
-            throws NoSuchElementException, NumberFormatException
-        {
-            JRadioButton result = (JRadioButton)(_entries.get(name));
-            if(result == null) {
-                throw new NoSuchElementException("No item named \"" +
-                        name + " \" in the query box.");
-            }
-            return (new Boolean(result.isSelected())).booleanValue();
+            throws NoSuchElementException, NumberFormatException {
+        JRadioButton result = (JRadioButton)(_entries.get(name));
+        if(result == null) {
+            throw new NoSuchElementException("No item named \"" +
+            name + " \" in the query box.");
         }
+        return (new Boolean(result.isSelected())).booleanValue();
+    }
 
     /** Get the current value in the entry with the given name
      *  and return as a double value.  If the value of the entry is not
@@ -109,8 +106,8 @@ public class Query extends Panel {
      *   need not be declared explicitly.
      *
      *
-     *  Changed TextField to JTextField
-*/
+     *  FIXME: Changed TextField to JTextField
+     */
     public double doubleValue(String name)
             throws NoSuchElementException, NumberFormatException {
         JTextField result = (JTextField)(_entries.get(name));
@@ -134,7 +131,7 @@ public class Query extends Panel {
      *     
      *
      *  Changed TextField to JTextField
-*/
+     */
     public int intValue(String name)
             throws NoSuchElementException, NumberFormatException {
         JTextField result = (JTextField)(_entries.get(name));
