@@ -58,7 +58,9 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 # These models are listed in ptII/ptolemy/configs/visualsense/intro.htm
 PTCLASSALLJARS = \
+	AntennaPattern/AntennaPattern.jar \
 	CircularRange/CircularRange.jar \
+	Collisions/Collisions.jar \
 	EvaderAndPursuer/EvaderAndPursuer.jar \
 	MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.jar \
 	PowerVariability/PowerVariability.jar \
