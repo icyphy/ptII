@@ -128,10 +128,20 @@ public class Check {
                          new InterfaceAutomaton[_numberOfPhilosophers];
         for (int i=0; i<_numberOfPhilosophers; i++) {
             InterfaceAutomaton phiAndReceiver = _composePhiAndReceiver(i);
+
+System.out.println("finish " + i + "th phiAndReceiver:");
+System.out.println(phiAndReceiver.getInfo());
+
             InterfaceAutomaton choAndReceiver = _composeChoAndReceiver(i);
+
+System.out.println("finish " + i + "th choAndReceiver:");
+System.out.println(choAndReceiver.getInfo());
+
             phiCho[i] = phiAndReceiver.compose(choAndReceiver);
 
 System.out.println("finish " + i + "th philosopher/chopstick pair");
+System.out.println(phiCho[i].getInfo());
+
         }
 
         // compose all philosopher/chopstick pairs.
@@ -140,6 +150,7 @@ System.out.println("finish " + i + "th philosopher/chopstick pair");
             all = all.compose(phiCho[i]);
         }
 
+System.out.println("finish all.");
 System.out.println(all.getInfo());
 System.out.println(all.exportMoML());
 
@@ -268,9 +279,6 @@ System.out.println(all.exportMoML());
 
             controller.renameTransitionLabels(nameMap);
 
-System.out.println("controller:");
-System.out.println(controller.getInfo());
-
             // create left conditional send
             InterfaceAutomaton leftSend = (InterfaceAutomaton)_send.clone();
             leftSend.setName("c" + index + "sl");
@@ -295,9 +303,6 @@ System.out.println(controller.getInfo());
             nameMap.put("d", "c" + index + "dl");
 
             leftSend.renameTransitionLabels(nameMap);
-
-System.out.println("leftSend:");
-System.out.println(leftSend.getInfo());
 
             // create right conditional send
             InterfaceAutomaton rightSend = (InterfaceAutomaton)_send.clone();
@@ -328,13 +333,19 @@ System.out.println(leftSend.getInfo());
             InterfaceAutomaton choWithReceivers = cho.compose(leftReceiver);
             choWithReceivers = choWithReceivers.compose(rightReceiver);
 
-            InterfaceAutomaton conWithSend = controller.compose(leftSend);
-System.out.println("con and left send:");
-System.out.println(conWithSend.getInfo());
+System.out.println("Chopstick and two receivers:");
+System.out.println(choWithReceivers.getInfo());
 
+            InterfaceAutomaton conWithSend = controller.compose(leftSend);
             conWithSend = conWithSend.compose(rightSend);
 
+System.out.println("Controller and two send:");
+System.out.println(conWithSend.getInfo());
+
             InterfaceAutomaton whole = choWithReceivers.compose(conWithSend);
+
+System.out.println("Chopstick, receivers, controller and send:");
+System.out.println(whole.getInfo());
 
             return whole;
         } catch (CloneNotSupportedException cnse) {

@@ -13,7 +13,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[792, 653]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[8, 16]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[11, 0]">
     </property>
     <port name="iA1" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
@@ -143,7 +143,7 @@
     <entity name="4" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="311.0, 443.0">
+        <property name="_location" class="ptolemy.moml.Location" value="314.0, 402.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -153,7 +153,7 @@
     <entity name="8" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="164.0, 88.0">
+        <property name="_location" class="ptolemy.moml.Location" value="145.0, 88.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -223,7 +223,7 @@
     <entity name="5" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="508.0, 448.0">
+        <property name="_location" class="ptolemy.moml.Location" value="503.0, 410.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -233,7 +233,7 @@
     <entity name="7" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="368.0, 197.0">
+        <property name="_location" class="ptolemy.moml.Location" value="448.0, 152.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -353,7 +353,7 @@
     <entity name="u2" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="232.0, 552.0">
+        <property name="_location" class="ptolemy.moml.Location" value="202.0, 581.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -363,7 +363,7 @@
     <entity name="u3" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="218.0, 316.0">
+        <property name="_location" class="ptolemy.moml.Location" value="183.0, 250.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -373,7 +373,7 @@
     <entity name="u4" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="311.0, 281.0">
+        <property name="_location" class="ptolemy.moml.Location" value="323.0, 144.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -383,7 +383,7 @@
     <entity name="u5" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="161.0, 256.0">
+        <property name="_location" class="ptolemy.moml.Location" value="156.0, 165.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -403,7 +403,7 @@
     <entity name="a2" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="295.0, 154.0">
+        <property name="_location" class="ptolemy.moml.Location" value="418.0, 77.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -413,7 +413,7 @@
     <entity name="a3" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="481.0, 115.0">
+        <property name="_location" class="ptolemy.moml.Location" value="515.0, 104.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -423,7 +423,47 @@
     <entity name="a4" class="ptolemy.domains.fsm.kernel.State">
         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="479.0, 273.0">
+        <property name="_location" class="ptolemy.moml.Location" value="506.0, 255.0">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="a5" class="ptolemy.domains.fsm.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="288.0, 488.0">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="a6" class="ptolemy.domains.fsm.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="394.0, 223.0">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="a7" class="ptolemy.domains.fsm.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="503.0, 494.0">
+        </property>
+        <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <entity name="a8" class="ptolemy.domains.fsm.kernel.State">
+        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="262.0, 364.0">
         </property>
         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
         </port>
@@ -1278,6 +1318,134 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="iF2T!">
         </property>
     </relation>
+    <relation name="relation5" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="iA2_isPresent">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="iA2?">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="iA2T=true">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="iA2T!">
+        </property>
+    </relation>
+    <relation name="relation39" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="iF2_isPresent">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="iF2?">
+        </property>
+    </relation>
+    <relation name="relation57" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="iA1F=true">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="iA1F!">
+        </property>
+    </relation>
+    <relation name="relation58" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="iA1_isPresent">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="iA1?">
+        </property>
+    </relation>
+    <relation name="relation59" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="iA1T=true">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="iA1T!">
+        </property>
+    </relation>
+    <relation name="relation60" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="iF1_isPresent">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="iF1?">
+        </property>
+    </relation>
+    <relation name="relation61" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+        </property>
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="iA2F=true">
+        </property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="iA2F!">
+        </property>
+    </relation>
     <link port="1.incomingPort" relation="relation6"/>
     <link port="1.outgoingPort" relation="relation"/>
     <link port="2.incomingPort" relation="relation"/>
@@ -1293,7 +1461,10 @@
     <link port="3.outgoingPort" relation="relation22"/>
     <link port="3.outgoingPort" relation="relation48"/>
     <link port="4.incomingPort" relation="relation3"/>
+    <link port="4.incomingPort" relation="relation7"/>
     <link port="4.outgoingPort" relation="relation4"/>
+    <link port="4.outgoingPort" relation="relation5"/>
+    <link port="4.outgoingPort" relation="relation39"/>
     <link port="8.incomingPort" relation="relation9"/>
     <link port="8.incomingPort" relation="relation11"/>
     <link port="8.incomingPort" relation="relation40"/>
@@ -1319,10 +1490,14 @@
     <link port="20.incomingPort" relation="relation17"/>
     <link port="20.outgoingPort" relation="relation18"/>
     <link port="5.incomingPort" relation="relation20"/>
+    <link port="5.incomingPort" relation="relation59"/>
     <link port="5.outgoingPort" relation="relation21"/>
+    <link port="5.outgoingPort" relation="relation58"/>
+    <link port="5.outgoingPort" relation="relation60"/>
     <link port="7.incomingPort" relation="relation22"/>
     <link port="7.incomingPort" relation="relation52"/>
     <link port="7.incomingPort" relation="relation54"/>
+    <link port="7.incomingPort" relation="relation57"/>
     <link port="7.outgoingPort" relation="relation23"/>
     <link port="7.outgoingPort" relation="relation51"/>
     <link port="7.outgoingPort" relation="relation53"/>
@@ -1368,6 +1543,7 @@
     <link port="u3.incomingPort" relation="relation45"/>
     <link port="u3.incomingPort" relation="relation47"/>
     <link port="u3.incomingPort" relation="relation48"/>
+    <link port="u3.incomingPort" relation="relation61"/>
     <link port="u3.outgoingPort" relation="relation40"/>
     <link port="u3.outgoingPort" relation="relation41"/>
     <link port="u3.outgoingPort" relation="relation46"/>
@@ -1384,4 +1560,12 @@
     <link port="a3.outgoingPort" relation="relation54"/>
     <link port="a4.incomingPort" relation="relation55"/>
     <link port="a4.outgoingPort" relation="relation56"/>
+    <link port="a5.incomingPort" relation="relation5"/>
+    <link port="a5.outgoingPort" relation="relation7"/>
+    <link port="a6.incomingPort" relation="relation39"/>
+    <link port="a6.outgoingPort" relation="relation57"/>
+    <link port="a7.incomingPort" relation="relation58"/>
+    <link port="a7.outgoingPort" relation="relation59"/>
+    <link port="a8.incomingPort" relation="relation60"/>
+    <link port="a8.outgoingPort" relation="relation61"/>
 </entity>
