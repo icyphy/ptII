@@ -122,15 +122,12 @@
           <input source="../actor/lib/sinks.xml"/>
           <input source="../actor/lib/math.xml"/>
           <input source="../actor/lib/flowcontrol.xml"/>
+          <input source="../actor/lib/logic/logic.xml"/>
           <input source="../actor/lib/conversions/conversions.xml"/>
           <input source="../actor/lib/signalprocessing.xml"/>
           <input source="../domains/sdf/lib/sdfentities.xml"/>
           <input source="../domains/ct/lib/ctentities.xml"/>
           <input source="../domains/de/lib/deentities.xml"/>
-<!--
-          <input source="../apps/lego/legoentities.xml"/>
-          <input source="../apps/agilent/agilententities.xml"/>
--->
         </group>
       ?>
     </configure>
