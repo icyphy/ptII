@@ -51,7 +51,6 @@ JSRCS = \
 	NullToken.java \
         DDEActor.java \
         DDEDirector.java \
-        DDENullFBDelay.java \
         DDEIOPort.java \
         DDEReceiver.java \
         DDESourceActor.java \
@@ -59,6 +58,7 @@ JSRCS = \
         FBDelay.java \
         TimeKeeper.java \
         TimedQueueReceiver.java
+        #DDENullFBDelay.java \
 
 
 EXTRA_SRCS =	$(JSRCS)
