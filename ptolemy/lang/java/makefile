@@ -183,7 +183,7 @@ generate_codegen:
 compile_codegen:
 	(cd $(ROOT)/cg/OrthogonalCom; \
 	 $(JAVAC) $(JFLAGS) -classpath ../.. CG_Main.java)
-run_codegen: 	
+run_codegen:
 	(cd $(ROOT)/cg/OrthogonalCom; \
 		$(JAVA) -classpath ../.. cg.OrthogonalCom.CG_Main)
 

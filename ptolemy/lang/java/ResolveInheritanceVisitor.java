@@ -95,7 +95,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
             _fillInInheritedMembers(me, superClass);
         } else {
-            if (me == StaticResolution.OBJECT_DECL) {
+            if (me != StaticResolution.OBJECT_DECL) {
                 throw new RuntimeException("ResolveInheritanceVisitor." +
                         "visitClassDeclNode: " + me + 
                         "has no superclass, yet is not Object");
