@@ -25,8 +25,11 @@
 	    <!-- input source="ptolemy/domains/rtp/lib/rtpentities.xml"/-->
 	    <input source="ptolemy/domains/sr/lib/srentities.xml"/>
 	    <input source="ptolemy/domains/tm/lib/tmentities.xml"/>
-            <input source="ptolemy/domains/hde/lib/hdeentities.xml"/>
+
+	    <!-- Do not ship hde -->
+            <!-- input source="ptolemy/domains/hde/lib/hdeentities.xml"/-->
       </group>
     ?>
   </configure>
 </entity>
+o
