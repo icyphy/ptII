@@ -63,6 +63,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	AbstractCase.java \
 	AddSubtract.java \
 	AbsoluteValue.java \
 	ArrayAppend.java \
