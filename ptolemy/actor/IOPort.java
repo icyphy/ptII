@@ -87,7 +87,7 @@ derived from ComponentEntity and implementing the Actor interface.
 Subclasses may further constrain the containers by overriding
 setContainer().
 
-@authors Edward A. Lee, Jie Liu
+@authors Edward A. Lee, Jie Liu, Neil Smyth
 @version $Id$
 */
 public class IOPort extends ComponentPort {
@@ -212,18 +212,23 @@ public class IOPort extends ComponentPort {
     }
 
     /** Create receivers for this port. This method should only be 
-     *  called on input ports. It should also normally only be called 
+     *  called on opaque ports. It should also normally only be called 
      *  during the initialize and prefire methods of the director.
-     *  If this port already has the correct number of receivers, then
-     *  no new receivers are created. However if new receivers are created, 
-     *  then any receivers this port previously had will be overwritten.
+     *  Receivers are created and cached for each relation connected 
+     *  to this port. If, for a given relation, this port already has 
+     *  the correct number of receivers, then no new receivers are 
+     *  created. However if new receivers are created, then any 
+     *  receivers previously associated with that relation will 
+     *  be overwritten.
      *  <p>
-     *  Receivers are created if neccessary for each relation connected 
-     *  to the port. There are two cases where receivers need to be 
-     *  created: First whenever a port is an input port, and second 
-     *  whenever the port is an output, opaque port and the relation
-     *  connects to it from the inside. If neither of these cases
-     *  apply to a relation, no receivers are created.
+     *  If the port is an input port, receivers are created as neccessary 
+     *  for each relation connecting to the port from the outside.
+     *  <p>
+     *  If the port is an output port, receivers are created as neccessary 
+     *  for each relation connected to the port from the inside. Note that 
+     *  only composite entities will have relations connecting to ports 
+     *  from the inside.
+     *  <p>
      *  It is <i>not</i> write-synchronized on the workspace, so the
      *  caller should be. 
      *  @exception IllegalActionException Thrown if this port is not 
@@ -247,9 +252,8 @@ public class IOPort extends ComponentPort {
         boolean input = isInput();
         boolean output = isOutput();
 
-        Enumeration outsideRelations = linkedRelations();
-        Enumeration insideRelations = insideRelations();
         if (input) {
+            Enumeration outsideRelations = linkedRelations();
             while (outsideRelations.hasMoreElements()) {
                 IORelation relation = (IORelation) outsideRelations.nextElement();
                 int width = relation.getWidth();
@@ -279,7 +283,9 @@ public class IOPort extends ComponentPort {
                 // in the receivers is lost.
                 _localReceiversTable.put(relation, result);    
             }
-        } else if (output) {
+        }
+        if (output) {
+            Enumeration insideRelations = insideRelations();
             while (insideRelations.hasMoreElements()) {
                 IORelation relation = (IORelation)insideRelations.nextElement();
                 int width = relation.getWidth();
