@@ -2713,7 +2713,7 @@ if test ! -d "$VR_USER_DIR" -o -z "$PTJAVA3D_DIR"; then
     or Java 3D was not found, so we need not find Java 3D Volume Rendering.])
 else
     AC_MSG_CHECKING([for Java 3D Volume Rendering])
-    AC_ARG_WITH(ptvr, [  --with-ptvr=DIR       use Volume Rendering from DIR
+    AC_ARG_WITH(ptvr-jar, [  --with-ptvr-jar=DIR       use Volume Rendering from DIR
                           defaults to \$PTII/lib/ptvr.jar],
 	PTVR_JAR=$withval,
 	PTVR_JAR=$PTII/lib/ptvr.jar)
@@ -2735,6 +2735,9 @@ fi
 
 if test -z "$PTVR_DIR"; then
     ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/lib/vr"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	<classpathentry kind=\"lib\" path=\"$PTVR_JAR\"/> "
 fi 
 
 #--------------------------------------------------------------------
