@@ -746,7 +746,6 @@ public class DEDirector extends Director implements TimedDirector {
      *  because hierarchical models may change their structures during the
      *  preinitialize method. For example, a modal model does not specify its
      *  initial state till the end of its preinitialize method. 
-     *  {@link #ptolemy.domains.fsm.kernel.FSMActor.preinitialize()}. 
      *  <p>
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
