@@ -117,9 +117,8 @@ public class PNDirector extends ProcessDirector {
     /** Schedule to be restart execution after a specified delay
      *  with respect to the current time.
      */
-    public synchronized void fireAfterDelay(Actor actor, double delay)
+    public synchronized void fireAt(Actor actor, double newfiringtime)
             throws IllegalActionException {
-        double newfiringtime = getCurrentTime()+delay;
         _eventQueue.put(new Double(newfiringtime), actor);
         //_eventQueue.insert(new Double(newfiringtime));
         //FIXME: Blocked on a delay
@@ -397,21 +396,21 @@ public class PNDirector extends ProcessDirector {
 	    PNQueueReceiver queue = (PNQueueReceiver)receps.nextElement();
 	    if (smallestCapacity == -1) {
 	        smallestCapacityQueue = queue;
-		smallestCapacity = queue.capacity();
+		smallestCapacity = queue.getCapacity();
 		//smallestCapacityRecep = flowqueue;
-	    } else if (smallestCapacity > queue.capacity()) {
+	    } else if (smallestCapacity > queue.getCapacity()) {
 	        smallestCapacityQueue = queue;
-	        smallestCapacity = queue.capacity();
+	        smallestCapacity = queue.getCapacity();
 	    }
 	}
         //System.out.println("I am here");
         try {
-            if (smallestCapacityQueue.capacity() <= 0) {
+            if (smallestCapacityQueue.getCapacity() <= 0) {
                 smallestCapacityQueue.setCapacity(1);
                 //System.out.println("Setting capacity of "+smallestCapacityQueue.getContainer().getFullName()+" to 1");
             } else {
-	        smallestCapacityQueue.setCapacity(smallestCapacityQueue.capacity()+1);
-                //System.out.println("Setting capacity of "+smallestCapacityQueue.getContainer().getFullName()+" to "+(smallestCapacityQueue.capacity()+1) );
+	        smallestCapacityQueue.setCapacity(smallestCapacityQueue.getCapacity()+1);
+                //System.out.println("Setting capacity of "+smallestCapacityQueue.getContainer().getFullName()+" to "+(smallestCapacityQueue.getCapacity()+1) );
             }
 	    writeUnblock(smallestCapacityQueue);
 	    smallestCapacityQueue.setWritePending(false);
