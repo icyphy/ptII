@@ -82,7 +82,8 @@ JSRCS = \
 	TypedActor.java \
 	TypedAtomicActor.java \
 	TypedCompositeActor.java \
-	TypedIOPort.java
+	TypedIOPort.java \
+	TypedIORelation.java
 
 EXTRA_SRCS =	$(JSRCS)
 
