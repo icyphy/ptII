@@ -1,6 +1,8 @@
 <!-- $Id$ -->
 <html>
 <head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../default.css" rel="stylesheet" type="text/css">
 <title>Ptolemy II Directory Structure</title>
 </head>
 <body>
@@ -65,6 +67,45 @@
 	For more information, see the <a href="../install.htm#Diva">Diva</a>
 	section of the installation guide.
 
+
+	<dt> <a href="../"><CODE>doc</CODE></a>
+	<dd> The documentation directory
+		<dl>
+
+		<dt> <a href="../codeDoc/index.html" target="_top"><CODE>codeDoc</CODE></a>
+		<dd> The Java class documentation produced by
+		running <CODE>cd $PTII/doc; make</CODE>
+
+
+		<dt> <CODE>coding</CODE>
+		<dd> This directory that contains this file
+
+		<dt> <a href="../design/body.htm" target="body"><CODE>design</CODE></a>
+		<dd> Location of the Ptolemy II Design doc
+
+		<dt> <a href="../img"><CODE>img</CODE></a>
+		<dd> Images used by various web pages
+
+		<dt> 
+		<dd> 
+
+		</dl>
+
+
+
+	<dt><a href="../../lib"><CODE>lib</CODE></a>
+	<dd> <CODE>.jar</CODE> files used by Ptolemy, but not shipped
+		<dl>
+		<dt> <CODE>lib/diva.jar</CODE>
+		<dd> <a href="../install.htm#Diva">Diva</a> visualization
+			package - used by some of the demos
+		<dt> <CODE>lib/ptjacl.jar</CODE>
+		<dd> <a href="../install.htm#Jacl">Jacl</a>, a 100%
+		Java implementation of a subset of Tcl - used by the
+		test suite.
+		</dl>
+
+
 	<dt><a href="../../mk"><CODE>mk</CODE></a>
 	<dd> Makefiles that are included in other makefiles
 		<dl>
@@ -97,7 +138,7 @@
 	<dd> Java packages used to implement Ptolemy II
 		<dl>
 		<dt> <a href="../../ptolemy/actor"><CODE>actor</CODE></a> -
-		<a href="../codeDoc/ptolemy/actor/package-summary.html" target="_top"><CODE>documentation</CODE></a>
+		<a href="../codeDoc/ptolemy/actor/package-summary.html" target="_top"><CODE>documentation</CODE></a>		
 		<dd> Functional block code
 			<dt>
 			<dl> <a href="../../ptolemy/actor/lib"><CODE>lib</CODE></a> -
@@ -126,76 +167,88 @@
 			<dt> 
 		<a href="../../ptolemy/domains/csp"><CODE>csp</CODE></a> -
 		<a href="../../ptolemy/domains/csp/doc/body.htm" target="body">Demonstrations</a> -
-		<a href="../codeDoc/ptolemy/domains/csp/package-summary.html" target="_top">Java documentation</a>
+		Java documentation: 
+		<a href="../codeDoc/ptolemy/domains/csp/kernel/package-summary.html" target="_top"><CODE>kernel</CODE></a> -
+		<a href="../codeDoc/ptolemy/domains/csp/lib/package-summary.html" target="_top"><CODE>lib</CODE></a>
 			<dd> Communicating Sequential Processes
 
 
 			<dt> <a href="../../ptolemy/domains/ct"><CODE>ct</CODE></a> -
 		<a href="../../ptolemy/domains/ct/doc/body.htm" target="body">Demonstrations</a> -
-		<a href="../codeDoc/ptolemy/domains/ct/package-summary.html" target="_top">Java documentation</a>
+		Java documentation: 
+		<a href="../codeDoc/ptolemy/domains/ct/kernel/package-summary.html" target="_top"><CODE>kernel</CODE></a> -
+		<a href="../codeDoc/ptolemy/domains/ct/lib/package-summary.html" target="_top"><CODE>lib</CODE></a>
 			<dd> Continuous Time
 
 
 			<dt>
-		<a href="../../ptolemy/domains/dde"><CODE>de</CODE></a> -
+		<a href="../../ptolemy/domains/dde"><CODE>dde</CODE></a> -
 		<a href="../../ptolemy/domains/dde/doc/body.htm" target="body">Demonstrations</a> -
+		Java documentation: 
+		<a href="../codeDoc/ptolemy/domains/dde/kernel/package-summary.html" target="_top"><CODE>kernel</CODE></a> -
+		<a href="../codeDoc/ptolemy/domains/dde/lib/package-summary.html" target="_top"><CODE>lib</CODE></a>
 
-		<a href="../codeDoc/ptolemy/domains/dde/package-summary.html" target="_top">Java documentation</a>
-			<dd> DDE
+			<dd> Distributed Discrete Event
 
 
 			<dt>
 		<a href="../../ptolemy/domains/de"><CODE>de</CODE></a> -
 		<a href="../../ptolemy/domains/de/doc/body.htm" target="body">Demonstrations</a> -
-		<a href="../codeDoc/ptolemy/domains/de/package-summary.html" target="_top">Java documentation</a>
+		Java documentation: 
+		<a href="../codeDoc/ptolemy/domains/de/kernel/package-summary.html" target="_top"><CODE>kernel</CODE></a> -
+		<a href="../codeDoc/ptolemy/domains/de/lib/package-summary.html" target="_top"><CODE>lib</CODE></a>
+
 			<dd> Discrete Event
 
 
 			<dt>
 		<a href="../../ptolemy/domains/fsm"><CODE>de</CODE></a> -
 		<a href="../../ptolemy/domains/fsm/doc/body.htm" target="body">Demonstrations</a> -
-
-		<a href="../codeDoc/ptolemy/domains/fsm/package-summary.html" target="_top">Java documentation</a>
+		Java documentation: 
+		<a href="../codeDoc/ptolemy/domains/fsm/kernel/package-summary.html" target="_top"><CODE>kernel</CODE></a> -
+		<a href="../codeDoc/ptolemy/domains/fsm/lib/package-summary.html" target="_top"><CODE>lib</CODE></a>
 			<dd> Finite State Machine
 
 
 			<dt>
 		<a href="../../ptolemy/domains/pn"><CODE>pn</CODE></a> -
 		<a href="../../ptolemy/domains/pn/doc/body.htm" target="body">Demonstrations</a> -
-		<a href="../codeDoc/ptolemy/domains/pn/package-summary.html" target="_top">Java documentation</a>
+		Java documentation: 
+		<a href="../codeDoc/ptolemy/domains/pn/kernel/package-summary.html" target="_top"><CODE>kernel</CODE></a> -
+		<a href="../codeDoc/ptolemy/domains/pn/lib/package-summary.html" target="_top"><CODE>lib</CODE></a>
 			<dd> Process Networks
 
 
 			<dt>
 		<a href="../../ptolemy/domains/sdf"><CODE>sdf</CODE></a> -
 		<a href="../../ptolemy/domains/sdf/doc/body.htm" target="body">Demonstrations</a> -
-		<a href="../codeDoc/ptolemy/domains/sdf/package-summary.html" target="_top">Java documentation</a>
+		Java documentation: 
+		<a href="../codeDoc/ptolemy/domains/sdf/kernel/package-summary.html" target="_top"><CODE>kernel</CODE></a> -
+		<a href="../codeDoc/ptolemy/domains/sdf/lib/package-summary.html" target="_top"><CODE>lib</CODE></a>
 			<dd> Synchronous Dataflow
 			</dl>
 
 
-		<dt> <a href="../../ptolemy/domains/generic"><CODE>domains/generic</CODE></a>
-		<dd> the icon libraries and demo schematics
-
 		<dt> <a href="../../ptolemy/graph"><CODE>graph</CODE></a> -
-
+		<a href="../codeDoc/ptolemy/graph/package-summary.html" target="_top">Java documentation</a>
 		<dd> Non-hierarchical graph classes
 
 		<dt> <a href="../../ptolemy/kernel"><CODE>kernel</CODE></a> -
+		<a href="../codeDoc/ptolemy/kernel/package-summary.html" target="_top">Java documentation</a>
 
 		<dd> Ptolemy II Kernel
 			<dl>
 			<dt> <a href="../../ptolemy/kernel/util"><CODE>util</CODE></a> -
-
+		<a href="../codeDoc/ptolemy/kernel/util/package-summary.html" target="_top">Java documentation</a>
 			<dd> Kernel Utilities
 			</dl>
 
 		<dt> <a href="../../ptolemy/math"><CODE>math</CODE></a> -
-
+		<a href="../codeDoc/ptolemy/math/package-summary.html" target="_top">Java documentation</a>
 		<dd> Math classes for Complex numbers and Signal Processing
 
-		<dt> <a href="../../ptolemy/plot"><CODE>plot</CODE></a> -
-
+		<dt> <a href="../../ptolemy/plot/doc/body.htm" target="body"><CODE>plot</CODE></a> -
+		<a href="../codeDoc/ptolemy/plot/package-summary.html" target="_top">Java documentation</a>
 		<dd> Ptplot 2-D graphing package
 		</dl>
 
@@ -203,7 +256,7 @@
 	<dd> Ptolemy II Non-Java Utilities
 		<dl>
 		<dt> <a href="../../util/testsuite"><CODE>testsuite</CODE></a>
-		<dd> Test suite infrastructure that uses <a href="../install.html#Jacl">Jacl</a>
+		<dd> Test suite infrastructure that uses <a href="../install.htm#Jacl">Jacl</a>
 		</dl>
 
 

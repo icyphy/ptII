@@ -1,6 +1,8 @@
 <!-- $Id$-->
 <html>
 <head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../default.css" rel="stylesheet" type="text/css">
 <title>Testing Ptolemy II</title>
 </head>
 <body>
@@ -23,7 +25,7 @@ directory.
 
 <H3>Running the tests</H3>
 The tests themselves are written in Tcl, and use
-<a href="http://www.scriptics.com/software/java.html">Jacl</a>,
+<a href="../install.htm#Jacl">Jacl</a>
 which is a 100% Java implementation of a subset of Tcl.
 
  <p>To run the tests, you must have Jacl installed.
@@ -387,13 +389,13 @@ grep mystring `find . -name "*.html" -print`
 </PRE>
 
 <H3>Spell checking</H3>
-<a href="../util/testsuite/ptspell"><CODE>$PTII/util/testsuite/ptspell</CODE></a>
+<a href="../../util/testsuite/ptspell"><CODE>$PTII/util/testsuite/ptspell</CODE></a>
  is a Ptolemy II specific spelling checker.
 
 <CODE>ptspell</CODE> has the following features:
 <menu>
 <li> It uses
-<a href="../util/testsuite/ptlocaldict"><CODE>$PTII/util/testsuite/ptlocaldict</CODE></a>
+<a href="../../util/testsuite/ptlocaldict"><CODE>$PTII/util/testsuite/ptlocaldict</CODE></a>
 as a local dictionary of acceptable words that are not in the
 regular system dictionary. <CODE>ptlocaldict</CODE> 
 is kept in ASCII sort order.  
