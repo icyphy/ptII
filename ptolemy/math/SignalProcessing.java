@@ -302,7 +302,7 @@ public final class SignalProcessing {
      *
      *  @param t The sample time.
      *  @param T The time of the first zero crossing.
-     *  @param excess The excess bandwith (in the range 0.0 to 1.0).
+     *  @param excess The excess bandwidth (in the range 0.0 to 1.0).
      *  @return A sample of a raised cosine pulse.
      */
     public static double raisedCosine(double t, double T, double excess) {
@@ -339,7 +339,7 @@ public final class SignalProcessing {
      *  @param length The number of desired samples.
      *  @param period The sample period.
      *  @param T The time of the first zero crossing.
-     *  @param excess The excess bandwith (in the range 0.0 to 1.0).
+     *  @param excess The excess bandwidth (in the range 0.0 to 1.0).
      *  @return An array containing a raised cosine pulse.
      */
     public static double[] raisedCosinePulse(double start, int length,
@@ -413,7 +413,7 @@ public final class SignalProcessing {
      *  where <i>x</i> is the the excess bandwidth.
      *  This pulse convolved with itself will, in principle, be equal
      *  to a raised cosine pulse.  However, because the pulse decays rather
-     *  slowly for low excess bandwith, this ideal is not
+     *  slowly for low excess bandwidth, this ideal is not
      *  closely approximated by short finite approximations of the pulse.
      *  <p>
      *  This implementation is ported from the Ptolemy 0.x implementation
@@ -474,7 +474,7 @@ public final class SignalProcessing {
      *  @param length The number of desired samples.
      *  @param period The sample period.
      *  @param T The time of the first zero crossing.
-     *  @param excess The excess bandwith (in the range 0.0 to 1.0).
+     *  @param excess The excess bandwidth (in the range 0.0 to 1.0).
      *  @return An array containing a raised cosine pulse.
      */
     public static double[] sqrtRaisedCosinePulse(double start, int length,
