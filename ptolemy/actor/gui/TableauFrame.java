@@ -340,6 +340,11 @@ public abstract class TableauFrame extends Top {
      *  @return False if the user cancels on a save query.
      */
     protected boolean _close() {
+        // If we were given no tableau, then just close the window
+        if(getEffigy() == null) {
+            return super._close();
+        }
+        
         // NOTE: We use dispose() here rather than just hiding the
         // window.  This ensures that derived classes can react to
         // windowClosed events rather than overriding the
