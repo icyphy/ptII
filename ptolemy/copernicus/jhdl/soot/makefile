@@ -45,6 +45,7 @@ include $(CONFIG)
 # Keep this list alphabetized.
 JSRCS = \
 	AbstractCompoundExpression.java \
+	BinaryMux.java \
 	BooleanNotCompactor.java \
 	CompoundAndExpression.java \
 	CompoundBooleanExpression.java \

@@ -75,7 +75,14 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 	new ControlSootDFGBuilder(this);
 
 	_ic = ic;
+
+	if (DEBUG) 
+	    System.out.println(toShortString()+":Creating IDFG");
+
 	_processChain();
+
+	if (DEBUG) 
+	    System.out.println(toShortString()+":Completed IDFG");
     }
 
     protected void _processChain() 
@@ -115,7 +122,9 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
     protected void _simpleMerge() 
 	throws JHDLUnsupportedException, SootASTException {
 
-	if (DEBUG) System.out.println("Simple merge");
+	if (DEBUG) 
+	    System.out.println(toShortString()+":Merge children");
+
 	// key=IntervalChain root Node, Value=IntervalChain
 	Map children = _ic.getChildren();
 
@@ -202,7 +211,9 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
     public void joinOneChild(IntervalBlockDirectedGraph childDFG,
 			     ValueMap childMap) {
 
-	if (DEBUG) System.out.println("Join One Child");
+	if (DEBUG) System.out.println("Merge single fork "+
+				      childDFG.toShortString()+
+				      " with parent "+toShortString());
 	// Determine which branch is true
 	boolean childTrue;
 	if (childDFG._ic.isTrueBranch())
@@ -213,12 +224,22 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 	// Determine Values assigned in parent
 	Collection parentAssignedValues = _valueMap.getAssignedValues();
 	if (DEBUG) {
-	    System.out.print("Parent assigned values=");
+	    System.out.print("\tParent assigned values=");
 	    printAssignedValues(parentAssignedValues);
 	}
 
 	// Determine Values assigned in child
 	Collection childAssignedNodes = childDFG._valueMap.getAssignedNodes();
+	if (DEBUG) {
+	    System.out.print("\tChildren assigned values=");
+	    printAssignedValues(childDFG._valueMap.getAssignedValues());
+	    System.out.print("\tChildren assigned Nodes=");
+	    for (Iterator i=childAssignedNodes.iterator();i.hasNext();) {
+		Node n = (Node) i.next();
+		System.out.print(n+" ");
+	    }
+	    System.out.println();
+	}
 
 	// Iterate over all Nodes assigned in child.
 	// If the value is also assigned in the parent,
@@ -243,7 +264,11 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 				ValueMap child2Map,
 				IntervalBlockDirectedGraph child2DFG) {
 
-	if (DEBUG) System.out.println("Join Two Children");
+	if (DEBUG) System.out.println("Merge dual forks "+
+				      child1DFG.toShortString()+" and "+
+				      child2DFG.toShortString()+
+				      " with parent "+toShortString());
+
 
 	// Determine which branch is true
 	boolean child1True;
@@ -321,7 +346,7 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
     protected void printAssignedValues(Collection values) {
 	for (Iterator i=values.iterator();i.hasNext();) {
 	    Value v = (Value) i.next();
-	    System.out.print(v+" ");
+	    System.out.print(v+"("+System.identityHashCode(v)+") ");
 	}
 	System.out.println();
     }
@@ -331,14 +356,17 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 				      ValueMap map) {
 
 	if (DEBUG)
-	    System.out.println("Multiplex: True="+trueNode+
-			       " False="+falseNode);
+	    System.out.println("\tMultiplex: True="+
+			       trueNode+"("+System.identityHashCode(trueNode)
+			       +")"+
+			       " False="+falseNode+"("+
+			       System.identityHashCode(trueNode)+")");
 
 	// Get the edges associated with the original CFG.
 	Node cNode = getConditionNode();
 	
 	Value value = (Value) trueNode.getWeight();
- 	BinaryMuxNode bmn = new BinaryMuxNode(trueNode,falseNode,cNode,
+ 	BinaryMux bmn = new BinaryMux(trueNode,falseNode,cNode,
 					      value.toString());
 
 	Node muxNode = addNodeWeight(bmn);
@@ -380,6 +408,9 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 	    return null;
     }
 
+    public String toShortString() {
+	return _ic.toShortString();
+    }
 
     /**
      * This method will greate an IntervalBlockDirectedGraph from the

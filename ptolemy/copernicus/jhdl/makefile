@@ -47,7 +47,6 @@ DIRS =		util soot test
 # Keep this list alphabetized.
 JSRCS = \
 	BDFGToJHDLCircuit.java \
-	BinaryMuxNode.java \
 	BlockDataFlowGraph.java \
 	CircuitAnalysis.java \
 	CircuitCreator.java \
@@ -58,7 +57,8 @@ JSRCS = \
 	Main.java \
 	Predefined.java \
 	RegisterDelay.java \
-	RequiredBlockDataFlowGraph.java
+	RequiredBlockDataFlowGraph.java \
+	SDFGToJHDLCircuit.java \
 
 
 OTHER_FILES_TO_BE_JARED = \

@@ -82,8 +82,8 @@ public class SootDFGBuilder extends SootASTVisitor {
 
 	if (!left)
 	    _valueMap.getOrAddValueNode(val); // make sure it is added
-	else
-	    _valueMap.addValueNode(val,left);	
+	//else
+	//_valueMap.addValueNode(val,left);	
 
 	Value v = super.processValue(val,left);
 	return v;

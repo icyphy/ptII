@@ -27,14 +27,20 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.copernicus.jhdl;
+package ptolemy.copernicus.jhdl.soot;
+
+import java.util.*;
 
 import ptolemy.graph.Node;
 
+import soot.*;
+import soot.jimple.*;
+import soot.util.*;
+import soot.jimple.internal.*;
 
-public class BinaryMuxNode {
+public class BinaryMux implements Value {
 
-    public BinaryMuxNode(Node t, Node f, Node c, String name) {
+    public BinaryMux(Node t, Node f, Node c, String name) {
 	_trueNode = t;
 	_falseNode = f;
 	_conditionNode = c;
@@ -48,6 +54,15 @@ public class BinaryMuxNode {
     public String toString() { 
 	return "mux_"+_name; 
     }
+
+    // Hack. Need to come up with a better way to represent Values
+    public boolean equivTo(Object o) { return false; }
+    public int equivHashCode() { return 0; }
+    public void convertToBaf(JimpleToBafContext context, List l) {}
+    public void apply(Switch sw) {}
+    public List getUseBoxes() { return null; }
+    public Type getType() {return null;}
+    public Object clone() { return null;}
 
     String _name;
     Node _trueNode;

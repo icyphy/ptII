@@ -38,21 +38,11 @@ import byucc.jhdl.Logic.Logic;
 import byucc.jhdl.apps.Viewers.Schematic.SmartSchematicFrame;
 import byucc.jhdl.Logic.Modules.arrayMult;
 
-import java.util.Collection;
-import java.util.Vector;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import ptolemy.copernicus.jhdl.util.JHDLUnsupportedException;
-import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
-import ptolemy.copernicus.jhdl.util.JHDLTestbench;
+import ptolemy.copernicus.jhdl.util.*;
 
-import ptolemy.copernicus.jhdl.soot.CompoundBooleanExpression;
-import ptolemy.copernicus.jhdl.soot.CompoundAndExpression;
-import ptolemy.copernicus.jhdl.soot.CompoundOrExpression;
-import ptolemy.copernicus.jhdl.soot.JHDLNotExpr;
+import ptolemy.copernicus.jhdl.soot.*;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.Node;
@@ -69,34 +59,35 @@ import soot.*;
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class BDFGToJHDLCircuit {
+public class SDFGToJHDLCircuit {
 
-    public BDFGToJHDLCircuit(BlockDataFlowGraph bdfg, JHDLTestbench parent) 
+    public SDFGToJHDLCircuit(SootBlockDirectedGraph sdfg, 
+			     JHDLTestbench parent)
 	throws JHDLUnsupportedException {
 	_cell = new Logic(parent,"newcell");
 	_jtb = parent;
-	_bdfg = bdfg;
+	_sdfg = sdfg;
 	_processDFG();
     }
 
     protected void _processDFG() throws JHDLUnsupportedException {
 	
-	ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile("orig",_bdfg);
+	ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile("orig",_sdfg);
 	Collection outputNodes = _determineOutputNodes();
 	_trimNonReachableNodes(outputNodes);
-	ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile("reachable",_bdfg);
+	ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty.writeDotFile("reachable",_sdfg);
 
 	// Generate a topological order of nodes in this graph
 	// (this is a single basic block, so it should be acyclic)
 	Collection c;
 	try {
-	    c = _bdfg.topologicalSort(_bdfg.nodes());
+	    c = _sdfg.topologicalSort(_sdfg.nodes());
 	} catch (IllegalActionException e) {
 	    throw new JHDLUnsupportedException(e.getMessage());
 	}
 	
 	// create a hashmap between nodes (key) and wires (value)
-	_wireMap = new HashMap(_bdfg.nodeCount());
+	_wireMap = new HashMap(_sdfg.nodeCount());
 	
 	// sequence through the nodes in the graph in topological
 	// order.
@@ -118,7 +109,7 @@ public class BDFGToJHDLCircuit {
 	Vector v = new Vector(1); 
 	// Find return statement node
 	Node returnNode = null; 
-	for (Iterator i=_bdfg.nodes().iterator();
+	for (Iterator i=_sdfg.nodes().iterator();
 	     i.hasNext() && (returnNode == null);) {
 	    Node n = (Node) i.next();
 	    if (n.getWeight() instanceof ReturnStmt)
@@ -132,21 +123,21 @@ public class BDFGToJHDLCircuit {
     
     protected void _trimNonReachableNodes(Collection outputNodes) {
 
-	Collection keepers = new Vector(_bdfg.nodeCount());
+	Collection keepers = new Vector(_sdfg.nodeCount());
 	for (Iterator i=outputNodes.iterator();i.hasNext();) {
 	    Node output = (Node) i.next();
-	    Collection k=_bdfg.backwardReachableNodes(output);	    
+	    Collection k=_sdfg.backwardReachableNodes(output);	    
 	    keepers.addAll(k);
 	    keepers.add(output);
 	}
-	Vector removeNodes=new Vector(_bdfg.nodeCount());
-	for (Iterator i=_bdfg.nodes().iterator();i.hasNext();) {
+	Vector removeNodes=new Vector(_sdfg.nodeCount());
+	for (Iterator i=_sdfg.nodes().iterator();i.hasNext();) {
 	    Node n = (Node) i.next();
 	    if (!keepers.contains(n))
 		removeNodes.add(n);
 	}
 	for (Iterator i=removeNodes.iterator();i.hasNext();)
-	    _bdfg.removeNode( (Node) i.next() );
+	    _sdfg.removeNode( (Node) i.next() );
     }
 
     /**
@@ -200,7 +191,7 @@ public class BDFGToJHDLCircuit {
 	// should have one input and one output. Just update the _wireMap
 	// TODO: I should use the local to provide some more naming
 	// information for the wire.
-	Collection c = _bdfg.inputEdges(node);
+	Collection c = _sdfg.inputEdges(node);
 	if (c.size() != 1) {
 	    _error("Unexpected input edges for node " + node);
 	}
@@ -226,7 +217,7 @@ public class BDFGToJHDLCircuit {
 	// get two nodes coming into this op
 	Wire wire1=null;
 	Wire wire2=null;
-	for (Iterator ie=_bdfg.inputEdges(node).iterator();
+	for (Iterator ie=_sdfg.inputEdges(node).iterator();
 	     ie.hasNext();) {
 	    Edge e = (Edge) ie.next();		    
 	    if (!e.hasWeight())
@@ -283,7 +274,7 @@ public class BDFGToJHDLCircuit {
 	throws JHDLUnsupportedException {
 	// get nodes coming into this op
 	Wire wire1=null;
-	Collection inEdges = _bdfg.inputEdges(node);
+	Collection inEdges = _sdfg.inputEdges(node);
 	if (inEdges.size() != 1)
 	    _error("Illegal number of edges on unop node");
 	Edge e = (Edge) inEdges.iterator().next();
@@ -435,7 +426,7 @@ public class BDFGToJHDLCircuit {
 	throws JHDLUnsupportedException {
 	// Get input wire
 	Node predecessor=null;
-	for (Iterator ie=_bdfg.inputEdges(node).iterator();
+	for (Iterator ie=_sdfg.inputEdges(node).iterator();
 	     ie.hasNext();) {
 	    Edge e = (Edge) ie.next();
 	    if (predecessor != null)
@@ -516,13 +507,21 @@ public class BDFGToJHDLCircuit {
 
     public static void main(String args[]) {
 
-	IntervalDFG idfg=null;
+	SootBlockDirectedGraph graphs[] = 
+	    ControlSootDFGBuilder.createDataFlowGraphs(args,true);
+
+	SootBlockDirectedGraph sbdg=null;
 	try {
-	    idfg = IntervalDFG.createIntervalDFG(args);
-	    PtDirectedGraphToDotty.writeDotFile("merge",idfg);
-	    HWSystem hw = new HWSystem();
-	    JHDLTestbench jtb = new JHDLTestbench(hw);
-	    BDFGToJHDLCircuit c = new BDFGToJHDLCircuit(idfg,jtb);
+	    sbdg = IntervalBlockDirectedGraph.createIntervalBlockDirectedGraph(args,true);
+	} catch (JHDLUnsupportedException e) {
+	    e.printStackTrace();
+	    System.err.println(e);
+	    System.exit(1);
+	}
+	HWSystem hw = new HWSystem();
+	JHDLTestbench jtb = new JHDLTestbench(hw);
+	try {
+	    SDFGToJHDLCircuit c = new SDFGToJHDLCircuit(sbdg,jtb);
 	    java.awt.Frame f = new SmartSchematicFrame(c.getCell());
 	    f.addWindowListener(new java.awt.event.WindowAdapter() {
 		    public void windowClosing(java.awt.event.WindowEvent e) {
@@ -535,13 +534,12 @@ public class BDFGToJHDLCircuit {
 	    System.exit(1);
 	}
 
-
     }
 
     public boolean DEBUG = false;
 
     protected Logic _cell;
-    protected BlockDataFlowGraph _bdfg;
+    protected SootBlockDirectedGraph _sdfg;
     protected Map _wireMap;
     protected JHDLTestbench _jtb;
 }

@@ -334,6 +334,7 @@ public class test1 extends TypedAtomicActor {
 	d += a + 5;
 	return d;
     }
+
     /** Serial combining (one fork) with limited dataflow **/
     public int method35_1(int a) {
 	int d=0;
@@ -366,7 +367,7 @@ public class test1 extends TypedAtomicActor {
 	} else {
 	    a += 3;
 	}
-	d += 5;
+	d += a;
 	return d;
     }
 
@@ -379,7 +380,7 @@ public class test1 extends TypedAtomicActor {
 	} else {
 	    d += 4;
 	}
-	d += 5;
+	d += a;
 	return d;
     }
 
@@ -493,6 +494,82 @@ public class test1 extends TypedAtomicActor {
 	return a[0];
     }
 
+    /****************************************************
+     * Control Flow
+     ****************************************************/
+
+    /** A single fork operation with limited dataflow.
+     * No corresponding "else" statement.
+     **/
+    public int fork_1(int a) {
+	int d=0;
+	if (a > 5) {
+	    d += a;
+	}
+	d += 5;
+	return d;
+    }
+
+    /** If-Else fork operation with limited dataflow.
+     *  The "d" value is defined in both forks.
+     *  (test combining two forks).
+     */
+    public int method35_2a(int a) {
+	int d=0;
+	if (a > 5) {
+	    d += a;
+	} else {
+	    d -= a;
+	}
+	d += 5;
+	return d;
+    }
+
+    /** If-Else fork operation with limited dataflow.
+     *  The "d" value is defined in in the true branch
+     * only.
+     */
+    public int method35_3a(int a) {
+	int d=0;
+	if (a > 5) {
+	    d += a;
+	} else {
+	    a += 3;
+	}
+	d += 5;
+	return d;
+    }
+
+    /** If-Else fork operation with limited dataflow.
+     *  The "d" value is defined in in the false branch
+     * only.
+     */
+    public int method35_4a(int a) {
+	int d=0;
+	if (a > 5) {
+	    a += 3;
+	} else {
+	    d += 4;
+	}
+	d += 5;
+	return d;
+    }
+
+    public int nested_fork(int a) {
+	int d=0;
+	if (a > 5) {
+	    d += 5;
+	    if (a < 10)
+		d += 6;
+	}
+	d += 7;
+	return d;
+    }
+
+    /****************************************************
+     * Hardware Generation
+     ****************************************************/
+     
     /* Simple method with one basic block and one operation */
     public int hwgen1(int a, int b) {
 	int c = a + b;
