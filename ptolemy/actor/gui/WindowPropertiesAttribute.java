@@ -31,6 +31,7 @@
 package ptolemy.actor.gui;
 
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
@@ -44,6 +45,8 @@ import ptolemy.kernel.util.Settable;
 
 import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 //////////////////////////////////////////////////////////////////////////
 //// WindowPropertiesAttribute
@@ -60,8 +63,9 @@ see it in parameter editing dialogs.
 @version $Id$
 @since Ptolemy II 2.1
 */
-public class WindowPropertiesAttribute extends Parameter {
-
+public class WindowPropertiesAttribute extends Parameter
+        implements ComponentListener {
+    
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -84,6 +88,34 @@ public class WindowPropertiesAttribute extends Parameter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Do nothing. This method is
+     *  invoked when the component has been made invisible.
+     *  @param event The component event.
+     */
+    public void componentHidden(ComponentEvent event) {}
+             
+    /** Record the new position. This method is
+     *  invoked when the component's position changes.
+     *  @param event The component event.
+     */
+    public void componentMoved(ComponentEvent event) {
+        recordProperties(_listeningTo);
+    }
+             
+    /** Record the new size. This method is
+     *  invoked when the component's size changes.
+     *  @param event The component event.
+     */
+    public void componentResized(ComponentEvent event) {
+        recordProperties(_listeningTo);
+    }
+
+    /** Do nothing. This method is
+     *  invoked when the component has been made visible.
+     *  @param event The component event.
+     */
+    public void componentShown(ComponentEvent event) {}
+
     /** Set the value of the attribute to match those of the specified
      *  frame.
      *  @param frame The frame whose properties are to be recorded.
@@ -97,15 +129,26 @@ public class WindowPropertiesAttribute extends Parameter {
             boundsArray[2] = new IntToken(bounds.width);
             boundsArray[3] = new IntToken(bounds.height);
 
-            // Construct values for the record token (currently only one).
-            Token[] values = new Token[1];
-            values[0] = new ArrayToken(boundsArray);
+            // Determine whether the window is maximized.
+            boolean maximized
+                    = (frame.getExtendedState() & Frame.MAXIMIZED_BOTH)
+                    == Frame.MAXIMIZED_BOTH;
 
-            // Construct field names for the record token (currently only one).
-            String[] names = new String[1];
+            // Construct values for the record token.
+            Token[] values = new Token[2];
+            values[0] = new ArrayToken(boundsArray);
+            values[1] = new BooleanToken(maximized);
+
+            // Construct field names for the record token.
+            String[] names = new String[2];
             names[0] = "bounds";
+            names[1] = "maximized";
 
             setToken(new RecordToken(names, values));
+            
+            // If we don't do this, then the bounds may not be written.
+            setClassElement(false);
+            
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(
                     "Can't set propertes value! " + ex);
@@ -121,17 +164,35 @@ public class WindowPropertiesAttribute extends Parameter {
      *  @return True if successful.
      */
     public boolean setProperties(Frame frame) {
+        if (_listeningTo != frame) {
+            if (_listeningTo != null) {
+                _listeningTo.removeComponentListener(this);
+            }
+            frame.addComponentListener(this);
+            _listeningTo = frame;
+        }
         try {
             RecordToken value = (RecordToken)getToken();
             if (value == null) return true;
             ArrayToken boundsToken = (ArrayToken)value.get("bounds");
+            BooleanToken maximizedToken = (BooleanToken)value.get("maximized");
 
             int x = ((IntToken)boundsToken.getElement(0)).intValue();
             int y = ((IntToken)boundsToken.getElement(1)).intValue();
             int width = ((IntToken)boundsToken.getElement(2)).intValue();
             int height = ((IntToken)boundsToken.getElement(3)).intValue();
-
+            
             frame.setBounds(x, y, width, height);
+
+            if (maximizedToken != null) {
+                boolean maximized = maximizedToken.booleanValue();
+                if (maximized) {
+                    // FIXME: Regrettably, this doesn't make the window
+                    // actually maximized under Windows, at least.
+                    frame.setExtendedState(
+                            frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
+                }
+            }
 
             if (frame instanceof Top) {
                 // Disable centering.
@@ -143,4 +204,10 @@ public class WindowPropertiesAttribute extends Parameter {
             return false;
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The frame we are listening to. */
+    private Frame _listeningTo;
 }

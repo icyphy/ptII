@@ -41,6 +41,8 @@ import ptolemy.kernel.util.Settable;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.JComponent;
 
@@ -52,12 +54,17 @@ The token in this attribute is an IntMatrixToken containing a matrix
 of dimension 1x2, containing the width and the height, in that order.
 By default, this attribute has visibility NONE, so the user will not
 see it in parameter editing dialogs.
+<p>
+Note that this attribute is typically used to record the size of
+a component within a frame (a top-level window). To record the size
+and position of the frame, use WindowPropertiesAttribute.
 
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 1.0
+@see WindowPropertiesAttribute
 */
-public class SizeAttribute extends Parameter {
+public class SizeAttribute extends Parameter implements ComponentListener {
 
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -81,6 +88,32 @@ public class SizeAttribute extends Parameter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Do nothing. This method is
+     *  invoked when the component has been made invisible.
+     *  @param event The component event.
+     */
+    public void componentHidden(ComponentEvent event) {}
+             
+    /** Do nothing. This method is
+     *  invoked when the component's position changes.
+     *  @param event The component event.
+     */
+    public void componentMoved(ComponentEvent event) {}
+             
+    /** Record the new size. This method is
+     *  invoked when the component's size changes.
+     *  @param event The component event.
+     */
+    public void componentResized(ComponentEvent event) {
+        recordSize(_listeningTo);
+    }
+
+    /** Do nothing. This method is
+     *  invoked when the component has been made visible.
+     *  @param event The component event.
+     */
+    public void componentShown(ComponentEvent event) {}
+
     /** Set the value of the attribute to match those of the specified
      *  component.
      *  @param component The component whose size is to be recorded.
@@ -94,6 +127,10 @@ public class SizeAttribute extends Parameter {
 
             IntMatrixToken token = new IntMatrixToken(boundsMatrix);
             setToken(token);
+            
+            // If we don't do this, then the bounds may not be written.
+            setClassElement(false);
+
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Can't set bounds value!");
         }
@@ -101,11 +138,20 @@ public class SizeAttribute extends Parameter {
 
     /** Set the size of the specified component to match the
      *  current value of the attribute.  If the value of the attribute
-     *  has not been set, then do nothing.
+     *  has not been set, then do nothing.  If it has not already
+     *  done so, this method also registers with the component
+     *  as a listener for component events like resizing.
      *  @param component The component whose size is to be set.
      *  @return True if successful.
      */
     public boolean setSize(Component component) {
+        if (_listeningTo != component) {
+            if (_listeningTo != null) {
+                _listeningTo.removeComponentListener(this);
+            }
+            component.addComponentListener(this);
+            _listeningTo = component;
+        }
         try {
             IntMatrixToken token = (IntMatrixToken)getToken();
             if (token != null) {
@@ -132,4 +178,10 @@ public class SizeAttribute extends Parameter {
             return false;
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The component we are listening to. */
+    private Component _listeningTo;
 }

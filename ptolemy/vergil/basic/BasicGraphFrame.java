@@ -87,6 +87,10 @@ import ptolemy.actor.gui.RunTableau;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.ComponentEntity;
@@ -237,6 +241,25 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 _jgraph.setPreferredSize(new Dimension(600, 400));
                 _jgraph.setSize(600, 400);
             }
+            
+            // Set the zoom factor.
+            Parameter zoom = (Parameter)getModel().getAttribute(
+                    "_vergilZoomFactor", Parameter.class);
+            if (zoom != null) {
+                zoom(((DoubleToken)zoom.getToken()).doubleValue());
+            }
+            
+            // Set the pan position.
+            Parameter pan = (Parameter)getModel().getAttribute(
+                    "_vergilCenter", Parameter.class);
+            if (pan != null) {
+                ArrayToken panToken = (ArrayToken)pan.getToken();
+                Point2D center = new Point2D.Double(
+                        ((DoubleToken)panToken.getElement(0)).doubleValue(),
+                        ((DoubleToken)panToken.getElement(1)).doubleValue());
+                setCenter(center);
+            }
+            
         } catch (Exception ex) {
             // Ignore problems here.  Errors simply result in a default
             // size and location.
@@ -1330,7 +1353,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         canvas.getCanvasPane().setTransform(current);
         // Reset the center.
         setCenter(center);
-        _graphPanner.repaint();
+        if (_graphPanner != null) {
+            _graphPanner.repaint();
+        }
     }
 
     /** Zoom to fit the current figures.
@@ -1347,7 +1372,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             CanvasUtilities.computeFitTransform(bounds, viewSize);
         JCanvas canvas = pane.getCanvas();
         canvas.getCanvasPane().setTransform(newTransform);
-        _graphPanner.repaint();
+        if (_graphPanner != null) {
+            _graphPanner.repaint();
+        }
     }
 
     /** Set zoom to the nominal.
@@ -1358,7 +1385,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             canvas.getCanvasPane().getTransformContext().getTransform();
         current.setToIdentity();
         canvas.getCanvasPane().setTransform(current);
-        _graphPanner.repaint();
+        if (_graphPanner != null) {
+            _graphPanner.repaint();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1534,6 +1563,32 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 size = new SizeAttribute(getModel(), "_vergilSize");
             }
             size.recordSize(_jgraph);
+            
+            // Also record zoom and pan state.
+            JCanvas canvas = _jgraph.getGraphPane().getCanvas();
+            AffineTransform current =
+                    canvas.getCanvasPane().getTransformContext().getTransform();
+            // We assume the scaling in the X and Y directions are the same.
+            double scale = current.getScaleX();
+            Parameter zoom = (Parameter)getModel().getAttribute(
+                    "_vergilZoomFactor", Parameter.class);
+            if (zoom == null) {
+                zoom = new Parameter(getModel(), "_vergilZoomFactor");
+            }
+            zoom.setToken(new DoubleToken(scale));
+            
+            // Save the center, to record the pan state.
+            Point2D center = getCenter();
+            Parameter pan = (Parameter)getModel().getAttribute(
+                    "_vergilCenter", Parameter.class);
+            if (pan == null) {
+                pan = new Parameter(getModel(), "_vergilCenter");
+            }
+            Token[] centerArray = new Token[2];
+            centerArray[0] = new DoubleToken(center.getX());
+            centerArray[1] = new DoubleToken(center.getY());
+            pan.setToken(new ArrayToken(centerArray));
+
         } catch (Exception ex) {
             // Ignore problems here.  Errors simply result in a default
             // size and location.
