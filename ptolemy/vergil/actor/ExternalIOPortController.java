@@ -30,10 +30,6 @@ package ptolemy.vergil.actor;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingConstants;
@@ -50,7 +46,6 @@ import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.kernel.AttributeController;
-import diva.canvas.AbstractFigure;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
