@@ -4,12 +4,12 @@
 <entity name="URLDirectoryReader" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[39, 58]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -25,12 +25,14 @@
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
+        <property name="endsWith" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+        </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
             <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
             </property>
         </property>
         <doc>Read a directory and output each file or subdirectory</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="85.0, 218.5">
+        <property name="_location" class="ptolemy.moml.Location" value="100.0, 215.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -41,62 +43,18 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="300">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="257.5, 218.5">
-        </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="300">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
-    </entity>
-    <entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength">
-        <property name="_location" class="ptolemy.moml.Location" value="380.5, 218.5">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{300}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="506.5, 219.5">
+    <entity name="Discard" class="ptolemy.actor.lib.Discard">
+        <property name="_location" class="ptolemy.moml.Location" value="270.0, 215.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="175.0, 215.0">
+        </vertex>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="URLDirectoryReader.output" relation="relation"/>
-    <link port="SequenceToArray.input" relation="relation"/>
-    <link port="SequenceToArray.output" relation="relation2"/>
-    <link port="ArrayLength.input" relation="relation2"/>
-    <link port="ArrayLength.output" relation="relation3"/>
-    <link port="Test.input" relation="relation3"/>
+    <link port="URLDirectoryReader.output" relation="relation4"/>
+    <link port="Discard.input" relation="relation4"/>
 </entity>
