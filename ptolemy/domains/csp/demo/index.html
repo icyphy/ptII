@@ -57,7 +57,7 @@ times are decreased relative to the eating times.
 <H1>
 Implementation:</H1>
 The above applet is implemented using the 
-<A HREF= "http://ptolemy.eecs.berkeley.edu">Ptolemy II</A> 
+<A HREF="" "http://ptolemy.eecs.berkeley.edu">Ptolemy II</A> 
 Communicating Sequential Processes (CSP) domain. Ptolemy II is an 
 environment that supports heterogeneous modeling and design of 
 embedded systems. The CSP domain models a system as a network of process 
@@ -67,9 +67,9 @@ processes block until the other side is ready to communicate. The model of
 communication used in the CSP domain is different from the CSP model 
 normally encountered in that a notion of time has been added to the model. 
 <P>
-In the above applet, each fork and each philosopher is represented as a 
-separate process. A fork must be ready to communicate with either 
-philosopher beside it at any stage. The fork process uses a conditional 
+In the above applet, each chopstick and each philosopher is represented as a 
+separate process. A chopstick must be ready to communicate with either 
+philosopher beside it at any stage. The chopstick process uses a conditional 
 communication construct to be ready to rendezvous at any stage. Each 
 philosopher uses the notion of time built into the CSP domain to allow 
 itself to delay while it is eating or thinking. It should be noted that the 
