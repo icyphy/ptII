@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="configuration" class="ptolemy.actor.gui.Configuration">
 
-  <doc>Configuration including only mature domains.</doc>
+  <doc>Configuration for use with JNI.</doc>
 
   <!-- Specify the about file to open. -->
   <property name="_about"
