@@ -43,9 +43,15 @@ if {[string compare test [info procs test]] == 1} then {
 # Create two test files pxgraphfile1 pxgraphfile2
 #
 proc pxgraphFiles {} {
-    global pxgraphfile1 pxgraphfile2
-    set pxgraphfile1 /tmp/pxgrapfile1.plt
-    set pxgraphfile2 /tmp/pxgrapfile2.plt
+    global pxgraphfile1 pxgraphfile2 tcl_platform
+    if { $tcl_platform(host_platform) == "windows"} {
+	set pxgraphfile1 pxgrapfile1.plt
+	set pxgraphfile2 pxgrapfile2.plt
+    } else {
+	set pxgraphfile1 /tmp/pxgrapfile1.plt
+	set pxgraphfile2 /tmp/pxgrapfile2.plt
+    }
+
     set fd [open $pxgraphfile1 w]
     puts $fd "0  0\n1	1 \n2,2\n3 -0.2" 
     close $fd
