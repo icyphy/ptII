@@ -276,7 +276,7 @@ For more help, choose Help from the upper menu bar.</text>
         <!-- attributes of entity -->
         <xsl:attribute name="name">CT Director</xsl:attribute>
         <xsl:attribute name="class">ptolemy.domains.ct.kernel.CTMixedSignalDirector</xsl:attribute>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50"></property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="200"></property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1"></property>
     </xsl:element>
 </xsl:template>
