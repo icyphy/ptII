@@ -90,7 +90,7 @@ public class DoubleToken extends ScalarToken {
         int typeInfo = TypeLattice.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
-                return rightArg.addR(this);
+                return rightArg.addReverse(this);
             } else if (rightArg instanceof DoubleToken) {
                 double result = _value + ((DoubleToken)rightArg).doubleValue();
                 return new DoubleToken(result);
@@ -119,7 +119,7 @@ public class DoubleToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token addR(ptolemy.data.Token leftArg) 
+    public Token addReverse(ptolemy.data.Token leftArg) 
             throws IllegalActionException {
         DoubleToken tmp = (DoubleToken)this.convert(leftArg);
         double result = tmp.doubleValue() + _value;
@@ -186,7 +186,7 @@ public class DoubleToken extends ScalarToken {
         int typeInfo = TypeLattice.compare(this, divisor);
         try {
             if (typeInfo == CPO.LOWER) {
-                return divisor.divideR(this);
+                return divisor.divideReverse(this);
             } else if (divisor instanceof DoubleToken) {
                 double result = _value / ((DoubleToken)divisor).doubleValue();
                 return new DoubleToken(result);
@@ -215,7 +215,7 @@ public class DoubleToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token divideR(Token dividend) throws IllegalActionException {
+    public Token divideReverse(Token dividend) throws IllegalActionException {
         DoubleToken tmp = (DoubleToken)this.convert(dividend);
         double result = tmp.doubleValue() / _value;
         return new DoubleToken(result);
@@ -276,7 +276,7 @@ public class DoubleToken extends ScalarToken {
         int typeInfo = TypeLattice.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
-                return rightArg.moduloR(this);
+                return rightArg.moduloReverse(this);
             } else if (rightArg instanceof DoubleToken) {
                 double result = _value % ((DoubleToken)rightArg).doubleValue();
                 return new DoubleToken(result);
@@ -306,7 +306,7 @@ public class DoubleToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token moduloR(Token leftArg) throws IllegalActionException {
+    public Token moduloReverse(Token leftArg) throws IllegalActionException {
         DoubleToken tmp = (DoubleToken)this.convert(leftArg);
         double result = tmp.doubleValue() %  _value;
         return new DoubleToken(result);
@@ -327,7 +327,7 @@ public class DoubleToken extends ScalarToken {
         int typeInfo = TypeLattice.compare(this, rightFactor);
         try {
             if (typeInfo == CPO.LOWER) {
-                return rightFactor.multiplyR(this);
+                return rightFactor.multiplyReverse(this);
             } else if (rightFactor instanceof DoubleToken) {
                 double result = _value *
 				((DoubleToken)rightFactor).doubleValue();
@@ -358,7 +358,8 @@ public class DoubleToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token multiplyR(Token leftFactor) throws IllegalActionException {
+    public Token multiplyReverse(Token leftFactor)
+	    throws IllegalActionException {
         DoubleToken tmp = (DoubleToken)this.convert(leftFactor);
         double result = tmp.doubleValue() * _value;
         return new DoubleToken(result);
@@ -394,7 +395,7 @@ public class DoubleToken extends ScalarToken {
         int typeInfo = TypeLattice.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
-                return rightArg.subtractR(this);
+                return rightArg.subtractReverse(this);
             } else if (rightArg instanceof DoubleToken) {
                 double result = _value -  ((DoubleToken)rightArg).doubleValue();
                 return new DoubleToken(result);
@@ -423,7 +424,7 @@ public class DoubleToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token subtractR(Token leftArg) throws IllegalActionException {
+    public Token subtractReverse(Token leftArg) throws IllegalActionException {
         DoubleToken tmp = (DoubleToken)this.convert(leftArg);
         double result = tmp.doubleValue() - _value;
         return new DoubleToken(result);

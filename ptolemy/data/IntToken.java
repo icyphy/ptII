@@ -82,7 +82,7 @@ public class IntToken extends ScalarToken {
         int typeInfo = TypeLattice.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
-                return rightArg.addR(this);
+                return rightArg.addReverse(this);
             } else if (rightArg instanceof IntToken) {
                 int result = _value + ((IntToken)rightArg).intValue();
                 return new IntToken(result);
@@ -111,7 +111,7 @@ public class IntToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token addR(ptolemy.data.Token leftArg) 
+    public Token addReverse(ptolemy.data.Token leftArg) 
             throws IllegalActionException {
         IntToken tmp = (IntToken)this.convert(leftArg);
         int result = tmp.intValue() + _value;
@@ -173,7 +173,7 @@ public class IntToken extends ScalarToken {
         int typeInfo = TypeLattice.compare(this, divisor);
         try {
             if (typeInfo == CPO.LOWER) {
-                return divisor.divideR(this);
+                return divisor.divideReverse(this);
             } else if (divisor instanceof IntToken) {
                 double result = _value / ((IntToken)divisor).doubleValue();
                 if ((result - (int)result) == 0) {
@@ -210,7 +210,7 @@ public class IntToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token divideR(Token dividend) throws IllegalActionException {
+    public Token divideReverse(Token dividend) throws IllegalActionException {
         IntToken tmp = (IntToken)this.convert(dividend);
         double result = tmp.intValue() / _value;
         if (result == (int)result) {
@@ -289,7 +289,7 @@ public class IntToken extends ScalarToken {
         int typeInfo = TypeLattice.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
-                return rightArg.moduloR(this);
+                return rightArg.moduloReverse(this);
             } else if (rightArg instanceof IntToken) {
                 int result = _value % ((IntToken)rightArg).intValue();
                 return new IntToken(result);
@@ -317,7 +317,7 @@ public class IntToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token moduloR(Token leftArg) throws IllegalActionException {
+    public Token moduloReverse(Token leftArg) throws IllegalActionException {
         IntToken tmp = (IntToken)this.convert(leftArg);
         int result = tmp.intValue() %  _value;
         return new IntToken(result);
@@ -338,7 +338,7 @@ public class IntToken extends ScalarToken {
         int typeInfo = TypeLattice.compare(this, rightFactor);
         try {
             if (typeInfo == CPO.LOWER) {
-                return rightFactor.multiplyR(this);
+                return rightFactor.multiplyReverse(this);
             } else if (rightFactor instanceof IntToken) {
                 int result = _value * ((IntToken)rightFactor).intValue();
                 return new IntToken(result);
@@ -368,7 +368,8 @@ public class IntToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token multiplyR(Token leftFactor) throws IllegalActionException {
+    public Token multiplyReverse(Token leftFactor)
+	    throws IllegalActionException {
         IntToken tmp = (IntToken)this.convert(leftFactor);
         int result = tmp.intValue() * _value;
         return new IntToken(result);
@@ -402,7 +403,7 @@ public class IntToken extends ScalarToken {
         int typeInfo = TypeLattice.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
-                return rightArg.subtractR(this);
+                return rightArg.subtractReverse(this);
             } else if (rightArg instanceof IntToken) {
                 int result = _value -  ((IntToken)rightArg).intValue();
                 return new IntToken(result);
@@ -430,7 +431,7 @@ public class IntToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token subtractR(Token leftArg) throws IllegalActionException {
+    public Token subtractReverse(Token leftArg) throws IllegalActionException {
         IntToken tmp = (IntToken)this.convert(leftArg);
         int result = tmp.intValue() - _value;
         return new IntToken(result);

@@ -83,8 +83,8 @@ public class Token {
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
-    public Token addR(Token leftArg) throws IllegalActionException {
-        String str = "addR method not supported on ";
+    public Token addReverse(Token leftArg) throws IllegalActionException {
+        String str = "addReverse method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
@@ -131,8 +131,9 @@ public class Token {
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
-    public Token divideR(Token dividend) throws  IllegalActionException {
-        String str = "divideR method not supported on ";
+    public Token divideReverse(Token dividend)
+	    throws  IllegalActionException {
+        String str = "divideReverse method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
@@ -175,8 +176,9 @@ public class Token {
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
-    public Token moduloR(Token leftArg) throws IllegalActionException {
-        String str = "moduloR method not supported on ";
+    public Token moduloReverse(Token leftArg)
+	     throws IllegalActionException {
+        String str = "moduloReverse method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
@@ -207,8 +209,9 @@ public class Token {
      *   supported by the derived class.
      *  @return A new Token containing the result.
      */
-    public Token multiplyR(Token leftFactor) throws  IllegalActionException {
-        String str = "multiplyR method not supported on ";
+    public Token multiplyReverse(Token leftFactor)
+	    throws  IllegalActionException {
+        String str = "multiplyReverse method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
@@ -259,8 +262,9 @@ public class Token {
      *  supported by the derived class.
      *  @return A new Token containing the result.
      */
-    public Token subtractR(Token leftArg) throws  IllegalActionException {
-        String str = "subtractR method not supported on ";
+    public Token subtractReverse(Token leftArg)
+	    throws  IllegalActionException {
+        String str = "subtractReverse method not supported on ";
         str = str + this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }

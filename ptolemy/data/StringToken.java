@@ -86,7 +86,7 @@ public class StringToken extends Token {
                 String result = _value + ((StringToken)token).stringValue();
                 return new StringToken(result);
             } else if (typeInfo == CPO.LOWER) {
-                return token.addR(this);
+                return token.addReverse(this);
             } else {
                 throw new Exception();
             }
@@ -106,7 +106,8 @@ public class StringToken extends Token {
      *   a lossless fashion.
      *  @return A new StringToken containing the result.
      */
-    public Token addR(ptolemy.data.Token token) throws IllegalActionException {
+    public Token addReverse(ptolemy.data.Token token)
+	    throws IllegalActionException {
         StringToken tmp = (StringToken)this.convert(token);
         String result = tmp.stringValue() + _value;
         return new StringToken(result);

@@ -81,7 +81,7 @@ public class LongToken extends ScalarToken {
         long typeInfo = TypeLattice.compare(this, token);
         try {
             if (typeInfo == CPO.LOWER) {
-                return token.addR(this);
+                return token.addReverse(this);
             } else if (token instanceof LongToken) {
                 long result = _value + ((LongToken)token).longValue();
                 return new LongToken(result);
@@ -109,7 +109,7 @@ public class LongToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token addR(Token token) throws IllegalActionException {
+    public Token addReverse(Token token) throws IllegalActionException {
         LongToken tmp = (LongToken)this.convert(token);
         long result = tmp.longValue() + _value;
         return new LongToken(result);
@@ -207,7 +207,7 @@ public class LongToken extends ScalarToken {
         long typeInfo = TypeLattice.compare(this, token);
         try {
             if (typeInfo == CPO.LOWER) {
-                return token.moduloR(this);
+                return token.moduloReverse(this);
             } else if (token instanceof LongToken) {
                 long result = _value % ((LongToken)token).longValue();
                 return new LongToken(result);
@@ -236,7 +236,7 @@ public class LongToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token moduloR(Token token) throws IllegalActionException {
+    public Token moduloReverse(Token token) throws IllegalActionException {
         LongToken tmp = (LongToken)this.convert(token);
         long result = tmp.longValue() %  _value;
         return new LongToken(result);
@@ -257,7 +257,7 @@ public class LongToken extends ScalarToken {
         long typeInfo = TypeLattice.compare(this, rightFactor);
         try {
             if (typeInfo == CPO.LOWER) {
-                return rightFactor.multiplyR(this);
+                return rightFactor.multiplyReverse(this);
             } else if (rightFactor instanceof LongToken) {
                 long result = _value * ((LongToken)rightFactor).longValue();
                 return new LongToken(result);
@@ -287,7 +287,8 @@ public class LongToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token multiplyR(Token leftFactor) throws IllegalActionException {
+    public Token multiplyReverse(Token leftFactor)
+	    throws IllegalActionException {
         LongToken tmp = (LongToken)this.convert(leftFactor);
         long result = tmp.longValue() * _value;
         return new LongToken(result);
@@ -321,7 +322,7 @@ public class LongToken extends ScalarToken {
         long typeInfo = TypeLattice.compare(this, rightArg);
         try {
             if (typeInfo == CPO.LOWER) {
-                return rightArg.subtractR(this);
+                return rightArg.subtractReverse(this);
             } else if (rightArg instanceof LongToken) {
                 long result = _value -  ((LongToken)rightArg).longValue();
                 return new LongToken(result);
@@ -350,7 +351,7 @@ public class LongToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token subtractR(Token leftArg) throws IllegalActionException {
+    public Token subtractReverse(Token leftArg) throws IllegalActionException {
         LongToken tmp = (LongToken)this.convert(leftArg);
         long result = tmp.longValue() - _value;
         return new LongToken(result);

@@ -76,7 +76,7 @@ public class BooleanToken extends Token {
         int typeInfo = TypeLattice.compare(this, tok);
         try {
             if (typeInfo == CPO.LOWER) {
-                return tok.addR(this);
+                return tok.addReverse(this);
             } else {
                 throw new Exception();
             }

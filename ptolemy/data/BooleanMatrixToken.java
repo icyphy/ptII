@@ -101,7 +101,7 @@ public class BooleanMatrixToken extends MatrixToken {
                          t.getClass().getName();
             throw new IllegalActionException(msg);
         } else {
-            return t.addR(this);
+            return t.addReverse(this);
         }
     }
 
