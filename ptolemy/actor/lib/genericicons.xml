@@ -4,7 +4,7 @@
 <class name="generic" extends="ptolemy.actor.TypedCompositeActor">
 <doc>Generic Icons</doc>
 
-<entity name="source" class="ptolemy.schematic.util.XMLIcon">
+<entity name="source" class="ptolemy.vergil.toolbox.XMLIcon">
 <doc>A default entity for sources</doc>
 <configure>
 <![CDATA[
@@ -16,7 +16,7 @@
 </configure>
 </entity>
 
-<entity name="sink" class="ptolemy.schematic.util.XMLIcon">
+<entity name="sink" class="ptolemy.vergil.toolbox.XMLIcon">
 <configure>
 <![CDATA[
 	<xmlgraphic>
@@ -27,7 +27,7 @@
 </configure>
 </entity>
 
-<entity name="transformer" class="ptolemy.schematic.util.XMLIcon">
+<entity name="transformer" class="ptolemy.vergil.toolbox.XMLIcon">
 <configure>
 <![CDATA[
 	<xmlgraphic>

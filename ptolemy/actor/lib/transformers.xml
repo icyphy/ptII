@@ -6,61 +6,61 @@
   </doc>
   <!-- Define the actors -->
   <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-    <rendition class="ptolemy.schematic.util.LibraryIcon">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
        <configure>generic.transformer</configure>
     </rendition>
   </entity>
   
   <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
-    <rendition class="ptolemy.schematic.util.LibraryIcon">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
  
   <entity name="Average" class="ptolemy.actor.lib.Average">
-    <rendition class="ptolemy.schematic.util.LibraryIcon">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
 
   <entity name="Commutator" class="ptolemy.actor.lib.Commutator">
-    <rendition class="ptolemy.schematic.util.LibraryIcon">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
 
   <entity name="Distributor" class="ptolemy.actor.lib.Distributor">
-    <rendition class="ptolemy.schematic.util.LibraryIcon">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
 
   <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
-    <rendition class="ptolemy.schematic.util.LibraryIcon">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
 
   <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
-    <rendition class="ptolemy.schematic.util.LibraryIcon">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
 
   <entity name="Quantizer" class="ptolemy.actor.lib.Quantizer">
-    <rendition class="ptolemy.schematic.util.LibraryIcon">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
 
   <entity name="Scale" class="ptolemy.actor.lib.Scale">
-    <rendition class="ptolemy.schematic.util.LibraryIcon">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
 
   <entity name="Sine" class="ptolemy.actor.lib.Sine">
-    <rendition class="ptolemy.schematic.util.LibraryIcon">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
   </entity>

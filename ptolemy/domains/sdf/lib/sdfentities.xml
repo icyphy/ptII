@@ -5,51 +5,51 @@
 <doc>SDF actors</doc>
 
 <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
 </entity>
 
 <entity name="BitsToInt" class="ptolemy.domains.sdf.lib.BitsToInt">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
 </entity>
 
 <entity name="Delay" class="ptolemy.domains.sdf.lib.Delay">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
 <doc>The sdf delay actor</doc>
 </entity>
 
 <entity name="FIR" class="ptolemy.domains.sdf.lib.FIR">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
 <doc>FIR filter</doc>
 </entity>
 
 <entity name="IntToBits" class="ptolemy.domains.sdf.lib.IntToBits">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
 </entity>
 
 <entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
 </entity>
 
 <entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
 </entity>
 
 <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
 </rendition>
 </entity>

@@ -6,43 +6,43 @@
 
 <!-- Sources -->
 <entity name="FileWrite" class="ptolemy.actor.lib.FileWrite">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
 </entity>
 
 <entity name="HistogramPlotter" class="ptolemy.actor.gui.HistogramPlotter">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
 </entity>
 
 <entity name="Print" class="ptolemy.actor.gui.Print">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
 </entity>
 
 <entity name="Recorder" class="ptolemy.actor.lib.Recorder">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
 </entity>
 
 <entity name="SequencePlotter" class="ptolemy.actor.gui.SequencePlotter">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
 </entity>
 
 <entity name="TimedPlotter" class="ptolemy.actor.gui.TimedPlotter">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
 </entity>
 
 <entity name="XYPlotter" class="ptolemy.actor.gui.XYPlotter">
-<rendition class="ptolemy.schematic.util.LibraryIcon">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
 </rendition>
 </entity>
