@@ -210,67 +210,8 @@ public class PNDirector extends BasePNDirector {
 	return;
     }
 
-    /** Add a topology change request to the request queue and suspend the
-     *  calling thread until the requests are processed. These changes
-     *  are executed in the fire() method of the director.
-     *  After queuing the requests, increment the count of processes blocked
-     *  while waiting for the topology change requests to be processed
-     *  (mutation-blocked). Notify the directing thread
-     *  of pending topology changes. The directing thread stops the execution
-     *  and processes the queued topology change requests in the fire() method
-     *  of the director. After the directing thread processes all the requests,
-     *  it notifies the calling thread to resume. On resuming, decrease the
-     *  count of processes blocked while waiting for topology changes.
-     *  This method is synchronized on the director.
-     *  <p>
-     *  This method is called by the processes requesting mutations and not
-     *  the directing thread.
-     *  <p>
-     *  FIXME: Currently this director does not properly deal with 
-     *         topology mutations.
-     *
-     *  @param request An object with commands to perform topology changes
-     *  and to inform the topology listeners of the same.
-     *  @exception ChangeFailedException If the superclass throws it.
-     *  @see ptolemy.kernel.event.ChangeRequest
-     *  @see ptolemy.kernel.event.ChangeListener
-     *  @see #fire
-     */
-    public void requestChange(ChangeRequest request) throws ChangeFailedException {
-	synchronized(this) {
-	    // _mutationsRequested = true;
-	    _informOfMutationBlock();
-            super.requestChange(request);
-            //Wake up the director to inform it that mutation is requested
-            //notifyAll();
-            /*
-	    while(_mutationsRequested) {
-		try {
-		    wait();
-		} catch (InterruptedException e) {
-		    System.err.println(e.toString());
-		}
-	    }
-            */
-	}
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Determine if all of the threads containing actors controlled
-     *  by this director have stopped due to a call of stopFire() or are
-     *  blocked on a read or while waiting for mutations to be processed.
-     *  @return True if all active threads containing actors controlled
-     *  by this thread have stopped or are blocked; otherwise return false.
-    protected synchronized boolean _areActorsStopped() {
- 	if(_getStoppedProcessesCount() + _readBlockCount +
-                _mutationBlockCount == _getActiveActorsCount()) {
- 	    return (_getStoppedProcessesCount() != 0);
- 	}
- 	return false;
-    }
-     */
 
     /** Return true if a deadlock is detected. Return false otherwise.
      *  A detected deadlock is when all the active processes in the container
