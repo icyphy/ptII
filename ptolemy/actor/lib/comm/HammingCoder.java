@@ -52,7 +52,7 @@ The rate of the code is <i>k/n</i>.
 <p>
 For a Hamming code, <i>k</i> and <i>n</i> must satisfiy the following:
 <i>n</i> = 2<sup>m</sup> - 1
-<i>k</i> = 2<sup>m</sum> - 1 - m;
+<i>k</i> = 2<sup>m</sup> - 1 - m;
 where <i>m</i> is any positive integer. Note <i>m</i> = <i>n</i> - <i>k</i>.
 It is called the order of the Hamming code. The lowest order is <i>m</i> = 2,
 and (<i>n</i>, <i>k</i>) = (3, 1).
