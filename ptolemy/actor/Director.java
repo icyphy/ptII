@@ -376,6 +376,26 @@ public class Director extends Attribute implements Executable {
         return _timeResolution;
     }
 
+    /** Get the start time of the model. This base class returns 
+     *  Double.MAX_VALUE as the value of the start time. 
+     *  Subclasses need to override this method to get a different 
+     *  start time.
+     *  @return The start time of the model.
+     */
+    public double getStartTime() {
+        return -1*Double.MAX_VALUE;
+    }
+
+    /** Get the stop time of the model. This base class returns
+     *  Double.MAX_VALUE as the value of the stop time. 
+     *  Subclasses need to override this method to get a different 
+     *  stop time.
+     *  @return The stop time of the model.
+     */
+    public double getStopTime() {
+        return Double.MAX_VALUE;
+    }
+
     /** Initialize the model controlled by this director.  Set the
      *  current time to 0.0 or the time of the executive director, and
      *  then invoke the initialize() method of this director on each
@@ -400,14 +420,16 @@ public class Director extends Attribute implements Executable {
         if (container instanceof CompositeActor) {
             Nameable containersContainer = container.getContainer();
             if (containersContainer instanceof CompositeActor) {
-                double time = ((CompositeActor)containersContainer)
+                // The container is an embedded model.
+                double currentTime = ((CompositeActor)containersContainer)
                     .getDirector().getCurrentTime();
-                _currentTime = time;
+                _currentTime = currentTime;
             } else {
+                // The container is the top level.
                 // There is no reason to set the current time to 0.0.
                 // Instead, it has to be set to start time of a model. 
                 // FIXME: to simplify the initilize method of DE director
-                _currentTime = 0.0;
+                _currentTime = getStartTime();
             }
             Iterator actors = ((CompositeActor)container)
                 .deepEntityList().iterator();

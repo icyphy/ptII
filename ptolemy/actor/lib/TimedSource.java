@@ -75,8 +75,13 @@ public class TimedSource extends Source implements TimedActor {
     public TimedSource(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
+
+        startTime = new Parameter(this, "startTime");
+        startTime.setExpression("0.0");
+        startTime.setTypeEquals(BaseType.DOUBLE);
+
         stopTime = new Parameter(this, "stopTime");
-        stopTime.setExpression("0.0");
+        stopTime.setExpression("MaxDouble");
         stopTime.setTypeEquals(BaseType.DOUBLE);
 
         _attachText("_iconDescription", "<svg>\n" +
@@ -97,7 +102,12 @@ public class TimedSource extends Source implements TimedActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** If greater than zero, then this parameter gives the time at which
+    /** The absolute starting time of this time source.
+     */
+    public Parameter startTime;
+
+    /** The absolute stopping time of this time source.
+     *  If greater than zero, then this parameter gives the time at which
      *  postfire() should return false.
      */
     public Parameter stopTime;
@@ -106,26 +116,43 @@ public class TimedSource extends Source implements TimedActor {
     ////                         public methods                    ////
 
     /** If the <i>stopTime</i> parameter is changed and the model is
-     *  executing, then if the new value is greater
-     *  than zero and greater than the current time, then ask the director
+     *  executing, then if the new value is greater than the start time 
+     *  and greater than the current time, then ask the director
      *  to fire this actor at that time.  If the new value is less than
      *  the current time, then request refiring at the current time.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == stopTime && _executing) {
-            double time = ((DoubleToken)stopTime.getToken()).doubleValue();
-            if (time > 0.0) {
+        if (attribute == stopTime || attribute == startTime) {
+            double timeToStop = 
+                ((DoubleToken)stopTime.getToken()).doubleValue();
+            double timeToStart = 
+                ((DoubleToken)startTime.getToken()).doubleValue();
+            if (timeToStop >= timeToStart) {
                 Director director = getDirector();
-                if (director != null) {
+                if (_executing && director != null) {
                     double currentTime = director.getCurrentTime();
-                    if (time > currentTime) {
-                        director.fireAt(this, time);
+                    if (timeToStop >= currentTime 
+                        && timeToStart <= currentTime) {
+                        director.fireAt(this, timeToStop);
+                    } else if (timeToStart > currentTime) {
+                        throw new IllegalActionException(this,
+                            "The start time must be earlier than " +
+                            "the current time because the clock " +
+                            "is already running.");
                     } else {
+                        // The stop time can not be eariler than the
+                        // current time. We stop at the current time.
+                        // FIXME: pop a message for warning?
                         director.fireAt(this, currentTime);
                     }
                 }
+            } else {
+                // the stop time can not be earlier than the start time.
+                throw new IllegalActionException(this,
+                    "The stop time must be later than " +
+                    " the start time.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -138,16 +165,17 @@ public class TimedSource extends Source implements TimedActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        double time = ((DoubleToken)stopTime.getToken()).doubleValue();
-        if (time > 0.0) {
+        double timeToStart = 
+                ((DoubleToken)startTime.getToken()).doubleValue();
+        double timeToStop = 
+                ((DoubleToken)stopTime.getToken()).doubleValue();
+        if (timeToStop >= timeToStart) {
             Director director = getDirector();
             if (director == null) {
                 throw new IllegalActionException(this, "No director!");
             }
-            //changed by yang.
-            //director.fireAt(this, time);
-            _stopTime = director.getCurrentTime()+ time;
-            director.fireAt(this, _stopTime);
+            director.fireAt(this, timeToStart);
+            director.fireAt(this, timeToStop);
             _executing = true;
         }
     }
@@ -161,7 +189,7 @@ public class TimedSource extends Source implements TimedActor {
      */
     public boolean postfire() throws IllegalActionException {
         double time = ((DoubleToken)stopTime.getToken()).doubleValue();
-        if (time > 0.0 && getDirector().getCurrentTime() >= _stopTime) {
+        if (getDirector().getCurrentTime() >= time) {
             return false;
         }
         return true;
@@ -174,6 +202,7 @@ public class TimedSource extends Source implements TimedActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void wrapup() throws IllegalActionException {
+        super.wrapup();
         _executing = false;
     }
 
@@ -182,6 +211,4 @@ public class TimedSource extends Source implements TimedActor {
 
     // Flag indicating that the model is running.
     private boolean _executing = false;
-
-    private double _stopTime = 0.0;
 }

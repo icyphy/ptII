@@ -85,6 +85,8 @@ public class CurrentTime extends TimedSource {
         double currentTime = Double.MAX_VALUE;
         if (trigger.getWidth() > 0) {
             // Trigger port is connected.
+            // If there is a token in a channel of the trigger port,
+            // output the current time (that is associated with the token). 
             for (int i = 0; i < trigger.getWidth(); i++) {
                 if (trigger.hasToken(i)) {
                     currentTime = Math.min(
@@ -92,17 +94,15 @@ public class CurrentTime extends TimedSource {
                     // Do not consume the token... It will be consumed
                     // in the superclass fire().
                     // trigger.get(i);
+                    output.send(0, new DoubleToken(currentTime));
                 }
             }
-        }
-        // If current time is still the max value, then we were not
-        // successful inferring current time from the inputs. Get
-        // if from the director.
-        if (currentTime == Double.MAX_VALUE) {
+        } else {
+            // Teigger port is not connected.
             Director director = getDirector();
             currentTime = director.getCurrentTime();
+            output.send(0, new DoubleToken(currentTime));
         }
         super.fire();
-        output.send(0, new DoubleToken(currentTime));
     }
 }

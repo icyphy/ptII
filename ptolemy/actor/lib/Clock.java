@@ -278,8 +278,8 @@ public class Clock extends TimedSource {
 
             // Adjust the phase if time has moved beyond the current phase.
             // FIXME: why using while but not if?
-            while (currentTime
-                    >= _tentativeCycleStartTime + _offsets[_tentativePhase]) {
+            if (currentTime
+                    == _tentativeCycleStartTime + _offsets[_tentativePhase]) {
 
                 // Phase boundary.  Change the current value.
                 _tentativeCurrentValue = _getValue(_tentativePhase);
@@ -314,24 +314,25 @@ public class Clock extends TimedSource {
                 if (_debugging) {
                     _debug("next firing is at " + _tentativeNextFiringTime);
                 }
+
+                // If we are beyond the number of cycles requested, then
+                // change the output value to zero.
+                int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
+                if (cycleLimit > 0
+                        && currentTime
+                        >= _tentativeStartTime + cycleLimit * periodValue) {
+                    _tentativeCurrentValue = _tentativeCurrentValue.zero();
+                }
+        
+                // Used to use any negative number here to indicate
+                // that no future firing should be scheduled.
+                // Now, we leave it up to the director, unless the value
+                // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
+                output.send(0, _tentativeCurrentValue);
+                if (_debugging)_debug("Output: " + _tentativeCurrentValue + ".");
+
             }
         }
-
-        // If we are beyond the number of cycles requested, then
-        // change the output value to zero.
-        int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
-        if (cycleLimit > 0
-                && currentTime
-                >= _tentativeStartTime + cycleLimit * periodValue) {
-            _tentativeCurrentValue = _tentativeCurrentValue.zero();
-        }
-
-        // Used to use any negative number here to indicate
-        // that no future firing should be scheduled.
-        // Now, we leave it up to the director, unless the value
-        // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
-        output.send(0, _tentativeCurrentValue);
-        if (_debugging)_debug("Output: " + _tentativeCurrentValue + ".");
     }
 
     /** Schedule the first firing and initialize local variables.
@@ -343,9 +344,10 @@ public class Clock extends TimedSource {
         super.initialize();
         if (_debugging)_debug("Initializing " + getFullName() + ".");
 
-        double currentTime = getDirector().getCurrentTime();
-        _cycleStartTime = currentTime;
-        _startTime = currentTime;
+        double timeToStart = 
+            ((DoubleToken) startTime.getToken()).doubleValue();
+        _cycleStartTime = timeToStart;
+        _startTime = timeToStart + _offsets[0];
         _currentValue = _getValue(0).zero();
         _phase = 0;
 
@@ -357,11 +359,11 @@ public class Clock extends TimedSource {
         if (!_done) {
             if (_debugging) {
                 _debug("Requesting firing at time "
-                        + (_offsets[0] + currentTime));
+                        + _startTime);
             }
             // This should be the last line, because in threaded domains,
             // it could execute immediately.
-            getDirector().fireAt(this, _offsets[0] + currentTime);
+            getDirector().fireAt(this, _startTime);
         }
     }
 
@@ -421,6 +423,8 @@ public class Clock extends TimedSource {
      *   <i>offsets</i> parameters do not have the same length.
      */
     public boolean prefire() throws IllegalActionException {
+        
+        // FIXME: why put the check here???
         ArrayToken val = (ArrayToken)(values.getToken());
         if (_offsets.length != val.length()) {
             throw new IllegalActionException(this,
