@@ -117,7 +117,7 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
         _index = 0;
     }
 
-    /** Incremement the index number.
+    /** Increment the index number.
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {

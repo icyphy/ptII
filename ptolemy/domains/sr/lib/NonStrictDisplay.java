@@ -54,7 +54,7 @@ converge to a fixed point.
 
 @author  Paul Whitaker, Yuhong Xiong, Edward A. Lee
 @version $Id$
- */
+*/
 public class NonStrictDisplay extends Display {
 
     /** Construct an actor with an input multiport of type GENERAL.

@@ -31,6 +31,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.sr.lib;
 
+import ptolemy.actor.Director;
+import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.lib.SequenceActor;
+import ptolemy.actor.lib.Source;
+import ptolemy.actor.lib.WallClockTime;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.IntToken;
@@ -38,11 +43,6 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.actor.*;
-import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.lib.SequenceActor;
-import ptolemy.actor.lib.Source;
-import ptolemy.actor.lib.WallClockTime;
 
 import java.awt.Container;
 import java.awt.Color;
