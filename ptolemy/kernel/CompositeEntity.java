@@ -150,7 +150,7 @@ public class CompositeEntity extends ComponentEntity {
         Enumeration relations = getRelations();
         while (relations.hasMoreElements()) {
             ComponentRelation relation =
-                    (ComponentRelation)relations.nextElement();
+                (ComponentRelation)relations.nextElement();
             ComponentRelation newrelation = (ComponentRelation)relation.clone();
             // Assume that since we are dealing with clones,
             // exceptions won't occur normally.  If they do, throw a
@@ -159,7 +159,8 @@ public class CompositeEntity extends ComponentEntity {
                 newrelation.setContainer(newentity);
             } catch (KernelException ex) {
                 throw new CloneNotSupportedException(
-                "Failed to clone a CompositeEntity: " + ex.getMessage());
+                        "Failed to clone a CompositeEntity: " +
+                        ex.getMessage());
             }
         }
 
@@ -175,7 +176,8 @@ public class CompositeEntity extends ComponentEntity {
                 newsubentity.setContainer(newentity);
             } catch (KernelException ex) {
                 throw new CloneNotSupportedException(
-                "Failed to clone a CompositeEntity: " + ex.getMessage());
+                        "Failed to clone a CompositeEntity: " +
+                        ex.getMessage());
             }
 
             // Clone the links of the ports of the cloned entities.
@@ -185,22 +187,22 @@ public class CompositeEntity extends ComponentEntity {
                 Enumeration lrels = port.linkedRelations();
                 while (lrels.hasMoreElements()) {
                     ComponentRelation rel =
-                           (ComponentRelation)lrels.nextElement();
+                        (ComponentRelation)lrels.nextElement();
                     if (rel.getContainer() != this) {
                         throw new CloneNotSupportedException(
-                        "Cannot clone a CompositeEntity with level crossing" +
-                        " transitions.");
+                                "Cannot clone a CompositeEntity with level " +
+                                "crossing transitions.");
                     }
                     ComponentRelation newrel =
-                           newentity.getRelation(rel.getName());
+                        newentity.getRelation(rel.getName());
                     Port newport =
-                           newsubentity.getPort(port.getName());
+                        newsubentity.getPort(port.getName());
                     try {
                         newport.link(newrel);
                     } catch (IllegalActionException ex) {
                         throw new CloneNotSupportedException(
-                        "Failed to clone a CompositeEntity: " +
-                        ex.getMessage());
+                                "Failed to clone a CompositeEntity: " +
+                                ex.getMessage());
                     }                        
                 }
             }
@@ -350,7 +352,7 @@ public class CompositeEntity extends ComponentEntity {
                 Enumeration enume = getEntities();
                 while (enume.hasMoreElements()) {
                     ComponentEntity entity =
-                            (ComponentEntity)enume.nextElement();
+                        (ComponentEntity)enume.nextElement();
                     result = result + "\n" + entity.description(verbosity);
                 }
                 result += "\n} ";
