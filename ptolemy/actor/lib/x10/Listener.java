@@ -1,6 +1,6 @@
 /* Output X10 commands detected on the X10 network.
 
-Copyright (c) 1998-2004 The Regents of the University of California.
+Copyright (c) 2003-2004 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -45,6 +45,7 @@ import x10.Command;
  *
  *  @author Colin Cochran (contributor: Edward A. Lee)
  *  @version $Id$
+@since Ptolemy II 4.0
  */
 
 public class Listener extends Receiver {

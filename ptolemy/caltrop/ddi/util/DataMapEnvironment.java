@@ -52,7 +52,7 @@ import java.util.Set;
 
    @author J&#246;rn W. Janneck <janneck@eecs.berkeley.edu>
    @version $Id$
-   @since Ptolemy II 3.1
+   @since Ptolemy II 4.0
 */
 public class DataMapEnvironment implements Environment {
     // FIXME: assumes repeat expressions can be evaluated in the

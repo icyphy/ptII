@@ -80,7 +80,7 @@ import javax.crypto.Cipher;
 
    @author Christopher Hylands Brooks, Contributor: Rakesh Reddy
    @version $Id$
-   @since Ptolemy II 3.1
+   @since Ptolemy II 4.0
 */
 public class SymmetricDecryption extends CipherActor {
 

@@ -65,7 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    @author Vinay Krishnan, Daniel L&aacute;zaro Cuadrado (contributor: Edward A. Lee)
    @version $Id$
-   @since Ptolemy II 3.0.3
+   @since Ptolemy II 4.0
 */
 
 public class StringCompare extends TypedAtomicActor {

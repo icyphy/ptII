@@ -41,7 +41,7 @@ import ptolemy.caltrop.actors.CalInterpreter;
 /**
    @author Christopher Chang <cbc@eecs.berkeley.edu>
    @version $Id$
-   @since Ptolemy II 3.1
+   @since Ptolemy II 4.0
 */
 public class CSPFactory implements DDIFactory {
     public DDI create(CalInterpreter ptActor, Actor actor, Context context, Environment env) {

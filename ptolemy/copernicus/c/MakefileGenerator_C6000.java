@@ -1,6 +1,6 @@
 /* This class generates a makefile specific to the TMS320C6xxx.
 
-Copyright (c) 2002-2004 The University of Maryland.
+Copyright (c) 2003-2004 The University of Maryland.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -40,7 +40,7 @@ import java.util.Iterator;
 
    @author Ankush Varma
    @version $Id$
-   @since Ptolemy II 2.0
+   @since Ptolemy II 4.0
 */
 public class MakefileGenerator_C6000 extends MakeFileGenerator{
     /** Create the MakeFile.

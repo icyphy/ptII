@@ -63,7 +63,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see StringSubstring
    @author Mike Kofi Okyere, Ismael M. Sarmiento
    @version $Id$
-   @since Ptolemy II 3.0.3
+   @since Ptolemy II 4.0
 */
 
 public class StringFunction extends Transformer {

@@ -2,7 +2,7 @@
   A C code generator for generating "stub header files"
   that implement Java classes.
 
-  Copyright (c) 2002-2004 The University of Maryland.
+  Copyright (c) 2003-2004 The University of Maryland.
   All rights reserved.
 
   Permission is hereby granted, without written agreement and without
@@ -43,7 +43,7 @@ import java.util.Iterator;
 
     @author Ankush Varma
     @version $Id$
-    @since Ptolemy II 2.0
+    @since Ptolemy II 4.0
 */
 
 public class StubFileGenerator extends CodeGenerator {

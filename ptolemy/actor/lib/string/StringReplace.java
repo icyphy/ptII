@@ -63,7 +63,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    @author Antonio Yordan-Nones, Neil E. Turner, Edward A. Lee
    @version $Id$
-   @since Ptolemy II 3.0.3
+   @since Ptolemy II 4.0
 */
 
 public class StringReplace extends TypedAtomicActor {

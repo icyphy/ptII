@@ -42,7 +42,7 @@ import java.util.AbstractList;
    FIXME: What does this class do?
    @author J&#246;rn W. Janneck <janneck@eecs.berkeley.edu>
    @version $Id$
-   @since Ptolemy II 3.1
+   @since Ptolemy II 4.0
 */
 public class IntegerList extends AbstractList {
 

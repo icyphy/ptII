@@ -58,7 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    @author Rakesh Reddy, Philip Baldwin, Edward A. Lee
    @version $Id$
-   @since Ptolemy II 3.0.3
+   @since Ptolemy II 4.0
 */
 
 public class StringIndexOf extends TypedAtomicActor {

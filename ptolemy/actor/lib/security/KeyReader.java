@@ -70,7 +70,7 @@ import java.util.Enumeration;
    @see PublicKeyReader
    @author  Christopher Hylands Brooks
    @version $Id$
-   @since Ptolemy II 3.1
+   @since Ptolemy II 4.0
 */
 public class KeyReader extends KeyStoreActor {
     /** Construct an actor with the given container and name.

@@ -1,6 +1,6 @@
 /* Output the length of a string provided at the input.
 
-Copyright (c) 1998-2004 The Regents of the University of California.
+Copyright (c) 2003-2004 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -45,6 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    @author Edward A. Lee
    @version $Id$
+@since Ptolemy II 4.0
 */
 
 public class StringLength extends Transformer {

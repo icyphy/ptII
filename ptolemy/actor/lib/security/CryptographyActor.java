@@ -97,7 +97,7 @@ import java.util.Set;
 
    @author Christopher Hylands Brooks, Contributor: Rakesh Reddy
    @version $Id$
-   @since Ptolemy II 3.1
+   @since Ptolemy II 4.0
 */
 abstract public class CryptographyActor extends TypedAtomicActor {
 

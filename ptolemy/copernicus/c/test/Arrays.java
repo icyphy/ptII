@@ -1,7 +1,7 @@
 /*
   A class that runs multiple array tests.
 
-  Copyright (c) 2001-2004 The University of Maryland
+  Copyright (c) 2003-2004 The University of Maryland
   All rights reserved.
 
   Permission is hereby granted, without written agreement and without
@@ -42,7 +42,7 @@ Array2DInt, Array3DInt and ArrayOfObjects tests.
 
 @author Ankush Varma
 @version $Id$
-@since Ptolemy II 2.0
+@since Ptolemy II 4.0
 
 */
 
