@@ -184,7 +184,8 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
                                 inport != outport) {
 			    // output also undeclared, not bi-directional port,
 		            Inequality ineq = new Inequality(
-                                    inport.getTypeTerm(), outport.getTypeTerm());
+                                    inport.getTypeTerm(),
+                                    outport.getTypeTerm());
 			    result.insertLast(ineq);
 			}
 		    }
