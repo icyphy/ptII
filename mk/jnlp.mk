@@ -204,7 +204,7 @@ FULL_ONLY_JNLP_JARS = \
 	$(COPERNICUS_JARS) \
 	doc/design/design.jar \
 	$(PTJACL_JARS) \
-	vendors/jython/jython.jar \
+	lib/jython.jar \
 	ptolemy/actor/hoc/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/jai/jai.jar \
@@ -212,6 +212,8 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/joystick/joystick.jar \
 	ptolemy/actor/lib/python/python.jar \
 	ptolemy/actor/lib/python/demo/demo.jar \
+	lib/ptCal.jar \
+	lib/saxon7.jar \
 	ptolemy/cal/cal.jar \
 	ptolemy/cal/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
