@@ -43,9 +43,12 @@ import soot.toolkits.scalar.*;
 import soot.util.*;
 import soot.toolkits.graph.*;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -169,7 +172,10 @@ public class AppletWriter extends SceneTransformer {
 		copyJarFiles = true;
 		_codeBase = ".";
 	    }
-	} catch (IOException ex) {}
+	} catch (IOException ex) {
+	    System.out.println("_isSubdirectory threw an exception: " + ex);
+	    ex.printStackTrace();
+	}
 
 	// Determine the value of _domainJar, which is the
 	// path to the domain specific jar, e.g. "ptolemy/domains/sdf/sdf.jar"
@@ -281,49 +287,105 @@ public class AppletWriter extends SceneTransformer {
     }
 
     // Copy jar files into _outputDirectory
-    private void _copyJarFiles(Director director) 
-	throws IOException {
+    private void _copyJarFiles(Director director)
+        throws IOException {
 
-	Map classMap = new HashMap();
-	classMap.put("ptolemy.actor.gui.MoMLApplet",
-		     "ptolemy/ptsupport.jar");
-	classMap.put(director.getClass().getName(),
-		     _domainJar);
-	classMap.put("ptolemy.vergil.MoMLViewerApplet",
-		     "ptolemy/vergil/vergilApplet.jar");
-	classMap.put("diva.foo",
-		     "lib/diva.jar");
+	// In the perfect world, we would run tree shaking here, or
+	// look up classes as resources.  However, if we are running
+	// in a devel tree, then the ptII directory will be returned
+	// as the resource when we look up a class, which is not
+	// at all what we want.
+	// appletviewer -J-verbose could be used for tree shaking.
 
-	Iterator classNames = classMap.entrySet().iterator();
-	while (classNames.hasNext()) {
-	    String className = (String)classNames.next();
-	    // FIXME: will this work if we are getting classes
-	    // from a directory?
-	    String classResource =
-		GeneratorAttribute.lookupClassAsResource(className);
+	// We use a HashMap that maps class names to destination jar
+	// files.
 
-	    if (classResource != null) {
-		System.out.println("AppletWriter: " + classResource
-				   + " " + _outputDirectory 
-				   + " " + (String)classMap.get(className));
-		// This is a dumb way to copy files, Java should have
-		// a method that has the os do it for us
-		File inputFile = new File(classResource);
-		File outputFile = new File(_outputDirectory,
-					   (String)classMap.get(className));
-		outputFile.mkdirs();
+        Map classMap = new HashMap();
+        classMap.put("ptolemy.actor.gui.MoMLApplet",
+                     "ptolemy/ptsupport.jar");
+        classMap.put(director.getClass().getName(),
+                     _domainJar);
+        classMap.put("ptolemy.vergil.MoMLViewerApplet",
+                     "ptolemy/vergil/vergilApplet.jar");
+        classMap.put("diva.graph.GraphController",
+                     "lib/diva.jar");
+	// First, we search for the jar file, then we try
+	// getting the class as a resource.
+	// FIXME: we don't handle the case where there are no
+	// individual jar files because the user did not run 'make install'.
+
+        Iterator classNames = classMap.keySet().iterator();
+        while (classNames.hasNext()) {
+            String className = (String)classNames.next();
+
+	    File potentialSourceJarFile =
+		new File(_ptIIDirectory, (String)classMap.get(className));
+	    if (potentialSourceJarFile.exists()) {
+		// Ptolemy II development trees will have jar files
+		// if 'make install' was run. 
+		_copyFile(_ptIIDirectory + File.separator
+			  + (String)classMap.get(className),
+			  _outputDirectory, 
+			  (String)classMap.get(className));
 		
-		FileReader in = new FileReader(inputFile);
-		FileWriter out = new FileWriter(outputFile);
-		int c;
+	    } else {
+		// Under Web Start, the resource that contains a class
+		// will have a mangled name, so we copy the jar file.
+		String classResource =
+		    GeneratorAttribute.lookupClassAsResource(className);
 
-		while ((c = in.read()) != -1)
-		    out.write(c);
-		
-		in.close();
-		out.close();
+		if (classResource != null) {
+		    System.out.println("AppletWriter: " + classResource
+				       + " " + _outputDirectory
+				       + " "
+				       + (String)classMap.get(className));
+		    _copyFile(classResource, _outputDirectory, 
+				 (String)classMap.get(className));
+		} else {
+		    throw new IOException("Could not find '" + className
+					  + "' as a resource.\n"
+					  + "Try adding this class to the "
+					  + "necessaryClasses parameter"
+					  );
+		}
 	    }
 	}
+    }
+
+    // Copy sourceFile to the destinationFile in destinationDirectory.
+    private void _copyFile(String sourceFileName,
+			      String destinationDirectory,
+			      String destinationFileName )
+	throws IOException {
+	File sourceFile = new File(sourceFileName);
+	if ( !sourceFile.isFile()) {
+	    throw new FileNotFoundException("Could not find '"
+					    + sourceFileName + "'."
+					    + "\nPerhaps you need "
+					    + "to run 'make install'?");
+	}
+
+	File destinationFile = new File(destinationDirectory,
+					    destinationFileName);
+	File destinationParent = new File(destinationFile.getParent());
+	destinationParent.mkdirs();
+
+	System.out.println("AppletWriter: Copying " + sourceFile
+			   + " (" + sourceFile.length()/1024 + "K) to "
+			   + destinationFile);
+
+	// Avoid end of line and localization issues.
+        BufferedInputStream in =
+            new BufferedInputStream(new FileInputStream(sourceFile));
+        BufferedOutputStream out =
+            new BufferedOutputStream(new FileOutputStream(destinationFile));
+	int c;
+	
+	while ((c = in.read()) != -1)
+	    out.write(c);
+
+	in.close();
+	out.close();
     }
 
     // Return true if possibleSubdirectory is a subdirectory of parent.
@@ -341,9 +403,10 @@ public class AppletWriter extends SceneTransformer {
 	}
 	String parentCanonical = parentFile.getCanonicalPath();
 	String possibleSubdirectoryCanonical =
-	    parentFile.getCanonicalPath();
-	System.out.println("_isSubdirectory: \n\t" + parentCanonical + "\n\t" +
-			   possibleSubdirectoryCanonical);
+	    possibleSubdirectoryFile.getCanonicalPath();
+	System.out.println("\n\n_isSubdirectory: \n\t"
+			   + parentCanonical + "\n\t"
+			   + possibleSubdirectoryCanonical);
 	return parentCanonical.startsWith(possibleSubdirectoryCanonical);
     }
 
