@@ -71,7 +71,7 @@ public class SinkNodeAnalysis extends Analysis {
 
 
     /** Return the sink nodes in the graph under analysis.
-     *  Each element of the list is an {@link Node}.
+     *  Each element of the list is an {@link ptolemy.graph.Node}.
      *
      *  @return Return the sink nodes.
      */

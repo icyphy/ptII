@@ -72,7 +72,7 @@ public class SelfLoopAnalysis extends Analysis {
     ////                         public methods                    ////
 
     /** Return the self-loop edges in the graph under analysis.
-     *  Each element of the list is an {@link Edge}.
+     *  Each element of the list is an {@link ptolemy.graph.Edge}.
      *
      *  @return Return the self-loop edges.
      */

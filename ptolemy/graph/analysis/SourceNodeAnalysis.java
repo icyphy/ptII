@@ -71,7 +71,7 @@ public class SourceNodeAnalysis extends Analysis {
 
 
     /** Return the source nodes in the graph under analysis.
-     *  Each element of the collection is an {@link Node}.
+     *  Each element of the collection is an {@link ptolemy.graph.Node}.
      *
      *  @return Return the source nodes.
      */
