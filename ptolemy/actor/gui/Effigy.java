@@ -204,6 +204,28 @@ public class Effigy extends CompositeEntity {
         return _factory;
     }
 
+    /** Return a writable file for the URL given by the <i>url</i>
+     *  parameter of this effigy, if there is one, or return
+     *  null if there is not.  This will return null if the file does
+     *  not exist, or it exists and is not writable, or the <i>url</i>
+     *  parameter has not been set.
+     */
+    public File getWritableFile() {
+        File result = null;
+        URL fileURL = url.getURL();
+        if (fileURL != null) {
+            String protocol = fileURL.getProtocol();
+            if (protocol.equals("file")) {
+                String filename = fileURL.getFile();
+                File tentativeResult = new File(filename);
+                if (tentativeResult.canWrite()) {
+                    result = tentativeResult;
+                }
+            }
+        }
+        return result;
+    }
+
     /** Return whether the model data is modifiable.  In this case,
      *  this is determined by checking whether
      *  the URL associated with this effigy can be written
@@ -262,13 +284,14 @@ public class Effigy extends CompositeEntity {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-	if (container == null) {
-	    // Remove all tableaux.
-	    Iterator tableaux = entityList(Tableau.class).iterator();
-	    while (tableaux.hasNext()) {
-		ComponentEntity tableau = (ComponentEntity)tableaux.next();
-		tableau.setContainer(null);
-	    }
+        if (container == null) {
+            // Remove all tableaux.
+            Iterator tableaux = entityList(Tableau.class).iterator();
+            while (tableaux.hasNext()) {
+                ComponentEntity tableau = (ComponentEntity)tableaux.next();
+                tableau.setContainer(null);
+            }
+            
 	    // Remove all contained effigies as well.
 	    Iterator effigies = entityList(Effigy.class).iterator();
 	    while (effigies.hasNext()) {

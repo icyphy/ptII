@@ -461,8 +461,8 @@ public abstract class TableauFrame extends Top {
      *  @return True if the save succeeds.
      */
     protected boolean _save() {
-        File file = _writableFile();
         Effigy effigy = getEffigy();
+        File file = effigy.getWritableFile();
         if ((effigy != null && !effigy.isModifiable()) || file == null) {
             return _saveAs();
         } else {
@@ -603,7 +603,9 @@ public abstract class TableauFrame extends Top {
         if (tableau != null) {
             Effigy effigy = (Effigy)tableau.getContainer();
             if (effigy != null) {
-                effigy.writeFile(file);
+                // Ensure that if we do ever try to call this method,
+                // that it is the top effigy that is written.
+                effigy.topEffigy().writeFile(file);
                 return;
             }
         }
@@ -620,33 +622,6 @@ public abstract class TableauFrame extends Top {
      *  it is null.
      */
     protected JMenu _viewMenu;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    // Return a writable file for the URL given by the <i>url</i>
-    // parameter of the associated effigy, if there is one, or return
-    // null if there is not.  This will return null if the file does
-    // not exist, or it exists and is not writable, or the <i>url</i>
-    // parameter has not been set.
-    private File _writableFile() {
-        File result = null;
-        Effigy effigy = getEffigy();
-        if (effigy != null) {
-            URL url = effigy.url.getURL();
-            if (url != null) {
-                String protocol = url.getProtocol();
-                if (protocol.equals("file")) {
-                    String filename = url.getFile();
-                    File tentativeResult = new File(filename);
-                    if (tentativeResult.canWrite()) {
-                        result = tentativeResult;
-                    }
-                }
-            }
-        }
-        return result;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
