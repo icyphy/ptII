@@ -237,7 +237,8 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	  #	 "-codeGenerator" "applet" \
 	  #	 "-run" "false"] ]
 	  #java::new ptolemy.copernicus.kernel.Copernicus $args	
-   	  set args [list $modelPath \
+	  # -q means do not echo the command being run
+   	  set args [list -q $modelPath \
 		  "-codeGenerator" "applet" \
 		      "-run" "false" \
 		      "-compile" "true"]
@@ -386,7 +387,8 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	} else {
 	    set codeGenerator "shallow"
 	}
-	set args [list $modelPath \
+	# -q means do not echo the command being run
+	set args [list -q $modelPath \
 		      "-codeGenerator" $codeGenerator \
 		      "-compile" "true"]
 	# If toplevel iterations set, then pass those arguments to copernicus.
