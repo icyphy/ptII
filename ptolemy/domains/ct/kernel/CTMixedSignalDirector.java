@@ -283,7 +283,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             _outsideTime = executiveDirector.getModelTime();
 
             Time localTime = getModelTime();
-            double timeResolution = getTimeResolution();
             Time outsideNextIterationTime = executiveDirector
                 .getModelNextIterationTime();
 
@@ -367,6 +366,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                         + " Inferred run length = " + aheadLength);
             }
 
+            double timeResolution = getTimeResolution();
             if (aheadLength < timeResolution) {
                 // This is a zero step size iteration.
                 // TESTIT: simultaneous events from the outside model drives
