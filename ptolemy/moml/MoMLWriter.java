@@ -373,12 +373,11 @@ public class MoMLWriter extends Writer {
                         toplevel = (CompositeEntity)
                             _reflectionParser.parse(source);
                     } catch (Exception ex) {
-                        throw new InternalErrorException("Attempt "
-                                + "to create an instance of "
+                        throw new InternalErrorException(null, ex,
+                                "Attempt to create an instance of "
                                 + deferredClass + " failed because "
                                 + "it does not have a Workspace "
-                                + "constructor.  Original error:\n"
-                                + ex.getMessage());
+                                + "constructor.");
                     }
                     if (object instanceof Attribute) {
                         deferredObject =
