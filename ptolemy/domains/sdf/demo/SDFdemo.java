@@ -8,10 +8,11 @@ import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.sdf.lib.*;
 import java.util.Enumeration;
 
-import gui.DynamicGraphView;
-
 import ptolemy.domains.sdf.kernel.*;
 
+/**
+ * @version $Id$
+ */
 public class SDFdemo {
 
     private SDFRamp ramp;
