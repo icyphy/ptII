@@ -1,4 +1,4 @@
-/* A CTActor that wrap a Saber subsystem
+/* An actor that wrap a Saber subsystem
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -34,6 +34,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import ptolemy.data.expr.Parameter;
 import java.util.*;
 import java.io.*;
@@ -49,13 +50,12 @@ For each output port, there is one parameter, the nodeId.
 @author Jie Liu, William Wu
 @version $Id$
 */
-public class CTSaberSubsys extends CTActor 
+public class CTSaberSubsys extends TypedAtomicActor 
     implements IPCInterface, CTDynamicActor{
     
     /** Construct the actor. Default implementation has no 
      *  input port, no output port. The ports can be added by
      *  creating new port with this actor as the container. 
-     * @see ptolemy.domains.ct.kernel.CTActor
      * @param container The TypedCompositeActor this star belongs to
      * @param name The name
      * @exception NameDuplicationException another star already had this name
@@ -65,10 +65,10 @@ public class CTSaberSubsys extends CTActor
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         _netlist = new String("saber");
-        _paramNetlist = new CTParameter(this, "Netlist",
+        _paramNetlist = new Parameter(this, "Netlist",
                 new StringToken(_netlist));
         _innerStep = new String("10u");
-        _paramInnerStep = new CTParameter(this, "InnerStepSize",
+        _paramInnerStep = new Parameter(this, "InnerStepSize",
                 new StringToken(_innerStep));
     }
 
@@ -409,7 +409,7 @@ public class CTSaberSubsys extends CTActor
             super._addPort(p);
             String portname = p.getName();
             String paramname = portname + "ToolVar";
-            new CTParameter(this, paramname, 
+            new Parameter(this, paramname, 
                     new StringToken("saber_variable_here"));
     } 
 
@@ -499,9 +499,9 @@ public class CTSaberSubsys extends CTActor
 
     //parameters
     private String _netlist;
-    private CTParameter _paramNetlist;
+    private Parameter _paramNetlist;
     private String _innerStep;
-    private CTParameter _paramInnerStep;
+    private Parameter _paramInnerStep;
 
     //protential output
     private int _numout;

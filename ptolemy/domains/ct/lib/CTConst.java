@@ -34,6 +34,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -45,12 +46,10 @@ set in the setParam method. If the "value" is not set, the default
 value is 0.
 @author Jie Liu
 @version $Id$
-@see pt.domains.ct.kernel.CTActor
 */
-public class CTConst extends CTActor {
+public class CTConst extends TypedAtomicActor {
     /** Construct the CTConst star. This actor is not a dynamic actor.
      *  The default output value is 0.
-     * @see CTActor#CTActor()
      * @param container The CTSubSystem this star belongs to
      * @param name The name.
      * @exception NameDuplicationException Other star already had this name
@@ -64,7 +63,7 @@ public class CTConst extends CTActor {
         output.setOutput(true);
         output.setDeclaredType(DoubleToken.class);
         _value = (double)0.0;
-        _paramValue = new CTParameter(this, "Value", new DoubleToken(_value));
+        _paramValue = new Parameter(this, "Value", new DoubleToken(_value));
     }
 
 
@@ -96,6 +95,6 @@ public class CTConst extends CTActor {
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
-    private CTParameter _paramValue;
+    private Parameter _paramValue;
     private double _value;
 }

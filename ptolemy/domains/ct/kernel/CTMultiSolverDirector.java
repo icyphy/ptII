@@ -70,7 +70,6 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
      */
     public CTMultiSolverDirector () {
         super();
-        _initParameters();
     }
 
     /** Construct a CTMultiSolverDirector in the default workspace with
@@ -84,7 +83,6 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
      */
     public CTMultiSolverDirector (String name) {
         super(name);
-        _initParameters();
     }
 
     /** Construct a director in the given workspace with the given name.
@@ -99,11 +97,34 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
      */
     public CTMultiSolverDirector (Workspace workspace, String name) {
         super(workspace, name);
-        _initParameters();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to a change in an attribute. If the changed attribute matches
+     *  a parameter of the director, then the coresponding private copy of the
+     *  parameter value will be updated.
+     *  @param param The changed parameter.
+     *  @exception IllegalActionException If the new solver that is specified
+     *   is not valid.
+     */
+    public void attributeChanged(Parameter param)
+            throws IllegalActionException {
+        if(param == _paramDefaultODESolver) {
+            _debug("default solver updating.");
+            _defaultsolverclass = ((StringToken)param.getToken()).stringValue();
+            _defaultSolver = _instantiateODESolver(_defaultsolverclass);
+        } else if (param == _paramBreakpointODESolver) {
+            _debug("breakpoint solver updating.");
+            _breakpointsolverclass =
+                    ((StringToken)param.getToken()).stringValue();
+            _breakpointSolver =
+                    _instantiateODESolver(_breakpointsolverclass);
+        } else {
+            super.attributeChanged(param);
+        }
+    }
 
     /** Return the default ODE solver.
      *  @return The default ODE solver
@@ -133,35 +154,31 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
         fireAt(null, getCurrentTime());
     }
 
-    /** Update given parameter. If the parameter does not exist, 
-     *  throws an exception.
-     *  @param param The parameter.
-     *  @exception IllegalActionException If the parameter does not exist.
-     */
-    public void updateParameter(Parameter param)
-            throws IllegalActionException {
-        if(param == _paramDefaultODESolver) {
-            if(VERBOSE) {
-                System.out.println("default solver updating.");
-            }
-            _defaultsolverclass =
-            ((StringToken)param.getToken()).stringValue();
-            _defaultSolver = _instantiateODESolver(_defaultsolverclass);
-        } else if (param == _paramBreakpointODESolver) {
-            if(VERBOSE) {
-                System.out.println("breakpoint solver updating.");
-            }
-            _breakpointsolverclass =
-            ((StringToken)param.getToken()).stringValue();
-            _breakpointSolver =
-            _instantiateODESolver(_breakpointsolverclass);
-        } else {
-            super.updateParameter(param);
-        }
-    }
-
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
+
+    /** Initialize parameters to their default values. */
+    protected void _initParameters() {
+        super._initParameters();
+        try {
+            _defaultsolverclass=
+                "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver";
+            _paramDefaultODESolver = (Parameter)getAttribute("ODESolver");
+            _paramDefaultODESolver.setToken(
+                    new StringToken(_defaultsolverclass));
+            _breakpointsolverclass=
+                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver";
+            _paramBreakpointODESolver = new Parameter(
+                this, "BreakpointODESolver",
+                new StringToken(_breakpointsolverclass));
+        } catch (IllegalActionException e) {
+            //Should never happens. The parameters are always compatible.
+            throw new InternalErrorException("Parameter creation error.");
+        } catch (NameDuplicationException ex) {
+            throw new InvalidStateException(this,
+                    "Parameter name duplication.");
+        }
+    }
 
     /** clear obsolete breakpoints, switch to breakpointODESolver if this
      *  is the first fire after a breakpoint, and adjust step sizes
@@ -188,10 +205,8 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
                     breakPoints.removeFirst();
                     setCurrentODESolver(_breakpointSolver);
                     setCurrentStepSize(getMinStepSize());
-                    if(DEBUG) {
-                        System.out.println(getFullName() + 
+                    _debug(getFullName() + 
                                 "IN BREAKPOINT iteration.");
-                    }
                     _setIsBPIteration(true);
                     break;
                 } else {
@@ -232,41 +247,18 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
         }
     }
     
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                      ////
-    private void _initParameters() {
-        try {
-            _defaultsolverclass=
-                "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver";
-            _paramDefaultODESolver = (CTParameter)getAttribute("ODESolver");
-            _paramDefaultODESolver.setToken(
-                    new StringToken(_defaultsolverclass));
-            _breakpointsolverclass=
-                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver";
-            _paramBreakpointODESolver = new CTParameter(
-                this, "BreakpointODESolver",
-                new StringToken(_breakpointsolverclass));
-        } catch (IllegalActionException e) {
-            //Should never happens. The parameters are always compatible.
-            throw new InternalErrorException("Parameter creation error.");
-        } catch (NameDuplicationException ex) {
-            throw new InvalidStateException(this,
-                    "Parameter name duplication.");
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // parameter of default ODE solver
-    private CTParameter _paramDefaultODESolver;
+    private Parameter _paramDefaultODESolver;
     // The classname of the default ODE solver
     private String _defaultsolverclass;
     // The default solver.
     private ODESolver _defaultSolver = null;
 
     // parameter of breakpoint ODE solver
-    private CTParameter _paramBreakpointODESolver;
+    private Parameter _paramBreakpointODESolver;
     // The classname of the default ODE solver
     private String _breakpointsolverclass;
     // The default solver.

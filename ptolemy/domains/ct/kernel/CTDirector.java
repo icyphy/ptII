@@ -104,18 +104,13 @@ director dependent.
 @version $Id$
 @see ptolemy.actor.Director
 */
-public abstract class CTDirector extends StaticSchedulingDirector
-        implements ParameterListener{
+public abstract class CTDirector extends StaticSchedulingDirector {
 
-    public static  boolean VERBOSE = false;
-    public static  boolean DEBUG = false;
     public static  boolean STAT = true;
     public static int NSTEP = 0;
     public static int NFUNC = 0;
     public static int NFAIL = 0;
     public static int NROLL = 0;
-
-
 
     /** Construct a CTDirector with no name and no Container.
      *  All parameters take their default values. The scheduler
@@ -179,14 +174,44 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    ////tentative methods
-    public void setVERBOSE(boolean v) {
-        VERBOSE = v;
+
+    /** React to a change in an attribute. If the changed atrribute matches
+     *  a parameter of the director, then the coresponding private copy of the
+     *  parameter value will be updated.
+     *  @param param The changed parameter.
+     */
+    public void attributeChanged(Attribute attr) {
+        _debug(attr.getName() + " updating.");
+        if(attr == _paramStopTime) {
+            Parameter param = (Parameter)attr;
+            setStopTime(((DoubleToken)param.getToken()).doubleValue());
+        } else if(attr == _paramInitStepSize) {
+            Parameter param = (Parameter)attr;
+            _initStepSize = ((DoubleToken)param.getToken()).doubleValue();
+        } else if(attr == _paramStartTime) {
+            Parameter param = (Parameter)attr;
+            _startTime = ((DoubleToken)param.getToken()).doubleValue();
+        } else if(attr == _paramLTETolerance) {
+            Parameter param = (Parameter)attr;
+            _lteTolerance = ((DoubleToken)param.getToken()).doubleValue();
+        } else if(attr == _paramMinStepSize) {
+            Parameter param = (Parameter)attr;
+            _minStepSize = ((DoubleToken)param.getToken()).doubleValue();
+        } else if(attr == _paramMaxStepSize) {
+            Parameter param = (Parameter)attr;
+            _maxStepSize = ((DoubleToken)param.getToken()).doubleValue();
+        } else if(attr == _paramValueResolution) {
+            Parameter param = (Parameter)attr;
+            _valueResolution = ((DoubleToken)param.getToken()).doubleValue();
+        } else if(attr == _paramTimeResolution) {
+            Parameter param = (Parameter)attr;
+            _timeResolution = ((DoubleToken)param.getToken()).doubleValue();
+        } else if(attr == _paramMaxIterations) {
+            Parameter param = (Parameter)attr;
+            _maxIterations = ((IntToken)param.getToken()).intValue();
+        }
     }
 
-    public void setDEBUG(boolean d) {
-        DEBUG = d;
-    }
     /** Return the break point table.
      *  @return The break point table.
      */
@@ -333,7 +358,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             return;
         }
         */
-        // System.out.println(this.getFullName() + "Registing breakpoint at "+ 
+        // _debug(this.getFullName() + "Registing breakpoint at "+ 
         //        time);
         // check if the time is before the current time;
         if(time < getCurrentTime()-getTimeResolution()) {
@@ -359,110 +384,6 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     public Receiver newReceiver() {
         return new CTReceiver();
-    }
-
-    /** If parameter changed, queue the event.
-     *  FIXME: Merge to mutation handling.
-     */
-    public void parameterChanged(ParameterEvent e) {
-        if(VERBOSE) {
-            System.out.println("Parameter Changed.");
-        }
-        if(_parameterEvents == null) {
-            _parameterEvents = new LinkedList();
-        }
-        _parameterEvents.insertLast(e);
-    }
-
-    /** Throw a InvalidStateException if any of the parameters are deleted.
-     *  FIXME: Merge to mutation handling.
-     */
-    public void parameterRemoved(ParameterEvent e) {
-        throw new InvalidStateException(this,
-            "Critical Parameter deleted");
-    }
-
-    /** Update changed parameters. The queued parameter change events
-     *  will be processed in their happening order.
-     *  @exception IllegalActionException If throw by creation of some
-     *       parameters.
-     *  FIXME: Merge to mutation handling
-     */
-    public void updateParameters() throws IllegalActionException {
-        LinkedList pEvents = _getParameterEvents();
-        if((pEvents != null )&& (!pEvents.isEmpty())) {
-            if(DEBUG) {
-                System.out.println(" # of events = "+pEvents.size());
-            }
-            Enumeration pes = pEvents.elements();
-            while(pes.hasMoreElements()) {
-                ParameterEvent event = (ParameterEvent) pes.nextElement();
-                 Parameter param = event.getParameter();
-                 updateParameter(param);
-             }
-             pEvents.clear();
-         }
-     }
-
-    /** Update a changed paramter. If the changed parameter name matches
-     *  the name of a parameter of the director, then the coresponding
-     *  parameter value will be updated. Otherwise, throw an exception.
-     *  @param param The changed parameter.
-     *  @exception IllegalActionException If the parameter name is not
-     *     found.
-     *  FIXME: MERGE TO mutation handling
-     */
-    public void updateParameter(Parameter param)
-            throws IllegalActionException {
-        if(param == _paramStopTime) {
-            if(VERBOSE) {
-                System.out.println("StopTime updating.");
-            }
-            setStopTime(((DoubleToken)param.getToken()).doubleValue());
-        } else if(param == _paramInitStepSize) {
-            if(VERBOSE) {
-                System.out.println("initStepSize updating.");
-            }
-            _initStepSize =
-            ((DoubleToken)param.getToken()).doubleValue();
-        } else if(param == _paramStartTime) {
-            if(VERBOSE) {
-                System.out.println("starttime updating.");
-            }
-            _startTime = ((DoubleToken)param.getToken()).doubleValue();
-        } else if(param == _paramLTETolerance) {
-            if(VERBOSE) {
-                System.out.println("LTE tolerant updating.");
-            }
-            _lteTolerance = ((DoubleToken)param.getToken()).doubleValue();
-        } else if(param == _paramMinStepSize) {
-            if(VERBOSE) {
-                System.out.println("minstep updating.");
-            }
-            _minStepSize =
-            ((DoubleToken)param.getToken()).doubleValue();
-        } else if(param == _paramMaxStepSize) {
-            if(VERBOSE) {
-                System.out.println("maxstep updating.");
-            }
-            _maxStepSize =
-            ((DoubleToken)param.getToken()).doubleValue();
-        } else if(param == _paramValueResolution) {
-            _valueResolution =
-            ((DoubleToken)param.getToken()).doubleValue();
-        } else if(param == _paramTimeResolution) {
-            _timeResolution =
-            ((DoubleToken)param.getToken()).doubleValue();
-        } else if(param == _paramMaxIterations) {
-            _maxIterations =
-            ((IntToken)param.getToken()).intValue();
-        } else {
-            if (VERBOSE) {
-                System.out.println("Unknowparameter: "+param.getName());
-            }
-            throw new IllegalActionException(this, param,
-                " Unknown parameter.");
-        }
     }
 
     /** set the given solver to be the current ODE Solver. If the solver
@@ -529,13 +450,51 @@ public abstract class CTDirector extends StaticSchedulingDirector
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** Return the parameter event queue.
-     *  @return The parameter event queue.
+    /** Create and initialize all parameters to their default values.
      */
-    protected LinkedList _getParameterEvents() {
-        return _parameterEvents;
-    }
+    protected void _initParameters() {
+        try {
+            _startTime = 0.0;
+            _stopTime = 1.0;
+            _initStepSize = 0.1;
+            _minStepSize = 1e-5;
+            _maxStepSize = 1.0;
+            _maxIterations = 20;
+            _lteTolerance = 1e-4;
+            _valueResolution = 1e-6;
+            _timeResolution = 1e-10;
 
+
+            _paramStartTime = new Parameter(
+                this, "StartTime", new DoubleToken(_startTime));
+            _paramStopTime = new Parameter(
+                this, "StopTime", new DoubleToken(_stopTime));
+            _paramInitStepSize = new Parameter(
+                this, "InitialStepSize", new DoubleToken(_initStepSize));
+            _paramMinStepSize = new Parameter(
+                this, "MinimumStepSize", new DoubleToken(_minStepSize));
+             _paramMaxStepSize = new Parameter(
+                this, "MaximumStepSize", new DoubleToken(_maxStepSize));
+            _paramMaxIterations = new Parameter(
+                this, "MaximumIterationsPerStep", 
+                new IntToken(_maxIterations));
+            _paramLTETolerance =  new Parameter(
+                this, "LocalTrancationErrorTolerance",
+                new DoubleToken(_lteTolerance));
+            _paramValueResolution =  new Parameter(
+                this, "ConvergeValueResolution", 
+                new DoubleToken(_valueResolution));
+            _paramTimeResolution= new Parameter(
+                this, "TimeResolution", new DoubleToken(_timeResolution));
+
+        } catch (IllegalActionException e) {
+            //Should never happens. The parameters are always compatible.
+            throw new InternalErrorException("Parameter creation error.");
+        } catch (NameDuplicationException ex) {
+            throw new InvalidStateException(this,
+                    "Parameter name duplication.");
+        }
+    }
 
     /** Instantiate ODESolver from its classname. Given the solver's full 
      *  class name, this method will try to inistantiate it by looking
@@ -547,28 +506,17 @@ public abstract class CTDirector extends StaticSchedulingDirector
     protected ODESolver _instantiateODESolver(String solverclass)
             throws IllegalActionException {
         ODESolver newsolver;
-        if(VERBOSE) {
-            System.out.println("instantiating solver..."+solverclass);
-        }
+        _debug("instantiating solver..."+solverclass);
         try {
             Class solver = Class.forName(solverclass);
             newsolver = (ODESolver)solver.newInstance();
         } catch(ClassNotFoundException e) {
-            if(DEBUG) {
-                System.out.println("solver class not found" + e.getMessage());
-            }
             throw new IllegalActionException( this, "ODESolver: "+
                 solverclass + " not found.");
         } catch(InstantiationException e) {
-            if(DEBUG) {
-                System.out.println("solver instantiate error" + e.getMessage());
-            }
             throw new IllegalActionException( this, "ODESolver: "+
                 solverclass + " instantiation failed.");
         } catch(IllegalAccessException e) {
-            if(DEBUG) {
-                System.out.println("solver not accessible" + e.getMessage());
-            }
             throw new IllegalActionException( this, "ODESolver: "+
                 solverclass + " not accessible.");
         }
@@ -594,52 +542,6 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
-    /** Create and initialize all the parameters. All parameters take
-     *  their default values.
-     */
-    private void _initParameters() {
-        try {
-            _startTime = 0.0;
-            _stopTime = 1.0;
-            _initStepSize = 0.1;
-            _minStepSize = 1e-5;
-            _maxStepSize = 1.0;
-            _maxIterations = 20;
-            _lteTolerance = 1e-4;
-            _valueResolution = 1e-6;
-            _timeResolution = 1e-10;
-
-
-            _paramStartTime = new CTParameter(
-                this, "StartTime", new DoubleToken(_startTime));
-            _paramStopTime = new CTParameter(
-                this, "StopTime", new DoubleToken(_stopTime));
-            _paramInitStepSize = new CTParameter(
-                this, "InitialStepSize", new DoubleToken(_initStepSize));
-            _paramMinStepSize = new CTParameter(
-                this, "MinimumStepSize", new DoubleToken(_minStepSize));
-             _paramMaxStepSize = new CTParameter(
-                this, "MaximumStepSize", new DoubleToken(_maxStepSize));
-            _paramMaxIterations = new CTParameter(
-                this, "MaximumIterationsPerStep", 
-                new IntToken(_maxIterations));
-            _paramLTETolerance =  new CTParameter(
-                this, "LocalTrancationErrorTolerance",
-                new DoubleToken(_lteTolerance));
-            _paramValueResolution =  new CTParameter(
-                this, "ConvergeValueResolution", 
-                new DoubleToken(_valueResolution));
-            _paramTimeResolution= new CTParameter(
-                this, "TimeResolution", new DoubleToken(_timeResolution));
-
-        } catch (IllegalActionException e) {
-            //Should never happens. The parameters are always compatible.
-            throw new InternalErrorException("Parameter creation error.");
-        } catch (NameDuplicationException ex) {
-            throw new InvalidStateException(this,
-                    "Parameter name duplication.");
-        }
-    }
 
     /** Set the fire begin time.
      *  @param fbt Fire begin time.
@@ -655,15 +557,15 @@ public abstract class CTDirector extends StaticSchedulingDirector
     private ODESolver _currentSolver = null;
 
     // parameters.
-    private CTParameter _paramStartTime;
-    private CTParameter _paramStopTime;
-    private CTParameter _paramInitStepSize;
-    private CTParameter _paramMinStepSize;
-    private CTParameter _paramMaxStepSize;    
-    private CTParameter _paramMaxIterations;
-    private CTParameter _paramLTETolerance;
-    private CTParameter _paramValueResolution;
-    private CTParameter _paramTimeResolution;
+    private Parameter _paramStartTime;
+    private Parameter _paramStopTime;
+    private Parameter _paramInitStepSize;
+    private Parameter _paramMinStepSize;
+    private Parameter _paramMaxStepSize;    
+    private Parameter _paramMaxIterations;
+    private Parameter _paramLTETolerance;
+    private Parameter _paramValueResolution;
+    private Parameter _paramTimeResolution;
 
 
     //values
@@ -680,9 +582,6 @@ public abstract class CTDirector extends StaticSchedulingDirector
     //indicate whether this is a breakpoint iteration.
     private boolean _bpIteration = false;
     
-    // List of parameter change events.
-    private LinkedList _parameterEvents = null;
-
     // Simulation progress variables.
     private double _currentTime;
     private double _currentStepSize;

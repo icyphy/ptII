@@ -95,9 +95,7 @@ public class BackwardEulerSolver extends FixedStepSolver
      *  class. May be needed by the derived class.
      */
     public boolean resolveStates() throws IllegalActionException {
-        if(VERBOSE) {
-            System.out.println("BE: resolveState().");
-        }
+        _debug("BE: resolveState().");
         CTDirector dir = (CTDirector)getContainer();
         if (dir == null) {
             throw new IllegalActionException( this,
@@ -113,9 +111,7 @@ public class BackwardEulerSolver extends FixedStepSolver
         Enumeration actors = sch.dynamicActorSchedule();
         while(actors.hasMoreElements()) {
             CTDynamicActor next = (CTDynamicActor)actors.nextElement();
-            if(DEBUG) {
-                System.out.println("Guessing..."+((Nameable)next).getName());
-            }
+            _debug("Guessing..."+((Nameable)next).getName());
             next.emitTentativeOutputs();
         }
         _setConverge(false);
@@ -128,17 +124,13 @@ public class BackwardEulerSolver extends FixedStepSolver
             actors = sch.stateTransitionSchedule();
             while(actors.hasMoreElements()) {
                 Actor next = (Actor)actors.nextElement();
-                if(DEBUG) {
-                    System.out.println("Firing..."+((Nameable)next).getName());
-                }
+                _debug("Firing..."+((Nameable)next).getName());
                 next.fire();
             }
             actors = sch.dynamicActorSchedule();
             while(actors.hasMoreElements()) {
                 Actor next = (Actor)actors.nextElement();
-                if(DEBUG) {
-                    System.out.println("Refiring..."+((Nameable)next).getName());
-                }
+                _debug("Refiring..."+((Nameable)next).getName());
                 next.fire();
             }
             if(iterations++ > dir.getMaxIterations()) {

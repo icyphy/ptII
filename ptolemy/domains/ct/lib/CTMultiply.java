@@ -43,9 +43,8 @@ Output the multiplication of all the inputs. Multi-input single output.
 @author Jie Liu
 @version  $Id$
 */
-public class CTMultiply extends CTActor{
+public class CTMultiply extends TypedAtomicActor {
     /** Construct the multiplexer. Multi-input, single output, Nondynamic.
-     * @see pt.domains.ct.kernel.CTActor
      * @param container The CTSubSystem this star belongs to
      * @param name The name
      * @exception NameDuplicationException another star already had this name

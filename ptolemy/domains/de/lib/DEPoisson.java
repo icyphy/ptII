@@ -69,12 +69,21 @@ public class DEPoisson extends DEActor {
         output = new TypedIOPort(this, "output", false, true);
         meantime = new Parameter(this, "lambda", new DoubleToken(0.1));
         outputvalue = new Parameter(this, "value");
-        // Create a parameter listener
-        meantime.addParameterListener(new LambdaListener());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to a change in a parameter.  This method is called by
+     *  a contained parameter when its value changes. The method updates
+     *  private variables that cache the parameter values.
+     *  @param attribute The attribute that changed.
+     */
+    public void attributeChanged(Attribute attribute) {
+        if (attribute == meantime) {
+            _lambda = ((DoubleToken)meantime.getToken()).doubleValue();
+        }
+    }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the ports and parameters.
@@ -87,7 +96,6 @@ public class DEPoisson extends DEActor {
 	    newobj.output = (TypedIOPort)newobj.getPort("output");
 	    newobj.outputvalue = (Parameter)newobj.getAttribute("outputvalue");
 	    newobj.meantime = (Parameter)newobj.getAttribute("meantime");
-            newobj.meantime.addParameterListener(new LambdaListener());
 	    return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -128,7 +136,12 @@ public class DEPoisson extends DEActor {
     // FIXME: This should be simplified when infrastructure support improves.
     public Enumeration typeConstraints() {
 	if (outputvalue.getToken() == null) {
-	    outputvalue.setToken(new BooleanToken(true));
+            try {
+                outputvalue.setToken(new BooleanToken(true));
+            } catch (IllegalActionException ex) {
+                // Should not occur (no type constraints)
+                throw new InternalErrorException(ex.getMessage());
+            }
 	}
 	LinkedList result = new LinkedList();
 	Class paramType = outputvalue.getToken().getClass();
@@ -148,30 +161,7 @@ public class DEPoisson extends DEActor {
     public Parameter outputvalue;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    private class LambdaListener implements ParameterListener {
-        public void parameterChanged(ParameterEvent event) {
-            _lambda = ((DoubleToken)meantime.getToken()).doubleValue();
-        }
-        public void parameterRemoved(ParameterEvent event) {
-        }
-    }
-
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private double _lambda;            
 }
-
-
-
-
-
-
-
-
-
-
-

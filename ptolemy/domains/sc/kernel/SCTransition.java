@@ -268,7 +268,14 @@ public class SCTransition extends ComponentRelation {
         if (_te == null) {
             _createVarLists();
         }
-        _te.setExpression(te);
+        try {
+            _te.setExpression(te);
+        } catch (IllegalActionException ex) {
+            // FIXME: Is this the right thing to do?  This exception will
+            // be thrown if _te has variables whose expressions depend on it,
+            // and the given expression for _te cannot be evaluated.
+            throw new InternalErrorException(ex.getMessage());
+        }
         _teSet = true;
     }
 
@@ -278,7 +285,15 @@ public class SCTransition extends ComponentRelation {
         if (_tc == null) {
             _createVarLists();
         }
-        _tc.setExpression(tc);
+        try {
+            _tc.setExpression(tc);
+        } catch (IllegalActionException ex) {
+            // FIXME: Is this the right thing to do?  This exception will
+            // be thrown if _te has variables whose expressions depend on it,
+            // and the given expression for _te cannot be evaluated.
+            throw new InternalErrorException(ex.getMessage());
+        }
+
         _tcSet = true;
     }
 
@@ -355,7 +370,7 @@ public class SCTransition extends ComponentRelation {
             Variable var = new Variable(_actions, name);
             if (expr == null) {
                 try {
-                    var.setType(Class.forName("ptolemy.data.Token"));
+                    var.setTypeEquals(Class.forName("ptolemy.data.Token"));
                     var.setToken(new ptolemy.data.Token());
                 } catch (ClassNotFoundException ex) {
                     // ignore for now
@@ -365,6 +380,7 @@ public class SCTransition extends ComponentRelation {
             }
         } catch (IllegalActionException ex) {
             // this should not happen
+            throw new InternalErrorException(ex.getMessage());
         }
     }
 
@@ -380,7 +396,7 @@ public class SCTransition extends ComponentRelation {
             if (expr == null) {
                 // We can just forbid expr to be null.
                 try {
-                    var.setType(Class.forName("ptolemy.data.Token"));
+                    var.setTypeEquals(Class.forName("ptolemy.data.Token"));
                     var.setToken(new ptolemy.data.Token());
                 } catch (ClassNotFoundException ex) {
                     // ignore for now
@@ -390,6 +406,7 @@ public class SCTransition extends ComponentRelation {
             }
         } catch (IllegalActionException ex) {
             // this should not happen
+            throw new InternalErrorException(ex.getMessage());
         }
     }
 

@@ -176,6 +176,13 @@ public final class Manager extends NamedObj implements Runnable {
         return _toplevel;
     }
 
+    /** Indicate that resolved types in the system may no longer be valid.
+     *  This will force type resolution to be redone on the next iteration.
+     */
+    public void invalidateResolvedTypes() {
+        _typeResolved = false;
+    }
+
     /** If an execution is currently running, then set a flag requesting that
      *  execution pause at the next available opportunity between toplevel
      *  iterations.   When the pause flag is detected, the
@@ -513,14 +520,10 @@ public final class Manager extends NamedObj implements Runnable {
         _toplevel = ca;
     }
 
-
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /**
-     * Propagate the execution event to all the execution listeners.
+    /** Propagate the execution event to all the execution listeners.
      */
     private void _fireExecutionEvent(_ExecutionEventType type,
             ExecutionEvent event) {
@@ -609,9 +612,7 @@ public final class Manager extends NamedObj implements Runnable {
         }
     }
 
-
-
-    /** Check if write access will be needed in the workspace during an
+    /** Check whether write access will be needed in the workspace during an
      *  iteration. An iteration consists of invocations of the prefire(),
      *  fire(), and postfire() methods of the top level composite actor in
      *  that order.
@@ -689,6 +690,6 @@ public final class Manager extends NamedObj implements Runnable {
     // Listeners for ExecutionEvent.
     private HashedSet _ExecutionListeners;
 
-    // FIXME: a hack until mutation got implemented.
+    // An indicator of whether type resolution needs to be done.
     private boolean _typeResolved = false;
 }

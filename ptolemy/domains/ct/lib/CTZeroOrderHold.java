@@ -31,6 +31,7 @@ import ptolemy.domains.ct.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import java.util.Enumeration;
 
 
@@ -48,16 +49,16 @@ receivers of the port its output are connected.
 @author Jie Liu
 @version $Id$
 */
-public class CTZeroOrderHold extends CTActor 
+public class CTZeroOrderHold extends TypedAtomicActor 
     implements CTEventInterpreter{
 
     public static final boolean DEBUG = false;
 
-    /** Construct a CTActor in the specified container with the specified
+    /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
-     *  A CTActor can be either dynamic, or not.  It must be set at the
+     *  The actor can be either dynamic, or not.  It must be set at the
      *  construction time and can't be changed thereafter.
      *  A dynamic actor will produce a token at its initialization phase.
      *

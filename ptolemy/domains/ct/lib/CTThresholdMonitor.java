@@ -33,6 +33,7 @@ import ptolemy.domains.ct.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import java.util.Enumeration;
 
@@ -43,7 +44,7 @@ Minitor integration steps so that the threshold is not crossed in one step.
 @author  Jie Liu
 @version $Id$
 */
-public class CTThresholdMonitor extends CTActor 
+public class CTThresholdMonitor extends TypedAtomicActor 
         implements CTStepSizeControlActor {
     /** Constructor
      */	
@@ -57,11 +58,11 @@ public class CTThresholdMonitor extends CTActor
         input.setDeclaredType(DoubleToken.class);
         
         _thWidth = (double)1e-2;
-        _paramThWidth = new CTParameter(this, "ThresholdWidth", 
+        _paramThWidth = new Parameter(this, "ThresholdWidth", 
                 new DoubleToken(_thWidth));
 
         _thCenter = (double)0.0;
-        _paramThCenter = new CTParameter(this, "ThresholdCenter", 
+        _paramThCenter = new Parameter(this, "ThresholdCenter", 
                 new DoubleToken(_thCenter));
 
         _lowerBound = -5e-3;
@@ -153,10 +154,10 @@ public class CTThresholdMonitor extends CTActor
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
 
-    private CTParameter _paramThWidth;
+    private Parameter _paramThWidth;
     private double _thWidth;
 
-    private CTParameter _paramThCenter;
+    private Parameter _paramThCenter;
     private double _thCenter;
 
     private boolean _first;

@@ -83,10 +83,8 @@ public class SimpleHS {
             CTRamp ramp = new CTRamp(sys, "Ramp");
             Parameter p = (Parameter)ramp.getAttribute("InitialValue");
             p.setToken(new DoubleToken(1.0));
-            p.parameterChanged(null);
             p = (Parameter)ramp.getAttribute("Slope");
             p.setToken(new DoubleToken(0.0));
-            p.parameterChanged(null);
 
             // the plot
             CTPlot plot = new CTPlot(sys, "Plot");
@@ -259,65 +257,49 @@ public class SimpleHS {
            
             // CT director parameters
             Parameter initStep = (Parameter)ctIncDir.getAttribute("InitialStepSize");
-            initStep.setExpression("0.01");
-            initStep.parameterChanged(null);
+            initStep.setToken(new DoubleToken(0.01));
             Parameter minStep = (Parameter)ctIncDir.getAttribute("MinimumStepSize");
-            minStep.setExpression("1e-3");
-            minStep.parameterChanged(null);
+            minStep.setToken(new DoubleToken(1e-3));
             Parameter bpsol = (Parameter)ctIncDir.getAttribute("BreakpointODESolver");
             StringToken tok = new StringToken("ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             bpsol.setToken(tok);
-            bpsol.parameterChanged(null);
             Parameter dfsol = (Parameter)ctIncDir.getAttribute("ODESolver");
             tok = new StringToken("ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
             dfsol.setToken(tok);
-            dfsol.parameterChanged(null);
 
             //Parameter sp = (Parameter)ctIncS.getAttribute("SamplePeriod");
-            //sp.setExpression("0.1");
-            //sp.parameterChanged(null);
+            //sp.setToken(new DoubleToken(0.1));
 
             // CT director parameters
             initStep = (Parameter)ctDecDir.getAttribute("InitialStepSize");
-            initStep.setExpression("0.01");
-            initStep.parameterChanged(null);
+            initStep.setToken(new DoubleToken(0.01));
             minStep = (Parameter)ctDecDir.getAttribute("MinimumStepSize");
-            minStep.setExpression("1e-3");
-            minStep.parameterChanged(null);
+            minStep.setToken(new DoubleToken(1e-3));
             bpsol = (Parameter)ctDecDir.getAttribute("BreakpointODESolver");
             tok = new StringToken("ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             bpsol.setToken(tok);
-            bpsol.parameterChanged(null);
             dfsol = (Parameter)ctDecDir.getAttribute("ODESolver");
             tok = new StringToken("ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
             dfsol.setToken(tok);
-            dfsol.parameterChanged(null);
 
             //sp = (Parameter)ctDecS.getAttribute("SamplePeriod");
-            //sp.setExpression("0.1");
-            //sp.parameterChanged(null);
+            //sp.setToken(new DoubleToken(0.1));
             Parameter gain = (Parameter)ctGain.getAttribute("Gain");
-            gain.setExpression("-1.0");
-            gain.parameterChanged(null);
+            gain.setToken(new DoubleToken(-1.0));
 
             // CT director parameters
             initStep = (Parameter)dedir.getAttribute("InitialStepSize");
-            initStep.setExpression("0.01");
-            initStep.parameterChanged(null);
+            initStep.setToken(new DoubleToken(0.01));
             minStep = (Parameter)dedir.getAttribute("MinimumStepSize");
-            minStep.setExpression("1e-3");
-            minStep.parameterChanged(null);
+            minStep.setToken(new DoubleToken(1e-3));
             minStep = (Parameter)dedir.getAttribute("MaximumStepSize");
-            minStep.setExpression("0.05");
-            minStep.parameterChanged(null);
+            minStep.setToken(new DoubleToken(0.05));
             bpsol = (Parameter)dedir.getAttribute("BreakpointODESolver");
             tok = new StringToken("ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             bpsol.setToken(tok);
-            bpsol.parameterChanged(null);
             dfsol = (Parameter)dedir.getAttribute("ODESolver");
             tok = new StringToken("ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             dfsol.setToken(tok);
-            dfsol.parameterChanged(null);
 
 
             System.out.println(ctIncDir.getScheduler().description());

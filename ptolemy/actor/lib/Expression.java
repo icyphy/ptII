@@ -130,8 +130,10 @@ public class Expression extends TypedAtomicActor {
      *  All input ports are included, plus the <i>time</i> and
      *  <i>firing</i> variables.  If any input bears the name <i>time</i>
      *  or <i>firing</i>, then it will shadow these variables.
+     *  @exception IllegalActionException If the expression is evaluated
+     *   immediately and is invalid.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
         // NOTE: There is lots of try...catch in this code.
         // One of these, IllegalActionException, could be passed up instead.
         _variables = new NamedList();
@@ -182,7 +184,7 @@ public class Expression extends TypedAtomicActor {
         }
         String expr = ((StringToken)(expression.getToken())).stringValue();
         _expression.setExpression(expr);
-        _expression.addToScope(_variables);
+        _expression.addToScope(_variables.elements());
     }
 
     /** Evaluate the expression and broadcast its result to the output.
@@ -210,7 +212,12 @@ public class Expression extends TypedAtomicActor {
     /** Update the state.
      */
     public boolean postfire() {
-        _firing.setToken(new IntToken(_firingCount++));
+        try {
+            _firing.setToken(new IntToken(_firingCount++));
+        } catch (IllegalActionException ex) {
+            // Should not be thrown
+            throw new InternalErrorException(ex.getMessage());
+        }
         // This actor never requests termination.
         return true;
     }

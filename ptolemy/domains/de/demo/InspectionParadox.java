@@ -36,6 +36,7 @@ import java.awt.event.*;
 import java.util.Enumeration;
 
 import ptolemy.kernel.*;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.util.*;
@@ -180,8 +181,10 @@ public class InspectionParadox extends DEApplet {
 
     /** Execute the system.  This overrides the base class to read the
      *  values in the query box first and set parameters.
+     *  @exception IllegalActionException If type constraints of the
+     *   parameters have somehow been set.
      */
-    protected void _go() {
+    protected void _go() throws IllegalActionException {
         _bus.meantime.setToken
                 (new DoubleToken(_query.doubleValue("busmean")));
         _passenger1.meantime.setToken

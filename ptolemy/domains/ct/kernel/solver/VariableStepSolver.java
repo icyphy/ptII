@@ -96,22 +96,20 @@ public abstract class VariableStepSolver extends ODESolver{
                     (CTErrorControlActor)errCtrlActors.nextElement();
                 tolerable = tolerable && eca.isSuccessful();
             }
-            if(DEBUG) {
-                if(tolerable) {
-                    System.out.println("A successful step at time: " +
-                    dir.getCurrentTime() + " with step size: " +
-                    dir.getCurrentStepSize());
-                } else {
-                    if(dir.STAT) {
-                        dir.NFAIL ++;
-                    }
-                    System.out.println("Fail step at time: " +
-                    dir.getCurrentTime() + " with step size: " +
-                    dir.getCurrentStepSize());
+            if(tolerable) {
+                _debug("A successful step at time: " +
+                dir.getCurrentTime() + " with step size: " +
+                dir.getCurrentStepSize());
+            } else {
+                if(dir.STAT) {
+                    dir.NFAIL ++;
                 }
+                _debug("Fail step at time: " +
+                dir.getCurrentTime() + " with step size: " +
+                dir.getCurrentStepSize());
             }
             return tolerable;
-        }catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             throw new InvalidStateException(this,
                 "has no scheduler avaliable");
         }
@@ -164,11 +162,9 @@ public abstract class VariableStepSolver extends ODESolver{
                 + " solution at time" + dir.getCurrentTime());
         }
         dir.setCurrentStepSize(currentstep/2.0);
-        if(VERBOSE) {
-            System.out.println("restart at time: " +
+        _debug("restart at time: " +
             dir.getCurrentTime() + " with step size: " +
             dir.getCurrentStepSize());
-        }
     }
     */
 

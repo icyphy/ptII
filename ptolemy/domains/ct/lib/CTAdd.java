@@ -39,13 +39,11 @@ import ptolemy.data.*;
 /**
 An multi-input one output double precision adder (IO type: double)
 In the fire() phase, it adds all the input token and emit the sum as
-the output. Inherent other functions from the default implementation
-of CTActor.
+the output.
 @author Jie Liu
 @version $Id$
-@see ptolemy.domains.ct.kernel.CTActor
 */
-public class CTAdd extends CTActor{
+public class CTAdd extends TypedAtomicActor {
     /** Construct the adder. The adder is not dynamic.
      * @param container The CTSubSystem this adder belongs to
      * @param name The name

@@ -44,9 +44,8 @@ Consume the input token and do nothing.
 @author  Jie Liu
 @version $Id$
 */
-public class CTSink extends CTActor{
+public class CTSink extends TypedAtomicActor {
     /** Construct the sink.
-     * @see ptolemy.domains.ct.kernel.CTActor
      * @param container The CTSubSystem this star belongs to
      * @param name The name
      * @exception NameDuplicationException another star already had this name

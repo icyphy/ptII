@@ -32,17 +32,17 @@
 package ptolemy.data;
 
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.util.IllegalActionException;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// Typeable
 /**
 Interface for objects with types. This interface defines methods for
-setting and getting types and type constraints. For type resolution,
-each Typeable object must encapsulte its type in an InequalityTerm,
-this term can be obtained through getTypeTerm().
+setting and getting types and type constraints. Type constraints are
+represented as inequalities between Typeable objects.
 
-@author Yuhong Xiong, Xiaojun Liu
+@author Yuhong Xiong, Xiaojun Liu, Edward A. Lee
 $Id$
 @see ptolemy.graph.InequalityTerm
 */
@@ -55,30 +55,45 @@ public interface Typeable
      */
     Class getType();
 
-    /** Return an InequalityTerm whose value is the type of this object.
+    /** Return an InequalityTerm representing this object.
      *  @return An InequalityTerm.
      */
     InequalityTerm getTypeTerm();
 
-    /** Set the type of this object to the specified value.
-     */
-    void setType(Class type);
-
-    /** Constraint that the type of this object is equal to or greater
-     *  than the type of the specified object.
+    /** Constrain the type of this object to be equal to or greater
+     *  than the type of the argument.  Notice that this constraint
+     *  is not enforced until type resolution is done, and is not
+     *  enforced if type resolution is not done.
      */
     void setTypeAtLeast(Typeable lesser);
 
-    /** Constraint that the type of this object is the same as the
-     *  type of the specified object.
+    /** Constrain the type of this object to be equal to or less
+     *  than the argument.  Because the argument is a concrete type,
+     *  rather than a Typeable object (which may not yet have a type),
+     *  the constraint is immediately enforced.
+     *  @exception IllegalActionException If the type of this object
+     *   already violates this constraint.
      */
-    void setTypeEquals(Typeable equal);
+    void setTypeAtMost(Class type) throws IllegalActionException;
+
+    /** Set a type constraint that the type of this object equal
+     *  the specified value.
+     *  @exception IllegalActionException If the type of this object
+     *   already violates this constraint.
+     */
+    void setTypeEquals(Class type) throws IllegalActionException;
+
+    /** Constrain the type of this object to be the same as the
+     *  type of the argument.  Notice that this constraint
+     *  is not enforced until type resolution is done, and is not
+     *  enforced if type resolution is not done.
+     */
+    void setTypeSameAs(Typeable equal);
 
     /** Return the type constraints of this object.
      *  The constraints are an enumeration of inequalities.
-     *  @return an enumeration of Inequality.
+     *  @return an enumeration of instances of Inequality.
      *  @see ptolemy.graph.Inequality
      */
     Enumeration typeConstraints();
 }
-

@@ -44,9 +44,8 @@ Print the time and data of the input tokens at stdout. Single input sink.
 @author Jie Liu
 @version $Id$
 */
-public class CTPrintln extends CTActor{
+public class CTPrintln extends TypedAtomicActor {
     /** Construct the printer. Single input sink.
-     * @see ptolemy.domains.ct.kernel.CTActor
      * @param container The CTSubSystem this star belongs to
      * @param name The name
      * @exception NameDuplicationException another star already had this name

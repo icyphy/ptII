@@ -45,7 +45,7 @@ A plotter for discrete-event signals.
 @author Jie Liu, Lukito Muliadi, Edward A. Lee
 @version $Id$
 */
-public class  CTPlot extends CTActor {
+public class  CTPlot extends TypedAtomicActor {
 
     private static final boolean DEBUG = false;
 

@@ -169,8 +169,9 @@ public class HTVQApplet extends SDFApplet {
 
     /** Execute the system.  This overrides the base class to read the
      *  values in the query box first.
+     *  @exception IllegalActionException Not thrown.
      */
-    protected void _go() {
+    protected void _go() throws IllegalActionException {
         super._go();
     }
 
@@ -185,7 +186,11 @@ public class HTVQApplet extends SDFApplet {
      */
     class ParameterListener implements QueryListener {
         public void changed(String name) {
-            _go();
+            try {
+                _go();
+            } catch (Exception ex) {
+                report(ex);
+            }
         }
     }
 }

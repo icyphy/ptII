@@ -99,9 +99,7 @@ public class ImpulseBESolver extends BackwardEulerSolver {
             ).dynamicActorSchedule();
         while(actors.hasMoreElements()) {
             Actor next = (Actor)actors.nextElement();
-            if(DEBUG) {
-                System.out.println("update..."+((Nameable)next).getName());
-            }
+            _debug("update..."+((Nameable)next).getName());
             next.postfire();
         }
         dir.setCurrentStepSize(-dir.getCurrentStepSize());

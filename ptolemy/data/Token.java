@@ -89,20 +89,24 @@ public class Token {
         throw new IllegalActionException(str);
     }
 
-    /** Convert the specified token to an instance of this class.
+    /** Convert the specified token to an instance of this class, if it
+     *  is not already such an instance.
      *  Since any token is an instance of this class, no conversion is
-     *  necessary. However, this implementation does not return the
-     *  specified token, but returns a brand new instance of Token.
-     *  This is for reducing the chance of undetected error caused by
-     *  accidental use of this method by the derived class (when the
-     *  derived class fails to override this method).
-     *  @param token A Token to be converted, ignored in this implementation.
-     *  @return A new instance of Token.
+     *  necessary, so this base class method simply returns the argument.
+     *  Derived classes <i>must</i> override this method, or very subtle
+     *  errors will result.  Notice that since this is a static method,
+     *  Java does not do late binding.  That means that to convert a
+     *  token <code>t</code> to an IntToken, say, you call
+     *  <code>x.convert(t)</code>, where <code>x</code> is a reference
+     *  of type IntToken.  It cannot be a reference of type
+     *  Token, or this implementation of the method, not the one in
+     *  IntToken will be called.
+     *  @param token A Token to be converted.
+     *  @return The argument.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public static Token convert(Token token)
-	    throws IllegalActionException {
-	return new Token();
+    public static Token convert(Token token) throws IllegalActionException {
+	return token;
     }
 
     /** Return a new Token whose value is the value of this token

@@ -37,7 +37,8 @@ import ptolemy.data.expr.Variable;
 //////////////////////////////////////////////////////////////////////////
 //// PassiveVariable
 /**
-A PassiveVariable is a Variable that does not propogate its changes.
+A PassiveVariable is a Variable that does not propogate its changes to
+variables that depend on it.
 You should use this class when you wish to exercise explicit control 
 over the order of evaluation of a set of variables.
 
@@ -110,11 +111,10 @@ public class PassiveVariable extends Variable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Do nothing. This variable dose not notify its value dependents
+    /** Do nothing. This variable does not notify its value dependents
      *  when it changes value.
      */
     protected void _notifyValueDependents() {
         // Do nothing.
     }
-
 }

@@ -33,6 +33,7 @@ package ptolemy.domains.de.demo;
 import java.awt.*;
 import java.awt.event.*;
 
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.util.PtolemyApplet;
@@ -157,13 +158,10 @@ public class DEApplet extends PtolemyApplet {
 
     /** Execute the system until the stop time given by the
      *  _getStopTime() method.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected void _go() {
-        try {
-            _director.setStopTime(_getStopTime());
-        } catch (Exception ex) {
-            report("Unable to set the stop time:\n", ex);
-        }
+    protected void _go() throws IllegalActionException {
+        _director.setStopTime(_getStopTime());
         super._go();
     }
 
@@ -193,7 +191,7 @@ public class DEApplet extends PtolemyApplet {
      */
     class StopTimeBoxListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            _go();
+            start();
         }
     }
 }

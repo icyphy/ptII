@@ -84,7 +84,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
      */
     public CTMixedSignalDirector () {
         super();
-        _initParameters();
     }
 
     /** Construct a CTMixedSignalDirector in the default workspace 
@@ -99,7 +98,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
      */
     public CTMixedSignalDirector (String name) {
         super(name);
-        _initParameters();
     }
 
     /** Construct a CTMixedSignalDirector in the given workspace with
@@ -116,11 +114,26 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
      */
     public CTMixedSignalDirector (Workspace workspace, String name) {
         super(workspace, name);
-        _initParameters();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to a change in an attribute. If the changed atrribute matches
+     *  a parameter of the director, then the coresponding private copy of the
+     *  parameter value will be updated.
+     *  @param param The changed parameter.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public void attributeChanged(Parameter param)
+            throws IllegalActionException {
+        if(param == _paramRunAheadLength) {
+            _debug("run ahead time updating.");
+            _runAheadLength = ((DoubleToken)param.getToken()).doubleValue();
+        } else {
+            super.attributeChanged(param);
+        }
+    }
 
     /** Return the end time of this director's firing.
      *  
@@ -162,17 +175,14 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         if (_first) {
             _first = false;
             produceOutput();
-            updateStates();
             //return;
         }
         CompositeActor ca = (CompositeActor) getContainer();
         Director exe = ca.getExecutiveDirector(); // it may be null.
         double timeAcc = getTimeResolution();
         if (_isEventPhase()) {
-            if(VERBOSE) {
-                System.out.println(this.getFullName() + 
+            _debug(this.getFullName() + 
                         "In event phase execution.");
-            }
             _eventPhaseExecution();
             _setEventPhase(false);
             exe.fireAt(ca, exe.getCurrentTime());
@@ -190,13 +200,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             //Refine step size
             setCurrentStepSize(getSuggestedNextStepSize());
             _processBreakpoints();
-            if(DEBUG) {
-                System.out.println("Resolved stepsize: "+getCurrentStepSize() +
+            _debug("Resolved stepsize: "+getCurrentStepSize() +
                                    " One itertion from " + getCurrentTime());
-            }
             _fireOneIteration();
             if (_stopByEvent()) {
-                //System.out.println( this.getFullName() + 
+                //_debug( this.getFullName() + 
                 //        " stop by event.");
                 exe.fireAt(ca, getCurrentTime());
                 _isFireSuccessful = false;
@@ -233,32 +241,21 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
      *       no scheduler, or thrown by a contained actor.
      */
     public void initialize() throws IllegalActionException {
-        if (VERBOSE||DEBUG) {
-            System.out.println("MixedSignalDirector initialize.");
-        }
+        _debug("MixedSignalDirector initialize.");
         CompositeActor ca = (CompositeActor) getContainer();
         if (ca == null) {
-            if(DEBUG) {
-                System.out.println("Director has no container.");
-            }
+            _debug("Director has no container.");
             throw new IllegalActionException(this, "Has no container.");
         }
         CTScheduler sch = (CTScheduler)getScheduler();
         if (sch == null) {
-            if(DEBUG) {
-                System.out.println("Director does not have a scheduler.");
-            }
+            _debug("Director does not have a scheduler.");
             throw new IllegalActionException( this,
             "does not have a scheduler.");
         }
         sch.setValid(false);
         _first = true;
         if(!_isTopLevel()) {
-            // clear the parameters and make sure the outside domain
-            // parameters
-            // overwrite the local parameter (e.g. start time).
-            updateParameters();
-
             // this is an embedded director.
             // synchronize the start time and request a fire at the start time.
             Director exe = ca.getExecutiveDirector();
@@ -266,9 +263,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             setStartTime(tnow);
             exe.fireAt(ca, tnow);
         }
-        if (VERBOSE) {
-            System.out.println("Director.super initialize.");
-        }
+        _debug("Director.super initialize.");
         _initialize();
     }
 
@@ -343,9 +338,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             // ca should have beed checked in _isTopLevel()
             Director exe = ca.getExecutiveDirector();
             _outsideTime = exe.getCurrentTime();
-            if(DEBUG) {
-                System.out.println("Outside Time =" + _outsideTime);
-            }
+            _debug("Outside Time =" + _outsideTime);
             double timeAcc = getTimeResolution();
             double nextIterTime = exe.getNextIterationTime();
             double runlength = nextIterTime - _outsideTime;
@@ -355,7 +348,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
                         + " current time " + _outsideTime
                         + " next iteration time " + nextIterTime);
             }
-            //System.out.println( "Current Time " + getCurrentTime() 
+            //_debug( "Current Time " + getCurrentTime() 
             //        + "Outside domain current time " + _outsideTime
             //        + " next iteration time " + nextIterTime
             //        + "run length "+ runlength);
@@ -363,17 +356,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             // synchronization, handle round up error.
             if(runlength < timeAcc) {
                 exe.fireAt(ca, nextIterTime);
-                if(DEBUG) {
-                    System.out.println("Next iteration is too near" +
+                _debug("Next iteration is too near" +
                         " (but not sync). Request a refire at:"+nextIterTime);
-                }
                 return false;
             }
             if(Math.abs (_outsideTime -getCurrentTime()) < timeAcc) {
-                if(DEBUG) {
-                    System.out.println("Round up current time " +
+                _debug("Round up current time " +
                         getCurrentTime() + " to outside time " +_outsideTime);
-                }
                 setCurrentTime(_outsideTime);
                 // remove 
             }
@@ -383,11 +372,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             } 
             // check for roll back.
             if (_outsideTime < getCurrentTime()) {
-                if(DEBUG) {
-                    System.out.println(getName() + " rollback from: " +
+                _debug(getName() + " rollback from: " +
                         getCurrentTime() + " to: " +_knownGoodTime +
                         "due to outside time " +_outsideTime );
-                }
                 if(STAT) {
                     NROLL ++;
                 }
@@ -405,9 +392,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             // fireAt(null, _outsideTime);
             // fireAt(null, getFireEndTime());
             // Now it's guranteed that the current time is the outside time.
-            if(DEBUG) {
-                System.out.println("Fire end time="+getFireEndTime());
-            }
+            _debug("Fire end time="+getFireEndTime());
         }
         return true;
     }
@@ -422,24 +407,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
             return Double.MAX_VALUE;
         }
     } 
-
-    /** Update the given parameter. If the parameter name is MaxRunAheadLength,
-     *  update it. Otherwise pass it to the super class.
-     *  @param param The parameter to be updated.
-     *  @exception IllegalActionException If thrown by the super class.
-     */
-    public void updateParameters(Parameter param)
-            throws IllegalActionException {
-        if(param == _paramRunAheadLength) {
-            if(VERBOSE) {
-                System.out.println("run ahead time updating.");
-            }
-            _runAheadLength =
-            ((DoubleToken)param.getToken()).doubleValue();
-        } else {
-            super.updateParameter(param);
-        }
-    }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
@@ -484,10 +451,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         Enumeration memactors = scheduler.statefulActors();
         while(memactors.hasMoreElements()) {
             CTStatefulActor mem =(CTStatefulActor)memactors.nextElement();
-            if(VERBOSE) {
-                System.out.println("Restore State..."+
+            _debug("Restore State..."+
                     ((Nameable)mem).getName());
-            }
             mem.goToMarkedState();
         }
         setCurrentTime(_knownGoodTime);
@@ -507,7 +472,27 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         while(getCurrentTime() < (getOutsideTime()-getTimeResolution())) {
             _fireOneIteration();
         }
-        //System.out.println("***Catch up time"+getCurrentTime());
+        //_debug("***Catch up time"+getCurrentTime());
+    }
+
+    /** Initialize parameters in addition to the parameters inherited
+     *  from CTMultiSolverDirector. In this class the additional 
+     *  parameter is the maximum run ahead time length 
+     *  (<code>MaxRunAheadLength</code>). The default value is 1.0.
+     */
+    protected void _initParameters() {
+        super._initParameters();
+        try {
+            _runAheadLength = 1.0;
+            _paramRunAheadLength = new Parameter(this,
+                "MaxRunAheadLength", new DoubleToken(_runAheadLength));
+        } catch (IllegalActionException e) {
+            //Should never happens. The parameters are always compatible.
+            throw new InternalErrorException("Parameter creation error.");
+        } catch (NameDuplicationException ex) {
+            throw new InvalidStateException(this,
+                    "Parameter name duplication.");
+        }
     }
 
     /** Mark the current state as the known good state. Call the
@@ -519,10 +504,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         Enumeration memactors = scheduler.statefulActors();
         while(memactors.hasMoreElements()) {
             CTStatefulActor mem =(CTStatefulActor)memactors.nextElement();
-            if(VERBOSE) {
-                System.out.println("Save State..."+
+            _debug("Save State..."+
                     ((Nameable)mem).getName());
-            }
             mem.markState();
         }
         _knownGoodTime = getCurrentTime();
@@ -589,28 +572,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Initialize parameters in addition to the parameters inherited
-     *  from CTMultiSolverDirector. In this class the additional 
-     *  parameter is the maximum run ahead time length 
-     *  (<code>MaxRunAheadLength</code>). The default value is 1.0.
-     */
-    private void _initParameters() {
-        try {
-            _runAheadLength = 1.0;
-            _paramRunAheadLength = new CTParameter(this,
-                "MaxRunAheadLength", new DoubleToken(_runAheadLength));
-        } catch (IllegalActionException e) {
-            //Should never happens. The parameters are always compatible.
-            throw new InternalErrorException("Parameter creation error.");
-        } catch (NameDuplicationException ex) {
-            throw new InvalidStateException(this,
-                    "Parameter name duplication.");
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
     // version of mutation. If this version is not the workspace
     // version then every thing related to mutation need to be updated.
     private long _mutationVersion = -1;
@@ -628,7 +589,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
     private double _outsideTime;
 
     // parameter of default runaheadlength
-    private CTParameter _paramRunAheadLength;
+    private Parameter _paramRunAheadLength;
 
     // variable of runaheadlength
     private double _runAheadLength;

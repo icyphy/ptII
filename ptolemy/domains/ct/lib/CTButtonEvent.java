@@ -32,6 +32,7 @@ import ptolemy.domains.ct.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import java.util.Enumeration;
 
@@ -48,10 +49,9 @@ back to false.
 @version $Id$
 
 */
-public class CTButtonEvent extends CTActor{
+public class CTButtonEvent extends TypedAtomicActor {
     /** Construct the actor. One output of type boolean
      *  The default output value is false.
-     * @see CTActor#CTActor()
      * @param container The TypedCompositeActor this star belongs to
      * @param name The name.
      * @exception NameDuplicationException Other star already had this name
@@ -65,7 +65,7 @@ public class CTButtonEvent extends CTActor{
         output.setOutput(true);
         output.setDeclaredType(BooleanToken.class);
         _buttonClicked = false;
-        _paramButtonClicked = new CTParameter(this, "ButtonClicked",
+        _paramButtonClicked = new Parameter(this, "ButtonClicked",
                 new BooleanToken(_buttonClicked));
     }
 
@@ -107,6 +107,6 @@ public class CTButtonEvent extends CTActor{
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
-    private CTParameter _paramButtonClicked;
+    private Parameter _paramButtonClicked;
     private boolean _buttonClicked;
 }

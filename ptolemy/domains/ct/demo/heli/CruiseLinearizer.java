@@ -148,19 +148,19 @@ public class CruiseLinearizer extends CTActor{
         for(int i = 0; i< 5; i++) {
             sP = sP + _alphaP[i] + " ";
         }
-        _paramAlphaP = new CTParameter(this, "AlphaP", new StringToken(sP));
+        _paramAlphaP = new Parameter(this, "AlphaP", new StringToken(sP));
 
         String sV = new String();
         for(int i = 0; i< 4; i++) {
             sV = sV + _alphaV[i] + " ";
         }
-        _paramAlphaV = new CTParameter(this, "AlphaV", new StringToken(sV));
+        _paramAlphaV = new Parameter(this, "AlphaV", new StringToken(sV));
         
         _cVx = 5.0;
-        _paramCVx = new CTParameter(this, "CVx", new DoubleToken(_cVx));
+        _paramCVx = new Parameter(this, "CVx", new DoubleToken(_cVx));
 
         _cPz = -2.0;
-        _paramCPz = new CTParameter(this, "CPz", new DoubleToken(_cPz));
+        _paramCPz = new Parameter(this, "CPz", new DoubleToken(_cPz));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -295,16 +295,16 @@ public class CruiseLinearizer extends CTActor{
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private CTParameter _paramAlphaP;
+    private Parameter _paramAlphaP;
     private double[] _alphaP = {500.0, 650.0, 395.0,  121.0, 17.8};
 
-    private CTParameter _paramAlphaV;
+    private Parameter _paramAlphaV;
     private double[] _alphaV = {100.0, 110.0, 57.0, 12.80};
   
-    private CTParameter _paramCVx;
+    private Parameter _paramCVx;
     private double _cVx;
 
-    private CTParameter _paramCPz;
+    private Parameter _paramCPz;
     private double _cPz;
 
 }

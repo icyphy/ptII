@@ -148,13 +148,13 @@ public class HoverLinearizer extends CTActor{
         for(int i = 0; i< 5; i++) {
             s = s + _alphaP[i] + " ";
         }
-        _paramAlphaP = new CTParameter(this, "AlphaP", new StringToken(s));
+        _paramAlphaP = new Parameter(this, "AlphaP", new StringToken(s));
         
         _cPx = 0.0;
-        _paramCPx = new CTParameter(this, "CPx", new DoubleToken(_cPx));
+        _paramCPx = new Parameter(this, "CPx", new DoubleToken(_cPx));
 
         _cPz = -2.0;
-        _paramCPz = new CTParameter(this, "CPz", new DoubleToken(_cPz));
+        _paramCPz = new Parameter(this, "CPz", new DoubleToken(_cPz));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -273,13 +273,13 @@ public class HoverLinearizer extends CTActor{
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private CTParameter _paramAlphaP;
+    private Parameter _paramAlphaP;
     private double[] _alphaP = {500.0, 650.0, 395.0,  121.0, 17.8};
 
-    private CTParameter _paramCPx;
+    private Parameter _paramCPx;
     private double _cPx;
 
-    private CTParameter _paramCPz;
+    private Parameter _paramCPz;
     private double _cPz;
 
 }

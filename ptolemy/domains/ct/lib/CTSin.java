@@ -32,6 +32,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -40,10 +41,8 @@ import java.util.Enumeration;
 A sin wave source: output = A*Sin(w*t + phi) 
 @author Jie Liu
 @version %W%  %G%
-@see CTActor
-@see ptolemy.domains.ct.kernel.CTActor
 */
-public class CTSin extends CTActor {
+public class CTSin extends TypedAtomicActor {
     /** Construct the CTRamp actor, default slop 1, defalt initial value 0
      * @param container CTSubSystem this star belongs to
      * @param name The name
@@ -58,13 +57,13 @@ public class CTSin extends CTActor {
         output.setOutput(true);
         output.setDeclaredType(DoubleToken.class);
         _magnitude = 1.0;
-        _paramMagnitude =  new CTParameter(this, "Magnitude",
+        _paramMagnitude =  new Parameter(this, "Magnitude",
                 new DoubleToken(_magnitude));
         _angleFrequency = 2*Math.PI;
-        _paramAngleFrequency = new CTParameter(this, "AngleFrequency",
+        _paramAngleFrequency = new Parameter(this, "AngleFrequency",
                 new DoubleToken(_angleFrequency));
         _phase = 0.0;
-        _paramPhase =  new CTParameter(this, "Phase",
+        _paramPhase =  new Parameter(this, "Phase",
                 new DoubleToken(_phase));
     }
 
@@ -109,9 +108,9 @@ public class CTSin extends CTActor {
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
     private double _magnitude;
-    private CTParameter _paramMagnitude;
+    private Parameter _paramMagnitude;
     private double _angleFrequency;
-    private CTParameter _paramAngleFrequency;
+    private Parameter _paramAngleFrequency;
     private double _phase;
-    private CTParameter _paramPhase;
+    private Parameter _paramPhase;
 }

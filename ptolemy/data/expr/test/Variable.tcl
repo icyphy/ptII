@@ -70,7 +70,7 @@ test Variable-1.0 {Check constructors} {
 } {. workspace. .entity.id2 .entity.id1 4.5}
 
 #################################
-####
+#### scope
 #
 test Variable-2.0 {Check addition of variables to the scope} {
     set e [java::new {ptolemy.kernel.Entity String} parent]
@@ -82,9 +82,86 @@ test Variable-2.0 {Check addition of variables to the scope} {
     $var2 setExpression "param+var1"
     set list [java::new ptolemy.kernel.util.NamedList]
     $list prepend $var1
-    $var2 {addToScope ptolemy.kernel.util.NamedList} $list
+    $var2 {addToScope java.util.Enumeration} [$list elements]
     $var2 evaluate
     set tok [$var2 getToken]
     $tok stringValue
 } {3}
+
+test Variable-2.1 {Check scope with sets of params} {
+    set e [java::new {ptolemy.kernel.Entity String} E]
+    set p1 [java::new ptolemy.data.expr.Parameter $e P1 ]
+    set p2 [java::new ptolemy.data.expr.Parameter $e P2 ]
+    set p3 [java::new ptolemy.data.expr.Parameter $e P3 ]
+    enumToFullNames [[$p3 getScope] elements]
+} {.E.P1 .E.P2}
+
+test Variable-2.3 {Check expression evaluation} {
+    $p1 setExpression 1.1
+    set t [java::new {ptolemy.data.DoubleToken double} 9.9]
+    $p2 setExpression 9.8
+    $p3 setExpression "P1+P2"
+    [$p3 getToken] stringValue
+} {10.9}
+
+test Variable-2.4 {Check updating of Variables that refer to others} {
+    set e [java::new {ptolemy.kernel.Entity String} E]
+    set p1 [java::new ptolemy.data.expr.Variable $e P1]
+    $p1 setExpression 1.1
+
+    set tok1 [java::new  {ptolemy.data.DoubleToken double} 9.9]
+    set p2 [java::new ptolemy.data.expr.Variable $e P2 $tok1]
+
+    set p3 [java::new ptolemy.data.expr.Variable $e P3]
+    $p3 setExpression "P1 + P2"
+ 
+    set name1 [$p1 getFullName]
+    set value1 [[$p1 getToken] stringValue]
+    set name2 [$p2 getFullName]
+    set value2 [[$p2 getToken] stringValue]
+    set name3 [$p3 getFullName]
+    set value3 [[$p3 getToken] stringValue]
+    
+    $p1 setExpression  "((true) ? 5.5 : \"string\")"
+    set name4 [$p1 getFullName]
+    set value4 [[$p1 getToken] stringValue]
+
+    set name5 [$p3 getFullName]
+    set value5 [[$p3 getToken] stringValue]
+
+    list $name1 $value1 $name2 $value2 $name3 $value3 $name4 $value4 $name5 $value5 
+} {.E.P1 1.1 .E.P2 9.9 .E.P3 11.0 .E.P1 5.5 .E.P3 15.4}
+
+test Variable-2.5 {Check that dependency cycles are flagged as an error} {
+    set e [java::new {ptolemy.kernel.Entity String} E]
+    set p1 [java::new ptolemy.data.expr.Variable $e P1]
+    $p1 setExpression 1.1
+
+    set tok1 [java::new  {ptolemy.data.DoubleToken double} 9.9]
+    set p2 [java::new ptolemy.data.expr.Variable $e P2 $tok1]
+
+    set p3 [java::new ptolemy.data.expr.Variable $e P3]
+    $p3 setExpression "P1 + P2"
+ 
+    set value1 [[$p1 getToken] stringValue]
+    set value2 [[$p2 getToken] stringValue]
+    set value3 [[$p3 getToken] stringValue]
+    
+    catch {$p1 setExpression  "P3"} errormsg
+    list $value1 $value2 $value3 $errormsg
+} {1.1 9.9 11.0 {ptolemy.data.expr.IllegalExpressionException: Found dependency loop when evaluating .E.P3: P1 + P2}}
+
+#################################
+####
+test Variable-3.0 {First check for no error message} {
+    set e [java::new {ptolemy.kernel.Entity String} E]
+    set p1 [java::new ptolemy.data.expr.Variable $e P1]
+    $p1 setExpression "P2"
+} {}
+
+test Variable-3.1 {Next check for reasonable error message} {
+    catch {$p1 evaluate} msg
+    list $msg
+} {{ptolemy.data.expr.IllegalExpressionException: Error parsing expression "P2":
+The ID P2 is undefined.}}
 

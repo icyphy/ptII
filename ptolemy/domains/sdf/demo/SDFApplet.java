@@ -33,6 +33,7 @@ package ptolemy.domains.sdf.demo;
 import java.awt.*;
 import java.awt.event.*;
 
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.util.PtolemyApplet;
@@ -167,8 +168,9 @@ public class SDFApplet extends PtolemyApplet {
 
     /** Execute the system for the number of iterations given by the
      *  _getIterations() method.
+     *  @throws IllegalActionException Not thrown.
      */
-    protected void _go() {
+    protected void _go() throws IllegalActionException {
         try {
             int iterations = _getIterations();
             Parameter iterparam = _director.iterations;
@@ -206,7 +208,11 @@ public class SDFApplet extends PtolemyApplet {
      */
     class IterBoxListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            _go();
+            try {
+                _go();
+            } catch (Exception ex) {
+                report(ex);
+            }
         }
     }
 }

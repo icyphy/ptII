@@ -51,61 +51,65 @@ public abstract class MatrixToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a copy of the content of this token as a 2-D Complex
-     *  array.
-     *  In this base class, we just throw an exception.
+    /** In derived classes that support conversion to a 2-D complex array,
+     *  return a copy of the content of this token as a 2-D Complex array.
+     *  In this base class, just throw an exception.
      *  @return A 2-D Complex array.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
+     *  @exception IllegalActionException If the token cannot be represented
+     *   as requested (always thrown in this base class).
      */
-    public Complex[][] complexMatrix()
-	    throws IllegalActionException {
-	String str = "complexMatrix method not supported on "
-		+ this.getClass().getName() + " objects.";
-	throw new IllegalActionException(str);
+    public Complex[][] complexMatrix() throws IllegalActionException {
+        throw new IllegalActionException(this.getClass().getName() +
+        " cannot be converted to a complex matrix.");
     }
 
-    /** Return a copy of the content of this token as a 2-D double array.
-     *  In this base class, we just throw an exception.
-     *  @return A 2-D double array.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
+    /** Throw an exception, since convertion to this class is not supported
+     *  (the class is abstract).  This method overrides that in Token,
+     *  which simply returns the argument.
+     *  @param token A Token to be converted.
+     *  @return nothing
+     *  @exception IllegalActionException Always thrown.
      */
-    public double[][] doubleMatrix()
-	    throws IllegalActionException {
-	String str = "doubleMatrix method not supported on "
-		+ this.getClass().getName() + " objects.";
-	throw new IllegalActionException(str);
+    public static Token convert(Token token) throws IllegalActionException {
+	return token;
+    }
+
+    /** In derived classes that can be represented as a 2-D double array,
+     *  return a representation of their contents as a such an array.
+     *  In this base class, just throw an exception.
+     *  @return A 2-D double array.
+     *  @exception IllegalActionException If the token cannot be represented
+     *   as requested (always thrown in this base class).
+     */
+    public double[][] doubleMatrix() throws IllegalActionException {
+        throw new IllegalActionException(this.getClass().getName() +
+        " cannot be converted to a double matrix.");
     }
 
     // Return the content in the token as a 2-D Fix array.
     // FIXME: uncomment this method after the Fix class is implemented.
     // public Fix[][] fixMatrix();
 
-    /** Return a copy of the content of this token as a 2-D integer array.
-     *  In this base class, we just throw an exception.
+    /** In derived classes that can be represented as a 2-D integer array,
+     *  return a representation of their contents as a such an array.
+     *  In this base class, just throw an exception.
      *  @return A 2-D integer array.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
-     */
-    public int[][] intMatrix()
-	    throws IllegalActionException {
-	String str = "intMatrix method not supported on "
-		+ this.getClass().getName() + " objects.";
-	throw new IllegalActionException(str);
+     *  @exception IllegalActionException If the token cannot be represented
+     *   as requested (always thrown in this base class).
+    public int[][] intMatrix() throws IllegalActionException {
+        throw new IllegalActionException(this.getClass().getName() +
+        " cannot be converted to an integer matrix.");
     }
 
-    /** Return a copy of the content of this token as a 2-D long array.
-     *  In this base class, we just throw an exception.
+    /** In derived classes that can be represented as a 2-D long array,
+     *  return a representation of their contents as a such an array.
+     *  In this base class, just throw an exception.
      *  @return A 2-D long array.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
-     */
-    public long[][] longMatrix()
-	    throws IllegalActionException {
-	String str = "longMatrix method not supported on "
-		+ this.getClass().getName() + " objects.";
-	throw new IllegalActionException(str);
+     *  @exception IllegalActionException If the token cannot be represented
+     *   as requested (always thrown in this base class).
+    public long[][] longMatrix() throws IllegalActionException {
+        throw new IllegalActionException(this.getClass().getName() +
+        " cannot be converted to a long matrix.");
     }
 
     /** Return the number of columns of the contained matrix.
@@ -135,4 +139,3 @@ public abstract class MatrixToken extends Token {
 		"not supported on " + getClass().getName() + " objects.");
     }
 }
-

@@ -35,6 +35,8 @@ import ptolemy.actor.*;
 import ptolemy.data.expr.*;
 import java.util.Enumeration;
 
+// FIXME: This class is not needed...
+
 //////////////////////////////////////////////////////////////////////////
 //// CTActor
 /**
@@ -53,7 +55,7 @@ during the iteration.
 @version $Id$
 @see ptolemy.actor.AtomicActor
 */
-public class CTActor extends TypedAtomicActor implements ParameterListener{
+public class CTActor extends TypedAtomicActor {
     /** Construct a CTActor in the default workspace with an empty string
      *  as its name.
      *  The object is added to the workspace directory.
@@ -92,67 +94,4 @@ public class CTActor extends TypedAtomicActor implements ParameterListener{
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Return true if the parameter has changed from the last time it
-     *  was updated.
-     *
-     *  @return true if the parameter has changed.
-     */
-    public boolean isParamChanged() {
-        return _paramChanged;
-    }
-
-    /** Set the <code>paramChanged</code> flag to true. The parameter will
-     *  be updated when the next time the updateParameters() is called.
-     */
-    public void parameterChanged(ParameterEvent e) {
-        _paramChanged = true;
-    }
-
-    /** Responds the parameter removed event. Do nothing in this base class.
-     */
-    public void parameterRemoved(ParameterEvent e) {
-    }
-
-    /** The default implementation of the prefire() in an iteration.
-     *  In this base class, update the parameters if they are changed.
-     *
-     * @return True always.
-     * @exception IllegalActionException Not throw in this class. May be
-     *                         needed by derived classes.
-     */
-    public boolean prefire() throws IllegalActionException {
-        if(_paramChanged) {
-            updateParameters();
-            //System.out.println(getName());
-            resetParamChanged();
-        }
-        return true;
-    }
-
-    /** Set the <code>paramChanged</code> flag if the argument
-     *  is true, otherwise reset the flag to false.
-     *
-     *  @param A boolean illustrate if a parameter has been changed.
-     */
-    public void resetParamChanged() {
-        _paramChanged = false;
-    }
-
-    /** Update the parameter values.
-     *  @exception IllegalActionException If the parameter is not
-     *      in the actor, or the new value is an illegal value of
-     *      the parameter.
-     */
-    public void updateParameters() throws IllegalActionException{}
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // Illustrate if the parameter has been changed.
-    // default value is TRUE.
-    private boolean _paramChanged = true;
 }

@@ -209,11 +209,11 @@ public class VariableList extends Attribute {
      *  An IllegalArgumentException will be thrown if not all of
      *  the variables in this list can take token as value. 
      *  @param token The value to be set to the variables.
-     *  @exception IllegalArgumentException The token cannot be
+     *  @exception IllegalActionException The token cannot be
      *   placed in some variables in this list.
      */ 
     public void setAllVariables(ptolemy.data.Token token) 
-            throws IllegalArgumentException {
+            throws IllegalActionException {
         Enumeration enum = getAttributes();
         while (enum.hasMoreElements()) {
             Variable nextvar = (Variable)enum.nextElement();
@@ -295,11 +295,11 @@ public class VariableList extends Attribute {
     /** Set the value of the variable with name varname to token.
      *  @param varname The name of the variable to be set.
      *  @param token The desired value of the variable.
-     *  @exception IllegalArgumentException If the token is not of
+     *  @exception IllegalActionException If the token is not of
      *   an acceptable type of the variable.
      */
     public void setVarValue(String varname, ptolemy.data.Token token)
-            throws IllegalArgumentException {
+            throws IllegalActionException {
         Variable var = (Variable)getAttribute(varname);
         if (var != null) {
             var.setToken(token);

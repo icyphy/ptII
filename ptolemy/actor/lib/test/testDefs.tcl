@@ -51,6 +51,20 @@ if {![info exist PTII]} {
 }
 
 # Load up the test definitions.
-if {[string compare test [info procs test]] == 1} then {
+if {[string compare test [info procs test]] != 0} then {
     source [file join $PTII util testsuite testDefs.tcl]
 } {}
+
+if {[string compare iterToTokenValues [info procs iterToTokenValues]] != 0} \
+        then {
+    source [file join $PTII util testsuite enums.tcl]
+} {}
+
+if {[string compare sdfModel [info procs sdfModel]] != 0} \
+        then {
+    source [file join $PTII util testsuite models.tcl]
+} {}
+
+if {[info procs test_clone] == "" } then { 
+    source [file join $PTII util testsuite testParameters.tcl]
+}

@@ -612,7 +612,6 @@ public class ABPApplet extends Applet {
                     _fdr = _fdrBox.getText();
                     double f1 = (Double.valueOf(_fdr)).doubleValue();
                     _fdRate.setToken(new DoubleToken(f1));
-                    _fdRate.parameterChanged(null);
                 } catch (NumberFormatException ex) {
                     System.err.println("Invalid minimum service time: " + 
                                        ex.getMessage());
@@ -623,7 +622,6 @@ public class ABPApplet extends Applet {
                      _bdr = _bdrBox.getText();
                      double f2 = (Double.valueOf(_bdr)).doubleValue();
                      _bdRate.setToken(new DoubleToken(f2)); 
-                     _bdRate.parameterChanged(null);
                 } catch (NumberFormatException ex) {
                     System.err.println("Invalid interrupt service time: " + 
                                        ex.getMessage());

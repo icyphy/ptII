@@ -477,68 +477,55 @@ public class HeliControlApplet extends CTApplet {
             // CT Director parameters
             Parameter initstep = 
                 (Parameter)_dir.getAttribute("InitialStepSize");
-            initstep.setExpression("0.01");
-            initstep.parameterChanged(null);
+            initstep.setToken(new DoubleToken(0.01));
 
             Parameter minstep =
                 (Parameter)_dir.getAttribute("MinimumStepSize");
-            minstep.setExpression("1e-6");
-            minstep.parameterChanged(null);
+            minstep.setToken(new DoubleToken(1e-6));
             
             Parameter maxstep =
                 (Parameter)_dir.getAttribute("MaximumStepSize");
-            maxstep.setExpression("0.5");
-            maxstep.parameterChanged(null);
+            maxstep.setToken(new DoubleToken(0.5));
 
             Parameter solver1 =
                 (Parameter)_dir.getAttribute("BreakpointODESolver");
             StringToken token1 = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             solver1.setToken(token1);
-            solver1.parameterChanged(null);
            
             Parameter solver2 =
                 (Parameter)_dir.getAttribute("ODESolver");
             StringToken token2 = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             solver2.setToken(token2);
-            solver2.parameterChanged(null);
 
            
             // CTActorParameters
             Parameter Pxi = (Parameter)Px.getAttribute("InitialState");
-            Pxi.setExpression("0.0");
-            Pxi.parameterChanged(null);
+            Pxi.setToken(new DoubleToken(0.0));
 
             Parameter Pzi = (Parameter)Pz.getAttribute("InitialState");
-            Pzi.setExpression("-1.5");
-            Pzi.parameterChanged(null);
+            Pzi.setToken(new DoubleToken(-1.5));
 
             Parameter Tmi = (Parameter)Tm.getAttribute("InitialState");
-            Tmi.setExpression("48.02");
-            Tmi.parameterChanged(null);
+            Tmi.setToken(new DoubleToken(48.02));
             
             
             Parameter m1 = (Parameter)MINUS.getAttribute("Gain");
-            m1.setExpression("-1.0");
-            m1.parameterChanged(null);
+            m1.setToken(new DoubleToken(-1.0));
             
             //XYPlot ranges
             Parameter xmin = (Parameter)ctPlot.getAttribute("X_Min");
-            xmin.setExpression("-1.0");
-            xmin.parameterChanged(null);
+            xmin.setToken(new DoubleToken(-1.0));
             
             Parameter xmax = (Parameter)ctPlot.getAttribute("X_Max");
-            xmax.setExpression("100.0");
-            xmax.parameterChanged(null);
+            xmax.setToken(new DoubleToken(100.0));
 
             Parameter ymin = (Parameter)ctPlot.getAttribute("Y_Min");
-            ymin.setExpression("1.0");
-            ymin.parameterChanged(null);
+            ymin.setToken(new DoubleToken(1.0));
 
             Parameter ymax = (Parameter)ctPlot.getAttribute("Y_Max");
-            ymax.setExpression("12.0");
-            ymax.parameterChanged(null);
+            ymax.setToken(new DoubleToken(12.0));
             /* CTPlot pxPlot = new CTPlot(sys, "VxPlot", pxPanel);
             String[] pxLegends = {"Vx"};
             pxPlot.setLegend(pxLegends);
@@ -552,54 +539,42 @@ public class HeliControlApplet extends CTApplet {
             thPlot.setLegend(thLegends);*/
             //VxPlot
             xmin = (Parameter)pxPlot.getAttribute("X_Min");
-            xmin.setExpression("0.0");
-            xmin.parameterChanged(null);
+            xmin.setToken(new DoubleToken(0.0));
             
             xmax = (Parameter)pxPlot.getAttribute("X_Max");
-            xmax.setExpression("70.0");
-            xmax.parameterChanged(null);
+            xmax.setToken(new DoubleToken(70.0));
 
             ymin = (Parameter)pxPlot.getAttribute("Y_Min");
-            ymin.setExpression("0.0");
-            ymin.parameterChanged(null);
+            ymin.setToken(new DoubleToken(0.0));
 
             ymax = (Parameter)pxPlot.getAttribute("Y_Max");
-            ymax.setExpression("6.0");
-            ymax.parameterChanged(null);
+            ymax.setToken(new DoubleToken(6.0));
 
             //PzPlot
             xmin = (Parameter)pzPlot.getAttribute("X_Min");
-            xmin.setExpression("0.0");
-            xmin.parameterChanged(null);
+            xmin.setToken(new DoubleToken(0.0));
             
             xmax = (Parameter)pzPlot.getAttribute("X_Max");
-            xmax.setExpression("70.0");
-            xmax.parameterChanged(null);
+            xmax.setToken(new DoubleToken(70.0));
 
             ymin = (Parameter)pzPlot.getAttribute("Y_Min");
-            ymin.setExpression("1.0");
-            ymin.parameterChanged(null);
+            ymin.setToken(new DoubleToken(1.0));
 
             ymax = (Parameter)pzPlot.getAttribute("Y_Max");
-            ymax.setExpression("12.0");
-            ymax.parameterChanged(null);
+            ymax.setToken(new DoubleToken(12.0));
 
             //thPlot
             xmin = (Parameter)thPlot.getAttribute("X_Min");
-            xmin.setExpression("0.0");
-            xmin.parameterChanged(null);
+            xmin.setToken(new DoubleToken(0.0));
             
             xmax = (Parameter)thPlot.getAttribute("X_Max");
-            xmax.setExpression("70.0");
-            xmax.parameterChanged(null);
+            xmax.setToken(new DoubleToken(70.0));
 
             ymin = (Parameter)thPlot.getAttribute("Y_Min");
-            ymin.setExpression("-0.05");
-            ymin.parameterChanged(null);
+            ymin.setToken(new DoubleToken(-0.05));
 
             ymax = (Parameter)thPlot.getAttribute("Y_Max");
-            ymax.setExpression("0.05");
-            ymax.parameterChanged(null);
+            ymax.setToken(new DoubleToken(0.05));
 
             // Setting up parameters.
             //_paramAlphaP = (Parameter)hover.getAttribute("AlphaP");
@@ -712,10 +687,8 @@ public class HeliControlApplet extends CTApplet {
                 lin = new CruiseLinearizer(sub, "Cruise2");
                 Parameter param = (Parameter)lin.getAttribute("CPz");
                 param.setToken(new DoubleToken(-10.0));
-                param.parameterChanged(null);
                 param = (Parameter)lin.getAttribute("CVx");
                 param.setToken(new DoubleToken(5.0));
-                param.parameterChanged(null);
                 break;
             default:
                 break;
@@ -769,42 +742,32 @@ public class HeliControlApplet extends CTApplet {
                 mon1.input.link(rInPz);
                 p = (Parameter)mon1.getAttribute("ThresholdWidth");
                 p.setToken(new DoubleToken(0.1));
-                p.parameterChanged(null);
                 p = (Parameter)mon1.getAttribute("ThresholdCenter");
                 p.setToken(new DoubleToken(-2.0));
-                p.parameterChanged(null);
                 break;
             case 2: // first cruise state
                 mon1.input.link(rV);
                 p = (Parameter)mon1.getAttribute("ThresholdWidth");
                 p.setToken(new DoubleToken(0.2));
-                p.parameterChanged(null);
                 p = (Parameter)mon1.getAttribute("ThresholdCenter");
                 p.setToken(new DoubleToken(5.0));
-                p.parameterChanged(null);
                 mon2.input.link(rR);
                 p = (Parameter)mon2.getAttribute("ThresholdWidth");
                 p.setToken(new DoubleToken(0.02));
-                p.parameterChanged(null);
                 p = (Parameter)mon2.getAttribute("ThresholdCenter");
                 p.setToken(new DoubleToken(0.0));
-                p.parameterChanged(null);
                 break;
             case 3: // climb state
                 mon1.input.link(rInPz);
                 p = (Parameter)mon1.getAttribute("ThresholdWidth");
                 p.setToken(new DoubleToken(0.1));
-                p.parameterChanged(null);
                 p = (Parameter)mon1.getAttribute("ThresholdCenter");
                 p.setToken(new DoubleToken(-10.0));
-                p.parameterChanged(null);
                 mon2.input.link(rV);
                 p = (Parameter)mon2.getAttribute("ThresholdWidth");
                 p.setToken(new DoubleToken(0.2));
-                p.parameterChanged(null);
                 p = (Parameter)mon2.getAttribute("ThresholdCenter");
                 p.setToken(new DoubleToken(5.0));
-                p.parameterChanged(null);
                 break;
             default:
                 break;
@@ -813,27 +776,23 @@ public class HeliControlApplet extends CTApplet {
         // sub dir parameters
         Parameter initstep = 
                 (Parameter)subdir.getAttribute("InitialStepSize");
-        initstep.setExpression("0.01");
-        initstep.parameterChanged(null);
+        initstep.setToken(new DoubleToken(0.01));
 
         Parameter minstep =
                 (Parameter)subdir.getAttribute("MinimumStepSize");
-        minstep.setExpression("1e-6");
-        minstep.parameterChanged(null);
+        minstep.setToken(new DoubleToken(1e-6));
             
         Parameter solver1 =
                 (Parameter)subdir.getAttribute("BreakpointODESolver");
         Token token1 = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
         solver1.setToken(token1);
-        solver1.parameterChanged(null);
                       
         Parameter solver2 =
                 (Parameter)subdir.getAttribute("ODESolver");
         Token token2 = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
         solver2.setToken(token2);
-        solver2.parameterChanged(null);
 
         return sub;
     }
@@ -940,8 +899,11 @@ public class HeliControlApplet extends CTApplet {
 
     public class ActionButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
-            _paramButton.setToken(new BooleanToken(true));
-            _paramButton.parameterChanged(null);
+            try {
+                _paramButton.setToken(new BooleanToken(true));
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(ex.getMessage());
+            }
         }
     }
 
@@ -960,7 +922,6 @@ public class HeliControlApplet extends CTApplet {
                 try {
                     Double tmp = Double.valueOf( _stopTimeBox.getText());
                     _paramStopT.setToken(new DoubleToken(tmp.doubleValue()));
-                    _paramStopT.parameterChanged(null);
 
                     //System.out.println("Set stop time of simulation.");
 

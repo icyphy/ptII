@@ -49,7 +49,7 @@ true. Otherwise, the method returns false.
 @version $Id$
 
 */
-public class CTTestValueSink extends CTActor {
+public class CTTestValueSink extends TypedAtomicActor {
     /** Constructor
      *  @param container The container.
      *  @param name The name.

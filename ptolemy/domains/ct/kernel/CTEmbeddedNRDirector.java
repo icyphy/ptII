@@ -96,9 +96,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
     /** can only be a embeded director, so check it here.
      */
     public void initialize() throws IllegalActionException {
-        if (VERBOSE||DEBUG) {
-            System.out.println(this.getFullName() + " initialize.");
-        }
+        _debug(this.getFullName() + " initialize.");
         CompositeActor ca = (CompositeActor) getContainer();
         if (ca == null) {
             throw new IllegalActionException(this, "Has no container.");
@@ -113,22 +111,17 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         }
         CTScheduler sch = (CTScheduler)getScheduler();
         if (sch == null) {
-            if(DEBUG) {
-                System.out.println("Director does not have a scheduler.");
-            }
+            _debug("Director does not have a scheduler.");
             throw new IllegalActionException( this,
             "does not have a scheduler.");
         }
         sch.setValid(false);
         _first = true;
-        updateParameters();
         // don't need fireAt to run ahead of time.
         Director exe = ca.getExecutiveDirector();
         double tnow = exe.getCurrentTime();
         setStartTime(tnow);
-        if (VERBOSE) {
-            System.out.println("Director.super initialize.");
-        }
+        _debug("Director.super initialize.");
         _initialize();
     }
 
@@ -145,13 +138,11 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         ODESolver solver = getCurrentODESolver();
         if(!solver.resolveStates()) {
             _stateAcceptable = false;
-            //System.out.println(getFullName() + "resolve state failed.");
+            //_debug(getFullName() + "resolve state failed.");
         }
         
-        if(DEBUG) {
-            System.out.println(getFullName() + " current time after" +
+        _debug(getFullName() + " current time after" +
                     " solver.resolveStates() is " + getCurrentTime());
-        }
         //setCurrentTime(getIterEndTime());
         produceOutput();
     }
@@ -164,12 +155,12 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
     public boolean isThisStepSuccessful() {
         try {
             if (!_isStateAcceptable()) {
-                //System.out.println(getFullName() + 
+                //_debug(getFullName() + 
                 //        " current step not successful because of STATE."); 
                 _stateAcceptable = false;
                 return false;
             } else if(!_isOutputAcceptable()) {
-                //System.out.println(getFullName() + 
+                //_debug(getFullName() + 
                 //        " current step not successful because of OUTPUT."); 
                 _outputAcceptable = false;
                 return false;
@@ -196,7 +187,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
     public boolean postfire() throws IllegalActionException {
         //super.postfire();
         _first = false;
-        //System.out.println(this.getFullName() +
+        //_debug(this.getFullName() +
         //        "postfire...................");
         _eventPhaseExecution();
         updateStates();
@@ -233,9 +224,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
     /** prefire, 
      */
     public boolean prefire() throws IllegalActionException {
-        if (VERBOSE) {
-            System.out.println(this.getFullName() + "prefire.");
-        }
+        _debug(this.getFullName() + "prefire.");
         if(STAT) {
             NSTEP++;
         }
@@ -251,17 +240,12 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
             scheduler.schedule();
             setScheduleValid(true);
         }
-        updateParameters();
         double timeAcc = getTimeResolution();
         Director exe = ca.getExecutiveDirector();
         _outsideTime = exe.getCurrentTime();
-        if(DEBUG) {
-            System.out.println("Outside Time =" + _outsideTime);
-        }
+        _debug("Outside Time =" + _outsideTime);
         double nextIterTime = exe.getNextIterationTime();
-        if(DEBUG) {
-            System.out.println("Next Iter Time =" + nextIterTime);
-        }
+        _debug("Next Iter Time =" + nextIterTime);
         /**
         if(_outsideTime < getCurrentTime()-timeAcc) {
             throw new IllegalActionException(exe, this,
@@ -279,7 +263,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
                 bp = ((Double)breakPoints.first()).doubleValue();
                 if(Math.abs(bp - getCurrentTime()) < getTimeResolution()) {
                     setCurrentODESolver(getBreakpointSolver());
-                    //System.out.println(getFullName() + 
+                    //_debug(getFullName() + 
                     //        " Change to break point solver " + 
                     //        getCurrentODESolver().getFullName());
                     break;

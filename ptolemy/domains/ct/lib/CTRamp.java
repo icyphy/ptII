@@ -32,6 +32,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -40,10 +41,8 @@ import java.util.Enumeration;
 A ramp source
 @author Jie Liu
 @version $Id$
-@see CTActor
-@see ptolemy.domains.ct.kernel.CTActor
 */
-public class CTRamp extends CTActor {
+public class CTRamp extends TypedAtomicActor {
     /** Construct the CTRamp actor, default slop 1, defalt initial value 0
      * @param container CTSubSystem this star belongs to
      * @param name The name
@@ -58,10 +57,10 @@ public class CTRamp extends CTActor {
         output.setOutput(true);
         output.setDeclaredType(DoubleToken.class);
         _initValue = (double)0.0;
-        _paramInitValue = new CTParameter(this, "InitialValue",
+        _paramInitValue = new Parameter(this, "InitialValue",
                 new DoubleToken(_initValue));
         _slope = 1.0;
-        _paramSlope = new CTParameter(this, "Slope",
+        _paramSlope = new Parameter(this, "Slope",
                 new DoubleToken(_slope));
     }
 
@@ -104,7 +103,7 @@ public class CTRamp extends CTActor {
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
     private double _initValue;
-    private CTParameter _paramInitValue;
+    private Parameter _paramInitValue;
     private double _slope;
-    private CTParameter _paramSlope;
+    private Parameter _paramSlope;
 }

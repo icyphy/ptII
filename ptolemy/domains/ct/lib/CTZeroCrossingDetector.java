@@ -30,6 +30,7 @@ import ptolemy.domains.ct.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
 import java.util.Enumeration;
 
@@ -46,12 +47,12 @@ zero
 @author Jie Liu
 @version $Id$
 */
-public class CTZeroCrossingDetector extends CTActor
+public class CTZeroCrossingDetector extends TypedAtomicActor
         implements  CTStepSizeControlActor, CTEventGenerator {
 
     public static boolean DEBUG = false;
 
-    /** Construct a CTActor in the specified container with the specified
+    /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -84,7 +85,7 @@ public class CTZeroCrossingDetector extends CTActor
         output.setOutput(true);
         output.setDeclaredType(DoubleToken.class);
         _errorTolerance = (double)1e-4;
-        _paramErrorTolerance = new CTParameter(this, "ErrorTolerance", 
+        _paramErrorTolerance = new Parameter(this, "ErrorTolerance", 
                 new DoubleToken(_errorTolerance));
 
     }
@@ -239,7 +240,7 @@ public class CTZeroCrossingDetector extends CTActor
     ////                         private variables                      ////
 
     // Parameter, the sample period.
-    private CTParameter _paramErrorTolerance;
+    private Parameter _paramErrorTolerance;
     private double _errorTolerance;
 
     private boolean _eventMissed = false;

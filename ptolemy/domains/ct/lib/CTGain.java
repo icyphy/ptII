@@ -33,6 +33,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -44,10 +45,9 @@ should have the same function in all domains. Single input single output.
 @author Jie Liu
 @version $Id$
 */
-public class CTGain extends CTActor {
+public class CTGain extends TypedAtomicActor {
     /** Construct the gain, default gain is 1.0. Single input, single
      *  output.
-     * @see ptolemy.domains.ct.kernel.CTActor
      * @param container The TypedCompositeActor this star belongs to
      * @param name The name
      * @exception NameDuplicationException another actor already had this name
@@ -67,7 +67,7 @@ public class CTGain extends CTActor {
         output.setMultiport(false);
         output.setDeclaredType(DoubleToken.class);
         _gain = (double)1.0;
-        _paramGain = new CTParameter(this, "Gain", new DoubleToken(_gain));
+        _paramGain = new Parameter(this, "Gain", new DoubleToken(_gain));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -105,6 +105,6 @@ public class CTGain extends CTActor {
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
-    private CTParameter _paramGain;
+    private Parameter _paramGain;
     private double _gain;
 }

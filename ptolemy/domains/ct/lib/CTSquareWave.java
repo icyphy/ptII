@@ -32,6 +32,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import java.util.Enumeration;
 import java.lang.*;
 
@@ -44,9 +45,8 @@ director when the jump occurs. Single output source (Output type:double).
 
 @author Jie Liu
 @version: $Id$
-@see ptolemy.domains.ct.kernel.CTActor
 */
-public class CTSquareWave extends CTActor {
+public class CTSquareWave extends TypedAtomicActor {
 
     public static final boolean VERBOSE = true;
     public static final boolean DEBUG = true;
@@ -65,17 +65,17 @@ public class CTSquareWave extends CTActor {
         output.setOutput(true);
         output.setDeclaredType(DoubleToken.class);
         _maxValue = (double)1.0;
-        _paramMaxValue = new CTParameter(this, "MaximumValue",
+        _paramMaxValue = new Parameter(this, "MaximumValue",
                 new DoubleToken(_maxValue));
         _minValue = (double)-1.0;
-        _paramMinValue = new CTParameter(this, "MinimumValue",
+        _paramMinValue = new Parameter(this, "MinimumValue",
                 new DoubleToken(_minValue));
         _frequency = (double)1.0;
         _halfperiod = (double)1.0/((double)2.0*_frequency);
-        _paramFrequency = new CTParameter(this, "Frequency",
+        _paramFrequency = new Parameter(this, "Frequency",
                 new DoubleToken(_frequency));
         _startFromMin = true;
-        _paramStartFromMin = new CTParameter(this, "StartFromMinimum",
+        _paramStartFromMin = new Parameter(this, "StartFromMinimum",
                 new BooleanToken(true));
     }
 
@@ -191,13 +191,13 @@ public class CTSquareWave extends CTActor {
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
     private double _maxValue;
-    private CTParameter _paramMaxValue;
+    private Parameter _paramMaxValue;
     private double _minValue;
-    private CTParameter _paramMinValue;
+    private Parameter _paramMinValue;
     private double _frequency;
-    private CTParameter _paramFrequency;
+    private Parameter _paramFrequency;
     private boolean _startFromMin;
-    private CTParameter _paramStartFromMin;
+    private Parameter _paramStartFromMin;
 
     private double _halfperiod;
     private double _lastfliptime;

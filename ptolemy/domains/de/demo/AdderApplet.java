@@ -236,55 +236,23 @@ public class AdderApplet extends Applet implements Runnable {
         double[] array = _string2DoubleArray(term);
         double[][] array2d = new double[1][];
         array2d[0] = array;
-        DoubleMatrixToken t = new DoubleMatrixToken(array2d);
-        _valueOfA.setToken(t);
-
-
-        term = _BTextField.getText();
-        array = _string2DoubleArray(term);
-        array2d[0] = array;
-        t = new DoubleMatrixToken(array2d);
-        _valueOfB.setToken(t);
-
-
-
-
         try {
+            DoubleMatrixToken t = new DoubleMatrixToken(array2d);
+            _valueOfA.setToken(t);
 
-                _localDirector.setStopTime(_stopTime);
+            term = _BTextField.getText();
+            array = _string2DoubleArray(term);
+            array2d[0] = array;
+            t = new DoubleMatrixToken(array2d);
+            _valueOfB.setToken(t);
 
-                // Start the CurrentTimeThread.
-                Thread ctt = new CurrentTimeThread();
-                ctt.start();
-
-                /*
-                // Start the simulation.
-                // This won't start a thread.
-                // FIXME: A BIG & UGLY HACK
-                int beforeCount = Thread.activeCount(); // HACK
-                Thread[] before = new Thread[beforeCount]; // HACK
-                Thread.enumerate(before);  // HACK
-                _manager.go(); //NON-HACK
-                int afterCount = Thread.activeCount();  // HACK
-                Thread[] after = new Thread[afterCount]; // HACK
-                Thread.enumerate(after); // HACK
-                for (int i = 0; i < afterCount; i++) { // HACK
-                    Thread suspect = after[i]; //HACK
-                    // find suspect in the before list.
-                    boolean found = false; //HACK
-                    for (int j = 0; j < beforeCount; j++) { //HACK
-                        if (suspect == before[i]) { //HACK
-                            found = true; //HACK
-                            break; //HACK
-                        } //HACK
-                    } //HACK
-                    if (!found) { //HACK
-                        suspect.join(); //HACK
-                        break; //HACK
-                    } //HACK
-                } //HACK
-                */
-                _manager.run();
+            _localDirector.setStopTime(_stopTime);
+            
+            // Start the CurrentTimeThread.
+            Thread ctt = new CurrentTimeThread();
+            ctt.start();
+            
+            _manager.run();
 
         } catch (Exception ex) {
             System.err.println("Run failed: " + ex.getMessage());

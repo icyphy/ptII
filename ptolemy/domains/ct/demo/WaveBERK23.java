@@ -85,52 +85,42 @@ public class WaveBERK23 {
              plot.input.link(r1);
 
              Parameter starttime = (Parameter)dir.getAttribute("StartTime");
-             starttime.setExpression("0.0");
-             starttime.parameterChanged(null);
+             starttime.setToken(new DoubleToken(0.0));
 
              Parameter initstep = (Parameter)dir.getAttribute(
                  "InitialStepSize");
-             initstep.setExpression("0.000001");
-             initstep.parameterChanged(null);
+             initstep.setToken(new DoubleToken(0.000001));
 
              Parameter minstep =
                  (Parameter)dir.getAttribute("MinimumStepSize");
-             minstep.setExpression("1e-6");
-             minstep.parameterChanged(null);
+             minstep.setToken(new DoubleToken(1e-6));
 
              Parameter stoptime = (Parameter)dir.getAttribute("StopTime");
-             stoptime.setExpression("10.0");
-             stoptime.parameterChanged(null);
+             stoptime.setToken(new DoubleToken(10.0));
 
              Parameter bpsolver = (Parameter)dir.getAttribute(
                  "BreakpointODESolver");
              StringToken token = new StringToken(
                  "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
              bpsolver.setToken(token);
-             bpsolver.parameterChanged(null);
 
              Parameter dsolver = (Parameter)dir.getAttribute(
                  "DefaultODESolver");
              StringToken token1 = new StringToken(
                  "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
              dsolver.setToken(token1);
-             dsolver.parameterChanged(null);
 
              Parameter freq = (Parameter)sqwv.getAttribute("Frequency");
-             freq.setExpression("0.25");
-             freq.parameterChanged(null);
+             freq.setToken(new DoubleToken(0.25));
 
              Parameter g1 = (Parameter)gain1.getAttribute("Gain");
-             g1.setExpression("500.0");
-             g1.parameterChanged(null);
+             g1.setToken(new DoubleToken(500.0));
 
              Parameter g2 = (Parameter)gain2.getAttribute("Gain");
-             g2.setExpression("-25.0");
-             g2.parameterChanged(null);
+             g2.setToken(new DoubleToken(-25.0));
 
              Parameter g3 = (Parameter)gain3.getAttribute("Gain");
-             g3.setExpression("-2500.0");
-             g3.parameterChanged(null);
+             g3.setToken(new DoubleToken(-2500.0));
 
              man.run();
          } catch (NameDuplicationException ex) {

@@ -55,7 +55,6 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	CTActor.java \
 	CTBaseIntegrator.java \
 	CTCompositeActor.java \
 	CTDirector.java \
@@ -66,7 +65,6 @@ JSRCS = \
 	CTEventInterpreter.java \
 	CTMixedSignalDirector.java \
 	CTMultiSolverDirector.java \
-	CTParameter.java \
 	CTReceiver.java \
 	CTScheduler.java \
 	CTSingleSolverDirector.java \

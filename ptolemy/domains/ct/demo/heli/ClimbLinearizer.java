@@ -148,13 +148,13 @@ public class ClimbLinearizer extends CTActor{
         for(int i = 0; i< 4; i++) {
             sV = sV + _alphaV[i] + " ";
         }
-        _paramAlphaV = new CTParameter(this, "AlphaV", new StringToken(sV));
+        _paramAlphaV = new Parameter(this, "AlphaV", new StringToken(sV));
         
         _cVx = 4.7;
-        _paramCVx = new CTParameter(this, "CVx", new DoubleToken(_cVx));
+        _paramCVx = new Parameter(this, "CVx", new DoubleToken(_cVx));
 
         _cVz = -1.7;
-        _paramCVz = new CTParameter(this, "CVz", new DoubleToken(_cVz));
+        _paramCVz = new Parameter(this, "CVz", new DoubleToken(_cVz));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -277,16 +277,16 @@ public class ClimbLinearizer extends CTActor{
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    //private CTParameter _paramAlphaP;
+    //private Parameter _paramAlphaP;
     //private double[] _alphaP = {500.0, 650.0, 395.0,  121.0, 17.8};
 
-    private CTParameter _paramAlphaV;
+    private Parameter _paramAlphaV;
     private double[] _alphaV = {100.0, 110.0, 57.0, 12.80};
   
-    private CTParameter _paramCVx;
+    private Parameter _paramCVx;
     private double _cVx;
 
-    private CTParameter _paramCVz;
+    private Parameter _paramCVz;
     private double _cVz;
 
 }

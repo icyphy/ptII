@@ -122,8 +122,9 @@ public class ExpressionApplet extends SDFApplet {
 
     /** Execute the system.  This overrides the base class to read the
      *  values in the query box first.
+     *  @exception IllegalActionException Not thrown.
      */
-    protected void _go() {
+    protected void _go() throws IllegalActionException {
         _expr.expression.setToken(new StringToken(_query.stringValue("expr")));
         super._go();
     }
@@ -141,7 +142,11 @@ public class ExpressionApplet extends SDFApplet {
      */
     class ParameterListener implements QueryListener {
         public void changed(String name) {
-            _go();
+            try {
+                _go();
+            } catch (Exception ex) {
+                report(ex);
+            }
         }
     }
 }

@@ -95,7 +95,7 @@ public class TTTApplet extends PNApplet {
         return;
     }
 
-    protected void _go() {
+    protected void _go() throws IllegalActionException {
 	displayPanel.removeAll();
 	_display.setPanel(displayPanel);
 	super._go();

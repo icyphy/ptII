@@ -358,8 +358,9 @@ public class SCState extends ComponentEntity {
         }
         try {
             _localStatusVars.setAllVariables(SCController.ABSENT);
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalActionException ex) {
             // this should not happen
+            throw new InternalErrorException(ex.getMessage());
         }
     }
 
@@ -367,7 +368,7 @@ public class SCState extends ComponentEntity {
      *  corresponding local input status variable to PRESENT.
      */
     public void setLocalInputVar(String name, Token value)
-            throws IllegalArgumentException {
+            throws IllegalActionException {
         if (_localValueVars == null) {
             return;
         }

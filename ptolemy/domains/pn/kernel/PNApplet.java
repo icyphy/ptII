@@ -34,6 +34,7 @@ import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
 
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.actor.*;
 import ptolemy.actor.util.PtolemyApplet;
 import ptolemy.data.expr.Parameter;
@@ -168,8 +169,10 @@ public class PNApplet extends PtolemyApplet {
 
     /** Get the initial queue capacity from the entry box, if there is one,
      *  and then execute the system.
+     *  @exception IllegalActionException If a type conflict occurs in the
+     *   parameters.
      */
-    protected void _go() {
+    protected void _go() throws IllegalActionException {
         try {
             int queuesize = _getQueueSize();
             Parameter param =
@@ -236,8 +239,6 @@ public class PNApplet extends PtolemyApplet {
     private Button _goButton;
 
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -249,7 +250,11 @@ public class PNApplet extends PtolemyApplet {
      */
     class QueueSizeBoxListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            _go();
+            try {
+                _go();
+            } catch (Exception ex) {
+                report(ex);
+            }
         }
     }
 

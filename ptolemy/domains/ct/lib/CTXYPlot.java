@@ -49,7 +49,7 @@ A XY-plotter for continuous signals.
 @author Jie Liu, Lukito Muliadi, Edward A. Lee
 @version $Id$
 */
-public class  CTXYPlot extends CTActor {
+public class  CTXYPlot extends TypedAtomicActor {
 
     private static  boolean DEBUG = false;
 

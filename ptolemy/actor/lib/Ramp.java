@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -43,10 +43,10 @@ import collections.LinkedList;
 //// Ramp
 /**
 Produce an output token on each firing with a value that is
-incremented by the specified step each time the actor fires. The
+incremented by the specified step each iteration. The
 first output and the step value are given by parameters.
 The type of the output is determined by the constraint that it must
-be greater than or equal to the types of the parameters.
+be greater than or equal to the types of the tokens in the parameters.
 Thus, this actor is
 polymorphic in the sense that its output data type can be that
 of any token type that supports addition.
@@ -55,9 +55,11 @@ of any token type that supports addition.
 @version $Id$
 */
 
-public class Ramp extends TypedAtomicActor {
+public class Ramp extends SequenceSource {
 
-    /** Construct a Ramp with the given container and name.
+    /** Construct an actor with the given container and name.
+     *  In addition to invoking the base class constructors, contruct
+     *  the <i>init</i> and <i>step</i> parameters.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -68,9 +70,6 @@ public class Ramp extends TypedAtomicActor {
     public Ramp(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-
-        output = new TypedIOPort(this, "output", false, true);
-
         init = new Parameter(this, "init");
         step = new Parameter(this, "step");
     }
@@ -78,16 +77,15 @@ public class Ramp extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The output port. */
-    public TypedIOPort output;
-
-    /** The value produced by the ramp on its first firing.
-     *  This parameter contains a DoubleToken, initially with value 0.
+    /** The value produced by the ramp on its first iteration.
+     *  If this parameter is not set by the time type resolution is done,
+     *  then its value is set to an IntToken with value 0.
      */
     public Parameter init;
 
-    /** The amount by which the ramp output is incremented on each firing.
-     *  This parameter contains a DoubleToken, initially with value 1.
+    /** The amount by which the ramp output is incremented on each iteration.
+     *  If this parameter is not set by the time type resolution is done,
+     *  then its value is set to an IntToken with value 1.
      */
     public Parameter step;
 
@@ -95,35 +93,29 @@ public class Ramp extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
+     *  base class and then sets the <code>init</code> and <code>step</code>
+     *  public members to the parameters of the new actor.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
-        try {
-            Ramp newobj = (Ramp)super.clone(ws);
-            newobj.output = (TypedIOPort)newobj.getPort("output");
-            newobj.init = (Parameter)newobj.getAttribute("init");
-            newobj.step = (Parameter)newobj.getAttribute("step");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        Ramp newobj = (Ramp)super.clone(ws);
+        newobj.init = (Parameter)newobj.getAttribute("init");
+        newobj.step = (Parameter)newobj.getAttribute("step");
+        return newobj;
     }
 
-    /** Initialize the internal state.
-     *  @exception IllegalActionException Not thrown in this class.
+    /** Initialize the state of the actor to equal the value of the
+     *  <i>init</i> parameter, if it has been set.  The state is
+     *  incremented by the value of the <i>step</i> parameter on each
+     *  iteration.
      */
-    public void initialize() throws IllegalActionException {
-	// FIXME: after the change that initialize() is called
-	// after type resolution, uncomment this line.
-	// _stateToken = init.getToken();
-
+    public void initialize() {
+        _stateToken = init.getToken();
+        super.initialize();
     }
 
-    /** Send out the next ramp output.
+    /** Send the current value of the state of this actor to the output.
      */
     public void fire() {
         try {
@@ -134,7 +126,11 @@ public class Ramp extends TypedAtomicActor {
         }
     }
 
-    /** Update the state.
+    /** Update the state of the actor by adding the value of the
+     *  <i>step</i> parameter to the state.  Also, increment the
+     *  iteration count, and if the result is equal to <i>lifetime</i>, then
+     *  return false.
+     *  @return False if the number of iterations matches the number requested.
      */
     public boolean postfire() {
         try {
@@ -144,25 +140,31 @@ public class Ramp extends TypedAtomicActor {
             // we have already verified that the tokens can be added.
             throw new InternalErrorException(ex.getMessage());
         }
-        // This actor never requests termination.
-        return true;
+        return super.postfire();
     }
 
     /** Return the type constraints that the output type must be
      *  greater than or equal to the type of the parameters.
      *  If the parameters have not been set, then they are set
-     *  to type DoubleToken with value 0.0 for init and 1.0 for step.
+     *  to IntToken with value 0 for <i>init</i> and 1 for <i>step</i>.
+     *  A side effect of this method is that the state of the actor
+     *  is reset to the value of <i>init</i>.
+     *  @return An enumeration of type constraints.
      */
-    // FIXME: it may be better to set the default value for
-    // parameters in the constructor. But this requires support
-    // for parameter type change.
+    // FIXME: Simplify this when the interface to the type system improves.
     public Enumeration typeConstraints() {
-        if(init.getToken() == null) {
-            init.setToken(new DoubleToken(0.0));
+        try {
+            if(init.getToken() == null) {
+                init.setToken(new IntToken(0));
+            }
+            if(step.getToken() == null) {
+                step.setToken(new IntToken(1));
+            }
+        } catch (IllegalActionException ex) {
+            // Should not occur since there are no type constraints.
+            throw new InternalErrorException(ex.getMessage());
         }
-        if(step.getToken() == null) {
-            step.setToken(new DoubleToken(1.0));
-        }
+	_stateToken = init.getToken();
 
 	LinkedList result = new LinkedList();
 	Class initType = init.getToken().getClass();
@@ -173,11 +175,6 @@ public class Ramp extends TypedAtomicActor {
         ineq = new Inequality(new TypeConstant(stepType),
                 output.getTypeTerm());
 	result.insertLast(ineq);
-
-	// FIXME: after the change that initialize() is called
-	// after type resolution, _stateToken init should be
-	// moved to initialize().
-	_stateToken = init.getToken();
 
 	return result.elements();
     }

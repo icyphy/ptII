@@ -36,6 +36,7 @@ import java.awt.event.*;
 import java.util.Enumeration;
 
 import ptolemy.kernel.*;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.util.*;
@@ -140,8 +141,10 @@ public class Pulses extends SDFApplet {
     /** Execute the system.  This overrides the base class to read the
      *  values in the query box and set the parameters of the configurable
      *  raised-cosine pulse.
+     *  @exception IllegalActionException If a type conflict occurs (which
+     *   it should not).
      */
-    protected void _go() {
+    protected void _go() throws IllegalActionException {
         _yours.excessBW.setToken
             (new DoubleToken(((double)_query.intValue("exbw"))/100.0));
         _yours.symbolInterval.setToken
@@ -164,7 +167,11 @@ public class Pulses extends SDFApplet {
      */
     class ParameterListener implements QueryListener {
         public void changed(String name) {
-            _go();
+            try {
+                _go();
+            } catch (Exception ex) {
+                report(ex);
+            }
         }
     }
 }

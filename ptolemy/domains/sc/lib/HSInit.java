@@ -76,7 +76,7 @@ public class HSInit extends NamedObj implements TransitionAction {
     /** Initialize internal data structures etc. This is called when
      *  the SCController initializes.
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
         /*try*/ {
             VariableList vl = null;
             // Add the SCController's input value variable list to ValueVar's

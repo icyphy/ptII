@@ -76,7 +76,6 @@ public class CTSingleSolverDirector extends CTDirector {
      */
     public CTSingleSolverDirector () {
         super();
-        this._initParameters();
     }
 
     /** Construct a CTDirector in the default workspace with the given name.
@@ -88,7 +87,6 @@ public class CTSingleSolverDirector extends CTDirector {
      */
     public CTSingleSolverDirector (String name) {
         super(name);
-        this._initParameters();
     }
 
     /** Construct a director in the given workspace with the given name.
@@ -103,11 +101,29 @@ public class CTSingleSolverDirector extends CTDirector {
      */
     public CTSingleSolverDirector (Workspace workspace, String name) {
         super(workspace, name);
-        this._initParameters();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to a change in an attribute. If the changed atrribute matches
+     *  a parameter of the director, then the coresponding private copy of the
+     *  parameter value will be updated.
+     *  @param param The changed parameter.
+     *  @exception IllegalActionException If the default solver that is
+     *   specified is not valid.
+     */
+    public void attributeChanged(Parameter param)
+            throws IllegalActionException {
+        if(param == _paramODESolver) {
+            _debug("solver updating.");
+            _solverclass = ((StringToken)param.getToken()).stringValue();
+            _defaultSolver = _instantiateODESolver(_solverclass);
+            setCurrentODESolver(_defaultSolver);
+        } else {
+            super.attributeChanged(param);
+        }
+    }
 
     /**  Fire the system for one iteration. One iteration is defined as
      *   simulating the system at one time point, which includes
@@ -142,10 +158,8 @@ public class CTSingleSolverDirector extends CTDirector {
         //Refine step size
         setCurrentStepSize(getSuggestedNextStepSize());
         _processBreakpoints();
-        if(VERBOSE) {
-            System.out.println("execute the system from "+
+        _debug("execute the system from "+
                     getCurrentTime() +" step size" + getCurrentStepSize());
-        }
         _fireOneIteration();
     }
 
@@ -166,33 +180,21 @@ public class CTSingleSolverDirector extends CTDirector {
      *       thrown by a contained actor.
      */
     public void initialize() throws IllegalActionException {
-        if (VERBOSE||DEBUG) {
-            System.out.println("Director initialize.");
-        }
+        _debug("Director initialize.");
         CompositeActor ca = (CompositeActor) getContainer();
         if (ca == null) {
-            if(DEBUG) {
-                System.out.println("Director has no container.");
-            }
             throw new IllegalActionException(this, "Has no container.");
         }
         if (ca.getContainer() != null) {
-            if(DEBUG) {
-                System.out.println("Director can only be the top director.");
-            }
             throw new IllegalActionException(this,
             " can only serve as the top level director.");
         }
         CTScheduler sch = (CTScheduler)getScheduler();
         if (sch == null) {
-            if(DEBUG) {
-                System.out.println("Director does not have a scheduler.");
-            }
             throw new IllegalActionException( this,
             "does not have a scheduler.");
         }
         sch.setValid(false);
-        updateParameters();
         _initialize();
         fireAt(null, getCurrentTime());
         fireAt(null, getStopTime());
@@ -229,9 +231,7 @@ public class CTSingleSolverDirector extends CTDirector {
      *  @exception IllegalActionException Never thrown in this director.
      */
     public boolean prefire() throws IllegalActionException {
-        if (VERBOSE) {
-            System.out.println(this.getFullName() + "prefire.");
-        }
+        _debug(this.getFullName() + "prefire.");
         if(STAT) {
             NSTEP++;
         }
@@ -246,7 +246,6 @@ public class CTSingleSolverDirector extends CTDirector {
             scheduler.schedule();
             setScheduleValid(true);
         }
-        updateParameters();
         return true;
     }
 
@@ -263,20 +262,16 @@ public class CTSingleSolverDirector extends CTDirector {
         Enumeration integrators = scheduler.dynamicActorSchedule();
         while(integrators.hasMoreElements()) {
             CTDynamicActor dyn =(CTDynamicActor)integrators.nextElement();
-            if(VERBOSE) {
-                System.out.println("Excite State..."+
+            _debug("Excite State..."+
                     ((Nameable)dyn).getName());
-            }
             dyn.emitTentativeOutputs();
         }
         // outputSchdule.fire()
         Enumeration outputactors = scheduler.outputSchedule();
         while(outputactors.hasMoreElements()) {
             Actor nextoutputactor = (Actor)outputactors.nextElement();
-            if(VERBOSE) {
-                System.out.println("Fire output..."+
+            _debug("Fire output..."+
                     ((Nameable)nextoutputactor).getName());
-            }
             nextoutputactor.fire();
         }
     } 
@@ -293,26 +288,6 @@ public class CTSingleSolverDirector extends CTDirector {
         while(allactors.hasMoreElements()) {
             Actor nextactor = (Actor)allactors.nextElement();
             nextactor.postfire();
-        }
-    }
-
-    /** Update given parameter. If the parameter does not exist, 
-     *  throws an exception.
-     *  @param param The parameter.
-     *  @exception IllegalActionException If the parameter does not exist.
-     */
-    public void updateParameter(Parameter param)
-            throws IllegalActionException {
-        if(param == _paramODESolver) {
-            if(VERBOSE) {
-                System.out.println("solver updating.");
-            }
-            _solverclass =
-            ((StringToken)param.getToken()).stringValue();
-            _defaultSolver = _instantiateODESolver(_solverclass);
-            setCurrentODESolver(_defaultSolver);
-        } else {
-            super.updateParameter(param);
         }
     }
 
@@ -365,10 +340,8 @@ public class CTSingleSolverDirector extends CTDirector {
         while(actors.hasMoreElements()) {
             Actor a = (Actor) actors.nextElement();
             ready = ready && a.prefire();
-            if(DEBUG) {
-                System.out.println("Prefire "+((Nameable)a).getName() +
+            _debug("Prefire "+((Nameable)a).getName() +
                         " returns" + ready);
-            }
         }
         return ready;
     }        
@@ -411,27 +384,21 @@ public class CTSingleSolverDirector extends CTDirector {
      *  current step size.
      */
     protected void _fireOneIteration() throws IllegalActionException {   
-        if(VERBOSE) {
-            System.out.println(this.getFullName() +"Fire one iteration from " +
+        _debug(this.getFullName() +"Fire one iteration from " +
                     getCurrentTime() + " step size" +
                     getCurrentStepSize());
-        }
         ODESolver solver = getCurrentODESolver();
         while (true) {
             while (_prefireSystem()) {
                 if (solver.resolveStates()) {
-                    if(VERBOSE) {
-                        System.out.println("state resolved.");
-                    }
+                    _debug("state resolved.");
                     // ask if this step is acceptable
                     if (!_isStateAcceptable()) {
                         setCurrentTime(getFireBeginTime());
                         setCurrentStepSize(_refinedStepWRTState());
-                        if(VERBOSE) {
-                            System.out.println("execute the system from "+
+                        _debug("execute the system from "+
                                     getCurrentTime() +" step size" + 
                                     getCurrentStepSize());
-                        }
                         if(STAT) {
                             NFAIL++;
                         }
@@ -451,7 +418,7 @@ public class CTSingleSolverDirector extends CTDirector {
             }
             produceOutput();
             if (!_isOutputAcceptable()) {
-                //System.out.println("Output not satisfied.");
+                //_debug("Output not satisfied.");
                 setCurrentTime(getFireBeginTime());
                 setCurrentStepSize(_refinedStepWRTOutput());
                 if(STAT) {
@@ -473,18 +440,14 @@ public class CTSingleSolverDirector extends CTDirector {
             NFUNC=0;
             NFAIL=0;
         }
-        if(VERBOSE) {
-            System.out.println("updating parameters");
-        }
+        _debug("updating parameters");
         // Instantiate ODE solver
-        if(VERBOSE) {
-            System.out.println("instantiating ODE solver"+_solverclass);
-        }
+        _debug("instantiating ODE solver"+_solverclass);
         if(_defaultSolver == null) {
             _defaultSolver = _instantiateODESolver(_solverclass);
         }
         // set time
-        //System.out.println(this.getFullName() + 
+        //_debug(this.getFullName() + 
         //        "_init get State Time " + getStartTime());
 
         setCurrentTime(getStartTime());
@@ -496,10 +459,25 @@ public class CTSingleSolverDirector extends CTDirector {
             bps.clear();
         }
         _first = true;
-        if (VERBOSE) {
-            System.out.println("Director.super initialize.");
-        }
+        _debug("Director.super initialize.");
         super.initialize();
+    }
+
+    /** Initialize parameters to their default values. */
+    protected void _initParameters() {
+        super._initParameters();
+        try {
+            _solverclass=
+                "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver";
+            _paramODESolver = new Parameter(
+                this, "ODESolver", new StringToken(_solverclass));
+        } catch (IllegalActionException e) {
+            //Should never happens. The parameters are always compatible.
+            throw new InternalErrorException("Parameter creation error.");
+        } catch (NameDuplicationException ex) {
+            throw new InvalidStateException(this,
+                    "Parameter name duplication.");
+        }
     }
 
     /** Return true if the newly resolved state is acceptable.
@@ -571,19 +549,15 @@ public class CTSingleSolverDirector extends CTDirector {
      *  @exception IllegalActionException If the scheduler throws it.
      */
     protected double _refinedStepWRTState() throws IllegalActionException {
-        if(VERBOSE) {
-            System.out.println("refine step wrt state.");
-        }
+        _debug("refine step wrt state.");
         double refinedstep = getCurrentStepSize();
         CTScheduler sched = (CTScheduler)getScheduler();
         Enumeration sscs = sched.stateTransitionSSCActors();
         while (sscs.hasMoreElements()) {
             CTStepSizeControlActor a = 
                 (CTStepSizeControlActor) sscs.nextElement();
-            if(DEBUG) {
-                System.out.println(((Nameable)a).getName() + "refine..."
+            _debug(((Nameable)a).getName() + "refine..."
                         + a.refinedStepSize());
-            }
             refinedstep = Math.min(refinedstep, a.refinedStepSize());
         }
         return refinedstep;
@@ -608,30 +582,11 @@ public class CTSingleSolverDirector extends CTDirector {
         return refinedstep;
     }
 
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    private void _initParameters() {
-        try {
-            _solverclass=
-                "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver";
-            _paramODESolver = new CTParameter(
-                this, "ODESolver", new StringToken(_solverclass));
-        } catch (IllegalActionException e) {
-            //Should never happens. The parameters are always compatible.
-            throw new InternalErrorException("Parameter creation error.");
-        } catch (NameDuplicationException ex) {
-            throw new InvalidStateException(this,
-                    "Parameter name duplication.");
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // parameter of ODE solver
-    private CTParameter _paramODESolver;
+    private Parameter _paramODESolver;
     // The classname of the ODE solver
     private String _solverclass;
 

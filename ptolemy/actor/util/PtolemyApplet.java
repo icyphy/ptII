@@ -144,7 +144,11 @@ public class PtolemyApplet extends Applet {
      *  override this method.
      */
     public void start() {
-        _go();
+        try {
+            _go();
+        } catch (Exception ex) {
+            report(ex);
+        }
     }
 
     /** Stop execution of the model. This method is called by the
@@ -202,8 +206,9 @@ public class PtolemyApplet extends Applet {
     }
 
     /** Execute the system.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected void _go() {
+    protected void _go() throws IllegalActionException {
         _manager.startRun();
     }
 
@@ -237,7 +242,11 @@ public class PtolemyApplet extends Applet {
 
     private class GoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
-            _go();
+            try {
+                _go();
+            } catch (Exception ex) {
+                report(ex);
+            }
         }
     }
 

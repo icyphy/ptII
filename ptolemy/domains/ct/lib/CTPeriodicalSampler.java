@@ -30,6 +30,7 @@ import ptolemy.domains.ct.kernel.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import java.util.Enumeration;
 
@@ -42,16 +43,16 @@ which has the value of the input signal.
 @author Jie Liu
 @version $Id$
 */
-public class CTPeriodicalSampler extends CTActor
+public class CTPeriodicalSampler extends TypedAtomicActor
         implements CTEventGenerator {
 
     public static final boolean DEBUG = false;
 
-    /** Construct a CTActor in the specified container with the specified
+    /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
-     *  A CTActor can be either dynamic, or not.  It must be set at the
+     *  The actor can be either dynamic, or not.  It must be set at the
      *  construction time and can't be changed thereafter.
      *  A dynamic actor will produce a token at its initialization phase.
      *
@@ -77,7 +78,7 @@ public class CTPeriodicalSampler extends CTActor
         output.setDeclaredType(DoubleToken.class);
 
         _samplePeriod = (double)1.0;
-        _paramSamplePeriod = new CTParameter(this,
+        _paramSamplePeriod = new Parameter(this,
             "SamplePeriod", new DoubleToken(_samplePeriod));
     }
 
@@ -200,7 +201,7 @@ public class CTPeriodicalSampler extends CTActor
     ////                         private variables                      ////
 
     // Parameter, the sample period.
-    private CTParameter _paramSamplePeriod;
+    private Parameter _paramSamplePeriod;
     private double _samplePeriod;
     private double _eventTime;
     private boolean _hasCurrentEvent = false;

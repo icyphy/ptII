@@ -93,7 +93,7 @@ test Parameter-3.1 {Check setting the contained Token with another Token} {
 #################################
 ####
 #
-test Parameter-3.2 {Check type constriants on contained Token type} {
+test Parameter-3.2 {Check that type changes with new Token type} {
     set e [java::new {ptolemy.kernel.Entity String} entity]
     set tok1 [java::new  {ptolemy.data.IntToken int} 11]
 
@@ -103,13 +103,16 @@ test Parameter-3.2 {Check type constriants on contained Token type} {
 
     # Now put a new token into the Param
     set tok2 [java::new  {ptolemy.data.DoubleToken double} 7.3]
-    catch {$param1 setToken $tok2} errmsg
-    
+    set type1 [[$param1 getType] getName]
+    $param1 setToken $tok2
+    set type2 [[$param1 getType] getName]
+
     set name2 [$param1 getFullName]
     set value2 [[$param1 getToken] stringValue]
 
-    list $name1 $value1 $errmsg
-} {.entity.id1 11 {java.lang.IllegalArgumentException: Cannot store a token of type ptolemy.data.DoubleToken in .entity.id1 of class ptolemy.data.expr.Parameter with type ptolemy.data.IntToken}}
+    list $name1 $value1 $type1 $type2
+} {.entity.id1 11 ptolemy.data.IntToken ptolemy.data.DoubleToken}
+
 #################################
 ####
 #
@@ -147,7 +150,7 @@ test Parameter-4.0 {Check setting the contained Token from a String or another T
     set value2 [[$param1 getToken] stringValue]
 
     # Now set the Token contained from a String
-    $param1 setExpression "-((true) ? 5.5 : \"crap\")" 
+    $param1 setExpression "-((true) ? 5.5 : \"string\")" 
     set value3 [[$param1 getToken] stringValue]
 
     # Now put a new token into the Param
@@ -178,7 +181,7 @@ test Parameter-5.0 {Check reseting the Parameter to its original String} {
     set value3 [[$param1 getToken] stringValue]
 
     # Put a new Token in the Parameter from a String
-    $param1 setExpression "((true) ? 5.5 : \"crap\")" 
+    $param1 setExpression "((true) ? 5.5 : \"string\")" 
     set value4 [[$param1 getToken] stringValue]
     
     # Reset the Token 
@@ -200,7 +203,7 @@ test Parameter-5.1 {Check reseting the Parameter to its original Token} {
     set value1 [[$param1 getToken] stringValue]
 
     # Put a new token into the Parameter from a String 
-    $param1 setExpression "((true) ? 7.7 : \"crap\")" 
+    $param1 setExpression "((true) ? 7.7 : \"string\")" 
     set value2 [[$param1 getToken] stringValue]
     
     # Reset the Token 
@@ -222,63 +225,7 @@ test Parameter-5.1 {Check reseting the Parameter to its original Token} {
 #################################
 ####
 #
-test Parameter-6.0 {Check updating of Parameters that refer to other Params} {
-    set e [java::new {ptolemy.kernel.Entity String} parent]
-    set param1 [java::new ptolemy.data.expr.Parameter $e id1 ]
-    $param1 setExpression 1.1
-    $param1 setContainer $e
 
-    set tok1 [java::new  {ptolemy.data.DoubleToken double} 9.9]
-    set param2 [java::new ptolemy.data.expr.Parameter $e id2 $tok1 ]
-    $param2 setContainer $e
-
-    set param3 [java::new ptolemy.data.expr.Parameter $e id3 ]
-    $param3 setExpression "id1 + id2"
-    $param3 setContainer $e
- 
-    set name1 [$param1 getFullName]
-    set value1 [[$param1 getToken] stringValue]
-    set name2 [$param2 getFullName]
-    set value2 [[$param2 getToken] stringValue]
-    set name3 [$param3 getFullName]
-    set value3 [[$param3 getToken] stringValue]
-    
-    $param1 setExpression  "((true) ? 5.5 : \"crap\")" 
-    set name4 [$param1 getFullName]
-    set value4 [[$param1 getToken] stringValue]
-
-    set name5 [$param3 getFullName]
-    set value5 [[$param3 getToken] stringValue]
-
-    list $name1 $value1 $name2 $value2 $name3 $value3 $name4 $value4 $name5 $value5 
-} {.parent.id1 1.1 .parent.id2 9.9 .parent.id3 11.0 .parent.id1 5.5 .parent.id3 15.4}
-
-#################################
-####
-#
-test Parameter-7.0 {Check that dependency cycles are flagged as an error} {
-    set e [java::new {ptolemy.kernel.Entity String} parent]
-    set param1 [java::new ptolemy.data.expr.Parameter $e id1 ]
-    $param1 setExpression 1.1
-
-    set tok1 [java::new {ptolemy.data.DoubleToken double} 9.9]
-    set param2 [java::new ptolemy.data.expr.Parameter $e id2 $tok1]
-
-    set param3 [java::new ptolemy.data.expr.Parameter $e id3]
-    $param3 setExpression "id2 + id1"
-
-    set value1 [[$param1 getToken] stringValue]
-    set value2 [[$param2 getToken] stringValue]
-    set value3 [[$param3 getToken] stringValue]
-
-    $param1 setExpression "id3"
-    catch {$param1 evaluate} errmsg
-
-    list $value1 $value2 $value3 $errmsg
-} {1.1 9.9 11.0 {ptolemy.data.expr.IllegalExpressionException: Found dependency loop when evaluating .parent.id1: id3}}
-#################################
-####
-# 
 test Parameter-8.0 {Check that previous dependencies are cleared when a new Token or expression is placed in the Parameter.} {
     set e [java::new {ptolemy.kernel.Entity String} parent]
     set param1 [java::new ptolemy.data.expr.Parameter $e id1 ]
@@ -357,4 +304,3 @@ test Parameter10.0 {Check that the type of the Token returned by getToken is the
     list $name1 $value1 $class2 $value2 $class3 $value3
 } {.entity.id1 4.4 ptolemy.data.DoubleToken 7.0 ptolemy.data.IntToken 7}
 
- 

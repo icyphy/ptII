@@ -371,7 +371,12 @@ public class HistogramApplet extends Applet implements Runnable {
             int value = e.getValue();
             _meanIntervalLabel.setText("Mean interarrival time = " + value);
             if (_meanInterval != null) {
-                _meanInterval.setToken(new DoubleToken((double)value));
+                try {
+                    _meanInterval.setToken(new DoubleToken((double)value));
+                } catch (IllegalActionException ex) {
+                    // Should not happen
+                    throw new InternalErrorException(ex.getMessage());
+                }
             }
         }
     }

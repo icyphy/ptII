@@ -351,7 +351,12 @@ public class DiningApplet extends Applet
                     System.err.println("Invalid eating rate: " +
                             ex.getMessage() + ", defaulting to 1.0");
                 }
-                p.setToken(new DoubleToken(spec));
+                try {
+                    p.setToken(new DoubleToken(spec));
+                } catch (IllegalActionException ex) {
+                    // Should not occur since there are no type constraints
+                    throw new InternalErrorException(ex.getMessage());
+                }
             }
         }
     }
@@ -368,7 +373,12 @@ public class DiningApplet extends Applet
                     System.err.println("Invalid thinking rate: " +
                             ex.getMessage() + ", defaulting to 1.0");
                 }
-                p.setToken(new DoubleToken(spec));
+                try {
+                    p.setToken(new DoubleToken(spec));
+                } catch (IllegalActionException ex) {
+                    // Should not be thrown
+                    System.err.println("Unexpected error setting token.");
+                }
             }
         }
     }

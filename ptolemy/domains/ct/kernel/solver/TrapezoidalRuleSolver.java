@@ -94,9 +94,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
      *  class. May be needed by the derived class.
      */
     public boolean resolveStates() throws IllegalActionException {
-        if(VERBOSE) {
-            System.out.println("BE: resolveState().");
-        }
+        _debug("BE: resolveState().");
         CTDirector dir = (CTDirector)getContainer();
         if (dir == null) {
             throw new IllegalActionException( this,
@@ -112,9 +110,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
         Enumeration actors = sch.dynamicActorSchedule();
         while(actors.hasMoreElements()) {
             Actor next = (Actor)actors.nextElement();
-            if(DEBUG) {
-                System.out.println("Guessing..."+((Nameable)next).getName());
-            }
+            _debug("Guessing..."+((Nameable)next).getName());
             next.fire();
         }
         dir.setCurrentTime(dir.getCurrentTime()+dir.getCurrentStepSize());
@@ -129,17 +125,13 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
             actors = sch.stateTransitionSchedule();
             while(actors.hasMoreElements()) {
                 Actor next = (Actor)actors.nextElement();
-                if(DEBUG) {
-                    System.out.println("Firing..."+((Nameable)next).getName());
-                }
+                _debug("Firing..."+((Nameable)next).getName());
                 next.fire();
             }
             actors = sch.dynamicActorSchedule();
             while(actors.hasMoreElements()) {
                 Actor next = (Actor)actors.nextElement();
-                if(DEBUG) {
-                    System.out.println("Refiring..."+((Nameable)next).getName());
-                }
+                _debug("Refiring..."+((Nameable)next).getName());
                 next.fire();
             }
             if(iterations++ > dir.getMaxIterations()) {
@@ -150,10 +142,8 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
                 actors = sch.dynamicActorSchedule();
                 while(actors.hasMoreElements()) {
                     Actor next = (Actor)actors.nextElement();
-                    if(DEBUG) {
-                        System.out.println("Guessing..."+
+                    _debug("Guessing..."+
                             ((Nameable)next).getName());
-                    }
                     next.fire();
                 }
                 dir.setCurrentTime(dir.getCurrentTime()+
@@ -212,21 +202,15 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
             double[] k = integrator.getAuxVariables();
             double lte = 0.5*Math.abs(integrator.getPotentialState() - k[0]);
             integrator.setAuxVariables(1, lte);
-            if(DEBUG) {
-                System.out.println("Integrator: "+ integrator.getName() +
+            _debug("Integrator: "+ integrator.getName() +
                 " local truncation error = " + lte);
-            }
             if(lte<errtol) {
-                if(DEBUG) {
-                    System.out.println("Integrator: " + integrator.getName() +
+                _debug("Integrator: " + integrator.getName() +
                     " report a success.");
-                }
                 return true;
             } else {
-                if(DEBUG) {
-                    System.out.println("Integrator: " + integrator.getName() +
+                _debug("Integrator: " + integrator.getName() +
                     " reports a failiar.");
-                }
                 return false;
             }
         } catch (IllegalActionException e) {
@@ -250,10 +234,8 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
         if(lte>dir.getValueResolution()) {
             newh = h* Math.max(0.5, Math.pow((3.0*errtol/lte), 1.0/3.0));
         }
-        if(DEBUG) {
-            System.out.println("integrator: " + integrator.getName() +
+        _debug("integrator: " + integrator.getName() +
             " suggests next step size = " + newh);
-        }
         return newh;
     }
 

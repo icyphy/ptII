@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -34,24 +34,29 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
-import ptolemy.graph.Inequality;
 
+// FIXME: when the interface to the type system simplifies, these
+// will no longer be needed.
+import ptolemy.graph.Inequality;
 import java.util.Enumeration;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Const
 /**
-Produces a constant output. The type and value of the
-output is determined by a parameter set by the user.
+Produce a constant output. The type and value of the
+output is that of the token contained by the <i>value</i> parameter,
+which by default is an IntToken with value 1.
 
-@author Yuhong Xiong
+@author Yuhong Xiong, Edward A. Lee
 @version $Id$
 */
 
-public class Const extends TypedAtomicActor {
+public class Const extends Source {
 
     /** Construct a constant source with the given container and name.
+     *  Create the <i>value</i> parameter, set its type to Token,
+     *  and set its default value to an IntToken with value 1.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -62,20 +67,21 @@ public class Const extends TypedAtomicActor {
     public Const(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-
-    	value = new Parameter(this, "value");
-    	output = new TypedIOPort(this, "output", false, true);
+        // Have to initialize this with a Token so that it has the most
+        // general possible type.
+    	value = new Parameter(this, "value", _initToken);
+        // Reset the token to the default value.
+        value.setToken(new IntToken(1));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The output port.
-     */
-    public TypedIOPort output = null;
-
-    /** The value produced by this constant source. This parameter
-     *  is initialized to a IntToken, with value 1.
+    /** The value produced by this constant source. The type of this
+     *  parameter is Token, meaning that you can insert any token into
+     *  it.  By default, it contains an IntToken with value 1.  If the
+     *  type of this token is changed during the execution of a model,
+     *  then the manager will be asked to redo type resolution.
      */
     public Parameter value = null;
 
@@ -83,43 +89,32 @@ public class Const extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
+     *  base class and then sets the value public variable in the new
+     *  object to equal the cloned parameter in that new object.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
-	try {
-	    Const newobj = (Const)super.clone(ws);
-	    newobj.output = (TypedIOPort)newobj.getPort("output");
-	    newobj.value = (Parameter)newobj.getAttribute("value");
-	    return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        Const newobj = (Const)super.clone(ws);
+        newobj.value = (Parameter)newobj.getAttribute("value");
+        return newobj;
     }
 
-    /** Send out the constant value.
+    /** Send the constant value to the output.
      *  @exception IllegalActionException If it is thrown by the method
      *   sending out the token.
      */
-    public void fire()
-	throws IllegalActionException {
+    public void fire() throws IllegalActionException {
         output.broadcast(value.getToken());
     }
 
     /** Return the type constraint that the output type must be
-     *  greater than or equal to the type of the value parameter.
-     *  If the the value parameter has not been set, then it is
-     *  set to type IntToken with value 1.
+     *  greater than or equal to the type of the token in the value parameter.
      *  @return An enumeration of inequality type constraints.
      */
     public Enumeration typeConstraints() {
-	if (value.getToken() == null) {
-	    value.setToken(new IntToken(1));
-	}
-
+        // FIXME: When there is better infrastructure in the type system,
+        // replace this with a simpler form.
 	LinkedList result = new LinkedList();
 	Class paramType = value.getToken().getClass();
         Inequality ineq = new Inequality(new TypeConstant(paramType),
@@ -127,5 +122,10 @@ public class Const extends TypedAtomicActor {
 	result.insertLast(ineq);
 	return result.elements();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private static Token _initToken = new Token();
 }
 

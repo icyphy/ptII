@@ -148,19 +148,19 @@ public class AccelerLinearizer extends CTActor{
         for(int i = 0; i< 5; i++) {
             sP = sP + _alphaP[i] + " ";
         }
-        _paramAlphaP = new CTParameter(this, "AlphaP", new StringToken(sP));
+        _paramAlphaP = new Parameter(this, "AlphaP", new StringToken(sP));
         
         String sA = new String();
         for(int i = 0; i< 3; i++) {
             sA = sA + _alphaA[i] + " ";
         }
-        _paramAlphaA = new CTParameter(this, "AlphaA", new StringToken(sA));
+        _paramAlphaA = new Parameter(this, "AlphaA", new StringToken(sA));
         
         _cAx = 9.8/20.0;
-        _paramCAx = new CTParameter(this, "CAx", new DoubleToken(_cAx));
+        _paramCAx = new Parameter(this, "CAx", new DoubleToken(_cAx));
 
         _cPz = -2.0;
-        _paramCPz = new CTParameter(this, "CPz", new DoubleToken(_cPz));
+        _paramCPz = new Parameter(this, "CPz", new DoubleToken(_cPz));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -296,16 +296,16 @@ public class AccelerLinearizer extends CTActor{
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private CTParameter _paramAlphaP;
+    private Parameter _paramAlphaP;
     private double[] _alphaP = {500.0, 650.0, 395.0,  121.0, 17.8};
 
-    private CTParameter _paramAlphaA;
+    private Parameter _paramAlphaA;
     private double[] _alphaA = {20.0000, 18.0000, 7.8000};
   
-    private CTParameter _paramCAx;
+    private Parameter _paramCAx;
     private double _cAx;
 
-    private CTParameter _paramCPz;
+    private Parameter _paramCPz;
     private double _cPz;
 
 }

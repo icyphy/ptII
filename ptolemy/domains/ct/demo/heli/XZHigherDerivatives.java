@@ -128,16 +128,16 @@ public class XZHigherDerivatives extends CTActor{
         outputD4Pz.setDeclaredType(DoubleToken.class);
 
         _Iy = (double)0.271256;
-        _paramIy = new CTParameter(this, "Iy", new DoubleToken(_Iy));
+        _paramIy = new Parameter(this, "Iy", new DoubleToken(_Iy));
 
         _hm = (double)0.2943;
-        _paramHm = new CTParameter(this, "hm", new DoubleToken(_hm));
+        _paramHm = new Parameter(this, "hm", new DoubleToken(_hm));
 
         _Mm = (double)25.23;
-        _paramMm = new CTParameter(this, "Mm", new DoubleToken(_Mm));
+        _paramMm = new Parameter(this, "Mm", new DoubleToken(_Mm));
 
         _mass = (double)4.9;
-        _paramMass = new CTParameter(this, "Mass", new DoubleToken(_mass));
+        _paramMass = new Parameter(this, "Mass", new DoubleToken(_mass));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -235,16 +235,16 @@ public class XZHigherDerivatives extends CTActor{
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private CTParameter _paramIy;
+    private Parameter _paramIy;
     private double _Iy;
 
-    private CTParameter _paramHm;
+    private Parameter _paramHm;
     private double _hm;
 
-    private CTParameter _paramMm;
+    private Parameter _paramMm;
     private double _Mm;
 
-    private CTParameter _paramMass;
+    private Parameter _paramMass;
     private double _mass;
 
 }

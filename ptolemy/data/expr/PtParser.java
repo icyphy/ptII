@@ -76,7 +76,7 @@ of the parse tree. Thus the process is
 <br>
 </CENTER>
 <p>
-The parser can also be passed a symbol table of ptolemy.data.expr.Parameters 
+The parser can also be passed a symbol table of ptolemy.data.expr.Variables 
 which the expression to be parsed can reference.
 <p>
 Anything between quotes(") is taken to be one string.
@@ -131,11 +131,11 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      *  returned. To evaluate the parse tree, the method evaluateParseTree()
      *  should be called on the rootNode
      *  @param stringIn The expression to be parsed
-     *  @exception IllegalArgumentException If the parse failed.
+     *  @exception IllegalActionException If the parse fails.
      *  @return The root node of the parse tree.
      */
     public ASTPtRootNode generateParseTree(String stringIn)
-            throws IllegalArgumentException {
+            throws IllegalActionException {
         InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
         _scope = null;
         this.ReInit(stream);
@@ -147,8 +147,8 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
             if (debug) rootNode.displayParseTree(" ");
             return rootNode;
         } catch (ParseException x) {
-            throw new IllegalArgumentException("parse of " + stringIn +
-                    " failed: " + x.getMessage());
+            throw new IllegalActionException("Error parsing expression \""
+                    + stringIn + "\":\n" + x.getMessage());
         }
     }
 
@@ -156,12 +156,12 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      *  returned. To evaluate the parse tree, the method evaluateParseTree()
      *  should be called on the rootNode
      *  @param stringIn The expression to be parsed.
-     *  @param scope Parameters to which the expression can refer.
-     *  @exception IllegalArgumentException If the parse failed.
+     *  @param scope Variables to which the expression can refer.
+     *  @exception IllegalActionException If the parse fails.
      *  @return The root node of the parse tree.
      */
     public ASTPtRootNode generateParseTree(String stringIn, NamedList scope)
-            throws IllegalArgumentException {
+            throws IllegalActionException {
         InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
         _scope = scope;
         this.ReInit(stream);
@@ -172,8 +172,8 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
             rootNode = start();
             if (debug) rootNode.displayParseTree(" ");
         } catch (ParseException x) {
-            throw new IllegalArgumentException("parse of " + stringIn +
-                    " failed: " + x.getMessage());
+            throw new IllegalActionException("Error parsing expression \""
+                    + stringIn + "\":\n" + x.getMessage());
         }
         return rootNode;
     }
@@ -192,7 +192,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         return _classesSearched;
     }
 
-    /** Return the list of Parameters that comprise the current scope.
+    /** Return the list of Variables that comprise the current scope.
      *  @return The current scope.
      */
      public NamedList getScope() {
@@ -209,7 +209,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      *  @param name The string name that the parser will recognize.
      *  @param value An Object constraining the value associated with 
      *   the constant.
-     *  @exception IllegalArgumentException If the constant could not 
+     *  @exception IllegalArgumentException If the constant cannot 
      *   be registered with the parser.
      */
     public static void registerConstant(String name, Object value)
@@ -253,7 +253,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      *  @param newClassName The fully qualified name of the Class to 
      *   be added to the search path for functions.
      *  @exception IllegalArgumentException If the Class named by the 
-     *   argument could not be found.
+     *   argument cannot be found.
      */
     public static void registerFunctionClass(String newClassName)
             throws IllegalArgumentException {
@@ -289,27 +289,27 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      */
     private static boolean _alreadyInitialized = false;
 
-    /** Stores the classes that are searched by the parser when a 
+    /*  Stores the classes that are searched by the parser when a 
      *  function call is parsed. It is static, and by default only 
      *  contains the java.lang.Math class.
      */
     private static LinkedList _classesSearched;
 
-    /** Stores the Tokens corresponding to constants that the parser
+    /*  Stores the Tokens corresponding to constants that the parser
      *  recognizes. It stores them by name, with each name corresponding
      *  to a ptolemy.data.Token. It is static, and by default only 
      *  contains the java.lang.Math PI and E constants.
      */
     private static Hashtable _constantsRecognized;
 
-    /** The Parameter (or other ParameterListener) creating the parser. 
-     *  Each time another parameter is referenced in the input expression, 
-     *  this Parameter is registered as a listener of that parameter. 
+    /*  The Variable creating the parser. 
+     *  Each time another variable is referenced in the input expression, 
+     *  this Variable is registered as a listener of that Variable. 
      *  If null, then no dependency is registered.
      */
     private Variable _owner;
 
-    /** Stores the parameters to which the input expression can reference
+    /*  Stores the variables to which the input expression can reference
      */
     private NamedList _scope;
 
@@ -1164,12 +1164,12 @@ String tidied, x;
            referredVar = (Variable)_scope.get(token.image);
         }
         if (referredVar != null) {
-           // The Parameter is stored in the node so that the tree 
+           // The Variable is stored in the node so that the tree 
            // does not have to be reparsed whenever the Token in 
-           // the Parameter changes.
+           // the Variable changes.
            jjtn007._var   = referredVar;
-           // Register the calling parameter as a ParameterListener 
-           // of this Parameter this ID references.
+           // Register the calling Variable as a listener 
+           // of the Variable this ID references.
            if (_owner != null) {
                 referredVar._addValueDependent(_owner);
             }
@@ -1178,10 +1178,8 @@ String tidied, x;
             Object tmp = _constantsRecognized.get(token.image);
             jjtn007._ptToken = (ptolemy.data.Token)tmp;
         } else {
-            {if (true) throw new ParseException("PtParser: parsed an ID, " +
-                    token.image + ", which is neither a Parameter visible " +
-                    "in the current scope, nor a constant registered with " +
-                    "the parser.");}
+            {if (true) throw new ParseException("The ID " +
+                    token.image + " is undefined.");}
         }
           } finally {
      if (jjtc007) {

@@ -1017,21 +1017,20 @@ public class SDFScheduler extends Scheduler {
                 e.getName());
         Parameter param = (Parameter)
             port.getAttribute("TokenConsumptionRate");
-        if(param != null) {
-            param.setToken(new IntToken(rate));
-        } else {
-            try {
+        try {
+            if(param != null) {
+                param.setToken(new IntToken(rate));
+            } else {
                 param = new Parameter(port,"TokenConsumptionRate",
                         new IntToken(rate));
             }
-            catch (Exception exception) {
-                // This should never happen.  
-                // e might be NameDuplicationException, but we already
-                // know it doesn't exist.
-                // e might be IllegalActionException, but we've already
-                // checked the error conditions
-                throw new InternalErrorException(exception.getMessage());
-            }
+        } catch (Exception exception) {
+            // This should never happen.  
+            // e might be NameDuplicationException, but we already
+            // know it doesn't exist.
+            // e might be IllegalActionException, but we've already
+            // checked the error conditions
+            throw new InternalErrorException(exception.getMessage());
         }
     }
 
@@ -1047,22 +1046,21 @@ public class SDFScheduler extends Scheduler {
                 e.getName());
         Parameter param = (Parameter)
             port.getAttribute("TokenProductionRate");
-        if(param != null) {
-            param.setToken(new IntToken(rate));
-        } else {
-            try {
+        try {
+            if(param != null) {
+                param.setToken(new IntToken(rate));
+            } else {
                 param = new Parameter(port,"TokenProductionRate",
                         new IntToken(rate));
             } 
-            catch (Exception exception) {
-               // This should never happen.  
-                // e might be NameDuplicationException, but we already
-                // know it doesn't exist.
-                // e might be IllegalActionException, but we've already
-                // checked the error conditions
-                throw new InternalErrorException(exception.getMessage());
-            }
-         }
+        } catch (Exception exception) {
+            // This should never happen.  
+            // e might be NameDuplicationException, but we already
+            // know it doesn't exist.
+            // e might be IllegalActionException, but we've already
+            // checked the error conditions
+            throw new InternalErrorException(exception.getMessage());
+        }
     }
 
     protected void _setTokenInitProduction(Entity e, IOPort port, int rate) 
@@ -1077,21 +1075,20 @@ public class SDFScheduler extends Scheduler {
                 e.getName());
         Parameter param = (Parameter)
             port.getAttribute("TokenInitProduction");
-        if(param != null) {
-            param.setToken(new IntToken(rate));
-        } else {
-            try {
+        try {
+            if(param != null) {
+                param.setToken(new IntToken(rate));
+            } else {
                 param = new Parameter(port,"TokenInitProduction",
                         new IntToken(rate));
             } 
-            catch (Exception exception) {
-                // This should never happen.  
-                // e might be NameDuplicationException, but we already
-                // know it doesn't exist.
-                // e might be IllegalActionException, but we've already
-                // checked the error conditions
-               throw new InternalErrorException(exception.getMessage());
-            }
+        } catch (Exception exception) {
+            // This should never happen.  
+            // e might be NameDuplicationException, but we already
+            // know it doesn't exist.
+            // e might be IllegalActionException, but we've already
+            // checked the error conditions
+            throw new InternalErrorException(exception.getMessage());
         }
     }   
 

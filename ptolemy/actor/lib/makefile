@@ -51,7 +51,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	Add.java \
 	AddSub.java \
 	Average.java \
 	CoinFlip.java \
@@ -66,8 +65,11 @@ JSRCS = \
 	Print.java \
 	Pulse.java \
 	Ramp.java \
+	Recorder.java \
+	SequenceSource.java \
 	Sin.java \
-	Show.java
+	Show.java \
+	Source.java
 
 EXTRA_SRCS =	$(JSRCS)
 

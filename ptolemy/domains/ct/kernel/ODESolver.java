@@ -64,18 +64,6 @@ are shared by all the solvers in a simulation.
 */
 public abstract class ODESolver extends NamedObj {
 
-    public static  boolean VERBOSE = false;
-    public static  boolean DEBUG = false;
-
-    ////tentative methods
-    public void setVERBOSE(boolean v) {
-        VERBOSE = v;
-    }
-
-    public void setDEBUG(boolean d) {
-        DEBUG = d;
-    }
-
     /** Construct a solver in the default workspace with an empty
      *  string as name. The solver is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.

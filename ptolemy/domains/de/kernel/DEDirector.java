@@ -540,9 +540,14 @@ public class DEDirector extends Director {
      *  @param stopTime The new stop time.
      */
     public void setStopTime(double stopTime) {
-        // since the _stopTime is field is set in the constructor,
-        // it's guarantee to be non-null here.
-        _stopTime.setToken(new DoubleToken(stopTime));
+        try {
+            // since the _stopTime is field is set in the constructor,
+            // it's guarantee to be non-null here.
+            _stopTime.setToken(new DoubleToken(stopTime));
+        } catch (IllegalActionException ex) {
+            // Shouldn't occur, since there are no type constraints
+            throw new InternalErrorException(ex.getMessage());
+        }
     }
 
     /** Decide whether the simulation should be stopped when there's no more

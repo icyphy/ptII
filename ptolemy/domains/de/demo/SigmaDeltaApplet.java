@@ -256,8 +256,7 @@ public class SigmaDeltaApplet extends Applet {
             // approximate the FIR filter by a delay and a gain.
             DEFIRfilter fir = new DEFIRfilter(sys, "FIR", "0.7 0.3");
             Parameter firdelay = (Parameter)fir.getAttribute("Delay");
-            firdelay.setExpression("0.02");
-            firdelay.parameterChanged(null);
+            firdelay.setToken(new DoubleToken(0.02));
 
             DETestLevel quan = new DETestLevel(sys, "Quantizer");
             DEStatistics accu = new DEStatistics(sys, "Accumulator");
@@ -302,52 +301,42 @@ public class SigmaDeltaApplet extends Applet {
             // CT Director parameters
             Parameter initstep =
                 (Parameter)ctdir.getAttribute("InitialStepSize");
-            initstep.setExpression("0.001");
-            initstep.parameterChanged(null);
+            initstep.setToken(new DoubleToken(0.001));
             Parameter minstep =
                 (Parameter)ctdir.getAttribute("MinimumStepSize");
-            minstep.setExpression("1e-6");
-            minstep.parameterChanged(null);
+            minstep.setToken(new DoubleToken(1e-6));
 
             Parameter solver1 =
                 (Parameter)ctdir.getAttribute("BreakpointODESolver");
             StringToken token1 = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             solver1.setToken(token1);
-            solver1.parameterChanged(null);
 
             Parameter solver2 =
                 (Parameter)ctdir.getAttribute("ODESolver");
             StringToken token2 = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             solver2.setToken(token2);
-            solver2.parameterChanged(null);
 
             // CTActorParameters
 
             Parameter freq = (Parameter)sine.getAttribute("AngleFrequency");
-            freq.setExpression("0.5");
-            freq.parameterChanged(null);
+            freq.setToken(new DoubleToken(0.5));
 
             Parameter g0 = (Parameter)gain0.getAttribute("Gain");
-            g0.setExpression("50.0");
-            g0.parameterChanged(null);
+            g0.setToken(new DoubleToken(50.0));
 
             Parameter g1 = (Parameter)gain1.getAttribute("Gain");
-            g1.setExpression("-2.50");
-            g1.parameterChanged(null);
+            g1.setToken(new DoubleToken(-2.50));
 
             Parameter g2 = (Parameter)gain2.getAttribute("Gain");
-            g2.setExpression("-250.0");
-            g2.parameterChanged(null);
+            g2.setToken(new DoubleToken(-250.0));
 
             Parameter g3 = (Parameter)gain3.getAttribute("Gain");
-            g3.setExpression("-20.0");
-            g3.parameterChanged(null);
+            g3.setToken(new DoubleToken(-20.0));
 
             Parameter ts = (Parameter)sampler.getAttribute("SamplePeriod");
-            ts.setExpression("0.02");
-            ts.parameterChanged(null);
+            ts.setToken(new DoubleToken(0.02));
 
             // Setting up parameters.
             _minimumServiceTime = (Parameter)processor.getAttribute("MST");
