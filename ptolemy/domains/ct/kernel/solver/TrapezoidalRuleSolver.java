@@ -40,11 +40,11 @@ import ptolemy.kernel.util.Workspace;
 //// TrapezoidalRuleSolver
 /**
    This is a second order variable step size ODE solver that uses the
-   trapezoidal rule algorithm. 
+   trapezoidal rule algorithm.
    <p>
    NOTE: still under development.
    <p>
-   
+
    For an ODE
    <pre>
    x' = f(x, t)
@@ -58,17 +58,17 @@ import ptolemy.kernel.util.Workspace;
    It is an implicit algorithm, which involves a fixed-point iteration
    to find x(t+h) and x'(t+h).
    <p>
-   The local truncation error (LTE) control is based on the formula 9.78 in 
+   The local truncation error (LTE) control is based on the formula 9.78 in
    "Modeling and Simulation of Dynamic Systems" by Robert L. Woods and Kent L.
-   Lawrence. 
+   Lawrence.
    <p>
-   The basic idea is that once states and derivatives are resolved, denoted as 
-   x(t+h) and x'(t+h), use a two-step method with the calculated derivatives 
-   to recalculate the states, denoted as xx(t+h). Since this solver is second 
+   The basic idea is that once states and derivatives are resolved, denoted as
+   x(t+h) and x'(t+h), use a two-step method with the calculated derivatives
+   to recalculate the states, denoted as xx(t+h). Since this solver is second
    order, the LTE is approximately:
    <pre>
    abs(x(t+h) - xx(t+h))/(2^2 - 1)
-   </pre>    
+   </pre>
 
    @author Jie Liu, Haiyang Zheng
    @version $Id$
@@ -109,14 +109,14 @@ public class TrapezoidalRuleSolver extends ODESolver {
     ////                         public methods                    ////
 
     /** Fire dynamic actors. Advance the model time to the current model time
-     *  plus the current step size. 
+     *  plus the current step size.
      *  @throws IllegalActionException If thrown in the super class or the
      *  model time can not be set.
      */
     public void fireDynamicActors() throws IllegalActionException {
         // First assume that the states will converge after this round.
-        // If any integrator does not agree, the final converged status may be 
-        // changed via calling _voteForConverged() by that integrator. 
+        // If any integrator does not agree, the final converged status may be
+        // changed via calling _voteForConverged() by that integrator.
         _setConverged(true);
         CTDirector dir = (CTDirector)getContainer();
         super.fireDynamicActors();
@@ -127,7 +127,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
         }
         if (_isConverged()) {
             // Resolved satates have converged.
-            // We need to recalculate the states with two steps. 
+            // We need to recalculate the states with two steps.
             // The new states will be used to control local truncation error
             if (!_recalculatingWithTwoSteps) {
                 _setConverged(false);
@@ -136,7 +136,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
                 if (_firstStep) {
                     _setConverged(false);
                     _firstStep = false;
-                } 
+                }
             }
         }
     }
@@ -169,11 +169,11 @@ public class TrapezoidalRuleSolver extends ODESolver {
         return 2;
     }
 
-    /** Fire the given integrator. 
+    /** Fire the given integrator.
      *
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException If there is no director, or can not
-     *  read input, or send output. 
+     *  read input, or send output.
      */
     public void integratorFire(CTBaseIntegrator integrator)
             throws IllegalActionException {
@@ -185,12 +185,12 @@ public class TrapezoidalRuleSolver extends ODESolver {
         double h = dir.getCurrentStepSize();
         double tentativeState;
         if (_getRoundCount() == 0) {
-            // During the first round, use the current derivative to predict 
+            // During the first round, use the current derivative to predict
             // the states at currentModelTime + currentStepSize. The predicted
             // states are the initial guesses for fixed-point iteration.
             double f1 = integrator.getDerivative();
             tentativeState = integrator.getState() + f1*h;
-            // Set converged to false such that the integrator will be refired 
+            // Set converged to false such that the integrator will be refired
             // again to check convergence of resolved states.
             _voteForConverged(false);
         } else {
@@ -212,33 +212,33 @@ public class TrapezoidalRuleSolver extends ODESolver {
             } else {
                 if (_firstStep) {
                     // calculate the states with half of the step size.
-                    tentativeState 
+                    tentativeState
                         = integrator.getState() + (h*(f1+f2))/2.0/2.0;
                 } else {
                     // calculate the states with half of the step size.
-                    tentativeState 
+                    tentativeState
                         = integrator.getTentativeState() + (h*(f1+f2))/2.0/2.0;
                     // NOTE: We save the newly calculated state as the saved
-                    // aux variable and restore the tentativeState back to 
+                    // aux variable and restore the tentativeState back to
                     // the fixed-point state
                     double temp = tentativeState;
-                    integrator.setAuxVariables(0, temp);    
+                    integrator.setAuxVariables(0, temp);
                     tentativeState = (integrator.getAuxVariables())[0];
                     integrator.setTentativeDerivative(f2);
                 }
                 _voteForConverged(true);
             }
         }
-        integrator.setTentativeState(tentativeState);  
+        integrator.setTentativeState(tentativeState);
         integrator.output.broadcast(new DoubleToken(tentativeState));
     }
 
     /** Perform the isThisStepAccurate() test for the integrator under
-     *  this solver. This method returns true if the local truncation error 
+     *  this solver. This method returns true if the local truncation error
      *  (an estimation of the local error) is less than the error tolerance.
      *  Otherwise, return false.
      *  @param integrator The integrator that calls this method.
-     *  @return True if the local truncation error is less than the 
+     *  @return True if the local truncation error is less than the
      *  error tolerance.
      */
     public boolean integratorIsAccurate(CTBaseIntegrator integrator) {
@@ -248,8 +248,8 @@ public class TrapezoidalRuleSolver extends ODESolver {
         double localError =
             (1.0/3.0)*Math.abs(integrator.getTentativeState() - k[0]);
         integrator.setAuxVariables(1, localError);
-        if (_debugging) {        
-            _debug("Integrator: "+ integrator.getName() +                 
+        if (_debugging) {
+            _debug("Integrator: "+ integrator.getName() +
                     " local truncation error = " + localError);
         }
         if (localError < tolerance) {
@@ -292,8 +292,8 @@ public class TrapezoidalRuleSolver extends ODESolver {
         return newh;
     }
 
-    /** Return true if the resolved states have converged. Return false if 
-     *  states have not converged but the number of iterations reaches the 
+    /** Return true if the resolved states have converged. Return false if
+     *  states have not converged but the number of iterations reaches the
      *  <i>maxIterations</i> number. Mean while, the round count is reset.
      *  @return True if the resolved states have converged.
      *  @exception IllegalActionException Not thrown in this class.

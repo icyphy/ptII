@@ -38,7 +38,7 @@ import ptolemy.kernel.util.Workspace;
 //// FixedStepSolver
 /**
    Abstract base class for fixed step size ODE solvers, which provide no
-   error control. It provide base implementation for some methods that 
+   error control. It provide base implementation for some methods that
    are shared by all fixed-step-size solvers.
 
    @author Jie Liu, Haiyang Zheng
@@ -72,13 +72,13 @@ public abstract class FixedStepSolver extends ODESolver {
 
     /** Fire dynamic actors. Advance the model time to the current model time
      *  plus the current step size.
-     *  @throws IllegalActionException If thrown in the super class or 
+     *  @throws IllegalActionException If thrown in the super class or
      *  the model time can not be set.
      */
     public void fireDynamicActors() throws IllegalActionException {
         // First assume that the states will converge after this round.
-        // If any integrator does not agree, the final converged status may be 
-        // changed via calling _voteForConverged() by that integrator. 
+        // If any integrator does not agree, the final converged status may be
+        // changed via calling _voteForConverged() by that integrator.
         _setConverged(true);
         super.fireDynamicActors();
         CTDirector dir = (CTDirector)getContainer();

@@ -88,10 +88,10 @@ public class ForwardEulerSolver extends FixedStepSolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire the integrator to resolve states. Vote true for convergence if 
-     *  a fixed-point solution is found. Otherwise, vote false. 
+    /** Fire the integrator to resolve states. Vote true for convergence if
+     *  a fixed-point solution is found. Otherwise, vote false.
      *
-     *  @param integrator The integrator to be fired. 
+     *  @param integrator The integrator to be fired.
      *  @exception IllegalActionException If there is no director, or can not
      *  read input, or can not send output.
      */
@@ -105,7 +105,7 @@ public class ForwardEulerSolver extends FixedStepSolver {
         double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
         double tentativeState =
             integrator.getState() + f*(dir.getCurrentStepSize());
-        
+
         integrator.setTentativeState(tentativeState);
         integrator.setTentativeDerivative(f);
 

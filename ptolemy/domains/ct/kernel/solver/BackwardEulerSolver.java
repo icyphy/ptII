@@ -50,12 +50,12 @@ import ptolemy.kernel.util.Workspace;
    where x(t) is the current state, x(t+h) is the next
    state, h is the step size, and x'(t+h) is the derivative of x at t+h.
    The formula above is an algebraic equation, and this solver uses fixed
-   point iteration to solve it. 
+   point iteration to solve it.
    <P>
-   This solver does not perform step size control even when the states do not 
-   converge after the maximum number of iterations is reached. However, CT 
-   directors may try to reduce step size. This solver does not give suggestions 
-   on choosing step size either. 
+   This solver does not perform step size control even when the states do not
+   converge after the maximum number of iterations is reached. However, CT
+   directors may try to reduce step size. This solver does not give suggestions
+   on choosing step size either.
 
    @author Jie Liu, Haiyang Zheng
    @version $Id$
@@ -107,10 +107,10 @@ public class BackwardEulerSolver extends FixedStepSolver {
         }
     }
 
-    /** Fire the integrator to resolve states. Vote true for convergence if 
-     *  a fixed-point solution is found. Otherwise, vote false. 
+    /** Fire the integrator to resolve states. Vote true for convergence if
+     *  a fixed-point solution is found. Otherwise, vote false.
      *
-     *  @param integrator The integrator to be fired. 
+     *  @param integrator The integrator to be fired.
      *  @exception IllegalActionException If there is no director, or can not
      *  read input, or can not send output.
      */
@@ -123,20 +123,20 @@ public class BackwardEulerSolver extends FixedStepSolver {
         }
         double tentativeState = integrator.getState();
         if (_getRoundCount() == 0) {
-            // During the first round, use the current derivative to predict 
+            // During the first round, use the current derivative to predict
             // the states at currentModelTime + currentStepSize. The predicted
             // states are the initial guesses for fixed-point iteration.
             double f = integrator.getDerivative();
             tentativeState = tentativeState + f*(dir.getCurrentStepSize());
-            // Set converged to false such that the integrator will be refired 
+            // Set converged to false such that the integrator will be refired
             // again to check convergence of resolved states.
             _voteForConverged(false);
         } else {
-            // Not the first round, keep iterating until resolved states 
+            // Not the first round, keep iterating until resolved states
             // converge.
             double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
             tentativeState = tentativeState + f*(dir.getCurrentStepSize());
-            double error = 
+            double error =
                 Math.abs(tentativeState-integrator.getTentativeState());
             if (error < dir.getValueResolution()) {
                 integrator.setTentativeDerivative(f);
@@ -149,8 +149,8 @@ public class BackwardEulerSolver extends FixedStepSolver {
     }
 
 
-    /** Return true if the resolved states have converged. Return false if 
-     *  states have not converged but the number of iterations reaches the 
+    /** Return true if the resolved states have converged. Return false if
+     *  states have not converged but the number of iterations reaches the
      *  <i>maxIterations</i> number. Meanwhile, the round count is reset.
      *  @return True if the resolved states have converged.
      *  @exception IllegalActionException Not thrown in this class.

@@ -118,8 +118,8 @@ public class DerivativeResolver extends ODESolver
     }
 
     /** Fire the given integrator. Build history information by recording
-     *  the current input as the derivative and using the old state as the 
-     *  tentative state. 
+     *  the current input as the derivative and using the old state as the
+     *  tentative state.
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException If can not read input.
      */
@@ -155,5 +155,5 @@ public class DerivativeResolver extends ODESolver
 
     /** Name of this Solver. */
     private static final String _DEFAULT_NAME="CT_Derivative_Resolver" ;
-    
+
 }

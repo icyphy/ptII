@@ -53,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
    K1 = f(x(n)+0.5*h*K0, tn+0.5*h);
    K2 = f(x(n)+0.75*h*K1, tn+0.75*h);
    x(n+1) = x(n)+(2/9)*h*K0+(1/3)*h*K0+(4/9)*h*K2;
-   </pre>, 
+   </pre>,
    and error control:
    <pre>
    K3 = f(x(n+1), tn+h);
@@ -114,8 +114,8 @@ public class ExplicitRK23Solver extends ODESolver {
         super.fireDynamicActors();
         CTDirector dir = (CTDirector)getContainer();
         // NOTE: why is the current model time changed here?
-        // Some state transition actors may be some functions 
-        // defined on the current time, such as the CurrentTime actor.            
+        // Some state transition actors may be some functions
+        // defined on the current time, such as the CurrentTime actor.
         Time iterationBeginTime = dir.getIterationBeginTime();
         double currentStepSize = dir.getCurrentStepSize();
         dir.setModelTime(
@@ -123,8 +123,8 @@ public class ExplicitRK23Solver extends ODESolver {
     }
 
 
-    /** Fire state transition actors. Increment the round count. 
-     *  If the current round is the third round, set converged flag to 
+    /** Fire state transition actors. Increment the round count.
+     *  If the current round is the third round, set converged flag to
      *  true indicating a fixed-point states have been reached. Reset
      *  the round count if the current round is the last one.
      *  @throws IllegalActionException If thrown in the super class.
@@ -154,7 +154,7 @@ public class ExplicitRK23Solver extends ODESolver {
         return 4;
     }
 
-    /** Fire the given integrator. This method performs the ODE solving 
+    /** Fire the given integrator. This method performs the ODE solving
      *  algorithm described in the class comment.
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException If there is no director, or can not
@@ -277,5 +277,5 @@ public class ExplicitRK23Solver extends ODESolver {
 
     // The order of the algorithm.
     private static final double _order = 3;
-    
+
 }
