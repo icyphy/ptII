@@ -101,7 +101,8 @@ public class Ramp extends SequenceSource {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class to update the step parameter.
+    /** Override the base class to reinitialize the state if either
+     *  the <i>step</i> or the <i>init</i> parameter is changed.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown.
      */
@@ -110,9 +111,7 @@ public class Ramp extends SequenceSource {
 	if (attribute == step) {
 	    _step = step.getToken();
 	    _stateToken = init.getToken();
-	}
-
-        if (attribute == init) {
+	} else if (attribute == init) {
             _stateToken = init.getToken();
         }
     }
