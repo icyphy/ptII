@@ -16,6 +16,9 @@
   <entity name="Average" class="ptolemy.actor.lib.Average">
   </entity>
 
+  <entity name="DotProduct" class="ptolemy.domains.sdf.lib.DotProduct">
+  </entity>
+
   <entity name="Expression" class="ptolemy.actor.lib.Expression">
   </entity>
 
@@ -25,6 +28,8 @@
             <property name="exp" value="exp"
 	              class="ptolemy.kernel.util.StringAttribute"/>
             <property name="log" value="log"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="remainder" value="remainder"
 	              class="ptolemy.kernel.util.StringAttribute"/>
             <property name="sign" value="sign"
 	              class="ptolemy.kernel.util.StringAttribute"/>
