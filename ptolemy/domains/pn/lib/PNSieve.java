@@ -89,15 +89,17 @@ public class PNSieve extends PNStar {
                     /* is it the next prime? */
                     if (_output == null) {
                         /* yes - make the sieve for it */
-                        PNSieve newSieve = new PNSieve(getContainer(), data.intValue() + "_sieve");
-                        _output = new PNOutPort(this, "output");
-                        IORelation relation = new IORelation(getContainer(),
-                                data.intValue()+"_queue");
-                        _output.link(relation);
-                        PNPort inport = newSieve.getPort("_input");
-                        inport.link(relation);
+                        PNSieve newSieve = new PNSieve((CompositeEntity)
+                                getContainer(), data.intValue() + "_sieve");
                         newSieve.initialize(data.intValue());
-                        Thread temp = new Thread(_processGroup, star);
+                        _output = new PNOutPort(this, "output");
+                        IORelation relation = new IORelation((CompositeEntity)
+                                getContainer(), data.intValue()+"_queue");
+                        _output.link(relation);
+                        PNPort inport = (PNPort)newSieve.getPort("input");
+                        inport.link(relation);
+                        inport.getQueue().setCapacity(1);
+                        Thread temp = new Thread(executive().getProcessGroup(), newSieve);
                         temp.start();
                     } 
                     else {
@@ -108,6 +110,12 @@ public class PNSieve extends PNStar {
         } catch (NoSuchElementException e) {
             System.out.println("Terminating "+ this.getName());
             return;
+        } catch (NameDuplicationException n) {
+            //This should never be thrown
+            System.out.println("Name being duplicated");
+        } catch (IllegalActionException a) {
+            //This should never be thrown
+            System.out.println("IllegalActionException thrown");
         }
     }
     
