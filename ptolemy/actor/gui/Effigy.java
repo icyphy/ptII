@@ -291,7 +291,7 @@ public class Effigy extends CompositeEntity {
                 ComponentEntity tableau = (ComponentEntity)tableaux.next();
                 tableau.setContainer(null);
             }
-            
+
 	    // Remove all contained effigies as well.
 	    Iterator effigies = entityList(Effigy.class).iterator();
 	    while (effigies.hasNext()) {
