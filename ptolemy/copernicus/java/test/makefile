@@ -83,7 +83,7 @@ test_java: jclass
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
-PTJACL_JFLAG = -Xms120m -Xmx120m
+PTJACL_JFLAG = -Xms180m -Xmx180m
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
@@ -129,7 +129,7 @@ disassembleShallowDemo:
 	sh ./jad2java cg/$(SHALLOWTARGETNAME).jad \
 		> cg/$(SHALLOWTARGETNAME).java
 	$(JAVAC) -classpath $(ROOT) cg/$(SHALLOWTARGETNAME).java
-	$(ROOT)/bin/ptinvoke \
+	CLASSPATH=$(ROOT) /opt/jdk1.3latest/bin/java \
 		ptolemy.actor.gui.CompositeActorApplication \
 		-class ptolemy.copernicus.java.test.cg.$(SHALLOWTARGETNAME)
 
