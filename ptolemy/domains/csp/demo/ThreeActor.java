@@ -63,9 +63,9 @@ public class ThreeActor {
      */	
     public static void main(String[] args) {
         try {
-            CSPCompositeActor univ = new CSPCompositeActor();
+            CompositeActor univ = new CompositeActor();
             univ.setName( "Universe");
-            CSPDirector execdir = new CSPDirector("Executive");
+            Director execdir = new Director("Executive");
             CSPDirector localdir = new CSPDirector("Local Director");
             univ.setExecutiveDirector(execdir);
             univ.setDirector(localdir);
