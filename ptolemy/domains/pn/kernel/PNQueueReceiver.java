@@ -97,8 +97,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     /**
      */
-    public synchronized void prepareToBlock(Branch branch) 
-            throws TerminateBranchException {
+    public synchronized void prepareToBlock(Branch branch) {
         if( branch != null ) {
             branch.registerRcvrBlocked(this);
             _otherBranch = branch;
@@ -316,6 +315,16 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	return _boundaryDetector.isConnectedToBoundaryOutside();
     }
 
+    /** This class serves as an example of a ConsumerReceiver and
+     *  hence this method returns true;
+     */
+    public boolean isConsumerReceiver() {
+        if( isConnectedToBoundary() ) {
+             return true;
+        }
+    	return false;
+    }
+
     /** Return true if this receiver is contained on the inside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is contained
@@ -344,6 +353,16 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public boolean isOutsideBoundary() {
 	return _boundaryDetector.isOutsideBoundary();
+    }
+
+    /** This class serves as an example of a ProducerReceiver and
+     *  hence this method returns true;
+     */
+    public boolean isProducerReceiver() {
+        if( isOutsideBoundary() || isInsideBoundary() ) {
+            return true;
+        }
+    	return false;
     }
 
     /** Return a true or false to indicate whether there is a read block
