@@ -47,8 +47,8 @@ then stored in a ODFReceiver.
 
 BEGIN FIXME
        There are some critical semantic differences between actors that
-       use ODFIOPorts and polymorphic ports which use regular IOPorts.
-       The key difference is that IOPort.send() sets the timestamp of the
+       use ODFIOPorts and polymorphic ports which use regular TypedIOPorts.
+       The key difference is that TypedIOPort.send() sets the timestamp of the
        token to the rcvrTime of the receiving actor's receiver. ODFIOPort.send()
        sets the timestamp of the token to the minimum rcvrTime of the
        sending actor.
@@ -70,7 +70,7 @@ are selected first in situations involving simultaneous event times.
 @see ptolemy.domains.odf.kernel.Event
 */
 
-public class ODFIOPort extends IOPort {
+public class ODFIOPort extends TypedIOPort {
 
     /** Construct an ODFIOPort with no container and no name that is
      *  neither an input nor an output.
