@@ -278,7 +278,12 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
             //System.out.println("Initializing...");
             _alreadyInitialized = true;
             registerConstant("PI", new DoubleToken(java.lang.Math.PI));
+            registerConstant("pi", new DoubleToken(java.lang.Math.PI));
             registerConstant("E", new DoubleToken(java.lang.Math.E));
+            registerConstant("e", new DoubleToken(java.lang.Math.E));
+            Complex i = new Complex(0.0, 1.0);
+            registerConstant("i", new ComplexToken(i));
+            registerConstant("j", new ComplexToken(i));
             registerFunctionClass("java.lang.Math");
             registerFunctionClass("ptolemy.data.expr.UtilityFunctions");
         }
@@ -298,7 +303,8 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
     /*  Stores the Tokens corresponding to constants that the parser
      *  recognizes. It stores them by name, with each name corresponding
      *  to a ptolemy.data.Token. It is static, and by default only 
-     *  contains the java.lang.Math PI and E constants.
+     *  contains the java.lang.Math PI and E constants and the imaginary
+     *  numbers i and j.
      */
     private static Hashtable _constantsRecognized;
 

@@ -462,3 +462,14 @@ test PtParser-10.1 {Test that functions can access registered classes.
     
     list $value1 $value2
 } {ptolemy.data.IntToken(1) ptolemy.data.DoubleToken(0.5)}
+
+######################################################################
+####
+test PtParser-11.0 {Test constants} {
+    set e [java::new {ptolemy.kernel.Entity String} E]
+    set v1 [java::new ptolemy.data.expr.Variable $e v1]
+    $v1 setExpression i
+    set v2 [java::new ptolemy.data.expr.Variable $e v2]
+    $v2 setExpression {v1*j}
+    [$v2 getToken] stringValue
+} {-1.0 + 0.0i}

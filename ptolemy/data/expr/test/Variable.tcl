@@ -298,6 +298,38 @@ test Variable-6.3 {check getScope} {
     enumToFullNames [$namelist elements]
 } {.E.P2 .E.P1}
 
+test Variable-6.4 {Check removeFromScope} {
+    set e [java::new {ptolemy.kernel.Entity String} E]
+    set p1 [java::new ptolemy.data.expr.Variable $e P1]
+    $p1 setExpression {"a"}
+    set p2 [java::new ptolemy.data.expr.Variable $e P2]
+    $p2 setExpression {"b"}
+    set v1 [java::new ptolemy.data.expr.Variable]
+    $v1 setName "P1"
+    $v1 setExpression {"c"}
+    set v2 [java::new ptolemy.data.expr.Variable]
+    $v2 setName "V2"
+    $v2 setExpression "P1+P2"
+    $v2 {addToScope java.util.Enumeration} [$e getAttributes]
+    $v2 {addToScope ptolemy.data.expr.Variable} $v1
+    set r1 [[$v2 getToken] stringValue]
+    $v2 {removeFromScope ptolemy.data.expr.Variable} $v1
+    catch {[[$v2 getToken] stringValue]} r2
+    list $r1 $r2
+} {cb {ptolemy.data.expr.IllegalExpressionException: Error parsing expression "P1+P2":
+The ID P1 is undefined.}}
+
+test Variable-6.5 {Check that removeFromScope does not remove container's variables} {
+    set e [java::new {ptolemy.kernel.Entity String} E]
+    set p1 [java::new ptolemy.data.expr.Variable $e P1]
+    $p1 setExpression {"a"}
+    set p2 [java::new ptolemy.data.expr.Variable $e P2]
+    $p2 setExpression {P1}
+    $p2 getToken
+    $p2 {removeFromScope java.util.Enumeration} [$e getAttributes]
+    [$p2 getToken] stringValue
+} {a}
+
 #################################
 ####
 test Variable-7.0 {Check clone} {
@@ -310,7 +342,7 @@ test Variable-7.0 {Check clone} {
     list $r1 [string compare $r2 [java::null]]
 } {1.0 0}
 
-test Variable-7.0 {Check clone} {
+test Variable-7.1 {Check clone} {
     set e [java::new {ptolemy.kernel.Entity String} E]
     set p1 [java::new ptolemy.data.expr.Variable $e P1]
     $p1 setExpression P3
@@ -325,7 +357,7 @@ test Variable-7.0 {Check clone} {
 
 #################################
 ####
-test Variable-7.1 {Check getExpression} {
+test Variable-8.0 {Check getExpression} {
     set p1 [java::new ptolemy.data.expr.Variable]
     $p1 setExpression {"1.0"}
     set r1 [$p1 getExpression]
@@ -333,3 +365,58 @@ test Variable-7.1 {Check getExpression} {
     set r2 [$p1 getExpression]
     list $r1 $r2
 } {{"1.0"} {}}
+
+#################################
+####
+test Variable-9.0 {Check reset} {
+    set p1 [java::new ptolemy.data.expr.Variable]
+    $p1 setExpression {"1.0"}
+    set r1 [$p1 getExpression]
+    $p1 setToken [java::new ptolemy.data.DoubleToken 2.0]
+    set r2 [$p1 getExpression]
+    $p1 reset
+    set r3 [$p1 getExpression]
+    list $r1 $r2 $r3
+} {{"1.0"} {} {"1.0"}}
+
+test Variable-9.1 {Check reset} {
+    set p1 [java::new ptolemy.data.expr.Variable]
+    $p1 setToken [java::new ptolemy.data.DoubleToken 3.0]
+    set r1 [$p1 getExpression]
+    $p1 setExpression {1.0}
+    set r2 [[$p1 getToken] stringValue]
+    $p1 reset
+    set r3 [$p1 getExpression]
+    set r4 [[$p1 getToken] stringValue]
+    list $r1 $r2 $r3 $r4
+} {{} 1.0 {} 3.0}
+
+#################################
+####
+test Variable-10.0 {Check setContainer} {
+    set e1 [java::new {ptolemy.kernel.Entity String} E1]
+    set e2 [java::new {ptolemy.kernel.Entity String} E2]
+    set p1 [java::new ptolemy.data.expr.Variable $e1 P1]
+    $p1 setExpression {"a"}
+    set p2 [java::new ptolemy.data.expr.Variable $e1 P2]
+    $p2 setExpression {P1}
+    set r1 [[$p2 getToken] stringValue]
+    $p1 setContainer $e2
+    catch {[$p2 getToken] stringValue} r2
+    $p2 setContainer $e2
+    set r3 [[$p2 getToken] stringValue]
+    list $r1 $r2 $r3
+} {a {ptolemy.data.expr.IllegalExpressionException: Error parsing expression "P1":
+The ID P1 is undefined.} a}
+
+#################################
+####
+test Variable-11.0 {Check reach of scope} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 E2]
+    set p1 [java::new ptolemy.data.expr.Variable $e1 P1]
+    $p1 setExpression {"a"}
+    set p2 [java::new ptolemy.data.expr.Variable $e2 P2]
+    $p2 setExpression {P1}
+    [$p2 getToken] stringValue
+} {a}
