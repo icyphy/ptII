@@ -31,6 +31,7 @@
 package ptolemy.kernel.attributes;
 
 import ptolemy.kernel.util.*;
+import ptolemy.util.StringUtilities;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
