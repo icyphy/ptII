@@ -43,14 +43,33 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 95.0]">
         </property>
     </property>
+    <property name="directoryOrURL" class="ptolemy.data.expr.FileParameter" value="http://ptolemy.eecs.berkeley.edu/demos">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:#00BB00" y="20">-F-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 120.0]">
+        </property>
+    </property>
     <entity name="DirectoryListing" class="ptolemy.actor.lib.io.DirectoryListing">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="directoryOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Demos/">
+        <property name="directoryOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="$directoryOrURL">
         </property>
         <property name="listOnlyFiles" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 195.0]">
         </property>
     </entity>
     <entity name="VisualModelReference" class="ptolemy.vergil.actor.lib.VisualModelReference">
@@ -62,7 +81,7 @@
         </property>
         <property name="closeOnPostfire" class="ptolemy.data.expr.StringParameter" value="close Vergil graph">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 195.0]">
         </property>
     </entity>
     <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
@@ -76,7 +95,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 195.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
