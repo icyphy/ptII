@@ -76,21 +76,20 @@ install: jclass subinstall $(PTCLASSJAR)
 Hello.prc: Hello.class \
 		$(KVM_DIR)/tools/palm/src/palm/database/MakePalmApp.class
 	$(JAVA) \
-	 -classpath "$(KVM_DIR)/tools/palm/src$(CLASSPATHSEPARATOR)(CLASSPATH)" \
+	 -classpath $(KVM_DIR)/tools/palm/src \
 	 palm.database.MakePalmApp \
 	-v -v \
 	-version "1.0" \
-	-bootclasspath $(KVM_CLASSES)/bin/api/classes  \
+	-bootclasspath $(KVM_CLASSES)  \
 	-classpath "$(CLASSPATH)" \
 	ptolemy.kvm.demo.hello.Hello
 
-# Build the MakePalmApp tool if necessary
-$(KVM_DIR)/tools/palm/src/palm/database/MakePalmApp.class: \
-		$(KVM_DIR)/tools/palm/src/palm/database/MakePalmApp.java
-	(cd $(KVM_DIR)/tools/palm/src/palm/database; $(JAVAC) *.java)
 
 depend:
 	@echo "no dependencies in this directory"
+
+# Get rules for KVM
+include $(ROOT)/mk/kvm.mk
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
