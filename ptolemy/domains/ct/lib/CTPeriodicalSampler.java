@@ -97,7 +97,8 @@ public class CTPeriodicalSampler extends CTActor
         updateParameters();
         CTDirector dir = (CTDirector) getDirector();
         boolean hasjump = false;
-        while (_nextSamplingTime < dir.getCurrentTime()) {
+        while (_nextSamplingTime < 
+                (dir.getCurrentTime()-dir.getTimeResolution())) {
             hasjump = true;
             _nextSamplingTime += _samplePeriod;
         }
@@ -114,7 +115,12 @@ public class CTPeriodicalSampler extends CTActor
      *  of this fire.
      */
     public void fire() throws IllegalActionException {
-        return;
+        CTDirector dir = (CTDirector)getDirector();
+        double tnow = dir.getCurrentTime();
+         _hasCurrentEvent = false;
+        if(Math.abs(tnow - _nextSamplingTime)<dir.getTimeResolution()) {
+            _hasCurrentEvent = true;
+        }
     }
 
     /** Postfire: if this is the sampling point, output a token with the
@@ -159,12 +165,6 @@ public class CTPeriodicalSampler extends CTActor
      *  last step.
      */
     public boolean hasCurrentEvent() {
-        CTDirector dir = (CTDirector)getDirector();
-        double tnow = dir.getCurrentTime();
-         _hasCurrentEvent = false;
-        if(Math.abs(tnow - _nextSamplingTime)<dir.getTimeResolution()) {
-            _hasCurrentEvent = true;
-        }
         return _hasCurrentEvent;
     }
 
@@ -172,13 +172,15 @@ public class CTPeriodicalSampler extends CTActor
      *  - current time; else return the current step size.
      */
     public void emitCurrentEvents() {
+        CTDirector dir = (CTDirector)getDirector();
         if(_hasCurrentEvent) {
             try {
                 if(input.hasToken(0)) {
                     output.broadcast(input.get(0));
+                    _hasCurrentEvent = false;
                 }
             }catch (IllegalActionException e) {
-                //ignor.
+                throw new InvalidStateException("No input Token.");
             }
         }
     }
@@ -200,7 +202,7 @@ public class CTPeriodicalSampler extends CTActor
     // Parameter, the sample period.
     private CTParameter _paramSamplePeriod;
     private double _samplePeriod;
-
+    private double _eventTime;
     private boolean _hasCurrentEvent = false;
     private double _refineStep;
     private double _nextSamplingTime;

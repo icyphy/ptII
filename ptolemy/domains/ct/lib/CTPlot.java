@@ -123,14 +123,14 @@ public class  CTPlot extends CTActor {
         _xMax = ((DoubleToken)_paramXMax.getToken()).doubleValue();
         
         String legs = ((StringToken)_paramLegends.getToken()).stringValue();
-        System.out.println(legs);
+        //System.out.println(legs);
         if(!legs.equals("")) {
             StringTokenizer stokens = new StringTokenizer(legs);
             int index = 0;
             _legends = new String[stokens.countTokens()];
             while(stokens.hasMoreTokens()) {
                  _legends[index++]= stokens.nextToken();
-                 System.out.println(_legends[index-1]);
+                 //System.out.println(_legends[index-1]);
             }
         }
         int width = input.getWidth();
