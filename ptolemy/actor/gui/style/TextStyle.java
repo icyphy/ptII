@@ -32,7 +32,11 @@ TextArea (multi-line).
 package ptolemy.actor.gui.style;
 
 import ptolemy.actor.gui.PtolemyQuery;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -54,7 +58,7 @@ attribute.  This style can be used with any Settable attribute.
 public class TextStyle extends ParameterEditorStyle {
 
     /** Construct an attribute in the default workspace with an empty string
-     *  as its name.
+     *  as its name. This constructor is for testing only.
      *  The object is added to the directory of the workspace.
      *  Increment the version number of the workspace.
      */
@@ -74,7 +78,28 @@ public class TextStyle extends ParameterEditorStyle {
     public TextStyle(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        
+        height = new Parameter(this, "height");
+        height.setToken("10");
+        height.setTypeEquals(BaseType.INT);
+
+        width = new Parameter(this, "width");
+        width.setToken("30");
+        width.setTypeEquals(BaseType.INT);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The height (in lines) of the text box. This is an integer
+     *  that defaults to 10.
+     */
+    public Parameter height;
+
+    /** The width (in lines) of the text box. This is an integer
+     *  that defaults to 30.
+     */
+    public Parameter width;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -99,11 +124,19 @@ public class TextStyle extends ParameterEditorStyle {
         String name = container.getName();
         String defaultValue = "";
         defaultValue = container.getExpression();
-        query.addTextArea(
-                name, 
-                name, 
-                defaultValue,
-                PtolemyQuery.preferredBackgroundColor(container));
-        query.attachParameter(container, name);
+        try {
+            int heightValue = ((IntToken)height.getToken()).intValue();
+            int widthValue = ((IntToken)width.getToken()).intValue();
+            query.addTextArea(
+                    name, 
+                    name, 
+                    defaultValue,
+                    PtolemyQuery.preferredBackgroundColor(container),
+                    heightValue,
+                    widthValue);
+            query.attachParameter(container, name);
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
     }
 }
