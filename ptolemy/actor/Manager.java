@@ -77,7 +77,7 @@ the default behaviour, override the Director._writeAccessPreference() method.
 
 @author Steve Neuendorffer, Lukito Muliadi
 // Contributors: Mudit Goel, Edward A. Lee
-@version: $Id$
+@version $Id$
 */
 
 public final class Manager extends NamedObj implements Runnable {
@@ -160,7 +160,7 @@ public final class Manager extends NamedObj implements Runnable {
     public void fireExecutionError(Exception e) {
         // if any exceptions get up to this level, then we have to tell
         // the gui by enscapsulating in an event.
-        ExecutionEvent event = new ExecutionEvent(this,_iteration,e);
+        ExecutionEvent event = new ExecutionEvent(this, _iteration,e);
         Enumeration listeners = _ExecutionListeners.elements();
         // if nobody is listening, then just dump the stack trace.
         if(!listeners.hasMoreElements()) {
@@ -363,7 +363,7 @@ public final class Manager extends NamedObj implements Runnable {
                         if(_isPaused) {
                             // Notify listeners that we are paused.
                             event =
-                                new ExecutionEvent(this,_iteration);
+                                new ExecutionEvent(this, _iteration);
                             _fireExecutionEvent(
                                     ExecutionEventType.EXECUTIONPAUSED, event);
 
@@ -377,7 +377,7 @@ public final class Manager extends NamedObj implements Runnable {
                             // Somebody woke us up, so notify all the
                             // listeners that we are resuming.
                             event =
-                                new ExecutionEvent(this,_iteration);
+                                new ExecutionEvent(this, _iteration);
                             _fireExecutionEvent(
                                     ExecutionEventType.EXECUTIONRESUMED,
                                     event);
@@ -400,7 +400,7 @@ public final class Manager extends NamedObj implements Runnable {
 
                 // notify all listeners that we have been stopped.
                 event =
-                    new ExecutionEvent(this,_iteration);
+                    new ExecutionEvent(this, _iteration);
                 _fireExecutionEvent(ExecutionEventType.EXECUTIONFINISHED,
                         event);
             }
@@ -431,7 +431,7 @@ public final class Manager extends NamedObj implements Runnable {
         // be buffered, and the second simulation will rerun immediately
         // after the first one ends.. Is this what you want ? (lmuliadi)
 
-        if(_simulationThread!=null) {
+        if(_simulationThread != null) {
             _simulationThread.stop();
             try {
                 _simulationThread.join();
@@ -507,7 +507,7 @@ public final class Manager extends NamedObj implements Runnable {
                     " attempted execution with no topology to execute!");
         }
 
-        ExecutionEvent event = new ExecutionEvent(this,_iteration);
+        ExecutionEvent event = new ExecutionEvent(this, _iteration);
         _fireExecutionEvent(ExecutionEventType.ITERATIONSTARTED, event);
 
         // Toplevel mutations will occur here.
@@ -565,7 +565,7 @@ public final class Manager extends NamedObj implements Runnable {
 
     /** Check if write access in the workspace will be needed during an
      *  iteration.
-     s     *  An iteration is defined to be one invocation of prefire(), fire(), and
+     *  An iteration is defined to be one invocation of prefire(), fire(), and
      *  postfire() methods of the top level composite actor.
      *  <p>
      *  This method recursively call the needWriteAccess() method of all lower
