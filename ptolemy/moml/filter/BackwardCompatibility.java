@@ -92,6 +92,7 @@ public class BackwardCompatibility {
         _filterList.add(new AddIcon());
         _filterList.add(new ClassChanges());
         _filterList.add(new HideAnnotationNames());
+        _filterList.add(new MultiportToSinglePort());
         _filterList.add(new ParameterNameChanges());
         _filterList.add(new PortNameChanges());
         _filterList.add(new PropertyClassChanges());
