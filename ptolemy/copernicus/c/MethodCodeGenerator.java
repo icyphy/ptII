@@ -147,7 +147,7 @@ public class MethodCodeGenerator {
     }
 
 
-    /** Generate the declarions for variables used in exception-tracking.
+    /** Generate the declarations for variables used in exception-tracking.
         @param tracker The ExceptionTracker for the method for which the
         declarations are needed.
         @return A string containing these declarations.
