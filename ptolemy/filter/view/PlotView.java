@@ -86,6 +86,27 @@ public abstract class PlotView extends FilterView {
      */
     public abstract void moveInteractComp(InteractComponent ic);
 
+    /**
+     * Process the selection of an interactive component.  
+     * The derived class need to provide the implementation.
+     * @param ic the selected InteractComponent.
+     */
+    public abstract void selectInteractComp(InteractComponent ic);
+ 
+    /**
+     * Process the disselection of an interactive component.  
+     * The derived class need to provide the implementation.
+     * @param ic the unselected InteractComponent.
+     */
+    public abstract void unselectInteractComp(InteractComponent ic);
+ 
+    /**
+     * Process the deletion of an interactive component.  
+     * The derived class need to provide the implementation.
+     * @param ic the InteractComponent to be deleted.
+     */
+    public abstract void deleteInteractComp(InteractComponent ic);
+
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
 

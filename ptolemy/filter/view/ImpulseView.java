@@ -139,6 +139,18 @@ public class ImpulseView extends PlotView {
           return;
      }
 
+     public void deleteInteractComp(InteractComponent ic){
+          return;
+     }
+
+     public void selectInteractComp(InteractComponent ic){
+          return;
+     }
+
+     public void unselectInteractComp(InteractComponent ic){
+          return;
+     }
+
      //////////////////////////////////////////////////////////////////////////
      ////                     private methods                              ////
 

@@ -169,6 +169,20 @@ System.out.println("updating the frequency response value");
           }  
      }
 
+     public void deleteInteractComp(InteractComponent ic){
+          return;
+     }
+  
+     public void selectInteractComp(InteractComponent ic){
+          return;
+
+     }
+
+     public void unselectInteractComp(InteractComponent ic){
+          return;
+
+     }
+
      /**
       * Process the changing in filter spec.  Interact plot calls this function
       * after the interactive component that represent the filter spec has 
@@ -224,7 +238,7 @@ System.out.println("updating the frequency response value");
           while (edgeenum.hasMoreElements()){
                InteractComponent edgeic = (InteractComponent) edgeenum.nextElement();
                Double edge = (Double) _crossref[0].get(edgeic);
-               edgefreq[edgeic.getDataIndexNum()] = edge.doubleValue();
+               edgefreq[edgeic.getDataSetNum()] = edge.doubleValue();
           }
 
           // get gain at edge frequencies 
@@ -232,7 +246,7 @@ System.out.println("updating the frequency response value");
           while (gainenum.hasMoreElements()){
                InteractComponent gainic = (InteractComponent) gainenum.nextElement();
                Double gain = (Double) _crossref[1].get(gainic);
-               edgegain[gainic.getDataIndexNum()] = gain.doubleValue();
+               edgegain[gainic.getDataSetNum()] = gain.doubleValue();
           }
 
           // get pass band ripple height 
@@ -373,8 +387,6 @@ System.out.println("updating the frequency response value");
                                     new String("Gain"), 
                                     InteractComponent.XAXISDEGFREE);
 
-                ic.setDatasetIndex(1,i);
-
                 // add interact component to interact magnitude plot
                 InteractPlot iplot = (InteractPlot) _plots[0];
                 iplot.addInteractPoint(ic, 1, ic.getXValue(), ic.getYValue(), false); 
@@ -395,8 +407,6 @@ System.out.println("updating the frequency response value");
 
                 ic.setInteractParam(new String("Band"), new String("Gain"), 
                                     InteractComponent.YAXISDEGFREE);
-
-                ic.setDatasetIndex(2,i);
 
                 // add the interact component to interact plot
                 InteractPlot iplot = (InteractPlot) _plots[0];
@@ -426,8 +436,6 @@ System.out.println("updating the frequency response value");
             ic.setInteractParam(new String(""), new String("height"), 
                                 InteractComponent.YAXISDEGFREE);
 
-            ic.setDatasetIndex(3,0);
-                
                 
             // add the interact component to interact plot
             InteractPlot iplot = (InteractPlot) _plots[0];
@@ -448,8 +456,6 @@ System.out.println("updating the frequency response value");
 
             ic.setInteractParam(new String(""), new String("height"), 
                                 InteractComponent.YAXISDEGFREE);
-
-            ic.setDatasetIndex(4,0);
 
             // add the interact component to interact plot
             InteractPlot iplot = (InteractPlot) _plots[0];

@@ -76,7 +76,7 @@ public class PoleZeroView extends PlotView implements ActionListener {
           plot.setForeground(Color.gray);
           plot.setXRange(-1.2, 1.2);
           plot.setYRange(-1.2, 1.2);
-          plot.setNumSets(3);
+          plot.setNumSets(5);
           plot.setMergeInteractComp(true); 
           if (filter.getType() == ptolemy.math.filter.Filter.IIR){
               plot.setEditPermission(false);
@@ -205,6 +205,30 @@ public class PoleZeroView extends PlotView implements ActionListener {
    }
 
    /**
+    * Delete the selected pole/zero.  This function calls filter object 
+    * <code> deletePole() </code> or <code> deleteZero() </code>.
+    * This will delete the factor associate with that pole/zero. 
+    * @param interactpolezero to be deleted interact pole/zero 
+    */
+   public void deleteInteractComp(InteractComponent interactpolezero){
+        if (_crossref[0].containsKey(interactpolezero)){
+            Complex pole = (Complex) _crossref[0].get(interactpolezero); 
+            // notify the filter object about the moved pole.
+            FilterObj jf = (FilterObj) _observed;
+            jf.deletePole(pole); 
+            
+        } else {        
+            if (_crossref[1].containsKey(interactpolezero)){
+                Complex zero = (Complex) _crossref[1].get(interactpolezero); 
+                // notify the filter object about the moved zero.
+                FilterObj jf = (FilterObj) _observed;
+                jf.deleteZero(zero); 
+            }
+        } 
+   }
+
+
+   /**
     * Move the desired interact pole/zero.  First find the Complex object
     * that represents the pole or zero, then calls FilterObj's updatePoleValue(),
     * updateZeroValue() to change pole/zero in the filter object.
@@ -212,8 +236,6 @@ public class PoleZeroView extends PlotView implements ActionListener {
     * @param interactpolezero changed interact pole/zero
     */  
    public void moveInteractComp(InteractComponent interactpolezero){
-
-        boolean polemoved = false;
 
         if (_crossref[0].containsKey(interactpolezero)){
             Complex pole = (Complex) _crossref[0].get(interactpolezero); 
@@ -233,6 +255,114 @@ public class PoleZeroView extends PlotView implements ActionListener {
         } 
    }
 
+
+   /**
+    * Display all the pole-zero that associate with the currently selected
+    * pole/zero.  This method will call filter object <code> getFamilyPoleZero()
+    * </code> to get all the poles/zero that are in the same factor.
+    * @param interactpolezero changed interact pole/zero
+    */ 
+   public void selectInteractComp(InteractComponent interactpolezero){
+
+        InteractComponent ic;
+        Complex [] familypole = null;
+        Complex [] familyzero = null;
+
+        if (_crossref[0].containsKey(interactpolezero)){
+            Complex pole = (Complex) _crossref[0].get(interactpolezero); 
+            FilterObj jf = (FilterObj) _observed;
+            familypole = jf.getFamilyPoleWithPole(pole);
+            familyzero = jf.getFamilyZeroWithPole(pole);
+
+        } else if (_crossref[1].containsKey(interactpolezero)){
+                        
+            Complex zero = (Complex) _crossref[1].get(interactpolezero); 
+            FilterObj jf = (FilterObj) _observed;
+            familypole = jf.getFamilyPoleWithZero(zero);
+            familyzero = jf.getFamilyZeroWithZero(zero);
+        }
+   
+        if (familypole != null){
+            for (int i=0;i<familypole.length;i++){
+                if (!_crossref[0].contains((Object) familypole[i])) {
+                      ic = new InteractComponent("Pole", 
+                                          InteractComponent.CROSS, 
+                                          familypole[i].real,
+                                          familypole[i].imag);
+                      ic.setDrawingParam(Color.green, 6, false,
+                                          InteractComponent.SYMMETRICORI);
+                      ((InteractPlot)_plots[0]).addInteractPoint(ic, 3, 
+                                                        ic.getXValue(),
+                                                        ic.getYValue(),
+                                                        false);
+                      ic.setHighlighted(true);
+                } else { 
+                      Enumeration polekeys = _crossref[0].keys();
+                      while (polekeys.hasMoreElements()){
+                            ic = (InteractComponent) polekeys.nextElement();
+                            if (_crossref[0].get(ic) == familypole[i]){
+                                 ic.setHighlighted(true);
+                                 break;
+                            }
+                      }
+                 } 
+            }
+        }
+ 
+        if (familyzero != null){
+            for (int i=0;i<familyzero.length;i++){
+                if (!_crossref[1].contains((Object) familyzero[i])) {
+                      ic = new InteractComponent("Zero", 
+                                          InteractComponent.CIRCLE, 
+                                          familyzero[i].real,
+                                          familyzero[i].imag);
+                      ic.setDrawingParam(Color.cyan, 6, false,
+                                          InteractComponent.SYMMETRICORI);
+                      ((InteractPlot)_plots[0]).addInteractPoint(ic, 4, 
+                                                         ic.getXValue(),
+                                                         ic.getYValue(),
+                                                         false);
+                      ic.setHighlighted(true);
+                } else { 
+                      Enumeration zerokeys = _crossref[1].keys();
+                      while (zerokeys.hasMoreElements()){
+                            ic = (InteractComponent) zerokeys.nextElement();
+                            if (_crossref[0].get(ic) == familyzero[i]){
+                                 ic.setHighlighted(true);
+                                 break;
+                            }
+                      }
+                 } 
+            }
+        } 
+        _plots[0].repaint();
+   }
+
+   /**
+    * Remove the pole/zero that is in the same factor as the given pole/zero.
+    * This is done by simply remove the interact components with data set 3 and 4. 
+    * @param interactpolezero unselected interact pole/zero
+    */ 
+   public void unselectInteractComp(InteractComponent interactpolezero){
+         ((InteractPlot)_plots[0]).eraseInteractComponents(3);
+         ((InteractPlot)_plots[0]).eraseInteractComponents(4);
+         
+         Enumeration poleenum = _crossref[0].keys(); 
+         Enumeration zeroenum = _crossref[1].keys(); 
+  
+         InteractComponent ic; 
+         while (poleenum.hasMoreElements()){
+             ic = (InteractComponent) poleenum.nextElement();
+             ic.setHighlighted(false);
+         }  
+         while (zeroenum.hasMoreElements()){
+             ic = (InteractComponent) zeroenum.nextElement();
+             ic.setHighlighted(false);
+         }  
+         _plots[0].repaint();
+        
+   }
+ 
    //////////////////////////////////////////////////////////////////////////
    ////                     private methods                              ////
 
@@ -288,8 +418,6 @@ public class PoleZeroView extends PlotView implements ActionListener {
                                    new String("Pole imag"), 
                                    InteractComponent.ALLDEGFREE); 
                     
-               ic.setDatasetIndex(1, ind);
-                       
                // add to interact plot 
                ((InteractPlot)_plots[0]).addInteractPoint(ic, 1, ic.getXValue(),
                                                           ic.getYValue(), false);
@@ -317,8 +445,6 @@ public class PoleZeroView extends PlotView implements ActionListener {
                                    new String("Zero imag"), 
                                    InteractComponent.ALLDEGFREE); 
 
-               ic.setDatasetIndex(2, ind);
-                   
                ((InteractPlot)_plots[0]).addInteractPoint(ic, 2, ic.getXValue(),
                                                           ic.getYValue(), false);
 

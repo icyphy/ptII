@@ -141,14 +141,6 @@ public class InteractComponent {
     }     
 
     /**
-     * Get the data index number. <p>
-     * @return the data index number of this object in the dataset.
-     */
-    public int getDataIndexNum(){
-           return _dataindex;
-    }     
-
-    /**
      * Set default drawing parameters.  Set the parameters for the 
      * appearences of this interact object.  They will be used
      * when the object is drawn.  Bounding box is also set in this
@@ -271,12 +263,28 @@ public class InteractComponent {
        }
     }
 
+    public void setHighlighted(boolean highlight){
+       this._highlight = highlight;
+       if (highlight){
+           if (!_selected){
+               _savedcolor = _color;
+               _color = Color.magenta;
+           } 
+       } else {
+           _color = _savedcolor; 
+       }
+    }
+
     /**
      * Get the select flag value. <p>
      * @return select flag value
      */
     public boolean getSelected(){
        return _selected;
+    }
+
+    public boolean getHighlighted(){
+       return _highlight;
     }
 
     /**
@@ -428,15 +436,14 @@ public class InteractComponent {
     }
 
     /**
-     * Set the dataset and data index this interact component is corresponding 
+     * Set the data-set number of this interact component is corresponding 
      * to.  The dataset number and index number is similiar to the dataset
      * and data index in Plot.
      * <p>
      * @param datas data set number.
      * @param ind data index number.
      */ 
-    public void setDatasetIndex(int datas, int ind){
-       _dataindex = ind;
+    public void setDataSetNum(int datas){
        _dataset = datas;
     } 
 
@@ -489,6 +496,7 @@ public class InteractComponent {
     private int _dataset;  // tells which group of data this component belongs
     private int _dataindex;
     private boolean _selected; // set this flag if the component is seleted
+    private boolean _highlight; // set this flag if the component is highlighted 
 
     // used to specify on the plot upper left corner what each coordinates
     // represents.

@@ -113,14 +113,24 @@ public class InteractPlot extends Plot {
      * @param datas given data set number where the interact object will
      * delete. 
      */
-    public void eraseInteractComp(int datas){
-        for (int ind = 0; ind < _interactComponents.size();ind++){
-             InteractComponent ic;
-             ic  = (InteractComponent) _interactComponents.elementAt(ind);
+    public void eraseInteractComponents(int datas){
+        Enumeration interenum = _interactComponents.elements();
+        Vector deleted = new Vector();
+        while (interenum.hasMoreElements()){
+
+             InteractComponent ic = (InteractComponent) interenum.nextElement();
+
              if (ic.getDataSetNum() == datas){
-                 _interactComponents.removeElementAt(ind);
+                 // mark the deletion
+                 deleted.addElement(ic);
              }
         }
+        // perform the deletion 
+        Enumeration delenum = deleted.elements();
+        while (delenum.hasMoreElements()){
+             _interactComponents.removeElement(delenum.nextElement());
+        }
+        deleted.removeAllElements();
     } 
 
     /**
@@ -137,6 +147,7 @@ public class InteractPlot extends Plot {
                                  double x, double y, boolean connect){
 
          if (_interactComponents == null) _interactComponents = new Vector();
+         interacomp.setDataSetNum(dataset);
          _interactComponents.addElement(interacomp);
          addPoint(dataset, x, y, connect);
     }
@@ -153,21 +164,27 @@ public class InteractPlot extends Plot {
         Graphics graphics = getGraphics();
  
         // got a close one
-        if (_selected != null){
-            _selected.setSelected(true);
+        if (_selected != null) {
+            if (_editpermission){
+                _selected.setSelected(true);
  
-            // memerize the old coordinates
-            _oldx = x;
-            _oldy = y;
+                // memerize the old coordinates
+                _oldx = x;
+                _oldy = y;
  
-            // draw the string that represents the actual value of
-            // interact component on the upper left side of the plot
-            // display upto 5 digit precision
+                // draw the string that represents the actual value of
+                // interact component on the upper left side of the plot
+                // display upto 5 digit precision
 
-            graphics.setColor(Color.white); 
-            _selected.drawValue(graphics, 5, 15, 5);
+                graphics.setColor(Color.white); 
+                _selected.drawValue(graphics, 5, 15, 5);
  
-            repaint();
+                repaint();
+            } else {
+                _selected.setSelected(true);
+            }
+
+            _viewer.selectInteractComp(_selected);
         }
     }
  
@@ -203,6 +220,7 @@ public class InteractPlot extends Plot {
                _cxyframe.setInteractComponent(_selected);
                _cxyframe.setVisible(true);
                repaint();
+               _viewer.selectInteractComp(_selected);
            }
         }
     }
@@ -277,7 +295,7 @@ public class InteractPlot extends Plot {
      */
     public synchronized void finishDragInteractcomp(int x, int y){
          if (_selected != null){
-             if (!_cxyframe.isVisible()){
+             if ((!_cxyframe.isVisible()) && (_editpermission)){
                  
                  Graphics graphics = getGraphics();
 
@@ -299,7 +317,10 @@ public class InteractPlot extends Plot {
                  repaint();
                  _viewer.moveInteractComp(_selected);
                  _selected = null;
+             } else {
+                 _selected.setSelected(false);
              }
+             _viewer.unselectInteractComp(_selected);
          }
     }
 
@@ -447,6 +468,7 @@ public class InteractPlot extends Plot {
               repaint();
               _viewer.moveInteractComp(_selected);
               _selected = null;
+              _viewer.unselectInteractComp(_selected);
          }
     }
 
@@ -458,6 +480,7 @@ public class InteractPlot extends Plot {
              _cxyframe.setVisible(false);
              _selected.setSelected(false);
              repaint();
+             _viewer.unselectInteractComp(_selected);
              _selected = null;
         }
     }
@@ -694,16 +717,12 @@ public class InteractPlot extends Plot {
 
         public void mousePressed(MouseEvent event) {
             if (event.isMetaDown()){
-                if (_editpermission){
-                   InteractPlot.this.selectInteractcomp(event.getX(), event.getY());
-                }
+                InteractPlot.this.selectInteractcomp(event.getX(), event.getY());
             }
         }
         public void mouseReleased(MouseEvent event) {
             if (event.isMetaDown()){
-                if (_editpermission){
-                   InteractPlot.this.finishDragInteractcomp(event.getX(), event.getY());
-                }
+                InteractPlot.this.finishDragInteractcomp(event.getX(), event.getY());
             }
         }
 
